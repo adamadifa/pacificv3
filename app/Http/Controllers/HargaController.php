@@ -1,0 +1,167 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Barang;
+use App\Models\Cabang;
+use App\Models\Harga;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
+
+class HargaController extends Controller
+{
+    function index(Request $request)
+    {
+        $query = Harga::query();
+        if (isset($request->submit)) {
+            if (!empty($request->kode_cabang)) {
+                $query->where('kode_cabang', $request->kode_cabang);
+            }
+
+            if (!empty($request->kategori_harga)) {
+                $query->where('kategori_harga', $request->kategori_harga);
+            }
+        }
+        $harga = $query->paginate(15);
+        $harga->appends($request->all());
+        $cabang = Cabang::all();
+        return view('harga.index', compact('harga', 'cabang'));
+    }
+
+    public function create()
+    {
+        $barang = Barang::all();
+        $cabang = Cabang::all();
+        return view('harga.create', compact('barang', 'cabang'));
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'kode_barang' => 'required',
+            'kode_produk' => 'required',
+            'kategori' => 'required',
+            'satuan' => 'required',
+            'isipcsdus' => 'required|numeric',
+            'isipack' => 'required|numeric',
+            'isipcs' => 'required|numeric',
+            'kategori_harga' => 'required',
+            'kode_cabang' => 'required',
+            'harga_dus' => 'required',
+            'harga_pack' => 'required',
+            'harga_pcs' => 'required',
+            'harga_returdus' => 'required',
+            'harga_returpack' => 'required',
+            'harga_returpcs' => 'required',
+        ]);
+
+        $produk = explode("|", $request->kode_produk);
+        $simpan = DB::table('barang')->insert([
+            'kode_barang' => $request->kode_barang,
+            'kode_produk' => $produk[0],
+            'nama_barang' => $produk[1],
+            'kategori' => $request->kategori,
+            'satuan' => $request->satuan,
+            'isipcsdus' => $request->isipcsdus,
+            'isipack' => $request->isipack,
+            'isipcs' => $request->isipcs,
+            'kategori_harga' => $request->kategori_harga,
+            'kode_cabang' => $request->kode_cabang,
+            'harga_dus' => str_replace(".", "", $request->harga_dus),
+            'harga_pack' => str_replace(".", "", $request->harga_pack),
+            'harga_pcs' => str_replace(".", "", $request->harga_pcs),
+            'harga_returdus' => str_replace(".", "", $request->harga_returdus),
+            'harga_returpack' => str_replace(".", "", $request->harga_returpack),
+            'harga_returpcs' => str_replace(".", "", $request->harga_returpcs),
+        ]);
+
+        if ($simpan) {
+            return redirect('/harga')->with(['success' => 'Data Berhasil Disimpan']);
+        } else {
+            return redirect('/harga')->with(['warning' => 'Data Gagal Disimpan']);
+        }
+    }
+
+    public function edit($kode_barang)
+    {
+        $kode_barang = Crypt::decrypt($kode_barang);
+        $data = DB::table('barang')->where('kode_barang', $kode_barang)->first();
+        $barang = Barang::all();
+        $cabang = Cabang::all();
+        return view('harga.edit', compact('barang', 'cabang', 'data'));
+    }
+
+
+    public function update(Request $request, $kode_barang)
+    {
+        $kode_barang = Crypt::decrypt($kode_barang);
+        $request->validate([
+            'kode_barang' => 'required',
+            'kode_produk' => 'required',
+            'kategori' => 'required',
+            'satuan' => 'required',
+            'isipcsdus' => 'required|numeric',
+            'isipack' => 'required|numeric',
+            'isipcs' => 'required|numeric',
+            'kategori_harga' => 'required',
+            'kode_cabang' => 'required',
+            'harga_dus' => 'required',
+            'harga_pack' => 'required',
+            'harga_pcs' => 'required',
+            'harga_returdus' => 'required',
+            'harga_returpack' => 'required',
+            'harga_returpcs' => 'required',
+        ]);
+
+        $produk = explode("|", $request->kode_produk);
+        $simpan = DB::table('barang')
+            ->where('kode_barang', $kode_barang)
+            ->update([
+                'kode_barang' => $request->kode_barang,
+                'kode_produk' => $produk[0],
+                'nama_barang' => $produk[1],
+                'kategori' => $request->kategori,
+                'satuan' => $request->satuan,
+                'isipcsdus' => $request->isipcsdus,
+                'isipack' => $request->isipack,
+                'isipcs' => $request->isipcs,
+                'kategori_harga' => $request->kategori_harga,
+                'kode_cabang' => $request->kode_cabang,
+                'harga_dus' => str_replace(".", "", $request->harga_dus),
+                'harga_pack' => str_replace(".", "", $request->harga_pack),
+                'harga_pcs' => str_replace(".", "", $request->harga_pcs),
+                'harga_returdus' => str_replace(".", "", $request->harga_returdus),
+                'harga_returpack' => str_replace(".", "", $request->harga_returpack),
+                'harga_returpcs' => str_replace(".", "", $request->harga_returpcs),
+            ]);
+
+        if ($simpan) {
+            return Redirect::back()->with(['success' => 'Data Berhasil Di Update']);
+        } else {
+            return Redirect::back()->with(['warning' => 'Data Gagal Di Updat']);
+        }
+    }
+
+    public function delete($kode_barang)
+    {
+        $kode_barang = Crypt::decrypt($kode_barang);
+        $hapus = DB::table('barang')
+            ->where('kode_barang', $kode_barang)
+            ->delete();
+
+        if ($hapus) {
+            return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
+        } else {
+            return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
+        }
+    }
+
+    public function show(Request $request)
+    {
+        $kode_barang = Crypt::decrypt($request->kode_barang);
+        $data = DB::table('barang')->where('kode_barang', $kode_barang)->first();
+        return view('harga.show', compact('data'));
+    }
+}
