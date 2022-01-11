@@ -9,6 +9,7 @@ use Illuminate\Queue\Jobs\RedisJob;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use PDOException;
 
 class SalesmanController extends Controller
 {
@@ -110,14 +111,21 @@ class SalesmanController extends Controller
     public function delete($id_karyawan)
     {
         $id_karyawan = Crypt::decrypt($id_karyawan);
-        $hapus = DB::table('karyawan')
-            ->where('id_karyawan', $id_karyawan)
-            ->delete();
+        try {
+            $hapus = DB::table('karyawan')
+                ->where('id_karyawan', $id_karyawan)
+                ->delete();
 
-        if ($hapus) {
-            return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
-        } else {
-            return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
+            if ($hapus) {
+                return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
+            } else {
+                return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
+            }
+        } catch (PDOException $e) {
+            $errorcode = $e->getCode();
+            if ($errorcode == 23000) {
+                return Redirect::back()->with(['danger' => 'Data Tidak Dapat Dihapus Karena Sudah Memiliki Transaksi']);
+            }
         }
     }
 

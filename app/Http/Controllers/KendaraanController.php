@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use PDOException;
 
 class KendaraanController extends Controller
 {
@@ -158,14 +159,21 @@ class KendaraanController extends Controller
     public function delete($id)
     {
         $id = Crypt::decrypt($id);
-        $hapus = DB::table('kendaraan')
-            ->where('id', $id)
-            ->delete();
+        try {
+            $hapus = DB::table('kendaraan')
+                ->where('id', $id)
+                ->delete();
 
-        if ($hapus) {
-            return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
-        } else {
-            return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
+            if ($hapus) {
+                return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
+            } else {
+                return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
+            }
+        } catch (PDOException $e) {
+            $errorcode = $e->getCode();
+            if ($errorcode == 23000) {
+                return Redirect::back()->with(['warning' => 'Data Tidak Dapat Dihapus Karena Sudah Memiliki Transaksi']);
+            }
         }
     }
 

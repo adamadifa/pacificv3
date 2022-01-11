@@ -17,7 +17,11 @@ class AuthController extends Controller
         //dd(Auth::attempt(['username' => $request->username, 'password' => $request->password]));
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->intended('/dashboardadmin');
+            if (Auth::user()->level == "admin") {
+                return redirect()->intended('/dashboardadmin');
+            } else if (Auth::user()->level == "admin penjualan") {
+                return redirect()->intended('/dashboardadminpenjualan');
+            }
         }
     }
 

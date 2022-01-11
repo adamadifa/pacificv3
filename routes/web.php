@@ -4,6 +4,7 @@ use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\CabangController;
 use App\Http\Controllers\DaftarController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GudangController;
@@ -57,6 +58,29 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/barang/{kode_produk}/update', [BarangController::class, 'update']);
     Route::delete('/barang/{kode_produk}/delete', [BarangController::class, 'delete']);
 
+    //Kendaraan
+    Route::get('/kendaraan', [KendaraanController::class, 'index']);
+    Route::get('/kendaraan/create', [KendaraanController::class, 'create']);
+    Route::post('/kendaraan/store', [KendaraanController::class, 'store']);
+    Route::delete('/kendaraan/{id}/delete', [KendaraanController::class, 'delete']);
+    Route::get('/kendaraan/{id}/edit', [KendaraanController::class, 'edit']);
+    Route::post('/kendaraan/{id}/update', [KendaraanController::class, 'update']);
+    Route::post('/kendaraan/show', [KendaraanController::class, 'show']);
+
+    //Cabang
+    Route::get('/cabang', [CabangController::class, 'index']);
+    Route::get('/cabang/create', [CabangController::class, 'create']);
+    Route::post('/cabang/store', [CabangController::class, 'store']);
+    Route::get('/cabang/{kode_cabang}/edit', [CabangController::class, 'edit']);
+    Route::post('/cabang/{kode_cabang}/update', [CabangController::class, 'update']);
+    Route::delete('/cabang/{kode_cabang}/delete', [CabangController::class, 'delete']);
+});
+
+//Administrator | Admin Penjualan
+Route::middleware(['auth', 'ceklevel:admin,admin penjualan'])->group(function () {
+
+    Route::get('/dashboardadminpenjualan', [DashboardController::class, 'dashboardadminpenjualan']);
+
     //Harga
     Route::get('/harga', [HargaController::class, 'index']);
     Route::get('/harga/create', [HargaController::class, 'create']);
@@ -84,13 +108,4 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/pelanggan/{kode_pelanggan}/update', [PelangganController::class, 'update']);
     Route::delete('/pelanggan/{kode_pelanggan}/delete', [PelangganController::class, 'delete']);
     Route::get('/pelanggan/{kode_pelanggan}/show', [PelangganController::class, 'show']);
-
-    //Kendaraan
-    Route::get('/kendaraan', [KendaraanController::class, 'index']);
-    Route::get('/kendaraan/create', [KendaraanController::class, 'create']);
-    Route::post('/kendaraan/store', [KendaraanController::class, 'store']);
-    Route::delete('/kendaraan/{id}/delete', [KendaraanController::class, 'delete']);
-    Route::get('/kendaraan/{id}/edit', [KendaraanController::class, 'edit']);
-    Route::post('/kendaraan/{id}/update', [KendaraanController::class, 'update']);
-    Route::post('/kendaraan/show', [KendaraanController::class, 'show']);
 });

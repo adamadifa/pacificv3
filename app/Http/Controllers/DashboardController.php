@@ -57,4 +57,9 @@ class DashboardController extends Controller
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('dashboard.administrator', compact('jmlpengajuan', 'bulan', 'cabang'));
     }
+
+    function dashboardadminpenjualan()
+    {
+        return view('dashboard.adminpenjualan');
+    }
 }

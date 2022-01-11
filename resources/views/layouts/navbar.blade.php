@@ -23,7 +23,7 @@
                      <li class="{{ request()->is(['barang','barang/*']) ? 'active' : '' }}"><a href="/barang"><i class="feather icon-grid"></i><span class="menu-item">Barang</span></a></li>
                      <li class="{{ request()->is(['harga','harga/*']) ? 'active' : '' }}"><a href="/harga"><i class="fa fa-money"></i><span class="menu-item">Harga</span></a></li>
                      <li class="{{ request()->is(['kendaraan','kendaraan/*']) ? 'active' : '' }}"><a href="/kendaraan"><i class="feather icon-truck"></i><span class="menu-item">Kendaraan</span></a></li>
-                     <li class="{{ request()->is(['tabungan','tabungan/*']) ? 'active' : '' }}"><a href="/tabungan"><i class="fa fa-bank"></i><span class="menu-item">Cabang</span></a></li>
+                     <li class="{{ request()->is(['cabang','cabang/*']) ? 'active' : '' }}"><a href="/cabang"><i class="fa fa-bank"></i><span class="menu-item">Cabang</span></a></li>
                  </ul>
              </li>
 
