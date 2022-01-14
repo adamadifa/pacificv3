@@ -19,7 +19,7 @@
     </div>
 </div>
 <div class="content-body">
-    <form class="form" action="/pelanggan/store" method="POST">
+    <form class="form" action="/pelanggan/store" method="POST" enctype="multipart/form-data">
         <div class="col-md-12">
 
             <div class="row">
@@ -99,6 +99,7 @@
                                         </div>
                                     </div>
                                     <div class="row">
+                                        @if (Auth::user()->kode_cabang=="PCF")
                                         <div class="col-lg-6 col-sm-12">
                                             <div class="form-group  @error('kode_cabang') error @enderror">
                                                 <select name="kode_cabang" id="kode_cabang" class="form-control">
@@ -118,6 +119,9 @@
                                                 @enderror
                                             </div>
                                         </div>
+                                        @else
+                                        <input type="hidden" name="kode_cabang" id="kode_cabang" value="{{ Auth::user()->kode_cabang }}" readonly>
+                                        @endif
                                         <div class="col-lg-6 col-sm-12">
                                             <div class="form-group   @error('id_karyawan') error @enderror"">
                                                 <select name=" id_karyawan" id="id_karyawan" class="form-control">
@@ -133,6 +137,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @if (Auth::user()->kode_cabang=="PCF")
                                     <div class="row">
                                         <div class="col-12">
                                             <x-inputtext label="Limit Pelanggan" field="limitpel" icon="feather icon-file" right />
@@ -157,6 +162,11 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @else
+                                    <input type="hidden" name="limitpel" id="limitpel">
+                                    <input type="hidden" name="jatuhtempo" id="jatuhtempo">
+                                    @endif
+
 
                                     <div class="row">
                                         <div class="col-12">
@@ -337,6 +347,23 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <x-inputtext label="Omset Toko" field="omset_toko" icon="feather icon-file" right />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group  @error('foto') error @enderror">
+                                            <div class="custom-file">
+                                                <input type="file" name="foto" class="custom-file-input" id="inputGroupFile01">
+                                                <label class="custom-file-label" for="inputGroupFile01">Upload Foto</label>
+                                            </div>
+                                            @error('foto')
+                                            <div class="help-block">
+                                                <ul role="alert">
+                                                    <li>{{ $message }}</li>
+                                                </ul>
+                                            </div>
+                                            @enderror
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row">

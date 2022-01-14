@@ -5,21 +5,44 @@ namespace App\Http\Controllers;
 use App\Models\Cabang;
 use App\Models\Pelanggan;
 use App\Models\Salesman;
+use Facade\FlareClient\Stacktrace\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
+use Yajra\DataTables\Facades\DataTables;
 use PDOException;
 
 class PelangganController extends Controller
 {
+    protected $cabang;
+    public function __construct()
+    {
+        // Fetch the Site Settings object
+        $this->middleware(function ($request, $next) {
+            $this->cabang = Auth::user()->kode_cabang;
+            return $next($request);
+        });
+
+
+        View::share('cabang', $this->cabang);
+    }
     public function index(Request $request)
     {
+
+
         $query = Pelanggan::query();
+        if ($this->cabang != "PCF") {
+            $query->where('pelanggan.kode_cabang', $this->cabang);
+        }
         if (isset($request->submit) || isset($request->export)) {
             if ($request->nama != "") {
                 $query->where('nama_pelanggan', 'like', '%' . $request->nama . '%');
             }
+
 
             if ($request->kode_cabang != "") {
                 $query->where('pelanggan.kode_cabang', $request->kode_cabang);
@@ -51,6 +74,9 @@ class PelangganController extends Controller
 
 
         $query2 = Pelanggan::query();
+        if ($this->cabang != "PCF") {
+            $query2->where('pelanggan.kode_cabang', $this->cabang);
+        }
         if (isset($request->submit)) {
             if ($request->nama != "") {
                 $query2->where('nama_pelanggan', 'like', '%' . $request->nama . '%');
@@ -78,6 +104,9 @@ class PelangganController extends Controller
         $query2->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
 
         $queryaktif = Pelanggan::query();
+        if ($this->cabang != "PCF") {
+            $queryaktif->where('pelanggan.kode_cabang', $this->cabang);
+        }
         if (isset($request->submit)) {
             if ($request->nama != "") {
                 $queryaktif->where('nama_pelanggan', 'like', '%' . $request->nama . '%');
@@ -103,6 +132,9 @@ class PelangganController extends Controller
 
 
         $querynonaktif = Pelanggan::query();
+        if ($this->cabang != "PCF") {
+            $querynonaktif->where('pelanggan.kode_cabang', $this->cabang);
+        }
         if (isset($request->submit)) {
             if ($request->nama != "") {
                 $querynonaktif->where('nama_pelanggan', 'like', '%' . $request->nama . '%');
@@ -163,11 +195,12 @@ class PelangganController extends Controller
             'hari' => 'required',
             'kode_cabang' => 'required',
             'id_karyawan' => 'required',
-            'limitpel' => 'required',
-            'jatuhtempo' => 'required',
             'status_pelanggan' => 'required',
+            'foto' => 'mimes:png,jpg,jpeg|max:1024', // max 1MB
 
         ]);
+
+
 
         $pelanggan = DB::table('pelanggan')
             ->select('kode_pelanggan')
@@ -178,6 +211,23 @@ class PelangganController extends Controller
 
         $kodepelangganterakhir = $pelanggan->kode_pelanggan;
         $kodepelanggan = buatkode($kodepelangganterakhir, $request->kode_cabang . '-', 5);
+
+        //Upload File
+        if ($request->hasfile('foto')) {
+            $image = $request->file('foto');
+            $image_name =  $kodepelanggan . "." . $request->file('foto')->getClientOriginalExtension();
+            $destination_path = "/public/pelanggan";
+            $upload = $request->file('foto')->storeAs($destination_path, $image_name);
+            $foto = $image_name;
+        } else {
+            $foto = NULL;
+        }
+
+        // Storage::putFileAs(new File('/public/pelanggan'), $image);
+        // $path = Storage::putFileAs(
+        //     'public/pelanggan',
+        //     $request->file('foto', $image),
+        // );
 
         $simpan = DB::table('pelanggan')->insert([
             'kode_pelanggan' => $kodepelanggan,
@@ -202,7 +252,8 @@ class PelangganController extends Controller
             'cara_pembayaran' => $request->cara_pembayaran,
             'lama_langganan' => $request->lama_langganan,
             'jaminan' => $request->jaminan,
-            'omset_toko' => $request->omset_toko
+            'omset_toko' => $request->omset_toko,
+            'foto' => $foto
         ]);
 
         if ($simpan) {
@@ -222,7 +273,13 @@ class PelangganController extends Controller
 
     public function delete($kode_pelanggan)
     {
+
+
         $kode_pelanggan = Crypt::decrypt($kode_pelanggan);
+        $pelanggan = Pelanggan::where('kode_pelanggan', $kode_pelanggan)->first();
+        $file = $pelanggan->foto;
+
+
 
         try {
             $hapus = DB::table('pelanggan')
@@ -230,6 +287,7 @@ class PelangganController extends Controller
                 ->delete();
 
             if ($hapus) {
+                Storage::delete('public/pelanggan/' . $file);
                 return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
             } else {
                 return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
@@ -245,6 +303,8 @@ class PelangganController extends Controller
     public function update(Request $request, $kode_pelanggan)
     {
         $kode_pelanggan = Crypt::decrypt($kode_pelanggan);
+        $pelanggan = Pelanggan::where('kode_pelanggan', $kode_pelanggan)->first();
+        $file = $pelanggan->foto;
         $request->validate([
             'nama_pelanggan' => 'required',
             'alamat_pelanggan' => 'required',
@@ -254,13 +314,16 @@ class PelangganController extends Controller
             'hari' => 'required',
             'kode_cabang' => 'required',
             'id_karyawan' => 'required',
-            'limitpel' => 'required',
-            'jatuhtempo' => 'required',
             'status_pelanggan' => 'required',
+            'foto' => 'mimes:png,jpg,jpeg|max:1024', // max 1MB
 
         ]);
 
-
+        if ($request->hasfile('foto')) {
+            $foto = $kode_pelanggan . "." . $request->file('foto')->getClientOriginalExtension();
+        } else {
+            $foto = $file;
+        }
 
         $simpan = DB::table('pelanggan')
             ->where('kode_pelanggan', $kode_pelanggan)
@@ -286,10 +349,19 @@ class PelangganController extends Controller
                 'cara_pembayaran' => $request->cara_pembayaran,
                 'lama_langganan' => $request->lama_langganan,
                 'jaminan' => $request->jaminan,
+                'foto' => $foto,
                 'omset_toko' => str_replace(".", "", $request->omset_toko)
             ]);
 
         if ($simpan) {
+            //Upload File
+            if ($request->hasfile('foto')) {
+                Storage::delete('public/pelanggan/' . $file);
+                $image = $request->file('foto');
+                $image_name =  $kode_pelanggan . "." . $request->file('foto')->getClientOriginalExtension();
+                $destination_path = "/public/pelanggan";
+                $upload = $request->file('foto')->storeAs($destination_path, $image_name);
+            }
             return Redirect::back()->with(['success' => 'Data Berhasil Di Update']);
         } else {
             return Redirect::back()->with(['warning' => 'Data Gagal Di Updat']);
@@ -304,5 +376,28 @@ class PelangganController extends Controller
             ->join('cabang', 'pelanggan.kode_cabang', '=', 'cabang.kode_cabang')
             ->first();
         return view('pelanggan.show', compact('data'));
+    }
+
+    public function json()
+    {
+        $pelanggan = DB::table('pelanggan')
+            ->select('pelanggan.*', 'karyawan.nama_karyawan', 'karyawan.kategori_salesman')
+            ->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
+        return DataTables::of($pelanggan)
+            ->addColumn('action', function ($pelanggan) {
+                return '<a href="#" class="btn btn-sm btn-primary"
+                kode_pelanggan="' . $pelanggan->kode_pelanggan . '" nama_pelanggan="' . $pelanggan->nama_pelanggan . '"
+                id_karyawan ="' . $pelanggan->id_sales . '"
+                nama_karyawan ="' . $pelanggan->nama_karyawan . '"
+                kategori_salesman ="' . $pelanggan->kategori_salesman . '"
+                alamat_pelanggan ="' . $pelanggan->alamat_pelanggan . '"
+                no_hp ="' . $pelanggan->no_hp . '"
+                pasar ="' . $pelanggan->pasar . '"
+                latitude ="' . $pelanggan->latitude . '"
+                longitude ="' . $pelanggan->longitude . '"
+                foto = "' . url(Storage::url('pelanggan/' . $pelanggan->foto)) . '"
+                >Pilih</a>';
+            })
+            ->toJson();
     }
 }

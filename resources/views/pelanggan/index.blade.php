@@ -84,6 +84,7 @@
                             </div>
                         </div>
                         <div class="row">
+                            @if (Auth::user()->kode_cabang=="PCF")
                             <div class="col-lg-2 col-sm-12">
                                 <div class="form-group  ">
                                     <select name="kode_cabang" id="kode_cabang" class="form-control">
@@ -94,6 +95,7 @@
                                     </select>
                                 </div>
                             </div>
+                            @endif
                             <div class="col-lg-3 col-sm-12">
                                 <div class="form-group  ">
                                     <select name="id_karyawan" id="id_karyawan" class="form-control">
@@ -202,7 +204,12 @@
 
 
         function loadsalesmancabang() {
-            var kode_cabang = $("#kode_cabang").val();
+            var cabang = "{{ Auth::user()->kode_cabang }}";
+            if (cabang != 'PST') {
+                var kode_cabang = cabang;
+            } else {
+                var kode_cabang = $("#kode_cabang").val();
+            }
             var id_karyawan = "{{ Request('id_karyawan') }}";
 
 

@@ -74,6 +74,11 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/cabang/{kode_cabang}/edit', [CabangController::class, 'edit']);
     Route::post('/cabang/{kode_cabang}/update', [CabangController::class, 'update']);
     Route::delete('/cabang/{kode_cabang}/delete', [CabangController::class, 'delete']);
+
+
+
+    //Penjualan
+    Route::get('/penjualan/create', [PenjualanController::class, 'create']);
 });
 
 //Administrator | Admin Penjualan
@@ -108,4 +113,14 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan'])->group(function ()
     Route::post('/pelanggan/{kode_pelanggan}/update', [PelangganController::class, 'update']);
     Route::delete('/pelanggan/{kode_pelanggan}/delete', [PelangganController::class, 'delete']);
     Route::get('/pelanggan/{kode_pelanggan}/show', [PelangganController::class, 'show']);
+    Route::get('/pelanggan/json', [PelangganController::class, 'json'])->name('pelanggan.json');
+
+    //Kendaraan
+    Route::get('/kendaraan', [KendaraanController::class, 'index']);
+    Route::get('/kendaraan/create', [KendaraanController::class, 'create']);
+    Route::post('/kendaraan/store', [KendaraanController::class, 'store']);
+    Route::delete('/kendaraan/{id}/delete', [KendaraanController::class, 'delete']);
+    Route::get('/kendaraan/{id}/edit', [KendaraanController::class, 'edit']);
+    Route::post('/kendaraan/{id}/update', [KendaraanController::class, 'update']);
+    Route::post('/kendaraan/show', [KendaraanController::class, 'show']);
 });

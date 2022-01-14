@@ -23,12 +23,16 @@
         @include('layouts.notification')
         <div class="col-md-12 col-sm-12">
             <div class="card">
+
+                @if (in_array($level,$kendaraan_tambah))
                 <div class="card-header">
                     <a href="/kendaraan/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
                 </div>
+                @endif
                 <div class="card-body">
                     <form action="/kendaraan">
                         <div class="row">
+                            @if ($level == "PCF")
                             <div class="col-lg-4 col-sm-12">
                                 <div class="form-group  ">
                                     <select name="kode_cabang" id="" class="form-control">
@@ -39,6 +43,7 @@
                                     </select>
                                 </div>
                             </div>
+                            @endif
                             <div class="col-lg-4 col-sm-12">
                                 <x-inputtext label="No. Polisi" field="no_polisi" icon="fa fa-truck" value="{{ Request('no_polisi') }}" />
                             </div>
@@ -80,6 +85,8 @@
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             <a class="ml-1" href="/kendaraan/{{\Crypt::encrypt($d->id)}}/edit"><i class="feather icon-edit success"></i></a>
                                             <a class="ml-1 detailkendaraan" href="#" data-id="{{ $d->id }}"><i class=" feather icon-file-text info"></i></a>
+
+                                            @if (in_array($level,$kendaraan_hapus))
                                             <form method="POST" name="deleteform" class="deleteform" action="/kendaraan/{{ Crypt::encrypt($d->id) }}/delete">
                                                 @csrf
                                                 @method('DELETE')
@@ -87,6 +94,7 @@
                                                     <i class="feather icon-trash danger"></i>
                                                 </a>
                                             </form>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>

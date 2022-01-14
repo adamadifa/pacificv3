@@ -5,16 +5,34 @@ namespace App\Http\Controllers;
 use App\Models\Cabang;
 use App\Models\Kendaraan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\View;
 use PDOException;
 
 class KendaraanController extends Controller
 {
+
+    protected $cabang;
+    public function __construct()
+    {
+        // Fetch the Site Settings object
+        $this->middleware(function ($request, $next) {
+            $this->cabang = Auth::user()->kode_cabang;
+            return $next($request);
+        });
+
+
+        View::share('cabang', $this->cabang);
+    }
     public function index(Request $request)
     {
         $query = Kendaraan::query();
+        if ($this->cabang != "PCF") {
+            $query->where('kode_cabang', $this->cabang);
+        }
         if (isset($request->kode_cabang)) {
             $query->where('kode_cabang', $request->kode_cabang);
         }

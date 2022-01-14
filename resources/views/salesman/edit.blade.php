@@ -53,6 +53,8 @@
                                             <x-inputtext label="No. HP" field="no_hp" icon="feather icon-phone" value="{{ $data->no_hp }}" />
                                         </div>
                                     </div>
+                                    @if ($getcbg == "PCF")
+
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group  @error('kode_cabang') error @enderror">
@@ -78,6 +80,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @else
+                                    <input type="hidden" id="kode_cabang" name="kode_cabang" value="{{ $getcbg }}">
+                                    @endif
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group  @error('kategori_salesman') error @enderror">

@@ -17,6 +17,7 @@ class AuthController extends Controller
         //dd(Auth::attempt(['username' => $request->username, 'password' => $request->password]));
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+            //dd(Auth::user()->kode_cabang);
             if (Auth::user()->level == "admin") {
                 return redirect()->intended('/dashboardadmin');
             } else if (Auth::user()->level == "admin penjualan") {

@@ -139,6 +139,8 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @if ($level == "PCF")
+
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group  @error('kode_cabang') error @enderror">
@@ -160,6 +162,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @else
+                                    <input type="hidden" name="kode_cabang" id="kode_cabang" value="{{ $getcbg }}">
+                                    @endif
                                     <div class="row">
                                         <div class="col-12">
                                             <button type="submit" class="btn btn-primary mr-1 mb-1"><i class="fa fa-send mr-1"></i> Simpan</button>

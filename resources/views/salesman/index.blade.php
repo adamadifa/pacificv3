@@ -32,6 +32,8 @@
                             <div class="col-lg-4 col-sm-12">
                                 <x-inputtext label="Nama Salesman" field="nama" icon="feather icon-user" value="{{ Request('nama') }}" />
                             </div>
+                            @if (Auth::user()->cabang =="PCF")
+
                             <div class="col-lg-4 col-sm-12">
                                 <div class="form-group  ">
                                     <select name="kode_cabang" id="" class="form-control">
@@ -42,6 +44,7 @@
                                     </select>
                                 </div>
                             </div>
+                            @endif
 
                             <div class="col-lg-4 col-sm-12">
                                 <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search mr-2"></i> Search</button>

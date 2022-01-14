@@ -9,6 +9,16 @@ use Illuminate\Support\Facades\DB;
 
 class PenjualanController extends Controller
 {
+
+
+    //Create
+
+    public function create()
+    {
+        return view('penjualan.create');
+    }
+
+
     public function rekapcashin(Request $request)
     {
         $dari = $request->tahun . "-" . $request->bulan . "-01";

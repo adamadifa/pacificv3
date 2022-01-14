@@ -19,7 +19,7 @@
     </div>
 </div>
 <div class="content-body">
-    <form class="form" action="/pelanggan/{{ Crypt::encrypt($data->kode_pelanggan) }}/update" method="POST">
+    <form class="form" action="/pelanggan/{{ Crypt::encrypt($data->kode_pelanggan) }}/update" method="POST" enctype="multipart/form-data">
         <div class="col-md-12">
             @include('layouts.notification')
             <div class="row">
@@ -126,7 +126,9 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="row">
+                                        @if (Auth::user()->kode_cabang=="PCF")
                                         <div class="col-lg-6 col-sm-12">
                                             <div class="form-group  @error('kode_cabang') error @enderror">
                                                 <select name="kode_cabang" id="kode_cabang" class="form-control">
@@ -150,6 +152,9 @@
                                                 @enderror
                                             </div>
                                         </div>
+                                        @else
+                                        <input type="hidden" name="kode_cabang" id="kode_cabang" value="{{ Auth::user()->kode_cabang }}" readonly>
+                                        @endif
                                         <div class="col-lg-6 col-sm-12">
                                             <div class="form-group   @error('id_karyawan') error @enderror"">
                                                 <select name=" id_karyawan" id="id_karyawan" class="form-control">
@@ -165,6 +170,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @if (Auth::user()->kode_cabang=="PCF")
                                     <div class="row">
                                         <div class="col-12">
                                             <x-inputtext label="Limit Pelanggan" field="limitpel" icon="feather icon-file" value="{{ rupiah($data->limitpel) }}" right money />
@@ -201,7 +207,10 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    @else
+                                    <input type="hidden" name="limitpel" id="limitpel" value="{{ rupiah($data->limitpel) }}">
+                                    <input type="hidden" name="jatuhtempo" id="jatuhtempo" value="{{ $data->jatuhtempo }}">
+                                    @endif
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group  @error('status_pelanggan') error @enderror">
@@ -452,6 +461,33 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <x-inputtext label="Omset Toko" field="omset_toko" icon="feather icon-file" right value="{{ rupiah($data->omset_toko) }}" money />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group  @error('foto') error @enderror">
+                                            <div class="custom-file">
+                                                <input type="file" name="foto" class="custom-file-input" id="inputGroupFile01">
+                                                <label class="custom-file-label" for="inputGroupFile01">Upload Foto</label>
+                                            </div>
+                                            @error('foto')
+                                            <div class="help-block">
+                                                <ul role="alert">
+                                                    <li>{{ $message }}</li>
+                                                </ul>
+                                            </div>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-lg-3 col-sm-12">
+                                        @if (!empty($data->foto))
+                                        @php
+                                        $path = Storage::url('pelanggan/'.$data->foto);
+                                        @endphp
+                                        <img class="card-img img-fluid" src="{{ url($path) }}" alt="Card image">
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="row">

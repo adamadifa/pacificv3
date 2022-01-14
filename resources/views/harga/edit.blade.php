@@ -169,6 +169,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @if (Auth::user()->cabang =="PCF")
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group  @error('kode_cabang') error @enderror">
@@ -194,6 +195,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @else
+                                    <input type="hidden" name="kode_cabang" id="kode_cabang" value="{{ $data->kode_cabang }}">
+                                    @endif
                                 </div>
                             </div>
 
@@ -232,7 +236,7 @@
                                 <div class="row">
                                     <div class="col-12">
                                         <button type="submit" class="btn btn-primary mr-1 mb-1"><i class="fa fa-refresh mr-1"></i> Update</button>
-                                        <button type="reset" class="btn btn-outline-danger mr-1 mb-1">Batalkan</button>
+                                        <a href="/harga" class="btn btn-outline-warning mr-1 mb-1">Kembali</a>
                                     </div>
                                 </div>
                             </div>

@@ -28,6 +28,7 @@
             <div class="card-body">
                 <form action="/harga">
                     <div class="row">
+                        @if (Auth::user()->kode_cabang=="PCF")
                         <div class="col-lg-4 col-sm-12">
                             <div class="form-group  ">
                                 <select name="kode_cabang" id="" class="form-control">
@@ -38,6 +39,7 @@
                                 </select>
                             </div>
                         </div>
+                        @endif
                         <div class="col-lg-4 col-sm-12">
                             <div class="form-group  ">
                                 <select name="kategori_harga" id="" class="form-control">
@@ -96,6 +98,7 @@
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <a class="ml-1" href="/harga/{{\Crypt::encrypt($d->kode_barang)}}/edit"><i class="feather icon-edit success"></i></a>
                                         <a class="ml-1 detailbarang" href="#" kodebarang="{{ Crypt::encrypt($d->kode_barang) }}"><i class=" feather icon-file-text info"></i></a>
+                                        @if (in_array($level,$harga_hapus))
                                         <form method="POST" class="deleteform" action="/harga/{{Crypt::encrypt($d->kode_barang)}}/delete">
                                             @csrf
                                             @method('DELETE')
@@ -103,6 +106,7 @@
                                                 <i class="feather icon-trash danger"></i>
                                             </a>
                                         </form>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>

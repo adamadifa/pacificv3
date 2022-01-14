@@ -6,16 +6,35 @@ use App\Models\Barang;
 use App\Models\Cabang;
 use App\Models\Harga;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\View;
 use PDOException;
 
 class HargaController extends Controller
 {
+
+    protected $cabang;
+    public function __construct()
+    {
+        // Fetch the Site Settings object
+        $this->middleware(function ($request, $next) {
+            $this->cabang = Auth::user()->kode_cabang;
+            return $next($request);
+        });
+
+
+        View::share('cabang', $this->cabang);
+    }
+
     function index(Request $request)
     {
         $query = Harga::query();
+        if ($this->cabang != "PCF") {
+            $query->where('barang.kode_cabang', $this->cabang);
+        }
         if (isset($request->submit)) {
             if (!empty($request->kode_cabang)) {
                 $query->where('kode_cabang', $request->kode_cabang);

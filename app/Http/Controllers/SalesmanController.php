@@ -6,17 +6,34 @@ use App\Models\Cabang;
 use App\Models\Salesman;
 use Illuminate\Http\Request;
 use Illuminate\Queue\Jobs\RedisJob;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\View;
 use PDOException;
 
 class SalesmanController extends Controller
 {
+    protected $cabang;
+    public function __construct()
+    {
+        // Fetch the Site Settings object
+        $this->middleware(function ($request, $next) {
+            $this->cabang = Auth::user()->kode_cabang;
+            return $next($request);
+        });
+
+
+        View::share('cabang', $this->cabang);
+    }
 
     public function index(Request $request)
     {
         $query = Salesman::query();
+        if ($this->cabang != "PCF") {
+            $query->where('karyawan.kode_cabang', $this->cabang);
+        }
         if (isset($request->submit)) {
             if ($request->nama != "") {
                 $query->where('nama_karyawan', 'like', '%' . $request->nama . '%');

@@ -52,6 +52,7 @@
                                             <x-inputtext label="No. HP" field="no_hp" icon="feather icon-phone" />
                                         </div>
                                     </div>
+                                    @if (Auth::user()->cabang =="PCF")
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group  @error('kode_cabang') error @enderror">
@@ -73,6 +74,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @else
+                                    <input type="hidden" name="kode_cabang" id="kode_cabang" value="{{ Auth::user()->kode_cabang }}">
+                                    @endif
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group  @error('kategori_salesman') error @enderror">
