@@ -94,6 +94,7 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan'])->group(function ()
     Route::post('/harga/{kode_barang}/update', [HargaController::class, 'update']);
     Route::post('/harga/show', [HargaController::class, 'show']);
     Route::delete('/harga/{kode_barang}/delete', [HargaController::class, 'delete']);
+    Route::post('getautocompleteharga', [HargaController::class, 'getautocompleteharga']);
 
     //Salesman
     Route::get('/salesman', [SalesmanController::class, 'index']);

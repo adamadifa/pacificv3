@@ -62,6 +62,7 @@
                 <div class="col-3">
                     <div class="form-group">
                         <div class="form-label-group position-relative has-icon-left">
+                            <input type="hidden" id="kode_cabang" class="form-control" name="kode_cabang" readonly>
                             <input type="hidden" id="kode_pelanggan" class="form-control" name="kode_pelanggan" readonly>
                             <input type="text" id="nama_pelanggan" class="form-control" name="nama_pelanggan" placeholder="Pelanggan" readonly>
                             <div class="form-control-position" style="top:10px">
@@ -73,6 +74,7 @@
                 <div class="col-3">
                     <div class="form-group">
                         <div class="form-label-group position-relative has-icon-left">
+                            <input type="hidden" id="kategori_salesman" class="form-control" name="kategori_salesman" readonly>
                             <input type="hidden" id="id_karyawan" class="form-control" name="id_karyawan" readonly>
                             <input type="text" id="nama_karyawan" class="form-control" name="nama_karyawan" placeholder="Salesman" readonly>
                             <div class="form-control-position" style="top:10px">
@@ -87,7 +89,7 @@
                     <div class="col-12">
                         <div class="form-group">
                             <div class="form-label-group position-relative has-icon-left">
-                                <input type="text" id="first-name-floating-icon" class="form-control" name="fname-floating-icon" placeholder="Ketikan Nama Barang / Scan Barcode [F2]">
+                                <input type="text" id="kode_barang" class="form-control" name="kode_barang" placeholder="Ketikan Nama Barang / Scan Barcode [F2]">
                                 <div class="form-control-position" style="top:12px">
                                     <i class="feather icon-search"></i>
                                 </div>
@@ -128,10 +130,10 @@
                 <div class="col-md-2">
                     <div class="card text-white border-0 box-shadow-0">
                         <div class="card-content">
-                            <img class="card-img img-fluid" id="foto" src="../../../app-assets/images/slider/04.jpg" alt="Card image">
-                            <div class="card-img-overlay overflow-hidden overlay-info">
+                            <img class="card-img img-fluid" id="foto" src="{{ asset('app-assets/images/slider/04.jpg') }}" alt="Card image" style="height: 300px">
+                            <div class="card-img-overlay overflow-hidden overlay-danger" style="background: #008b9cd9">
 
-                                <p class="card-text text-white">
+                                <p class="card-text text-white" style="font-family: 'Poppins';">
                                     Alamat <br>
                                     <span id="alamat_pelanggan"></span><br>
                                     No. HP <br>
@@ -389,7 +391,10 @@
             var pasar = $(this).attr("pasar");
             var latitude = $(this).attr("latitude");
             var longitude = $(this).attr("longitude");
-            var foto = $(this).attr("foto");
+            var image = $(this).attr("foto")
+            var kode_cabang = $(this).attr("kode_cabang")
+            var foto = "{{ url(Storage::url('pelanggan/')) }}/" + image;
+            var nofoto = "{{ asset('app-assets/images/slider/04.jpg') }}";
             $("#kode_pelanggan").val(kode_pelanggan);
             $("#nama_pelanggan").val(kode_pelanggan + " | " + nama_pelanggan);
             $("#id_karyawan").val(id_karyawan);
@@ -397,9 +402,42 @@
             $("#alamat_pelanggan").text(alamat_pelanggan);
             $("#no_hp").text(no_hp);
             $("#pasar").text(pasar);
+            $("#kode_cabang").val(kode_cabang);
+            $("#kategori_salesman").val(kategori_salesman);
             $("#koordinat").text(latitude + " - " + longitude);
-            $("#foto").attr("src", foto);
+            if (image != "") {
+                $("#foto").attr("src", foto);
+            } else {
+                $("#foto").attr("src", nofoto);
+            }
+
             $("#mdlpelanggan").modal("hide");
+        });
+
+        $("#kode_barang").autocomplete({
+            source: function(request, response) {
+                // Fetch data
+                $.ajax({
+                    url: "/getautocompleteharga"
+                    , type: 'post'
+                    , dataType: "json"
+                    , data: {
+                        _token: "{{ csrf_token() }}"
+                        , search: request.term
+                        , kode_cabang: $("#kode_cabang").val()
+                        , kategori_salesman: $("#kategori_salesman").val()
+                    }
+                    , success: function(data) {
+                        response(data);
+                    }
+                });
+            }
+            , select: function(event, ui) {
+                $('#kode_barang').val(ui.item.label);
+                var kode_produk = ui.item.val;
+                //$('#employeeid').val(ui.item.value);
+                return false;
+            }
         });
     });
 

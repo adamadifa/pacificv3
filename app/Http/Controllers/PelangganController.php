@@ -390,12 +390,13 @@ class PelangganController extends Controller
                 id_karyawan ="' . $pelanggan->id_sales . '"
                 nama_karyawan ="' . $pelanggan->nama_karyawan . '"
                 kategori_salesman ="' . $pelanggan->kategori_salesman . '"
-                alamat_pelanggan ="' . $pelanggan->alamat_pelanggan . '"
+                alamat_pelanggan ="' . ucwords(strtolower($pelanggan->alamat_pelanggan)) . '"
                 no_hp ="' . $pelanggan->no_hp . '"
                 pasar ="' . $pelanggan->pasar . '"
                 latitude ="' . $pelanggan->latitude . '"
                 longitude ="' . $pelanggan->longitude . '"
-                foto = "' . url(Storage::url('pelanggan/' . $pelanggan->foto)) . '"
+                foto = "' . $pelanggan->foto  . '"
+                kode_cabang = "' . $pelanggan->kode_cabang  . '"
                 >Pilih</a>';
             })
             ->toJson();

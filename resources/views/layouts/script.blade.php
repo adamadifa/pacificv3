@@ -24,6 +24,7 @@
 <script src="{{asset('app-assets/vendors/js/tables/datatable/buttons.bootstrap.min.js')}}"></script>
 <script src="{{asset('app-assets/vendors/js/tables/datatable/datatables.bootstrap4.min.js')}}"></script>
 
+
 <!-- END: Page Vendor JS-->
 
 <!-- BEGIN: Theme JS-->
