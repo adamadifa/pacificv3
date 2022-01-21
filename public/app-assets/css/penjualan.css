@@ -2,7 +2,7 @@ body {
     background-color: #ffffff !important;
 }
 
-.form-group{
+.form-group {
     margin-bottom: 0.5rem !important;
 }
 .box {
@@ -74,68 +74,111 @@ width: 100%;
 border-collapse: collapse;
 table-layout: fixed;
 } */
+
+.table thead th {
+    font-size: 0.95rem !important;
+}
+
+.table td {
+    color: #212529 !important;
+    font-family: "Montserrat";
+    font-size: 1rem;
+    font-weight: 400;
+}
 #tabelproduktemp tr th:nth-child(1) {
     width: 1%;
     white-space: nowrap;
 }
 
+#tabelproduktemp tr th:nth-child(2) {
+    width: 1%;
+    white-space: nowrap;
+}
+
 #tabelproduktemp tr th:nth-child(3) {
-    width: 5%;
+    width: 10%;
     white-space: nowrap;
 }
-
 #tabelproduktemp tr th:nth-child(4) {
-    width: 1%;
+    width: 2%;
     white-space: nowrap;
 }
 
-#tabelproduktemp tr td:nth-child(5) {
-    width: 1%;
+#tabelproduktemp tr th:nth-child(5) {
+    width: 2%;
     white-space: nowrap;
 }
 
 #tabelproduktemp tr th:nth-child(6) {
+    width: 2%;
+    white-space: nowrap;
+}
+
+#tabelproduktemp tr th:nth-child(8) {
     width: 5%;
     white-space: nowrap;
 }
 
-#tabelproduktemp tr td:nth-child(7) {
+#tabelproduktemp tr th:nth-child(9) {
     width: 10%;
     white-space: nowrap;
 }
 
-#tabelproduktemp tr td:nth-child(8) {
+#tabelproduktemp tr th:nth-child(10) {
     width: 5%;
     white-space: nowrap;
 }
 
-#tabelproduktemp tr td:nth-child(9) {
+#tabelproduktemp tr th:nth-child(11) {
+    width: 10%;
+    white-space: nowrap;
+}
+
+#tabelproduktemp tr th:nth-child(12) {
     width: 5%;
+    white-space: nowrap;
+}
+
+#tabelproduktemp tr th:nth-child(13) {
+    width: 10%;
+    white-space: nowrap;
+}
+
+#tabelproduktemp tr th:nth-child(14) {
+    width: 10%;
+    white-space: nowrap;
+}
+#tabelproduktemp tr th:nth-child(15) {
+    width: 2%;
     white-space: nowrap;
 }
 
 .responsive {
-    min-height: .01%;
+    min-height: 0.01%;
     overflow-x: auto;
 }
 
 h1,
 h2,
-h3
-p,
+h3 p,
 a {
     font-family: "Poppins";
     font-weight: bold;
 }
 
-.font1{
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+.font1 {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     font-size: 16px;
     font-weight: bold;
 }
 
-.font2{
-    font-family: 'Poppins';
+.font2 {
+    font-family: "Poppins";
+}
+
+.font3 {
+    font-family: "Montserrat";
+    font-size: 14px;
 }
 
 .jam-digital-malasngoding {
@@ -156,7 +199,7 @@ a {
 
 .jam-digital-malasngoding p {
     color: #ffffff;
-    font-family: 'Poppins';
+    font-family: "Poppins";
     font-size: 30px;
     font-weight: bold;
     text-align: center;

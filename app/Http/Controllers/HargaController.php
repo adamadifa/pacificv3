@@ -224,4 +224,13 @@ class HargaController extends Controller
         echo json_encode($response);
         exit;
     }
+
+    public function gethargabarang(Request $request)
+    {
+        $barang = DB::table('barang')->where('kode_barang', $request->kode_barang)->first();
+        $harga_dus = $barang->harga_dus;
+        $harga_pack = $barang->harga_pack;
+        $harga_pcs = $barang->harga_pcs;
+        echo rupiah($harga_dus) . "|" . rupiah($harga_pack) . "|" . rupiah($harga_pcs);
+    }
 }

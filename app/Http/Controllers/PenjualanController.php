@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
+use App\Models\Harga;
 use App\Models\Penjualan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PenjualanController extends Controller
@@ -19,6 +21,205 @@ class PenjualanController extends Controller
     }
 
 
+    public function storebarangtemp(Request $request)
+    {
+        $barang = Harga::where('kode_barang', $request->kode_barang)->first();
+        $id_user = Auth::user()->id;
+        $cek = DB::table('detailpenjualan_temp')->where('kode_barang', $request->kode_barang)->where('id_admin', $id_user)->count();
+        if (empty($cek)) {
+            $simpan = DB::table('detailpenjualan_temp')
+                ->insert([
+                    'kode_barang' => $request->kode_barang,
+                    'jumlah' => 0,
+                    'harga_dus' => $barang->harga_dus,
+                    'harga_pack' => $barang->harga_pack,
+                    'harga_pcs' => $barang->harga_pcs,
+                    'subtotal' => 0,
+                    'id_admin' => $id_user
+                ]);
+            if ($simpan) {
+                echo 0;
+            } else {
+                echo 2;
+            }
+        } else {
+            echo 1;
+        }
+    }
+
+    public function showbarangtemp()
+    {
+        $id_user = Auth::user()->id;
+        $barang = DB::table('detailpenjualan_temp')
+            ->select('detailpenjualan_temp.*', 'nama_barang', 'isipcsdus', 'isipack', 'isipcs')
+            ->join('barang', 'detailpenjualan_temp.kode_barang', '=', 'barang.kode_barang')
+            ->where('id_admin', $id_user)
+            ->get();
+        return view('penjualan.showbarangtemp', compact('barang'));
+    }
+
+    public function deletebarangtemp(Request $request)
+    {
+        $id_user = Auth::user()->id;
+        $hapus = DB::table('detailpenjualan_temp')
+            ->where('kode_barang', $request->kode_barang)
+            ->where('id_admin', $id_user)
+            ->delete();
+        if ($hapus) {
+            echo 1;
+        } else {
+            echo 2;
+        }
+    }
+
+    public function updatedetailtemp(Request $request)
+    {
+        $id_user = Auth::user()->id;
+        $barang = DB::table('barang')->where('kode_barang', $request->kode_barang)->first();
+        $detailtemp = DB::table('detailpenjualan_temp')->where('kode_barang', $request->kode_barang)->where('id_admin', $id_user)->first();
+        $jmldus = $request->jmldus * $barang->isipcsdus;
+        $jmlpack = $request->jmlpack * $barang->isipcs;
+        $jmlpcs = $request->jmlpcs;
+        // echo $request->harga_dus;
+        // die;
+        if (isset($request->promo)) {
+            if ($request->promo == 1) {
+                $promo = 1;
+            } else {
+                $promo = NULL;
+            }
+        } else {
+            if ($detailtemp->promo == 1) {
+                $promo = 1;
+            } else {
+                $promo = NULL;
+            }
+        }
+        $harga_dus = str_replace(".", "", $request->harga_dus);
+        $harga_pack = str_replace(".", "", $request->harga_pack);
+        $harga_pcs = str_replace(".", "", $request->harga_pcs);
+        $totalqty = $jmldus + $jmlpack + $jmlpcs;
+        $total = $request->total;
+
+        DB::table('detailpenjualan_temp')
+            ->where('kode_barang', $request->kode_barang)
+            ->where('id_admin', $id_user)
+            ->update([
+                'jumlah' => $totalqty,
+                'harga_dus' => $harga_dus,
+                'harga_pack' => $harga_pack,
+                'harga_pcs' => $harga_pcs,
+                'subtotal' => $total,
+                'promo' => $promo
+            ]);
+    }
+
+    public function loadtotalpenjualantemp()
+    {
+        $detail = DB::table('detailpenjualan_temp')
+            ->select(DB::raw('SUM(subtotal) AS total'))
+            ->where('id_admin', Auth::user()->id)
+            ->first();
+        echo rupiah($detail->total);
+    }
+
+    public function hitungdiskon(Request $request)
+    {
+        $jenistransaksi = $request->jenistransaksi;
+        $id_user = Auth::user()->id;
+        $detail = DB::table('detailpenjualan_temp')
+            ->select('detailpenjualan_temp.kode_barang', 'promo', 'isipcsdus', 'kategori', 'jumlah')
+            ->join('barang', 'detailpenjualan_temp.kode_barang', '=', 'barang.kode_barang')
+            ->where('id_admin', $id_user)
+            ->whereNull('promo')
+            ->get();
+        $jmldusswan = 0;
+        $jmldusaida = 0;
+        $jmldusstick = 0;
+        $jmldussp = 0;
+        $jmldussb = 0;
+        foreach ($detail as $d) {
+            $jmldus      = floor($d->jumlah / $d->isipcsdus);
+            if ($d->kategori == "SWAN") {
+                $jmldusswan   = $jmldusswan + $jmldus;
+            }
+
+            if ($d->kategori == "AIDA") {
+                $jmldusaida   = $jmldusaida + $jmldus;
+            }
+
+            if ($d->kategori == "STICK") {
+                $jmldusstick   = $jmldusstick + $jmldus;
+            }
+
+            if ($d->kategori == "STICK") {
+                $jmldusstick   = $jmldusstick + $jmldus;
+            }
+
+            if ($d->kategori == "SP") {
+                $jmldussp   = $jmldussp + $jmldus;
+            }
+
+            if ($d->kategori == "SAMBAL") {
+                $jmldussb   = $jmldussb + $jmldus;
+            }
+        }
+
+        $diskon = DB::table('diskon')->get();
+        $diskonswan = 0;
+        $diskonaida = 0;
+        $diskonstick = 0;
+        $diskonsp = 0;
+        $diskonsb = 0;
+
+        $diskonswantunai = 0;
+        $diskonaidatunai = 0;
+        $diskonsticktunai = 0;
+        $diskonsptunai = 0;
+        $diskonsbtunai = 0;
+        foreach ($diskon as $p) {
+            if ($p->kategori == "SWAN" and $jmldusswan >= $p->dari and $jmldusswan <= $p->sampai) {
+                $diskonswan = $p->diskon;
+                $diskonswantunai = $p->diskon_tunai;
+            }
+
+            if ($p->kategori == "AIDA" and $jmldusaida >= $p->dari and $jmldusaida <= $p->sampai) {
+                $diskonaida = $p->diskon;
+                $diskonaidatunai = $p->diskon_tunai;
+            }
+
+            if ($p->kategori == "STICK" and $jmldusstick >= $p->dari and $jmldusstick <= $p->sampai) {
+                $diskonstick = $p->diskon;
+                $diskonsticktunai = $p->diskon_tunai;
+            }
+
+            if ($p->kategori == "SP" and $jmldussp >= $p->dari and $jmldussp <= $p->sampai) {
+                $diskonsp = $p->diskon;
+                $diskonsptunai = $p->diskon_tunai;
+            }
+
+            if ($p->kategori == "SC" and $jmldussb >= $p->dari and $jmldussb <= $p->sampai) {
+                $diskonsb = $p->diskon;
+                $diskonsbtunai = $p->diskon_tunai;
+            }
+        }
+
+        if ($jenistransaksi == "tunai") {
+            $totaldiskonswan = ($jmldusswan * $diskonswan) + ($jmldusswan * $diskonswantunai);
+            $totaldiskonaida = ($jmldusaida * $diskonaida) + ($jmldusaida * $diskonaidatunai);
+            $totaldiskonstick = ($jmldusstick * $diskonstick) + ($jmldusstick * $diskonsticktunai);
+            $totaldiskonsp = ($jmldussp * $diskonsp) + ($jmldussp * $diskonsptunai);
+            $totaldiskonsb = ($jmldussb * $diskonsb) + ($jmldussb * $diskonsbtunai);
+        } else {
+            $totaldiskonswan = $jmldusswan * $diskonswan;
+            $totaldiskonaida = $jmldusaida * $diskonaida;
+            $totaldiskonstick = $jmldusstick * $diskonstick;
+            $totaldiskonsp = $jmldussp * $diskonsp;
+            $totaldiskonsb = $jmldussb * $diskonsb;
+        }
+
+        echo rupiah($totaldiskonswan), "|" . rupiah($totaldiskonaida) . "|" . rupiah($totaldiskonstick) . "|" . rupiah($totaldiskonsp) . "|" . rupiah($totaldiskonsb);
+    }
     public function rekapcashin(Request $request)
     {
         $dari = $request->tahun . "-" . $request->bulan . "-01";

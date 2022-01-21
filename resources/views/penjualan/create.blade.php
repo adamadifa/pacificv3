@@ -34,6 +34,7 @@
                 <h1 align="center" id="grandtotal" style="margin-right: 5px; margin-top: 10px; padding-right: 5px; font-size: 50px; text-align: right;">
                     0
                 </h1>
+                <input type="hidden" id="subtotal">
             </div>
         </div>
         <div class="box-body section-main" style="height:auto;">
@@ -101,22 +102,27 @@
                     <div class="form-group">
                         <div class="col-sm-12">
                             <div class="responsive" style="height: 70%">
-                                <table class="table table-bordered table-striped resTable" id="tabelproduktemp">
+                                <table class="table table-bordered  table-hover-animation" id="tabelproduktemp">
                                     <thead>
                                         <tr>
+                                            <th></th>
                                             <th>Kode Barang</th>
                                             <th>Nama Barang</th>
-                                            <th style="text-align:center">Jml Dus</th>
-                                            <th>Harga/Dus</th>
-                                            <th class="text-center">Jml Pack</th>
+                                            <th>Pcs/Dus</th>
+                                            <th>Pack/Dus</th>
+                                            <th>Pcs/pack</th>
+                                            <th></th>
+                                            <th style="text-align:center">Dus/Ball</th>
+                                            <th>Harga/Dus/Ball</th>
+                                            <th class="text-center">Pack</th>
                                             <th>Harga/Pack</th>
-                                            <th class="text-center">Jml Pcs</th>
+                                            <th class="text-center">Pcs</th>
                                             <th>Harga/Pcs</th>
                                             <th>Total</th>
                                             <th></th>
                                         </tr>
                                     </thead>
-                                    <tbody id="loadproduktemp">
+                                    <tbody id="loadbarangtemp" class="font3">
                                     </tbody>
                                 </table>
                             </div>
@@ -158,7 +164,7 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <div class="position-relative has-icon-left">
-                                        <input type="text" id="first-name-icon" class="form-control text-right" name="fname-icon" placeholder="Aida">
+                                        <input type="text" id="potaida" class="form-control text-right money" name="fname-icon" placeholder="Aida">
                                         <div class="form-control-position" style="top:8px">
                                             <img src="{{asset('app-assets/images/icons/diskonaida.png')}}" width="18px" height="18px" alt="">
                                         </div>
@@ -166,7 +172,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="position-relative has-icon-left">
-                                        <input type="text" id="first-name-icon" class="form-control text-right" name="fname-icon" placeholder="Swan">
+                                        <input type="text" id="potswan" class="form-control text-right money" name="fname-icon" placeholder="Swan">
                                         <div class="form-control-position" style="top:8px">
                                             <img src="{{asset('app-assets/images/icons/diskonswan.png')}}" width="18px" height="18px" alt="">
                                         </div>
@@ -174,7 +180,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="position-relative has-icon-left">
-                                        <input type="text" id="first-name-icon" class="form-control text-right" name="fname-icon" placeholder="Stick">
+                                        <input type="text" id="potstick" class="form-control text-right money" name="fname-icon" placeholder="Stick">
                                         <div class="form-control-position" style="top:8px">
                                             <img src="{{asset('app-assets/images/icons/diskonstik.png')}}" width="18px" height="18px" alt="">
                                         </div>
@@ -182,7 +188,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="position-relative has-icon-left">
-                                        <input type="text" id="first-name-icon" class="form-control text-right" name="fname-icon" placeholder="Premium">
+                                        <input type="text" id="potsp" class="form-control text-right money" name="fname-icon" placeholder="Premium">
                                         <div class="form-control-position" style="top:8px">
                                             <img src="{{asset('app-assets/images/icons/diskonsp.png')}}" width="18px" height="18px" alt="">
                                         </div>
@@ -190,7 +196,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="position-relative has-icon-left">
-                                        <input type="text" id="first-name-icon" class="form-control text-right" name="fname-icon" placeholder="Sambal">
+                                        <input type="text" id="potsb" class="form-control text-right" name="fname-icon" placeholder="Sambal">
                                         <div class="form-control-position" style="top:8px">
                                             <img src="{{asset('app-assets/images/icons/diskonsambal.png')}}" width="18px" height="18px" alt="">
                                         </div>
@@ -209,7 +215,7 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <div class="position-relative has-icon-left">
-                                        <input type="text" id="first-name-icon" class="form-control text-right" name="fname-icon" placeholder="Aida">
+                                        <input type="text" id="potisaida" class="form-control text-right money" name="fname-icon" placeholder="Aida">
                                         <div class="form-control-position" style="top:8px">
                                             <img src="{{asset('app-assets/images/icons/diskonaida.png')}}" width="18px" height="18px" alt="">
                                         </div>
@@ -217,7 +223,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="position-relative has-icon-left">
-                                        <input type="text" id="first-name-icon" class="form-control text-right" name="fname-icon" placeholder="Swan">
+                                        <input type="text" id="potisswan" class="form-control text-right money" name="fname-icon" placeholder="Swan">
                                         <div class="form-control-position" style="top:8px">
                                             <img src="{{asset('app-assets/images/icons/diskonswan.png')}}" width="18px" height="18px" alt="">
                                         </div>
@@ -225,7 +231,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="position-relative has-icon-left">
-                                        <input type="text" id="first-name-icon" class="form-control text-right" name="fname-icon" placeholder="Stick">
+                                        <input type="text" id="potisstick" class="form-control text-right money" name="fname-icon" placeholder="Stick">
                                         <div class="form-control-position" style="top:8px">
                                             <img src="{{asset('app-assets/images/icons/diskonstik.png')}}" width="18px" height="18px" alt="">
                                         </div>
@@ -245,7 +251,7 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <div class="position-relative has-icon-left">
-                                        <input type="text" id="first-name-icon" class="form-control text-right" name="fname-icon" placeholder="Aida">
+                                        <input type="text" id="penyaida" class="form-control text-right money" name="fname-icon" placeholder="Aida">
                                         <div class="form-control-position" style="top:8px">
                                             <img src="{{asset('app-assets/images/icons/diskonaida.png')}}" width="18px" height="18px" alt="">
                                         </div>
@@ -253,7 +259,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="position-relative has-icon-left">
-                                        <input type="text" id="first-name-icon" class="form-control text-right" name="fname-icon" placeholder="Swan">
+                                        <input type="text" id="penyswan" class="form-control text-right money" name="fname-icon" placeholder="Swan">
                                         <div class="form-control-position" style="top:8px">
                                             <img src="{{asset('app-assets/images/icons/diskonswan.png')}}" width="18px" height="18px" alt="">
                                         </div>
@@ -261,7 +267,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="position-relative has-icon-left">
-                                        <input type="text" id="first-name-icon" class="form-control text-right" name="fname-icon" placeholder="Stick">
+                                        <input type="text" id="penystick" class="form-control text-right money" name="fname-icon" placeholder="Stick">
                                         <div class="form-control-position" style="top:8px">
                                             <img src="{{asset('app-assets/images/icons/diskonstik.png')}}" width="18px" height="18px" alt="">
                                         </div>
@@ -279,16 +285,39 @@
                             </div>
                             <div class="card-body">
                                 <div class="form-group">
-                                    <select class="form-control">
+                                    <select class="form-control" name="jenistransaksi" id="jenistransaksi">
                                         <option value="">Jenis Transaksi</option>
                                         <option value="tunai">Tunai</option>
                                         <option value="kredit">Kredit</option>
                                     </select>
+                                    <input type="hidden" id="jenisbayar" name="jenisbayar">
+                                </div>
+                                <div class="form-group tunai">
+                                    <div class="position-relative has-icon-left">
+                                        <input type="text" id="voucher" class="form-control text-right money" name="voucher" placeholder="Voucher">
+                                        <div class="form-control-position" style="top:10px">
+                                            <i class="feather icon-tag"></i>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="form-group">
-                                    <select class="form-control">
-                                        <option value="">Jenis Pembayaran</option>
-                                    </select>
+                                    <div class="position-relative has-icon-left">
+                                        <input type="text" id="total" class="form-control text-right money" style="font-weight: bold" readonly name="total" placeholder="Total">
+                                        <div class="form-control-position" style="top:10px">
+                                            <i class="feather icon-shopping-cart"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group kredit">
+                                    <div class="position-relative has-icon-left">
+                                        <input type="text" id="titipan" class="form-control text-right money" name="titipan" placeholder="Titipan">
+                                        <div class="form-control-position" style="top:10px">
+                                            <i class="feather icon-tag"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary btn-block"><i class="feather icon-send mr-1"></i>Simpan</button>
                                 </div>
                             </div>
                         </div>
@@ -299,7 +328,7 @@
 </form>
 <!-- Detail Salesman -->
 <div class="modal fade text-left" id="mdlpelanggan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document" style="max-width: 960px">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel18">Data Pelanggan</h4>
@@ -339,7 +368,61 @@
 </script>
 <script>
     $(function() {
+
+
+        $('#no_fak_penj').mask('AAAAAAAAAAA', {
+            'translation': {
+                A: {
+                    pattern: /[A-Za-z0-9]/
+                }
+            }
+        });
+        $("form").submit(function(e) {
+            var no_fak_penj = $("#no_fak_penj").val();
+            var tgltransaksi = $("#tgltransaksi").val();
+            var kode_pelanggan = $("#kode_pelanggan").val();
+            if (no_fak_penj == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'No Faktur Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#no_fak_penj").focus();
+                });
+                return false;
+            } else if (tgltransaksi == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Tanggal Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#tgltransaksi").focus();
+                });
+                return false;
+            } else if (kode_pelanggan == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Pelanggan Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#nama_pelanggan").focus();
+                });
+                return false;
+            }
+        });
+
         $('#nama_pelanggan').click(function(e) {
+            e.preventDefault();
+            $('#mdlpelanggan').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+        });
+
+        $('#nama_pelanggan').focus(function(e) {
             e.preventDefault();
             $('#mdlpelanggan').modal({
                 backdrop: 'static'
@@ -414,6 +497,44 @@
             $("#mdlpelanggan").modal("hide");
         });
 
+        function simpanbarangtemp(kode_barang) {
+            $.ajax({
+                type: 'POST'
+                , url: '/penjualan/storebarangtemp'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , kode_barang: kode_barang
+                }
+                , cache: false
+                , success: function(respond) {
+                    if (respond == "1") {
+                        swal("Oops", "Data Barang Sudah Ada !", "warning");
+                        $("#kode_barang").focus();
+                    } else {
+                        //loadproduktemp();
+                        $("#kode_barang").val("");
+                        $("#kode_barang").focus();
+                        loadbarangtemp();
+                    }
+                }
+            });
+        }
+
+        function loadbarangtemp() {
+            $.ajax({
+                type: 'GET'
+                , url: '/penjualan/showbarangtemp'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loadbarangtemp").html(respond);
+                }
+            });
+        }
+
+        loadbarangtemp();
         $("#kode_barang").autocomplete({
             source: function(request, response) {
                 // Fetch data
@@ -434,11 +555,13 @@
             }
             , select: function(event, ui) {
                 $('#kode_barang').val(ui.item.label);
-                var kode_produk = ui.item.val;
-                //$('#employeeid').val(ui.item.value);
+                var kode_barang = ui.item.val;
+                simpanbarangtemp(kode_barang);
                 return false;
             }
         });
+
+
     });
 
 </script>

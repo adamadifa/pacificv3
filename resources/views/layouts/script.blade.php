@@ -37,6 +37,7 @@
 <!-- END: Page JS-->
 <!-- BEGIN: Page JS-->
 <script src="{{asset('app-assets/js/scripts/ui/data-list-view.js')}}"></script>
+<script src="{{asset('app-assets/js/jquery.maskMoney.js')}}"></script>
 <!-- END: Page JS-->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"></script>
