@@ -17,6 +17,7 @@ use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\SalesmanController;
 use App\Http\Controllers\SimpananController;
 use App\Http\Controllers\TabunganController;
+use App\Http\Controllers\TutuplaporanController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -38,6 +39,12 @@ Route::get('/', function () {
 
 Route::post('/postlogin', [AuthController::class, 'postlogin']);
 Route::post('/postlogout', [AuthController::class, 'postlogout']);
+
+
+//Tutup Laporan
+Route::post('/cektutuplaporan', [TutuplaporanController::class, 'cektutuplaporan']);
+//Cek Barang Penjualan Temporary
+Route::post('/cekpenjtemp', [PenjualanController::class, 'cekpenjtemp']);
 
 Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/dashboardadmin', [DashboardController::class, 'dashboardadmin']);

@@ -19,60 +19,60 @@ $jmlpcs = $sisapack;
 $total += $d->subtotal;
 @endphp
 <tr>
-    <td>
-        <div class="vs-checkbox-con vs-checkbox-primary">
-            <input type="checkbox" name="promo[]" class="promo" id="promo" value="1" {{ ($d->promo==1 ? 'checked':'') }}>
-            <span class="vs-checkbox">
-                <span class="vs-checkbox--check">
-                    <i class="vs-icon feather icon-check"></i>
-                </span>
-            </span>
-        </div>
-    </td>
-    <td>
-        {{ $d->kode_barang }}
-        <input type="hidden" class="kode_barang" id="kode_barang" name="kode_barang[]" value="{{ $d->kode_barang }}">
-    </td>
-    <td>
-        {{ $d->nama_barang }}
-        <input type="hidden" class="isipack" id="isipack" name="isipack[]" value="{{ $d->isipack }}">
-        <input type="hidden" class="isipcsdus" id="isipcsdus" name="isipcsdus[]" value="{{ $d->isipcsdus }}">
-        <input type="hidden" class="isipcs" id="isipcs" name="isipcs[]" value="{{ $d->isipcs }}">
-    </td>
-    <td class="text-center">{{ $d->isipcsdus }}</td>
-    <td class="text-center">{{ $d->isipack }}</td>
-    <td class="text-center">{{ $d->isipcs }}</td>
-    <td></td>
-    <td>
-        <input type="text" class="form-control text-center jmldus" id="jmldus" name="jmldus[]" value="{{ $jmldus }}">
-    </td>
-    <td>
-        <input type="hidden" class="form-control text-right harga_dus_old" id="harga_dus_old" name="harga_dus_old[]" value="{{ rupiah($d->harga_dus) }}">
-        <input type="text" class="form-control text-right harga_dus money" id="harga_dus" name="harga_dus[]" value="{{ rupiah($d->harga_dus) }}">
-    </td>
-    <td>
+  <td>
+    <div class="vs-checkbox-con vs-checkbox-primary">
+      <input type="checkbox" name="promo[]" class="promo" id="promo" value="1" {{ ($d->promo==1 ? 'checked':'') }}>
+      <span class="vs-checkbox">
+        <span class="vs-checkbox--check">
+          <i class="vs-icon feather icon-check"></i>
+        </span>
+      </span>
+    </div>
+  </td>
+  <td>
+    {{ $d->kode_barang }}
+    <input type="hidden" class="kode_barang" id="kode_barang" name="kode_barang[]" value="{{ $d->kode_barang }}">
+  </td>
+  <td>
+    {{ $d->nama_barang }}
+    <input type="hidden" class="isipack" id="isipack" name="isipack[]" value="{{ $d->isipack }}">
+    <input type="hidden" class="isipcsdus" id="isipcsdus" name="isipcsdus[]" value="{{ $d->isipcsdus }}">
+    <input type="hidden" class="isipcs" id="isipcs" name="isipcs[]" value="{{ $d->isipcs }}">
+  </td>
+  <td class="text-center">{{ $d->isipcsdus }}</td>
+  <td class="text-center">{{ $d->isipack }}</td>
+  <td class="text-center">{{ $d->isipcs }}</td>
+  <td></td>
+  <td>
+    <input type="text" class="form-control text-center jmldus" id="jmldus" name="jmldus[]" value="{{ $jmldus }}">
+  </td>
+  <td>
+    <input type="hidden" class="form-control text-right harga_dus_old" id="harga_dus_old" name="harga_dus_old[]" value="{{ rupiah($d->harga_dus) }}">
+    <input type="text" class="form-control text-right harga_dus money" id="harga_dus" name="harga_dus[]" value="{{ rupiah($d->harga_dus) }}">
+  </td>
+  <td>
 
-        <input type="{{ (!empty($d->harga_pack) ? 'text' :'hidden') }}" class="form-control text-center jmlpack" id="jmlpack" name="jmlpack[]" value="{{ $jmlpack }}">
+    <input type="{{ (!empty($d->harga_pack) ? 'text' :'hidden') }}" class="form-control text-center jmlpack" id="jmlpack" name="jmlpack[]" value="{{ $jmlpack }}">
 
-    </td>
-    <td>
+  </td>
+  <td>
 
-        <input type="{{ (!empty($d->harga_pack) ? 'hidden' :'hidden') }}" class="form-control text-right harga_pack_old" id="harga_pack_old" name="harga_pack_old[]" value="{{ rupiah($d->harga_pack) }}">
-        <input type="{{ (!empty($d->harga_pack) ? 'text' :'hidden') }}" class="form-control text-right harga_pack money" id="harga_pack" name="harga_pack[]" value="{{ rupiah($d->harga_pack) }}">
+    <input type="{{ (!empty($d->harga_pack) ? 'hidden' :'hidden') }}" class="form-control text-right harga_pack_old" id="harga_pack_old" name="harga_pack_old[]" value="{{ rupiah($d->harga_pack) }}">
+    <input type="{{ (!empty($d->harga_pack) ? 'text' :'hidden') }}" class="form-control text-right harga_pack money" id="harga_pack" name="harga_pack[]" value="{{ rupiah($d->harga_pack) }}">
 
-    </td>
-    <td>
+  </td>
+  <td>
 
-        <input type="text" class="form-control text-center jmlpcs" id="jmlpcs" name="jmlpcs[]" value="{{ $jmlpcs }}">
-    </td>
-    <td>
-        <input type="hidden" class="form-control text-right harga_pcs_old " id="harga_pcs_old" name="harga_pcs_old[]" value="{{ rupiah($d->harga_pcs) }}">
-        <input type="text" class="form-control text-right harga_pcs money " id="harga_pcs" name="harga_pcs[]" value="{{ rupiah($d->harga_pcs) }}">
-    </td>
-    <td class="text-right total" class="total">{{ rupiah($d->subtotal) }}</td>
-    <td>
-        <a href="#" kode_barang="{{ $d->kode_barang }}" class="hapus"><i class="feather icon-trash danger"></i></a>
-    </td>
+    <input type="text" class="form-control text-center jmlpcs" id="jmlpcs" name="jmlpcs[]" value="{{ $jmlpcs }}">
+  </td>
+  <td>
+    <input type="hidden" class="form-control text-right harga_pcs_old " id="harga_pcs_old" name="harga_pcs_old[]" value="{{ rupiah($d->harga_pcs) }}">
+    <input type="text" class="form-control text-right harga_pcs money " id="harga_pcs" name="harga_pcs[]" value="{{ rupiah($d->harga_pcs) }}">
+  </td>
+  <td class="text-right total" class="total">{{ rupiah($d->subtotal) }}</td>
+  <td>
+    <a href="#" kode_barang="{{ $d->kode_barang }}" class="hapus"><i class="feather icon-trash danger"></i></a>
+  </td>
 </tr>
 @endforeach
 {{-- <tr>
@@ -81,611 +81,620 @@ $total += $d->subtotal;
 <th></th>
 </tr> --}}
 <script>
-    $(function() {
+  $(function() {
+    // function cektemp() {
+    //   $.ajax({
+    //     type: 'GET'
+    //     , url: '/cekpenjtemp'
+    //     , success: function(respond) {
 
-        function loadtotal() {
+    //     }
+    //   });
+    // }
+
+    function loadtotal() {
+      $.ajax({
+        type: 'GET'
+        , url: '/loadtotalpenjualantemp'
+        , success: function(respond) {
+          var total = parseInt(respond.replace(/\./g, ''));
+          var potswan = $("#potswan").val();
+          var potaida = $("#potaida").val();
+          var potstick = $("#potstick").val();
+          var potsp = $("#potsp").val();
+          var potsb = $("#potsb").val();
+          var potisaida = $("#potisaida").val();
+          var potisswan = $("#potisswan").val();
+          var potisstick = $("#potisstick").val();
+          var penyaida = $("#penyaida").val();
+          var penyswan = $("#penyswan").val();
+          var penystick = $("#penystick").val();
+          var voucher = $("#voucher").val();
+
+          if (potswan.length === 0) {
+            var potswan = 0;
+          } else {
+            var potswan = parseInt(potswan.replace(/\./g, ''));
+          }
+
+          if (potaida.length === 0) {
+            var potaida = 0;
+          } else {
+            var potaida = parseInt(potaida.replace(/\./g, ''));
+          }
+
+          if (potstick.length === 0) {
+            var potstick = 0;
+          } else {
+            var potstick = parseInt(potstick.replace(/\./g, ''));
+          }
+
+          if (potsp.length === 0) {
+            var potsp = 0;
+          } else {
+            var potsp = parseInt(potsp.replace(/\./g, ''));
+          }
+
+          if (potsb.length === 0) {
+            var potsb = 0;
+          } else {
+            var potsb = parseInt(potsb.replace(/\./g, ''));
+          }
+
+          if (potisaida.length === 0) {
+            var potisaida = 0;
+          } else {
+            var potisaida = parseInt(potisaida.replace(/\./g, ''));
+          }
+
+          if (potisswan.length === 0) {
+            var potisswan = 0;
+          } else {
+            var potisswan = parseInt(potisswan.replace(/\./g, ''));
+          }
+
+          if (potisstick.length === 0) {
+            var potisstick = 0;
+          } else {
+            var potisstick = parseInt(potisstick.replace(/\./g, ''));
+          }
+
+          if (penyaida.length === 0) {
+            var penyaida = 0;
+          } else {
+            var penyaida = parseInt(penyaida.replace(/\./g, ''));
+          }
+
+          if (penyswan.length === 0) {
+            var penyswan = 0;
+          } else {
+            var penyswan = parseInt(penyswan.replace(/\./g, ''));
+          }
+
+          if (penystick.length === 0) {
+            var penystick = 0;
+          } else {
+            var penystick = parseInt(penystick.replace(/\./g, ''));
+          }
+
+          if (voucher.length === 0) {
+            var voucher = 0;
+          } else {
+            var voucher = parseInt(voucher.replace(/\./g, ''));
+          }
+
+          var potongan = potswan + potaida + potstick + potsp + potsb;
+          var potonganistimewa = potisaida + potisswan + potisstick;
+          var penyesuaian = penyaida + penyswan + penystick;
+          var grandtotal = total - potongan - potonganistimewa - penyesuaian - voucher;
+          $("#grandtotal").text(convertToRupiah(grandtotal));
+          $("#total").val(convertToRupiah(grandtotal));
+          $("#subtotal").val(grandtotal);
+        }
+      });
+    }
+
+    function hitungdiskon() {
+      var jenistransaksi = $("#jenistransaksi").val();
+      $.ajax({
+        type: 'POST'
+        , url: '/hitungdiskon'
+        , data: {
+          _token: "{{ csrf_token() }}"
+          , jenistransaksi: jenistransaksi
+        }
+        , cache: false
+        , success: function(respond) {
+          var result = respond.split("|");
+          console.log(result);
+          $("#potswan").val(result[0]);
+          $("#potaida").val(result[1]);
+          $("#potstick").val(result[2]);
+          $("#potsp").val(result[3]);
+          $("#potsb").val(result[4]);
+          loadtotal();
+        }
+      });
+    }
+
+    hitungdiskon();
+
+    $(".tunai").hide();
+    $(".kredit").hide();
+    $("#jenistransaksi").change(function() {
+      var jenistransaksi = $(this).val();
+      if (jenistransaksi == "tunai") {
+        $("#jenisbayar").val("tunai");
+        $(".tunai").show();
+        $(".kredit").hide();
+      } else if (jenistransaksi == "kredit") {
+        $("#jenisbayar").val("titipan");
+        $(".tunai").hide();
+        $(".kredit").show();
+        $("#titipan").focus();
+      }
+      hitungdiskon();
+    });
+
+
+    $(".money").maskMoney();
+    $("#potswan, #potaida, #potstick, #potsp, #potsb,#potisaida,#potisswan,#potisstick,#penyaida,#penyswan,#penystick,#voucher").on('keyup', function() {
+      //alert('test');
+      loadtotal();
+    });
+    // $('.money').mask("#.##0", {
+    //     reverse: true
+    // });
+
+
+
+
+
+
+    function loadbarangtemp() {
+      $.ajax({
+        type: 'GET'
+        , url: '/penjualan/showbarangtemp'
+        , data: {
+          _token: "{{ csrf_token() }}"
+        }
+        , cache: false
+        , success: function(respond) {
+          $("#loadbarangtemp").html(respond);
+        }
+      });
+    }
+    $(".hapus").click(function(e) {
+      e.preventDefault();
+      var kode_barang = $(this).attr("kode_barang");
+      event.preventDefault();
+      swal({
+          title: `Anda Yakin Data ini Akan Dihapus ?`
+          , text: "Jika dihapus Data Ini Akan Hilang Dari Keranjang"
+          , icon: "warning"
+          , buttons: true
+          , dangerMode: true
+        , })
+        .then((willDelete) => {
+          if (willDelete) {
             $.ajax({
-                type: 'GET'
-                , url: '/loadtotalpenjualantemp'
-                , success: function(respond) {
-                    var total = parseInt(respond.replace(/\./g, ''));
-                    var potswan = $("#potswan").val();
-                    var potaida = $("#potaida").val();
-                    var potstick = $("#potstick").val();
-                    var potsp = $("#potsp").val();
-                    var potsb = $("#potsb").val();
-                    var potisaida = $("#potisaida").val();
-                    var potisswan = $("#potisswan").val();
-                    var potisstick = $("#potisstick").val();
-                    var penyaida = $("#penyaida").val();
-                    var penyswan = $("#penyswan").val();
-                    var penystick = $("#penystick").val();
-                    var voucher = $("#voucher").val();
-
-                    if (potswan.length === 0) {
-                        var potswan = 0;
-                    } else {
-                        var potswan = parseInt(potswan.replace(/\./g, ''));
-                    }
-
-                    if (potaida.length === 0) {
-                        var potaida = 0;
-                    } else {
-                        var potaida = parseInt(potaida.replace(/\./g, ''));
-                    }
-
-                    if (potstick.length === 0) {
-                        var potstick = 0;
-                    } else {
-                        var potstick = parseInt(potstick.replace(/\./g, ''));
-                    }
-
-                    if (potsp.length === 0) {
-                        var potsp = 0;
-                    } else {
-                        var potsp = parseInt(potsp.replace(/\./g, ''));
-                    }
-
-                    if (potsb.length === 0) {
-                        var potsb = 0;
-                    } else {
-                        var potsb = parseInt(potsb.replace(/\./g, ''));
-                    }
-
-                    if (potisaida.length === 0) {
-                        var potisaida = 0;
-                    } else {
-                        var potisaida = parseInt(potisaida.replace(/\./g, ''));
-                    }
-
-                    if (potisswan.length === 0) {
-                        var potisswan = 0;
-                    } else {
-                        var potisswan = parseInt(potisswan.replace(/\./g, ''));
-                    }
-
-                    if (potisstick.length === 0) {
-                        var potisstick = 0;
-                    } else {
-                        var potisstick = parseInt(potisstick.replace(/\./g, ''));
-                    }
-
-                    if (penyaida.length === 0) {
-                        var penyaida = 0;
-                    } else {
-                        var penyaida = parseInt(penyaida.replace(/\./g, ''));
-                    }
-
-                    if (penyswan.length === 0) {
-                        var penyswan = 0;
-                    } else {
-                        var penyswan = parseInt(penyswan.replace(/\./g, ''));
-                    }
-
-                    if (penystick.length === 0) {
-                        var penystick = 0;
-                    } else {
-                        var penystick = parseInt(penystick.replace(/\./g, ''));
-                    }
-
-                    if (voucher.length === 0) {
-                        var voucher = 0;
-                    } else {
-                        var voucher = parseInt(voucher.replace(/\./g, ''));
-                    }
-
-                    var potongan = potswan + potaida + potstick + potsp + potsb;
-                    var potonganistimewa = potisaida + potisswan + potisstick;
-                    var penyesuaian = penyaida + penyswan + penystick;
-                    var grandtotal = total - potongan - potonganistimewa - penyesuaian - voucher;
-                    $("#grandtotal").text(convertToRupiah(grandtotal));
-                    $("#total").val(convertToRupiah(grandtotal));
-                    $("#subtotal").val(grandtotal);
-                }
+              type: 'POST'
+              , url: '/penjualan/deletebarangtemp'
+              , data: {
+                _token: "{{ csrf_token() }}"
+                , kode_barang: kode_barang
+              }
+              , cache: false
+              , success: function(respond) {
+                swal(
+                  'Deleted!'
+                  , 'Data Berhasil Dihapus'
+                  , 'success'
+                )
+                loadbarangtemp();
+                hitungdiskon();
+              }
             });
+          }
+        });
+    });
+
+    function convertToRupiah(number) {
+      if (number) {
+        var rupiah = "";
+        var numberrev = number
+          .toString()
+          .split("")
+          .reverse()
+          .join("");
+        for (var i = 0; i < numberrev.length; i++)
+          if (i % 3 == 0) rupiah += numberrev.substr(i, 3) + ".";
+        return (
+          rupiah
+          .split("", rupiah.length - 1)
+          .reverse()
+          .join("")
+        );
+      } else {
+        return number;
+      }
+    }
+    var $tblrows = $("#tabelproduktemp tbody tr");
+    $tblrows.each(function(index) {
+      var $tblrow = $(this);
+
+      if ($tblrow.find('.promo').is(':checked')) {
+        $tblrow.css("background-color", "rgb(255 255 183 / 88%)");
+      }
+
+      $tblrow.find('.promo').on('change', function() {
+
+        var kode_barang = $tblrow.find("[id=kode_barang]").val();
+        var jmldus = $tblrow.find("[id=jmldus]").val();
+        var harga_dus = $tblrow.find("[id=harga_dus]").val();
+        var harga_dus_old = $tblrow.find("[id=harga_dus_old]").val();
+        var jmlpack = $tblrow.find("[id=jmlpack]").val();
+        var harga_pack = $tblrow.find("[id=harga_pack]").val();
+        var harga_pack_old = $tblrow.find("[id=harga_pack_old]").val();
+        var jmlpcs = $tblrow.find("[id=jmlpcs]").val();
+        var harga_pcs = $tblrow.find("[id=harga_pcs]").val();
+        var harga_pcs_old = $tblrow.find("[id=harga_pcs_old]").val();
+        if ($tblrow.find('.promo').is(':checked')) {
+          $tblrow.css("background-color", "rgb(255 255 183 / 88%)");
+          if (jmldus.length === 0) {
+            var jmldus = 0;
+          } else {
+            var jmldus = parseInt(jmldus);
+          }
+          if (harga_dus.length === 0) {
+            var harga_dus = 0;
+          } else {
+            var harga_dus = parseInt(harga_dus.replace(/\./g, ''));
+          }
+
+          if (jmlpack.length === 0) {
+            var jmlpack = 0;
+          } else {
+            var jmlpack = parseInt(jmlpack);
+          }
+
+          if (harga_pack.length === 0) {
+            var harga_pack = 0;
+          } else {
+            var harga_pack = parseInt(harga_pack.replace(/\./g, ''));
+          }
+
+          if (jmlpcs.length === 0) {
+            var jmlpcs = 0;
+          } else {
+            var jmlpcs = parseInt(jmlpcs);
+          }
+
+          if (harga_pcs.length === 0) {
+            var harga_pcs = 0;
+          } else {
+            var harga_pcs = parseInt(harga_pcs.replace(/\./g, ''));
+          }
+
+          $tblrow.find('.harga_dus').val(0);
+          $tblrow.find('.harga_dus').attr("readonly", "true");
+          $tblrow.find('.harga_pack').val(0);
+          $tblrow.find('.harga_pack').attr("readonly", "true");
+          $tblrow.find('.harga_pcs').val(0);
+          $tblrow.find('.harga_pcs').attr("readonly", "true");
+          var total = (jmldus * 0) + (jmlpack * 0) + (jmlpcs * 0);
+          $.ajax({
+            type: 'POST'
+            , url: '/penjualan/updatedetailtemp'
+            , data: {
+              _token: "{{ csrf_token() }}"
+              , kode_barang: kode_barang
+              , jmldus: jmldus
+              , jmlpack: jmlpack
+              , jmlpcs: jmlpcs
+              , harga_dus: 0
+              , harga_pack: 0
+              , harga_pcs: 0
+              , total: total
+              , promo: 1
+            }
+            , cache: false
+            , success: function(respond) {
+              console.log(respond);
+              hitungdiskon();
+            }
+          });
+          if (!isNaN(total)) {
+            $tblrow.find('.total').text(convertToRupiah(total));
+          }
+        } else {
+          $tblrow.css("background-color", "");
+
+          function updateharga() {
+            var harga_dus = $tblrow.find("[id=harga_dus]").val();
+            var harga_pack = $tblrow.find("[id=harga_pack]").val();
+            var harga_pcs = $tblrow.find("[id=harga_pcs]").val();
+            var jmldus = $tblrow.find("[id=jmldus]").val();
+            var jmlpack = $tblrow.find("[id=jmlpack]").val();
+            var jmlpcs = $tblrow.find("[id=jmlpcs]").val();
+            $tblrow.find('.harga_dus').removeAttr("readonly");
+            $tblrow.find('.harga_pack').removeAttr("readonly");
+            $tblrow.find('.harga_pcs').removeAttr("readonly");
+
+            if (jmldus.length === 0) {
+              var jmldus = 0;
+            } else {
+              var jmldus = parseInt(jmldus);
+            }
+            if (harga_dus.length === 0) {
+              var harga_dus = 0;
+            } else {
+              var harga_dus = parseInt(harga_dus.replace(/\./g, ''));
+            }
+
+            if (jmlpack.length === 0) {
+              var jmlpack = 0;
+            } else {
+              var jmlpack = parseInt(jmlpack);
+            }
+
+            if (harga_pack.length === 0) {
+              var harga_pack = 0;
+            } else {
+              var harga_pack = parseInt(harga_pack.replace(/\./g, ''));
+            }
+
+            if (jmlpcs.length === 0) {
+              var jmlpcs = 0;
+            } else {
+              var jmlpcs = parseInt(jmlpcs);
+            }
+
+            if (harga_pcs.length === 0) {
+              var harga_pcs = 0;
+            } else {
+              var harga_pcs = parseInt(harga_pcs.replace(/\./g, ''));
+            }
+
+            var total = (jmldus * harga_dus) + (jmlpack * harga_pack) + (jmlpcs * harga_pcs);
+            $.ajax({
+              type: 'POST'
+              , url: '/penjualan/updatedetailtemp'
+              , data: {
+                _token: "{{ csrf_token() }}"
+                , kode_barang: kode_barang
+                , jmldus: jmldus
+                , jmlpack: jmlpack
+                , jmlpcs: jmlpcs
+                , harga_dus: harga_dus
+                , harga_pack: harga_pack
+                , harga_pcs: harga_pcs
+                , total: total
+                , promo: 0
+              }
+              , cache: false
+              , success: function(respond) {
+                console.log(respond);
+              }
+            });
+            if (!isNaN(total)) {
+              $tblrow.find('.total').text(convertToRupiah(total));
+            }
+          }
+          $.ajax({
+            type: 'POST'
+            , url: '/gethargabarang'
+            , data: {
+              _token: "{{ csrf_token() }}"
+              , kode_barang: kode_barang
+            }
+            , cache: false
+            , success: function(respond) {
+              console.log(respond);
+              var data = respond.split("|");
+              $tblrow.find('.harga_dus').val(data[0]);
+              $tblrow.find('.harga_pack').val(data[1]);
+              $tblrow.find('.harga_pcs').val(data[2]);
+              updateharga();
+              hitungdiskon();
+            }
+          });
         }
 
-        function hitungdiskon() {
-            var jenistransaksi = $("#jenistransaksi").val();
+      });
+
+
+      $tblrow.find('.jmldus,.jmlpack,.jmlpcs,.harga_dus,.harga_pack,.harga_pcs').on('input', function() {
+        var kode_barang = $tblrow.find("[id=kode_barang]").val();
+        var isipack = $tblrow.find("[id=isipack]").val();
+        var isipcs = $tblrow.find("[id=isipcs]").val();
+        var isipcsdus = $tblrow.find("[id=isipcsdus]").val();
+        var jmldus = $tblrow.find("[id=jmldus]").val();
+        var harga_dus = $tblrow.find("[id=harga_dus]").val();
+        var jmlpack = $tblrow.find("[id=jmlpack]").val();
+        var harga_pack = $tblrow.find("[id=harga_pack]").val();
+        var jmlpcs = $tblrow.find("[id=jmlpcs]").val();
+        var harga_pcs = $tblrow.find("[id=harga_pcs]").val();
+
+
+        if (isipack.length === 0) {
+          var isipack = 0;
+        } else {
+          var isipack = parseInt(isipack);
+        }
+        if (isipcs.length === 0) {
+          var isipcs = 0;
+        } else {
+          var isipcs = parseInt(isipcs);
+        }
+        if (isipcsdus.length === 0) {
+          var isipcsdus = 0;
+        } else {
+          var isipcsdus = parseInt(isipcsdus);
+        }
+        if (jmldus.length === 0) {
+          var jmldus = 0;
+        } else {
+          var jmldus = parseInt(jmldus);
+        }
+        if (harga_dus.length === 0) {
+          var harga_dus = 0;
+        } else {
+          var harga_dus = parseInt(harga_dus.replace(/\./g, ''));
+        }
+
+        if (jmlpack.length === 0) {
+          var jmlpack = 0;
+        } else {
+          var jmlpack = parseInt(jmlpack);
+        }
+
+        if (harga_pack.length === 0) {
+          var harga_pack = 0;
+        } else {
+          var harga_pack = parseInt(harga_pack.replace(/\./g, ''));
+        }
+
+        if (jmlpcs.length === 0) {
+          var jmlpcs = 0;
+        } else {
+          var jmlpcs = parseInt(jmlpcs);
+        }
+
+        if (harga_pcs.length === 0) {
+          var harga_pcs = 0;
+        } else {
+          var harga_pcs = parseInt(harga_pcs.replace(/\./g, ''));
+        }
+
+
+        if (harga_pack === 0) {
+          if (jmlpcs >= isipcsdus) {
+            swal("Oops", "Jml Pcs Melebihi Batas Maksimal, Masukan Ke Satuan Dus/Ball", "warning");
+            $tblrow.find('.jmlpcs').val(0);
+            var total = (jmldus * harga_dus) + (jmlpack * harga_pack) + (0 * harga_pcs);
             $.ajax({
-                type: 'POST'
-                , url: '/hitungdiskon'
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , jenistransaksi: jenistransaksi
-                }
-                , cache: false
-                , success: function(respond) {
-                    var result = respond.split("|");
-                    console.log(result);
-                    $("#potswan").val(result[0]);
-                    $("#potaida").val(result[1]);
-                    $("#potstick").val(result[2]);
-                    $("#potsp").val(result[3]);
-                    $("#potsb").val(result[4]);
-                    loadtotal();
-                }
+              type: 'POST'
+              , url: '/penjualan/updatedetailtemp'
+              , data: {
+                _token: "{{ csrf_token() }}"
+                , kode_barang: kode_barang
+                , jmldus: jmldus
+                , jmlpack: jmlpack
+                , jmlpcs: 0
+                , harga_dus: harga_dus
+                , harga_pack: harga_pack
+                , harga_pcs: harga_pcs
+                , total: total
+              }
+              , cache: false
+              , success: function(respond) {
+                console.log(respond);
+              }
             });
+          } else {
+            var total = (jmldus * harga_dus) + (jmlpack * harga_pack) + (jmlpcs * harga_pcs);
+            $.ajax({
+              type: 'POST'
+              , url: '/penjualan/updatedetailtemp'
+              , data: {
+                _token: "{{ csrf_token() }}"
+                , kode_barang: kode_barang
+                , jmldus: jmldus
+                , jmlpack: jmlpack
+                , jmlpcs: jmlpcs
+                , harga_dus: harga_dus
+                , harga_pack: harga_pack
+                , harga_pcs: harga_pcs
+                , total: total
+              }
+              , cache: false
+              , success: function(respond) {
+                console.log(respond);
+              }
+            });
+          }
+        } else {
+          if (jmlpack >= isipack) {
+            swal("Oops", "Jml Pack Melebihi Batas Maksimal, Masukan Ke Satuan Dus/Ball", "warning");
+            $tblrow.find('.jmlpack').val(0);
+            var total = (jmldus * harga_dus) + (0 * harga_pack) + (jmlpcs * harga_pcs);
+            $.ajax({
+              type: 'POST'
+              , url: '/penjualan/updatedetailtemp'
+              , data: {
+                _token: "{{ csrf_token() }}"
+                , kode_barang: kode_barang
+                , jmldus: jmldus
+                , jmlpack: 0
+                , jmlpcs: jmlpcs
+                , harga_dus: harga_dus
+                , harga_pack: harga_pack
+                , harga_pcs: harga_pcs
+                , total: total
+              }
+              , cache: false
+              , success: function(respond) {
+                console.log(respond);
+              }
+            });
+
+          } else if (jmlpcs >= isipcs) {
+            swal("Oops", "Jml Pcs Melebihi Batas Maksimal, Masukan Ke Satuan Pack", "warning");
+            $tblrow.find('.jmlpcs').val(0);
+            var total = (jmldus * harga_dus) + (jmlpack * harga_pack) + (0 * harga_pcs);
+            $.ajax({
+              type: 'POST'
+              , url: '/penjualan/updatedetailtemp'
+              , data: {
+                _token: "{{ csrf_token() }}"
+                , kode_barang: kode_barang
+                , jmldus: jmldus
+                , jmlpack: jmlpack
+                , jmlpcs: 0
+                , harga_dus: harga_dus
+                , harga_pack: harga_pack
+                , harga_pcs: harga_pcs
+                , total: total
+              }
+              , cache: false
+              , success: function(respond) {
+                console.log(respond);
+              }
+            });
+          } else {
+            var total = (jmldus * harga_dus) + (jmlpack * harga_pack) + (jmlpcs * harga_pcs);
+            $.ajax({
+              type: 'POST'
+              , url: '/penjualan/updatedetailtemp'
+              , data: {
+                _token: "{{ csrf_token() }}"
+                , kode_barang: kode_barang
+                , jmldus: jmldus
+                , jmlpack: jmlpack
+                , jmlpcs: jmlpcs
+                , harga_dus: harga_dus
+                , harga_pack: harga_pack
+                , harga_pcs: harga_pcs
+                , total: total
+              }
+              , cache: false
+              , success: function(respond) {
+                console.log(respond);
+              }
+            });
+          }
+        }
+        if (!isNaN(total)) {
+          $tblrow.find('.total').text(convertToRupiah(total));
         }
 
         hitungdiskon();
-
-        $(".tunai").hide();
-        $(".kredit").hide();
-        $("#jenistransaksi").change(function() {
-            var jenistransaksi = $(this).val();
-            if (jenistransaksi == "tunai") {
-                $("#jenisbayar").val("tunai");
-                $(".tunai").show();
-                $(".kredit").hide();
-            } else if (jenistransaksi == "kredit") {
-                $("#jenisbayar").val("titipan");
-                $(".tunai").hide();
-                $(".kredit").show();
-                $("#titipan").focus();
-            }
-            hitungdiskon();
-        });
-
-
-        $(".money").maskMoney();
-        $("#potswan, #potaida, #potstick, #potsp, #potsb,#potisaida,#potisswan,#potisstick,#penyaida,#penyswan,#penystick,#voucher").on('keyup', function() {
-            //alert('test');
-            loadtotal();
-        });
-        // $('.money').mask("#.##0", {
-        //     reverse: true
-        // });
-
-
-
-
-
-
-        function loadbarangtemp() {
-            $.ajax({
-                type: 'GET'
-                , url: '/penjualan/showbarangtemp'
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                }
-                , cache: false
-                , success: function(respond) {
-                    $("#loadbarangtemp").html(respond);
-                }
-            });
-        }
-        $(".hapus").click(function(e) {
-            e.preventDefault();
-            var kode_barang = $(this).attr("kode_barang");
-            event.preventDefault();
-            swal({
-                    title: `Anda Yakin Data ini Akan Dihapus ?`
-                    , text: "Jika dihapus Data Ini Akan Hilang Dari Keranjang"
-                    , icon: "warning"
-                    , buttons: true
-                    , dangerMode: true
-                , })
-                .then((willDelete) => {
-                    if (willDelete) {
-                        $.ajax({
-                            type: 'POST'
-                            , url: '/penjualan/deletebarangtemp'
-                            , data: {
-                                _token: "{{ csrf_token() }}"
-                                , kode_barang: kode_barang
-                            }
-                            , cache: false
-                            , success: function(respond) {
-                                swal(
-                                    'Deleted!'
-                                    , 'Data Berhasil Dihapus'
-                                    , 'success'
-                                )
-                                loadbarangtemp();
-                                hitungdiskon();
-                            }
-                        });
-                    }
-                });
-        });
-
-        function convertToRupiah(number) {
-            if (number) {
-                var rupiah = "";
-                var numberrev = number
-                    .toString()
-                    .split("")
-                    .reverse()
-                    .join("");
-                for (var i = 0; i < numberrev.length; i++)
-                    if (i % 3 == 0) rupiah += numberrev.substr(i, 3) + ".";
-                return (
-                    rupiah
-                    .split("", rupiah.length - 1)
-                    .reverse()
-                    .join("")
-                );
-            } else {
-                return number;
-            }
-        }
-        var $tblrows = $("#tabelproduktemp tbody tr");
-        $tblrows.each(function(index) {
-            var $tblrow = $(this);
-
-            if ($tblrow.find('.promo').is(':checked')) {
-                $tblrow.css("background-color", "rgb(255 255 183 / 88%)");
-            }
-
-            $tblrow.find('.promo').on('change', function() {
-
-                var kode_barang = $tblrow.find("[id=kode_barang]").val();
-                var jmldus = $tblrow.find("[id=jmldus]").val();
-                var harga_dus = $tblrow.find("[id=harga_dus]").val();
-                var harga_dus_old = $tblrow.find("[id=harga_dus_old]").val();
-                var jmlpack = $tblrow.find("[id=jmlpack]").val();
-                var harga_pack = $tblrow.find("[id=harga_pack]").val();
-                var harga_pack_old = $tblrow.find("[id=harga_pack_old]").val();
-                var jmlpcs = $tblrow.find("[id=jmlpcs]").val();
-                var harga_pcs = $tblrow.find("[id=harga_pcs]").val();
-                var harga_pcs_old = $tblrow.find("[id=harga_pcs_old]").val();
-                if ($tblrow.find('.promo').is(':checked')) {
-                    $tblrow.css("background-color", "rgb(255 255 183 / 88%)");
-                    if (jmldus.length === 0) {
-                        var jmldus = 0;
-                    } else {
-                        var jmldus = parseInt(jmldus);
-                    }
-                    if (harga_dus.length === 0) {
-                        var harga_dus = 0;
-                    } else {
-                        var harga_dus = parseInt(harga_dus.replace(/\./g, ''));
-                    }
-
-                    if (jmlpack.length === 0) {
-                        var jmlpack = 0;
-                    } else {
-                        var jmlpack = parseInt(jmlpack);
-                    }
-
-                    if (harga_pack.length === 0) {
-                        var harga_pack = 0;
-                    } else {
-                        var harga_pack = parseInt(harga_pack.replace(/\./g, ''));
-                    }
-
-                    if (jmlpcs.length === 0) {
-                        var jmlpcs = 0;
-                    } else {
-                        var jmlpcs = parseInt(jmlpcs);
-                    }
-
-                    if (harga_pcs.length === 0) {
-                        var harga_pcs = 0;
-                    } else {
-                        var harga_pcs = parseInt(harga_pcs.replace(/\./g, ''));
-                    }
-
-                    $tblrow.find('.harga_dus').val(0);
-                    $tblrow.find('.harga_dus').attr("readonly", "true");
-                    $tblrow.find('.harga_pack').val(0);
-                    $tblrow.find('.harga_pack').attr("readonly", "true");
-                    $tblrow.find('.harga_pcs').val(0);
-                    $tblrow.find('.harga_pcs').attr("readonly", "true");
-                    var total = (jmldus * 0) + (jmlpack * 0) + (jmlpcs * 0);
-                    $.ajax({
-                        type: 'POST'
-                        , url: '/penjualan/updatedetailtemp'
-                        , data: {
-                            _token: "{{ csrf_token() }}"
-                            , kode_barang: kode_barang
-                            , jmldus: jmldus
-                            , jmlpack: jmlpack
-                            , jmlpcs: jmlpcs
-                            , harga_dus: 0
-                            , harga_pack: 0
-                            , harga_pcs: 0
-                            , total: total
-                            , promo: 1
-                        }
-                        , cache: false
-                        , success: function(respond) {
-                            console.log(respond);
-                            hitungdiskon();
-                        }
-                    });
-                    if (!isNaN(total)) {
-                        $tblrow.find('.total').text(convertToRupiah(total));
-                    }
-                } else {
-                    $tblrow.css("background-color", "");
-
-                    function updateharga() {
-                        var harga_dus = $tblrow.find("[id=harga_dus]").val();
-                        var harga_pack = $tblrow.find("[id=harga_pack]").val();
-                        var harga_pcs = $tblrow.find("[id=harga_pcs]").val();
-                        var jmldus = $tblrow.find("[id=jmldus]").val();
-                        var jmlpack = $tblrow.find("[id=jmlpack]").val();
-                        var jmlpcs = $tblrow.find("[id=jmlpcs]").val();
-                        $tblrow.find('.harga_dus').removeAttr("readonly");
-                        $tblrow.find('.harga_pack').removeAttr("readonly");
-                        $tblrow.find('.harga_pcs').removeAttr("readonly");
-
-                        if (jmldus.length === 0) {
-                            var jmldus = 0;
-                        } else {
-                            var jmldus = parseInt(jmldus);
-                        }
-                        if (harga_dus.length === 0) {
-                            var harga_dus = 0;
-                        } else {
-                            var harga_dus = parseInt(harga_dus.replace(/\./g, ''));
-                        }
-
-                        if (jmlpack.length === 0) {
-                            var jmlpack = 0;
-                        } else {
-                            var jmlpack = parseInt(jmlpack);
-                        }
-
-                        if (harga_pack.length === 0) {
-                            var harga_pack = 0;
-                        } else {
-                            var harga_pack = parseInt(harga_pack.replace(/\./g, ''));
-                        }
-
-                        if (jmlpcs.length === 0) {
-                            var jmlpcs = 0;
-                        } else {
-                            var jmlpcs = parseInt(jmlpcs);
-                        }
-
-                        if (harga_pcs.length === 0) {
-                            var harga_pcs = 0;
-                        } else {
-                            var harga_pcs = parseInt(harga_pcs.replace(/\./g, ''));
-                        }
-
-                        var total = (jmldus * harga_dus) + (jmlpack * harga_pack) + (jmlpcs * harga_pcs);
-                        $.ajax({
-                            type: 'POST'
-                            , url: '/penjualan/updatedetailtemp'
-                            , data: {
-                                _token: "{{ csrf_token() }}"
-                                , kode_barang: kode_barang
-                                , jmldus: jmldus
-                                , jmlpack: jmlpack
-                                , jmlpcs: jmlpcs
-                                , harga_dus: harga_dus
-                                , harga_pack: harga_pack
-                                , harga_pcs: harga_pcs
-                                , total: total
-                                , promo: 0
-                            }
-                            , cache: false
-                            , success: function(respond) {
-                                console.log(respond);
-                            }
-                        });
-                        if (!isNaN(total)) {
-                            $tblrow.find('.total').text(convertToRupiah(total));
-                        }
-                    }
-                    $.ajax({
-                        type: 'POST'
-                        , url: '/gethargabarang'
-                        , data: {
-                            _token: "{{ csrf_token() }}"
-                            , kode_barang: kode_barang
-                        }
-                        , cache: false
-                        , success: function(respond) {
-                            console.log(respond);
-                            var data = respond.split("|");
-                            $tblrow.find('.harga_dus').val(data[0]);
-                            $tblrow.find('.harga_pack').val(data[1]);
-                            $tblrow.find('.harga_pcs').val(data[2]);
-                            updateharga();
-                            hitungdiskon();
-                        }
-                    });
-                }
-
-            });
-
-
-            $tblrow.find('.jmldus,.jmlpack,.jmlpcs,.harga_dus,.harga_pack,.harga_pcs').on('input', function() {
-                var kode_barang = $tblrow.find("[id=kode_barang]").val();
-                var isipack = $tblrow.find("[id=isipack]").val();
-                var isipcs = $tblrow.find("[id=isipcs]").val();
-                var isipcsdus = $tblrow.find("[id=isipcsdus]").val();
-                var jmldus = $tblrow.find("[id=jmldus]").val();
-                var harga_dus = $tblrow.find("[id=harga_dus]").val();
-                var jmlpack = $tblrow.find("[id=jmlpack]").val();
-                var harga_pack = $tblrow.find("[id=harga_pack]").val();
-                var jmlpcs = $tblrow.find("[id=jmlpcs]").val();
-                var harga_pcs = $tblrow.find("[id=harga_pcs]").val();
-
-
-                if (isipack.length === 0) {
-                    var isipack = 0;
-                } else {
-                    var isipack = parseInt(isipack);
-                }
-                if (isipcs.length === 0) {
-                    var isipcs = 0;
-                } else {
-                    var isipcs = parseInt(isipcs);
-                }
-                if (isipcsdus.length === 0) {
-                    var isipcsdus = 0;
-                } else {
-                    var isipcsdus = parseInt(isipcsdus);
-                }
-                if (jmldus.length === 0) {
-                    var jmldus = 0;
-                } else {
-                    var jmldus = parseInt(jmldus);
-                }
-                if (harga_dus.length === 0) {
-                    var harga_dus = 0;
-                } else {
-                    var harga_dus = parseInt(harga_dus.replace(/\./g, ''));
-                }
-
-                if (jmlpack.length === 0) {
-                    var jmlpack = 0;
-                } else {
-                    var jmlpack = parseInt(jmlpack);
-                }
-
-                if (harga_pack.length === 0) {
-                    var harga_pack = 0;
-                } else {
-                    var harga_pack = parseInt(harga_pack.replace(/\./g, ''));
-                }
-
-                if (jmlpcs.length === 0) {
-                    var jmlpcs = 0;
-                } else {
-                    var jmlpcs = parseInt(jmlpcs);
-                }
-
-                if (harga_pcs.length === 0) {
-                    var harga_pcs = 0;
-                } else {
-                    var harga_pcs = parseInt(harga_pcs.replace(/\./g, ''));
-                }
-
-
-                if (harga_pack === 0) {
-                    if (jmlpcs >= isipcsdus) {
-                        swal("Oops", "Jml Pcs Melebihi Batas Maksimal, Masukan Ke Satuan Dus/Ball", "warning");
-                        $tblrow.find('.jmlpcs').val(0);
-                        var total = (jmldus * harga_dus) + (jmlpack * harga_pack) + (0 * harga_pcs);
-                        $.ajax({
-                            type: 'POST'
-                            , url: '/penjualan/updatedetailtemp'
-                            , data: {
-                                _token: "{{ csrf_token() }}"
-                                , kode_barang: kode_barang
-                                , jmldus: jmldus
-                                , jmlpack: jmlpack
-                                , jmlpcs: 0
-                                , harga_dus: harga_dus
-                                , harga_pack: harga_pack
-                                , harga_pcs: harga_pcs
-                                , total: total
-                            }
-                            , cache: false
-                            , success: function(respond) {
-                                console.log(respond);
-                            }
-                        });
-                    } else {
-                        var total = (jmldus * harga_dus) + (jmlpack * harga_pack) + (jmlpcs * harga_pcs);
-                        $.ajax({
-                            type: 'POST'
-                            , url: '/penjualan/updatedetailtemp'
-                            , data: {
-                                _token: "{{ csrf_token() }}"
-                                , kode_barang: kode_barang
-                                , jmldus: jmldus
-                                , jmlpack: jmlpack
-                                , jmlpcs: jmlpcs
-                                , harga_dus: harga_dus
-                                , harga_pack: harga_pack
-                                , harga_pcs: harga_pcs
-                                , total: total
-                            }
-                            , cache: false
-                            , success: function(respond) {
-                                console.log(respond);
-                            }
-                        });
-                    }
-                } else {
-                    if (jmlpack >= isipack) {
-                        swal("Oops", "Jml Pack Melebihi Batas Maksimal, Masukan Ke Satuan Dus/Ball", "warning");
-                        $tblrow.find('.jmlpack').val(0);
-                        var total = (jmldus * harga_dus) + (0 * harga_pack) + (jmlpcs * harga_pcs);
-                        $.ajax({
-                            type: 'POST'
-                            , url: '/penjualan/updatedetailtemp'
-                            , data: {
-                                _token: "{{ csrf_token() }}"
-                                , kode_barang: kode_barang
-                                , jmldus: jmldus
-                                , jmlpack: 0
-                                , jmlpcs: jmlpcs
-                                , harga_dus: harga_dus
-                                , harga_pack: harga_pack
-                                , harga_pcs: harga_pcs
-                                , total: total
-                            }
-                            , cache: false
-                            , success: function(respond) {
-                                console.log(respond);
-                            }
-                        });
-
-                    } else if (jmlpcs >= isipcs) {
-                        swal("Oops", "Jml Pcs Melebihi Batas Maksimal, Masukan Ke Satuan Pack", "warning");
-                        $tblrow.find('.jmlpcs').val(0);
-                        var total = (jmldus * harga_dus) + (jmlpack * harga_pack) + (0 * harga_pcs);
-                        $.ajax({
-                            type: 'POST'
-                            , url: '/penjualan/updatedetailtemp'
-                            , data: {
-                                _token: "{{ csrf_token() }}"
-                                , kode_barang: kode_barang
-                                , jmldus: jmldus
-                                , jmlpack: jmlpack
-                                , jmlpcs: 0
-                                , harga_dus: harga_dus
-                                , harga_pack: harga_pack
-                                , harga_pcs: harga_pcs
-                                , total: total
-                            }
-                            , cache: false
-                            , success: function(respond) {
-                                console.log(respond);
-                            }
-                        });
-                    } else {
-                        var total = (jmldus * harga_dus) + (jmlpack * harga_pack) + (jmlpcs * harga_pcs);
-                        $.ajax({
-                            type: 'POST'
-                            , url: '/penjualan/updatedetailtemp'
-                            , data: {
-                                _token: "{{ csrf_token() }}"
-                                , kode_barang: kode_barang
-                                , jmldus: jmldus
-                                , jmlpack: jmlpack
-                                , jmlpcs: jmlpcs
-                                , harga_dus: harga_dus
-                                , harga_pack: harga_pack
-                                , harga_pcs: harga_pcs
-                                , total: total
-                            }
-                            , cache: false
-                            , success: function(respond) {
-                                console.log(respond);
-                            }
-                        });
-                    }
-                }
-                if (!isNaN(total)) {
-                    $tblrow.find('.total').text(convertToRupiah(total));
-                }
-
-                hitungdiskon();
-            });
-
-        });
-
+      });
 
     });
+
+
+  });
 
 </script>

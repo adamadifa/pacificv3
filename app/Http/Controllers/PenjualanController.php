@@ -220,6 +220,11 @@ class PenjualanController extends Controller
 
         echo rupiah($totaldiskonswan), "|" . rupiah($totaldiskonaida) . "|" . rupiah($totaldiskonstick) . "|" . rupiah($totaldiskonsp) . "|" . rupiah($totaldiskonsb);
     }
+
+    public function store(Request $request)
+    {
+    }
+
     public function rekapcashin(Request $request)
     {
         $dari = $request->tahun . "-" . $request->bulan . "-01";
