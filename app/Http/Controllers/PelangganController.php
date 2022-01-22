@@ -381,7 +381,7 @@ class PelangganController extends Controller
     public function json()
     {
         $pelanggan = DB::table('pelanggan')
-            ->select('pelanggan.*', 'karyawan.nama_karyawan', 'karyawan.kategori_salesman')
+            ->select('pelanggan.*', 'karyawan.nama_karyawan', 'karyawan.kategori_salesman', 'limitpel')
             ->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
         return DataTables::of($pelanggan)
             ->addColumn('action', function ($pelanggan) {
@@ -397,6 +397,8 @@ class PelangganController extends Controller
                 longitude ="' . $pelanggan->longitude . '"
                 foto = "' . $pelanggan->foto  . '"
                 kode_cabang = "' . $pelanggan->kode_cabang  . '"
+                limitpel = "' . $pelanggan->limitpel  . '"
+                limitpelanggan = "' . rupiah($pelanggan->limitpel)  . '"
                 >Pilih</a>';
             })
             ->toJson();

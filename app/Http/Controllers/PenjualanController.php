@@ -25,7 +25,7 @@ class PenjualanController extends Controller
     {
         $barang = Harga::where('kode_barang', $request->kode_barang)->first();
         $id_user = Auth::user()->id;
-        $cek = DB::table('detailpenjualan_temp')->where('kode_barang', $request->kode_barang)->where('id_admin', $id_user)->count();
+        $cek = DB::table('detailpenjualan_temp')->where('kode_barang', $request->kode_barang)->where('id_admin', $id_user)->whereNull('promo')->count();
         if (empty($cek)) {
             $simpan = DB::table('detailpenjualan_temp')
                 ->insert([
@@ -51,8 +51,16 @@ class PenjualanController extends Controller
     {
         $id_user = Auth::user()->id;
         $barang = DB::table('detailpenjualan_temp')
-            ->select('detailpenjualan_temp.*', 'nama_barang', 'isipcsdus', 'isipack', 'isipcs')
+            ->select('detailpenjualan_temp.*', 'nama_barang', 'isipcsdus', 'isipack', 'isipcs', 'cekjmlbarang')
             ->join('barang', 'detailpenjualan_temp.kode_barang', '=', 'barang.kode_barang')
+            ->leftJoin(
+                DB::raw("(
+                    SELECT kode_barang,COUNT(kode_barang) as cekjmlbarang FROM detailpenjualan_temp GROUP BY kode_barang
+                ) dbtemp"),
+                function ($join) {
+                    $join->on('detailpenjualan_temp.kode_barang', '=', 'dbtemp.kode_barang');
+                }
+            )
             ->where('id_admin', $id_user)
             ->get();
         return view('penjualan.showbarangtemp', compact('barang'));
@@ -64,6 +72,7 @@ class PenjualanController extends Controller
         $hapus = DB::table('detailpenjualan_temp')
             ->where('kode_barang', $request->kode_barang)
             ->where('id_admin', $id_user)
+            ->where('promo', $request->promo)
             ->delete();
         if ($hapus) {
             echo 1;
@@ -85,16 +94,57 @@ class PenjualanController extends Controller
         if (isset($request->promo)) {
             if ($request->promo == 1) {
                 $promo = 1;
+                if (isset($request->check)) {
+                    if ($request->check == "true") {
+                        $wherepromo = NULL;
+                    } else {
+                        $wherepromo = 1;
+                    }
+                } else {
+                    $wherepromo = 1;
+                }
             } else {
                 $promo = NULL;
+                if (isset($request->check)) {
+                    if ($request->check == "true") {
+                        $wherepromo = NULL;
+                        echo "test1";
+                    } else {
+                        $wherepromo = 1;
+                        echo "test2";
+                    }
+                } else {
+                    $wherepromo = NULL;
+                    echo "test";
+                }
             }
         } else {
             if ($detailtemp->promo == 1) {
                 $promo = 1;
+                if (isset($request->check)) {
+                    if ($request->check == "true") {
+                        $wherepromo = NULL;
+                    } else {
+                        $wherepromo = 1;
+                    }
+                } else {
+                    $wherepromo = 1;
+                }
             } else {
                 $promo = NULL;
+                if (isset($request->check)) {
+                    if ($request->check = "true") {
+                        $wherepromo = NULL;
+                    } else {
+                        $wherepromo = 1;
+                    }
+                } else {
+                    $wherepromo = NULL;
+                }
             }
         }
+
+        //$cekpromo = DB::table('detailpenjualan_temp')->where('kode_barang', $request->kode_barang)->where('id_admin', $id_user)->where('promo', $promo)->count();
         $harga_dus = str_replace(".", "", $request->harga_dus);
         $harga_pack = str_replace(".", "", $request->harga_pack);
         $harga_pcs = str_replace(".", "", $request->harga_pcs);
@@ -104,6 +154,7 @@ class PenjualanController extends Controller
         DB::table('detailpenjualan_temp')
             ->where('kode_barang', $request->kode_barang)
             ->where('id_admin', $id_user)
+            ->where('promo', $wherepromo)
             ->update([
                 'jumlah' => $totalqty,
                 'harga_dus' => $harga_dus,
@@ -221,8 +272,140 @@ class PenjualanController extends Controller
         echo rupiah($totaldiskonswan), "|" . rupiah($totaldiskonaida) . "|" . rupiah($totaldiskonstick) . "|" . rupiah($totaldiskonsp) . "|" . rupiah($totaldiskonsb);
     }
 
+    public function cekpenjtemp()
+    {
+        $id_user = Auth::user()->id;
+        $barang = DB::table('detailpenjualan_temp')
+            ->where('id_admin', $id_user)
+            ->count();
+        echo $barang;
+    }
+
+    public function cekpiutangpelanggan(Request $request)
+    {
+        $piutang = DB::table('penjualan')
+            ->select('penjualan.kode_pelanggan', DB::raw('SUM(IFNULL( retur.total, 0 )) AS totalretur,
+		              SUM(IFNULL(penjualan.total,0) - IFNULL(retur.total,0) - IFNULL(jmlbayar,0)) AS sisapiutang'))
+            ->leftJoin(
+                DB::raw("(
+                    SELECT retur.no_fak_penj AS no_fak_penj, SUM( total ) AS total FROM retur GROUP BY retur.no_fak_penj
+                ) retur"),
+                function ($join) {
+                    $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
+                }
+            )
+            ->leftJoin(
+                DB::raw("(
+                    SELECT no_fak_penj, IFNULL(SUM(bayar),0) as jmlbayar
+					FROM historibayar
+                    GROUP BY no_fak_penj
+                ) historibayar"),
+                function ($join) {
+                    $join->on('penjualan.no_fak_penj', '=', 'historibayar.no_fak_penj');
+                }
+            )
+            ->where('penjualan.kode_pelanggan', $request->kode_pelanggan)
+            ->groupBy('penjualan.kode_pelanggan')
+            ->first();
+
+        echo $piutang->sisapiutang;
+    }
+
     public function store(Request $request)
     {
+        $no_fak_penj = $request->no_fak_penj;
+        $tgltransaksi = $request->tgltransaksi;
+        $id_karyawan = $request->id_karyawan;
+        $kode_pelanggan = $request->kode_pelanggan;
+        $limitpel = $request->limitpel;
+        $sisapiutang = $request->sisapiutang;
+        $jenistransaksi = $request->jenistransaksi;
+        $jenisbayar = $request->jenisbayar;
+        $subtotal = $request->subtotal;
+
+        //Potongan
+        $potaida        = str_replace(".", "", $request->potaida);
+        if (empty($potaida)) {
+            $potaida = 0;
+        } else {
+            $potaida = $potaida;
+        }
+        $potswan        = str_replace(".", "", $request->potswan);
+        if (empty($potswan)) {
+            $potswan = 0;
+        } else {
+            $potswan = $potswan;
+        }
+        $potstick       = str_replace(".", "", $request->potstick);
+        if (empty($potstick)) {
+            $potstick = 0;
+        } else {
+            $potstick = $potstick;
+        }
+        $potsp       = str_replace(".", "", $request->potsp);
+        if (empty($potsp)) {
+            $potsp = 0;
+        } else {
+            $potsp = $potsp;
+        }
+        $potsambal       = str_replace(".", "", $request->potsambal);
+        if (empty($potsambal)) {
+            $potsambal = 0;
+        } else {
+            $potsambal = $potsambal;
+        }
+
+        // Voucher
+        $voucher       = str_replace(".", "", $request->voucher);
+        if (empty($voucher)) {
+            $voucher = 0;
+        } else {
+            $voucher = $voucher;
+        }
+
+        // Potongan Istimewa
+        $potisaida        = str_replace(".", "", $request->potisaida);
+        $potisswan        = str_replace(".", "", $request->potisswan);
+        $potisstick       = str_replace(".", "", $request->potisstick);
+        if (empty($potisaida)) {
+            $potisaida = 0;
+        } else {
+            $potisaida = $potisaida;
+        }
+        if (empty($potisswan)) {
+            $potisswan = 0;
+        } else {
+            $potisswan = $potisswan;
+        }
+        if (empty($potisstick)) {
+            $potisstick = 0;
+        } else {
+            $potisstick = $potisstick;
+        }
+
+        //Penyesuaian
+        $penyaida        = str_replace(".", "", $request->penyaida);
+        $penyswan        = str_replace(".", "", $request->penyswan);
+        $penystick       = str_replace(".", "", $request->penystick);
+        if (empty($penyaida)) {
+            $penyaida = 0;
+        } else {
+            $penyaida = $penyaida;
+        }
+        if (empty($penyswan)) {
+            $penyswan = 0;
+        } else {
+            $penyswan = $penyswan;
+        }
+        if (empty($penystick)) {
+            $penystick = 0;
+        } else {
+            $penystick = $penystick;
+        }
+
+        $potongan = $potaida + $potswan + $potstick + $potsp + $potsambal;
+        $potistimewa = $potisaida + $potisswan + $potisstick;
+        $penyesuaian = $penyaida + $penyswan + $penystick;
     }
 
     public function rekapcashin(Request $request)

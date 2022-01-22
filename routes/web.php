@@ -92,6 +92,9 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/penjualan/updatedetailtemp', [PenjualanController::class, 'updatedetailtemp']);
     Route::get('/loadtotalpenjualantemp', [PenjualanController::class, 'loadtotalpenjualantemp']);
     Route::post('/hitungdiskon', [PenjualanController::class, 'hitungdiskon']);
+    Route::get('/cekpenjtemp', [PenjualanController::class, 'cekpenjtemp']);
+    Route::post('/cekpiutangpelanggan', [PenjualanController::class, 'cekpiutangpelanggan']);
+    Route::post('/penjualan/store', [PenjualanController::class, 'store']);
 });
 
 //Administrator | Admin Penjualan
