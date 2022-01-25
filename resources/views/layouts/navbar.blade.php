@@ -55,9 +55,7 @@
                             @if (in_array($level,$penjualan_view))
                             <li class="{{ request()->is(['penjualan','penjualan/*']) ? 'active' : '' }}"><a href="/penjualan"><i class="feather icon-file-text"></i><span class="menu-item">Data Penjualan</span></a></li>
                             @endif
-                            @if (in_array($level,$penjualan_pending_view))
-                            <li class="{{ request()->is(['penjualan','penjualan/*']) ? 'active' : '' }}"><a href="/penjualan/pending"><i class="fa fa-history"></i><span class="menu-item">Penjualan Pending</span></a></li>
-                            @endif
+
                         </ul>
                     </li>
                     @endif

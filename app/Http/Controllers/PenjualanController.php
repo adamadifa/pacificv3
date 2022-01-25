@@ -12,6 +12,21 @@ use Illuminate\Support\Facades\DB;
 class PenjualanController extends Controller
 {
 
+    public function index(Request $request)
+    {
+        $query = Penjualan::query();
+        $query->select('penjualan.*', 'nama_pelanggan', 'nama_karyawan');
+        $query->orderBy('tgltransaksi', 'desc');
+        $query->orderBy('no_fak_penj', 'asc');
+        $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $query->limit(30);
+        $query->get();
+        $penjualan = $query->paginate(15);
+        $penjualan->appends($request->all());
+        return view('penjualan.index', compact('penjualan'));
+    }
+
 
     //Create
 
