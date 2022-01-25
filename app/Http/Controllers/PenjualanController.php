@@ -322,7 +322,9 @@ class PenjualanController extends Controller
         $jenistransaksi = $request->jenistransaksi;
         $jenisbayar = $request->jenisbayar;
         $subtotal = $request->subtotal;
-
+        $jatuhtempo = $request->jatuhtempo;
+        $bruto = $request->bruto;
+        $id_admin = Auth::user()->id;
         //Potongan
         $potaida        = str_replace(".", "", $request->potaida);
         if (empty($potaida)) {
@@ -406,6 +408,125 @@ class PenjualanController extends Controller
         $potongan = $potaida + $potswan + $potstick + $potsp + $potsambal;
         $potistimewa = $potisaida + $potisswan + $potisstick;
         $penyesuaian = $penyaida + $penyswan + $penystick;
+        $titipan = str_replace(".", "", $request->titipan);
+        $kode_cabang = $request->kode_cabang;
+        $tahunini  = date('y');
+
+        //Get No Bukti
+        $bayar = DB::table("historibayar")
+            ->whereRaw('LEFT(nobukti,6) = "' . $kode_cabang . $tahunini . '-"')
+            ->orderBy("nobukti", "desc")
+            ->first();
+        $lastnobukti = $bayar->nobukti;
+        $nobukti  = buatkode($lastnobukti, $kode_cabang . $tahunini . "-", 6);
+
+
+
+        $totalpiutang  = $sisapiutang + $subtotal;
+        if ($jenistransaksi == "tunai") {
+            $total = $subtotal + $voucher;
+            $status_lunas = "1";
+        } else {
+            $status_lunas = "2";
+            $total = $subtotal;
+        }
+        if (empty($jatuhtempo)) {
+            $jatuhtempo = date("Y-m-d", strtotime("+14 day", strtotime($tgltransaksi)));
+        } else {
+            $jatuhtempo = date("Y-m-d", strtotime("+$jatuhtempo day", strtotime($tgltransaksi)));
+        }
+
+        if (empty($limitpel) and $jenistransaksi == 'kredit' and ($subtotal - $titipan) > 2000000 or !empty($limitpel) and $totalpiutang >= $limitpel and $jenistransaksi == 'kredit') {
+            $status = 1; // Pending
+        } else {
+            $status = "";
+        }
+
+        DB::beginTransaction();
+        try {
+            DB::table('penjualan')->insert([
+                'no_fak_penj' => $no_fak_penj,
+                'tgltransaksi' => $tgltransaksi,
+                'kode_pelanggan' => $kode_pelanggan,
+                'id_karyawan' => $id_karyawan,
+                'subtotal' => $bruto,
+                'potaida' => $potaida,
+                'potswan' => $potswan,
+                'potstick' => $potstick,
+                'potsp' => $potsp,
+                'potsambal' => $potsambal,
+                'potongan' => $potongan,
+                'potisaida' => $potisaida,
+                'potisswan' => $potisswan,
+                'potisstick' => $potisstick,
+                'potistimewa' => $potistimewa,
+                'penyaida' => $penyaida,
+                'penyswan' => $penyswan,
+                'penystick' => $penystick,
+                'penyharga' => $penyesuaian,
+                'total' => $total,
+                'jenistransaksi' => $jenistransaksi,
+                'jenisbayar' => $jenisbayar,
+                'jatuhtempo' => $jatuhtempo,
+                'id_admin' => $id_admin,
+                'status' => $status,
+                'status_lunas' => $status_lunas
+            ]);
+
+            $tmp = DB::table('detailpenjualan_temp')->where('id_admin', $id_admin)->get();
+            foreach ($tmp as $d) {
+                DB::table('detailpenjualan')->insert([
+                    'no_fak_penj' => $no_fak_penj,
+                    'kode_barang' => $d->kode_barang,
+                    'harga_dus' => $d->harga_dus,
+                    'harga_pack' => $d->harga_pack,
+                    'harga_pcs' => $d->harga_pcs,
+                    'jumlah' => $d->jumlah,
+                    'subtotal' => $d->subtotal,
+                    'promo' => $d->promo,
+                    'id_admin' => $id_admin
+                ]);
+            }
+
+            DB::table('detailpenjualan_temp')->where('id_admin', $id_admin)->delete();
+            if ($jenistransaksi == "tunai") {
+                if (!empty($voucher)) {
+                    DB::table('historibayar')
+                        ->insert([
+                            'nobukti' => $nobukti,
+                            'no_fak_penj' => $no_fak_penj,
+                            'tglbayar' => $tgltransaksi,
+                            'jenistransaksi' => $jenistransaksi,
+                            'jenisbayar' => $jenisbayar,
+                            'bayar' => $voucher,
+                            'id_admin' => $id_admin,
+                            'ket_voucher' => 2,
+                            'status_bayar' => 'voucher',
+                            'id_karyawan' => $id_karyawan
+                        ]);
+                }
+            } else {
+                if (!empty($titipan)) {
+                    DB::table('historibayar')
+                        ->insert([
+                            'nobukti' => $nobukti,
+                            'no_fak_penj' => $no_fak_penj,
+                            'tglbayar' => $tgltransaksi,
+                            'jenistransaksi' => $jenistransaksi,
+                            'jenisbayar' => $jenisbayar,
+                            'bayar' => $titipan,
+                            'id_admin' => $id_admin,
+                            'id_karyawan' => $id_karyawan
+                        ]);
+                }
+            }
+            DB::commit();
+            return redirect('/penjualan/create')->with(['success' => 'Data Penjualan Berhasil di Simpan']);
+        } catch (\Exception $e) {
+            //dd($e);
+            DB::rollback();
+            return redirect('/penjualan/create')->with(['warning' => 'Data Penjualan Gagal di Simpan']);
+        }
     }
 
     public function rekapcashin(Request $request)

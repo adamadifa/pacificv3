@@ -6,6 +6,7 @@
     <input type="hidden" id="cektemp">
     <input type="hidden" id="sisapiutang" name="sisapiutang">
     <input type="hidden" id="limitpel" name="limitpel">
+    <input type="hidden" id="bruto" name="bruto">
     <div class="box box-info main-body" style="box-shadow: none;height:488px">
         <div class="box-header section-head" style="padding-bottom: 0px !important; height: auto">
             <div class="pull-left logo">
@@ -69,6 +70,7 @@
                         <div class="form-label-group position-relative has-icon-left">
                             <input type="hidden" id="kode_cabang" class="form-control" name="kode_cabang" readonly>
                             <input type="hidden" id="kode_pelanggan" class="form-control" name="kode_pelanggan" readonly>
+                            <input type="hidden" id="jatuhtempo" class="form-control" name="jatuhtempo" readonly>
                             <input type="text" id="nama_pelanggan" class="form-control" name="nama_pelanggan" placeholder="Pelanggan" readonly>
                             <div class="form-control-position" style="top:10px">
                                 <i class="feather icon-user"></i>
@@ -578,6 +580,7 @@
             var kode_cabang = $(this).attr("kode_cabang")
             var limitpel = $(this).attr("limitpel");
             var limitpelanggan = $(this).attr("limitpelanggan");
+            var jatuhtempo = $(this).attr("jatuhtempo");
 
             var foto = "{{ url(Storage::url('pelanggan/')) }}/" + image;
             var nofoto = "{{ asset('app-assets/images/slider/04.jpg') }}";
@@ -591,6 +594,7 @@
             $("#kode_cabang").val(kode_cabang);
             $("#kategori_salesman").val(kategori_salesman);
             $("#limitpel").val(limitpel);
+            $("#jatuhtempo").val(jatuhtempo);
             $("#limitpelanggan").text(limitpelanggan);
 
             $("#koordinat").text(latitude + " - " + longitude);

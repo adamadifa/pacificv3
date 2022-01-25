@@ -188,8 +188,10 @@ $total += $d->subtotal;
                     var potonganistimewa = potisaida + potisswan + potisstick;
                     var penyesuaian = penyaida + penyswan + penystick;
                     var grandtotal = total - potongan - potonganistimewa - penyesuaian - voucher;
+                    var bruto = total;
                     $("#grandtotal").text(convertToRupiah(grandtotal));
                     $("#total").val(convertToRupiah(grandtotal));
+                    $("#bruto").val(bruto);
                     $("#subtotal").val(grandtotal);
                     cektemp();
                 }

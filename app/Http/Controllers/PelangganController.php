@@ -398,6 +398,7 @@ class PelangganController extends Controller
                 foto = "' . $pelanggan->foto  . '"
                 kode_cabang = "' . $pelanggan->kode_cabang  . '"
                 limitpel = "' . $pelanggan->limitpel  . '"
+                jatuhtempo = "' . $pelanggan->jatuhtempo  . '"
                 limitpelanggan = "' . rupiah($pelanggan->limitpel)  . '"
                 >Pilih</a>';
             })
