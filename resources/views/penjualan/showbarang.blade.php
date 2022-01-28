@@ -84,9 +84,15 @@ $total += $d->subtotal;
     $(function() {
 
         function cektemp() {
+            var no_fak_penj = $("#no_fak_penj").val();
             $.ajax({
-                type: 'GET'
-                , url: '/cekpenjtemp'
+                type: 'POST'
+                , url: '/cekpenj'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , no_fak_penj: no_fak_penj
+                }
+                , cache: false
                 , success: function(respond) {
                     $("#cektemp").val(respond);
                 }
@@ -94,9 +100,15 @@ $total += $d->subtotal;
         }
 
         function loadtotal() {
+            var no_fak_penj = $("#no_fak_penj").val();
             $.ajax({
-                type: 'GET'
-                , url: '/loadtotalpenjualantemp'
+                type: 'POST'
+                , url: '/loadtotalpenjualan'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , no_fak_penj: no_fak_penj
+                }
+                , cache: false
                 , success: function(respond) {
                     var total = parseInt(respond.replace(/\./g, ''));
                     var potswan = $("#potswan").val();
@@ -200,12 +212,71 @@ $total += $d->subtotal;
 
         function hitungdiskon() {
             var jenistransaksi = $("#jenistransaksi").val();
+            var no_fak_penj = $("#no_fak_penj").val();
+            var potaida = "{{ rupiah($faktur->potaida) }}";
+            var potswan = "{{ rupiah($faktur->potswan) }}";
+            var potstick = "{{ rupiah($faktur->potstick) }}";
+            var potsb = "{{ rupiah($faktur->potsambal) }}";
+            var potsp = "{{ rupiah($faktur->potsp) }}";
             $.ajax({
                 type: 'POST'
-                , url: '/hitungdiskon'
+                , url: '/hitungdiskonpenjualan'
                 , data: {
                     _token: "{{ csrf_token() }}"
                     , jenistransaksi: jenistransaksi
+                    , no_fak_penj: no_fak_penj
+                }
+                , cache: false
+                , success: function(respond) {
+                    var result = respond.split("|");
+                    console.log(result);
+                    if (potswan == "" || potswan === 0) {
+                        $("#potswan").val(result[0]);
+                    } else {
+                        $("#potswan").val(potswan);
+                    }
+                    if (potaida == "" || potaida === 0) {
+                        $("#potaida").val(result[1]);
+                    } else {
+                        $("#potaida").val(potaida);
+                    }
+                    if (potstick == "" || potstick === 0) {
+                        $("#potstick").val(result[2]);
+                    } else {
+                        $("#potstick").val(potstick);
+                    }
+                    if (potsp == "" || potsp === 0) {
+                        $("#potsp").val(result[3]);
+                    } else {
+                        $("#potsp").val(potsp);
+                    }
+                    if (potsb == "" || potsb === 0) {
+                        $("#potsb").val(result[4]);
+                    } else {
+                        $("#potsb").val(potsb);
+                    }
+                    loadtotal();
+
+                }
+            });
+        }
+
+
+        function hitungdiskon2() {
+            var jenistransaksi = $("#jenistransaksi").val();
+            var no_fak_penj = $("#no_fak_penj").val();
+            var potaida = "{{ rupiah($faktur->potaida) }}";
+            var potswan = "{{ rupiah($faktur->potswan) }}";
+            var potstick = "{{ rupiah($faktur->potstick) }}";
+            var potsb = "{{ rupiah($faktur->potsambal) }}";
+            var potsp = "{{ rupiah($faktur->potsp) }}";
+            $.ajax({
+                type: 'POST'
+                , url: '/hitungdiskonpenjualan'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , jenistransaksi: jenistransaksi
+                    , no_fak_penj: no_fak_penj
                 }
                 , cache: false
                 , success: function(respond) {
@@ -217,7 +288,6 @@ $total += $d->subtotal;
                     $("#potsp").val(result[3]);
                     $("#potsb").val(result[4]);
                     loadtotal();
-
                 }
             });
         }
@@ -226,21 +296,30 @@ $total += $d->subtotal;
 
         $(".tunai").hide();
         $(".kredit").hide();
-        $("#jenistransaksi").change(function() {
-            var jenistransaksi = $(this).val();
+
+        function loadtunaikredit() {
+            var jenistransaksi = $("#jenistransaksi").val();
+            var voucher = $("#voucher_old").val();
             if (jenistransaksi == "tunai") {
                 $("#jenisbayar").val("tunai");
                 $(".tunai").show();
                 $(".kredit").hide();
+                $("#voucher").val(convertToRupiah(voucher));
             } else if (jenistransaksi == "kredit") {
                 $("#jenisbayar").val("titipan");
                 $(".tunai").hide();
                 $(".kredit").show();
-                $("#voucher").val(0);
                 $("#titipan").focus();
+                $("#voucher").val(0);
             }
-            hitungdiskon();
+            //hitungdiskon2();
+        }
+        $("#jenistransaksi").change(function() {
+            loadtunaikredit();
+            hitungdiskon2();
         });
+
+        loadtunaikredit();
 
 
         $(".money").maskMoney();
@@ -253,20 +332,18 @@ $total += $d->subtotal;
         // });
 
 
-
-
-
-
-        function loadbarangtemp() {
+        function loadbarang() {
+            var no_fak_penj = $("#no_fak_penj").val();
             $.ajax({
-                type: 'GET'
-                , url: '/penjualan/showbarangtemp'
+                type: 'POST'
+                , url: '/penjualan/showbarang'
                 , data: {
                     _token: "{{ csrf_token() }}"
+                    , no_fak_penj: no_fak_penj
                 }
                 , cache: false
                 , success: function(respond) {
-                    $("#loadbarangtemp").html(respond);
+                    $("#loadbarang").html(respond);
                 }
             });
         }
@@ -300,7 +377,7 @@ $total += $d->subtotal;
                                     , 'success'
                                 )
                                 loadbarangtemp();
-                                hitungdiskon();
+                                hitungdiskon2();
                             }
                         });
                     }
@@ -336,7 +413,7 @@ $total += $d->subtotal;
             }
 
             $tblrow.find('.promo').on('change', function() {
-
+                var no_fak_penj = $("#no_fak_penj").val();
                 var kode_barang = $tblrow.find("[id=kode_barang]").val();
                 var jmldus = $tblrow.find("[id=jmldus]").val();
                 var harga_dus = $tblrow.find("[id=harga_dus]").val();
@@ -393,9 +470,10 @@ $total += $d->subtotal;
                     var total = (jmldus * 0) + (jmlpack * 0) + (jmlpcs * 0);
                     $.ajax({
                         type: 'POST'
-                        , url: '/penjualan/updatedetailtemp'
+                        , url: '/penjualan/updatedetail'
                         , data: {
                             _token: "{{ csrf_token() }}"
+                            , no_fak_penj: no_fak_penj
                             , kode_barang: kode_barang
                             , jmldus: jmldus
                             , jmlpack: jmlpack
@@ -410,7 +488,7 @@ $total += $d->subtotal;
                         , cache: false
                         , success: function(respond) {
                             console.log(respond);
-                            hitungdiskon();
+                            hitungdiskon2();
                         }
                     });
                     if (!isNaN(total)) {
@@ -420,6 +498,7 @@ $total += $d->subtotal;
                     $tblrow.css("background-color", "");
 
                     function updateharga() {
+                        var no_fak_penj = $("#no_fak_penj").val();
                         var harga_dus = $tblrow.find("[id=harga_dus]").val();
                         var harga_pack = $tblrow.find("[id=harga_pack]").val();
                         var harga_pcs = $tblrow.find("[id=harga_pcs]").val();
@@ -468,9 +547,10 @@ $total += $d->subtotal;
                         var total = (jmldus * harga_dus) + (jmlpack * harga_pack) + (jmlpcs * harga_pcs);
                         $.ajax({
                             type: 'POST'
-                            , url: '/penjualan/updatedetailtemp'
+                            , url: '/penjualan/updatedetail'
                             , data: {
                                 _token: "{{ csrf_token() }}"
+                                , no_fak_penj: no_fak_penj
                                 , kode_barang: kode_barang
                                 , jmldus: jmldus
                                 , jmlpack: jmlpack
@@ -506,7 +586,7 @@ $total += $d->subtotal;
                             $tblrow.find('.harga_pack').val(data[1]);
                             $tblrow.find('.harga_pcs').val(data[2]);
                             updateharga();
-                            hitungdiskon();
+                            hitungdiskon2();
                         }
                     });
                 }
@@ -515,6 +595,8 @@ $total += $d->subtotal;
 
 
             $tblrow.find('.jmldus,.jmlpack,.jmlpcs,.harga_dus,.harga_pack,.harga_pcs').on('input', function() {
+                var no_fak_penj = $("#no_fak_penj").val();
+
                 var kode_barang = $tblrow.find("[id=kode_barang]").val();
                 var isipack = $tblrow.find("[id=isipack]").val();
                 var isipcs = $tblrow.find("[id=isipcs]").val();
@@ -589,9 +671,10 @@ $total += $d->subtotal;
                         var total = (jmldus * harga_dus) + (jmlpack * harga_pack) + (0 * harga_pcs);
                         $.ajax({
                             type: 'POST'
-                            , url: '/penjualan/updatedetailtemp'
+                            , url: '/penjualan/updatedetail'
                             , data: {
                                 _token: "{{ csrf_token() }}"
+                                , no_fak_penj: no_fak_penj
                                 , kode_barang: kode_barang
                                 , jmldus: jmldus
                                 , jmlpack: jmlpack
@@ -605,16 +688,17 @@ $total += $d->subtotal;
                             , cache: false
                             , success: function(respond) {
                                 console.log(respond);
-                                hitungdiskon();
+                                hitungdiskon2();
                             }
                         });
                     } else {
                         var total = (jmldus * harga_dus) + (jmlpack * harga_pack) + (jmlpcs * harga_pcs);
                         $.ajax({
                             type: 'POST'
-                            , url: '/penjualan/updatedetailtemp'
+                            , url: '/penjualan/updatedetail'
                             , data: {
                                 _token: "{{ csrf_token() }}"
+                                , no_fak_penj: no_fak_penj
                                 , kode_barang: kode_barang
                                 , jmldus: jmldus
                                 , jmlpack: jmlpack
@@ -628,7 +712,7 @@ $total += $d->subtotal;
                             , cache: false
                             , success: function(respond) {
                                 console.log(respond);
-                                hitungdiskon();
+                                hitungdiskon2();
                             }
                         });
                     }
@@ -639,9 +723,10 @@ $total += $d->subtotal;
                         var total = (jmldus * harga_dus) + (0 * harga_pack) + (jmlpcs * harga_pcs);
                         $.ajax({
                             type: 'POST'
-                            , url: '/penjualan/updatedetailtemp'
+                            , url: '/penjualan/updatedetail'
                             , data: {
                                 _token: "{{ csrf_token() }}"
+                                , no_fak_penj: no_fak_penj
                                 , kode_barang: kode_barang
                                 , jmldus: jmldus
                                 , jmlpack: 0
@@ -655,7 +740,7 @@ $total += $d->subtotal;
                             , cache: false
                             , success: function(respond) {
                                 console.log(respond);
-                                hitungdiskon();
+                                hitungdiskon2();
                             }
                         });
 
@@ -665,9 +750,10 @@ $total += $d->subtotal;
                         var total = (jmldus * harga_dus) + (jmlpack * harga_pack) + (0 * harga_pcs);
                         $.ajax({
                             type: 'POST'
-                            , url: '/penjualan/updatedetailtemp'
+                            , url: '/penjualan/updatedetail'
                             , data: {
                                 _token: "{{ csrf_token() }}"
+                                , no_fak_penj: no_fak_penj
                                 , kode_barang: kode_barang
                                 , jmldus: jmldus
                                 , jmlpack: jmlpack
@@ -681,16 +767,17 @@ $total += $d->subtotal;
                             , cache: false
                             , success: function(respond) {
                                 console.log(respond);
-                                hitungdiskon();
+                                hitungdiskon2();
                             }
                         });
                     } else {
                         var total = (jmldus * harga_dus) + (jmlpack * harga_pack) + (jmlpcs * harga_pcs);
                         $.ajax({
                             type: 'POST'
-                            , url: '/penjualan/updatedetailtemp'
+                            , url: '/penjualan/updatedetail'
                             , data: {
                                 _token: "{{ csrf_token() }}"
+                                , no_fak_penj: no_fak_penj
                                 , kode_barang: kode_barang
                                 , jmldus: jmldus
                                 , jmlpack: jmlpack
@@ -704,7 +791,7 @@ $total += $d->subtotal;
                             , cache: false
                             , success: function(respond) {
                                 console.log(respond);
-                                hitungdiskon();
+                                hitungdiskon2();
                             }
                         });
                     }

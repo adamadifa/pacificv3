@@ -21,7 +21,7 @@
         <div class="col-md-12 col-sm-12">
             <div class="card">
                 <div class="card-body">
-                    <form action="/pelanggan">
+                    <form action="/penjualan">
                         <div class="row">
                             <div class="col-lg-5">
                                 <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker value="{{ Request('dari') }}" />
@@ -39,11 +39,9 @@
                             </div>
                             <div class="col-lg-3 col-sm-12">
                                 <div class="form-group">
-                                    <select name="status_pelanggan" id="status_pelanggan" class="form-control">
+                                    <select name="status" id="status" class="form-control">
                                         <option value="">Status</option>
-                                        <option {{ (Request('status_pelanggan')=='0' ? 'selected':'')}} value="0">NORMAL</option>
-                                        <option {{ (Request('status_pelanggan')=='1' ? 'selected':'')}} value="1">PENDING</option>
-                                        <option {{ (Request('status_pelanggan')=='2' ? 'selected':'')}} value="2">DISETUJUI</option>
+                                        <option {{ (Request('status')=='1' ? 'selected':'')}} value="1">PENDING</option>
                                     </select>
                                 </div>
                             </div>
@@ -53,33 +51,102 @@
                             </div>
                         </div>
                     </form>
-                    <div class="table-responsive">
-                        <table class="table table-hover-animation">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th class="text-center">No Faktur</th>
-                                    <th class="text-center">Tanggal</th>
-                                    <th>Pelanggan</th>
-                                    <th>Salesman</th>
-                                    <th>Cabang</th>
-                                    <th>T/K</th>
-                                    <th>Total</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($penjualan as $d)
-                                <tr>
-                                    <td>{{$d->no_fak_penj}}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        {{ $penjualan->links('vendor.pagination.vuexy') }}
-                    </div>
+                    @include('layouts.notification')
+                    <table class="table ">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>No Faktur</th>
+                                <th>Tanggal</th>
+                                <th>Pelanggan</th>
+                                <th>Salesman</th>
+                                <th>Cabang</th>
+                                <th>T/K</th>
+                                <th>Total</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($penjualan as $d)
+                            @if ($d->status==1)
+                            @php
+                            $color = "#f7d97763";
+                            @endphp
+                            @else
+                            @php
+                            $color = "";
+                            @endphp
+                            @endif
+                            <tr style="background-color:{{ $color }}">
+                                <td>{{$d->no_fak_penj}}</td>
+                                <td>{{date("d-m-Y",strtotime($d->tgltransaksi))}}</td>
+                                <td>{{$d->nama_pelanggan}}</td>
+                                <td>{{$d->nama_karyawan}}</td>
+                                <td>{{$d->kode_cabang}}</td>
+                                <td>
+                                    @if ($d->jenistransaksi=="tunai")
+                                    <span class="badge bg-success">Tunai</span>
+                                    @else
+                                    <span class="badge bg-warning">Kredit</span>
+                                    @endif
+                                </td>
+                                <td class="text-right">{{rupiah($d->total)}}</td>
+                                <td>
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <a class="ml-1" href="/penjualan/{{\Crypt::encrypt($d->no_fak_penj)}}/edit"><i class="feather icon-edit success"></i></a>
+                                        <a class="ml-1 detailpelanggan" href="penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/show"><i class=" feather icon-file-text info"></i></a>
+                                        <form method="POST" name="deleteform" class="deleteform" action="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/delete">
+                                            @csrf
+                                            @method('DELETE')
+                                            <a href="#" class="delete-confirm ml-1">
+                                                <i class="feather icon-trash danger"></i>
+                                            </a>
+                                        </form>
+                                        <div class="dropdown ml-1">
+                                            <a class="dropdown-toggle mr-1" type="button" id="dropdownMenuButton300" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="feather icon-printer primary"></i>
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton300" x-placement="top-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -7px, 0px);">
+                                                <a class="dropdown-item" target="_blank" href="/penjualan/cetakfaktur/{{ Crypt::encrypt($d->no_fak_penj) }}"><i class="feather icon-printer mr-1"></i>Cetak Faktur</a>
+                                                <a class="dropdown-item" target="_blank" href="/penjualan/cetaksuratjalan/{{ Crypt::encrypt($d->no_fak_penj) }}/1"><i class="feather icon-printer mr-1"></i>Cetak Surat Jalan 1</a>
+                                                <a class="dropdown-item" target="_blank" href="/penjualan/cetaksuratjalan/{{ Crypt::encrypt($d->no_fak_penj) }}/2"><i class="feather icon-printer mr-1"></i>Cetak Surat Jalan 2</a>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    {{ $penjualan->links('vendor.pagination.vuexy') }}
+
                 </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
+@push('myscript')
+<script>
+    $(function() {
+        $('.delete-confirm').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+            event.preventDefault();
+            swal({
+                    title: `Are you sure you want to delete this record?`
+                    , text: "If you delete this, it will be gone forever."
+                    , icon: "warning"
+                    , buttons: true
+                    , dangerMode: true
+                , })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
+        });
+    });
+
+</script>
+@endpush

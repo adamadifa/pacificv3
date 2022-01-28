@@ -141,4 +141,16 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan'])->group(function ()
     Route::get('/cekpenjtemp', [PenjualanController::class, 'cekpenjtemp']);
     Route::post('/cekpiutangpelanggan', [PenjualanController::class, 'cekpiutangpelanggan']);
     Route::post('/penjualan/store', [PenjualanController::class, 'store']);
+    Route::get('/penjualan/cetakfaktur/{no_fak_penj}', [PenjualanController::class, 'cetakfaktur']);
+    Route::get('/penjualan/cetaksuratjalan/{no_fak_penj}/{type}', [PenjualanController::class, 'cetaksuratjalan']);
+    Route::delete('/penjualan/{no_fak_penj}/delete', [PenjualanController::class, 'delete']);
+    Route::get('/penjualan/{no_fak_penj}/edit', [PenjualanController::class, 'edit']);
+    Route::post('/penjualan/showbarang', [PenjualanController::class, 'showbarang']);
+    Route::post('/cekpenj', [PenjualanController::class, 'cekpenj']);
+    Route::post('/loadtotalpenjualan', [PenjualanController::class, 'loadtotalpenjualan']);
+    Route::post('/hitungdiskonpenjualan', [PenjualanController::class, 'hitungdiskonpenjualan']);
+    Route::post('/penjualan/updatedetail', [PenjualanController::class, 'updatedetail']);
+    Route::post('/penjualan/storebarang', [PenjualanController::class, 'storebarang']);
+    Route::post('/penjualan/update', [PenjualanController::class, 'update']);
+    Route::get('/penjualan/{no_fak_penj}/show', [PenjualanController::class, 'show']);
 });

@@ -51,7 +51,7 @@ class GlobalProvider extends ServiceProvider
             $barang = ['admin'];
 
             $harga = ['admin', 'admin penjualan'];
-            $harga_hapus = ['admin'];
+            $harga_hapus = ['admin', 'admin penjualan'];
 
             $kendaraan = ['admin', 'admin penjualan'];
             $kendaraan_tambah = ['admin'];

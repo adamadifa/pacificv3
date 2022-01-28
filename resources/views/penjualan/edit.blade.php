@@ -1,6 +1,6 @@
 @include('layouts.style')
 <link rel="stylesheet" href="{{ asset('app-assets/css/penjualan.css') }}">
-<form name="autoSumForm" autocomplete="off" action="/penjualan/store" class="formValidate form-horizontal" id="formValidate" method="POST">
+<form name="autoSumForm" autocomplete="off" action="/penjualan/update" class="formValidate form-horizontal" id="formValidate" method="POST">
     @csrf
     <input type="hidden" id="cektutuplaporan">
     <input type="hidden" id="cektemp">
@@ -48,7 +48,8 @@
                 <div class="col-2">
                     <div class="form-group">
                         <div class="form-label-group position-relative has-icon-left">
-                            <input type="text" id="no_fak_penj" class="form-control" name="no_fak_penj" placeholder="No. Faktur Penjualan">
+                            <input type="hidden" id="no_fak_penj" class="form-control" name="no_fak_penj" value="{{ $faktur->no_fak_penj }}" placeholder="No. Faktur Penjualan">
+                            <input type="text" id="no_fak_penj_new" class="form-control" name="no_fak_penj_new" value="{{ $faktur->no_fak_penj }}" placeholder="No. Faktur Penjualan">
                             <div class="form-control-position" style="top:10px">
                                 <i class="feather icon-credit-card"></i>
                             </div>
@@ -58,7 +59,7 @@
                 <div class="col-2">
                     <div class="form-group">
                         <div class="form-label-group position-relative has-icon-left">
-                            <input type="text" id="tgltransaksi" class="form-control pickadate-months-year picker__input" name="tgltransaksi" placeholder="Tanggal Transaksi">
+                            <input type="text" id="tgltransaksi" class="form-control pickadate-months-year picker__input" value="{{ $faktur->tgltransaksi }}" name="tgltransaksi" placeholder="Tanggal Transaksi">
                             <div class="form-control-position" style="top:10px">
                                 <i class="feather icon-calendar"></i>
                             </div>
@@ -68,10 +69,10 @@
                 <div class="col-3">
                     <div class="form-group">
                         <div class="form-label-group position-relative has-icon-left">
-                            <input type="hidden" id="kode_cabang" class="form-control" name="kode_cabang" readonly>
-                            <input type="hidden" id="kode_pelanggan" class="form-control" name="kode_pelanggan" readonly>
-                            <input type="hidden" id="jatuhtempo" class="form-control" name="jatuhtempo" readonly>
-                            <input type="text" id="nama_pelanggan" class="form-control" name="nama_pelanggan" placeholder="Pelanggan" readonly>
+                            <input type="hidden" value="{{ $faktur->kode_cabang }}" id="kode_cabang" class="form-control" name="kode_cabang" readonly>
+                            <input type="hidden" value="{{ $faktur->kode_pelanggan }}" id="kode_pelanggan" class="form-control" name="kode_pelanggan" readonly>
+                            <input type="hidden" value="{{ $faktur->jatuhtempo }}" id="jatuhtempo" class="form-control" name="jatuhtempo" readonly>
+                            <input type="text" value="{{ $faktur->nama_pelanggan }}" id="nama_pelanggan" class="form-control" name="nama_pelanggan" placeholder="Pelanggan" readonly>
                             <div class="form-control-position" style="top:10px">
                                 <i class="feather icon-user"></i>
                             </div>
@@ -81,9 +82,9 @@
                 <div class="col-3">
                     <div class="form-group">
                         <div class="form-label-group position-relative has-icon-left">
-                            <input type="hidden" id="kategori_salesman" class="form-control" name="kategori_salesman" readonly>
-                            <input type="hidden" id="id_karyawan" class="form-control" name="id_karyawan" readonly>
-                            <input type="text" id="nama_karyawan" class="form-control" name="nama_karyawan" placeholder="Salesman" readonly>
+                            <input type="hidden" value="{{ $faktur->kategori_salesman }}" id="kategori_salesman" class="form-control" name="kategori_salesman" readonly>
+                            <input type="hidden" value="{{ $faktur->id_karyawan }}" id="id_karyawan" class="form-control" name="id_karyawan" readonly>
+                            <input type="text" value="{{ $faktur->id_karyawan." | ".$faktur->nama_karyawan." | ".$faktur->kategori_salesman }}" id="nama_karyawan" class="form-control" name="nama_karyawan" placeholder="Salesman" readonly>
                             <div class="form-control-position" style="top:10px">
                                 <i class="feather icon-users"></i>
                             </div>
@@ -128,7 +129,7 @@
                                             <th></th>
                                         </tr>
                                     </thead>
-                                    <tbody id="loadbarangtemp" class="font3">
+                                    <tbody id="loadbarang" class="font3">
                                     </tbody>
                                 </table>
                             </div>
@@ -147,14 +148,13 @@
 
                                 <p class="card-text text-white" style="font-family: 'Poppins';">
                                     Alamat <br>
-                                    <span id="alamat_pelanggan"></span><br>
+                                    <span id="alamat_pelanggan">{{ $faktur->alamat_pelanggan }}</span><br>
                                     No. HP <br>
-                                    <span id="no_hp"></span><br>
-
+                                    <span id="no_hp">{{ $faktur->no_hp }}</span><br>
                                     Koordinat <br>
-                                    <span id="koordinat"></span><br>
+                                    <span id="koordinat">{{ $faktur->latitude }} {{ $faktur->longitude }}</span><br>
                                     Limit Pelanggan <br>
-                                    <span id="limitpelanggan"></span><br>
+                                    <span id="limitpelanggan">{{ rupiah($faktur->limitpel) }}</span><br>
                                     Piutang Pelanggan <br>
                                     <span id="piutangpelanggan"></span><br>
                                 </p>
@@ -173,7 +173,7 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <div class="position-relative has-icon-left">
-                                        <input type="text" id="potaida" class="form-control text-right money" name="potaida" placeholder="Aida">
+                                        <input type="text" id="potaida" value="{{ rupiah($faktur->potaida) }}" class="form-control text-right money" name="potaida" placeholder="Aida">
                                         <div class="form-control-position" style="top:8px">
                                             <img src="{{asset('app-assets/images/icons/diskonaida.png')}}" width="18px" height="18px" alt="">
                                         </div>
@@ -181,7 +181,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="position-relative has-icon-left">
-                                        <input type="text" id="potswan" class="form-control text-right money" name="potswan" placeholder="Swan">
+                                        <input type="text" id="potswan" value="{{ rupiah($faktur->potswan) }}" class="form-control text-right money" name="potswan" placeholder="Swan">
                                         <div class="form-control-position" style="top:8px">
                                             <img src="{{asset('app-assets/images/icons/diskonswan.png')}}" width="18px" height="18px" alt="">
                                         </div>
@@ -189,7 +189,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="position-relative has-icon-left">
-                                        <input type="text" id="potstick" class="form-control text-right money" name="potstick" placeholder="Stick">
+                                        <input type="text" id="potstick" value="{{ rupiah($faktur->potstick) }}" class="form-control text-right money" name="potstick" placeholder="Stick">
                                         <div class="form-control-position" style="top:8px">
                                             <img src="{{asset('app-assets/images/icons/diskonstik.png')}}" width="18px" height="18px" alt="">
                                         </div>
@@ -197,7 +197,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="position-relative has-icon-left">
-                                        <input type="text" id="potsp" class="form-control text-right money" name="potsp" placeholder="Premium">
+                                        <input type="text" id="potsp" value="{{ rupiah($faktur->potsp) }}" class="form-control text-right money" name="potsp" placeholder="Premium">
                                         <div class="form-control-position" style="top:8px">
                                             <img src="{{asset('app-assets/images/icons/diskonsp.png')}}" width="18px" height="18px" alt="">
                                         </div>
@@ -205,7 +205,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="position-relative has-icon-left">
-                                        <input type="text" id="potsb" class="form-control text-right" name="potsb" placeholder="Sambal">
+                                        <input type="text" id="potsb" value="{{ rupiah($faktur->potsambal) }}" class="form-control text-right" name="potsb" placeholder="Sambal">
                                         <div class="form-control-position" style="top:8px">
                                             <img src="{{asset('app-assets/images/icons/diskonsambal.png')}}" width="18px" height="18px" alt="">
                                         </div>
@@ -224,7 +224,7 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <div class="position-relative has-icon-left">
-                                        <input type="text" id="potisaida" class="form-control text-right money" name="potisaida" placeholder="Aida">
+                                        <input type="text" id="potisaida" value="{{ rupiah($faktur->potisaida) }}" class="form-control text-right money" name="potisaida" placeholder="Aida">
                                         <div class="form-control-position" style="top:8px">
                                             <img src="{{asset('app-assets/images/icons/diskonaida.png')}}" width="18px" height="18px" alt="">
                                         </div>
@@ -232,7 +232,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="position-relative has-icon-left">
-                                        <input type="text" id="potisswan" class="form-control text-right money" name="potisswan" placeholder="Swan">
+                                        <input type="text" id="potisswan" value="{{ rupiah($faktur->potisswan) }}" class="form-control text-right money" name="potisswan" placeholder="Swan">
                                         <div class="form-control-position" style="top:8px">
                                             <img src="{{asset('app-assets/images/icons/diskonswan.png')}}" width="18px" height="18px" alt="">
                                         </div>
@@ -240,7 +240,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="position-relative has-icon-left">
-                                        <input type="text" id="potisstick" class="form-control text-right money" name="potisstick" placeholder="Stick">
+                                        <input type="text" id="potisstick" value="{{ rupiah($faktur->potisstick) }}" class="form-control text-right money" name="potisstick" placeholder="Stick">
                                         <div class="form-control-position" style="top:8px">
                                             <img src="{{asset('app-assets/images/icons/diskonstik.png')}}" width="18px" height="18px" alt="">
                                         </div>
@@ -260,7 +260,7 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <div class="position-relative has-icon-left">
-                                        <input type="text" id="penyaida" class="form-control text-right money" name="penyaida" placeholder="Aida">
+                                        <input type="text" id="penyaida" value="{{ rupiah($faktur->penyaida) }}" class="form-control text-right money" name="penyaida" placeholder="Aida">
                                         <div class="form-control-position" style="top:8px">
                                             <img src="{{asset('app-assets/images/icons/diskonaida.png')}}" width="18px" height="18px" alt="">
                                         </div>
@@ -268,7 +268,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="position-relative has-icon-left">
-                                        <input type="text" id="penyswan" class="form-control text-right money" name="penyswan" placeholder="Swan">
+                                        <input type="text" id="penyswan" value="{{ rupiah($faktur->penyswan) }}" class="form-control text-right money" name="penyswan" placeholder="Swan">
                                         <div class="form-control-position" style="top:8px">
                                             <img src="{{asset('app-assets/images/icons/diskonswan.png')}}" width="18px" height="18px" alt="">
                                         </div>
@@ -276,7 +276,7 @@
                                 </div>
                                 <div class="form-group">
                                     <div class="position-relative has-icon-left">
-                                        <input type="text" id="penystick" class="form-control text-right money" name="penystick" placeholder="Stick">
+                                        <input type="text" id="penystick" value="{{ rupiah($faktur->penystick) }}" class="form-control text-right money" name="penystick" placeholder="Stick">
                                         <div class="form-control-position" style="top:8px">
                                             <img src="{{asset('app-assets/images/icons/diskonstik.png')}}" width="18px" height="18px" alt="">
                                         </div>
@@ -296,14 +296,19 @@
                                 <div class="form-group">
                                     <select class="form-control" name="jenistransaksi" id="jenistransaksi">
                                         <option value="">Jenis Transaksi</option>
-                                        <option value="tunai">Tunai</option>
-                                        <option value="kredit">Kredit</option>
+                                        <option @if ($faktur->jenistransaksi=="tunai")
+                                            selected
+                                            @endif value="tunai">Tunai</option>
+                                        <option @if ($faktur->jenistransaksi=="kredit")
+                                            selected
+                                            @endif value="kredit">Kredit</option>
                                     </select>
                                     <input type="hidden" id="jenisbayar" name="jenisbayar">
                                 </div>
                                 <div class="form-group tunai">
                                     <div class="position-relative has-icon-left">
-                                        <input type="text" id="voucher" class="form-control text-right money" name="voucher" placeholder="Voucher">
+                                        <input type="hidden" id="voucher_old" value="@if($cekvouchertunai!=null){{ rupiah($cekvouchertunai->bayar) }}@endif" class="form-control text-right money" name="voucher_old" placeholder="Voucher">
+                                        <input type="text" id="voucher" value="@if($cekvouchertunai!=null){{ rupiah($cekvouchertunai->bayar) }}@endif" class="form-control text-right money" name="voucher" placeholder="Voucher">
                                         <div class="form-control-position" style="top:10px">
                                             <i class="feather icon-tag"></i>
                                         </div>
@@ -319,7 +324,7 @@
                                 </div>
                                 <div class="form-group kredit">
                                     <div class="position-relative has-icon-left">
-                                        <input type="text" id="titipan" class="form-control text-right money" name="titipan" placeholder="Titipan">
+                                        <input type="text" id="titipan" value="@if($cektitipan != null){{ rupiah($cektitipan->bayar) }}@endif" class="form-control text-right money" name="titipan" placeholder="Titipan">
                                         <div class="form-control-position" style="top:10px">
                                             <i class="feather icon-tag"></i>
                                         </div>
@@ -400,12 +405,14 @@
         }
 
         function cekpiutang(kode_pelanggan) {
+            var no_fak_penj = $("#no_fak_penj").val();
             $.ajax({
                 type: 'POST'
                 , url: '/cekpiutangpelanggan'
                 , data: {
                     _token: "{{ csrf_token() }}"
                     , kode_pelanggan: kode_pelanggan
+                    , no_fak_penj: no_fak_penj
                 }
                 , cache: false
                 , success: function(respond) {
@@ -416,6 +423,10 @@
                 }
             });
         }
+
+        cekpiutang($("#kode_pelanggan").val());
+
+
 
         function cektutuplaporan() {
             var tgltransaksi = $("#tgltransaksi").val();
@@ -608,13 +619,15 @@
 
         });
 
-        function simpanbarangtemp(kode_barang) {
+        function simpanbarang(kode_barang) {
+            var no_fak_penj = $("#no_fak_penj").val();
             $.ajax({
                 type: 'POST'
-                , url: '/penjualan/storebarangtemp'
+                , url: '/penjualan/storebarang'
                 , data: {
                     _token: "{{ csrf_token() }}"
                     , kode_barang: kode_barang
+                    , no_fak_penj: no_fak_penj
                 }
                 , cache: false
                 , success: function(respond) {
@@ -625,27 +638,29 @@
                         //loadproduktemp();
                         $("#kode_barang").val("");
                         $("#kode_barang").focus();
-                        loadbarangtemp();
+                        loadbarang();
                     }
                 }
             });
         }
 
-        function loadbarangtemp() {
+        function loadbarang() {
+            var no_fak_penj = $("#no_fak_penj").val();
             $.ajax({
-                type: 'GET'
-                , url: '/penjualan/showbarangtemp'
+                type: 'POST'
+                , url: '/penjualan/showbarang'
                 , data: {
                     _token: "{{ csrf_token() }}"
+                    , no_fak_penj: no_fak_penj
                 }
                 , cache: false
                 , success: function(respond) {
-                    $("#loadbarangtemp").html(respond);
+                    $("#loadbarang").html(respond);
                 }
             });
         }
 
-        loadbarangtemp();
+        loadbarang();
         $("#kode_barang").autocomplete({
             source: function(request, response) {
                 // Fetch data
@@ -667,7 +682,7 @@
             , select: function(event, ui) {
                 $('#kode_barang').val(ui.item.label);
                 var kode_barang = ui.item.val;
-                simpanbarangtemp(kode_barang);
+                simpanbarang(kode_barang);
                 return false;
             }
         });
