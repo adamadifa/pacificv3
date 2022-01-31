@@ -1355,8 +1355,37 @@ class PenjualanController extends Controller
             ->where('retur.no_fak_penj', $no_fak_penj)
             ->orderBy('retur.no_retur_penj')
             ->get();
+        $salesman = DB::table('karyawan')->where('kode_cabang', $data->kode_cabang)->where('status_aktif_sales', 1)->get();
+        $girotolak = DB::table('giro')
+            ->select('giro.id_giro', 'no_giro')
+            ->leftJoin(
+                DB::raw("(
+                SELECT id_giro,girotocash FROM historibayar WHERE no_fak_penj ='$no_fak_penj'
+            ) hb"),
+                function ($join) {
+                    $join->on('giro.id_giro', '=', 'hb.id_giro');
+                }
+            )
+            ->where('giro.status', 2)
+            ->where('giro.no_fak_penj', $no_fak_penj)
+            ->get();
 
-        return view('penjualan.show', compact('data', 'detailpenjualan', 'retur', 'historibayar'));
+        $giro = DB::table('giro')
+            ->select('giro.*', 'nama_karyawan', 'tglbayar')
+            ->leftJoin('karyawan', 'giro.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->leftJoin(
+                DB::raw("(
+                SELECT id_giro,tglbayar
+                FROM historibayar
+                WHERE no_fak_penj = '$no_fak_penj'
+            ) historibayar"),
+                function ($join) {
+                    $join->on('giro.id_giro', '=', 'historibayar.id_giro');
+                }
+            )
+            ->where('giro.no_fak_penj', $no_fak_penj)
+            ->get();
+        return view('penjualan.show', compact('data', 'detailpenjualan', 'retur', 'historibayar', 'salesman', 'girotolak', 'giro'));
     }
     public function rekapcashin(Request $request)
     {

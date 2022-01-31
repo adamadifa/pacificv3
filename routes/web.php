@@ -13,6 +13,7 @@ use App\Http\Controllers\HargaControoler;
 use App\Http\Controllers\JenissimpananController;
 use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\PelangganController;
+use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\SalesmanController;
 use App\Http\Controllers\SimpananController;
@@ -153,4 +154,11 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan'])->group(function ()
     Route::post('/penjualan/storebarang', [PenjualanController::class, 'storebarang']);
     Route::post('/penjualan/update', [PenjualanController::class, 'update']);
     Route::get('/penjualan/{no_fak_penj}/show', [PenjualanController::class, 'show']);
+
+
+    //Pembayaran
+    Route::post('/pembayaran/store', [PembayaranController::class, 'store']);
+    Route::post('/pembayaran/edit', [PembayaranController::class, 'edit']);
+    Route::post('/pembayaran/{nobukti}/update', [PembayaranController::class, 'update']);
+    Route::delete('/pembayaran/{nobukti}/delete', [PembayaranController::class, 'delete']);
 });
