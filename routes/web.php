@@ -15,6 +15,7 @@ use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PenjualanController;
+use App\Http\Controllers\ReturController;
 use App\Http\Controllers\SalesmanController;
 use App\Http\Controllers\SimpananController;
 use App\Http\Controllers\TabunganController;
@@ -161,4 +162,22 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan'])->group(function ()
     Route::post('/pembayaran/edit', [PembayaranController::class, 'edit']);
     Route::post('/pembayaran/{nobukti}/update', [PembayaranController::class, 'update']);
     Route::delete('/pembayaran/{nobukti}/delete', [PembayaranController::class, 'delete']);
+
+    //Giro
+    Route::post('/pembayaran/storegiro', [PembayaranController::class, 'storegiro']);
+    Route::delete('/pembayaran/{id_giro}/deletegiro', [PembayaranController::class, 'deletegiro']);
+    Route::post('/pembayaran/editgiro', [PembayaranController::class, 'editgiro']);
+    Route::post('/pembayaran/{id_giro}/updategiro', [PembayaranController::class, 'updategiro']);
+
+    //Transfer
+    Route::post('/pembayaran/storetransfer', [PembayaranController::class, 'storetransfer']);
+    Route::delete('/pembayaran/{id_transfer}/deletetransfer', [PembayaranController::class, 'deletetransfer']);
+    Route::post('/pembayaran/edittransfer', [PembayaranController::class, 'edittransfer']);
+    Route::post('/pembayaran/{id_transfer}/updatetransfer', [PembayaranController::class, 'updatetransfer']);
+
+
+    //Retur
+    Route::get('/retur', [ReturController::class, 'index']);
+    Route::post('/retur/show', [ReturController::class, 'show']);
+    Route::delete('/retur/{no_retur_penj}/delete', [ReturController::class, 'delete']);
 });
