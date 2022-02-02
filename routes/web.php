@@ -99,6 +99,7 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan'])->group(function ()
     Route::post('/harga/show', [HargaController::class, 'show']);
     Route::delete('/harga/{kode_barang}/delete', [HargaController::class, 'delete']);
     Route::post('getautocompleteharga', [HargaController::class, 'getautocompleteharga']);
+    Route::post('getautocompletehargaretur', [HargaController::class, 'getautocompletehargaretur']);
     Route::post('gethargabarang', [HargaController::class, 'gethargabarang']);
 
     //Salesman
@@ -178,6 +179,15 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan'])->group(function ()
 
     //Retur
     Route::get('/retur', [ReturController::class, 'index']);
+    Route::get('/retur/create', [ReturController::class, 'create']);
+    Route::post('/retur/store', [ReturController::class, 'store']);
+    Route::post('/retur/showbarangtemp', [ReturController::class, 'showbarangtemp']);
+    Route::post('/retur/storebarangtemp', [ReturController::class, 'storebarangtemp']);
+    Route::post('/cekreturtemp', [ReturController::class, 'cekreturtemp']);
+    Route::post('/retur/updatedetailtemp', [ReturController::class, 'updatedetailtemp']);
     Route::post('/retur/show', [ReturController::class, 'show']);
     Route::delete('/retur/{no_retur_penj}/delete', [ReturController::class, 'delete']);
+    Route::post('/retur/deletebarangtemp', [ReturController::class, 'deletebarangtemp']);
+    Route::post('/loadtotalreturtemp', [ReturController::class, 'loadtotalreturtemp']);
+    Route::post('/retur/getfakturpelanggan', [ReturController::class, 'getfakturpelanggan']);
 });

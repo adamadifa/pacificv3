@@ -20,6 +20,9 @@
     <div class="content-body">
         <div class="col-md-12 col-sm-12">
             <div class="card">
+                <div class="card-header">
+                    <a href="/retur/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
+                </div>
                 <div class="card-body">
                     <form action="/retur">
                         <div class="row">

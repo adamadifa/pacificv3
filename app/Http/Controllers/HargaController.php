@@ -225,6 +225,39 @@ class HargaController extends Controller
         exit;
     }
 
+
+    public function getautocompletehargaretur(Request $request)
+    {
+        $search = $request->search;
+        $kode_cabang = $request->kode_cabang;
+        $kategori_salesman = $request->kategori_salesman;
+        if ($search == '') {
+            $autocomplate = Harga::orderby('nama_barang', 'asc')->select('kode_produk', 'kode_barang', 'nama_barang', 'harga_returdus', 'kategori_harga')
+                ->where('kode_cabang', $kode_cabang)
+                ->where('kategori_harga', $kategori_salesman)
+                ->limit(5)->get();
+        } else {
+            $autocomplate = Harga::orderby('nama_barang', 'asc')->select('kode_produk', 'kode_barang', 'nama_barang', 'harga_returdus', 'kategori_harga')->where('nama_barang', 'like', '%' . $search . '%')
+                ->where('kode_cabang', $kode_cabang)
+                ->where('kategori_harga', $kategori_salesman)
+                ->orWhere('kode_produk', 'like', '%' . $search . '%')
+                ->where('kode_cabang', $kode_cabang)
+                ->where('kategori_harga', $kategori_salesman)
+                ->limit(5)->get();
+        }
+
+
+        //dd($autocomplate);
+        $response = array();
+        foreach ($autocomplate as $autocomplate) {
+            $label = $autocomplate->kode_produk . " - " . $autocomplate->nama_barang . " - " . rupiah($autocomplate->harga_returdus) . " - " . $autocomplate->kategori_harga;
+            $response[] = array("value" => $autocomplate->nama_barang, "label" => $label, 'val' => $autocomplate->kode_barang);
+        }
+
+        echo json_encode($response);
+        exit;
+    }
+
     public function gethargabarang(Request $request)
     {
         $barang = DB::table('barang')->where('kode_barang', $request->kode_barang)->first();
