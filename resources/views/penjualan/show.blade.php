@@ -395,7 +395,7 @@
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="penjualan" aria-labelledby="penjualan-tab" role="tabpanel">
-                                    <a href="#" id="inputpembayaran" class="btn btn-primary mb-2" class="href"><i class="feather icon-credit-card"></i> Input Pembayaran</a>
+                                    <a href="#" id="inputpembayaran" class="btn btn-primary mb-2" class="href"><i class="feather icon-plus"></i></a>
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>
@@ -466,7 +466,7 @@
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="giro" aria-labelledby="giro-tab" role="tabpanel">
-                                    <a href="#" id="inputgiro" class="btn btn-primary mb-2" class="href"><i class="feather icon-credit-card"></i> Input Giro</a>
+                                    <a href="#" id="inputgiro" class="btn btn-primary mb-2" class="href"><i class="feather icon-plus"></i></a>
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>
@@ -476,6 +476,7 @@
                                                 <th>Jumlah</th>
                                                 <th>Jatuh Tempo</th>
                                                 <th>Status</th>
+                                                <th>Ket</th>
                                                 <th>Penagih</th>
                                                 <th>Aksi</th>
                                             </tr>
@@ -499,12 +500,14 @@
                                                     <span class="badge bg-warning"> <i class="fa fa-history"></i> Pending </span>
                                                     @endif
                                                 </td>
-                                                <td>{{ $d->nama_karyawan }}</td>\
+                                                <td>{{ $d->ket }}</td>
+                                                <td>{{ $d->nama_karyawan }}</td>
                                                 <td>
+                                                    @if ($d->status===0)
                                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                                        <a class="ml-1 editgiro" href="#" nobukti="{{ $d->id_giro; }}" sisabayar="{{ $sisabayar - $d->jumlah }}"><i class="feather icon-edit success"></i></a>
+                                                        <a class="ml-1 editgiro" href="#" id_giro="{{ $d->id_giro; }}" kode_cabang="{{ $data->kode_cabang }}" sisabayar="{{ $sisabayar - $d->jumlah }}"><i class="feather icon-edit success"></i></a>
                                                         @if (in_array($level,$harga_hapus))
-                                                        <form method="POST" class="deleteform" action="/pembayaran/{{ Crypt::encrypt($d->nobukti) }}/delete">
+                                                        <form method="POST" class="deleteform" action="/pembayaran/{{ Crypt::encrypt($d->id_giro) }}/deletegiro">
                                                             @csrf
                                                             @method('DELETE')
                                                             <a href=" #" class="delete-confirm ml-1">
@@ -513,10 +516,79 @@
                                                         </form>
                                                         @endif
                                                     </div>
+                                                    @else
+                                                    <span class="badge bg-success">Keuangan</span>
+                                                    @endif
                                                 </td>
                                             </tr>
                                             @endforeach
                                         </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="transfer-tab" data-toggle="tab" href="#transfer" aria-controls="transfer" role="tab" aria-selected="true">Histori Pembayaran Transfer</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="transfer" aria-labelledby="transfer-tab" role="tabpanel">
+                                    <a href="#" id="inputtransfer" class="btn btn-primary mb-2" class="href"><i class="feather icon-plus"></i></a>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Tanggal</th>
+                                                <th>Bank</th>
+                                                <th>Jumlah</th>
+                                                <th>Jatuh Tempo</th>
+                                                <th>Status</th>
+                                                <th>Ket</th>
+                                                <th>Penagih</th>
+                                                <th>Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($transfer as $d)
+                                            <tr>
+                                                <td>
+                                                    @if (!empty($d->tgl_transfer))
+                                                    {{ date("d-m-Y",strtotime($d->tgl_transfer)) }}
+                                                    @endif
+                                                </td>
+                                                <td>{{ $d->namabank }}</td>
+                                                <td class="text-right">{{ rupiah($d->jumlah) }}</td>
+                                                <td>
+                                                    {{ date("d-m-Y",strtotime($d->tglcair)) }}
+                                                </td>
+                                                <td>
+                                                    @if ($d->status==0)
+                                                    <span class="badge bg-warning"> <i class="fa fa-history"></i> Pending </span>
+                                                    @endif
+                                                </td>
+                                                <td>{{ $d->ket }}</td>
+                                                <td>{{ $d->nama_karyawan }}</td>
+                                                <td>
+                                                    @if ($d->status===0)
+                                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                                        <a class="ml-1 edittransfer" href="#" id_transfer="{{ $d->id_transfer; }}" kode_cabang="{{ $data->kode_cabang }}" sisabayar="{{ $sisabayar - $d->jumlah }}"><i class="feather icon-edit success"></i></a>
+                                                        @if (in_array($level,$harga_hapus))
+                                                        <form method="POST" class="deleteform" action="/pembayaran/{{ Crypt::encrypt($d->id_transfer) }}/deletetransfer">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <a href=" #" class="delete-confirm ml-1">
+                                                                <i class="feather icon-trash danger"></i>
+                                                            </a>
+                                                        </form>
+                                                        @endif
+                                                    </div>
+                                                    @else
+                                                    <span class="badge bg-success">Keuangan</span>
+                                                    @endif
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+
                                     </table>
                                 </div>
                             </div>
@@ -655,6 +727,181 @@
         </div>
     </div>
 </div>
+
+
+<!--Input Bayar Giro-->
+
+<div class="modal fade text-left" id="mdlinputgiro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Input Giro</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/pembayaran/storegiro" id="frmGiro" method="POST">
+                    @csrf
+                    <input type="hidden" name="no_fak_penj" value="{{ $data->no_fak_penj }}">
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <x-inputtext label="Tanggal Pencatatan Giro" field="tgl_giro" icon="feather icon-calendar" datepicker />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <select name="id_karyawan" id="id_karyawan_giro" class="form-control">
+                                        <option value="">Salesman</option>
+                                        @foreach ($salesman as $d)
+                                        <option value="{{ $d->id_karyawan }}">{{ $d->nama_karyawan }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <x-inputtext label="No. Giro" field="no_giro" icon="feather icon-credit-card" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <x-inputtext label="Nama Bank" field="namabank_giro" icon="fa fa-bank" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <x-inputtext label="Jatuh Tempo" field="tglcair" icon="feather icon-calendar" datepicker />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <x-inputtext label="Jumlah" field="jumlah_giro" icon="feather icon-file" right />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-block"><i class="feather icon-send"></i> Simpan</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Giro -->
+
+<div class="modal fade text-left" id="mdleditgiro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Edit Giro</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loadeditgiro"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Edit Giro -->
+
+<div class="modal fade text-left" id="mdledittransfer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Edit Transfer</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loadedittransfer"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Input Bayar Transfer-->
+
+<div class="modal fade text-left" id="mdlinputtransfer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Input Transfer</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/pembayaran/storetransfer" id="frmTransfer" method="POST">
+                    @csrf
+                    <input type="hidden" name="no_fak_penj" value="{{ $data->no_fak_penj }}">
+                    <input type="hidden" name="kode_pelanggan" value="{{ $data->kode_pelanggan }}">
+                    <div class="form-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <x-inputtext label="Tanggal Pencatatan Transfer" field="tgl_transfer" icon="feather icon-calendar" datepicker />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <select name="id_karyawan" id="id_karyawan_transfer" class="form-control">
+                                        <option value="">Salesman</option>
+                                        @foreach ($salesman as $d)
+                                        <option value="{{ $d->id_karyawan }}">{{ $d->nama_karyawan }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <x-inputtext label="Nama Bank" field="namabank_transfer" icon="fa fa-bank" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <x-inputtext label="Jatuh Tempo" field="tglcair_transfer" icon="feather icon-calendar" datepicker />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <x-inputtext label="Jumlah" field="jumlah_transfer" icon="feather icon-file" right />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <x-inputtext label="Keterangan" field="ket" icon="feather icon-file" right />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-block"><i class="feather icon-send"></i> Simpan</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('myscript')
@@ -682,6 +929,24 @@
         $("#inputpembayaran").click(function(e) {
             e.preventDefault();
             $('#mdlinputpembayaran').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+        });
+
+        //Input Giro
+        $("#inputgiro").click(function(e) {
+            e.preventDefault();
+            $('#mdlinputgiro').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+        });
+
+        //Input Transfer
+        $("#inputtransfer").click(function(e) {
+            e.preventDefault();
+            $('#mdlinputtransfer').modal({
                 backdrop: 'static'
                 , keyboard: false
             });
@@ -715,6 +980,65 @@
 
         });
 
+        //Edit Giro
+        $(".editgiro").click(function(e) {
+            e.preventDefault();
+            var id_giro = $(this).attr('id_giro');
+            var kode_cabang = $(this).attr('kode_cabang');
+            var sisabayar = $(this).attr('sisabayar');
+            $.ajax({
+                type: 'POST'
+                , url: '/pembayaran/editgiro'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , id_giro: id_giro
+                    , kode_cabang: kode_cabang
+                    , sisabayar: sisabayar
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loadeditgiro").html(respond);
+                    $('#mdleditgiro').modal({
+                        backdrop: 'static'
+                        , keyboard: false
+                    });
+                }
+            });
+
+        });
+
+
+        //Edit Transfer
+        $(".edittransfer").click(function(e) {
+            e.preventDefault();
+            var id_transfer = $(this).attr('id_transfer');
+            var kode_cabang = $(this).attr('kode_cabang');
+            var sisabayar = $(this).attr('sisabayar');
+            var kode_pelanggan = "{{ $data->kode_pelanggan }}"
+
+
+            $.ajax({
+                type: 'POST'
+                , url: '/pembayaran/edittransfer'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , id_transfer: id_transfer
+                    , kode_cabang: kode_cabang
+                    , kode_pelanggan: kode_pelanggan
+                    , sisabayar: sisabayar
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loadedittransfer").html(respond);
+                    $('#mdledittransfer').modal({
+                        backdrop: 'static'
+                        , keyboard: false
+                    });
+                }
+            });
+
+        });
+
 
         $("#ketvoucher").hide();
         $("#girotolak").hide();
@@ -737,6 +1061,8 @@
         });
 
         $("#bayar").maskMoney();
+        $("#jumlah_giro").maskMoney();
+        $("#jumlah_transfer").maskMoney();
 
         $("#frmBayar").submit(function(e) {
             //e.preventDefault();
@@ -801,6 +1127,169 @@
                 return true;
             }
         })
+
+
+
+        $("#frmGiro").submit(function(e) {
+            //e.preventDefault();
+            var tgl_giro = $("#tgl_giro").val();
+            var id_karyawan = $("#id_karyawan_giro").val();
+            var no_giro = $("#no_giro").val();
+            var namabank = $("#namabank_giro").val();
+            var tglcair = $("#tglcair").val();
+            var sisabayar = "{{ $sisabayar }}";
+            var jumlah = $("#jumlah_giro").val();
+            var jmlbayar = parseInt(jumlah.replace(/\./g, ''));
+            //alert(sisabayar);
+            if (tgl_giro == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Tanggal Giro Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#tgl_giro").focus();
+                });
+                return false;
+            } else if (id_karyawan == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Salesman Penagih Harus Diisi  !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#id_karyawan_giro").focus();
+                });
+                return false;
+            } else if (no_giro == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'No. Giro Harus Diisi  !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#no_giro").focus();
+                });
+                return false;
+            } else if (namabank == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Bank Harus Diisi  !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#namabank_giro").focus();
+                });
+                return false;
+            } else if (tglcair == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Jatuh Temp Harus Diisi   !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#tglcair").focus();
+                });
+                return false;
+            } else if (jumlah == "" || jumlah === 0) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Jumlah  Harus Diisi  !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#jumlah_giro").focus();
+                });
+                return false;
+            } else if (parseInt(jmlbayar) > parseInt(sisabayar)) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Jumlah Bayar Melebihi Sisa Bayar  !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#id_karyawan").focus();
+                });
+                return false;
+            } else {
+                return true;
+            }
+        });
+
+        $("#frmTransfer").submit(function(e) {
+            //e.preventDefault();
+            var tgl_transfer = $("#tgl_transfer").val();
+            var id_karyawan = $("#id_karyawan_transfer").val();
+            var namabank = $("#namabank_transfer").val();
+            var tglcair = $("#tglcair_transfer").val();
+            var sisabayar = "{{ $sisabayar }}";
+            var jumlah = $("#jumlah_transfer").val();
+            var jmlbayar = parseInt(jumlah.replace(/\./g, ''));
+            //alert(sisabayar);
+            if (tgl_transfer == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Tanggal Transfer Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#tgl_transfer").focus();
+                });
+                return false;
+            } else if (id_karyawan == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Salesman Penagih Harus Diisi  !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#id_karyawan_transfer").focus();
+                });
+                return false;
+            } else if (namabank == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Bank Harus Diisi  !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#namabank_transfer").focus();
+                });
+                return false;
+            } else if (tglcair == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Jatuh Tempo Harus Diisi   !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#tglcair_transfer").focus();
+                });
+                return false;
+            } else if (jumlah == "" || jumlah === 0) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Jumlah  Harus Diisi  !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#jumlah_transfer").focus();
+                });
+                return false;
+            } else if (parseInt(jmlbayar) > parseInt(sisabayar)) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Jumlah Bayar Melebihi Sisa Bayar  !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#jumlah_transfer").focus();
+                });
+                return false;
+            } else {
+                return true;
+            }
+        });
     });
 
 </script>

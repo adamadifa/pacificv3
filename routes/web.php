@@ -15,6 +15,7 @@ use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PenjualanController;
+use App\Http\Controllers\ReturController;
 use App\Http\Controllers\SalesmanController;
 use App\Http\Controllers\SimpananController;
 use App\Http\Controllers\TabunganController;
@@ -98,6 +99,7 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan'])->group(function ()
     Route::post('/harga/show', [HargaController::class, 'show']);
     Route::delete('/harga/{kode_barang}/delete', [HargaController::class, 'delete']);
     Route::post('getautocompleteharga', [HargaController::class, 'getautocompleteharga']);
+    Route::post('getautocompletehargaretur', [HargaController::class, 'getautocompletehargaretur']);
     Route::post('gethargabarang', [HargaController::class, 'gethargabarang']);
 
     //Salesman
@@ -161,4 +163,31 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan'])->group(function ()
     Route::post('/pembayaran/edit', [PembayaranController::class, 'edit']);
     Route::post('/pembayaran/{nobukti}/update', [PembayaranController::class, 'update']);
     Route::delete('/pembayaran/{nobukti}/delete', [PembayaranController::class, 'delete']);
+
+    //Giro
+    Route::post('/pembayaran/storegiro', [PembayaranController::class, 'storegiro']);
+    Route::delete('/pembayaran/{id_giro}/deletegiro', [PembayaranController::class, 'deletegiro']);
+    Route::post('/pembayaran/editgiro', [PembayaranController::class, 'editgiro']);
+    Route::post('/pembayaran/{id_giro}/updategiro', [PembayaranController::class, 'updategiro']);
+
+    //Transfer
+    Route::post('/pembayaran/storetransfer', [PembayaranController::class, 'storetransfer']);
+    Route::delete('/pembayaran/{id_transfer}/deletetransfer', [PembayaranController::class, 'deletetransfer']);
+    Route::post('/pembayaran/edittransfer', [PembayaranController::class, 'edittransfer']);
+    Route::post('/pembayaran/{id_transfer}/updatetransfer', [PembayaranController::class, 'updatetransfer']);
+
+
+    //Retur
+    Route::get('/retur', [ReturController::class, 'index']);
+    Route::get('/retur/create', [ReturController::class, 'create']);
+    Route::post('/retur/store', [ReturController::class, 'store']);
+    Route::post('/retur/showbarangtemp', [ReturController::class, 'showbarangtemp']);
+    Route::post('/retur/storebarangtemp', [ReturController::class, 'storebarangtemp']);
+    Route::post('/cekreturtemp', [ReturController::class, 'cekreturtemp']);
+    Route::post('/retur/updatedetailtemp', [ReturController::class, 'updatedetailtemp']);
+    Route::post('/retur/show', [ReturController::class, 'show']);
+    Route::delete('/retur/{no_retur_penj}/delete', [ReturController::class, 'delete']);
+    Route::post('/retur/deletebarangtemp', [ReturController::class, 'deletebarangtemp']);
+    Route::post('/loadtotalreturtemp', [ReturController::class, 'loadtotalreturtemp']);
+    Route::post('/retur/getfakturpelanggan', [ReturController::class, 'getfakturpelanggan']);
 });

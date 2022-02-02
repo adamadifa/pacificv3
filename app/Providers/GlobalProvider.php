@@ -73,6 +73,9 @@ class GlobalProvider extends ServiceProvider
             $penjualan_view = ['admin'];
             $penjualan_pending_view = ['admin'];
 
+            //Retur
+            $retur_view = ['admin'];
+
 
 
             $shareddata = [
@@ -104,6 +107,9 @@ class GlobalProvider extends ServiceProvider
                 'penjualan_input' => $penjualan_input,
                 'penjualan_view' => $penjualan_view,
                 'penjualan_pending_view' => $penjualan_pending_view,
+
+                //Retur
+                'retur_view' => $retur_view,
 
 
 

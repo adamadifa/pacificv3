@@ -514,7 +514,7 @@ $total += $d->subtotal;
             });
 
 
-            $tblrow.find('.jmldus,.jmlpack,.jmlpcs,.harga_dus,.harga_pack,.harga_pcs').on('input', function() {
+            $tblrow.find('.jmldus,.jmlpack,.jmlpcs,.harga_dus,.harga_pack,.harga_pcs').on('keyup', function() {
                 var kode_barang = $tblrow.find("[id=kode_barang]").val();
                 var isipack = $tblrow.find("[id=isipack]").val();
                 var isipcs = $tblrow.find("[id=isipcs]").val();

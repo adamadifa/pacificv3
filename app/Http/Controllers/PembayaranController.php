@@ -156,4 +156,178 @@ class PembayaranController extends Controller
             return Redirect::back()->with(['warning' => 'Data Pembayaran Gagal Di Hapus']);
         }
     }
+
+    public function storegiro(Request $request)
+    {
+        $no_fak_penj = $request->no_fak_penj;
+        $tgl_giro = $request->tgl_giro;
+        $no_giro = $request->no_giro;
+        $namabank = $request->namabank_giro;
+        $materai = "-";
+        $tglcair = $request->tglcair;
+        $jumlah = str_replace(".", "", $request->jumlah_giro);
+        $id_karyawan = $request->id_karyawan;
+        $simpan = DB::table('giro')
+            ->insert([
+                'no_fak_penj' => $no_fak_penj,
+                'tgl_giro' => $tgl_giro,
+                'no_giro' => $no_giro,
+                'namabank' => $namabank,
+                'materai' => $materai,
+                'tglcair' => $tglcair,
+                'jumlah' => $jumlah,
+                'id_karyawan' => $id_karyawan,
+                'status' => 0
+            ]);
+
+        if ($simpan) {
+            return Redirect::back()->with(['success' => 'Data Giro Berhasil Di Simpan']);
+        } else {
+            return Redirect::back()->with(['warning' => 'Data Giro Gagal Di Hapus']);
+        }
+    }
+
+
+
+
+    public function deletegiro($id_giro)
+    {
+
+
+        $id_giro = Crypt::decrypt($id_giro);
+        $hapus = DB::table('giro')
+            ->where('id_giro', $id_giro)
+            ->delete();
+        if ($hapus) {
+            return Redirect::back()->with(['success' => 'Data Giro Berhasil Di Hapus']);
+        } else {
+            return Redirect::back()->with(['warning' => 'Data Giro Gagal Di Hapus']);
+        }
+    }
+
+    public function editgiro(Request $request)
+    {
+        $kode_cabang = $request->kode_cabang;
+        $salesman = DB::table('karyawan')->where('kode_cabang', $kode_cabang)->get();
+        $giro = DB::table('giro')->where('id_giro', $request->id_giro)->first();
+        $sisabayar = $request->sisabayar;
+        return view('pembayaran.editgiro', compact('giro', 'salesman', 'sisabayar'));
+    }
+
+    public function updategiro($id_giro, Request $request)
+    {
+        $tgl_giro = $request->tgl_giro_edit;
+        $no_giro = $request->no_giro_edit;
+        $namabank = $request->namabank_giro_edit;
+        $tglcair = $request->tglcair_edit;
+        $jumlah = str_replace(".", "", $request->jumlah_giro_edit);
+        $id_karyawan = $request->id_karyawan;
+        $simpan = DB::table('giro')
+            ->where('id_giro', $id_giro)
+            ->update([
+                'tgl_giro' => $tgl_giro,
+                'no_giro' => $no_giro,
+                'namabank' => $namabank,
+                'tglcair' => $tglcair,
+                'jumlah' => $jumlah,
+                'id_karyawan' => $id_karyawan,
+            ]);
+
+        if ($simpan) {
+            return Redirect::back()->with(['success' => 'Data Giro Berhasil Di Update']);
+        } else {
+            return Redirect::back()->with(['warning' => 'Data Giro Gagal Di Update']);
+        }
+    }
+
+
+    public function storetransfer(Request $request)
+    {
+        $no_fak_penj = $request->no_fak_penj;
+        $tgl_transfer = $request->tgl_transfer;
+        $namabank = $request->namabank_transfer;
+        $tglcair = $request->tglcair_transfer;
+        $jumlah = str_replace(".", "", $request->jumlah_transfer);
+        $id_karyawan = $request->id_karyawan;
+        $kode_pelanggan = $request->kode_pelanggan;
+        $ket = $request->ket;
+        $tgl          = explode("-", $tgl_transfer);
+        $tanggal      = $tgl[2];
+        $bulan        = $tgl[1];
+        $tahun        = substr($tgl[0], 2, 2);
+        $kode_transfer =  $kode_pelanggan . $tanggal . $bulan . $tahun . $ket;
+        $simpan = DB::table('transfer')
+            ->insert([
+                'no_fak_penj' => $no_fak_penj,
+                'tgl_transfer' => $tgl_transfer,
+                'namabank' => $namabank,
+                'tglcair' => $tglcair,
+                'jumlah' => $jumlah,
+                'id_karyawan' => $id_karyawan,
+                'kode_transfer' => $kode_transfer,
+                'status' => 0
+            ]);
+
+        if ($simpan) {
+            return Redirect::back()->with(['success' => 'Data Transfer Berhasil Di Simpan']);
+        } else {
+            return Redirect::back()->with(['warning' => 'Data Transfer Gagal Di Hapus']);
+        }
+    }
+
+    public function deletetransfer($id_transfer)
+    {
+        $id_transfer = Crypt::decrypt($id_transfer);
+        $hapus = DB::table('transfer')
+            ->where('id_transfer', $id_transfer)
+            ->delete();
+        if ($hapus) {
+            return Redirect::back()->with(['success' => 'Data Transfer Berhasil Di Hapus']);
+        } else {
+            return Redirect::back()->with(['warning' => 'Data Transfer Gagal Di Hapus']);
+        }
+    }
+
+    public function edittransfer(Request $request)
+    {
+        $kode_pelanggan = $request->kode_pelanggan;
+        $kode_cabang = $request->kode_cabang;
+        $salesman = DB::table('karyawan')->where('kode_cabang', $kode_cabang)->get();
+        $transfer = DB::table('transfer')->where('id_transfer', $request->id_transfer)->first();
+        $sisabayar = $request->sisabayar;
+        return view('pembayaran.edittransfer', compact('transfer', 'salesman', 'sisabayar', 'kode_pelanggan'));
+    }
+
+    public function updatetransfer($id_transfer, Request $request)
+    {
+        $tgl_transfer = $request->tgl_transfer_edit;
+        $namabank = $request->namabank_transfer_edit;
+        $tglcair = $request->tglcair_transfer_edit;
+        $jumlah = str_replace(".", "", $request->jumlah_transfer_edit);
+        $id_karyawan = $request->id_karyawan;
+        $kode_pelanggan = $request->kode_pelanggan_edit;
+        $ket = $request->ket_edit;
+        $tgl          = explode("-", $tgl_transfer);
+        $tanggal      = $tgl[2];
+        $bulan        = $tgl[1];
+        $tahun        = substr($tgl[0], 2, 2);
+        $kode_transfer =  $kode_pelanggan . $tanggal . $bulan . $tahun . $ket;
+        $simpan = DB::table('transfer')
+            ->where('id_transfer', $id_transfer)
+            ->update([
+                'tgl_transfer' => $tgl_transfer,
+                'namabank' => $namabank,
+                'tglcair' => $tglcair,
+                'jumlah' => $jumlah,
+                'id_karyawan' => $id_karyawan,
+                'kode_transfer' => $kode_transfer,
+                'ket' => $ket
+            ]);
+
+        if ($simpan) {
+            return Redirect::back()->with(['success' => 'Data Transfer Berhasil Di Di Update']);
+        } else {
+            return Redirect::back()->with(['warning' => 'Data Transfer Gagal Di Update']);
+        }
+    }
 }

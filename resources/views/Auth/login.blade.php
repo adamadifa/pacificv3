@@ -7,7 +7,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login Template</title>
+    <title>Login</title>
     <link rel="stylesheet" href="{{asset('pacific/css/style.css')}}">
     <link rel="stylesheet" href="{{asset('pacific/css/materialdesignicons.min.css')}}">
     <link rel="stylesheet" href="{{asset('pacific/css/bootstrap.min.css')}}">
@@ -31,8 +31,7 @@
                         </div>
                         <div class="form-group">
                             <label for="password" class="sr-only">Password</label>
-                            <input type="password" name="password" id="password" class="form-control"
-                                placeholder="Password">
+                            <input type="password" name="password" id="password" class="form-control" placeholder="Password">
                         </div>
                         <button type="submit" class="btn btn-primary btn-lg btn-block">LOGIN</button>
                     </form>

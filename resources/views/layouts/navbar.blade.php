@@ -55,6 +55,9 @@
                             @if (in_array($level,$penjualan_view))
                             <li class="{{ request()->is(['penjualan','penjualan/*']) ? 'active' : '' }}"><a href="/penjualan"><i class="feather icon-file-text"></i><span class="menu-item">Data Penjualan</span></a></li>
                             @endif
+                            @if (in_array($level,$retur_view))
+                            <li class="{{ request()->is(['retur','retur/*']) ? 'active' : '' }}"><a href="/retur"><i class="feather icon-file-text"></i><span class="menu-item">Data Retur</span></a></li>
+                            @endif
 
                         </ul>
                     </li>

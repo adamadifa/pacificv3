@@ -1385,7 +1385,23 @@ class PenjualanController extends Controller
             )
             ->where('giro.no_fak_penj', $no_fak_penj)
             ->get();
-        return view('penjualan.show', compact('data', 'detailpenjualan', 'retur', 'historibayar', 'salesman', 'girotolak', 'giro'));
+
+        $transfer = DB::table('transfer')
+            ->select('transfer.*', 'nama_karyawan', 'tglbayar')
+            ->leftJoin('karyawan', 'transfer.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->leftJoin(
+                DB::raw("(
+                SELECT id_transfer,tglbayar
+                FROM historibayar
+                WHERE no_fak_penj = '$no_fak_penj'
+            ) historibayar"),
+                function ($join) {
+                    $join->on('transfer.id_transfer', '=', 'historibayar.id_transfer');
+                }
+            )
+            ->where('transfer.no_fak_penj', $no_fak_penj)
+            ->get();
+        return view('penjualan.show', compact('data', 'detailpenjualan', 'retur', 'historibayar', 'salesman', 'girotolak', 'giro', 'transfer'));
     }
     public function rekapcashin(Request $request)
     {
