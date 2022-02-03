@@ -111,7 +111,26 @@
 <script>
     $(function() {
 
+        function cektutuplaporan(tanggal) {
+            $.ajax({
+                type: "POST"
+                , url: "/cektutuplaporan"
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , tanggal: tanggal
+                    , jenislaporan: "penjualan"
+                }
+                , cache: false
+                , success: function(respond) {
+                    console.log(respond);
+                    $("#cektutuplaporan").val(respond);
+                }
+            });
+        }
 
+        $("#tglbayar_edit").change(function() {
+            cektutuplaporan($(this).val());
+        });
         $('.voucher_edit').change(function() {
             if (this.checked) {
                 $("#ketvoucher_edit").show();
@@ -158,8 +177,12 @@
             var id_giro = $("#id_giro_edit").val();
             var sisabayar = "{{ $sisabayar }}";
             var jmlbayar = parseInt(bayar.replace(/\./g, ''));
+            var cektutuplaporan = $("#cektutuplaporan").val();
             //alert(sisabayar);
-            if (tglbayar == "") {
+            if (cektutuplaporan > 0) {
+                swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
+                return false;
+            } else if (tglbayar == "") {
                 swal({
                     title: 'Oops'
                     , text: 'Tanggal Bayar Harus Diisi !'

@@ -65,6 +65,26 @@
                 </ul>
             </li>
             @endif
+
+            @if (in_array($level,$keuangan))
+            <li class=" nav-item">
+                <a href="#"><i class="feather icon-dollar-sign"></i><span class="menu-title">Keuangan</span></a>
+                <ul class="menu-content">
+                    @if (in_array($level,$penjualan_keuangan))
+                    <li><a href="#"><i class="feather icon-circle"></i><span class="menu-item" data-i18n="Second Level">Penjualan</span></a>
+                        <ul class="menu-content">
+                            @if (in_array($level,$giro_view))
+                            <li class="{{ request()->is(['giro','giro/*']) ? 'active' : '' }}"><a href="/giro"><i class="feather icon-file-text"></i><span class="menu-item">Giro</span></a></li>
+                            @endif
+                            @if (in_array($level,$transfer_view))
+                            <li><a href="/transfer"><i class="feather icon-file-text"></i><span class="menu-item">Transfer</span></a></li>
+                            @endif
+                        </ul>
+                    </li>
+                    @endif
+                </ul>
+            </li>
+            @endif
         </ul>
     </div>
 </div>

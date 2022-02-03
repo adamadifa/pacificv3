@@ -599,6 +599,7 @@
         </div>
     </div>
 </div>
+<input type="hidden" id="cektutuplaporan">
 <!-- Input Pembayaran -->
 <div class="modal fade text-left" id="mdlinputpembayaran" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
@@ -1064,6 +1065,26 @@
         $("#jumlah_giro").maskMoney();
         $("#jumlah_transfer").maskMoney();
 
+        function cektutuplaporan(tanggal) {
+            $.ajax({
+                type: "POST"
+                , url: "/cektutuplaporan"
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , tanggal: tanggal
+                    , jenislaporan: "penjualan"
+                }
+                , cache: false
+                , success: function(respond) {
+                    console.log(respond);
+                    $("#cektutuplaporan").val(respond);
+                }
+            });
+        }
+
+        $("#tglbayar").change(function() {
+            cektutuplaporan($(this).val());
+        });
         $("#frmBayar").submit(function(e) {
             //e.preventDefault();
             var tglbayar = $("#tglbayar").val();
@@ -1071,9 +1092,13 @@
             var id_karyawan = $("#id_karyawan").val();
             var id_giro = $("#id_giro").val();
             var sisabayar = "{{ $sisabayar }}";
+            var cektutuplaporan = $("#cektutuplaporan").val();
             var jmlbayar = parseInt(bayar.replace(/\./g, ''));
             //alert(sisabayar);
-            if (tglbayar == "") {
+            if (cektutuplaporan > 0) {
+                swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
+                return false;
+            } else if (tglbayar == "") {
                 swal({
                     title: 'Oops'
                     , text: 'Tanggal Bayar Harus Diisi !'
@@ -1129,7 +1154,9 @@
         })
 
 
-
+        $("#tgl_giro").change(function() {
+            cektutuplaporan($(this).val());
+        });
         $("#frmGiro").submit(function(e) {
             //e.preventDefault();
             var tgl_giro = $("#tgl_giro").val();
@@ -1140,8 +1167,12 @@
             var sisabayar = "{{ $sisabayar }}";
             var jumlah = $("#jumlah_giro").val();
             var jmlbayar = parseInt(jumlah.replace(/\./g, ''));
+            var cektutuplaporan = $("#cektutuplaporan").val();
             //alert(sisabayar);
-            if (tgl_giro == "") {
+            if (cektutuplaporan > 0) {
+                swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
+                return false;
+            } else if (tgl_giro == "") {
                 swal({
                     title: 'Oops'
                     , text: 'Tanggal Giro Harus Diisi !'
@@ -1216,6 +1247,9 @@
             }
         });
 
+        $("#tgl_transfer").change(function() {
+            cektutuplaporan($(this).val());
+        });
         $("#frmTransfer").submit(function(e) {
             //e.preventDefault();
             var tgl_transfer = $("#tgl_transfer").val();
@@ -1225,8 +1259,12 @@
             var sisabayar = "{{ $sisabayar }}";
             var jumlah = $("#jumlah_transfer").val();
             var jmlbayar = parseInt(jumlah.replace(/\./g, ''));
+            var cektutuplaporan = $("#cektutuplaporan").val();
             //alert(sisabayar);
-            if (tgl_transfer == "") {
+            if (cektutuplaporan > 0) {
+                swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
+                return false;
+            } else if (tgl_transfer == "") {
                 swal({
                     title: 'Oops'
                     , text: 'Tanggal Transfer Harus Diisi !'

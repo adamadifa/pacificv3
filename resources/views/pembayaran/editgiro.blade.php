@@ -53,7 +53,26 @@
 <script>
     $(function() {
 
+        function cektutuplaporan(tanggal) {
+            $.ajax({
+                type: "POST"
+                , url: "/cektutuplaporan"
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , tanggal: tanggal
+                    , jenislaporan: "penjualan"
+                }
+                , cache: false
+                , success: function(respond) {
+                    console.log(respond);
+                    $("#cektutuplaporan").val(respond);
+                }
+            });
+        }
 
+        $("#tgl_giro_edit").change(function() {
+            cektutuplaporan($(this).val());
+        });
 
         $("#jumlah_giro_edit").maskMoney();
 
@@ -67,8 +86,12 @@
             var sisabayar = "{{ $sisabayar }}";
             var jumlah = $("#jumlah_giro_edit").val();
             var jmlbayar = parseInt(jumlah.replace(/\./g, ''));
+            var cektutuplaporan = $("#cektutuplaporan").val();
             //alert(sisabayar);
-            if (tgl_giro == "") {
+            if (cektutuplaporan > 0) {
+                swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
+                return false;
+            } else if (tgl_giro == "") {
                 swal({
                     title: 'Oops'
                     , text: 'Tanggal Giro Harus Diisi !'

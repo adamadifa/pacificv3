@@ -69,6 +69,7 @@ class GlobalProvider extends ServiceProvider
 
             //Penjualan
             $penjualan_menu = ['admin'];
+            $penjualan_keuangan = ['admin'];
             $penjualan_input = ['admin'];
             $penjualan_view = ['admin'];
             $penjualan_pending_view = ['admin'];
@@ -77,6 +78,14 @@ class GlobalProvider extends ServiceProvider
             $retur_view = ['admin'];
 
 
+            //Keuangan
+            $keuangan = ['admin'];
+
+            //Keuangan
+            $giro_view = ['admin'];
+
+            //Keuangan
+            $transfer_view = ['admin'];
 
             $shareddata = [
                 'level' => $level,
@@ -104,6 +113,7 @@ class GlobalProvider extends ServiceProvider
                 'marketing' => $marketing,
                 //Penjualan
                 'penjualan_menu' => $penjualan_menu,
+                'penjualan_keuangan' => $penjualan_keuangan,
                 'penjualan_input' => $penjualan_input,
                 'penjualan_view' => $penjualan_view,
                 'penjualan_pending_view' => $penjualan_pending_view,
@@ -111,6 +121,15 @@ class GlobalProvider extends ServiceProvider
                 //Retur
                 'retur_view' => $retur_view,
 
+                //Keuangan
+                'keuangan' => $keuangan,
+                'penjualan_keuangan' => $penjualan_keuangan,
+
+                //Giro
+                'giro_view' => $giro_view,
+
+                //Giro
+                'transfer_view' => $transfer_view,
 
 
 

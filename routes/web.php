@@ -7,6 +7,7 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\CabangController;
 use App\Http\Controllers\DaftarController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\GiroController;
 use App\Http\Controllers\GudangController;
 use App\Http\Controllers\HargaController;
 use App\Http\Controllers\HargaControoler;
@@ -190,4 +191,9 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan'])->group(function ()
     Route::post('/retur/deletebarangtemp', [ReturController::class, 'deletebarangtemp']);
     Route::post('/loadtotalreturtemp', [ReturController::class, 'loadtotalreturtemp']);
     Route::post('/retur/getfakturpelanggan', [ReturController::class, 'getfakturpelanggan']);
+
+    //Giro
+    Route::get('/giro', [GiroController::class, 'index']);
+    Route::post('/giro/detailfaktur', [GiroController::class, 'detailfaktur']);
+    Route::post('/giro/prosesgiro', [GiroController::class, 'prosesgiro']);
 });

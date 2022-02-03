@@ -13,7 +13,7 @@
                 <img src="{{asset('app-assets/images/logo/mp.png')}}" alt="" style="width: 80px; margin-left: 15px; margin-top:10px">
             </div>
             <div class="pull-left" style="margin-top: 20px; margin-left: 10px;">
-                <a href="/penjualan" class="btn btn-success"><i class="fa fa-home"></i></a>
+                <a href="/retur" class="btn btn-success"><i class="fa fa-home"></i></a>
                 <button type="button" id="reset" class="btn btn-warning" style="margin:5px 5px 5px 5px"><i class="fa fa-refresh"></i></button> </div>
 
             <div class="pull-left" style="margin-left: 10px;padding-right: 10px !important; margin-top: 20px; border-right: 2px rgba(0,0,0,.4) solid">

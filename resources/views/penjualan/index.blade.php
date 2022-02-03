@@ -23,10 +23,10 @@
                 <div class="card-body">
                     <form action="/penjualan">
                         <div class="row">
-                            <div class="col-lg-5">
+                            <div class="col-lg-6">
                                 <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker value="{{ Request('dari') }}" />
                             </div>
-                            <div class="col-lg-5">
+                            <div class="col-lg-6">
                                 <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker value="{{ Request('sampai') }}" />
                             </div>
                         </div>
