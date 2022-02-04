@@ -1,49 +1,122 @@
 <!DOCTYPE html>
-<!-- saved from url=(0063)https://www.bootstrapdash.com/demo/login-templates-pro/login-1/ -->
 <html lang="en">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login</title>
-    <link rel="stylesheet" href="{{asset('pacific/css/style.css')}}">
-    <link rel="stylesheet" href="{{asset('pacific/css/materialdesignicons.min.css')}}">
-    <link rel="stylesheet" href="{{asset('pacific/css/bootstrap.min.css')}}">
-    <link rel="stylesheet" href="{{asset('pacific/css/login.css')}}">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+	<link rel="stylesheet" href="{{asset('pacific/style.css')}}">
+	<title>
+		Animated login signup
+	</title>
 </head>
 
-<body class="d-flex align-items-center justify-content-center">
-    <section class="overlay">
-        <div class="container-fluid">
-            <div class="card login-card">
-                <img src="{{asset('pacific/css/login.png')}}" alt="login" class="login-card-img">
-                <div class="card-body">
-                    <img src="{{asset('pacific/css/logo.png')}}" width="250px" height="70px" alt="">
-                    <h2 class="login-card-title">Login</h2>
-                    <p class="login-card-description">Silahkan Login Untuk Melanjutkan</p>
-                    <form action="/postlogin" method="POST">
-                        @csrf
-                        <div class="form-group">
-                            <label for="email" class="sr-only">Email</label>
-                            <input type="email" name="email" id="email" class="form-control" placeholder="Email">
-                        </div>
-                        <div class="form-group">
-                            <label for="password" class="sr-only">Password</label>
-                            <input type="password" name="password" id="password" class="form-control" placeholder="Password">
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-lg btn-block">LOGIN</button>
-                    </form>
+<body>
+	<div id="container" class="container">
+		<!-- FORM SECTION -->
+		<div class="row">
+			<!-- SIGN UP -->
+			<div class="col align-items-center flex-col sign-up">
+				<div class="form-wrapper align-items-center">
 
-                </div>
-            </div>
-        </div>
-    </section>
-    <script src="{{asset('pacific/js/jquery-3.4.1.min.js')}}"></script>
-    <script src="{{asset('pacific/js/popper.min.js')}}"></script>
-    <script src="{{asset('pacific/js/bootstrap.min.js')}}"></script>
+				</div>
+				<div class="form-wrapper">
+					<div class="social-list align-items-center sign-up">
+						<div class="align-items-center facebook-bg">
+							<i class='bx bxl-facebook'></i>
+						</div>
+						<div class="align-items-center google-bg">
+							<i class='bx bxl-google'></i>
+						</div>
+						<div class="align-items-center twitter-bg">
+							<i class='bx bxl-twitter'></i>
+						</div>
+						<div class="align-items-center insta-bg">
+							<i class='bx bxl-instagram-alt'></i>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- END SIGN UP -->
+			<!-- SIGN IN -->
+			<div class="col align-items-center flex-col sign-in">
+                <form method="POST" action="/postlogin">
+                    @csrf
+                    <div class="form-wrapper align-items-center">
+                        <div class="form sign-in">
+                            <div class="input-group">
+                                <i class='bx bxs-user'></i>
+                                <input type="text" name="email" id="email" placeholder="Email">
+                            </div>
+                            <div class="input-group">
+                                <i class='bx bxs-lock-alt'></i>
+                                <input type="password" name="password" id="password" placeholder="Password">
+                            </div>
+                            <button>
+                                Sign in
+                            </button>
 
+                        </div>
+                    </div>
+                </form>
+				<div class="form-wrapper">
+					<div class="social-list align-items-center sign-in">
+						<div class="align-items-center facebook-bg">
+							<i class='bx bxl-facebook'></i>
+						</div>
+						<div class="align-items-center google-bg">
+							<i class='bx bxl-google'></i>
+						</div>
+						<div class="align-items-center twitter-bg">
+							<i class='bx bxl-twitter'></i>
+						</div>
+						<div class="align-items-center insta-bg">
+							<i class='bx bxl-instagram-alt'></i>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- END SIGN IN -->
+		</div>
+		<!-- END FORM SECTION -->
+		<!-- CONTENT SECTION -->
+		<div class="row content-row">
+			<!-- SIGN IN CONTENT -->
+			<div class="col align-items-center flex-col">
+				<div class="text sign-in">
+					<h2>
+						Selamat Datang
+					</h2>
+                    <p>di Portal Pacific Tasikmalaya,<br> Silahkan Login Untuk Melanjutkan !</p>
+
+				</div>
+				<div class="img sign-in">
+					<img src="{{asset('pacific/css/login.png')}}" alt="welcome">
+				</div>
+			</div>
+			<!-- END SIGN IN CONTENT -->
+			<!-- SIGN UP CONTENT -->
+			<div class="col align-items-center flex-col">
+				<div class="img sign-up">
+
+				</div>
+				<div class="text sign-up">
+					<h2>
+						Join with us
+					</h2>
+					<p>
+						Lorem ipsum, dolor sit amet consectetur adipisicing elit. Impedit obcaecati, accusantium
+						molestias, laborum, aspernatur deserunt officia voluptatum tempora dicta quo ab ullam. Assumenda
+						enim harum minima possimus dignissimos deserunt rem.
+					</p>
+				</div>
+			</div>
+			<!-- END SIGN UP CONTENT -->
+		</div>
+		<!-- END CONTENT SECTION -->
+	</div>
+
+	<script src="{{asset('pacific/index.js')}}"></script>
 </body>
 
 </html>

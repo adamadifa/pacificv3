@@ -46,5 +46,17 @@
 <!-- BEGIN: Page JS-->
 <script src="{{asset('app-assets/js/scripts/forms/validation/form-validation.js')}}"></script>
 <script src="{{asset('app-assets/js/scripts/datatables/datatable.js')}}"></script>
+<script>
+    $(function() {
+      function toggleZoomScreen() {
+        var width = window.screen.width;
+        if (width <= 1366) {
+          document.body.style.zoom = "70%";
+        }
+      }
+      toggleZoomScreen();
+    });
+
+  </script>
 <!-- END: Page JS-->
 @stack('myscript')

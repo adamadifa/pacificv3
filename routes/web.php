@@ -170,6 +170,11 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan'])->group(function ()
     Route::delete('/pembayaran/{id_giro}/deletegiro', [PembayaranController::class, 'deletegiro']);
     Route::post('/pembayaran/editgiro', [PembayaranController::class, 'editgiro']);
     Route::post('/pembayaran/{id_giro}/updategiro', [PembayaranController::class, 'updategiro']);
+    Route::get('/giro', [GiroController::class, 'index']);
+    Route::post('/giro/detailfaktur', [GiroController::class, 'detailfaktur']);
+    Route::post('/giro/prosesgiro', [GiroController::class, 'prosesgiro']);
+    Route::post('/giro/update',[GiroController::class,'update']);
+
 
     //Transfer
     Route::post('/pembayaran/storetransfer', [PembayaranController::class, 'storetransfer']);
@@ -192,8 +197,6 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan'])->group(function ()
     Route::post('/loadtotalreturtemp', [ReturController::class, 'loadtotalreturtemp']);
     Route::post('/retur/getfakturpelanggan', [ReturController::class, 'getfakturpelanggan']);
 
-    //Giro
-    Route::get('/giro', [GiroController::class, 'index']);
-    Route::post('/giro/detailfaktur', [GiroController::class, 'detailfaktur']);
-    Route::post('/giro/prosesgiro', [GiroController::class, 'prosesgiro']);
+
+
 });
