@@ -20,6 +20,7 @@ use App\Http\Controllers\ReturController;
 use App\Http\Controllers\SalesmanController;
 use App\Http\Controllers\SimpananController;
 use App\Http\Controllers\TabunganController;
+use App\Http\Controllers\TransferController;
 use App\Http\Controllers\TutuplaporanController;
 use Illuminate\Support\Facades\Route;
 
@@ -173,7 +174,7 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan'])->group(function ()
     Route::get('/giro', [GiroController::class, 'index']);
     Route::post('/giro/detailfaktur', [GiroController::class, 'detailfaktur']);
     Route::post('/giro/prosesgiro', [GiroController::class, 'prosesgiro']);
-    Route::post('/giro/update',[GiroController::class,'update']);
+    Route::post('/giro/update', [GiroController::class, 'update']);
 
 
     //Transfer
@@ -181,7 +182,10 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan'])->group(function ()
     Route::delete('/pembayaran/{id_transfer}/deletetransfer', [PembayaranController::class, 'deletetransfer']);
     Route::post('/pembayaran/edittransfer', [PembayaranController::class, 'edittransfer']);
     Route::post('/pembayaran/{id_transfer}/updatetransfer', [PembayaranController::class, 'updatetransfer']);
-
+    Route::get('/transfer', [TransferController::class, 'index']);
+    Route::post('/transfer/detailfaktur', [TransferController::class, 'detailfaktur']);
+    Route::post('/transfer/prosestransfer', [TransferController::class, 'prosestransfer']);
+    Route::post('/transfer/update', [TransferController::class, 'update']);
 
     //Retur
     Route::get('/retur', [ReturController::class, 'index']);
@@ -196,7 +200,4 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan'])->group(function ()
     Route::post('/retur/deletebarangtemp', [ReturController::class, 'deletebarangtemp']);
     Route::post('/loadtotalreturtemp', [ReturController::class, 'loadtotalreturtemp']);
     Route::post('/retur/getfakturpelanggan', [ReturController::class, 'getfakturpelanggan']);
-
-
-
 });

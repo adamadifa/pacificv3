@@ -2,26 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Giro;
+use App\Models\Transfer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
-class GiroController extends Controller
+class TransferController extends Controller
 {
     public function index(Request $request)
     {
         $pelanggan = '"' . $request->nama_pelanggan . '"';
-        $query = Giro::query();
-        $query->select('giro.no_giro', 'tgl_giro', 'nama_pelanggan', 'karyawan.kode_cabang', 'namabank', DB::raw('SUM(giro.jumlah) as jumlah'), 'tglcair', 'giro.status', 'ket', 'tglbayar', 'ledger_bank.no_bukti');
-        $query->leftJoin('historibayar', 'giro.id_giro', '=', 'historibayar.id_giro');
-        $query->leftJoin('ledger_bank', 'giro.no_giro', '=', 'ledger_bank.no_ref');
-        $query->join('penjualan', 'giro.no_fak_penj', '=', 'penjualan.no_fak_penj');
+        $query = Transfer::query();
+        $query->select(
+            'kode_transfer',
+            'tgl_transfer',
+            'nama_pelanggan',
+            'karyawan.kode_cabang',
+            'namabank',
+            DB::raw('SUM(transfer.jumlah) as jumlah'),
+            'tglcair',
+            'transfer.status',
+            'ket',
+            'tglbayar',
+            'ledger_bank.no_bukti'
+        );
+
+        $query->leftJoin('historibayar', 'transfer.id_transfer', '=', 'historibayar.id_transfer');
+        $query->leftJoin('ledger_bank', 'transfer.kode_transfer', '=', 'ledger_bank.no_ref');
+        $query->join('penjualan', 'transfer.no_fak_penj', '=', 'penjualan.no_fak_penj');
         $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
         $query->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
         $query->orderBy('tglcair', 'desc');
-        $query->groupBy('giro.no_giro', 'tgl_giro', 'nama_pelanggan', 'karyawan.kode_cabang', 'namabank', 'tglcair', 'giro.status', 'ket', 'ledger_bank.no_bukti', 'tglbayar');
+        $query->groupBy('transfer.kode_transfer', 'tgl_transfer', 'nama_pelanggan', 'karyawan.kode_cabang', 'namabank', 'tglcair', 'transfer.status', 'ket', 'ledger_bank.no_bukti', 'tglbayar');
         if (empty($request->no_giro) && empty($request->nama_pelanggan) && empty($request->dari) && empty($request->sampai) && $request->status === null) {
             $query->WhereRaw("MATCH(nama_pelanggan) AGAINST('" . $pelanggan .  "')");
         }
@@ -29,56 +42,53 @@ class GiroController extends Controller
             $query->WhereRaw("MATCH(nama_pelanggan) AGAINST('" . $pelanggan .  "')");
         }
 
-        if (!empty($request->no_giro)) {
-            $query->where('giro.no_giro', $request->no_giro);
-        }
-
         if ($request->status !== null) {
-            $query->where('giro.status', $request->status);
+            $query->where('transfer.status', $request->status);
         }
 
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('tglcair', [$request->dari, $request->sampai]);
         }
 
-        $giro = $query->paginate(15);
-        $giro->appends($request->all());
-        return view('giro.index', compact('giro'));
-    }
 
+        $transfer = $query->paginate(15);
+        $transfer->appends($request->all());
+        return view('transfer.index', compact('transfer'));
+    }
 
     public function detailfaktur(Request $request)
     {
-        $detailfaktur = DB::table('giro')
-            ->select('giro.no_fak_penj', 'jumlah', 'tgl_giro', 'giro.date_created as tgl_input', 'historibayar.date_created as tgl_aksi')
-            ->leftJoin('historibayar', 'giro.id_giro', '=', 'historibayar.id_giro')
-            ->where('no_giro', $request->no_giro)
+        $detailfaktur = DB::table('transfer')
+            ->select('transfer.no_fak_penj', 'jumlah', 'tgl_transfer', 'transfer.date_created as tgl_input', 'historibayar.date_created as tgl_aksi')
+            ->leftJoin('historibayar', 'transfer.id_transfer', '=', 'historibayar.id_transfer')
+            ->where('kode_transfer', $request->kode_transfer)
             ->get();
-        return view('giro.detailfaktur', compact('detailfaktur'));
+        return view('transfer.detailfaktur', compact('detailfaktur'));
     }
 
-    public function prosesgiro(Request $request)
+
+    public function prosestransfer(Request $request)
     {
-        $giro = DB::table('giro')
-            ->select('giro.no_giro', 'tgl_giro', 'penjualan.kode_pelanggan', 'nama_pelanggan', 'karyawan.kode_cabang', 'namabank', DB::raw('SUM(giro.jumlah) as jumlah'), 'tglcair', 'giro.status', 'ket', 'tglbayar', 'ledger_bank.no_bukti', 'penjualan.jenistransaksi')
-            ->leftJoin('historibayar', 'giro.id_giro', '=', 'historibayar.id_giro')
-            ->leftJoin('ledger_bank', 'giro.no_giro', '=', 'ledger_bank.no_ref')
-            ->join('penjualan', 'giro.no_fak_penj', '=', 'penjualan.no_fak_penj')
+        $transfer = DB::table('transfer')
+            ->select('transfer.kode_transfer', 'tgl_transfer', 'penjualan.kode_pelanggan', 'nama_pelanggan', 'karyawan.kode_cabang', 'namabank', DB::raw('SUM(transfer.jumlah) as jumlah'), 'tglcair', 'transfer.status', 'ket', 'tglbayar', 'ledger_bank.no_bukti', 'penjualan.jenistransaksi')
+            ->leftJoin('historibayar', 'transfer.id_transfer', '=', 'historibayar.id_transfer')
+            ->leftJoin('ledger_bank', 'transfer.kode_transfer', '=', 'ledger_bank.no_ref')
+            ->join('penjualan', 'transfer.no_fak_penj', '=', 'penjualan.no_fak_penj')
             ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
             ->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan')
-            ->groupBy('giro.no_giro', 'tgl_giro', 'penjualan.kode_pelanggan', 'nama_pelanggan', 'karyawan.kode_cabang', 'namabank', 'tglcair', 'giro.status', 'ket', 'ledger_bank.no_bukti', 'tglbayar', 'penjualan.jenistransaksi')
-            ->where('no_giro', $request->no_giro)
+            ->groupBy('transfer.kode_transfer', 'tgl_transfer', 'penjualan.kode_pelanggan', 'nama_pelanggan', 'karyawan.kode_cabang', 'namabank', 'tglcair', 'transfer.status', 'ket', 'ledger_bank.no_bukti', 'tglbayar', 'penjualan.jenistransaksi')
+            ->where('kode_transfer', $request->kode_transfer)
             ->first();
         $bank = DB::table('master_bank')->where('kode_cabang', 'PST')->get();
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
-        return view('giro.prosesgiro', compact('giro', 'bank', 'bulan'));
+        return view('transfer.prosestransfer', compact('transfer', 'bank', 'bulan'));
     }
 
     public function update(Request $request)
     {
-        $no_giro = $request->no_giro;
+        $kode_transfer = $request->kode_transfer;
         $status = $request->statusaksi;
-        $tgl_giro = $request->tgl_giro;
+        $tgl_transfer = $request->tgl_transfer;
         $pelanggan = $request->pelanggan;
         $omsetbulan = $request->bulan;
         $omsettahun = $request->tahun;
@@ -102,7 +112,7 @@ class GiroController extends Controller
         $cabang  = $request->kode_cabang;
         $jenistransaksi = $request->jenistransaksi;
 
-        $datagiro = DB::table('giro')->where('no_giro', $no_giro)->get();
+        $datatransfer = DB::table('transfer')->where('kode_transfer', $kode_transfer)->get();
 
         // //Setoran Pusat
         // $lastsetoranpusat = DB::table('setoran_pusat')
@@ -121,7 +131,7 @@ class GiroController extends Controller
 
 
         $listfaktur = "";
-        foreach ($datagiro as $d) {
+        foreach ($datatransfer as $d) {
             $listfaktur = $listfaktur .= $d->no_fak_penj . ",";
         }
 
@@ -183,7 +193,7 @@ class GiroController extends Controller
 
                 //Update Setoran Pusat
                 DB::table('setoran_pusat')
-                    ->where('no_ref', $no_giro)
+                    ->where('no_ref', $kode_transfer)
                     ->update([
                         'tgl_diterimapusat' => $tglcair,
                         'bank' => $bank,
@@ -194,17 +204,17 @@ class GiroController extends Controller
 
                 //Hapus Ledger
                 DB::table('ledger_bank')
-                    ->where('no_ref', $no_giro)
+                    ->where('no_ref', $kode_transfer)
                     ->delete();
 
                 //Insert Ledger
                 DB::table('ledger_bank')
                     ->insert([
                         'no_bukti'        => $no_bukti,
-                        'no_ref'          => $no_giro,
+                        'no_ref'          => $kode_transfer,
                         'bank'            => $bank,
                         'tgl_ledger'      => $tglcair,
-                        'tgl_penerimaan'  => $tgl_giro,
+                        'tgl_penerimaan'  => $tgl_transfer,
                         'pelanggan'       => $pelanggan,
                         'keterangan'      => "INV " . $listfaktur,
                         'kode_akun'       => $akun,
@@ -228,17 +238,17 @@ class GiroController extends Controller
                         'no_ref' => $no_bukti
                     ]);
             } else if ($status == 2) {
-                $ledger = DB::table('ledger_bank')->where('no_ref', $no_giro)->first();
+                $ledger = DB::table('ledger_bank')->where('no_ref', $kode_transfer)->first();
                 if ($ledger != null) {
                     $nobukti_ledger = $ledger->no_bukti;
                     //Hapus Buku Besar
                     DB::table('buku_besar')->where('no_ref', $nobukti_ledger)->delete();
                 }
                 //Hapus Ledger
-                DB::table('ledger_bank')->where('no_ref', $no_giro)->delete();
+                DB::table('ledger_bank')->where('no_ref', $kode_transfer)->delete();
                 //Update Setoran Pusat
                 DB::table('setoran_pusat')
-                    ->where('no_ref', $no_giro)
+                    ->where('no_ref', $kode_transfer)
                     ->update([
                         'tgl_diterimapusat'  => $tglcair,
                         'bank'  => $bank,
@@ -247,15 +257,15 @@ class GiroController extends Controller
                         'omset_tahun' => $tahunjt
                     ]);
             } else {
-                $ledger = DB::table('ledger_bank')->where('no_ref', $no_giro)->first();
+                $ledger = DB::table('ledger_bank')->where('no_ref', $kode_transfer)->first();
                 $nobukti_ledger = $ledger->no_bukti;
                 //Hapus  Ledger
-                DB::table('ledger_bank')->where('no_ref', $no_giro)->delete();
+                DB::table('ledger_bank')->where('no_ref', $kode_transfer)->delete();
                 //Hapus Buku Besar
                 DB::table('buku_besar')->where('no_ref', $nobukti_ledger)->delete();
                 //Update Setoran Pusat
                 DB::table('setoran_pusat')
-                    ->where('no_ref', $no_giro)
+                    ->where('no_ref', $kode_transfer)
                     ->update([
                         'tgl_diterimapusat'  => NULL,
                         'bank'              => $bank,
@@ -265,10 +275,10 @@ class GiroController extends Controller
                     ]);
             }
 
-            foreach ($datagiro as $d) {
+            foreach ($datatransfer as $d) {
                 if ($status == 1) {
-                    DB::table('giro')
-                        ->where('id_giro', $d->id_giro)
+                    DB::table('transfer')
+                        ->where('id_transfer', $d->id_transfer)
                         ->update([
                             'status' => $status,
                             'bank_penerima' => $bank,
@@ -276,7 +286,7 @@ class GiroController extends Controller
                             'omset_bulan' => $omsetbulan,
                             'omset_tahun' => $omsettahun
                         ]);
-                    $cekbayar = DB::table('historibayar')->where('id_giro', $d->id_giro)->count();
+                    $cekbayar = DB::table('historibayar')->where('id_transfer', $d->id_transfer)->count();
                     if (empty($cekbayar)) {
                         $tahunini = date("y");
                         $historibayar = DB::table("historibayar")
@@ -295,23 +305,23 @@ class GiroController extends Controller
                                 'no_fak_penj' => $d->no_fak_penj,
                                 'tglbayar' => $tglcair,
                                 'jenistransaksi' => $jenistransaksi,
-                                'jenisbayar' => 'giro',
+                                'jenisbayar' => 'transfer',
                                 'bayar' => $d->jumlah,
-                                'id_giro' => $d->id_giro,
+                                'id_transfer' => $d->id_transfer,
                                 'id_karyawan' => $d->id_karyawan,
                                 'id_admin' => $id_admin
                             ]);
                     } else {
                         DB::table('historibayar')
-                            ->where('id_giro', $d->id_giro)
+                            ->where('id_transfer', $d->id_transfer)
                             ->update([
                                 'tglbayar' => $tglcair,
                                 'bayar' => $d->jumlah
                             ]);
                     }
                 } else if ($status == 2) {
-                    DB::table('giro')
-                        ->where('id_giro', $d->id_giro)
+                    DB::table('transfer')
+                        ->where('id_transfer', $d->id_transfer)
                         ->update([
                             'tgl_ditolak'     => $tgl_ditolak,
                             'bank_penerima'   => $bank,
@@ -320,10 +330,10 @@ class GiroController extends Controller
                             'omset_tahun'     => $tahunjt
                         ]);
 
-                    DB::table('historibayar')->where('id_giro', $d->id_giro)->delete();
+                    DB::table('historibayar')->where('id_transfer', $d->id_transfer)->delete();
                 } else {
-                    DB::table('giro')
-                        ->where('id_giro', $d->id_giro)
+                    DB::table('transfer')
+                        ->where('id_transfer', $d->id_transfer)
                         ->update([
                             'bank_penerima' => '',
                             'status'        => $status,
@@ -331,15 +341,15 @@ class GiroController extends Controller
                             'omset_tahun'   => ''
                         ]);
 
-                    DB::table('historibayar')->where('id_giro', $d->id_giro)->delete();
+                    DB::table('historibayar')->where('id_transfer', $d->id_transfer)->delete();
                 }
             }
             DB::commit();
-            return Redirect::back()->with(['success' => 'Data Giro Berhasil di Update']);
+            return Redirect::back()->with(['success' => 'Data Transfer Berhasil di Update']);
         } catch (\Exception $e) {
             //dd($e);
             DB::rollback();
-            return Redirect::back()->with(['warning' => 'Data Giro Gagal di Update,  Silahkan Hubungi Tim IT']);
+            return Redirect::back()->with(['warning' => 'Data Transfer Gagal di Update,  Silahkan Hubungi Tim IT']);
         }
     }
 }

@@ -77,7 +77,7 @@
                             <li class="{{ request()->is(['giro','giro/*']) ? 'active' : '' }}"><a href="/giro"><i class="feather icon-file-text"></i><span class="menu-item">Giro</span></a></li>
                             @endif
                             @if (in_array($level,$transfer_view))
-                            <li><a href="/transfer"><i class="feather icon-file-text"></i><span class="menu-item">Transfer</span></a></li>
+                            <li class="{{ request()->is(['transfer','transfer/*']) ? 'active' : '' }}"><a href="/transfer"><i class="feather icon-file-text"></i><span class="menu-item">Transfer</span></a></li>
                             @endif
                         </ul>
                     </li>

@@ -498,6 +498,10 @@
                                                 <td>
                                                     @if ($d->status==0)
                                                     <span class="badge bg-warning"> <i class="fa fa-history"></i> Pending </span>
+                                                    @elseif($d->status==1)
+                                                    <span class="badge bg-success"> <i class="fa fa-check"></i> Diterima {{date("d-m-Y",strtotime( $d->tglbayar)) }} </span>
+                                                    @elseif($d->status==2)
+                                                    <span class="badge bg-danger"> <i class="fa fa-close"></i> Ditolak</span>
                                                     @endif
                                                 </td>
                                                 <td>{{ $d->ket }}</td>
@@ -563,6 +567,10 @@
                                                 <td>
                                                     @if ($d->status==0)
                                                     <span class="badge bg-warning"> <i class="fa fa-history"></i> Pending </span>
+                                                    @elseif($d->status==1)
+                                                    <span class="badge bg-success"> <i class="fa fa-check"></i> Diterima {{date("d-m-Y",strtotime( $d->tglbayar)) }} </span>
+                                                    @elseif($d->status==2)
+                                                    <span class="badge bg-danger"> <i class="fa fa-close"></i> Ditolak</span>
                                                     @endif
                                                 </td>
                                                 <td>{{ $d->ket }}</td>
