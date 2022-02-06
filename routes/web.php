@@ -13,6 +13,7 @@ use App\Http\Controllers\HargaController;
 use App\Http\Controllers\HargaControoler;
 use App\Http\Controllers\JenissimpananController;
 use App\Http\Controllers\KendaraanController;
+use App\Http\Controllers\LpcController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PenjualanController;
@@ -85,6 +86,11 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/cabang/{kode_cabang}/edit', [CabangController::class, 'edit']);
     Route::post('/cabang/{kode_cabang}/update', [CabangController::class, 'update']);
     Route::delete('/cabang/{kode_cabang}/delete', [CabangController::class, 'delete']);
+
+    //LPC
+    Route::get('/lpc',[LpcController::class,'index']);
+    Route::post('/lpc/show',[LpcController::class,'show']);
+    Route::get('lpc/create',[LpcController::class,'create']);
 });
 
 //Administrator | Admin Penjualan
@@ -200,4 +206,6 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan'])->group(function ()
     Route::post('/retur/deletebarangtemp', [ReturController::class, 'deletebarangtemp']);
     Route::post('/loadtotalreturtemp', [ReturController::class, 'loadtotalreturtemp']);
     Route::post('/retur/getfakturpelanggan', [ReturController::class, 'getfakturpelanggan']);
+
+
 });

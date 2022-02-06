@@ -87,6 +87,9 @@ class GlobalProvider extends ServiceProvider
             //Keuangan
             $transfer_view = ['admin'];
 
+            //Utilities
+            $utilities = ['admin', 'admin penjualan'];
+            $kirimlpc = ['admin', 'admin penjualan'];
             $shareddata = [
                 'level' => $level,
                 'getcbg' => $getcbg,
@@ -130,6 +133,10 @@ class GlobalProvider extends ServiceProvider
 
                 //Giro
                 'transfer_view' => $transfer_view,
+
+                //Utilities
+                'utilities' => $utilities,
+                'kirimlpc' => $kirimlpc
 
 
 

@@ -85,6 +85,16 @@
                 </ul>
             </li>
             @endif
+            @if (in_array($level,$utilities))
+            <li class=" nav-item">
+                <a href="#"><i class="feather icon-settings"></i><span class="menu-title">Utilities</span></a>
+                <ul class="menu-content">
+                    @if (in_array($level,$kirimlpc))
+                    <li class="{{ request()->is(['lpc','lpc/*']) ? 'active' : '' }}"><a href="/lpc"><i class="feather icon-file-text"></i><span class="menu-item">Kirim LPC</span></a></li>
+                    @endif
+                </ul>
+            </li>
+            @endif
         </ul>
     </div>
 </div>
