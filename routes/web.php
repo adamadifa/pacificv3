@@ -86,11 +86,6 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/cabang/{kode_cabang}/edit', [CabangController::class, 'edit']);
     Route::post('/cabang/{kode_cabang}/update', [CabangController::class, 'update']);
     Route::delete('/cabang/{kode_cabang}/delete', [CabangController::class, 'delete']);
-
-    //LPC
-    Route::get('/lpc',[LpcController::class,'index']);
-    Route::post('/lpc/show',[LpcController::class,'show']);
-    Route::get('lpc/create',[LpcController::class,'create']);
 });
 
 //Administrator | Admin Penjualan
@@ -207,5 +202,14 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan'])->group(function ()
     Route::post('/loadtotalreturtemp', [ReturController::class, 'loadtotalreturtemp']);
     Route::post('/retur/getfakturpelanggan', [ReturController::class, 'getfakturpelanggan']);
 
-
+    //LPC
+    Route::get('/lpc', [LpcController::class, 'index']);
+    Route::post('/lpc/show', [LpcController::class, 'show']);
+    Route::get('lpc/create', [LpcController::class, 'create']);
+    Route::post('lpc/store', [LpcController::class, 'store']);
+    Route::post('lpc/delete', [LpcController::class, 'delete']);
+    Route::post('lpc/edit', [LpcController::class, 'edit']);
+    Route::post('lpc/update', [LpcController::class, 'update']);
+    Route::post('lpc/approve', [LpcController::class, 'approve']);
+    Route::post('lpc/cancel', [LpcController::class, 'cancel']);
 });

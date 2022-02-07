@@ -2,27 +2,117 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Retur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class LpcController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $bln = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
-        return view('lpc.index',compact('bln'));
+        return view('lpc.index', compact('bln'));
     }
 
-    public function show(Request $request){
+    public function show(Request $request)
+    {
         $bulan = $request->bulan;
         $tahun = $request->tahun;
         $bln = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
-        $lpc = DB::table('lpc')->where('bulan',$bulan)->where('tahun',$tahun)->get();
-        return view('lpc.show',compact('lpc','bln'));
+        $lpc = DB::table('lpc')->where('bulan', $bulan)->where('tahun', $tahun)->get();
+        return view('lpc.show', compact('lpc', 'bln'));
     }
 
-    public function create(){
+    public function create()
+    {
         $bln = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         $cabang = DB::table('cabang')->get();
-        return view('lpc.create',compact('cabang','bln'));
+        return view('lpc.create', compact('cabang', 'bln'));
+    }
+
+    public function store(Request $request)
+    {
+        $cek = DB::table('lpc')
+            ->where('kode_cabang', $request->kode_cabang)
+            ->where('bulan', $request->bulan)
+            ->where('tahun', $request->tahun)
+            ->count();
+        if ($cek > 0) {
+            echo 1;
+        } else {
+            $simpan = DB::table('lpc')
+                ->insert([
+                    'kode_lpc' => $request->kode_cabang . $request->bulan . $request->tahun,
+                    'kode_cabang' => $request->kode_cabang,
+                    'bulan' => $request->bulan,
+                    'tahun' => $request->tahun,
+                    'tgl_lpc' => $request->tgl_lpc
+                ]);
+            if ($simpan) {
+                echo 0;
+            } else {
+                echo 2;
+            }
+        }
+    }
+
+    public function delete(Request $request)
+    {
+        $hapus = DB::table('lpc')->where('kode_lpc', $request->kode_lpc)->delete();
+        if ($hapus) {
+            echo 0;
+        } else {
+            echo 2;
+        }
+    }
+
+    public function edit(Request $request)
+    {
+        $bln = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        $cabang = DB::table('cabang')->get();
+        $lpc = DB::table('lpc')->where('kode_lpc', $request->kode_lpc)->first();
+        return view('lpc.edit', compact('lpc', 'bln', 'cabang'));
+    }
+
+    public function update(Request $request)
+    {
+        $update = DB::table('lpc')
+            ->where('kode_lpc', $request->kode_lpc)
+            ->update([
+                'tgl_lpc' => $request->tgl_lpc
+            ]);
+        if ($update) {
+            echo 0;
+        } else {
+            echo 2;
+        }
+    }
+
+    public function approve(Request $request)
+    {
+        $update = DB::table('lpc')
+            ->where('kode_lpc', $request->kode_lpc)
+            ->update([
+                'status' => 1
+            ]);
+        if ($update) {
+            echo 0;
+        } else {
+            echo 2;
+        }
+    }
+
+    public function cancel(Request $request)
+    {
+        $update = DB::table('lpc')
+            ->where('kode_lpc', $request->kode_lpc)
+            ->update([
+                'status' => 0
+            ]);
+        if ($update) {
+            echo 0;
+        } else {
+            echo 2;
+        }
     }
 }

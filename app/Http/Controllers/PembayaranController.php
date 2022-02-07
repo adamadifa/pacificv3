@@ -37,6 +37,14 @@ class PembayaranController extends Controller
             $ket_voucher = NULL;
         }
 
+        $tanggal    = explode("-", $tglbayar);
+        $tahun      = substr($tanggal[0], 2, 2);
+        $bulan      = $tanggal[1];
+        $pelanggan = DB::table('penjualan')
+            ->select('nama_pelanggan')
+            ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+            ->where('no_fak_penj', $no_fak_penj)
+            ->first();
         $tahunini = date("y");
         $historibayar = DB::table("historibayar")
             ->whereRaw('LEFT(nobukti,6) = "' . $kode_cabang . $tahunini . '-"')
@@ -46,26 +54,74 @@ class PembayaranController extends Controller
         $nobukti  = buatkode($lastnobukti, $kode_cabang . $tahunini . "-", 6);
 
 
+        $bukubesar = DB::table("buku_besar")
+            ->whereRaw('LEFT(no_bukti,6) = "GJ' . $bulan . $tahun . '"')
+            ->orderBy("no_bukti", "desc")
+            ->first();
+        $lastno_bukti = $bukubesar->no_bukti;
+        $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 4);
 
-        $simpan = DB::table('historibayar')
-            ->insert([
-                'nobukti' => $nobukti,
-                'tglbayar' => $tglbayar,
-                'no_fak_penj' => $no_fak_penj,
-                'jenistransaksi' => $jenistransaksi,
-                'jenisbayar' => $jenisbayar,
-                'bayar' => $bayar,
-                'girotocash' => $girotocash,
-                'status_bayar' => $status_bayar,
-                'ket_voucher' => $ket_voucher,
-                'id_karyawan' => $id_karyawan,
-                'id_giro' => $id_giro,
-                'id_admin' => $id_admin
-            ]);
 
-        if ($simpan) {
+        if ($kode_cabang == 'TSM') {
+            $akun = "1-1468";
+        } else if ($kode_cabang == 'BDG') {
+            $akun = "1-1402";
+        } else if ($kode_cabang == 'BGR') {
+            $akun = "1-1403";
+        } else if ($kode_cabang == 'PWT') {
+            $akun = "1-1404";
+        } else if ($kode_cabang == 'TGL') {
+            $akun = "1-1405";
+        } else if ($kode_cabang == "SKB") {
+            $akun = "1-1407";
+        } else if ($kode_cabang == "GRT") {
+            $akun = "1-1468";
+        } else if ($kode_cabang == "SMR") {
+            $akun = "1-1488";
+        } else if ($kode_cabang == "SBY") {
+            $akun = "1-1486";
+        } else if ($kode_cabang == "PST") {
+            $akun = "1-1489";
+        } else if ($kode_cabang == "KLT") {
+            $akun = "1-1490";
+        }
+        DB::beginTransaction();
+        try {
+            DB::table('historibayar')
+                ->insert([
+                    'nobukti' => $nobukti,
+                    'tglbayar' => $tglbayar,
+                    'no_fak_penj' => $no_fak_penj,
+                    'jenistransaksi' => $jenistransaksi,
+                    'jenisbayar' => $jenisbayar,
+                    'bayar' => $bayar,
+                    'girotocash' => $girotocash,
+                    'status_bayar' => $status_bayar,
+                    'ket_voucher' => $ket_voucher,
+                    'id_karyawan' => $id_karyawan,
+                    'id_giro' => $id_giro,
+                    'id_admin' => $id_admin
+                ]);
+            if ($status_bayar != "voucher") {
+                DB::table('buku_besar')
+                    ->insert([
+                        'no_bukti' => $no_bukti_bukubesar,
+                        'tanggal' => $tglbayar,
+                        'sumber' => 'Kas Besar',
+                        'keterangan' => "Pembayaran Piutang Pelanggan " . $pelanggan->nama_pelanggan,
+                        'kode_akun' => $akun,
+                        'debet' => $bayar,
+                        'kredit' => 0,
+                        'nobukti_transaksi' => $nobukti,
+                        'no_ref' => $nobukti
+                    ]);
+            }
+
+            DB::commit();
             return Redirect::back()->with(['success' => 'Data Pembayaran Berhasil Disimpan']);
-        } else {
+        } catch (\Exception $e) {
+            //dd($e);
+            DB::rollback();
             return Redirect::back()->with(['warning' => 'Data Pembayaran Gagal Disimpan']);
         }
     }
@@ -119,40 +175,85 @@ class PembayaranController extends Controller
             $ket_voucher = NULL;
         }
 
+        if ($kode_cabang == 'TSM') {
+            $akun = "1-1468";
+        } else if ($kode_cabang == 'BDG') {
+            $akun = "1-1402";
+        } else if ($kode_cabang == 'BGR') {
+            $akun = "1-1403";
+        } else if ($kode_cabang == 'PWT') {
+            $akun = "1-1404";
+        } else if ($kode_cabang == 'TGL') {
+            $akun = "1-1405";
+        } else if ($kode_cabang == "SKB") {
+            $akun = "1-1407";
+        } else if ($kode_cabang == "GRT") {
+            $akun = "1-1468";
+        } else if ($kode_cabang == "SMR") {
+            $akun = "1-1488";
+        } else if ($kode_cabang == "SBY") {
+            $akun = "1-1486";
+        } else if ($kode_cabang == "PST") {
+            $akun = "1-1489";
+        } else if ($kode_cabang == "KLT") {
+            $akun = "1-1490";
+        }
 
-        $simpan = DB::table('historibayar')
-            ->where('nobukti', $nobukti)
-            ->update([
-                'tglbayar' => $tglbayar,
-                // 'jenistransaksi' => $jenistransaksi,
-                // 'jenisbayar' => $jenisbayar,
-                'bayar' => $bayar,
-                'girotocash' => $girotocash,
-                'status_bayar' => $status_bayar,
-                'ket_voucher' => $ket_voucher,
-                'id_karyawan' => $id_karyawan,
-                'id_giro' => $id_giro,
-                'id_admin' => $id_admin
-            ]);
+        DB::beginTransaction();
+        try {
+            DB::table('historibayar')
+                ->where('nobukti', $nobukti)
+                ->update([
+                    'tglbayar' => $tglbayar,
+                    // 'jenistransaksi' => $jenistransaksi,
+                    // 'jenisbayar' => $jenisbayar,
+                    'bayar' => $bayar,
+                    'girotocash' => $girotocash,
+                    'status_bayar' => $status_bayar,
+                    'ket_voucher' => $ket_voucher,
+                    'id_karyawan' => $id_karyawan,
+                    'id_giro' => $id_giro,
+                    'id_admin' => $id_admin
+                ]);
+            if ($status_bayar != "voucher") {
+                DB::table('buku_besar')
+                    ->where('no_ref', $nobukti)
+                    ->update([
+                        'tanggal' => $tglbayar,
+                        'debet' => $bayar,
+                    ]);
+            } else {
+                DB::table('buku_besar')
+                    ->where('no_ref', $nobukti)
+                    ->delete();
+            }
 
-        if ($simpan) {
+            DB::commit();
             return Redirect::back()->with(['success' => 'Data Pembayaran Berhasil Di Update']);
-        } else {
+        } catch (\Exception $e) {
+            //dd($e);
+            DB::rollback();
             return Redirect::back()->with(['warning' => 'Data Pembayaran Gagal Di Update']);
         }
     }
 
     public function delete($nobukti)
     {
-
-
         $nobukti = Crypt::decrypt($nobukti);
-        $hapus = DB::table('historibayar')
-            ->where('nobukti', $nobukti)
-            ->delete();
-        if ($hapus) {
+        DB::beginTransaction();
+        try {
+            DB::table('historibayar')
+                ->where('nobukti', $nobukti)
+                ->delete();
+            DB::table('buku_besar')
+                ->where('no_ref', $nobukti)
+                ->delete();
+
+            DB::commit();
             return Redirect::back()->with(['success' => 'Data Pembayaran Berhasil Di Hapus']);
-        } else {
+        } catch (\Exception $e) {
+            //dd($e);
+            DB::rollback();
             return Redirect::back()->with(['warning' => 'Data Pembayaran Gagal Di Hapus']);
         }
     }

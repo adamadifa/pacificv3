@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cabang;
 use App\Models\Pelanggan;
+use App\Models\Penjualan;
 use App\Models\Salesman;
 use Facade\FlareClient\Stacktrace\File;
 use Illuminate\Http\Request;
@@ -368,21 +369,45 @@ class PelangganController extends Controller
         }
     }
 
-    public function show($kode_pelanggan)
+    public function show($kode_pelanggan, Request $request)
     {
         $kode_pelanggan = Crypt::decrypt($kode_pelanggan);
+
+        $query = Penjualan::query();
+        $query->select('penjualan.*', 'nama_pelanggan', 'nama_karyawan', 'karyawan.kode_cabang');
+        $query->orderBy('tgltransaksi', 'desc');
+        $query->orderBy('no_fak_penj', 'asc');
+        $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $query->where('penjualan.kode_pelanggan', $kode_pelanggan);
+
+
+        if (!empty($request->no_fak_penj)) {
+            $query->where('no_fak_penj', $request->no_fak_penj);
+        }
+
+
+        if (!empty($request->dari) && !empty($request->sampai)) {
+            $query->whereBetween('tgltransaksi', [$request->dari, $request->sampai]);
+        }
+
+        $penjualan = $query->paginate(10);
+        $penjualan->appends($request->all());
+
+
         $data = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)
             ->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan')
             ->join('cabang', 'pelanggan.kode_cabang', '=', 'cabang.kode_cabang')
             ->first();
-        return view('pelanggan.show', compact('data'));
+        return view('pelanggan.show', compact('data', 'penjualan'));
     }
 
     public function json()
     {
         $pelanggan = DB::table('pelanggan')
             ->select('pelanggan.*', 'karyawan.nama_karyawan', 'karyawan.kategori_salesman', 'limitpel')
-            ->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
+            ->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan')
+            ->where('status_pelanggan', '1');
         return DataTables::of($pelanggan)
             ->addColumn('action', function ($pelanggan) {
                 return '<a href="#" class="btn btn-sm btn-primary"

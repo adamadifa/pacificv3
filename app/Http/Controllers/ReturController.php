@@ -198,6 +198,7 @@ class ReturController extends Controller
         }
         $no_retur_penj = buatkode($last_no_retur_penj, 'R' . $tanggalretur, 3);
 
+
         DB::beginTransaction();
         try {
             if ($jenis_retur == "pf") {
@@ -206,11 +207,21 @@ class ReturController extends Controller
                 $total = $subtotal_pf + $subtotal_gb;
                 $cekfaktur = DB::table('penjualan')->where('no_fak_penj', $no_fak_penj)->first();
                 if ($cekfaktur->jenistransaksi == 'tunai') {
+                    $historibayar = DB::table('historibayar')
+                        ->where('no_fak_penj', $no_fak_penj)
+                        ->where('tglbayar', $cekfaktur->tgltransaksi)
+                        ->first();
                     DB::table('historibayar')
                         ->where('no_fak_penj', $no_fak_penj)
-                        ->where('tgltransaksi', $cekfaktur->tgltransaksi)
+                        ->where('tglbayar', $cekfaktur->tgltransaksi)
                         ->update([
-                            'bayar' =>  DB::raw('bayar -' . $$total)
+                            'bayar' =>  DB::raw('bayar -' . $total)
+                        ]);
+
+                    DB::table('buku_besar')
+                        ->where('no_ref', $historibayar->nobukti)
+                        ->update([
+                            'debet' =>  DB::raw('debet -' . $total)
                         ]);
                 }
             } else {
@@ -287,18 +298,41 @@ class ReturController extends Controller
     public function delete($no_retur_penj)
     {
         $no_retur_penj = Crypt::decrypt($no_retur_penj);
+        $retur = DB::table('retur')
+            ->select('retur.*', 'penjualan.jenistransaksi', 'penjualan.tgltransaksi')
+            ->join('penjualan', 'retur.no_fak_penj', '=', 'penjualan.no_fak_penj')
+            ->where('no_retur_penj', $no_retur_penj)->first();
+
+        $historibayar = DB::table('historibayar')
+            ->where('no_fak_penj', $retur->no_fak_penj)
+            ->where('tglbayar', $retur->tgltransaksi)
+            ->first();
+        DB::beginTransaction();
         try {
-            $hapus = DB::table('retur')
+            DB::table('retur')
                 ->where('no_retur_penj', $no_retur_penj)
                 ->delete();
 
-            if ($hapus) {
-                return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
-            } else {
-                return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
+            if ($retur->jenistransaksi == "tunai" and $retur->jenis_retur = "pf") {
+                DB::table('historibayar')
+                    ->where('no_fak_penj', $retur->no_fak_penj)
+                    ->where('tglbayar', $retur->tgltransaksi)
+                    ->update([
+                        'bayar' =>  DB::raw('bayar +' . $retur->total)
+                    ]);
+
+                DB::table('buku_besar')
+                    ->where('no_ref', $historibayar->nobukti)
+                    ->update([
+                        'debet' =>  DB::raw('debet +' . $retur->total)
+                    ]);
             }
-        } catch (PDOException $e) {
-            return Redirect::back()->with(['danger' => 'Data Gagal Di Hapus Hubungi Tim IT']);
+            DB::commit();
+            return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
+        } catch (\Exception $e) {
+            dd($e);
+            DB::rollback();
+            return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
         }
     }
 }

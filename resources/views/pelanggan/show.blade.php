@@ -19,6 +19,7 @@
     </div>
 </div>
 <div class="content-body">
+    <input type="hidden" id="cektutuplaporan">
     <div class="col-lg-12 col-sm-12">
 
         <div class="row">
@@ -195,7 +196,82 @@
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="penjualan" aria-labelledby="penjualan-tab" role="tabpanel">
+                                    <form action="">
+                                        <div class="row">
+                                            <div class="col-lg-6">
+                                                <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker value="{{ Request('dari') }}" />
+                                            </div>
+                                            <div class="col-lg-6">
+                                                <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker value="{{ Request('sampai') }}" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12 col-sm-12">
+                                                <x-inputtext label="No Faktur" field="no_fak_penj" icon="feather icon-credit-card" value="{{ Request('no_fak_penj') }}" />
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12 col-sm-12">
+                                                <button type="submit" name="submit" value="1" class="btn btn-primary btn-block"><i class="fa fa-search"></i> Cari Data </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>No. Faktur</th>
+                                                <th>Tanggal</th>
+                                                <th>Salesman</th>
+                                                <th>T/K</th>
+                                                <th>Total</th>
+                                                <th>Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($penjualan as $d)
+                                            <tr>
+                                                <td>{{ $loop->iteration; }}</td>
+                                                <td>{{ $d->no_fak_penj }}</td>
+                                                <td>{{ date("d-m-Y",strtotime($d->tgltransaksi)) }}</td>
+                                                <td>{{ ucwords(strtolower($d->nama_karyawan)) }}</td>
+                                                <td>
+                                                    @if ($d->jenistransaksi=="tunai")
+                                                    <span class="badge bg-success">Tunai</span>
+                                                    @else
+                                                    <span class="badge bg-warning">Kredit</span>
+                                                    @endif
+                                                </td>
+                                                <td class="text-right">{{rupiah($d->total)}}</td>
+                                                <td>
+                                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                                        <a class="ml-1" href="/penjualan/{{\Crypt::encrypt($d->no_fak_penj)}}/edit"><i class="feather icon-edit success"></i></a>
+                                                        <a class="ml-1 detailpenjualan" href="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/show"><i class=" feather icon-file-text info"></i></a>
+                                                        <form method="POST" name="deleteform" class="deleteform" action="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/delete">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <a href="#" tanggal="{{ $d->tgltransaksi }}" class="delete-confirm ml-1">
+                                                                <i class="feather icon-trash danger"></i>
+                                                            </a>
+                                                        </form>
+                                                        <div class="dropdown ml-1">
+                                                            <a class="dropdown-toggle mr-1" type="button" id="dropdownMenuButton300" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <i class="feather icon-printer primary"></i>
+                                                            </a>
+                                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton300" x-placement="top-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -7px, 0px);">
+                                                                <a class="dropdown-item" target="_blank" href="/penjualan/cetakfaktur/{{ Crypt::encrypt($d->no_fak_penj) }}"><i class="feather icon-printer mr-1"></i>Cetak Faktur</a>
+                                                                <a class="dropdown-item" target="_blank" href="/penjualan/cetaksuratjalan/{{ Crypt::encrypt($d->no_fak_penj) }}/1"><i class="feather icon-printer mr-1"></i>Cetak Surat Jalan 1</a>
+                                                                <a class="dropdown-item" target="_blank" href="/penjualan/cetaksuratjalan/{{ Crypt::encrypt($d->no_fak_penj) }}/2"><i class="feather icon-printer mr-1"></i>Cetak Surat Jalan 2</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
+                                                </td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                    {{ $penjualan->links('vendor.pagination.vuexy') }}
                                 </div>
                                 <div class="tab-pane" id="limitkredit" aria-labelledby="limitkredit-tab" role="tabpanel">
                                 </div>
@@ -208,3 +284,51 @@
     </div>
 </div>
 @endsection
+@push('myscript')
+<script>
+    $(function() {
+        function cektutuplaporan(tanggal) {
+            $.ajax({
+                type: "POST"
+                , url: "/cektutuplaporan"
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , tanggal: tanggal
+                    , jenislaporan: "penjualan"
+                }
+                , cache: false
+                , success: function(respond) {
+                    console.log(respond);
+                    $("#cektutuplaporan").val(respond);
+                }
+            });
+        }
+        $('.delete-confirm').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+            var tanggal = $(this).attr("tanggal");
+            cektutuplaporan(tanggal);
+            event.preventDefault();
+            swal({
+                    title: `Are you sure you want to delete this record?`
+                    , text: "If you delete this, it will be gone forever."
+                    , icon: "warning"
+                    , buttons: true
+                    , dangerMode: true
+                , })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        var cektutuplaporan = $("#cektutuplaporan").val();
+                        if (cektutuplaporan > 0) {
+                            swal("Oops", "Laporan Periode Ini Sudah Di Tutup !", "warning");
+                            return false;
+                        } else {
+                            form.submit();
+                        }
+                    }
+                });
+        });
+    });
+
+</script>
+@endpush

@@ -79,6 +79,7 @@
                                     <th>Bulan</th>
                                     <th>Tahun</th>
                                     <th>Tgl Kirim</th>
+                                    <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -111,52 +112,77 @@
         </div>
     </div>
 </div>
+
+<!-- Edit LPC -->
+<div class="modal fade text-left" id="mdleditlpc" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Edit LPC</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loadeditlpc"></div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @push('myscript')
-    <script>
-        $(function(){
-            function loadlpc() {
-                var tahun = $("#tahun").val();
-                var bulan = $("#bulan").val();
-                $.ajax({
-                    type: 'POST',
-                    url: '/lpc/show',
-                    data: {
-                    _token: "{{ csrf_token() }}",
-                    bulan: bulan,
-                    tahun: tahun
-                    },
-                    cache: false,
-                    success: function(respond) {
+<script>
+    $(function() {
+        function loadlpc() {
+            var tahun = $("#tahun").val();
+            var bulan = $("#bulan").val();
+            $.ajax({
+                type: 'POST'
+                , url: '/lpc/show'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , bulan: bulan
+                    , tahun: tahun
+                }
+                , cache: false
+                , success: function(respond) {
                     $("#loadlpc").html(respond);
-                    }
-                });
-            }
-
-            function loadinputlpc(){
-                $.ajax({
-                    type: 'GET',
-                    url: '/lpc/create',
-                    cache: false,
-                    success: function(respond) {
-                    $("#loadinputlpc").html(respond);
-                    }
-                });
-            }
-            loadlpc();
-
-            $("#bulan").change(function(){
-                loadlpc();
+                }
             });
+        }
 
-            $("#inputlpc").click(function(e){
-                e.preventDefault();
-                loadinputlpc();
-                $('#mdlinputlpc').modal({
-                    backdrop: 'static'
-                    , keyboard: false
-                });
+        function loadinputlpc() {
+            $.ajax({
+                type: 'GET'
+                , url: '/lpc/create'
+                , cache: false
+                , success: function(respond) {
+                    $("#loadinputlpc").html(respond);
+                }
+            });
+        }
+        loadlpc();
+
+        $("#bulan").change(function() {
+            loadlpc();
+        });
+
+        $("#tahun").change(function() {
+            loadlpc();
+        });
+
+        $("#inputlpc").click(function(e) {
+            e.preventDefault();
+            loadinputlpc();
+            $('#mdlinputlpc').modal({
+                backdrop: 'static'
+                , keyboard: false
             });
         });
-    </script>
+
+
+
+    });
+
+</script>
 @endpush

@@ -440,18 +440,20 @@
                                                     @endif
                                                 </td>
                                                 <td>
+                                                    @if ($d->jenisbayar=='titipan')
                                                     <div class="btn-group" role="group" aria-label="Basic example">
                                                         <a class="ml-1 editbayar" href="#" nobukti="{{ $d->nobukti; }}" kode_cabang="{{ $data->kode_cabang }}" no_fak_penj="{{ $data->no_fak_penj }}" sisabayar="{{ $sisabayar - $d->bayar }}"><i class="feather icon-edit success"></i></a>
                                                         @if (in_array($level,$harga_hapus))
                                                         <form method="POST" class="deleteform" action="/pembayaran/{{ Crypt::encrypt($d->nobukti) }}/delete">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <a href=" #" class="delete-confirm ml-1">
+                                                            <a href=" #" tanggal="{{ $d->tglbayar }}" class="delete-confirm ml-1">
                                                                 <i class="feather icon-trash danger"></i>
                                                             </a>
                                                         </form>
                                                         @endif
                                                     </div>
+                                                    @endif
                                                 </td>
                                             </tr>
                                             @endforeach
@@ -514,7 +516,7 @@
                                                         <form method="POST" class="deleteform" action="/pembayaran/{{ Crypt::encrypt($d->id_giro) }}/deletegiro">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <a href=" #" class="delete-confirm ml-1">
+                                                            <a href=" #" tanggal="{{ $d->tgl_giro }}" class="delete-confirm ml-1">
                                                                 <i class="feather icon-trash danger"></i>
                                                             </a>
                                                         </form>
@@ -583,7 +585,7 @@
                                                         <form method="POST" class="deleteform" action="/pembayaran/{{ Crypt::encrypt($d->id_transfer) }}/deletetransfer">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <a href=" #" class="delete-confirm ml-1">
+                                                            <a href=" #" tanggal="{{ $d->tgl_transfer }}" class="delete-confirm ml-1">
                                                                 <i class="feather icon-trash danger"></i>
                                                             </a>
                                                         </form>
@@ -918,9 +920,12 @@
     $(function() {
 
         $('.delete-confirm').click(function(event) {
+            event.preventDefault();
             var form = $(this).closest("form");
             var name = $(this).data("name");
-            event.preventDefault();
+            var tanggal = $(this).attr("tanggal");
+            cektutuplaporan(tanggal);
+
             swal({
                     title: `Are you sure you want to delete this record?`
                     , text: "If you delete this, it will be gone forever."
@@ -930,7 +935,12 @@
                 , })
                 .then((willDelete) => {
                     if (willDelete) {
-                        form.submit();
+                        var cektutup = $("#cektutuplaporan").val();
+                        if (cektutup > 0) {
+                            swal("Oops", "Laporan Periode Ini Sudah Di Tutup !", "warning");
+                        } else {
+                            form.submit();
+                        }
                     }
                 });
         });

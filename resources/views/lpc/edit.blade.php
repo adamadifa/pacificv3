@@ -1,24 +1,29 @@
 <form action="#">
+    <input type="hidden" name="kode_lpc" id="kode_lpc" value="{{ $lpc->kode_lpc }}">
     <div class="form-body">
         <div class="form-group">
             <div class="col-12">
-                <select name="kode_cabang" id="kode_cabang" class="form-control">
+                <select name="kode_cabang" id="kode_cabang" class="form-control" disabled>
                     <option value="">Cabang</option>
                     @foreach ($cabang as $d)
-                    <option value="{{$d->kode_cabang}}">{{$d->nama_cabang}}</option>
+                    <option @if($lpc->kode_cabang == $d->kode_cabang)
+                        selected
+                        @endif value="{{$d->kode_cabang}}">{{$d->nama_cabang}}</option>
                     @endforeach
                 </select>
             </div>
         </div>
         <div class="form-group">
             <div class="col-12">
-                <select name="bulaninput" id="bulaninput" class="form-control">
+                <select name="bulaninput" id="bulaninput" class="form-control" disabled>
                     <option value="">Bulan</option>
                     <?php
                     $bl = date("m");
                     for ($i = 1; $i < count($bln); $i++) {
                     ?>
-                    <option <?php if ($bl == $i) {
+                    <option @if($lpc->bulan == $i)
+                        selected
+                        @endif <?php if ($bl == $i) {
                                 echo "selected";
                             } ?> value="<?php echo $i; ?>"><?php echo $bln[$i]; ?></option>
                     <?php
@@ -29,14 +34,16 @@
         </div>
         <div class="form-group">
             <div class="col-12">
-                <select name="tahuninput" id="tahuninput" class="form-control">
+                <select name="tahuninput" id="tahuninput" class="form-control" disabled>
                     <option value="">Tahun</option>
                     <?php
                     $tahun = date("Y");
                     $tahunmulai = 2021;
                     for ($thn = $tahunmulai; $thn <= date('Y'); $thn++) {
                     ?>
-                    <option <?php if ($tahun == $thn) {
+                    <option @if($lpc->tahun == $thn)
+                        selected
+                        @endif <?php if ($tahun == $thn) {
                                 echo "selected";
                             } ?> value="<?php echo $thn; ?>"><?php echo $thn; ?>
                     </option>
@@ -48,11 +55,11 @@
         </div>
         <div class="form-group">
             <div class="col-12">
-                <x-inputtext label="Tanggal LPC" field="tgl_lpc" datepicker icon="feather icon-calendar" />
+                <x-inputtext label="Tanggal LPC" value="{{ $lpc->tgl_lpc }}" field="tgl_lpc" datepicker icon="feather icon-calendar" />
             </div>
         </div>
         <div class="form-group">
-            <button class="btn btn-primary btn-block" id="simpanlpc"><i class="feather icon-send"></i> Submit</button>
+            <button class="btn btn-primary btn-block" id="updatelpc"><i class="feather icon-send"></i> Submit</button>
         </div>
     </div>
 </form>
@@ -77,40 +84,11 @@
                 }
             });
         }
-        $("#simpanlpc").click(function(e) {
+        $("#updatelpc").click(function(e) {
             e.preventDefault();
-            var kode_cabang = $("#kode_cabang").val();
-            var bulan = $("#bulaninput").val();
-            var tahun = $("#tahuninput").val();
+            var kode_lpc = $("#kode_lpc").val();
             var tgl_lpc = $("#tgl_lpc").val();
-            if (kode_cabang == "") {
-                swal({
-                    title: 'Oops'
-                    , text: 'Kode Cabang Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#kode_cabang").focus();
-                });
-            } else if (bulan == "") {
-                swal({
-                    title: 'Oops'
-                    , text: 'Bulan Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#bulaninput").focus();
-                });
-            } else if (tahun == "") {
-                swal({
-                    title: 'Oops'
-                    , text: 'Tahun Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#tahuninput").focus();
-                });
-            } else if (tgl_lpc == "") {
+            if (tgl_lpc == "") {
                 swal({
                     title: 'Oops'
                     , text: 'Tanggal Harus Diisi !'
@@ -122,26 +100,22 @@
             } else {
                 $.ajax({
                     type: 'POST'
-                    , url: '/lpc/store'
+                    , url: '/lpc/update'
                     , data: {
                         _token: "{{ csrf_token() }}"
-                        , kode_cabang: kode_cabang
-                        , bulan: bulan
-                        , tahun: tahun
+                        , kode_lpc: kode_lpc
                         , tgl_lpc: tgl_lpc
                     }
                     , cache: false
                     , success: function(respond) {
-                        if (respond == 1) {
-                            swal("Oops", "Data Sudah Ada", "warning");
-                        } else if (respond == 0) {
-                            swal("Berhasil ", "Data Berhasil Disimpan", "success");
+                        if (respond == 0) {
+                            swal("Berhasil ", "Data Berhasil Update", "success");
                         } else {
-                            swal("Gagal", "Data Gagal Disimpan", "danger");
+                            swal("Gagal", "Data Gagal Update", "danger");
                         }
 
                         loadlpc();
-                        $("#mdlinputlpc").modal("hide");
+                        $("#mdleditlpc").modal("hide");
                     }
                 });
             }

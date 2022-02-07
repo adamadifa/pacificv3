@@ -104,6 +104,7 @@ class GiroController extends Controller
 
         $datagiro = DB::table('giro')->where('no_giro', $no_giro)->get();
 
+
         // //Setoran Pusat
         // $lastsetoranpusat = DB::table('setoran_pusat')
         // ->select('kode_setoranpusat')
@@ -267,6 +268,9 @@ class GiroController extends Controller
 
             foreach ($datagiro as $d) {
                 if ($status == 1) {
+                    $tanggal    = explode("-", $tglcair);
+                    $tahun      = substr($tanggal[0], 2, 2);
+                    $bulan      = $tanggal[1];
                     DB::table('giro')
                         ->where('id_giro', $d->id_giro)
                         ->update([
@@ -276,39 +280,60 @@ class GiroController extends Controller
                             'omset_bulan' => $omsetbulan,
                             'omset_tahun' => $omsettahun
                         ]);
-                    $cekbayar = DB::table('historibayar')->where('id_giro', $d->id_giro)->count();
-                    if (empty($cekbayar)) {
-                        $tahunini = date("y");
-                        $historibayar = DB::table("historibayar")
-                            ->whereRaw('LEFT(nobukti,6) = "' . $cabang . $tahunini . '-"')
-                            ->orderBy("nobukti", "desc")
-                            ->first();
-                        if ($historibayar == null) {
-                            $lastnobukti = $cabang . $tahunini . '-000000';
-                        } else {
-                            $lastnobukti = $historibayar->nobukti;
-                        }
-                        $nobukti  = buatkode($lastnobukti, $cabang . $tahunini . "-", 6);
-                        DB::table('historibayar')
-                            ->insert([
-                                'nobukti' => $nobukti,
-                                'no_fak_penj' => $d->no_fak_penj,
-                                'tglbayar' => $tglcair,
-                                'jenistransaksi' => $jenistransaksi,
-                                'jenisbayar' => 'giro',
-                                'bayar' => $d->jumlah,
-                                'id_giro' => $d->id_giro,
-                                'id_karyawan' => $d->id_karyawan,
-                                'id_admin' => $id_admin
-                            ]);
+                    // $cekbayar = DB::table('historibayar')->where('id_giro', $d->id_giro)->count();
+                    // if (empty($cekbayar)) {
+                    $tahunini = date("y");
+                    $historibayar = DB::table("historibayar")
+                        ->whereRaw('LEFT(nobukti,6) = "' . $cabang . $tahunini . '-"')
+                        ->orderBy("nobukti", "desc")
+                        ->first();
+                    if ($historibayar == null) {
+                        $lastnobukti = $cabang . $tahunini . '-000000';
                     } else {
-                        DB::table('historibayar')
-                            ->where('id_giro', $d->id_giro)
-                            ->update([
-                                'tglbayar' => $tglcair,
-                                'bayar' => $d->jumlah
-                            ]);
+                        $lastnobukti = $historibayar->nobukti;
                     }
+                    $nobukti  = buatkode($lastnobukti, $cabang . $tahunini . "-", 6);
+                    DB::table('historibayar')
+                        ->insert([
+                            'nobukti' => $nobukti,
+                            'no_fak_penj' => $d->no_fak_penj,
+                            'tglbayar' => $tglcair,
+                            'jenistransaksi' => $jenistransaksi,
+                            'jenisbayar' => 'giro',
+                            'bayar' => $d->jumlah,
+                            'id_giro' => $d->id_giro,
+                            'id_karyawan' => $d->id_karyawan,
+                            'id_admin' => $id_admin
+                        ]);
+
+
+                    $bukubesar = DB::table("buku_besar")
+                        ->whereRaw('LEFT(no_bukti,6) = "GJ' . $bulan . $tahun . '"')
+                        ->orderBy("no_bukti", "desc")
+                        ->first();
+                    $lastno_bukti = $bukubesar->no_bukti;
+                    $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 4);
+
+                    DB::table('buku_besar')
+                        ->insert([
+                            'no_bukti' => $no_bukti_bukubesar,
+                            'tanggal' => $tglcair,
+                            'sumber' => 'Kas Besar',
+                            'keterangan' => "Pembayaran Piutang Pelanggan " . $pelanggan,
+                            'kode_akun' => $akun,
+                            'debet' => $d->jumlah,
+                            'kredit' => 0,
+                            'nobukti_transaksi' => $nobukti,
+                            'no_ref' => $nobukti
+                        ]);
+                    // } else {
+                    //     DB::table('historibayar')
+                    //         ->where('id_giro', $d->id_giro)
+                    //         ->update([
+                    //             'tglbayar' => $tglcair,
+                    //             'bayar' => $d->jumlah
+                    //         ]);
+                    // }
                 } else if ($status == 2) {
                     DB::table('giro')
                         ->where('id_giro', $d->id_giro)
@@ -319,6 +344,10 @@ class GiroController extends Controller
                             'omset_bulan'     => $bulanjt,
                             'omset_tahun'     => $tahunjt
                         ]);
+                    $hb = DB::table('historibayar')->where('id_giro', $d->id_giro)->first();
+                    DB::table('buku_besar')
+                        ->where('no_ref', $hb->nobukti)
+                        ->delete();
 
                     DB::table('historibayar')->where('id_giro', $d->id_giro)->delete();
                 } else {
@@ -330,7 +359,10 @@ class GiroController extends Controller
                             'omset_bulan'   => 0,
                             'omset_tahun'   => ''
                         ]);
-
+                    $hb = DB::table('historibayar')->where('id_giro', $d->id_giro)->first();
+                    DB::table('buku_besar')
+                        ->where('no_ref', $hb->nobukti)
+                        ->delete();
                     DB::table('historibayar')->where('id_giro', $d->id_giro)->delete();
                 }
             }

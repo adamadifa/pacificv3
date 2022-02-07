@@ -18,6 +18,7 @@
         </div>
     </div>
     <div class="content-body">
+        <input type="hidden" id="cektutuplaporan">
         <div class="col-md-12 col-sm-12">
             <div class="card">
                 <div class="card-body">
@@ -93,11 +94,11 @@
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <a class="ml-1" href="/penjualan/{{\Crypt::encrypt($d->no_fak_penj)}}/edit"><i class="feather icon-edit success"></i></a>
-                                        <a class="ml-1 detailpelanggan" href="penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/show"><i class=" feather icon-file-text info"></i></a>
+                                        <a class="ml-1 detailpenjualan" href="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/show"><i class=" feather icon-file-text info"></i></a>
                                         <form method="POST" name="deleteform" class="deleteform" action="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/delete">
                                             @csrf
                                             @method('DELETE')
-                                            <a href="#" class="delete-confirm ml-1">
+                                            <a href="#" tanggal="{{ $d->tgltransaksi }}" class="delete-confirm ml-1">
                                                 <i class="feather icon-trash danger"></i>
                                             </a>
                                         </form>
@@ -129,9 +130,28 @@
 @push('myscript')
 <script>
     $(function() {
+
+        function cektutuplaporan(tanggal) {
+            $.ajax({
+                type: "POST"
+                , url: "/cektutuplaporan"
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , tanggal: tanggal
+                    , jenislaporan: "penjualan"
+                }
+                , cache: false
+                , success: function(respond) {
+                    console.log(respond);
+                    $("#cektutuplaporan").val(respond);
+                }
+            });
+        }
         $('.delete-confirm').click(function(event) {
             var form = $(this).closest("form");
             var name = $(this).data("name");
+            var tanggal = $(this).attr("tanggal");
+            cektutuplaporan(tanggal);
             event.preventDefault();
             swal({
                     title: `Are you sure you want to delete this record?`
@@ -142,7 +162,13 @@
                 , })
                 .then((willDelete) => {
                     if (willDelete) {
-                        form.submit();
+                        var cektutuplaporan = $("#cektutuplaporan").val();
+                        if (cektutuplaporan > 0) {
+                            swal("Oops", "Laporan Periode Ini Sudah Di Tutup !", "warning");
+                            return false;
+                        } else {
+                            form.submit();
+                        }
                     }
                 });
         });
