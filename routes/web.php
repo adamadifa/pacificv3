@@ -13,6 +13,7 @@ use App\Http\Controllers\HargaController;
 use App\Http\Controllers\HargaControoler;
 use App\Http\Controllers\JenissimpananController;
 use App\Http\Controllers\KendaraanController;
+use App\Http\Controllers\LimitkreditController;
 use App\Http\Controllers\LpcController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PembayaranController;
@@ -212,4 +213,7 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan'])->group(function ()
     Route::post('lpc/update', [LpcController::class, 'update']);
     Route::post('lpc/approve', [LpcController::class, 'approve']);
     Route::post('lpc/cancel', [LpcController::class, 'cancel']);
+
+    //Limit Kredit
+    Route::get('/limitkredit', [LimitkreditController::class, 'index']);
 });

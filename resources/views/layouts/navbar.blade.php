@@ -58,7 +58,9 @@
                             @if (in_array($level,$retur_view))
                             <li class="{{ request()->is(['retur','retur/*']) ? 'active' : '' }}"><a href="/retur"><i class="feather icon-file-text"></i><span class="menu-item">Data Retur</span></a></li>
                             @endif
-
+                            @if (in_array($level,$limitkredit_view))
+                            <li class="{{ request()->is(['limitkredit','limitkredit/*']) ? 'active' : '' }}"><a href="/limitkredit"><i class="feather icon-credit-card"></i><span class="menu-item">Limit Kredit</span></a></li>
+                            @endif
                         </ul>
                     </li>
                     @endif

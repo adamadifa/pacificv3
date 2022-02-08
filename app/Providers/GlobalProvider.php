@@ -77,6 +77,9 @@ class GlobalProvider extends ServiceProvider
             //Retur
             $retur_view = ['admin'];
 
+            //Retur
+            $limitkredit_view = ['admin'];
+
 
             //Keuangan
             $keuangan = ['admin'];
@@ -123,6 +126,9 @@ class GlobalProvider extends ServiceProvider
 
                 //Retur
                 'retur_view' => $retur_view,
+
+                //Limit Kredit
+                'limitkredit_view' => $limitkredit_view,
 
                 //Keuangan
                 'keuangan' => $keuangan,

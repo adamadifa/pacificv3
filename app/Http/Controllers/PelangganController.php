@@ -381,25 +381,26 @@ class PelangganController extends Controller
         $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
         $query->where('penjualan.kode_pelanggan', $kode_pelanggan);
 
-
         if (!empty($request->no_fak_penj)) {
             $query->where('no_fak_penj', $request->no_fak_penj);
         }
-
-
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('tgltransaksi', [$request->dari, $request->sampai]);
         }
-
         $penjualan = $query->paginate(10);
         $penjualan->appends($request->all());
 
 
+        $limitkredit = DB::table('pengajuan_limitkredit_v3')
+            ->select('no_pengajuan', 'tgl_pengajuan', 'jumlah', 'jumlah_rekomendasi', 'jatuhtempo', 'jatuhtempo_rekomendasi', 'skor', 'status', 'kacab', 'mm', 'gm', 'dirut')
+            ->where('kode_pelanggan', $kode_pelanggan)
+            ->orderBy('tgl_pengajuan', 'asc')
+            ->get();
         $data = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)
             ->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan')
             ->join('cabang', 'pelanggan.kode_cabang', '=', 'cabang.kode_cabang')
             ->first();
-        return view('pelanggan.show', compact('data', 'penjualan'));
+        return view('pelanggan.show', compact('data', 'penjualan', 'limitkredit'));
     }
 
     public function json()

@@ -960,7 +960,12 @@ class PenjualanController extends Controller
                         ->whereRaw('LEFT(no_bukti,6) = "GJ' . $bulan . $tahun . '"')
                         ->orderBy("no_bukti", "desc")
                         ->first();
-                    $lastno_bukti = $bukubesar->no_bukti;
+                    if ($bukubesar == null) {
+                        $lastno_bukti = "GJ" . $bulan . $tahun . "0000";
+                    } else {
+                        $lastno_bukti = $bukubesar->no_bukti;
+                    }
+
                     $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 4);
                     DB::table('historibayar')
                         ->insert([
@@ -1001,6 +1006,11 @@ class PenjualanController extends Controller
     {
         $no_fak_penj = Crypt::decrypt($no_fak_penj);
         $hb = DB::table('historibayar')->where('no_fak_penj', $no_fak_penj)->get();
+        $giro = DB::table('giro')
+            ->select('ledger_bank.no_bukti')
+            ->leftJoin('ledger_bank', 'giro.no_giro', '=', 'ledger_bank.no_ref')
+            ->where('giro.no_fak_penj', $no_fak_penj)
+            ->get();
         DB::beginTransaction();
         try {
             DB::table('penjualan')
@@ -1013,11 +1023,20 @@ class PenjualanController extends Controller
                 $no_ref[] = $d->nobukti;
             }
 
+            $no_bukti[] = "";
+            foreach ($giro as $d) {
+                $no_bukti[] = $d->no_bukti;
+            }
 
 
             DB::table('buku_besar')
                 ->whereIn('no_ref', $no_ref)
                 ->delete();
+
+            DB::table('buku_besar')
+                ->whereIn('no_ref', $no_bukti)
+                ->delete();
+
             // DB::table('buku_besar')
             //     ->leftJoin('historibayar', 'buku_besar.no_ref', '=', 'historibayar.nobukti')
             //     ->where('no_fak_penj', $no_fak_penj)
@@ -1125,6 +1144,7 @@ class PenjualanController extends Controller
         $tgltransaksi = $request->tgltransaksi;
         $id_karyawan = $request->id_karyawan;
         $kode_pelanggan = $request->kode_pelanggan;
+        $nama_pelanggan = $request->nama_pelanggan;
         $limitpel = $request->limitpel;
         $sisapiutang = $request->sisapiutang;
         $jenistransaksi = $request->jenistransaksi;
@@ -1249,7 +1269,33 @@ class PenjualanController extends Controller
             $status = "";
         }
 
+        if ($kode_cabang == 'TSM') {
+            $akun = "1-1468";
+        } else if ($kode_cabang == 'BDG') {
+            $akun = "1-1402";
+        } else if ($kode_cabang == 'BGR') {
+            $akun = "1-1403";
+        } else if ($kode_cabang == 'PWT') {
+            $akun = "1-1404";
+        } else if ($kode_cabang == 'TGL') {
+            $akun = "1-1405";
+        } else if ($kode_cabang == "SKB") {
+            $akun = "1-1407";
+        } else if ($kode_cabang == "GRT") {
+            $akun = "1-1468";
+        } else if ($kode_cabang == "SMR") {
+            $akun = "1-1488";
+        } else if ($kode_cabang == "SBY") {
+            $akun = "1-1486";
+        } else if ($kode_cabang == "PST") {
+            $akun = "1-1489";
+        } else if ($kode_cabang == "KLT") {
+            $akun = "1-1490";
+        }
 
+        $tanggal    = explode("-", $tgltransaksi);
+        $tahun      = substr($tanggal[0], 2, 2);
+        $bulan      = $tanggal[1];
         DB::beginTransaction();
         try {
             DB::table('penjualan')
@@ -1299,6 +1345,29 @@ class PenjualanController extends Controller
             }
             DB::table('detailpenjualan_edit')->where('no_fak_penj', $no_fak_penj)->delete();
             if ($jenistransaksi == "tunai") {
+                $hb = DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->get();
+                $no_ref[] = "";
+                foreach ($hb as $d) {
+                    $no_ref[] = $d->nobukti;
+                }
+
+                DB::table('buku_besar')
+                    ->whereIn('no_ref', $no_ref)
+                    ->delete();
+
+
+                $bukubesar = DB::table("buku_besar")
+                    ->whereRaw('LEFT(no_bukti,6) = "GJ' . $bulan . $tahun . '"')
+                    ->orderBy("no_bukti", "desc")
+                    ->first();
+                if ($bukubesar == null) {
+                    $lastno_bukti = 'GJ' . $bulan . $tahun . '0000';
+                } else {
+                    $lastno_bukti = $bukubesar->no_bukti;
+                }
+                $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 4);
+
+
                 DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->delete();
                 DB::table('historibayar')
                     ->insert([
@@ -1310,6 +1379,19 @@ class PenjualanController extends Controller
                         'bayar' => $subtotal,
                         'id_admin' => $id_admin,
                         'id_karyawan' => $id_karyawan
+                    ]);
+
+                DB::table('buku_besar')
+                    ->insert([
+                        'no_bukti' => $no_bukti_bukubesar,
+                        'tanggal' => $tgltransaksi,
+                        'sumber' => 'Kas Besar',
+                        'keterangan' => "Pembayaran Piutang Pelanggan " . $nama_pelanggan,
+                        'kode_akun' => $akun,
+                        'debet' => $subtotal,
+                        'kredit' => 0,
+                        'nobukti_transaksi' => $nobukti,
+                        'no_ref' => $nobukti
                     ]);
                 if (!empty($voucher)) {
                     $nobukti = buatkode($nobukti, $kode_cabang . $tahunini . "-", 6);
@@ -1328,9 +1410,43 @@ class PenjualanController extends Controller
                         ]);
                 }
             } else {
+                $hbtunai = DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->where('jenisbayar', 'tunai')->get();
+                $hbtitipan = DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->where('jenisbayar', 'titipan')->where('tglbayar', $tgltransaksi)->first();
+
+                if ($hbtunai != null) {
+                    $no_ref_tunai[] = "";
+                    foreach ($hbtunai as $d) {
+                        $no_ref_tunai[] = $d->nobukti;
+                    }
+
+                    DB::table('buku_besar')
+                        ->whereIn('no_ref', $no_ref_tunai)
+                        ->delete();
+                }
+
+                if ($hbtitipan != null) {
+                    DB::table('buku_besar')
+                        ->where('no_ref', $hbtitipan->nobukti)->delete();
+                }
+
+
+
+
+
                 DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->where('jenisbayar', 'tunai')->delete();
                 DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->where('jenisbayar', 'titipan')->where('tglbayar', $tgltransaksi)->delete();
                 if (!empty($titipan)) {
+                    $bukubesar = DB::table("buku_besar")
+                        ->whereRaw('LEFT(no_bukti,6) = "GJ' . $bulan . $tahun . '"')
+                        ->orderBy("no_bukti", "desc")
+                        ->first();
+                    if ($bukubesar == null) {
+                        $lastno_bukti = "GJ" . $bulan . $tahun . "0000";
+                    } else {
+                        $lastno_bukti = $bukubesar->no_bukti;
+                    }
+
+                    $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 4);
 
                     DB::table('historibayar')
                         ->insert([
@@ -1343,12 +1459,25 @@ class PenjualanController extends Controller
                             'id_admin' => $id_admin,
                             'id_karyawan' => $id_karyawan
                         ]);
+
+                    DB::table('buku_besar')
+                        ->insert([
+                            'no_bukti' => $no_bukti_bukubesar,
+                            'tanggal' => $tgltransaksi,
+                            'sumber' => 'Kas Besar',
+                            'keterangan' => "Pembayaran Piutang Pelanggan " . $nama_pelanggan,
+                            'kode_akun' => $akun,
+                            'debet' => $titipan,
+                            'kredit' => 0,
+                            'nobukti_transaksi' => $nobukti,
+                            'no_ref' => $nobukti
+                        ]);
                 }
             }
             DB::commit();
             return redirect('/penjualan?no_fak_penj=' . $no_fak_penj_new)->with(['success' => 'Data Penjualan Berhasil di Update']);
         } catch (\Exception $e) {
-            //dd($e);
+            dd($e);
             DB::rollback();
             return redirect('/penjualan?no_fak_penj=' . $no_fak_penj_new)->with(['warning' => 'Data Penjualan Gagal di Update']);
         }
@@ -1428,6 +1557,7 @@ class PenjualanController extends Controller
         $historibayar = DB::table('historibayar')
             ->join('karyawan', 'historibayar.id_karyawan', '=', 'karyawan.id_karyawan')
             ->where('no_fak_penj', $no_fak_penj)
+            ->orderBy('tglbayar', 'asc')
             ->get();
 
         $retur = DB::table('detailretur')

@@ -63,6 +63,7 @@
                                 <th>Cabang</th>
                                 <th>T/K</th>
                                 <th>Total</th>
+                                <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -91,6 +92,13 @@
                                     @endif
                                 </td>
                                 <td class="text-right">{{rupiah($d->total)}}</td>
+                                <td>
+                                    @if ($d->status_lunas=="1")
+                                    <span class="badge bg-success">Lunas</span>
+                                    @else
+                                    <span class="badge bg-danger">Belum Lunas</span>
+                                    @endif
+                                </td>
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <a class="ml-1" href="/penjualan/{{\Crypt::encrypt($d->no_fak_penj)}}/edit"><i class="feather icon-edit success"></i></a>
