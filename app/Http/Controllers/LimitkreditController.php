@@ -45,8 +45,9 @@ class LimitkreditController extends Controller
     {
         $no_pengajuan = Crypt::decrypt($no_pengajuan);
         $limitkredit = DB::table('pengajuan_limitkredit_v3')
-            ->select('no_pengajuan', 'tgl_pengajuan', 'jumlah', 'jumlah_rekomendasi', 'pengajuan_limitkredit_v3.jatuhtempo', 'jatuhtempo_rekomendasi', 'skor', 'status', 'kacab', 'mm', 'gm', 'dirut')
+            ->select('pengajuan_limitkredit_v3.*', 'nama_pelanggan', 'alamat_pelanggan', 'alamat_toko', 'latitude', 'longitude', 'pelanggan.no_hp', 'nama_karyawan', 'karyawan.kode_cabang')
             ->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+            ->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan')
             ->where('no_pengajuan', $no_pengajuan)
             ->orderBy('tgl_pengajuan', 'asc')
             ->first();
