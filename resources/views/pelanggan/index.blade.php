@@ -90,7 +90,8 @@
                                     <select name="kode_cabang" id="kode_cabang" class="form-control">
                                         <option value="">Semua Cabang</option>
                                         @foreach ($cabang as $c)
-                                        <option {{ (Request('kode_cabang')==$c->kode_cabang ? 'selected':'')}} value="{{ $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
+                                        <option {{ (Request('kode_cabang')==$c->kode_cabang ? 'selected':'')}} value="{{
+                                            $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -107,8 +108,10 @@
                                 <div class="form-group">
                                     <select name="status_pelanggan" id="status_pelanggan" class="form-control">
                                         <option value="">Status</option>
-                                        <option {{ (Request('status_pelanggan')=='1' ? 'selected':'')}} value="1">AKTIF</option>
-                                        <option {{ (Request('status_pelanggan')=='0' ? 'selected':'')}} value="0">NON AKTIF</option>
+                                        <option {{ (Request('status_pelanggan')=='1' ? 'selected' :'')}} value="1">AKTIF
+                                        </option>
+                                        <option {{ (Request('status_pelanggan')=='0' ? 'selected' :'')}} value="0">NON
+                                            AKTIF</option>
                                     </select>
                                 </div>
                             </div>

@@ -216,4 +216,5 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan'])->group(function ()
 
     //Limit Kredit
     Route::get('/limitkredit', [LimitkreditController::class, 'index']);
+    Route::get('/limitkredit/{no_pengajuan}/cetak', [LimitkreditController::class, 'cetak']);
 });
