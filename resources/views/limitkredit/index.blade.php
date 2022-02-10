@@ -186,7 +186,7 @@
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <a href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/cetak" target="_blank"><i class="feather icon-printer info"></i></a>
-                                        <a class="ml-1" href="#"><i class=" feather icon-edit success"></i></a>
+                                        {{-- <a class="ml-1" href="#"><i class=" feather icon-edit success"></i></a> --}}
                                         @if (empty($d->kacab))
                                         <form method="POST" name="deleteform" class="deleteform" action="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/delete">
                                             @csrf

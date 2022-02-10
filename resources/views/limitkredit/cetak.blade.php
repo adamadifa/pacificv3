@@ -205,7 +205,7 @@
         </tr>
         <tr>
             <td>Omset Toko</td>
-            <td style="text-align: right">{{ rupiah($limitkredit->omset_toko) }}</td>
+            <td style="text-align: right">{{ rupiah($limitkredit->last_omset) }}</td>
         </tr>
         <tr>
             <td>Mulai Langganan</td>
@@ -226,11 +226,11 @@
 <table class="datatable3" style="margin-top:200px; width:40%">
     <tr>
         <td>Limit Kredit Sebelumnya</td>
-        <td></td>
+        <td style="text-align: right">{{ rupiah($limitkredit->last_limit) }}</td>
     </tr>
     <tr>
         <td>Pengajuan Tambahan</td>
-        <td></td>
+        <td style="text-align: right">{{ rupiah($limitkredit->jumlah - $limitkredit->last_limit) }}</td>
     </tr>
 </table>
 
@@ -246,7 +246,17 @@
     </tr>
     <tr>
         <td>Level Otorisasi</td>
-        <td></td>
+        <td>
+            @if ($limitkredit->jumlah > 15000000)
+            Direktur
+            @elseif($limitkredit->jumlah > 10000000)
+            General Manager
+            @elseif($limitkredit->jumlah >5000000)
+            RSM
+            @elseif($limitkredit->jumlah > 2000000)
+            Kepala Penjualan
+            @endif
+        </td>
     </tr>
     <tr>
         <td>Total Skor</td>

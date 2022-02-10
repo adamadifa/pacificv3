@@ -218,5 +218,7 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan'])->group(function ()
     Route::get('/limitkredit', [LimitkreditController::class, 'index']);
     Route::get('/limitkredit/{no_pengajuan}/cetak', [LimitkreditController::class, 'cetak']);
     Route::get('/limitkredit/{kode_pelanggan}/create', [LimitkreditController::class, 'create']);
+    Route::post('/limitkredit/store', [LimitkreditController::class, 'store']);
+    Route::post('/limitkredit/get_topup_terakhir', [LimitkreditController::class, 'get_topup_terakhir']);
     Route::delete('/limitkredit/{no_pengajuan}/delete', [LimitkreditController::class, 'delete']);
 });

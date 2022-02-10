@@ -20,6 +20,8 @@
 </div>
 <div class="content-body">
     <form class="form" id="formLimit" action="/limitkredit/store" method="POST">
+        <input type="hidden" name="skor" id="skor">
+        <input type="hidden" name="limitpel" id="limitpel">
         <div class="col-md-12">
 
             <div class="row">
@@ -38,7 +40,10 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
-                                        <x-inputtext label="Tanggal Pengajuan" field="tgl_pengajuan" icon="feather icon-calendar" datepicker />
+                                        @php
+                                        $hariini = date("Y-m-d");
+                                        @endphp
+                                        <x-inputtext label="Tanggal Pengajuan" field="tgl_pengajuan" value="{{ $hariini }}" icon="feather icon-calendar" datepicker />
                                     </div>
                                 </div>
                                 <div class="row">
@@ -245,17 +250,17 @@
                                         @endphp
                                         @else
                                         @php
-                                        $lasttopupdate = "";
+                                        $lasttopupdate = date("Y-m-d");
                                         $usia_topup = "";
                                         $lama_topup=0;
                                         @endphp
                                         @endif
                                         <input type="hidden" value="{{ $lama_topup }}" id="lama_topup" name="lama_topup">
-                                        <x-inputtext label="Terakhir Top Up" field="lasttopup" icon="feather icon-calendar" value="{{ $lasttopupdate }}" readonly />
+                                        <x-inputtext label="Terakhir Top Up" field="topup_terakhir" icon="feather icon-calendar" value="{{ $lasttopupdate }}" datepicker />
                                     </div>
                                     <div class="col-lg-6 col-sm-12">
 
-                                        <x-inputtext label="Lama Top Up" field="lama_topup" icon="feather icon-file" value="{{ $usia_topup }}" readonly />
+                                        <x-inputtext label="Usia Top Up" field="usia_topup" icon="feather icon-file" value="{{ $usia_topup }}" readonly />
                                     </div>
                                 </div>
                                 <div class="row">
@@ -384,6 +389,33 @@
     $(function() {
         $("#jumlah").maskMoney();
         $("#omset_toko").maskMoney();
+
+
+        function loadtopup_terakhir(topup_terakhir) {
+            var tgl_pengajuan = $("#tgl_pengajuan").val();
+            $.ajax({
+                type: 'POST'
+                , url: '/limitkredit/get_topup_terakhir'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , topup_terakhir: topup_terakhir
+                }
+                , cache: false
+                , success: function(respond) {
+                    var data = respond.split("|");
+                    $("#lama_topup").val(data[0]);
+                    $("#usia_topup").val(data[1]);
+                    loadSkor();
+                }
+            });
+        }
+        $("#topup_terakhir").change(function() {
+            var topup_terakhir = $(this).val();
+            loadtopup_terakhir(topup_terakhir);
+
+        });
+
+        loadtopup_terakhir();
 
         function loadSkor() {
             var status_outlet = $("#status_outlet").val();
