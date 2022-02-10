@@ -187,6 +187,7 @@
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <a href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/cetak" target="_blank"><i class="feather icon-printer info"></i></a>
                                         <a class="ml-1" href="#"><i class=" feather icon-edit success"></i></a>
+                                        @if (empty($d->kacab))
                                         <form method="POST" name="deleteform" class="deleteform" action="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/delete">
                                             @csrf
                                             @method('DELETE')
@@ -194,6 +195,7 @@
                                                 <i class="feather icon-trash danger"></i>
                                             </a>
                                         </form>
+                                        @endif
                                         <a class="ml-1" href="#"><i class=" feather icon-message-circle primary"></i></a>
                                         <a class="ml-1" href="#"><i class=" fa fa-check success"></i></a>
                                         <a class="ml-1" href="#"><i class=" fa fa-close danger"></i></a>
@@ -211,3 +213,28 @@
     </div>
 </div>
 @endsection
+
+@push('myscript')
+<script>
+    $(function() {
+        $('.delete-confirm').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+            event.preventDefault();
+            swal({
+                    title: `Are you sure you want to delete this record?`
+                    , text: "If you delete this, it will be gone forever."
+                    , icon: "warning"
+                    , buttons: true
+                    , dangerMode: true
+                , })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
+        });
+    });
+
+</script>
+@endpush

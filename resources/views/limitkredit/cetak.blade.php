@@ -1,3 +1,4 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Cetak Ajuan Limit Kredit</title>
 <style>
     @page {
@@ -64,6 +65,8 @@
     .inline {
         float: left;
         width: 50%;
+        height: 170px;
+        margin-right: 10px;
     }
 
 </style>
@@ -139,4 +142,170 @@
         </tr>
     </table>
 </div>
-<div class="inline"></div>
+
+<h4 class="judul2"><u>KUANTITATIF</u></h4>
+
+<div class="inline">
+    <table class="datatable3" style="width:100%">
+        <tr>
+            <td>Status Pelanggan</td>
+            <td>
+                @if ($limitkredit->status_outlet==1)
+                New Outlet
+                @else
+                Existing Outlet
+                @endif
+            </td>
+        </tr>
+        <tr>
+            <td>Cara Pembayaran</td>
+            <td>
+                @if ($limitkredit->cara_pembayaran==1)
+                Bank Transfer
+                @elseif($limitkredit->cara_pembayaran==2)
+                Advance Cash
+                @else
+                Cheque / Bilyet Giro
+                @endif
+            </td>
+        </tr>
+        <tr>
+            <td>Histori Pembayaran Transaksi (6 Bulan Terakhir)</td>
+            <td>{{ $limitkredit->histori_transaksi }}</td>
+        </tr>
+        <tr>
+            <td>Terakhir Top UP</td>
+            <td>
+                @php
+                $k = "<"; $l=">" ; @endphp @if ($limitkredit->lama_topup >= 31)
+                    {{ $l }} 1 Bulan
+                    @else
+                    {{ $k }} 1 Bulan @endif </td>
+        </tr>
+        <tr>
+            <td>Lama Usaha</td>
+            <td>{{ $limitkredit->lama_usaha }}</td>
+        </tr>
+        <tr>
+            <td>Jumlah Faktur</td>
+            <td>{{ $limitkredit->jml_faktur }}</td>
+        </tr>
+
+    </table>
+</div>
+<div class="inline">
+    <table class="datatable3" style="width:80%">
+        <tr>
+            <td>TOP</td>
+            <td>{{ $limitkredit->jatuhtempo }} Hari</td>
+        </tr>
+        <tr>
+            <td>Tempat Usaha</td>
+            <td>{{ $limitkredit->kepemilikan }}</td>
+        </tr>
+        <tr>
+            <td>Omset Toko</td>
+            <td style="text-align: right">{{ rupiah($limitkredit->omset_toko) }}</td>
+        </tr>
+        <tr>
+            <td>Mulai Langganan</td>
+            <td>{{ $limitkredit->lama_langganan }}</td>
+        </tr>
+        <tr>
+            <td>Type Outlet</td>
+            <td>
+                @if ($limitkredit->type_outlet==1)
+                Grosir
+                @else
+                Retail
+                @endif
+            </td>
+        </tr>
+    </table>
+</div>
+<table class="datatable3" style="margin-top:200px; width:40%">
+    <tr>
+        <td>Limit Kredit Sebelumnya</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Pengajuan Tambahan</td>
+        <td></td>
+    </tr>
+</table>
+
+<table class="datatable3" style="margin-top:30px;">
+    <tr>
+        <td>Total Limit</td>
+        <td style="text-align: right">{{ rupiah($limitkredit->jumlah) }}</td>
+        <td rowspan="4" valign="top">
+            @foreach ($komentar as $d)
+            {{ $d->uraian_analisa }}<br>
+            @endforeach
+        </td>
+    </tr>
+    <tr>
+        <td>Level Otorisasi</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Total Skor</td>
+        <td style="text-align: right">{{ desimal($limitkredit->skor) }}</td>
+    </tr>
+    <tr>
+        <td>Rekomendasi</td>
+        <td>
+            <?php
+            $scoreakhir =  $limitkredit->skor;
+            if ($scoreakhir <= 2) {
+            $rekomendasi = "Tidak Layak";
+            } else if ($scoreakhir > 2 && $scoreakhir <= 4) {
+            $rekomendasi = "Tidak Disarankan";
+            } else if ($scoreakhir > 4 && $scoreakhir <= 6.75) {
+            $rekomendasi = "Beresiko";
+            } else if ($scoreakhir > 6.75 && $scoreakhir <= 8.5) {
+            $rekomendasi = "Layak Dengan Pertimbangan";
+            } else if ($scoreakhir > 8.5 && $scoreakhir <= 10) {
+            $rekomendasi = "Layak";
+            }
+            echo $rekomendasi;
+            ?>
+        </td>
+    </tr>
+</table>
+<div style="margin-top:30px"></div>
+<table class="datatable3" style="width:80%">
+    <tr>
+        <td colspan="2" align="center" style="width: 100px;">Diajukan Oleh</td>
+        <td colspan="2" align="center" style="width: 100px;">Disetujui Cabang</td>
+        <td colspan="3" align="center" style="width: 200px;">Disetujui Pusat</td>
+    </tr>
+    <tr>
+        <td style="height: 100px; width:90px"></td>
+        <td style="height: 100px; width:90px"></td>
+        <td style="height: 100px; width:90px"></td>
+        <td style="height: 100px; width:90px"></td>
+        <td style="height: 100px; width:90px"></td>
+        <td style="height: 100px; width:90px"></td>
+        <td style="height: 100px; width:90px"></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td>{{ $limitkredit->time_kacab}}</td>
+        <td>{{ $limitkredit->time_kacab}}</td>
+        <td>{{ $limitkredit->time_mm}}</td>
+        <td>{{ $limitkredit->time_gm}}</td>
+        <td>{{ $limitkredit->time_dirut}}</td>
+    </tr>
+    <tr style="text-align: center;">
+        <td>Salesman</td>
+        <td>Driver</td>
+        <td>Ka. Penjualan</td>
+        <td>Ka. Admin</td>
+        <td>Marketing Manager</td>
+        <td>Executive Manager</td>
+        <td>Direktur</td>
+    </tr>
+</table>
+</div>

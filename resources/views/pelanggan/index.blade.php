@@ -183,6 +183,7 @@
                                                     <i class="feather icon-trash danger"></i>
                                                 </a>
                                             </form>
+                                            <a class="ml-1" href="/limitkredit/{{\Crypt::encrypt($d->kode_pelanggan)}}/create"><i class="feather icon-external-link primary"></i></a>
                                         </div>
                                     </td>
                                 </tr>
