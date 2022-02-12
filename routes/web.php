@@ -52,7 +52,7 @@ Route::post('/cektutuplaporan', [TutuplaporanController::class, 'cektutuplaporan
 //Cek Barang Penjualan Temporary
 Route::post('/cekpenjtemp', [PenjualanController::class, 'cekpenjtemp']);
 
-Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
+Route::middleware(['auth', 'ceklevel:admin,manager marketing,general manager,direktur'])->group(function () {
     Route::get('/dashboardadmin', [DashboardController::class, 'dashboardadmin']);
 
     //Dashboard
@@ -89,10 +89,27 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::delete('/cabang/{kode_cabang}/delete', [CabangController::class, 'delete']);
 });
 
-//Administrator | Admin Penjualan
-Route::middleware(['auth', 'ceklevel:admin,admin penjualan'])->group(function () {
 
+Route::middleware(['auth', 'ceklevel:admin penjualan'])->group(function () {
     Route::get('/dashboardadminpenjualan', [DashboardController::class, 'dashboardadminpenjualan']);
+});
+
+Route::middleware(['auth', 'ceklevel:kepala penjualan'])->group(function () {
+    Route::get('/dashboardkepalapenjualan', [DashboardController::class, 'dashboardkepalapenjualan']);
+});
+
+
+//Admin Penjualan | Kepala Penjualan | Kepala Cabang | Manager Marketing | General manager
+Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,manager marketing,general manager,direktur'])->group(function () {
+    Route::get('/limitkredit', [LimitkreditController::class, 'index']);
+    Route::get('/limitkredit/{no_pengajuan}/cetak', [LimitkreditController::class, 'cetak']);
+    Route::post('/limitkredit/create_uraiananalisa', [LimitkreditController::class, 'create_uraiananalisa']);
+    Route::post('/limitkredit/store_uraiananalisa', [LimitkreditController::class, 'store_uraiananalisa']);
+    Route::get('/limitkredit/{no_pengajuan}/approve', [LimitkreditController::class, 'approve']);
+});
+//Administrator | Admin Penjualan
+Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan'])->group(function () {
+
 
     //Harga
     Route::get('/harga', [HargaController::class, 'index']);
@@ -215,10 +232,10 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan'])->group(function ()
     Route::post('lpc/cancel', [LpcController::class, 'cancel']);
 
     //Limit Kredit
-    Route::get('/limitkredit', [LimitkreditController::class, 'index']);
-    Route::get('/limitkredit/{no_pengajuan}/cetak', [LimitkreditController::class, 'cetak']);
+
     Route::get('/limitkredit/{kode_pelanggan}/create', [LimitkreditController::class, 'create']);
     Route::post('/limitkredit/store', [LimitkreditController::class, 'store']);
     Route::post('/limitkredit/get_topup_terakhir', [LimitkreditController::class, 'get_topup_terakhir']);
-    Route::delete('/limitkredit/{no_pengajuan}/delete', [LimitkreditController::class, 'delete']);
+    Route::delete('/limitkredit/{no_pengajuan}/{kode_pelanggan}/delete', [LimitkreditController::class, 'delete']);
+    Route::post('/limitkredit/penyesuaian_limit', [LimitkreditController::class, 'penyesuaian_limit']);
 });

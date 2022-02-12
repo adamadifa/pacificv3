@@ -42,20 +42,20 @@ class GlobalProvider extends ServiceProvider
                 $getcbg = "";
             }
             //Data Master
-            $datamaster = ['admin', 'admin penjualan'];
+            $datamaster = ['admin', 'admin penjualan', 'kepala penjualan', 'manager marketing', 'direktur'];
 
-            $pelanggan = ['admin', 'admin penjualan'];
+            $pelanggan = ['admin', 'admin penjualan', 'kepala penjualan', 'manager marketing', 'direktur'];
 
-            $salesman = ['admin', 'admin penjualan'];
+            $salesman = ['admin', 'admin penjualan', 'kepala penjualan', 'manager marketing', 'direktur'];
 
             $barang = ['admin'];
 
-            $harga = ['admin', 'admin penjualan'];
-            $harga_hapus = ['admin', 'admin penjualan'];
+            $harga = ['admin', 'admin penjualan', 'kepala penjualan', 'manager marketing', 'direktur'];
+            $harga_hapus = ['admin', 'admin penjualan', 'kepala penjualan', 'manager marketing', 'direktur'];
 
-            $kendaraan = ['admin', 'admin penjualan'];
+            $kendaraan = ['admin', 'admin penjualan', 'kepala penjualan', 'manager marketing', 'direktur'];
             $kendaraan_tambah = ['admin'];
-            $kendaraan_edit = ['admin' . 'admin penjualan'];
+            $kendaraan_edit = ['admin' . 'admin penjualan', 'kepala penjualan', 'manager marketing', 'direktur'];
             $kendaraan_hapus = ['admin'];
 
             $cabang = ['admin'];
@@ -65,34 +65,34 @@ class GlobalProvider extends ServiceProvider
 
 
             //Marketing
-            $marketing = ['admin'];
+            $marketing = ['admin', 'admin penjualan', 'kepala penjualan', 'manager marketing', 'general manager', 'direktur'];
 
             //Penjualan
-            $penjualan_menu = ['admin'];
-            $penjualan_keuangan = ['admin'];
-            $penjualan_input = ['admin'];
-            $penjualan_view = ['admin'];
-            $penjualan_pending_view = ['admin'];
+            $penjualan_menu = ['admin', 'admin penjualan', 'kepala penjualan', 'manager marketing', 'general manager', 'direktur'];
+            $penjualan_keuangan = ['admin', 'admin penjualan', 'kepala penjualan'];
+            $penjualan_input = ['admin', 'admin penjualan', 'kepala penjualan'];
+            $penjualan_view = ['admin', 'admin penjualan', 'kepala penjualan'];
+
 
             //Retur
-            $retur_view = ['admin'];
+            $retur_view = ['admin', 'admin penjualan', 'kepala penjualan'];
 
             //Retur
-            $limitkredit_view = ['admin'];
+            $limitkredit_view = ['admin', 'admin penjualan', 'kepala penjualan', 'manager marketing', 'general manager', 'direktur'];
 
 
             //Keuangan
-            $keuangan = ['admin'];
+            $keuangan = ['admin', 'admin penjualan', 'kepala penjualan'];
 
             //Keuangan
-            $giro_view = ['admin'];
+            $giro_view = ['admin', 'admin penjualan', 'kepala penjualan'];
 
             //Keuangan
-            $transfer_view = ['admin'];
+            $transfer_view = ['admin', 'admin penjualan', 'kepala penjualan'];
 
             //Utilities
-            $utilities = ['admin', 'admin penjualan'];
-            $kirimlpc = ['admin', 'admin penjualan'];
+            $utilities = ['admin', 'admin penjualan', 'kepala penjualan', 'manager marketing'];
+            $kirimlpc = ['admin', 'admin penjualan', 'kepala penjualan', 'manager marketing'];
             $shareddata = [
                 'level' => $level,
                 'getcbg' => $getcbg,
@@ -122,7 +122,7 @@ class GlobalProvider extends ServiceProvider
                 'penjualan_keuangan' => $penjualan_keuangan,
                 'penjualan_input' => $penjualan_input,
                 'penjualan_view' => $penjualan_view,
-                'penjualan_pending_view' => $penjualan_pending_view,
+
 
                 //Retur
                 'retur_view' => $retur_view,

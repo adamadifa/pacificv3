@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Limitkredit;
 use Barryvdh\DomPDF\Facade as PDF;
 use DateTime;
+use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -13,13 +14,26 @@ use Illuminate\Support\Facades\Redirect;
 
 class LimitkreditController extends Controller
 {
+    protected $cabang;
+    public function __construct()
+    {
+        // Fetch the Site Settings object
+        $this->middleware(function ($request, $next) {
+            $this->cabang = Auth::user()->kode_cabang;
+            return $next($request);
+        });
+        View::share('cabang', $this->cabang);
+    }
     public function index(Request $request)
     {
         $pelanggan = '"' . $request->nama_pelanggan . '"';
         $query = Limitkredit::query();
+        if ($this->cabang != "PCF") {
+            $query->where('pelanggan.kode_cabang', $this->cabang);
+        }
         $query->select('pengajuan_limitkredit_v3.*', 'nama_pelanggan');
         $query->orderBy('tgl_pengajuan', 'desc');
-        $query->orderBy('no_pengajuan', 'asc');
+        $query->orderBy('no_pengajuan', 'desc');
         $query->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
         if (empty($request->nama_pelanggan) && empty($request->dari) && empty($request->sampai) && empty($request->status)) {
             $query->WhereRaw("MATCH(nama_pelanggan) AGAINST('" . $pelanggan .  "')");
@@ -120,15 +134,39 @@ class LimitkreditController extends Controller
         return $pdf->stream();
     }
 
-    public function delete($no_pengajuan)
+    public function delete($no_pengajuan, $kode_pelanggan)
     {
         $no_pengajuan = Crypt::decrypt($no_pengajuan);
-        $hapus = DB::table('pengajuan_limitkredit_v3')
-            ->where('no_pengajuan', $no_pengajuan)->delete();
-        if ($hapus) {
+        $kode_pelanggan = Crypt::decrypt($kode_pelanggan);
+        $lastlimitpelanggan = DB::table('pengajuan_limitkredit_v3')
+            ->select('no_pengajuan', 'status')
+            ->where('kode_pelanggan', $kode_pelanggan)
+            ->where('no_pengajuan', '!=', $no_pengajuan)
+            ->orderBy('no_pengajuan', 'desc')
+            ->first();
+
+
+        try {
+            DB::table('pengajuan_limitkredit_v3')
+                ->where('no_pengajuan', $no_pengajuan)->delete();
+            DB::table('pengajuan_limitkredit_analisa_v3')
+                ->where('no_pengajuan', $no_pengajuan)->delete();
+            if ($lastlimitpelanggan != null) {
+                $last_no_pengajuan_pelanggan = $lastlimitpelanggan->no_pengajuan;
+                if ($lastlimitpelanggan->status == 1 || $lastlimitpelanggan == 2) {
+                    DB::table('pengajuan_limitkredit_v3')
+                        ->where('no_pengajuan', $last_no_pengajuan_pelanggan)
+                        ->update([
+                            'cek_ajuan' => null
+                        ]);
+                }
+            }
+            DB::commit();
             return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
-        } else {
-            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);
+        } catch (\Exception $e) {
+            dd($e);
+            DB::rollback();
+            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan Hubungi Tim IT']);
         }
     }
 
@@ -202,9 +240,8 @@ class LimitkreditController extends Controller
         $id_admin = Auth::user()->id;
 
         $lastlimitpelanggan = DB::table('pengajuan_limitkredit_v3')
-            ->select('no_pengajuan')
+            ->select('no_pengajuan', 'status')
             ->where('kode_pelanggan', $kode_pelanggan)
-            ->where('status', 0)
             ->orderBy('no_pengajuan', 'desc')
             ->first();
 
@@ -234,9 +271,19 @@ class LimitkreditController extends Controller
             //Hapus Pengajuan Terakhir Yang Statusnya 0
             if ($lastlimitpelanggan != null) {
                 $last_no_pengajuan_pelanggan = $lastlimitpelanggan->no_pengajuan;
-                DB::table('pengajuan_limitkredit_v3')
-                    ->where('no_pengajuan', $last_no_pengajuan_pelanggan)
-                    ->delete();
+                if ($lastlimitpelanggan->status == 0 || $lastlimitpelanggan == null) {
+                    DB::table('pengajuan_limitkredit_v3')
+                        ->where('no_pengajuan', $last_no_pengajuan_pelanggan)
+                        ->delete();
+                    DB::table('pengajuan_limitkredit_analisa_v3')
+                        ->where('no_pengajuan', $last_no_pengajuan_pelanggan)->delete();
+                } else {
+                    DB::table('pengajuan_limitkredit_v3')
+                        ->where('no_pengajuan', $last_no_pengajuan_pelanggan)
+                        ->update([
+                            'cek_ajuan' => 1
+                        ]);
+                }
             }
 
 
@@ -280,9 +327,235 @@ class LimitkreditController extends Controller
             DB::commit();
             return redirect('/limitkredit')->with(['success' => 'Data Pengajuan Limit Kredit Berhasil di Simpan']);
         } catch (\Exception $e) {
-            dd($e);
+            //dd($e);
             DB::rollback();
             return redirect('/limitkredit')->with(['warning' => 'Data Pengajuan Limit Kredit Gagal di Simpan Hubungi Tim IT']);
+        }
+    }
+
+    public function create_uraiananalisa(Request $request)
+    {
+        $no_pengajuan = $request->no_pengajuan;
+        $id_user = Auth::user()->id;
+        $uraian_analisa = DB::table('pengajuan_limitkredit_analisa_v3')
+            ->where('no_pengajuan', $no_pengajuan)
+            ->where('id_user', $id_user)
+            ->first();
+        return view('limitkredit.create_uraiananalisa', compact('no_pengajuan', 'uraian_analisa'));
+    }
+
+    public function store_uraiananalisa(Request $request)
+    {
+        $id_user = Auth::user()->id;
+        $cek = DB::table('pengajuan_limitkredit_analisa_v3')
+            ->where('no_pengajuan', $request->no_pengajuan)
+            ->where('id_user', $id_user)
+            ->count();
+        DB::beginTransaction();
+        try {
+            if (empty($cek)) {
+                DB::table('pengajuan_limitkredit_analisa_v3')
+                    ->insert([
+                        'no_pengajuan' => $request->no_pengajuan,
+                        'uraian_analisa' => $request->uraian_analisa,
+                        'id_user' => $id_user
+                    ]);
+            } else {
+                DB::table('pengajuan_limitkredit_analisa_v3')
+                    ->where('no_pengajuan', $request->no_pengajuan)
+                    ->where('id_user', $id_user)
+                    ->update([
+                        'uraian_analisa' => $request->uraian_analisa
+                    ]);
+            }
+            DB::commit();
+            return Redirect::back()->with(['success' => 'Data Uraian Analisa Berhasil Disimpan']);
+        } catch (\Exception $e) {
+            //dd($e);
+            DB::rollback();
+            return redirect('/limitkredit')->with(['warning' => 'Data Uraian Analisa Gagal di Simpan Hubungi Tim IT']);
+        }
+    }
+
+    public function penyesuaian_limit(Request $request)
+    {
+        $no_pengajuan = $request->no_pengajuan;
+        $limitkredit = DB::table('pengajuan_limitkredit_v3')->where('no_pengajuan', $no_pengajuan)->first();
+        return view('limitkredit.penyesuaian', compact('no_pengajuan', 'limitkredit'));
+    }
+
+    public function updatelimit(Request $request)
+    {
+        $jumlah_rekomendasi = str_replace(".", "", $request->jumlah_rekomendasi);
+        if ($request->jatuhtempo != $request->jatuhtempo_rekomendasi) {
+            $update = DB::table('pengajuan_limitkredit_v3')
+                ->where('no_pengajuan', $request->no_pengajuan)
+                ->update([
+                    'jumlah_rekomendasi' => $jumlah_rekomendasi,
+                    'jatuhtempo_rekomendasi' => $request->jatuhtempo_rekomendasi
+                ]);
+        } else {
+            $update = DB::table('pengajuan_limitkredit_v3')
+                ->where('no_pengajuan', $request->no_pengajuan)
+                ->update([
+                    'jumlah_rekomendasi' => $jumlah_rekomendasi,
+                ]);
+        }
+
+        if ($update) {
+            return Redirect::back()->with(['success' => 'Data Penyesuaian Berhasil Disimpan']);
+        } else {
+            return Redirect::back()->with(['warning' => 'Data Uraian Analisa Gagal Disimpan Hubungi Tim IT']);
+        }
+    }
+
+    public function approve($no_pengajuan)
+    {
+        $no_pengajuan = Crypt::decrypt($no_pengajuan);
+        $limitkredit = DB::table('pengajuan_limitkredit_v3')->where('no_pengajuan', $no_pengajuan)->first();
+        $kode_pelanggan = $limitkredit->kode_pelanggan;
+        $jumlah = $limitkredit->jumlah;
+        $jatuhtempo = $limitkredit->jatuhtempo;
+        $jumlah_rekomendasi = $limitkredit->jumlah_rekomendasi;
+        $jatuhtempo_rekomendasi = $limitkredit->jatuhtempo_rekomendasi;
+        $id_admin = Auth::user()->id;
+        $level = Auth::user()->level;
+        $time = date("Y-m-d H:i");
+        if (empty($jumlah_rekomendasi) && empty($jatuhtempo_rekomendasi)) {
+            if (!empty($jatuhtempo)) {
+                $data = [
+                    'limitpel' => $jumlah,
+                    'jatuhtempo' => $jatuhtempo
+                ];
+            } else {
+                $data = [
+                    'limitpel' => $jumlah
+                ];
+            }
+        } else if (!empty($jumlah_rekomendasi) && empty($jatuhtempo_rekomendasi)) {
+            if (!empty($jatuhtempo)) {
+                $data = [
+                    'limitpel' => $jumlah_rekomendasi,
+                    'jatuhtempo' => $jatuhtempo
+                ];
+            } else {
+                $data = [
+                    'limitpel' => $jumlah_rekomendasi
+                ];
+            }
+        } else if (empty($jumlah_rekomendasi) && !empty($jatuhtempo_rekomendasi)) {
+            $data = [
+                'limitpel' => $jumlah,
+                'jatuhtempo' => $jatuhtempo_rekomendasi
+            ];
+        } else if (!empty($jumlah_rekomendasi) && !empty($jatuhtempo_rekomendasi)) {
+            $data = [
+                'limitpel' => $jumlah_rekomendasi,
+                'jatuhtempo' => $jatuhtempo_rekomendasi
+            ];
+        }
+
+        if ($level == 'kepala cabang' || $level == 'kepala penjualan') {
+            $lv = 'kacab';
+            if ($jumlah <= 5000000) {
+                $status = 1;
+            } else {
+                $status = 0;
+            }
+        } else if ($level == 'manager marketing') {
+            $lv = 'mm';
+            if ($jumlah <= 10000000) {
+                $status = 1;
+            } else {
+                $status = 0;
+            }
+        } else if ($level == 'general manager') {
+            $lv = 'gm';
+            if ($jumlah <= 15000000) {
+                $status = 1;
+            } else {
+                $status = 0;
+            }
+        } else if ($level == 'direktur') {
+            $lv = 'dirut';
+            $status = 1;
+        }
+
+        if ($level == "direktur") {
+            $field_time = 'time_dirut';
+        } else if ($level == "manager marketing") {
+            $field_time = 'time_mm';
+        } else if ($level == "general manager") {
+            $field_time = 'time_gm';
+        } else if ($level == "kepala cabang" || $level == "kepala penjualan") {
+            $field_time = 'time_kacab';
+        }
+
+        $datastatus = [
+            'status' => $status,
+            $lv => $id_admin,
+            $field_time => $time
+        ];
+        $ceklimit = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)->first();
+        $penjualanpending = DB::table('penjualan')->where('status', 1)->get();
+
+        DB::beginTransaction();
+        try {
+            //Update Limit Kredit
+            DB::table('pengajuan_limitkredit_v3')
+                ->where('no_pengajuan', $no_pengajuan)
+                ->update($datastatus);
+            //Update Pelanggan
+            DB::table('pelanggan')
+                ->where('kode_pelanggan', $kode_pelanggan)
+                ->update($data);
+
+            //Update Penjualan Pending
+            foreach ($penjualanpending as $d) {
+                $cekpiutang  = DB::table('penjualan')
+                    ->select('penjualan.kode_pelanggan', DB::raw('SUM(IFNULL(penjualan.total,0) - IFNULL(retur.total,0) - IFNULL(jmlbayar,0)) AS sisapiutang'))
+                    ->leftJoin(
+                        DB::raw("(
+                            SELECT no_fak_penj, IFNULL(SUM(bayar),0) as jmlbayar
+                            FROM historibayar
+                            GROUP BY no_fak_penj
+                        ) historibayar"),
+                        function ($join) {
+                            $join->on('penjualan.no_fak_penj', '=', 'historibayar.no_fak_penj');
+                        }
+                    )
+                    ->leftJoin(
+                        DB::raw("(
+                        SELECT retur.no_fak_penj AS no_fak_penj, SUM( total ) AS total FROM retur GROUP BY retur.no_fak_penj
+                    ) retur"),
+                        function ($join) {
+                            $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
+                        }
+                    )
+                    ->where('penjualan.kode_pelanggan', $kode_pelanggan)
+                    ->groupBy('penjualan.kode_pelanggan')
+                    ->first();
+
+                $piutang = $cekpiutang->sisapiutang;
+                $totalpiutang = $piutang +  $d->total;
+
+                if ($totalpiutang <= $ceklimit->limitpel) {
+                    $datapenjualan = [
+                        'status' => 2
+                    ];
+
+                    DB::table('penjualan')
+                        ->where('no_fak_penj', $d->no_fak_penj)
+                        ->update($datapenjualan);
+                }
+            }
+
+            DB::commit();
+            return Redirect::back()->with(['success' => 'Data Berhasil Di Setujui']);
+        } catch (\Exception $e) {
+            dd($e);
+            DB::rollback();
+            return Redirect::back()->with(['warning' => 'Data Gagal Disetujui Hubungi Tim IT']);
         }
     }
 }

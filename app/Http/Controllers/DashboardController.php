@@ -21,7 +21,7 @@ class DashboardController extends Controller
             $no_pengajuan[] = $d->no_pengajuan;
         }
 
-        if ($level == "admin" || $level == "direktur") {
+        if ($level == "direktur") {
             $jmlpengajuan = DB::table('pengajuan_limitkredit_v3')
                 ->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
                 ->whereIn('no_pengajuan', $no_pengajuan)
@@ -29,7 +29,7 @@ class DashboardController extends Controller
                 ->whereNull('dirut')
                 ->where('status', 0)
                 ->count();
-        } else if ($level == "kacab") {
+        } else if ($level == "kepala cabang" || $level == "kepala penjualan") {
             $jmlpengajuan = DB::table('pengajuan_limitkredit_v3')
                 ->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
                 ->whereIn('no_pengajuan', $no_pengajuan)
@@ -53,6 +53,12 @@ class DashboardController extends Controller
                 ->whereNull('gm')
                 ->where('status', 0)
                 ->count();
+        } else if ($level == "admin") {
+            $jmlpengajuan = DB::table('pengajuan_limitkredit_v3')
+                ->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+                ->whereIn('no_pengajuan', $no_pengajuan)
+                ->where('status', 0)
+                ->count();
         }
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('dashboard.administrator', compact('jmlpengajuan', 'bulan', 'cabang'));
@@ -61,5 +67,25 @@ class DashboardController extends Controller
     function dashboardadminpenjualan()
     {
         return view('dashboard.adminpenjualan');
+    }
+
+    function dashboardkepalapenjualan()
+    {
+        $kode_cabang = Auth::user()->kode_cabang;
+        $pengajuanterakhir = DB::table('pengajuan_limitkredit_v3')
+            ->select(DB::raw('MAX(no_pengajuan) as no_pengajuan'))
+            ->groupBy('kode_pelanggan')
+            ->get();
+        foreach ($pengajuanterakhir as $d) {
+            $no_pengajuan[] = $d->no_pengajuan;
+        }
+        $jmlpengajuan = DB::table('pengajuan_limitkredit_v3')
+            ->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+            ->whereIn('no_pengajuan', $no_pengajuan)
+            ->where('pelanggan.kode_cabang', $kode_cabang)
+            ->whereNull('kacab')
+            ->where('status', 0)
+            ->count();
+        return view('dashboard.kepalapenjualan', compact('jmlpengajuan'));
     }
 }
