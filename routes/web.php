@@ -99,18 +99,29 @@ Route::middleware(['auth', 'ceklevel:kepala penjualan'])->group(function () {
 });
 
 
-//Admin Penjualan | Kepala Penjualan | Kepala Cabang | Manager Marketing | General manager
+//Admin Penjualan | Kepala Penjualan | Kepala Cabang | Manager Marketing | General manager | Direktur
 Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,manager marketing,general manager,direktur'])->group(function () {
+    //Limit Kredit
     Route::get('/limitkredit', [LimitkreditController::class, 'index']);
     Route::get('/limitkredit/{no_pengajuan}/cetak', [LimitkreditController::class, 'cetak']);
     Route::post('/limitkredit/create_uraiananalisa', [LimitkreditController::class, 'create_uraiananalisa']);
     Route::post('/limitkredit/store_uraiananalisa', [LimitkreditController::class, 'store_uraiananalisa']);
     Route::get('/limitkredit/{no_pengajuan}/approve', [LimitkreditController::class, 'approve']);
+    Route::get('/limitkredit/{no_pengajuan}/decline', [LimitkreditController::class, 'decline']);
+
+    Route::get('/laporanpenjualan', [PenjualanController::class, 'laporanpenjualan']);
 });
-//Administrator | Admin Penjualan
-Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan'])->group(function () {
 
 
+//Admin | Direktur
+Route::middleware(['auth', 'ceklevel:admin,direktur'])->group(function () {
+    Route::post('/limitkredit/penyesuaian_limit', [LimitkreditController::class, 'penyesuaian_limit']);
+    Route::post('/limitkredit/updatelimit', [LimitkreditController::class, 'updatelimit']);
+});
+
+
+//Administrator | Admin Penjualan | Direktur
+Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,direktur'])->group(function () {
     //Harga
     Route::get('/harga', [HargaController::class, 'index']);
     Route::get('/harga/create', [HargaController::class, 'create']);
@@ -151,6 +162,11 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan'])->
     Route::get('/kendaraan/{id}/edit', [KendaraanController::class, 'edit']);
     Route::post('/kendaraan/{id}/update', [KendaraanController::class, 'update']);
     Route::post('/kendaraan/show', [KendaraanController::class, 'show']);
+});
+
+//Administrator | Admin Penjualan
+Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan'])->group(function () {
+
 
 
     //Penjualan
@@ -237,5 +253,4 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan'])->
     Route::post('/limitkredit/store', [LimitkreditController::class, 'store']);
     Route::post('/limitkredit/get_topup_terakhir', [LimitkreditController::class, 'get_topup_terakhir']);
     Route::delete('/limitkredit/{no_pengajuan}/{kode_pelanggan}/delete', [LimitkreditController::class, 'delete']);
-    Route::post('/limitkredit/penyesuaian_limit', [LimitkreditController::class, 'penyesuaian_limit']);
 });

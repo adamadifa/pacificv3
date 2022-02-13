@@ -21,7 +21,7 @@
 <div class="content-body">
     <form class="form" id="formLimit" action="/limitkredit/store" method="POST">
         <input type="hidden" name="skor" id="skor">
-        <input type="hidden" name="limitpel" id="limitpel">
+        <input type="hidden" name="limitpel" id="limitpel" value="{{ $pelanggan->limitpel }}">
         <div class="col-md-12">
 
             <div class="row">

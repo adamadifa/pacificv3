@@ -41,23 +41,23 @@ class GlobalProvider extends ServiceProvider
                 $level = "";
                 $getcbg = "";
             }
+
+            //Dashboard
+
+            $dashboardadmin = ['admin', 'manager marketing', 'general manager', 'direktur'];
+            $dashboardkepalapenjualan = ['kepala penjualan', 'kepala cabang'];
+
             //Data Master
             $datamaster = ['admin', 'admin penjualan', 'kepala penjualan', 'manager marketing', 'direktur'];
-
             $pelanggan = ['admin', 'admin penjualan', 'kepala penjualan', 'manager marketing', 'direktur'];
-
             $salesman = ['admin', 'admin penjualan', 'kepala penjualan', 'manager marketing', 'direktur'];
-
-            $barang = ['admin'];
-
+            $barang = ['admin', 'direktur', 'manager marketing', 'general manager'];
             $harga = ['admin', 'admin penjualan', 'kepala penjualan', 'manager marketing', 'direktur'];
             $harga_hapus = ['admin', 'admin penjualan', 'kepala penjualan', 'manager marketing', 'direktur'];
-
             $kendaraan = ['admin', 'admin penjualan', 'kepala penjualan', 'manager marketing', 'direktur'];
             $kendaraan_tambah = ['admin'];
             $kendaraan_edit = ['admin' . 'admin penjualan', 'kepala penjualan', 'manager marketing', 'direktur'];
             $kendaraan_hapus = ['admin'];
-
             $cabang = ['admin'];
 
 
@@ -67,28 +67,28 @@ class GlobalProvider extends ServiceProvider
             //Marketing
             $marketing = ['admin', 'admin penjualan', 'kepala penjualan', 'manager marketing', 'general manager', 'direktur'];
 
-            //Penjualan
+            //-----------------------------Penjualan-------------------------------------------
             $penjualan_menu = ['admin', 'admin penjualan', 'kepala penjualan', 'manager marketing', 'general manager', 'direktur'];
             $penjualan_keuangan = ['admin', 'admin penjualan', 'kepala penjualan'];
             $penjualan_input = ['admin', 'admin penjualan', 'kepala penjualan'];
             $penjualan_view = ['admin', 'admin penjualan', 'kepala penjualan'];
-
-
             //Retur
             $retur_view = ['admin', 'admin penjualan', 'kepala penjualan'];
-
-            //Retur
+            //LImit
             $limitkredit_view = ['admin', 'admin penjualan', 'kepala penjualan', 'manager marketing', 'general manager', 'direktur'];
-
+            $penyesuaian_limit = ['admin', 'direktur'];
+            //Laporan
+            $laporan_penjualan = ['admin'];
 
             //Keuangan
             $keuangan = ['admin', 'admin penjualan', 'kepala penjualan'];
-
-            //Keuangan
             $giro_view = ['admin', 'admin penjualan', 'kepala penjualan'];
-
-            //Keuangan
             $transfer_view = ['admin', 'admin penjualan', 'kepala penjualan'];
+
+
+
+
+
 
             //Utilities
             $utilities = ['admin', 'admin penjualan', 'kepala penjualan', 'manager marketing'];
@@ -96,7 +96,9 @@ class GlobalProvider extends ServiceProvider
             $shareddata = [
                 'level' => $level,
                 'getcbg' => $getcbg,
-
+                //Dashboard
+                'dashboardadmin' => $dashboardadmin,
+                'dashboardkepalapenjualan' => $dashboardkepalapenjualan,
                 //Data Master
                 'datamaster_view' => $datamaster,
                 'pelanggan_view' => $pelanggan,
@@ -117,27 +119,22 @@ class GlobalProvider extends ServiceProvider
 
                 //Data Marketing
                 'marketing' => $marketing,
-                //Penjualan
+                //------------Penjualan-------------------
                 'penjualan_menu' => $penjualan_menu,
                 'penjualan_keuangan' => $penjualan_keuangan,
                 'penjualan_input' => $penjualan_input,
                 'penjualan_view' => $penjualan_view,
-
-
                 //Retur
                 'retur_view' => $retur_view,
-
                 //Limit Kredit
                 'limitkredit_view' => $limitkredit_view,
-
+                'penyesuaian_limit' => $penyesuaian_limit,
+                //Laporan
+                'laporan_penjualan' => $laporan_penjualan,
                 //Keuangan
                 'keuangan' => $keuangan,
                 'penjualan_keuangan' => $penjualan_keuangan,
-
-                //Giro
                 'giro_view' => $giro_view,
-
-                //Giro
                 'transfer_view' => $transfer_view,
 
                 //Utilities

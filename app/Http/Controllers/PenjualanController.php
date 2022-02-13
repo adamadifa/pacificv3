@@ -1936,4 +1936,10 @@ class PenjualanController extends Controller
 
         return view('penjualan.dashboard.dppp', compact('dppp', 'tahunlalu', 'tahunini'));
     }
+
+    public function laporanpenjualan()
+    {
+        $cabang = DB::table('cabang')->get();
+        return view('penjualan.laporan', compact('cabang'));
+    }
 }

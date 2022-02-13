@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cabang;
 use App\Models\Limitkredit;
 use Barryvdh\DomPDF\Facade as PDF;
 use DateTime;
@@ -20,6 +21,7 @@ class LimitkreditController extends Controller
         // Fetch the Site Settings object
         $this->middleware(function ($request, $next) {
             $this->cabang = Auth::user()->kode_cabang;
+            $this->level = Auth::user()->level;
             return $next($request);
         });
         View::share('cabang', $this->cabang);
@@ -35,6 +37,7 @@ class LimitkreditController extends Controller
         $query->orderBy('tgl_pengajuan', 'desc');
         $query->orderBy('no_pengajuan', 'desc');
         $query->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        $query->leftJoin('users', 'pengajuan_limitkredit_v3.id_approval', '=', 'users.id');
         if (empty($request->nama_pelanggan) && empty($request->dari) && empty($request->sampai) && empty($request->status)) {
             $query->WhereRaw("MATCH(nama_pelanggan) AGAINST('" . $pelanggan .  "')");
         }
@@ -42,20 +45,117 @@ class LimitkreditController extends Controller
             $query->WhereRaw("MATCH(nama_pelanggan) AGAINST('" . $pelanggan .  "')");
         }
 
-
-        if (!empty($request->status)) {
-            $query->where('status', $request->status);
+        if (!empty($request->kode_cabang)) {
+            $query->where('pelanggan.kode_cabang', $request->kode_cabang);
         }
+
+
 
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('tgl_pengajuan', [$request->dari, $request->sampai]);
         }
 
 
+        if ($this->level == "admin") {
+            if ($request->status == "pending") {
+                $status = 0;
+            } elseif ($request->status == "disetujui") {
+                $status = 1;
+            } elseif ($request->status == "ditolak") {
+                $status = 2;
+            }
+
+            if (!empty($request->status)) {
+                $query->where('status', $status);
+            }
+        }
+        if ($this->level == "kepala cabang" || $this->level == "kepala penjualan") {
+            if ($request->status == "pending") {
+                $query->whereNull('kacab');
+            } else if ($request->status == "disetujui") {
+                $query->whereNotNull('kacab');
+                $query->where('status', '!=', 2);
+                $query->orwhereNotNull('kacab');
+                $query->where('status', '=', 2);
+                $query->where('level', '!=', Auth::user()->level);
+            } else if ($request->status == "ditolak") {
+                $query->whereNotNull('kacab');
+                $query->where('status', 2);
+                $query->where('level', Auth::user()->level);
+            }
+            $query->where('jumlah', '>', 2000000);
+        }
+
+        if ($this->level == "manager marketing") {
+            if ($request->status == "pending") {
+                $query->whereNotNull('kacab');
+                $query->whereNull('mm');
+            } else if ($request->status == "disetujui") {
+                $query->whereNotNull('mm');
+                $query->where('status', '!=', 2);
+                $query->orwhereNotNull('mm');
+                $query->where('status', '=', 2);
+                $query->where('level', '!=', Auth::user()->level);
+            } else if ($request->status == "ditolak") {
+                $query->whereNotNull('kacab');
+                $query->whereNotNull('mm');
+                $query->where('status', 2);
+                $query->where('level', Auth::user()->level);
+            } else {
+                $query->whereNotNull('kacab');
+            }
+            $query->where('jumlah', '>', 5000000);
+        }
+
+        if ($this->level == "general manager") {
+            if ($request->status == "pending") {
+                $query->whereNotNull('mm');
+                $query->whereNull('gm');
+            } else if ($request->status == "disetujui") {
+                $query->whereNotNull('gm');
+                $query->where('status', '!=', 2);
+                $query->orwhereNotNull('gm');
+                $query->where('status', '=', 2);
+                $query->where('level', '!=', Auth::user()->level);
+            } else if ($request->status == "ditolak") {
+                $query->whereNotNull('mm');
+                $query->whereNotNull('gm');
+                $query->where('status', 2);
+                $query->where('level', Auth::user()->level);
+            } else {
+                $query->whereNotNull('mm');
+            }
+            $query->where('jumlah', '>', 10000000);
+        }
+
+        if ($this->level == "direktur") {
+            if ($request->status == "pending") {
+                $query->whereNotNull('gm');
+                $query->whereNull('dirut');
+            } else if ($request->status == "disetujui") {
+                $query->whereNotNull('dirut');
+                $query->where('status', '!=', 2);
+                $query->orwhereNotNull('dirut');
+                $query->where('status', '=', 2);
+                $query->where('level', '!=', Auth::user()->level);
+            } else if ($request->status == "ditolak") {
+                $query->whereNotNull('gm');
+                $query->whereNotNull('dirut');
+                $query->where('status', 2);
+                $query->where('level', Auth::user()->level);
+            } else {
+                $query->whereNotNull('gm');
+            }
+            $query->where('jumlah', '>', 10000000);
+        }
+
+
 
         $limitkredit = $query->paginate(15);
         $limitkredit->appends($request->all());
-        return view('limitkredit.index', compact('limitkredit'));
+
+        $cabang = Cabang::all();
+        return view('limitkredit.index', compact('limitkredit', 'cabang'));
     }
 
     public function create($kode_pelanggan)
@@ -386,26 +486,44 @@ class LimitkreditController extends Controller
 
     public function updatelimit(Request $request)
     {
+        $limitkredit = DB::table('pengajuan_limitkredit_v3')->where('no_pengajuan', $request->no_pengajuan)->first();
         $jumlah_rekomendasi = str_replace(".", "", $request->jumlah_rekomendasi);
-        if ($request->jatuhtempo != $request->jatuhtempo_rekomendasi) {
-            $update = DB::table('pengajuan_limitkredit_v3')
-                ->where('no_pengajuan', $request->no_pengajuan)
-                ->update([
-                    'jumlah_rekomendasi' => $jumlah_rekomendasi,
-                    'jatuhtempo_rekomendasi' => $request->jatuhtempo_rekomendasi
-                ]);
-        } else {
-            $update = DB::table('pengajuan_limitkredit_v3')
-                ->where('no_pengajuan', $request->no_pengajuan)
-                ->update([
-                    'jumlah_rekomendasi' => $jumlah_rekomendasi,
-                ]);
-        }
+        DB::beginTransaction();
+        try {
+            if ($request->jatuhtempo != $request->jatuhtempo_rekomendasi) {
+                DB::table('pengajuan_limitkredit_v3')
+                    ->where('no_pengajuan', $request->no_pengajuan)
+                    ->update([
+                        'jumlah_rekomendasi' => $jumlah_rekomendasi,
+                        'jatuhtempo_rekomendasi' => $request->jatuhtempo_rekomendasi
+                    ]);
+                if ($limitkredit->status == 1) {
+                    DB::table('pelanggan')->where('kode_pelanggan', $limitkredit->kode_pelanggan)
+                        ->update([
+                            'jatuhtempo' => $request->jatuhtempo_rekomendasi,
+                            'limitpel' => $jumlah_rekomendasi
+                        ]);
+                }
+            } else {
+                DB::table('pengajuan_limitkredit_v3')
+                    ->where('no_pengajuan', $request->no_pengajuan)
+                    ->update([
+                        'jumlah_rekomendasi' => $jumlah_rekomendasi,
+                    ]);
 
-        if ($update) {
-            return Redirect::back()->with(['success' => 'Data Penyesuaian Berhasil Disimpan']);
-        } else {
-            return Redirect::back()->with(['warning' => 'Data Uraian Analisa Gagal Disimpan Hubungi Tim IT']);
+                if ($limitkredit->status == 1) {
+                    DB::table('pelanggan')->where('kode_pelanggan', $limitkredit->kode_pelanggan)
+                        ->update([
+                            'limitpel' => $jumlah_rekomendasi
+                        ]);
+                }
+            }
+            DB::commit();
+            return Redirect::back()->with(['success' => 'Data Uraian Analisa Berhasil Disimpan']);
+        } catch (\Exception $e) {
+            //dd($e);
+            DB::rollback();
+            return redirect('/limitkredit')->with(['warning' => 'Data Uraian Analisa Gagal di Simpan Hubungi Tim IT']);
         }
     }
 
@@ -494,11 +612,12 @@ class LimitkreditController extends Controller
         $datastatus = [
             'status' => $status,
             $lv => $id_admin,
+            'id_approval' => $id_admin,
             $field_time => $time
         ];
         $ceklimit = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)->first();
-        $penjualanpending = DB::table('penjualan')->where('status', 1)->get();
-
+        $penjualanpending = DB::table('penjualan')->where('kode_pelanggan', $kode_pelanggan)->where('status', 1)->get();
+        //dd($penjualanpending);
         DB::beginTransaction();
         try {
             //Update Limit Kredit
@@ -506,9 +625,11 @@ class LimitkreditController extends Controller
                 ->where('no_pengajuan', $no_pengajuan)
                 ->update($datastatus);
             //Update Pelanggan
-            DB::table('pelanggan')
-                ->where('kode_pelanggan', $kode_pelanggan)
-                ->update($data);
+            if ($status == 1) {
+                DB::table('pelanggan')
+                    ->where('kode_pelanggan', $kode_pelanggan)
+                    ->update($data);
+            }
 
             //Update Penjualan Pending
             foreach ($penjualanpending as $d) {
@@ -533,11 +654,14 @@ class LimitkreditController extends Controller
                         }
                     )
                     ->where('penjualan.kode_pelanggan', $kode_pelanggan)
+                    ->where('penjualan.no_fak_penj', '!=', $d->no_fak_penj)
                     ->groupBy('penjualan.kode_pelanggan')
                     ->first();
 
+
                 $piutang = $cekpiutang->sisapiutang;
                 $totalpiutang = $piutang +  $d->total;
+
 
                 if ($totalpiutang <= $ceklimit->limitpel) {
                     $datapenjualan = [
@@ -556,6 +680,77 @@ class LimitkreditController extends Controller
             dd($e);
             DB::rollback();
             return Redirect::back()->with(['warning' => 'Data Gagal Disetujui Hubungi Tim IT']);
+        }
+    }
+
+
+    public function decline($no_pengajuan)
+    {
+        $no_pengajuan = Crypt::decrypt($no_pengajuan);
+        $limitkredit = DB::table('pengajuan_limitkredit_v3')->where('no_pengajuan', $no_pengajuan)->first();
+        $kode_pelanggan = $limitkredit->kode_pelanggan;
+        $tgl_pengajuan = $limitkredit->tgl_pengajuan;
+        $id_admin = Auth::user()->id;
+        $level = Auth::user()->level;
+        $status = $limitkredit->status;
+        $lastlimit = DB::table('pengajuan_limitkredit_v3')->where('tgl_pengajuan', '<', $tgl_pengajuan)->where('status', 1)->orderBy('tgl_pengajuan', 'desc')->first();
+
+        if ($lastlimit != null) {
+            $jumlah = $lastlimit->jumlah;
+            $jatuhtempo = $lastlimit->jatuhtempo;
+        } else {
+            $jumlah = 0;
+            $jatuhtempo = 0;
+        }
+
+        if (!empty($jatuhtempo)) {
+            $data = [
+                'limitpel' => $jumlah,
+                'jatuhtempo' => $jatuhtempo
+            ];
+        } else {
+            $data = [
+                'limitpel' => $jumlah
+            ];
+        }
+
+        if ($level == 'kepala cabang' || $level == "kepala penjualan") {
+            $lv = 'kacab';
+        } else if ($level == 'manager marketing') {
+            $lv = 'mm';
+        } else if ($level == 'general manager') {
+            $lv = 'gm';
+        } else if ($level == 'direktur') {
+            $lv = 'dirut';
+        }
+
+        $datastatus = [
+            'status' => 2,
+            $lv => $id_admin,
+            'id_approval' => $id_admin
+        ];
+
+
+        DB::beginTransaction();
+        try {
+            DB::table('pengajuan_limitkredit_v3')->where('no_pengajuan', $no_pengajuan)->update($datastatus);
+            if ($status == 1 && $lastlimit == null) {
+                DB::table('pelanggan')
+                    ->where('kode_pelanggan', $kode_pelanggan)
+                    ->update([
+                        'limitpel' => $limitkredit->last_limit
+                    ]);
+            } elseif ($status == 1 && $lastlimit != null) {
+                DB::table('pelanggan')
+                    ->where('kode_Pelanggan', $kode_pelanggan)
+                    ->update($data);
+            }
+            DB::commit();
+            return Redirect::back()->with(['success' => 'Data Berhasil Di Tolak']);
+        } catch (\Exception $e) {
+            dd($e);
+            DB::rollback();
+            return Redirect::back()->with(['warning' => 'Data Gagal DI Tolak Hubungi Tim IT']);
         }
     }
 }

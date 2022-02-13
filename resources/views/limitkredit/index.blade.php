@@ -32,6 +32,19 @@
                             </div>
                         </div>
                         <div class="row">
+                            @if (Auth::user()->kode_cabang=="PCF")
+                            <div class="col-lg-2 col-sm-12">
+                                <div class="form-group  ">
+                                    <select name="kode_cabang" id="kode_cabang" class="form-control">
+                                        <option value="">Semua Cabang</option>
+                                        @foreach ($cabang as $c)
+                                        <option {{ (Request('kode_cabang')==$c->kode_cabang ? 'selected':'')}} value="{{
+                                            $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            @endif
                             <div class="col-lg-3 col-sm-12">
                                 <x-inputtext label="Nama Pelanggan" field="nama_pelanggan" icon="feather icon-user" value="{{ Request('nama_pelanggan') }}" />
                             </div>
@@ -39,8 +52,9 @@
                                 <div class="form-group">
                                     <select name="status" id="status" class="form-control">
                                         <option value="">Status</option>
-                                        <option {{ (Request('status')=='1' ? 'selected' :'')}} value="1">PENDING
-                                        </option>
+                                        <option {{ (Request('status')=='pending' ? 'selected' :'')}} value="pending">PENDING</option>
+                                        <option {{ (Request('status')=='disetujui' ? 'selected' :'')}} value="disetujui">DISETUJUI</option>
+                                        <option {{ (Request('status')=='ditolak' ? 'selected' :'')}} value="ditolak">DITOLAK</option>
                                     </select>
                                 </div>
                             </div>
@@ -60,7 +74,9 @@
                                 <th>Pelanggan</th>
                                 <th>Jumlah</th>
                                 <th>Jatuhtempo</th>
+                                @if (in_array($level,$penyesuaian_limit))
                                 <th>% Peny</th>
+                                @endif
                                 <th>Skor</th>
                                 <th>Ket</th>
                                 <th>KP</th>
@@ -78,7 +94,7 @@
                                 <td>{{ date("d-m-Y",strtotime($d->tgl_pengajuan)) }}</td>
                                 <td>{{ ucwords(strtolower($d->nama_pelanggan)) }}</td>
                                 <td class="text-right">
-                                    @if (!empty($d->jumlah_rekomendasi) || $d->jumlah_rekomendasi === 0 )
+                                    @if (!empty($d->jumlah_rekomendasi))
                                     <s>{{ rupiah($d->jumlah) }}</s> / {{ rupiah($d->jumlah_rekomendasi) }}
                                     @else
                                     {{ rupiah($d->jumlah) }}
@@ -91,8 +107,9 @@
                                     {{ $d->jatuhtempo }} Hari
                                     @endif
                                 </td>
+                                @if (in_array($level,$penyesuaian_limit))
                                 <td>
-                                    @if ($d->status==0)
+                                    @if ($d->status!=2)
                                     @if (empty($d->jumlah_rekomendasi) || $d->jumlah_rekomendasi===0)
                                     <a href="#" class="penyesuaian_limit" no_pengajuan="{{ $d->no_pengajuan }}"><i class="feather icon-maximize-2 info"></i></a>
                                     @else
@@ -104,17 +121,27 @@
                                     @php
                                     $persentase = ($selisih / $d->jumlah) * 100;
                                     @endphp
-                                    <a href="#" class="penyesuaian_limit" no_pengajuan="{{ $d->no_pengajuan }}"><i class="feather icon-arrow-up-right success"></i> <span class="success">{{ $persentase }} %</span></a>
+                                    @if($d->cek_ajuan==1)
+                                    <a href="#" class="#" no_pengajuan="{{ $d->no_pengajuan }}"><i class="feather icon-arrow-up-right success"></i> <span class="success">{{ round($persentase,2) }} %</span></a>
+                                    @else
+                                    <a href="#" class="penyesuaian_limit" no_pengajuan="{{ $d->no_pengajuan }}"><i class="feather icon-arrow-up-right success"></i> <span class="success">{{ round($persentase,2) }} %</span></a>
+                                    @endif
                                     @else
                                     @php
                                     $selisih = $d->jumlah - $d->jumlah_rekomendasi;
                                     $persentase = ($selisih/ $d->jumlah ) *100;
                                     @endphp
-                                    <a href="#" class="penyesuaian_limit" no_pengajuan="{{ $d->no_pengajuan }}"><i class="feather icon-arrow-down-left danger"></i> <span class="danger">{{ $persentase }} %</span></a>
+                                    @if($d->cek_ajuan==1)
+                                    <a href="#" class="#" no_pengajuan="{{ $d->no_pengajuan }}"><i class="feather icon-arrow-down-left danger"></i> <span class="danger">{{ round($persentase,2) }} %</span></a>
+                                    @else
+                                    <a href="#" class="penyesuaian_limit" no_pengajuan="{{ $d->no_pengajuan }}"><i class="feather icon-arrow-down-left danger"></i> <span class="danger">{{ round($persentase,2) }} %</span></a>
+                                    @endif
+
                                     @endif
                                     @endif
                                     @endif
                                 </td>
+                                @endif
                                 <td>
                                     <?php
                                     $scoreakhir =  $d['skor'];
@@ -223,18 +250,24 @@
                                             </a>
                                         </form>
                                         @endif
-                                        @if($d->status===0){
+                                        @if($d->status==0)
                                         <a class="ml-1 uraiananalisa" no_pengajuan="{{ $d->no_pengajuan }}" href="#"><i class=" feather icon-message-circle primary"></i></a>
                                         @endif
                                         <!-- Kepala Cabang -->
                                         @if($level == "kepala penjualan" && empty($d->kacab) && $d->status==0
                                         || $level == "kepala cabang" && empty($d->kacab) && $d->status==0
+
                                         || $level == "kepala penjualan" && !empty($d->kacab) && empty($d->mm) && $d->status==2
                                         || $level == "kepala cabang" && !empty($d->kacab) && empty($d->mm) && $d->status==2
+
                                         || $level == "kepala penjualan" && !empty($d->kacab) && empty($d->mm) && $d->status==1
-                                        || $level == "kepala cabang" && !empty($d->kacab) && empty($d->mm) && $d->status==1)
+                                        || $level == "kepala cabang" && !empty($d->kacab) && empty($d->mm) && $d->status==1
+
+                                        || $level == "kepala penjualan" && !empty($d->kacab) && empty($d->mm) && $d->status==0
+                                        || $level == "kepala cabang" && !empty($d->kacab) && empty($d->mm) && $d->status==0)
+
                                         <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/approve"><i class=" fa fa-check success"></i></a>
-                                        <a class="ml-1" href="#"><i class=" fa fa-close danger"></i></a>
+                                        <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/decline"><i class=" fa fa-close danger"></i></a>
                                         @endif
 
                                         <!-- Manager marketing -->
@@ -242,7 +275,7 @@
                                         || $level == "manager marketing" && !empty($d->kacab) && !empty($d->mm) && empty($d->gm) && $d->status==2
                                         || $level == "manager marketing" && !empty($d->kacab) && !empty($d->mm) && empty($d->gm) && $d->status==0)
                                         <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/approve"><i class=" fa fa-check success"></i></a>
-                                        <a class="ml-1" href="#"><i class=" fa fa-close danger"></i></a>
+                                        <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/decline"><i class=" fa fa-close danger"></i></a>
                                         @endif
 
                                         <!-- General Manager -->
@@ -251,15 +284,13 @@
                                         || $level =="general manager" && !empty($d->mm) && !empty($d->gm) && empty($d->dirut) && $d->status==2
                                         || $level =="general manager" && !empty($d->mm) && !empty($d->gm) && empty($d->dirut) && $d->status==0)
                                         <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/approve"><i class=" fa fa-check success"></i></a>
-                                        <a class="ml-1" href="#"><i class=" fa fa-close danger"></i></a>
+                                        <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/decline"><i class=" fa fa-close danger"></i></a>
                                         @endif
 
                                         <!-- Direktur -->
-                                        @if($level == "direktur" && !empty($d->gm) && $d->status==0
-                                        || $level=="direktur" && !empty($d->gm) && $d->status == 2
-                                        || $level=="direktur" && !empty($d->gm) && $d->status == 0)
+                                        @if($level == "direktur" )
                                         <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/approve"><i class=" fa fa-check success"></i></a>
-                                        <a class="ml-1" href="#"><i class=" fa fa-close danger"></i></a>
+                                        <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/decline"><i class=" fa fa-close danger"></i></a>
                                         @endif
 
                                         @endif

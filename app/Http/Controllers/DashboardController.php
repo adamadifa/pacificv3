@@ -29,14 +29,6 @@ class DashboardController extends Controller
                 ->whereNull('dirut')
                 ->where('status', 0)
                 ->count();
-        } else if ($level == "kepala cabang" || $level == "kepala penjualan") {
-            $jmlpengajuan = DB::table('pengajuan_limitkredit_v3')
-                ->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
-                ->whereIn('no_pengajuan', $no_pengajuan)
-                ->where('pelanggan.kode_cabang', $kode_cabang)
-                ->whereNull('kacab')
-                ->where('status', 0)
-                ->count();
         } else if ($level == "manager marketing") {
             $jmlpengajuan = DB::table('pengajuan_limitkredit_v3')
                 ->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')

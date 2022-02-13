@@ -37,7 +37,7 @@
                                         <i class="feather icon-shopping-bag text-danger font-large-3"></i>
                                     </div>
                                 </div>
-                                <h1 class="text-bold-700">{{ $jmlpengajuan }}</h1>
+                                <h1 class="text-bold-700"><a href="/limitkredit?status=pending">{{ $jmlpengajuan }}</a></h1>
                                 <p class="mb-0 line-ellipsis">Menunggu Persetujuan {{ ucwords(Auth::user()->level) }}<br><br><br></p>
                             </div>
                         </div>

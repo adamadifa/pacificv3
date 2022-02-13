@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-12">
             <div class="form-group">
-                <textarea class="form-control" id="uraian_analisa" name="uraian_analisa" rows="10">{{ $uraian_analisa->uraian_analisa }}</textarea>
+                <textarea class="form-control" id="uraian_analisa" name="uraian_analisa" rows="10">@if ($uraian_analisa != null) {{ $uraian_analisa->uraian_analisa }} @endif</textarea>
             </div>
         </div>
     </div>
