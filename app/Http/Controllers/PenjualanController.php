@@ -1940,6 +1940,196 @@ class PenjualanController extends Controller
     public function laporanpenjualan()
     {
         $cabang = DB::table('cabang')->get();
-        return view('penjualan.laporan', compact('cabang'));
+        return view('penjualan.laporan.frm.lap_penjualan', compact('cabang'));
+    }
+
+    public function cetaklaporanpenjualan(Request $request)
+    {
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $cabang = DB::table('cabang')->where('kode_cabang', $request->kode_cabang)->first();
+        $salesman = DB::table('karyawan')->where('id_karyawan', $request->id_karyawan)->first();
+        $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $request->kode_pelanggan)->first();
+        $jenistransaksi = $request->jenistransaksi;
+        $jenislaporan = $request->jenislaporan;
+        if (!empty($request->kode_cabang)) {
+            if ($jenislaporan == "standar") {
+                $query = Penjualan::query();
+                $query->selectRaw('penjualan.no_fak_penj AS no_fak_penj,
+                penjualan.tgltransaksi AS tgltransaksi,
+                penjualan.kode_pelanggan AS kode_pelanggan,
+                pelanggan.nama_pelanggan AS nama_pelanggan,
+                pelanggan.alamat_pelanggan AS alamat_pelanggan,
+                pelanggan.no_hp AS no_hp,
+                pelanggan.pasar AS pasar,
+                pelanggan.hari AS hari,
+                pelanggan.kode_cabang AS kode_cabang,
+                penjualan.subtotal AS subtotal,
+                penjualan.potongan AS potongan,
+                penjualan.potaida as potaida,
+                penjualan.potswan as potswan,
+                penjualan.potstick as potstick,
+                penjualan.potsp as potsp,
+                penjualan.potsambal as potsambal,
+                penjualan.potistimewa AS potistimewa,
+                penjualan.penyharga AS penyharga,
+                date_created,
+                date_updated,
+                ifnull( penjualan.total, 0 ) AS total,
+                ifnull( retur.totalgb, 0 ) AS totalgb,
+                ifnull( retur.totalpf, 0 ) AS totalpf,
+                (ifnull( retur.totalpf, 0 ) - ifnull( retur.totalgb, 0 ) ) AS totalretur,
+                (ifnull( penjualan.total, 0 ) - ( ifnull( retur.totalpf, 0 ) - ifnull( retur.totalgb, 0))) AS totalpiutang,
+                penjualan.jenistransaksi AS jenistransaksi,
+                penjualan.jenisbayar AS jenisbayar,
+                penjualan.id_karyawan AS id_karyawan,
+                karyawan.nama_karyawan AS nama_karyawan,
+                penjualan.jatuhtempo AS jatuhtempo,
+                penjualan.status');
+                $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+                $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+                $query->leftJoin(
+                    DB::raw("(
+                SELECT
+                    retur.no_fak_penj AS no_fak_penj,
+                    sum(retur.subtotal_gb) AS totalgb,
+                    sum(retur.subtotal_pf) AS totalpf
+                FROM
+                    retur
+                WHERE
+                    tglretur BETWEEN '$dari' AND '$sampai'
+                GROUP BY
+                retur.no_fak_penj
+                ) retur"),
+                    function ($join) {
+                        $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
+                    }
+                );
+
+                $query->whereBetween('tgltransaksi', [$dari, $sampai]);
+                if ($request->cabang != "") {
+                    $query->where('karyawan.kode_cabang', $request->kode_cabang);
+                }
+
+                if ($request->id_karyawan != "") {
+                    $query->where('penjualan.id_karyawan', $request->id_karyawan);
+                }
+
+                if ($request->kode_pelanggan != "") {
+                    $query->where('penjualan.kode_pelanggan', $request->kode_pelanggan);
+                }
+
+                if ($request->jenistransaksi != "") {
+                    $query->where('penjualan.jenistransaksi', $request->jenistransaksi);
+                }
+
+
+
+                if ($request->status != "") {
+                    if ($request->status == "pending") {
+                        $query->where('penjualan.status', 1);
+                    } else if ($request->status == "disetujui") {
+                        $query->where('penjualan.status', '!=', 1);
+                    }
+                }
+
+                $query->groupByRaw('
+                penjualan.no_fak_penj,
+                tgltransaksi,
+                penjualan.kode_pelanggan,
+                pelanggan.nama_pelanggan,
+                pelanggan.alamat_pelanggan,
+                pelanggan.no_hp,
+                pelanggan.pasar,
+                pelanggan.hari,
+                pelanggan.kode_cabang,
+                penjualan.subtotal,
+                penjualan.potongan,
+                penjualan.potongan,
+                penjualan.potaida,
+                penjualan.potswan,
+                penjualan.potstick,
+                penjualan.potsp,
+                penjualan.potsambal,
+                penjualan.potistimewa,
+                penjualan.penyharga,
+                penjualan.jenistransaksi,
+                penjualan.jenisbayar,
+                penjualan.id_karyawan,
+                karyawan.nama_karyawan,
+                penjualan.jatuhtempo,
+                penjualan.total,
+                penjualan.status,
+                retur.totalgb,
+                retur.totalpf,
+                date_created,
+                date_updated');
+                $query->orderBy('tgltransaksi', 'asc');
+                $query->orderBy('no_fak_penj', 'asc');
+                $penjualan = $query->get();
+                return view('penjualan.laporan.cetak_penjualan', compact('penjualan', 'cabang', 'dari', 'sampai', 'salesman', 'pelanggan'));
+            } else if ($jenislaporan == "rekapperpelanggan") {
+                $query = Penjualan::query();
+                $query->selectRaw('penjualan.kode_pelanggan,nama_pelanggan,pasar,hari,penjualan.id_karyawan,nama_karyawan,SUM(subtotal) as totalpenjualan,
+                sum(potongan) as totalpotongan,sum(potistimewa) as totalpotonganistimewa,sum(penyharga) as totalpenyharga, sum(total) as totalpenjualannetto,
+                SUM(totretur) as totalretur');
+                $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+                $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+                $query->leftJoin(
+                    DB::raw("(
+                        SELECT no_fak_penj,SUM(total) as totretur FROM retur WHERE tglretur
+                        BETWEEN '$dari' AND '$sampai' GROUP BY no_fak_penj
+                    ) retur"),
+                    function ($join) {
+                        $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
+                    }
+                );
+                $query->whereBetween('tgltransaksi', [$dari, $sampai]);
+                $query->groupByRaw('
+                penjualan.kode_pelanggan,
+                nama_pelanggan,
+                pasar,
+                Hari,
+                penjualan.id_karyawan,
+                nama_karyawan');
+                $penjualan = $query->get();
+                return view('penjualan.laporan.cetak_penjualan_rekapperpelanggan', compact('penjualan', 'cabang', 'dari', 'sampai', 'salesman', 'pelanggan'));
+            }
+        } else {
+            $query = Penjualan::query();
+            $query->selectRaw('karyawan.kode_cabang AS kode_cabang,nama_cabang,
+            (ifnull( SUM(penjualan.subtotal), 0 )
+            ) AS totalbruto, totalretur,ifnull( SUM(penjualan.penyharga), 0 )  as totalpenyharga,
+            ifnull( SUM(penjualan.potongan), 0 )  as totalpotongan,
+            ifnull( SUM(penjualan.potistimewa), 0 )  as totalpotistimewa');
+            $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+            $query->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang');
+            $query->leftJoin(
+                DB::raw("(
+                SELECT karyawan.kode_cabang, SUM(retur.total )AS totalretur FROM retur
+                INNER JOIN penjualan ON retur.no_fak_penj = penjualan.no_fak_penj
+                INNER JOIN karyawan ON penjualan.id_karyawan = karyawan.id_karyawan
+                WHERE tglretur BETWEEN '$dari' AND '$sampai' GROUP BY karyawan.kode_cabang
+                ) retur"),
+                function ($join) {
+                    $join->on('karyawan.kode_cabang', '=', 'retur.kode_cabang');
+                }
+            );
+
+            $query->whereBetween('tgltransaksi', [$dari, $sampai]);
+            if ($request->jenistransaksi != "") {
+                $query->where('penjualan.jenistransaksi', $request->jenistransaksi);
+            }
+            if ($request->status != "") {
+                if ($request->status == "pending") {
+                    $query->where('penjualan.status', 1);
+                } else if ($request->status == "disetujui") {
+                    $query->where('penjualan.status', '!=', 1);
+                }
+            }
+            $query->groupByRaw(' karyawan.kode_cabang,nama_cabang,totalretur');
+            $penjualan = $query->get();
+            return view('penjualan.laporan.cetak_penjualan_rekapallcabang', compact('penjualan', 'dari', 'sampai'));
+        }
     }
 }

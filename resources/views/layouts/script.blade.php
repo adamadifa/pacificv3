@@ -1,20 +1,15 @@
 <!-- BEGIN: Vendor JS-->
 <script src="{{asset('app-assets/vendors/js/vendors.min.js')}}"></script>
-<!-- BEGIN Vendor JS-->
+<script src="{{asset('app-assets/vendors/js/forms/select/select2.full.min.js')}}"></script>
 
-<!-- BEGIN: Page Vendor JS-->
 <script src="{{asset('app-assets/vendors/js/pickers/pickadate/picker.js')}}"></script>
 <script src="{{asset('app-assets/vendors/js/pickers/pickadate/picker.date.js')}}"></script>
 <script src="{{asset('app-assets/vendors/js/pickers/pickadate/picker.time.js')}}"></script>
 <script src="{{asset('app-assets/vendors/js/pickers/pickadate/legacy.js')}}"></script>
-<!-- END: Page Vendor JS-->
-<!-- BEGIN: Page Vendor JS-->
 <script src="{{asset('app-assets/vendors/js/forms/validation/jqBootstrapValidation.js')}}"></script>
-<!-- END: Page Vendor JS-->
-<!-- BEGIN: Page Vendor JS-->
 <script src="{{asset('app-assets/vendors/js/extensions/dropzone.min.js')}}"></script>
 
-<!-- BEGIN: Page Vendor JS-->
+
 <script src="{{asset('app-assets/vendors/js/tables/datatable/pdfmake.min.js')}}"></script>
 <script src="{{asset('app-assets/vendors/js/tables/datatable/vfs_fonts.js')}}"></script>
 <script src="{{asset('app-assets/vendors/js/tables/datatable/datatables.min.js')}}"></script>
@@ -34,10 +29,9 @@
 <!-- END: Theme JS-->
 <!-- BEGIN: Page JS-->
 <script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
-<!-- END: Page JS-->
-<!-- BEGIN: Page JS-->
 <script src="{{asset('app-assets/js/scripts/ui/data-list-view.js')}}"></script>
 <script src="{{asset('app-assets/js/jquery.maskMoney.js')}}"></script>
+<script src="{{asset('app-assets/js/scripts/forms/select/form-select2.js')}}"></script>
 <!-- END: Page JS-->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"></script>
@@ -48,15 +42,15 @@
 <script src="{{asset('app-assets/js/scripts/datatables/datatable.js')}}"></script>
 <script>
     $(function() {
-      function toggleZoomScreen() {
-        var width = window.screen.width;
-        if (width <= 1366) {
-          document.body.style.zoom = "70%";
+        function toggleZoomScreen() {
+            var width = window.screen.width;
+            if (width <= 1366) {
+                document.body.style.zoom = "70%";
+            }
         }
-      }
-      toggleZoomScreen();
+        toggleZoomScreen();
     });
 
-  </script>
+</script>
 <!-- END: Page JS-->
 @stack('myscript')

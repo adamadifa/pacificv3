@@ -66,7 +66,7 @@
                             <li class="{{ request()->is(['limitkredit','limitkredit/*']) ? 'active' : '' }}"><a href="/limitkredit"><i class="feather icon-credit-card"></i><span class="menu-item">Limit Kredit</span></a></li>
                             @endif
                             @if (in_array($level,$laporan_penjualan))
-                            <li class="{{ request()->is(['laporanpenjualan','laporanpenjualan/*']) ? 'active' : '' }}"><a href="/laporanpenjualan"><i class="feather icon-file-text"></i><span class="menu-item">Laporan</span></a></li>
+                            <li class="{{ request()->is(['laporanpenjualan','laporanpenjualan/*']) ? 'active' : '' }}"><a href="/laporanpenjualan/penjualan"><i class="feather icon-file-text"></i><span class="menu-item">Laporan</span></a></li>
                             @endif
                         </ul>
                     </li>
