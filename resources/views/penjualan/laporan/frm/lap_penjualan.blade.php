@@ -82,7 +82,7 @@
                                                     <option value="">Pilih Jenis Laporan</option>
                                                     <option value="standar">Standar</option>
                                                     <option value="rekapperpelanggan">Rekap Per Pelanggan</option>
-                                                    <option value="satubaris">Format Satu Baris</option>
+                                                    <option value="formatsatubaris">Format Satu Baris</option>
                                                     <option value="komisi">Format Komisi</option>
                                                 </select>
                                             </div>
@@ -108,12 +108,12 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-8">
+                                        <div class="col-lg-8 col-sm-12">
                                             <div class="form-group">
                                                 <button type="submit" name="submit" class="btn btn-primary btn-block"><i class="feather icon-send"></i> Submit</button>
                                             </div>
                                         </div>
-                                        <div class="col-4">
+                                        <div class="col-lg-4 col-sm-12">
                                             <div class="form-group">
                                                 <button type="submit" name="submit" class="btn btn-success btn-block"><i class="feather icon-download"></i> Export</button>
                                             </div>
@@ -127,7 +127,7 @@
                 </div>
             </div>
             <div class="col-lg-3 col-sm-12">
-                <div class="card" style="height: 400.453px;">
+                <div class="card">
                     <div class="card-content">
                         <div class="card-body">
                             <h4 class="card-title">Laporan</h4>
@@ -233,7 +233,7 @@
                     $("#kode_cabang").focus();
                 });
                 return false;
-            } else if (jenislaporan == "") {
+            } else if (jenislaporan == "" && kode_cabang != "") {
                 swal({
                     title: 'Oops'
                     , text: 'Jenis Laporan Harus Dipilih !'
