@@ -335,4 +335,47 @@ class ReturController extends Controller
             return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
         }
     }
+
+    public function laporanretur()
+    {
+        $cabang = DB::table('cabang')->get();
+        return view('retur.laporan.frm.lap_retur', compact('cabang'));
+    }
+
+    public function cetaklaporanretur(Request $request)
+    {
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $cabang = DB::table('cabang')->where('kode_cabang', $request->kode_cabang)->first();
+        $salesman = DB::table('karyawan')->where('id_karyawan', $request->id_karyawan)->first();
+        $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $request->kode_pelanggan)->first();
+        $query = Retur::query();
+        $query->selectRaw('no_retur_penj,no_ref,retur.no_fak_penj,penjualan.kode_pelanggan,nama_pelanggan,pasar,hari,
+        karyawan.kode_cabang,tglretur,subtotal_gb,subtotal_pf,retur.total,jenistransaksi,retur.date_created,retur.date_updated');
+        $query->join('penjualan', 'retur.no_fak_penj', '=', 'penjualan.no_fak_penj');
+        $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $query->whereBetween('tglretur', [$dari, $sampai]);
+        if ($request->cabang != "") {
+            $query->where('karyawan.kode_cabang', $request->kode_cabang);
+        }
+        if ($request->id_karyawan != "") {
+            $query->where('penjualan.id_karyawan', $request->id_karyawan);
+        }
+
+        if ($request->kode_pelanggan != "") {
+            $query->where('penjualan.kode_pelanggan', $request->kode_pelanggan);
+        }
+        $query->orderBy('tglretur', 'asc');
+        $retur = $query->get();
+
+        if (isset($_POST['export'])) {
+            $time = date("H:i:s");
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Penjualan Format Komisi Periode $dari-$sampai-$time.xls");
+        }
+        return view('retur.laporan.cetak_retur', compact('retur', 'cabang', 'dari', 'sampai', 'salesman', 'pelanggan'));
+    }
 }

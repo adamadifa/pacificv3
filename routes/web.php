@@ -119,8 +119,12 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,mana
     Route::get('/limitkredit/{no_pengajuan}/decline', [LimitkreditController::class, 'decline']);
 
     //Penjualan
+    //Laporan Penjualan
     Route::get('/laporanpenjualan/penjualan', [PenjualanController::class, 'laporanpenjualan']);
     Route::post('/laporanpenjualan/cetaklaporanpenjualan', [PenjualanController::class, 'cetaklaporanpenjualan']);
+    //Laporan Retur
+    Route::get('/laporanretur', [ReturController::class, 'laporanretur']);
+    Route::post('/laporanretur/cetaklaporanretur', [ReturController::class, 'cetaklaporanretur']);
 });
 
 

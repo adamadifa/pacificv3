@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak Laporan Penjualan Format Satu Baris</title>
+    <title>Cetak Laporan Penjualan Format Komisi</title>
     <style>
         body {
             font-family: 'Poppins'
@@ -393,8 +393,44 @@
                 <th align="right"><b>{{ desimal($totalpotongan)}}</b></th>
                 <th align="right"><b>{{ desimal($totalpotis)}}</b></th>
                 <th align="right"><b>{{ desimal($totalnetto)}}</b></th>
+                <th colspan="4"></th>
             </tr>
         </tbody>
     </table>
+    <br>
+
+    <table class="datatable3" style="width:40%" border="1">
+        <thead bgcolor="#024a75" style="color:white; font-size:12;">
+            <tr bgcolor="#024a75" style="color:white; font-size:12;">
+                <th colspan="5">SELLING OUT KOMISI</th>
+            </tr>
+            <tr>
+                <th style="background-color: #35ce35;">BB & DP</th>
+                <th style="background-color: #ffcb00;">DS</th>
+                <th style="background-color: #058cbe;">SP</th>
+                <th style="background-color: #ce3ae4;">AR</th>
+                <th style="background-color: #ff9b0d;">AB,AS,CG5</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                @php
+                $BBDP = $totalBB + $totalDEP;
+                $DS = $totalDS;
+                $SP = $totalSP;
+                $AR = $totalAR;
+                $ABASCG5 = $totalAB + $totalAS + $totalCG5;
+                @endphp
+
+
+                <th align="right"><b>{{ desimal($BBDP)}}</b></th>
+                <th align="right"><b>{{ desimal($DS)}}</b></th>
+                <th align="right"><b>{{ desimal($SP)}}</b></th>
+                <th align="right"><b>{{ desimal($AR)}}</b></th>
+                <th align="right"><b>{{ desimal($ABASCG5)}}</b></th>
+            </tr>
+        </tbody>
+    </table>
+
 </body>
 </html>
