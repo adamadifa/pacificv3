@@ -242,24 +242,12 @@
             @endphp
             <tr>
                 <td><?php echo $b2->nama_barang; ?></td>
-                <td align='center'><?php if ($jmldus != 0) {
-                                          echo $jmldus;
-                                        } ?></td>
-                <td align='right'><?php if ($jmldus != 0) {
-                                        echo number_format($b2->harga_dus, '0', '', '.');
-                                      } ?></td>
-                <td align='center'><?php if ($jmlpack != 0) {
-                                          echo $jmlpack;
-                                        } ?></td>
-                <td align='right'><?php if ($jmlpack != 0) {
-                                        echo number_format($b2->harga_pack, '0', '', '.');
-                                      } ?></td>
-                <td align='center'><?php if ($jmlpcs != 0) {
-                                          echo $jmlpcs;
-                                        } ?></td>
-                <td align='right'><?php if ($jmlpcs != 0) {
-                                        echo number_format($b2->harga_pcs, '0', '', '.');
-                                      } ?></td>
+                <td align='center'><?php if ($jmldus != 0) {echo $jmldus;} ?></td>
+                <td align='right'><?php if ($jmldus != 0) {echo number_format($b2->harga_dus, '0', '', '.');} ?></td>
+                <td align='center'><?php if ($jmlpack != 0) { echo $jmlpack;} ?></td>
+                <td align='right'><?php if ($jmlpack != 0) {echo number_format($b2->harga_pack, '0', '', '.');} ?></td>
+                <td align='center'><?php if ($jmlpcs != 0) {echo $jmlpcs;} ?></td>
+                <td align='right'><?php if ($jmlpcs != 0) {echo number_format($b2->harga_pcs, '0', '', '.');} ?></td>
                 <td align='right'><?php echo number_format($b2->subtotal, '0', '', '.'); ?></td>
             </tr>
             @endforeach

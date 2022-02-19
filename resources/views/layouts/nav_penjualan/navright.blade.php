@@ -14,21 +14,32 @@
                     <i class="feather icon-file mr-1"></i>Retur
                 </li>
             </a>
-            <li class="list-group-item">
-                <i class="feather icon-file mr-1"></i>Kas Besar
-            </li>
-            <li class="list-group-item">
-                <i class="feather icon-file mr-1"></i>Tunai Kredit
-            </li>
-            <li class="list-group-item">
-                <i class="feather icon-file mr-1"></i>Analisa Umur Piutang (AUP)
-            </li>
-            <li class="list-group-item">
-                <i class="feather icon-file mr-1"></i>Kartu Piutang
-            </li>
-            <li class="list-group-item">
-                <i class="feather icon-file mr-1"></i>Lebih 1 Faktur
-            </li>
+            <a href="/laporankasbesarpenjualan" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporankasbesarpenjualan']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Kas Besar
+                </li>
+            </a>
+            <a href="/laporanpenjualan/tunaikredit" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanpenjualan/tunaikredit']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Tunai Kredit
+                </li>
+            </a>
+            <a href="/laporanpenjualan/kartupiutang" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanpenjualan/kartupiutang']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Kartu Piutang
+                </li>
+            </a>
+            <a href="/laporanpenjualan/aup" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanpenjualan/aup']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Analisa Umur Piutang
+                </li>
+            </a>
+
+            <a href="/laporanpenjualan/lebihsatufaktur" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanpenjualan/lebihsatufaktur']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Lebih 1 Faktur
+                </li>
+            </a>
             <li class="list-group-item">
                 <i class="feather icon-file mr-1"></i>DPPP
             </li>

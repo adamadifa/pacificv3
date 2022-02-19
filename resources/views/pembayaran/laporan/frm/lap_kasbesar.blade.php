@@ -1,15 +1,15 @@
 @extends('layouts.midone')
-@section('titlepage','Laporan Penjualan')
+@section('titlepage','Laporan Kas Besar')
 @section('content')
 <div class="content-wrapper">
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Laporan Penjualan</h2>
+                    <h2 class="content-header-title float-left mb-0">Laporan Kas Besar</h2>
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/penjualan/laporan">Laporan Penjualan</a>
+                            <li class="breadcrumb-item"><a href="/laporankasbesarpenjualan">Laporan Kas Besar</a>
                             </li>
                         </ol>
                     </div>
@@ -27,7 +27,7 @@
                     <div class="col-lg-7 col-sm-12">
                         <div class="card">
                             <div class="card-body">
-                                <form action="/laporanpenjualan/cetak" method="POST" id="frmPenjualan" target="_blank">
+                                <form action="/laporankasbesarpenjualan/cetak" method="POST" id="frmKasBesar" target="_blank">
                                     @csrf
                                     <input type="hidden" name="cabang" id="cabang" value="{{ Auth::user()->kode_cabang }}">
                                     <div class="row" id="pilihcabang">
@@ -64,13 +64,15 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row" id="pilihjenistransaksi">
+                                    <div class="row" id="pilihjenisbayar">
                                         <div class="col-12">
                                             <div class="form-group  ">
-                                                <select name="jenistransaksi" id="jenistransaksi" class="form-control">
-                                                    <option value="">Semua Jenis Transaksi</option>
+                                                <select name="jenisbayar" id="jenisbayar" class="form-control">
+                                                    <option value="">Semua Jenis Pembayaran</option>
                                                     <option value="tunai">Tunai</option>
                                                     <option value="kredit">Kredit</option>
+                                                    <option value="transfer">Transfer</option>
+                                                    <option value="giro">Giro</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -78,23 +80,10 @@
                                     <div class="row" id="pilihjenislaporan">
                                         <div class="col-12">
                                             <div class="form-group  ">
-                                                <select name="jenislaporan" id="jenislaporan" class="form-control">
+                                                <select name="jenislaporan" id="jenislaporan" class="form-control jenislaporan">
                                                     <option value="">Pilih Jenis Laporan</option>
-                                                    <option value="standar">Standar</option>
-                                                    <option value="rekapperpelanggan">Rekap Per Pelanggan</option>
-                                                    <option value="formatsatubaris">Format Satu Baris</option>
-                                                    <option value="komisi">Format Komisi</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row" id="pilihstatus">
-                                        <div class="col-12">
-                                            <div class="form-group  ">
-                                                <select name="status" id="status" class="form-control">
-                                                    <option value="">Semua Status</option>
-                                                    <option value="disetujui">Disetujui</option>
-                                                    <option value="pending">Pending</option>
+                                                    <option value="detail">Detail</option>
+                                                    <option value="rekap">Rekap</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -144,20 +133,22 @@
     $(function() {
         function disabledform() {
             var kode_cabang = $("#kode_cabang").val();
+            //alert(kode_cabang);
             if (kode_cabang == "") {
                 $("#id_karyawan").prop("disabled", true);
                 $("#kode_pelanggan").prop("disabled", true);
                 $("#jenislaporan").prop("disabled", true);
+                $('.jenislaporan option[value="rekap"]').attr('selected', 'selected');
             } else {
                 $("#id_karyawan").prop("disabled", false);
                 $("#kode_pelanggan").prop("disabled", false);
                 $('#jenislaporan option[value=""]').attr('selected', 'selected');
-                $("#jenislaporan").prop("disabled", false);
+                $(".jenislaporan").prop("disabled", false);
             }
         }
 
         disabledform();
-        $("#frmPenjualan").submit(function() {
+        $("#frmKasBesar").submit(function() {
             var cabang = $("#cabang").val();
             var kode_cabang = $("#kode_cabang").val();
             var jenislaporan = $("#jenislaporan").val();
@@ -255,6 +246,9 @@
 
         $("#kode_cabang").change(function() {
             var kode_cabang = $(this).val();
+            if (kode_cabang == "") {
+                $("#jenislaporan").val('rekap');
+            }
             disabledform();
             loadsalesmancabang(kode_cabang);
         });

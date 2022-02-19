@@ -27,7 +27,7 @@
                     <div class="col-lg-7 col-sm-12">
                         <div class="card">
                             <div class="card-body">
-                                <form action="/laporanretur/cetaklaporanretur" method="POST" id="frmPenjualan" target="_blank">
+                                <form action="/laporanretur/cetak" method="POST" id="frmPenjualan" target="_blank">
                                     @csrf
                                     <input type="hidden" name="cabang" id="cabang" value="{{ Auth::user()->kode_cabang }}">
                                     <div class="row" id="pilihcabang">
@@ -92,7 +92,7 @@
                 </div>
             </div>
             <div class="col-lg-3 col-sm-12">
-                @include('penjualan.laporan.navright')
+                @include('layouts.nav_penjualan.navright')
             </div>
 
             <div class="col-lg-8 col-sm-12">

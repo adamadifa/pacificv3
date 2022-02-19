@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pembayaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -435,6 +436,120 @@ class PembayaranController extends Controller
             return Redirect::back()->with(['success' => 'Data Transfer Berhasil Di Di Update']);
         } else {
             return Redirect::back()->with(['warning' => 'Data Transfer Gagal Di Update']);
+        }
+    }
+
+    public function laporankasbesarpenjualan()
+    {
+        $cabang = DB::table('cabang')->get();
+        return view('pembayaran.laporan.frm.lap_kasbesar', compact('cabang'));
+    }
+
+    public function cetaklaporankasbesarpenjualan(Request $request)
+    {
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $cabang = DB::table('cabang')->where('kode_cabang', $request->kode_cabang)->first();
+        $salesman = DB::table('karyawan')->where('id_karyawan', $request->id_karyawan)->first();
+        $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $request->kode_pelanggan)->first();
+        $jenislaporan = $request->jenislaporan;
+        if (empty($request->kode_cabang)) {
+            $query = Pembayaran::query();
+            $query->selectRaw('karyawan.kode_cabang,nama_cabang,SUM(IF(status_bayar="voucher",bayar,0)) as voucher,
+            SUM(IF(status_bayar IS NULL,bayar,0)) as cashin');
+            $query->join('penjualan', 'historibayar.no_fak_penj', '=', 'penjualan.no_fak_penj');
+            $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+            $query->join('karyawan', 'historibayar.id_karyawan', '=', 'karyawan.id_karyawan');
+            $query->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang');
+            $query->whereBetween('tglbayar', [$dari, $sampai]);
+            if (!empty($request->jenisbayar)) {
+                $query->where('historibayar.jenisbayar', $request->jenisbayar);
+            }
+            $query->groupByRaw('karyawan.kode_cabang,nama_cabang');
+            $kasbesar = $query->get();
+            return view('pembayaran.laporan.cetak_kasbesar_rekapallcabang', compact('kasbesar', 'cabang', 'dari', 'sampai', 'salesman', 'pelanggan'));
+        } else {
+            if ($jenislaporan == "rekap") {
+                $query = Pembayaran::query();
+                $query->selectRaw('historibayar.id_karyawan,nama_karyawan,SUM(IF(status_bayar="voucher",bayar,0)) as voucher,
+                SUM(IF(status_bayar IS NULL,bayar,0)) as cashin');
+                $query->join('penjualan', 'historibayar.no_fak_penj', '=', 'penjualan.no_fak_penj');
+                $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+                $query->join('karyawan', 'historibayar.id_karyawan', '=', 'karyawan.id_karyawan');
+                $query->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang');
+                $query->whereBetween('tglbayar', [$dari, $sampai]);
+                $query->where('karyawan.kode_cabang', $request->kode_cabang);
+                if (!empty($request->jenisbayar)) {
+                    $query->where('historibayar.jenisbayar', $request->jenisbayar);
+                }
+                $query->groupByRaw('historibayar.id_karyawan,nama_karyawan');
+                $kasbesar = $query->get();
+                return view('pembayaran.laporan.cetak_kasbesar_rekapallsalesman', compact('kasbesar', 'cabang', 'dari', 'sampai', 'salesman', 'pelanggan'));
+            } else {
+                $query = Pembayaran::query();
+                $query->selectRaw('historibayar.no_fak_penj,
+                karyawan.nama_karyawan,
+                k.nama_karyawan as penagih,
+                tgltransaksi,
+                tglbayar,
+                bayar,
+                bayar as bayarterakhir,
+                girotocash,status_bayar,historibayar.date_created,historibayar.date_updated,penjualan.status,penjualan.jenistransaksi,
+                historibayar.jenisbayar,
+                no_giro,
+                materai,
+                giro.namabank as bankgiro,
+                giro.jumlah as jumlahgiro,
+                transfer.namabank as banktransfer,
+                transfer.jumlah as jumlahtransfer,
+                historibayar.id_karyawan,
+                penjualan.kode_pelanggan,
+                nama_pelanggan,
+                (
+                    SELECT IFNULL(penjualan.total, 0) - (ifnull(r.totalpf, 0) - ifnull(r.totalgb, 0)) AS totalpiutang
+                    FROM penjualan
+                    LEFT JOIN (
+                        SELECT retur.no_fak_penj AS no_fak_penj,
+                        sum(retur.subtotal_gb) AS totalgb,
+                        sum(retur.subtotal_pf) AS totalpf
+                        FROM
+                            retur
+                        GROUP BY
+                            retur.no_fak_penj
+                    ) r ON (penjualan.no_fak_penj = r.no_fak_penj)
+                    WHERE penjualan.no_fak_penj = historibayar.no_fak_penj
+                ) as totalpenjualan,
+                (SELECT IFNULL(SUM(bayar),0)
+                FROM historibayar h
+                WHERE h.no_fak_penj = historibayar.no_fak_penj
+                AND h.tglbayar <= historibayar.tglbayar AND h.tglbayar >= penjualan.tgltransaksi) as totalbayar');
+                $query->leftJoin('giro', 'historibayar.id_giro', '=', 'giro.id_giro');
+                $query->leftJoin('transfer', 'historibayar.id_transfer', '=', 'transfer.id_transfer');
+                $query->join('penjualan', 'historibayar.no_fak_penj', '=', 'penjualan.no_fak_penj');
+                $query->join('v_movefaktur', 'historibayar.no_fak_penj', '=', 'v_movefaktur.no_fak_penj');
+                $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+                $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+                $query->join('karyawan as k', 'historibayar.id_karyawan', '=', 'k.id_karyawan');
+                $query->orderBy('tglbayar', 'asc');
+                $query->orderBy('historibayar.no_fak_penj', 'asc');
+                $query->whereBetween('tglbayar', [$dari, $sampai]);
+                $query->where('cabangbarunew', $request->kode_cabang);
+                if (!empty($request->id_karyawan)) {
+                    $query->where('historibayar.id_karyawan', $request->id_karyawan);
+                }
+                if (!empty($request->pelanggan)) {
+                    $query->where('penjualan.kode_pelanggan', $request->kode_pelanggan);
+                }
+
+                if (!empty($request->jenisbayar)) {
+                    $query->where('historibayar.jenisbayar', $request->jenisbayar);
+                }
+                $kasbesar = $query->get();
+
+                $voucher = $query->where('status_bayar', 'voucher')->get();
+
+                return view('pembayaran.laporan.cetak_kasbesar', compact('kasbesar', 'cabang', 'dari', 'sampai', 'salesman', 'pelanggan', 'voucher'));
+            }
         }
     }
 }

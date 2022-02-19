@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Barang;
 use App\Models\Harga;
 use App\Models\Penjualan;
+use App\Models\Retur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -1805,7 +1806,7 @@ class PenjualanController extends Controller
             }
         );
         $query->where('tgltransaksi', '<=', $tanggal_aup);
-        $query->where('cabangbarunew', $request->cabang);
+        $query->where('cabangbarunew', $request->kode_cabang);
         $query->whereRaw('(ifnull( penjualan.total, 0 ) - (ifnull( retur.total, 0 ))) != IFNULL( jmlbayar, 0 )');
         $query->groupBy('salesbarunew');
         $aup = $query->get();
@@ -1817,7 +1818,7 @@ class PenjualanController extends Controller
         $tahun = $request->tahun;
         $bulan = $request->bulan;
         $tahun = $request->tahun;
-        $cabang = $request->cabang;
+        $cabang = $request->kode_cabang;
         $tahunini = $tahun;
         $tahunlalu = $tahun - 1;
 
@@ -2007,7 +2008,7 @@ class PenjualanController extends Controller
                 );
 
                 $query->whereBetween('tgltransaksi', [$dari, $sampai]);
-                if ($request->cabang != "") {
+                if ($request->kode_cabang != "") {
                     $query->where('karyawan.kode_cabang', $request->kode_cabang);
                 }
 
@@ -2091,7 +2092,7 @@ class PenjualanController extends Controller
                     }
                 );
                 $query->whereBetween('tgltransaksi', [$dari, $sampai]);
-                if ($request->cabang != "") {
+                if ($request->kode_cabang != "") {
                     $query->where('karyawan.kode_cabang', $request->kode_cabang);
                 }
 
@@ -2150,7 +2151,7 @@ class PenjualanController extends Controller
                 penjualan.potongan as potongan,
                 penjualan.potistimewa,
                 penjualan.subtotal,
-                 (ifnull( penjualan.total, 0 ) - ( ifnull( r.totalpf, 0 ) - ifnull( r.totalgb, 0))) as totalnetto,
+                (ifnull( penjualan.total, 0 ) - ( ifnull( r.totalpf, 0 ) - ifnull( r.totalgb, 0))) as totalnetto,
                 totalbayar,
                 penjualan.jenistransaksi,
                 penjualan.status_lunas,
@@ -2216,7 +2217,7 @@ class PenjualanController extends Controller
                 $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
                 $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
                 $query->whereBetween('tgltransaksi', [$dari, $sampai]);
-                if ($request->cabang != "") {
+                if ($request->kode_cabang != "") {
                     $query->where('karyawan.kode_cabang', $request->kode_cabang);
                 }
                 if ($request->id_karyawan != "") {
@@ -2270,7 +2271,7 @@ class PenjualanController extends Controller
                 penjualan.potongan as potongan,
                 penjualan.potistimewa,
                 penjualan.subtotal,
-                 (ifnull( penjualan.total, 0 ) - ( ifnull( r.totalpf, 0 ) - ifnull( r.totalgb, 0))) as totalnetto,
+                (ifnull( penjualan.total, 0 ) - ( ifnull( r.totalpf, 0 ) - ifnull( r.totalgb, 0))) as totalnetto,
                 totalbayar,
                 penjualan.jenistransaksi,
                 penjualan.status_lunas,
@@ -2336,7 +2337,7 @@ class PenjualanController extends Controller
                 $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
                 $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
 
-                if ($request->cabang != "") {
+                if ($request->kode_cabang != "") {
                     $query->where('karyawan.kode_cabang', $request->kode_cabang);
                 }
                 if ($request->id_karyawan != "") {
@@ -2419,5 +2420,578 @@ class PenjualanController extends Controller
             }
             return view('penjualan.laporan.cetak_penjualan_rekapallcabang', compact('penjualan', 'dari', 'sampai'));
         }
+    }
+
+    public function laporantunaikredit()
+    {
+        $cabang = DB::table('cabang')->get();
+        return view('penjualan.laporan.frm.lap_tunaikredit', compact('cabang'));
+    }
+
+    public function cetaklaporantunaikredit(Request $request)
+    {
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $cabang = DB::table('cabang')->where('kode_cabang', $request->kode_cabang)->first();
+        $salesman = DB::table('karyawan')->where('id_karyawan', $request->id_karyawan)->first();
+        if ($request->kode_cabang     != "") {
+            $kode_cabang = "AND karyawan.kode_cabang = '" . $request->kode_cabang . "' ";
+        } else {
+            $kode_cabang = "";
+        }
+
+        if ($request->id_karyawan != "") {
+            $id_karyawan = "AND penjualan.id_karyawan = '" . $request->id_karyawan . "' ";
+        } else {
+            $id_karyawan = "";
+        }
+        $query = Barang::query();
+        $query->selectRaw('master_barang.kode_produk,nama_barang,isipcsdus,satuan,isipack,isipcs,
+        jumlah_tunai,totaljual_tunai,jumlah_kredit,totaljual_kredit,jumlah_tunai + jumlah_kredit as jumlah,
+        totaljual_tunai + totaljual_kredit as totaljual');
+        $query->leftJoin(
+            DB::raw("(
+                SELECT kode_produk,
+                SUM( IF ( jenistransaksi ='tunai', detailpenjualan.jumlah, 0 ) ) AS jumlah_tunai,
+                SUM( IF ( jenistransaksi ='tunai', detailpenjualan.subtotal, 0 ) ) AS totaljual_tunai,
+                SUM( IF ( jenistransaksi ='kredit', detailpenjualan.jumlah, 0 ) ) AS jumlah_kredit,
+                SUM( IF ( jenistransaksi ='kredit', detailpenjualan.subtotal, 0 ) ) AS totaljual_kredit
+                FROM detailpenjualan
+                INNER JOIN penjualan ON detailpenjualan.no_fak_penj = penjualan.no_fak_penj
+                INNER JOIN karyawan ON penjualan.id_karyawan = karyawan.id_karyawan
+                INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
+                WHERE tgltransaksi BETWEEN '$dari' AND '$sampai' AND promo !='1'"
+                . $kode_cabang
+                . $id_karyawan
+                . "
+                GROUP BY kode_produk
+            ) detailpenjualan"),
+            function ($join) {
+                $join->on('master_barang.kode_produk', '=', 'detailpenjualan.kode_produk');
+            }
+        );
+        $query->orderBy('master_barang.kode_produk', 'asc');
+        $tunaikredit = $query->get();
+
+        $queryretur = Retur::query();
+        $queryretur->selectRaw('SUM( IF ( jenistransaksi ="tunai", retur.total, 0 ) ) AS totalretur_tunai,
+        SUM( IF ( jenistransaksi ="kredit", retur.total, 0 ) ) AS totalretur_kredit');
+        $queryretur->join('penjualan', 'retur.no_fak_penj', '=', 'penjualan.no_fak_penj');
+        $queryretur->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $queryretur->whereBetween('tglretur', [$dari, $sampai]);
+        if (!empty($request->kode_cabang)) {
+            $queryretur->where('karyawan.kode_cabang', $request->kode_cabang);
+        }
+
+        if (!empty($request->id_karyawan)) {
+            $queryretur->where('penjualan.id_karyawan', $request->id_karyawan);
+        }
+        $retur = $queryretur->first();
+
+
+        $querypotongan = Penjualan::query();
+        $querypotongan->selectRaw("SUM( IF ( jenistransaksi ='tunai', penyharga, 0 ) ) AS totpenyharga_tunai,
+        SUM( IF ( jenistransaksi ='kredit', penyharga, 0 ) ) AS totpenyharga_kredit,
+        SUM( IF ( jenistransaksi ='tunai', potongan, 0 ) ) AS totpotongan_tunai,
+        SUM( IF ( jenistransaksi ='kredit', potongan, 0 ) ) AS totpotongan_kredit,
+        SUM( IF ( jenistransaksi ='tunai', potistimewa, 0 ) ) AS totpotistimewa_tunai,
+        SUM( IF ( jenistransaksi ='kredit', potistimewa, 0 ) ) AS totpotistimewa_kredit");
+        $querypotongan->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        if (!empty($request->kode_cabang)) {
+            $querypotongan->where('karyawan.kode_cabang', $request->kode_cabang);
+        }
+
+        if (!empty($request->id_karyawan)) {
+            $querypotongan->where('penjualan.id_karyawan', $request->id_karyawan);
+        }
+        $querypotongan->whereBetween('tgltransaksi', [$dari, $sampai]);
+        $potongan = $querypotongan->first();
+
+
+        return view('penjualan.laporan.cetak_tunaikredit', compact('tunaikredit', 'salesman', 'cabang', 'dari', 'sampai', 'retur', 'potongan'));
+    }
+
+    public function laporankartupiutang()
+    {
+        $cabang = DB::table('cabang')->get();
+        return view('penjualan.laporan.frm.lap_kartupiutang', compact('cabang'));
+    }
+
+    public function cetaklaporankartupiutang(Request $request)
+    {
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $ljt = $request->ljt;
+        $cabang = DB::table('cabang')->where('kode_cabang', $request->kode_cabang)->first();
+        $salesman = DB::table('karyawan')->where('id_karyawan', $request->id_karyawan)->first();
+        $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $request->kode_pelanggan)->first();
+        $query = Penjualan::query();
+        $query->selectRaw("penjualan.no_fak_penj AS no_fak_penj,
+        penjualan.tgltransaksi AS tgltransaksi,
+        datediff('$sampai', penjualan.tgltransaksi) as usiapiutang,
+        penjualan.kode_pelanggan AS kode_pelanggan,
+        pelanggan.nama_pelanggan AS nama_pelanggan,
+        pelanggan.alamat_pelanggan AS alamat_pelanggan,
+        pelanggan.jatuhtempo AS jatuhtempopel,
+        pelanggan.no_hp AS no_hp,
+        pelanggan.pasar AS pasar,
+        pelanggan.hari AS hari,
+        pelanggan.jatuhtempo AS jatuhtempo,
+        pelanggan.kode_cabang AS kode_cabang,
+        penjualan.total AS total,
+        penjualan.jenistransaksi AS jenistransaksi,
+        penjualan.jenisbayar AS jenisbayar,
+        penjualan.id_karyawan AS id_karyawan,
+        penjualan.status,
+        salesbarunew,
+        karyawan.nama_karyawan AS nama_karyawan,
+        IFNULL(penjbulanini.subtotal,0) AS subtotal,
+        IFNULL(penjbulanini.penyharga,0) AS penyharga,
+        IFNULL(penjbulanini.potongan,0) AS potongan,
+        IFNULL(penjbulanini.potistimewa,0) AS potistimewa,
+        (IFNULL(totalpf,0)-IFNULL(totalgb,0)) AS totalretur,
+        IFNULL(penjbulanini.total,0) -(IFNULL(totalpf,0)-IFNULL(totalgb,0))  AS piutangbulanini,
+        (ifnull(penjualan.total,0) - (ifnull(totalpf_last,0)-ifnull(totalgb_last,0))) AS totalpiutang,
+        ifnull(bayarsebelumbulanini,0) AS bayarsebelumbulanini,
+        ifnull(bayarbulanini,0) AS bayarbulanini");
+        $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        $query->leftJoin(
+            DB::raw("(
+            SELECT no_fak_penj,subtotal,penyharga,potongan,potistimewa,total
+            FROM penjualan
+            WHERE tgltransaksi BETWEEN '$dari' AND '$sampai'
+            ) penjbulanini"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'penjbulanini.no_fak_penj');
+            }
+        );
+        $query->leftJoin(
+            DB::raw("(
+                SELECT pj.no_fak_penj,
+                IF(salesbaru IS NULL,pj.id_karyawan,salesbaru) as salesbarunew, karyawan.nama_karyawan as nama_sales,
+                IF(cabangbaru IS NULL,karyawan.kode_cabang,cabangbaru) as cabangbarunew
+                FROM penjualan pj
+                INNER JOIN karyawan ON pj.id_karyawan = karyawan.id_karyawan
+                LEFT JOIN (
+                    SELECT MAX(id_move) as id_move,no_fak_penj,move_faktur.id_karyawan as salesbaru,karyawan.kode_cabang as cabangbaru
+                    FROM move_faktur
+                    INNER JOIN karyawan ON move_faktur.id_karyawan = karyawan.id_karyawan
+                    WHERE tgl_move <= '$dari'
+                    GROUP BY no_fak_penj,move_faktur.id_karyawan,karyawan.kode_cabang
+                ) move_fak ON (pj.no_fak_penj = move_fak.no_fak_penj)
+            ) pjmove"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'pjmove.no_fak_penj');
+            }
+        );
+        $query->join('karyawan', 'pjmove.salesbarunew', '=', 'karyawan.id_karyawan');
+        $query->leftJoin(
+            DB::raw("(
+                SELECT retur.no_fak_penj AS no_fak_penj,
+                sum(retur.subtotal_gb) AS totalgb,
+                sum(retur.subtotal_pf) AS totalpf
+                FROM
+                retur
+                WHERE tglretur BETWEEN  '$dari' AND '$sampai'
+                GROUP BY
+                retur.no_fak_penj
+            ) returbulanini"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'returbulanini.no_fak_penj');
+            }
+        );
+        $query->leftJoin(
+            DB::raw("(
+                SELECT no_fak_penj,sum( historibayar.bayar ) AS bayarsebelumbulanini
+                FROM historibayar
+                WHERE tglbayar < '$dari'
+                GROUP BY no_fak_penj
+            ) hblalu"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'hblalu.no_fak_penj');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+                SELECT no_fak_penj,sum( historibayar.bayar ) AS bayarbulanini
+                FROM historibayar
+                WHERE tglbayar BETWEEN  '$dari' AND '$sampai'
+                GROUP BY no_fak_penj
+            ) hbskrg"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'hbskrg.no_fak_penj');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+                SELECT retur.no_fak_penj AS no_fak_penj,
+                SUM(retur.subtotal_gb) AS totalgb_last,
+                SUM(retur.subtotal_pf) AS totalpf_last
+                FROM
+                    retur
+                WHERE tglretur < '$dari'
+                GROUP BY
+                retur.no_fak_penj
+            ) r"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'r.no_fak_penj');
+            }
+        );
+
+        $query->where('penjualan.jenistransaksi', '!=', 'tunai');
+        $query->where('tgltransaksi', '<=', $sampai);
+        $query->whereRaw('(ifnull(penjualan.total,0) - (ifnull(totalpf_last,0)-ifnull(totalgb_last,0))) != IFNULL(bayarsebelumbulanini,0)');
+        if ($request->kode_cabang != "") {
+            $query->where('cabangbarunew', $request->kode_cabang);
+        }
+        if ($request->id_karyawan != "") {
+            $query->where('salesbarunew', $request->id_karyawan);
+        }
+
+        if ($request->kode_pelanggan != "") {
+            $query->where('penjualan.kode_pelanggan', $request->kode_pelanggan);
+        }
+        if ($ljt == 1) {
+            $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) <= pelanggan.jatuhtempo");
+        } else if ($ljt == 2) {
+            $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) > pelanggan.jatuhtempo");
+        }
+        $query->orWhere('penjualan.jenistransaksi', '!=', 'tunai');
+        $query->where('tgltransaksi', '<=', $sampai);
+        $query->whereRaw('IFNULL(bayarbulanini,0) != 0');
+        if ($request->kode_cabang != "") {
+            $query->where('cabangbarunew', $request->kode_cabang);
+        }
+        if ($request->id_karyawan != "") {
+            $query->where('salesbarunew', $request->id_karyawan);
+        }
+
+        if ($request->kode_pelanggan != "") {
+            $query->where('penjualan.kode_pelanggan', $request->kode_pelanggan);
+        }
+        if ($ljt == 1) {
+            $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) <= pelanggan.jatuhtempo");
+        } else if ($ljt == 2) {
+            $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) > pelanggan.jatuhtempo");
+        }
+        $kartupiutang = $query->get();
+        return view('penjualan.laporan.cetak_kartupiutang', compact('kartupiutang', 'salesman', 'cabang', 'dari', 'sampai', 'pelanggan'));
+    }
+
+    public function laporanaup()
+    {
+        $cabang = DB::table('cabang')->get();
+        return view('penjualan.laporan.frm.lap_aup', compact('cabang'));
+    }
+
+    public function cetaklaporanaup(Request $request)
+    {
+        $tgl_aup = $request->tgl_aup;
+        $cabang = DB::table('cabang')->where('kode_cabang', $request->kode_cabang)->first();
+        $salesman = DB::table('karyawan')->where('id_karyawan', $request->id_karyawan)->first();
+        $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $request->kode_pelanggan)->first();
+        if (empty($request->kode_cabang)) {
+            $cbg = "all";
+        } else {
+            $cbg = $request->kode_cabang;
+        }
+
+        if (empty($request->id_karyawan)) {
+            $sales = "all";
+        } else {
+            $sales = $request->id_karyawan;
+        }
+
+
+        if (empty($request->kode_pelanggan)) {
+            $idpel = "all";
+        } else {
+            $idpel = $request->kode_pelanggan;
+        }
+
+
+
+        if (isset($request->excludepusat)) {
+            $exclude = 1;
+        } else {
+            $exclude = 0;
+        }
+
+        $query = Penjualan::query();
+        $query->selectRaw("
+        penjualan.kode_pelanggan,nama_pelanggan,karyawan.nama_karyawan,pasar,hari,pelanggan.jatuhtempo,
+		CASE
+		WHEN datediff('$tgl_aup', tgltransaksi) <= 15 THEN
+				((IFNULL(penjualan.total,0))-(IFNULL(retur.total,0)))-(ifnull(jmlbayar,0) ) END AS duaminggu,
+		CASE
+		WHEN datediff('$tgl_aup', tgltransaksi) <= 31  AND datediff('$tgl_aup', tgltransaksi) > 15 THEN
+				((IFNULL(penjualan.total,0))-(IFNULL(retur.total,0)))-(ifnull(jmlbayar,0) ) END AS satubulan,
+		CASE
+		WHEN datediff('$tgl_aup', tgltransaksi) <= 46  AND datediff('$tgl_aup', tgltransaksi) > 31 THEN
+				((IFNULL(penjualan.total,0))-(IFNULL(retur.total,0)))-(ifnull(jmlbayar,0) ) END AS satubulan15,
+		CASE
+		WHEN datediff('$tgl_aup', tgltransaksi) <= 60  AND datediff('$tgl_aup', tgltransaksi) > 46 THEN
+				((IFNULL(penjualan.total,0))-(IFNULL(retur.total,0)))-(ifnull(jmlbayar,0) ) END AS duabulan,
+		CASE
+		WHEN datediff('$tgl_aup', tgltransaksi) > 60 AND datediff('$tgl_aup', tgltransaksi) <= 90 THEN
+				((IFNULL(penjualan.total,0))-(IFNULL(retur.total,0)))-(ifnull(jmlbayar,0) ) END AS lebihtigabulan,
+		CASE
+		WHEN datediff('$tgl_aup', tgltransaksi) > 90 AND datediff('$tgl_aup', tgltransaksi) <= 180 THEN
+				((IFNULL(penjualan.total,0))-(IFNULL(retur.total,0)))-(ifnull(jmlbayar,0) ) END AS enambulan,
+		CASE
+		WHEN datediff('$tgl_aup', tgltransaksi) > 180 AND datediff('$tgl_aup', tgltransaksi) <= 360 THEN
+				((IFNULL(penjualan.total,0))-(IFNULL(retur.total,0)))-(ifnull(jmlbayar,0) ) END AS duabelasbulan,
+		CASE
+		WHEN datediff('$tgl_aup', tgltransaksi) > 360 AND datediff('$tgl_aup', tgltransaksi) <= 720 THEN
+				((IFNULL(penjualan.total,0))-(IFNULL(retur.total,0)))-(ifnull(jmlbayar,0) ) END AS duatahun,
+		CASE
+		WHEN datediff('$tgl_aup', tgltransaksi) > 720 THEN
+				((IFNULL(penjualan.total,0))-(IFNULL(retur.total,0)))-(ifnull(jmlbayar,0) ) END AS lebihduatahun
+        ");
+
+        $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        $query->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
+        $query->leftJoin(
+            DB::raw("(
+                SELECT pj.no_fak_penj,
+				IF(salesbaru IS NULL,pj.id_karyawan,salesbaru) as salesbarunew, karyawan.nama_karyawan as nama_sales,
+				IF(cabangbaru IS NULL,karyawan.kode_cabang,cabangbaru) as cabangbarunew
+				FROM penjualan pj
+				INNER JOIN karyawan ON pj.id_karyawan = karyawan.id_karyawan
+				LEFT JOIN (
+					SELECT MAX(id_move) as id_move,no_fak_penj,move_faktur.id_karyawan as salesbaru,karyawan.kode_cabang as cabangbaru
+					FROM move_faktur
+					INNER JOIN karyawan ON move_faktur.id_karyawan = karyawan.id_karyawan
+					WHERE tgl_move <='$tgl_aup'
+					GROUP BY no_fak_penj,move_faktur.id_karyawan,karyawan.kode_cabang
+				) move_fak ON (pj.no_fak_penj = move_fak.no_fak_penj)
+            ) pjmove"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'pjmove.no_fak_penj');
+            }
+        );
+        $query->leftJoin(
+            DB::raw("(
+                SELECT no_fak_penj,sum( historibayar.bayar ) AS jmlbayar
+				FROM historibayar
+				WHERE tglbayar <= '$tgl_aup'
+				GROUP BY no_fak_penj
+            ) hblalu"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'hblalu.no_fak_penj');
+            }
+        );
+        $query->leftJoin(
+            DB::raw("(
+                SELECT retur.no_fak_penj AS no_fak_penj,
+				SUM(total) AS total
+				FROM
+					retur
+				WHERE tglretur <= '$tgl_aup'
+				GROUP BY
+					retur.no_fak_penj
+            ) retur"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
+            }
+        );
+
+        $query->orderBy('nama_pelanggan', 'asc');
+        $query->orderBy('penjualan.kode_pelanggan', 'asc');
+        $query->Where('penjualan.jenistransaksi', '!=', 'tunai');
+        $query->where('tgltransaksi', '<=', $tgl_aup);
+        if ($request->kode_cabang != "") {
+            $query->where('cabangbarunew', $request->kode_cabang);
+        }
+
+        if ($request->id_karyawan != "") {
+            $query->where('salesbarunew', $request->id_karyawan);
+        }
+
+        if ($request->kode_pelanggan != "") {
+            $query->where('penjualan.kode_pelanggan', $request->kode_pelanggan);
+        }
+
+        if (isset($request->excludepusat)) {
+            $query->where('cabangbarunew', '!=', 'PST');
+        }
+
+        if ($tgl_aup < '2020-01-01') {
+            $query->where('cabangbarunew', '!=', 'GRT');
+        }
+        $query->whereRaw('(ifnull(penjualan.total,0) - (ifnull(retur.total,0))) != IFNULL(jmlbayar,0)');
+        $aup = $query->get();
+        //dd($aup);
+        return view('penjualan.laporan.cetak_aup', compact('aup', 'salesman', 'cabang', 'tgl_aup', 'pelanggan', 'cbg', 'sales', 'idpel', 'exclude'));
+    }
+
+    public function detailaup($cbg, $sales, $idpel, $tgl_aup, $kategori, $exclude)
+    {
+        $cabang = DB::table('cabang')->where('kode_cabang', $cbg)->first();
+        $salesman = DB::table('karyawan')->where('id_karyawan', $sales)->first();
+        $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $idpel)->first();
+        $query = Penjualan::query();
+        $query->selectRaw('penjualan.no_fak_penj,tgltransaksi,
+		penjualan.kode_pelanggan,
+		nama_pelanggan,
+		karyawan.nama_karyawan,
+		pasar,
+		hari,
+		pelanggan.jatuhtempo as jt,
+		((IFNULL( penjualan.total, 0 ))-(IFNULL( retur.total, 0 )))-(IFNULL( jmlbayar, 0 )) as jumlah');
+        $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        $query->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
+        $query->leftJoin(
+            DB::raw("(
+                SELECT pj.no_fak_penj,
+				IF(salesbaru IS NULL,pj.id_karyawan,salesbaru) as salesbarunew, karyawan.nama_karyawan as nama_sales,
+				IF(cabangbaru IS NULL,karyawan.kode_cabang,cabangbaru) as cabangbarunew
+				FROM penjualan pj
+				INNER JOIN karyawan ON pj.id_karyawan = karyawan.id_karyawan
+				LEFT JOIN (
+					SELECT MAX(id_move) as id_move,no_fak_penj,move_faktur.id_karyawan as salesbaru,karyawan.kode_cabang as cabangbaru
+					FROM move_faktur
+					INNER JOIN karyawan ON move_faktur.id_karyawan = karyawan.id_karyawan
+					WHERE tgl_move <='$tgl_aup'
+					GROUP BY no_fak_penj,move_faktur.id_karyawan,karyawan.kode_cabang
+				) move_fak ON (pj.no_fak_penj = move_fak.no_fak_penj)
+            ) pjmove"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'pjmove.no_fak_penj');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+                SELECT no_fak_penj,sum( historibayar.bayar ) AS jmlbayar
+				FROM historibayar
+				WHERE tglbayar <= '$tgl_aup'
+				GROUP BY no_fak_penj
+            ) hblalu"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'hblalu.no_fak_penj');
+            }
+        );
+        $query->leftJoin(
+            DB::raw("(
+                SELECT retur.no_fak_penj AS no_fak_penj,
+				SUM(total) AS total
+				FROM
+					retur
+				WHERE tglretur <= '$tgl_aup'
+				GROUP BY
+					retur.no_fak_penj
+            ) retur"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
+            }
+        );
+
+        $query->orderBy('nama_pelanggan', 'asc');
+        $query->orderBy('penjualan.kode_pelanggan', 'asc');
+        $query->Where('penjualan.jenistransaksi', '!=', 'tunai');
+        $query->where('tgltransaksi', '<=', $tgl_aup);
+        if ($kategori == "duaminggu") {
+            $query->whereRaw("datediff( '" . $tgl_aup . "', tgltransaksi ) <='15'");
+        } else if ($kategori == "satubulan") {
+            $query->whereRaw("datediff( '" . $tgl_aup . "', tgltransaksi ) >'15' AND datediff( '" . $tgl_aup . "', tgltransaksi ) <='31'");
+        } else if ($kategori == "satubulan15") {
+            $query->whereRaw("datediff( '" . $tgl_aup . "', tgltransaksi ) >'31' AND datediff( '" . $tgl_aup . "', tgltransaksi ) <='46'");
+        } else if ($kategori == "duabulan") {
+            $query->whereRaw("datediff( '" . $tgl_aup . "', tgltransaksi ) >'46' AND datediff( '" . $tgl_aup . "', tgltransaksi ) <='60'");
+        } else if ($kategori == "tigabulan") {
+            $query->whereRaw("datediff( '" . $tgl_aup . "', tgltransaksi ) >'60' AND datediff( '" . $tgl_aup . "', tgltransaksi ) <='90'");
+        } else if ($kategori == "enambulan") {
+            $query->whereRaw("datediff( '" . $tgl_aup . "', tgltransaksi ) >'90' AND datediff( '" . $tgl_aup . "', tgltransaksi ) <='180'");
+        } else if ($kategori == "duabelasbulan") {
+            $query->whereRaw("datediff( '" . $tgl_aup . "', tgltransaksi ) >'180' AND datediff( '" . $tgl_aup . "', tgltransaksi ) <='360'");
+        } else if ($kategori == "duatahun") {
+            $query->whereRaw("datediff( '" . $tgl_aup . "', tgltransaksi ) >'360' AND datediff( '" . $tgl_aup . "', tgltransaksi ) <='720'");
+        } else if ($kategori == "lebihduatahun") {
+            $query->whereRaw("datediff( '" . $tgl_aup . "', tgltransaksi ) >='720'");
+        }
+        if ($cbg != "all") {
+            $query->where('cabangbarunew', $cbg);
+        }
+
+        if ($sales != "all") {
+            $query->where('salesbarunew', $sales);
+        }
+
+        if ($idpel != "all") {
+            $query->where('penjualan.kode_pelanggan', $idpel);
+        }
+
+        if ($exclude != 0) {
+            $query->where('cabangbarunew', '!=', 'PST');
+        }
+
+        if ($tgl_aup < '2020-01-01') {
+            $query->where('cabangbarunew', '!=', 'GRT');
+        }
+        $query->whereRaw('(ifnull(penjualan.total,0) - (ifnull(retur.total,0))) != IFNULL(jmlbayar,0)');
+        $detailaup = $query->get();
+
+        return view('penjualan.laporan.cetak_detailaup', compact('detailaup', 'salesman', 'cabang', 'tgl_aup', 'pelanggan', 'kategori'));
+    }
+
+
+    public function laporanlebihsatufaktur()
+    {
+        $cabang = DB::table('cabang')->get();
+        return view('penjualan.laporan.frm.lap_lebihsatufaktur', compact('cabang'));
+    }
+
+    public function cetaklaporanlebihsatufaktur(Request $request)
+    {
+        $tanggal = $request->tanggal;
+        $cabang = DB::table('cabang')->where('kode_cabang', $request->kode_cabang)->first();
+        $salesman = DB::table('karyawan')->where('id_karyawan', $request->id_karyawan)->first();
+        $query = Penjualan::query();
+        $query->selectRaw('penjualan.no_fak_penj,tgltransaksi,penjualan.kode_pelanggan,nama_pelanggan,pasar,penjualan.total as totalpenjualan,
+        ( ifnull( penjualan.total, 0 ) - IFNULL( retur.total, 0 ) - ifnull( jmlbayar, 0 ) ) AS sisabayar, 1 AS jmlfaktur');
+        $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        $query->leftJoin(
+            DB::raw("(
+                SELECT no_fak_penj,sum( historibayar.bayar ) AS jmlbayar
+				FROM historibayar
+				WHERE tglbayar <= '$tanggal'
+				GROUP BY no_fak_penj
+            ) hblalu"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'hblalu.no_fak_penj');
+            }
+        );
+        $query->leftJoin(
+            DB::raw("(
+                SELECT retur.no_fak_penj AS no_fak_penj,
+				SUM(total) AS total
+				FROM
+					retur
+				WHERE tglretur <= '$tanggal'
+				GROUP BY
+					retur.no_fak_penj
+            ) retur"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
+            }
+        );
+        $query->where('penjualan.jenistransaksi', '!=', 'tunai');
+        $query->where('tgltransaksi', '<=', $tanggal);
+        if (!empty($request->kode_cabang)) {
+            $query->where('karyawan.kode_cabang', $request->kode_cabang);
+        }
+
+        if (!empty($request->id_karyawan)) {
+            $query->where('penjualan.id_karyawan', $request->id_karyawan);
+        }
+
+        $query->whereRaw('(ifnull(penjualan.total,0) - (ifnull(retur.total,0))) != IFNULL(jmlbayar,0)');
+        $query->orderBy('penjualan.kode_pelanggan', 'asc');
+        $lebihsatufaktur = $query->get();
+        return view('penjualan.laporan.cetak_lebihsatufaktur', compact('lebihsatufaktur', 'salesman', 'cabang', 'tanggal'));
     }
 }

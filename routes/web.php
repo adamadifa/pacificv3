@@ -121,10 +121,27 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,mana
     //Penjualan
     //Laporan Penjualan
     Route::get('/laporanpenjualan/penjualan', [PenjualanController::class, 'laporanpenjualan']);
-    Route::post('/laporanpenjualan/cetaklaporanpenjualan', [PenjualanController::class, 'cetaklaporanpenjualan']);
+    Route::post('/laporanpenjualan/cetak', [PenjualanController::class, 'cetaklaporanpenjualan']);
     //Laporan Retur
     Route::get('/laporanretur', [ReturController::class, 'laporanretur']);
-    Route::post('/laporanretur/cetaklaporanretur', [ReturController::class, 'cetaklaporanretur']);
+    Route::post('/laporanretur/cetak', [ReturController::class, 'cetaklaporanretur']);
+    //Laporan Kas Besar Penjualan
+    Route::get('/laporankasbesarpenjualan', [PembayaranController::class, 'laporankasbesarpenjualan']);
+    Route::post('/laporankasbesarpenjualan/cetak', [PembayaranController::class, 'cetaklaporankasbesarpenjualan']);
+    //Laporan Tunai Kredit
+    Route::get('/laporanpenjualan/tunaikredit', [PenjualanController::class, 'laporantunaikredit']);
+    Route::post('/laporanpenjualan/tunaikredit/cetak', [PenjualanController::class, 'cetaklaporantunaikredit']);
+    //Laporan Kartu Piutang
+    Route::get('/laporanpenjualan/kartupiutang', [PenjualanController::class, 'laporankartupiutang']);
+    Route::post('/laporanpenjualan/kartupiutang/cetak', [PenjualanController::class, 'cetaklaporankartupiutang']);
+    //Laporan Kartu Piutang
+    Route::get('/laporanpenjualan/aup', [PenjualanController::class, 'laporanaup']);
+    Route::post('/laporanpenjualan/aup/cetak', [PenjualanController::class, 'cetaklaporanaup']);
+    Route::get('/laporanpenjualan/detailaup/{cbg}/{sales}/{idpel}/{tgl_aup}/{kategori}/{exclude}', [PenjualanController::class, 'detailaup']);
+
+    //Lebih Satu Faktur
+    Route::get('/laporanpenjualan/lebihsatufaktur', [PenjualanController::class, 'laporanlebihsatufaktur']);
+    Route::post('/laporanpenjualan/lebihsatufaktur/cetak', [PenjualanController::class, 'cetaklaporanlebihsatufaktur']);
 });
 
 

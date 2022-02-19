@@ -1,15 +1,15 @@
 @extends('layouts.midone')
-@section('titlepage','Laporan Penjualan')
+@section('titlepage','Laporan Analisa Umur Piutang')
 @section('content')
 <div class="content-wrapper">
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Laporan Penjualan</h2>
+                    <h2 class="content-header-title float-left mb-0">Analisa Umur Piutang (AUP)</h2>
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/penjualan/laporan">Laporan Penjualan</a>
+                            <li class="breadcrumb-item"><a href="/laporanpenjualan/aup">Analisa Umur Piutang (AUP)</a>
                             </li>
                         </ol>
                     </div>
@@ -27,7 +27,7 @@
                     <div class="col-lg-7 col-sm-12">
                         <div class="card">
                             <div class="card-body">
-                                <form action="/laporanpenjualan/cetak" method="POST" id="frmPenjualan" target="_blank">
+                                <form action="/laporanpenjualan/aup/cetak" method="POST" id="frmPenjualan" target="_blank">
                                     @csrf
                                     <input type="hidden" name="cabang" id="cabang" value="{{ Auth::user()->kode_cabang }}">
                                     <div class="row" id="pilihcabang">
@@ -64,47 +64,24 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row" id="pilihjenistransaksi">
-                                        <div class="col-12">
-                                            <div class="form-group  ">
-                                                <select name="jenistransaksi" id="jenistransaksi" class="form-control">
-                                                    <option value="">Semua Jenis Transaksi</option>
-                                                    <option value="tunai">Tunai</option>
-                                                    <option value="kredit">Kredit</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row" id="pilihjenislaporan">
-                                        <div class="col-12">
-                                            <div class="form-group  ">
-                                                <select name="jenislaporan" id="jenislaporan" class="form-control">
-                                                    <option value="">Pilih Jenis Laporan</option>
-                                                    <option value="standar">Standar</option>
-                                                    <option value="rekapperpelanggan">Rekap Per Pelanggan</option>
-                                                    <option value="formatsatubaris">Format Satu Baris</option>
-                                                    <option value="komisi">Format Komisi</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row" id="pilihstatus">
-                                        <div class="col-12">
-                                            <div class="form-group  ">
-                                                <select name="status" id="status" class="form-control">
-                                                    <option value="">Semua Status</option>
-                                                    <option value="disetujui">Disetujui</option>
-                                                    <option value="pending">Pending</option>
-                                                </select>
+                                    <div class="row exclude">
+                                        <div class="form-group">
+                                            <div class="col-12">
+                                                <div class="vs-checkbox-con vs-checkbox-primary">
+                                                    <input type="checkbox" class="excludepusat" name="excludepusat" value="1">
+                                                    <span class="vs-checkbox">
+                                                        <span class="vs-checkbox--check">
+                                                            <i class="vs-icon feather icon-check"></i>
+                                                        </span>
+                                                    </span>
+                                                    <span class="">Exclude Pusat</span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row" id="pilihperiode">
-                                        <div class="col-6">
-                                            <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker />
-                                        </div>
-                                        <div class="col-6">
-                                            <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker />
+                                        <div class="col-12">
+                                            <x-inputtext label="Lihat Per Tanggal" field="tgl_aup" icon="feather icon-calendar" datepicker />
                                         </div>
                                     </div>
                                     <div class="row">
@@ -142,30 +119,15 @@
 @push('myscript')
 <script>
     $(function() {
-        function disabledform() {
-            var kode_cabang = $("#kode_cabang").val();
-            if (kode_cabang == "") {
-                $("#id_karyawan").prop("disabled", true);
-                $("#kode_pelanggan").prop("disabled", true);
-                $("#jenislaporan").prop("disabled", true);
-            } else {
-                $("#id_karyawan").prop("disabled", false);
-                $("#kode_pelanggan").prop("disabled", false);
-                $('#jenislaporan option[value=""]').attr('selected', 'selected');
-                $("#jenislaporan").prop("disabled", false);
-            }
-        }
 
-        disabledform();
         $("#frmPenjualan").submit(function() {
             var cabang = $("#cabang").val();
             var kode_cabang = $("#kode_cabang").val();
-            var jenislaporan = $("#jenislaporan").val();
-            var dari = $("#dari").val();
-            var sampai = $("#sampai").val();
+            var tgl_aup = $("#tgl_aup").val();
 
-            var start = new Date(dari);
-            var end = new Date(sampai);
+
+            var start = new Date(tgl_aup);
+
 
             var datestart = new Date('2018-09-01');
             if (cabang != "PCF" && kode_cabang == "") {
@@ -178,30 +140,10 @@
                     $("#kode_cabang").focus();
                 });
                 return false;
-            } else if (jenislaporan == "" && kode_cabang != "") {
+            } else if (tgl_aup == "") {
                 swal({
                     title: 'Oops'
-                    , text: 'Jenis Laporan Harus Dipilih !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#jenislaporan").focus();
-                });
-                return false;
-            } else if (dari == "" && sampai == "") {
-                swal({
-                    title: 'Oops'
-                    , text: 'Periode Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#dari").focus();
-                });
-                return false;
-            } else if (start.getTime() > end.getTime()) {
-                swal({
-                    title: 'Oops'
-                    , text: 'Periode tidak Valid !'
+                    , text: 'Tanggal AUP Harus Diisi !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
@@ -222,6 +164,17 @@
                 return true;
             }
         });
+
+        function loadexclude() {
+            var kode_cabang = $("#kode_cabang").val();
+            if (kode_cabang == "") {
+                $(".exclude").show();
+            } else {
+                $(".exclude").hide();
+            }
+        }
+
+        loadexclude();
 
         function loadsalesmancabang(kode_cabang) {
             $.ajax({
@@ -255,8 +208,8 @@
 
         $("#kode_cabang").change(function() {
             var kode_cabang = $(this).val();
-            disabledform();
             loadsalesmancabang(kode_cabang);
+            loadexclude();
         });
 
         $("#id_karyawan").change(function() {
