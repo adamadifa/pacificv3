@@ -40,21 +40,29 @@
                     <i class="feather icon-file mr-1"></i>Lebih 1 Faktur
                 </li>
             </a>
-            <li class="list-group-item">
-                <i class="feather icon-file mr-1"></i>DPPP
-            </li>
-            <li class="list-group-item">
-                <i class="feather icon-file mr-1"></i>DPP
-            </li>
-            <li class="list-group-item">
+            <a href="/laporanpenjualan/dppp" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanpenjualan/dppp']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>DPPP
+                </li>
+            </a>
+            <a href="/laporanpenjualan/dpp" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanpenjualan/dpp']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Data Pengambilan Pelanggan (DPP)
+                </li>
+            </a>
+            {{-- <li class="list-group-item">
                 <i class="feather icon-file mr-1"></i>REPO
-            </li>
-            <li class="list-group-item">
-                <i class="feather icon-file mr-1"></i>Rekap Omset Pelanggan
-            </li>
-            <li class="list-group-item">
-                <i class="feather icon-file mr-1"></i>Rekap Pelanggan
-            </li>
+            </li> --}}
+            <a href="/laporanpenjualan/rekapomsetpelanggan" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanpenjualan/rekapomsetpelanggan']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Rekap Omset Pelanggan
+                </li>
+            </a>
+            <a href="/laporanpenjualan/rekappelanggan" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanpenjualan/rekappelanggan']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Rekap Pelanggan
+                </li>
+            </a>
             <li class="list-group-item">
                 <i class="feather icon-file mr-1"></i>Rekap Penjualan
             </li>

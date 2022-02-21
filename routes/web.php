@@ -138,10 +138,21 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,mana
     Route::get('/laporanpenjualan/aup', [PenjualanController::class, 'laporanaup']);
     Route::post('/laporanpenjualan/aup/cetak', [PenjualanController::class, 'cetaklaporanaup']);
     Route::get('/laporanpenjualan/detailaup/{cbg}/{sales}/{idpel}/{tgl_aup}/{kategori}/{exclude}', [PenjualanController::class, 'detailaup']);
-
     //Lebih Satu Faktur
     Route::get('/laporanpenjualan/lebihsatufaktur', [PenjualanController::class, 'laporanlebihsatufaktur']);
     Route::post('/laporanpenjualan/lebihsatufaktur/cetak', [PenjualanController::class, 'cetaklaporanlebihsatufaktur']);
+    //DPPP
+    Route::get('/laporanpenjualan/dppp', [PenjualanController::class, 'laporandppp']);
+    Route::post('/laporanpenjualan/dppp/cetak', [PenjualanController::class, 'cetaklaporandppp']);
+    //DPP
+    Route::get('/laporanpenjualan/dpp', [PenjualanController::class, 'laporandpp']);
+    Route::post('/laporanpenjualan/dpp/cetak', [PenjualanController::class, 'cetaklaporandpp']);
+    //Rekap Omset Pelanggan
+    Route::get('/laporanpenjualan/rekapomsetpelanggan', [PenjualanController::class, 'laporanrekapomsetpelanggan']);
+    Route::post('/laporanpenjualan/rekapomsetpelanggan/cetak', [PenjualanController::class, 'cetaklaporanrekapomsetpelanggan']);
+    //Rekap  Pelanggan
+    Route::get('/laporanpenjualan/rekappelanggan', [PenjualanController::class, 'laporanrekappelanggan']);
+    Route::post('/laporanpenjualan/rekappelanggan/cetak', [PenjualanController::class, 'cetaklaporanrekappelanggan']);
 });
 
 
