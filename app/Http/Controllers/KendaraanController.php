@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cabang;
+use App\Models\Dpb;
 use App\Models\Kendaraan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -240,5 +241,77 @@ class KendaraanController extends Controller
 
         $rekapkendaraan = $query->get();
         return view('kendaraan.dashboard.rekapkendaraan', compact('rekapkendaraan'));
+    }
+
+    public function laporanrekapkendaraan()
+    {
+        $cabang = DB::table('cabang')->get();
+        return view('kendaraan.laporan.frm.lap_rekapkendaraan', compact('cabang'));
+    }
+
+    public function getkendaraancab(Request $request)
+    {
+        $kode_cabang = $request->kode_cabang;
+        $no_polisi = $request->no_polisi;
+        $kendaraan = Kendaraan::where('kode_cabang', $kode_cabang)->get();
+        echo "<option value=''>Pilih Kendaraan</option>";
+        foreach ($kendaraan as $d) {
+            if ($no_polisi == $d->no_polisi) {
+                $selected = 'selected';
+            } else {
+                $selected = '';
+            }
+            echo "<option $selected value='$d->no_polisi'>" . $d->no_polisi . " - " . $d->type . "</option>";
+        }
+    }
+
+    public function cetaklaporanrekapkendaraan(Request $request)
+    {
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $cabang = DB::table('cabang')->where('kode_cabang', $request->kode_cabang)->first();
+        $kendaraan = DB::table('kendaraan')->where('no_polisi', $request->no_polisi)->first();
+        $query = Dpb::query();
+        $query->selectRaw("dpb.tgl_pengambilan, no_kendaraan,COUNT(no_dpb) as jmlpengambilan");
+        $query->where('no_kendaraan', $request->no_polisi);
+        $query->whereBetween('tgl_pengambilan', [$dari, $sampai]);
+        $query->groupByRaw('tgl_pengambilan,no_kendaraan');
+        $historikendaraan = $query->get();
+
+        $rekapkendaraan = DB::table('detail_dpb')
+            ->selectRaw("detail_dpb.kode_produk,isipcsdus,ROUND(SUM(jml_pengambilan),2) as jml_pengambilan,
+        ROUND(SUM(jml_pengembalian),2) as jml_pengembalian,
+        jmlpenjualan,jmlgantibarang,jmlplhk,jmlpromosi,jmlttr,
+        dpb.no_kendaraan")
+            ->join('dpb', 'detail_dpb.no_dpb', '=', 'dpb.no_dpb')
+            ->join('master_barang', 'detail_dpb.kode_produk', '=', 'master_barang.kode_produk')
+            ->leftJoin(
+                DB::raw("(
+                    SELECT kode_produk,
+                    ROUND(SUM(IF(jenis_mutasi = 'PENJUALAN',jumlah,0)),2) as jmlpenjualan,
+                    ROUND(SUM(IF(jenis_mutasi = 'PL HUTANG KIRIM',jumlah,0)),2) as jmlplhk,
+                    ROUND(SUM(IF(jenis_mutasi = 'PROMOSI',jumlah,0)),2) as jmlpromosi,
+                    ROUND(SUM(IF(jenis_mutasi = 'TTR',jumlah,0)),2) as jmlttr,
+                    ROUND(SUM(IF(jenis_mutasi = 'GANTI BARANG',jumlah,0)),2) as jmlgantibarang,
+                    ROUND(SUM(IF(jenis_mutasi = 'RETUR',jumlah,0)),2) as jmlretur,
+                    ROUND(SUM(IF(jenis_mutasi = 'PL TTR',jumlah,0)),2) as jmlplttr,
+                    ROUND(SUM(IF(jenis_mutasi = 'HUTANG KIRIM',jumlah,0)),2) as jmlhk,
+                    no_kendaraan
+                    FROM detail_mutasi_gudang_cabang
+                    INNER JOIN mutasi_gudang_cabang ON detail_mutasi_gudang_cabang.no_mutasi_gudang_cabang = mutasi_gudang_cabang.no_mutasi_gudang_cabang
+                    INNER JOIN dpb ON mutasi_gudang_cabang.no_dpb = dpb.no_dpb
+                    WHERE tgl_mutasi_gudang_cabang BETWEEN '$dari' AND '$sampai' AND no_kendaraan = '$request->no_polisi'
+                    GROUP BY kode_produk,no_kendaraan
+                ) penjualan"),
+                function ($join) {
+                    $join->on('detail_dpb.kode_produk', '=', 'penjualan.kode_produk');
+                }
+            )
+            ->whereBetween('tgl_pengambilan', [$dari, $sampai])
+            ->where('dpb.no_kendaraan', $request->no_polisi)
+            ->groupByRaw('kode_produk,dpb.no_kendaraan,isipcsdus,jmlpenjualan,jmlgantibarang,jmlplhk,jmlpromosi,jmlttr')
+            ->get();
+
+        return view('kendaraan.laporan.cetak_rekapkendaraan', compact('historikendaraan', 'rekapkendaraan', 'dari', 'sampai', 'cabang', 'kendaraan'));
     }
 }

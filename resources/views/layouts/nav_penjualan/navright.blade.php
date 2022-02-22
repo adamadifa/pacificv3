@@ -63,15 +63,21 @@
                     <i class="feather icon-file mr-1"></i>Rekap Pelanggan
                 </li>
             </a>
-            <li class="list-group-item">
-                <i class="feather icon-file mr-1"></i>Rekap Penjualan
-            </li>
-            <li class="list-group-item">
-                <i class="feather icon-file mr-1"></i>Rekap Kendaraan
-            </li>
-            <li class="list-group-item">
-                <i class="feather icon-file mr-1"></i>Harga Net
-            </li>
+            <a href="/laporanpenjualan/rekappenjualan" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanpenjualan/rekappenjualan']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Rekap Penjualan
+                </li>
+            </a>
+            <a href="/laporankendaraan/rekapkendaraan" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporankendaraan/rekapkendaraan']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Rekap Kendaraan
+                </li>
+            </a>
+            <a href="/laporanpenjualan/harganet" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanpenjualan/harganet']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Harga Net
+                </li>
+            </a>
         </ul>
     </div>
 </div>

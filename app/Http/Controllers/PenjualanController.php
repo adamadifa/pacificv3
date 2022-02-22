@@ -3527,7 +3527,7 @@ class PenjualanController extends Controller
         $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
         $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
         $query->whereBetween('tgltransaksi', [$dari, $sampai]);
-        if ($request->cabang != "") {
+        if ($request->kode_cabang != "") {
             $query->where('karyawan.kode_cabang', $request->kode_cabang);
         }
         if ($request->id_karyawan != "") {
@@ -3631,7 +3631,7 @@ class PenjualanController extends Controller
         $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
         $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
         $query->whereBetween('tgltransaksi', [$dari, $sampai]);
-        if ($request->cabang != "") {
+        if ($request->kode_cabang != "") {
             $query->where('karyawan.kode_cabang', $request->kode_cabang);
         }
         if ($request->id_karyawan != "") {
@@ -3645,5 +3645,340 @@ class PenjualanController extends Controller
         $query->groupByRaw('penjualan.kode_pelanggan,nama_pelanggan,nama_karyawan');
         $rekappelanggan = $query->get();
         return view('penjualan.laporan.cetak_rekappelanggan', compact('rekappelanggan', 'cabang', 'dari', 'sampai', 'salesman', 'pelanggan'));
+    }
+
+    public function laporanharganet()
+    {
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        return view('penjualan.laporan.frm.lap_harganet', compact('bulan'));
+    }
+
+    public function cetaklaporanharganet(Request $request)
+    {
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $dari = $tahun . "-" . $bulan . "-01";
+        $sampai = date("Y-m-t", strtotime($dari));
+        $harganet = DB::table('penjualan')
+            ->selectRaw("SUM(bruto_AB) as bruto_AB,
+		SUM(bruto_AR) as bruto_AR,
+		SUM(bruto_AS) as bruto_AS,
+		SUM(bruto_BB) as bruto_BB,
+		SUM(bruto_BBP) as bruto_BBP,
+		SUM(bruto_CG) as bruto_CG,
+		SUM(bruto_CGG) as bruto_CGG,
+		SUM(bruto_CG5) as bruto_CG5,
+		SUM(bruto_DEP) as bruto_DEP,
+		SUM(bruto_DS) as bruto_DS,
+		SUM(bruto_SP) as bruto_SP,
+		SUM(bruto_SPP) as bruto_SPP,
+		SUM(bruto_SC) as bruto_SC,
+		SUM(bruto_SP8) as bruto_SP8,
+
+		SUM(qty_AB) as qty_AB,
+		SUM(qty_AR) as qty_AR,
+		SUM(qty_AS) as qty_AS,
+		SUM(qty_BB) as qty_BB,
+		SUM(qty_BBP) as qty_BBP,
+		SUM(qty_CG) as qty_CG,
+		SUM(qty_CGG) as qty_CGG,
+		SUM(qty_CG5) as qty_CG5,
+		SUM(qty_DEP) as qty_DEP,
+		SUM(qty_DS) as qty_DS,
+		SUM(qty_SP) as qty_SP,
+		SUM(qty_SPP) as qty_SPP,
+		SUM(qty_SC) as qty_SC,
+		SUM(qty_SP8) as qty_SP8,
+
+
+		SUM(qtydus_AB) as qtydus_AB,
+		SUM(qtydus_AR) as qtydus_AR,
+		SUM(qtydus_AS) as qtydus_AS,
+		SUM(qtydus_BB) as qtydus_BB,
+		SUM(qtydus_BBP) as qtydus_BBP,
+		SUM(qtydus_CG) as qtydus_CG,
+		SUM(qtydus_CGG) as qtydus_CGG,
+		SUM(qtydus_CG5) as qtydus_CG5,
+		SUM(qtydus_DEP) as qtydus_DEP,
+		SUM(qtydus_DS) as qtydus_DS,
+		SUM(qtydus_SP) as qtydus_SP,
+		SUM(qtydus_SPP) as qtydus_SPP,
+		SUM(qtydus_SC) as qtydus_SC,
+		SUM(qtydus_SP8) as qtydus_SP8,
+
+		SUM(potaida) as  potonganAIDA,
+		SUM(IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0)) as potonganSWAN,
+
+		SUM(IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0)) as qtyAIDA,
+		SUM(IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0) + IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0)) as qtySWAN,
+
+		SUM(IFNULL(IFNULL(potaida,0) / (IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0)),0)) as diskonaida,
+		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0) + IFNULL(qtydus_SPP,0)+ IFNULL(qtydus_SC,0)+ IFNULL(qtydus_SP8,0)),0)) as diskonswan,
+
+		SUM(IFNULL((IFNULL(potaida,0) / (IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0))) * qtydus_AB,0)) as diskon_AB,
+		SUM(IFNULL((IFNULL(potaida,0) / (IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0))) * qtydus_AR,0)) as diskon_AR,
+		SUM(IFNULL((IFNULL(potaida,0) / (IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0))) * qtydus_AS,0)) as diskon_AS,
+		SUM(IFNULL((IFNULL(potaida,0) / (IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0))) * qtydus_CG,0)) as diskon_CG,
+		SUM(IFNULL((IFNULL(potaida,0) / (IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0))) * qtydus_CGG,0)) as diskon_CGG,
+		SUM(IFNULL((IFNULL(potaida,0) / (IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0))) * qtydus_CG5,0)) as diskon_CG5,
+		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0) + IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0)) * qtydus_BB,0)) as diskon_BB,
+		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0)) * qtydus_BBP,0)) as diskon_BBP,
+		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0)) * qtydus_DEP,0)) as diskon_DEP,
+		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0)) * qtydus_DS,0)) as diskon_DS,
+		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0)) * qtydus_SP,0)) as diskon_SP,
+		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0)) * qtydus_SPP,0)) as diskon_SPP,
+		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0)) * qtydus_SC,0)) as diskon_SC,
+		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0)) * qtydus_SP8,0)) as diskon_SP8,
+
+		SUM(penyharga) as penyharga,
+
+		SUM(IFNULL(retur_AB,0)) as retur_AB,
+		SUM(IFNULL(retur_AR,0)) as retur_AR,
+		SUM(IFNULL(retur_AS,0)) as retur_AS,
+		SUM(IFNULL(retur_BB,0)) as retur_BB,
+		SUM(IFNULL(retur_BBP,0)) as retur_BBP,
+		SUM(IFNULL(retur_CG,0)) as retur_CG,
+		SUM(IFNULL(retur_CGG,0)) as retur_AB,
+		SUM(IFNULL(retur_CG5,0)) as retur_CG5,
+		SUM(IFNULL(retur_DEP,0)) as retur_DEP,
+		SUM(IFNULL(retur_DS,0)) as retur_DS,
+		SUM(IFNULL(retur_SP,0)) as retur_SP,
+		SUM(IFNULL(retur_SPP,0)) as retur_SPP,
+		SUM(IFNULL(retur_SC,0)) as retur_SC,
+		SUM(IFNULL(retur_SP8,0)) as retur_SP8")
+            ->leftJoin(
+                DB::raw("(
+                SELECT
+		dp.no_fak_penj,
+		SUM(IF(b.kode_produk = 'AB',dp.subtotal,0)) as bruto_AB,
+		SUM(IF(b.kode_produk = 'AR',dp.subtotal,0)) as bruto_AR,
+		SUM(IF(b.kode_produk = 'AS',dp.subtotal,0)) as bruto_AS,
+		SUM(IF(b.kode_produk = 'BB',dp.subtotal,0)) as bruto_BB,
+		SUM(IF(b.kode_produk = 'BBP',dp.subtotal,0)) as bruto_BBP,
+		SUM(IF(b.kode_produk = 'CG',dp.subtotal,0)) as bruto_CG,
+		SUM(IF(b.kode_produk = 'CGG',dp.subtotal,0)) as bruto_CGG,
+		SUM(IF(b.kode_produk = 'CG5',dp.subtotal,0)) as bruto_CG5,
+		SUM(IF(b.kode_produk = 'DEP',dp.subtotal,0)) as bruto_DEP,
+		SUM(IF(b.kode_produk = 'DS',dp.subtotal,0)) as bruto_DS,
+		SUM(IF(b.kode_produk = 'SP',dp.subtotal,0)) as bruto_SP,
+		SUM(IF(b.kode_produk = 'SPP',dp.subtotal,0)) as bruto_SPP,
+		SUM(IF(b.kode_produk = 'SC',dp.subtotal,0)) as bruto_SC,
+		SUM(IF(b.kode_produk = 'SP8',dp.subtotal,0)) as bruto_SP8,
+
+		SUM(IF(b.kode_produk = 'AB' AND promo !=1,dp.jumlah,0)) as   qty_AB,
+		SUM(IF(b.kode_produk = 'AR' AND promo !=1,dp.jumlah,0)) as   qty_AR,
+		SUM(IF(b.kode_produk = 'AS' AND promo !=1,dp.jumlah,0)) as   qty_AS,
+		SUM(IF(b.kode_produk = 'BB' AND promo !=1,dp.jumlah,0)) as   qty_BB,
+		SUM(IF(b.kode_produk = 'BBP' AND promo !=1,dp.jumlah,0)) as   qty_BBP,
+		SUM(IF(b.kode_produk = 'CG' AND promo !=1,dp.jumlah,0)) as  qty_CG,
+		SUM(IF(b.kode_produk = 'CGG' AND promo !=1,dp.jumlah,0)) as   qty_CGG,
+		SUM(IF(b.kode_produk = 'CG5' AND promo !=1,dp.jumlah,0)) as   qty_CG5,
+		SUM(IF(b.kode_produk = 'DEP' AND promo !=1,dp.jumlah,0)) as   qty_DEP,
+		SUM(IF(b.kode_produk = 'DS' AND promo !=1,dp.jumlah,0)) as   qty_DS,
+		SUM(IF(b.kode_produk = 'SP' AND promo !=1,dp.jumlah,0)) as   qty_SP,
+		SUM(IF(b.kode_produk = 'SPP' AND promo !=1,dp.jumlah,0)) as   qty_SPP,
+		SUM(IF(b.kode_produk = 'SC' AND promo !=1,dp.jumlah,0)) as   qty_SC,
+		SUM(IF(b.kode_produk = 'SP8' AND promo !=1,dp.jumlah,0)) as   qty_SP8,
+
+		SUM(IF(b.kode_produk = 'AB' AND promo !=1,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_AB,
+		SUM(IF(b.kode_produk = 'AR' AND promo !=1,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_AR,
+		SUM(IF(b.kode_produk = 'AS' AND promo !=1,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_AS,
+		SUM(IF(b.kode_produk = 'BB' AND promo !=1,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_BB,
+		SUM(IF(b.kode_produk = 'BBP' AND promo !=1,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_BBP,
+		SUM(IF(b.kode_produk = 'CG' AND promo !=1,floor(dp.jumlah/mb.isipcsdus),0)) as  qtydus_CG,
+		SUM(IF(b.kode_produk = 'CGG' AND promo !=1,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_CGG,
+		SUM(IF(b.kode_produk = 'CG5' AND promo !=1,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_CG5,
+		SUM(IF(b.kode_produk = 'DEP' AND promo !=1,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_DEP,
+		SUM(IF(b.kode_produk = 'DS' AND promo !=1,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_DS,
+		SUM(IF(b.kode_produk = 'SP' AND promo !=1,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_SP,
+		SUM(IF(b.kode_produk = 'SPP' AND promo !=1,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_SPP,
+		SUM(IF(b.kode_produk = 'SC' AND promo !=1,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_SC,
+		SUM(IF(b.kode_produk = 'SP8' AND promo !=1,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_SP8
+		FROM detailpenjualan dp
+		INNER JOIN barang b ON dp.kode_barang = b.kode_barang
+		INNER JOIN master_barang mb ON b.kode_produk = mb.kode_produk
+		GROUP BY dp.no_fak_penj
+            ) detail"),
+                function ($join) {
+                    $join->on('penjualan.no_fak_penj', '=', 'detail.no_fak_penj');
+                }
+            )
+
+            ->leftJoin(
+                DB::raw("(
+                SELECT retur.no_fak_penj,
+                SUM(IF(b.kode_produk = 'AB',subtotal,0)) as   retur_AB,
+                SUM(IF(b.kode_produk = 'AR',subtotal,0)) as   retur_AR,
+                SUM(IF(b.kode_produk = 'AS',subtotal,0)) as   retur_AS,
+                SUM(IF(b.kode_produk = 'BB',subtotal,0)) as   retur_BB,
+                SUM(IF(b.kode_produk = 'BBP',subtotal,0)) as   retur_BBP,
+                SUM(IF(b.kode_produk = 'CG',subtotal,0)) as   retur_CG,
+                SUM(IF(b.kode_produk = 'CGG',subtotal,0)) as   retur_CGG,
+                SUM(IF(b.kode_produk = 'CG5',subtotal,0)) as   retur_CG5,
+                SUM(IF(b.kode_produk = 'DEP',subtotal,0)) as   retur_DEP,
+                SUM(IF(b.kode_produk = 'DS',subtotal,0)) as   retur_DS,
+                SUM(IF(b.kode_produk = 'SP',subtotal,0)) as   retur_SP,
+                SUM(IF(b.kode_produk = 'SPP',subtotal,0)) as   retur_SPP,
+                SUM(IF(b.kode_produk = 'SC',subtotal,0)) as   retur_SC,
+                SUM(IF(b.kode_produk = 'SP8',subtotal,0)) as   retur_SP8
+                FROM detailretur
+                INNER JOIN retur ON detailretur.no_retur_penj = retur.no_retur_penj
+                INNER JOIN barang b ON detailretur.kode_barang = b.kode_barang
+                INNER JOIN master_barang mb ON b.kode_produk = mb.kode_produk
+                WHERE tglretur BETWEEN '$dari' AND '$sampai'
+                GROUP BY retur.no_fak_penj
+            ) retur"),
+                function ($join) {
+                    $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
+                }
+            )
+
+            ->whereBetween('tgltransaksi', [$dari, $sampai])
+            ->first();
+
+        $retur = DB::table('detailretur')
+            ->selectRaw("SUM(IF(barang.kode_produk = 'AB',subtotal,0)) as   retur_AB,
+		SUM(IF(barang.kode_produk = 'AR',subtotal,0)) as   retur_AR,
+		SUM(IF(barang.kode_produk = 'AS',subtotal,0)) as   retur_AS,
+		SUM(IF(barang.kode_produk = 'BB',subtotal,0)) as   retur_BB,
+		SUM(IF(barang.kode_produk = 'BBP',subtotal,0)) as   retur_BBP,
+		SUM(IF(barang.kode_produk = 'CG',subtotal,0)) as   retur_CG,
+		SUM(IF(barang.kode_produk = 'CGG',subtotal,0)) as   retur_CGG,
+		SUM(IF(barang.kode_produk = 'CG5',subtotal,0)) as   retur_CG5,
+		SUM(IF(barang.kode_produk = 'DEP',subtotal,0)) as   retur_DEP,
+		SUM(IF(barang.kode_produk = 'DS',subtotal,0)) as   retur_DS,
+		SUM(IF(barang.kode_produk = 'SP',subtotal,0)) as   retur_SP,
+		SUM(IF(barang.kode_produk = 'DK',subtotal,0)) as   retur_DK,
+		SUM(IF(barang.kode_produk = 'SPP',subtotal,0)) as   retur_SPP,
+		SUM(IF(barang.kode_produk = 'SC',subtotal,0)) as   retur_SC,
+		SUM(IF(barang.kode_produk = 'SP8',subtotal,0)) as   retur_SP8,
+
+		SUM(IF(barang.kode_produk = 'AB' AND jenis_retur='GB',subtotal,0)) as   returpeny_AB,
+		SUM(IF(barang.kode_produk = 'AR' AND jenis_retur='GB',subtotal,0)) as   returpeny_AR,
+		SUM(IF(barang.kode_produk = 'AS' AND jenis_retur='GB',subtotal,0)) as   returpeny_AS,
+		SUM(IF(barang.kode_produk = 'BB' AND jenis_retur='GB',subtotal,0)) as   returpeny_BB,
+		SUM(IF(barang.kode_produk = 'BBP' AND jenis_retur='GB',subtotal,0)) as   returpeny_BBP,
+		SUM(IF(barang.kode_produk = 'CG' AND jenis_retur='GB',subtotal,0)) as   returpeny_CG,
+		SUM(IF(barang.kode_produk = 'CGG' AND jenis_retur='GB',subtotal,0)) as   returpeny_CGG,
+		SUM(IF(barang.kode_produk = 'CG5' AND jenis_retur='GB',subtotal,0)) as   returpeny_CG5,
+		SUM(IF(barang.kode_produk = 'DEP' AND jenis_retur='GB',subtotal,0)) as   returpeny_DEP,
+		SUM(IF(barang.kode_produk = 'DS' AND jenis_retur='GB',subtotal,0)) as   returpeny_DS,
+		SUM(IF(barang.kode_produk = 'SP' AND jenis_retur='GB',subtotal,0)) as   returpeny_SP,
+		SUM(IF(barang.kode_produk = 'DK' AND jenis_retur='GB',subtotal,0)) as   returpeny_DK,
+		SUM(IF(barang.kode_produk = 'SPP' AND jenis_retur='GB',subtotal,0)) as   returpeny_SPP,
+		SUM(IF(barang.kode_produk = 'SC' AND jenis_retur='GB',subtotal,0)) as   returpeny_SC,
+		SUM(IF(barang.kode_produk = 'SP8' AND jenis_retur='GB',subtotal,0)) as   returpeny_SP8")
+            ->join('retur', 'detailretur.no_retur_penj', '=', 'retur.no_retur_penj')
+            ->join('barang', 'detailretur.kode_barang', '=', 'barang.kode_barang')
+            ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')
+            ->whereBetween('tglretur', [$dari, $sampai])
+            ->first();
+        $produk = Barang::orderby('kode_produk')->get();
+        return view('penjualan.laporan.cetak_harganet', compact('harganet', 'retur', 'produk', 'dari', 'sampai'));
+    }
+
+
+    public function laporanrekappenjualan()
+    {
+        $cabang = DB::table('cabang')->get();
+        return view('penjualan.laporan.frm.lap_rekappenjualan', compact('cabang'));
+    }
+
+    public function cetaklaporanrekappenjualan(Request $request)
+    {
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $jenislaporan = $request->jenislaporan;
+        $kode_cabang = $request->kode_cabang;
+        $id_karyawan = $request->id_karyawan;
+        $cabang = DB::table('cabang')->where('kode_cabang', $request->kode_cabang)->first();
+        $salesman = DB::table('karyawan')->where('id_karyawan', $request->id_karyawan)->first();
+        if ($jenislaporan == 1) {
+            $query = Detailpenjualan::query();
+            $query->selectRaw("barang.nama_barang,barang.kode_produk,kategori_jenisproduk,SUM(detailpenjualan.subtotal) as jumlah");
+            $query->join('barang', 'detailpenjualan.kode_barang', '=', 'barang.kode_barang');
+            $query->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk');
+            $query->join('penjualan', 'detailpenjualan.no_fak_penj', '=', 'penjualan.no_fak_penj');
+            $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+            $query->whereBetween('tgltransaksi', [$dari, $sampai]);
+            if ($request->kode_cabang != "") {
+                $query->where('karyawan.kode_cabang', $request->kode_cabang);
+            }
+            if ($request->id_karyawan != "") {
+                $query->where('penjualan.id_karyawan', $request->id_karyawan);
+            }
+            $query->groupByRaw('barang.nama_barang,barang.kode_produk,kategori_jenisproduk');
+            $query->orderBy('kategori_jenisproduk');
+            $rekap = $query->get();
+
+            $querypenjualan = Penjualan::query();
+            $querypenjualan->selectRaw("SUM(potongan) as potongan,SUM(potistimewa) as potistimewa, SUM(penyharga) as penyharga");
+            $querypenjualan->whereBetween('tgltransaksi', [$dari, $sampai]);
+            $querypenjualan->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+            if ($request->kode_cabang != "") {
+                $querypenjualan->where('karyawan.kode_cabang', $request->kode_cabang);
+            }
+            if ($request->id_karyawan != "") {
+                $querypenjualan->where('penjualan.id_karyawan', $request->id_karyawan);
+            }
+            $penjualan = $querypenjualan->first();
+
+
+
+
+            $queryretur = Retur::query();
+            $queryretur->selectRaw("SUM(retur.total) as totalretur");
+            $queryretur->join('penjualan', 'retur.no_fak_penj', '=', 'penjualan.no_fak_penj');
+            $queryretur->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+            $queryretur->whereBetween('tglretur', [$dari, $sampai]);
+            if ($request->kode_cabang != "") {
+                $queryretur->where('karyawan.kode_cabang', $request->kode_cabang);
+            }
+            if ($request->id_karyawan != "") {
+                $queryretur->where('penjualan.id_karyawan', $request->id_karyawan);
+            }
+            $retur = $queryretur->first();
+            return view('penjualan.laporan.cetak_rekappenjualanproduk', compact('rekap', 'cabang', 'salesman', 'dari', 'sampai', 'penjualan', 'retur'));
+        } else if ($jenislaporan == 3) {
+            $query = Detailpenjualan::query();
+            $query->selectRaw("kode_produk,nama_barang,isipcsdus,
+            SUM(IF(karyawan.kode_cabang = 'BDG',jumlah,0)) as BDG,
+            SUM(IF(karyawan.kode_cabang = 'BDG',detailpenjualan.subtotal,0)) as JML_BDG,
+            SUM(IF(karyawan.kode_cabang = 'BGR',jumlah,0)) as BGR,
+            SUM(IF(karyawan.kode_cabang = 'BGR',detailpenjualan.subtotal,0)) as JML_BGR,
+            SUM(IF(karyawan.kode_cabang = 'SKB',jumlah,0)) as SKB,
+            SUM(IF(karyawan.kode_cabang = 'SKB',detailpenjualan.subtotal,0)) as JML_SKB,
+            SUM(IF(karyawan.kode_cabang = 'PWT',jumlah,0)) as PWT,
+            SUM(IF(karyawan.kode_cabang = 'PWT',detailpenjualan.subtotal,0)) as JML_PWT,
+            SUM(IF(karyawan.kode_cabang = 'TGL',jumlah,0)) as TGL,
+            SUM(IF(karyawan.kode_cabang = 'TGL',detailpenjualan.subtotal,0)) as JML_TGL,
+            SUM(IF(karyawan.kode_cabang = 'TSM',jumlah,0)) as TSM,
+            SUM(IF(karyawan.kode_cabang = 'TSM',detailpenjualan.subtotal,0)) as JML_TSM,
+            SUM(IF(karyawan.kode_cabang = 'SBY',jumlah,0)) as SBY,
+            SUM(IF(karyawan.kode_cabang = 'SBY',detailpenjualan.subtotal,0)) as JML_SBY,
+            SUM(IF(karyawan.kode_cabang = 'SMR',jumlah,0)) as SMR,
+            SUM(IF(karyawan.kode_cabang = 'SMR',detailpenjualan.subtotal,0)) as JML_SMR,
+            SUM(IF(karyawan.kode_cabang = 'PST',jumlah,0)) as PST,
+            SUM(IF(karyawan.kode_cabang = 'PST',detailpenjualan.subtotal,0)) as JML_PST,
+            SUM(IF(karyawan.kode_cabang = 'KLT',jumlah,0)) as KLT,
+            SUM(IF(karyawan.kode_cabang = 'KLT',detailpenjualan.subtotal,0)) as JML_KLT,
+            SUM(jumlah) as totalqty,
+            SUM(detailpenjualan.subtotal) as JML");
+            $query->join('barang', 'detailpenjualan.kode_barang', '=', 'barang.kode_barang');
+            $query->join('penjualan', 'detailpenjualan.no_fak_penj', '=', 'penjualan.no_fak_penj');
+            $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+            $query->whereBetween('tgltransaksi', [$dari, $sampai]);
+            $query->where('promo', '!=', 1);
+            if ($request->kode_cabang != "") {
+                $query->where('karyawan.kode_cabang', $request->kode_cabang);
+            }
+            if ($request->id_karyawan != "") {
+                $query->where('penjualan.id_karyawan', $request->id_karyawan);
+            }
+            $query->groupByRaw("kode_produk,nama_barang,isipcsdus");
+            $rekap = $query->get();
+            return view('penjualan.laporan.cetak_rekappenjualanqty', compact('rekap', 'dari', 'sampai'));
+            //dd($rekap);
+        }
     }
 }

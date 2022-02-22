@@ -87,6 +87,7 @@ Route::middleware(['auth', 'ceklevel:admin,manager marketing,general manager,dir
     Route::get('/kendaraan/{id}/edit', [KendaraanController::class, 'edit']);
     Route::post('/kendaraan/{id}/update', [KendaraanController::class, 'update']);
     Route::post('/kendaraan/show', [KendaraanController::class, 'show']);
+    Route::post('/kendaraan/getkendaraancab', [KendaraanController::class, 'getkendaraancab']);
 
     //Cabang
     Route::get('/cabang', [CabangController::class, 'index']);
@@ -153,6 +154,18 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,mana
     //Rekap  Pelanggan
     Route::get('/laporanpenjualan/rekappelanggan', [PenjualanController::class, 'laporanrekappelanggan']);
     Route::post('/laporanpenjualan/rekappelanggan/cetak', [PenjualanController::class, 'cetaklaporanrekappelanggan']);
+    //Harga Net
+    Route::get('/laporanpenjualan/harganet', [PenjualanController::class, 'laporanharganet']);
+    Route::post('/laporanpenjualan/harganet/cetak', [PenjualanController::class, 'cetaklaporanharganet']);
+
+    //Rekap Penjualan
+    Route::get('/laporanpenjualan/rekappenjualan', [PenjualanController::class, 'laporanrekappenjualan']);
+    Route::post('/laporanpenjualan/rekappenjualan/cetak', [PenjualanController::class, 'cetaklaporanrekappenjualan']);
+
+    //Kendaraan
+    //Rekap Kendaraan
+    Route::get('/laporankendaraan/rekapkendaraan', [KendaraanController::class, 'laporanrekapkendaraan']);
+    Route::post('/laporankendaraan/rekapkendaraan/cetak', [KendaraanController::class, 'cetaklaporanrekapkendaraan']);
 });
 
 
