@@ -77,6 +77,11 @@
                                             <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker />
                                         </div>
                                     </div>
+                                    <div class="row" id="pilihtanggalaup">
+                                        <div class="col-12">
+                                            <x-inputtext label="Lihat Per Tanggal" field="tgl_aup" icon="feather icon-calendar" datepicker />
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-lg-8 col-sm-12">
                                             <div class="form-group">
@@ -121,7 +126,7 @@
             var jenislaporan = $("#jenislaporan").val();
             var start = new Date(dari);
             var end = new Date(sampai);
-
+            var tgl_aup = $("#tgl_aup").val();
             var datestart = new Date('2018-09-01');
             if (cabang != "PCF" && kode_cabang == "" && jenislaporan != 3) {
                 swal({
@@ -133,10 +138,20 @@
                     $("#kode_cabang").focus();
                 });
                 return false;
-            } else if (dari == "" && sampai == "") {
+            } else if (dari == "" && sampai == "" && jenislaporan != 5) {
                 swal({
                     title: 'Oops'
                     , text: 'Periode Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#dari").focus();
+                });
+                return false;
+            } else if (jenislaporan == 5 && tgl_aup == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Tanggal AUP Harus Diisi !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
@@ -189,11 +204,22 @@
             if (jenislaporan == 3) {
                 $("#pilihcabang").hide();
                 $("#pilihsalesman").hide();
+                $("#pilihperiode").show();
+                $("#pilihtanggalaup").hide();
+            } else if (jenislaporan == 5) {
+                $("#pilihcabang").show();
+                $("#pilihsalesman").hide();
+                $("#pilihperiode").hide();
+                $("#pilihtanggalaup").show();
             } else {
                 $("#pilihcabang").show();
                 $("#pilihsalesman").show();
+                $("#pilihperiode").show();
+                $("#pilihtanggalaup").hide();
             }
         }
+
+        loadjenislaporan();
 
         $("#jenislaporan").change(function() {
             loadjenislaporan();
