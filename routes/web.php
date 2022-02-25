@@ -166,6 +166,10 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,mana
     //Rekap Kendaraan
     Route::get('/laporankendaraan/rekapkendaraan', [KendaraanController::class, 'laporanrekapkendaraan']);
     Route::post('/laporankendaraan/rekapkendaraan/cetak', [KendaraanController::class, 'cetaklaporanrekapkendaraan']);
+
+    //LPC
+    Route::get('/lpc', [LpcController::class, 'index']);
+    Route::post('/lpc/show', [LpcController::class, 'show']);
 });
 
 
@@ -177,7 +181,7 @@ Route::middleware(['auth', 'ceklevel:admin,direktur'])->group(function () {
 
 
 //Administrator | Admin Penjualan | Kepala Penjualan | Direktur
-Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,direktur'])->group(function () {
+Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,manager marketing,direktur'])->group(function () {
 
     //Salesman
     Route::get('/salesman', [SalesmanController::class, 'index']);
@@ -296,8 +300,6 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan'])->
     Route::post('/retur/getfakturpelanggan', [ReturController::class, 'getfakturpelanggan']);
 
     //LPC
-    Route::get('/lpc', [LpcController::class, 'index']);
-    Route::post('/lpc/show', [LpcController::class, 'show']);
     Route::get('lpc/create', [LpcController::class, 'create']);
     Route::post('lpc/store', [LpcController::class, 'store']);
     Route::post('lpc/delete', [LpcController::class, 'delete']);

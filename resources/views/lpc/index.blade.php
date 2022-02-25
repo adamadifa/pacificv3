@@ -23,9 +23,11 @@
         @include('layouts.notification')
         <div class="col-md-6 col-sm-12">
             <div class="card">
+                @if (in_array($level,$kirimlpc_tambah))
                 <div class="card-header">
                     <a href="#" class="btn btn-primary" id="inputlpc"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
                 </div>
+                @endif
                 <div class="card-body">
                     <form action="#">
                         <div class="row">

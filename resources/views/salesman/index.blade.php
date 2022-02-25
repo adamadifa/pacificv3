@@ -23,9 +23,11 @@
         @include('layouts.notification')
         <div class="col-md-8 col-sm-8">
             <div class="card">
+                @if (in_array($level,$salesman_tambah))
                 <div class="card-header">
                     <a href="/salesman/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
                 </div>
+                @endif
                 <div class="card-body">
                     <form action="/salesman">
                         <div class="row">
@@ -84,8 +86,11 @@
                                     <td>{{ $d->kategori_salesman }}</td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
+                                            @if (in_array($level,$salesman_edit))
                                             <a class="ml-1" href="/salesman/{{\Crypt::encrypt($d->id_karyawan)}}/edit"><i class="feather icon-edit success"></i></a>
+                                            @endif
                                             <a class="ml-1 detailsalesman" href="#" idkaryawan="{{ Crypt::encrypt($d->id_karyawan) }}"><i class=" feather icon-file-text info"></i></a>
+                                            @if (in_array($level,$salesman_hapus))
                                             <form method="POST" class="deleteform" action="/salesman/{{Crypt::encrypt($d->id_karyawan)}}/delete">
                                                 @csrf
                                                 @method('DELETE')
@@ -93,6 +98,7 @@
                                                     <i class="feather icon-trash danger"></i>
                                                 </a>
                                             </form>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>

@@ -73,11 +73,13 @@
                     <i class="feather icon-file mr-1"></i>Rekap Kendaraan
                 </li>
             </a>
+            @if (in_array($level,$harga_net))
             <a href="/laporanpenjualan/harganet" style="color:#626262">
                 <li class="list-group-item {{ request()->is(['laporanpenjualan/harganet']) ? 'active' : '' }}">
                     <i class="feather icon-file mr-1"></i>Harga Net
                 </li>
             </a>
+            @endif
         </ul>
     </div>
 </div>

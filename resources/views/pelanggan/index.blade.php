@@ -70,9 +70,11 @@
         @include('layouts.notification')
         <div class="col-md-12 col-sm-12">
             <div class="card">
+                @if(in_array($level,$pelanggan_tambah))
                 <div class="card-header">
                     <a href="/pelanggan/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
                 </div>
+                @endif
                 <div class="card-body">
                     <form action="/pelanggan">
                         <div class="row">
@@ -174,8 +176,11 @@
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
+                                            @if (in_array($level,$pelanggan_edit))
                                             <a class="ml-1" href="/pelanggan/{{\Crypt::encrypt($d->kode_pelanggan)}}/edit"><i class="feather icon-edit success"></i></a>
+                                            @endif
                                             <a class="ml-1 detailpelanggan" href="pelanggan/{{ Crypt::encrypt($d->kode_pelanggan) }}/show"><i class=" feather icon-file-text info"></i></a>
+                                            @if (in_array($level,$pelanggan_hapus))
                                             <form method="POST" name="deleteform" class="deleteform" action="/pelanggan/{{ Crypt::encrypt($d->kode_pelanggan) }}/delete">
                                                 @csrf
                                                 @method('DELETE')
@@ -183,7 +188,10 @@
                                                     <i class="feather icon-trash danger"></i>
                                                 </a>
                                             </form>
+                                            @endif
+                                            @if (in_array($level,$pelanggan_ajuanlimit))
                                             <a class="ml-1" href="/limitkredit/{{\Crypt::encrypt($d->kode_pelanggan)}}/create"><i class="feather icon-external-link primary"></i></a>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>

@@ -23,11 +23,12 @@
         @include('layouts.notification')
         <div class="col-md-12 col-sm-12">
             <div class="card">
+                @if (in_array($level,$barang_tambah))
                 <div class="card-header">
                     <a href="/barang/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
                 </div>
+                @endif
                 <div class="card-body">
-
                     <div class="table-responsive">
                         <table class="table table-hover-animation">
                             <thead class="thead-dark">
@@ -61,7 +62,10 @@
                                     <td class="text-center">{{ $d->kode_akun }}</td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
+                                            @if (in_array($level,$barang_edit))
                                             <a class="ml-1" href="/barang/{{\Crypt::encrypt($d->kode_produk)}}/edit"><i class="feather icon-edit success"></i></a>
+                                            @endif
+                                            @if (in_array($level,$barang_hapus))
                                             <form method="POST" class="deleteform" action="/barang/{{Crypt::encrypt($d->kode_produk)}}/delete">
                                                 @csrf
                                                 @method('DELETE')
@@ -69,6 +73,7 @@
                                                     <i class="feather icon-trash danger"></i>
                                                 </a>
                                             </form>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>

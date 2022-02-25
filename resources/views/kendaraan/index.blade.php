@@ -83,7 +83,9 @@
                                     <td>{{ strtoupper($d->kode_cabang) }}</td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
+                                            @if (in_array($level,$kendaraan_edit))
                                             <a class="ml-1" href="/kendaraan/{{\Crypt::encrypt($d->id)}}/edit"><i class="feather icon-edit success"></i></a>
+                                            @endif
                                             <a class="ml-1 detailkendaraan" href="#" data-id="{{ $d->id }}"><i class=" feather icon-file-text info"></i></a>
 
                                             @if (in_array($level,$kendaraan_hapus))

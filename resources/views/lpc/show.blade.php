@@ -13,12 +13,18 @@
         @endif
     </td>
     <td>
+        @if (in_array($level,$kirimlpc_edit))
         <a class="ml-1 edit" href="#" kode_lpc="{{ $d->kode_lpc }}"><i class="feather icon-edit success"></i></a>
+        @endif
+        @if (in_array($level,$kirimlpc_hapus))
         <a class="ml-1 hapus" href="#" kode_lpc="{{ $d->kode_lpc }}"><i class="feather icon-trash danger"></i></a>
+        @endif
+        @if (in_array($level,$kirimlpc_approve))
         @if ($d->status==0)
         <a class="ml-1 approve" kode_lpc="{{ $d->kode_lpc }}" href="#"><i class=" feather icon-check info"></i></a>
         @elseif($d->status==1)
         <a class="ml-1 cancel" kode_lpc="{{ $d->kode_lpc }}" href="#"><i class=" fa fa-close danger"></i></a>
+        @endif
         @endif
     </td>
 </tr>

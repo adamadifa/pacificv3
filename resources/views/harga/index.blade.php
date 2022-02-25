@@ -22,9 +22,11 @@
         <!-- DataTable starts -->
         @include('layouts.notification')
         <div class="card">
+            @if (in_array($level,$harga_tambah))
             <div class="card-header">
                 <a href="/harga/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
             </div>
+            @endif
             <div class="card-body">
                 <form action="/harga">
                     <div class="row">
@@ -96,7 +98,9 @@
                                 <td align="right">{{ $d->kategori_harga }}</td>
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example">
+                                        @if (in_array($level,$harga_edit))
                                         <a class="ml-1" href="/harga/{{\Crypt::encrypt($d->kode_barang)}}/edit"><i class="feather icon-edit success"></i></a>
+                                        @endif
                                         <a class="ml-1 detailbarang" href="#" kodebarang="{{ Crypt::encrypt($d->kode_barang) }}"><i class=" feather icon-file-text info"></i></a>
                                         @if (in_array($level,$harga_hapus))
                                         <form method="POST" class="deleteform" action="/harga/{{Crypt::encrypt($d->kode_barang)}}/delete">
