@@ -405,10 +405,27 @@ class PelangganController extends Controller
 
     public function json()
     {
-        $pelanggan = DB::table('pelanggan')
-            ->select('pelanggan.*', 'karyawan.nama_karyawan', 'karyawan.kategori_salesman', 'limitpel')
-            ->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan')
-            ->where('status_pelanggan', '1');
+
+        $query = Pelanggan::query();
+        $query->select('pelanggan.*', 'karyawan.nama_karyawan', 'karyawan.kategori_salesman', 'limitpel');
+        $query->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
+        $query->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang');
+        $query->where('status_pelanggan', '1');
+        if ($this->cabang != "PCF") {
+            $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+            $cabang[] = "";
+            foreach ($cbg as $c) {
+                $cabang[] = $c->kode_cabang;
+            }
+            $query->whereIn('karyawan.kode_cabang', $cabang);
+        }
+
+        $pelanggan = $query;
+
+
+
+
+
         return DataTables::of($pelanggan)
             ->addColumn('action', function ($pelanggan) {
                 return '<a href="#" class="btn btn-sm btn-primary"

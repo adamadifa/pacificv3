@@ -8,9 +8,22 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\View;
 
 class PembayaranController extends Controller
 {
+    protected $cabang;
+    public function __construct()
+    {
+        // Fetch the Site Settings object
+        $this->middleware(function ($request, $next) {
+            $this->cabang = Auth::user()->kode_cabang;
+            return $next($request);
+        });
+
+
+        View::share('cabang', $this->cabang);
+    }
     public function store(Request $request)
     {
         $id_admin = Auth::user()->id;
@@ -441,7 +454,11 @@ class PembayaranController extends Controller
 
     public function laporankasbesarpenjualan()
     {
-        $cabang = DB::table('cabang')->get();
+        if ($this->cabang == "PCF") {
+            $cabang = DB::table('cabang')->get();
+        } else {
+            $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+        }
         return view('pembayaran.laporan.frm.lap_kasbesar', compact('cabang'));
     }
 

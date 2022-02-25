@@ -94,7 +94,9 @@
                                 </td>
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example">
+                                        @if (in_array($level,$giro_approved))
                                         <a class="ml-1 prosesgiro" href="#" no_giro="{{ $d->no_giro }}"><i class=" feather icon-external-link success"></i></a>
+                                        @endif
                                         <a class="ml-1 detailfaktur" href="#" no_giro="{{ $d->no_giro }}"><i class=" feather icon-file-text info"></i></a>
                                     </div>
                                 </td>

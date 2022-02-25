@@ -245,7 +245,11 @@ class KendaraanController extends Controller
 
     public function laporanrekapkendaraan()
     {
-        $cabang = DB::table('cabang')->get();
+        if ($this->cabang == "PCF") {
+            $cabang = DB::table('cabang')->get();
+        } else {
+            $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+        }
         return view('kendaraan.laporan.frm.lap_rekapkendaraan', compact('cabang'));
     }
 

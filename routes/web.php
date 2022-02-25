@@ -57,7 +57,8 @@ Route::post('/cekpenjtemp', [PenjualanController::class, 'cekpenjtemp']);
 Route::post('/salesman/getsalescab', [SalesmanController::class, 'getsalescab']);
 //Pelanggan
 Route::post('/pelanggan/getpelanggansalesman', [PelangganController::class, 'getpelanggansalesman']);
-
+//Kendaraan
+Route::post('/kendaraan/getkendaraancab', [KendaraanController::class, 'getkendaraancab']);
 
 //Administrator | Manager Marketing | General Manager | Direktur
 Route::middleware(['auth', 'ceklevel:admin,manager marketing,general manager,direktur'])->group(function () {
@@ -87,7 +88,7 @@ Route::middleware(['auth', 'ceklevel:admin,manager marketing,general manager,dir
     Route::get('/kendaraan/{id}/edit', [KendaraanController::class, 'edit']);
     Route::post('/kendaraan/{id}/update', [KendaraanController::class, 'update']);
     Route::post('/kendaraan/show', [KendaraanController::class, 'show']);
-    Route::post('/kendaraan/getkendaraancab', [KendaraanController::class, 'getkendaraancab']);
+
 
     //Cabang
     Route::get('/cabang', [CabangController::class, 'index']);
@@ -108,8 +109,12 @@ Route::middleware(['auth', 'ceklevel:kepala penjualan'])->group(function () {
 });
 
 
+Route::middleware(['auth', 'ceklevel:kepala admin'])->group(function () {
+    Route::get('/dashboardkepalaadmin', [DashboardController::class, 'dashboardkepalaadmin']);
+});
+
 //Admin Penjualan | Kepala Penjualan | Kepala Cabang | Manager Marketing | General manager | Direktur
-Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,manager marketing,general manager,direktur'])->group(function () {
+Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,kepala admin,manager marketing,general manager,direktur'])->group(function () {
 
     //Limit Kredit
     Route::get('/limitkredit', [LimitkreditController::class, 'index']);
@@ -181,7 +186,7 @@ Route::middleware(['auth', 'ceklevel:admin,direktur'])->group(function () {
 
 
 //Administrator | Admin Penjualan | Kepala Penjualan | Direktur
-Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,manager marketing,direktur'])->group(function () {
+Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,kepala admin,manager marketing,direktur'])->group(function () {
 
     //Salesman
     Route::get('/salesman', [SalesmanController::class, 'index']);
@@ -228,7 +233,7 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,mana
 });
 
 //Administrator | Admin Penjualan
-Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan'])->group(function () {
+Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,kepala admin'])->group(function () {
 
 
 

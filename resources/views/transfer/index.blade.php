@@ -89,7 +89,9 @@
                                 </td>
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example">
+                                        @if (in_array($level,$transfer_approved))
                                         <a class="ml-1 prosestransfer" href="#" kode_transfer="{{ $d->kode_transfer }}"><i class=" feather icon-external-link success"></i></a>
+                                        @endif
                                         <a class="ml-1 detailfaktur" href="#" kode_transfer="{{ $d->kode_transfer }}"><i class=" feather icon-file-text info"></i></a>
                                     </div>
                                 </td>

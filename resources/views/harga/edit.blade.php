@@ -40,7 +40,7 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group  @error('kode_produk') error @enderror">
-                                                <select name="kode_produk" id="kode_produk" class="form-control">
+                                                <select name="kode_produk" id="kode_produk" class="form-control" disabled>
                                                     <option value="">Kode Produk | Nama Produk</option>
                                                     @foreach ($barang as $p)
                                                     <option @isset($data->kode_produk) @if (old('kode_produk'))

@@ -7,9 +7,22 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\View;
 
 class GiroController extends Controller
 {
+    protected $cabang;
+    public function __construct()
+    {
+        // Fetch the Site Settings object
+        $this->middleware(function ($request, $next) {
+            $this->cabang = Auth::user()->kode_cabang;
+            return $next($request);
+        });
+
+
+        View::share('cabang', $this->cabang);
+    }
     public function index(Request $request)
     {
         $pelanggan = '"' . $request->nama_pelanggan . '"';
@@ -41,6 +54,14 @@ class GiroController extends Controller
             $query->whereBetween('tglcair', [$request->dari, $request->sampai]);
         }
 
+        if ($this->cabang != "PCF") {
+            $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+            $cabang[] = "";
+            foreach ($cbg as $c) {
+                $cabang[] = $c->kode_cabang;
+            }
+            $query->whereIn('karyawan.kode_cabang', $cabang);
+        }
         $giro = $query->paginate(15);
         $giro->appends($request->all());
         return view('giro.index', compact('giro'));

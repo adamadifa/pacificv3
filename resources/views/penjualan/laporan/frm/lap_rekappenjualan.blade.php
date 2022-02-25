@@ -35,7 +35,9 @@
                                                 <select name="jenislaporan" id="jenislaporan" class="form-control">
                                                     <option value="1">Rekap Penjualan Produk</option>
                                                     <option value="2">Rekap Penjualan</option>
+                                                    @if (Auth::user()->kode_cabang == "PCF")
                                                     <option value="3">Rekap Penjualan (QTY)</option>
+                                                    @endif
                                                     <option value="4">Rekap Retur</option>
                                                     <option value="5">Collect AUP</option>
                                                 </select>

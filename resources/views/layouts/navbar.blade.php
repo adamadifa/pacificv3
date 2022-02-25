@@ -15,10 +15,13 @@
     <div class="main-menu-content">
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
             @if (in_array($level,$dashboardadmin))
-            <li class=" nav-item"><a href="/dashboardadmin"><i class="feather icon-home"></i><span class="menu-title" data-i18n="Dashboard">Dashboard</span></a></li>
+            <li class=" {{ request()->is(['dashboardadmin']) ? 'active' : '' }} nav-item"><a href="/dashboardadmin"><i class="feather icon-home"></i><span class="menu-title" data-i18n="Dashboard">Dashboard</span></a></li>
             @endif
             @if (in_array($level,$dashboardkepalapenjualan))
-            <li class=" nav-item"><a href="/dashboardkepalapenjualan"><i class="feather icon-home"></i><span class="menu-title" data-i18n="Dashboard">Dashboard</span></a></li>
+            <li class="{{ request()->is(['dashboardkepalapenjualan']) ? 'active' : '' }} nav-item"><a href="/dashboardkepalapenjualan"><i class="feather icon-home"></i><span class="menu-title" data-i18n="Dashboard">Dashboard</span></a></li>
+            @endif
+            @if (in_array($level,$dashboardkepalaadmin))
+            <li class="{{ request()->is(['dashboardkepalaadmin']) ? 'active' : '' }} nav-item"><a href="/dashboardkepalaadmin"><i class="feather icon-home"></i><span class="menu-title" data-i18n="Dashboard">Dashboard</span></a></li>
             @endif
             @if (in_array($level,$datamaster_view))
             <li class=" nav-item">
@@ -66,7 +69,7 @@
                             <li class="{{ request()->is(['limitkredit','limitkredit/*']) ? 'active' : '' }}"><a href="/limitkredit"><i class="feather icon-credit-card"></i><span class="menu-item">Limit Kredit</span></a></li>
                             @endif
                             @if (in_array($level,$laporan_penjualan))
-                            <li class="{{ request()->is(['laporanpenjualan','laporanpenjualan/*']) ? 'active' : '' }}"><a href="/laporanpenjualan/penjualan"><i class="feather icon-file-text"></i><span class="menu-item">Laporan</span></a></li>
+                            <li class="{{ request()->is(['laporanpenjualan','laporanpenjualan/*','laporanretur','laporankasbesarpenjualan','laporankendaraan/*']) ? 'active' : '' }}"><a href="/laporanpenjualan/penjualan"><i class="feather icon-file-text"></i><span class="menu-item">Laporan</span></a></li>
                             @endif
                         </ul>
                     </li>

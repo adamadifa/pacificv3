@@ -119,8 +119,6 @@ class HargaController extends Controller
         $kode_barang = Crypt::decrypt($kode_barang);
         $request->validate([
             'kode_barang' => 'required',
-            'kode_produk' => 'required',
-            'kategori' => 'required',
             'satuan' => 'required',
             'isipcsdus' => 'required|numeric',
             'isipack' => 'required|numeric',
@@ -140,8 +138,6 @@ class HargaController extends Controller
             ->where('kode_barang', $kode_barang)
             ->update([
                 'kode_barang' => $request->kode_barang,
-                'kode_produk' => $produk[0],
-                'nama_barang' => $produk[1],
                 'kategori' => $request->kategori,
                 'satuan' => $request->satuan,
                 'isipcsdus' => $request->isipcsdus,

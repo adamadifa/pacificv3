@@ -167,7 +167,8 @@
 
         function loadexclude() {
             var kode_cabang = $("#kode_cabang").val();
-            if (kode_cabang == "") {
+            var cabang = $("#cabang").val();
+            if (kode_cabang == "" && cabang == "PCF") {
                 $(".exclude").show();
             } else {
                 $(".exclude").hide();

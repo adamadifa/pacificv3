@@ -24,6 +24,8 @@ class AuthController extends Controller
                 return redirect()->intended('/dashboardadminpenjualan');
             } else if (Auth::user()->level == "kepala penjualan") {
                 return redirect()->intended('/dashboardkepalapenjualan');
+            } else if (Auth::user()->level == "kepala admin") {
+                return redirect()->intended('/dashboardkepalaadmin');
             }
         } else {
             echo "Username Atau Password Salah";

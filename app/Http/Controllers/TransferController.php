@@ -7,9 +7,22 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\View;
 
 class TransferController extends Controller
 {
+    protected $cabang;
+    public function __construct()
+    {
+        // Fetch the Site Settings object
+        $this->middleware(function ($request, $next) {
+            $this->cabang = Auth::user()->kode_cabang;
+            return $next($request);
+        });
+
+
+        View::share('cabang', $this->cabang);
+    }
     public function index(Request $request)
     {
         $pelanggan = '"' . $request->nama_pelanggan . '"';
@@ -50,7 +63,14 @@ class TransferController extends Controller
             $query->whereBetween('tglcair', [$request->dari, $request->sampai]);
         }
 
-
+        if ($this->cabang != "PCF") {
+            $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+            $cabang[] = "";
+            foreach ($cbg as $c) {
+                $cabang[] = $c->kode_cabang;
+            }
+            $query->whereIn('karyawan.kode_cabang', $cabang);
+        }
         $transfer = $query->paginate(15);
         $transfer->appends($request->all());
         return view('transfer.index', compact('transfer'));

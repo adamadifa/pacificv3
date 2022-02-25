@@ -9,10 +9,23 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\View;
 use PDOException;
 
 class ReturController extends Controller
 {
+    protected $cabang;
+    public function __construct()
+    {
+        // Fetch the Site Settings object
+        $this->middleware(function ($request, $next) {
+            $this->cabang = Auth::user()->kode_cabang;
+            return $next($request);
+        });
+
+
+        View::share('cabang', $this->cabang);
+    }
     public function index(Request $request)
     {
         $pelanggan = '"' . $request->nama_pelanggan . '"';
@@ -41,7 +54,14 @@ class ReturController extends Controller
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('tglretur', [$request->dari, $request->sampai]);
         }
-
+        if ($this->cabang != "PCF") {
+            $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+            $cabang[] = "";
+            foreach ($cbg as $c) {
+                $cabang[] = $c->kode_cabang;
+            }
+            $query->whereIn('karyawan.kode_cabang', $cabang);
+        }
         $retur = $query->paginate(15);
 
         $retur->appends($request->all());
@@ -160,6 +180,7 @@ class ReturController extends Controller
         $faktur = DB::table('penjualan')
             ->select('no_fak_penj')
             ->where('kode_pelanggan', $request->kode_pelanggan)
+            ->orderBy('tgltransaksi', 'desc')
             ->limit(5)
             ->get();
         echo "<option value=''>Pilih No. Faktur</option>";
@@ -338,7 +359,11 @@ class ReturController extends Controller
 
     public function laporanretur()
     {
-        $cabang = DB::table('cabang')->get();
+        if ($this->cabang == "PCF") {
+            $cabang = DB::table('cabang')->get();
+        } else {
+            $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+        }
         return view('retur.laporan.frm.lap_retur', compact('cabang'));
     }
 
