@@ -61,7 +61,7 @@ class LimitkreditController extends Controller
         }
 
 
-        if ($this->level == "admin") {
+        if ($this->level == "admin" || $this->level == "manager accounting") {
             if ($request->status == "pending") {
                 $status = 0;
             } elseif ($request->status == "disetujui") {

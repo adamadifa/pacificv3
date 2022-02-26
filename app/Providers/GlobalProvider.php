@@ -47,35 +47,37 @@ class GlobalProvider extends ServiceProvider
             $dashboardadmin = ['admin', 'manager marketing', 'general manager', 'direktur'];
             $dashboardkepalapenjualan = ['kepala penjualan'];
             $dashboardkepalaadmin = ['kepala admin'];
+            $dashboardadminpenjualan = ['admin penjualan'];
+            $dashboardaccounting = ['manager accounting'];
 
             //Data Master
-            $datamaster = ['admin', 'admin penjualan', 'kepala penjualan', 'kepala admin', 'manager marketing', 'direktur'];
+            $datamaster = ['admin', 'admin penjualan', 'manager accounting', 'kepala penjualan', 'kepala admin', 'manager marketing', 'direktur'];
             //Pelanggan
-            $pelanggan = ['admin', 'admin penjualan', 'kepala penjualan', 'kepala admin', 'manager marketing', 'direktur'];
+            $pelanggan = ['admin', 'admin penjualan', 'manager accounting', 'kepala penjualan', 'kepala admin', 'manager marketing', 'direktur'];
             $pelanggan_tambah = ['admin', 'kepala penjualan', 'kepala admin', 'admin penjualan'];
             $pelanggan_edit = ['admin', 'kepala penjualan', 'kepala admin', 'admin penjualan'];
             $pelanggan_hapus = ['admin', 'kepala penjualan', 'kepala admin', 'admin penjualan'];
             $pelanggan_ajuanlimit = ['admin', 'kepala penjualan', 'kepala admin', 'admin penjualan'];
 
             //Salesman
-            $salesman = ['admin', 'admin penjualan', 'kepala penjualan', 'kepala admin', 'manager marketing', 'direktur'];
+            $salesman = ['admin', 'admin penjualan', 'kepala penjualan', 'kepala admin', 'manager accounting', 'manager marketing', 'direktur'];
             $salesman_tambah = ['admin', 'kepala penjualan', 'kepala admin', 'admin penjualan'];
             $salesman_edit = ['admin', 'kepala penjualan', 'kepala admin', 'admin penjualan'];
             $salesman_hapus = ['admin', 'kepala penjualan', 'kepala admin', 'admin penjualan'];
 
             //Barang
-            $barang = ['admin', 'direktur', 'manager marketing', 'general manager'];
+            $barang = ['admin', 'manager accounting', 'direktur', 'manager marketing', 'general manager'];
             $barang_tambah = ['admin'];
             $barang_edit = ['admin'];
             $barang_hapus = ['admin'];
 
             //Harga
-            $harga = ['admin', 'admin penjualan', 'kepala penjualan', 'kepala admin', 'manager marketing', 'direktur'];
+            $harga = ['admin', 'admin penjualan', 'kepala penjualan', 'kepala admin', 'manager accounting', 'manager marketing', 'direktur'];
             $harga_hapus = ['admin'];
             $harga_tambah = ['admin'];
             $harga_edit = ['admin', 'admin penjualan', 'kepala penjualan', 'kepala admin'];
 
-            $kendaraan = ['admin', 'admin penjualan', 'kepala penjualan', 'kepala admin', 'manager marketing', 'direktur'];
+            $kendaraan = ['admin', 'admin penjualan', 'kepala penjualan', 'kepala admin', 'manager accounting', 'manager marketing', 'direktur'];
             $kendaraan_tambah = ['admin'];
             $kendaraan_edit = ['admin', 'admin penjualan', 'kepala penjualan', 'kepala admin'];
             $kendaraan_hapus = ['admin'];
@@ -88,20 +90,22 @@ class GlobalProvider extends ServiceProvider
 
 
             //Marketing
-            $marketing = ['admin', 'admin penjualan', 'kepala penjualan', 'kepala admin', 'manager marketing', 'general manager', 'direktur'];
+            $marketing = ['admin', 'admin penjualan', 'kepala penjualan', 'kepala admin', 'manager accounting', 'manager marketing', 'general manager', 'direktur'];
 
             //-----------------------------Penjualan-------------------------------------------
-            $penjualan_menu = ['admin', 'admin penjualan', 'kepala admin', 'kepala admin', 'manager marketing', 'general manager', 'direktur'];
+            $penjualan_menu = ['admin', 'admin penjualan', 'kepala penjualan', 'kepala admin', 'manager accounting', 'manager marketing', 'general manager', 'direktur'];
             $penjualan_keuangan = ['admin', 'admin penjualan', 'kepala admin'];
             $penjualan_input = ['admin', 'admin penjualan', 'kepala admin'];
             $penjualan_view = ['admin', 'admin penjualan', 'kepala admin'];
             //Retur
             $retur_view = ['admin', 'admin penjualan', 'kepala admin'];
             //LImit
-            $limitkredit_view = ['admin', 'admin penjualan', 'kepala admin', 'manager marketing', 'general manager', 'direktur'];
+            $limitkredit_view = ['admin', 'admin penjualan', 'kepala admin', 'manager marketing', 'manager accounting', 'general manager', 'direktur'];
+            $limitkredit_hapus = ['admin', 'admin penjualan', 'kepala admin', 'kepala penjualan'];
+            $limitkredit_analisa = ['admin', 'admin penjualan', 'kepala admin', 'kepala penjualan'];
             $penyesuaian_limit = ['admin', 'direktur'];
             //Laporan
-            $laporan_penjualan = ['admin', 'admin penjualan', 'kepala penjualan', 'kepala admin', 'manager marketing', 'manager accounting', 'general manager', 'direktur'];
+            $laporan_penjualan = ['admin', 'admin penjualan', 'kepala penjualan', 'kepala admin', 'manager accounting', 'manager marketing', 'manager accounting', 'general manager', 'direktur'];
             $harga_net = ['admin', 'manager accounting', 'manager marketing', 'general manager', 'direktur'];
             //Keuangan
             $keuangan = ['admin', 'admin penjualan', 'kepala admin'];
@@ -118,11 +122,11 @@ class GlobalProvider extends ServiceProvider
 
 
             //Utilities
-            $utilities = ['admin', 'admin penjualan', 'kepala penjualan', 'manager marketing', 'manager accounting', 'general manager', 'direktur'];
-            $kirimlpc = ['admin', 'admin penjualan', 'kepala penjualan', 'manager accounting', 'manager marketing', 'general manager', 'direktur'];
-            $kirimlpc_tambah = ['admin', 'admin penjualan', 'kepala penjualan', 'manager accounting'];
-            $kirimlpc_edit = ['admin', 'admin penjualan', 'kepala penjualan', 'manager accounting'];
-            $kirimlpc_hapus = ['admin', 'admin penjualan', 'kepala penjualan', 'manager accounting'];
+
+            $kirimlpc = ['admin', 'admin penjualan', 'kepala penjualan', 'kepala admin', 'manager accounting', 'manager marketing', 'general manager', 'direktur'];
+            $kirimlpc_tambah = ['admin', 'kepala penjualan', 'kepala admin', 'manager accounting'];
+            $kirimlpc_edit = ['admin', 'kepala penjualan', 'kepala admin', 'manager accounting'];
+            $kirimlpc_hapus = ['admin', 'kepala penjualan', 'kepala admin', 'manager accounting'];
             $kirimlpc_approve = ['admin', 'manager accounting'];
             $shareddata = [
                 'level' => $level,
@@ -131,6 +135,8 @@ class GlobalProvider extends ServiceProvider
                 'dashboardadmin' => $dashboardadmin,
                 'dashboardkepalapenjualan' => $dashboardkepalapenjualan,
                 'dashboardkepalaadmin' => $dashboardkepalaadmin,
+                'dashboardadminpenjualan' => $dashboardadminpenjualan,
+                'dashboardaccounting' => $dashboardaccounting,
                 //Data Master
                 'datamaster_view' => $datamaster,
                 //Pelanggan
@@ -175,6 +181,8 @@ class GlobalProvider extends ServiceProvider
                 'retur_view' => $retur_view,
                 //Limit Kredit
                 'limitkredit_view' => $limitkredit_view,
+                'limitkredit_hapus' => $limitkredit_hapus,
+                'limitkredit_analisa' => $limitkredit_analisa,
                 'penyesuaian_limit' => $penyesuaian_limit,
                 //Laporan
                 'laporan_penjualan' => $laporan_penjualan,
@@ -189,7 +197,7 @@ class GlobalProvider extends ServiceProvider
                 'transfer_view' => $transfer_view,
                 'transfer_approved' => $transfer_approved,
                 //Utilities
-                'utilities' => $utilities,
+
                 'kirimlpc' => $kirimlpc,
                 'kirimlpc_tambah' => $kirimlpc_tambah,
                 'kirimlpc_edit' => $kirimlpc_edit,

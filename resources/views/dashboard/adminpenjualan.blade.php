@@ -30,6 +30,69 @@
                 </div>
             </div>
         </section>
+        <section>
+            <div class="row">
+                <div class="col-lg-4 col-md-12 col-sm-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">Rekap Penjualan</div>
+                        </div>
+                        <div class="card-content">
+                            <div class="card-body">
+                                <table class="table">
+                                    <tr>
+                                        <td>Total Bruto</td>
+                                        <td></td>
+                                        <td class="text-right">{{ rupiah($rekappenjualan->totalbruto) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Total Retur</td>
+                                        <td></td>
+                                        <td class="text-right">{{ rupiah($rekappenjualan->totalretur) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Penyesuaian</td>
+                                        <td></td>
+                                        <td class="text-right">{{ rupiah($rekappenjualan->totalpenyharga) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Potongan</td>
+                                        <td></td>
+                                        <td class="text-right">{{ rupiah($rekappenjualan->totalpotongan) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Potongan Istimewa</td>
+                                        <td></td>
+                                        <td class="text-right">{{ rupiah($rekappenjualan->totalpotistimewa) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Netto</td>
+                                        <td></td>
+                                        @php
+                                        $totalnetto = $rekappenjualan->totalbruto - $rekappenjualan->totalretur - $rekappenjualan->totalpenyharga - $rekappenjualan->totalpotongan - $rekappenjualan->totalpotistimewa;
+                                        @endphp
+                                        <td class="text-right">{{ rupiah($totalnetto) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Pending</td>
+                                        <td></td>
+                                        @php
+                                        $totalnettopending = $rekappenjualan->totalbrutopending - $rekappenjualan->totalreturpending - $rekappenjualan->totalpenyhargapending - $rekappenjualan->totalpotonganpending - $rekappenjualan->totalpotistimewapending;
+                                        @endphp
+                                        <td class="text-right text-warning">{{ rupiah($totalnettopending) }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Reguler</td>
+                                        <td></td>
+                                        <td class="text-right">{{ rupiah($totalnetto - $totalnettopending) }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
 </div>
 @endsection

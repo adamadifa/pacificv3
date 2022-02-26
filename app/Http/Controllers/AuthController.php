@@ -18,7 +18,12 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             //dd(Auth::user()->kode_cabang);
-            if (Auth::user()->level == "admin" || Auth::user()->level == "manager marketing" || Auth::user()->level == "general manager" || Auth::user()->level == "direktur") {
+            if (
+                Auth::user()->level == "admin"
+                || Auth::user()->level == "manager marketing"
+                || Auth::user()->level == "general manager"
+                || Auth::user()->level == "direktur"
+            ) {
                 return redirect()->intended('/dashboardadmin');
             } else if (Auth::user()->level == "admin penjualan") {
                 return redirect()->intended('/dashboardadminpenjualan');
@@ -26,6 +31,8 @@ class AuthController extends Controller
                 return redirect()->intended('/dashboardkepalapenjualan');
             } else if (Auth::user()->level == "kepala admin") {
                 return redirect()->intended('/dashboardkepalaadmin');
+            } else if (Auth::user()->level == "manager accounting") {
+                return redirect()->intended('/dashboardaccounting');
             }
         } else {
             echo "Username Atau Password Salah";

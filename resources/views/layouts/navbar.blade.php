@@ -23,6 +23,12 @@
             @if (in_array($level,$dashboardkepalaadmin))
             <li class="{{ request()->is(['dashboardkepalaadmin']) ? 'active' : '' }} nav-item"><a href="/dashboardkepalaadmin"><i class="feather icon-home"></i><span class="menu-title" data-i18n="Dashboard">Dashboard</span></a></li>
             @endif
+            @if (in_array($level,$dashboardadminpenjualan))
+            <li class="{{ request()->is(['dashboardadminpenjualan']) ? 'active' : '' }} nav-item"><a href="/dashboardadminpenjualan"><i class="feather icon-home"></i><span class="menu-title" data-i18n="Dashboard">Dashboard</span></a></li>
+            @endif
+            @if (in_array($level,$dashboardaccounting))
+            <li class="{{ request()->is(['dashboardaccounting']) ? 'active' : '' }} nav-item"><a href="/dashboardaccounting"><i class="feather icon-home"></i><span class="menu-title" data-i18n="Dashboard">Dashboard</span></a></li>
+            @endif
             @if (in_array($level,$datamaster_view))
             <li class=" nav-item">
                 <a href="#"><i class="feather icon-grid"></i><span class="menu-title">Data Master</span></a>
@@ -97,7 +103,7 @@
                 </ul>
             </li>
             @endif
-            @if (in_array($level,$utilities))
+
             <li class=" nav-item">
                 <a href="#"><i class="feather icon-settings"></i><span class="menu-title">Utilities</span></a>
                 <ul class="menu-content">
@@ -106,7 +112,7 @@
                     @endif
                 </ul>
             </li>
-            @endif
+
         </ul>
     </div>
 </div>

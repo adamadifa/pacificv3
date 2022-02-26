@@ -363,7 +363,7 @@ $total += $d->subtotal;
                     if (willDelete) {
                         $.ajax({
                             type: 'POST'
-                            , url: '/penjualan/deletebarangtemp'
+                            , url: '/penjualan/deletebarang'
                             , data: {
                                 _token: "{{ csrf_token() }}"
                                 , kode_barang: kode_barang
@@ -376,7 +376,7 @@ $total += $d->subtotal;
                                     , 'Data Berhasil Dihapus'
                                     , 'success'
                                 )
-                                loadbarangtemp();
+                                loadbarang();
                                 hitungdiskon2();
                             }
                         });

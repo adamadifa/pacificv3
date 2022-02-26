@@ -241,6 +241,7 @@
                                         @if ($d->cek_ajuan != 1)
 
                                         {{-- <a class="ml-1" href="#"><i class=" feather icon-edit success"></i></a> --}}
+                                        @if(in_array($level,$limitkredit_hapus))
                                         @if (empty($d->kacab))
                                         <form method="POST" name="deleteform" class="deleteform" action="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/{{ Crypt::encrypt($d->kode_pelanggan) }}/delete">
                                             @csrf
@@ -250,8 +251,11 @@
                                             </a>
                                         </form>
                                         @endif
+                                        @endif
+                                        @if(in_array($level,$limitkredit_analisa))
                                         @if($d->status==0)
                                         <a class="ml-1 uraiananalisa" no_pengajuan="{{ $d->no_pengajuan }}" href="#"><i class=" feather icon-message-circle primary"></i></a>
+                                        @endif
                                         @endif
                                         <!-- Kepala Cabang -->
                                         @if($level == "kepala penjualan" && empty($d->kacab) && $d->status==0

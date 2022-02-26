@@ -15,6 +15,7 @@ use App\Http\Controllers\JenissimpananController;
 use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\LimitkreditController;
 use App\Http\Controllers\LpcController;
+use App\Http\Controllers\MutasigudangcabangController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PenjualanController;
@@ -59,15 +60,17 @@ Route::post('/salesman/getsalescab', [SalesmanController::class, 'getsalescab'])
 Route::post('/pelanggan/getpelanggansalesman', [PelangganController::class, 'getpelanggansalesman']);
 //Kendaraan
 Route::post('/kendaraan/getkendaraancab', [KendaraanController::class, 'getkendaraancab']);
+//LoadStokCabang
+Route::post('/getsaldogudangcabang', [MutasigudangcabangController::class, 'getsaldogudangcabang']);
+Route::post('/getsaldogudangcabangbs', [MutasigudangcabangController::class, 'getsaldogudangcabangbs']);
 
-//Administrator | Manager Marketing | General Manager | Direktur
-Route::middleware(['auth', 'ceklevel:admin,manager marketing,general manager,direktur'])->group(function () {
+//Administrator | Manager Accounting | Manager Marketing | General Manager | Direktur
+Route::middleware(['auth', 'ceklevel:admin,manager accounting,manager marketing,general manager,direktur'])->group(function () {
     Route::get('/dashboardadmin', [DashboardController::class, 'dashboardadmin']);
 
     //Dashboard
     Route::post('/rekapcashin', [PenjualanController::class, 'rekapcashin']);
-    Route::post('/aupdashboardall', [PenjualanController::class, 'aupdashboardall']);
-    Route::post('/aupdashboardcabang', [PenjualanController::class, 'aupdashboardcabang']);
+
     Route::post('/dpppdashboard', [PenjualanController::class, 'dpppdashboard']);
     Route::post('/rekapkendaraandashboard', [KendaraanController::class, 'rekapkendaraandashboard']);
     Route::get('/rekappersediaandashboard', [GudangController::class, 'rekappersediaandashboard']);
@@ -113,8 +116,12 @@ Route::middleware(['auth', 'ceklevel:kepala admin'])->group(function () {
     Route::get('/dashboardkepalaadmin', [DashboardController::class, 'dashboardkepalaadmin']);
 });
 
-//Admin Penjualan | Kepala Penjualan | Kepala Cabang | Manager Marketing | General manager | Direktur
-Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,kepala admin,manager marketing,general manager,direktur'])->group(function () {
+Route::middleware(['auth', 'ceklevel:manager accounting'])->group(function () {
+    Route::get('/dashboardaccounting', [DashboardController::class, 'dashboardaccounting']);
+});
+
+//Admin Penjualan | Kepala Penjualan | Kepala Cabang | Manager Accounting | Manager Marketing | General manager | Direktur
+Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,kepala admin,manager accounting,manager marketing,general manager,direktur'])->group(function () {
 
     //Limit Kredit
     Route::get('/limitkredit', [LimitkreditController::class, 'index']);
@@ -175,6 +182,12 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,kepa
     //LPC
     Route::get('/lpc', [LpcController::class, 'index']);
     Route::post('/lpc/show', [LpcController::class, 'show']);
+
+    //Dashboard
+    Route::post('/dpppdashboard', [PenjualanController::class, 'dpppdashboard']);
+    Route::post('/rekapkendaraandashboard', [KendaraanController::class, 'rekapkendaraandashboard']);
+    Route::post('/aupdashboardall', [PenjualanController::class, 'aupdashboardall']);
+    Route::post('/aupdashboardcabang', [PenjualanController::class, 'aupdashboardcabang']);
 });
 
 
@@ -185,8 +198,8 @@ Route::middleware(['auth', 'ceklevel:admin,direktur'])->group(function () {
 });
 
 
-//Administrator | Admin Penjualan | Kepala Penjualan | Direktur
-Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,kepala admin,manager marketing,direktur'])->group(function () {
+//Administrator | Admin Penjualan | Kepala Penjualan | Direktur | Manager Accounting
+Route::middleware(['auth', 'ceklevel:admin,admin penjualan,manager accounting,kepala penjualan,kepala admin,manager marketing,direktur'])->group(function () {
 
     //Salesman
     Route::get('/salesman', [SalesmanController::class, 'index']);
@@ -242,6 +255,7 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,kepa
     Route::get('/penjualan/create', [PenjualanController::class, 'create']);
     Route::post('/penjualan/storebarangtemp', [PenjualanController::class, 'storebarangtemp']);
     Route::post('/penjualan/deletebarangtemp', [PenjualanController::class, 'deletebarangtemp']);
+    Route::post('/penjualan/deletebarang', [PenjualanController::class, 'deletebarang']);
     Route::get('/penjualan/showbarangtemp', [PenjualanController::class, 'showbarangtemp']);
     Route::post('/penjualan/updatedetailtemp', [PenjualanController::class, 'updatedetailtemp']);
     Route::get('/loadtotalpenjualantemp', [PenjualanController::class, 'loadtotalpenjualantemp']);
