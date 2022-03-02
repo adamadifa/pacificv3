@@ -315,6 +315,13 @@ class KendaraanController extends Controller
             ->where('dpb.no_kendaraan', $request->no_polisi)
             ->groupByRaw('kode_produk,dpb.no_kendaraan,isipcsdus,jmlpenjualan,jmlgantibarang,jmlplhk,jmlpromosi,jmlttr')
             ->get();
+        if (isset($_POST['export'])) {
+            $time = date("H:i:s");
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Rekap Kendaraan Periode $dari-$sampai-$time.xls");
+        }
 
         return view('kendaraan.laporan.cetak_rekapkendaraan', compact('historikendaraan', 'rekapkendaraan', 'dari', 'sampai', 'cabang', 'kendaraan'));
     }

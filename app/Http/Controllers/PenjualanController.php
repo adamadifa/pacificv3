@@ -2634,7 +2634,13 @@ class PenjualanController extends Controller
         $querypotongan->whereBetween('tgltransaksi', [$dari, $sampai]);
         $potongan = $querypotongan->first();
 
-
+        if (isset($_POST['export'])) {
+            $time = date("H:i:s");
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Tunai Kredit Periode $dari-$sampai-$time.xls");
+        }
         return view('penjualan.laporan.cetak_tunaikredit', compact('tunaikredit', 'salesman', 'cabang', 'dari', 'sampai', 'retur', 'potongan'));
     }
 
@@ -2808,6 +2814,13 @@ class PenjualanController extends Controller
             $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) > pelanggan.jatuhtempo");
         }
         $kartupiutang = $query->get();
+        if (isset($_POST['export'])) {
+            $time = date("H:i:s");
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Kartu Piutang Periode $dari-$sampai-$time.xls");
+        }
         return view('penjualan.laporan.cetak_kartupiutang', compact('kartupiutang', 'salesman', 'cabang', 'dari', 'sampai', 'pelanggan'));
     }
 
@@ -2959,6 +2972,13 @@ class PenjualanController extends Controller
         $query->whereRaw('(ifnull(penjualan.total,0) - (ifnull(retur.total,0))) != IFNULL(jmlbayar,0)');
         $aup = $query->get();
         //dd($aup);
+        if (isset($_POST['export'])) {
+            $time = date("H:i:s");
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=AUP Per Tanggal $tgl_aup-$time.xls");
+        }
         return view('penjualan.laporan.cetak_aup', compact('aup', 'salesman', 'cabang', 'tgl_aup', 'pelanggan', 'cbg', 'sales', 'idpel', 'exclude'));
     }
 
@@ -3080,12 +3100,14 @@ class PenjualanController extends Controller
         } else {
             $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
         }
+
+
         return view('penjualan.laporan.frm.lap_lebihsatufaktur', compact('cabang'));
     }
 
     public function cetaklaporanlebihsatufaktur(Request $request)
     {
-        $tgl_aup = $request->tgl_aup;
+        $tanggal = $request->tanggal;
         $cabang = DB::table('cabang')->where('kode_cabang', $request->kode_cabang)->first();
         $salesman = DB::table('karyawan')->where('id_karyawan', $request->id_karyawan)->first();
         $query = Penjualan::query();
@@ -3097,7 +3119,7 @@ class PenjualanController extends Controller
             DB::raw("(
                 SELECT no_fak_penj,sum( historibayar.bayar ) AS jmlbayar
 				FROM historibayar
-				WHERE tglbayar <= '$tgl_aup'
+				WHERE tglbayar <= '$tanggal'
 				GROUP BY no_fak_penj
             ) hblalu"),
             function ($join) {
@@ -3110,7 +3132,7 @@ class PenjualanController extends Controller
 				SUM(total) AS total
 				FROM
 					retur
-				WHERE tglretur <= '$tgl_aup'
+				WHERE tglretur <= '$tanggal'
 				GROUP BY
 					retur.no_fak_penj
             ) retur"),
@@ -3119,7 +3141,7 @@ class PenjualanController extends Controller
             }
         );
         $query->where('penjualan.jenistransaksi', '!=', 'tunai');
-        $query->where('tgltransaksi', '<=', $tgl_aup);
+        $query->where('tgltransaksi', '<=', $tanggal);
         if (!empty($request->kode_cabang)) {
             $query->where('karyawan.kode_cabang', $request->kode_cabang);
         }
@@ -3131,7 +3153,14 @@ class PenjualanController extends Controller
         $query->whereRaw('(ifnull(penjualan.total,0) - (ifnull(retur.total,0))) != IFNULL(jmlbayar,0)');
         $query->orderBy('penjualan.kode_pelanggan', 'asc');
         $lebihsatufaktur = $query->get();
-        return view('penjualan.laporan.cetak_lebihsatufaktur', compact('lebihsatufaktur', 'salesman', 'cabang', 'tgl_aup'));
+        if (isset($_POST['export'])) {
+            $time = date("H:i:s");
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Lebih Satu Faktur Per Tanggal $tanggal-$time.xls");
+        }
+        return view('penjualan.laporan.cetak_lebihsatufaktur', compact('lebihsatufaktur', 'salesman', 'cabang', 'tanggal'));
     }
 
     public function laporandppp()
@@ -3396,6 +3425,13 @@ class PenjualanController extends Controller
             $query->where('karyawan.kode_cabang', $request->kode_cabang);
 
             $dppp = $query->get();
+            if (isset($_POST['export'])) {
+                $time = date("H:i:s");
+                // Fungsi header dengan mengirimkan raw data excel
+                header("Content-type: application/vnd-ms-excel");
+                // Mendefinisikan nama file ekspor "hasil-export.xls"
+                header("Content-Disposition: attachment; filename=DPPP Periode $bulan$tahun-$time.xls");
+            }
             return view('penjualan.laporan.cetak_dppp_salesman', compact('dppp', 'cabang', 'namabulan', 'tahun', 'produk'));
         } else {
             $query = Cabang::query();
@@ -3627,6 +3663,13 @@ class PenjualanController extends Controller
             }
 
             $dppp = $query->get();
+            if (isset($_POST['export'])) {
+                $time = date("H:i:s");
+                // Fungsi header dengan mengirimkan raw data excel
+                header("Content-type: application/vnd-ms-excel");
+                // Mendefinisikan nama file ekspor "hasil-export.xls"
+                header("Content-Disposition: attachment; filename=DPPP Periode $bulan$tahun-$time.xls");
+            }
             return view('penjualan.laporan.cetak_dppp', compact('dppp', 'namabulan', 'tahun', 'produk'));
         }
     }
@@ -3685,6 +3728,13 @@ class PenjualanController extends Controller
         $query->groupByRaw('tgltransaksi,penjualan.kode_pelanggan,nama_pelanggan,pasar,alamat_pelanggan,penjualan.id_karyawan,nama_karyawan');
         $query->orderBy('tgltransaksi');
         $dpp = $query->get();
+        if (isset($_POST['export'])) {
+            $time = date("H:i:s");
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=DPP Periode $dari-$sampai-$time.xls");
+        }
         return view('penjualan.laporan.cetak_dpp', compact('dpp', 'cabang', 'dari', 'sampai', 'salesman', 'pelanggan'));
     }
 
@@ -3740,6 +3790,13 @@ class PenjualanController extends Controller
         $query->groupByRaw('penjualan.kode_pelanggan,nama_pelanggan,pasar');
         $query->orderBy('nama_pelanggan');
         $rekapomsetpelanggan = $query->get();
+        if (isset($_POST['export'])) {
+            $time = date("H:i:s");
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Rekap Omset Pelanggan Periode $dari-$sampai-$time.xls");
+        }
         return view('penjualan.laporan.cetak_rekapomsetpelanggan', compact('rekapomsetpelanggan', 'cabang', 'dari', 'sampai', 'periode'));
     }
 
@@ -3796,6 +3853,13 @@ class PenjualanController extends Controller
 
         $query->groupByRaw('penjualan.kode_pelanggan,nama_pelanggan,nama_karyawan');
         $rekappelanggan = $query->get();
+        if (isset($_POST['export'])) {
+            $time = date("H:i:s");
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Rekap Pelanggan Periode $dari-$sampai-$time.xls");
+        }
         return view('penjualan.laporan.cetak_rekappelanggan', compact('rekappelanggan', 'cabang', 'dari', 'sampai', 'salesman', 'pelanggan'));
     }
 
@@ -4026,6 +4090,13 @@ class PenjualanController extends Controller
             ->whereBetween('tglretur', [$dari, $sampai])
             ->first();
         $produk = Barang::orderby('kode_produk')->get();
+        if (isset($_POST['export'])) {
+            $time = date("H:i:s");
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Harga Net Periode $dari-$sampai-$time.xls");
+        }
         return view('penjualan.laporan.cetak_harganet', compact('harganet', 'retur', 'produk', 'dari', 'sampai'));
     }
 
@@ -4096,6 +4167,13 @@ class PenjualanController extends Controller
                 $queryretur->where('penjualan.id_karyawan', $request->id_karyawan);
             }
             $retur = $queryretur->first();
+            if (isset($_POST['export'])) {
+                $time = date("H:i:s");
+                // Fungsi header dengan mengirimkan raw data excel
+                header("Content-type: application/vnd-ms-excel");
+                // Mendefinisikan nama file ekspor "hasil-export.xls"
+                header("Content-Disposition: attachment; filename=Rekap Penjualan Produk Periode $dari-$sampai-$time.xls");
+            }
             return view('penjualan.laporan.cetak_rekappenjualanproduk', compact('rekap', 'cabang', 'salesman', 'dari', 'sampai', 'penjualan', 'retur'));
         } else if ($jenislaporan == 3) {
             $query = Detailpenjualan::query();
@@ -4143,6 +4221,13 @@ class PenjualanController extends Controller
             }
             $query->groupByRaw("kode_produk,nama_barang,isipcsdus");
             $rekap = $query->get();
+            if (isset($_POST['export'])) {
+                $time = date("H:i:s");
+                // Fungsi header dengan mengirimkan raw data excel
+                header("Content-type: application/vnd-ms-excel");
+                // Mendefinisikan nama file ekspor "hasil-export.xls"
+                header("Content-Disposition: attachment; filename=Rekap Penjualan Qty Periode $dari-$sampai-$time.xls");
+            }
             return view('penjualan.laporan.cetak_rekappenjualanqty', compact('rekap', 'dari', 'sampai'));
             //dd($rekap);
         } else if ($jenislaporan == 2) {
@@ -4328,6 +4413,13 @@ class PenjualanController extends Controller
             $query->orderBy('karyawan.id_karyawan');
 
             $rekap = $query->get();
+            if (isset($_POST['export'])) {
+                $time = date("H:i:s");
+                // Fungsi header dengan mengirimkan raw data excel
+                header("Content-type: application/vnd-ms-excel");
+                // Mendefinisikan nama file ekspor "hasil-export.xls"
+                header("Content-Disposition: attachment; filename=Rekap Penjualan Periode $dari-$sampai-$time.xls");
+            }
             return view('penjualan.laporan.cetak_rekappenjualan', compact('rekap', 'dari', 'sampai', 'cabang', 'salesman'));
         } else if ($jenislaporan == 4) {
             $query = Detailretur::query();
@@ -4387,6 +4479,13 @@ class PenjualanController extends Controller
             $query->orderBy('nama_karyawan');
             $query->get();
             $rekap = $query->get();
+            if (isset($_POST['export'])) {
+                $time = date("H:i:s");
+                // Fungsi header dengan mengirimkan raw data excel
+                header("Content-type: application/vnd-ms-excel");
+                // Mendefinisikan nama file ekspor "hasil-export.xls"
+                header("Content-Disposition: attachment; filename=Rekap Retur Periode $dari-$sampai-$time.xls");
+            }
             return view('penjualan.laporan.cetak_rekapretur', compact('rekap', 'dari', 'sampai', 'cabang', 'salesman'));
         } else if ($jenislaporan == 5) {
             $tgl_aup = $request->tgl_aup;
@@ -4481,6 +4580,13 @@ class PenjualanController extends Controller
             $query->orderBy('cabangbarunew', 'asc');
             $query->orderBy('salesbarunew', 'asc');
             $rekap = $query->get();
+            if (isset($_POST['export'])) {
+                $time = date("H:i:s");
+                // Fungsi header dengan mengirimkan raw data excel
+                header("Content-type: application/vnd-ms-excel");
+                // Mendefinisikan nama file ekspor "hasil-export.xls"
+                header("Content-Disposition: attachment; filename=Rekap AUP Periode $dari-$sampai-$time.xls");
+            }
             return view('penjualan.laporan.cetak_rekapaup', compact('rekap', 'tgl_aup',  'cabang'));
         }
     }

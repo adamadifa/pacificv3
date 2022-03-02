@@ -16,6 +16,7 @@ use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\LimitkreditController;
 use App\Http\Controllers\LpcController;
 use App\Http\Controllers\MutasigudangcabangController;
+use App\Http\Controllers\OmancabangController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PenjualanController;
@@ -63,6 +64,14 @@ Route::post('/kendaraan/getkendaraancab', [KendaraanController::class, 'getkenda
 //LoadStokCabang
 Route::post('/getsaldogudangcabang', [MutasigudangcabangController::class, 'getsaldogudangcabang']);
 Route::post('/getsaldogudangcabangbs', [MutasigudangcabangController::class, 'getsaldogudangcabangbs']);
+
+Route::middleware(['auth', 'ceklevel:admin,manager marketing,manager accounting,direktur'])->group(function () {
+    Route::get('/omancabang', [OmancabangController::class, 'index']);
+    Route::get('/omancabang/create', [OmancabangController::class, 'create']);
+    Route::post('/cekomancabang', [OmancabangController::class, 'cekomancabang']);
+    Route::post('/omancabang/store', [OmancabangController::class, 'store']);
+});
+
 
 //Administrator | Manager Accounting | Manager Marketing | General Manager | Direktur
 Route::middleware(['auth', 'ceklevel:admin,manager accounting,manager marketing,general manager,direktur'])->group(function () {

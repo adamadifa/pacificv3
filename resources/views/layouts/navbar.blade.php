@@ -59,6 +59,15 @@
             <li class=" nav-item">
                 <a href="#"><i class="feather icon-radio"></i><span class="menu-title">Marketing</span></a>
                 <ul class="menu-content">
+                    @if (in_array($level,$oman))
+                    <li><a href="#"><i class="feather icon-circle"></i><span class="menu-item" data-i18n="Second Level">OMAN</span></a>
+                        <ul class="menu-content">
+                            @if (in_array($level,$omancabang))
+                            <li class="{{ request()->is(['omancabang','omancabang/*']) ? 'active' : '' }}"><a href="/omancabang"><i class="feather icon-box"></i><span class="menu-item">Oman Cabang</span></a></li>
+                            @endif
+                        </ul>
+                    </li>
+                    @endif
                     @if (in_array($level,$penjualan_menu))
                     <li><a href="#"><i class="feather icon-circle"></i><span class="menu-item" data-i18n="Second Level">Penjualan</span></a>
                         <ul class="menu-content">

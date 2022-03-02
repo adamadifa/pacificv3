@@ -484,6 +484,13 @@ class PembayaranController extends Controller
             }
             $query->groupByRaw('karyawan.kode_cabang,nama_cabang');
             $kasbesar = $query->get();
+            if (isset($_POST['export'])) {
+                $time = date("H:i:s");
+                // Fungsi header dengan mengirimkan raw data excel
+                header("Content-type: application/vnd-ms-excel");
+                // Mendefinisikan nama file ekspor "hasil-export.xls"
+                header("Content-Disposition: attachment; filename=Rekap Kas Besar All Cabang $dari-$sampai-$time.xls");
+            }
             return view('pembayaran.laporan.cetak_kasbesar_rekapallcabang', compact('kasbesar', 'cabang', 'dari', 'sampai', 'salesman', 'pelanggan'));
         } else {
             if ($jenislaporan == "rekap") {
@@ -501,6 +508,13 @@ class PembayaranController extends Controller
                 }
                 $query->groupByRaw('historibayar.id_karyawan,nama_karyawan');
                 $kasbesar = $query->get();
+                if (isset($_POST['export'])) {
+                    $time = date("H:i:s");
+                    // Fungsi header dengan mengirimkan raw data excel
+                    header("Content-type: application/vnd-ms-excel");
+                    // Mendefinisikan nama file ekspor "hasil-export.xls"
+                    header("Content-Disposition: attachment; filename=Laporan Kas Besar Salesman Periode $dari-$sampai-$time.xls");
+                }
                 return view('pembayaran.laporan.cetak_kasbesar_rekapallsalesman', compact('kasbesar', 'cabang', 'dari', 'sampai', 'salesman', 'pelanggan'));
             } else {
                 $query = Pembayaran::query();
@@ -564,7 +578,13 @@ class PembayaranController extends Controller
                 $kasbesar = $query->get();
 
                 $voucher = $query->where('status_bayar', 'voucher')->get();
-
+                if (isset($_POST['export'])) {
+                    $time = date("H:i:s");
+                    // Fungsi header dengan mengirimkan raw data excel
+                    header("Content-type: application/vnd-ms-excel");
+                    // Mendefinisikan nama file ekspor "hasil-export.xls"
+                    header("Content-Disposition: attachment; filename=Laporan Kas Besar Periode $dari-$sampai-$time.xls");
+                }
                 return view('pembayaran.laporan.cetak_kasbesar', compact('kasbesar', 'cabang', 'dari', 'sampai', 'salesman', 'pelanggan', 'voucher'));
             }
         }

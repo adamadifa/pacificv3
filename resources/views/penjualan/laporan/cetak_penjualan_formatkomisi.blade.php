@@ -327,7 +327,6 @@
             $color = "#f70a4b61";
             }
             @endphp
-            <tr>
             <tr style="font-size: 12px; background-color: {{ $color}}">
                 <td align="center">{{ $loop->iteration}}</td>
                 <td align="center">{{ $d->no_fak_penj}}</td>

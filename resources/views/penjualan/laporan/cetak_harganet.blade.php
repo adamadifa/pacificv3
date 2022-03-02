@@ -99,7 +99,7 @@
     $totalqty = ($harganet->qty_AB / $isipcs_ab) + ($harganet->qty_AR / $isipcs_ar) + ($harganet->qty_AS / $isipcs_as) + ($harganet->qty_BB / $isipcs_bb) + ($harganet->qty_BBP / $isipcs_bbp)
     + ($harganet->qty_CG / $isipcs_cg) + ($harganet->qty_CGG / $isipcs_cgg) + ($harganet->qty_CG5 / $isipcs_cg5) + ($harganet->qty_DEP / $isipcs_dep) + ($harganet->qty_DS / $isipcs_ds) + ($harganet->qty_SP / $isipcs_sp)
     + ($harganet->qty_SPP / $isipcs_sp) + ($harganet->qty_SC / $isipcs_sp) + ($harganet->qty_SP8 / $isipcs_sp);
-    $ratiopeny = $penyharga / $totalqty;
+    $ratiopeny = ($totalqty != 0) ? $penyharga / $totalqty : 0;
     //dd($harganet->qty_CG)
     @endphp
     <table class="datatable3">
@@ -163,19 +163,19 @@
         </tr>
         <tr style="font-size:14px;">
             <?php
-            $peny_AB = ($harganet->qty_AB / $isipcs_ab) / $ratiopeny;
-            $peny_AR = ($harganet->qty_AR / $isipcs_ar) / $ratiopeny;
-            $peny_AS = ($harganet->qty_AS / $isipcs_as) / $ratiopeny;
-            $peny_BB = ($harganet->qty_BB / $isipcs_bb) / $ratiopeny;
-            $peny_BBP = ($harganet->qty_BBP / $isipcs_bbp) / $ratiopeny;
-            $peny_CG = ($harganet->qty_CG / $isipcs_cg) / $ratiopeny;
-            $peny_CGG = ($harganet->qty_CGG / $isipcs_cgg) / $ratiopeny;
-            $peny_CG5 = ($harganet->qty_CG5 / $isipcs_cg5) / $ratiopeny;
-            $peny_DEP = ($harganet->qty_DEP / $isipcs_dep) / $ratiopeny;
-            $peny_DS = ($harganet->qty_DS / $isipcs_ds) / $ratiopeny;
-            $peny_SP = ($harganet->qty_SP / $isipcs_sp) / $ratiopeny;
-            $peny_SC = ($harganet->qty_SC / $isipcs_sc) / $ratiopeny;
-            $peny_SP8 = ($harganet->qty_SP8 / $isipcs_sp8) / $ratiopeny;
+            $peny_AB = ($ratiopeny != 0 ) ? ($harganet->qty_AB / $isipcs_ab) / $ratiopeny : 0;
+            $peny_AR = ($ratiopeny != 0 ) ? ($harganet->qty_AR / $isipcs_ar) / $ratiopeny : 0;
+            $peny_AS = ($ratiopeny != 0 ) ? ($harganet->qty_AS / $isipcs_as) / $ratiopeny : 0;
+            $peny_BB = ($ratiopeny != 0 ) ? ($harganet->qty_BB / $isipcs_bb) / $ratiopeny : 0;
+            $peny_BBP = ($ratiopeny != 0 ) ? ($harganet->qty_BBP / $isipcs_bbp) / $ratiopeny : 0;
+            $peny_CG = ($ratiopeny != 0 ) ? ($harganet->qty_CG / $isipcs_cg) / $ratiopeny : 0;
+            $peny_CGG = ($ratiopeny != 0 ) ? ($harganet->qty_CGG / $isipcs_cgg) / $ratiopeny : 0;
+            $peny_CG5 = ($ratiopeny != 0 ) ? ($harganet->qty_CG5 / $isipcs_cg5) / $ratiopeny : 0;
+            $peny_DEP = ($ratiopeny != 0 ) ? ($harganet->qty_DEP / $isipcs_dep) / $ratiopeny : 0;
+            $peny_DS = ($ratiopeny != 0 ) ? ($harganet->qty_DS / $isipcs_ds) / $ratiopeny : 0;
+            $peny_SP = ($ratiopeny != 0 ) ? ($harganet->qty_SP / $isipcs_sp) / $ratiopeny : 0;
+            $peny_SC = ($ratiopeny != 0 ) ? ($harganet->qty_SC / $isipcs_sc) / $ratiopeny : 0;
+            $peny_SP8 = ($ratiopeny != 0 ) ? ($harganet->qty_SP8 / $isipcs_sp8) / $ratiopeny : 0;
             ?>
             <td>PENYESUAIAN HARGA</td>
             <td align="right"><?php echo number_format($peny_AB, '2', ',', '.'); ?></td>

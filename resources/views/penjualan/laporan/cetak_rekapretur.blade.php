@@ -407,7 +407,7 @@
     <br>
     <?php
     $totalqtyretur  = $grandtytotalAB + $grandtytotalAR  + $grandtytotalASE  + $grandtytotalBB  + $grandtytotalCG + $grandtytotalCGG  + $grandtytotalDB + $grandtytotalDEP + $grandtytotalDK + $grandtytotalDS + $grandtytotalSP + $grandtytotalSPP + $grandtytotalSP8;
-    $average     = $grandtotalpenyesuaian / $totalqtyretur;
+    $average     = ($totalqtyretur !=0) ? $grandtotalpenyesuaian / $totalqtyretur : 0;
     $avgAB       = $grandtytotalAB * $average;
     $avgAR       = $grandtytotalAR * $average;
     $avgASE     = $grandtytotalASE * $average;

@@ -34,7 +34,7 @@
                             <div class="col-lg-4 col-sm-12">
                                 <x-inputtext label="Nama Salesman" field="nama" icon="feather icon-user" value="{{ Request('nama') }}" />
                             </div>
-                            @if (Auth::user()->cabang =="PCF")
+                            @if (Auth::user()->kode_cabang =="PCF")
 
                             <div class="col-lg-4 col-sm-12">
                                 <div class="form-group  ">
