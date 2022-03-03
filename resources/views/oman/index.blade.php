@@ -6,10 +6,10 @@
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Order Management Cabang</h2>
+                    <h2 class="content-header-title float-left mb-0">Order Management</h2>
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/omancabang">Order Management Cabang</a>
+                            <li class="breadcrumb-item"><a href="/oman">Order Management</a>
                             </li>
                         </ol>
                     </div>
@@ -24,41 +24,12 @@
         <div class="col-md-8 col-sm-8">
             <div class="card">
                 <div class="card-header">
-                    <a href="/omancabang/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
+                    <a href="/oman/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
                 </div>
                 <div class="card-body">
-                    <form action="/omancabang">
+                    <form action="/oman">
                         <div class="row">
-
-                            @if (Auth::user()->kode_cabang =="PCF")
-                            <div class="col-lg-3 col-sm-12">
-                                <div class="form-group  ">
-                                    <select name="kode_cabang" id="" class="form-control">
-                                        <option value="">Semua Cabang</option>
-                                        @foreach ($cabang as $c)
-                                        <option {{ (Request('kode_cabang')==$c->kode_cabang ? 'selected':'')}} value="{{ $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            @endif
-                            <div class="col-lg-3 col-sm-12">
-                                {{-- <label for="" class="form-label mb-1">Omset Bulan</label> --}}
-                                <div class="form-group">
-                                    <select class="form-control" id="bulan" name="bulan">
-                                        <option value="">Bulan</option>
-                                        <?php
-                                        $bulanini = date("m");
-                                        for ($i = 1; $i < count($bulan); $i++) {
-                                        ?>
-                                        <option <?php if(empty(Request('bulan'))){   if ($bulanini == $i) {echo "selected";} }else { if(Request('bulan')==$i){echo "selected";}} ?> value="<?php echo $i; ?>"><?php echo $bulan[$i]; ?></option>
-                                        <?php
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-sm-12">
+                            <div class="col-lg-9 col-sm-12">
                                 <div class="form-group">
                                     <select class="form-control" id="tahun" name="tahun">
                                         <?php
@@ -84,7 +55,7 @@
                                 <tr>
                                     <th class="text-center">No</th>
                                     <th>No. Order</th>
-                                    <th>Cabang</th>
+
                                     <th>Bulan</th>
                                     <th>Tahun</th>
                                     <th>Status</th>
@@ -92,11 +63,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($oman_cabang as $d)
+                                @foreach ($oman_marketing as $d)
                                 <tr>
-                                    <td class="text-center">{{ $loop->iteration + $oman_cabang->firstItem() - 1 }}</td>
+                                    <td class="text-center">{{ $loop->iteration }}</td>
                                     <td>{{ $d->no_order }}</td>
-                                    <td>{{ $d->kode_cabang }}</td>
+
                                     <td>{{ $bulan[$d->bulan] }}</td>
                                     <td>{{ $d->tahun }}</td>
                                     <td>
@@ -109,8 +80,8 @@
                                     <td class="text-center">
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             @if ($d->status !=1)
-                                            <a class="ml-1" href="/omancabang/{{\Crypt::encrypt($d->no_order)}}/edit"><i class="feather icon-edit success"></i></a>
-                                            <form method="POST" name="deleteform" class="deleteform" action="/omancabang/{{ Crypt::encrypt($d->no_order) }}/delete">
+                                            <a class="ml-1" href="/oman/{{\Crypt::encrypt($d->no_order)}}/edit"><i class="feather icon-edit success"></i></a>
+                                            <form method="POST" name="deleteform" class="deleteform" action="/oman/{{ Crypt::encrypt($d->no_order) }}/delete">
                                                 @csrf
                                                 @method('DELETE')
                                                 <a href="#" class="delete-confirm ml-1">
@@ -118,7 +89,7 @@
                                                 </a>
                                             </form>
                                             @endif
-                                            <a class="ml-1 detailomancabang" no_order="{{ $d->no_order }}" href="#"><i class=" feather icon-file-text info"></i></a>
+                                            <a class="ml-1 detailoman" no_order="{{ $d->no_order }}" href="#"><i class=" feather icon-file-text info"></i></a>
                                         </div>
                                     </td>
                                 </tr>
@@ -126,7 +97,7 @@
 
                             </tbody>
                         </table>
-                        {{ $oman_cabang->links('vendor.pagination.vuexy') }}
+
                     </div>
 
                     <!-- DataTable ends -->
@@ -135,7 +106,7 @@
         </div>
     </div>
 </div>
-<div class="modal fade text-left" id="mdlomancabang" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+<div class="modal fade text-left" id="mdloman" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -145,7 +116,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div id="loadomancabang"></div>
+                <div id="loadoman"></div>
             </div>
         </div>
     </div>
@@ -172,25 +143,25 @@
                 });
         });
 
-        function loadomancabang(no_order) {
+        function loadoman(no_order) {
             $.ajax({
                 type: 'POST'
-                , url: '/omancabang/show'
+                , url: '/oman/show'
                 , data: {
                     _token: "{{ csrf_token() }}"
                     , no_order: no_order
                 }
                 , cache: false
                 , success: function(respond) {
-                    $("#loadomancabang").html(respond);
+                    $("#loadoman").html(respond);
                 }
             });
         }
-        $('.detailomancabang').click(function(e) {
+        $('.detailoman').click(function(e) {
             var no_order = $(this).attr("no_order");
             e.preventDefault();
-            loadomancabang(no_order);
-            $('#mdlomancabang').modal({
+            loadoman(no_order);
+            $('#mdloman').modal({
                 backdrop: 'static'
                 , keyboard: false
             });

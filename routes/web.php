@@ -17,6 +17,7 @@ use App\Http\Controllers\LimitkreditController;
 use App\Http\Controllers\LpcController;
 use App\Http\Controllers\MutasigudangcabangController;
 use App\Http\Controllers\OmancabangController;
+use App\Http\Controllers\OmanController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PenjualanController;
@@ -64,12 +65,28 @@ Route::post('/kendaraan/getkendaraancab', [KendaraanController::class, 'getkenda
 //LoadStokCabang
 Route::post('/getsaldogudangcabang', [MutasigudangcabangController::class, 'getsaldogudangcabang']);
 Route::post('/getsaldogudangcabangbs', [MutasigudangcabangController::class, 'getsaldogudangcabangbs']);
-
-Route::middleware(['auth', 'ceklevel:admin,manager marketing,manager accounting,direktur'])->group(function () {
+//Oman Cabang
+Route::middleware(['auth', 'ceklevel:admin,kepala admin,kepala penjualan,manager marketing,manager accounting,direktur'])->group(function () {
     Route::get('/omancabang', [OmancabangController::class, 'index']);
     Route::get('/omancabang/create', [OmancabangController::class, 'create']);
     Route::post('/cekomancabang', [OmancabangController::class, 'cekomancabang']);
+    Route::post('/omancabang/show', [OmancabangController::class, 'show']);
     Route::post('/omancabang/store', [OmancabangController::class, 'store']);
+    Route::get('/omancabang/{no_order}/edit', [OmancabangController::class, 'edit']);
+    Route::post('/omancabang/{no_order}/update', [OmancabangController::class, 'update']);
+    Route::delete('/omancabang/{no_order}/delete', [OmancabangController::class, 'delete']);
+    Route::post('/getomancabang', [OmancabangController::class, 'getomancabang']);
+});
+//Oman Marketing
+Route::middleware(['auth', 'ceklevel:admin,manager marketing,manager accounting,direktur'])->group(function () {
+    Route::get('/oman', [OmanController::class, 'index']);
+    Route::get('/oman/create', [OmanController::class, 'create']);
+    Route::post('/cekoman', [OmanController::class, 'cekoman']);
+    Route::post('/oman/store', [OmanController::class, 'store']);
+    Route::get('/oman/{no_order}/edit', [OmanController::class, 'edit']);
+    Route::post('/oman/{no_order}/update', [OmanController::class, 'update']);
+    Route::delete('/oman/{no_order}/delete', [OmanController::class, 'delete']);
+    Route::post('/oman/show', [OmanController::class, 'show']);
 });
 
 

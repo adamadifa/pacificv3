@@ -95,6 +95,9 @@ class GlobalProvider extends ServiceProvider
             //-----------------------------OMAN-------------------------------------------------
             $oman = ['admin'];
             $omancabang = ['admin'];
+            $omanmarketing = ['admin'];
+            //----------------------------Permintaaan Pengiriman--------------------------------
+            $permintaanpengiriman = ['admin'];
             //-----------------------------Penjualan-------------------------------------------
             $penjualan_menu = ['admin', 'admin penjualan', 'kepala penjualan', 'kepala admin', 'manager accounting', 'manager marketing', 'general manager', 'direktur'];
             $penjualan_keuangan = ['admin', 'admin penjualan', 'kepala admin'];
@@ -178,6 +181,10 @@ class GlobalProvider extends ServiceProvider
                 //-----------OMAN------------------------
                 'oman' => $oman,
                 'omancabang' => $omancabang,
+                'omanmarketing' => $omanmarketing,
+
+                //------------Permintaan Pengiriman------
+                'permintaanpengiriman' => $permintaanpengiriman,
                 //------------Penjualan-------------------
                 'penjualan_menu' => $penjualan_menu,
                 'penjualan_keuangan' => $penjualan_keuangan,
