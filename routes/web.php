@@ -21,6 +21,7 @@ use App\Http\Controllers\OmanController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PenjualanController;
+use App\Http\Controllers\PermintaanpengirimanController;
 use App\Http\Controllers\ReturController;
 use App\Http\Controllers\SalesmanController;
 use App\Http\Controllers\SimpananController;
@@ -87,6 +88,11 @@ Route::middleware(['auth', 'ceklevel:admin,manager marketing,manager accounting,
     Route::post('/oman/{no_order}/update', [OmanController::class, 'update']);
     Route::delete('/oman/{no_order}/delete', [OmanController::class, 'delete']);
     Route::post('/oman/show', [OmanController::class, 'show']);
+});
+
+//Permintaan Pengiriman
+Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
+    Route::get('/permintaanpengiriman', [PermintaanpengirimanController::class, 'index']);
 });
 
 
