@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Barang;
 use App\Models\Cabang;
 use App\Models\Permintaanpengiriman;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class PermintaanpengirimanController extends Controller
 {
@@ -27,12 +31,136 @@ class PermintaanpengirimanController extends Controller
         $pp->appends($request->all());
 
         $cabang = Cabang::all();
-        return view('permintaanpengiriman.index', compact('pp', 'cabang'));
+        $produk = Barang::orderBy('kode_produk')->get();
+        return view('permintaanpengiriman.index', compact('pp', 'cabang', 'produk'));
     }
 
     public function cektemp()
     {
         $cektemp = DB::table('detail_permintaan_pengiriman_temp')->count();
-        echo $cektemp;
+        if (empty($cektemp)) {
+            echo 0;
+        } else {
+            echo $cektemp;
+        }
+    }
+
+    public function storetemp(Request $request)
+    {
+        $kode_produk = $request->kode_produk;
+        $jumlah = str_replace(".", "", $request->jumlah);
+        $cek = DB::table('detail_permintaan_pengiriman_temp')->where('kode_produk', $kode_produk)->count();
+        if ($cek > 0) {
+            echo 1;
+        } else {
+            DB::table('detail_permintaan_pengiriman_temp')->insert([
+                'kode_produk' => $kode_produk,
+                'jumlah' => $jumlah
+            ]);
+
+            echo 0;
+        }
+    }
+
+    public function showtemp()
+    {
+        $detailtemp = DB::table('detail_permintaan_pengiriman_temp')
+            ->select('detail_permintaan_pengiriman_temp.*', 'nama_barang')
+            ->join('master_barang', 'detail_permintaan_pengiriman_temp.kode_produk', '=', 'master_barang.kode_produk')
+            ->get();
+        return view('permintaanpengiriman.showtemp', compact('detailtemp'));
+    }
+
+    public function deletetemp(Request $request)
+    {
+        $hapus = DB::table('detail_permintaan_pengiriman_temp')->where('kode_produk', $request->kode_produk)->delete();
+        if ($hapus) {
+            echo 0;
+        } else {
+            echo 1;
+        }
+    }
+
+    public function store(Request $request)
+    {
+        $no_permintaan_pengiriman = $request->no_permintaan_pengiriman;
+        $tgl_permintaan_pengiriman = $request->tgl_permintaan_pengiriman;
+        $kode_cabang = $request->kode_cabang;
+        $keterangan = $request->keterangan;
+        if ($kode_cabang == "TSM") {
+            $id_karyawan = $request->id_karyawan;
+        } else {
+            $id_karyawan = NULL;
+        }
+        $id_admin = Auth::user()->id;
+        $data = array(
+            'no_permintaan_pengiriman'     => $no_permintaan_pengiriman,
+            'tgl_permintaan_pengiriman' => $tgl_permintaan_pengiriman,
+            'kode_cabang' => $kode_cabang,
+            'keterangan' => $keterangan,
+            'status' => 0,
+            'id_admin' => $id_admin,
+            'id_karyawan' => $id_karyawan
+        );
+        DB::beginTransaction();
+        try {
+            DB::table('permintaan_pengiriman')->insert($data);
+            $detail = DB::table('detail_permintaan_pengiriman_temp')->get();
+            foreach ($detail as $d) {
+                $data_detail = array(
+                    'no_permintaan_pengiriman' => $no_permintaan_pengiriman,
+                    'kode_produk' => $d->kode_produk,
+                    'jumlah' => $d->jumlah
+                );
+
+                DB::table('detail_permintaan_pengiriman')->insert($data_detail);
+            }
+
+            DB::table('detail_permintaan_pengiriman_temp')->delete();
+            DB::commit();
+            return redirect('/permintaanpengiriman')->with(['success' => 'Data Berhasil di Simpan']);
+        } catch (\Exception $e) {
+            ///dd($e);
+            DB::rollback();
+            return redirect('/permintaanpengiriman')->with(['warning' => 'Data Gagal di Simpan Hubungi Tim IT']);
+        }
+    }
+
+    public function buatnopermintaan(Request $request)
+    {
+        $tgl_permintaan_pengiriman = $request->tgl_permintaan_pengiriman;
+        $kode_cabang = $request->kode_cabang;
+        $kode = strlen($kode_cabang);
+        $no_permintaan  = $kode + 4;
+        $pp = DB::table('permintaan_pengiriman')
+            ->selectRaw('LEFT(no_permintaan_pengiriman,' . $no_permintaan . ') as no_permintaan_pengiriman')
+            ->whereRaw('MID(no_permintaan_pengiriman,3,' . $kode . ')="' . $kode_cabang . '"')
+            ->where('tgl_permintaan_pengiriman', $tgl_permintaan_pengiriman)
+            ->orderByRaw('LEFT(no_permintaan_pengiriman,' . $no_permintaan . ') DESC')
+            ->first();
+        $tanggal = explode("-", $tgl_permintaan_pengiriman);
+        $hari  = $tanggal[2];
+        $bulan = $tanggal[1];
+        $tahun = $tanggal[0];
+        $tgl   = "." . $hari . "." . $bulan . "." . $tahun;
+        if ($pp != null) {
+            $lastnopermintaan = $pp->no_permintaan_pengiriman;
+        } else {
+            $lastnopermintaan = "";
+        }
+        $no_permintaan_pengiriman = buatkode($lastnopermintaan, "OR" . $kode_cabang, 2) . $tgl;
+
+        echo $no_permintaan_pengiriman;
+    }
+
+    public function delete($no_permintaan_pengiriman)
+    {
+        $no_permintaan_pengiriman = Crypt::decrypt($no_permintaan_pengiriman);
+        $hapus = DB::table('permintaan_pengiriman')->where('no_permintaan_pengiriman', $no_permintaan_pengiriman)->delete();
+        if ($hapus) {
+            return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
+        } else {
+            return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
+        }
     }
 }

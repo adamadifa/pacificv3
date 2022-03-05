@@ -94,6 +94,12 @@ Route::middleware(['auth', 'ceklevel:admin,manager marketing,manager accounting,
 Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/permintaanpengiriman', [PermintaanpengirimanController::class, 'index']);
     Route::get('/permintaanpengiriman/cektemp', [PermintaanpengirimanController::class, 'cektemp']);
+    Route::post('/permintaanpengiriman/storetemp', [PermintaanpengirimanController::class, 'storetemp']);
+    Route::post('/permintaanpengiriman/deletetemp', [PermintaanpengirimanController::class, 'deletetemp']);
+    Route::get('/permintaanpengiriman/showtemp', [PermintaanpengirimanController::class, 'showtemp']);
+    Route::post('/permintaanpengiriman/store', [PermintaanpengirimanController::class, 'store']);
+    Route::post('/permintaanpengiriman/buatnopermintaan', [PermintaanpengirimanController::class, 'buatnopermintaan']);
+    Route::delete('/permintaanpengiriman/{no_permintaan_pengiriman}/delete', [PermintaanpengirimanController::class, 'delete']);
 });
 
 
