@@ -22,6 +22,7 @@ use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\PermintaanpengirimanController;
+use App\Http\Controllers\RatiokomisiController;
 use App\Http\Controllers\ReturController;
 use App\Http\Controllers\SalesmanController;
 use App\Http\Controllers\SimpananController;
@@ -90,8 +91,9 @@ Route::middleware(['auth', 'ceklevel:admin,manager marketing,manager accounting,
     Route::post('/oman/show', [OmanController::class, 'show']);
 });
 
-//Permintaan Pengiriman
+
 Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
+    //Permintaan Pengiriman
     Route::get('/permintaanpengiriman', [PermintaanpengirimanController::class, 'index']);
     Route::get('/permintaanpengiriman/cektemp', [PermintaanpengirimanController::class, 'cektemp']);
     Route::post('/permintaanpengiriman/storetemp', [PermintaanpengirimanController::class, 'storetemp']);
@@ -100,7 +102,12 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/permintaanpengiriman/store', [PermintaanpengirimanController::class, 'store']);
     Route::post('/permintaanpengiriman/buatnopermintaan', [PermintaanpengirimanController::class, 'buatnopermintaan']);
     Route::delete('/permintaanpengiriman/{no_permintaan_pengiriman}/delete', [PermintaanpengirimanController::class, 'delete']);
+
+    //Ratio Komisi
+    Route::get('/ratiokomisi', [RatiokomisiController::class, 'index']);
 });
+
+
 
 
 //Administrator | Manager Accounting | Manager Marketing | General Manager | Direktur

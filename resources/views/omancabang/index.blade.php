@@ -1,5 +1,5 @@
 @extends('layouts.midone')
-@section('titlepage','Data Order Management Cabang')
+@section('titlepage', 'Data Order Management Cabang')
 @section('content')
 <div class="content-wrapper">
     <div class="content-header row">
@@ -30,13 +30,15 @@
                     <form action="/omancabang">
                         <div class="row">
 
-                            @if (Auth::user()->kode_cabang =="PCF")
+                            @if (Auth::user()->kode_cabang == 'PCF')
                             <div class="col-lg-3 col-sm-12">
                                 <div class="form-group  ">
                                     <select name="kode_cabang" id="" class="form-control">
                                         <option value="">Semua Cabang</option>
                                         @foreach ($cabang as $c)
-                                        <option {{ (Request('kode_cabang')==$c->kode_cabang ? 'selected':'')}} value="{{ $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
+                                        <option {{ Request('kode_cabang')==$c->kode_cabang ? 'selected' : '' }}
+                                            value="{{ $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}
+                                        </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -47,11 +49,16 @@
                                 <div class="form-group">
                                     <select class="form-control" id="bulan" name="bulan">
                                         <option value="">Bulan</option>
-                                        <?php
-                                        $bulanini = date("m");
-                                        for ($i = 1; $i < count($bulan); $i++) {
-                                        ?>
-                                        <option <?php if(empty(Request('bulan'))){   if ($bulanini == $i) {echo "selected";} }else { if(Request('bulan')==$i){echo "selected";}} ?> value="<?php echo $i; ?>"><?php echo $bulan[$i]; ?></option>
+                                            <?php
+                                                $bulanini = date("m");
+                                                for ($i = 1; $i < count($bulan); $i++) {
+                                            ?>
+                                        <option <?php if (empty(Request('bulan'))) { if ($bulanini==$i) {
+                                            echo 'selected' ; } } else { if (Request('bulan')==$i) { echo 'selected' ; }
+                                            } ?> value="
+                                            <?php echo $i; ?>">
+                                            <?php echo $bulan[$i]; ?>
+                                        </option>
                                         <?php
                                         }
                                         ?>
@@ -65,7 +72,12 @@
                                         $tahunmulai = 2020;
                                         for ($thn = $tahunmulai; $thn <= date('Y'); $thn++) {
                                         ?>
-                                        <option <?php if(empty(Request('tahun'))){ if (date('Y') == $thn) { echo "Selected";} } else{ if(Request('tahun') == $thn){echo "selected";}} ?> value="<?php echo $thn; ?>"><?php echo $thn; ?></option>
+                                        <option <?php if (empty(Request('tahun'))) { if (date('Y')==$thn) {
+                                            echo 'Selected' ; } } else { if (Request('tahun')==$thn) { echo 'selected' ;
+                                            } } ?> value="
+                                            <?php echo $thn; ?>">
+                                            <?php echo $thn; ?>
+                                        </option>
                                         <?php
                                         }
                                         ?>
@@ -73,7 +85,8 @@
                                 </div>
                             </div>
                             <div class="col-lg-3 col-sm-12">
-                                <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search mr-2"></i> Search</button>
+                                <button type="submit" name="submit" value="1" class="btn btn-primary"><i
+                                        class="fa fa-search mr-2"></i> Search</button>
                             </div>
                         </div>
 
@@ -94,23 +107,29 @@
                             <tbody>
                                 @foreach ($oman_cabang as $d)
                                 <tr>
-                                    <td class="text-center">{{ $loop->iteration + $oman_cabang->firstItem() - 1 }}</td>
+                                    <td class="text-center">
+                                        {{ $loop->iteration + $oman_cabang->firstItem() - 1 }}</td>
                                     <td>{{ $d->no_order }}</td>
                                     <td>{{ $d->kode_cabang }}</td>
                                     <td>{{ $bulan[$d->bulan] }}</td>
                                     <td>{{ $d->tahun }}</td>
                                     <td>
-                                        @if ($d->status==0)
-                                        <span class="badge bg-warning"><i class="fa fa-history"></i> Pending</span>
+                                        @if ($d->status == 0)
+                                        <span class="badge bg-warning"><i class="fa fa-history"></i>
+                                            Pending</span>
                                         @else
-                                        <span class="badge bg-warning"><i class="fa fa-check"></i> Sudah Di Proses</span>
+                                        <span class="badge bg-warning"><i class="fa fa-check"></i> Sudah Di
+                                            Proses</span>
                                         @endif
                                     </td>
                                     <td class="text-center">
                                         <div class="btn-group" role="group" aria-label="Basic example">
-                                            @if ($d->status !=1)
-                                            <a class="ml-1" href="/omancabang/{{\Crypt::encrypt($d->no_order)}}/edit"><i class="feather icon-edit success"></i></a>
-                                            <form method="POST" name="deleteform" class="deleteform" action="/omancabang/{{ Crypt::encrypt($d->no_order) }}/delete">
+                                            @if ($d->status != 1)
+                                            <a class="ml-1"
+                                                href="/omancabang/{{ \Crypt::encrypt($d->no_order) }}/edit"><i
+                                                    class="feather icon-edit success"></i></a>
+                                            <form method="POST" name="deleteform" class="deleteform"
+                                                action="/omancabang/{{ Crypt::encrypt($d->no_order) }}/delete">
                                                 @csrf
                                                 @method('DELETE')
                                                 <a href="#" class="delete-confirm ml-1">
@@ -118,7 +137,8 @@
                                                 </a>
                                             </form>
                                             @endif
-                                            <a class="ml-1 detailomancabang" no_order="{{ $d->no_order }}" href="#"><i class=" feather icon-file-text info"></i></a>
+                                            <a class="ml-1 detailomancabang" no_order="{{ $d->no_order }}" href="#"><i
+                                                    class=" feather icon-file-text info"></i></a>
                                         </div>
                                     </td>
                                 </tr>
@@ -135,7 +155,8 @@
         </div>
     </div>
 </div>
-<div class="modal fade text-left" id="mdlomancabang" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+<div class="modal fade text-left" id="mdlomancabang" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -154,48 +175,47 @@
 @push('myscript')
 <script>
     $(function() {
-        $('.delete-confirm').click(function(event) {
-            var form = $(this).closest("form");
-            var name = $(this).data("name");
-            event.preventDefault();
-            swal({
-                    title: `Are you sure you want to delete this record?`
-                    , text: "If you delete this, it will be gone forever."
-                    , icon: "warning"
-                    , buttons: true
-                    , dangerMode: true
-                , })
-                .then((willDelete) => {
-                    if (willDelete) {
-                        form.submit();
+            $('.delete-confirm').click(function(event) {
+                var form = $(this).closest("form");
+                var name = $(this).data("name");
+                event.preventDefault();
+                swal({
+                        title: `Are you sure you want to delete this record?`,
+                        text: "If you delete this, it will be gone forever.",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            form.submit();
+                        }
+                    });
+            });
+
+            function loadomancabang(no_order) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/omancabang/show',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        no_order: no_order
+                    },
+                    cache: false,
+                    success: function(respond) {
+                        $("#loadomancabang").html(respond);
                     }
                 });
-        });
-
-        function loadomancabang(no_order) {
-            $.ajax({
-                type: 'POST'
-                , url: '/omancabang/show'
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , no_order: no_order
-                }
-                , cache: false
-                , success: function(respond) {
-                    $("#loadomancabang").html(respond);
-                }
+            }
+            $('.detailomancabang').click(function(e) {
+                var no_order = $(this).attr("no_order");
+                e.preventDefault();
+                loadomancabang(no_order);
+                $('#mdlomancabang').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
             });
-        }
-        $('.detailomancabang').click(function(e) {
-            var no_order = $(this).attr("no_order");
-            e.preventDefault();
-            loadomancabang(no_order);
-            $('#mdlomancabang').modal({
-                backdrop: 'static'
-                , keyboard: false
-            });
-        });
-    })
-
+        })
 </script>
 @endpush
