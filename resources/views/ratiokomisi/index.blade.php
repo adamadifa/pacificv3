@@ -99,7 +99,7 @@
                                     <th>Ratio</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="loadratiokomisi">
                             </tbody>
                         </table>
                     </div>
@@ -111,3 +111,41 @@
     </div>
 </div>
 @endsection
+@push('myscript')
+<script>
+    $(function() {
+        function loadratiokomisi() {
+            var kode_cabang = $("#kode_cabang").val();
+            var bulan = $("#bulan").val();
+            var tahun = $("#tahun").val();
+            $.ajax({
+                type: 'POST'
+                , url: '/ratiokomisi/getratiokomisi'
+                , data: {
+                    _token: "{{csrf_token()}}"
+                    , kode_cabang: kode_cabang
+                    , bulan: bulan
+                    , tahun: tahun
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loadratiokomisi").html(respond);
+                }
+            });
+        }
+
+        $("#kode_cabang").change(function() {
+            loadratiokomisi();
+        });
+        $("#bulan").change(function() {
+            loadratiokomisi();
+        });
+
+        $("#tahun").change(function() {
+            loadratiokomisi();
+        });
+
+    });
+
+</script>
+@endpush

@@ -147,7 +147,7 @@ pre {
   white-space: nowrap; }
 
 .table thead th {
-  vertical-align: top; }
+  vertical-align: middle; }
 
 .table th,
 .table td {

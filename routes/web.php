@@ -27,6 +27,7 @@ use App\Http\Controllers\ReturController;
 use App\Http\Controllers\SalesmanController;
 use App\Http\Controllers\SimpananController;
 use App\Http\Controllers\TabunganController;
+use App\Http\Controllers\TargetkomisiController;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\TutuplaporanController;
 use Illuminate\Support\Facades\Route;
@@ -105,6 +106,8 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
 
     //Ratio Komisi
     Route::get('/ratiokomisi', [RatiokomisiController::class, 'index']);
+    Route::post('/ratiokomisi/getratiokomisi', [RatiokomisiController::class, 'getratiokomisi']);
+    Route::post('/ratiokomisi/store', [RatiokomisiController::class, 'store']);
 });
 
 
@@ -234,6 +237,19 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,kepa
     Route::post('/rekapkendaraandashboard', [KendaraanController::class, 'rekapkendaraandashboard']);
     Route::post('/aupdashboardall', [PenjualanController::class, 'aupdashboardall']);
     Route::post('/aupdashboardcabang', [PenjualanController::class, 'aupdashboardcabang']);
+
+    //Target Komisi
+    Route::get('/targetkomisi', [TargetkomisiController::class, 'index']);
+    Route::post('/targetkomisi/detailapprovecabang', [TargetkomisiController::class, 'detailapprovecabang']);
+    Route::post('/targetkomisi/create', [TargetkomisiController::class, 'create']);
+    Route::post('/targetkomisi/getlisttarget', [TargetkomisiController::class, 'getlisttarget']);
+    Route::post('/targetkomisi/store', [TargetkomisiController::class, 'store']);
+    Route::get('/targetkomisi/{kode_target}/generatecashin', [TargetkomisiController::class, 'generatecashin']);
+    Route::post('/targetkomisi/show', [TargetkomisiController::class, 'show']);
+    Route::post('/targetkomisi/loadkoreksitarget', [TargetkomisiController::class, 'loadkoreksitarget']);
+    Route::post('/targetkomisi/update', [TargetkomisiController::class, 'update']);
+    Route::get('/targetkomisi/{kode_target}/{kode_cabang}/approvetarget', [TargetkomisiController::class, 'approvetarget']);
+    Route::get('/targetkomisi/{kode_target}/{kode_cabang}/canceltarget', [TargetkomisiController::class, 'canceltarget']);
 });
 
 

@@ -99,8 +99,10 @@ class GlobalProvider extends ServiceProvider
             //----------------------------Permintaaan Pengiriman--------------------------------
             $permintaanpengiriman = ['admin'];
             //----------------------------Target Komisi--------------------------------
-            $komisi = ['admin'];
-            $targetkomisi = ['admin'];
+            $komisi = ['admin', 'kepala penjualan', 'kepala admin', 'manager marketing', 'general manager', 'direktur', 'manager accounting'];
+            $targetkomisi = ['admin', 'kepala penjualan', 'kepala admin', 'manager marketing', 'general manager', 'direktur', 'manager accounting'];
+            $targetkomisiinput = ['admin', 'kepala penjualan', 'kepala admin'];
+            $generatecashin = ['admin'];
             $ratiokomisi = ['admin'];
             //-----------------------------Penjualan-------------------------------------------
             $penjualan_menu = ['admin', 'admin penjualan', 'kepala penjualan', 'kepala admin', 'manager accounting', 'manager marketing', 'general manager', 'direktur'];
@@ -192,6 +194,8 @@ class GlobalProvider extends ServiceProvider
                 //------------Komisi------
                 'komisi' => $komisi,
                 'targetkomisi' => $targetkomisi,
+                'targetkomisiinput' => $targetkomisiinput,
+                'generatecashin' => $generatecashin,
                 'ratiokomisi' => $ratiokomisi,
                 //------------Penjualan-------------------
                 'penjualan_menu' => $penjualan_menu,
