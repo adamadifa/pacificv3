@@ -21,7 +21,7 @@
         <!-- Data list view starts -->
         <!-- DataTable starts -->
         @include('layouts.notification')
-        <div class="col-md-6 col-sm-6">
+        <div class="col-lg-8 col-sm-12">
             <div class="card">
                 <div class="card-body">
                     <form action="/targetkomisi">

@@ -12,9 +12,7 @@
             </li>
             <li class="nav-item nav-toggle">
                 <a class="nav-link modern-nav-toggle pr-0" data-toggle="collapse">
-                    <i class="feather icon-x d-block d-xl-none font-medium-4 primary toggle-icon"></i><i
-                        class="toggle-icon feather icon-disc font-medium-4 d-none d-xl-block collapse-toggle-icon primary"
-                        data-ticon="icon-disc">
+                    <i class="feather icon-x d-block d-xl-none font-medium-4 primary toggle-icon"></i><i class="toggle-icon feather icon-disc font-medium-4 d-none d-xl-block collapse-toggle-icon primary" data-ticon="icon-disc">
                     </i>
                 </a>
             </li>
@@ -153,6 +151,14 @@
                                 </a>
                             </li>
                             @endif
+                            @if (in_array($level, $laporan_komisi))
+                            <li class="{{ request()->is(['laporankomisi','laporaninsentif']) ? 'active': '' }}">
+                                <a href="/laporankomisi">
+                                    <i class="feather icon-file-text"></i>
+                                    <span class="menu-item">Laporan</span>
+                                </a>
+                            </li>
+                            @endif
                         </ul>
                     </li>
                     @endif
@@ -183,8 +189,7 @@
                     </li>
                     @endif
                     @if (in_array($level, $penjualan_menu))
-                    <li><a href="#"><i class="feather icon-circle"></i><span class="menu-item"
-                                data-i18n="Second Level">Penjualan</span></a>
+                    <li><a href="#"><i class="feather icon-circle"></i><span class="menu-item" data-i18n="Second Level">Penjualan</span></a>
                         <ul class="menu-content">
                             @if (in_array($level, $penjualan_input))
                             <li>
@@ -217,8 +222,7 @@
                             </li>
                             @endif
                             @if (in_array($level, $laporan_penjualan))
-                            <li
-                                class="{{ request()->is(['laporanpenjualan','laporanpenjualan/*','laporanretur','laporankasbesarpenjualan','laporankendaraan/*'])? 'active': '' }}">
+                            <li class="{{ request()->is(['laporanpenjualan','laporanpenjualan/*','laporanretur','laporankasbesarpenjualan','laporankendaraan/*'])? 'active': '' }}">
                                 <a href="/laporanpenjualan/penjualan">
                                     <i class="feather icon-file-text"></i>
                                     <span class="menu-item">Laporan</span>
@@ -262,6 +266,32 @@
                         </ul>
                     </li>
                     @endif
+                    @if (in_array($level, $kaskecil_menu))
+                    <li>
+                        <a href="#">
+                            <i class="feather icon-circle"></i>
+                            <span class="menu-item" data-i18n="Second Level">Kas Kecil</span>
+                        </a>
+                        <ul class="menu-content">
+                            @if (in_array($level, $kaskecil_view))
+                            <li class="{{ request()->is(['kaskecil', 'kaskecil/*']) ? 'active' : '' }}">
+                                <a href="/kaskecil">
+                                    <i class="feather icon-book"></i>
+                                    <span class="menu-item">Kas Kecil</span>
+                                </a>
+                            </li>
+                            @endif
+                            @if (in_array($level, $klaim_view))
+                            <li class="{{ request()->is(['klaim', 'klaim/*']) ? 'active' : '' }}">
+                                <a href="/klaim">
+                                    <i class="feather icon-archive"></i>
+                                    <span class="menu-item">Klaim</span>
+                                </a>
+                            </li>
+                            @endif
+                        </ul>
+                    </li>
+                    @endif
                 </ul>
             </li>
             @endif
@@ -269,6 +299,14 @@
             <li class=" nav-item">
                 <a href="#"><i class="feather icon-settings"></i><span class="menu-title">Utilities</span></a>
                 <ul class="menu-content">
+                    @if (in_array($level, $saldoawalpiutang))
+                    <li class="{{ request()->is(['saldoawalpiutang']) ? 'active' : '' }}">
+                        <a href="/saldoawalpiutang">
+                            <i class="feather icon-clipboard"></i>
+                            <span class="menu-item">Saldo Awal Piutang</span>
+                        </a>
+                    </li>
+                    @endif
                     @if (in_array($level, $kirimlpc))
                     <li class="{{ request()->is(['lpc', 'lpc/*']) ? 'active' : '' }}">
                         <a href="/lpc">

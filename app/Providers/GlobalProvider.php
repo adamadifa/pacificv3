@@ -103,7 +103,8 @@ class GlobalProvider extends ServiceProvider
             $targetkomisi = ['admin', 'kepala penjualan', 'kepala admin', 'manager marketing', 'general manager', 'direktur', 'manager accounting'];
             $targetkomisiinput = ['admin', 'kepala penjualan', 'kepala admin'];
             $generatecashin = ['admin'];
-            $ratiokomisi = ['admin'];
+            $ratiokomisi = ['admin', 'kepala admin', 'kepala penjualan'];
+            $laporan_komisi = ['admin'];
             //-----------------------------Penjualan-------------------------------------------
             $penjualan_menu = ['admin', 'admin penjualan', 'kepala penjualan', 'kepala admin', 'manager accounting', 'manager marketing', 'general manager', 'direktur'];
             $penjualan_keuangan = ['admin', 'admin penjualan', 'kepala admin'];
@@ -119,21 +120,27 @@ class GlobalProvider extends ServiceProvider
             //Laporan
             $laporan_penjualan = ['admin', 'admin penjualan', 'kepala penjualan', 'kepala admin', 'manager accounting', 'manager marketing', 'manager accounting', 'general manager', 'direktur'];
             $harga_net = ['admin', 'manager accounting', 'manager marketing', 'general manager', 'direktur'];
-            //Keuangan
+            //--------------------------------Keuangan---------------------------------------------
             $keuangan = ['admin', 'admin penjualan', 'kepala admin'];
 
+            //Giro
             $giro_view = ['admin', 'admin penjualan', 'kepala admin'];
             $giro_approved = ['admin', 'admin keuangan', 'manager keuangan'];
 
+            //Transfer
             $transfer_view = ['admin', 'admin penjualan', 'kepala admin'];
             $transfer_approved =  ['admin', 'admin keuangan', 'manager keuangan'];
 
-
+            //Kas Kecil
+            $kaskecil_menu  = ['admin'];
+            $kaskecil_view = ['admin'];
+            $klaim_view = ['admin'];
 
 
 
 
             //Utilities
+            $saldoawalpiutang = ['admin'];
 
             $kirimlpc = ['admin', 'admin penjualan', 'kepala penjualan', 'kepala admin', 'manager accounting', 'manager marketing', 'general manager', 'direktur'];
             $kirimlpc_tambah = ['admin', 'kepala penjualan', 'kepala admin', 'manager accounting'];
@@ -197,6 +204,7 @@ class GlobalProvider extends ServiceProvider
                 'targetkomisiinput' => $targetkomisiinput,
                 'generatecashin' => $generatecashin,
                 'ratiokomisi' => $ratiokomisi,
+                'laporan_komisi' => $laporan_komisi,
                 //------------Penjualan-------------------
                 'penjualan_menu' => $penjualan_menu,
                 'penjualan_keuangan' => $penjualan_keuangan,
@@ -212,16 +220,23 @@ class GlobalProvider extends ServiceProvider
                 //Laporan
                 'laporan_penjualan' => $laporan_penjualan,
                 'harga_net' => $harga_net,
-                //Keuangan
+                //--------------Keuangan--------------
                 'keuangan' => $keuangan,
                 'penjualan_keuangan' => $penjualan_keuangan,
 
+                //Giro
                 'giro_view' => $giro_view,
                 'giro_approved' => $giro_approved,
-
+                //Transfer
                 'transfer_view' => $transfer_view,
                 'transfer_approved' => $transfer_approved,
+
+                //Kas Kecil
+                'kaskecil_menu' => $kaskecil_menu,
+                'kaskecil_view' => $kaskecil_view,
+                'klaim_view' => $klaim_view,
                 //Utilities
+                'saldoawalpiutang' => $saldoawalpiutang,
 
                 'kirimlpc' => $kirimlpc,
                 'kirimlpc_tambah' => $kirimlpc_tambah,

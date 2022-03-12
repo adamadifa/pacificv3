@@ -12,6 +12,7 @@ use App\Http\Controllers\GudangController;
 use App\Http\Controllers\HargaController;
 use App\Http\Controllers\HargaControoler;
 use App\Http\Controllers\JenissimpananController;
+use App\Http\Controllers\KaskecilController;
 use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\LimitkreditController;
 use App\Http\Controllers\LpcController;
@@ -93,7 +94,7 @@ Route::middleware(['auth', 'ceklevel:admin,manager marketing,manager accounting,
 });
 
 
-Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
+Route::middleware(['auth', 'ceklevel:admin,manager marketing'])->group(function () {
     //Permintaan Pengiriman
     Route::get('/permintaanpengiriman', [PermintaanpengirimanController::class, 'index']);
     Route::get('/permintaanpengiriman/cektemp', [PermintaanpengirimanController::class, 'cektemp']);
@@ -103,16 +104,14 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/permintaanpengiriman/store', [PermintaanpengirimanController::class, 'store']);
     Route::post('/permintaanpengiriman/buatnopermintaan', [PermintaanpengirimanController::class, 'buatnopermintaan']);
     Route::delete('/permintaanpengiriman/{no_permintaan_pengiriman}/delete', [PermintaanpengirimanController::class, 'delete']);
+});
 
+Route::middleware(['auth', 'ceklevel:admin,kepala admin,kepala penjualan'])->group(function () {
     //Ratio Komisi
     Route::get('/ratiokomisi', [RatiokomisiController::class, 'index']);
     Route::post('/ratiokomisi/getratiokomisi', [RatiokomisiController::class, 'getratiokomisi']);
     Route::post('/ratiokomisi/store', [RatiokomisiController::class, 'store']);
 });
-
-
-
-
 //Administrator | Manager Accounting | Manager Marketing | General Manager | Direktur
 Route::middleware(['auth', 'ceklevel:admin,manager accounting,manager marketing,general manager,direktur'])->group(function () {
     Route::get('/dashboardadmin', [DashboardController::class, 'dashboardadmin']);
@@ -250,6 +249,11 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,kepa
     Route::post('/targetkomisi/update', [TargetkomisiController::class, 'update']);
     Route::get('/targetkomisi/{kode_target}/{kode_cabang}/approvetarget', [TargetkomisiController::class, 'approvetarget']);
     Route::get('/targetkomisi/{kode_target}/{kode_cabang}/canceltarget', [TargetkomisiController::class, 'canceltarget']);
+    Route::get('/laporankomisi', [TargetkomisiController::class, 'laporankomisi']);
+    Route::post('/laporankomisi/cetak', [TargetkomisiController::class, 'cetaklaporankomisi']);
+    Route::get('/laporaninsentif', [TargetkomisiController::class, 'laporaninsentif']);
+    Route::post('/laporaninsentif/cetak', [TargetkomisiController::class, 'cetaklaporaninsentif']);
+    //Ratio Komisi
 });
 
 
@@ -259,7 +263,18 @@ Route::middleware(['auth', 'ceklevel:admin,direktur'])->group(function () {
     Route::post('/limitkredit/updatelimit', [LimitkreditController::class, 'updatelimit']);
 });
 
+Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
+    //Saldo Awal Piutang
+    Route::get('/saldoawalpiutang', [PenjualanController::class, 'saldoawalpiutang']);
+    Route::post('/loadsaldoawalpiutang', [PenjualanController::class, 'loadsaldoawalpiutang']);
+    Route::post('/generatesaldoawalpiutang', [PenjualanController::class, 'generatesaldoawalpiutang']);
 
+    //Kas Kecil
+    Route::get('/kaskecil', [KaskecilController::class, 'index']);
+    Route::get('/kaskecil/create', [KaskecilController::class, 'create']);
+    Route::post('/getkaskeciltemp', [KaskecilController::class, 'getkaskeciltemp']);
+    Route::post('/kaskecil/storetemp', [KaskecilController::class, 'storetemp']);
+});
 //Administrator | Admin Penjualan | Kepala Penjualan | Direktur | Manager Accounting
 Route::middleware(['auth', 'ceklevel:admin,admin penjualan,manager accounting,kepala penjualan,kepala admin,manager marketing,direktur'])->group(function () {
 

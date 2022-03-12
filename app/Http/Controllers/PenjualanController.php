@@ -4590,4 +4590,124 @@ class PenjualanController extends Controller
             return view('penjualan.laporan.cetak_rekapaup', compact('rekap', 'tgl_aup',  'cabang'));
         }
     }
+
+    public function saldoawalpiutang()
+    {
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        $cabang = Cabang::orderBy('kode_cabang')->get();
+        return view('penjualan.saldoawalpiutang', compact('bulan', 'cabang'));
+    }
+
+    public function loadsaldoawalpiutang(Request $request)
+    {
+        $kode_cabang = $request->kode_cabang;
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+
+        $saldoawalpiutang = DB::table('saldoawal_piutang')
+            ->join('karyawan', 'saldoawal_piutang.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->select('saldoawal_piutang.*', 'nama_karyawan')
+            ->where('karyawan.kode_cabang', $kode_cabang)
+            ->where('bulan', $bulan)
+            ->where('tahun', $tahun)
+            ->get();
+
+        return view('penjualan.loadsaldoawalpiutang', compact('saldoawalpiutang'));
+    }
+
+    public function generatesaldoawalpiutang(Request $request)
+    {
+        $kode_cabang = $request->kode_cabang;
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $bulanlalu = $bulan - 1;
+        $tanggal = $tahun . "-" . $bulanlalu . "-01";
+        $akhirtanggal  = date('Y-m-t', strtotime($tanggal));
+
+        $piutang = DB::table('penjualan')
+            ->selectRaw("salesbarunew,SUM((IFNULL(penjualan.total,0))-(IFNULL(retur.total,0))-IFNULL(jmlbayar,0))  as saldopiutang")
+            ->leftJoin(
+                DB::raw("(
+                    SELECT no_fak_penj,sum( historibayar.bayar ) AS jmlbayar
+                    FROM historibayar
+                    WHERE tglbayar <= '$akhirtanggal'
+                    GROUP BY no_fak_penj
+                ) hblalu"),
+                function ($join) {
+                    $join->on('penjualan.no_fak_penj', '=', 'hblalu.no_fak_penj');
+                }
+            )
+
+            ->leftJoin(
+                DB::raw("(
+                    SELECT retur.no_fak_penj AS no_fak_penj,
+                    SUM(total) AS total
+                    FROM
+                        retur
+                    WHERE tglretur <= '$akhirtanggal'
+                    GROUP BY
+                        retur.no_fak_penj
+                ) retur"),
+                function ($join) {
+                    $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
+                }
+            )
+
+            ->leftJoin(
+                DB::raw("(
+                    SELECT pj.no_fak_penj,
+                    IF(salesbaru IS NULL,pj.id_karyawan,salesbaru) as salesbarunew, karyawan.nama_karyawan as nama_sales,
+                    IF(cabangbaru IS NULL,karyawan.kode_cabang,cabangbaru) as cabangbarunew
+                    FROM penjualan pj
+                    INNER JOIN karyawan ON pj.id_karyawan = karyawan.id_karyawan
+                    LEFT JOIN (
+                    SELECT MAX(id_move) as id_move,no_fak_penj,move_faktur.id_karyawan as salesbaru,karyawan.kode_cabang as cabangbaru
+                    FROM move_faktur
+                    INNER JOIN karyawan ON move_faktur.id_karyawan = karyawan.id_karyawan
+                    WHERE tgl_move <= '$akhirtanggal'
+                    GROUP BY no_fak_penj,move_faktur.id_karyawan,karyawan.kode_cabang
+                    ) move_fak ON (pj.no_fak_penj = move_fak.no_fak_penj)
+                ) pjmove"),
+                function ($join) {
+                    $join->on('penjualan.no_fak_penj', '=', 'pjmove.no_fak_penj');
+                }
+            )
+
+            ->where('cabangbarunew', $kode_cabang)
+            ->where('penjualan.jenistransaksi', '!=', 'tunai')
+            ->where('tgltransaksi', '<=', $akhirtanggal)
+            ->whereRaw('(ifnull(penjualan.total,0) - (ifnull(retur.total,0))) != IFNULL(jmlbayar,0)')
+            ->groupBy('salesbarunew')
+            ->get();
+
+        foreach ($piutang as $p) {
+            $kodesales = substr($p->salesbarunew, 4, 2);
+            if (Strlen($bulan) == 2) {
+                $bln = $bulan;
+            } else {
+                $bln = "0" . $bulan;
+            }
+            $thn = substr($tahun, 2, 2);
+            $kodesaldoawalpiutang = "SP" . $kode_cabang . $bln . $thn . $kodesales;
+
+            $cek = DB::table('saldoawal_piutang')->where('kode_saldoawalpiutang', $kodesaldoawalpiutang)->count();
+            if (empty($cek)) {
+                $data = [
+                    'kode_saldoawalpiutang' => $kodesaldoawalpiutang,
+                    'bulan' => $bulan,
+                    'tahun' => $tahun,
+                    'id_karyawan' => $p->salesbarunew,
+                    'saldo_piutang' => $p->saldopiutang
+                ];
+
+                DB::table('saldoawal_piutang')->insert($data);
+            } else {
+                $data = [
+                    'saldo_piutang' => $p->saldopiutang
+                ];
+
+                DB::table('saldoawal_piutang')->where('kode_saldoawalpiutang', $kodesaldoawalpiutang)->update($data);
+            }
+        }
+    }
 }

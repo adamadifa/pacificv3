@@ -26,7 +26,7 @@
                 <div class="card-body">
                     <form action="#">
                         <div class="row">
-
+                            @if (Auth::user()->kode_cabang=="PCF")
                             <div class="col-12">
                                 <div class="form-group">
                                     <select name="kode_cabang" id="kode_cabang" class="form-control">
@@ -39,6 +39,9 @@
                                     </select>
                                 </div>
                             </div>
+                            @else
+                            <input type="hidden" name="kode_cabang" id="kode_cabang" value="{{ Auth::user()->kode_cabang }}">
+                            @endif
 
                         </div>
                         <div class="row">
@@ -134,6 +137,7 @@
             });
         }
 
+        loadratiokomisi();
         $("#kode_cabang").change(function() {
             loadratiokomisi();
         });
