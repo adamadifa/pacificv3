@@ -163,4 +163,33 @@ class PermintaanpengirimanController extends Controller
             return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
         }
     }
+
+    public function show($no_permintaan_pengiriman)
+    {
+        $no_permintaan_pengiriman = Crypt::decrypt($no_permintaan_pengiriman);
+        $pp = DB::table('permintaan_pengiriman')->where('no_permintaan_pengiriman', $no_permintaan_pengiriman)->first();
+        $sj = DB::table('mutasi_gudang_jadi')->where('no_permintaan_pengiriman', $no_permintaan_pengiriman)->first();
+        $detail = DB::table('detail_permintaan_pengiriman')
+            ->join('master_barang', 'detail_permintaan_pengiriman.kode_produk', '=', 'master_barang.kode_produk')
+            ->where('no_permintaan_pengiriman', $no_permintaan_pengiriman)->orderBy('detail_permintaan_pengiriman.kode_produk')->get();
+        if ($sj != null) {
+            $detailsj = DB::table('detail_mutasi_gudang')
+                ->join('master_barang', 'detail_mutasi_gudang.kode_produk', '=', 'master_barang.kode_produk')
+                ->where('no_mutasi_gudang', $sj->no_mutasi_gudang)->orderBy('detail_mutasi_gudang.kode_produk')->get();
+        } else {
+            $detailsj = null;
+        }
+        return view('permintaanpengiriman.show', compact('pp', 'detail', 'sj', 'detailsj'));
+    }
+
+    public function updatedetail(Request $request)
+    {
+        $no_permintaan_pengiriman = $request->no_permintaan_pengiriman;
+        $kode_produk = $request->kode_produk;
+        $jumlah = str_replace(".", "", $request->jumlah);
+        $data = [
+            'jumlah' => $jumlah
+        ];
+        DB::table('detail_permintaan_pengiriman')->where('no_permintaan_pengiriman', $no_permintaan_pengiriman)->where('kode_produk', $kode_produk)->update($data);
+    }
 }

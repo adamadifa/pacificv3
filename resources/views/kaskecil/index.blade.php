@@ -48,7 +48,16 @@
                                 </div>
                             </div>
                             @else
-                            <input type="hidden" name="kode_cabang" id="kode_cabang" value="{{ Request('kode_cabang') }}">
+                            @if (Auth::user()->level=="admin keuangan")
+                            @php
+                            $kode_cabang = "PST";
+                            @endphp
+                            @else
+                            @php
+                            $kode_cabang = Auth::user()->kode_cabang;
+                            @endphp
+                            @endif
+                            <input type="hidden" name="kode_cabang" id="kode_cabang" value="{{ $kode_cabang }}">
                             @endif
                             <div class="col-lg-4 col-sm-12">
                                 <x-inputtext field="nobukti" label="No. Bukti" icon="feather icon-credit-card" value="{{ Request('nobukti') }}" />
@@ -134,17 +143,17 @@
                                 <td>{{ $d->nobukti; }}</td>
                                 <td style="width:25%">{{ ucwords(strtolower($d->keterangan)) }}</td>
                                 <td style="width:20%">{{ $d->kode_akun }} - {{ $d->nama_akun }}</td>
-                                <td align="right" class="bg-success text-white">
+                                <td align="right" class="success">
                                     @if (!empty($penerimaan))
                                     {{ rupiah($penerimaan) }}
                                     @endif
                                 </td>
-                                <td align="right" class="bg-danger text-white">
+                                <td align=" right" class="danger">
                                     @if (!empty($pengeluaran))
                                     {{ rupiah($pengeluaran) }}
                                     @endif
                                 </td>
-                                <td align="right" class="bg-info text-white">
+                                <td align="right" class="info">
                                     @if (!empty($saldo))
                                     {{ rupiah($saldo) }}
                                     @endif
@@ -162,8 +171,8 @@
                                     @if (empty($d->kode_klaim) && $d->keterangan != "Penerimaan Kas Kecil")
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         @if(empty($d->no_ref))
-                                        <a href="#" data-status="0" data-id="{{ $d->id }}" data-kodecr="{{ $d->kode_cr }}" class="success edit"><i class="feather icon-edit"></i></a>
-                                        <form method="POST" name="deleteform" class="deleteform" action="/kaskecil/{{ Crypt::encrypt($d->id) }}/{{ Crypt::encrypt($d->kode_cr) }}/delete">
+                                        <a href="#" data-status="0" data-id="{{ $d->id }}" class="success edit"><i class="feather icon-edit"></i></a>
+                                        <form method="POST" name="deleteform" class="deleteform" action="/kaskecil/{{ Crypt::encrypt($d->id) }}/delete">
                                             @csrf
                                             @method('DELETE')
                                             <a href="#" class="delete-confirm ml-1">
@@ -173,7 +182,7 @@
                                         @endif
                                     </div>
                                     @else
-                                    <a href="#" data-status="0" data-id="{{ $d->id }}" data-kodecr="{{ $d->kode_cr }}" class="success edit"><i class="feather icon-edit"></i></a>
+                                    <a href="#" data-status="1" data-id="{{ $d->id }}" class="success edit"><i class="feather icon-edit"></i></a>
                                     @endif
                                 </td>
                             </tr>
@@ -181,14 +190,12 @@
                             @endif
                         </tbody>
                     </table>
-
-
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- Input Pembayaran -->
+<!-- Input Kas Kecil -->
 <div class="modal fade text-left" id="mdlinputkaskecil" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -205,18 +212,60 @@
     </div>
 </div>
 
+<!-- Edit Kas Kecil -->
+<div class="modal fade text-left" id="mdleditkaskecil" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Edit Kas Kecil</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loadeditkaskecil"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @push('myscript')
 <script>
     $(function() {
-
+        $('.delete-confirm').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+            event.preventDefault();
+            swal({
+                    title: `Are you sure you want to delete this record?`
+                    , text: "If you delete this, it will be gone forever."
+                    , icon: "warning"
+                    , buttons: true
+                    , dangerMode: true
+                , })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
+        });
         $("#inputkaskecil").click(function() {
             $('#mdlinputkaskecil').modal({
                 backdrop: 'static'
                 , keyboard: false
             });
             $("#loadinputkaskecil").load('/kaskecil/create');
+        });
+
+        $(".edit").click(function() {
+            var id = $(this).attr("data-id");
+            $('#mdleditkaskecil').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+            $("#loadeditkaskecil").load('/kaskecil/' + id + '/edit');
         });
         $("#frmcari").submit(function() {
             var kode_cabang = $("#kode_cabang").val();

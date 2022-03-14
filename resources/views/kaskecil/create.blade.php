@@ -1,5 +1,7 @@
-<form action="/kaskecil/store" id="frmInputkaskecil">
+<form action="/kaskecil/store" method="POST" id="frmInputkaskecil">
     <input type="hidden" id="cektutuplaporan">
+    <input type="hidden" id="cekkaskeciltemp">
+    @csrf
     <div class="row">
         @if (Auth::user()->kode_cabang =="PCF" && Auth::user()->level != "admin keuangan")
         <div class="col-lg-12 col-sm-12">
@@ -65,7 +67,7 @@
                     <li class="d-inline-block mr-2">
                         <fieldset>
                             <div class="vs-radio-con vs-radio-success">
-                                <input type="radio" name="inout" checked="" value="K">
+                                <input type="radio" name="inout" value="K">
                                 <span class="vs-radio">
                                     <span class="vs-radio--border"></span>
                                     <span class="vs-radio--circle"></span>
@@ -77,7 +79,7 @@
                     <li class="d-inline-block mr-2">
                         <fieldset>
                             <div class="vs-radio-con vs-radio-danger">
-                                <input type="radio" name="inout" value="D">
+                                <input type="radio" name="inout" checked value="D">
                                 <span class="vs-radio">
                                     <span class="vs-radio--border"></span>
                                     <span class="vs-radio--circle"></span>
@@ -98,7 +100,7 @@
                     <li class="d-inline-block mr-2">
                         <fieldset>
                             <div class="vs-radio-con vs-radio-primary">
-                                <input type="radio" name="peruntukan" value="PCF">
+                                <input type="radio" name="peruntukan" value="PCF" checked>
                                 <span class="vs-radio">
                                     <span class="vs-radio--border"></span>
                                     <span class="vs-radio--circle"></span>
@@ -149,6 +151,26 @@
 
         </tbody>
     </table>
+    <div class="row mb-1">
+        <div class="col-12">
+            <div class="vs-checkbox-con vs-checkbox-primary">
+                <input type="checkbox" class="aggrement" name="aggrement" value="aggrement">
+                <span class="vs-checkbox">
+                    <span class="vs-checkbox--check">
+                        <i class="vs-icon feather icon-check"></i>
+                    </span>
+                </span>
+                <span class="">Yakin Akan Disimpan ?</span>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5" id="tombolsimpan">
+        <div class="col-12">
+            <div class="form-group">
+                <button class="btn btn-primary btn-block"><i class="feather icon-send mr-1"></i> Submit</button>
+            </div>
+        </div>
+    </div>
 </form>
 <script src="{{asset('app-assets/vendors/js/forms/select/select2.full.min.js')}}"></script>
 <script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
@@ -156,6 +178,27 @@
 <script>
     $(function() {
         $("#jumlah").maskMoney();
+        $('#frmInputkaskecil').find('#nobukti').mask('AAAAAAAAAAA', {
+            'translation': {
+                A: {
+                    pattern: /[A-Za-z0-9]/
+                }
+            }
+        });
+        $('.aggrement').change(function() {
+            if (this.checked) {
+                $("#tombolsimpan").show();
+            } else {
+                $("#tombolsimpan").hide();
+            }
+        });
+
+        function hidetombolsimpan() {
+            $("#tombolsimpan").hide();
+        }
+
+        hidetombolsimpan();
+        cektutuplaporan();
 
         function cektutuplaporan() {
             var tanggal = $("#tgl_kaskecil").val();
@@ -171,6 +214,25 @@
                 , success: function(respond) {
                     console.log(respond);
                     $("#cektutuplaporan").val(respond);
+                }
+            });
+        }
+
+
+        function cekkaskeciltemp(callback) {
+            var nobukti = $('#frmInputkaskecil').find('#nobukti').val();
+            var kode_cabang = $('#frmInputkaskecil').find('#kode_cabang').val();
+            $.ajax({
+                type: 'POST'
+                , url: '/cekkaskeciltemp'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , nobukti: nobukti
+                    , kode_cabang: kode_cabang
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#cekkaskeciltemp").val(respond);
                 }
             });
         }
@@ -196,6 +258,7 @@
                 , cache: false
                 , success: function(respond) {
                     $("#loadkaskeciltemp").html(respond);
+                    cekkaskeciltemp();
                 }
             });
         }
@@ -235,11 +298,19 @@
                 , success: function(respond) {
                     if (respond == 0) {
                         swal("Success", "Data Berhasil Disimpan", "success");
+                        reset();
                     } else {
                         swal("Success", "Data Gagal Disimpan", "success");
                     }
                 }
             });
+        }
+
+        function reset() {
+            $("#keterangan").val("");
+            $("#jumlah").val("");
+            $("#kode_akun").val("").change();
+            $("#keterangan").focus();
         }
         $("#tambahitem").click(function() {
             var nobukti = $('#frmInputkaskecil').find('#nobukti').val();
@@ -319,9 +390,35 @@
 
         });
 
+
+
         $("#frmInputkaskecil").submit(function() {
+            var cekkaskeciltemp = $("#cekkaskeciltemp").val();
+            var nobukti = $('#frmInputkaskecil').find('#nobukti').val();
 
+            if (nobukti == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'No. Bukti Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#nobukti").focus();
+                });
 
+                return false;
+            } else if (cekkaskeciltemp == 0 || cekkaskeciltemp == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Data Masih Kosong !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#nobukti").focus();
+                });
+
+                return false;
+            }
         });
 
     });

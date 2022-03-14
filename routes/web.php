@@ -14,6 +14,7 @@ use App\Http\Controllers\HargaControoler;
 use App\Http\Controllers\JenissimpananController;
 use App\Http\Controllers\KaskecilController;
 use App\Http\Controllers\KendaraanController;
+use App\Http\Controllers\KlaimController;
 use App\Http\Controllers\LimitkreditController;
 use App\Http\Controllers\LpcController;
 use App\Http\Controllers\MutasigudangcabangController;
@@ -101,7 +102,9 @@ Route::middleware(['auth', 'ceklevel:admin,manager marketing'])->group(function 
     Route::post('/permintaanpengiriman/storetemp', [PermintaanpengirimanController::class, 'storetemp']);
     Route::post('/permintaanpengiriman/deletetemp', [PermintaanpengirimanController::class, 'deletetemp']);
     Route::get('/permintaanpengiriman/showtemp', [PermintaanpengirimanController::class, 'showtemp']);
+    Route::get('/permintaanpengiriman/{no_permintaan_pengiriman}/show', [PermintaanpengirimanController::class, 'show']);
     Route::post('/permintaanpengiriman/store', [PermintaanpengirimanController::class, 'store']);
+    Route::post('/permintaanpengiriman/updatedetail', [PermintaanpengirimanController::class, 'updatedetail']);
     Route::post('/permintaanpengiriman/buatnopermintaan', [PermintaanpengirimanController::class, 'buatnopermintaan']);
     Route::delete('/permintaanpengiriman/{no_permintaan_pengiriman}/delete', [PermintaanpengirimanController::class, 'delete']);
 });
@@ -274,6 +277,20 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/kaskecil/create', [KaskecilController::class, 'create']);
     Route::post('/getkaskeciltemp', [KaskecilController::class, 'getkaskeciltemp']);
     Route::post('/kaskecil/storetemp', [KaskecilController::class, 'storetemp']);
+    Route::post('/kaskecil/deletetemp', [KaskecilController::class, 'deletetemp']);
+    Route::post('/cekkaskeciltemp', [KaskecilController::class, 'cekkaskeciltemp']);
+    Route::post('/kaskecil/store', [KaskecilController::class, 'store']);
+    Route::delete('/kaskecil/{id}/delete', [KaskecilController::class, 'delete']);
+    Route::get('/kaskecil/{id}/edit', [KaskecilController::class, 'edit']);
+    Route::post('/kaskecil/{id}/update', [KaskecilController::class, 'update']);
+
+
+    //Klaim Kas Kecil
+    Route::get('/klaim', [KlaimController::class, 'index']);
+    Route::get('/klaim/{kode_klaim}/{excel}/cetak', [KlaimController::class, 'cetak']);
+    Route::get('/klaim/{kode_klaim}/show', [KlaimController::class, 'show']);
+    Route::get('/klaim/create', [KlaimController::class, 'create']);
+    Route::delete('/klaim/{kode_klaim}/delete', [KlaimController::class, 'delete']);
 });
 //Administrator | Admin Penjualan | Kepala Penjualan | Direktur | Manager Accounting
 Route::middleware(['auth', 'ceklevel:admin,admin penjualan,manager accounting,kepala penjualan,kepala admin,manager marketing,direktur'])->group(function () {

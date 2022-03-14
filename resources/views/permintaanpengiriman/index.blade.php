@@ -85,15 +85,18 @@
                                     </td>
                                     <td>{{ $d->nama_karyawan }}</td>
                                     <td>
-                                        @if ($d->status == 0)
-                                        <form method="POST" class="deleteform" action="/permintaanpengiriman/{{ Crypt::encrypt($d->no_permintaan_pengiriman) }}/delete">
-                                            @csrf
-                                            @method('DELETE')
-                                            <a href="#" class="delete-confirm ml-1">
-                                                <i class="feather icon-trash danger"></i>
-                                            </a>
-                                        </form>
-                                        @endif
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            @if ($d->status == 0)
+                                            <form method="POST" class="deleteform" action="/permintaanpengiriman/{{ Crypt::encrypt($d->no_permintaan_pengiriman) }}/delete">
+                                                @csrf
+                                                @method('DELETE')
+                                                <a href="#" class="delete-confirm ml-1">
+                                                    <i class="feather icon-trash danger"></i>
+                                                </a>
+                                            </form>
+                                            @endif
+                                            <a class="ml-1 detail" href="#" no_permintaan_pengiriman="{{ Crypt::encrypt($d->no_permintaan_pengiriman) }}"><i class=" feather icon-file-text info"></i></a>
+                                        </div>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -109,7 +112,23 @@
         <!-- Data list view end -->
     </div>
 </div>
-<!-- Detail Salesman -->
+<!-- Detail Permintaan Pengiriman -->
+<div class="modal fade text-left" id="mdldetailpp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Detail Permintaan Pengiriman</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loaddetailpp"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Input Permintaan Pengiriman -->
 <div class="modal fade text-left" id="mdlinputpengiriman" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -244,6 +263,27 @@
             });
         });
 
+
+        function detailpp(no_permintaan_pengiriman) {
+            $.ajax({
+                type: 'GET'
+                , url: '/permintaanpengiriman/' + no_permintaan_pengiriman + '/show'
+                , cache: false
+                , success: function(respond) {
+                    $("#loaddetailpp").html(respond);
+                }
+            });
+        }
+        $('.detail').click(function(e) {
+            e.preventDefault();
+            var no_permintaan_pengiriman = $(this).attr("no_permintaan_pengiriman");
+            $('#mdldetailpp').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+            detailpp(no_permintaan_pengiriman);
+        });
+
         function loadpilihsalesman() {
             var kode_cabang = $("#kode_cabang").val();
             if (kode_cabang == "TSM") {
@@ -298,6 +338,7 @@
                 , cache: false
                 , success: function(respond) {
                     $("#loadproduktemp").html(respond);
+                    cektemp();
                 }
             });
         }
@@ -386,7 +427,7 @@
             var keterangan = $("#keterangan").val();
             var id_karyawan = $("#id_karyawan").val();
             var cek = $("#cektemp").val();
-            cektemp();
+
             if (tgl_permintaan_pengiriman == "") {
                 swal({
                     title: 'Oops'
@@ -427,7 +468,7 @@
                     $("#keterangan").focus();
                 });
                 return false;
-            } else if (cek == "") {
+            } else if (cek == "" || cek == 0) {
                 swal({
                     title: 'Oops'
                     , text: 'Data Barang Masih Kosong !'
