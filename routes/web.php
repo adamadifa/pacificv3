@@ -285,11 +285,18 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/kaskecil/{id}/update', [KaskecilController::class, 'update']);
 
 
+
     //Klaim Kas Kecil
     Route::get('/klaim', [KlaimController::class, 'index']);
     Route::get('/klaim/{kode_klaim}/{excel}/cetak', [KlaimController::class, 'cetak']);
     Route::get('/klaim/{kode_klaim}/show', [KlaimController::class, 'show']);
+    Route::get('/klaim/{kode_klaim}/prosesklaim', [KlaimController::class, 'prosesklaim']);
+    Route::get('/klaim/{kode_klaim}/batalkanproses', [KlaimController::class, 'batalkanproses']);
+    Route::get('/klaim/{kode_klaim}/validasikaskecil', [KlaimController::class, 'validasikaskecil']);
+    Route::get('/klaim/{kode_klaim}/batalkanvalidasi', [KlaimController::class, 'batalkanvalidasi']);
     Route::get('/klaim/create', [KlaimController::class, 'create']);
+    Route::post('/klaim/store', [KlaimController::class, 'store']);
+    Route::post('/klaim/storeprosesklaim', [KlaimController::class, 'storeprosesklaim']);
     Route::delete('/klaim/{kode_klaim}/delete', [KlaimController::class, 'delete']);
 });
 //Administrator | Admin Penjualan | Kepala Penjualan | Direktur | Manager Accounting

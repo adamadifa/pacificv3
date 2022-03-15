@@ -72,6 +72,10 @@
                                 <th>Tanggal</th>
                                 <th>Keterangan</th>
                                 <th>Status</th>
+                                <th>No. Bukti</th>
+                                <th>Tgl Proses</th>
+                                <th>Status Validasi</th>
+                                <th>Jumlah</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -89,13 +93,31 @@
                                     <span class="badge bg-danger"><i class="fa fa-history mr-1"></i> Belum di Process</span>
                                     @endif
                                 </td>
+                                <td><span class="badge bg-info">{{ $d->no_bukti }}</span></td>
+                                <td>{{ !empty($d->tgl_ledger) ? date("d-m-Y",strtotime($d->tgl_ledger)) : '' }}</td>
+                                <td>
+                                    @if ($d->status_validasi==1)
+                                    <span class="badge bg-success"><i class="fa fa-check mr-1"></i> Sudah di Validasi</span>
+                                    @else
+                                    <span class="badge bg-danger"><i class="fa fa-history mr-1"></i> Belum di Validasi</span>
+                                    @endif
+                                </td>
+                                <td align="right">
+                                    @if ($d->status != 1)
+                                    <span class="badge bg-warning"><i class="fa fa-history"></i></span>
+                                    @else
+                                    {{ rupiah($d->jumlah) }}
+                                    @endif
+                                </td>
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example">
 
                                         <a class="ml-1" href="/klaim/{{ Crypt::encrypt($d->kode_klaim) }}/false/cetak" target="_blank"><i class=" feather icon-printer primary"></i></a>
                                         <a class="ml-1" href="/klaim/{{ Crypt::encrypt($d->kode_klaim) }}/true/cetak" target="_blank"><i class=" feather icon-download success"></i></a>
                                         <a class="ml-1 detailklaim" href="#" kodeklaim="{{ Crypt::encrypt($d->kode_klaim) }}"><i class=" feather icon-file-text info"></i></a>
+
                                         @if ($d->status!=1)
+                                        <a class="ml-1 prosesklaim" href="#" kodeklaim="{{ Crypt::encrypt($d->kode_klaim) }}"><i class=" feather icon-send success"></i></a>
                                         <form method="POST" class="deleteform" action="/klaim/{{Crypt::encrypt($d->kode_klaim)}}/delete">
                                             @csrf
                                             @method('DELETE')
@@ -103,8 +125,14 @@
                                                 <i class="feather icon-trash danger"></i>
                                             </a>
                                         </form>
+                                        @else
+                                        @if($d->status_validasi !=1)
+                                        <a class="ml-1" href="/klaim/{{ Crypt::encrypt($d->kode_klaim) }}/batalkanproses"><i class="fa fa-close danger"></i></a>
+                                        <a class="ml-1" href="/klaim/{{ Crypt::encrypt($d->kode_klaim) }}/validasikaskecil"><i class="fa fa-check success"></i></a>
+                                        @else
+                                        <a class="ml-1" href="/klaim/{{ Crypt::encrypt($d->no_bukti) }}/batalkanvalidasi"><i class="fa fa-close danger"></i></a>
                                         @endif
-
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
@@ -144,6 +172,16 @@
                 , keyboard: false
             });
             $("#loaddetailklaim").load('/klaim/' + kode_klaim + '/show');
+        });
+
+        $(".prosesklaim").click(function(e) {
+            e.preventDefault();
+            var kode_klaim = $(this).attr("kodeklaim");
+            $('#mdldetailklaim').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+            $("#loaddetailklaim").load('/klaim/' + kode_klaim + '/prosesklaim');
         });
 
         $('.delete-confirm').click(function(event) {

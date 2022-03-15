@@ -14,7 +14,28 @@
         <td>:</td>
         <td><b>{{ ucwords(strtolower($klaim->keterangan)) }}</b></td>
     </tr>
+    <tr>
+        <td>Kode Cabang</td>
+        <td>:</td>
+        <td><b>{{ $klaim->kode_cabang }} </b></td>
+    </tr>
+    <tr>
+        <td>Status</td>
+        <td>:</td>
+        <td>
+            <?php
+            if ($klaim->status == '0') {
+                $keterangan = "Belum Di Proses";
+                $color       = "bg-danger";
+            } else {
+                $keterangan = "Sudah di Proses";
+                $color       = "bg-success";
+            }
+            ?>
+            <span class="badge <?php echo $color; ?>"><?php echo $keterangan; ?></span>
+        </td>
 
+    </tr>
 </table>
 <table class="table" style="font-size:12px">
     <thead class="thead-dark" style="font-size:14px;">

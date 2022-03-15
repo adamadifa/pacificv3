@@ -291,6 +291,12 @@
                             @endif
                         </ul>
                     </li>
+                    <li>
+                        <a href="#">
+                            <i class="feather icon-book"></i>
+                            <span class="menu-item" data-i18n="Second Level">Mutasi Bank</span>
+                        </a>
+                    </li>
                     @endif
                 </ul>
             </li>

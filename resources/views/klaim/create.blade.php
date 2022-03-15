@@ -7,6 +7,7 @@
         bottom: 40px;
         right: 40px;
         text-align: center;
+        z-index: 9000;
     }
 
 </style>
@@ -74,7 +75,9 @@
                     </form>
 
                     <hr>
-                    <form action="/klaim/store" method="POST">
+                    <form action="/klaim/store" method="POST" id="frmKlaim">
+                        @csrf
+                        <input type="hidden" name="kode_cabang" id="kode_cabang">
                         <div class="row">
                             <div class="col-lg-6 col-sm-12">
                                 <x-inputtext label="Tanggal Klaim" field="tgl_klaim" icon="feather icon-calendar" datepicker />
@@ -87,6 +90,7 @@
                         <button type="submit" name="submit" class=" float btn btn-primary">
                             <i class="fa fa-plus my-float"></i> Buat Klaim
                         </button>
+                        @include('layouts.notification')
                         <table class="table" style="font-size:12px">
                             <thead class="thead-dark">
                                 <tr>
@@ -201,77 +205,45 @@
         </div>
     </div>
 </div>
-<!-- Input Kas Kecil -->
-<div class="modal fade text-left" id="mdlinputkaskecil" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel18">Input Kas Kecil</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div id="loadinputkaskecil"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Edit Kas Kecil -->
-<div class="modal fade text-left" id="mdleditkaskecil" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel18">Edit Kas Kecil</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div id="loadeditkaskecil"></div>
-            </div>
-        </div>
-    </div>
-</div>
 
 @endsection
 
 @push('myscript')
 <script>
     $(function() {
-        $('.delete-confirm').click(function(event) {
-            var form = $(this).closest("form");
-            var name = $(this).data("name");
-            event.preventDefault();
-            swal({
-                    title: `Are you sure you want to delete this record?`
-                    , text: "If you delete this, it will be gone forever."
-                    , icon: "warning"
-                    , buttons: true
-                    , dangerMode: true
-                , })
-                .then((willDelete) => {
-                    if (willDelete) {
-                        form.submit();
-                    }
-                });
-        });
-        $("#inputkaskecil").click(function() {
-            $('#mdlinputkaskecil').modal({
-                backdrop: 'static'
-                , keyboard: false
-            });
-            $("#loadinputkaskecil").load('/kaskecil/create');
-        });
+        function loadcabang() {
+            var kode_cabang = $('#frmcari').find('#kode_cabang').val();
+            $('#frmKlaim').find('#kode_cabang').val(kode_cabang);
+        }
 
-        $(".edit").click(function() {
-            var id = $(this).attr("data-id");
-            $('#mdleditkaskecil').modal({
-                backdrop: 'static'
-                , keyboard: false
-            });
-            $("#loadeditkaskecil").load('/kaskecil/' + id + '/edit');
+        loadcabang();
+        $("#frmKlaim").submit(function() {
+            var tgl_klaim = $("#tgl_klaim").val();
+            var keterangan = $("#keterangan").val();
+
+
+            if (tgl_klaim == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Tanggal Klaim Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#tgl_klaim").focus();
+                });
+                return false;
+            } else if (keterangan == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Keterangan Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#keterangan").focus();
+                });
+
+                return false;
+            }
         });
         $("#frmcari").submit(function() {
             var kode_cabang = $("#kode_cabang").val();
