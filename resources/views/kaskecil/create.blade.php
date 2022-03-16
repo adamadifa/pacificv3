@@ -218,6 +218,9 @@
             });
         }
 
+        $("#tgl_kaskecil").change(function() {
+            cektutuplaporan();
+        });
 
         function cekkaskeciltemp(callback) {
             var nobukti = $('#frmInputkaskecil').find('#nobukti').val();
@@ -240,9 +243,7 @@
 
 
 
-        $("#tgl_kaskecil").change(function() {
-            cektutuplaporan();
-        });
+
 
         function loadkaskeciltemp() {
             var nobukti = $('#frmInputkaskecil').find('#nobukti').val();

@@ -307,6 +307,11 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
 
     //Mutasi Bank
     Route::get('/mutasibank', [MutasibankController::class, 'index']);
+    Route::get('/mutasibank/{kode_bank}/{kode_cabang}/create', [MutasibankController::class, 'create']);
+    Route::post('/mutasibank/edit', [MutasibankController::class, 'edit']);
+    Route::post('/mutasibank/{no_bukti}/update', [MutasibankController::class, 'update']);
+    Route::post('/mutasibank/store', [MutasibankController::class, 'store']);
+    Route::delete('/mutasibank/{no_bukti}/delete', [MutasibankController::class, 'delete']);
 });
 //Administrator | Admin Penjualan | Kepala Penjualan | Direktur | Manager Accounting
 Route::middleware(['auth', 'ceklevel:admin,admin penjualan,manager accounting,kepala penjualan,kepala admin,manager marketing,direktur'])->group(function () {
