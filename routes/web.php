@@ -3,6 +3,7 @@
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BankController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\CabangController;
 use App\Http\Controllers\DaftarController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\KlaimController;
 use App\Http\Controllers\LimitkreditController;
 use App\Http\Controllers\LpcController;
+use App\Http\Controllers\MutasibankController;
 use App\Http\Controllers\MutasigudangcabangController;
 use App\Http\Controllers\OmancabangController;
 use App\Http\Controllers\OmanController;
@@ -298,6 +300,13 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/klaim/store', [KlaimController::class, 'store']);
     Route::post('/klaim/storeprosesklaim', [KlaimController::class, 'storeprosesklaim']);
     Route::delete('/klaim/{kode_klaim}/delete', [KlaimController::class, 'delete']);
+
+    //Bank
+    Route::post('/bank/getbankcabang', [BankController::class, 'getbankcabang']);
+
+
+    //Mutasi Bank
+    Route::get('/mutasibank', [MutasibankController::class, 'index']);
 });
 //Administrator | Admin Penjualan | Kepala Penjualan | Direktur | Manager Accounting
 Route::middleware(['auth', 'ceklevel:admin,admin penjualan,manager accounting,kepala penjualan,kepala admin,manager marketing,direktur'])->group(function () {

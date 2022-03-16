@@ -291,12 +291,14 @@
                             @endif
                         </ul>
                     </li>
-                    <li>
-                        <a href="#">
+                    @if (in_array($level, $mutasibank_view))
+                    <li class="{{ request()->is(['mutasibank', 'mutasibank/*']) ? 'active' : '' }}">
+                        <a href="mutasibank">
                             <i class="feather icon-book"></i>
                             <span class="menu-item" data-i18n="Second Level">Mutasi Bank</span>
                         </a>
                     </li>
+                    @endif
                     @endif
                 </ul>
             </li>

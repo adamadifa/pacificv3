@@ -136,6 +136,9 @@ class GlobalProvider extends ServiceProvider
             $kaskecil_view = ['admin'];
             $klaim_view = ['admin'];
 
+            //Mutasi Bank
+            $mutasibank_view = ['admin'];
+
 
 
 
@@ -235,6 +238,10 @@ class GlobalProvider extends ServiceProvider
                 'kaskecil_menu' => $kaskecil_menu,
                 'kaskecil_view' => $kaskecil_view,
                 'klaim_view' => $klaim_view,
+
+                //Mutasi Bank
+                'mutasibank_view' => $mutasibank_view,
+
                 //Utilities
                 'saldoawalpiutang' => $saldoawalpiutang,
 
