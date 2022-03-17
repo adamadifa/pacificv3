@@ -25,7 +25,39 @@ class MutasibankController extends Controller
         $query->where('ledger_bank.bank', $request->bank);
         $mutasibank = $query->get();
         $cabang = Cabang::orderBy('kode_cabang')->get();
-        return view('mutasibank.index', compact('cabang', 'mutasibank'));
+
+        if (!empty($request->dari)) {
+            $tanggal = explode("-", $request->dari);
+            $bulan = $tanggal[1];
+            $tahun = $tanggal[0];
+        } else {
+            $bulan = "";
+            $tahun = "";
+        }
+
+        $lastsaldoawal = DB::table('saldoawal_ledger')
+            ->where('bulan', '<=', $bulan)
+            ->where('tahun', '<=', $tahun)
+            ->orderBy('tahun', 'desc')->orderBy('bulan', 'desc')->first();
+        if ($lastsaldoawal != null) {
+
+            $sa = $lastsaldoawal->jumlah;
+            $tgl_mulai = $lastsaldoawal->tahun . "-" . $lastsaldoawal->bulan . "-01";
+        } else {
+            $sa = 0;
+            $tgl_mulai = "";
+        }
+
+        $mutasi = DB::table('ledger_bank')
+            ->selectRaw("SUM(IF(status_dk='K',jumlah,0)) - SUM(IF(status_dk='D',jumlah,0)) as sisamutasi")
+            ->where('bank', $request->bank)
+            ->whereBetween('tgl_ledger', [$tgl_mulai, $request->dari])
+            ->first();
+
+        $saldoawal = $sa + $mutasi->sisamutasi;
+
+
+        return view('mutasibank.index', compact('cabang', 'mutasibank', 'saldoawal'));
     }
 
     public function create($kode_bank, $kode_cabang)

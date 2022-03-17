@@ -65,7 +65,7 @@
                     @include('layouts.notification')
                     <table class="table table-hover-animation">
                         <thead class="thead-dark">
-                            <tr>
+
                             <tr>
                                 <th>No</th>
                                 <th>Tanggal</th>
@@ -73,11 +73,20 @@
                                 <th>Akun</th>
                                 <th>Penerimaan</th>
                                 <th>Pengeluaran</th>
+                                <th>Saldo</th>
                                 <th>Aksi</th>
                             </tr>
+                            <tr>
+                                <th colspan="6">Saldo Awal</th>
+                                <th class="text-right">{{ rupiah($saldoawal) }}</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
+                            @php
+                            $totalpenerimaan = 0;
+                            $totalpengeluaran = 0;
+                            @endphp
                             @foreach ($mutasibank as $d)
                             @php
                             if ($d->status_dk == 'K') {
@@ -89,6 +98,10 @@
                             $pengeluaran = $d->jumlah;
                             $s = -$pengeluaran;
                             }
+
+                            $saldo = $saldoawal + $s;
+                            $totalpenerimaan += $penerimaan;
+                            $totalpengeluaran += $pengeluaran;
                             @endphp
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
@@ -97,6 +110,7 @@
                                 <td>{{ $d->kode_akun }} {{ $d->nama_akun }}</td>
                                 <td class="success text-right">{{(!empty($penerimaan)) ? rupiah($penerimaan) : '' }}</td>
                                 <td class="danger text-right">{{(!empty($pengeluaran)) ? rupiah($pengeluaran) : '' }}</td>
+                                <td class="text-right">{{ rupiah($saldo) }}</td>
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <a class="ml-1 editmutasibank" href="#" no_bukti="{{ $d->no_bukti }}"><i class="feather icon-edit success"></i></a>
@@ -112,6 +126,13 @@
                                 </td>
                             </tr>
                             @endforeach
+                            <tr style="font-weight:bold">
+                                <td colspan="4">TOTAL</td>
+                                <td class="text-right success">{{ rupiah($totalpenerimaan) }}</td>
+                                <td class="text-right danger">{{ rupiah($totalpengeluaran) }}</td>
+                                <td class="text-right">{{ rupiah($saldo) }}</td>
+                                <td class="text-right"></td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -203,12 +224,12 @@
             var bank = "{{ Request('bank') }}";
             var kode_bank = "{{ Crypt::encrypt(Request('bank')) }}";
             var nama_bank = $("#bank option:selected").text();
-            var kode_cabang = $("#kode_cabang").val();
+            var kode_cabang = "{{ Request('kode_cabang') }}";
             //alert(bank);
             if (kode_cabang == "") {
                 swal({
                     title: 'Oops'
-                    , text: 'Cabang Harus Diisi !'
+                    , text: 'Cabang Harus Diisi !, Klik Cari Data'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
@@ -217,7 +238,7 @@
             } else if (bank == "") {
                 swal({
                     title: 'Oops'
-                    , text: 'Nomor Rekening / Bank  Harus Dipilih !'
+                    , text: 'Nomor Rekening / Bank  Harus Dipilih !, Klik Cari Data'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
