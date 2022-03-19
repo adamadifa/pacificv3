@@ -38,6 +38,7 @@ class MutasibankController extends Controller
         $lastsaldoawal = DB::table('saldoawal_ledger')
             ->where('bulan', '<=', $bulan)
             ->where('tahun', '<=', $tahun)
+            ->where('kode_bank', $request->bank)
             ->orderBy('tahun', 'desc')->orderBy('bulan', 'desc')->first();
         if ($lastsaldoawal != null) {
 

@@ -86,6 +86,7 @@
                             @php
                             $totalpenerimaan = 0;
                             $totalpengeluaran = 0;
+                            $saldo = $saldoawal;
                             @endphp
                             @foreach ($mutasibank as $d)
                             @php
@@ -99,7 +100,7 @@
                             $s = -$pengeluaran;
                             }
 
-                            $saldo = $saldoawal + $s;
+                            $saldo = $saldo + $s;
                             $totalpenerimaan += $penerimaan;
                             $totalpengeluaran += $pengeluaran;
                             @endphp

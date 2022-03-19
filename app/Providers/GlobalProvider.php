@@ -139,7 +139,10 @@ class GlobalProvider extends ServiceProvider
             //Mutasi Bank
             $mutasibank_view = ['admin'];
 
-
+            //Ledger
+            $ledger_menu  = ['admin'];
+            $ledger_view = ['admin'];
+            $ledger_saldoawal = ['admin'];
 
 
             //Utilities
@@ -241,6 +244,13 @@ class GlobalProvider extends ServiceProvider
 
                 //Mutasi Bank
                 'mutasibank_view' => $mutasibank_view,
+
+
+                //ledger
+                'ledger_menu' => $ledger_menu,
+                'ledger_view' => $ledger_view,
+                'ledger_saldoawal' => $ledger_saldoawal,
+
 
                 //Utilities
                 'saldoawalpiutang' => $saldoawalpiutang,

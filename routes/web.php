@@ -16,6 +16,7 @@ use App\Http\Controllers\JenissimpananController;
 use App\Http\Controllers\KaskecilController;
 use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\KlaimController;
+use App\Http\Controllers\LedgerController;
 use App\Http\Controllers\LimitkreditController;
 use App\Http\Controllers\LpcController;
 use App\Http\Controllers\MutasibankController;
@@ -312,6 +313,15 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/mutasibank/{no_bukti}/update', [MutasibankController::class, 'update']);
     Route::post('/mutasibank/store', [MutasibankController::class, 'store']);
     Route::delete('/mutasibank/{no_bukti}/delete', [MutasibankController::class, 'delete']);
+
+    //Ledger
+
+    Route::get('/ledger', [LedgerController::class, 'index']);
+    Route::get('/ledger/{kode_ledger}/create', [LedgerController::class, 'create']);
+    Route::post('/ledger/storetemp', [LedgerController::class, 'storetemp']);
+    Route::post('/getledgertemp', [LedgerController::class, 'getledgertemp']);
+    Route::post('/cekledgertemp', [LedgerController::class, 'cekledgertemp']);
+    Route::post('/ledger/deletetemp', [LedgerController::class, 'deletetemp']);
 });
 //Administrator | Admin Penjualan | Kepala Penjualan | Direktur | Manager Accounting
 Route::middleware(['auth', 'ceklevel:admin,admin penjualan,manager accounting,kepala penjualan,kepala admin,manager marketing,direktur'])->group(function () {

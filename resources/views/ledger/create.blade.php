@@ -1,51 +1,26 @@
-<form action="/kaskecil/store" method="POST" id="frmInputkaskecil">
+<form action="/ledger/store" method="post" id="FrmInputledger">
+    <input type="hidden" name="kode_ledger" value="{{ $kode_ledger }}">
     <input type="hidden" id="cektutuplaporan">
-    <input type="hidden" id="cekkaskeciltemp">
+    <input type="hidden" id="cekledgertemp">
     @csrf
     <div class="row">
-        @if (Auth::user()->kode_cabang =="PCF" && Auth::user()->level != "admin keuangan")
-        <div class="col-lg-12 col-sm-12">
-            <div class="form-group  ">
-                <select name="kode_cabang" id="kode_cabang" class="form-control">
-                    <option value="">Pilih Cabang</option>
-                    @foreach ($cabang as $c)
-                    <option {{ (Request('kode_cabang')==$c->kode_cabang ? 'selected':'')}} value="{{
-                                            $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-        @else
-        @if (Auth::user()->kode_cabang=="PCF")
-        @php
-        $cbg = "PST";
-        @endphp
-        @else
-        @php
-        $cbg = Auth::user()->kode_cabang;
-        @endphp
-        @endif
-        <input type="hidden" name="kode_cabang" id="kode_cabang" value="{{ $cbg }}">
-        @endif
-    </div>
-    <div class="row">
         <div class="col-12">
-            <x-inputtext field="nobukti" label="No. Bukti" icon="feather icon-credit-card" />
+            <x-inputtext label="Tanggal" field="tgl_ledger" icon="feather icon-calendar" datepicker />
         </div>
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext field="tgl_kaskecil" label="Tanggal" icon="feather icon-calendar" datepicker />
+            <x-inputtext label="Pelanggan" field="pelanggan" icon="feather icon-file" />
         </div>
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext field="keterangan" label="Keterangan" icon="feather icon-file" />
+            <x-inputtext label="Keterangan" field="keterangan" icon="feather icon-file" />
         </div>
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext field="jumlah" label="Jumlah" icon="feather icon-file" right />
+            <x-inputtext label="Jumlah" field="jumlah" icon="feather icon-file" right />
         </div>
     </div>
     <div class="row">
@@ -66,25 +41,25 @@
                 <ul class="list-unstyled mb-0">
                     <li class="d-inline-block mr-2">
                         <fieldset>
-                            <div class="vs-radio-con vs-radio-success">
-                                <input type="radio" name="inout" value="K">
+                            <div class="vs-radio-con vs-radio-danger">
+                                <input type="radio" checked name="status_dk" value="D">
                                 <span class="vs-radio">
                                     <span class="vs-radio--border"></span>
                                     <span class="vs-radio--circle"></span>
                                 </span>
-                                <span class="">IN</span>
+                                <span class="">Debet</span>
                             </div>
                         </fieldset>
                     </li>
                     <li class="d-inline-block mr-2">
                         <fieldset>
-                            <div class="vs-radio-con vs-radio-danger">
-                                <input type="radio" name="inout" checked value="D">
+                            <div class="vs-radio-con vs-radio-success">
+                                <input type="radio" name="status_dk" value="K">
                                 <span class="vs-radio">
                                     <span class="vs-radio--border"></span>
                                     <span class="vs-radio--circle"></span>
                                 </span>
-                                <span class="">OUT</span>
+                                <span class="">Kredit</span>
                             </div>
                         </fieldset>
                     </li>
@@ -92,7 +67,6 @@
             </div>
         </div>
     </div>
-    @if (Auth::user()->kode_cabang == "PCF")
     <div class="row">
         <div class="col-12">
             <div class="form-group">
@@ -100,7 +74,7 @@
                     <li class="d-inline-block mr-2">
                         <fieldset>
                             <div class="vs-radio-con vs-radio-primary">
-                                <input type="radio" name="peruntukan" value="PCF" checked>
+                                <input type="radio" class="peruntukan" name="peruntukan" value="PC">
                                 <span class="vs-radio">
                                     <span class="vs-radio--border"></span>
                                     <span class="vs-radio--circle"></span>
@@ -112,7 +86,7 @@
                     <li class="d-inline-block mr-2">
                         <fieldset>
                             <div class="vs-radio-con vs-radio-primary">
-                                <input type="radio" name="peruntukan" value="MP">
+                                <input type="radio" class="peruntukan" name="peruntukan" value="MP" checked>
                                 <span class="vs-radio">
                                     <span class="vs-radio--border"></span>
                                     <span class="vs-radio--circle"></span>
@@ -125,7 +99,18 @@
             </div>
         </div>
     </div>
-    @endif
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group" id="pilihcabang">
+                <select name="kode_cabang" id="kode_cabang" class="form-control ">
+                    <option value="">Pilih Cabang</option>
+                    @foreach ($cabang as $d)
+                    <option value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-12">
             <div class="form-group">
@@ -133,22 +118,20 @@
             </div>
         </div>
     </div>
-
-    <table class="table table-hover-animation">
+    <table class="table table-hover-animation" style="font-size:12px">
         <thead class="thead-dark">
             <tr>
-                <th>No</th>
-                <th>Keterangan</th>
-                <th>Jumlah</th>
+                <th>Tgl</th>
+                <th>Pelanggan</th>
                 <th>Akun</th>
-                <th>IN/OUT</th>
-                @if (Auth::user()->kode_cabang == "PCF")
+                <th>Keterangan</th>
                 <th>Peruntukan</th>
-                @endif
+                <th>Debet</th>
+                <th>Kredit</th>
                 <th>Aksi</th>
             </tr>
         </thead>
-        <tbody id="loadkaskeciltemp">
+        <tbody id="loadledgertemp">
 
         </tbody>
     </table>
@@ -165,10 +148,10 @@
             </div>
         </div>
     </div>
-    <div class="row mt-5" id="tombolsimpan">
+    <div class="row" id="tombolsimpan">
         <div class="col-12">
             <div class="form-group">
-                <button class="btn btn-primary btn-block"><i class="feather icon-send mr-1"></i> Submit</button>
+                <button class="btn btn-primary btn-block" type="submit"><i class="fa fa-send mr-1"></i>Submit</button>
             </div>
         </div>
     </div>
@@ -178,14 +161,7 @@
 <script src="{{asset('app-assets/js/scripts/forms/select/form-select2.js')}}"></script>
 <script>
     $(function() {
-        $("#jumlah").maskMoney();
-        $('#frmInputkaskecil').find('#nobukti').mask('AAAAAAAAAAA', {
-            'translation': {
-                A: {
-                    pattern: /[A-Za-z0-9]/
-                }
-            }
-        });
+
         $('.aggrement').change(function() {
             if (this.checked) {
                 $("#tombolsimpan").show();
@@ -199,17 +175,16 @@
         }
 
         hidetombolsimpan();
-        cektutuplaporan();
 
         function cektutuplaporan() {
-            var tanggal = $("#tgl_kaskecil").val();
+            var tanggal = $("#tgl_ledger").val();
             $.ajax({
                 type: "POST"
                 , url: "/cektutuplaporan"
                 , data: {
                     _token: "{{ csrf_token() }}"
                     , tanggal: tanggal
-                    , jenislaporan: "kaskecil"
+                    , jenislaporan: "ledger"
                 }
                 , cache: false
                 , success: function(respond) {
@@ -219,81 +194,33 @@
             });
         }
 
-        $("#tgl_kaskecil").change(function() {
+        $("#tgl_ledger").change(function() {
             cektutuplaporan();
         });
+        $("#jumlah").maskMoney();
 
-        function cekkaskeciltemp(callback) {
-            var nobukti = $('#frmInputkaskecil').find('#nobukti').val();
-            var kode_cabang = $('#frmInputkaskecil').find('#kode_cabang').val();
-            $.ajax({
-                type: 'POST'
-                , url: '/cekkaskeciltemp'
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , nobukti: nobukti
-                    , kode_cabang: kode_cabang
-                }
-                , cache: false
-                , success: function(respond) {
-                    $("#cekkaskeciltemp").val(respond);
-                }
-            });
-        }
-
-
-
-
-
-
-        function loadkaskeciltemp() {
-            var nobukti = $('#frmInputkaskecil').find('#nobukti').val();
-            var kode_cabang = $('#frmInputkaskecil').find('#kode_cabang').val();
-            $.ajax({
-                type: 'POST'
-                , url: '/getkaskeciltemp'
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , nobukti: nobukti
-                    , kode_cabang: kode_cabang
-                }
-                , cache: false
-                , success: function(respond) {
-                    $("#loadkaskeciltemp").html(respond);
-                    cekkaskeciltemp();
-                }
-            });
-        }
-
-        $('#frmInputkaskecil').find('#nobukti').keyup(function() {
-            loadkaskeciltemp();
-        });
-
-        $('#frmInputkaskecil').find('#kode_cabang').change(function() {
-            loadkaskeciltemp();
-        });;
 
         function simpantemp() {
-            var nobukti = $('#frmInputkaskecil').find('#nobukti').val();
-            var tgl_kaskecil = $("#tgl_kaskecil").val();
+            var tgl_ledger = $("#tgl_ledger").val();
             var keterangan = $("#keterangan").val();
+            var pelanggan = $("#pelanggan").val();
             var jumlah = $("#jumlah").val();
             var kode_akun = $("#kode_akun").val();
-            var kode_cabang = $('#frmInputkaskecil').find('#kode_cabang').val();
-            var inout = $("input[name='inout']:checked").val();
+            var kode_cabang = $("#kode_cabang").val();
+            var status_dk = $("input[name='status_dk']:checked").val();
             var peruntukan = $("input[name='peruntukan']:checked").val();
             $.ajax({
                 type: 'POST'
-                , url: '/kaskecil/storetemp'
+                , url: '/ledger/storetemp'
                 , data: {
                     _token: "{{ csrf_token(); }}"
                     , kode_cabang: kode_cabang
-                    , nobukti: nobukti
-                    , tgl_kaskecil: tgl_kaskecil
+                    , tgl_ledger: tgl_ledger
+                    , pelanggan: pelanggan
                     , keterangan: keterangan
                     , jumlah: jumlah
                     , kode_akun: kode_akun
-                    , inout: inout
+                    , status_dk: status_dk
                     , peruntukan: peruntukan
                 }
                 , cache: false
@@ -307,21 +234,17 @@
                 }
             });
         }
-
-        function reset() {
-            $("#keterangan").val("");
-            $("#jumlah").val("");
-            $("#kode_akun").val("").change();
-            $("#keterangan").focus();
-        }
         $("#tambahitem").click(function() {
-            var nobukti = $('#frmInputkaskecil').find('#nobukti').val();
-            var tgl_kaskecil = $("#tgl_kaskecil").val();
+
+            var tgl_ledger = $("#tgl_ledger").val();
             var keterangan = $("#keterangan").val();
+            var pelanggan = $("#pelanggan").val();
             var jumlah = $("#jumlah").val();
             var kode_akun = $("#kode_akun").val();
             var kode_cabang = $('#frmInputkaskecil').find('#kode_cabang').val();
             var cektutuplaporan = $("#cektutuplaporan").val();
+            var peruntukan = $("input[name='peruntukan']:checked").val();
+            var kode_cabang = $("#kode_cabang").val();
             if (cektutuplaporan == 1) {
                 swal({
                     title: 'Oops'
@@ -329,34 +252,25 @@
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
-                    $('#frmInputkaskecil').find('#kode_cabang').focus();
+                    $('#tgl_ledger').focus();
                 });
-            } else if (kode_cabang == "") {
-                swal({
-                    title: 'Oops'
-                    , text: 'Cabang Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $('#frmInputkaskecil').find('#kode_cabang').focus();
-                });
-            } else if (nobukti == "") {
-                swal({
-                    title: 'Oops'
-                    , text: 'No. Bukti Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $('#frmInputkaskecil').find('#nobukti').focus();
-                });
-            } else if (tgl_kaskecil == "") {
+            } else if (tgl_ledger == "") {
                 swal({
                     title: 'Oops'
                     , text: 'Tanggal Harus Diisi !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
-                    $("#tgl_kaskecil").focus();
+                    $('#tgl_ledger').focus();
+                });
+            } else if (pelanggan == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Pelanggan Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#pelanggan").focus();
                 });
             } else if (keterangan == "") {
                 swal({
@@ -385,44 +299,67 @@
                 }).then(function() {
                     $("#kode_akun").focus();
                 });
+            } else if (peruntukan == "PCF" && kode_cabang == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Kode Cabang Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#kode_cabang").focus();
+                });
             } else {
                 simpantemp();
-                loadkaskeciltemp();
+                loadledgertemp();
             }
 
         });
 
+        function cekledgertemp() {
+            $.ajax({
+                type: 'POST'
+                , url: '/cekledgertemp'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#cekledgertemp").val(respond);
+                }
+            });
+        }
 
+        function loadledgertemp() {
+            $.ajax({
+                type: 'POST'
+                , url: '/getledgertemp'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loadledgertemp").html(respond);
+                    cekledgertemp();
+                }
+            });
+        }
 
-        $("#frmInputkaskecil").submit(function() {
-            var cekkaskeciltemp = $("#cekkaskeciltemp").val();
-            var nobukti = $('#frmInputkaskecil').find('#nobukti').val();
+        loadledgertemp();
 
-            if (nobukti == "") {
-                swal({
-                    title: 'Oops'
-                    , text: 'No. Bukti Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#nobukti").focus();
-                });
-
-                return false;
-            } else if (cekkaskeciltemp == 0 || cekkaskeciltemp == "") {
-                swal({
-                    title: 'Oops'
-                    , text: 'Data Masih Kosong !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#nobukti").focus();
-                });
-
-                return false;
+        function loadpilihcabang() {
+            var peruntukan = $("input[name='peruntukan']:checked").val();
+            if (peruntukan == "PC") {
+                $("#pilihcabang").show();
+            } else {
+                $("#pilihcabang").hide();
             }
-        });
+        }
 
+        loadpilihcabang();
+        $('.peruntukan').change(function() {
+            loadpilihcabang();
+
+        });
     });
 
 </script>

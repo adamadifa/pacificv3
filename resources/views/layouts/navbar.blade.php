@@ -277,7 +277,7 @@
                             <li class="{{ request()->is(['kaskecil', 'kaskecil/*']) ? 'active' : '' }}">
                                 <a href="/kaskecil">
                                     <i class="feather icon-book"></i>
-                                    <span class="menu-item">Kas Kecil</span>
+                                    <span class="menu-item">Data Kas Kecil</span>
                                 </a>
                             </li>
                             @endif
@@ -291,6 +291,34 @@
                             @endif
                         </ul>
                     </li>
+                    @endif
+                    @if (in_array($level, $ledger_menu))
+                    <li>
+                        <a href="#">
+                            <i class="feather icon-circle"></i>
+                            <span class="menu-item" data-i18n="Second Level">Ledger</span>
+                        </a>
+                        <ul class="menu-content">
+                            @if (in_array($level, $ledger_saldoawal))
+                            <li class="{{ request()->is(['ledger/saldoawal', 'ledger/saldoawal/*']) ? 'active' : '' }}">
+                                <a href="/klaim">
+                                    <i class="feather icon-settings"></i>
+                                    <span class="menu-item">Saldo Awal Ledger</span>
+                                </a>
+                            </li>
+                            @endif
+                            @if (in_array($level, $ledger_view))
+                            <li class="{{ request()->is(['ledger', 'ledger/*']) ? 'active' : '' }}">
+                                <a href="/ledger">
+                                    <i class="feather icon-book"></i>
+                                    <span class="menu-item">Data Ledger</span>
+                                </a>
+                            </li>
+                            @endif
+
+                        </ul>
+                    </li>
+                    @endif
                     @if (in_array($level, $mutasibank_view))
                     <li class="{{ request()->is(['mutasibank', 'mutasibank/*']) ? 'active' : '' }}">
                         <a href="mutasibank">
@@ -298,7 +326,6 @@
                             <span class="menu-item" data-i18n="Second Level">Mutasi Bank</span>
                         </a>
                     </li>
-                    @endif
                     @endif
                 </ul>
             </li>

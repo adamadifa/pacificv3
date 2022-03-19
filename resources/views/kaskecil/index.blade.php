@@ -85,6 +85,17 @@
                                 <th>CR</th>
                                 <th>Aksi</th>
                             </tr>
+                            <tr>
+                                <th colspan="7"><b>SALDO AWAL</b></th>
+                                <th align="right" style="font-weight:bold">
+                                    @if (!empty($saldoawal->saldo_awal))
+                                    {{ rupiah($saldoawal->saldo_awal) }}
+                                    @endif
+                                </th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
                         </thead>
                         <tbody>
                             @if ($kaskecil == null)
@@ -97,17 +108,7 @@
                                 </td>
                             </tr>
                             @else
-                            <tr>
-                                <td colspan="7"><b>SALDO AWAL</b></td>
-                                <td align="right" style="font-weight:bold">
-                                    @if (!empty($saldoawal->saldo_awal))
-                                    {{ rupiah($saldoawal->saldo_awal) }}
-                                    @endif
-                                </td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+
                             @php
                             $saldo = $saldoawal->saldo_awal;
                             $totalpenerimaan = 0;
@@ -187,6 +188,13 @@
                                 </td>
                             </tr>
                             @endforeach
+                            <tr>
+                                <td style="font-weight: bold" colspan="5">TOTAL</td>
+                                <td class="text-right" style="font-weight: bold">{{ rupiah($totalpengeluaran) }}</td>
+                                <td class="text-right" style="font-weight: bold">{{ rupiah($totalpenerimaan) }}</td>
+                                <td class="text-right" style="font-weight: bold">{{ rupiah($saldo) }}</td>
+                                <td colspan="3"></td>
+                            </tr>
                             @endif
                         </tbody>
                     </table>
