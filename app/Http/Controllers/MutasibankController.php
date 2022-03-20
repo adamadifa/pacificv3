@@ -49,13 +49,21 @@ class MutasibankController extends Controller
             $tgl_mulai = "";
         }
 
-        $mutasi = DB::table('ledger_bank')
-            ->selectRaw("SUM(IF(status_dk='K',jumlah,0)) - SUM(IF(status_dk='D',jumlah,0)) as sisamutasi")
-            ->where('bank', $request->bank)
-            ->whereBetween('tgl_ledger', [$tgl_mulai, $request->dari])
-            ->first();
+        if (!empty($request->dari)) {
+            $mutasi = DB::table('ledger_bank')
+                ->selectRaw("SUM(IF(status_dk='K',jumlah,0)) - SUM(IF(status_dk='D',jumlah,0)) as sisamutasi")
+                ->where('bank', $request->bank)
+                ->where('tgl_ledger', '>=', $tgl_mulai)
+                ->where('tgl_ledger', '<', $request->dari)
+                ->first();
 
-        $saldoawal = $sa + $mutasi->sisamutasi;
+            $saldoawal = $sa + $mutasi->sisamutasi;
+        } else {
+            $saldoawal = 0;
+        }
+
+
+
 
 
         return view('mutasibank.index', compact('cabang', 'mutasibank', 'saldoawal'));
@@ -123,6 +131,10 @@ class MutasibankController extends Controller
             '1-1118'
         ];
 
+
+        $bank = DB::table('master_bank')->where('kode_bank', $kode_bank)->first();
+        $kode_akun_bank = $bank->kode_akun;
+
         if ($debetkredit == "D") {
             $debet = $jumlah;
             $kredit = 0;
@@ -130,6 +142,8 @@ class MutasibankController extends Controller
             $debet = 0;
             $kredit = $jumlah;
         }
+
+        $nobukti_bukubesar_bank = buatkode($nobukti_bukubesar, 'GJ' . $bulan . $tahun, 4);
 
         $databukubesar = array(
             'no_bukti' => $nobukti_bukubesar,
@@ -142,8 +156,21 @@ class MutasibankController extends Controller
             'nobukti_transaksi' => $no_bukti
         );
 
+        $databukubesarbank = array(
+            'no_bukti' => $nobukti_bukubesar_bank,
+            'tanggal' => $tgl_ledger,
+            'sumber' => 'ledger',
+            'keterangan' => $keterangan,
+            'kode_akun' => $kode_akun_bank,
+            'debet' => $kredit,
+            'kredit' => $debet,
+            'nobukti_transaksi' => $no_bukti
+        );
+
         DB::beginTransaction();
         try {
+
+
             if (in_array($kode_akun, $akunkaskecil)) {
                 $dataledger = array(
                     'no_bukti'        => $no_bukti,
@@ -171,6 +198,8 @@ class MutasibankController extends Controller
                 );
                 DB::table('ledger_bank')->insert($dataledger);
             }
+            DB::table('buku_besar')->insert($databukubesarbank);
+
             DB::commit();
             return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
         } catch (\Exception $e) {

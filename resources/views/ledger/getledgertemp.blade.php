@@ -28,11 +28,13 @@ $kredit = $d->jumlah;
     $(function() {
 
         function cekledgertemp() {
+            var kode_ledger = $("#kode_ledger").val();
             $.ajax({
                 type: 'POST'
                 , url: '/cekledgertemp'
                 , data: {
                     _token: "{{ csrf_token() }}"
+                    , kode_ledger: kode_ledger
                 }
                 , cache: false
                 , success: function(respond) {
@@ -42,11 +44,13 @@ $kredit = $d->jumlah;
         }
 
         function loadledgertemp() {
+            var kode_ledger = $("#kode_ledger").val();
             $.ajax({
                 type: 'POST'
                 , url: '/getledgertemp'
                 , data: {
                     _token: "{{ csrf_token() }}"
+                    , kode_ledger: kode_ledger
                 }
                 , cache: false
                 , success: function(respond) {

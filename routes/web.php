@@ -322,6 +322,10 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/getledgertemp', [LedgerController::class, 'getledgertemp']);
     Route::post('/cekledgertemp', [LedgerController::class, 'cekledgertemp']);
     Route::post('/ledger/deletetemp', [LedgerController::class, 'deletetemp']);
+    Route::post('/ledger/store', [LedgerController::class, 'store']);
+    Route::delete('/ledger/{no_bukti}/delete', [LedgerController::class, 'delete']);
+    Route::get('/ledger/{no_bukti}/edit', [LedgerController::class, 'edit']);
+    Route::post('/ledger/{no_bukti}/update', [LedgerController::class, 'update']);
 });
 //Administrator | Admin Penjualan | Kepala Penjualan | Direktur | Manager Accounting
 Route::middleware(['auth', 'ceklevel:admin,admin penjualan,manager accounting,kepala penjualan,kepala admin,manager marketing,direktur'])->group(function () {
