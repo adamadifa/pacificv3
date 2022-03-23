@@ -49,7 +49,7 @@
                     <li class="d-inline-block mr-2">
                         <fieldset>
                             <div class="vs-radio-con vs-radio-success">
-                                <input type="radio" name="inout" value="K" {{ ($kaskecil->status_dk ==  'K') ? 'selected' :'' }} {{ $disabled }}>
+                                <input type="radio" name="inout" value="K" {{ ($kaskecil->status_dk ==  'K') ? 'checked' :'' }} {{ $disabled }}>
                                 <span class="vs-radio">
                                     <span class="vs-radio--border"></span>
                                     <span class="vs-radio--circle"></span>

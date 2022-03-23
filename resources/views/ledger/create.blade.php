@@ -86,7 +86,7 @@
                     <li class="d-inline-block mr-2">
                         <fieldset>
                             <div class="vs-radio-con vs-radio-primary">
-                                <input type="radio" class="peruntukan" name="peruntukan" value="MP" checked>
+                                <input type="radio" class="peruntukan" name="peruntukan" value="MP">
                                 <span class="vs-radio">
                                     <span class="vs-radio--border"></span>
                                     <span class="vs-radio--circle"></span>

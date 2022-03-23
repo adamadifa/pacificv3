@@ -1,0 +1,260 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Cabang;
+use App\Models\Setoranpenjualan;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
+
+class SetoranpenjualanController extends Controller
+{
+    public function index(Request $request)
+    {
+        $query = Setoranpenjualan::query();
+        $query->selectRaw(" kode_setoran,tgl_lhp,setoran_penjualan.id_karyawan,setoran_penjualan.kode_cabang,nama_karyawan,lhp_tunai,
+        ifnull(cektunai,0) AS cektunai,lhp_tagihan,ifnull(cekkredit,0) AS cekkredit,ifnull(ceksetorangiro,0) AS ceksetorangiro,
+        ifnull(ceksetorantransfer,0) AS ceksetorantransfer,ifnull(cekgirotocash,0) AS cekgirotocash,
+        setoran_kertas,setoran_logam,setoran_bg,setoran_transfer,keterangan,girotocash,girototransfer,
+        ifnull(kurangsetorlogam,0) AS kurangsetorlogam,ifnull(kurangsetorkertas,0) AS kurangsetorkertas,
+        ifnull(lebihsetorlogam,0) AS lebihsetorlogam,ifnull(lebihsetorkertas,0) AS lebihsetorkertas");
+        $query->join('karyawan', 'setoran_penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $query->leftJoin(
+            DB::raw("(
+                SELECT id_karyawan,tglbayar,SUM(IF(jenistransaksi='tunai' AND id_giro  IS NULL AND id_transfer IS NULL AND status_bayar IS NULL,bayar,0)) AS cektunai
+                ,SUM(IF(jenistransaksi='kredit' AND id_giro  IS NULL AND id_transfer IS NULL AND status_bayar IS NULL,bayar,0)) AS cekkredit
+                ,SUM(IF(girotocash IS NOT NULL AND status_bayar IS NULL,bayar,0)) AS cekgirotocash
+                FROM historibayar
+                WHERE  tglbayar >= '$request->dari'
+                AND tglbayar <= '$request->sampai'
+                GROUP BY historibayar.id_karyawan,tglbayar
+            ) ceklhp"),
+            function ($join) {
+                $join->on('setoran_penjualan.id_karyawan', '=', 'ceklhp.id_karyawan');
+                $join->on('setoran_penjualan.tgl_lhp', '=', 'ceklhp.tglbayar');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+                SELECT giro.id_karyawan,tgl_giro,SUM(jumlah) as ceksetorangiro
+                FROM giro
+                WHERE tgl_giro >= '$request->dari'
+                AND tgl_giro <= '$request->sampai'
+                GROUP BY giro.id_karyawan,tgl_giro
+            ) cekgiro"),
+            function ($join) {
+                $join->on('setoran_penjualan.id_karyawan', '=', 'cekgiro.id_karyawan');
+                $join->on('setoran_penjualan.tgl_lhp', '=', 'cekgiro.tgl_giro');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+                SELECT transfer.id_karyawan,tgl_transfer,SUM(jumlah) as ceksetorantransfer
+                FROM transfer
+                LEFT JOIN historibayar ON transfer.id_transfer = historibayar.id_transfer
+                WHERE tgl_transfer >= '$request->dari'
+                AND tgl_transfer <= '$request->sampai' AND girotocash ='' OR tgl_transfer >= '$request->dari'
+                AND tgl_transfer <= '$request->sampai' AND girotocash IS NULL
+                GROUP BY transfer.id_karyawan,tgl_transfer
+            ) cektransfer"),
+            function ($join) {
+                $join->on('setoran_penjualan.id_karyawan', '=', 'cektransfer.id_karyawan');
+                $join->on('setoran_penjualan.tgl_lhp', '=', 'cektransfer.tgl_transfer');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+                SELECT kuranglebihsetor.id_karyawan,tgl_kl,
+                SUM(IF(pembayaran='1',uang_logam,0)) AS kurangsetorlogam,
+                SUM(IF(pembayaran='1',uang_kertas,0)) AS kurangsetorkertas,
+                SUM(IF(pembayaran='2',uang_logam,0)) AS lebihsetorlogam,
+                SUM(IF(pembayaran='2',uang_kertas,0)) AS lebihsetorkertas
+                FROM kuranglebihsetor
+                WHERE kode_cabang ='$request->kode_cabang' AND tgl_kl >= '$request->dari'
+                AND tgl_kl <= '$request->sampai'
+                GROUP BY kuranglebihsetor.id_karyawan,tgl_kl
+            ) cek_kl"),
+            function ($join) {
+                $join->on('setoran_penjualan.id_karyawan', '=', 'cek_kl.id_karyawan');
+                $join->on('setoran_penjualan.tgl_lhp', '=', 'cek_kl.tgl_kl');
+            }
+        );
+
+        $query->where('setoran_penjualan.kode_cabang', $request->kode_cabang);
+        $query->whereBetween('tgl_lhp', [$request->dari, $request->sampai]);
+        if (!empty($request->id_karyawan)) {
+            $query->where('setoran_penjualan.id_karyawan', $request->id_karyawan);
+        }
+        $query->orderBy('tgl_lhp');
+        $query->orderBy('nama_karyawan');
+        $setoranpenjualan = $query->get();
+        //dd($setoranpenjualan);
+        $cabang = Cabang::orderBy('kode_cabang')->get();
+        return view('setoranpenjualan.index', compact('cabang', 'setoranpenjualan'));
+    }
+
+    public function detailsetoran(Request $request)
+    {
+        $kode_cabang = $request->kode_cabang;
+        $id_karyawan = $request->id_karyawan;
+        $tgl_lhp = $request->tgl_lhp;
+
+        $salesman = DB::table('karyawan')->where('id_karyawan', $id_karyawan)->first();
+        $cabang = DB::table('cabang')->where('kode_cabang', $kode_cabang)->first();
+
+        $kasbesar = DB::table('historibayar')
+            ->select('historibayar.no_fak_penj', 'tglbayar', 'penjualan.kode_pelanggan', 'nama_pelanggan', 'penjualan.jenistransaksi', 'bayar', 'girotocash')
+
+            ->join('penjualan', 'historibayar.no_fak_penj', '=', 'penjualan.no_fak_penj')
+            ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+
+            ->where('tglbayar', $tgl_lhp)
+            ->where('historibayar.id_karyawan', $id_karyawan)
+            ->whereNull('historibayar.id_giro')
+            ->whereNull('historibayar.id_transfer')
+            ->whereNull('historibayar.girotocash')
+
+            ->orWhere('tglbayar', $tgl_lhp)
+            ->where('historibayar.id_karyawan', $id_karyawan)
+            ->whereNull('historibayar.id_giro')
+            ->whereNull('historibayar.id_transfer')
+            ->where('historibayar.girotocash', 1)
+
+            ->orWhere('tglbayar', $tgl_lhp)
+            ->where('historibayar.id_karyawan', $id_karyawan)
+            ->whereNotNull('historibayar.id_giro')
+            ->whereNull('historibayar.id_transfer')
+            ->where('historibayar.girotocash', 1)
+
+            ->orderBy('tglbayar')
+            ->orderBy('historibayar.no_fak_penj')
+            ->get();
+
+        $listgiro = DB::table('giro')
+            ->selectRaw("giro.no_fak_penj,penjualan.kode_pelanggan,nama_pelanggan,tgl_giro,no_giro,namabank,jumlah,tglcair,giro.status")
+            ->join('penjualan', 'giro.no_fak_penj', '=', 'penjualan.no_fak_penj')
+            ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+            ->where('tgl_giro', $tgl_lhp)
+            ->where('giro.id_karyawan', $id_karyawan)
+            ->get();
+
+        $listtransfer = DB::table('transfer')
+            ->selectRaw("transfer.no_fak_penj,penjualan.kode_pelanggan,nama_pelanggan,tgl_transfer,namabank,jumlah,tglcair,transfer.status,girotocash,kode_transfer")
+            ->join('penjualan', 'transfer.no_fak_penj', '=', 'penjualan.no_fak_penj')
+            ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+            ->leftJoin('historibayar', 'transfer.id_transfer', '=', 'historibayar.id_transfer')
+            ->where('tgl_transfer', $tgl_lhp)
+            ->where('transfer.id_karyawan', $id_karyawan)
+            ->get();
+        return view('setoranpenjualan.detailsetoran', compact('cabang', 'salesman', 'tgl_lhp', 'kasbesar', 'listgiro', 'listtransfer'));
+    }
+
+    public function synclhp($kode_setoran)
+    {
+        $kode_setoran = Crypt::decrypt($kode_setoran);
+        $setoranpenjualan = DB::table('setoran_penjualan')->where('kode_setoran', $kode_setoran)->first();
+        $tgl_lhp = $setoranpenjualan->tgl_lhp;
+        $tgl   = explode("-", $tgl_lhp);
+        $bulan = $tgl[1];
+        $tahun = $tgl[0];
+        if ($bulan == 12) {
+            $bulan = 1;
+            $tahun = $tahun + 1;
+        } else {
+            $bulan = $bulan + 1;
+            $tahun = $tahun;
+        }
+
+        $kode_cabang = $setoranpenjualan->kode_cabang;
+        $id_karyawan = $setoranpenjualan->id_karyawan;
+        $ceksaldo = DB::table('saldoawal_kasbesar')->where('bulan', $bulan)->where('tahun', $tahun)->where('kode_cabang', $kode_cabang)->count();
+
+        if (empty($ceksaldo)) {
+            $tunaitagihan = DB::table('historibayar')
+                ->selectRaw("historibayar.id_karyawan,SUM(IF(historibayar.jenistransaksi='kredit',bayar,0)) as setoran_tagihan,
+                SUM(IF(historibayar.jenistransaksi='tunai',bayar,0)) as setoran_tunai")
+                ->where('tglbayar', $tgl_lhp)
+                ->whereNull('id_giro')
+                ->whereNull('girotocash')
+                ->whereNull('id_transfer')
+                ->whereNull('status_bayar')
+                ->where('historibayar.id_karyawan', $id_karyawan)
+                ->groupBy('historibayar.id_karyawan')
+                ->first();
+            $girotocash = DB::table('historibayar')
+                ->selectRaw("historibayar.id_karyawan,SUM(bayar) as setoran_girotocash")
+                ->where('historibayar.id_karyawan', $id_karyawan)
+                ->where('tglbayar', $tgl_lhp)
+                ->whereNotNull('girotocash')
+                ->whereNull('id_transfer')
+                ->groupBy('historibayar.id_karyawan')
+                ->first();
+
+            $girototransfer = DB::table('historibayar')
+                ->selectRaw("historibayar.id_karyawan,SUM(bayar) as setoran_girototransfer")
+                ->where('historibayar.id_karyawan', $id_karyawan)
+                ->where('tglbayar', $tgl_lhp)
+                ->whereNotNull('girotocash')
+                ->whereNotNull('id_transfer')
+                ->groupBy('historibayar.id_karyawan')
+                ->first();
+
+            $giro = DB::table('giro')
+                ->selectRaw("giro.id_karyawan,SUM(jumlah) as setoran_giro")
+                ->where('giro.id_karyawan', $id_karyawan)
+                ->where('tgl_giro', $tgl_lhp)
+                ->groupBy('giro.id_karyawan')
+                ->first();
+
+            $transfer = DB::table('transfer')
+                ->selectRaw("transfer.id_karyawan,SUM(jumlah) as setoran_transfer")
+                ->leftJoin('historibayar', 'transfer.id_transfer', '=', 'historibayar.id_transfer')
+                ->where('transfer.id_karyawan', $id_karyawan)
+                ->where('tgl_transfer', $tgl_lhp)
+                ->whereNull('girotocash')
+                ->groupBy('transfer.id_karyawan')
+                ->first();
+
+            $setoran_tunai = $tunaitagihan->setoran_tunai;
+            $setoran_giro = $giro != null ? $giro->setoran_giro : 0;
+            $setoran_transfer = $transfer != null ? $transfer->setoran_transfer : 0;
+            $setoran_tagihan = $tunaitagihan->setoran_tagihan + $setoran_giro + $setoran_transfer;
+            $gantigirokecash = $girotocash != null  ?  $girotocash->setoran_girotocash : 0;
+            $gantigiroketransfer = $girototransfer != null ? $girototransfer->setoran_girototransfer : 0;
+
+            $data = [
+                'lhp_tunai' => $setoran_tunai,
+                'lhp_tagihan' => $setoran_tagihan,
+                'girotocash' => $gantigirokecash,
+                'girototransfer' => $gantigiroketransfer,
+                'setoran_bg' => $setoran_giro,
+                'setoran_transfer' => $setoran_transfer
+            ];
+
+            $update = DB::table('setoran_penjualan')->where('kode_setoran', $kode_setoran)->update($data);
+            if ($update) {
+                return Redirect::back()->with(['success' => 'Data Berhasil Disyncronisasi']);
+            } else {
+                return Redirect::back()->with(['warning' => 'Data Gagal Disyncronisasi Hubungi Tim IT']);
+            }
+        } else {
+            return Redirect::back()->with(['warning' => 'Tidak Dapat Ubah Data karena Saldo Bulan Berikutnya Sudah di Set']);
+        }
+    }
+
+    public function delete($kode_setoran)
+    {
+        $kode_setoran = Crypt::decrypt($kode_setoran);
+        $hapus = DB::table('setoran_penjualan')->where('kode_setoran', $kode_setoran)->delete();
+        if ($hapus) {
+            return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
+        } else {
+            return Redirect::back()->with(['warning' => 'Data Gagal Dihapus Hubungi Tim IT']);
+        }
+    }
+}

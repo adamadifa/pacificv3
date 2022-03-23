@@ -26,12 +26,14 @@
 <script src="{{asset('app-assets/js/core/app-menu.js')}}"></script>
 <script src="{{asset('app-assets/js/core/app.js')}}"></script>
 <script src="{{asset('app-assets/js/scripts/components.js')}}"></script>
+<script src="{{ asset('app-assets/js/scripts//popover/popover.js') }}"></script>
 <!-- END: Theme JS-->
 <!-- BEGIN: Page JS-->
 <script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
 <script src="{{asset('app-assets/js/scripts/ui/data-list-view.js')}}"></script>
 <script src="{{asset('app-assets/js/jquery.maskMoney.js')}}"></script>
 <script src="{{asset('app-assets/js/scripts/forms/select/form-select2.js')}}"></script>
+
 <!-- END: Page JS-->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"></script>

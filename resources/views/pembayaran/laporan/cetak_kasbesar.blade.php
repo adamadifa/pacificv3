@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak Laporan Penjualan {{ date("d-m-y") }}</title>
+    <title>Cetak Laporan Kas Besar {{ date("d-m-y") }}</title>
     <style>
         body {
             font-family: 'Poppins'

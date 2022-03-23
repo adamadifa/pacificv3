@@ -30,11 +30,13 @@ use App\Http\Controllers\PermintaanpengirimanController;
 use App\Http\Controllers\RatiokomisiController;
 use App\Http\Controllers\ReturController;
 use App\Http\Controllers\SalesmanController;
+use App\Http\Controllers\SetoranpenjualanController;
 use App\Http\Controllers\SimpananController;
 use App\Http\Controllers\TabunganController;
 use App\Http\Controllers\TargetkomisiController;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\TutuplaporanController;
+use App\Models\Setoranpenjualan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -326,6 +328,18 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::delete('/ledger/{no_bukti}/delete', [LedgerController::class, 'delete']);
     Route::get('/ledger/{no_bukti}/edit', [LedgerController::class, 'edit']);
     Route::post('/ledger/{no_bukti}/update', [LedgerController::class, 'update']);
+    Route::get('/saldoawalledger', [LedgerController::class, 'saldoawal']);
+    Route::get('/saldoawalledger/create', [LedgerController::class, 'saldoawal_create']);
+    Route::post('/saldoawalledger/getsaldo', [LedgerController::class, 'getsaldo']);
+    Route::post('/saldoawalledger/store', [LedgerController::class, 'saldoawal_store']);
+    Route::delete('/saldoawalledger/{kode_saldoawalledger}/delete', [LedgerController::class, 'saldoawal_delete']);
+
+
+    //Setoran Penjualan
+    Route::get('/setoranpenjualan', [SetoranpenjualanController::class, 'index']);
+    Route::get('/setoranpenjualan/detailsetoran', [SetoranpenjualanController::class, 'detailsetoran']);
+    Route::get('/setoranpenjualan/{kode_setoran}/synclhp', [SetoranpenjualanController::class, 'synclhp']);
+    Route::delete('/setoranpenjualan/{kode_setoran}/delete', [SetoranpenjualanController::class, 'delete']);
 });
 //Administrator | Admin Penjualan | Kepala Penjualan | Direktur | Manager Accounting
 Route::middleware(['auth', 'ceklevel:admin,admin penjualan,manager accounting,kepala penjualan,kepala admin,manager marketing,direktur'])->group(function () {

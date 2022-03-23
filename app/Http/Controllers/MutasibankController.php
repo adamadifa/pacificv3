@@ -118,18 +118,18 @@ class MutasibankController extends Controller
 
 
 
-        $akunkaskecil = [
-            '1-1102',
-            '1-1103',
-            '1-1111',
-            '1-1112',
-            '1-1113',
-            '1-1114',
-            '1-1115',
-            '1-1116',
-            '1-1117',
-            '1-1118'
-        ];
+        // $akunkaskecil = [
+        //     '1-1102',
+        //     '1-1103',
+        //     '1-1111',
+        //     '1-1112',
+        //     '1-1113',
+        //     '1-1114',
+        //     '1-1115',
+        //     '1-1116',
+        //     '1-1117',
+        //     '1-1118'
+        // ];
 
 
         $bank = DB::table('master_bank')->where('kode_bank', $kode_bank)->first();
@@ -144,6 +144,7 @@ class MutasibankController extends Controller
         }
 
         $nobukti_bukubesar_bank = buatkode($nobukti_bukubesar, 'GJ' . $bulan . $tahun, 4);
+
 
         $databukubesar = array(
             'no_bukti' => $nobukti_bukubesar,
@@ -167,37 +168,28 @@ class MutasibankController extends Controller
             'nobukti_transaksi' => $no_bukti
         );
 
+
+
+
+
         DB::beginTransaction();
         try {
 
 
-            if (in_array($kode_akun, $akunkaskecil)) {
-                $dataledger = array(
-                    'no_bukti'        => $no_bukti,
-                    'bank'            => $kode_bank,
-                    'tgl_ledger'      => $tgl_ledger,
-                    'keterangan'      => $keterangan,
-                    'kode_akun'       => $kode_akun,
-                    'jumlah'          => $jumlah,
-                    'status_dk'       => $debetkredit,
-                    'nobukti_bukubesar' => $nobukti_bukubesar,
-                    'status_validasi' => 1
-                );
-                DB::table('ledger_bank')->insert($dataledger);
-                DB::table('buku_besar')->insert($databukubesar);
-            } else {
-                $dataledger = array(
-                    'no_bukti'        => $no_bukti,
-                    'bank'            => $kode_bank,
-                    'tgl_ledger'      => $tgl_ledger,
-                    'keterangan'      => $keterangan,
-                    'kode_akun'       => $kode_akun,
-                    'jumlah'          => $jumlah,
-                    'status_dk'       => $debetkredit,
-                    'status_validasi' => 1
-                );
-                DB::table('ledger_bank')->insert($dataledger);
-            }
+            $dataledger = array(
+                'no_bukti'        => $no_bukti,
+                'bank'            => $kode_bank,
+                'tgl_ledger'      => $tgl_ledger,
+                'keterangan'      => $keterangan,
+                'kode_akun'       => $kode_akun,
+                'jumlah'          => $jumlah,
+                'status_dk'       => $debetkredit,
+                'nobukti_bukubesar' => $nobukti_bukubesar,
+                'nobukti_bukubesar_2' => $nobukti_bukubesar_bank,
+                'status_validasi' => 1
+            );
+            DB::table('ledger_bank')->insert($dataledger);
+            DB::table('buku_besar')->insert($databukubesar);
             DB::table('buku_besar')->insert($databukubesarbank);
 
             DB::commit();
@@ -213,7 +205,6 @@ class MutasibankController extends Controller
     {
         $no_bukti = Crypt::decrypt($no_bukti);
         $mutasibank = DB::table('ledger_bank')->where('no_bukti', $no_bukti)->first();
-        $nobukti_bukubesar = $mutasibank->nobukti_bukubesar;
         $tgl_ledger = $mutasibank->tgl_ledger;
         $tanggal = explode("-", $tgl_ledger);
         $bulan = $tanggal[1];
@@ -225,7 +216,8 @@ class MutasibankController extends Controller
             DB::beginTransaction();
             try {
                 DB::table('ledger_bank')->where('no_bukti', $no_bukti)->delete();
-                DB::table('buku_besar')->where('no_bukti', $nobukti_bukubesar)->delete();
+                DB::table('buku_besar')->where('no_bukti', $mutasibank->nobukti_bukubesar)->delete();
+                DB::table('buku_besar')->where('no_bukti', $mutasibank->nobukti_bukubesar_2)->delete();
                 DB::commit();
                 return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
             } catch (\Exception $e) {
@@ -260,7 +252,6 @@ class MutasibankController extends Controller
         $mutasibank = DB::table('ledger_bank')
             ->join('master_bank', 'ledger_bank.bank', '=', 'master_bank.kode_bank')
             ->where('no_bukti', $no_bukti)->first();
-        $kode_cabang = $mutasibank->kode_cabang;
         $tgl_ledger = $request->tgl_ledger;
         $keterangan = $request->keterangan;
         $jumlah = str_replace(".", "", $request->jumlah);
@@ -273,31 +264,31 @@ class MutasibankController extends Controller
 
 
 
-        $bukubesar = DB::table('buku_besar')->whereRaw('LEFT(no_bukti,6)="GJ' . $bulan . $tahun . '"')
-            ->orderBy('no_bukti', 'desc')
-            ->first();
-        if ($bukubesar != null) {
-            $last_no_bukti_bukubesar = $bukubesar->no_bukti;
-        } else {
-            $last_no_bukti_bukubesar = "";
-        }
+        // $bukubesar = DB::table('buku_besar')->whereRaw('LEFT(no_bukti,6)="GJ' . $bulan . $tahun . '"')
+        //     ->orderBy('no_bukti', 'desc')
+        //     ->first();
+        // if ($bukubesar != null) {
+        //     $last_no_bukti_bukubesar = $bukubesar->no_bukti;
+        // } else {
+        //     $last_no_bukti_bukubesar = "";
+        // }
 
-        $nobukti_bukubesar = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $tahun, 4);
+        // $nobukti_bukubesar = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $tahun, 4);
 
 
 
-        $akunkaskecil = [
-            '1-1102',
-            '1-1103',
-            '1-1111',
-            '1-1112',
-            '1-1113',
-            '1-1114',
-            '1-1115',
-            '1-1116',
-            '1-1117',
-            '1-1118'
-        ];
+        // $akunkaskecil = [
+        //     '1-1102',
+        //     '1-1103',
+        //     '1-1111',
+        //     '1-1112',
+        //     '1-1113',
+        //     '1-1114',
+        //     '1-1115',
+        //     '1-1116',
+        //     '1-1117',
+        //     '1-1118'
+        // ];
 
         if ($debetkredit == "D") {
             $debet = $jumlah;
@@ -310,64 +301,33 @@ class MutasibankController extends Controller
 
         DB::beginTransaction();
         try {
-            if (in_array($kode_akun, $akunkaskecil)) {
 
-                if (!empty($mutasibank->nobukti_bukubesar)) {
-                    $databukubesar = array(
-                        'tanggal' => $tgl_ledger,
-                        'keterangan' => $keterangan,
-                        'debet' => $debet,
-                        'kredit' => $kredit,
-                    );
-                    $dataledger = array(
-                        'tgl_ledger'      => $tgl_ledger,
-                        'keterangan'      => $keterangan,
-                        'kode_akun'       => $kode_akun,
-                        'jumlah'          => $jumlah,
-                        'status_dk'       => $debetkredit,
-                        'status_validasi' => 1
-                    );
-                    DB::table('buku_besar')->where('no_bukti', $mutasibank->nobukti_bukubesar)->update($databukubesar);
-                } else {
+            $databukubesar = array(
+                'tanggal' => $tgl_ledger,
+                'keterangan' => $keterangan,
+                'kode_akun' => $kode_akun,
+                'debet' => $debet,
+                'kredit' => $kredit,
+            );
 
-                    $databukubesar = array(
-                        'no_bukti' => $nobukti_bukubesar,
-                        'tanggal' => $tgl_ledger,
-                        'sumber' => 'ledger',
-                        'keterangan' => $keterangan,
-                        'kode_akun' => $kode_akun,
-                        'debet' => $debet,
-                        'kredit' => $kredit,
-                        'nobukti_transaksi' => $no_bukti
-                    );
+            $databukubesarbank = array(
+                'tanggal' => $tgl_ledger,
+                'keterangan' => $keterangan,
+                'debet' => $kredit,
+                'kredit' => $debet,
+            );
 
-                    $dataledger = array(
-                        'tgl_ledger'      => $tgl_ledger,
-                        'keterangan'      => $keterangan,
-                        'kode_akun'       => $kode_akun,
-                        'jumlah'          => $jumlah,
-                        'status_dk'       => $debetkredit,
-                        'nobukti_bukubesar' => $nobukti_bukubesar,
-                        'status_validasi' => 1
-                    );
-                    DB::table('buku_besar')->insert($databukubesar);
-                }
-                DB::table('ledger_bank')->where('no_bukti', $no_bukti)->update($dataledger);
-            } else {
-                $dataledger = array(
-                    'tgl_ledger'      => $tgl_ledger,
-                    'keterangan'      => $keterangan,
-                    'kode_akun'       => $kode_akun,
-                    'jumlah'          => $jumlah,
-                    'status_dk'       => $debetkredit,
-                    'nobukti_bukubesar' => null,
-                    'status_validasi' => 1
-                );
-                DB::table('ledger_bank')->where('no_bukti', $no_bukti)->update($dataledger);
-                if (!empty($mutasibank->nobukti_bukubesar)) {
-                    DB::table('buku_besar')->where('no_bukti', $mutasibank->nobukti_bukubesar)->delete();
-                }
-            }
+            $dataledger = array(
+                'tgl_ledger'      => $tgl_ledger,
+                'keterangan'      => $keterangan,
+                'kode_akun'       => $kode_akun,
+                'jumlah'          => $jumlah,
+                'status_dk'       => $debetkredit,
+                'status_validasi' => 1
+            );
+            DB::table('buku_besar')->where('no_bukti', $mutasibank->nobukti_bukubesar)->update($databukubesar);
+            DB::table('buku_besar')->where('no_bukti', $mutasibank->nobukti_bukubesar_2)->update($databukubesarbank);
+            DB::table('ledger_bank')->where('no_bukti', $no_bukti)->update($dataledger);
             DB::commit();
             return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
         } catch (\Exception $e) {

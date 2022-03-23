@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Bank;
 use App\Models\Cabang;
 use App\Models\Ledger;
+use App\Models\Saldoawalledger;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -171,26 +172,40 @@ class LedgerController extends Controller
                 }
 
                 $nobukti_bukubesar = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $tahun, 4);
+                $nobukti_bukubesar_bank = buatkode($nobukti_bukubesar, 'GJ' . $bulan . $tahun, 4);
 
                 if ($d->status_dk == "D") {
-                    $debetbukubesar = 0;
-                    $kreditbukubesar = $d->jumlah;
+                    $debet = $d->jumlah;
+                    $kredit = 0;
                 } else {
-                    $debetbukubesar = $d->jumlah;
-                    $kreditbukubesar = 0;
+                    $debet = 0;
+                    $kredit = $d->jumlah;
                 }
                 $databukubesar = array(
                     'no_bukti' => $nobukti_bukubesar,
                     'tanggal' => $d->tgl_ledger,
                     'sumber' => 'ledger',
                     'keterangan' => $d->keterangan,
+                    'kode_akun' => $d->kode_akun,
+                    'debet' => $debet,
+                    'kredit' => $kredit,
+                    'nobukti_transaksi' => $no_bukti
+                );
+
+
+                $databukubesarbank = array(
+                    'no_bukti' => $nobukti_bukubesar_bank,
+                    'tanggal' => $d->tgl_ledger,
+                    'sumber' => 'ledger',
+                    'keterangan' => $d->keterangan,
                     'kode_akun' => $kode_akun_bank,
-                    'debet' => $debetbukubesar,
-                    'kredit' => $kreditbukubesar,
+                    'debet' => $kredit,
+                    'kredit' => $debet,
                     'nobukti_transaksi' => $no_bukti
                 );
 
                 DB::table('buku_besar')->insert($databukubesar);
+                DB::table('buku_besar')->insert($databukubesarbank);
                 if ($d->status_dk == "D" && $d->peruntukan == "PC") {
                     $kode = "CR" . $bulan . $tahun;
                     $cr = DB::table('costratio_biaya')
@@ -218,7 +233,8 @@ class LedgerController extends Controller
                         'peruntukan'      => $d->peruntukan,
                         'ket_peruntukan'  => $d->ket_peruntukan,
                         'kode_cr'         => $kode_cr,
-                        'nobukti_bukubesar' => $nobukti_bukubesar
+                        'nobukti_bukubesar' => $nobukti_bukubesar,
+                        'nobukti_bukubesar_2' => $nobukti_bukubesar_bank
                     );
 
                     $datacr = [
@@ -248,7 +264,8 @@ class LedgerController extends Controller
                         'status_validasi' => 1,
                         'peruntukan'      => $d->peruntukan,
                         'ket_peruntukan'  => $d->ket_peruntukan,
-                        'nobukti_bukubesar' => $nobukti_bukubesar
+                        'nobukti_bukubesar' => $nobukti_bukubesar,
+                        'nobukti_bukubesar_2' => $nobukti_bukubesar_bank
                     );
 
                     DB::table('ledger_bank')->insert($dataledger);
@@ -270,10 +287,11 @@ class LedgerController extends Controller
         $no_bukti = Crypt::decrypt($no_bukti);
         $ledger = DB::table('ledger_bank')->where('no_bukti', $no_bukti)->first();
         $kode_cr = $ledger->kode_cr;
-        $nobukti_bukubesar = $ledger->nobukti_bukubesar;
+
         DB::beginTransaction();
         try {
-            DB::table('buku_besar')->where('no_bukti', $nobukti_bukubesar)->delete();
+            DB::table('buku_besar')->where('no_bukti', $ledger->nobukti_bukubesar)->delete();
+            DB::table('buku_besar')->where('no_bukti', $ledger->nobukti_bukubesar_2)->delete();
             DB::table('costratio_biaya')->where('kode_cr', $kode_cr)->delete();
             DB::table('ledger_bank')->where('no_bukti', $no_bukti)->delete();
             DB::commit();
@@ -312,23 +330,32 @@ class LedgerController extends Controller
 
 
         if ($status_dk == "D") {
-            $debetbukubesar = 0;
-            $kreditbukubesar = $jumlah;
+            $debet = $jumlah;
+            $kredit = 0;
         } else {
-            $debetbukubesar = $jumlah;
-            $kreditbukubesar = 0;
+            $debet = 0;
+            $kredit = $jumlah;
         }
         $databukubesar = [
             'tanggal' => $tgl_ledger,
             'keterangan' => $keterangan,
-            'debet' => $debetbukubesar,
-            'kredit' => $kreditbukubesar
+            'kode_akun' => $kode_akun,
+            'debet' => $debet,
+            'kredit' => $kredit
+        ];
+
+        $databukubesarbank = [
+            'tanggal' => $tgl_ledger,
+            'keterangan' => $keterangan,
+            'debet' => $kredit,
+            'kredit' => $debet
         ];
 
         DB::beginTransaction();
         try {
 
             DB::table('buku_besar')->where('no_bukti', $ledger->nobukti_bukubesar)->update($databukubesar);
+            DB::table('buku_besar')->where('no_bukti', $ledger->nobukti_bukubesar_2)->update($databukubesarbank);
             if (empty($ledger->kode_cr)) {
                 if ($status_dk == "D" && $peruntukan == "PC") {
                     $kode = "CR" . $bulan . $tahun;
@@ -410,6 +437,113 @@ class LedgerController extends Controller
             dd($e);
             DB::rollback();
             return Redirect::back()->with(['warning' => 'Data Gagal Disimpan Hubungi Tim IT']);;
+        }
+    }
+
+    public function saldoawal(Request $request)
+    {
+        $query = Saldoawalledger::query();
+        if (empty($request->bank) && empty($request->bulan) && empty($request->tahun)) {
+            $bulanini = date("m");
+            $tahunini = date("Y");
+            $query->where('bulan', $bulanini);
+            $query->where('tahun', $tahunini);
+        } else {
+            if (!empty($request->bank)) {
+                $query->where('saldoawal_ledger.kode_bank', $request->bank);
+            }
+
+            if (!empty($request->bulan)) {
+                $query->where('bulan', $request->bulan);
+            }
+
+            if (!empty($request->tahun)) {
+                $query->where('tahun', $request->tahun);
+            }
+        }
+        $query->join('master_bank', 'saldoawal_ledger.kode_bank', '=', 'master_bank.kode_bank');
+        $query->orderBy('bulan');
+        $saldoawal = $query->get();
+
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        $bank = Bank::orderBy('kode_bank')->get();
+        return view('ledger.saldoawal', compact('bank', 'bulan', 'saldoawal'));
+    }
+
+    public function saldoawal_create()
+    {
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        $bank = Bank::orderBy('kode_bank')->get();
+        return view('ledger.saldoawal_create', compact('bulan', 'bank'));
+    }
+
+    public function getsaldo(Request $request)
+    {
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $bank = $request->bank;
+
+        if ($bulan == 1) {
+            $bulanlalu = 12;
+            $tahunlalu = $tahun - 1;
+        } else {
+            $bulanlalu = $bulan - 1;
+            $tahunlalu = $tahun;
+        }
+        $ceksaldosebelumnya = DB::table('saldoawal_ledger')->where('bulan', $bulanlalu)->where('tahun', $tahunlalu)->where('kode_bank', $bank)->count();
+        $ceksaldobank = DB::table('saldoawal_ledger')->where('kode_bank', $bank)->count();
+        $ceksaldo = DB::table('saldoawal_ledger')->where('bulan', $bulan)->where('tahun', $tahun)->where('kode_bank', $bank)->count();
+        if (empty($ceksaldosebelumnya) && !empty($ceksaldobank) || !empty($ceksaldo)) {
+            echo 1;
+        } else {
+            $saldo = DB::table('saldoawal_ledger')->where('kode_bank', $bank)->where('bulan', $bulanlalu)->where('tahun', $tahunlalu)->first();
+            $mutasi = DB::table('ledger_bank')
+                ->selectRaw("SUM(IF(status_dk='K',jumlah,0)) as kredit,
+            SUM(IF(status_dk='D',jumlah,0)) as debet")
+                ->whereRaw('MONTH(tgl_ledger)=' . $bulanlalu)
+                ->whereRaw('YEAR(tgl_ledger)=' . $tahunlalu)
+                ->where('bank', $bank)
+                ->first();
+
+            $saldoawal = $saldo->jumlah + $mutasi->kredit - $mutasi->debet;
+            echo rupiah($saldoawal);
+        }
+    }
+
+    public function saldoawal_store(Request $request)
+    {
+        $kode_saldoawalledger = $request->kode_saldoawalledger;
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $tanggal = $tahun . "-" . $bulan . "-01";
+        $bank = $request->bank;
+        $jumlah = str_replace(".", "", $request->jumlah);
+        $data = [
+            'kode_saldoawalledger' => $kode_saldoawalledger,
+            'tanggal' => $tanggal,
+            'bulan' => $bulan,
+            'tahun' => $tahun,
+            'kode_bank' => $bank,
+            'jumlah' => $jumlah,
+            'id_admin' => Auth::user()->id
+        ];
+
+        $simpan = DB::table('saldoawal_ledger')->insert($data);
+        if ($simpan) {
+            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+        } else {
+            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan Hubungi Tim IT']);
+        }
+    }
+
+    public function saldoawal_delete($kode_saldoawalledger)
+    {
+        $kode_saldoawalledger = Crypt::decrypt($kode_saldoawalledger);
+        $hapus = DB::table('saldoawal_ledger')->where('kode_saldoawalledger', $kode_saldoawalledger)->delete();
+        if ($hapus) {
+            return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
+        } else {
+            return Redirect::back()->with(['warning' => 'Data Gagal Dihapus Hubungi Tim IT']);
         }
     }
 }

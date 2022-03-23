@@ -152,6 +152,7 @@ class KaskecilController extends Controller
                 }
 
                 $no_bukti = buatkode($last_no_bukti, 'GJ' . $bulan . $thn, 4);
+                $no_bukti_2 = buatkode($no_bukti, 'GJ' . $bulan . $thn, 4);
                 if ($t->status_dk == 'D' and $cekakun == '6-1' and $t->peruntukan != 'MP' or $t->status_dk == 'D' and $cekakun == '6-2' and $t->peruntukan != 'MP') {
                     $kode = "CR" . $bulan . $thn;
                     $cr = DB::table('costratio_biaya')
@@ -177,7 +178,8 @@ class KaskecilController extends Controller
                         'order'        => 2,
                         'peruntukan'   => $t->peruntukan,
                         'kode_cr'      => $kode_cr,
-                        'nobukti_bukubesar' => $no_bukti
+                        'nobukti_bukubesar' => $no_bukti,
+                        'nobukti_bukubesar_2' => $no_bukti_2
                     );
 
                     $datacr = [
@@ -203,23 +205,44 @@ class KaskecilController extends Controller
                         'status_dk'    => $t->status_dk,
                         'peruntukan'   => $t->peruntukan,
                         'order'        => 2,
-                        'nobukti_bukubesar' => $no_bukti
+                        'nobukti_bukubesar' => $no_bukti,
+                        'nobukti_bukubesar_2' => $no_bukti_2
                     );
                     DB::table('kaskecil_detail')->insert($data);
                 }
 
+                if ($t->status_dk == "D") {
+                    $debet = $t->jumlah;
+                    $kredit = 0;
+                } else {
+                    $debet = 0;
+                    $kredit = $t->jumlah;
+                }
                 $databukubesar = array(
                     'no_bukti' => $no_bukti,
                     'tanggal' => $t->tgl_kaskecil,
                     'sumber' => 'Kas Kecil',
                     'keterangan' => $t->keterangan,
                     'kode_akun' => $akun[$kode_cabang],
-                    'debet' => 0,
-                    'kredit' => $t->jumlah,
+                    'debet' => $kredit,
+                    'kredit' => $debet,
+                    'nobukti_transaksi' => $t->nobukti,
+                );
+
+
+                $databukubesartrans = array(
+                    'no_bukti' => $no_bukti_2,
+                    'tanggal' => $t->tgl_kaskecil,
+                    'sumber' => 'Kas Kecil',
+                    'keterangan' => $t->keterangan,
+                    'kode_akun' => $t->kode_akun,
+                    'debet' => $debet,
+                    'kredit' => $kredit,
                     'nobukti_transaksi' => $t->nobukti,
                 );
 
                 DB::table('buku_besar')->insert($databukubesar);
+                DB::table('buku_besar')->insert($databukubesartrans);
             }
             DB::table('kaskecil_detail_temp')->where('nobukti', $nobukti)->delete();
             DB::commit();
@@ -237,10 +260,12 @@ class KaskecilController extends Controller
         $kaskecil = DB::table('kaskecil_detail')->where('id', $id)->first();
         $kode_cr = $kaskecil->kode_cr;
         $nobukti_bukubesar = $kaskecil->nobukti_bukubesar;
+        $nobukti_bukubesar_2 = $kaskecil->nobukti_bukubesar_2;
         DB::beginTransaction();
         try {
             DB::table('kaskecil_detail')->where('id', $id)->delete();
             DB::table('buku_besar')->where('no_bukti', $nobukti_bukubesar)->delete();
+            DB::table('buku_besar')->where('no_bukti', $nobukti_bukubesar_2)->delete();
             DB::table('costratio_biaya')->where('kode_cr', $kode_cr)->delete();
             DB::commit();
             return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
@@ -286,6 +311,7 @@ class KaskecilController extends Controller
         $kode_cr = $kaskecil->kode_cr;
         $kode_cabang = $kaskecil->kode_cabang;
         $nobukti_bukubesar = $kaskecil->nobukti_bukubesar;
+        $nobukti_bukubesar_2 = $kaskecil->nobukti_bukubesar_2;
         $cekakun = substr($kode_akun, 0, 3);
 
         DB::beginTransaction();
@@ -357,14 +383,33 @@ class KaskecilController extends Controller
             }
 
             //Update Buku Besar
+
+            if ($status_dk == "D") {
+                $debet = $jumlah;
+                $kredit = 0;
+            } else {
+                $debet = 0;
+                $kredit = $jumlah;
+            }
+
             $databukubesar = [
                 'tanggal' => $tgl_kaskecil,
                 'keterangan' => $keterangan,
-                'kredit' => $jumlah,
+                'debet' => $kredit,
+                'kredit' => $debet,
+                'nobukti_transaksi' => $nobukti
+            ];
+
+            $databukubesartrans = [
+                'tanggal' => $tgl_kaskecil,
+                'keterangan' => $keterangan,
+                'debet' => $debet,
+                'kredit' => $kredit,
                 'nobukti_transaksi' => $nobukti
             ];
 
             DB::table('buku_besar')->where('no_bukti', $nobukti_bukubesar)->update($databukubesar);
+            DB::table('buku_besar')->where('no_bukti', $nobukti_bukubesar_2)->update($databukubesartrans);
             DB::commit();
             return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
         } catch (\Exception $e) {

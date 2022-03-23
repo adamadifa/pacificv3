@@ -5827,7 +5827,7 @@ a.close.disabled {
     padding: 0.5rem 0.75rem;
     margin-bottom: 0;
     font-size: 1rem;
-    color: #2c2c2c;
+    color: #fff;
     background-color: #7367f0;
     border-bottom: 1px solid #5e50ee;
     border-top-left-radius: calc(0.6rem - 1px);

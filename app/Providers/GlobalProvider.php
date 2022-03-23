@@ -144,6 +144,9 @@ class GlobalProvider extends ServiceProvider
             $ledger_view = ['admin'];
             $ledger_saldoawal = ['admin'];
 
+            //Kas Besar Keuangan
+            $kasbesar_menu  = ['admin'];
+            $setoranpenjualan_view = ['admin'];
 
             //Utilities
             $saldoawalpiutang = ['admin'];
@@ -251,7 +254,9 @@ class GlobalProvider extends ServiceProvider
                 'ledger_view' => $ledger_view,
                 'ledger_saldoawal' => $ledger_saldoawal,
 
-
+                //Kas Besar Keuangan
+                'kasbesar_menu' => $kasbesar_menu,
+                'setoranpenjualan_view' => $setoranpenjualan_view,
                 //Utilities
                 'saldoawalpiutang' => $saldoawalpiutang,
 

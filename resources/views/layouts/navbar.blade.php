@@ -266,6 +266,24 @@
                         </ul>
                     </li>
                     @endif
+                    @if (in_array($level, $kasbesar_menu))
+                    <li>
+                        <a href="#">
+                            <i class="feather icon-circle"></i>
+                            <span class="menu-item" data-i18n="Second Level">Kas Besar</span>
+                        </a>
+                        <ul class="menu-content">
+                            @if (in_array($level, $setoranpenjualan_view))
+                            <li class="{{ request()->is(['setoranpenjualan', 'setoranpenjualan/*']) ? 'active' : '' }}">
+                                <a href="/setoranpenjualan">
+                                    <i class="feather icon-file-text"></i>
+                                    <span class="menu-item">Setoran Penjualan</span>
+                                </a>
+                            </li>
+                            @endif
+                        </ul>
+                    </li>
+                    @endif
                     @if (in_array($level, $kaskecil_menu))
                     <li>
                         <a href="#">
@@ -300,8 +318,8 @@
                         </a>
                         <ul class="menu-content">
                             @if (in_array($level, $ledger_saldoawal))
-                            <li class="{{ request()->is(['ledger/saldoawal', 'ledger/saldoawal/*']) ? 'active' : '' }}">
-                                <a href="/klaim">
+                            <li class="{{ request()->is(['saldoawalledger', 'saldoawalledger/*']) ? 'active' : '' }}">
+                                <a href="/saldoawalledger">
                                     <i class="feather icon-settings"></i>
                                     <span class="menu-item">Saldo Awal Ledger</span>
                                 </a>
