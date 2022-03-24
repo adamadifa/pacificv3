@@ -23,7 +23,7 @@
         <div class="col-md-12 col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    <a href="#" class="btn btn-primary" id="inputkaskecil"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
+                    <a href="#" class="btn btn-primary" id="inputsetoranpenjualan"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
                 </div>
                 <div class="card-body">
                     <form action="/setoranpenjualan" id="frmcari">
@@ -179,7 +179,7 @@
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         <a href="#" class="info ml-1" data-toggle="popover" data-placement="{{ $position }}" data-container="body" data-original-title="Keterangan" data-content="{{ $d->keterangan }}"><i class="feather icon-info"></i></a>
                                         <a href="/setoranpenjualan/{{ Crypt::encrypt($d->kode_setoran) }}/synclhp" class="success ml-1"><i class="feather icon-refresh-ccw"></i></a>
-                                        <a href="#" class="success ml-1"><i class="feather icon-edit"></i></a>
+                                        <a href="#" class="success ml-1 edit" kodesetoran="{{ Crypt::encrypt($d->kode_setoran) }}"><i class="feather icon-edit"></i></a>
                                         <form method="POST" class="deleteform" action="/setoranpenjualan/{{Crypt::encrypt($d->kode_setoran)}}/delete">
                                             @csrf
                                             @method('DELETE')
@@ -224,28 +224,47 @@
         </div>
     </div>
 </div>
-<!-- Input Kas Kecil -->
-<div class="modal fade text-left" id="mdlinputkaskecil" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog modal-lg" role="document">
+<!-- Input Setoran Penjualan -->
+<div class="modal fade text-left" id="mdlinputsetoranpenjualan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel18">Input Kas Kecil</h4>
+                <h4 class="modal-title" id="myModalLabel18">Input Setoran Penjualan</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div id="loadinputkaskecil"></div>
+                <div id="loadinputsetoranpenjualan"></div>
             </div>
         </div>
     </div>
 </div>
-
+<!-- Edit Setoran Penjualan -->
+<div class="modal fade text-left" id="mdleditsetoranpenjualan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Edit Setoran Penjualan</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loadeditsetoranpenjualan"></div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('myscript')
+
 <script>
     $(function() {
+        var kode_cabang = $("#kode_cabang").val();
+        loadsalesmancabang(kode_cabang);
+
         function cektutuplaporan(tanggal) {
             $.ajax({
                 type: "POST"
@@ -288,17 +307,19 @@
                 });
         });
 
-        $(".detailkertas, .detaillogam").click(function(e) {
+        $(".detailkertas, .detaillogam, .info").click(function(e) {
             e.preventDefault();
         });
 
         function loadsalesmancabang(kode_cabang) {
+            var id_karyawan = "{{ Request('id_karyawan') }}";
             $.ajax({
                 type: 'POST'
                 , url: '/salesman/getsalescab'
                 , data: {
                     _token: "{{ csrf_token() }}"
                     , kode_cabang: kode_cabang
+                    , id_karyawan: id_karyawan
                 }
                 , cache: false
                 , success: function(respond) {
@@ -310,6 +331,25 @@
         $("#kode_cabang").change(function() {
             var kode_cabang = $(this).val();
             loadsalesmancabang(kode_cabang);
+        });
+
+        $("#inputsetoranpenjualan").click(function(e) {
+            e.preventDefault();
+            $('#mdlinputsetoranpenjualan').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+            $("#loadinputsetoranpenjualan").load("/setoranpenjualan/create");
+        });
+
+        $(".edit").click(function(e) {
+            e.preventDefault();
+            var kode_setoran = $(this).attr("kodesetoran");
+            $('#mdleditsetoranpenjualan').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+            $("#loadeditsetoranpenjualan").load("/setoranpenjualan/" + kode_setoran + "/edit");
         });
     });
 

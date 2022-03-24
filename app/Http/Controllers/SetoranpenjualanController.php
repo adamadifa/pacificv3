@@ -257,4 +257,190 @@ class SetoranpenjualanController extends Controller
             return Redirect::back()->with(['warning' => 'Data Gagal Dihapus Hubungi Tim IT']);
         }
     }
+
+    public function create()
+    {
+        $cabang = Cabang::orderBy('kode_cabang')->get();
+        return view('setoranpenjualan.create', compact('cabang'));
+    }
+
+    public function getsetoranpenjualan(Request $request)
+    {
+        $tgl_lhp = $request->tgl_lhp;
+        $id_karyawan = $request->id_karyawan;
+
+        $tunaitagihan = DB::table('historibayar')
+            ->selectRaw("historibayar.id_karyawan,SUM(IF(historibayar.jenistransaksi='kredit',bayar,0)) as setoran_tagihan,
+                SUM(IF(historibayar.jenistransaksi='tunai',bayar,0)) as setoran_tunai")
+            ->where('tglbayar', $tgl_lhp)
+            ->whereNull('id_giro')
+            ->whereNull('girotocash')
+            ->whereNull('id_transfer')
+            ->whereNull('status_bayar')
+            ->where('historibayar.id_karyawan', $id_karyawan)
+            ->groupBy('historibayar.id_karyawan')
+            ->first();
+        $girotocash = DB::table('historibayar')
+            ->selectRaw("historibayar.id_karyawan,SUM(bayar) as setoran_girotocash")
+            ->where('historibayar.id_karyawan', $id_karyawan)
+            ->where('tglbayar', $tgl_lhp)
+            ->whereNotNull('girotocash')
+            ->whereNull('id_transfer')
+            ->groupBy('historibayar.id_karyawan')
+            ->first();
+
+        $girototransfer = DB::table('historibayar')
+            ->selectRaw("historibayar.id_karyawan,SUM(bayar) as setoran_girototransfer")
+            ->where('historibayar.id_karyawan', $id_karyawan)
+            ->where('tglbayar', $tgl_lhp)
+            ->whereNotNull('girotocash')
+            ->whereNotNull('id_transfer')
+            ->groupBy('historibayar.id_karyawan')
+            ->first();
+
+        $giro = DB::table('giro')
+            ->selectRaw("giro.id_karyawan,SUM(jumlah) as setoran_giro")
+            ->where('giro.id_karyawan', $id_karyawan)
+            ->where('tgl_giro', $tgl_lhp)
+            ->whereNotNull('tgl_giro')
+            ->groupBy('giro.id_karyawan')
+            ->first();
+
+        $transfer = DB::table('transfer')
+            ->selectRaw("transfer.id_karyawan,SUM(jumlah) as setoran_transfer")
+            ->leftJoin('historibayar', 'transfer.id_transfer', '=', 'historibayar.id_transfer')
+            ->where('transfer.id_karyawan', $id_karyawan)
+            ->where('tgl_transfer', $tgl_lhp)
+            ->whereNotNull('tgl_transfer')
+            ->whereNull('girotocash')
+            ->groupBy('transfer.id_karyawan')
+            ->first();
+
+        $setoran_tunai = $tunaitagihan != null ? $tunaitagihan->setoran_tunai : 0;
+        $setoran_giro = $giro != null ? $giro->setoran_giro : 0;
+        $setoran_transfer = $transfer != null ? $transfer->setoran_transfer : 0;
+        $setoran_giro_transfer = $setoran_giro + $setoran_transfer;
+        $setoran_tagihan = $tunaitagihan != null ? $tunaitagihan->setoran_tagihan : 0;
+        $total_setoran_tagihan = $setoran_tagihan + $setoran_giro + $setoran_transfer;
+        $gantigirokecash = $girotocash != null  ?  $girotocash->setoran_girotocash : 0;
+        $gantigiroketransfer = $girototransfer != null ? $girototransfer->setoran_girototransfer : 0;
+
+
+        echo rupiah($setoran_tunai) . "|" . rupiah($total_setoran_tagihan) . "|" . rupiah($setoran_giro) . "|" . rupiah($gantigirokecash) . "|" . rupiah($setoran_transfer) . "|" . rupiah($setoran_giro_transfer) . "|" . rupiah($gantigiroketransfer) . "|" . rupiah($setoran_tunai + $total_setoran_tagihan);
+    }
+
+    public function ceksetoran(Request $request)
+    {
+        $ceksetoran = DB::table('setoran_penjualan')->where('id_karyawan', $request->id_karyawan)->where('tgl_lhp', $request->tgl_lhp)->count();
+        echo $ceksetoran;
+    }
+
+    public function store(Request $request)
+    {
+        $tgl_lhp = $request->tgl_lhp;
+        $kode_cabang = $request->kode_cabang;
+        $id_karyawan = $request->id_karyawan;
+        $lhp_tunai = !empty($request->lhp_tunai) ? str_replace(".", "", $request->lhp_tunai) : 0;
+        $lhp_tagihan = !empty($request->lhp_tagihan)  ? str_replace(".", "", $request->lhp_tagihan) : 0;
+
+        $setoran_kertas = !empty($request->setoran_kertas) ? str_replace(".", "", $request->setoran_kertas) : 0;
+        $setoran_logam = !empty($request->setoran_logam) ? str_replace(".", "", $request->setoran_logam) : 0;
+        $setoran_bg = !empty($request->setoran_bg) ? str_replace(".", "", $request->setoran_bg) : 0;
+        $setoran_transfer = !empty($request->setoran_transfer) ? str_replace(".", "", $request->setoran_transfer) : 0;
+
+        $girotocash = !empty($request->girotocash) ? str_replace(".", "", $request->girotocash) : 0;
+        $girototransfer = !empty($request->girototransfer) ? str_replace(".", "", $request->girototransfer) : 0;
+        $keterangan = $request->keterangan;
+
+        $tanggal = explode("-", $tgl_lhp);
+        $hari  = $tanggal[2];
+        $bulan = $tanggal[1];
+        $tahun = $tanggal[0];
+        $thn = substr($tahun, 2, 2);
+
+        $tahunini = date("y");
+        $setoranpenjualan = DB::table('setoran_penjualan')
+            ->select('kode_setoran')
+            ->whereRaw('LEFT(kode_setoran,4)="SP' . $tahunini . '"')
+            ->orderBy('kode_setoran', 'desc')
+            ->first();
+        $lastkode_setoran = $setoranpenjualan->kode_setoran;
+        $kode_setoran = buatkode($lastkode_setoran, 'SP' . $tahunini, 5);
+        $data = array(
+            'kode_setoran'    => $kode_setoran,
+            'tgl_lhp'         => $tgl_lhp,
+            'kode_cabang'     => $kode_cabang,
+            'id_karyawan'     => $id_karyawan,
+            'lhp_tunai'       => $lhp_tunai,
+            'lhp_tagihan'     => $lhp_tagihan,
+            'setoran_kertas'  => $setoran_kertas,
+            'setoran_logam'   => $setoran_logam,
+            'setoran_bg'      => $setoran_bg,
+            'setoran_transfer' => $setoran_transfer,
+            'girotocash'      => $girotocash,
+            'girototransfer'  => $girototransfer,
+            'keterangan'      => $keterangan
+        );
+
+        if ($bulan == 12) {
+            $bulan = 1;
+            $tahun = $tahun + 1;
+        } else {
+            $bulan = $bulan + 1;
+            $tahun = $tahun;
+        }
+
+        $ceksaldo = DB::table('saldoawal_kasbesar')->where('bulan', $bulan)->where('tahun', $tahun)->where('kode_cabang', $kode_cabang)->count();
+        if (empty($ceksaldo)) {
+            $simpan = DB::table('setoran_penjualan')->insert($data);
+            if ($simpan) {
+                return Redirect::back()->with(['success' => 'Data Berhasil Disimpan !']);
+            } else {
+                return Redirect::back()->with(['warning' => 'Data Gagal Disimpan Hubungi Tim IT !']);
+            }
+        } else {
+            return Redirect::back()->with(['warning' => 'Periode Sudah Ditutup']);
+        }
+    }
+
+    public function edit($kode_setoran)
+    {
+        $kode_setoran = Crypt::decrypt($kode_setoran);
+        $setoranpenjualan = DB::table('setoran_penjualan')->where('kode_setoran', $kode_setoran)->first();
+        $cabang = Cabang::orderBy('kode_cabang')->get();
+        return view('setoranpenjualan.edit', compact('cabang', 'setoranpenjualan'));
+    }
+
+    public function update($kode_setoran, Request $request)
+    {
+        $kode_setoran = Crypt::decrypt($kode_setoran);
+        $lhp_tunai = !empty($request->lhp_tunai) ? str_replace(".", "", $request->lhp_tunai) : 0;
+        $lhp_tagihan = !empty($request->lhp_tagihan)  ? str_replace(".", "", $request->lhp_tagihan) : 0;
+
+        $setoran_kertas = !empty($request->setoran_kertas) ? str_replace(".", "", $request->setoran_kertas) : 0;
+        $setoran_logam = !empty($request->setoran_logam) ? str_replace(".", "", $request->setoran_logam) : 0;
+        $setoran_bg = !empty($request->setoran_bg) ? str_replace(".", "", $request->setoran_bg) : 0;
+        $setoran_transfer = !empty($request->setoran_transfer) ? str_replace(".", "", $request->setoran_transfer) : 0;
+
+        $girotocash = !empty($request->girotocash) ? str_replace(".", "", $request->girotocash) : 0;
+        $girototransfer = !empty($request->girototransfer) ? str_replace(".", "", $request->girototransfer) : 0;
+        $keterangan = $request->keterangan;
+        $data = array(
+            'lhp_tunai'       => $lhp_tunai,
+            'lhp_tagihan'     => $lhp_tagihan,
+            'setoran_kertas'  => $setoran_kertas,
+            'setoran_logam'   => $setoran_logam,
+            'setoran_bg'      => $setoran_bg,
+            'setoran_transfer' => $setoran_transfer,
+            'girotocash'      => $girotocash,
+            'girototransfer'  => $girototransfer,
+            'keterangan'      => $keterangan
+        );
+        $simpan = DB::table('setoran_penjualan')->where('kode_setoran', $kode_setoran)->update($data);
+        if ($simpan) {
+            return Redirect::back()->with(['success' => 'Data Berhasil Di update !']);
+        } else {
+            return Redirect::back()->with(['warning' => 'Data Gagal Di Update Hubungi Tim IT !']);
+        }
+    }
 }

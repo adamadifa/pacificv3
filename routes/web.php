@@ -338,7 +338,13 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     //Setoran Penjualan
     Route::get('/setoranpenjualan', [SetoranpenjualanController::class, 'index']);
     Route::get('/setoranpenjualan/detailsetoran', [SetoranpenjualanController::class, 'detailsetoran']);
+    Route::get('/setoranpenjualan/create', [SetoranpenjualanController::class, 'create']);
+    Route::post('/setoranpenjualan/getsetoranpenjualan', [SetoranpenjualanController::class, 'getsetoranpenjualan']);
+    Route::post('/setoranpenjualan/ceksetoran', [SetoranpenjualanController::class, 'ceksetoran']);
+    Route::post('/setoranpenjualan/store', [SetoranpenjualanController::class, 'store']);
     Route::get('/setoranpenjualan/{kode_setoran}/synclhp', [SetoranpenjualanController::class, 'synclhp']);
+    Route::get('/setoranpenjualan/{kode_setoran}/edit', [SetoranpenjualanController::class, 'edit']);
+    Route::post('/setoranpenjualan/{kode_setoran}/update', [SetoranpenjualanController::class, 'update']);
     Route::delete('/setoranpenjualan/{kode_setoran}/delete', [SetoranpenjualanController::class, 'delete']);
 });
 //Administrator | Admin Penjualan | Kepala Penjualan | Direktur | Manager Accounting
