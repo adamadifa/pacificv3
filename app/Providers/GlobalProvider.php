@@ -146,9 +146,11 @@ class GlobalProvider extends ServiceProvider
 
             //Kas Besar Keuangan
             $kasbesar_menu  = ['admin'];
+            $setoran_menu = ['admin'];
             $setoranpenjualan_view = ['admin'];
+            $setoranpusat_view = ['admin'];
+            $setorangiro_view = ['admin'];
 
-            //Utilities
             $saldoawalpiutang = ['admin'];
 
             $kirimlpc = ['admin', 'admin penjualan', 'kepala penjualan', 'kepala admin', 'manager accounting', 'manager marketing', 'general manager', 'direktur'];
@@ -256,7 +258,12 @@ class GlobalProvider extends ServiceProvider
 
                 //Kas Besar Keuangan
                 'kasbesar_menu' => $kasbesar_menu,
+
+                //Setoran
+                'setoran_menu' => $setoran_menu,
                 'setoranpenjualan_view' => $setoranpenjualan_view,
+                'setoranpusat_view' => $setoranpusat_view,
+                'setorangiro_view' => $setorangiro_view,
                 //Utilities
                 'saldoawalpiutang' => $saldoawalpiutang,
 

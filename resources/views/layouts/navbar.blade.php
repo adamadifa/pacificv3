@@ -273,12 +273,38 @@
                             <span class="menu-item" data-i18n="Second Level">Kas Besar</span>
                         </a>
                         <ul class="menu-content">
-                            @if (in_array($level, $setoranpenjualan_view))
-                            <li class="{{ request()->is(['setoranpenjualan', 'setoranpenjualan/*']) ? 'active' : '' }}">
-                                <a href="/setoranpenjualan">
-                                    <i class="feather icon-file-text"></i>
-                                    <span class="menu-item">Setoran Penjualan</span>
+                            @if (in_array($level, $setoran_menu))
+                            <li>
+                                <a href="#">
+                                    <i class="feather icon-circle"></i>
+                                    <span class="menu-item" data-i18n="Second Level">Setoran</span>
                                 </a>
+                                <ul class="menu-content">
+                                    @if (in_array($level, $setoranpenjualan_view))
+                                    <li class="{{ request()->is(['setoranpenjualan', 'setoranpenjualan/*']) ? 'active' : '' }}">
+                                        <a href="/setoranpenjualan">
+                                            <i class="feather icon-file-text"></i>
+                                            <span class="menu-item">Setoran Penjualan</span>
+                                        </a>
+                                    </li>
+                                    @endif
+                                    @if (in_array($level, $setoranpusat_view))
+                                    <li class="{{ request()->is(['setoranpusat', 'setoranpusat/*']) ? 'active' : '' }}">
+                                        <a href="/setoranpusat">
+                                            <i class="feather icon-file-text"></i>
+                                            <span class="menu-item">Setoran Pusat</span>
+                                        </a>
+                                    </li>
+                                    @endif
+                                    @if (in_array($level, $setorangiro_view))
+                                    <li class="{{ request()->is(['setorangiro', 'setorangiro/*']) ? 'active' : '' }}">
+                                        <a href="/setorangiro">
+                                            <i class="feather icon-file-text"></i>
+                                            <span class="menu-item">Setoran Giro</span>
+                                        </a>
+                                    </li>
+                                    @endif
+                                </ul>
                             </li>
                             @endif
                         </ul>

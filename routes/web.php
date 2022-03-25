@@ -30,7 +30,9 @@ use App\Http\Controllers\PermintaanpengirimanController;
 use App\Http\Controllers\RatiokomisiController;
 use App\Http\Controllers\ReturController;
 use App\Http\Controllers\SalesmanController;
+use App\Http\Controllers\SetorangiroController;
 use App\Http\Controllers\SetoranpenjualanController;
+use App\Http\Controllers\SetoranpusatController;
 use App\Http\Controllers\SimpananController;
 use App\Http\Controllers\TabunganController;
 use App\Http\Controllers\TargetkomisiController;
@@ -346,6 +348,20 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/setoranpenjualan/{kode_setoran}/edit', [SetoranpenjualanController::class, 'edit']);
     Route::post('/setoranpenjualan/{kode_setoran}/update', [SetoranpenjualanController::class, 'update']);
     Route::delete('/setoranpenjualan/{kode_setoran}/delete', [SetoranpenjualanController::class, 'delete']);
+
+
+    //Setoran Pusat
+    Route::get('/setoranpusat', [SetoranpusatController::class, 'index']);
+    Route::get('/setoranpusat/create', [SetoranpusatController::class, 'create']);
+    Route::post('/setoranpusat/store', [SetoranpusatController::class, 'store']);
+    Route::delete('/setoranpusat/{kode_setoranpusat}/delete', [SetoranpusatController::class, 'delete']);
+    Route::get('/setoranpusat/{kode_setoranpusat}/edit', [SetoranpusatController::class, 'edit']);
+    Route::post('/setoranpusat/{kode_setoranpusat}/update', [SetoranpusatController::class, 'update']);
+
+    //Setoran Giro
+    Route::get('/setorangiro', [SetorangiroController::class, 'index']);
+    Route::post('/setorangiro/create', [SetorangiroController::class, 'create']);
+    Route::post('/setorangiro/store', [SetorangiroController::class, 'store']);
 });
 //Administrator | Admin Penjualan | Kepala Penjualan | Direktur | Manager Accounting
 Route::middleware(['auth', 'ceklevel:admin,admin penjualan,manager accounting,kepala penjualan,kepala admin,manager marketing,direktur'])->group(function () {
