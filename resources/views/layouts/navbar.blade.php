@@ -273,6 +273,14 @@
                             <span class="menu-item" data-i18n="Second Level">Kas Besar</span>
                         </a>
                         <ul class="menu-content">
+                            @if (in_array($level, $saldoawalkasbesar_view))
+                            <li class="{{ request()->is(['saldoawalkasbesar', 'saldoawalkasbesar/*']) ? 'active' : '' }}">
+                                <a href="/saldoawalkasbesar">
+                                    <i class="feather icon-settings"></i>
+                                    <span class="menu-item">S. Awal Kas Besar</span>
+                                </a>
+                            </li>
+                            @endif
                             @if (in_array($level, $setoran_menu))
                             <li>
                                 <a href="#">
@@ -280,6 +288,7 @@
                                     <span class="menu-item" data-i18n="Second Level">Setoran</span>
                                 </a>
                                 <ul class="menu-content">
+
                                     @if (in_array($level, $setoranpenjualan_view))
                                     <li class="{{ request()->is(['setoranpenjualan', 'setoranpenjualan/*']) ? 'active' : '' }}">
                                         <a href="/setoranpenjualan">
@@ -301,6 +310,14 @@
                                         <a href="/setorangiro">
                                             <i class="feather icon-file-text"></i>
                                             <span class="menu-item">Setoran Giro</span>
+                                        </a>
+                                    </li>
+                                    @endif
+                                    @if (in_array($level, $setorantransfer_view))
+                                    <li class="{{ request()->is(['setorantransfer', 'setorantransfer/*']) ? 'active' : '' }}">
+                                        <a href="/setorantransfer">
+                                            <i class="feather icon-file-text"></i>
+                                            <span class="menu-item">Setoran Transfer</span>
                                         </a>
                                     </li>
                                     @endif

@@ -29,10 +29,12 @@ use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\PermintaanpengirimanController;
 use App\Http\Controllers\RatiokomisiController;
 use App\Http\Controllers\ReturController;
+use App\Http\Controllers\SaldoawalkasbesarController;
 use App\Http\Controllers\SalesmanController;
 use App\Http\Controllers\SetorangiroController;
 use App\Http\Controllers\SetoranpenjualanController;
 use App\Http\Controllers\SetoranpusatController;
+use App\Http\Controllers\SetorantransferController;
 use App\Http\Controllers\SimpananController;
 use App\Http\Controllers\TabunganController;
 use App\Http\Controllers\TargetkomisiController;
@@ -362,6 +364,20 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/setorangiro', [SetorangiroController::class, 'index']);
     Route::post('/setorangiro/create', [SetorangiroController::class, 'create']);
     Route::post('/setorangiro/store', [SetorangiroController::class, 'store']);
+    Route::get('/setorangiro/{no_giro}/delete', [SetorangiroController::class, 'delete']);
+
+    //Setoran Transfer
+    Route::get('/setorantransfer', [SetorantransferController::class, 'index']);
+    Route::post('/setorantransfer/create', [SetorantransferController::class, 'create']);
+    Route::post('/setorantransfer/store', [SetorantransferController::class, 'store']);
+    Route::get('/setorantransfer/{kode_transfer}/delete', [SetorantransferController::class, 'delete']);
+
+    //Saldo Awal Kas Besar
+    Route::get('/saldoawalkasbesar', [SaldoawalkasbesarController::class, 'index']);
+    Route::get('/saldoawalkasbesar/create', [SaldoawalkasbesarController::class, 'create']);
+    Route::post('/saldoawalkasbesar/getsaldo', [SaldoawalkasbesarController::class, 'getsaldo']);
+    Route::post('/saldoawalkasbesar/store', [SaldoawalkasbesarController::class, 'store']);
+    Route::delete('/saldoawalkasbesar/{kode_saldoawalkb}/delete', [SaldoawalkasbesarController::class, 'delete']);
 });
 //Administrator | Admin Penjualan | Kepala Penjualan | Direktur | Manager Accounting
 Route::middleware(['auth', 'ceklevel:admin,admin penjualan,manager accounting,kepala penjualan,kepala admin,manager marketing,direktur'])->group(function () {

@@ -1,5 +1,5 @@
 @extends('layouts.midone')
-@section('titlepage','Setoran Giro')
+@section('titlepage','Setoran Transfer')
 @section('content')
 
 <div class="content-wrapper">
@@ -7,10 +7,10 @@
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Setoran Giro</h2>
+                    <h2 class="content-header-title float-left mb-0">Setoran Transfer</h2>
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/giro">Setoran Giro</a>
+                            <li class="breadcrumb-item"><a href="/setorantransfer">Setoran Transfer</a>
                             </li>
                         </ol>
                     </div>
@@ -22,7 +22,7 @@
         <div class="col-md-12 col-sm-12">
             <div class="card">
                 <div class="card-body">
-                    <form action="/setorangiro">
+                    <form action="/setorantransfer">
                         <div class="row">
                             <div class="col-lg-6">
                                 <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker value="{{ Request('dari') }}" />
@@ -32,16 +32,13 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-3 col-sm-12">
-                                <x-inputtext label="No Giro" field="no_giro" icon="feather icon-credit-card" value="{{ Request('no_giro') }}" />
-                            </div>
-                            <div class="col-lg-3 col-sm-12">
+                            <div class="col-lg-4 col-sm-12">
                                 <x-inputtext label="Nama Pelanggan" field="nama_pelanggan" icon="feather icon-user" value="{{ Request('nama_pelanggan') }}" />
                             </div>
-                            <div class="col-lg-3 col-sm-12">
+                            <div class="col-lg-4 col-sm-12">
                                 <div class="form-group">
                                     <select name="status" id="status" class="form-control">
-                                        <option value="">Status Giro</option>
+                                        <option value="">Status Transfer</option>
                                         <option {{ (Request('status')=='0' ? 'selected':'')}} value="0">Pending</option>
                                         <option {{ (Request('status')=='1' ? 'selected':'')}} value="1">Diterima</option>
                                         <option {{ (Request('status')=='2' ? 'selected':'')}} value="2">Ditolak</option>
@@ -58,7 +55,7 @@
                     <table class="table table-hover-animation">
                         <thead class="thead-dark">
                             <tr>
-                                <th>No Giro</th>
+
                                 <th>Pelanggan</th>
                                 <th>Bank</th>
                                 <th>Jumlah</th>
@@ -70,17 +67,15 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($giro as $d)
+                            @foreach ($transfer as $d)
                             <tr>
-                                <td>{{ $d->no_giro }}</td>
+
                                 <td>{{ ucwords(strtolower($d->nama_pelanggan)) }}</td>
                                 <td>{{ strtoupper($d->namabank) }}</td>
                                 <td class="text-right" style="font-weight: bold">{{ rupiah($d->jumlah) }}</td>
                                 <td>{{ date("d-m-Y",strtotime($d->tglcair)) }}</td>
-
                                 <td>{{ $d->kode_cabang }}</td>
                                 <td>
-
                                     @if ($d->status==0)
                                     <span class="badge bg-warning"><i class="fa fa-history"></i> Pending</span>
                                     @elseif($d->status==1)
@@ -99,30 +94,30 @@
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         @if (empty($d->tgl_setoranpusat))
-                                        <a class="setorkan" href="#" no_giro="{{ $d->no_giro }}"><i class=" feather icon-external-link success"></i></a>
+                                        <a class="setorkan" href="#" kode_transfer="{{ $d->kode_transfer }}"><i class=" feather icon-external-link success"></i></a>
                                         @else
-                                        <a href="/setorangiro/{{ Crypt::encrypt($d->no_giro) }}/delete" class="danger"><i class="fa fa-close"></i></a>
+                                        <a href="/setorantransfer/{{ Crypt::encrypt($d->kode_transfer) }}/delete" class="danger"><i class="fa fa-close"></i></a>
                                         @endif
-                                        <a class="ml-1 detailfaktur" href="#" no_giro="{{ $d->no_giro }}"><i class=" feather icon-file-text info"></i></a>
+                                        <a class="ml-1 detailfaktur" href="#" kode_transfer="{{ $d->kode_transfer }}"><i class=" feather icon-file-text info"></i></a>
                                     </div>
                                 </td>
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
-                    {{ $giro->links('vendor.pagination.vuexy') }}
+                    {{-- {{ $giro->links('vendor.pagination.vuexy') }} --}}
 
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- Detail Giro -->
+<!-- Detail Transfer -->
 <div class="modal fade text-left" id="mdldetailfaktur" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel18">Detail Giro <span id="nogiro"></span></h4>
+                <h4 class="modal-title" id="myModalLabel18">Detail Transfer <span id="kodetransfer"></span></h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -134,18 +129,18 @@
     </div>
 </div>
 
-<!-- Proses Giro -->
-<div class="modal fade text-left" id="mdlsetorangiro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+<!-- Setor Transfer -->
+<div class="modal fade text-left" id="mdlsetorantransfer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel18">Setorkan Giro <span id="nogiroproses"></span></h4>
+                <h4 class="modal-title" id="myModalLabel18">Setorkan Transfer <span id="kodetransfer_setoran"></span></h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div id="loadsetorangiro"></div>
+                <div id="loadsetorantransfer"></div>
             </div>
         </div>
     </div>
@@ -156,43 +151,43 @@
 <script>
     $(function() {
 
-        function loaddetailfaktur(no_giro) {
+        function loaddetailfaktur(kode_transfer) {
             $.ajax({
                 type: 'POST'
-                , url: '/giro/detailfaktur'
+                , url: '/transfer/detailfaktur'
                 , data: {
                     _token: "{{ csrf_token() }}"
-                    , no_giro: no_giro
+                    , kode_transfer: kode_transfer
                 }
                 , cache: false
                 , success: function(respond) {
-                    $("#nogiro").text(no_giro);
+                    $("#kodetransfer").text(kode_transfer);
                     $("#loaddetailfaktur").html(respond);
                 }
             });
         }
 
-        function loadsetorangiro(no_giro) {
+        function loadsetorantransfer(kode_transfer) {
             $.ajax({
                 type: 'POST'
-                , url: '/setorangiro/create'
+                , url: '/setorantransfer/create'
                 , data: {
                     _token: "{{ csrf_token() }}"
-                    , no_giro: no_giro
+                    , kode_transfer: kode_transfer
                 }
                 , cache: false
                 , success: function(respond) {
-                    $("#nogiroproses").text(no_giro);
-                    $("#loadsetorangiro").html(respond);
+                    $("#kodetransfer_setoran").text(kode_transfer);
+                    $("#loadsetorantransfer").html(respond);
                 }
             });
         }
 
 
         $('.detailfaktur').click(function(e) {
-            var no_giro = $(this).attr("no_giro");
+            var kode_transfer = $(this).attr("kode_transfer");
             e.preventDefault();
-            loaddetailfaktur(no_giro);
+            loaddetailfaktur(kode_transfer);
             $('#mdldetailfaktur').modal({
                 backdrop: 'static'
                 , keyboard: false
@@ -201,10 +196,10 @@
 
 
         $('.setorkan').click(function(e) {
-            var no_giro = $(this).attr("no_giro");
+            var kode_transfer = $(this).attr("kode_transfer");
             e.preventDefault();
-            loadsetorangiro(no_giro);
-            $('#mdlsetorangiro').modal({
+            loadsetorantransfer(kode_transfer);
+            $('#mdlsetorantransfer').modal({
                 backdrop: 'static'
                 , keyboard: false
             });
