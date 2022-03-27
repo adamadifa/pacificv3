@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\BelumsetorController;
 use App\Http\Controllers\CabangController;
 use App\Http\Controllers\DaftarController;
 use App\Http\Controllers\DashboardController;
@@ -371,6 +372,13 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/setorantransfer/create', [SetorantransferController::class, 'create']);
     Route::post('/setorantransfer/store', [SetorantransferController::class, 'store']);
     Route::get('/setorantransfer/{kode_transfer}/delete', [SetorantransferController::class, 'delete']);
+
+    //Saldo Awal Kas Besar
+    Route::get('/belumsetor', [BelumsetorController::class, 'index']);
+    Route::get('/belumsetor/{kode_saldobs}/show', [BelumsetorController::class, 'show']);
+    Route::get('/belumsetor/{kode_cabang}/{bulan}/{tahun}/showtemp', [BelumsetorController::class, 'showtemp']);
+    Route::get('/belumsetor/create', [BelumsetorController::class, 'create']);
+    Route::delete('/belumsetor/{kode_saldobs}/delete', [BelumsetorController::class, 'delete']);
 
     //Saldo Awal Kas Besar
     Route::get('/saldoawalkasbesar', [SaldoawalkasbesarController::class, 'index']);

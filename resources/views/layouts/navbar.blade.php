@@ -321,6 +321,14 @@
                                         </a>
                                     </li>
                                     @endif
+                                    @if (in_array($level, $belum_disetorkan))
+                                    <li class="{{ request()->is(['belumsetor', 'belumsetor/*']) ? 'active' : '' }}">
+                                        <a href="/belumsetor">
+                                            <i class="feather icon-file-text"></i>
+                                            <span class="menu-item">Belum Setor</span>
+                                        </a>
+                                    </li>
+                                    @endif
                                 </ul>
                             </li>
                             @endif
