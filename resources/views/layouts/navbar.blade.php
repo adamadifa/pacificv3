@@ -329,6 +329,14 @@
                                         </a>
                                     </li>
                                     @endif
+                                    @if (in_array($level, $lebih_disetorkan))
+                                    <li class="{{ request()->is(['lebihsetor', 'lebihsetor/*']) ? 'active' : '' }}">
+                                        <a href="/lebihsetor">
+                                            <i class="feather icon-file-text"></i>
+                                            <span class="menu-item">Lebih Setor</span>
+                                        </a>
+                                    </li>
+                                    @endif
                                 </ul>
                             </li>
                             @endif

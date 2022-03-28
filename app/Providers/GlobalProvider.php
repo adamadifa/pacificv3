@@ -153,6 +153,7 @@ class GlobalProvider extends ServiceProvider
             $setorangiro_view = ['admin'];
             $setorantransfer_view = ['admin'];
             $belum_disetorkan = ['admin'];
+            $lebih_disetorkan = ['admin'];
 
             $saldoawalpiutang = ['admin'];
 
@@ -269,6 +270,7 @@ class GlobalProvider extends ServiceProvider
                 'setorangiro_view' => $setorangiro_view,
                 'setorantransfer_view' => $setorantransfer_view,
                 'belum_disetorkan' => $belum_disetorkan,
+                'lebih_disetorkan' => $lebih_disetorkan,
 
 
                 //Utilities

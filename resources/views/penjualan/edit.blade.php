@@ -426,7 +426,7 @@
 
         cekpiutang($("#kode_pelanggan").val());
 
-
+        cektutuplaporan();
 
         function cektutuplaporan() {
             var tgltransaksi = $("#tgltransaksi").val();

@@ -378,6 +378,10 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/belumsetor/{kode_saldobs}/show', [BelumsetorController::class, 'show']);
     Route::get('/belumsetor/{kode_cabang}/{bulan}/{tahun}/showtemp', [BelumsetorController::class, 'showtemp']);
     Route::get('/belumsetor/create', [BelumsetorController::class, 'create']);
+    Route::post('/belumsetor/storetemp', [BelumsetorController::class, 'storetemp']);
+    Route::post('/belumsetor/deletetemp', [BelumsetorController::class, 'deletetemp']);
+    Route::post('/belumsetor/cektemp', [BelumsetorController::class, 'cektemp']);
+    Route::post('/belumsetor/store', [BelumsetorController::class, 'store']);
     Route::delete('/belumsetor/{kode_saldobs}/delete', [BelumsetorController::class, 'delete']);
 
     //Saldo Awal Kas Besar
