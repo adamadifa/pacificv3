@@ -190,8 +190,8 @@
                             @endforeach
                             <tr>
                                 <td style="font-weight: bold" colspan="5">TOTAL</td>
-                                <td class="text-right" style="font-weight: bold">{{ rupiah($totalpengeluaran) }}</td>
                                 <td class="text-right" style="font-weight: bold">{{ rupiah($totalpenerimaan) }}</td>
+                                <td class="text-right" style="font-weight: bold">{{ rupiah($totalpengeluaran) }}</td>
                                 <td class="text-right" style="font-weight: bold">{{ rupiah($saldo) }}</td>
                                 <td colspan="3"></td>
                             </tr>

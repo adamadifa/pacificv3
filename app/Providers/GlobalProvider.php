@@ -122,6 +122,7 @@ class GlobalProvider extends ServiceProvider
             $harga_net = ['admin', 'manager accounting', 'manager marketing', 'general manager', 'direktur'];
             //--------------------------------Keuangan---------------------------------------------
             $keuangan = ['admin', 'admin penjualan', 'kepala admin'];
+            $laporankeuangan_view = ['admin'];
 
             //Giro
             $giro_view = ['admin', 'admin penjualan', 'kepala admin'];
@@ -238,6 +239,7 @@ class GlobalProvider extends ServiceProvider
                 //--------------Keuangan--------------
                 'keuangan' => $keuangan,
                 'penjualan_keuangan' => $penjualan_keuangan,
+                'laporankeuangan_view' => $laporankeuangan_view,
 
                 //Giro
                 'giro_view' => $giro_view,

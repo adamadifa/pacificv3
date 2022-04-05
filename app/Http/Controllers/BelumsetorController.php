@@ -117,7 +117,7 @@ class BelumsetorController extends Controller
         $tahun = $request->tahun;
         $thn = substr($tahun, 2, 2);
         $tanggal = $tahun . "-" . $bulan . "-01";
-        $kode_saldobs = "SABS" . $kode_cabang . $bulan . $tahun;
+        $kode_saldobs = "SABS" . $kode_cabang . $bulan . $thn;
         DB::beginTransaction();
         try {
             $data = [

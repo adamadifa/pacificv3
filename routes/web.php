@@ -7,6 +7,7 @@ use App\Http\Controllers\BankController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\BelumsetorController;
 use App\Http\Controllers\CabangController;
+use App\Http\Controllers\CoaController;
 use App\Http\Controllers\DaftarController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GiroController;
@@ -17,6 +18,8 @@ use App\Http\Controllers\JenissimpananController;
 use App\Http\Controllers\KaskecilController;
 use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\KlaimController;
+use App\Http\Controllers\LaporankeuanganController;
+use App\Http\Controllers\LebihsetorController;
 use App\Http\Controllers\LedgerController;
 use App\Http\Controllers\LimitkreditController;
 use App\Http\Controllers\LpcController;
@@ -80,6 +83,10 @@ Route::post('/kendaraan/getkendaraancab', [KendaraanController::class, 'getkenda
 //LoadStokCabang
 Route::post('/getsaldogudangcabang', [MutasigudangcabangController::class, 'getsaldogudangcabang']);
 Route::post('/getsaldogudangcabangbs', [MutasigudangcabangController::class, 'getsaldogudangcabangbs']);
+
+//Load Coa Cabang
+Route::post('/coa/getcoacabang', [CoaController::class, 'getcoacabang']);
+
 //Oman Cabang
 Route::middleware(['auth', 'ceklevel:admin,kepala admin,kepala penjualan,manager marketing,manager accounting,direktur'])->group(function () {
     Route::get('/omancabang', [OmancabangController::class, 'index']);
@@ -373,7 +380,7 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/setorantransfer/store', [SetorantransferController::class, 'store']);
     Route::get('/setorantransfer/{kode_transfer}/delete', [SetorantransferController::class, 'delete']);
 
-    //Saldo Awal Kas Besar
+    //Belum Setor
     Route::get('/belumsetor', [BelumsetorController::class, 'index']);
     Route::get('/belumsetor/{kode_saldobs}/show', [BelumsetorController::class, 'show']);
     Route::get('/belumsetor/{kode_cabang}/{bulan}/{tahun}/showtemp', [BelumsetorController::class, 'showtemp']);
@@ -384,12 +391,37 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/belumsetor/store', [BelumsetorController::class, 'store']);
     Route::delete('/belumsetor/{kode_saldobs}/delete', [BelumsetorController::class, 'delete']);
 
+
+    Route::get('/lebihsetor', [LebihsetorController::class, 'index']);
+    Route::get('/lebihsetor/{kode_ls}/show', [LebihsetorController::class, 'show']);
+    Route::get('/lebihsetor/{kode_cabang}/{bulan}/{tahun}/showtemp', [LebihsetorController::class, 'showtemp']);
+    Route::get('/lebihsetor/create', [LebihsetorController::class, 'create']);
+    Route::post('/lebihsetor/storetemp', [LebihsetorController::class, 'storetemp']);
+    Route::post('/lebihsetor/deletetemp', [LebihsetorController::class, 'deletetemp']);
+    Route::post('/lebihsetor/cektemp', [LebihsetorController::class, 'cektemp']);
+    Route::post('/lebihsetor/store', [LebihsetorController::class, 'store']);
+    Route::delete('/lebihsetor/{kode_ls}/delete', [LebihsetorController::class, 'delete']);
+
     //Saldo Awal Kas Besar
     Route::get('/saldoawalkasbesar', [SaldoawalkasbesarController::class, 'index']);
     Route::get('/saldoawalkasbesar/create', [SaldoawalkasbesarController::class, 'create']);
     Route::post('/saldoawalkasbesar/getsaldo', [SaldoawalkasbesarController::class, 'getsaldo']);
     Route::post('/saldoawalkasbesar/store', [SaldoawalkasbesarController::class, 'store']);
     Route::delete('/saldoawalkasbesar/{kode_saldoawalkb}/delete', [SaldoawalkasbesarController::class, 'delete']);
+
+    //Laporan Keuangan
+    Route::get('/laporankeuangan/kaskecil', [LaporankeuanganController::class, 'kaskecil']);
+    Route::get('/laporankeuangan/ledger', [LaporankeuanganController::class, 'ledger']);
+    Route::get('/laporankeuangan/penjualan', [LaporankeuanganController::class, 'penjualan']);
+    Route::get('/laporankeuangan/uanglogam', [LaporankeuanganController::class, 'uanglogam']);
+    Route::get('/laporankeuangan/rekapbg', [LaporankeuanganController::class, 'rekapbg']);
+    Route::get('/laporankeuangan/saldokasbesar', [LaporankeuanganController::class, 'saldokasbesar']);
+    Route::post('/laporankeuangan/kaskecil/cetak', [LaporankeuanganController::class, 'cetak_kaskecil']);
+    Route::post('/laporankeuangan/ledger/cetak', [LaporankeuanganController::class, 'cetak_ledger']);
+    Route::post('/laporankeuangan/penjualan/cetak', [LaporankeuanganController::class, 'cetak_penjualan']);
+    Route::post('/laporankeuangan/uanglogam/cetak', [LaporankeuanganController::class, 'cetak_uanglogam']);
+    Route::post('/laporankeuangan/rekapbg/cetak', [LaporankeuanganController::class, 'cetak_rekapbg']);
+    Route::post('/laporankeuangan/saldokasbesar/cetak', [LaporankeuanganController::class, 'cetak_saldokasbesar']);
 });
 //Administrator | Admin Penjualan | Kepala Penjualan | Direktur | Manager Accounting
 Route::middleware(['auth', 'ceklevel:admin,admin penjualan,manager accounting,kepala penjualan,kepala admin,manager marketing,direktur'])->group(function () {

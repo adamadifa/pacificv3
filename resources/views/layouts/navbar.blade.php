@@ -404,6 +404,14 @@
                         </a>
                     </li>
                     @endif
+                    @if (in_array($level, $laporankeuangan_view))
+                    <li class="{{ request()->is(['laporankeuangan', 'laporankeuangan/*']) ? 'active' : '' }}">
+                        <a href="laporankeuangan/kaskecil">
+                            <i class="feather icon-book"></i>
+                            <span class="menu-item" data-i18n="Second Level">Laporan</span>
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </li>
             @endif
