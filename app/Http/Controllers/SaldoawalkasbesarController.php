@@ -75,7 +75,7 @@ class SaldoawalkasbesarController extends Controller
         } else {
             $sampai = $ceknextbulan->tgl_diterimapusat;
         }
-        if (empty($ceksaldo) && !empty($cekall) || !empty($ceknow)) {
+        if (empty($ceksaldo) && !empty($cekall) || !empty($ceksaldoSkrg)) {
             echo 1;
         } else {
             $saldoterakhir = DB::table('saldoawal_kasbesar')->where('bulan', $bln)->where('tahun', $thn)->where('kode_cabang', $kode_cabang)->first();

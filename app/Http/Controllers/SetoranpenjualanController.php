@@ -413,6 +413,7 @@ class SetoranpenjualanController extends Controller
 
     public function update($kode_setoran, Request $request)
     {
+
         $kode_setoran = Crypt::decrypt($kode_setoran);
         $lhp_tunai = !empty($request->lhp_tunai) ? str_replace(".", "", $request->lhp_tunai) : 0;
         $lhp_tagihan = !empty($request->lhp_tagihan)  ? str_replace(".", "", $request->lhp_tagihan) : 0;
@@ -442,5 +443,101 @@ class SetoranpenjualanController extends Controller
         } else {
             return Redirect::back()->with(['warning' => 'Data Gagal Di Update Hubungi Tim IT !']);
         }
+    }
+
+    public function cetak(Request $request)
+    {
+        $query = Setoranpenjualan::query();
+        $query->selectRaw(" kode_setoran,tgl_lhp,setoran_penjualan.id_karyawan,setoran_penjualan.kode_cabang,nama_karyawan,lhp_tunai,
+        ifnull(cektunai,0) AS cektunai,lhp_tagihan,ifnull(cekkredit,0) AS cekkredit,ifnull(ceksetorangiro,0) AS ceksetorangiro,
+        ifnull(ceksetorantransfer,0) AS ceksetorantransfer,ifnull(cekgirotocash,0) AS cekgirotocash,
+        setoran_kertas,setoran_logam,setoran_bg,setoran_transfer,keterangan,girotocash,girototransfer,
+        ifnull(kurangsetorlogam,0) AS kurangsetorlogam,ifnull(kurangsetorkertas,0) AS kurangsetorkertas,
+        ifnull(lebihsetorlogam,0) AS lebihsetorlogam,ifnull(lebihsetorkertas,0) AS lebihsetorkertas");
+        $query->join('karyawan', 'setoran_penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $query->leftJoin(
+            DB::raw("(
+                SELECT id_karyawan,tglbayar,SUM(IF(jenistransaksi='tunai' AND id_giro  IS NULL AND id_transfer IS NULL AND status_bayar IS NULL,bayar,0)) AS cektunai
+                ,SUM(IF(jenistransaksi='kredit' AND id_giro  IS NULL AND id_transfer IS NULL AND status_bayar IS NULL,bayar,0)) AS cekkredit
+                ,SUM(IF(girotocash IS NOT NULL AND status_bayar IS NULL,bayar,0)) AS cekgirotocash
+                FROM historibayar
+                WHERE  tglbayar >= '$request->dari'
+                AND tglbayar <= '$request->sampai'
+                GROUP BY historibayar.id_karyawan,tglbayar
+            ) ceklhp"),
+            function ($join) {
+                $join->on('setoran_penjualan.id_karyawan', '=', 'ceklhp.id_karyawan');
+                $join->on('setoran_penjualan.tgl_lhp', '=', 'ceklhp.tglbayar');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+                SELECT giro.id_karyawan,tgl_giro,SUM(jumlah) as ceksetorangiro
+                FROM giro
+                WHERE tgl_giro >= '$request->dari'
+                AND tgl_giro <= '$request->sampai'
+                GROUP BY giro.id_karyawan,tgl_giro
+            ) cekgiro"),
+            function ($join) {
+                $join->on('setoran_penjualan.id_karyawan', '=', 'cekgiro.id_karyawan');
+                $join->on('setoran_penjualan.tgl_lhp', '=', 'cekgiro.tgl_giro');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+                SELECT transfer.id_karyawan,tgl_transfer,SUM(jumlah) as ceksetorantransfer
+                FROM transfer
+                LEFT JOIN historibayar ON transfer.id_transfer = historibayar.id_transfer
+                WHERE tgl_transfer >= '$request->dari'
+                AND tgl_transfer <= '$request->sampai' AND girotocash ='' OR tgl_transfer >= '$request->dari'
+                AND tgl_transfer <= '$request->sampai' AND girotocash IS NULL
+                GROUP BY transfer.id_karyawan,tgl_transfer
+            ) cektransfer"),
+            function ($join) {
+                $join->on('setoran_penjualan.id_karyawan', '=', 'cektransfer.id_karyawan');
+                $join->on('setoran_penjualan.tgl_lhp', '=', 'cektransfer.tgl_transfer');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+                SELECT kuranglebihsetor.id_karyawan,tgl_kl,
+                SUM(IF(pembayaran='1',uang_logam,0)) AS kurangsetorlogam,
+                SUM(IF(pembayaran='1',uang_kertas,0)) AS kurangsetorkertas,
+                SUM(IF(pembayaran='2',uang_logam,0)) AS lebihsetorlogam,
+                SUM(IF(pembayaran='2',uang_kertas,0)) AS lebihsetorkertas
+                FROM kuranglebihsetor
+                WHERE kode_cabang ='$request->kode_cabang' AND tgl_kl >= '$request->dari'
+                AND tgl_kl <= '$request->sampai'
+                GROUP BY kuranglebihsetor.id_karyawan,tgl_kl
+            ) cek_kl"),
+            function ($join) {
+                $join->on('setoran_penjualan.id_karyawan', '=', 'cek_kl.id_karyawan');
+                $join->on('setoran_penjualan.tgl_lhp', '=', 'cek_kl.tgl_kl');
+            }
+        );
+
+        $query->where('setoran_penjualan.kode_cabang', $request->kode_cabang);
+        $query->whereBetween('tgl_lhp', [$request->dari, $request->sampai]);
+        if (!empty($request->id_karyawan)) {
+            $query->where('setoran_penjualan.id_karyawan', $request->id_karyawan);
+        }
+        $query->orderBy('tgl_lhp');
+        $query->orderBy('nama_karyawan');
+        $setoranpenjualan = $query->get();
+        //dd($setoranpenjualan);
+        $cabang = Cabang::where('kode_cabang', $request->kode_cabang)->first();
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        if ($request->excel == "true") {
+            $time = date("H:i:s");
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Setoran Penjualan $dari-$sampai-$time.xls");
+        }
+        return view('setoranpenjualan.cetak', compact('cabang', 'setoranpenjualan', 'dari', 'sampai'));
     }
 }

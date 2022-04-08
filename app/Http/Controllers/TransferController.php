@@ -339,7 +339,11 @@ class TransferController extends Controller
                         ->whereRaw('LEFT(no_bukti,6) = "GJ' . $bulan . $tahun . '"')
                         ->orderBy("no_bukti", "desc")
                         ->first();
-                    $lastno_bukti = $bukubesar->no_bukti;
+                    if ($bukubesar != null) {
+                        $lastno_bukti = $bukubesar->no_bukti;
+                    } else {
+                        $lastno_bukti = "";
+                    }
                     $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 4);
 
                     DB::table('buku_besar')
@@ -373,9 +377,11 @@ class TransferController extends Controller
                             'omset_tahun'     => $tahunjt
                         ]);
                     $hb = DB::table('historibayar')->where('id_transfer', $d->id_transfer)->first();
-                    DB::table('buku_besar')
-                        ->where('no_ref', $hb->nobukti)
-                        ->delete();
+                    if ($hb != null) {
+                        DB::table('buku_besar')
+                            ->where('no_ref', $hb->nobukti)
+                            ->delete();
+                    }
                     DB::table('historibayar')->where('id_transfer', $d->id_transfer)->delete();
                 } else {
                     DB::table('transfer')
@@ -387,16 +393,18 @@ class TransferController extends Controller
                             'omset_tahun'   => ''
                         ]);
                     $hb = DB::table('historibayar')->where('id_transfer', $d->id_transfer)->first();
-                    DB::table('buku_besar')
-                        ->where('no_ref', $hb->nobukti)
-                        ->delete();
+                    if ($hb != null) {
+                        DB::table('buku_besar')
+                            ->where('no_ref', $hb->nobukti)
+                            ->delete();
+                    }
                     DB::table('historibayar')->where('id_transfer', $d->id_transfer)->delete();
                 }
             }
             DB::commit();
             return Redirect::back()->with(['success' => 'Data Transfer Berhasil di Update']);
         } catch (\Exception $e) {
-            //dd($e);
+            dd($e);
             DB::rollback();
             return Redirect::back()->with(['warning' => 'Data Transfer Gagal di Update,  Silahkan Hubungi Tim IT']);
         }

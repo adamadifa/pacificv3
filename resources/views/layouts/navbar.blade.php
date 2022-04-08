@@ -151,14 +151,7 @@
                                 </a>
                             </li>
                             @endif
-                            @if (in_array($level, $laporan_komisi))
-                            <li class="{{ request()->is(['laporankomisi','laporaninsentif']) ? 'active': '' }}">
-                                <a href="/laporankomisi">
-                                    <i class="feather icon-file-text"></i>
-                                    <span class="menu-item">Laporan</span>
-                                </a>
-                            </li>
-                            @endif
+
                         </ul>
                     </li>
                     @endif
@@ -221,15 +214,16 @@
                                 </a>
                             </li>
                             @endif
-                            @if (in_array($level, $laporan_penjualan))
-                            <li class="{{ request()->is(['laporanpenjualan','laporanpenjualan/*','laporanretur','laporankasbesarpenjualan','laporankendaraan/*'])? 'active': '' }}">
-                                <a href="/laporanpenjualan/penjualan">
-                                    <i class="feather icon-file-text"></i>
-                                    <span class="menu-item">Laporan</span>
-                                </a>
-                            </li>
-                            @endif
+
                         </ul>
+                    </li>
+                    @endif
+                    @if (in_array($level, $laporan_penjualan))
+                    <li class="{{ request()->is(['laporanpenjualan','laporanpenjualan/*','laporanretur','laporankasbesarpenjualan','laporankendaraan/*','laporaninsentif','laporankomisi'])? 'active': '' }}">
+                        <a href="/laporanpenjualan/penjualan">
+                            <i class="feather icon-file-text"></i>
+                            <span class="menu-item">Laporan</span>
+                        </a>
                     </li>
                     @endif
                 </ul>

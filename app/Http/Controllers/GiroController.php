@@ -270,7 +270,11 @@ class GiroController extends Controller
                     ]);
             } else {
                 $ledger = DB::table('ledger_bank')->where('no_ref', $no_giro)->first();
-                $nobukti_ledger = $ledger->no_bukti;
+                if ($ledger != null) {
+                    $nobukti_ledger = $ledger->no_bukti;
+                } else {
+                    $nobukti_ledger = "";
+                }
                 //Hapus  Ledger
                 DB::table('ledger_bank')->where('no_ref', $no_giro)->delete();
                 //Hapus Buku Besar
@@ -366,9 +370,12 @@ class GiroController extends Controller
                             'omset_tahun'     => $tahunjt
                         ]);
                     $hb = DB::table('historibayar')->where('id_giro', $d->id_giro)->first();
-                    DB::table('buku_besar')
-                        ->where('no_ref', $hb->nobukti)
-                        ->delete();
+                    if ($hb != null) {
+                        DB::table('buku_besar')
+                            ->where('no_ref', $hb->nobukti)
+                            ->delete();
+                    }
+
 
                     DB::table('historibayar')->where('id_giro', $d->id_giro)->delete();
                 } else {
@@ -381,16 +388,18 @@ class GiroController extends Controller
                             'omset_tahun'   => ''
                         ]);
                     $hb = DB::table('historibayar')->where('id_giro', $d->id_giro)->first();
-                    DB::table('buku_besar')
-                        ->where('no_ref', $hb->nobukti)
-                        ->delete();
+                    if ($hb != null) {
+                        DB::table('buku_besar')
+                            ->where('no_ref', $hb->nobukti)
+                            ->delete();
+                    }
                     DB::table('historibayar')->where('id_giro', $d->id_giro)->delete();
                 }
             }
             DB::commit();
             return Redirect::back()->with(['success' => 'Data Giro Berhasil di Update']);
         } catch (\Exception $e) {
-            //dd($e);
+            dd($e);
             DB::rollback();
             return Redirect::back()->with(['warning' => 'Data Giro Gagal di Update,  Silahkan Hubungi Tim IT']);
         }

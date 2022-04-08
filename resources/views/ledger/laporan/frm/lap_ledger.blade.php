@@ -33,7 +33,13 @@
                                         <div class="col-lg-12 col-sm-12">
                                             <div class="form-group  ">
                                                 <select name="kode_bank" id="kode_bank" class="form-control">
+                                                    @if (in_array($level,$laporan_ledger))
+
                                                     <option value="">Semua Ledger</option>
+                                                    @else
+                                                    <option value="-">Pilih Bank</option>
+                                                    @endif
+
                                                     @foreach ($bank as $d)
                                                     <option value="{{ $d->kode_bank }}">{{ strtoupper($d->nama_bank) }}</option>
                                                     @endforeach
@@ -159,7 +165,7 @@
             var dari = $("#dari").val();
             var sampai = $("#sampai").val();
 
-            if (kode_bank == "" && jenislaporan == "detail") {
+            if (kode_bank == "" && jenislaporan == "detail" || kode_bank == "-") {
                 swal({
                     title: 'Oops'
                     , text: 'Pilih Ledger Terlebih Dahulu !'

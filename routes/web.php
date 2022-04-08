@@ -188,6 +188,12 @@ Route::middleware(['auth', 'ceklevel:manager accounting'])->group(function () {
     Route::get('/dashboardaccounting', [DashboardController::class, 'dashboardaccounting']);
 });
 
+Route::middleware(['auth', 'ceklevel:staff keuangan'])->group(function () {
+    Route::get('/dashboardstaffkeuangan', [DashboardController::class, 'dashboardstaffkeuangan']);
+});
+
+
+
 //Admin Penjualan | Kepala Penjualan | Kepala Cabang | Manager Accounting | Manager Marketing | General manager | Direktur
 Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,kepala admin,manager accounting,manager marketing,general manager,direktur'])->group(function () {
 
@@ -303,18 +309,7 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
 
 
 
-    //Klaim Kas Kecil
-    Route::get('/klaim', [KlaimController::class, 'index']);
-    Route::get('/klaim/{kode_klaim}/{excel}/cetak', [KlaimController::class, 'cetak']);
-    Route::get('/klaim/{kode_klaim}/show', [KlaimController::class, 'show']);
-    Route::get('/klaim/{kode_klaim}/prosesklaim', [KlaimController::class, 'prosesklaim']);
-    Route::get('/klaim/{kode_klaim}/batalkanproses', [KlaimController::class, 'batalkanproses']);
-    Route::get('/klaim/{kode_klaim}/validasikaskecil', [KlaimController::class, 'validasikaskecil']);
-    Route::get('/klaim/{kode_klaim}/batalkanvalidasi', [KlaimController::class, 'batalkanvalidasi']);
-    Route::get('/klaim/create', [KlaimController::class, 'create']);
-    Route::post('/klaim/store', [KlaimController::class, 'store']);
-    Route::post('/klaim/storeprosesklaim', [KlaimController::class, 'storeprosesklaim']);
-    Route::delete('/klaim/{kode_klaim}/delete', [KlaimController::class, 'delete']);
+
 
     //Bank
     Route::post('/bank/getbankcabang', [BankController::class, 'getbankcabang']);
@@ -328,27 +323,12 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/mutasibank/store', [MutasibankController::class, 'store']);
     Route::delete('/mutasibank/{no_bukti}/delete', [MutasibankController::class, 'delete']);
 
-    //Ledger
 
-    Route::get('/ledger', [LedgerController::class, 'index']);
-    Route::get('/ledger/{kode_ledger}/create', [LedgerController::class, 'create']);
-    Route::post('/ledger/storetemp', [LedgerController::class, 'storetemp']);
-    Route::post('/getledgertemp', [LedgerController::class, 'getledgertemp']);
-    Route::post('/cekledgertemp', [LedgerController::class, 'cekledgertemp']);
-    Route::post('/ledger/deletetemp', [LedgerController::class, 'deletetemp']);
-    Route::post('/ledger/store', [LedgerController::class, 'store']);
-    Route::delete('/ledger/{no_bukti}/delete', [LedgerController::class, 'delete']);
-    Route::get('/ledger/{no_bukti}/edit', [LedgerController::class, 'edit']);
-    Route::post('/ledger/{no_bukti}/update', [LedgerController::class, 'update']);
-    Route::get('/saldoawalledger', [LedgerController::class, 'saldoawal']);
-    Route::get('/saldoawalledger/create', [LedgerController::class, 'saldoawal_create']);
-    Route::post('/saldoawalledger/getsaldo', [LedgerController::class, 'getsaldo']);
-    Route::post('/saldoawalledger/store', [LedgerController::class, 'saldoawal_store']);
-    Route::delete('/saldoawalledger/{kode_saldoawalledger}/delete', [LedgerController::class, 'saldoawal_delete']);
 
 
     //Setoran Penjualan
     Route::get('/setoranpenjualan', [SetoranpenjualanController::class, 'index']);
+    Route::get('/setoranpenjualan/cetak', [SetoranpenjualanController::class, 'cetak']);
     Route::get('/setoranpenjualan/detailsetoran', [SetoranpenjualanController::class, 'detailsetoran']);
     Route::get('/setoranpenjualan/create', [SetoranpenjualanController::class, 'create']);
     Route::post('/setoranpenjualan/getsetoranpenjualan', [SetoranpenjualanController::class, 'getsetoranpenjualan']);
@@ -360,13 +340,7 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::delete('/setoranpenjualan/{kode_setoran}/delete', [SetoranpenjualanController::class, 'delete']);
 
 
-    //Setoran Pusat
-    Route::get('/setoranpusat', [SetoranpusatController::class, 'index']);
-    Route::get('/setoranpusat/create', [SetoranpusatController::class, 'create']);
-    Route::post('/setoranpusat/store', [SetoranpusatController::class, 'store']);
-    Route::delete('/setoranpusat/{kode_setoranpusat}/delete', [SetoranpusatController::class, 'delete']);
-    Route::get('/setoranpusat/{kode_setoranpusat}/edit', [SetoranpusatController::class, 'edit']);
-    Route::post('/setoranpusat/{kode_setoranpusat}/update', [SetoranpusatController::class, 'update']);
+
 
     //Setoran Giro
     Route::get('/setorangiro', [SetorangiroController::class, 'index']);
@@ -401,28 +375,34 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/lebihsetor/cektemp', [LebihsetorController::class, 'cektemp']);
     Route::post('/lebihsetor/store', [LebihsetorController::class, 'store']);
     Route::delete('/lebihsetor/{kode_ls}/delete', [LebihsetorController::class, 'delete']);
+});
 
-    //Saldo Awal Kas Besar
-    Route::get('/saldoawalkasbesar', [SaldoawalkasbesarController::class, 'index']);
-    Route::get('/saldoawalkasbesar/create', [SaldoawalkasbesarController::class, 'create']);
-    Route::post('/saldoawalkasbesar/getsaldo', [SaldoawalkasbesarController::class, 'getsaldo']);
-    Route::post('/saldoawalkasbesar/store', [SaldoawalkasbesarController::class, 'store']);
-    Route::delete('/saldoawalkasbesar/{kode_saldoawalkb}/delete', [SaldoawalkasbesarController::class, 'delete']);
+
+//Administrator | Direktur | General Manager
+Route::middleware(['auth', 'ceklevel:admin,direktur,general manager,manager marketing,manager accounting,kepala penjualan,staff keuangan'])->group(function () {
 
     //Laporan Keuangan
-    Route::get('/laporankeuangan/kaskecil', [LaporankeuanganController::class, 'kaskecil']);
     Route::get('/laporankeuangan/ledger', [LaporankeuanganController::class, 'ledger']);
+    Route::post('/laporankeuangan/ledger/cetak', [LaporankeuanganController::class, 'cetak_ledger']);
+    Route::get('/laporankeuangan/kaskecil', [LaporankeuanganController::class, 'kaskecil']);
     Route::get('/laporankeuangan/penjualan', [LaporankeuanganController::class, 'penjualan']);
     Route::get('/laporankeuangan/uanglogam', [LaporankeuanganController::class, 'uanglogam']);
     Route::get('/laporankeuangan/rekapbg', [LaporankeuanganController::class, 'rekapbg']);
     Route::get('/laporankeuangan/saldokasbesar', [LaporankeuanganController::class, 'saldokasbesar']);
+    Route::get('/laporankeuangan/lpu', [LaporankeuanganController::class, 'lpu']);
     Route::post('/laporankeuangan/kaskecil/cetak', [LaporankeuanganController::class, 'cetak_kaskecil']);
-    Route::post('/laporankeuangan/ledger/cetak', [LaporankeuanganController::class, 'cetak_ledger']);
     Route::post('/laporankeuangan/penjualan/cetak', [LaporankeuanganController::class, 'cetak_penjualan']);
     Route::post('/laporankeuangan/uanglogam/cetak', [LaporankeuanganController::class, 'cetak_uanglogam']);
     Route::post('/laporankeuangan/rekapbg/cetak', [LaporankeuanganController::class, 'cetak_rekapbg']);
     Route::post('/laporankeuangan/saldokasbesar/cetak', [LaporankeuanganController::class, 'cetak_saldokasbesar']);
+    Route::post('/laporankeuangan/lpu/cetak', [LaporankeuanganController::class, 'cetak_lpu']);
 });
+
+//Administrator | Direktur | General Manager | Manager Marketing
+Route::middleware(['auth', 'ceklevel:admin,direktur,general manager'])->group(function () {
+});
+
+
 //Administrator | Admin Penjualan | Kepala Penjualan | Direktur | Manager Accounting
 Route::middleware(['auth', 'ceklevel:admin,admin penjualan,manager accounting,kepala penjualan,kepala admin,manager marketing,direktur'])->group(function () {
 
@@ -470,7 +450,74 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan,manager accounting,ke
     Route::post('/kendaraan/show', [KendaraanController::class, 'show']);
 });
 
-//Administrator | Admin Penjualan
+
+
+//Administrator | Staff Keuangan
+Route::middleware(['auth', 'ceklevel:admin,staff keuangan'])->group(function () {
+    //Ledger
+    Route::get('/ledger', [LedgerController::class, 'index']);
+    Route::get('/ledger/{kode_ledger}/create', [LedgerController::class, 'create']);
+    Route::post('/ledger/storetemp', [LedgerController::class, 'storetemp']);
+    Route::post('/getledgertemp', [LedgerController::class, 'getledgertemp']);
+    Route::post('/cekledgertemp', [LedgerController::class, 'cekledgertemp']);
+    Route::post('/ledger/deletetemp', [LedgerController::class, 'deletetemp']);
+    Route::post('/ledger/store', [LedgerController::class, 'store']);
+    Route::delete('/ledger/{no_bukti}/delete', [LedgerController::class, 'delete']);
+    Route::get('/ledger/{no_bukti}/edit', [LedgerController::class, 'edit']);
+    Route::post('/ledger/{no_bukti}/update', [LedgerController::class, 'update']);
+    Route::get('/saldoawalledger', [LedgerController::class, 'saldoawal']);
+    Route::get('/saldoawalledger/create', [LedgerController::class, 'saldoawal_create']);
+    Route::post('/saldoawalledger/getsaldo', [LedgerController::class, 'getsaldo']);
+    Route::post('/saldoawalledger/store', [LedgerController::class, 'saldoawal_store']);
+    Route::delete('/saldoawalledger/{kode_saldoawalledger}/delete', [LedgerController::class, 'saldoawal_delete']);
+});
+
+//Administrator | Admin Penjulan | Kepala Penjualan | Kepala Admin | Staff Keuangan
+Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,kepala admin,staff keuangan'])->group(function () {
+    Route::get('/giro', [GiroController::class, 'index']);
+    Route::post('/giro/detailfaktur', [GiroController::class, 'detailfaktur']);
+    Route::post('/giro/prosesgiro', [GiroController::class, 'prosesgiro']);
+    Route::post('/giro/update', [GiroController::class, 'update']);
+
+    Route::get('/transfer', [TransferController::class, 'index']);
+    Route::post('/transfer/detailfaktur', [TransferController::class, 'detailfaktur']);
+    Route::post('/transfer/prosestransfer', [TransferController::class, 'prosestransfer']);
+    Route::post('/transfer/update', [TransferController::class, 'update']);
+});
+
+//Administrator | Staff Keuanagan | Kepala Penjualan | Kepala Admin | Kasir
+Route::middleware(['auth', 'ceklevel:admin,staff keuangan,kepala penjualan,kepala admin,kasir'])->group(function () {
+    //Setoran Pusat
+    Route::get('/setoranpusat', [SetoranpusatController::class, 'index']);
+    Route::get('/setoranpusat/cetak', [SetoranpusatController::class, 'cetak']);
+    Route::get('/setoranpusat/create', [SetoranpusatController::class, 'create']);
+    Route::post('/setoranpusat/store', [SetoranpusatController::class, 'store']);
+    Route::delete('/setoranpusat/{kode_setoranpusat}/delete', [SetoranpusatController::class, 'delete']);
+    Route::get('/setoranpusat/{kode_setoranpusat}/edit', [SetoranpusatController::class, 'edit']);
+    Route::post('/setoranpusat/{kode_setoranpusat}/update', [SetoranpusatController::class, 'update']);
+
+    //Saldo Awal Kas Besar
+    Route::get('/saldoawalkasbesar', [SaldoawalkasbesarController::class, 'index']);
+    Route::get('/saldoawalkasbesar/create', [SaldoawalkasbesarController::class, 'create']);
+    Route::post('/saldoawalkasbesar/getsaldo', [SaldoawalkasbesarController::class, 'getsaldo']);
+    Route::post('/saldoawalkasbesar/store', [SaldoawalkasbesarController::class, 'store']);
+    Route::delete('/saldoawalkasbesar/{kode_saldoawalkb}/delete', [SaldoawalkasbesarController::class, 'delete']);
+
+    //Klaim Kas Kecil
+    Route::get('/klaim', [KlaimController::class, 'index']);
+    Route::get('/klaim/{kode_klaim}/{excel}/cetak', [KlaimController::class, 'cetak']);
+    Route::get('/klaim/{kode_klaim}/show', [KlaimController::class, 'show']);
+    Route::get('/klaim/{kode_klaim}/prosesklaim', [KlaimController::class, 'prosesklaim']);
+    Route::get('/klaim/{kode_klaim}/batalkanproses', [KlaimController::class, 'batalkanproses']);
+    Route::get('/klaim/{kode_klaim}/validasikaskecil', [KlaimController::class, 'validasikaskecil']);
+    Route::get('/klaim/{kode_klaim}/batalkanvalidasi', [KlaimController::class, 'batalkanvalidasi']);
+    Route::get('/klaim/create', [KlaimController::class, 'create']);
+    Route::post('/klaim/store', [KlaimController::class, 'store']);
+    Route::post('/klaim/storeprosesklaim', [KlaimController::class, 'storeprosesklaim']);
+    Route::delete('/klaim/{kode_klaim}/delete', [KlaimController::class, 'delete']);
+});
+
+//Administrator | Admin Penjualan | Kepala penjualan | KEpala Admin
 Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,kepala admin'])->group(function () {
 
 
@@ -513,10 +560,6 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,kepa
     Route::delete('/pembayaran/{id_giro}/deletegiro', [PembayaranController::class, 'deletegiro']);
     Route::post('/pembayaran/editgiro', [PembayaranController::class, 'editgiro']);
     Route::post('/pembayaran/{id_giro}/updategiro', [PembayaranController::class, 'updategiro']);
-    Route::get('/giro', [GiroController::class, 'index']);
-    Route::post('/giro/detailfaktur', [GiroController::class, 'detailfaktur']);
-    Route::post('/giro/prosesgiro', [GiroController::class, 'prosesgiro']);
-    Route::post('/giro/update', [GiroController::class, 'update']);
 
 
     //Transfer
@@ -524,10 +567,7 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,kepa
     Route::delete('/pembayaran/{id_transfer}/deletetransfer', [PembayaranController::class, 'deletetransfer']);
     Route::post('/pembayaran/edittransfer', [PembayaranController::class, 'edittransfer']);
     Route::post('/pembayaran/{id_transfer}/updatetransfer', [PembayaranController::class, 'updatetransfer']);
-    Route::get('/transfer', [TransferController::class, 'index']);
-    Route::post('/transfer/detailfaktur', [TransferController::class, 'detailfaktur']);
-    Route::post('/transfer/prosestransfer', [TransferController::class, 'prosestransfer']);
-    Route::post('/transfer/update', [TransferController::class, 'update']);
+
 
     //Retur
     Route::get('/retur', [ReturController::class, 'index']);

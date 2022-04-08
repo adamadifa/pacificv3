@@ -64,7 +64,9 @@
                         </div>
                     </form>
                     @include('layouts.notification')
-                    <table class="table table-bordered table-hover-animation">
+                    <a href="/setoranpenjualan/cetak?dari={{ Request('dari') }}&sampai={{ Request('sampai') }}&kode_cabang={{ Request('kode_cabang') }}&id_karyawan={{ Request('id_karyawan') }}&excel=false" target="_blank" class="btn btn-primary"><i class="feather icon-printer"></i></a>
+                    <a href="/setoranpenjualan/cetak?dari={{ Request('dari') }}&sampai={{ Request('sampai') }}&kode_cabang={{ Request('kode_cabang') }}&id_karyawan={{ Request('id_karyawan') }}&excel=true" class="btn btn-success"><i class="feather icon-download"></i></a>
+                    <table class="table table-bordered table-hover-animation mt-2">
                         <thead>
                             <tr>
                                 <th rowspan="2" class="text-center bg-primary text-white">Tgl Lhp</th>

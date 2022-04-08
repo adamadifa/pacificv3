@@ -21,7 +21,9 @@
         <div class="col-md-12 col-sm-12">
             <div class="card">
                 <div class="card-header">
+                    @if (in_array($level,$klaim_add))
                     <a href="/klaim/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Buat Klaim</a>
+                    @endif
                 </div>
                 <div class="card-body">
                     <form action="/klaim" id="frmcari">
@@ -118,6 +120,7 @@
 
                                         @if ($d->status!=1)
                                         <a class="ml-1 prosesklaim" href="#" kodeklaim="{{ Crypt::encrypt($d->kode_klaim) }}"><i class=" feather icon-send success"></i></a>
+                                        @if (in_array($level,$klaim_add))
                                         <form method="POST" class="deleteform" action="/klaim/{{Crypt::encrypt($d->kode_klaim)}}/delete">
                                             @csrf
                                             @method('DELETE')
@@ -125,12 +128,15 @@
                                                 <i class="feather icon-trash danger"></i>
                                             </a>
                                         </form>
+                                        @endif
                                         @else
+                                        @if (in_array($level,$klaim_validasi))
                                         @if($d->status_validasi !=1)
                                         <a class="ml-1" href="/klaim/{{ Crypt::encrypt($d->kode_klaim) }}/batalkanproses"><i class="fa fa-close danger"></i></a>
                                         <a class="ml-1" href="/klaim/{{ Crypt::encrypt($d->kode_klaim) }}/validasikaskecil"><i class="fa fa-check success"></i></a>
                                         @else
                                         <a class="ml-1" href="/klaim/{{ Crypt::encrypt($d->no_bukti) }}/batalkanvalidasi"><i class="fa fa-close danger"></i></a>
+                                        @endif
                                         @endif
                                         @endif
                                     </div>

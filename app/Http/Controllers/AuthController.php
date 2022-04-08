@@ -33,6 +33,8 @@ class AuthController extends Controller
                 return redirect()->intended('/dashboardkepalaadmin');
             } else if (Auth::user()->level == "manager accounting") {
                 return redirect()->intended('/dashboardaccounting');
+            } else if (Auth::user()->level == "staff keuangan") {
+                return redirect()->intended('/dashboardstaffkeuangan');
             }
         } else {
             echo "Username Atau Password Salah";

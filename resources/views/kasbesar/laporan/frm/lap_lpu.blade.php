@@ -1,15 +1,15 @@
 @extends('layouts.midone')
-@section('titlepage','Laporan Insentif Kepala Admin')
+@section('titlepage','Laporan Penerimaan Uang')
 @section('content')
 <div class="content-wrapper">
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Laporan Insentif Kepala Admin</h2>
+                    <h2 class="content-header-title float-left mb-0">Laporan Penerimaan Uang (LPU)</h2>
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/laporankomisi">Laporan Insentif Kepala Admin</a>
+                            <li class="breadcrumb-item"><a href="/laporankeuangan/lpu">Laporan Penerimaan Uang (LPU)</a>
                             </li>
                         </ol>
                     </div>
@@ -27,10 +27,20 @@
                     <div class="col-lg-7 col-sm-12">
                         <div class="card">
                             <div class="card-body">
-                                <form action="/laporaninsentif/cetak" method="POST" id="frmPenjualan" target="_blank">
+                                <form action="/laporankeuangan/lpu/cetak" method="POST" id="frmLpu" target="_blank">
                                     @csrf
-
-
+                                    <div class="row" id="pilihcabang">
+                                        <div class="col-lg-12 col-sm-12">
+                                            <div class="form-group  ">
+                                                <select name="kode_cabang" id="kode_cabang" class="form-control">
+                                                    <option value="">Pilih Cabang</option>
+                                                    @foreach ($cabang as $c)
+                                                    <option value="{{ $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                     <div class="row" id="pilihbulan">
                                         <div class="col-12">
@@ -66,11 +76,34 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <select name="format" id="format" class="form-control">
+                                                    <option value="1">Format 1</option>
+                                                    <option value="2" selected>Format 2</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-1">
+                                        <div class="col-12">
+                                            <div class="vs-checkbox-con vs-checkbox-primary">
 
+                                                <input type="checkbox" class="showallsales" name="showallsales" value="1">
+                                                <span class="vs-checkbox">
+                                                    <span class="vs-checkbox--check">
+                                                        <i class="vs-icon feather icon-check"></i>
+                                                    </span>
+                                                </span>
+                                                <span class="">Tampilkan Sales Non Aktif</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-lg-8 col-sm-12">
                                             <div class="form-group">
-                                                <button type="submit" name="submit" class="btn btn-primary btn-block"><i class="feather icon-printer"></i> Cetak</button>
+                                                <button type="submit" name="submit" class="btn btn-primary btn-block"><i class="feather icon-send"></i> Submit</button>
                                             </div>
                                         </div>
                                         <div class="col-lg-4 col-sm-12">
@@ -79,6 +112,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                 </form>
                                 <!-- DataTable ends -->
                             </div>
@@ -87,7 +121,7 @@
                 </div>
             </div>
             <div class="col-lg-3 col-sm-12">
-                @include('layouts.nav_penjualan.navright')
+                @include('layouts.nav_laporankeuangan')
             </div>
 
             <div class="col-lg-8 col-sm-12">
@@ -99,3 +133,46 @@
     </div>
 </div>
 @endsection
+@push('myscript')
+<script>
+    $(function() {
+        function loadAkun() {
+            var kode_cabang = $("#kode_cabang").val();
+            $.ajax({
+                type: 'POST'
+                , url: '/coa/getcoacabang'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , kode_cabang: kode_cabang
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#dari_kode_akun").html(respond);
+                    $("#sampai_kode_akun").html(respond);
+                }
+            });
+        }
+
+        $("#kode_cabang").change(function() {
+            // alert('test');
+            loadAkun();
+        });
+
+        $("#frmLpu").submit(function() {
+            var kode_cabang = $("#kode_cabang").val();
+            if (kode_cabang == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Pilih Cabang Terlebih Dahulu !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#kode_cabang").focus();
+                });
+                return false;
+            }
+        });
+    });
+
+</script>
+@endpush

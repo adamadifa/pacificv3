@@ -139,4 +139,51 @@ class SetoranpusatController extends Controller
             return Redirect::back()->with(['warning' => 'Data Gagal Diupdate Hubungi Tim IT']);
         }
     }
+
+    public function cetak(Request $request)
+    {
+        $query = Setoranpusat::query();
+        $query->select('setoran_pusat.*', 'nama_bank');
+        $query->join('master_bank', 'setoran_pusat.bank', '=', 'master_bank.kode_bank');
+        $query->whereBetween('tgl_setoranpusat', [$request->dari, $request->sampai]);
+        if (!empty($request->kode_bank)) {
+            $query->where('bank', $request->kode_bank);
+        }
+
+        if (!empty($request->kode_cabang)) {
+            $query->where('setoran_pusat.kode_cabang', $request->kode_cabang);
+        }
+        $query->orderBy('tgl_setoranpusat');
+        $query->orderBy('kode_setoranpusat');
+        $setoranpusat = $query->get();
+
+        $qrekap = Setoranpusat::query();
+        $qrekap->selectRaw("nama_bank,sum(uang_kertas) as uang_kertas, sum(uang_logam) as uang_logam, sum(giro) as giro,SUM(transfer) as transfer");
+        $qrekap->join('master_bank', 'setoran_pusat.bank', '=', 'master_bank.kode_bank');
+        $qrekap->whereBetween('tgl_setoranpusat', [$request->dari, $request->sampai]);
+        if (!empty($request->kode_bank)) {
+            $qrekap->where('bank', $request->kode_bank);
+        }
+
+        if (!empty($request->kode_cabang)) {
+            $qrekap->where('setoran_pusat.kode_cabang', $request->kode_cabang);
+        }
+        $qrekap->groupBy('nama_bank');
+        $rekap = $qrekap->get();
+
+
+
+        $cabang = Cabang::where('kode_cabang', $request->kode_cabang)->first();
+        $bank = Bank::where('kode_bank', $request->kode_bank)->first();
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        if ($request->excel == "true") {
+            $time = date("H:i:s");
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Setoran Penjualan $dari-$sampai-$time.xls");
+        }
+        return view('setoranpusat.cetak', compact('cabang', 'bank', 'setoranpusat', 'dari', 'sampai', 'rekap'));
+    }
 }

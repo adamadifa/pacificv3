@@ -951,7 +951,11 @@ class PenjualanController extends Controller
                     ->whereRaw('LEFT(no_bukti,6) = "GJ' . $bulan . $tahun . '"')
                     ->orderBy("no_bukti", "desc")
                     ->first();
-                $lastno_bukti = $bukubesar->no_bukti;
+                if ($bukubesar != null) {
+                    $lastno_bukti = $bukubesar->no_bukti;
+                } else {
+                    $lastno_bukti = "";
+                }
                 $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 4);
 
                 DB::table('buku_besar')

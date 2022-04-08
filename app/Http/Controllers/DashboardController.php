@@ -294,4 +294,9 @@ class DashboardController extends Controller
         $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
         return view('dashboard.kepalapenjualan', compact('jmlpengajuan', 'bulan', 'cabang', 'rekappenjualan'));
     }
+
+    public function dashboardstaffkeuangan()
+    {
+        return view('dashboard.staffkeuangan');
+    }
 }

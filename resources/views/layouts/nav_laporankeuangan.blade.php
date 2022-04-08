@@ -9,14 +9,27 @@
                     <i class="feather icon-file mr-1"></i>Kas Kecil
                 </li>
             </a>
+            @if (in_array($level,$laporan_ledger))
             <a href="/laporankeuangan/ledger" style="color:#626262">
                 <li class="list-group-item {{ request()->is(['laporankeuangan/ledger']) ? 'active' : '' }}">
                     <i class="feather icon-file mr-1"></i>Ledger / Mutasi Bank
                 </li>
             </a>
+            @else
+            <a href="/laporankeuangan/ledger" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporankeuangan/ledger']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i> Mutasi Bank
+                </li>
+            </a>
+            @endif
             <a href="/laporankeuangan/saldokasbesar" style="color:#626262">
                 <li class="list-group-item {{ request()->is(['laporankeuangan/saldokasbesar']) ? 'active' : '' }}">
                     <i class="feather icon-file mr-1"></i>Saldo Kas Besar
+                </li>
+            </a>
+            <a href="/laporankeuangan/lpu" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporankeuangan/lpu']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Laporan Penerimaan Uang (LPU)
                 </li>
             </a>
             <a href="/laporankeuangan/penjualan" style="color:#626262">

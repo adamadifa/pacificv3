@@ -6,6 +6,7 @@ use App\Models\Bank;
 use App\Models\Cabang;
 use App\Models\Kaskecil;
 use App\Models\Ledger;
+use App\Models\Salesman;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -89,7 +90,22 @@ class LaporankeuanganController extends Controller
 
     public function ledger()
     {
-        $bank = DB::table('master_bank')->orderBy('kode_bank')->get();
+        $role = ['admin', 'direktur', 'general manager', 'manager accounting'];
+        $level = Auth::user()->level;
+        if (in_array($level, $role)) {
+            $bank = DB::table('master_bank')->orderBy('kode_bank')->get();
+        } else {
+            if ($this->cabang == "PCF") {
+                $listbank = DB::table('cabang')->where('kode_cabang', '!=', 'PST')->get();
+                $list[] = "";
+                foreach ($listbank as $d) {
+                    $list[] = $d->kode_cabang;
+                }
+                $bank = DB::table('master_bank')->whereIn('kode_cabang', $list)->orderBy('kode_bank')->get();
+            } else {
+                $bank = DB::table('master_bank')->where('kode_cabang', $this->cabang)->orderBy('kode_bank')->get();
+            }
+        }
         if ($this->cabang == "PCF") {
             $coa = DB::table('coa')->orderBy('kode_akun')->get();
         } else {
@@ -411,6 +427,105 @@ class LaporankeuanganController extends Controller
             ->where('kode_cabang', $kode_cabang)->first();
         $namabulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
+        if (isset($_POST['export'])) {
+            echo "EXPORT";
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Saldo Kas Besar Cabang $cabang->nama_cabang Periode Bulan $namabulan[$bulan] $tahun.xls");
+        }
         return view('kasbesar.laporan.cetak_saldokasbesar', compact('dari', 'sampai', 'saldokasbesar', 'tgl_akhirsetoran', 'cabang', 'namabulan', 'bulan', 'tahun', 'kode_cabang'));
+    }
+
+    public function lpu()
+    {
+        if ($this->cabang == "PCF") {
+            $cabang = DB::table('cabang')->get();
+        } else {
+            $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+        }
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        return view('kasbesar.laporan.frm.lap_lpu', compact('cabang', 'bulan'));
+    }
+
+    public function cetak_lpu(Request $request)
+    {
+        $kode_cabang = $request->kode_cabang;
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $dari = $tahun . "-" . $bulan . "-01";
+        $sampai = date("Y-m-t", strtotime($dari));
+        $showallsales = $request->showallsales;
+        $format = $request->format;
+
+        if ($bulan == 12) {
+            $bln = 1;
+            $thn = $tahun + 1;
+        } else {
+            $bln = $bulan + 1;
+            $thn = $tahun;
+        }
+
+        if ($bulan == 1) {
+            $blnbefore = 12;
+            $thnbefore = $tahun - 1;
+        } else {
+            $blnbefore = $bulan - 1;
+            $thnbefore = $tahun;
+        }
+
+        $ceknextBulan = DB::table('setoran_pusat')->where('omset_bulan', $bulan)->where('omset_tahun', $tahun)
+            ->whereRaw('MONTH(tgl_diterimapusat) = ' . $bln)
+            ->whereRaw('YEAR(tgl_diterimapusat) = ' . $thn)
+            ->where('kode_cabang', $kode_cabang)
+            ->orderBy('tgl_diterimapusat', 'desc')
+            ->first();
+
+        $cekbeforeBulan = DB::table('setoran_pusat')->where('omset_bulan', $bulan)->where('omset_tahun', $tahun)
+            ->whereRaw('MONTH(tgl_diterimapusat) = ' . $blnbefore)
+            ->whereRaw('YEAR(tgl_diterimapusat) = ' . $thnbefore)
+            ->where('kode_cabang', $kode_cabang)
+            ->orderBy('tgl_diterimapusat', 'desc')
+            ->first();
+
+        if ($ceknextBulan ==  null) {
+            $sampai = $sampai;
+        } else {
+            $sampai = $ceknextBulan->tgl_diterimapusat;
+        }
+
+        if ($cekbeforeBulan ==  null) {
+            $fromlast = $dari;
+        } else {
+            $fromlast = $cekbeforeBulan->tgl_diterimapusat;
+        }
+
+        $qsalesman = Salesman::query();
+        if (empty($showallsales)) {
+            $qsalesman->where('status_aktif_sales', 1);
+        }
+        $qsalesman->where('nama_karyawan', '!=', '-');
+        $qsalesman->where('kode_cabang', $kode_cabang);
+        $qsalesman->orderBy('nama_karyawan');
+        $salesman = $qsalesman->get();
+        $jmlsales = $qsalesman->count();
+
+        $qbank = Bank::where('kode_cabang', 'PST');
+        $bank = $qbank->get();
+        $jmlbank = $qbank->count();
+        $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
+        $namabulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        if (isset($_POST['export'])) {
+            echo "EXPORT";
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=LPU Cabang $cabang->nama_cabang Periode Bulan $namabulan[$bulan] $tahun.xls");
+        }
+        if ($format == 2) {
+            return view('kasbesar.laporan.cetak_lpu_2', compact('salesman', 'bank', 'jmlbank', 'jmlsales', 'cabang', 'bulan', 'tahun', 'namabulan', 'dari', 'sampai', 'kode_cabang'));
+        } else {
+            return view('kasbesar.laporan.cetak_lpu', compact('salesman', 'bank', 'jmlbank', 'jmlsales', 'cabang', 'bulan', 'tahun', 'namabulan', 'dari', 'sampai', 'kode_cabang'));
+        }
     }
 }

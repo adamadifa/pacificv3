@@ -40,6 +40,9 @@
                         <div class="card-content">
                             <div class="card-body">
                                 <table class="table">
+                                    @if ($rekappenjualan !=null)
+
+
                                     <tr>
                                         <td>Total Bruto</td>
                                         <td></td>
@@ -86,6 +89,16 @@
                                         <td></td>
                                         <td class="text-right">{{ rupiah($totalnetto - $totalnettopending) }}</td>
                                     </tr>
+                                    @else
+                                    <tr>
+                                        <td>
+                                            <div class="alert alert-info">
+                                                <i class="fa fa-info mr-1"></i>Data Belum Tersedia
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endif
+
                                 </table>
                             </div>
                         </div>

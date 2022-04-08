@@ -23,7 +23,9 @@
         <div class="col-md-12 col-sm-12">
             <div class="card">
                 <div class="card-header">
+                    @if (in_array($level,$setoranpusat_add))
                     <a href="#" class="btn btn-primary" id="inputsetoranpusat"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
+                    @endif
                 </div>
                 <div class="card-body">
                     <form action="/setoranpusat" id="frmcari">
@@ -67,7 +69,9 @@
                         </div>
                     </form>
                     @include('layouts.notification')
-                    <table class="table table-bordered table-hover-animation">
+                    <a href="/setoranpusat/cetak?dari={{ Request('dari') }}&sampai={{ Request('sampai') }}&kode_cabang={{ Request('kode_cabang') }}&kode_bank={{ Request('kode_bank') }}&excel=false" target="_blank" class="btn btn-primary"><i class="feather icon-printer"></i></a>
+                    <a href="/setoranpusat/cetak?dari={{ Request('dari') }}&sampai={{ Request('sampai') }}&kode_cabang={{ Request('kode_cabang') }}&kode_bank={{ Request('kode_bank') }}&excel=true" class="btn btn-success"><i class="feather icon-download"></i></a>
+                    <table class="table table-bordered table-hover-animation mt-2">
                         <thead class="thead-dark">
                             <tr>
                                 <th style="width:10%">Tanggal</th>
@@ -107,9 +111,12 @@
                                 </td>
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example">
+                                        @if (in_array($level,$setoranpusat_edit))
                                         @if (empty($d->no_ref))
                                         <a class="ml-1 edit" status="{{ $d->status }}" kode_setoranpusat="{{ $d->kode_setoranpusat }}" href="#"><i class="feather icon-edit success"></i></a>
                                         @endif
+                                        @endif
+                                        @if (in_array($level,$setoranpusat_hapus))
                                         @if ($d->status==0)
                                         <form method="POST" class="deleteform" action="/setoranpusat/{{Crypt::encrypt($d->kode_setoranpusat)}}/delete">
                                             @csrf
@@ -118,6 +125,7 @@
                                                 <i class="feather icon-trash danger"></i>
                                             </a>
                                         </form>
+                                        @endif
                                         @endif
                                     </div>
                                 </td>
