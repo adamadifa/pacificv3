@@ -9,9 +9,22 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\View;
 
 class BelumsetorController extends Controller
 {
+    protected $cabang;
+    public function __construct()
+    {
+        // Fetch the Site Settings object
+        $this->middleware(function ($request, $next) {
+            $this->cabang = Auth::user()->kode_cabang;
+            return $next($request);
+        });
+
+
+        View::share('cabang', $this->cabang);
+    }
     public function index(Request $request)
     {
         $query = Belumsetor::query();
@@ -19,19 +32,30 @@ class BelumsetorController extends Controller
         if (!empty($request->bulan)) {
             $query->where('bulan', $request->bulan);
         }
+
+        if ($this->cabang != "PCF") {
+            $query->where('kode_cabang', $this->cabang);
+        }
         $query->orderBy('kode_cabang');
         $query->orderBy('bulan');
         $belumsetor = $query->get();
 
 
-        $cabang = Cabang::orderBy('kode_cabang')->get();
+
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
-        return view('belumsetor.index', compact('cabang', 'bulan', 'belumsetor'));
+        return view('belumsetor.index', compact('bulan', 'belumsetor'));
     }
 
     public function create()
     {
-        $cabang = Cabang::orderBy('kode_cabang')->get();
+
+        if ($this->cabang == "PCF") {
+            $cabang = Cabang::orderBy('kode_cabang')->get();
+        } else {
+            $cabang = Cabang::where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+        }
+
+
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('belumsetor.create', compact('cabang', 'bulan'));
     }

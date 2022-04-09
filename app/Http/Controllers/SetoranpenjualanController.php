@@ -5,12 +5,27 @@ namespace App\Http\Controllers;
 use App\Models\Cabang;
 use App\Models\Setoranpenjualan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\View;
 
 class SetoranpenjualanController extends Controller
 {
+
+    protected $cabang;
+    public function __construct()
+    {
+        // Fetch the Site Settings object
+        $this->middleware(function ($request, $next) {
+            $this->cabang = Auth::user()->kode_cabang;
+            return $next($request);
+        });
+
+
+        View::share('cabang', $this->cabang);
+    }
     public function index(Request $request)
     {
         $query = Setoranpenjualan::query();
@@ -95,7 +110,8 @@ class SetoranpenjualanController extends Controller
         $setoranpenjualan = $query->get();
         //dd($setoranpenjualan);
         $cabang = Cabang::orderBy('kode_cabang')->get();
-        return view('setoranpenjualan.index', compact('cabang', 'setoranpenjualan'));
+        $kode_cabang = $this->cabang;
+        return view('setoranpenjualan.index', compact('cabang', 'setoranpenjualan', 'kode_cabang'));
     }
 
     public function detailsetoran(Request $request)

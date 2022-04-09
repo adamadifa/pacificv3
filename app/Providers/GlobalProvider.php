@@ -49,6 +49,8 @@ class GlobalProvider extends ServiceProvider
             $dashboardkepalaadmin = ['kepala admin'];
             $dashboardadminpenjualan = ['admin penjualan'];
             $dashboardaccounting = ['manager accounting'];
+            $dashboardstaffkeuangan = ['staff keuangan'];
+            $dashboardadminkaskecil = ['admin kas kecil'];
 
             //Data Master
             $datamaster = ['admin', 'admin penjualan', 'manager accounting', 'kepala penjualan', 'kepala admin', 'manager marketing', 'direktur'];
@@ -121,9 +123,18 @@ class GlobalProvider extends ServiceProvider
             $laporan_penjualan = ['admin', 'admin penjualan', 'kepala penjualan', 'kepala admin', 'manager accounting', 'manager marketing', 'manager accounting', 'general manager', 'direktur'];
             $harga_net = ['admin', 'manager accounting', 'manager marketing', 'general manager', 'direktur'];
             //--------------------------------Keuangan---------------------------------------------
-            $keuangan = ['admin', 'admin penjualan', 'kepala admin', 'direktur', 'manager accounting', 'general manager', 'manager marketing', 'kepala penjualan', 'staff keuangan'];
-            $laporankeuangan_view = ['admin', 'direktur', 'general manager', 'manager marketing', 'manager accounting', 'kepala penjualan', 'kepala admin', 'staff keuangan'];
+            $keuangan = [
+                'admin', 'admin penjualan', 'kepala admin', 'direktur', 'manager accounting', 'general manager',
+                'manager marketing', 'kepala penjualan', 'staff keuangan', 'admin kas kecil', 'kasir'
+            ];
+            $laporankeuangan_view = ['admin', 'direktur', 'general manager', 'manager marketing', 'manager accounting', 'kepala penjualan', 'kepala admin', 'staff keuangan', 'admin kas kecil'];
             $laporan_ledger = ['admin', 'direktur', 'general manager', 'manager accounting'];
+            $laporan_kaskecil = ['admin', 'direktur', 'general manager', 'manager accounting', 'kepala admin', 'staff keuangan', 'admin kas kecil'];
+            $laporan_saldokasbesar = ['admin', 'direktur', 'general manager', 'manager accounting', 'kepala admin', 'staff keuangan'];
+            $laporan_lpu = ['admin', 'direktur', 'general manager', 'manager accounting', 'kepala admin', 'staff keuangan'];
+            $laporan_penjualan_keuangan = ['admin', 'direktur', 'general manager', 'manager accounting', 'kepala admin', 'staff keuangan'];
+            $laporan_uanglogam = ['admin', 'direktur', 'general manager', 'manager accounting', 'kepala admin', 'staff keuangan'];
+            $laporan_rekapbg = ['admin', 'direktur', 'general manager', 'manager accounting', 'kepala admin', 'staff keuangan'];
             //Giro
             $giro_view = ['admin', 'admin penjualan', 'kepala admin', 'staff keuangan'];
             $giro_approved = ['admin', 'staff keuangan', 'manager keuangan'];
@@ -133,15 +144,16 @@ class GlobalProvider extends ServiceProvider
             $transfer_approved =  ['admin', 'staff keuangan', 'manager keuangan'];
 
             //Kas Kecil
-            $kaskecil_menu  = ['admin', 'staff keuangan'];
-            $kaskecil_view = ['admin'];
-            $klaim_view = ['admin', 'staff keuangan'];
-            $klaim_add = ['admin', 'kasir'];
-            $klaim_hapus = ['admin', 'kasir'];
-            $klaim_validasi = ['admin', 'kasir'];
+            $kaskecil_menu  = ['admin', 'staff keuangan', 'kepala admin', 'admin kas kecil'];
+            $kaskecil_view = ['admin', 'kepala admin', 'admin kas kecil'];
+            $klaim_view = ['admin', 'staff keuangan', 'kepala admin', 'admin kas kecil'];
+            $klaim_add = ['admin', 'kepala admin', 'admin kas kecil'];
+            $klaim_hapus = ['admin', 'kepala admin', 'admin kas kecil'];
+            $klaim_validasi = ['admin', 'kepala admin', 'admin kas kecil'];
+            $klaim_proses = ['admin', 'staff keuangan'];
 
             //Mutasi Bank
-            $mutasibank_view = ['admin'];
+            $mutasibank_view = ['admin', 'kepala admin', 'admin kas kecil'];
 
             //Ledger
             $ledger_menu  = ['admin', 'staff keuangan'];
@@ -149,18 +161,19 @@ class GlobalProvider extends ServiceProvider
             $ledger_saldoawal = ['admin', 'staff keuangan'];
 
             //Kas Besar Keuangan
-            $kasbesar_menu  = ['admin', 'staff keuangan'];
+            $kasbesar_menu  = ['admin', 'staff keuangan', 'kepala admin', 'kasir'];
             $saldoawalkasbesar_view = ['admin', 'staff keuangan'];
-            $setoran_menu = ['admin', 'staff keuangan'];
-            $setoranpenjualan_view = ['admin'];
-            $setoranpusat_view = ['admin', 'staff keuangan'];
-            $setoranpusat_add = ['admin', 'kasir', 'kepala admin'];
-            $setoranpusat_edit = ['admin', 'kasir', 'kepala admin'];
-            $setoranpusat_hapus = ['admin', 'kasir', 'kepala admin'];
-            $setorangiro_view = ['admin'];
-            $setorantransfer_view = ['admin'];
-            $belum_disetorkan = ['admin'];
-            $lebih_disetorkan = ['admin'];
+            $setoran_menu = ['admin', 'staff keuangan', 'kepala admin', 'kasir'];
+            $setoranpenjualan_view = ['admin', 'kepala admin', 'kasir'];
+            $setoranpusat_view = ['admin', 'staff keuangan', 'kepala admin', 'kasir'];
+            $setoranpusat_add = ['admin', 'kasir', 'kepala admin', 'kasir'];
+            $setoranpusat_edit = ['admin', 'kasir', 'kepala admin', 'kasir'];
+            $setoranpusat_hapus = ['admin', 'kasir', 'kepala admin', 'kasir'];
+            $setoranpusat_terimasetoran = ['admin', 'staff keuangan'];
+            $setorangiro_view = ['admin', 'kepala admin', 'kasir'];
+            $setorantransfer_view = ['admin', 'kepala admin', 'kasir'];
+            $belum_disetorkan = ['admin', 'kepala admin', 'kasir'];
+            $lebih_disetorkan = ['admin', 'kepala admin', 'kasir'];
 
             $saldoawalpiutang = ['admin'];
 
@@ -169,6 +182,12 @@ class GlobalProvider extends ServiceProvider
             $kirimlpc_edit = ['admin', 'kepala penjualan', 'kepala admin', 'manager accounting'];
             $kirimlpc_hapus = ['admin', 'kepala penjualan', 'kepala admin', 'manager accounting'];
             $kirimlpc_approve = ['admin', 'manager accounting'];
+
+
+
+
+            //Pembelian
+            $pembelian_menu = ['admin'];
             $shareddata = [
                 'level' => $level,
                 'getcbg' => $getcbg,
@@ -178,6 +197,8 @@ class GlobalProvider extends ServiceProvider
                 'dashboardkepalaadmin' => $dashboardkepalaadmin,
                 'dashboardadminpenjualan' => $dashboardadminpenjualan,
                 'dashboardaccounting' => $dashboardaccounting,
+                'dashboardstaffkeuangan' => $dashboardstaffkeuangan,
+                'dashboardadminkaskecil' => $dashboardadminkaskecil,
                 //Data Master
                 'datamaster_view' => $datamaster,
                 //Pelanggan
@@ -247,6 +268,12 @@ class GlobalProvider extends ServiceProvider
                 'penjualan_keuangan' => $penjualan_keuangan,
                 'laporankeuangan_view' => $laporankeuangan_view,
                 'laporan_ledger' => $laporan_ledger,
+                'laporan_kaskecil' => $laporan_kaskecil,
+                'laporan_saldokasbesar' => $laporan_saldokasbesar,
+                'laporan_lpu' => $laporan_lpu,
+                'laporan_penjualan_keuangan' => $laporan_penjualan_keuangan,
+                'laporan_uanglogam' => $laporan_uanglogam,
+                'laporan_rekapbg' => $laporan_rekapbg,
 
                 //Giro
                 'giro_view' => $giro_view,
@@ -262,6 +289,7 @@ class GlobalProvider extends ServiceProvider
                 'klaim_add' => $klaim_add,
                 'klaim_hapus' => $klaim_hapus,
                 'klaim_validasi' => $klaim_validasi,
+                'klaim_proses' => $klaim_proses,
 
                 //Mutasi Bank
                 'mutasibank_view' => $mutasibank_view,
@@ -286,6 +314,7 @@ class GlobalProvider extends ServiceProvider
                 'setorantransfer_view' => $setorantransfer_view,
                 'belum_disetorkan' => $belum_disetorkan,
                 'lebih_disetorkan' => $lebih_disetorkan,
+                'setoranpusat_terimasetoran' => $setoranpusat_terimasetoran,
 
 
                 //Utilities
@@ -297,6 +326,7 @@ class GlobalProvider extends ServiceProvider
                 'kirimlpc_hapus' => $kirimlpc_hapus,
                 'kirimlpc_approve' => $kirimlpc_approve,
 
+                'pembelian_menu' => $pembelian_menu,
 
             ];
             View::share($shareddata);

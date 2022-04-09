@@ -127,6 +127,15 @@
                                         </form>
                                         @endif
                                         @endif
+                                        @if (in_array($level,$setoranpusat_terimasetoran))
+                                        @if (empty($d->no_ref))
+                                        @if ($d->status==0)
+                                        <a href="#" kodesetoranpusat="{{ $d->kode_setoranpusat }}" class="success terimasetoran ml-1"><i class="feather icon-external-link"></i></a>
+                                        @else
+                                        <a href="/setoranpusat/{{ Crypt::encrypt($d->kode_setoranpusat) }}/batalkansetoran" class="danger batalkansetoran ml-1"><i class="fa fa-close"></i></a>
+                                        @endif
+                                        @endif
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
@@ -170,6 +179,23 @@
         </div>
     </div>
 </div>
+
+<!-- Penerimaan Setoran -->
+<div class="modal fade text-left" id="mdlterimasetoran" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Input Terima Seoran</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loadterimasetoeran"></div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('myscript')
@@ -183,6 +209,18 @@
             });
             $("#loadinputsetoranpusat").load("/setoranpusat/create");
         });
+
+
+        $(".terimasetoran").click(function(e) {
+            e.preventDefault();
+            var kode_setoranpusat = $(this).attr("kodesetoranpusat");
+            $('#mdlterimasetoran').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+            $("#loadterimasetoeran").load("/setoranpusat/" + kode_setoranpusat + "/createterimasetoran");
+        });
+
 
         $('.delete-confirm').click(function(event) {
             var form = $(this).closest("form");

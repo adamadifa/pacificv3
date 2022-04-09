@@ -299,4 +299,14 @@ class DashboardController extends Controller
     {
         return view('dashboard.staffkeuangan');
     }
+
+    public function dashboardadminkaskecil()
+    {
+        return view('dashboard.adminkaskecil');
+    }
+
+    public function dashboardkasir()
+    {
+        return view('dashboard.kasir');
+    }
 }

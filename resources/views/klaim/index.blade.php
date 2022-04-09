@@ -36,7 +36,6 @@
                             </div>
                         </div>
                         <div class="row">
-                            @if (Auth::user()->kode_cabang =="PCF")
                             <div class="col-lg-4 col-sm-12">
                                 <div class="form-group  ">
                                     <select name="kode_cabang" id="kode_cabang" class="form-control">
@@ -48,18 +47,6 @@
                                     </select>
                                 </div>
                             </div>
-                            @else
-                            @if (Auth::user()->level=="admin keuangan")
-                            @php
-                            $kode_cabang = "PST";
-                            @endphp
-                            @else
-                            @php
-                            $kode_cabang = Auth::user()->kode_cabang;
-                            @endphp
-                            @endif
-                            <input type="hidden" name="kode_cabang" id="kode_cabang" value="{{ $kode_cabang }}">
-                            @endif
                             <div class="col-lg-4 col-sm-12">
                                 <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search"></i> Cari Data </button>
                             </div>
@@ -119,8 +106,11 @@
                                         <a class="ml-1 detailklaim" href="#" kodeklaim="{{ Crypt::encrypt($d->kode_klaim) }}"><i class=" feather icon-file-text info"></i></a>
 
                                         @if ($d->status!=1)
+                                        @if (in_array($level,$klaim_proses))
                                         <a class="ml-1 prosesklaim" href="#" kodeklaim="{{ Crypt::encrypt($d->kode_klaim) }}"><i class=" feather icon-send success"></i></a>
-                                        @if (in_array($level,$klaim_add))
+                                        @endif
+
+                                        @if (in_array($level,$klaim_hapus))
                                         <form method="POST" class="deleteform" action="/klaim/{{Crypt::encrypt($d->kode_klaim)}}/delete">
                                             @csrf
                                             @method('DELETE')
@@ -129,16 +119,29 @@
                                             </a>
                                         </form>
                                         @endif
+
+
+
+                                        @else
+
+
+
+                                        @if($d->status_validasi !=1)
+                                        @if (in_array($level,$klaim_proses))
+                                        <a class="ml-1" href="/klaim/{{ Crypt::encrypt($d->kode_klaim) }}/batalkanproses"><i class="fa fa-close danger"></i></a>
+                                        @endif
+                                        @if (in_array($level,$klaim_validasi))
+                                        <a class="ml-1" href="/klaim/{{ Crypt::encrypt($d->kode_klaim) }}/validasikaskecil"><i class="fa fa-check success"></i></a>
+                                        @endif
+
                                         @else
                                         @if (in_array($level,$klaim_validasi))
-                                        @if($d->status_validasi !=1)
-                                        <a class="ml-1" href="/klaim/{{ Crypt::encrypt($d->kode_klaim) }}/batalkanproses"><i class="fa fa-close danger"></i></a>
-                                        <a class="ml-1" href="/klaim/{{ Crypt::encrypt($d->kode_klaim) }}/validasikaskecil"><i class="fa fa-check success"></i></a>
-                                        @else
                                         <a class="ml-1" href="/klaim/{{ Crypt::encrypt($d->no_bukti) }}/batalkanvalidasi"><i class="fa fa-close danger"></i></a>
                                         @endif
                                         @endif
                                         @endif
+
+
                                     </div>
                                 </td>
                             </tr>

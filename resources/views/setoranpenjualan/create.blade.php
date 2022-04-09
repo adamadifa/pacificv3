@@ -125,6 +125,8 @@
 <script src="{{asset('app-assets/js/scripts/forms/select/form-select2.js')}}"></script>
 <script>
     $(function() {
+        var kode_cabang = $("#kode_cabang").val();
+        loadsalesmancabang(kode_cabang);
 
         function cektutuplaporan() {
             var tanggal = $("#tgl_lhp").val();
@@ -153,6 +155,7 @@
                 , data: {
                     _token: "{{ csrf_token() }}"
                     , kode_cabang: kode_cabang
+                    , type: 1
                 }
                 , cache: false
                 , success: function(respond) {
@@ -160,6 +163,7 @@
                 }
             });
         }
+
 
 
         function addCommas(nStr) {

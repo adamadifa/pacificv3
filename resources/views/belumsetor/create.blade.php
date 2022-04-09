@@ -139,7 +139,34 @@
             var tahun = $("#frmBelumsetor").find("#tahun").val();
             var id_karyawan = $("#id_karyawan").val();
             var jumlah = $("#jumlah").val();
-            if (id_karyawan == "") {
+            if (kode_cabang == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Cabang Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $('#kode_cabang').focus();
+                });
+            } else if (bulan == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Bulan Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $('#bulan').focus();
+                });
+            } else if (tahun == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Tahun Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $('#tahun').focus();
+                });
+            } else if (id_karyawan == "") {
                 swal({
                     title: 'Oops'
                     , text: 'Salesman Harus Diisi !'

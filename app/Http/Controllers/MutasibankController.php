@@ -10,9 +10,22 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\View;
 
 class MutasibankController extends Controller
 {
+    protected $cabang;
+    public function __construct()
+    {
+        // Fetch the Site Settings object
+        $this->middleware(function ($request, $next) {
+            $this->cabang = Auth::user()->kode_cabang;
+            return $next($request);
+        });
+
+
+        View::share('cabang', $this->cabang);
+    }
     public function index(Request $request)
     {
         $query = Ledger::query();
@@ -21,10 +34,16 @@ class MutasibankController extends Controller
         $query->join('master_bank', 'ledger_bank.bank', '=', 'master_bank.kode_bank');
         $query->orderBy('tgl_ledger');
         $query->orderBy('pelanggan');
+        $query->orderBy('status_dk', 'desc');
+        $query->orderBy('date_created', 'asc');
         $query->whereBetween('tgl_ledger', [$request->dari, $request->sampai]);
         $query->where('ledger_bank.bank', $request->bank);
         $mutasibank = $query->get();
-        $cabang = Cabang::orderBy('kode_cabang')->get();
+        if ($this->cabang == "PCF") {
+            $cabang = Cabang::orderBy('kode_cabang')->get();
+        } else {
+            $cabang = Cabang::where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+        }
 
         if (!empty($request->dari)) {
             $tanggal = explode("-", $request->dari);

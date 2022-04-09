@@ -121,6 +121,7 @@
 <script src="{{asset('app-assets/js/scripts/forms/select/form-select2.js')}}"></script>
 <script>
     $(function() {
+        $("#jumlah").maskMoney();
 
         function cektutuplaporan() {
             var tanggal = $("#tgl_kaskecil").val();

@@ -278,7 +278,11 @@ class TransferController extends Controller
                     ]);
             } else {
                 $ledger = DB::table('ledger_bank')->where('no_ref', $kode_transfer)->first();
-                $nobukti_ledger = $ledger->no_bukti;
+                if ($ledger != null) {
+                    $nobukti_ledger = $ledger->no_bukti;
+                } else {
+                    $nobukti_ledger = "";
+                }
                 //Hapus  Ledger
                 DB::table('ledger_bank')->where('no_ref', $kode_transfer)->delete();
                 //Hapus Buku Besar

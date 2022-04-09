@@ -6,12 +6,27 @@ use App\Models\Cabang;
 use App\Models\Kaskecil;
 use App\Models\Klaim;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\View;
 
 class KlaimController extends Controller
 {
+
+    protected $cabang;
+    public function __construct()
+    {
+        // Fetch the Site Settings object
+        $this->middleware(function ($request, $next) {
+            $this->cabang = Auth::user()->kode_cabang;
+            return $next($request);
+        });
+
+
+        View::share('cabang', $this->cabang);
+    }
     public function index(Request $request)
     {
         $query = Klaim::query();
@@ -22,7 +37,11 @@ class KlaimController extends Controller
         }
         $query->leftJoin('ledger_bank', 'klaim.kode_klaim', '=', 'ledger_bank.kode_klaim');
         $klaim = $query->get();
-        $cabang = Cabang::orderBy('kode_cabang')->get();
+        if ($this->cabang == "PCF") {
+            $cabang = Cabang::orderBy('kode_cabang')->get();
+        } else {
+            $cabang = Cabang::where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+        }
         return view('klaim.index', compact('klaim', 'cabang'));
     }
 
