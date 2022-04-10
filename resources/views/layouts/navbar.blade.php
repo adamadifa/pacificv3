@@ -99,11 +99,27 @@
                         </a>
                     </li>
                     @endif
+                    @if (in_array($level, $supplier_view))
+                    <li class="{{ request()->is(['supplier', 'supplier/*']) ? 'active' : '' }}">
+                        <a href="/supplier">
+                            <i class="feather icon-users"></i>
+                            <span class="menu-item">Supplier</span>
+                        </a>
+                    </li>
+                    @endif
                     @if (in_array($level, $barang_view))
                     <li class="{{ request()->is(['barang', 'barang/*']) ? 'active' : '' }}">
                         <a href="/barang">
                             <i class="feather icon-grid"></i>
-                            <span class="menu-item">Barang</span>
+                            <span class="menu-item">Barang <small>(Penjualan)</small></span>
+                        </a>
+                    </li>
+                    @endif
+                    @if (in_array($level, $barangpembelian))
+                    <li class="{{ request()->is(['barangpembelian', 'barangpembelian/*']) ? 'active' : '' }}">
+                        <a href="/barangpembelian">
+                            <i class="feather icon-grid"></i>
+                            <span class="menu-item">Barang <small>(Pembelian)</small></span>
                         </a>
                     </li>
                     @endif
@@ -431,6 +447,14 @@
             <li class=" nav-item">
                 <a href="#"><i class="feather icon-shopping-bag danger"></i><span class="menu-title">Pembelian</span></a>
                 <ul class="menu-content">
+                    @if (in_array($level,$pembelian_view))
+                    <li class="{{ request()->is(['pembelian','pembelian/*']) ? 'active' : '' }}">
+                        <a href="/pembelian">
+                            <i class="feather icon-shopping-cart"></i>
+                            <span class="menu-item">Data Pembelian</span>
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </li>
             @endif

@@ -67,11 +67,23 @@ class GlobalProvider extends ServiceProvider
             $salesman_edit = ['admin', 'kepala penjualan', 'kepala admin', 'admin penjualan'];
             $salesman_hapus = ['admin', 'kepala penjualan', 'kepala admin', 'admin penjualan'];
 
+            //Supplier
+            $supplier_menu = ['admin'];
+            $supplier_tambah = ['admin'];
+            $supplier_edit = ['admin'];
+            $supplier_hapus = ['admin'];
+
             //Barang
             $barang = ['admin', 'manager accounting', 'direktur', 'manager marketing', 'general manager'];
             $barang_tambah = ['admin'];
             $barang_edit = ['admin'];
             $barang_hapus = ['admin'];
+
+            //Barang
+            $barangpembelian = ['admin'];
+            $barangpembelian_tambah = ['admin'];
+            $barangpembelian_edit = ['admin'];
+            $barangpembelian_hapus = ['admin'];
 
             //Harga
             $harga = ['admin', 'admin penjualan', 'kepala penjualan', 'kepala admin', 'manager accounting', 'manager marketing', 'direktur'];
@@ -188,6 +200,7 @@ class GlobalProvider extends ServiceProvider
 
             //Pembelian
             $pembelian_menu = ['admin'];
+            $pembelian_view = ['admin'];
             $shareddata = [
                 'level' => $level,
                 'getcbg' => $getcbg,
@@ -214,11 +227,23 @@ class GlobalProvider extends ServiceProvider
                 'salesman_edit' => $salesman_edit,
                 'salesman_hapus' => $salesman_hapus,
 
+
+                'supplier_view' => $supplier_menu,
+                'supplier_tambah' => $salesman_tambah,
+                'supplier_edit' => $salesman_edit,
+                'supplier_hapus' => $salesman_hapus,
+
                 //Barang Produk
                 'barang_view' => $barang,
                 'barang_tambah' => $barang_tambah,
                 'barang_edit' => $barang_edit,
                 'barang_hapus' => $barang_hapus,
+
+                //Barang Pembelian
+                'barangpembelian' => $barangpembelian,
+                'barangpembelian_tambah' => $barangpembelian_tambah,
+                'barangpembelian_edit' => $barangpembelian_edit,
+                'barangpembelian_hapus' => $barangpembelian_hapus,
                 //Harga Edit
                 'harga_view' => $harga,
                 'harga_hapus' => $harga_hapus,
@@ -327,6 +352,7 @@ class GlobalProvider extends ServiceProvider
                 'kirimlpc_approve' => $kirimlpc_approve,
 
                 'pembelian_menu' => $pembelian_menu,
+                'pembelian_view' => $pembelian_view,
 
             ];
             View::share($shareddata);

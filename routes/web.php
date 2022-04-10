@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\BarangpembelianController;
 use App\Http\Controllers\BelumsetorController;
 use App\Http\Controllers\CabangController;
 use App\Http\Controllers\CoaController;
@@ -29,6 +30,7 @@ use App\Http\Controllers\OmancabangController;
 use App\Http\Controllers\OmanController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\PembelianController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\PermintaanpengirimanController;
 use App\Http\Controllers\RatiokomisiController;
@@ -40,6 +42,7 @@ use App\Http\Controllers\SetoranpenjualanController;
 use App\Http\Controllers\SetoranpusatController;
 use App\Http\Controllers\SetorantransferController;
 use App\Http\Controllers\SimpananController;
+use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\TabunganController;
 use App\Http\Controllers\TargetkomisiController;
 use App\Http\Controllers\TransferController;
@@ -324,11 +327,31 @@ Route::middleware(['auth', 'ceklevel:admin,kepala admin,admin kas kecil'])->grou
 });
 
 
+//Administrator
 Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     //Saldo Awal Piutang
     Route::get('/saldoawalpiutang', [PenjualanController::class, 'saldoawalpiutang']);
     Route::post('/loadsaldoawalpiutang', [PenjualanController::class, 'loadsaldoawalpiutang']);
     Route::post('/generatesaldoawalpiutang', [PenjualanController::class, 'generatesaldoawalpiutang']);
+
+    //Pembelian
+    Route::get('/barangpembelian', [BarangpembelianController::class, 'index']);
+    Route::get('/barangpembelian/create', [BarangpembelianController::class, 'create']);
+    Route::post('/barangpembelian/store', [BarangpembelianController::class, 'store']);
+    Route::delete('/barangpembelian/{kode_barang}/delete', [BarangpembelianController::class, 'delete']);
+    Route::get('/barangpembelian/{kode_barang}/edit', [BarangpembelianController::class, 'edit']);
+    Route::post('/barangpembelian/{kode_barang}/update', [BarangpembelianController::class, 'update']);
+
+    //Supplier
+    Route::get('/supplier', [SupplierController::class, 'index']);
+    Route::get('/supplier/create', [SupplierController::class, 'create']);
+    Route::post('/supplier/store', [SupplierController::class, 'store']);
+    Route::delete('/supplier/{kode_supplier}/delete', [SupplierController::class, 'delete']);
+    Route::get('/supplier/{kode_supplier}/edit', [SupplierController::class, 'edit']);
+    Route::post('/supplier/{kode_supplier}/update', [SupplierController::class, 'update']);
+
+    //Pembelian
+    Route::get('/pembelian', [PembelianController::class, 'index']);
 });
 
 //Administrator | Direktur | General Manager | Manager Marketing | Manager Accounting | Kepala Penjualan | Staff Keuangan | Admin Kas Kecil
