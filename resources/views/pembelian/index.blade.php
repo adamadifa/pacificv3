@@ -24,7 +24,7 @@
         <div class="col-md-12 col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    <a href="#" id="tambahsupplier" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
+                    <a href="/pembelian/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
                 </div>
                 <div class="card-body">
                     <form action="/pembelian">
@@ -44,10 +44,10 @@
                         <div class="row">
                             <div class="col-lg-2 col-sm-12">
                                 <div class="form-group">
-                                    <select name="departemen" id="departemen" class="form-control">
+                                    <select name="kode_dept" id="kode_dept" class="form-control">
                                         <option value="">Pilih Departemen</option>
                                         @foreach ($departemen as $d)
-                                        <option value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
+                                        <option {{ Request('kode_dept') == $d->kode_dept ? 'selected' : '' }} value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -57,7 +57,7 @@
                                     <select name="kode_supplier" id="kode_supplier" class="form-control select2">
                                         <option value="">Pilih Supplier</option>
                                         @foreach ($supplier as $d)
-                                        <option value="{{ $d->kode_supplier }}">{{ $d->nama_supplier }}</option>
+                                        <option {{ Request('kode_supplier') == $d->kode_supplier ? 'selected' : '' }} value="{{ $d->kode_supplier }}">{{ $d->nama_supplier }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -65,9 +65,9 @@
                             <div class="col-lg-2 col-sm-12">
                                 <div class="form-group">
                                     <select name="ppn" id="ppn" class="form-control">
-                                        <option value="">PPN / Non PPN</option>
-                                        <option value="1">PPN</option>
-                                        <option value="0">Non PPN</option>
+                                        <option {{ Request('ppn')=="-" ? 'selected' : '' }} value="-">PPN / Non PPN</option>
+                                        <option {{ Request('ppn') == 1 ? 'selected' : '' }} value="1">PPN</option>
+                                        <option {{ Request('ppn') == 0 ? 'selected' : '' }} value="0">Non PPN</option>
                                     </select>
                                 </div>
                             </div>
@@ -75,8 +75,8 @@
                                 <div class="form-group">
                                     <select name="jenistransaksi" id="jenistransaksi" class="form-control">
                                         <option value="">Tunai / Kredit</option>
-                                        <option value="1">PPN</option>
-                                        <option value="0">Non PPN</option>
+                                        <option {{ Request('jenistransaksi')=="tunai" ? 'selected' : '' }} value="tunai">Tunai</option>
+                                        <option {{ Request('jenistransaksi')=="kredit" ? 'selected' : '' }} value="kredit">Kredit</option>
                                     </select>
                                 </div>
                             </div>
@@ -105,7 +105,7 @@
                                     <th>KB</th>
                                     <th>Ket</th>
                                     <th>Fak. Pajak</th>
-                                    <th>JT</th>
+                                    <th>T/K</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -143,6 +143,33 @@
                                         }
                                         @endphp
 
+                                    </td>
+                                    <td>
+                                        @if (!empty($d->ppn) && empty($d->no_fak_pajak))
+                                        <a href="#" nobukti="{{ $d->nobukti_pembelian }}" nopajak="{{ $d->no_fak_pajak }}" class="inputnopajak warning"><i class="feather icon-edit-2"></i></a>
+                                        @elseif(!empty($d->ppn) && !empty($d->no_fak_pajak))
+                                        <a href="#" nobukti="{{ $d->nobukti_pembelian }}" nopajak="{{ $d->no_fak_pajak }}" class="inputnopajak info">{{ $d->no_fak_pajak }}</a>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($d->jenistransaksi=="tunai")
+                                        <span class="badge bg-success">T</span>
+                                        @else
+                                        <span class="badge bg-warning">K</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <a class="ml-1" href="/pembelian/{{\Crypt::encrypt($d->nobukti_pembelian)}}/edit"><i class="feather icon-edit success"></i></a>
+                                            <a class="ml-1 detailpembelian" href="#" nobuktipembelian="{{ Crypt::encrypt($d->nobukti_pembelian) }}"><i class=" feather icon-file-text info"></i></a>
+                                            <form method="POST" class="deleteform" action="/detailpembelian/{{Crypt::encrypt($d->nobukti_pembelian)}}/delete">
+                                                @csrf
+                                                @method('DELETE')
+                                                <a href="#" class="delete-confirm ml-1">
+                                                    <i class="feather icon-trash danger"></i>
+                                                </a>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                                 @endforeach

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cabang;
 use App\Models\Pembelian;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
@@ -82,7 +83,25 @@ class PembelianController extends Controller
 
 
         $query->whereBetween('tgl_pembelian', [$request->dari, $request->sampai]);
+        if (!empty($request->nobukti_pembelian)) {
+            $query->where('pembelian.nobukti_pembelian', $request->nobukti_pembelian);
+        }
 
+        if (!empty($request->kode_dept)) {
+            $query->where('pembelian.kode_dept', $request->kode_dept);
+        }
+
+        if (!empty($request->kode_supplier)) {
+            $query->where('pembelian.kode_supplier', $request->kode_supplier);
+        }
+
+        if ($request->ppn != "-") {
+            $query->where('pembelian.ppn', $request->ppn);
+        }
+
+        if (!empty($request->jenistransaksi)) {
+            $query->where('pembelian.jenistransaksi', $request->jenistransaksi);
+        }
         $query->orderBy('tgl_pembelian', 'desc');
         $query->orderBy('nobukti_pembelian', 'desc');
         $pembelian = $query->paginate(15);
@@ -90,5 +109,16 @@ class PembelianController extends Controller
         $departemen = DB::table('departemen')->where('status_pengajuan', 1)->get();
         $supplier = Supplier::orderBy('nama_supplier')->get();
         return view('pembelian.index', compact('departemen', 'supplier', 'pembelian'));
+    }
+
+    public function create()
+    {
+        $coa = DB::table('set_coa_cabang')
+            ->select('set_coa_cabang.kode_akun', 'nama_akun')
+            ->join('coa', 'set_coa_cabang.kode_akun', '=', 'coa.kode_akun')
+            ->where('kategori', 'pembelian')->get();
+        $departemen = DB::table('departemen')->where('status_pengajuan', 1)->get();
+        $cabang = Cabang::orderBy('kode_cabang')->get();
+        return view('pembelian.create', compact('departemen', 'coa', 'cabang'));
     }
 }

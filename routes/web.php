@@ -352,6 +352,7 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
 
     //Pembelian
     Route::get('/pembelian', [PembelianController::class, 'index']);
+    Route::get('/pembelian/create', [PembelianController::class, 'create']);
 });
 
 //Administrator | Direktur | General Manager | Manager Marketing | Manager Accounting | Kepala Penjualan | Staff Keuangan | Admin Kas Kecil
