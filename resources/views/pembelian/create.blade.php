@@ -39,7 +39,8 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
-                                        <x-inputtext field="kode_supplier" label="Supplier" icon="feather icon-user" />
+                                        <input type="hidden" id="kode_supplier" name="kode_supplier">
+                                        <x-inputtext field="nama_supplier" label="Supplier" icon="feather icon-user" />
                                     </div>
                                 </div>
                                 <div class="row">
@@ -204,7 +205,22 @@
     <!-- Data list view end -->
 </div>
 </div>
-
+<!-- Data Supplier -->
+<div class="modal fade text-left" id="mdlsupplier" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class=" modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Data Supplier</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loadsupplier"></div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @push('myscript')
 <script>
@@ -222,6 +238,15 @@
         }
 
         hidecabang();
+
+        $('#nama_supplier').click(function(e) {
+            e.preventDefault();
+            $('#mdlsupplier').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+            $("#loadsupplier").load("/supplier/getsupplier");
+        });
     });
 
 </script>

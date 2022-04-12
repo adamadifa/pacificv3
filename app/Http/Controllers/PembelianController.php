@@ -121,4 +121,9 @@ class PembelianController extends Controller
         $cabang = Cabang::orderBy('kode_cabang')->get();
         return view('pembelian.create', compact('departemen', 'coa', 'cabang'));
     }
+
+    public function getsupplierjson()
+    {
+        return view('pembelian.getsupplierjson');
+    }
 }

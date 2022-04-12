@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use PDOException;
+use Yajra\DataTables\Facades\DataTables;
 
 class SupplierController extends Controller
 {
@@ -105,5 +106,29 @@ class SupplierController extends Controller
         } else {
             return Redirect::back()->with(['warning' => 'Data Gagal Di Update, Hubungi Tim IT !']);
         }
+    }
+
+    public function getsupplier()
+    {
+        return view('supplier.getsupplier');
+    }
+
+    public function json()
+    {
+
+        $query = Supplier::query();
+        $supplier = $query;
+
+
+
+
+
+        return DataTables::of($supplier)
+            ->addColumn('action', function ($supplier) {
+                return '<a href="#"
+                kode_supplier="' . $supplier->kode_supplier . '" nama_supplier="' . $supplier->nama_supplier . '"
+                ><i class="feather icon-external-link success"></i></a>';
+            })
+            ->toJson();
     }
 }

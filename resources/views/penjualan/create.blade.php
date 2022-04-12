@@ -335,7 +335,7 @@
             </div>
         </div>
 </form>
-<!-- Detail Salesman -->
+<!-- Data Pelanggan -->
 <div class="modal fade text-left" id="mdlpelanggan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document" style="max-width: 960px">
         <div class="modal-content">

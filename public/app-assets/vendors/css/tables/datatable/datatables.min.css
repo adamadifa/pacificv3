@@ -13,7 +13,7 @@ table.dataTable {
     border-collapse: separate !important;
     border-spacing: 0;
     font-size: 12px;
-    font-family: "Montserrat";
+    font-family: "Poppins";
 }
 table.dataTable td,
 table.dataTable th {

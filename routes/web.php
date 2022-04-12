@@ -349,7 +349,8 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::delete('/supplier/{kode_supplier}/delete', [SupplierController::class, 'delete']);
     Route::get('/supplier/{kode_supplier}/edit', [SupplierController::class, 'edit']);
     Route::post('/supplier/{kode_supplier}/update', [SupplierController::class, 'update']);
-
+    Route::get('/supplier/getsupplier', [SupplierController::class, 'getsupplier']);
+    Route::get('/supplier/json', [SupplierController::class, 'json'])->name('supplier.json');
     //Pembelian
     Route::get('/pembelian', [PembelianController::class, 'index']);
     Route::get('/pembelian/create', [PembelianController::class, 'create']);
