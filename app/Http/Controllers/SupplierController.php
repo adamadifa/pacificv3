@@ -118,11 +118,6 @@ class SupplierController extends Controller
 
         $query = Supplier::query();
         $supplier = $query;
-
-
-
-
-
         return DataTables::of($supplier)
             ->addColumn('action', function ($supplier) {
                 return '<a href="#"

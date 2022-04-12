@@ -341,7 +341,8 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::delete('/barangpembelian/{kode_barang}/delete', [BarangpembelianController::class, 'delete']);
     Route::get('/barangpembelian/{kode_barang}/edit', [BarangpembelianController::class, 'edit']);
     Route::post('/barangpembelian/{kode_barang}/update', [BarangpembelianController::class, 'update']);
-
+    Route::get('/barangpembelian/{kode_dept}/getbarang', [BarangpembelianController::class, 'getbarang']);
+    Route::get('/barangpembelian/{kode_dept}/json', [BarangpembelianController::class, 'json'])->name('barang.json');
     //Supplier
     Route::get('/supplier', [SupplierController::class, 'index']);
     Route::get('/supplier/create', [SupplierController::class, 'create']);
@@ -354,6 +355,10 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     //Pembelian
     Route::get('/pembelian', [PembelianController::class, 'index']);
     Route::get('/pembelian/create', [PembelianController::class, 'create']);
+    Route::post('/pembelian/storetemp', [PembelianController::class, 'storetemp']);
+    Route::post('/pembelian/showtemp', [PembelianController::class, 'showtemp']);
+    Route::post('/pembelian/deletetemp', [PembelianController::class, 'deletetemp']);
+    Route::post('/pembelian/store', [PembelianController::class, 'store']);
 });
 
 //Administrator | Direktur | General Manager | Manager Marketing | Manager Accounting | Kepala Penjualan | Staff Keuangan | Admin Kas Kecil

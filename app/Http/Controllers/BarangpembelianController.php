@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Yajra\DataTables\Facades\DataTables;
 
 class BarangpembelianController extends Controller
 {
@@ -127,5 +128,26 @@ class BarangpembelianController extends Controller
         } else {
             return Redirect::back()->with(['warning' => 'Data Gagal Diupdate, Hubungi Tim IT !']);
         }
+    }
+
+    public function getbarang($kode_dept)
+    {
+        return view('barangpembelian.getbarang', compact('kode_dept'));
+    }
+
+    public function json($kode_dept)
+    {
+
+        $query = Barangpembelian::query();
+        $query->where('kode_dept', $kode_dept);
+        $barang = $query;
+        return DataTables::of($barang)
+            ->addColumn('action', function ($barang) {
+                return '<a href="#"
+                kode_barang="' . $barang->kode_barang . '" nama_barang ="' . $barang->nama_barang . '"
+                jenis_barang ="' . $barang->jenis_barang . '"
+                ><i class="feather icon-external-link success"></i></a>';
+            })
+            ->toJson();
     }
 }
