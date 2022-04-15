@@ -45,7 +45,7 @@
                             <div class="col-lg-2 col-sm-12">
                                 <div class="form-group">
                                     <select name="kode_dept" id="kode_dept" class="form-control">
-                                        <option value="">Pilih Departemen</option>
+                                        <option value="">Semua Departemen</option>
                                         @foreach ($departemen as $d)
                                         <option {{ Request('kode_dept') == $d->kode_dept ? 'selected' : '' }} value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
                                         @endforeach
@@ -55,7 +55,7 @@
                             <div class="col-lg-3 col-sm-12">
                                 <div class="form-group">
                                     <select name="kode_supplier" id="kode_supplier" class="form-control select2">
-                                        <option value="">Pilih Supplier</option>
+                                        <option value="">Semua Supplier</option>
                                         @foreach ($supplier as $d)
                                         <option {{ Request('kode_supplier') == $d->kode_supplier ? 'selected' : '' }} value="{{ $d->kode_supplier }}">{{ $d->nama_supplier }}</option>
                                         @endforeach
@@ -104,7 +104,7 @@
                                     <th>Bayar</th>
                                     <th>KB</th>
                                     <th>Ket</th>
-                                    <th>Fak. Pajak</th>
+                                    {{-- <th>Fak. Pajak</th> --}}
                                     <th>T/K</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -144,13 +144,13 @@
                                         @endphp
 
                                     </td>
-                                    <td>
+                                    {{-- <td>
                                         @if (!empty($d->ppn) && empty($d->no_fak_pajak))
                                         <a href="#" nobukti="{{ $d->nobukti_pembelian }}" nopajak="{{ $d->no_fak_pajak }}" class="inputnopajak warning"><i class="feather icon-edit-2"></i></a>
-                                        @elseif(!empty($d->ppn) && !empty($d->no_fak_pajak))
-                                        <a href="#" nobukti="{{ $d->nobukti_pembelian }}" nopajak="{{ $d->no_fak_pajak }}" class="inputnopajak info">{{ $d->no_fak_pajak }}</a>
-                                        @endif
-                                    </td>
+                                    @elseif(!empty($d->ppn) && !empty($d->no_fak_pajak))
+                                    <a href="#" nobukti="{{ $d->nobukti_pembelian }}" nopajak="{{ $d->no_fak_pajak }}" class="inputnopajak info">{{ $d->no_fak_pajak }}</a>
+                                    @endif
+                                    </td> --}}
                                     <td>
                                         @if ($d->jenistransaksi=="tunai")
                                         <span class="badge bg-success">T</span>
@@ -161,8 +161,8 @@
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             <a class="ml-1" href="/pembelian/{{\Crypt::encrypt($d->nobukti_pembelian)}}/edit"><i class="feather icon-edit success"></i></a>
-                                            <a class="ml-1 detailpembelian" href="#" nobuktipembelian="{{ Crypt::encrypt($d->nobukti_pembelian) }}"><i class=" feather icon-file-text info"></i></a>
-                                            <form method="POST" class="deleteform" action="/detailpembelian/{{Crypt::encrypt($d->nobukti_pembelian)}}/delete">
+                                            <a class="ml-1 detailpembelian" href="#" nobukti_pembelian="{{ $d->nobukti_pembelian }}"><i class=" feather icon-file-text info"></i></a>
+                                            <form method="POST" class="deleteform" action="/pembelian/{{Crypt::encrypt($d->nobukti_pembelian)}}/delete">
                                                 @csrf
                                                 @method('DELETE')
                                                 <a href="#" class="delete-confirm ml-1">
@@ -185,5 +185,69 @@
         <!-- Data list view end -->
     </div>
 </div>
-
+<!-- Detail Salesman -->
+<div class="modal fade text-left" id="mdldetailpembelian" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="max-width:968px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Detail Pembelian</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loaddetailpembelian"></div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
+@push('myscript')
+<script>
+    $(function() {
+        function loaddetailpembelian(nobukti_pembelian) {
+            $.ajax({
+                type: 'POST'
+                , url: '/pembelian/show'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , nobukti_pembelian: nobukti_pembelian
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loaddetailpembelian").html(respond);
+                }
+            });
+        }
+        $('.detailpembelian').click(function(e) {
+            var nobukti_pembelian = $(this).attr("nobukti_pembelian");
+            //alert(nobukti_pembelian);
+            e.preventDefault();
+            loaddetailpembelian(nobukti_pembelian);
+            $('#mdldetailpembelian').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+        });
+
+        $('.delete-confirm').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+            event.preventDefault();
+            swal({
+                    title: `Are you sure you want to delete this record?`
+                    , text: "If you delete this, it will be gone forever."
+                    , icon: "warning"
+                    , buttons: true
+                    , dangerMode: true
+                , })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
+        });
+    });
+
+</script>
+@endpush

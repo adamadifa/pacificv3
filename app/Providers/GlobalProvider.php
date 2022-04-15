@@ -201,6 +201,8 @@ class GlobalProvider extends ServiceProvider
             //Pembelian
             $pembelian_menu = ['admin'];
             $pembelian_view = ['admin'];
+            $pembelian_keuangan = ['admin'];
+            $kontrabon_view = ['admin'];
             $shareddata = [
                 'level' => $level,
                 'getcbg' => $getcbg,
@@ -353,6 +355,8 @@ class GlobalProvider extends ServiceProvider
 
                 'pembelian_menu' => $pembelian_menu,
                 'pembelian_view' => $pembelian_view,
+                'pembelian_keuangan' => $pembelian_keuangan,
+                'kontrabon_view' => $kontrabon_view,
 
             ];
             View::share($shareddata);

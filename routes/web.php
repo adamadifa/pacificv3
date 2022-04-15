@@ -19,6 +19,7 @@ use App\Http\Controllers\JenissimpananController;
 use App\Http\Controllers\KaskecilController;
 use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\KlaimController;
+use App\Http\Controllers\KontrabonController;
 use App\Http\Controllers\LaporankeuanganController;
 use App\Http\Controllers\LebihsetorController;
 use App\Http\Controllers\LedgerController;
@@ -356,9 +357,29 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/pembelian', [PembelianController::class, 'index']);
     Route::get('/pembelian/create', [PembelianController::class, 'create']);
     Route::post('/pembelian/storetemp', [PembelianController::class, 'storetemp']);
+    Route::post('/pembelian/storedetailpembelian', [PembelianController::class, 'storedetailpembelian']);
     Route::post('/pembelian/showtemp', [PembelianController::class, 'showtemp']);
     Route::post('/pembelian/deletetemp', [PembelianController::class, 'deletetemp']);
     Route::post('/pembelian/store', [PembelianController::class, 'store']);
+    Route::post('/pembelian/show', [PembelianController::class, 'show']);
+    Route::post('/pembelian/showdetailpembelian', [PembelianController::class, 'showdetailpembelian']);
+    Route::post('/pembelian/showdetailpembeliankontrabon', [PembelianController::class, 'showdetailpembeliankontrabon']);
+    Route::post('/pembelian/showdetailpotongan', [PembelianController::class, 'showdetailpotongan']);
+    Route::get('/pembelian/{nobukti_pembelian}/edit', [PembelianController::class, 'edit']);
+    Route::post('/pembelian/deletedetail', [PembelianController::class, 'deletedetail']);
+    Route::post('/pembelian/editbarang', [PembelianController::class, 'editbarang']);
+    Route::post('/pembelian/updatebarang', [PembelianController::class, 'updatebarang']);
+    Route::get('/pembelian/{nobukti_pembelian}/inputpotongan', [PembelianController::class, 'inputpotongan']);
+    Route::post('/pembelian/storepotongan', [PembelianController::class, 'storepotongan']);
+    Route::post('/pembelian/{nobukti_pembelian}/update', [PembelianController::class, 'update']);
+    Route::delete('/pembelian/{nobukti_pembelian}/delete', [PembelianController::class, 'delete']);
+    Route::get('/pembelian/{kode_supplier}/getpembeliankontrabon', [PembelianController::class, 'getpembeliankontrabon']);
+
+    //Kontrabon
+    Route::get('/kontrabon', [KontrabonController::class, 'index']);
+    Route::post('/kontrabon/show', [KontrabonController::class, 'show']);
+    Route::get('/kontrabon/create', [KontrabonController::class, 'create']);
+    Route::get('/kontrabon/{kode_supplier}create', [KontrabonController::class, 'create']);
 });
 
 //Administrator | Direktur | General Manager | Manager Marketing | Manager Accounting | Kepala Penjualan | Staff Keuangan | Admin Kas Kecil

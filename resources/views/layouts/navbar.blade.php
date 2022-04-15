@@ -263,7 +263,22 @@
                 </ul>
             </li>
             @endif
+            @if (in_array($level, $pembelian_menu))
+            <li class=" nav-item">
+                <a href="#"><i class="feather icon-shopping-bag danger"></i><span class="menu-title">Pembelian</span></a>
+                <ul class="menu-content">
+                    @if (in_array($level,$pembelian_view))
+                    <li class="{{ request()->is(['pembelian','pembelian/*']) ? 'active' : '' }}">
+                        <a href="/pembelian?ppn=-">
+                            <i class="feather icon-shopping-cart"></i>
+                            <span class="menu-item">Data Pembelian</span>
+                        </a>
+                    </li>
+                    @endif
 
+                </ul>
+            </li>
+            @endif
             @if (in_array($level, $keuangan))
             <li class=" nav-item">
                 <a href="#"><i class="feather icon-dollar-sign warning"></i><span class="menu-title">Keuangan</span></a>
@@ -288,6 +303,24 @@
                                 <a href="/transfer">
                                     <i class="feather icon-file-text"></i>
                                     <span class="menu-item">Transfer</span>
+                                </a>
+                            </li>
+                            @endif
+                        </ul>
+                    </li>
+                    @endif
+                    @if (in_array($level, $pembelian_keuangan))
+                    <li>
+                        <a href="#">
+                            <i class="feather icon-circle"></i>
+                            <span class="menu-item" data-i18n="Second Level">Pembelian</span>
+                        </a>
+                        <ul class="menu-content">
+                            @if (in_array($level, $kontrabon_view))
+                            <li class="{{ request()->is(['kontrabon', 'kontrabon/*']) ? 'active' : '' }}">
+                                <a href="/kontrabon">
+                                    <i class="feather icon-file-text"></i>
+                                    <span class="menu-item">Kontra Bon</span>
                                 </a>
                             </li>
                             @endif
@@ -443,21 +476,7 @@
                 </ul>
             </li>
             @endif
-            @if (in_array($level, $pembelian_menu))
-            <li class=" nav-item">
-                <a href="#"><i class="feather icon-shopping-bag danger"></i><span class="menu-title">Pembelian</span></a>
-                <ul class="menu-content">
-                    @if (in_array($level,$pembelian_view))
-                    <li class="{{ request()->is(['pembelian','pembelian/*']) ? 'active' : '' }}">
-                        <a href="/pembelian">
-                            <i class="feather icon-shopping-cart"></i>
-                            <span class="menu-item">Data Pembelian</span>
-                        </a>
-                    </li>
-                    @endif
-                </ul>
-            </li>
-            @endif
+
             <li class=" nav-item">
                 <a href="#"><i class="feather icon-settings"></i><span class="menu-title">Utilities</span></a>
                 <ul class="menu-content">

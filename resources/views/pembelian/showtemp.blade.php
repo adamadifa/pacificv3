@@ -19,6 +19,7 @@ $grandtotal += $total;
     <td class="text-right">{{ desimal($d->penyesuaian) }}</td>
     <td class="text-right">{{ desimal($total) }}</td>
     <td class="text-center">{{ $d->kode_akun }}</td>
+    <td class="text-center">{{ $d->kode_cabang }}</td>
     <td>
         <a href="#" class="danger hapus" data-id="{{ $d->id }}"><i class="feather icon-trash"></i></a>
     </td>
@@ -30,7 +31,7 @@ $jmldata++;
 <tr>
     <th colspan="8" style="font-size: 14px">TOTAL</th>
     <th class="text-right" style="font-size: 14px" id="grandtotaltemp">{{ desimal($grandtotal) }}<input type="hidden" id="jmldata" value="{{ $jmldata -1 }}"></th>
-    <th colspan="2"></th>
+    <th colspan="3"></th>
 </tr>
 
 <script>

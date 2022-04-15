@@ -41,7 +41,8 @@
 
         });
 
-        $('.tabelbarang tbody').on('click', 'a', function() {
+        $('.tabelbarang tbody').on('click', 'a', function(e) {
+            e.preventDefault();
             var kode_barang = $(this).attr("kode_barang");
             var nama_barang = $(this).attr("nama_barang");
             var jenis_barang = $(this).attr("jenis_barang");
