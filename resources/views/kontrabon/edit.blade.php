@@ -1,15 +1,15 @@
 @extends('layouts.midone')
-@section('titlepage','Input Kontrabon')
+@section('titlepage','Edit Kontrabon')
 @section('content')
 <div class="content-wrapper">
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Input Kontrabon</h2>
+                    <h2 class="content-header-title float-left mb-0">Edit Kontrabon</h2>
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/kontrabon/create">Input Kontrabon</a>
+                            <li class="breadcrumb-item"><a href="#">Edit Kontrabon</a>
                             </li>
                         </ol>
                     </div>
@@ -21,7 +21,7 @@
         <!-- Data list view starts -->
         <!-- DataTable starts -->
         @include('layouts.notification')
-        <form action="/kontrabon/store" method="POST" id="frmKontrabon">
+        <form action="/kontrabon/{{ Crypt::encrypt($kontrabon->no_kontrabon)  }}/update" method="POST" id="frmKontrabon">
 
             @csrf
             <input type="hidden" id="cektutuplaporan">
@@ -33,12 +33,12 @@
                                 <div class="col-lg-12">
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext field="no_kontrabon" label="No. Kontrabon / Internal Memo" icon="feather icon-credit-card" />
+                                            <x-inputtext field="no_kontrabon" value="{{ $kontrabon->no_kontrabon }}" label="No. Kontrabon / Internal Memo" icon="feather icon-credit-card" readonly />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext field="tgl_kontrabon" label="Tanggal" icon="feather icon-calendar" datepicker />
+                                            <x-inputtext field="tgl_kontrabon" value="{{ $kontrabon->tgl_kontrabon }}" label="Tanggal" icon="feather icon-calendar" datepicker />
                                         </div>
                                     </div>
                                     <div class="row">
@@ -46,21 +46,21 @@
                                             <div class="form-group">
                                                 <select name="kategori" id="kategori" class="form-control">
                                                     <option value="">Jenis Pengajuan</option>
-                                                    <option value="KB">KB</option>
-                                                    <option value="IM">IM</option>
+                                                    <option {{ $kontrabon->kategori == "KB" ?'selected' : '' }} value="KB">KB</option>
+                                                    <option {{ $kontrabon->kategori == "IM" ?'selected' : '' }} value="IM">IM</option>
                                                 </select>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <input type="hidden" id="kode_supplier" name="kode_supplier">
-                                            <x-inputtext field="nama_supplier" label="Supplier" icon="feather icon-user" readonly />
+                                            <input type="hidden" id="kode_supplier" value="{{ $kontrabon->kode_supplier }}" name="kode_supplier">
+                                            <x-inputtext field="nama_supplier" value="{{ $kontrabon->nama_supplier }}" label="Supplier" icon="feather icon-user" readonly />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext field="no_dokumen" label="No. Dokumen" icon="feather icon-credit-card" />
+                                            <x-inputtext field="no_dokumen" value="{{ $kontrabon->no_dokumen }}" label="No. Dokumen" icon="feather icon-credit-card" />
                                         </div>
                                     </div>
 
@@ -69,8 +69,8 @@
                                             <div class="form-group">
                                                 <select name="jenisbayar" id="jenisbayar" class="form-control">
                                                     <option value="">Jenis Bayar</option>
-                                                    <option value="tunai">Tunai</option>
-                                                    <option value="transfer">Transfer</option>
+                                                    <option {{ $kontrabon->jenisbayar == "tunai" ?'selected' : '' }} value="tunai">Tunai</option>
+                                                    <option {{ $kontrabon->jenisbayar == "transfer" ?'selected' : '' }} value="transfer">Transfer</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -189,6 +189,35 @@
         </div>
     </div>
 </div>
+
+<!-- Edit Detail Kontrabon -->
+<div class="modal fade text-left" id="mdleditdetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class=" modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Edit Detail Kontrabon</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <input type="hidden" id="nobukti_pembelian_edit">
+                        <x-inputtext label="Jumlah Bayar" field="jmlbayar_edit" icon="feather icon-file" right />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <a href="#" class="btn btn-primary btn-block" id="updatedetail"><i class="fa fa-send mr-1"></i> Update</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('myscript')
@@ -196,6 +225,12 @@
     var h = document.getElementById('jmlbayar');
     h.addEventListener('keyup', function(e) {
         h.value = formatRupiah(this.value, '');
+        //alert(b);
+    });
+
+    var b = document.getElementById('jmlbayar_edit');
+    b.addEventListener('keyup', function(e) {
+        b.value = formatRupiah(this.value, '');
         //alert(b);
     });
 
@@ -241,14 +276,14 @@
             //alert(grandtotal);
             $("#grandtotal").text(grandtotal);
         }
-        $('#nama_supplier').click(function(e) {
-            e.preventDefault();
-            $('#mdlsupplier').modal({
-                backdrop: 'static'
-                , keyboard: false
-            });
-            $("#loadsupplier").load("/supplier/getsupplier");
-        });
+        // $('#nama_supplier').click(function(e) {
+        //     e.preventDefault();
+        //     $('#mdlsupplier').modal({
+        //         backdrop: 'static'
+        //         , keyboard: false
+        //     });
+        //     $("#loadsupplier").load("/supplier/getsupplier");
+        // });
 
         $('#nobukti_pembelian').click(function(e) {
             var kode_supplier = $("#kode_supplier").val();
@@ -275,13 +310,13 @@
         });
 
 
-        function loaddetailkontrabontemp() {
-            var kode_supplier = $("#kode_supplier").val();
+        function loaddetailkontrabon() {
+            var no_kontrabon = $("#no_kontrabon").val();
             $.ajax({
                 type: 'GET'
-                , url: '/kontrabon/showtemp'
+                , url: '/kontrabon/showdetail'
                 , data: {
-                    kode_supplier: kode_supplier
+                    no_kontrabon: no_kontrabon
                 }
                 , cache: false
                 , success: function(respond) {
@@ -289,14 +324,14 @@
                     loadtotal();
                 }
             });
-
         }
 
 
-
+        loaddetailkontrabon();
 
         $("#tambahdetail").click(function(e) {
             e.preventDefault();
+            var no_kontrabon = $("#no_kontrabon").val();
             var nobukti_pembelian = $("#nobukti_pembelian").val();
             var kode_supplier = $("#kode_supplier").val();
             var jmlbayar = $("#jmlbayar").val();
@@ -344,15 +379,6 @@
                 }).then(function() {
                     $("#nobukti_pembelian").focus();
                 });
-            } else if (kode_supplier == "") {
-                swal({
-                    title: 'Oops'
-                    , text: 'Supplier Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#nama_supplier").focus();
-                });
             } else if (jmlbayar == "") {
                 swal({
                     title: 'Oops'
@@ -374,11 +400,11 @@
             } else {
                 $.ajax({
                     type: 'POST'
-                    , url: '/kontrabon/storetemp'
+                    , url: '/kontrabon/storedetail'
                     , data: {
                         _token: "{{ csrf_token() }}"
+                        , no_kontrabon: no_kontrabon
                         , nobukti_pembelian: nobukti_pembelian
-                        , kode_supplier: kode_supplier
                         , jmlbayar: jmlbayar
                         , keterangan: keterangan
                     }
@@ -391,7 +417,7 @@
                         } else {
                             swal("Berhasil", "Data Berhasil Disimpan !", "success");
                         }
-                        loaddetailkontrabontemp();
+                        loaddetailkontrabon();
                     }
                 });
             }
@@ -466,6 +492,33 @@
                 });
                 return false;
             }
+        });
+
+        $("#updatedetail").click(function(e) {
+            e.preventDefault();
+            var no_kontrabon = $("#no_kontrabon").val();
+            var nobukti_pembelian = $("#nobukti_pembelian_edit").val();
+            var jmlbayar_edit = $("#jmlbayar_edit").val();
+            $.ajax({
+                type: 'POST'
+                , url: '/kontrabon/updatedetail'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , nobukti_pembelian: nobukti_pembelian
+                    , no_kontrabon: no_kontrabon
+                    , jmlbayar: jmlbayar_edit
+                }
+                , cache: false
+                , success: function(respond) {
+                    if (respond == 0) {
+                        swal("Berhasil", "Data Berhasil Diupdate", "success");
+                    } else {
+                        swal("Oops", "Data Gagal Disimpan, Hubunti Timi IT", "warning");
+                    }
+                    $("#mdleditdetail").modal("hide");
+                    loaddetailkontrabon();
+                }
+            });
         });
     });
 

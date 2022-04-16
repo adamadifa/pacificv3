@@ -380,6 +380,16 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/kontrabon/show', [KontrabonController::class, 'show']);
     Route::get('/kontrabon/create', [KontrabonController::class, 'create']);
     Route::get('/kontrabon/{kode_supplier}create', [KontrabonController::class, 'create']);
+    Route::post('/kontrabon/storetemp', [KontrabonController::class, 'storetemp']);
+    Route::post('/kontrabon/deletetemp', [KontrabonController::class, 'deletetemp']);
+    Route::get('/kontrabon/showtemp', [KontrabonController::class, 'showtemp']);
+    Route::post('/kontrabon/store', [KontrabonController::class, 'store']);
+    Route::get('/kontrabon/{no_kontrabon}/edit', [KontrabonController::class, 'edit']);
+    Route::get('/kontrabon/showdetail', [KontrabonController::class, 'showdetail']);
+    Route::post('/kontrabon/storedetail', [KontrabonController::class, 'storedetail']);
+    Route::post('/kontrabon/deletedetail', [KontrabonController::class, 'deletedetail']);
+    Route::post('/kontrabon/updatedetail', [KontrabonController::class, 'updatedetail']);
+    Route::post('/kontrabon/{no_kontrabon}/update', [KontrabonController::class, 'update']);
 });
 
 //Administrator | Direktur | General Manager | Manager Marketing | Manager Accounting | Kepala Penjualan | Staff Keuangan | Admin Kas Kecil

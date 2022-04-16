@@ -33,12 +33,31 @@
 
         });
 
+
+        function loaddetailkontrabontemp() {
+            var kode_supplier = $("#kode_supplier").val();
+            $.ajax({
+                type: 'GET'
+                , url: '/kontrabon/showtemp'
+                , data: {
+                    kode_supplier: kode_supplier
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loaddetailkontrabon").html(respond);
+                    loadtotal();
+                }
+            });
+
+        }
+
         $('.tabelsupplier tbody').on('click', 'a', function() {
             var kode_supplier = $(this).attr("kode_supplier");
             var nama_supplier = $(this).attr("nama_supplier");
             $("#kode_supplier").val(kode_supplier);
             $("#nama_supplier").val(nama_supplier);
             $("#mdlsupplier").modal("hide");
+            loaddetailkontrabontemp();
         });
     });
 
