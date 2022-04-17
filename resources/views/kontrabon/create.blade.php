@@ -228,6 +228,27 @@
 <script>
     $(function() {
 
+        function cektutuplaporan() {
+            var tgltransaksi = $("#tgl_kontrabon").val();
+            $.ajax({
+                type: "POST"
+                , url: "/cektutuplaporan"
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , tanggal: tgltransaksi
+                    , jenislaporan: "pembelian"
+                }
+                , cache: false
+                , success: function(respond) {
+                    console.log(respond);
+                    $("#cektutuplaporan").val(respond);
+                }
+            });
+        }
+
+        $("#tgl_kontrabon").change(function() {
+            cektutuplaporan();
+        });
         $('#no_kontrabon').mask('AAAAAAAAAAAAAAAAAAAA', {
             'translation': {
                 A: {
@@ -405,7 +426,18 @@
             var no_dokumen = $("#no_dokumen").val();
             var jenisbayar = $("#jenisbayar").val();
             var jmldata = $("#jmldata").val();
-            if (no_kontrabon == "") {
+            var cektutuplaporan = $("#cektutuplaporan").val();
+            if (cektutuplaporan > 0) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Laporan Periode Ini Sudah Ditutup !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#tgl_kontrabon").focus();
+                });
+                return false;
+            } else if (no_kontrabon == "") {
                 swal({
                     title: 'Oops'
                     , text: 'No. Kontrabon Harus Diisi !'

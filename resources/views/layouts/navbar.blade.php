@@ -275,7 +275,22 @@
                         </a>
                     </li>
                     @endif
-
+                    @if (in_array($level,$jatuhtempo_view))
+                    <li class="{{ request()->is(['jatuhtempo','jatuhtempo/*']) ? 'active' : '' }}">
+                        <a href="/jatuhtempo">
+                            <i class="feather icon-clock"></i>
+                            <span class="menu-item">Jatuh Tempo</span>
+                        </a>
+                    </li>
+                    @endif
+                    @if (in_array($level,$jurnalkoreksi_view))
+                    <li class="{{ request()->is(['jurnalkoreksi','jurnalkoreksi/*']) ? 'active' : '' }}">
+                        <a href="/jurnalkoreksi">
+                            <i class="feather icon-edit"></i>
+                            <span class="menu-item">Jurnal Koreksi</span>
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </li>
             @endif

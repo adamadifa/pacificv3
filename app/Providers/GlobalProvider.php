@@ -203,6 +203,8 @@ class GlobalProvider extends ServiceProvider
             $pembelian_view = ['admin'];
             $pembelian_keuangan = ['admin'];
             $kontrabon_view = ['admin'];
+            $jatuhtempo_view = ['admin'];
+            $jurnalkoreksi_view = ['admin'];
             $shareddata = [
                 'level' => $level,
                 'getcbg' => $getcbg,
@@ -357,6 +359,8 @@ class GlobalProvider extends ServiceProvider
                 'pembelian_view' => $pembelian_view,
                 'pembelian_keuangan' => $pembelian_keuangan,
                 'kontrabon_view' => $kontrabon_view,
+                'jatuhtempo_view' => $jatuhtempo_view,
+                'jurnalkoreksi_view' => $jurnalkoreksi_view,
 
             ];
             View::share($shareddata);

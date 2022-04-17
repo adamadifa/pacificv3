@@ -68,7 +68,7 @@
 </table>
 
 <table class="table table-hover-animation">
-    <thead class="thead-dark">
+    <thead class="thead-danger">
         <tr>
             <th colspan="4">POTONGAN</th>
         </tr>
@@ -94,17 +94,17 @@
         <td class="text-right">{{ desimal($total) }}</td>
     </tr>
     @endforeach
-    <tr class="thead-dark">
+    <tr class="thead-danger">
         <th colspan="3">TOTAL POTONGAN</th>
         <th class="text-right">{{ desimal($totalpenjualan) }}</th>
     </tr>
-    <tr class="thead-dark">
+    <tr class="thead-info">
         <th colspan="3">GRAND TOTAL</th>
         <th class="text-right">{{ desimal($totalpembelian - $totalpenjualan) }}</th>
     </tr>
 </table>
 <table class="table table-hover-animation">
-    <thead class="thead-dark">
+    <thead class="thead-success">
         <tr>
             <th colspan="6">HISTORI KONTRA BON</th>
         </tr>

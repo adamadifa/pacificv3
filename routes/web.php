@@ -16,6 +16,7 @@ use App\Http\Controllers\GudangController;
 use App\Http\Controllers\HargaController;
 use App\Http\Controllers\HargaControoler;
 use App\Http\Controllers\JenissimpananController;
+use App\Http\Controllers\JurnalkoreksiController;
 use App\Http\Controllers\KaskecilController;
 use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\KlaimController;
@@ -374,7 +375,15 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/pembelian/{nobukti_pembelian}/update', [PembelianController::class, 'update']);
     Route::delete('/pembelian/{nobukti_pembelian}/delete', [PembelianController::class, 'delete']);
     Route::get('/pembelian/{kode_supplier}/getpembeliankontrabon', [PembelianController::class, 'getpembeliankontrabon']);
+    Route::get('/pembelian/{kode_supplier}/getpembelianjurnalkoreksi', [PembelianController::class, 'getpembelianjurnalkoreksi']);
+    Route::get('/pembelian/{nobukti_pembelian}/getbarangjurnalkoreksi', [PembelianController::class, 'getbarangjurnalkoreksi']);
+    Route::get('/jatuhtempo', [PembelianController::class, 'jatuhtempo']);
 
+    //Jurnal Koreksi
+    Route::get('/jurnalkoreksi', [JurnalkoreksiController::class, 'index']);
+    Route::get('/jurnalkoreksi/create', [JurnalkoreksiController::class, 'create']);
+    Route::post('/jurnalkoreksi/store', [JurnalkoreksiController::class, 'store']);
+    Route::delete('/jurnalkoreksi/{kode_jk}/delete', [JurnalkoreksiController::class, 'delete']);
     //Kontrabon
     Route::get('/kontrabon', [KontrabonController::class, 'index']);
     Route::post('/kontrabon/show', [KontrabonController::class, 'show']);
@@ -390,6 +399,9 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/kontrabon/deletedetail', [KontrabonController::class, 'deletedetail']);
     Route::post('/kontrabon/updatedetail', [KontrabonController::class, 'updatedetail']);
     Route::post('/kontrabon/{no_kontrabon}/update', [KontrabonController::class, 'update']);
+    Route::delete('/kontrabon/{no_kontrabon}/delete', [KontrabonController::class, 'delete']);
+    Route::get('/pembelian/jatuhtempo', [PembelianController::class, 'jatuhtempo']);
+    Route::post('/kontrabon/proseskontrabon', [KontrabonController::class, 'proseskontrabon']);
 });
 
 //Administrator | Direktur | General Manager | Manager Marketing | Manager Accounting | Kepala Penjualan | Staff Keuangan | Admin Kas Kecil

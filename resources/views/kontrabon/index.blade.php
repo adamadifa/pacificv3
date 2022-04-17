@@ -115,7 +115,7 @@
                                         <span class="badge bg-success">{{ date("d-m-Y",strtotime($d->tglbayar)) }}</span>
                                         @endif
                                     </td>
-                                    <td>{{ ucwords($d->jenisbayar) }}</td>
+                                    <td>{{ ucwords($d->jenisbayar) }} {{ !empty($d->via) ? '('.$d->via.')' : '' }}</td>
                                     <td>
                                         @if ($d->status==1 OR !empty($d->tglbayar))
                                         @if (!empty($d->tglbayar))
@@ -134,15 +134,10 @@
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             <a class="ml-1 detailkontrabon" href="#" no_kontrabon="{{ Crypt::encrypt($d->no_kontrabon) }}"><i class=" feather icon-file-text info"></i></a>
-                                            @if (empty($d->tglbayar))
-                                            @if ($d->status ==1 )
-                                            <a href="/kontrabon/{{ $d->no_kontrabon }}/batalkankontrabon" class="danger ml-1"><i class="fa fa-close"></i></a>
-                                            @else
-                                            @if ($d->kategori != "TN")
-                                            <a href="/kontrabon/{{ $d->no_kontrabon }}/approvekontrabon" class="success ml-1"><i class="fa fa-check"></i></a>
-                                            @endif
-                                            @endif
-                                            @endif
+
+
+
+
 
                                             @if (empty($d->tglbayar) && $d->kategori != "TN")
                                             <a class="ml-1" href="/kontrabon/{{\Crypt::encrypt($d->no_kontrabon)}}/edit"><i class="feather icon-edit success"></i></a>
@@ -153,6 +148,33 @@
                                                     <i class="feather icon-trash danger"></i>
                                                 </a>
                                             </form>
+                                            @endif
+
+
+                                            @if (empty($d->tglbayar))
+                                            @if ($d->status ==1 )
+                                            <a href="/kontrabon/{{ $d->no_kontrabon }}/batalkankontrabon" class="danger ml-1"><i class="fa fa-close"></i></a>
+                                            @else
+                                            @if ($d->kategori != "TN")
+                                            <a href="/kontrabon/{{ $d->no_kontrabon }}/approvekontrabon" class="success ml-1"><i class="fa fa-check"></i></a>
+                                            @endif
+                                            @endif
+                                            @endif
+
+                                            @if (empty($d->tglbayar))
+                                            @if ($d->status==1)
+                                            @if($d->kategori != 'TN')
+                                            <a class="ml-1 proseskontrabon" href="#" no_kontrabon="{{ Crypt::encrypt($d->no_kontrabon) }}"><i class=" feather icon-external-link success"></i></a>
+                                            @else
+                                            <a class="ml-1 proseskontrabon" href="#" no_kontrabon="{{ Crypt::encrypt($d->no_kontrabon) }}"><i class=" feather icon-external-link success"></i></a>
+                                            @endif
+                                            @else
+                                            @if ($d->kategori != 'TN')
+                                            <span class="badge bg-warning ml-1"><i class="fa fa-history mr-1"></i>Waiting Approval</span>
+                                            @else
+                                            <a class="ml-1 proseskontrabon" href="#" no_kontrabon="{{ Crypt::encrypt($d->no_kontrabon) }}"><i class=" feather icon-external-link success"></i></a>
+                                            @endif
+                                            @endif
                                             @endif
                                         </div>
                                     </td>
@@ -186,6 +208,22 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade text-left" id="mdlproseskontrabon" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width:968px" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Proses Kontrabon</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loadproseskontrabon"></div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @push('myscript')
 <script>
@@ -204,6 +242,21 @@
                 }
             });
         }
+
+        function loadproseskontrabon(no_kontrabon) {
+            $.ajax({
+                type: 'POST'
+                , url: '/kontrabon/proseskontrabon'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , no_kontrabon: no_kontrabon
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loadproseskontrabon").html(respond);
+                }
+            });
+        }
         $('.detailkontrabon').click(function(e) {
             var no_kontrabon = $(this).attr("no_kontrabon");
             e.preventDefault();
@@ -212,6 +265,34 @@
                 backdrop: 'static'
                 , keyboard: false
             });
+        });
+
+        $('.proseskontrabon').click(function(e) {
+            var no_kontrabon = $(this).attr("no_kontrabon");
+            e.preventDefault();
+            loadproseskontrabon(no_kontrabon);
+            $('#mdlproseskontrabon').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+        });
+
+        $('.delete-confirm').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+            event.preventDefault();
+            swal({
+                    title: `Are you sure you want to delete this record?`
+                    , text: "If you delete this, it will be gone forever."
+                    , icon: "warning"
+                    , buttons: true
+                    , dangerMode: true
+                , })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
         });
     });
 

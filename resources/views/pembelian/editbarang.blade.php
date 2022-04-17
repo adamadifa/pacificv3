@@ -22,7 +22,7 @@
             <x-inputtext label="Harga" field="harga" icon="feather icon-file" value="{{ desimal($detailpembelian->harga) }}" right />
         </div>
         <div class="col-4">
-            <x-inputtext label="Harga" field="penyesuaian" icon="feather icon-file" value="{{ desimal($detailpembelian->penyesuaian) }}" right />
+            <x-inputtext label="Penyesuaian" field="penyesuaian" icon="feather icon-file" value="{{ desimal($detailpembelian->penyesuaian) }}" right />
         </div>
     </div>
     <div class="row">

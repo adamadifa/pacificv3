@@ -1687,6 +1687,24 @@ pre code {
     border-color: #322f6b;
 }
 
+.table .thead-danger th {
+    color: #fff;
+    background-color: #740404;
+    border-color: #bd0505;
+}
+
+.table .thead-info th {
+    color: #fff;
+    background-color: #04557a;
+    border-color: #0589bd;
+}
+
+.table .thead-success th {
+    color: #fff;
+    background-color: #035f1f;
+    border-color: #018132;
+}
+
 .table .thead-light th {
     color: #4e5154;
     background-color: #ededed;
