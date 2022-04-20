@@ -61,56 +61,86 @@
     </thead>
     <tbody id="loaddetailpembelian"></tbody>
 </table>
-<div class="row">
-    <div class="col-12">
-        <div class="row">
-            <div class="col-12">
-                <x-inputtext label="Tanggal Bayar" field="tglbayar" icon="feather icon-calendar" datepicker />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <div class="form-group">
-                    <select name="kode_bank" id="kode_bank" class="form-control select2">
-                        <option value="">Pilih Bank</option>
-                        @foreach ($bank as $d)
-                        <option value="{{ $d->kode_bank }}">{{ $d->nama_bank }}</option>
-                        @endforeach
-                    </select>
+<form action="/kontrabon/storeproseskontrabon" method="POST" id="frmKontrabon">
+    @csrf
+    <div class="row">
+        <div class="col-12">
+            <div class="row">
+                <div class="col-12">
+                    <input type="hidden" value="{{ $kontrabon->no_kontrabon }}" name="no_kontrabon" id="no_kontrabon">
+                    <input type="hidden" value="{{ $totalkontrabon }}" name="jmlbayar" id="jmlbayar">
+                    <input type="hidden" value="{{ $kontrabon->kode_supplier }}" name="kode_supplier" id="kode_supplier">
+                    <x-inputtext label="Tanggal Bayar" field="tglbayar" icon="feather icon-calendar" datepicker />
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <div class="form-group">
-                    <select class="form-control" id="kode_akun" name="kode_akun" data-error=".errorTxt1">
-                        <option value="">Pilih Akun</option>
-                        <option value="2-1300">Hutang Lainnya</option>
-                        <option value="2-1200">Hutang Dagang</option>
-                    </select>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <select name="kode_bank" id="kode_bank" class="form-control select2">
+                            <option value="">Pilih Bank</option>
+                            @foreach ($bank as $d)
+                            <option value="{{ $d->kode_bank }}">{{ $d->nama_bank }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row mb-1">
-            <div class="col-12">
-                <div class="vs-checkbox-con vs-checkbox-primary">
-                    <input type="checkbox" class="cekcabang" name="cekcabang" value="1">
-                    <span class="vs-checkbox">
-                        <span class="vs-checkbox--check">
-                            <i class="vs-icon feather icon-check"></i>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <select class="form-control" id="kode_akun" name="kode_akun" data-error=".errorTxt1">
+                            <option value="">Pilih Akun</option>
+                            <option value="2-1300">Hutang Lainnya</option>
+                            <option value="2-1200">Hutang Dagang</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-1">
+                <div class="col-12">
+                    <div class="vs-checkbox-con vs-checkbox-primary">
+                        <input type="checkbox" class="cekcabang" name="cekcabang" value="1">
+                        <span class="vs-checkbox">
+                            <span class="vs-checkbox--check">
+                                <i class="vs-icon feather icon-check"></i>
+                            </span>
                         </span>
-                    </span>
-                    <span class="">Dibayar Oleh Cabang ?</span>
+                        <span class="">Dibayar Oleh Cabang ?</span>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <x-inputtext label="Keterangan" field="keterangan" icon="fa fa-file" />
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group" id="pilihcabang">
+                        <select name="kode_cabang" id="kode_cabang" class="form-control ">
+                            <option value="">Pilih Cabang</option>
+                            @foreach ($cabang as $d)
+                            <option value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="nobkk">
+                <div class="col-12">
+                    <x-inputtext label="No. BKK" field="no_bkk" icon="fa fa-file" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <x-inputtext label="Keterangan" field="keterangan" icon="fa fa-file" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <button type="submit" name="submit" class="btn btn-primary btn-block"><i class="fa fa-send mr-1"></i>Submit</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</form>
 <script src="{{asset('app-assets/vendors/js/forms/select/select2.full.min.js')}}"></script>
 <script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
 <script src="{{asset('app-assets/js/scripts/forms/select/form-select2.js')}}"></script>
@@ -136,7 +166,113 @@
             $("#nobuktipembelian").text(nobukti_pembelian);
             loaddetailpembelian(nobukti_pembelian);
         });
+        $("#pilihcabang").hide();
+        $('.cekcabang').change(function() {
+            if (this.checked) {
+                $("#pilihcabang").show();
+            } else {
+                $("#pilihcabang").hide();
+            }
+        });
 
+        $("#kode_bank").change(function() {
+            loadnobkk();
+        });
+
+        function loadnobkk() {
+            var kode_bank = $("#kode_bank").val();
+            if (kode_bank == "KAS KECIL") {
+                $("#nobkk").show();
+            } else {
+                $("#nobkk").hide();
+            }
+        }
+        loadnobkk();
+        $("#frmKontrabon").submit(function() {
+            var tglbayar = $("#tglbayar").val();
+            var kode_bank = $("#kode_bank").val();
+            var kode_akun = $("#kode_akun").val();
+            var keterangan = $("#keterangan").val();
+            var kode_cabang = $("#kode_cabang").val();
+            var no_bkk = $("#no_bkk").val();
+            if (tglbayar == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Tanggal Bayar Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#tglbayar").focus();
+                });
+                return false;
+            } else if (kode_bank == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Bank Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#kode_bank").focus();
+                });
+                return false;
+
+            } else if (kode_akun == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Akun Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#kode_akun").focus();
+                });
+                return false;
+
+            } else if ($(".cekcabang").is(':checked') && kode_cabang == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Cabang Harus Pilih !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#kode_cabang").focus();
+                });
+                return false;
+
+            } else if (keterangan == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Keterangan Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#keterangan").focus();
+                });
+                return false;
+
+            } else if (kode_bank == "KAS KECIL" && kode_cabang == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Cabang Harus Dipilih !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#kode_cabang").focus();
+                });
+                return false;
+
+            } else if (kode_bank == "KAS KECIL" && no_bkk == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'No. BKK Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#no_bkk").focus();
+                });
+                return false;
+
+            }
+        });
     });
 
 </script>

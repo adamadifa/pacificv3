@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Bank;
+use App\Models\Cabang;
 use App\Models\Kontrabon;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
@@ -294,6 +295,277 @@ class KontrabonController extends Controller
             ->join('pembelian', 'detail_kontrabon.nobukti_pembelian', '=', 'pembelian.nobukti_pembelian')
             ->where('no_kontrabon', $no_kontrabon)->get();
         $bank = Bank::orderBy('kode_bank')->get();
-        return view('kontrabon.proseskontrabon', compact('kontrabon', 'detailkontrabon', 'bank'));
+        $cabang = Cabang::orderBy('kode_cabang')->get();
+        return view('kontrabon.proseskontrabon', compact('kontrabon', 'detailkontrabon', 'bank', 'cabang'));
+    }
+
+    public function storeproseskontrabon(Request $request)
+    {
+        $no_kontrabon = $request->no_kontrabon;
+        $tglbayar = $request->tglbayar;
+        $bayar = $request->jmlbayar;
+        $kode_bank = $request->kode_bank;
+        $kode_akun = $request->kode_akun;
+        $cekcabang = $request->cekcabang;
+        $kode_cabang = $request->kode_cabang;
+        $keterangan = $request->keterangan;
+        $no_bkk = $request->no_bkk;
+        $pelanggan = $request->kode_supplier;
+        $id_user = Auth::user()->id;
+        $tanggal = explode("-", $tglbayar);
+        $bulan = $tanggal[1];
+        $tahun = substr($tanggal[0], 2, 2);
+
+        $bank = DB::table('master_bank')->where('kode_bank', $kode_bank)->first();
+        $kode_akun_bank = $bank->kode_akun;
+        $akun = [
+            'BDG' => '1-1102',
+            'BGR' => '1-1103',
+            'PST' => '1-1111',
+            'TSM' => '1-1112',
+            'SKB' => '1-1113',
+            'PWT' => '1-1114',
+            'TGL' => '1-1115',
+            'SBY' => '1-1116',
+            'SMR' => '1-1117',
+            'KLT' => '1-1118',
+            'GRT' => '1-1119'
+        ];
+
+        $cbg = "PST";
+        $ledger = DB::table('ledger_bank')->select('no_bukti')->whereRaw('LEFT(no_bukti,7)="LR' . $cbg . $tahun . '"')->orderBy('no_bukti', 'desc')->first();
+        if ($ledger != null) {
+            $lastno_bukti = $ledger->no_bukti;
+        } else {
+            $lastno_bukti = "";
+        }
+        $no_bukti = buatkode($lastno_bukti, 'LR' . $cbg . $tahun, 4);
+
+        $bukubesar = DB::table('buku_besar')->whereRaw('LEFT(no_bukti,6)="GJ' . $bulan . $tahun . '"')
+            ->orderBy('no_bukti', 'desc')
+            ->first();
+        if ($bukubesar != null) {
+            $last_no_bukti_bukubesar = $bukubesar->no_bukti;
+        } else {
+            $last_no_bukti_bukubesar = "";
+        }
+
+        $nobukti_bukubesar = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $tahun, 4);
+        $nobukti_bukubesar_bank = buatkode($nobukti_bukubesar, 'GJ' . $bulan . $tahun, 4);
+        $nobukti_bukubesar_trans_kk = buatkode($nobukti_bukubesar_bank, 'GJ' . $bulan . $tahun, 4);
+        $nobukti_bukubesar_kk = buatkode($nobukti_bukubesar_trans_kk, 'GJ' . $bulan . $tahun, 4);
+
+
+        $nobukti_pembelian = "";
+        $detailkontrabon = DB::table('detail_kontrabon')->where('no_kontrabon', $no_kontrabon);
+        $cekkontrabon = $detailkontrabon->count();
+        $datadetailkontrabon = $detailkontrabon->get();
+        foreach ($datadetailkontrabon as $d) {
+            if ($cekkontrabon > 1) {
+                $nobukti_pembelian .= $d->nobukti_pembelian . ",";
+            } else {
+                $nobukti_pembelian .= $d->nobukti_pembelian;
+            }
+
+            if ($kode_bank == "KAS KECIL") {
+                // $detailpembelian = DB::table('detail_pembelian')
+                //     ->selectRaw("detail_pembelian.kode_barang,nama_barang,((qty*harga)+penyesuaian) as totalharga")
+                //     ->join('master_barang_pembelian', 'detail_pembelian.kode_barang', 'master_barang_pembelian.kode_barang')
+                //     ->where('nobukti_pembelian', $d->nobukt_pembelian)
+                //     ->get();
+
+                // foreach ($detailpembelian as $p) {
+                //     $barang[] = "PEMB " . $p->nama_barang;
+                //     $datakk[] = [
+                //         'nobukti' => $no_bkk,
+                //         'tgl_kaskecil' => $tglbayar,
+                //         'keterangan' => "PEMB " . $p->nama_barang,
+                //         'jumlah' => $p->totalharga,
+                //         'status_dk' => "D",
+                //         'kode_akun' => "2-1300"
+                //     ];
+                // }
+            }
+
+            $data = array(
+                'no_kontrabon' => $no_kontrabon,
+                'bayar'        => $bayar,
+                'tglbayar'     => $tglbayar,
+                'via'          => $kode_bank,
+                'kode_cabang'  => $kode_cabang,
+                'id_admin'     => $id_user
+            );
+
+            $dataledger = array(
+                'no_bukti'              => $no_bukti,
+                'no_ref'                => $no_kontrabon,
+                'pelanggan'             => $pelanggan,
+                'bank'                  => $kode_bank,
+                'tgl_ledger'            => $tglbayar,
+                'keterangan'            => $keterangan . " " . $nobukti_pembelian,
+                'kode_akun'             => $kode_akun,
+                'jumlah'                => $bayar,
+                'status_dk'             => 'D',
+                'status_validasi'       => 1,
+                'kategori'              => 'PMB',
+                'nobukti_bukubesar'     => $nobukti_bukubesar,
+                'nobukti_bukubesar_2'   => $nobukti_bukubesar_bank
+            );
+
+
+            $databukubesar = array(
+                'no_bukti' => $nobukti_bukubesar,
+                'tanggal' => $tglbayar,
+                'sumber' => 'ledger',
+                'keterangan' => $keterangan . " " . $nobukti_pembelian,
+                'kode_akun' => $kode_akun,
+                'debet' => $bayar,
+                'kredit' => 0,
+                'nobukti_transaksi' => $no_bukti
+            );
+
+
+            $databukubesarbank = array(
+                'no_bukti' => $nobukti_bukubesar_bank,
+                'tanggal' => $tglbayar,
+                'sumber' => 'ledger',
+                'keterangan' => $keterangan . " " . $nobukti_pembelian,
+                'kode_akun' => $kode_akun_bank,
+                'debet' => 0,
+                'kredit' => $bayar,
+                'nobukti_transaksi' => $no_bukti
+            );
+
+
+            DB::beginTransaction();
+            try {
+                //Simpan Histori Pembayaran
+
+                if ($kode_bank == "KAS KECIL") {
+                    $databukubesar_kk = array(
+                        'no_bukti' => $nobukti_bukubesar_kk,
+                        'tanggal' => $tglbayar,
+                        'sumber' => 'Kas Kecil',
+                        'keterangan' => $keterangan . " " . $nobukti_pembelian,
+                        'kode_akun' => $akun[$kode_cabang],
+                        'debet' => 0,
+                        'kredit' => $bayar,
+                        'nobukti_transaksi' => $no_bkk,
+                    );
+
+
+                    $databukubesartrans = array(
+                        'no_bukti' => $nobukti_bukubesar_trans_kk,
+                        'tanggal' => $tglbayar,
+                        'sumber' => 'Kas Kecil',
+                        'keterangan' =>  $keterangan . " " . $nobukti_pembelian,
+                        'kode_akun' => $kode_akun,
+                        'debet' => $bayar,
+                        'kredit' => 0,
+                        'nobukti_transaksi' => $no_bkk,
+                    );
+                    $datakaskecil = [
+                        'nobukti' => $no_bkk,
+                        'no_ref' => $no_kontrabon,
+                        'tgl_kaskecil' => $tglbayar,
+                        'keterangan' => $keterangan . " " . $nobukti_pembelian,
+                        'jumlah' => $bayar,
+                        'status_dk' => "D",
+                        'kode_cabang' => $kode_cabang,
+                        'kode_akun' => $kode_akun,
+                        'nobukti_bukubesar' => $nobukti_bukubesar_kk,
+                        'nobukti_bukubesar_2' => $nobukti_bukubesar_trans_kk
+                    ];
+
+                    DB::table('kaskecil_detail')->insert($datakaskecil);
+                    DB::table('buku_besar')->insert($databukubesar_kk);
+                    DB::table('buku_besar')->insert($databukubesartrans);
+                } else {
+                    DB::table('ledger_bank')->insert($dataledger);
+                    DB::table('buku_besar')->insert($databukubesar);
+                    DB::table('buku_besar')->insert($databukubesarbank);
+                }
+
+                DB::table('historibayar_pembelian')->insert($data);
+
+
+                DB::commit();
+                return Redirect::back()->with(['success' => 'Data Kontrabon Berhasil di Simpan']);
+            } catch (\Exception $e) {
+                dd($e);
+                DB::rollback();
+                return Redirect::back()->with(['warning' => 'Data Kontrabon Gagal di Simpan']);
+            }
+        }
+    }
+
+    public function batalkankontrabon($no_kontrabon)
+    {
+        $no_kontrabon = Crypt::decrypt($no_kontrabon);
+        $ledger = DB::table('ledger_bank')->where('no_ref', $no_kontrabon)->first();
+        $kaskecil = DB::table('kaskecil_detail')->where('no_ref', $no_kontrabon)->first();
+        if ($ledger != null) {
+            $nobukti_bukubesar_1 = $ledger->nobukti_bukubesar;
+            $nobukti_bukubesar_2 = $ledger->nobukti_bukubesar_2;
+        } else {
+            $nobukti_bukubesar_1 =  "";
+            $nobukti_bukubesar_2 = "";
+        }
+
+        if ($kaskecil != null) {
+            $nobukti_bukubesar_kk_1 = $kaskecil->nobukti_bukubesar;
+            $nobukti_bukubesar_kk_2 = $kaskecil->nobukti_bukubesar_2;
+        } else {
+            $nobukti_bukubesar_kk_1 = "";
+            $nobukti_bukubesar_kk_2 = "";
+        }
+
+        $nobukti_bukubesar = [
+            $nobukti_bukubesar_1, $nobukti_bukubesar_2, $nobukti_bukubesar_kk_1, $nobukti_bukubesar_kk_2
+        ];
+
+        DB::beginTransaction();
+        try {
+            DB::table('historibayar_pembelian')->where('no_kontrabon', $no_kontrabon)->delete();
+
+            DB::table('buku_besar')->whereIn('no_bukti', $nobukti_bukubesar)->delete();
+
+            DB::table('ledger_bank')->where('no_ref', $no_kontrabon)->delete();
+            DB::table('kaskecil_detail')->where('no_ref', $no_kontrabon)->delete();
+            DB::commit();
+            return Redirect::back()->with(['success' => 'Data Kontrabon Berhasil di Batalkan']);
+        } catch (\Exception $e) {
+            dd($e);
+            DB::rollback();
+            return Redirect::back()->with(['warning' => 'Data Kontrabon Gagal di Dbatalkan, Hubungi Tim IT']);
+        }
+    }
+
+    public function approvekontrabon($no_kontrabon)
+    {
+        $no_kontrabon = Crypt::decrypt($no_kontrabon);
+        $data = [
+            'status' => 1
+        ];
+        $simpan = DB::table('kontrabon')->where('no_kontrabon', $no_kontrabon)->update($data);
+        if ($simpan) {
+            return Redirect::back()->with(['success' => 'Data Berhasil di Approve']);
+        } else {
+            return Redirect::back()->with(['warning' => 'Data Gagal di Approve']);
+        }
+    }
+
+    public function cancelkontrabon($no_kontrabon)
+    {
+        $no_kontrabon = Crypt::decrypt($no_kontrabon);
+        $data = [
+            'status' => NULL
+        ];
+        $simpan = DB::table('kontrabon')->where('no_kontrabon', $no_kontrabon)->update($data);
+        if ($simpan) {
+            return Redirect::back()->with(['success' => 'Data Berhasil di Approve']);
+        } else {
+            return Redirect::back()->with(['warning' => 'Data Gagal di Approve']);
+        }
     }
 }

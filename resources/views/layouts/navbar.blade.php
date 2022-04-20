@@ -291,6 +291,14 @@
                         </a>
                     </li>
                     @endif
+                    @if (in_array($level,$laporan_pembelian))
+                    <li class="{{ request()->is(['laporanpembelian','laporanpembelian/*']) ? 'active' : '' }}">
+                        <a href="/laporanpembelian">
+                            <i class="feather icon-file-text"></i>
+                            <span class="menu-item">Laporan</span>
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </li>
             @endif
@@ -483,7 +491,7 @@
                     @if (in_array($level, $laporankeuangan_view))
                     <li class="{{ request()->is(['laporankeuangan', 'laporankeuangan/*']) ? 'active' : '' }}">
                         <a href="laporankeuangan/kaskecil">
-                            <i class="feather icon-book"></i>
+                            <i class="feather icon-file-text"></i>
                             <span class="menu-item" data-i18n="Second Level">Laporan</span>
                         </a>
                     </li>

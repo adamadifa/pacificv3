@@ -153,10 +153,10 @@
 
                                             @if (empty($d->tglbayar))
                                             @if ($d->status ==1 )
-                                            <a href="/kontrabon/{{ $d->no_kontrabon }}/batalkankontrabon" class="danger ml-1"><i class="fa fa-close"></i></a>
+                                            <a href="/kontrabon/{{ Crypt::encrypt($d->no_kontrabon) }}/cancelkontrabon" class="danger ml-1"><i class="fa fa-close"></i></a>
                                             @else
                                             @if ($d->kategori != "TN")
-                                            <a href="/kontrabon/{{ $d->no_kontrabon }}/approvekontrabon" class="success ml-1"><i class="fa fa-check"></i></a>
+                                            <a href="/kontrabon/{{ Crypt::encrypt($d->no_kontrabon) }}/approvekontrabon" class="success ml-1"><i class="fa fa-check"></i></a>
                                             @endif
                                             @endif
                                             @endif
@@ -175,6 +175,14 @@
                                             <a class="ml-1 proseskontrabon" href="#" no_kontrabon="{{ Crypt::encrypt($d->no_kontrabon) }}"><i class=" feather icon-external-link success"></i></a>
                                             @endif
                                             @endif
+                                            @else
+                                            <form method="POST" class="cancelkontrabon" action="/kontrabon/{{Crypt::encrypt($d->no_kontrabon)}}/batalkankontrabon">
+                                                @csrf
+                                                @method('DELETE')
+                                                <a href="#" class="cancelkontrabon-confirm ml-1 danger">
+                                                    <i class="fa fa-close danger"></i> Batalkan
+                                                </a>
+                                            </form>
                                             @endif
                                         </div>
                                     </td>
@@ -278,6 +286,24 @@
         });
 
         $('.delete-confirm').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+            event.preventDefault();
+            swal({
+                    title: `Are you sure you want to delete this record?`
+                    , text: "If you delete this, it will be gone forever."
+                    , icon: "warning"
+                    , buttons: true
+                    , dangerMode: true
+                , })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
+        });
+
+        $('.cancelkontrabon-confirm').click(function(event) {
             var form = $(this).closest("form");
             var name = $(this).data("name");
             event.preventDefault();

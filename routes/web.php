@@ -22,6 +22,7 @@ use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\KlaimController;
 use App\Http\Controllers\KontrabonController;
 use App\Http\Controllers\LaporankeuanganController;
+use App\Http\Controllers\LaporanpembelianController;
 use App\Http\Controllers\LebihsetorController;
 use App\Http\Controllers\LedgerController;
 use App\Http\Controllers\LimitkreditController;
@@ -379,6 +380,17 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/pembelian/{nobukti_pembelian}/getbarangjurnalkoreksi', [PembelianController::class, 'getbarangjurnalkoreksi']);
     Route::get('/jatuhtempo', [PembelianController::class, 'jatuhtempo']);
 
+    //Laporan Pembelian
+    Route::get('/laporanpembelian', [LaporanpembelianController::class, 'index']);
+    Route::get('/laporanpembelian/pembayaran', [LaporanpembelianController::class, 'pembayaran']);
+    Route::get('/laporanpembelian/rekapsupplier', [LaporanpembelianController::class, 'rekapsupplier']);
+    Route::get('/laporanpembelian/rekappembelian', [LaporanpembelianController::class, 'rekappembelian']);
+    Route::post('/laporanpembelian/cetak', [LaporanpembelianController::class, 'cetak_pembelian']);
+    Route::post('/laporanpembelian/pembayaran/cetak', [LaporanpembelianController::class, 'cetak_pembayaran']);
+    Route::post('/laporanpembelian/rekapsupplier/cetak', [LaporanpembelianController::class, 'cetak_rekapsupplier']);
+    Route::post('/laporanpembelian/rekappembelian/cetak', [LaporanpembelianController::class, 'cetak_rekappembelian']);
+
+
     //Jurnal Koreksi
     Route::get('/jurnalkoreksi', [JurnalkoreksiController::class, 'index']);
     Route::get('/jurnalkoreksi/create', [JurnalkoreksiController::class, 'create']);
@@ -402,6 +414,10 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::delete('/kontrabon/{no_kontrabon}/delete', [KontrabonController::class, 'delete']);
     Route::get('/pembelian/jatuhtempo', [PembelianController::class, 'jatuhtempo']);
     Route::post('/kontrabon/proseskontrabon', [KontrabonController::class, 'proseskontrabon']);
+    Route::post('/kontrabon/storeproseskontrabon', [KontrabonController::class, 'storeproseskontrabon']);
+    Route::delete('/kontrabon/{no_kontrabon}/batalkankontrabon', [KontrabonController::class, 'batalkankontrabon']);
+    Route::get('/kontrabon/{no_kontrabon}/approvekontrabon', [KontrabonController::class, 'approvekontrabon']);
+    Route::get('/kontrabon/{no_kontrabon}/cancelkontrabon', [KontrabonController::class, 'cancelkontrabon']);
 });
 
 //Administrator | Direktur | General Manager | Manager Marketing | Manager Accounting | Kepala Penjualan | Staff Keuangan | Admin Kas Kecil

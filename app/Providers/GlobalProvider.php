@@ -205,6 +205,11 @@ class GlobalProvider extends ServiceProvider
             $kontrabon_view = ['admin'];
             $jatuhtempo_view = ['admin'];
             $jurnalkoreksi_view = ['admin'];
+            $laporan_pembelian = ['admin'];
+            $laporan_pembayaran_pembelian = ['admin'];
+            $laporan_rekappembeliansupplier = ['admin'];
+            $laporan_rekappembelian = ['admin'];
+            $laporan_kartuhutang = ['admin'];
             $shareddata = [
                 'level' => $level,
                 'getcbg' => $getcbg,
@@ -361,6 +366,11 @@ class GlobalProvider extends ServiceProvider
                 'kontrabon_view' => $kontrabon_view,
                 'jatuhtempo_view' => $jatuhtempo_view,
                 'jurnalkoreksi_view' => $jurnalkoreksi_view,
+                'laporan_pembelian' => $laporan_pembelian,
+                'laporan_pembayaran_pembelian' => $laporan_pembayaran_pembelian,
+                'laporan_rekappembeliansupplier' => $laporan_rekappembeliansupplier,
+                'laporan_rekappembelian' => $laporan_rekappembelian,
+                'laporan_kartuhutang' => $laporan_kartuhutang,
 
             ];
             View::share($shareddata);

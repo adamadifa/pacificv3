@@ -315,6 +315,7 @@ class LedgerController extends Controller
     public function update($no_bukti, Request $request)
     {
         $no_bukti = Crypt::decrypt($no_bukti);
+
         $ledger = DB::table('ledger_bank')->where('no_bukti', $no_bukti)->first();
         $tgl_ledger = $request->tgl_ledger;
         $pelanggan = $request->pelanggan;
@@ -393,7 +394,22 @@ class LedgerController extends Controller
                     ];
                     DB::table('ledger_bank')->where('no_bukti', $no_bukti)->update($dataledger);
                     DB::table('costratio_biaya')->insert($datacr);
+                } else {
+                    $dataledger = [
+                        'tgl_ledger' => $tgl_ledger,
+                        'pelanggan' => $pelanggan,
+                        'keterangan' => $keterangan,
+                        'jumlah' => $jumlah,
+                        'kode_akun' => $kode_akun,
+                        'status_dk' => $status_dk,
+                        'peruntukan' => $peruntukan,
+                        'ket_peruntukan' => $ket_peruntukan,
+                    ];
+
+                    DB::table('ledger_bank')->where('no_bukti', $no_bukti)->update($dataledger);
                 }
+
+                //echo 1;
             } else {
                 if ($status_dk == "D" && $peruntukan == "PC") {
                     $datacr = [
@@ -430,13 +446,15 @@ class LedgerController extends Controller
                     DB::table('ledger_bank')->where('no_bukti', $no_bukti)->update($dataledger);
                     DB::table('costratio_biaya')->where('kode_cr', $ledger->kode_cr)->delete();
                 }
+
+                //echo 2;
             }
             DB::commit();
             return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
         } catch (\Exception $e) {
             dd($e);
             DB::rollback();
-            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan Hubungi Tim IT']);;
+            //return Redirect::back()->with(['warning' => 'Data Gagal Disimpan Hubungi Tim IT']);;
         }
     }
 
