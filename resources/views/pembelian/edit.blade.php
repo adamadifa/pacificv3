@@ -728,7 +728,7 @@
         });
 
         $("#tambahpotongan").click(function(e) {
-            var nobukti_pembelian = "{{ $pembelian->nobukti_pembelian }}";
+            var nobukti_pembelian = "{{ Crypt::encrypt($pembelian->nobukti_pembelian) }}";
             e.preventDefault();
             $('#mdlinputpotongan').modal({
                 backdrop: 'static'

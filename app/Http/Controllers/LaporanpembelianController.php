@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Barangpembelian;
+use App\Models\Coa;
 use App\Models\Detailkontrabon;
 use App\Models\Detailpembelian;
+use App\Models\Jurnalkoreksi;
+use App\Models\Pembelian;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -161,5 +165,333 @@ class LaporanpembelianController extends Controller
         } else {
             return view('pembelian.laporan.cetak_rekappembelian_jenisbarang', compact('dari', 'sampai', 'pmb', 'jenis_barang'));
         }
+    }
+
+    public function kartuhutang()
+    {
+        $supplier = Supplier::orderBy('nama_supplier')->get();
+        return view('pembelian.laporan.frm.lap_kartuhutang', compact('supplier'));
+    }
+
+    public function cetak_kartuhutang(Request $request)
+    {
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $jenishutang = $request->jenishutang;
+        $jenislaporan = $request->jenislaporan;
+        $kode_supplier = $request->kode_supplier;
+        $supplier = Supplier::where('kode_supplier', $kode_supplier)->first();
+        $coa = Coa::where('kode_akun', $jenishutang)->first();
+        $query = Pembelian::query();
+        $query->selectRaw("pembelian.nobukti_pembelian,tgl_pembelian,pembelian.kode_supplier,nama_supplier,pembelian.kode_akun,nama_akun,(IFNULL(IFNULL(totalhutang,0) + IFNULL(penyesuaianbulanlalu,0)+ IFNULL(penyesuaianbulanini,0),0))   as totalhutang,
+        (IFNULL(IFNULL(totalhutang,0) + IFNULL(penyesuaianbulanlalu,0) - IFNULL(jmlbayarbulanlalu,0) ,0))   as sisapiutang,
+        IFNULL(jmlbayarbulanlalu,0) as jmlbayarbulanlalu, IFNULL(jmlbayarbulanini,0) as jmlbayarbulanini,IFNULL(penyesuaianbulanlalu,0) as penyesuaianbulanlalu,IFNULL(penyesuaianbulanini,0) as penyesuaianbulanini ,pmbbulanini");
+        $query->join('supplier', 'pembelian.kode_supplier', '=', 'supplier.kode_supplier');
+        $query->join('coa', 'pembelian.kode_akun', '=', 'coa.kode_akun');
+        $query->leftJoin(
+            DB::raw("(
+            SELECT detail_pembelian.nobukti_pembelian, (SUM( IF ( STATUS = 'PMB', ((qty*harga)+penyesuaian), 0 ) ) - SUM( IF ( STATUS = 'PNJ',(qty*harga), 0 ) ) ) as totalhutang
+            ,IF(tgl_pembelian BETWEEN '$dari' AND '$sampai',(SUM( IF ( STATUS = 'PMB', ((qty*harga)+penyesuaian), 0 ) ) - SUM( IF ( STATUS = 'PNJ',(qty*harga), 0 ) ) ),0) as pmbbulanini
+            FROM detail_pembelian
+            INNER JOIN pembelian ON detail_pembelian.nobukti_pembelian = pembelian.nobukti_pembelian
+            GROUP BY nobukti_pembelian,tgl_pembelian
+            ) detailpembelian"),
+            function ($join) {
+                $join->on('pembelian.nobukti_pembelian', '=', 'detailpembelian.nobukti_pembelian');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+            SELECT nobukti_pembelian,SUM(IF(tglbayar<'$dari',jmlbayar,0)) as jmlbayarbulanlalu,
+            SUM(IF(tglbayar BETWEEN '$dari' AND '$sampai',jmlbayar,0)) as jmlbayarbulanini
+            FROM historibayar_pembelian hb
+            INNER JOIN detail_kontrabon on hb.no_kontrabon = detail_kontrabon.no_kontrabon
+            GROUP BY nobukti_pembelian
+            ) historibayar"),
+            function ($join) {
+                $join->on('pembelian.nobukti_pembelian', '=', 'historibayar.nobukti_pembelian');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+            SELECT nobukti_pembelian,(SUM(IF(tgl_jurnalkoreksi<'$dari' AND status_dk='K' AND kode_akun='2-1200'
+            OR tgl_jurnalkoreksi<'$dari' AND status_dk='K' AND kode_akun='2-1300' ,(qty*harga),0)) - SUM(IF(tgl_jurnalkoreksi<'$dari' AND status_dk='D' AND kode_akun='2-1200'
+            OR tgl_jurnalkoreksi<'$dari' AND status_dk='D' AND kode_akun='2-1300' ,(qty*harga),0))) as penyesuaianbulanlalu,
+            (SUM(IF(tgl_jurnalkoreksi BETWEEN '$dari' AND '$sampai'  AND status_dk='K' AND kode_akun='2-1200'
+            OR tgl_jurnalkoreksi BETWEEN '$dari' AND '$sampai'  AND status_dk='K' AND kode_akun='2-1300'  ,(qty*harga),0))-SUM(IF(tgl_jurnalkoreksi BETWEEN '$dari' AND '$sampai'  AND status_dk='D' AND kode_akun='2-1200'
+            OR tgl_jurnalkoreksi BETWEEN '$dari' AND '$sampai'  AND status_dk='D' AND kode_akun='2-1300'  ,(qty*harga),0))) as penyesuaianbulanini
+            FROM jurnal_koreksi jk
+            GROUP BY nobukti_pembelian
+            ) jurnalkoreksi"),
+            function ($join) {
+                $join->on('pembelian.nobukti_pembelian', '=', 'jurnalkoreksi.nobukti_pembelian');
+            }
+        );
+
+        $query->where('tgl_pembelian', '<=', $sampai);
+        $query->whereRaw("(IFNULL(IFNULL(totalhutang,0) + IFNULL(penyesuaianbulanlalu,0) - IFNULL(jmlbayarbulanlalu,0) ,0))  != 0");
+        if (!empty($kode_supplier)) {
+            $query->where('pembelian.kode_supplier', $kode_supplier);
+        }
+
+        if (!empty($jenishutang)) {
+            $query->where('pembelian.kode_akun', $jenishutang);
+        }
+        $query->orWhere('tgl_pembelian', '<=', $sampai);
+        $query->where('jmlbayarbulanini', '!=', 0);
+        if (!empty($kode_supplier)) {
+            $query->where('pembelian.kode_supplier', $kode_supplier);
+        }
+
+        if (!empty($jenishutang)) {
+            $query->where('pembelian.kode_akun', $jenishutang);
+        }
+        $query->orderBy('tgl_pembelian');
+        $query->orderBy('pembelian.nobukti_pembelian');
+        $pmb = $query->get();
+        if ($jenislaporan == 1) {
+            return view('pembelian.laporan.cetak_kartuhutang', compact('dari', 'sampai', 'supplier', 'coa', 'pmb'));
+        } else {
+            return view('pembelian.laporan.cetak_rekapkartuhutang', compact('dari', 'sampai', 'supplier', 'coa', 'pmb'));
+        }
+    }
+
+    public function auh()
+    {
+        return view('pembelian.laporan.frm.lap_auh');
+    }
+
+    public function cetak_auh(Request $request)
+    {
+        $sampai = $request->tgl_auh;
+        $pmb = DB::select("SELECT * FROM
+        (SELECT detail_pembelian.nobukti_pembelian,pembelian.kode_supplier,nama_supplier,
+        (SUM( IF ( STATUS = 'PMB', ((qty*harga)+penyesuaian), 0 ) ) - SUM( IF ( STATUS = 'PNJ',(qty*harga), 0 ) ) )-IFNULL(jmlbayar,0)+IFNULL(jmlpenyesuaian,0) as sisahutang,
+        CASE
+        WHEN  datediff('$sampai', tgl_pembelian) < 30  THEN
+        (SUM( IF ( STATUS = 'PMB', ((qty*harga)+penyesuaian), 0 ) ) - SUM( IF ( STATUS = 'PNJ',(qty*harga), 0 ) ) )-IFNULL(jmlbayar,0)+IFNULL(jmlpenyesuaian,0) END as bulanberjalan,
+        CASE
+        WHEN datediff('$sampai', tgl_pembelian) < 60 AND datediff('$sampai', tgl_pembelian) >= 30  THEN
+        (SUM( IF ( STATUS = 'PMB', ((qty*harga)+penyesuaian), 0 ) ) - SUM( IF ( STATUS = 'PNJ',(qty*harga), 0 ) ) )-IFNULL(jmlbayar,0)+IFNULL(jmlpenyesuaian,0) END as satubulan,
+        CASE
+        WHEN datediff('$sampai', tgl_pembelian) < 90 AND datediff('$sampai', tgl_pembelian) >= 60  THEN
+        (SUM( IF ( STATUS = 'PMB', ((qty*harga)+penyesuaian), 0 ) ) - SUM( IF ( STATUS = 'PNJ',(qty*harga), 0 ) ) )-IFNULL(jmlbayar,0)+IFNULL(jmlpenyesuaian,0) END as duabulan,
+        CASE
+        WHEN datediff('$sampai', tgl_pembelian) >= 90  THEN
+        (SUM( IF ( STATUS = 'PMB', ((qty*harga)+penyesuaian), 0 ) ) - SUM( IF ( STATUS = 'PNJ',(qty*harga), 0 ) ) )-IFNULL(jmlbayar,0)+IFNULL(jmlpenyesuaian,0) END as lebihtigabulan
+        FROM detail_pembelian
+        INNER JOIN pembelian ON detail_pembelian.nobukti_pembelian = pembelian.nobukti_pembelian
+        INNER JOIN supplier ON pembelian.kode_supplier = supplier.kode_supplier
+        LEFT JOIN (
+        SELECT nobukti_pembelian,SUM(IF(tglbayar<='$sampai',jmlbayar,0)) as jmlbayar
+        FROM historibayar_pembelian hb
+        INNER JOIN detail_kontrabon on hb.no_kontrabon = detail_kontrabon.no_kontrabon
+        GROUP BY nobukti_pembelian
+        ) hb ON hb.nobukti_pembelian = detail_pembelian.nobukti_pembelian
+        LEFT JOIN (
+        SELECT nobukti_pembelian,(SUM(IF(tgl_jurnalkoreksi<'$sampai' AND status_dk='K' AND kode_akun='2-1200'
+        OR tgl_jurnalkoreksi<'$sampai' AND status_dk='K' AND kode_akun='2-1300' ,(qty*harga),0)) - SUM(IF(tgl_jurnalkoreksi<'$sampai' AND status_dk='D' AND kode_akun='2-1200'
+        OR tgl_jurnalkoreksi<'$sampai' AND status_dk='D' AND kode_akun='2-1300' ,(qty*harga),0)))  as jmlpenyesuaian
+        FROM jurnal_koreksi jk
+        GROUP BY nobukti_pembelian
+        ) jk ON jk.nobukti_pembelian = detail_pembelian.nobukti_pembelian
+        WHERE tgl_pembelian <='$sampai'
+        GROUP BY detail_pembelian.nobukti_pembelian,pembelian.kode_supplier,nama_supplier,hb.jmlbayar,jk.jmlpenyesuaian,tgl_pembelian
+        ORDER BY pembelian.kode_supplier ASC
+        ) as kp WHERE sisahutang !=0");
+
+        return view('pembelian.laporan.cetak_auh', compact('sampai', 'pmb'));
+    }
+
+    public function bahankemasan()
+    {
+        return view('pembelian.laporan.frm.lap_bahankemasan');
+    }
+
+    public function cetak_bahankemasan(Request $request)
+    {
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $jenis_barang = $request->jenis_barang;
+        $query = Detailpembelian::query();
+        $query->selectRaw("detail_pembelian.kode_barang,satuan,nama_barang,jenis_barang,SUM(qty) as totalqty,SUM((qty*harga)+penyesuaian) as totalharga");
+        $query->join('pembelian', 'detail_pembelian.nobukti_pembelian', '=', 'pembelian.nobukti_pembelian');
+        $query->join('supplier', 'pembelian.kode_supplier', '=', 'supplier.kode_supplier');
+        $query->join('departemen', 'pembelian.kode_dept', '=', 'departemen.kode_dept');
+        $query->join('coa', 'detail_pembelian.kode_akun', '=', 'coa.kode_akun');
+        $query->join('master_barang_pembelian', 'detail_pembelian.kode_barang', '=', 'master_barang_pembelian.kode_barang');
+        $query->whereBetween('tgl_pembelian', [$dari, $sampai]);
+        if ($jenis_barang == "BAHAN") {
+            $query->where('jenis_barang', 'BAHAN BAKU');
+            $query->orWhereBetween('tgl_pembelian', [$dari, $sampai]);
+            $query->where('jenis_barang', 'BAHAN TAMBAHAN');
+        } else if ($jenis_barang == "KEMASAN") {
+            $query->where('jenis_barang', 'KEMASAN');
+        } else {
+            $query->where('jenis_barang', 'BAHAN BAKU');
+            $query->orWhereBetween('tgl_pembelian', [$dari, $sampai]);
+            $query->where('jenis_barang', 'BAHAN TAMBAHAN');
+            $query->orWhereBetween('tgl_pembelian', [$dari, $sampai]);
+            $query->where('jenis_barang', 'KEMASAN');
+        }
+        $query->groupByRaw("detail_pembelian.kode_barang,satuan,nama_barang,jenis_barang");
+        $pmb = $query->get();
+        return view('pembelian.laporan.cetak_bahankemasan', compact('dari', 'sampai', 'pmb', 'jenis_barang'));
+    }
+
+    public function rekapbahankemasan()
+    {
+        $jenis_barang = ['KEMASAN', 'BAHAN BAKU', 'Bahan Tambahan'];
+        $supplier = Supplier::orderBy('kode_supplier')->get();
+        $barang = Barangpembelian::whereIn('jenis_barang', $jenis_barang)->get();
+        return view('pembelian.laporan.frm.lap_rekapbahankemasan', compact('supplier', 'barang'));
+    }
+
+    public function cetak_rekapbahankemasan(Request $request)
+    {
+
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $kode_barang = $request->kode_barang;
+        $kode_supplier = $request->kode_supplier;
+
+        $barang = Barangpembelian::where('kode_barang', $kode_barang)->first();
+        $supplier = Supplier::where('kode_supplier', $kode_supplier)->first();
+        $query = Detailpembelian::query();
+        $query->select(
+            'detail_pembelian.nobukti_pembelian',
+            'tgl_pembelian',
+            'pembelian.kode_supplier',
+            'nama_supplier',
+            'nama_barang',
+            'qty',
+            'harga',
+            'penyesuaian'
+        );
+        $query->join('pembelian', 'detail_pembelian.nobukti_pembelian', '=', 'pembelian.nobukti_pembelian');
+        $query->join('supplier', 'pembelian.kode_supplier', '=', 'supplier.kode_supplier');
+        $query->join('master_barang_pembelian', 'detail_pembelian.kode_barang', '=', 'master_barang_pembelian.kode_barang');
+        $query->whereBetween('tgl_pembelian', [$dari, $sampai]);
+        $query->where('detail_pembelian.kode_barang', $kode_barang);
+        $query->orderBy('pembelian.kode_supplier');
+        $query->orderBy('tgl_pembelian');
+        $pmb = $query->get();
+        return view('pembelian.laporan.cetak_rekapbahankemasan', compact('dari', 'sampai', 'barang', 'supplier', 'pmb'));
+    }
+
+    public function jurnalkoreksi()
+    {
+        return view('pembelian.laporan.frm.lap_jurnalkoreksi');
+    }
+
+    public function cetak_jurnalkoreksi(Request $request)
+    {
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $query = Jurnalkoreksi::query();
+        $query->leftJoin('pembelian', 'jurnal_koreksi.nobukti_pembelian', '=', 'pembelian.nobukti_pembelian');
+        $query->leftJoin('supplier', 'pembelian.kode_supplier', '=', 'supplier.kode_supplier');
+        $query->leftJoin('master_barang_pembelian', 'jurnal_koreksi.kode_barang', '=', 'master_barang_pembelian.kode_barang');
+        $query->leftJoin('coa', 'jurnal_koreksi.kode_akun', '=', 'coa.kode_akun');
+        $query->whereBetween('tgl_jurnalkoreksi', [$dari, $sampai]);
+        $jurnalkoreksi = $query->get();
+        return view('pembelian.laporan.cetak_jurnalkoreksi', compact('dari', 'sampai', 'jurnalkoreksi'));
+    }
+
+    public function rekapakun()
+    {
+        return view('pembelian.laporan.frm.lap_rekapakun');
+    }
+
+    public function cetak_rekapakun(Request $request)
+    {
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $ppn = $request->ppn;
+
+        $query = Detailpembelian::query();
+        $query->selectRaw("detail_pembelian.kode_akun AS kode_akun,jk.jurnaldebet,jk.jurnalkredit,coa.nama_akun,status,SUM((qty*harga)+penyesuaian) as total");
+        $query->join('pembelian', 'detail_pembelian.nobukti_pembelian', '=', 'pembelian.nobukti_pembelian');
+        $query->leftJoin('coa', 'detail_pembelian.kode_akun', '=', 'coa.kode_akun');
+        $query->leftJoin(
+            DB::raw("(
+                SELECT kode_akun,
+                SUM(IF(status_dk='D',(jurnal_koreksi.qty*jurnal_koreksi.harga),0)) as jurnaldebet,
+                SUM(IF(status_dk='K',(jurnal_koreksi.qty*jurnal_koreksi.harga),0)) as jurnalkredit
+                FROM jurnal_koreksi
+                WHERE tgl_jurnalkoreksi BETWEEN '$dari' AND '$sampai'
+                GROUP BY kode_akun
+            ) jk"),
+            function ($join) {
+                $join->on('detail_pembelian.kode_akun', '=', 'jk.kode_akun');
+            }
+        );
+
+        $query->whereBetween('tgl_pembelian', [$dari, $sampai]);
+        if ($request->ppn != "-") {
+            $query->where('pembelian.ppn', $request->ppn);
+        }
+        $query->groupByRaw("detail_pembelian.kode_akun,jk.jurnaldebet,jk.jurnalkredit,coa.nama_akun,status");
+        $query->orderBy('detail_pembelian.kode_akun');
+        $pmb = $query->get();
+
+        $query2 = Jurnalkoreksi::query();
+        $query2->selectRaw("jurnal_koreksi.kode_akun,nama_akun,
+        SUM(IF(status_dk='D',(jurnal_koreksi.qty*jurnal_koreksi.harga),0)) as jurnaldebet,
+        SUM(IF(status_dk='K',(jurnal_koreksi.qty*jurnal_koreksi.harga),0)) as jurnalkredit,
+        pmb,
+        pnj");
+        $query2->join('coa', 'jurnal_koreksi.kode_akun', '=', 'coa.kode_akun');
+        $query2->leftJoin(
+            DB::raw("(
+                SELECT pembelian.kode_akun,
+                SUM(IF( STATUS = 'PMB',( detail_pembelian.qty * detail_pembelian.harga ) + penyesuaian, 0 )) AS pmb,
+                SUM(IF( STATUS = 'PNJ',( detail_pembelian.qty * detail_pembelian.harga ) + penyesuaian, 0 )) AS pnj
+                FROM pembelian
+                INNER JOIN detail_pembelian ON pembelian.nobukti_pembelian=detail_pembelian.nobukti_pembelian
+                WHERE tgl_pembelian BETWEEN '$dari' AND '$sampai'
+                GROUP BY kode_akun
+            ) dp"),
+            function ($join) {
+                $join->on('jurnal_koreksi.kode_akun', '=', 'dp.kode_akun');
+            }
+        );
+        $query2->whereBetween('tgl_jurnalkoreksi', [$dari, $sampai]);
+        $query2->groupByRaw(' kode_akun,nama_akun,pnj,pmb');
+        $jurnalkoreksi = $query2->get();
+        return view('pembelian.laporan.cetak_rekapakun', compact('dari', 'sampai', 'pmb', 'jurnalkoreksi'));
+    }
+
+    public function rekapkontrabon()
+    {
+        return view('pembelian.laporan.frm.lap_rekapkontrabon');
+    }
+
+    public function cetak_rekapkontrabon(Request $request)
+    {
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $query = Detailkontrabon::query();
+        $query->selectRaw("no_dokumen,nama_supplier,SUM(jmlbayar) as jumlah,ppn,norekening");
+        $query->leftJoin('kontrabon', 'detail_kontrabon.no_kontrabon', '=', 'kontrabon.no_kontrabon');
+        $query->leftJoin('supplier', 'kontrabon.kode_supplier', '=', 'supplier.kode_supplier');
+        $query->leftJoin('pembelian', 'detail_kontrabon.nobukti_pembelian', '=', 'pembelian.nobukti_pembelian');
+        $query->whereBetween('tgl_kontrabon', [$dari, $sampai]);
+        $query->where('ppn', 0);
+        $query->groupByRaw("detail_kontrabon.no_kontrabon,no_dokumen,nama_supplier,ppn,norekening");
+        $kb = $query->get();
+        $query2 = Detailkontrabon::query();
+        $query2->selectRaw("no_dokumen,nama_supplier,SUM(jmlbayar) as jumlah,ppn,norekening");
+        $query2->leftJoin('kontrabon', 'detail_kontrabon.no_kontrabon', '=', 'kontrabon.no_kontrabon');
+        $query2->leftJoin('supplier', 'kontrabon.kode_supplier', '=', 'supplier.kode_supplier');
+        $query2->leftJoin('pembelian', 'detail_kontrabon.nobukti_pembelian', '=', 'pembelian.nobukti_pembelian');
+        $query2->whereBetween('tgl_kontrabon', [$dari, $sampai]);
+        $query2->where('ppn', 1);
+        $query2->groupByRaw("detail_kontrabon.no_kontrabon,no_dokumen,nama_supplier,ppn,norekening");
+        $pf = $query2->get();
+
+        return view('pembelian.laporan.cetak_rekapkontrabon', compact('dari', 'sampai', 'kb', 'pf'));
     }
 }

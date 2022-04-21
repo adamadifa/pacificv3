@@ -161,8 +161,9 @@
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
-                                            <a class="ml-1" href="/pembelian/{{\Crypt::encrypt($d->nobukti_pembelian)}}/edit"><i class="feather icon-edit success"></i></a>
                                             <a class="ml-1 detailpembelian" href="#" nobukti_pembelian="{{ $d->nobukti_pembelian }}"><i class=" feather icon-file-text info"></i></a>
+                                            @if (empty($d->jmlbayar))
+                                            <a class="ml-1" href="/pembelian/{{\Crypt::encrypt($d->nobukti_pembelian)}}/edit"><i class="feather icon-edit success"></i></a>
                                             <form method="POST" class="deleteform" action="/pembelian/{{Crypt::encrypt($d->nobukti_pembelian)}}/delete">
                                                 @csrf
                                                 @method('DELETE')
@@ -170,6 +171,7 @@
                                                     <i class="feather icon-trash danger"></i>
                                                 </a>
                                             </form>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>

@@ -42,6 +42,53 @@
                 </li>
             </a>
             @endif
+
+            @if (in_array($level,$laporan_auh))
+            <a href="/laporanpembelian/auh" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanpembelian/auh']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Analisa Umur Hutang (AUH)
+                </li>
+            </a>
+            @endif
+
+            @if (in_array($level,$laporan_bahankemasan))
+            <a href="/laporanpembelian/bahankemasan" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanpembelian/bahankemasan']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Laporan Bahan & Kemasan
+                </li>
+            </a>
+            @endif
+
+            @if (in_array($level,$laporan_rekapbahankemasan))
+            <a href="/laporanpembelian/rekapbahankemasan" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanpembelian/rekapbahankemasan']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Rekap Bahan Kemasan / Supplier
+                </li>
+            </a>
+            @endif
+            @if (in_array($level,$laporan_jurnalkoreksi))
+            <a href="/laporanpembelian/jurnalkoreksi" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanpembelian/jurnalkoreksi']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Laporan Jurnal Koreksi
+                </li>
+            </a>
+            @endif
+            @if (in_array($level,$laporan_rekapakunpembelian))
+            <a href="/laporanpembelian/rekapakun" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanpembelian/rekapakun']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Rekap Akun
+                </li>
+            </a>
+            @endif
+
+            @if (in_array($level,$laporan_rekapkontrabon))
+            <a href="/laporanpembelian/rekapkontrabon" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanpembelian/rekapkontrabon']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Rekap Kontrabon
+                </li>
+            </a>
+            @endif
+
         </ul>
     </div>
 </div>

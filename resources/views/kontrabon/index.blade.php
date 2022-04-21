@@ -137,8 +137,8 @@
 
 
 
-
-
+                                            {{-- Kontrabon Edit & Hapus --}}
+                                            @if (in_array($level,$kontrabon_edit_hapus))
                                             @if (empty($d->tglbayar) && $d->kategori != "TN")
                                             <a class="ml-1" href="/kontrabon/{{\Crypt::encrypt($d->no_kontrabon)}}/edit"><i class="feather icon-edit success"></i></a>
                                             <form method="POST" class="deleteform" action="/kontrabon/{{Crypt::encrypt($d->no_kontrabon)}}/delete">
@@ -149,8 +149,10 @@
                                                 </a>
                                             </form>
                                             @endif
+                                            @endif
 
-
+                                            {{-- Approve Kontrabon --}}
+                                            @if (in_array($level,$kontrabon_approve))
                                             @if (empty($d->tglbayar))
                                             @if ($d->status ==1 )
                                             <a href="/kontrabon/{{ Crypt::encrypt($d->no_kontrabon) }}/cancelkontrabon" class="danger ml-1"><i class="fa fa-close"></i></a>
@@ -160,7 +162,11 @@
                                             @endif
                                             @endif
                                             @endif
+                                            @endif
 
+
+                                            {{-- Kontrabon Proses --}}
+                                            @if (in_array($level,$kontrabon_proses))
                                             @if (empty($d->tglbayar))
                                             @if ($d->status==1)
                                             @if($d->kategori != 'TN')
@@ -184,6 +190,8 @@
                                                 </a>
                                             </form>
                                             @endif
+                                            @endif
+
                                         </div>
                                     </td>
                                 </tr>

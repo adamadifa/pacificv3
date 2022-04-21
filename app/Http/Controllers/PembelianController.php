@@ -752,11 +752,11 @@ class PembelianController extends Controller
 
     public function inputpotongan(Request $request)
     {
+        $nobukti_pembelian = Crypt::decrypt($request->nobukti_pembelian);
         $coa = DB::table('set_coa_cabang')
             ->select('set_coa_cabang.kode_akun', 'nama_akun')
             ->join('coa', 'set_coa_cabang.kode_akun', '=', 'coa.kode_akun')
             ->where('kategori', 'pembelian')->get();
-        $nobukti_pembelian = $request->nobukti_pembelian;
         return view('pembelian.inputpotongan', compact('nobukti_pembelian', 'coa'));
     }
 

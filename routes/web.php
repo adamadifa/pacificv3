@@ -210,6 +210,10 @@ Route::middleware(['auth', 'ceklevel:kasir'])->group(function () {
     Route::get('/dashboardkasir', [DashboardController::class, 'dashboardkasir']);
 });
 
+Route::middleware(['auth', 'ceklevel:manager pembelian,admin pembelian'])->group(function () {
+    Route::get('/dashboardpembelian', [DashboardController::class, 'dashboardpembelian']);
+});
+
 //Admin Penjualan | Kepala Penjualan | Kepala Cabang | Manager Accounting | Manager Marketing | General manager | Direktur
 Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,kepala admin,manager accounting,manager marketing,general manager,direktur'])->group(function () {
 
@@ -330,15 +334,48 @@ Route::middleware(['auth', 'ceklevel:admin,kepala admin,admin kas kecil'])->grou
 });
 
 
-//Administrator
-Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
-    //Saldo Awal Piutang
-    Route::get('/saldoawalpiutang', [PenjualanController::class, 'saldoawalpiutang']);
-    Route::post('/loadsaldoawalpiutang', [PenjualanController::class, 'loadsaldoawalpiutang']);
-    Route::post('/generatesaldoawalpiutang', [PenjualanController::class, 'generatesaldoawalpiutang']);
+//Administrator | Direktur | General Manger | Manager Accounting | Manager Pembelian | Admin Pembelian
+Route::middleware(['auth', 'ceklevel:admin,direktur,general manager,manager accounting,manager pembelian,admin pembelian'])->group(function () {
+    //Laporan Pembelian
+    Route::get('/laporanpembelian', [LaporanpembelianController::class, 'index']);
+    Route::get('/laporanpembelian/pembayaran', [LaporanpembelianController::class, 'pembayaran']);
+    Route::get('/laporanpembelian/rekapsupplier', [LaporanpembelianController::class, 'rekapsupplier']);
+    Route::get('/laporanpembelian/rekappembelian', [LaporanpembelianController::class, 'rekappembelian']);
+    Route::get('/laporanpembelian/kartuhutang', [LaporanpembelianController::class, 'kartuhutang']);
+    Route::get('/laporanpembelian/auh', [LaporanpembelianController::class, 'auh']);
+    Route::get('/laporanpembelian/bahankemasan', [LaporanpembelianController::class, 'bahankemasan']);
+    Route::get('/laporanpembelian/rekapbahankemasan', [LaporanpembelianController::class, 'rekapbahankemasan']);
+    Route::get('/laporanpembelian/jurnalkoreksi', [LaporanpembelianController::class, 'jurnalkoreksi']);
+    Route::get('/laporanpembelian/rekapakun', [LaporanpembelianController::class, 'rekapakun']);
+    Route::get('/laporanpembelian/rekapkontrabon', [LaporanpembelianController::class, 'rekapkontrabon']);
+    Route::post('/laporanpembelian/cetak', [LaporanpembelianController::class, 'cetak_pembelian']);
+    Route::post('/laporanpembelian/pembayaran/cetak', [LaporanpembelianController::class, 'cetak_pembayaran']);
+    Route::post('/laporanpembelian/rekapsupplier/cetak', [LaporanpembelianController::class, 'cetak_rekapsupplier']);
+    Route::post('/laporanpembelian/rekappembelian/cetak', [LaporanpembelianController::class, 'cetak_rekappembelian']);
+    Route::post('/laporanpembelian/kartuhutang/cetak', [LaporanpembelianController::class, 'cetak_kartuhutang']);
+    Route::post('/laporanpembelian/auh/cetak', [LaporanpembelianController::class, 'cetak_auh']);
+    Route::post('/laporanpembelian/bahankemasan/cetak', [LaporanpembelianController::class, 'cetak_bahankemasan']);
+    Route::post('/laporanpembelian/rekapbahankemasan/cetak', [LaporanpembelianController::class, 'cetak_rekapbahankemasan']);
+    Route::post('/laporanpembelian/jurnalkoreksi/cetak', [LaporanpembelianController::class, 'cetak_jurnalkoreksi']);
+    Route::post('/laporanpembelian/rekapakun/cetak', [LaporanpembelianController::class, 'cetak_rekapakun']);
+    Route::post('/laporanpembelian/rekapkontrabon/cetak', [LaporanpembelianController::class, 'cetak_rekapkontrabon']);
+});
 
-    //Pembelian
+
+//Administrator | Manager Pembelian | Admin Pembelian
+Route::middleware(['auth', 'ceklevel:admin,manager pembelian,admin pembelian,manager accounting'])->group(function () {
+
+    //Barang Pembelian
     Route::get('/barangpembelian', [BarangpembelianController::class, 'index']);
+
+    //Supplier
+    Route::get('/supplier', [SupplierController::class, 'index']);
+});
+
+
+
+Route::middleware(['auth', 'ceklevel:admin,manager pembelian,admin pembelian'])->group(function () {
+    //Barang Pembelian
     Route::get('/barangpembelian/create', [BarangpembelianController::class, 'create']);
     Route::post('/barangpembelian/store', [BarangpembelianController::class, 'store']);
     Route::delete('/barangpembelian/{kode_barang}/delete', [BarangpembelianController::class, 'delete']);
@@ -346,8 +383,8 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/barangpembelian/{kode_barang}/update', [BarangpembelianController::class, 'update']);
     Route::get('/barangpembelian/{kode_dept}/getbarang', [BarangpembelianController::class, 'getbarang']);
     Route::get('/barangpembelian/{kode_dept}/json', [BarangpembelianController::class, 'json'])->name('barang.json');
-    //Supplier
-    Route::get('/supplier', [SupplierController::class, 'index']);
+
+    //Suplier
     Route::get('/supplier/create', [SupplierController::class, 'create']);
     Route::post('/supplier/store', [SupplierController::class, 'store']);
     Route::delete('/supplier/{kode_supplier}/delete', [SupplierController::class, 'delete']);
@@ -355,6 +392,7 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/supplier/{kode_supplier}/update', [SupplierController::class, 'update']);
     Route::get('/supplier/getsupplier', [SupplierController::class, 'getsupplier']);
     Route::get('/supplier/json', [SupplierController::class, 'json'])->name('supplier.json');
+
     //Pembelian
     Route::get('/pembelian', [PembelianController::class, 'index']);
     Route::get('/pembelian/create', [PembelianController::class, 'create']);
@@ -380,15 +418,7 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/pembelian/{nobukti_pembelian}/getbarangjurnalkoreksi', [PembelianController::class, 'getbarangjurnalkoreksi']);
     Route::get('/jatuhtempo', [PembelianController::class, 'jatuhtempo']);
 
-    //Laporan Pembelian
-    Route::get('/laporanpembelian', [LaporanpembelianController::class, 'index']);
-    Route::get('/laporanpembelian/pembayaran', [LaporanpembelianController::class, 'pembayaran']);
-    Route::get('/laporanpembelian/rekapsupplier', [LaporanpembelianController::class, 'rekapsupplier']);
-    Route::get('/laporanpembelian/rekappembelian', [LaporanpembelianController::class, 'rekappembelian']);
-    Route::post('/laporanpembelian/cetak', [LaporanpembelianController::class, 'cetak_pembelian']);
-    Route::post('/laporanpembelian/pembayaran/cetak', [LaporanpembelianController::class, 'cetak_pembayaran']);
-    Route::post('/laporanpembelian/rekapsupplier/cetak', [LaporanpembelianController::class, 'cetak_rekapsupplier']);
-    Route::post('/laporanpembelian/rekappembelian/cetak', [LaporanpembelianController::class, 'cetak_rekappembelian']);
+
 
 
     //Jurnal Koreksi
@@ -418,6 +448,14 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::delete('/kontrabon/{no_kontrabon}/batalkankontrabon', [KontrabonController::class, 'batalkankontrabon']);
     Route::get('/kontrabon/{no_kontrabon}/approvekontrabon', [KontrabonController::class, 'approvekontrabon']);
     Route::get('/kontrabon/{no_kontrabon}/cancelkontrabon', [KontrabonController::class, 'cancelkontrabon']);
+});
+
+//Administrator
+Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
+    //Saldo Awal Piutang
+    Route::get('/saldoawalpiutang', [PenjualanController::class, 'saldoawalpiutang']);
+    Route::post('/loadsaldoawalpiutang', [PenjualanController::class, 'loadsaldoawalpiutang']);
+    Route::post('/generatesaldoawalpiutang', [PenjualanController::class, 'generatesaldoawalpiutang']);
 });
 
 //Administrator | Direktur | General Manager | Manager Marketing | Manager Accounting | Kepala Penjualan | Staff Keuangan | Admin Kas Kecil

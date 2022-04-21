@@ -309,4 +309,9 @@ class DashboardController extends Controller
     {
         return view('dashboard.kasir');
     }
+
+    public function dashboardpembelian()
+    {
+        return view('dashboard.pembelian');
+    }
 }

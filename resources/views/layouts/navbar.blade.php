@@ -79,6 +79,15 @@
                 </a>
             </li>
             @endif
+
+            @if (in_array($level, $dashboardpembelian))
+            <li class="{{ request()->is(['dashboardpembelian']) ? 'active' : '' }} nav-item">
+                <a href="/dashboardpembelian">
+                    <i class="feather icon-home"></i>
+                    <span class="menu-title" data-i18n="Dashboard">Dashboard</span>
+                </a>
+            </li>
+            @endif
             @if (in_array($level, $datamaster_view))
             <li class=" nav-item">
                 <a href="#"><i class="feather icon-grid primary"></i><span class="menu-title">Data Master</span></a>
@@ -490,7 +499,7 @@
                     @endif
                     @if (in_array($level, $laporankeuangan_view))
                     <li class="{{ request()->is(['laporankeuangan', 'laporankeuangan/*']) ? 'active' : '' }}">
-                        <a href="laporankeuangan/kaskecil">
+                        <a href="/laporankeuangan/kaskecil">
                             <i class="feather icon-file-text"></i>
                             <span class="menu-item" data-i18n="Second Level">Laporan</span>
                         </a>

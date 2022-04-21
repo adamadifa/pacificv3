@@ -51,9 +51,10 @@ class GlobalProvider extends ServiceProvider
             $dashboardaccounting = ['manager accounting'];
             $dashboardstaffkeuangan = ['staff keuangan'];
             $dashboardadminkaskecil = ['admin kas kecil'];
+            $dashboardpembelian = ['manager pembelian', 'admin pembelian'];
 
             //Data Master
-            $datamaster = ['admin', 'admin penjualan', 'manager accounting', 'kepala penjualan', 'kepala admin', 'manager marketing', 'direktur'];
+            $datamaster = ['admin', 'admin penjualan', 'manager accounting', 'kepala penjualan', 'kepala admin', 'manager marketing', 'direktur', 'manager pembelian', 'admin pembelian'];
             //Pelanggan
             $pelanggan = ['admin', 'admin penjualan', 'manager accounting', 'kepala penjualan', 'kepala admin', 'manager marketing', 'direktur'];
             $pelanggan_tambah = ['admin', 'kepala penjualan', 'kepala admin', 'admin penjualan'];
@@ -68,10 +69,10 @@ class GlobalProvider extends ServiceProvider
             $salesman_hapus = ['admin', 'kepala penjualan', 'kepala admin', 'admin penjualan'];
 
             //Supplier
-            $supplier_menu = ['admin'];
-            $supplier_tambah = ['admin'];
-            $supplier_edit = ['admin'];
-            $supplier_hapus = ['admin'];
+            $supplier_menu = ['admin', 'manager pembelian', 'admin pembelian', 'manager accounting'];
+            $supplier_tambah = ['admin', 'manager pembelian', 'admin pembelian'];
+            $supplier_edit = ['admin', 'manager pembelian', 'admin pembelian'];
+            $supplier_hapus = ['admin', 'manager pembelian', 'admin pembelian'];
 
             //Barang
             $barang = ['admin', 'manager accounting', 'direktur', 'manager marketing', 'general manager'];
@@ -80,10 +81,10 @@ class GlobalProvider extends ServiceProvider
             $barang_hapus = ['admin'];
 
             //Barang
-            $barangpembelian = ['admin'];
-            $barangpembelian_tambah = ['admin'];
-            $barangpembelian_edit = ['admin'];
-            $barangpembelian_hapus = ['admin'];
+            $barangpembelian = ['admin', 'manager pembelian', 'admin pembelian', 'manager accounting'];
+            $barangpembelian_tambah = ['admin', 'manager pembelian', 'admin pembelian'];
+            $barangpembelian_edit = ['admin', 'manager pembelian', 'admin pembelian'];
+            $barangpembelian_hapus = ['admin', 'manager pembelian', 'admin pembelian'];
 
             //Harga
             $harga = ['admin', 'admin penjualan', 'kepala penjualan', 'kepala admin', 'manager accounting', 'manager marketing', 'direktur'];
@@ -137,7 +138,7 @@ class GlobalProvider extends ServiceProvider
             //--------------------------------Keuangan---------------------------------------------
             $keuangan = [
                 'admin', 'admin penjualan', 'kepala admin', 'direktur', 'manager accounting', 'general manager',
-                'manager marketing', 'kepala penjualan', 'staff keuangan', 'admin kas kecil', 'kasir'
+                'manager marketing', 'kepala penjualan', 'staff keuangan', 'admin kas kecil', 'kasir', 'manager pembelian', 'admin pembelian'
             ];
             $laporankeuangan_view = ['admin', 'direktur', 'general manager', 'manager marketing', 'manager accounting', 'kepala penjualan', 'kepala admin', 'staff keuangan', 'admin kas kecil'];
             $laporan_ledger = ['admin', 'direktur', 'general manager', 'manager accounting'];
@@ -199,17 +200,29 @@ class GlobalProvider extends ServiceProvider
 
 
             //Pembelian
-            $pembelian_menu = ['admin'];
-            $pembelian_view = ['admin'];
-            $pembelian_keuangan = ['admin'];
-            $kontrabon_view = ['admin'];
-            $jatuhtempo_view = ['admin'];
-            $jurnalkoreksi_view = ['admin'];
-            $laporan_pembelian = ['admin'];
-            $laporan_pembayaran_pembelian = ['admin'];
-            $laporan_rekappembeliansupplier = ['admin'];
-            $laporan_rekappembelian = ['admin'];
-            $laporan_kartuhutang = ['admin'];
+            $pembelian_menu = ['admin', 'direktur', 'general manager', 'manager accounting', 'manager pembelian', 'admin pembelian'];
+            $pembelian_view = ['admin', 'manager pembelian', 'admin pembelian'];
+            $pembelian_keuangan = ['admin', 'manager pembelian', 'admin pembelian'];
+            $kontrabon_view = ['admin', 'manager pembelian', 'admin pembelian'];
+            $kontrabon_edit_hapus = ['admin', 'admin pembelian'];
+            $kontrabon_approve = ['admin', 'manager pembelian'];
+            $kontrabon_proses = ['admin', 'staff keuangan'];
+
+            $jatuhtempo_view = ['admin', 'manager pembelian', 'admin pembelian'];
+            $jurnalkoreksi_view = ['admin', 'manager pembelian', 'admin pembelian'];
+            $laporan_pembelian = ['admin', 'direktur', 'general manager', 'manager accounting', 'manager pembelian', 'admin pembelian'];
+            $laporan_pembayaran_pembelian = ['admin', 'direktur', 'general manager', 'manager accounting', 'manager pembelian', 'admin pembelian'];
+            $laporan_rekappembeliansupplier = ['admin', 'direktur', 'general manager', 'manager accounting', 'manager pembelian', 'admin pembelian'];
+            $laporan_rekappembelian = ['admin', 'direktur', 'general manager', 'manager accounting', 'manager pembelian', 'admin pembelian'];
+            $laporan_kartuhutang = ['admin', 'direktur', 'general manager', 'manager accounting', 'manager pembelian', 'admin pembelian'];
+            $laporan_auh = ['admin', 'direktur', 'general manager', 'manager accounting', 'manager pembelian', 'admin pembelian'];
+            $laporan_bahankemasan = ['admin', 'direktur', 'general manager', 'manager accounting', 'manager pembelian', 'admin pembelian'];
+            $laporan_rekapbahankemasan = ['admin', 'direktur', 'general manager', 'manager accounting', 'manager pembelian', 'admin pembelian'];
+            $laporan_jurnalkoreksi = ['admin', 'direktur', 'general manager', 'manager accounting', 'manager pembelian', 'admin pembelian'];
+            $laporan_rekapakunpembelian  = ['admin', 'direktur', 'general manager', 'manager accounting', 'manager pembelian', 'admin pembelian'];
+            $laporan_rekapkontrabon = ['admin', 'direktur', 'general manager', 'manager accounting', 'manager pembelian', 'admin pembelian'];
+
+
             $shareddata = [
                 'level' => $level,
                 'getcbg' => $getcbg,
@@ -221,6 +234,7 @@ class GlobalProvider extends ServiceProvider
                 'dashboardaccounting' => $dashboardaccounting,
                 'dashboardstaffkeuangan' => $dashboardstaffkeuangan,
                 'dashboardadminkaskecil' => $dashboardadminkaskecil,
+                'dashboardpembelian' => $dashboardpembelian,
                 //Data Master
                 'datamaster_view' => $datamaster,
                 //Pelanggan
@@ -364,6 +378,9 @@ class GlobalProvider extends ServiceProvider
                 'pembelian_view' => $pembelian_view,
                 'pembelian_keuangan' => $pembelian_keuangan,
                 'kontrabon_view' => $kontrabon_view,
+                'kontrabon_edit_hapus' => $kontrabon_edit_hapus,
+                'kontrabon_proses' => $kontrabon_proses,
+                'kontrabon_approve' => $kontrabon_approve,
                 'jatuhtempo_view' => $jatuhtempo_view,
                 'jurnalkoreksi_view' => $jurnalkoreksi_view,
                 'laporan_pembelian' => $laporan_pembelian,
@@ -371,6 +388,12 @@ class GlobalProvider extends ServiceProvider
                 'laporan_rekappembeliansupplier' => $laporan_rekappembeliansupplier,
                 'laporan_rekappembelian' => $laporan_rekappembelian,
                 'laporan_kartuhutang' => $laporan_kartuhutang,
+                'laporan_auh' => $laporan_auh,
+                'laporan_bahankemasan' => $laporan_bahankemasan,
+                'laporan_rekapbahankemasan' => $laporan_rekapbahankemasan,
+                'laporan_jurnalkoreksi' => $laporan_jurnalkoreksi,
+                'laporan_rekapakunpembelian' => $laporan_rekapakunpembelian,
+                'laporan_rekapkontrabon' => $laporan_rekapkontrabon,
 
             ];
             View::share($shareddata);
