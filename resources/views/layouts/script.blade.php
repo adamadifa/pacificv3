@@ -42,6 +42,12 @@
 <!-- BEGIN: Page JS-->
 <script src="{{asset('app-assets/js/scripts/forms/validation/form-validation.js')}}"></script>
 <script src="{{asset('app-assets/js/scripts/datatables/datatable.js')}}"></script>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/series-label.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/modules/export-data.js"></script>
+<script src="https://code.highcharts.com/modules/accessibility.js"></script>
 <script>
     $(function() {
         function toggleZoomScreen() {

@@ -7,6 +7,7 @@ use App\Http\Controllers\BankController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\BarangpembelianController;
 use App\Http\Controllers\BelumsetorController;
+use App\Http\Controllers\BpbjController;
 use App\Http\Controllers\CabangController;
 use App\Http\Controllers\CoaController;
 use App\Http\Controllers\DaftarController;
@@ -36,6 +37,7 @@ use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PembelianController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\PermintaanpengirimanController;
+use App\Http\Controllers\ProduksiController;
 use App\Http\Controllers\RatiokomisiController;
 use App\Http\Controllers\ReturController;
 use App\Http\Controllers\SaldoawalkasbesarController;
@@ -456,6 +458,17 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/saldoawalpiutang', [PenjualanController::class, 'saldoawalpiutang']);
     Route::post('/loadsaldoawalpiutang', [PenjualanController::class, 'loadsaldoawalpiutang']);
     Route::post('/generatesaldoawalpiutang', [PenjualanController::class, 'generatesaldoawalpiutang']);
+
+    //Produksi
+    Route::get('/produksi/analytics', [ProduksiController::class, 'analytics']);
+    Route::post('/loadrekapproduksi', [ProduksiController::class, 'loadrekapproduksi']);
+    Route::post('/loadgrafikproduksi', [ProduksiController::class, 'loadgrafikproduksi']);
+
+    //BPBJ
+
+    Route::get('/bpbj', [BpbjController::class, 'index']);
+    Route::post('/bpbj/show', [BpbjController::class, 'show']);
+    Route::delete('/bpbj/{no_mutasi_produksi}/delete', [BpbjController::class, 'delete']);
 });
 
 //Administrator | Direktur | General Manager | Manager Marketing | Manager Accounting | Kepala Penjualan | Staff Keuangan | Admin Kas Kecil

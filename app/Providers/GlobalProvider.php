@@ -223,6 +223,12 @@ class GlobalProvider extends ServiceProvider
             $laporan_rekapkontrabon = ['admin', 'direktur', 'general manager', 'manager accounting', 'manager pembelian', 'admin pembelian'];
 
 
+            $produksi_menu = ['admin'];
+            $produksi_analytics = ['admin'];
+            $mutasi_produk = ['admin'];
+            $bpbj_view = ['admin'];
+            $fsthp_view = ['admin'];
+
             $shareddata = [
                 'level' => $level,
                 'getcbg' => $getcbg,
@@ -395,6 +401,13 @@ class GlobalProvider extends ServiceProvider
                 'laporan_rekapakunpembelian' => $laporan_rekapakunpembelian,
                 'laporan_rekapkontrabon' => $laporan_rekapkontrabon,
 
+                //Produksi
+
+                'produksi_menu' => $produksi_menu,
+                'produksi_analytics' => $produksi_analytics,
+                'mutasi_produk' => $mutasi_produk,
+                'bpbj_view' => $bpbj_view,
+                'fsthp_view' => $fsthp_view
             ];
             View::share($shareddata);
         });
