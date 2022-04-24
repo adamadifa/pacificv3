@@ -468,6 +468,13 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
 
     Route::get('/bpbj', [BpbjController::class, 'index']);
     Route::post('/bpbj/show', [BpbjController::class, 'show']);
+    Route::post('/bpbj/storetemp', [BpbjController::class, 'storetemp']);
+    Route::post('/bpbj/buat_nomor_bpbj', [BpbjController::class, 'buat_nomor_bpbj']);
+    Route::post('/bpbj/cekbpbjtemp', [BpbjController::class, 'cekbpbjtemp']);
+    Route::post('/bpbj/deletetemp', [BpbjController::class, 'deletetemp']);
+    Route::get('/bpbj/{kode_produk}/showtemp', [BpbjController::class, 'showtemp']);
+    Route::get('/bpbj/getbarang', [BpbjController::class, 'getbarang']);
+    Route::post('/bpbj/store', [BpbjController::class, 'store']);
     Route::delete('/bpbj/{no_mutasi_produksi}/delete', [BpbjController::class, 'delete']);
 });
 
