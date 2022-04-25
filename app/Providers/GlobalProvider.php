@@ -228,6 +228,7 @@ class GlobalProvider extends ServiceProvider
             $mutasi_produk = ['admin'];
             $bpbj_view = ['admin'];
             $fsthp_view = ['admin'];
+            $mutasi_barang = ['admin'];
 
             $shareddata = [
                 'level' => $level,
@@ -407,7 +408,8 @@ class GlobalProvider extends ServiceProvider
                 'produksi_analytics' => $produksi_analytics,
                 'mutasi_produk' => $mutasi_produk,
                 'bpbj_view' => $bpbj_view,
-                'fsthp_view' => $fsthp_view
+                'fsthp_view' => $fsthp_view,
+                'mutasi_barang' => $mutasi_barang
             ];
             View::share($shareddata);
         });

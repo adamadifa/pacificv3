@@ -200,6 +200,34 @@
                         </ul>
                     </li>
                     @endif
+
+                    @if (in_array($level, $mutasi_barang))
+                    <li>
+                        <a href="#">
+                            <i class="feather icon-circle"></i>
+                            <span class="menu-item" data-i18n="Second Level">Mutasi Barang</span>
+                        </a>
+                        <ul class="menu-content">
+                            {{-- @if (in_array($level, $bpbj_view))
+                            <li class="{{ request()->is(['bpbj', 'bpbj/*']) ? 'active' : '' }}">
+                                <a href="/bpbj">
+                                    <i class="feather icon-arrow-right"></i>
+                                    <span class="menu-item">BPBJ</span>
+                                </a>
+                            </li>
+                            @endif
+                            @if (in_array($level, $fsthp_view))
+                            <li class="{{ request()->is(['fsthp', 'fsthp/*']) ? 'active' : '' }}">
+                                <a href="/fsthp">
+                                    <i class="feather icon-arrow-left"></i>
+                                    <span class="menu-item">FSTHP</span>
+                                </a>
+                            </li>
+                            @endif --}}
+
+                        </ul>
+                    </li>
+                    @endif
                 </ul>
             </li>
             @endif

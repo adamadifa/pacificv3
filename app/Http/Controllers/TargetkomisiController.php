@@ -951,7 +951,7 @@ class TargetkomisiController extends Controller
                 ->get();
         }
         $nmbulan  = $namabulan[$bulan];
-        return view('targetkomisi.laporan.cetak_komisi_lpu', compact('komisi', 'cbg', 'nmbulan', 'tahun', 'produk', 'driver', 'helper', 'gudang', 'tunaikredit', 'bulan'));
+        return view('targetkomisi.laporan.cetak_komisi_lpu', compact('komisi', 'cbg', 'nmbulan', 'tahun', 'produk', 'driver', 'helper', 'gudang', 'tunaikredit', 'bulan', 'cabang'));
     }
 
     public function laporaninsentif()
