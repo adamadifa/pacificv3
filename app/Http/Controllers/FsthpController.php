@@ -10,38 +10,39 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
-class BpbjController extends Controller
+class FsthpController extends Controller
 {
+
     public function index(Request $request)
     {
         $query = Mutasiproduksi::query();
-        $query->where('jenis_mutasi', 'BPBJ');
+        $query->where('jenis_mutasi', 'FSTHP');
         if (!empty($request->tanggal)) {
             $query->where('tgl_mutasi_produksi', $request->tanggal);
         }
         $query->orderBy('tgl_mutasi_produksi', 'desc');
         $query->orderBy('time_stamp', 'desc');
-        $bpbj = $query->paginate(15);
-        $bpbj->appends($request->all());
-        return view('bpbj.index', compact('bpbj'));
+        $fsthp = $query->paginate(15);
+        $fsthp->appends($request->all());
+        return view('fsthp.index', compact('fsthp'));
     }
     public function show(Request $request)
     {
         $no_mutasi_produksi = Crypt::decrypt($request->no_mutasi_produksi);
-        $bpbj = DB::table('mutasi_produksi')->where('no_mutasi_produksi', $no_mutasi_produksi)->first();
+        $fsthp = DB::table('mutasi_produksi')->where('no_mutasi_produksi', $no_mutasi_produksi)->first();
         $detail = DB::table('detail_mutasi_produksi')
             ->select('detail_mutasi_produksi.*', 'nama_barang')
             ->join('master_barang', 'detail_mutasi_produksi.kode_produk', '=', 'master_barang.kode_produk')
             ->where('no_mutasi_produksi', $no_mutasi_produksi)
             ->orderBy('shift')
             ->get();
-        return view('bpbj.show', compact('bpbj', 'detail'));
+        return view('fsthp.show', compact('fsthp', 'detail'));
     }
 
     public function getbarang()
     {
         $barang = Barang::orderBy('kode_produk')->get();
-        return view('bpbj.getbarang', compact('barang'));
+        return view('fsthp.getbarang', compact('barang'));
     }
 
     public function delete($no_mutasi_produksi)
@@ -55,33 +56,41 @@ class BpbjController extends Controller
         }
     }
 
-    public function showtemp($kode_produk)
+    public function showtemp($kode_produk, $unit, $shift)
     {
         $id_admin = Auth::user()->id;
         $detail = DB::table('detail_mutasi_produksi_temp')
             ->select('detail_mutasi_produksi_temp.*', 'nama_barang')
             ->join('master_barang', 'detail_mutasi_produksi_temp.kode_produk', '=', 'master_barang.kode_produk')
             ->where('detail_mutasi_produksi_temp.kode_produk', $kode_produk)
+            ->where('unit', $unit)
+            ->where('shift', $shift)
             ->where('id_admin', $id_admin)
-            ->where('inout', 'IN')
+            ->where('inout', 'OUT')
             ->orderBy('shift')->get();
-        return view('bpbj.showtemp', compact('detail'));
+        return view('fsthp.showtemp', compact('detail'));
     }
 
-    public function buat_nomor_bpbj(Request $request)
+
+
+
+
+    public function buat_nomor_fsthp(Request $request)
     {
         $tgl_mutasi_produksi = $request->tgl_mutasi_produksi;
         $kode_produk = $request->kode_produk;
-        $kode = strlen($kode_produk);
-        $no_bpbj = $kode + 2;
+        $shift = $request->shift;
 
-        $bpbj = DB::table('mutasi_produksi')
-            ->selectRaw("LEFT(no_mutasi_produksi,$no_bpbj) as no_bpbj")
-            ->whereRaw("LEFT(no_mutasi_produksi," . $kode . ")='" . $kode_produk . "'")
-            ->where('tgl_mutasi_produksi', $tgl_mutasi_produksi)
-            ->where('jenis_mutasi', 'BPBJ')
-            ->orderByRaw("LEFT(no_mutasi_produksi," . $no_bpbj . ") DESC")
-            ->first();
+        // $kode = strlen($kode_produk);
+        // $no_fsthp = $kode + 3;
+
+        // $bpbj = DB::table('mutasi_produksi')
+        //     ->selectRaw("LEFT(no_mutasi_produksi,$no_fsthp) as no_fsthp")
+        //     ->whereRaw("MID(no_mutasi_produksi,2," . $kode . ")='" . $kode_produk . "'")
+        //     ->where('tgl_mutasi_produksi', $tgl_mutasi_produksi)
+        //     ->where('jenis_mutasi', 'FSTHP')
+        //     ->orderByRaw("LEFT(no_mutasi_produksi," . $no_fsthp . ") DESC")
+        //     ->first();
 
         $namabulan = array("", "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des");
         $tanggal = explode("-", $tgl_mutasi_produksi);
@@ -90,30 +99,31 @@ class BpbjController extends Controller
         //echo $bl;
         $tahun = $tanggal[0];
         $tgl = "/" . $hari . "/" . $namabulan[$bulan] . "/" . $tahun;
-        if ($bpbj != null) {
-            $last_nobpbj = $bpbj->no_bpbj;
-        } else {
-            $last_nobpbj = "";
-        }
-        $no_bpbj = buatkode($last_nobpbj, $kode_produk, 2) . $tgl;
-        echo $no_bpbj;
+        // if ($bpbj != null) {
+        //     $last_nobpbj = $bpbj->no_bpbj;
+        // } else {
+        //     $last_nobpbj = "";
+        // }
+        // $no_bpbj = buatkode($last_nobpbj, $kode_produk, 2) . $tgl;
+        $no_fsthp = "F" . $kode_produk . "/0" . $shift . $tgl;
+        echo $no_fsthp;
     }
 
     public function storetemp(Request $request)
     {
         $kode_produk = $request->kode_produk;
         $shift = $request->shift;
+        $unit = $request->unit;
         $jumlah = !empty($request->jumlah) ? str_replace(".", "", $request->jumlah) : 0;
         $id_admin = Auth::user()->id;
 
-        $cek = DB::table('detail_mutasi_produksi_temp')->where('kode_produk', $kode_produk)->where('shift', $shift)
-            ->where('inout', 'IN')
-            ->where('id_admin', $id_admin)->count();
+        $cek = DB::table('detail_mutasi_produksi_temp')->where('kode_produk', $kode_produk)->where('shift', $shift)->where('unit', $unit)->where('id_admin', $id_admin)->count();
         $data = [
             'kode_produk' => $kode_produk,
             'jumlah' => $jumlah,
             'shift' => $shift,
-            'inout' => 'IN',
+            'unit' => $unit,
+            'inout' => 'OUT',
             'id_admin' => $id_admin
         ];
 
@@ -130,11 +140,18 @@ class BpbjController extends Controller
         }
     }
 
-    public function cekbpbjtemp(Request $request)
+    public function cekfsthptemp(Request $request)
     {
         $kode_produk = $request->kode_produk;
+        $unit = $request->unit;
+        $shift = $request->shift;
         $id_admin = Auth::user()->id;
-        $cek = DB::table('detail_mutasi_produksi_temp')->where('kode_produk', $kode_produk)->where('id_admin', $id_admin)->where('inout', 'IN')->count();
+        $cek = DB::table('detail_mutasi_produksi_temp')
+            ->where('kode_produk', $kode_produk)
+            ->where('unit', $unit)
+            ->where('shift', $shift)
+            ->where('id_admin', $id_admin)
+            ->where('inout', 'OUT')->count();
         echo $cek;
     }
 
@@ -142,8 +159,9 @@ class BpbjController extends Controller
     {
         $kode_produk = $request->kode_produk;
         $shift = $request->shift;
+        $unit = $request->unit;
         $id_admin = Auth::user()->id;
-        $hapus = DB::table('detail_mutasi_produksi_temp')->where('kode_produk', $kode_produk)->where('id_admin', $id_admin)->where('shift', $shift)->delete();
+        $hapus = DB::table('detail_mutasi_produksi_temp')->where('kode_produk', $kode_produk)->where('id_admin', $id_admin)->where('shift', $shift)->where('unit', $unit)->delete();
         if ($hapus) {
             echo 0;
         } else {
@@ -153,20 +171,28 @@ class BpbjController extends Controller
 
     public function store(Request $request)
     {
-        $no_mutasi_produksi = $request->no_bpbj;
+        $no_mutasi_produksi = $request->no_fsthp;
         $tgl_mutasi_produksi = $request->tgl_mutasi_produksi;
         $kode_produk = $request->kode_produk;
+        $unit = $request->unit;
+        $shift = $request->shift;
         $id_admin = Auth::user()->id;
 
-        $detailtemp = DB::table('detail_mutasi_produksi_temp')->where('kode_produk', $kode_produk)->where('inout', 'IN')->where('id_admin', $id_admin)->get();
+        $detailtemp = DB::table('detail_mutasi_produksi_temp')
+            ->where('kode_produk', $kode_produk)
+            ->where('shift', $shift)
+            ->where('unit', $unit)
+            ->where('inout', 'OUT')
+            ->where('id_admin', $id_admin)->get();
         DB::beginTransaction();
         try {
             $data = [
                 'no_mutasi_produksi' => $no_mutasi_produksi,
                 'tgl_mutasi_produksi' => $tgl_mutasi_produksi,
-                'inout' => 'IN',
+                'unit' => $unit,
+                'inout' => 'OUT',
                 'id_admin' => $id_admin,
-                'jenis_mutasi' => 'BPBJ'
+                'jenis_mutasi' => 'FSTHP'
             ];
 
             DB::table('mutasi_produksi')->insert($data);
@@ -181,7 +207,10 @@ class BpbjController extends Controller
                 DB::table('detail_mutasi_produksi')->insert($datadetail);
             }
 
-            DB::table('detail_mutasi_produksi_temp')->where('kode_produk', $kode_produk)->where('inout', 'IN')->where('id_admin', $id_admin)->delete();
+            DB::table('detail_mutasi_produksi_temp')->where('kode_produk', $kode_produk)
+                ->where('shift', $shift)
+                ->where('unit', $unit)
+                ->where('inout', 'OUT')->where('id_admin', $id_admin)->delete();
             DB::commit();
             return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
         } catch (\Exception $e) {

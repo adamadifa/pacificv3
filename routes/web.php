@@ -12,6 +12,7 @@ use App\Http\Controllers\CabangController;
 use App\Http\Controllers\CoaController;
 use App\Http\Controllers\DaftarController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FsthpController;
 use App\Http\Controllers\GiroController;
 use App\Http\Controllers\GudangController;
 use App\Http\Controllers\HargaController;
@@ -476,6 +477,19 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/bpbj/getbarang', [BpbjController::class, 'getbarang']);
     Route::post('/bpbj/store', [BpbjController::class, 'store']);
     Route::delete('/bpbj/{no_mutasi_produksi}/delete', [BpbjController::class, 'delete']);
+
+
+    //Fsthp
+    Route::get('/fsthp', [FsthpController::class, 'index']);
+    Route::post('/fsthp/show', [FsthpController::class, 'show']);
+    Route::post('/fsthp/storetemp', [FsthpController::class, 'storetemp']);
+    Route::post('/fsthp/buat_nomor_fsthp', [FsthpController::class, 'buat_nomor_fsthp']);
+    Route::post('/fsthp/cekfsthptemp', [FsthpController::class, 'cekfsthptemp']);
+    Route::post('/fsthp/deletetemp', [FsthpController::class, 'deletetemp']);
+    Route::get('/fsthp/{kode_produk}/{unit}/{shift}/showtemp', [FsthpController::class, 'showtemp']);
+    Route::get('/fsthp/getbarang', [FsthpController::class, 'getbarang']);
+    Route::post('/fsthp/store', [FsthpController::class, 'store']);
+    Route::delete('/fsthp/{no_mutasi_produksi}/delete', [FsthpController::class, 'delete']);
 });
 
 //Administrator | Direktur | General Manager | Manager Marketing | Manager Accounting | Kepala Penjualan | Staff Keuangan | Admin Kas Kecil
