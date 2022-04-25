@@ -6,6 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Laporan Penerimaan Uang (LPU) {{ $cabang->nama_cabang }} {{ date("d-m-y") }}</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
+
         body {
             font-family: 'Poppins'
         }
