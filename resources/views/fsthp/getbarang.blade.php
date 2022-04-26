@@ -73,8 +73,7 @@
 
 
         $("#tabelbarang").DataTable();
-        $("#tabelbarang").find(".pilihbarang").click(function(e) {
-            e.preventDefault();
+        $('#tabelbarang').on('click', '.pilihbarang', function() {
             var kode_produk = $(this).attr('kode_produk');
             var nama_barang = $(this).attr('nama_barang');
             $("#kode_produk").val(kode_produk);

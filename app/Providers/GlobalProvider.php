@@ -229,6 +229,9 @@ class GlobalProvider extends ServiceProvider
             $bpbj_view = ['admin'];
             $fsthp_view = ['admin'];
             $mutasi_barang = ['admin'];
+            $pemasukan_produksi = ['admin'];
+            $pengeluaran_produksi = ['admin'];
+            $saldoawal_mutasibarang_produksi = ['admin'];
 
             $shareddata = [
                 'level' => $level,
@@ -409,7 +412,10 @@ class GlobalProvider extends ServiceProvider
                 'mutasi_produk' => $mutasi_produk,
                 'bpbj_view' => $bpbj_view,
                 'fsthp_view' => $fsthp_view,
-                'mutasi_barang' => $mutasi_barang
+                'mutasi_barang' => $mutasi_barang,
+                'pemasukan_produksi' => $pemasukan_produksi,
+                'pengeluaran_produksi' => $pengeluaran_produksi,
+                'saldoawal_mutasibarang_produksi' => $saldoawal_mutasibarang_produksi
             ];
             View::share($shareddata);
         });

@@ -265,7 +265,9 @@
         }
         $("#tgl_mutasi_produksi").change(function(e) {
             e.preventDefault();
+            var tgl_mutasi_produksi = $(this).val();
             buatnomorbpbj();
+            cektutuplaporan(tgl_mutasi_produksi);
         });
         $(".detailbpbj").click(function(e) {
             e.preventDefault();
@@ -393,8 +395,19 @@
             var tgl_mutasi_produksi = $("#tgl_mutasi_produksi").val();
             var kode_produk = $("#kode_produk").val();
             var cekbpbjtemp = $("#cekbpbjtemp").val();
+            var cektutuplaporan = $("#cektutuplaporan").val();
 
-            if (tgl_mutasi_produksi == "") {
+            if (cektutuplaporan > 0) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Laporan Periode Ini Sudah Ditutup !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#tgl_mutasi_produksi").focus();
+                });
+                return false;
+            } else if (tgl_mutasi_produksi == "") {
                 swal({
                     title: 'Oops'
                     , text: 'Tanggal Harus Diisi !'
