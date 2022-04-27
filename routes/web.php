@@ -33,6 +33,7 @@ use App\Http\Controllers\MutasibankController;
 use App\Http\Controllers\MutasigudangcabangController;
 use App\Http\Controllers\OmancabangController;
 use App\Http\Controllers\OmanController;
+use App\Http\Controllers\OpnamemutasibarangproduksiController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PemasukanproduksiController;
 use App\Http\Controllers\PembayaranController;
@@ -545,6 +546,16 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/saldoawalmutasibarangproduksi/{kode_saldoawal}/{kode_barang}/updatebarang', [SaldoawalmutasibarangproduksiController::class, 'updatebarang']);
     Route::post('saldoawalmutasibarangproduksi/getdetailsaldo', [SaldoawalmutasibarangproduksiController::class, 'getdetailsaldo']);
     Route::post('saldoawalmutasibarangproduksi/store', [SaldoawalmutasibarangproduksiController::class, 'store']);
+
+    //Opname Mutasi Barang Produksi
+    Route::get('/opnamemutasibarangproduksi', [OpnamemutasibarangproduksiController::class, 'index']);
+    Route::get('/opnamemutasibarangproduksi/create', [OpnamemutasibarangproduksiController::class, 'create']);
+    Route::post('opnamemutasibarangproduksi/getdetailopname', [OpnamemutasibarangproduksiController::class, 'getdetailopname']);
+    Route::delete('/opnamemutasibarangproduksi/{kode_opname}/delete', [OpnamemutasibarangproduksiController::class, 'delete']);
+    Route::get('/opnamemutasibarangproduksi/{kode_opname}/edit', [OpnamemutasibarangproduksiController::class, 'edit']);
+    Route::get('/opnamemutasibarangproduksi/{kode_opname}/{kode_barang}/editbarang', [OpnamemutasibarangproduksiController::class, 'editbarang']);
+    Route::post('/opnamemutasibarangproduksi/{kode_opname}/{kode_barang}/updatebarang', [OpnamemutasibarangproduksiController::class, 'updatebarang']);
+    Route::post('opnamemutasibarangproduksi/store', [OpnamemutasibarangproduksiController::class, 'store']);
 });
 
 //Administrator | Direktur | General Manager | Manager Marketing | Manager Accounting | Kepala Penjualan | Staff Keuangan | Admin Kas Kecil

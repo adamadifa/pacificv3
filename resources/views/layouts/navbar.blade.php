@@ -214,6 +214,15 @@
                                 </a>
                             </li>
                             @endif
+                            @if (in_array($level, $opname_mutasibarang_produksi))
+                            <li class="{{ request()->is(['opnamemutasibarangproduksi', 'opnamemutasibarangproduksi/*']) ? 'active' : '' }}">
+                                <a href="/opnamemutasibarangproduksi">
+                                    <i class="feather icon-clipboard"></i>
+                                    <span class="menu-item">Opname</span>
+                                </a>
+                            </li>
+                            @endif
+
                             @if (in_array($level, $pemasukan_produksi))
                             <li class="{{ request()->is(['pemasukanproduksi', 'pemasukanproduksi/*']) ? 'active' : '' }}">
                                 <a href="/pemasukanproduksi">

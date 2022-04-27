@@ -1,15 +1,15 @@
 @extends('layouts.midone')
-@section('titlepage','Input Saldo Awal Mutasi Barang Produksi')
+@section('titlepage','Input Opname Mutasi Barang Produksi')
 @section('content')
 <div class="content-wrapper">
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Input Saldo Awal Barang Produksi</h2>
+                    <h2 class="content-header-title float-left mb-0">Input Opname Barang Produksi</h2>
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/saldoawalmutasibarangproduksi/create">Input Saldo Awal Barang Produksi</a>
+                            <li class="breadcrumb-item"><a href="/opnamemutasibarangproduksi/create">Input Opname Barang Produksi</a>
                             </li>
                         </ol>
                     </div>
@@ -22,15 +22,15 @@
         <!-- Data list view starts -->
         <!-- DataTable starts -->
         @include('layouts.notification')
-        <div class="col-md-12 col-sm-8 col-lg-6">
+        <div class="col-lg-6 col-sm-12 col-md-12">
             <div class="card">
                 <div class="card-body">
-                    <form action="/saldoawalmutasibarangproduksi/store" method="POST" id="frmsabarangproduksi">
+                    <form action="/opnamemutasibarangproduksi/store" method="POST" id="frmopnamebarangproduksi">
                         @csrf
                         <input type="hidden" id="getsa">
                         <div class="row">
                             <div class="col-12">
-                                <x-inputtext label="Kode Saldo Awal" field="kode_saldoawal" icon="feather icon-credit-card" value="Auto" readonly />
+                                <x-inputtext label="Kode Opname" field="kode_opname" icon="feather icon-credit-card" value="Auto" readonly />
                             </div>
                         </div>
                         <div class="row">
@@ -75,7 +75,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <a href="#" class="btn btn-success btn-block" id="getsaldo"><i class="feather icon-refresh-ccw mr-1"></i> Get Saldo</a>
+                                    <a href="#" class="btn btn-success btn-block" id="getopname"><i class="feather icon-refresh-ccw mr-1"></i> Get Opname</a>
                                 </div>
                             </div>
                         </div>
@@ -85,7 +85,7 @@
                                     <th>No.</th>
                                     <th>Kode Barang</th>
                                     <th>Nama Barang</th>
-                                    <th>Qty</th>
+                                    <th style="width:15%">Qty</th>
                                 </tr>
                             </thead>
                             <tbody id="loaddetailsaldo">
@@ -112,7 +112,7 @@
 @push('myscript')
 <script>
     $(function() {
-        function loaddetailsaldo() {
+        function loaddetailopname() {
             var bulan = $("#bulan").val();
             var tahun = $("#tahun").val();
             var thn = tahun.substr(2, 2);
@@ -125,7 +125,7 @@
             } else {
                 $.ajax({
                     type: 'POST'
-                    , url: '/saldoawalmutasibarangproduksi/getdetailsaldo'
+                    , url: '/opnamemutasibarangproduksi/getdetailopname'
                     , data: {
                         _token: "{{ csrf_token() }}"
                         , bulan: bulan
@@ -145,16 +145,16 @@
             }
         }
 
-        $("#getsaldo").click(function(e) {
+        $("#getopname").click(function(e) {
             e.preventDefault();
-            loaddetailsaldo();
+            loaddetailopname();
         });
 
-        $("#frmsabarangproduksi").submit(function() {
+        $("#frmopnamebarangproduksi").submit(function() {
             var getsa = $("#getsa").val();
             var tanggal = $("#tanggal").val();
             if (getsa == "" || getsa == 0) {
-                swal("Oops", "Silahkan Lakukan Get Saldo Terlebih Dahulu!", "warning");
+                swal("Oops", "Silahkan Lakukan Get Opname Terlebih Dahulu!", "warning");
                 return false;
             } else if (tanggal == "") {
                 swal("Oops", "Tanggal  Harus Diisi !", "warning");
