@@ -233,6 +233,12 @@ class GlobalProvider extends ServiceProvider
             $pengeluaran_produksi = ['admin'];
             $saldoawal_mutasibarang_produksi = ['admin'];
             $opname_mutasibarang_produksi = ['admin'];
+            $laporan_produksi = ['admin'];
+            $laporan_mutasiproduksi = ['admin'];
+            $laporan_rekapmutasiproduksi = ['admin'];
+            $laporan_pemasukanproduksi = ['admin'];
+            $laporan_pengeluaranproduksi = ['admin'];
+            $laporan_rekappersediaanbarangproduksi = ['admin'];
 
             $shareddata = [
                 'level' => $level,
@@ -417,7 +423,13 @@ class GlobalProvider extends ServiceProvider
                 'pemasukan_produksi' => $pemasukan_produksi,
                 'pengeluaran_produksi' => $pengeluaran_produksi,
                 'saldoawal_mutasibarang_produksi' => $saldoawal_mutasibarang_produksi,
-                'opname_mutasibarang_produksi' => $opname_mutasibarang_produksi
+                'opname_mutasibarang_produksi' => $opname_mutasibarang_produksi,
+                'laporan_produksi' => $laporan_produksi,
+                'laporan_mutasiproduksi' => $laporan_mutasiproduksi,
+                'laporan_rekapmutasiproduksi' => $laporan_rekapmutasiproduksi,
+                'laporan_pemasukanproduksi' => $laporan_pemasukanproduksi,
+                'laporan_pengeluaranproduksi' => $laporan_pengeluaranproduksi,
+                'laporan_rekappersediaanbarangproduksi' => $laporan_rekappersediaanbarangproduksi,
             ];
             View::share($shareddata);
         });

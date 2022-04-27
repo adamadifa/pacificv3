@@ -240,7 +240,16 @@
                             </li>
                             @endif
 
+
                         </ul>
+                    </li>
+                    @endif
+                    @if (in_array($level, $laporan_produksi))
+                    <li class="{{ request()->is(['laporanproduksi', 'laporanproduksi/*']) ? 'active' : '' }}">
+                        <a href="/laporanproduksi/mutasiproduksi">
+                            <i class="feather icon-file-text"></i>
+                            <span class="menu-item">Laporan</span>
+                        </a>
                     </li>
                     @endif
                 </ul>

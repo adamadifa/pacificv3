@@ -25,6 +25,8 @@ use App\Http\Controllers\KlaimController;
 use App\Http\Controllers\KontrabonController;
 use App\Http\Controllers\LaporankeuanganController;
 use App\Http\Controllers\LaporanpembelianController;
+use App\Http\Controllers\Laporanproduksi;
+use App\Http\Controllers\LaporanproduksiController;
 use App\Http\Controllers\LebihsetorController;
 use App\Http\Controllers\LedgerController;
 use App\Http\Controllers\LimitkreditController;
@@ -556,6 +558,18 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/opnamemutasibarangproduksi/{kode_opname}/{kode_barang}/editbarang', [OpnamemutasibarangproduksiController::class, 'editbarang']);
     Route::post('/opnamemutasibarangproduksi/{kode_opname}/{kode_barang}/updatebarang', [OpnamemutasibarangproduksiController::class, 'updatebarang']);
     Route::post('opnamemutasibarangproduksi/store', [OpnamemutasibarangproduksiController::class, 'store']);
+
+    //Laporanproduksi
+    Route::get('/laporanproduksi/mutasiproduksi', [LaporanproduksiController::class, 'mutasiproduksi']);
+    Route::get('/laporanproduksi/rekapmutasiproduksi', [LaporanproduksiController::class, 'rekapmutasiproduksi']);
+    Route::get('/laporanproduksi/pemasukanproduksi', [LaporanproduksiController::class, 'pemasukanproduksi']);
+    Route::get('/laporanproduksi/pengeluaranproduksi', [LaporanproduksiController::class, 'pengeluaranproduksi']);
+    Route::get('/laporanproduksi/rekappersediaanbarangproduksi', [LaporanproduksiController::class, 'rekappersediaanbarangproduksi']);
+    Route::post('/laporanproduksi/mutasiproduksi/cetak', [LaporanproduksiController::class, 'cetak_mutasiproduksi']);
+    Route::post('/laporanproduksi/rekapmutasiproduksi/cetak', [LaporanproduksiController::class, 'cetak_rekapmutasiproduksi']);
+    Route::post('/laporanproduksi/pemasukanproduksi/cetak', [LaporanproduksiController::class, 'cetak_pemasukanproduksi']);
+    Route::post('/laporanproduksi/pengeluaranproduksi/cetak', [LaporanproduksiController::class, 'cetak_pengeluaranproduksi']);
+    Route::post('/laporanproduksi/rekappersediaanbarangproduksi/cetak', [LaporanproduksiController::class, 'cetak_rekappersediaanbarangproduksi']);
 });
 
 //Administrator | Direktur | General Manager | Manager Marketing | Manager Accounting | Kepala Penjualan | Staff Keuangan | Admin Kas Kecil
