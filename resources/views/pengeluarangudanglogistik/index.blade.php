@@ -1,15 +1,15 @@
 @extends('layouts.midone')
-@section('titlepage','Data Barang Masuk')
+@section('titlepage','Data Barang Keluar')
 @section('content')
 <div class="content-wrapper">
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Data Barang Masuk</h2>
+                    <h2 class="content-header-title float-left mb-0">Data Barang Keluar</h2>
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/pemasukangudanglogistik">Data Barang Masuk</a>
+                            <li class="breadcrumb-item"><a href="/pengeluarangudanglogistik">Data Barang Keluar</a>
                             </li>
                         </ol>
                     </div>
@@ -22,14 +22,17 @@
         <!-- Data list view starts -->
         <!-- DataTable starts -->
         @include('layouts.notification')
-        <div class="col-md-12 col-sm-12 col-lg-6">
+        <div class="col-md-8 col-sm-8">
             <div class="card">
+                <div class="card-header">
+                    <a href="/pengeluarangudanglogistik/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
+                </div>
                 <div class="card-body">
-                    <form action="/pemasukangudanglogistik">
+                    <form action="/pengeluarangudanglogistik">
 
                         <div class="row">
                             <div class="col-12">
-                                <x-inputtext field="nobukti_pemasukan" label="No. Bukti" icon="feather icon-credit-card" value="{{ Request('nobukti_pemasukan') }}" />
+                                <x-inputtext field="nobukti_pengeluaran" label="No. Bukti" icon="feather icon-credit-card" value="{{ Request('nobukti_pengeluaran') }}" />
                             </div>
                         </div>
                         <div class="row">
@@ -38,6 +41,18 @@
                             </div>
                             <div class="col-6">
                                 <x-inputtext field="sampai" label="Sampai" icon="feather icon-calendar" datepicker value="{{ Request('sampai') }}" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <select name="kode_dept" id="kode_dept" class="form-control">
+                                        <option value="">Departemen</option>
+                                        @foreach ($departemen as $d)
+                                        <option value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
@@ -54,25 +69,27 @@
                                 <tr>
                                     <th class="text-center">No</th>
                                     <th>No. Bukti</th>
-                                    <th>Tanggal Pembelian</th>
-                                    <th>Tanggal Approve</th>
+                                    <th>Tanggal</th>
+                                    <th>Dikeluarkan Ke</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($pemasukan as $d)
+                                @foreach ($pengeluaran as $d)
                                 <tr>
-                                    <td class="text-center">{{ $loop->iteration + $pemasukan->firstItem() - 1 }}</td>
-                                    <td>{{ $d->nobukti_pemasukan }}</td>
-                                    <td>{{ date("d-m-y",strtotime($d->tgl_pemasukan)) }}</td>
-                                    <td>{{ date("d-m-y",strtotime($d->tgl_pembelian)) }}</td>
+                                    <td class="text-center">{{ $loop->iteration + $pengeluaran->firstItem() - 1 }}</td>
+                                    <td>{{ $d->nobukti_pengeluaran }}</td>
+                                    <td>{{ date("d-m-y",strtotime($d->tgl_pengeluaran)) }}</td>
+                                    <td>{{ $d->nama_dept }}</td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
-                                            <a class="ml-1 detail" href="#" nobukti_pemasukan="{{ Crypt::encrypt($d->nobukti_pemasukan) }}"><i class=" feather icon-file-text info"></i></a>
-                                            <form method="POST" class="deleteform" action="/pemasukangudanglogistik/{{Crypt::encrypt($d->nobukti_pemasukan)}}/delete">
+
+                                            <a class="ml-1" href="/pengeluarangudanglogistik/{{\Crypt::encrypt($d->nobukti_pengeluaran)}}/edit"><i class="feather icon-edit success"></i></a>
+                                            <a class="ml-1 detail" href="#" nobukti_pengeluaran="{{ Crypt::encrypt($d->nobukti_pengeluaran) }}"><i class=" feather icon-file-text info"></i></a>
+                                            <form method="POST" class="deleteform" action="/pengeluarangudanglogistik/{{Crypt::encrypt($d->nobukti_pengeluaran)}}/delete">
                                                 @csrf
                                                 @method('DELETE')
-                                                <a href="#" tanggal="{{ $d->tgl_pemasukan }}" class="delete-confirm ml-1">
+                                                <a href="#" tanggal="{{ $d->tgl_pengeluaran }}" class="delete-confirm ml-1">
                                                     <i class="feather icon-trash danger"></i>
                                                 </a>
                                             </form>
@@ -84,7 +101,7 @@
 
                             </tbody>
                         </table>
-                        {{ $pemasukan->links('vendor.pagination.vuexy') }}
+                        {{ $pengeluaran->links('vendor.pagination.vuexy') }}
                     </div>
 
                     <!-- DataTable ends -->
@@ -96,10 +113,10 @@
 </div>
 <!-- Detail Barang masuk -->
 <div class="modal fade text-left" id="mdldetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="max-width: 980px">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="max-width:980px">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel18">Detail Pemasukan Gudang Logistik</h4>
+                <h4 class="modal-title" id="myModalLabel18">Detail Pengeluaran Gudang Logistik</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -114,13 +131,13 @@
 @push('myscript')
 <script>
     $(function() {
-        function loaddetail(nobukti_pemasukan) {
+        function loaddetail(nobukti_pengeluaran) {
             $.ajax({
                 type: 'POST'
-                , url: '/pemasukangudanglogistik/show'
+                , url: '/pengeluarangudanglogistik/show'
                 , data: {
                     _token: "{{ csrf_token() }}"
-                    , nobukti_pemasukan: nobukti_pemasukan
+                    , nobukti_pengeluaran: nobukti_pengeluaran
                 }
                 , cache: false
                 , success: function(respond) {
@@ -129,10 +146,10 @@
             });
         }
         $('.detail').click(function(e) {
-            var nobukti_pemasukan = $(this).attr("nobukti_pemasukan");
+            var nobukti_pengeluaran = $(this).attr("nobukti_pengeluaran");
             //alert(nobukti_pemasukan);
             e.preventDefault();
-            loaddetail(nobukti_pemasukan);
+            loaddetail(nobukti_pengeluaran);
             $('#mdldetail').modal({
                 backdrop: 'static'
                 , keyboard: false

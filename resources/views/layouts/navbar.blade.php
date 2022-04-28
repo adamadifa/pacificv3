@@ -267,6 +267,15 @@
                         </a>
                         <ul class="menu-content">
                             @if (in_array($level, $pemasukan_gudanglogistik))
+                            <li class="{{ request()->is(['saldoawalgudanglogistik', 'saldoawalgudanglogistik/*']) ? 'active' : '' }}">
+                                <a href="/saldoawalgudanglogistik">
+                                    <i class="feather icon-settings"></i>
+                                    <span class="menu-item">Saldo Awal</span>
+                                </a>
+                            </li>
+                            @endif
+
+                            @if (in_array($level, $pemasukan_gudanglogistik))
                             <li class="{{ request()->is(['pemasukangudanglogistik', 'pemasukangudanglogistik/*']) ? 'active' : '' }}">
                                 <a href="/pemasukangudanglogistik">
                                     <i class="feather icon-arrow-right"></i>
@@ -274,6 +283,15 @@
                                 </a>
                             </li>
                             @endif
+                            @if (in_array($level, $pengeluaran_gudanglogistik))
+                            <li class="{{ request()->is(['pengeluarangudanglogistik', 'pengeluarangudanglogistik/*']) ? 'active' : '' }}">
+                                <a href="/pengeluarangudanglogistik">
+                                    <i class="feather icon-arrow-left"></i>
+                                    <span class="menu-item">Barang Keluar</span>
+                                </a>
+                            </li>
+                            @endif
+
                         </ul>
                     </li>
                     @endif

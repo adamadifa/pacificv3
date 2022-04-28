@@ -248,6 +248,8 @@ class GlobalProvider extends ServiceProvider
             $gudang_cabang_menu = ['admin'];
             $pemasukan_gudanglogisitik = ['admin'];
             $approve_pembelian = ['admin'];
+            $pengeluaran_gudanglogistik = ['admin'];
+            $saldoawal_gudanglogistik = ['admin'];
 
             $shareddata = [
                 'level' => $level,
@@ -448,7 +450,9 @@ class GlobalProvider extends ServiceProvider
                 'gudang_jadi_menu' => $gudang_jadi_menu,
                 'gudang_cabang_menu' => $gudang_cabang_menu,
                 'pemasukan_gudanglogistik' => $pemasukan_gudanglogisitik,
-                'approve_pembelian' => $approve_pembelian
+                'approve_pembelian' => $approve_pembelian,
+                'pengeluaran_gudanglogistik' => $pengeluaran_gudanglogistik,
+                'saldoawal_gudanglogistik' => $saldoawal_gudanglogistik
             ];
             View::share($shareddata);
         });

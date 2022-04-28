@@ -41,12 +41,14 @@ use App\Http\Controllers\PemasukangudanglogistikController;
 use App\Http\Controllers\PemasukanproduksiController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PembelianController;
+use App\Http\Controllers\PengeluarangudanglogistikController;
 use App\Http\Controllers\PengeluaranproduksiController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\PermintaanpengirimanController;
 use App\Http\Controllers\ProduksiController;
 use App\Http\Controllers\RatiokomisiController;
 use App\Http\Controllers\ReturController;
+use App\Http\Controllers\SaldoawalgudanglogistikController;
 use App\Http\Controllers\SaldoawalkasbesarController;
 use App\Http\Controllers\SaldoawalmutasibarangproduksiController;
 use App\Http\Controllers\SalesmanController;
@@ -579,6 +581,35 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/pemasukangudanglogistik', [PemasukangudanglogistikController::class, 'index']);
     Route::post('/pemasukangudanglogistik/show', [PemasukangudanglogistikController::class, 'show']);
     Route::delete('/pemasukangudanglogistik/{nobukti_pemasukan}/delete', [PemasukangudanglogistikController::class, 'delete']);
+    Route::get('/pengeluarangudanglogistik', [PengeluarangudanglogistikController::class, 'index']);
+    Route::post('/pengeluarangudanglogistik/show', [PengeluarangudanglogistikController::class, 'show']);
+    Route::get('/pengeluarangudanglogistik/create', [PengeluarangudanglogistikController::class, 'create']);
+    Route::post('/pengeluarangudanglogistik/cektemp', [PengeluarangudanglogistikController::class, 'cektemp']);
+    Route::post('/pengeluarangudanglogistik/storetemp', [PengeluarangudanglogistikController::class, 'storetemp']);
+    Route::get('/pengeluarangudanglogistik/getbarang', [PengeluarangudanglogistikController::class, 'getbarang']);
+    Route::get('/pengeluarangudanglogistik/showtemp', [PengeluarangudanglogistikController::class, 'showtemp']);
+    Route::post('/pengeluarangudanglogistik/deletetemp', [PengeluarangudanglogistikController::class, 'deletetemp']);
+    Route::post('/pengeluarangudanglogistik/store', [PengeluarangudanglogistikController::class, 'store']);
+    Route::get('/pengeluarangudanglogistik/{nobukti_pengeluaran}/edit', [PengeluarangudanglogistikController::class, 'edit']);
+    Route::post('/pengeluarangudanglogistik/cekbarang', [PengeluarangudanglogistikController::class, 'cekbarang']);
+    Route::get('/pengeluarangudanglogistik/{nobukti_pengeluaran}/showbarang', [PengeluarangudanglogistikController::class, 'showbarang']);
+    Route::post('/pengeluarangudanglogistik/storebarang', [PengeluarangudanglogistikController::class, 'storebarang']);
+    Route::post('/pengeluarangudanglogistik/editbarang', [PengeluarangudanglogistikController::class, 'editbarang']);
+    Route::post('/pengeluarangudanglogistik/updatebarang', [PengeluarangudanglogistikController::class, 'updatebarang']);
+    Route::post('/pengeluarangudanglogistik/deletebarang', [PengeluarangudanglogistikController::class, 'deletebarang']);
+    Route::post('/pengeluarangudanglogistik/{nobukti_pengeluaran}/update', [PengeluarangudanglogistikController::class, 'update']);
+    Route::delete('/pengeluarangudanglogistik/{nobukti_pengeluaran}/delete', [PengeluarangudanglogistikController::class, 'delete']);
+
+
+    //Saldo Awal Gudang Logistik
+    Route::get('/saldoawalgudanglogistik', [SaldoawalgudanglogistikController::class, 'index']);
+    Route::get('/saldoawalgudanglogistik/create', [SaldoawalgudanglogistikController::class, 'create']);
+    Route::get('/saldoawalgudanglogistik/{kode_saldoawal}/edit', [SaldoawalgudanglogistikController::class, 'edit']);
+    Route::get('/saldoawalgudanglogistik/{kode_saldoawal}/{kode_barang}/editbarang', [SaldoawalgudanglogistikController::class, 'editbarang']);
+    Route::post('/saldoawalgudanglogistik/{kode_saldoawal}/{kode_barang}/updatebarang', [SaldoawalgudanglogistikController::class, 'updatebarang']);
+    Route::post('saldoawalgudanglogistik/getdetailsaldo', [SaldoawalgudanglogistikController::class, 'getdetailsaldo']);
+    Route::post('saldoawalgudanglogistik/store', [SaldoawalgudanglogistikController::class, 'store']);
+    Route::delete('/saldoawalgudanglogistik/{kode_saldoawal}/delete', [SaldoawalgudanglogistikController::class, 'delete']);
 });
 
 //Administrator | Direktur | General Manager | Manager Marketing | Manager Accounting | Kepala Penjualan | Staff Keuangan | Admin Kas Kecil
