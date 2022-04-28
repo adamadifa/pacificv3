@@ -16,8 +16,8 @@ class PembelianController extends Controller
     public function index(Request $request)
     {
         $query = Pembelian::query();
-        $query->selectRaw("pembelian.nobukti_pembelian,
-        tgl_pembelian,
+        $query->selectRaw("pembelian.nobukti_pembelian,nobukti_pemasukan,tgl_pemasukan,
+        pembelian.tgl_pembelian,
         tgl_jatuhtempo,
         ppn,
         no_fak_pajak,
@@ -31,6 +31,7 @@ class PembelianController extends Controller
         penyesuaian,
         jmlbayar");
         $query->join('supplier', 'pembelian.kode_supplier', '=', 'supplier.kode_supplier');
+        $query->leftJoin('pemasukan', 'pembelian.nobukti_pembelian', '=', 'pemasukan.nobukti_pemasukan');
         $query->leftJoin(
             DB::raw('(
                 SELECT nobukti_pembelian, SUM( IF ( STATUS = "PMB", ( ( qty * harga ) + penyesuaian ), 0 ) ) - SUM( IF ( STATUS = "PNJ", ( qty * harga ), 0 ) ) as harga
@@ -84,8 +85,9 @@ class PembelianController extends Controller
             }
         );
 
-
-        $query->whereBetween('tgl_pembelian', [$request->dari, $request->sampai]);
+        if (!empty($request->dari) && !empty($request->sampai)) {
+            $query->whereBetween('tgl_pembelian', [$request->dari, $request->sampai]);
+        }
         if (!empty($request->nobukti_pembelian)) {
             $query->where('pembelian.nobukti_pembelian', $request->nobukti_pembelian);
         }
@@ -522,6 +524,27 @@ class PembelianController extends Controller
             ->get();
 
         return view('pembelian.show', compact('pembelian', 'detailpembelian', 'detailpenjualan', 'kontrabon'));
+    }
+
+
+    public function prosespembelian(Request $request)
+    {
+        $nobukti_pembelian = $request->nobukti_pembelian;
+        $pembelian = DB::table('pembelian')
+            ->select('pembelian.*', 'nama_supplier', 'nama_dept')
+            ->join('supplier', 'pembelian.kode_supplier', '=', 'supplier.kode_supplier')
+            ->join('departemen', 'pembelian.kode_dept', '=', 'departemen.kode_dept')
+            ->where('nobukti_pembelian', $nobukti_pembelian)
+            ->first();
+        $detailpembelian = DB::table('detail_pembelian')
+            ->select('detail_pembelian.*', 'nama_barang')
+            ->join('master_barang_pembelian', 'detail_pembelian.kode_barang', '=', 'master_barang_pembelian.kode_barang')
+            ->where('nobukti_pembelian', $nobukti_pembelian)
+            ->where('detail_pembelian.status', 'PMB')
+            ->get();
+
+
+        return view('pembelian.prosespembelian', compact('pembelian', 'detailpembelian'));
     }
 
 
@@ -1209,6 +1232,44 @@ class PembelianController extends Controller
         echo "<option value=''>Pilih Barang</option>";
         foreach ($detailpembelian as $d) {
             echo "<option value='$d->kode_barang'>$d->nama_barang</option>";
+        }
+    }
+
+    public function storeprosespembelian($nobukti_pembelian, Request $request)
+    {
+        $nobukti_pembelian = Crypt::decrypt($nobukti_pembelian);
+        $pembelian = DB::table('pembelian')->where('nobukti_pembelian', $nobukti_pembelian)->first();
+        $detailpembelian = DB::table('detail_pembelian')->where('nobukti_pembelian', $nobukti_pembelian)->get();
+        $tgl_pembelian = $pembelian->tgl_pembelian;
+        $tgl_pemasukan = $request->tgl_pemasukan;
+        DB::beginTransaction();
+        try {
+            $data = [
+                'nobukti_pemasukan' => $nobukti_pembelian,
+                'tgl_pembelian' => $tgl_pembelian,
+                'tgl_pemasukan' => $tgl_pemasukan,
+                'gdb' => 0
+            ];
+            DB::table('pemasukan')->insert($data);
+            foreach ($detailpembelian as $d) {
+                $datadetail = [
+                    'nobukti_pemasukan' => $nobukti_pembelian,
+                    'kode_barang' => $d->kode_barang,
+                    'keterangan' => $d->keterangan,
+                    'qty' => $d->qty,
+                    'harga' => $d->harga,
+                    'penyesuaian' => $d->penyesuaian,
+                    'kode_akun' => $d->kode_akun
+                ];
+
+                DB::table('detail_pemasukan')->insert($datadetail);
+            }
+            DB::commit();
+            return Redirect::back()->with(['success' => 'Data Berhasil Di Proses']);
+        } catch (\Exception $e) {
+            //dd($e);
+            return Redirect::back()->with(['warning' => 'Data Gagal Diproses, Hubungi Tim IT']);
+            DB::rollback();
         }
     }
 }

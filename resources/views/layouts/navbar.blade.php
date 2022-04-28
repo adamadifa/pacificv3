@@ -255,6 +255,31 @@
                 </ul>
             </li>
             @endif
+            @if (in_array($level,$gudang_menu))
+            <li class=" nav-item">
+                <a href="#"><i class="fa fa-building-o" style="color:rgb(167, 69, 4)"></i><span class="menu-title">Gudang</span></a>
+                <ul class="menu-content">
+                    @if (in_array($level,$gudang_logistik_menu))
+                    <li>
+                        <a href="/gudanglogistik">
+                            <i class="feather icon-circle"></i>
+                            <span class="menu-item">Gudang Logistik</span>
+                        </a>
+                        <ul class="menu-content">
+                            @if (in_array($level, $pemasukan_gudanglogistik))
+                            <li class="{{ request()->is(['pemasukangudanglogistik', 'pemasukangudanglogistik/*']) ? 'active' : '' }}">
+                                <a href="/pemasukangudanglogistik">
+                                    <i class="feather icon-arrow-right"></i>
+                                    <span class="menu-item">Barang Masuk</span>
+                                </a>
+                            </li>
+                            @endif
+                        </ul>
+                    </li>
+                    @endif
+                </ul>
+            </li>
+            @endif
             @if (in_array($level, $marketing))
             <li class=" nav-item">
                 <a href="#"><i class="feather icon-radio info"></i><span class="menu-title">Marketing</span></a>

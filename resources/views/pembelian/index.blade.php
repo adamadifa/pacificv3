@@ -172,6 +172,22 @@
                                                 </a>
                                             </form>
                                             @endif
+
+                                            @if (in_array($level,$approve_pembelian))
+                                            @if ($d->kode_dept=="GDL")
+                                            @if (!empty($d->nobukti_pemasukan))
+                                            <form method="POST" class="deleteform" action="/pemasukangudanglogistik/{{Crypt::encrypt($d->nobukti_pemasukan)}}/delete">
+                                                @csrf
+                                                @method('DELETE')
+                                                <a href="#" tanggal="{{ $d->tgl_pemasukan }}" class="delete-confirm-pemasukan ml-1">
+                                                    <i class="fa fa-close danger"></i>
+                                                </a>
+                                            </form>
+                                            @else
+                                            <a href="#" nobukti_pembelian="{{ $d->nobukti_pembelian }}" class="ml-1 prosespembelian"><i class="feather icon-external-link success"></i></a>
+                                            @endif
+                                            @endif
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
@@ -222,11 +238,37 @@
                 }
             });
         }
+
+        function loadprosespembelian(nobukti_pembelian) {
+            $.ajax({
+                type: 'POST'
+                , url: '/pembelian/prosespembelian'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , nobukti_pembelian: nobukti_pembelian
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loaddetailpembelian").html(respond);
+                }
+            });
+        }
         $('.detailpembelian').click(function(e) {
             var nobukti_pembelian = $(this).attr("nobukti_pembelian");
             //alert(nobukti_pembelian);
             e.preventDefault();
             loaddetailpembelian(nobukti_pembelian);
+            $('#mdldetailpembelian').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+        });
+
+        $('.prosespembelian').click(function(e) {
+            var nobukti_pembelian = $(this).attr("nobukti_pembelian");
+            //alert(nobukti_pembelian);
+            e.preventDefault();
+            loadprosespembelian(nobukti_pembelian);
             $('#mdldetailpembelian').modal({
                 backdrop: 'static'
                 , keyboard: false
@@ -249,11 +291,54 @@
                 }
             });
         }
+
+        function cektutuplaporanpemasukan(tanggal) {
+            $.ajax({
+                type: "POST"
+                , url: "/cektutuplaporan"
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , tanggal: tanggal
+                    , jenislaporan: "gudanglogistik"
+                }
+                , cache: false
+                , success: function(respond) {
+                    console.log(respond);
+                    $("#cektutuplaporan").val(respond);
+                }
+            });
+        }
         $('.delete-confirm').click(function(event) {
             var form = $(this).closest("form");
             var name = $(this).data("name");
             var tanggal = $(this).attr("tanggal");
             cektutuplaporan(tanggal);
+            event.preventDefault();
+            swal({
+                    title: `Are you sure you want to delete this record?`
+                    , text: "If you delete this, it will be gone forever."
+                    , icon: "warning"
+                    , buttons: true
+                    , dangerMode: true
+                , })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        var cektutuplaporan = $("#cektutuplaporan").val();
+                        if (cektutuplaporan > 0) {
+                            swal("Oops", "Laporan Periode Ini Sudah Di Tutup !", "warning");
+                            return false;
+                        } else {
+                            form.submit();
+                        }
+                    }
+                });
+        });
+
+        $('.delete-confirm-pemasukan').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+            var tanggal = $(this).attr("tanggal");
+            cektutuplaporanpemasukan(tanggal);
             event.preventDefault();
             swal({
                     title: `Are you sure you want to delete this record?`

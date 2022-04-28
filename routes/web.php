@@ -37,6 +37,7 @@ use App\Http\Controllers\OmancabangController;
 use App\Http\Controllers\OmanController;
 use App\Http\Controllers\OpnamemutasibarangproduksiController;
 use App\Http\Controllers\PelangganController;
+use App\Http\Controllers\PemasukangudanglogistikController;
 use App\Http\Controllers\PemasukanproduksiController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PembelianController;
@@ -59,6 +60,7 @@ use App\Http\Controllers\TabunganController;
 use App\Http\Controllers\TargetkomisiController;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\TutuplaporanController;
+use App\Models\Pemasukangudanglogistik;
 use App\Models\Saldoawalmutasibarangproduksi;
 use App\Models\Setoranpenjualan;
 use Illuminate\Support\Facades\Route;
@@ -412,6 +414,8 @@ Route::middleware(['auth', 'ceklevel:admin,manager pembelian,admin pembelian'])-
     Route::post('/pembelian/deletetemp', [PembelianController::class, 'deletetemp']);
     Route::post('/pembelian/store', [PembelianController::class, 'store']);
     Route::post('/pembelian/show', [PembelianController::class, 'show']);
+    Route::post('/pembelian/prosespembelian', [PembelianController::class, 'prosespembelian']);
+    Route::post('/pembelian/{nobukti_pembelian}/storeprosespembelian', [PembelianController::class, 'storeprosespembelian']);
     Route::post('/pembelian/showdetailpembelian', [PembelianController::class, 'showdetailpembelian']);
     Route::post('/pembelian/showdetailpembeliankontrabon', [PembelianController::class, 'showdetailpembeliankontrabon']);
     Route::post('/pembelian/showdetailpotongan', [PembelianController::class, 'showdetailpotongan']);
@@ -570,6 +574,11 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/laporanproduksi/pemasukanproduksi/cetak', [LaporanproduksiController::class, 'cetak_pemasukanproduksi']);
     Route::post('/laporanproduksi/pengeluaranproduksi/cetak', [LaporanproduksiController::class, 'cetak_pengeluaranproduksi']);
     Route::post('/laporanproduksi/rekappersediaanbarangproduksi/cetak', [LaporanproduksiController::class, 'cetak_rekappersediaanbarangproduksi']);
+
+    //Gudang Logistik
+    Route::get('/pemasukangudanglogistik', [PemasukangudanglogistikController::class, 'index']);
+    Route::post('/pemasukangudanglogistik/show', [PemasukangudanglogistikController::class, 'show']);
+    Route::delete('/pemasukangudanglogistik/{nobukti_pemasukan}/delete', [PemasukangudanglogistikController::class, 'delete']);
 });
 
 //Administrator | Direktur | General Manager | Manager Marketing | Manager Accounting | Kepala Penjualan | Staff Keuangan | Admin Kas Kecil

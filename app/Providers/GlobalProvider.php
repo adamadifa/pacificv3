@@ -240,6 +240,15 @@ class GlobalProvider extends ServiceProvider
             $laporan_pengeluaranproduksi = ['admin'];
             $laporan_rekappersediaanbarangproduksi = ['admin'];
 
+            //Gudang
+            $gudang_menu = ['admin'];
+            $gudang_bahan_menu = ['admin'];
+            $gudang_logistik_menu = ['admin'];
+            $gudang_jadi_menu = ['admin'];
+            $gudang_cabang_menu = ['admin'];
+            $pemasukan_gudanglogisitik = ['admin'];
+            $approve_pembelian = ['admin'];
+
             $shareddata = [
                 'level' => $level,
                 'getcbg' => $getcbg,
@@ -430,6 +439,16 @@ class GlobalProvider extends ServiceProvider
                 'laporan_pemasukanproduksi' => $laporan_pemasukanproduksi,
                 'laporan_pengeluaranproduksi' => $laporan_pengeluaranproduksi,
                 'laporan_rekappersediaanbarangproduksi' => $laporan_rekappersediaanbarangproduksi,
+
+                //Gudang
+
+                'gudang_menu' => $gudang_menu,
+                'gudang_bahan_menu' => $gudang_bahan_menu,
+                'gudang_logistik_menu' => $gudang_logistik_menu,
+                'gudang_jadi_menu' => $gudang_jadi_menu,
+                'gudang_cabang_menu' => $gudang_cabang_menu,
+                'pemasukan_gudanglogistik' => $pemasukan_gudanglogisitik,
+                'approve_pembelian' => $approve_pembelian
             ];
             View::share($shareddata);
         });
