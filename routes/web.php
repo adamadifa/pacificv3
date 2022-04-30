@@ -23,6 +23,7 @@ use App\Http\Controllers\KaskecilController;
 use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\KlaimController;
 use App\Http\Controllers\KontrabonController;
+use App\Http\Controllers\LaporangudanglogistikController;
 use App\Http\Controllers\LaporankeuanganController;
 use App\Http\Controllers\LaporanpembelianController;
 use App\Http\Controllers\Laporanproduksi;
@@ -35,6 +36,7 @@ use App\Http\Controllers\MutasibankController;
 use App\Http\Controllers\MutasigudangcabangController;
 use App\Http\Controllers\OmancabangController;
 use App\Http\Controllers\OmanController;
+use App\Http\Controllers\OpnamegudanglogistikController;
 use App\Http\Controllers\OpnamemutasibarangproduksiController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PemasukangudanglogistikController;
@@ -62,6 +64,7 @@ use App\Http\Controllers\TabunganController;
 use App\Http\Controllers\TargetkomisiController;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\TutuplaporanController;
+use App\Models\Barangpembelian;
 use App\Models\Pemasukangudanglogistik;
 use App\Models\Saldoawalmutasibarangproduksi;
 use App\Models\Setoranpenjualan;
@@ -110,6 +113,8 @@ Route::post('/bank/getbankcabang', [BankController::class, 'getbankcabang']);
 
 //Load Coa Cabang
 Route::post('/coa/getcoacabang', [CoaController::class, 'getcoacabang']);
+//Loda Barang Pembleian By Kategori
+Route::post('/getbarangpembelianbykategori', [BarangpembelianController::class, 'getbarangpembelianbykategori']);
 
 //Oman Cabang
 Route::middleware(['auth', 'ceklevel:admin,kepala admin,kepala penjualan,manager marketing,manager accounting,direktur'])->group(function () {
@@ -610,6 +615,20 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('saldoawalgudanglogistik/getdetailsaldo', [SaldoawalgudanglogistikController::class, 'getdetailsaldo']);
     Route::post('saldoawalgudanglogistik/store', [SaldoawalgudanglogistikController::class, 'store']);
     Route::delete('/saldoawalgudanglogistik/{kode_saldoawal}/delete', [SaldoawalgudanglogistikController::class, 'delete']);
+
+    //Opname Gudang Logistik
+    Route::get('/opnamegudanglogistik', [OpnamegudanglogistikController::class, 'index']);
+    Route::get('/opnamegudanglogistik/create', [OpnamegudanglogistikController::class, 'create']);
+    Route::get('/opnamegudanglogistik/{kode_opname}/edit', [OpnamegudanglogistikController::class, 'edit']);
+    Route::get('/opnamegudanglogistik/{kode_opname}/{kode_barang}/editbarang', [OpnamegudanglogistikController::class, 'editbarang']);
+    Route::post('/opnamegudanglogistik/{kode_opname}/{kode_barang}/updatebarang', [OpnamegudanglogistikController::class, 'updatebarang']);
+    Route::post('opnamegudanglogistik/getdetailsaldo', [OpnamegudanglogistikController::class, 'getdetailsaldo']);
+    Route::post('opnamegudanglogistik/store', [OpnamegudanglogistikController::class, 'store']);
+    Route::delete('/opnamegudanglogistik/{kode_opname}/delete', [OpnamegudanglogistikController::class, 'delete']);
+
+    //Laporan Gudang Logistik
+    Route::get('/laporangudanglogistik/pemasukan', [LaporangudanglogistikController::class, 'pemasukan']);
+    Route::post('/laporangudanglogistik/pemasukan/cetak', [LaporangudanglogistikController::class, 'cetak_pemasukan']);
 });
 
 //Administrator | Direktur | General Manager | Manager Marketing | Manager Accounting | Kepala Penjualan | Staff Keuangan | Admin Kas Kecil

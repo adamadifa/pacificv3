@@ -150,4 +150,14 @@ class BarangpembelianController extends Controller
             })
             ->toJson();
     }
+
+    public function getbarangpembelianbykategori(Request $request)
+    {
+        $kode_kategori = $request->kode_kategori;
+        $barang = DB::table('master_barang_pembelian')->where('kode_kategori', $kode_kategori)->orderBy('nama_barang')->get();
+        echo "<option value=''>Semua Barang</option>";
+        foreach ($barang as $d) {
+            echo "<option value='$d->kode_barang'>$d->nama_barang</option>";
+        }
+    }
 }

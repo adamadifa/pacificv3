@@ -274,6 +274,14 @@
                                 </a>
                             </li>
                             @endif
+                            @if (in_array($level, $opname_gudanglogistik))
+                            <li class="{{ request()->is(['opnamegudanglogistik', 'opnamegudanglogistik/*']) ? 'active' : '' }}">
+                                <a href="/opnamegudanglogistik">
+                                    <i class="feather icon-clipboard"></i>
+                                    <span class="menu-item">Opname</span>
+                                </a>
+                            </li>
+                            @endif
 
                             @if (in_array($level, $pemasukan_gudanglogistik))
                             <li class="{{ request()->is(['pemasukangudanglogistik', 'pemasukangudanglogistik/*']) ? 'active' : '' }}">
@@ -295,6 +303,15 @@
                         </ul>
                     </li>
                     @endif
+                    @if (in_array($level, $laporan_gudanglogistik))
+                    <li class="{{ request()->is(['laporangudanglogistik','laporangudanglogistik/*'])? 'active': '' }}">
+                        <a href="/laporangudanglogistik/pemasukan">
+                            <i class="feather icon-file-text"></i>
+                            <span class="menu-item">Laporan</span>
+                        </a>
+                    </li>
+                    @endif
+
                 </ul>
             </li>
             @endif
