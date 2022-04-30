@@ -303,7 +303,51 @@
                         </ul>
                     </li>
                     @endif
-                    @if (in_array($level, $laporan_gudanglogistik))
+                    @if (in_array($level,$gudang_bahan_menu))
+                    <li>
+                        <a href="/gudangbahan">
+                            <i class="feather icon-circle"></i>
+                            <span class="menu-item">Gudang Bahan</span>
+                        </a>
+                        <ul class="menu-content">
+                            @if (in_array($level, $pemasukan_gudangbahan))
+                            <li class="{{ request()->is(['saldoawalgudanglogistik', 'saldoawalgudanglogistik/*']) ? 'active' : '' }}">
+                                <a href="/saldoawalgudanglogistik">
+                                    <i class="feather icon-settings"></i>
+                                    <span class="menu-item">Saldo Awal</span>
+                                </a>
+                            </li>
+                            @endif
+                            @if (in_array($level, $opname_gudangbahan))
+                            <li class="{{ request()->is(['opnamegudanglogistik', 'opnamegudanglogistik/*']) ? 'active' : '' }}">
+                                <a href="/opnamegudanglogistik">
+                                    <i class="feather icon-clipboard"></i>
+                                    <span class="menu-item">Opname</span>
+                                </a>
+                            </li>
+                            @endif
+
+                            @if (in_array($level, $pemasukan_gudangbahan))
+                            <li class="{{ request()->is(['pemasukangudanglogistik', 'pemasukangudanglogistik/*']) ? 'active' : '' }}">
+                                <a href="/pemasukangudanglogistik">
+                                    <i class="feather icon-arrow-right"></i>
+                                    <span class="menu-item">Barang Masuk</span>
+                                </a>
+                            </li>
+                            @endif
+                            @if (in_array($level, $pengeluaran_gudangbahan))
+                            <li class="{{ request()->is(['pengeluarangudanglogistik', 'pengeluarangudanglogistik/*']) ? 'active' : '' }}">
+                                <a href="/pengeluarangudanglogistik">
+                                    <i class="feather icon-arrow-left"></i>
+                                    <span class="menu-item">Barang Keluar</span>
+                                </a>
+                            </li>
+                            @endif
+
+                        </ul>
+                    </li>
+                    @endif
+                    @if (in_array($level, $laporan_gudang))
                     <li class="{{ request()->is(['laporangudanglogistik','laporangudanglogistik/*'])? 'active': '' }}">
                         <a href="/laporangudanglogistik/pemasukan">
                             <i class="feather icon-file-text"></i>
@@ -315,6 +359,7 @@
                 </ul>
             </li>
             @endif
+
             @if (in_array($level, $marketing))
             <li class=" nav-item">
                 <a href="#"><i class="feather icon-radio info"></i><span class="menu-title">Marketing</span></a>

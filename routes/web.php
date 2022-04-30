@@ -628,7 +628,13 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
 
     //Laporan Gudang Logistik
     Route::get('/laporangudanglogistik/pemasukan', [LaporangudanglogistikController::class, 'pemasukan']);
+    Route::get('/laporangudanglogistik/pengeluaran', [LaporangudanglogistikController::class, 'pengeluaran']);
+    Route::get('/laporangudanglogistik/persediaan', [LaporangudanglogistikController::class, 'persediaan']);
+    Route::get('/laporangudanglogistik/persediaanopname', [LaporangudanglogistikController::class, 'persediaanopname']);
     Route::post('/laporangudanglogistik/pemasukan/cetak', [LaporangudanglogistikController::class, 'cetak_pemasukan']);
+    Route::post('/laporangudanglogistik/pengeluaran/cetak', [LaporangudanglogistikController::class, 'cetak_pengeluaran']);
+    Route::post('/laporangudanglogistik/persediaan/cetak', [LaporangudanglogistikController::class, 'cetak_persediaan']);
+    Route::post('/laporangudanglogistik/persediaanopname/cetak', [LaporangudanglogistikController::class, 'cetak_persediaanopname']);
 });
 
 //Administrator | Direktur | General Manager | Manager Marketing | Manager Accounting | Kepala Penjualan | Staff Keuangan | Admin Kas Kecil

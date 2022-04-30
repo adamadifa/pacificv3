@@ -246,14 +246,24 @@ class GlobalProvider extends ServiceProvider
             $gudang_logistik_menu = ['admin'];
             $gudang_jadi_menu = ['admin'];
             $gudang_cabang_menu = ['admin'];
+            $laporan_gudang = ['admin'];
+            //Gudang Logistik
             $pemasukan_gudanglogisitik = ['admin'];
             $approve_pembelian = ['admin'];
             $pengeluaran_gudanglogistik = ['admin'];
             $saldoawal_gudanglogistik = ['admin'];
             $opname_gudanglogistik = ['admin'];
-            $laporan_gudanglogistik = ['admin'];
+
+            //Gudang Bahan
+            $pemasukan_gudangbahan = ['admin'];
+            $pengeluaran_gudangbahan = ['admin'];
+            $saldoawal_gudangbahan = ['admin'];
+            $opname_gudangbahan = ['admin'];
+
             $laporan_pemasukan_gl = ['admin'];
             $laporan_pengeluaran_gl = ['admin'];
+            $laporan_persediaan_gl = ['admin'];
+            $laporan_persediaanopname_gl = ['admin'];
 
             $shareddata = [
                 'level' => $level,
@@ -453,14 +463,26 @@ class GlobalProvider extends ServiceProvider
                 'gudang_logistik_menu' => $gudang_logistik_menu,
                 'gudang_jadi_menu' => $gudang_jadi_menu,
                 'gudang_cabang_menu' => $gudang_cabang_menu,
+
+                //Gudang Logistik
                 'pemasukan_gudanglogistik' => $pemasukan_gudanglogisitik,
                 'approve_pembelian' => $approve_pembelian,
                 'pengeluaran_gudanglogistik' => $pengeluaran_gudanglogistik,
                 'saldoawal_gudanglogistik' => $saldoawal_gudanglogistik,
                 'opname_gudanglogistik' => $opname_gudanglogistik,
-                'laporan_gudanglogistik' => $laporan_gudanglogistik,
+
+                //Gudang Bahan
+                'pemasukan_gudangbahan' => $pemasukan_gudangbahan,
+                'pengeluaran_gudangbahan' => $pengeluaran_gudangbahan,
+                'saldoawal_gudangbahan' => $saldoawal_gudangbahan,
+                'opname_gudangbahan' => $opname_gudangbahan,
+
+                //Laporan Gudang
+                'laporan_gudang' => $laporan_gudang,
                 'laporan_pemasukan_gl' => $laporan_pemasukan_gl,
-                'laporan_pengeluaran_gl' => $laporan_pengeluaran_gl
+                'laporan_pengeluaran_gl' => $laporan_pengeluaran_gl,
+                'laporan_persediaan_gl' => $laporan_persediaan_gl,
+                'laporan_persediaanopname_gl' => $laporan_persediaanopname_gl,
             ];
             View::share($shareddata);
         });
