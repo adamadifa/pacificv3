@@ -39,10 +39,12 @@ use App\Http\Controllers\OmanController;
 use App\Http\Controllers\OpnamegudanglogistikController;
 use App\Http\Controllers\OpnamemutasibarangproduksiController;
 use App\Http\Controllers\PelangganController;
+use App\Http\Controllers\PemasukangudangbahanController;
 use App\Http\Controllers\PemasukangudanglogistikController;
 use App\Http\Controllers\PemasukanproduksiController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PembelianController;
+use App\Http\Controllers\PengeluarangudangbahanController;
 use App\Http\Controllers\PengeluarangudanglogistikController;
 use App\Http\Controllers\PengeluaranproduksiController;
 use App\Http\Controllers\PenjualanController;
@@ -50,6 +52,7 @@ use App\Http\Controllers\PermintaanpengirimanController;
 use App\Http\Controllers\ProduksiController;
 use App\Http\Controllers\RatiokomisiController;
 use App\Http\Controllers\ReturController;
+use App\Http\Controllers\SaldoawalgudangbahanController;
 use App\Http\Controllers\SaldoawalgudanglogistikController;
 use App\Http\Controllers\SaldoawalkasbesarController;
 use App\Http\Controllers\SaldoawalmutasibarangproduksiController;
@@ -588,6 +591,7 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::delete('/pemasukangudanglogistik/{nobukti_pemasukan}/delete', [PemasukangudanglogistikController::class, 'delete']);
     Route::get('/pengeluarangudanglogistik', [PengeluarangudanglogistikController::class, 'index']);
     Route::post('/pengeluarangudanglogistik/show', [PengeluarangudanglogistikController::class, 'show']);
+
     Route::get('/pengeluarangudanglogistik/create', [PengeluarangudanglogistikController::class, 'create']);
     Route::post('/pengeluarangudanglogistik/cektemp', [PengeluarangudanglogistikController::class, 'cektemp']);
     Route::post('/pengeluarangudanglogistik/storetemp', [PengeluarangudanglogistikController::class, 'storetemp']);
@@ -635,6 +639,64 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/laporangudanglogistik/pengeluaran/cetak', [LaporangudanglogistikController::class, 'cetak_pengeluaran']);
     Route::post('/laporangudanglogistik/persediaan/cetak', [LaporangudanglogistikController::class, 'cetak_persediaan']);
     Route::post('/laporangudanglogistik/persediaanopname/cetak', [LaporangudanglogistikController::class, 'cetak_persediaanopname']);
+
+    //Gudang Bahan
+
+    //Pemasukan
+    Route::get('/pemasukangudangbahan', [PemasukangudangbahanController::class, 'index']);
+    Route::post('/pemasukangudangbahan/show', [PemasukangudangbahanController::class, 'show']);
+    Route::delete('/pemasukangudangbahan/{nobukti_pemasukan}/delete', [PemasukangudangbahanController::class, 'delete']);
+
+    Route::get('/pemasukangudangbahan/create', [PemasukangudangbahanController::class, 'create']);
+    Route::post('/pemasukangudangbahan/cektemp', [PemasukangudangbahanController::class, 'cektemp']);
+    Route::post('/pemasukangudangbahan/storetemp', [PemasukangudangbahanController::class, 'storetemp']);
+    Route::get('/pemasukangudangbahan/getbarang', [PemasukangudangbahanController::class, 'getbarang']);
+    Route::get('/pemasukangudangbahan/showtemp', [PemasukangudangbahanController::class, 'showtemp']);
+    Route::post('/pemasukangudangbahan/deletetemp', [PemasukangudangbahanController::class, 'deletetemp']);
+    Route::post('/pemasukangudangbahan/store', [PemasukangudangbahanController::class, 'store']);
+
+    Route::get('/pemasukangudangbahan/{nobukti_pemasukan}/edit', [PemasukangudangbahanController::class, 'edit']);
+    Route::post('/pemasukangudangbahan/cekbarang', [PemasukangudangbahanController::class, 'cekbarang']);
+    Route::get('/pemasukangudangbahan/{nobukti_pemasukan}/showbarang', [PemasukangudangbahanController::class, 'showbarang']);
+    Route::post('/pemasukangudangbahan/storebarang', [PemasukangudangbahanController::class, 'storebarang']);
+    Route::post('/pemasukangudangbahan/editbarang', [PemasukangudangbahanController::class, 'editbarang']);
+    Route::post('/pemasukangudangbahan/updatebarang', [PemasukangudangbahanController::class, 'updatebarang']);
+    Route::post('/pemasukangudangbahan/deletebarang', [PemasukangudangbahanController::class, 'deletebarang']);
+    Route::post('/pemasukangudangbahan/{nobukti_pemasukan}/update', [PemasukangudangbahanController::class, 'update']);
+    Route::delete('/pemasukangudangbahan/{nobukti_pemasukan}/delete', [PemasukangudangbahanController::class, 'delete']);
+
+    //Pengeluaran
+    Route::get('/pengeluarangudangbahan', [PengeluarangudangbahanController::class, 'index']);
+    Route::post('/pengeluarangudangbahan/show', [PengeluarangudangbahanController::class, 'show']);
+    Route::delete('/pengeluarangudangbahan/{nobukti_pemasukan}/delete', [PengeluarangudangbahanController::class, 'delete']);
+
+    Route::get('/pengeluarangudangbahan/create', [PengeluarangudangbahanController::class, 'create']);
+    Route::post('/pengeluarangudangbahan/cektemp', [PengeluarangudangbahanController::class, 'cektemp']);
+    Route::post('/pengeluarangudangbahan/storetemp', [PengeluarangudangbahanController::class, 'storetemp']);
+    Route::get('/pengeluarangudangbahan/getbarang', [PengeluarangudangbahanController::class, 'getbarang']);
+    Route::get('/pengeluarangudangbahan/showtemp', [PengeluarangudangbahanController::class, 'showtemp']);
+    Route::post('/pengeluarangudangbahan/deletetemp', [PengeluarangudangbahanController::class, 'deletetemp']);
+    Route::post('/pengeluarangudangbahan/store', [PengeluarangudangbahanController::class, 'store']);
+
+    Route::get('/pengeluarangudangbahan/{nobukti_pemasukan}/edit', [PengeluarangudangbahanController::class, 'edit']);
+    Route::post('/pengeluarangudangbahan/cekbarang', [PengeluarangudangbahanController::class, 'cekbarang']);
+    Route::get('/pengeluarangudangbahan/{nobukti_pemasukan}/showbarang', [PengeluarangudangbahanController::class, 'showbarang']);
+    Route::post('/pengeluarangudangbahan/storebarang', [PengeluarangudangbahanController::class, 'storebarang']);
+    Route::post('/pengeluarangudangbahan/editbarang', [PengeluarangudangbahanController::class, 'editbarang']);
+    Route::post('/pengeluarangudangbahan/updatebarang', [PengeluarangudangbahanController::class, 'updatebarang']);
+    Route::post('/pengeluarangudangbahan/deletebarang', [PengeluarangudangbahanController::class, 'deletebarang']);
+    Route::post('/pengeluarangudangbahan/{nobukti_pemasukan}/update', [PengeluarangudangbahanController::class, 'update']);
+    Route::delete('/pengeluarangudangbahan/{nobukti_pemasukan}/delete', [PengeluarangudangbahanController::class, 'delete']);
+
+    //Saldo Awal Gudang bahan
+    Route::get('/saldoawalgudangbahan', [SaldoawalgudangbahanController::class, 'index']);
+    Route::get('/saldoawalgudangbahan/create', [SaldoawalgudangbahanController::class, 'create']);
+    Route::get('/saldoawalgudangbahan/{kode_saldoawal}/edit', [SaldoawalgudangbahanController::class, 'edit']);
+    Route::get('/saldoawalgudangbahan/{kode_saldoawal}/{kode_barang}/editbarang', [SaldoawalgudangbahanController::class, 'editbarang']);
+    Route::post('/saldoawalgudangbahan/{kode_saldoawal}/{kode_barang}/updatebarang', [SaldoawalgudangbahanController::class, 'updatebarang']);
+    Route::post('saldoawalgudangbahan/getdetailsaldo', [SaldoawalgudangbahanController::class, 'getdetailsaldo']);
+    Route::post('saldoawalgudangbahan/store', [SaldoawalgudangbahanController::class, 'store']);
+    Route::delete('/saldoawalgudangbahan/{kode_saldoawal}/delete', [SaldoawalgudangbahanController::class, 'delete']);
 });
 
 //Administrator | Direktur | General Manager | Manager Marketing | Manager Accounting | Kepala Penjualan | Staff Keuangan | Admin Kas Kecil

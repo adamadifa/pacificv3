@@ -348,7 +348,7 @@
             cektutuplaporan(tgl_pengeluaran);
         });
 
-        $("#frmBarangkeluarproduksi").submit(function() {
+        $("#frmBarangkeluargl").submit(function() {
             var tgl_pengeluaran = $("#tgl_pengeluaran").val();
             var kode_dept = $("#kode_dept").val();
             var cekbarang = $("#cekbarang").val();

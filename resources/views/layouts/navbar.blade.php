@@ -310,9 +310,9 @@
                             <span class="menu-item">Gudang Bahan</span>
                         </a>
                         <ul class="menu-content">
-                            @if (in_array($level, $pemasukan_gudangbahan))
-                            <li class="{{ request()->is(['saldoawalgudanglogistik', 'saldoawalgudanglogistik/*']) ? 'active' : '' }}">
-                                <a href="/saldoawalgudanglogistik">
+                            @if (in_array($level, $saldoawal_gudangbahan))
+                            <li class="{{ request()->is(['saldoawalgudangbahan', 'saldoawalgudangbahan/*']) ? 'active' : '' }}">
+                                <a href="/saldoawalgudangbahan">
                                     <i class="feather icon-settings"></i>
                                     <span class="menu-item">Saldo Awal</span>
                                 </a>
@@ -328,16 +328,16 @@
                             @endif
 
                             @if (in_array($level, $pemasukan_gudangbahan))
-                            <li class="{{ request()->is(['pemasukangudanglogistik', 'pemasukangudanglogistik/*']) ? 'active' : '' }}">
-                                <a href="/pemasukangudanglogistik">
+                            <li class="{{ request()->is(['pemasukangudangbahan', 'pemasukangudangbahan/*']) ? 'active' : '' }}">
+                                <a href="/pemasukangudangbahan">
                                     <i class="feather icon-arrow-right"></i>
                                     <span class="menu-item">Barang Masuk</span>
                                 </a>
                             </li>
                             @endif
                             @if (in_array($level, $pengeluaran_gudangbahan))
-                            <li class="{{ request()->is(['pengeluarangudanglogistik', 'pengeluarangudanglogistik/*']) ? 'active' : '' }}">
-                                <a href="/pengeluarangudanglogistik">
+                            <li class="{{ request()->is(['pengeluarangudangbahan', 'pengeluarangudangbahan/*']) ? 'active' : '' }}">
+                                <a href="/pengeluarangudangbahan">
                                     <i class="feather icon-arrow-left"></i>
                                     <span class="menu-item">Barang Keluar</span>
                                 </a>

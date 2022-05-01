@@ -1,15 +1,15 @@
 @extends('layouts.midone')
-@section('titlepage','Input Data Barang Keluar')
+@section('titlepage','Edit Data Barang Masuk')
 @section('content')
 <div class="content-wrapper">
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Input Data Barang Keluar</h2>
+                    <h2 class="content-header-title float-left mb-0">Edit Data Barang Masuk</h2>
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/pengeluarangudanglogistik/create">Input Data Barang Keluar</a>
+                            <li class="breadcrumb-item"><a href="#">Edit Data Barang Masuk</a>
                             </li>
                         </ol>
                     </div>
@@ -19,9 +19,9 @@
     </div>
     <div class="content-body">
         @include('layouts.notification')
-        <form action="/pengeluarangudanglogistik/store" method="POST" id="frmBarangkeluargl">
+        <form action="/pemasukangudangbahan/{{ Crypt::encrypt($pemasukan->nobukti_pemasukan) }}/update" method="POST" id="frm">
             @csrf
-            <input type="hidden" id="cektemp">
+            <input type="hidden" id="cekbarang">
             <input type="hidden" id="cektutuplaporan">
             <div class="row">
                 <div class="col-lg-4 col-sm-12 col-md-12">
@@ -29,23 +29,25 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12">
-                                    <x-inputtext field="nobukti_pengeluaran" label="No. Bukti Pengeluaran" icon="fa fa-barcode" />
+                                    <input type="hidden" value="{{ Crypt::encrypt($pemasukan->nobukti_pemasukan) }}" id="no_bukti">
+                                    <x-inputtext field="nobukti_pemasukan" label="Auto" icon="feather icon-credit-card" value="{{ $pemasukan->nobukti_pemasukan }}" readonly />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <x-inputtext field="tgl_pengeluaran" label="Tanggal pengeluaran" icon="feather icon-calendar" datepicker />
+                                    <x-inputtext field="tgl_pemasukan" value="{{ $pemasukan->tgl_pemasukan }}" label="Tanggal pemasukan" icon="feather icon-calendar" datepicker />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <select name="kode_dept" id="kode_dept" class="form-control">
+                                        <select name="departemen" id="departemen" class="form-control">
                                             <option value="">Departemen</option>
-                                            @foreach ($departemen as $d)
-                                            <option value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
-                                            @endforeach
+                                            <option {{$pemasukan->departemen == 'Pembelian' ? 'selected' : ''}} value="Pembelian">Pembelian</option>
+                                            <option {{$pemasukan->departemen == 'Retur Pengganti' ? 'selected' : ''}} value="Retur Pengganti">Retur Pengganti</option>
+                                            <option {{$pemasukan->departemen == 'Lainnya' ? 'selected' : ''}} value="Lainnya">Lainnya</option>
                                         </select>
+
                                     </div>
                                 </div>
                             </div>
@@ -60,41 +62,26 @@
                                     <input type="hidden" name="kode_barang" id="kode_barang">
                                     <x-inputtext field="nama_barang" label="Nama Barang" icon="feather icon-box" readonly />
                                 </div>
-                                <div class="col-lg-5 col-sm-12 col-md-12">
+                                <div class="col-lg-3 col-sm-12 col-md-12">
                                     <x-inputtext field="keterangan" label="Keterangan" icon="feather icon-file" />
                                 </div>
                                 <div class="col-lg-2 col-sm-12 col-md-12">
-                                    <x-inputtext field="qty" label="Qty" icon="feather icon-file" />
+                                    <x-inputtext field="qty_unit" label="Qty Unit" icon="feather icon-file" />
                                 </div>
                                 <div class="col-lg-2 col-sm-12 col-md-12">
-                                    <a href="#" id="tambahbarang" class="btn btn-primary"><i class="fa fa-plus"></i></a>
+                                    <x-inputtext field="qty_berat" label="Qty Berat" icon="feather icon-file" />
+                                </div>
+
+                                <div class="col-lg-2 col-sm-12 col-md-12">
+                                    <x-inputtext field="qty_lebih" label="Qty Lebih" icon="feather icon-file" />
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-2">
+                                <div class="col-12">
                                     <div class="form-group">
-                                        <div class="vs-checkbox-con vs-checkbox-primary">
-                                            <input type="checkbox" class="cabangcheck" name="cabangcheck" value="1">
-                                            <span class="vs-checkbox">
-                                                <span class="vs-checkbox--check">
-                                                    <i class="vs-icon feather icon-check"></i>
-                                                </span>
-                                            </span>
-                                            <span class="">Cabang ?</span>
-                                        </div>
+                                        <a href="#" id="tambahbarang" class="btn btn-primary btn-block"><i class="fa fa-plus mr-1"></i>Tambah</a>
                                     </div>
                                 </div>
-                                <div class="col-lg-4 col-sm-12" id="pilihcabang">
-                                    <div class="form-group">
-                                        <select name="kode_cabang" id="kode_cabang" class="form-control">
-                                            <option value="">Cabang</option>
-                                            @foreach ($cabang as $d)
-                                            <option value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-
                             </div>
                             <div class="row">
                                 <div class="col-12">
@@ -105,15 +92,17 @@
                                                 <th>Kode barang</th>
                                                 <th>Nama Barang</th>
                                                 <th>Keterangan</th>
-                                                <th>Cabang</th>
-                                                <th>Qty</th>
+                                                <th>Qty Unit</th>
+                                                <th>Qty Berat</th>
+                                                <th>Qty Lebih</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="loaddetailpengeluaran"></tbody>
+                                        <tbody id="loaddetailpemasukan"></tbody>
                                     </table>
                                 </div>
                             </div>
+
                             <div class="row mb-1">
                                 <div class="col-12">
                                     <div class="vs-checkbox-con vs-checkbox-primary">
@@ -159,53 +148,85 @@
         </div>
     </div>
 </div>
+
+<!-- Edit Barang  -->
+<div class="modal fade text-left" id="mdledit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Edit Barang</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loadedit"></div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @push('myscript')
 <script>
     $(function() {
+        var tgl_pemasukan = $("#tgl_pemasukan").val();
+        cektutuplaporan(tgl_pemasukan);
 
-        function cektemp() {
+
+
+
+        function cektutuplaporan(tanggal) {
+            // alert(tanggal);
             $.ajax({
-                type: 'POST'
-                , url: '/pengeluarangudanglogistik/cektemp'
+                type: "POST"
+                , url: "/cektutuplaporan"
                 , data: {
                     _token: "{{ csrf_token() }}"
+                    , tanggal: tanggal
+                    , jenislaporan: "gudangbahan"
                 }
                 , cache: false
                 , success: function(respond) {
-                    $("#cektemp").val(respond);
+                    console.log(respond);
+                    $("#cektutuplaporan").val(respond);
                 }
             });
         }
 
-        $('.cabangcheck').change(function() {
-            if (this.checked) {
-                $("#pilihcabang").show();
-            } else {
-                $("#pilihcabang").hide();
-                $("#kode_cabang").val("").change();
-            }
+
+        $("#tgl_pemasukan").change(function() {
+            var tgl_pemasukan = $("#tgl_pemasukan").val();
+            //alert(tgl_pemasukan);
+            cektutuplaporan(tgl_pemasukan);
         });
 
-        function hidecabang() {
-            $("#pilihcabang").hide();
+        function cekbarang() {
+            var nobukti_pemasukan = $("#nobukti_pemasukan").val();
+            $.ajax({
+                type: 'POST'
+                , url: '/pemasukangudangbahan/cekbarang'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , nobukti_pemasukan: nobukti_pemasukan
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#cekbarang").val(respond);
+                }
+            });
         }
 
-        hidecabang();
-
-
         function loadBarang() {
-            $("#loadpilihbarang").load("/pengeluarangudanglogistik/getbarang");
+            $("#loadpilihbarang").load("/pemasukangudangbahan/getbarang");
         }
 
         function loaddetail() {
-            $("#loaddetailpengeluaran").load("/pengeluarangudanglogistik/showtemp");
-            cektemp();
+            var nobukti_pemasukan = $("#no_bukti").val();
+            $("#loaddetailpemasukan").load("/pemasukangudangbahan/" + nobukti_pemasukan + "/showbarang");
+            cekbarang();
         }
 
         loaddetail();
-
-
         $("#nama_barang").click(function(e) {
             loadBarang();
             $('#mdlpilihbarang').modal({
@@ -230,10 +251,12 @@
 
         $("#tambahbarang").click(function(e) {
             e.preventDefault();
+            var nobukti_pemasukan = $("#nobukti_pemasukan").val();
             var kode_barang = $("#kode_barang").val();
             var keterangan = $("#keterangan").val();
-            var qty = $("#qty").val();
-            var kode_cabang = $("#kode_cabang").val();
+            var qty_unit = $("#qty_unit").val();
+            var qty_berat = $("#qty_berat").val();
+            var qty_lebih = $("#qty_lebih").val();
             if (kode_barang == "") {
                 swal({
                     title: 'Oops'
@@ -243,35 +266,39 @@
                 }).then(function() {
                     $("#nama_barang").focus();
                 });
-            } else if (qty == "" || qty == 0) {
+            } else if (qty_unit == "" || qty_unit == 0) {
                 swal({
                     title: 'Oops'
-                    , text: 'Qty Harus Diisi Dulu !'
+                    , text: 'Qty Unit Diisi Dulu !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
-                    $("#qty").focus();
+                    $("#qty_unit").focus();
                 });
-            } else if ($('.cabangcheck').is(':checked') && kode_cabang == "") {
+            } else if (qty_berat == "" || qty_berat == 0) {
                 swal({
                     title: 'Oops'
-                    , text: 'Cabang Harus Diisi !'
+                    , text: 'Qty Berat Diisi Dulu !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
-                    $("#kode_cabang").focus();
+                    $("#qty_berat").focus();
                 });
             } else {
 
+
                 $.ajax({
                     type: 'POST'
-                    , url: '/pengeluarangudanglogistik/storetemp'
+                    , url: '/pemasukangudangbahan/storebarang'
                     , data: {
                         _token: "{{ csrf_token() }}"
+                        , nobukti_pemasukan: nobukti_pemasukan
                         , kode_barang: kode_barang
                         , keterangan: keterangan
-                        , qty: qty
-                        , kode_cabang: kode_cabang
+                        , qty_unit: qty_unit
+                        , qty_berat: qty_berat
+                        , qty_lebih: qty_lebih
+
                     }
                     , cache: false
                     , success: function(respond) {
@@ -284,9 +311,11 @@
                             $("#kode_barang").val("");
                             $("#nama_barang").val("");
                             $("#keterangan").val("");
-                            $("#qty").val("");
-                            $("#kode_cabang").val("").change();
+                            $("#qty_unit").val("");
+                            $("#qty_berat").val("");
+                            $("#qty_lebih").val("");
                             $("#nama_barang").focus();
+
                         }
                         loaddetail();
 
@@ -295,32 +324,15 @@
             }
         });
 
-        $("#tgl_pengeluaran").change(function() {
-            var tgl_pengeluaran = $(this).val();
-            cektutuplaporan(tgl_pengeluaran);
+        $("#tgl_pemasukan").change(function() {
+            var tgl_pemasukan = $(this).val();
+            cektutuplaporan(tgl_pemasukan);
         });
 
-        function cektutuplaporan(tanggal) {
-            $.ajax({
-                type: "POST"
-                , url: "/cektutuplaporan"
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , tanggal: tanggal
-                    , jenislaporan: "gudanglogistik"
-                }
-                , cache: false
-                , success: function(respond) {
-                    console.log(respond);
-                    $("#cektutuplaporan").val(respond);
-                }
-            });
-        }
-        $("#frmBarangkeluargl").submit(function() {
-            var nobukti_pengeluaran = $("#nobukti_pengeluaran").val();
-            var tgl_pengeluaran = $("#tgl_pengeluaran").val();
+        $("#frm").submit(function() {
+            var tgl_pemasukan = $("#tgl_pemasukan").val();
             var kode_dept = $("#kode_dept").val();
-            var cektemp = $("#cektemp").val();
+            var cekbarang = $("#cekbarang").val();
             var cektutuplaporan = $("#cektutuplaporan").val();
             if (cektutuplaporan > 0) {
                 swal({
@@ -329,41 +341,30 @@
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
-                    $("#tgl_pengeluaran").focus();
+                    $("#tgl_pemasukan").focus();
                 });
                 return false;
-            } else if (nobukti_pengeluaran == "") {
-                swal({
-                    title: 'Oops'
-                    , text: 'No. Bukti Pengeluaran Harus Diisi Dulu !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#nobukti_pengeluaran").focus();
-                });
-                return false;
-            } else if (tgl_pengeluaran == "") {
-
+            } else if (tgl_pemasukan == "") {
                 swal({
                     title: 'Oops'
                     , text: 'Tanggal Harus Diisi Dulu !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
-                    $("#tgl_pengeluaran").focus();
+                    $("#tgl_pemasukan").focus();
                 });
                 return false;
             } else if (kode_dept == "") {
                 swal({
                     title: 'Oops'
-                    , text: 'Departemen Harus Diisi Dulu !'
+                    , text: 'Sumber barang Harus Diisi Dulu !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
                     $("#kode_dept").focus();
                 });
                 return false;
-            } else if (cektemp == "" || cektemp == 0) {
+            } else if (cekbarang == "" || cekbarang == 0) {
                 swal({
                     title: 'Oops'
                     , text: 'Data Masih Kosong !'
