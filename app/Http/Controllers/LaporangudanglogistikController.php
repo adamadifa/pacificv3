@@ -301,7 +301,7 @@ class LaporangudanglogistikController extends Controller
         if (!empty($kode_kategori)) {
             $query->where('master_barang_pembelian.kode_kategori', $kode_kategori);
         }
-
+        $a = 0;
         $query->orderBy('nama_barang');
         $persediaan = $query->get();
         $namabulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
