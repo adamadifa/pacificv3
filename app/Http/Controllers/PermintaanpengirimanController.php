@@ -16,7 +16,18 @@ class PermintaanpengirimanController extends Controller
     public function index(Request $request)
     {
         $query = Permintaanpengiriman::query();
-        $query->select('no_permintaan_pengiriman', 'tgl_permintaan_pengiriman', 'permintaan_pengiriman.kode_cabang', 'keterangan', 'status', 'nama_karyawan');
+        $query->select(
+            'permintaan_pengiriman.no_permintaan_pengiriman',
+            'tgl_permintaan_pengiriman',
+            'permintaan_pengiriman.kode_cabang',
+            'permintaan_pengiriman.keterangan',
+            'status',
+            'nama_karyawan',
+            'no_mutasi_gudang',
+            'no_dok',
+            'tgl_mutasi_gudang',
+            'status_sj'
+        );
         if (!empty($request->tanggal)) {
             $query->where('tgl_permintaan_pengiriman', $request->tanggal);
         }
@@ -25,8 +36,9 @@ class PermintaanpengirimanController extends Controller
             $query->where('status', $request->status);
         }
         $query->leftJoin('karyawan', 'permintaan_pengiriman.id_karyawan', '=', 'karyawan.id_karyawan');
+        $query->leftJoin('mutasi_gudang_jadi', 'permintaan_pengiriman.no_permintaan_pengiriman', '=', 'mutasi_gudang_jadi.no_permintaan_pengiriman');
         $query->orderBy('status', 'asc');
-        $query->orderBy('no_permintaan_pengiriman', 'desc');
+        $query->orderBy('permintaan_pengiriman.no_permintaan_pengiriman', 'desc');
         $pp = $query->paginate(15);
         $pp->appends($request->all());
 

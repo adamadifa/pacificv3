@@ -1,15 +1,15 @@
 @extends('layouts.midone')
-@section('titlepage','Laporan Persediaan Opname Gudang Logistik')
+@section('titlepage','Laporan Persediaan Barang Gudang Bahan')
 @section('content')
 <div class="content-wrapper">
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Laporan Persediaan Opname Gudang Logistik</h2>
+                    <h2 class="content-header-title float-left mb-0">Laporan Persediaan Barang Gudang Bahan</h2>
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/laporangudanglogistik/persediaanopname">Laporan Persediaan Opname Gudang Logistik</a>
+                            <li class="breadcrumb-item"><a href="/laporangudangbahan/persediaan">Laporan Persediaan Barang Gudang Bahan</a>
                             </li>
                         </ol>
                     </div>
@@ -27,20 +27,8 @@
                     <div class="col-lg-7 col-sm-12">
                         <div class="card">
                             <div class="card-body">
-                                <form action="/laporangudanglogistik/persediaanopname/cetak" method="POST" id="frmLaporan" target="_blank">
+                                <form action="/laporangudangbahan/persediaan/cetak" method="POST" id="frmLaporan" target="_blank">
                                     @csrf
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <select name="kode_kategori" id="kode_kategori" class="form-control">
-                                                    <option value="">Semua Kategori</option>
-                                                    @foreach ($kategori as $d)
-                                                    <option value="{{ $d->kode_kategori }}">{{ $d->kategori }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="row" id="pilihbulan">
                                         <div class="col-12">
                                             {{-- <label for="" class="form-label mb-1">Omset Bulan</label> --}}
@@ -75,7 +63,16 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <select name="kode_kategori" id="kode_kategori" class="form-control">
+                                                    <option value="B001">Bahan</option>
+                                                    <option value="B002">Kemasan</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-lg-8 col-sm-12">
                                             <div class="form-group">

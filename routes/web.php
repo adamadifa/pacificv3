@@ -23,6 +23,7 @@ use App\Http\Controllers\KaskecilController;
 use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\KlaimController;
 use App\Http\Controllers\KontrabonController;
+use App\Http\Controllers\LaporangudangbahanController;
 use App\Http\Controllers\LaporangudanglogistikController;
 use App\Http\Controllers\LaporankeuanganController;
 use App\Http\Controllers\LaporanpembelianController;
@@ -36,6 +37,7 @@ use App\Http\Controllers\MutasibankController;
 use App\Http\Controllers\MutasigudangcabangController;
 use App\Http\Controllers\OmancabangController;
 use App\Http\Controllers\OmanController;
+use App\Http\Controllers\OpnamegudangbahanController;
 use App\Http\Controllers\OpnamegudanglogistikController;
 use App\Http\Controllers\OpnamemutasibarangproduksiController;
 use App\Http\Controllers\PelangganController;
@@ -49,6 +51,7 @@ use App\Http\Controllers\PengeluarangudanglogistikController;
 use App\Http\Controllers\PengeluaranproduksiController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\PermintaanpengirimanController;
+use App\Http\Controllers\PermintaanproduksiController;
 use App\Http\Controllers\ProduksiController;
 use App\Http\Controllers\RatiokomisiController;
 use App\Http\Controllers\ReturController;
@@ -616,8 +619,8 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/saldoawalgudanglogistik/{kode_saldoawal}/edit', [SaldoawalgudanglogistikController::class, 'edit']);
     Route::get('/saldoawalgudanglogistik/{kode_saldoawal}/{kode_barang}/editbarang', [SaldoawalgudanglogistikController::class, 'editbarang']);
     Route::post('/saldoawalgudanglogistik/{kode_saldoawal}/{kode_barang}/updatebarang', [SaldoawalgudanglogistikController::class, 'updatebarang']);
-    Route::post('saldoawalgudanglogistik/getdetailsaldo', [SaldoawalgudanglogistikController::class, 'getdetailsaldo']);
-    Route::post('saldoawalgudanglogistik/store', [SaldoawalgudanglogistikController::class, 'store']);
+    Route::post('/saldoawalgudanglogistik/getdetailsaldo', [SaldoawalgudanglogistikController::class, 'getdetailsaldo']);
+    Route::post('/saldoawalgudanglogistik/store', [SaldoawalgudanglogistikController::class, 'store']);
     Route::delete('/saldoawalgudanglogistik/{kode_saldoawal}/delete', [SaldoawalgudanglogistikController::class, 'delete']);
 
     //Opname Gudang Logistik
@@ -626,8 +629,8 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/opnamegudanglogistik/{kode_opname}/edit', [OpnamegudanglogistikController::class, 'edit']);
     Route::get('/opnamegudanglogistik/{kode_opname}/{kode_barang}/editbarang', [OpnamegudanglogistikController::class, 'editbarang']);
     Route::post('/opnamegudanglogistik/{kode_opname}/{kode_barang}/updatebarang', [OpnamegudanglogistikController::class, 'updatebarang']);
-    Route::post('opnamegudanglogistik/getdetailsaldo', [OpnamegudanglogistikController::class, 'getdetailsaldo']);
-    Route::post('opnamegudanglogistik/store', [OpnamegudanglogistikController::class, 'store']);
+    Route::post('/opnamegudanglogistik/getdetailsaldo', [OpnamegudanglogistikController::class, 'getdetailsaldo']);
+    Route::post('/opnamegudanglogistik/store', [OpnamegudanglogistikController::class, 'store']);
     Route::delete('/opnamegudanglogistik/{kode_opname}/delete', [OpnamegudanglogistikController::class, 'delete']);
 
     //Laporan Gudang Logistik
@@ -694,9 +697,46 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/saldoawalgudangbahan/{kode_saldoawal}/edit', [SaldoawalgudangbahanController::class, 'edit']);
     Route::get('/saldoawalgudangbahan/{kode_saldoawal}/{kode_barang}/editbarang', [SaldoawalgudangbahanController::class, 'editbarang']);
     Route::post('/saldoawalgudangbahan/{kode_saldoawal}/{kode_barang}/updatebarang', [SaldoawalgudangbahanController::class, 'updatebarang']);
-    Route::post('saldoawalgudangbahan/getdetailsaldo', [SaldoawalgudangbahanController::class, 'getdetailsaldo']);
-    Route::post('saldoawalgudangbahan/store', [SaldoawalgudangbahanController::class, 'store']);
+    Route::post('/saldoawalgudangbahan/getdetailsaldo', [SaldoawalgudangbahanController::class, 'getdetailsaldo']);
+    Route::post('/saldoawalgudangbahan/store', [SaldoawalgudangbahanController::class, 'store']);
     Route::delete('/saldoawalgudangbahan/{kode_saldoawal}/delete', [SaldoawalgudangbahanController::class, 'delete']);
+
+    //Opname Gudang Bahan
+    Route::get('/opnamegudangbahan', [OpnamegudangbahanController::class, 'index']);
+    Route::get('/opnamegudangbahan/create', [OpnamegudangbahanController::class, 'create']);
+    Route::get('/opnamegudangbahan/{kode_opname}/edit', [OpnamegudangbahanController::class, 'edit']);
+    Route::get('/opnamegudangbahan/{kode_opname}/{kode_barang}/editbarang', [OpnamegudangbahanController::class, 'editbarang']);
+    Route::post('/opnamegudangbahan/{kode_opname}/{kode_barang}/updatebarang', [OpnamegudangbahanController::class, 'updatebarang']);
+    Route::post('/opnamegudangbahan/getdetailsaldo', [OpnamegudangbahanController::class, 'getdetailsaldo']);
+    Route::post('/opnamegudangbahan/store', [OpnamegudangbahanController::class, 'store']);
+    Route::delete('/opnamegudangbahan/{kode_opname}/delete', [OpnamegudangbahanController::class, 'delete']);
+
+    //Laporan Gudang Bahan
+    Route::get('/laporangudangbahan/pemasukan', [LaporangudangbahanController::class, 'pemasukan']);
+    Route::get('/laporangudangbahan/pengeluaran', [LaporangudangbahanController::class, 'pengeluaran']);
+    Route::get('/laporangudangbahan/persediaan', [LaporangudangbahanController::class, 'persediaan']);
+    Route::get('/laporangudangbahan/kartugudang', [LaporangudangbahanController::class, 'kartugudang']);
+    Route::get('/laporangudangbahan/rekappersediaan', [LaporangudangbahanController::class, 'rekappersediaan']);
+
+    Route::post('/laporangudangbahan/pemasukan/cetak', [LaporangudangbahanController::class, 'cetak_pemasukan']);
+    Route::post('/laporangudangbahan/pengeluaran/cetak', [LaporangudangbahanController::class, 'cetak_pengeluaran']);
+    Route::post('/laporangudangbahan/persediaan/cetak', [LaporangudangbahanController::class, 'cetak_persediaan']);
+    Route::post('/laporangudangbahan/kartugudang/cetak', [LaporangudangbahanController::class, 'cetak_kartugudang']);
+    Route::post('/laporangudangbahan/rekappersediaan/cetak', [LaporangudangbahanController::class, 'cetak_rekappersediaan']);
+
+    //Permintaan Produksi
+    Route::get('/permintaanproduksi', [PermintaanproduksiController::class, 'index']);
+    Route::post('/permintaanproduksi/show', [PermintaanproduksiController::class, 'show']);
+    Route::get('/permintaanproduksi/create', [PermintaanproduksiController::class, 'create']);
+    Route::get('/permintaanproduksi/{no_permintaan}/approve', [PermintaanproduksiController::class, 'approve']);
+    Route::get('/permintaanproduksi/{no_permintaan}/batalkanapprove', [PermintaanproduksiController::class, 'batalkanapprove']);
+    Route::post('/permintaanproduksi/store', [PermintaanproduksiController::class, 'store']);
+    Route::delete('/permintaanproduksi/{no_permintaan}/delete', [PermintaanproduksiController::class, 'delete']);
+
+    //FSTHP Gudang Jadi
+    Route::get('/fsthpgj', [FsthpController::class, 'index']);
+    Route::get('/fsthpgj/{no_mutasi_produksi}/approve', [FsthpController::class, 'approve']);
+    Route::get('/fsthpgj/{no_mutasi_produksi}/batalkanapprove', [FsthpController::class, 'batalkanapprove']);
 });
 
 //Administrator | Direktur | General Manager | Manager Marketing | Manager Accounting | Kepala Penjualan | Staff Keuangan | Admin Kas Kecil

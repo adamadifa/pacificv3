@@ -171,6 +171,15 @@
                         </a>
                     </li>
                     @endif
+                    @if (in_array($level, $permintaan_produksi_view))
+                    <li class="{{ request()->is(['permintaanproduksi', 'permintaanproduksi/*']) ? 'active' : '' }}">
+                        <a href="/permintaanproduksi">
+                            <i class="feather icon-clipboard"></i>
+                            <span class="menu-item">Permintaan Produksi</span>
+                        </a>
+                    </li>
+                    @endif
+
                     @if (in_array($level, $mutasi_produk))
                     <li>
                         <a href="#">
@@ -319,8 +328,8 @@
                             </li>
                             @endif
                             @if (in_array($level, $opname_gudangbahan))
-                            <li class="{{ request()->is(['opnamegudanglogistik', 'opnamegudanglogistik/*']) ? 'active' : '' }}">
-                                <a href="/opnamegudanglogistik">
+                            <li class="{{ request()->is(['opnamegudangbahan', 'opnamegudangbahan/*']) ? 'active' : '' }}">
+                                <a href="/opnamegudangbahan">
                                     <i class="feather icon-clipboard"></i>
                                     <span class="menu-item">Opname</span>
                                 </a>
@@ -347,9 +356,40 @@
                         </ul>
                     </li>
                     @endif
+                    @if (in_array($level,$gudang_jadi_menu))
+                    <li>
+                        <a href="#">
+                            <i class="feather icon-circle"></i>
+                            <span class="menu-item">Gudang Jadi</span>
+                        </a>
+                        <ul class="menu-content">
+                            @if (in_array($level, $mutasi_produk_gj))
+                            <li>
+                                <a href="#">
+                                    <i class="feather icon-circle"></i>
+                                    <span class="menu-item" data-i18n="Second Level">Mutasi Produk</span>
+                                </a>
+                                <ul class="menu-content">
+                                    @if (in_array($level, $fsthp_gj_view))
+                                    <li class="{{ request()->is(['fsthpgj', 'fsthpgj/*']) ? 'active' : '' }}">
+                                        <a href="/fsthpgj">
+                                            <i class="feather icon-arrow-right"></i>
+                                            <span class="menu-item">FSTHP</span>
+                                        </a>
+                                    </li>
+                                    @endif
+
+                                </ul>
+                            </li>
+                            @endif
+
+                        </ul>
+                    </li>
+                    @endif
+
                     @if (in_array($level, $laporan_gudang))
-                    <li class="{{ request()->is(['laporangudanglogistik','laporangudanglogistik/*'])? 'active': '' }}">
-                        <a href="/laporangudanglogistik/pemasukan">
+                    <li class="{{ request()->is(['laporangudangbahan','laporangudangbahan/*'])? 'active': '' }}">
+                        <a href="/laporangudangbahan/pemasukan">
                             <i class="feather icon-file-text"></i>
                             <span class="menu-item">Laporan</span>
                         </a>

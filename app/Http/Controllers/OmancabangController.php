@@ -140,7 +140,7 @@ class OmancabangController extends Controller
             //die;
             return redirect('/omancabang')->with(['success' => 'Data Berhasil Disimpan ']);
         } catch (\Exception $e) {
-            //dd($e);
+            dd($e);
             DB::rollback();
             return  redirect('/omancabang')->with(['warning' => 'Data Gagal Disimpan Hubungi Tim IT']);
         }

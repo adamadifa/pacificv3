@@ -1,15 +1,15 @@
 @extends('layouts.midone')
-@section('titlepage','Data Order Management Cabang')
+@section('titlepage','Data Permintaan Produksi Cabang')
 @section('content')
 <div class="content-wrapper">
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Order Management</h2>
+                    <h2 class="content-header-title float-left mb-0">Permintaan Produksi</h2>
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/oman">Order Management</a>
+                            <li class="breadcrumb-item"><a href="/permintaanproduksi">Permintaan Produksi</a>
                             </li>
                         </ol>
                     </div>
@@ -24,10 +24,10 @@
         <div class="col-md-8 col-sm-8">
             <div class="card">
                 <div class="card-header">
-                    <a href="/oman/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
+                    <a href="/permintaanproduksi/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
                 </div>
                 <div class="card-body">
-                    <form action="/oman">
+                    <form action="/permintaanproduksi">
                         <div class="row">
                             <div class="col-lg-9 col-sm-12">
                                 <div class="form-group">
@@ -54,8 +54,9 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th class="text-center">No</th>
+                                    <th>No. Permintaan</th>
+                                    <th>Tanggal</th>
                                     <th>No. Order</th>
-
                                     <th>Bulan</th>
                                     <th>Tahun</th>
                                     <th>Status</th>
@@ -63,43 +64,41 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($oman_marketing as $d)
+                                @foreach ($permintaanproduksi as $d)
                                 <tr>
-                                    <td class="text-center">{{ $loop->iteration }}</td>
-                                    <td>{{ $d->no_order }}</td>
-
-                                    <td>{{ $bulan[$d->bulan] }}</td>
-                                    <td>{{ $d->tahun }}</td>
+                                    <td>{{$loop->iteration}}</td>
+                                    <td>{{$d->no_permintaan}}</td>
+                                    <td>{{date("Y-m-d",strtotime($d->tgl_permintaan))}}</td>
+                                    <td>{{$d->no_order}}</td>
+                                    <td>{{$bulan[$d->bulan]}}</td>
+                                    <td>{{$d->tahun}}</td>
                                     <td>
-                                        @if ($d->status==0)
-                                        <span class="badge bg-warning"><i class="fa fa-history"></i> Pending</span>
-                                        @elseif($d->status==1)
-                                        <span class="badge bg-info"><i class="fa fa-check"></i> Sudah Di Proses Gudang</span>
-                                        @elseif($d->status==2)
-                                        <span class="badge bg-success"><i class="fa fa-check"></i> Sudah Di Proses Produksi</span>
+                                        @if ($d->status==1)
+                                        <span class="badge bg-success"><i class="fa fa-check mr-1"></i> Sudah Diproses Oleh Produksi</span>
+                                        @else
+                                        <span class="badge bg-warning"><i class="fa fa-history mr-1"></i> Pending</span>
                                         @endif
                                     </td>
-                                    <td class="text-center">
+                                    <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
-                                            @if ($d->status ==0)
-                                            <a class="ml-1" href="/oman/{{\Crypt::encrypt($d->no_order)}}/edit"><i class="feather icon-edit success"></i></a>
-                                            <form method="POST" name="deleteform" class="deleteform" action="/oman/{{ Crypt::encrypt($d->no_order) }}/delete">
+                                            <a class="ml-1 detail" no_permintaan="{{ $d->no_permintaan }}" href="#"><i class=" feather icon-file-text info"></i></a>
+                                            @if ($d->status !=1)
+                                            <form method="POST" name="deleteform" class="deleteform" action="/permintaanproduksi/{{ Crypt::encrypt($d->no_permintaan) }}/delete">
                                                 @csrf
                                                 @method('DELETE')
                                                 <a href="#" class="delete-confirm ml-1">
                                                     <i class="feather icon-trash danger"></i>
                                                 </a>
                                             </form>
-                                            @endif
-                                            <a class="ml-1 detailoman" no_order="{{ $d->no_order }}" href="#"><i class=" feather icon-file-text info"></i></a>
-                                            @if ($d->status==2)
-                                            <a class="ml-1 detail" no_permintaan="{{ $d->no_permintaan }}" href="#"><i class=" feather icon-file-text warning"></i></a>
+                                            <a href="/permintaanproduksi/{{Crypt::encrypt($d->no_permintaan)}}/approve" class="ml-1"><i class="fa fa-check success"></i></a>
+                                            @else
+                                            <a href="/permintaanproduksi/{{Crypt::encrypt($d->no_permintaan)}}/batalkanapprove" class="ml-1"><i class="fa fa-close danger"></i></a>
                                             @endif
                                         </div>
+
                                     </td>
                                 </tr>
                                 @endforeach
-
                             </tbody>
                         </table>
 
@@ -111,22 +110,6 @@
         </div>
     </div>
 </div>
-<div class="modal fade text-left" id="mdloman" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel18">Detail</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div id="loadoman"></div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="modal fade text-left" id="mdldetail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -142,7 +125,6 @@
         </div>
     </div>
 </div>
-
 @endsection
 @push('myscript')
 <script>
@@ -165,30 +147,6 @@
                 });
         });
 
-        function loadoman(no_order) {
-            $.ajax({
-                type: 'POST'
-                , url: '/oman/show'
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , no_order: no_order
-                }
-                , cache: false
-                , success: function(respond) {
-                    $("#loadoman").html(respond);
-                }
-            });
-        }
-        $('.detailoman').click(function(e) {
-            var no_order = $(this).attr("no_order");
-            e.preventDefault();
-            loadoman(no_order);
-            $('#mdloman').modal({
-                backdrop: 'static'
-                , keyboard: false
-            });
-        });
-
         function loaddetail(no_permintaan) {
             $.ajax({
                 type: 'POST'
@@ -203,7 +161,6 @@
                 }
             });
         }
-
         $('.detail').click(function(e) {
             var no_permintaan = $(this).attr("no_permintaan");
             e.preventDefault();
@@ -213,7 +170,6 @@
                 , keyboard: false
             });
         });
-
     })
 
 </script>

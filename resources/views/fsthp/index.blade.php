@@ -121,8 +121,7 @@
             <div class="col-lg-6 col-md-12 col-sm-12">
                 <div class="card">
                     <div class="card-body">
-                        <form action="/fsthp">
-
+                        <form action="{{URL::current()}}">
                             <div class="row">
                                 <div class="col-8">
                                     <x-inputtext label="Tanggal" field="tanggal" icon="feather icon-calendar" value="{{ Request('tanggal') }}" datepicker />
@@ -173,6 +172,9 @@
                                                     <i class="feather icon-trash danger"></i>
                                                 </a>
                                             </form>
+                                            <a href="/fsthpgj/{{Crypt::encrypt($d->no_mutasi_produksi)}}/approve" class="ml-1"><i class="fa fa-check success"></i></a>
+                                            @else
+                                            <a href="/fsthpgj/{{Crypt::encrypt($d->no_mutasi_produksi)}}/batalkanapprove" class="ml-1"><i class="fa fa-close danger"></i></a>
                                             @endif
                                         </div>
                                     </td>

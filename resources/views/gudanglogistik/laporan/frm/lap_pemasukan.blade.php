@@ -78,7 +78,7 @@
                 </div>
             </div>
             <div class="col-lg-3 col-sm-12">
-                @include('layouts.nav_laporangudanglogistik')
+                @include('layouts.nav_laporangudang')
             </div>
 
             <div class="col-lg-8 col-sm-12">

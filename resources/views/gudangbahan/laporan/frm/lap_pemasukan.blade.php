@@ -1,15 +1,15 @@
 @extends('layouts.midone')
-@section('titlepage','Laporan Pengeluran Gudang Logistik')
+@section('titlepage','Laporan Pemasukan Gudang Bahan')
 @section('content')
 <div class="content-wrapper">
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Laporan Pengeluran Gudang Logistik</h2>
+                    <h2 class="content-header-title float-left mb-0">Laporan Pemasukan Gudang Bahan</h2>
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/laporangudanglogistik/pengeluaran">Laporan Pengeluran Gudang Logistik</a>
+                            <li class="breadcrumb-item"><a href="/laporangudangbahan/pemasukan">Laporan Pemasukan Gudang Bahan</a>
                             </li>
                         </ol>
                     </div>
@@ -27,49 +27,16 @@
                     <div class="col-lg-7 col-sm-12">
                         <div class="card">
                             <div class="card-body">
-                                <form action="/laporangudanglogistik/pengeluaran/cetak" method="POST" id="frmLaporan" target="_blank">
+                                <form action="/laporangudangbahan/pemasukan/cetak" method="POST" id="frmPembelian" target="_blank">
                                     @csrf
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <select name="kode_dept" id="kode_dept" class="form-control">
-                                                    <option value="">Semua Departemen</option>
-                                                    @foreach ($departemen as $d)
-                                                    <option value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <select name="kode_cabang" id="kode_cabang" class="form-control">
-                                                    <option value="">Semua Cabang</option>
-                                                    @foreach ($cabang as $d)
-                                                    <option value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <select name="kode_kategori" id="kode_kategori" class="form-control">
-                                                    <option value="">Semua Kategori</option>
-                                                    @foreach ($kategori as $d)
-                                                    <option value="{{ $d->kode_kategori }}">{{ $d->kategori }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <select name="kode_barang" id="kode_barang" class="form-control select2">
                                                     <option value="">Semua Barang</option>
+                                                    @foreach ($barang as $d)
+                                                    <option value="{{$d->kode_barang}}">{{$d->nama_barang}}</option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
@@ -118,22 +85,7 @@
 <script>
     $(function() {
 
-        $("#kode_kategori").change(function() {
-            var kode_kategori = $("#kode_kategori").val();
-            $.ajax({
-                type: 'POST'
-                , url: '/getbarangpembelianbykategori'
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , kode_kategori: kode_kategori
-                }
-                , cache: false
-                , success: function(respond) {
-                    $("#kode_barang").html(respond);
-                }
-            });
-        });
-        $("#frmLaporan").submit(function() {
+        $("#frmPembelian").submit(function() {
             var dari = $("#dari").val();
             var sampai = $("#sampai").val();
 

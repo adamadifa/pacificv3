@@ -21,7 +21,7 @@
         <!-- Data list view starts -->
         <!-- DataTable starts -->
         @include('layouts.notification')
-        <div class="col-md-8 col-sm-8">
+        <div class="col-md-12 col-sm-12 col-lg-12">
             <div class="card">
                 @if (in_array($level, $salesman_tambah))
                 <div class="card-header">
@@ -63,6 +63,10 @@
                                     <th>Keterangan</th>
                                     <th>Status</th>
                                     <th>Salesman</th>
+                                    <th>No. SJ</th>
+                                    <th>No.Dok / No. Faktur</th>
+                                    <th>Tanggal SJ</th>
+                                    <th>Status SJ</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -70,7 +74,8 @@
                                 @foreach ($pp as $d)
                                 <tr>
                                     <td class="text-center">{{ $loop->iteration + $pp->firstItem() - 1 }}</td>
-                                    <td>{{ $d->no_permintaan_pengiriman }}</td>
+                                    <td><a class="ml-1 detail" href="#" no_permintaan_pengiriman="{{ Crypt::encrypt($d->no_permintaan_pengiriman) }}">{{$d->no_permintaan_pengiriman}}</a></td>
+
                                     <td>{{ date('d-m-Y', strtotime($d->tgl_permintaan_pengiriman)) }}</td>
                                     <td>{{ $d->kode_cabang }}</td>
                                     <td>{{ $d->keterangan }}</td>
@@ -79,11 +84,25 @@
                                         <span class="badge bg-success"><i class="feather icon-check"></i> Sudah
                                             Di Proses</span>
                                         @else
-                                        <span class="badge bg-danger"><i class="feather icon-history"></i> Sudah
+                                        <span class="badge bg-danger"><i class="feather icon-history"></i>
                                             Belum Di Proses</span>
                                         @endif
                                     </td>
                                     <td>{{ $d->nama_karyawan }}</td>
+                                    <td>{{$d->no_mutasi_gudang}}</td>
+                                    <td>{{$d->no_dok}}</td>
+                                    <td>{{!empty($d->tgl_mutasi_gudang) ? date("d-m-Y",strtotime($d->tgl_mutasi_gudang)) : ''}}</td>
+                                    <td>
+                                        @if ($d->status==1)
+                                        @if ($d->status_sj==0)
+                                        <span class="badge bg-danger">Belum Diterima Cabang</span>
+                                        @elseif($d->status_sj==1)
+                                        <span class="badge bg-success">Sudah Diterima Cabang</span>
+                                        @elseif($d->status_sj ==2)
+                                        <span class="badge bg-info">Transit Out</span>
+                                        @endif
+                                        @endif
+                                    </td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             @if ($d->status == 0)
@@ -95,7 +114,7 @@
                                                 </a>
                                             </form>
                                             @endif
-                                            <a class="ml-1 detail" href="#" no_permintaan_pengiriman="{{ Crypt::encrypt($d->no_permintaan_pengiriman) }}"><i class=" feather icon-file-text info"></i></a>
+
                                         </div>
                                     </td>
                                 </tr>
@@ -114,7 +133,7 @@
 </div>
 <!-- Detail Permintaan Pengiriman -->
 <div class="modal fade text-left" id="mdldetailpp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel18">Detail Permintaan Pengiriman</h4>

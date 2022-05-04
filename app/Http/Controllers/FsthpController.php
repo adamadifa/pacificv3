@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Barang;
 use App\Models\Mutasiproduksi;
+use COM;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -217,6 +218,66 @@ class FsthpController extends Controller
             dd($e);
             DB::rollback();
             return Redirect::back()->with(['warning' => 'Data Gagal Disimpan, Hubunti Tim IT']);
+        }
+    }
+
+    public function approve($no_mutasi_produksi)
+    {
+        $no_mutasi_produksi = Crypt::decrypt($no_mutasi_produksi);
+        $fsthp = DB::table('mutasi_produksi')->where('no_mutasi_produksi', $no_mutasi_produksi)->first();
+        $detailfsthp = DB::table('detail_mutasi_produksi')->where('no_mutasi_produksi', $no_mutasi_produksi)->get();
+        $id_admin = Auth::user()->id;
+        $cek = DB::table('mutasi_gudang_jadi')->where('no_mutasi_gudang', $no_mutasi_produksi)->count();
+        if ($cek > 0) {
+            return Redirect::back()->with(['warning' => 'Data Sudah Ada']);
+        } else {
+            $data = [
+                'no_mutasi_gudang' => $no_mutasi_produksi,
+                'tgl_mutasi_gudang' => $fsthp->tgl_mutasi_produksi,
+                'inout' => 'IN',
+                'jenis_mutasi' => 'FSTHP',
+                'id_admin' => $id_admin
+
+            ];
+            DB::beginTransaction();
+            try {
+                DB::table('mutasi_gudang_jadi')->insert($data);
+                foreach ($detailfsthp as $d) {
+                    $data_detail = [
+                        'no_mutasi_gudang' => $no_mutasi_produksi,
+                        'kode_produk'  => $d->kode_produk,
+                        'shift'  => $d->shift,
+                        'jumlah' => $d->jumlah
+                    ];
+
+                    DB::table('detail_mutasi_gudang')->insert($data_detail);
+                }
+                DB::table('mutasi_produksi')->where('no_mutasi_produksi', $no_mutasi_produksi)->update(['status' => 1]);
+                DB::commit();
+                return Redirect::back()->with(['success' => 'Data Berhasil Di Batalkan']);
+            } catch (\Exception $e) {
+                dd($e);
+                DB::rollback();
+                return Redirect::back()->with(['warning' => 'Data Gagal Dibatalkan, Hubungi Tim IT']);
+            }
+        }
+    }
+
+    public function batalkanapprove($no_mutasi_produksi)
+    {
+        $no_mutasi_produksi = Crypt::decrypt($no_mutasi_produksi);
+
+        DB::beginTransaction();
+        try {
+            DB::table('mutasi_gudang_jadi')->where('no_mutasi_gudang', $no_mutasi_produksi)->delete();
+            DB::table('detail_mutasi_gudang')->where('no_mutasi_gudang', $no_mutasi_produksi)->delete();
+            DB::table('mutasi_produksi')->where('no_mutasi_produksi', $no_mutasi_produksi)->update(['status' => null]);
+            DB::commit();
+            return Redirect::back()->with(['success' => 'Data Berhasil Di Batalkan']);
+        } catch (\Exception $e) {
+            dd($e);
+            DB::rollback();
+            return Redirect::back()->with(['warning' => 'Data Gagal Dibatalkan, Hubungi Tim IT']);
         }
     }
 }

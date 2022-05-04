@@ -53,6 +53,9 @@
 @if ($sj != null)
 <table class="table">
     <tr>
+        <th colspan="2">Data Surat Jalan</th>
+    </tr>
+    <tr>
         <td>No. Surat Jalan</td>
         <td>{{ $sj->no_mutasi_gudang }}</td>
     </tr>
