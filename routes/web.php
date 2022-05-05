@@ -740,7 +740,14 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/fsthpgj/{no_mutasi_produksi}/batalkanapprove', [FsthpController::class, 'batalkanapprove']);
 
     //Surat jalan
-    Route::get('/suratjalan/create', [SuratjalanController::class, 'create']);
+    Route::get('/suratjalan/{no_permintaan_pengiriman}/create', [SuratjalanController::class, 'create']);
+    Route::post('/suratjalan/cektemp', [SuratjalanController::class, 'cektemp']);
+    Route::post('/suratjalan/storetemp', [SuratjalanController::class, 'storetemp']);
+    Route::post('/suratjalan/deletetemp', [SuratjalanController::class, 'deletetemp']);
+    Route::post('/suratjalan/masukankerealisasi', [SuratjalanController::class, 'masukankerealisasi']);
+    Route::post('/suratjalan/buatnomorsj', [SuratjalanController::class, 'buatnomorsj']);
+    Route::post('/suratjalan/store', [SuratjalanController::class, 'store']);
+    Route::get('/suratjalan/{no_permintaan_pengiriman}/showtemp', [SuratjalanController::class, 'showtemp']);
 });
 
 //Administrator | Direktur | General Manager | Manager Marketing | Manager Accounting | Kepala Penjualan | Staff Keuangan | Admin Kas Kecil

@@ -116,7 +116,7 @@
                                             @endif
 
                                             @if (empty($d->status_sj))
-                                            <a href="#" class="input_sj ml-1"><i class="feather icon-external-link success"></i></a>
+                                            <a href="#" class="input_sj ml-1" no_permintaan_pengiriman="{{ Crypt::encrypt($d->no_permintaan_pengiriman) }}"><i class="feather icon-external-link success"></i></a>
                                             @endif
                                         </div>
                                     </td>
@@ -524,7 +524,8 @@
 
         $(".input_sj").click(function(e) {
             e.preventDefault();
-            $("#loadinputsj").load('/suratjalan/create');
+            var no_permintaan_pengiriman = $(this).attr("no_permintaan_pengiriman");
+            $("#loadinputsj").load('/suratjalan/' + no_permintaan_pengiriman + '/create');
             $('#mdlinputsj').modal({
                 backdrop: 'static'
                 , keyboard: false
