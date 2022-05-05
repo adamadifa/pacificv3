@@ -66,6 +66,7 @@ use App\Http\Controllers\SetoranpusatController;
 use App\Http\Controllers\SetorantransferController;
 use App\Http\Controllers\SimpananController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\SuratjalanController;
 use App\Http\Controllers\TabunganController;
 use App\Http\Controllers\TargetkomisiController;
 use App\Http\Controllers\TransferController;
@@ -737,6 +738,9 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/fsthpgj', [FsthpController::class, 'index']);
     Route::get('/fsthpgj/{no_mutasi_produksi}/approve', [FsthpController::class, 'approve']);
     Route::get('/fsthpgj/{no_mutasi_produksi}/batalkanapprove', [FsthpController::class, 'batalkanapprove']);
+
+    //Surat jalan
+    Route::get('/suratjalan/create', [SuratjalanController::class, 'create']);
 });
 
 //Administrator | Direktur | General Manager | Manager Marketing | Manager Accounting | Kepala Penjualan | Staff Keuangan | Admin Kas Kecil

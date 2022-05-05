@@ -115,6 +115,9 @@
                                             </form>
                                             @endif
 
+                                            @if (empty($d->status_sj))
+                                            <a href="#" class="input_sj ml-1"><i class="feather icon-external-link success"></i></a>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>
@@ -251,6 +254,23 @@
         </div>
     </div>
 </div>
+<!-- Input Surat Jalan -->
+<div class="modal fade text-left" id="mdlinputsj" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Buat Surat Jalan</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loadinputsj"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @push('myscript')
@@ -500,6 +520,16 @@
             } else {
                 return true;
             }
+        });
+
+        $(".input_sj").click(function(e) {
+            e.preventDefault();
+            $("#loadinputsj").load('/suratjalan/create');
+            $('#mdlinputsj').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+
         });
     });
 
