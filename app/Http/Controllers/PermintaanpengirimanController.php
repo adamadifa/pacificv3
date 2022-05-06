@@ -35,9 +35,14 @@ class PermintaanpengirimanController extends Controller
         if (!empty($request->status) || $request->status === '0') {
             $query->where('status', $request->status);
         }
+
+        if (!empty($request->cabang)) {
+            $query->where('permintaan_pengiriman.kode_cabang', $request->cabang);
+        }
         $query->leftJoin('karyawan', 'permintaan_pengiriman.id_karyawan', '=', 'karyawan.id_karyawan');
         $query->leftJoin('mutasi_gudang_jadi', 'permintaan_pengiriman.no_permintaan_pengiriman', '=', 'mutasi_gudang_jadi.no_permintaan_pengiriman');
         $query->orderBy('status', 'asc');
+        $query->orderBy('tgl_permintaan_pengiriman', 'desc');
         $query->orderBy('permintaan_pengiriman.no_permintaan_pengiriman', 'desc');
         $pp = $query->paginate(15);
         $pp->appends($request->all());

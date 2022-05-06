@@ -100,6 +100,10 @@
                                 } else if ($d->kategori == 'PNJ') {
                                 $color = "rgba(80, 39, 245, 0.08)";
                                 $text = "black";
+                                }else if ($d->kategori == 'GDJ') {
+                                $color = "rgba(240, 95, 95, 0.24)";
+
+                                $text = "black";
                                 } else {
                                 if (!empty($d->kode_cr)) {
                                 $color = "rgba(209, 203, 11, 0.15)";

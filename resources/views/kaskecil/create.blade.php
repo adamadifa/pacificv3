@@ -302,7 +302,7 @@
                         swal("Success", "Data Berhasil Disimpan", "success");
                         reset();
                     } else {
-                        swal("Success", "Data Gagal Disimpan", "success");
+                        swal("Oops", "Data Gagal Disimpan, Hubungi Tim IT", "warning");
                     }
                 }
             });

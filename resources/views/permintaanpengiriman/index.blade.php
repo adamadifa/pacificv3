@@ -23,19 +23,28 @@
         @include('layouts.notification')
         <div class="col-md-12 col-sm-12 col-lg-12">
             <div class="card">
-                @if (in_array($level, $salesman_tambah))
+
                 <div class="card-header">
-                    <a href="#" class="btn btn-primary" id="inputpermintaan"><i class="fa fa-plus mr-1"></i> Tambah
-                        Data</a>
+                    <a href="#" class="btn btn-primary" id="inputpermintaan"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
                 </div>
-                @endif
+
                 <div class="card-body">
-                    <form action="/permintaanpengiriman">
+                    <form action="{{URL::current()}}">
                         <div class="row">
-                            <div class="col-lg-4 col-sm-12">
+                            <div class="col-lg-3 col-sm-12">
                                 <x-inputtext field="tanggal" value="{{ Request('tanggal') }}" label="Tanggal Permintaan Pengiriman" icon="feather icon-calendar" datepicker />
                             </div>
-                            <div class="col-lg-4 col-sm-12">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <select name="cabang" id="cabang" class="form-control">
+                                        <option value="">Cabang</option>
+                                        @foreach ($cabang as $d)
+                                        <option {{Request('cabang')==$d->kode_cabang ? 'selected' : ''}} value="{{$d->kode_cabang}}">{{$d->nama_cabang}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-sm-12">
                                 <div class="form-group">
                                     <select name="status" id="status" class="form-control">
                                         <option value="">Semua Status</option>
@@ -46,7 +55,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-sm-12">
+                            <div class="col-lg-3 col-sm-12">
                                 <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search mr-2"></i> Search</button>
                             </div>
                         </div>
@@ -115,8 +124,12 @@
                                             </form>
                                             @endif
 
-                                            @if (empty($d->status_sj))
+                                            @if ($d->status==0)
                                             <a href="#" class="input_sj ml-1" no_permintaan_pengiriman="{{ Crypt::encrypt($d->no_permintaan_pengiriman) }}"><i class="feather icon-external-link success"></i></a>
+                                            @else
+                                            @if ($d->status==1 AND $d->status_sj==0)
+                                            <a href="/suratjalan/{{Crypt::encrypt($d->no_mutasi_gudang)}}/batalkansuratjalan" class="ml-1"><i class="fa fa-close danger"></i></a>
+                                            @endif
                                             @endif
                                         </div>
                                     </td>

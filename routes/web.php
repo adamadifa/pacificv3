@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AnggotaController;
+use App\Http\Controllers\AngkutanController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BankController;
@@ -22,6 +23,7 @@ use App\Http\Controllers\JurnalkoreksiController;
 use App\Http\Controllers\KaskecilController;
 use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\KlaimController;
+use App\Http\Controllers\KontrabonangkutanController;
 use App\Http\Controllers\KontrabonController;
 use App\Http\Controllers\LaporangudangbahanController;
 use App\Http\Controllers\LaporangudanglogistikController;
@@ -35,6 +37,7 @@ use App\Http\Controllers\LimitkreditController;
 use App\Http\Controllers\LpcController;
 use App\Http\Controllers\MutasibankController;
 use App\Http\Controllers\MutasigudangcabangController;
+use App\Http\Controllers\MutasilaingjController;
 use App\Http\Controllers\OmancabangController;
 use App\Http\Controllers\OmanController;
 use App\Http\Controllers\OpnamegudangbahanController;
@@ -54,6 +57,7 @@ use App\Http\Controllers\PermintaanpengirimanController;
 use App\Http\Controllers\PermintaanproduksiController;
 use App\Http\Controllers\ProduksiController;
 use App\Http\Controllers\RatiokomisiController;
+use App\Http\Controllers\RepackrejectgudangjadiController;
 use App\Http\Controllers\ReturController;
 use App\Http\Controllers\SaldoawalgudangbahanController;
 use App\Http\Controllers\SaldoawalgudanglogistikController;
@@ -740,14 +744,65 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/fsthpgj/{no_mutasi_produksi}/batalkanapprove', [FsthpController::class, 'batalkanapprove']);
 
     //Surat jalan
+    Route::get('/suratjalan', [SuratjalanController::class, 'index']);
+    Route::get('/suratjalan/{no_mutasi_gudang}/show', [SuratjalanController::class, 'show']);
+    Route::get('/suratjalan/{no_mutasi_gudang}/cetak', [SuratjalanController::class, 'cetak']);
     Route::get('/suratjalan/{no_permintaan_pengiriman}/create', [SuratjalanController::class, 'create']);
     Route::post('/suratjalan/cektemp', [SuratjalanController::class, 'cektemp']);
+    Route::get('/suratjalan/{no_permintaan_pengiriman}/showtemp', [SuratjalanController::class, 'showtemp']);
     Route::post('/suratjalan/storetemp', [SuratjalanController::class, 'storetemp']);
     Route::post('/suratjalan/deletetemp', [SuratjalanController::class, 'deletetemp']);
     Route::post('/suratjalan/masukankerealisasi', [SuratjalanController::class, 'masukankerealisasi']);
     Route::post('/suratjalan/buatnomorsj', [SuratjalanController::class, 'buatnomorsj']);
     Route::post('/suratjalan/store', [SuratjalanController::class, 'store']);
-    Route::get('/suratjalan/{no_permintaan_pengiriman}/showtemp', [SuratjalanController::class, 'showtemp']);
+    Route::get('/suratjalan/{no_mutasi_gudang}/batalkansuratjalan', [SuratjalanController::class, 'batalkansuratjalan']);
+
+    //Permintaan Pengiriman GJ
+    Route::get('/permintaanpengirimangj', [PermintaanpengirimanController::class, 'index']);
+
+    //RepackReject
+    Route::get('/repackgj/{jenis_mutasi}', [RepackrejectgudangjadiController::class, 'index']);
+    Route::get('/rejectgj/{jenis_mutasi}', [RepackrejectgudangjadiController::class, 'index']);
+    Route::get('/repackrejectgj/{jenis_mutasi}/showtemp', [RepackrejectgudangjadiController::class, 'showtemp']);
+    Route::get('/repackrejectgj/{no_mutasi_gudang}/show', [RepackrejectgudangjadiController::class, 'show']);
+    Route::post('/repackrejectgj/{jenis_mutasi}/cektemp', [RepackrejectgudangjadiController::class, 'cektemp']);
+    Route::post('/repackrejectgj/storetemp', [RepackrejectgudangjadiController::class, 'storetemp']);
+    Route::post('/repackrejectgj/deletetemp', [RepackrejectgudangjadiController::class, 'deletetemp']);
+    Route::post('/repackrejectgj/buatnomorrepackreject', [RepackrejectgudangjadiController::class, 'buatnomorrepackreject']);
+    Route::post('/repackrejectgj/store', [RepackrejectgudangjadiController::class, 'store']);
+    Route::delete('/repackrejectgj/{no_mutasi_gudang}/delete', [RepackrejectgudangjadiController::class, 'delete']);
+
+    //Mutasi Lainnya
+    Route::get('/lainnyagj', [MutasilaingjController::class, 'index']);
+    Route::get('/lainnyagj/{no_mutasi_gudang}/show', [MutasilaingjController::class, 'show']);
+    Route::delete('/lainnyagj/{no_mutasi_gudang}/delete', [MutasilaingjController::class, 'delete']);
+    Route::post('/lainnyagj/buatnomormutasi', [MutasilaingjController::class, 'buatnomormutasi']);
+    Route::post('/lainnyagj/{jenis_mutasi}/cektemp', [MutasilaingjController::class, 'cektemp']);
+    Route::post('/lainnyagj/storetemp', [MutasilaingjController::class, 'storetemp']);
+    Route::post('/lainnyagj/deletetemp', [MutasilaingjController::class, 'deletetemp']);
+    Route::get('/lainnyagj/{jenis_mutasi}/showtemp', [MutasilaingjController::class, 'showtemp']);
+    Route::post('/lainnyagj/store', [MutasilaingjController::class, 'store']);
+
+    //Angkutan
+    Route::get('/angkutan', [AngkutanController::class, 'index']);
+    Route::delete('/angkutan/{no_surat_jalan}/delete', [AngkutanController::class, 'delete']);
+    Route::get('/angkutan/{no_surat_jalan}/edit', [AngkutanController::class, 'edit']);
+    Route::post('/angkutan/{no_surat_jalan}/update', [AngkutanController::class, 'update']);
+
+    //Kontrabon Angkutan
+    Route::get('/kontrabonangkutan', [KontrabonangkutanController::class, 'index']);
+    Route::get('/kontrabonangkutan/{no_kontrabon}/show', [KontrabonangkutanController::class, 'show']);
+    Route::get('/kontrabonangkutan/{no_kontrabon}/proses', [KontrabonangkutanController::class, 'proses']);
+    Route::get('/kontrabonangkutan/create', [KontrabonangkutanController::class, 'create']);
+    Route::get('/kontrabonangkutan/getnosuratjalan', [KontrabonangkutanController::class, 'getnosuratjalan']);
+    Route::get('/kontrabonangkutan/showtemp', [KontrabonangkutanController::class, 'showtemp']);
+    Route::post('/kontrabonangkutan/deletetemp', [KontrabonangkutanController::class, 'deletetemp']);
+    Route::post('/kontrabonangkutan/cektemp', [KontrabonangkutanController::class, 'cektemp']);
+    Route::post('/kontrabonangkutan/storetemp', [KontrabonangkutanController::class, 'storetemp']);
+    Route::post('/kontrabonangkutan/store', [KontrabonangkutanController::class, 'store']);
+    Route::post('/kontrabonangkutan/proseskontrabon', [KontrabonangkutanController::class, 'proseskontrabon']);
+    Route::get('/kontrabonangkutan/{no_kontrabon}/{no_ref}/batalkan', [KontrabonangkutanController::class, 'batalkan']);
+    Route::delete('/kontrabonangkutan/{no_kontrabon}/delete', [KontrabonangkutanController::class, 'delete']);
 });
 
 //Administrator | Direktur | General Manager | Manager Marketing | Manager Accounting | Kepala Penjualan | Staff Keuangan | Admin Kas Kecil

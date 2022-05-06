@@ -113,6 +113,7 @@ class GlobalProvider extends ServiceProvider
             $omanmarketing = ['admin'];
             //----------------------------Permintaaan Pengiriman--------------------------------
             $permintaanpengiriman = ['admin'];
+            $permintaanpengiriman_gj = ['admin'];
             //----------------------------Target Komisi--------------------------------
             $komisi = ['admin', 'kepala penjualan', 'kepala admin', 'manager marketing', 'general manager', 'direktur', 'manager accounting'];
             $targetkomisi = ['admin', 'kepala penjualan', 'kepala admin', 'manager marketing', 'general manager', 'direktur', 'manager accounting'];
@@ -277,6 +278,17 @@ class GlobalProvider extends ServiceProvider
             $permintaan_produksi_view = ['admin'];
             $mutasi_produk_gj = ['admin'];
             $fsthp_gj_view = ['admin'];
+            $suratjalan_view = ['admin'];
+            $repackgj_view = ['admin'];
+            $rejectgj_view = ['admin'];
+            $lainnyagj_view = ['admin'];
+            $angkutan_view = ['admin'];
+
+            //Kontrabon Angkutan
+
+            $gudang_jadi_keuangan = ['admin'];
+            $kontrabon_angkutan_view = ['admin'];
+
 
 
             $shareddata = [
@@ -345,6 +357,7 @@ class GlobalProvider extends ServiceProvider
 
                 //------------Permintaan Pengiriman------
                 'permintaanpengiriman' => $permintaanpengiriman,
+                'permintaanpengiriman_gj' => $permintaanpengiriman_gj,
                 //------------Komisi------
                 'komisi' => $komisi,
                 'targetkomisi' => $targetkomisi,
@@ -510,7 +523,16 @@ class GlobalProvider extends ServiceProvider
                 //Gudang Jadi
                 'permintaan_produksi_view' => $permintaan_produksi_view,
                 'mutasi_produk_gj' => $mutasi_produk_gj,
-                'fsthp_gj_view' => $fsthp_gj_view
+                'fsthp_gj_view' => $fsthp_gj_view,
+                'suratjalan_view' => $suratjalan_view,
+                'repackgj_view' => $repackgj_view,
+                'rejectgj_view' => $rejectgj_view,
+                'lainnyagj_view' => $lainnyagj_view,
+                'angkutan_view' => $angkutan_view,
+
+                //Kontrabon Angkutan
+                'gudang_jadi_keuangan' => $gudang_jadi_keuangan,
+                'kontrabon_angkutan_view' => $kontrabon_angkutan_view
             ];
             View::share($shareddata);
         });

@@ -363,6 +363,23 @@
                             <span class="menu-item">Gudang Jadi</span>
                         </a>
                         <ul class="menu-content">
+                            @if (in_array($level, $permintaanpengiriman_gj))
+                            <li class="{{ request()->is(['permintaanpengirimangj', 'permintaanpengirimangj/*']) ? 'active' : '' }}">
+                                <a href="/permintaanpengirimangj">
+                                    <i class="feather icon-truck"></i>
+                                    <span class="menu-item">Permintaan Kirim</span>
+                                </a>
+                            </li>
+                            @endif
+                            @if (in_array($level, $angkutan_view))
+                            <li class="{{ request()->is(['angkutan', 'angkutan/*']) ? 'active' : '' }}">
+                                <a href="/angkutan">
+                                    <i class="feather icon-truck"></i>
+                                    <span class="menu-item">Angkutan</span>
+                                </a>
+                            </li>
+                            @endif
+
                             @if (in_array($level, $mutasi_produk_gj))
                             <li>
                                 <a href="#">
@@ -373,12 +390,44 @@
                                     @if (in_array($level, $fsthp_gj_view))
                                     <li class="{{ request()->is(['fsthpgj', 'fsthpgj/*']) ? 'active' : '' }}">
                                         <a href="/fsthpgj">
-                                            <i class="feather icon-arrow-right"></i>
+                                            <i class="feather icon-file"></i>
                                             <span class="menu-item">FSTHP</span>
                                         </a>
                                     </li>
                                     @endif
+                                    @if (in_array($level, $suratjalan_view))
+                                    <li class="{{ request()->is(['suratjalan', 'suratjalan/*']) ? 'active' : '' }}">
+                                        <a href="/suratjalan">
+                                            <i class="feather icon-truck"></i>
+                                            <span class="menu-item">Surat Jalan</span>
+                                        </a>
+                                    </li>
+                                    @endif
+                                    @if (in_array($level, $repackgj_view))
+                                    <li class="{{ request()->is(['repackgj', 'repackgj/*']) ? 'active' : '' }}">
 
+                                        <a href="/repackgj/repack">
+                                            <i class="feather icon-file"></i>
+                                            <span class="menu-item">Repack</span>
+                                        </a>
+                                    </li>
+                                    @endif
+                                    @if (in_array($level, $rejectgj_view))
+                                    <li class="{{ request()->is(['rejectgj', 'rejectgj/*']) ? 'active' : '' }}">
+                                        <a href="/rejectgj/reject">
+                                            <i class="feather icon-file"></i>
+                                            <span class="menu-item">Reject</span>
+                                        </a>
+                                    </li>
+                                    @endif
+                                    @if (in_array($level, $lainnyagj_view))
+                                    <li class="{{ request()->is(['lainnyagj', 'lainnyagj/*']) ? 'active' : '' }}">
+                                        <a href="/lainnyagj">
+                                            <i class="feather icon-file"></i>
+                                            <span class="menu-item">Lainnya</span>
+                                        </a>
+                                    </li>
+                                    @endif
                                 </ul>
                             </li>
                             @endif
@@ -555,6 +604,25 @@
             <li class=" nav-item">
                 <a href="#"><i class="feather icon-dollar-sign warning"></i><span class="menu-title">Keuangan</span></a>
                 <ul class="menu-content">
+                    @if (in_array($level, $gudang_jadi_keuangan))
+                    <li>
+                        <a href="#">
+                            <i class="feather icon-circle"></i>
+                            <span class="menu-item" data-i18n="Second Level">Gudang Jadi</span>
+                        </a>
+                        <ul class="menu-content">
+                            @if (in_array($level, $kontrabon_angkutan_view))
+                            <li class="{{ request()->is(['kontrabonangkutan', 'kontrabonangkutan/*']) ? 'active' : '' }}">
+                                <a href="/kontrabonangkutan">
+                                    <i class="feather icon-file-text"></i>
+                                    <span class="menu-item">KontraBon Angkutan</span>
+                                </a>
+                            </li>
+                            @endif
+                        </ul>
+                    </li>
+                    @endif
+
                     @if (in_array($level, $penjualan_keuangan))
                     <li>
                         <a href="#">

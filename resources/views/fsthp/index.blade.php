@@ -167,7 +167,7 @@
                                             @if ($d->status != 1)
                                             <form method="POST" class="deleteform" action="/bpbj/{{Crypt::encrypt($d->no_mutasi_produksi)}}/delete">
                                                 @csrf
-                                                @method('DELETE')
+
                                                 <a href="#" tanggal="{{ $d->tgl_mutasi_produksi }}" class="delete-confirm ml-1">
                                                     <i class="feather icon-trash danger"></i>
                                                 </a>
