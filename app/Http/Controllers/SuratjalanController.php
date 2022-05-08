@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Whoops\Run;
 
 class SuratjalanController extends Controller
 {
@@ -287,5 +288,110 @@ class SuratjalanController extends Controller
             ->where('no_mutasi_gudang', $no_mutasi_gudang)
             ->get();
         return view('suratjalan.cetak', compact('mutasi', 'detail'));
+    }
+
+    public function prosescabang($no_mutasi_gudang)
+    {
+        $no_mutasi_gudang = Crypt::decrypt($no_mutasi_gudang);
+        $mutasi = DB::table('mutasi_gudang_jadi')
+            ->select('mutasi_gudang_jadi.*', 'tgl_permintaan_pengiriman', 'permintaan_pengiriman.kode_cabang', 'nama_cabang', 'permintaan_pengiriman.keterangan')
+            ->join('permintaan_pengiriman', 'mutasi_gudang_jadi.no_permintaan_pengiriman', '=', 'permintaan_pengiriman.no_permintaan_pengiriman')
+            ->join('cabang', 'permintaan_pengiriman.kode_cabang', '=', 'cabang.kode_cabang')
+            ->where('mutasi_gudang_jadi.no_mutasi_gudang', $no_mutasi_gudang)->first();
+        $detail = DB::table('detail_mutasi_gudang')
+            ->select('detail_mutasi_gudang.*', 'nama_barang')
+            ->join('master_barang', 'detail_mutasi_gudang.kode_produk', '=', 'master_barang.kode_produk')
+            ->where('no_mutasi_gudang', $no_mutasi_gudang)
+            ->get();
+        return view('suratjalan.prosescabang', compact('mutasi', 'detail'));
+    }
+
+    public function storeprosescabang($no_mutasi_gudang, Request $request)
+    {
+        $no_mutasi_gudang = Crypt::decrypt($no_mutasi_gudang);
+        $sj = DB::table('mutasi_gudang_jadi')
+            ->select('mutasi_gudang_jadi.*', 'tgl_permintaan_pengiriman', 'permintaan_pengiriman.kode_cabang', 'nama_cabang', 'permintaan_pengiriman.keterangan')
+            ->join('permintaan_pengiriman', 'mutasi_gudang_jadi.no_permintaan_pengiriman', '=', 'permintaan_pengiriman.no_permintaan_pengiriman')
+            ->join('cabang', 'permintaan_pengiriman.kode_cabang', '=', 'cabang.kode_cabang')
+            ->where('mutasi_gudang_jadi.no_mutasi_gudang', $no_mutasi_gudang)->first();
+        $tgl_mutasi_gudang = $sj->tgl_mutasi_gudang;
+        $tgl_mutasi_gudang_cabang = $request->tgl_mutasi_gudang_cabang;
+        $kode_cabang = $sj->kode_cabang;
+        $status = $request->status;
+        $id_admin = Auth::user()->id;
+
+        $tahun = date('Y');
+        $transitout = DB::table('mutasi_gudang_cabang')
+            ->selectRaw("no_mutasi_gudang_cabang as no_transitout")
+            ->where('kode_cabang', $kode_cabang)
+            ->where('jenis_mutasi', 'TRANSIT OUT')
+            ->whereRaw('MID(no_mutasi_gudang_cabang,6,2) =' . $tahun)
+            ->orderBy('no_mutasi_gudang_cabang', 'desc')
+            ->first();
+        $lastransitout = $transitout != null ? $transitout->no_transitout : '';
+        $no_transitout = buatkode($lastransitout, 'TO' . $kode_cabang . $tahun, 2);
+        $detail = DB::table('detail_mutasi_gudang')
+            ->select('detail_mutasi_gudang.*', 'nama_barang', 'isipcsdus')
+            ->join('master_barang', 'detail_mutasi_gudang.kode_produk', '=', 'master_barang.kode_produk')
+            ->where('no_mutasi_gudang', $no_mutasi_gudang)
+            ->get();
+        $data_sj = [
+            'no_mutasi_gudang_cabang' => $no_mutasi_gudang,
+            'tgl_mutasi_gudang_cabang' => $tgl_mutasi_gudang_cabang,
+            'tgl_kirim' => $tgl_mutasi_gudang,
+            'kode_cabang' => $kode_cabang,
+            'kondisi' => 'GOOD',
+            'inout_good' => 'IN',
+            'jenis_mutasi' => 'SURAT JALAN',
+            'order' => '0',
+            'id_admin' => $id_admin
+        ];
+
+        $data_transitout = [
+            'no_mutasi_gudang_cabang' => $no_transitout,
+            'tgl_mutasi_gudang_cabang' => $tgl_mutasi_gudang,
+            'tgl_kirim' => $tgl_mutasi_gudang,
+            'no_suratjalan' => $no_mutasi_gudang,
+            'kode_cabang' => $kode_cabang,
+            'kondisi'  => 'GOOD',
+            'inout_good'  => 'OUT',
+            'jenis_mutasi' => 'TRANSIT OUT',
+            'order' => '1',
+            'id_admin' => $id_admin
+        ];
+
+        DB::beginTransaction();
+        try {
+            DB::table('mutasi_gudang_cabang')->insert($data_sj);
+            if ($status == "SURAT JALAN") {
+                $status = 1;
+            } else if ($status == "TRANSIT OUT") {
+                $data_to = array(
+                    'no_mutasi_gudang_cabang' => $no_transitout,
+                    'kode_produk' => $d->kode_produk,
+                    'jumlah' => $jumlah
+                );
+                DB::table('mutasi_gudang_cabang')->insert($data_transitout);
+                DB::table('detail_mutasi_gudang_cabang')->insert($data_to);
+                $status = 2;
+            }
+
+            foreach ($detail as $d) {
+                $jumlah = $d->jumlah * $d->isipcsdus;
+                $data_detail = array(
+                    'no_mutasi_gudang_cabang' => $no_mutasi_gudang,
+                    'kode_produk' => $d->kode_produk,
+                    'jumlah' => $jumlah
+                );
+                DB::table('detail_mutasi_gudang_cabang')->insert($data_detail);
+            }
+            DB::table('mutasi_gudang_jadi')->where('no_mutasi_gudang', $no_mutasi_gudang)->update(['status_sj' => $status]);
+            DB::commit();
+            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+        } catch (\Exception $e) {
+            dd($e);
+            DB::rollback();
+            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan, Hubungi Tim IT!']);
+        }
     }
 }

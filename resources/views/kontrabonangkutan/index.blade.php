@@ -84,7 +84,7 @@
                                             </form>
                                             <a href="#" class="ml-1 proses" no_kontrabon="{{ Crypt::encrypt($d->no_kontrabon) }}"><i class="feather icon-external-link success"></i></a>
                                             @else
-                                            <a href="/kontrabonangkutan/{{ Crypt::encrypt($d->no_kontrabon) }}/{{ Crypt::encrypt($d->no_ref) }}/batalkan" class="ml-1"><i class="fa fa-close danger"></i></a>
+                                            <a href="/kontrabonangkutan/{{ Crypt::encrypt($d->no_kontrabon) }}/batalkan" class="ml-1"><i class="fa fa-close danger"></i></a>
                                             @endif
                                         </div>
                                     </td>

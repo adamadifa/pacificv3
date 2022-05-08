@@ -187,7 +187,7 @@ class KontrabonangkutanController extends Controller
         $no_ref = $request->no_ref;
         $pelanggan = $request->pelanggan;
         $kode_bank = $request->kode_bank;
-        $keterangan = $request->keterangan;
+        $keterangan = $no_ref . "/" . $request->keterangan;
         $no_kontrabon = $request->no_kontrabon;
         $tanggal = explode("-", $tgl_ledger);
         $thn = $tanggal[0];
@@ -240,7 +240,7 @@ class KontrabonangkutanController extends Controller
                     'no_bukti'            => $no_bukti,
                     'tgl_ledger'          => $tgl_ledger,
                     'bank'                => $kode_bank,
-                    'no_ref'              => $no_ref,
+                    'no_ref'              => $no_kontrabon,
                     'pelanggan'           => $pelanggan,
                     'keterangan'          => $keterangan,
                     'kode_akun'           => '6-1114',
@@ -249,8 +249,35 @@ class KontrabonangkutanController extends Controller
                     'status_dk'           => 'D',
                     'peruntukan'          => 'MP',
                     'ket_peruntukan'      => 'PST',
-                    'kategori' => 'GDJ'
+                    'kategori' => 'GDJ',
+                    'nobukti_bukubesar' => $nobukti_bukubesar,
+                    'nobukti_bukubesar_2' => $nobukti_bukubesar_bank
                 );
+
+                $databukubesar = array(
+                    'no_bukti' => $nobukti_bukubesar,
+                    'tanggal' => $tgl_ledger,
+                    'sumber' => 'ledger',
+                    'keterangan' => $keterangan,
+                    'kode_akun' => '6-1114',
+                    'debet' => $jmlangkutan,
+                    'kredit' => 0,
+                    'nobukti_transaksi' => $no_bukti
+                );
+
+
+                $databukubesarbank = array(
+                    'no_bukti' => $nobukti_bukubesar_bank,
+                    'tanggal' => $tgl_ledger,
+                    'sumber' => 'ledger',
+                    'keterangan' => $keterangan,
+                    'kode_akun' => $kode_akun_bank,
+                    'debet' => 0,
+                    'kredit' => $jmlangkutan,
+                    'nobukti_transaksi' => $no_bukti
+                );
+                DB::table('buku_besar')->insert($databukubesar);
+                DB::table('buku_besar')->insert($databukubesarbank);
                 DB::table('ledger_bank')->insert($data);
             }
 
@@ -259,7 +286,7 @@ class KontrabonangkutanController extends Controller
                 $data = array(
                     'no_bukti'            => $no_bukti_hutang,
                     'tgl_ledger'          => $tgl_ledger,
-                    'no_ref'              => $no_ref,
+                    'no_ref'              => $no_kontrabon,
                     'bank'                => $bank,
                     'pelanggan'           => $pelanggan,
                     'keterangan'          => $keterangan,
@@ -269,8 +296,34 @@ class KontrabonangkutanController extends Controller
                     'status_dk'           => 'D',
                     'peruntukan'          => 'MP',
                     'ket_peruntukan'      => 'PST',
-                    'kategori' => 'GDJ'
+                    'kategori' => 'GDJ',
+                    'nobukti_bukubesar' => $nobukti_bukubesar,
+                    'nobukti_bukubesar_2' => $nobukti_bukubesar_bank
                 );
+                $databukubesar = array(
+                    'no_bukti' => $nobukti_bukubesar,
+                    'tanggal' => $tgl_ledger,
+                    'sumber' => 'ledger',
+                    'keterangan' => $keterangan,
+                    'kode_akun' => '2-1800',
+                    'debet' => $jmlangkutan,
+                    'kredit' => 0,
+                    'nobukti_transaksi' => $no_bukti
+                );
+
+
+                $databukubesarbank = array(
+                    'no_bukti' => $nobukti_bukubesar_bank,
+                    'tanggal' => $tgl_ledger,
+                    'sumber' => 'ledger',
+                    'keterangan' => $keterangan,
+                    'kode_akun' => $kode_akun_bank,
+                    'debet' => 0,
+                    'kredit' => $jmlangkutan,
+                    'nobukti_transaksi' => $no_bukti
+                );
+                DB::table('buku_besar')->insert($databukubesar);
+                DB::table('buku_besar')->insert($databukubesarbank);
                 DB::table('ledger_bank')->insert($data);
             }
 
@@ -279,7 +332,7 @@ class KontrabonangkutanController extends Controller
             ];
 
             DB::table('angkutan')->whereIn('no_surat_jalan', $no_surat_jalan)->update($dataangkutan);
-            DB::table('kontrabon_angkutan')->where('no_kontrabon', $no_kontrabon)->update(['status' => 1, 'no_ref' => $no_ref]);
+            DB::table('kontrabon_angkutan')->where('no_kontrabon', $no_kontrabon)->update(['status' => 1]);
             DB::commit();
             return Redirect::back()->with(['success' => 'Data Kontrabon Berhasil di Simpan']);
         } catch (\Exception $e) {
@@ -289,18 +342,22 @@ class KontrabonangkutanController extends Controller
         }
     }
 
-    public function batalkan($no_kontrabon, $no_ref)
+    public function batalkan($no_kontrabon)
     {
         $no_kontrabon = Crypt::decrypt($no_kontrabon);
-        $no_ref = Crypt::decrypt($no_ref);
         $detail = DB::table('detail_kontrabon_angkutan')->where('no_kontrabon', $no_kontrabon)->get();
+        $ledger = DB::table('ledger_bank')->where('no_ref', $no_kontrabon)->first();
+        $nobukti_bukubesar = $ledger->nobukti_bukubesar;
+        $nobukti_bukubesar_bank = $ledger->nobukti_bukubesar_2;
         foreach ($detail as $d) {
             $no_surat_jalan[] = $d->no_surat_jalan;
         }
         DB::beginTransaction();
         try {
-            DB::table('ledger_bank')->where('no_ref', $no_ref)->delete();
-            DB::table('kontrabon_angkutan')->where('no_kontrabon', $no_kontrabon)->update(['no_ref' => null, 'status' => null]);
+            DB::table('buku_besar')->where('no_bukti', $nobukti_bukubesar)->delete();
+            DB::table('buku_besar')->where('no_bukti', $nobukti_bukubesar_bank)->delete();
+            DB::table('ledger_bank')->where('no_ref', $no_kontrabon)->delete();
+            DB::table('kontrabon_angkutan')->where('no_kontrabon', $no_kontrabon)->update(['status' => null]);
             DB::table('angkutan')->whereIn('no_surat_jalan', $no_surat_jalan)->update(['tgl_bayar' => null]);
             DB::commit();
             return Redirect::back()->with(['success' => 'Data Kontrabon Berhasil di Simpan']);

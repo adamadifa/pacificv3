@@ -17,7 +17,7 @@
 @endif
 
 @if ($message = Session::get('warning'))
-<div class="alert alert-warning" role="alert">
+<div class="alert alert-danger" role="alert">
     <h4 class="alert-heading">Warning</h4>
     <p class="mb-0">
         {{$message}}

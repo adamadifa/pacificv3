@@ -102,9 +102,9 @@
                                     <td>
                                         <a href="/suratjalan/{{Crypt::encrypt($d->no_mutasi_gudang)}}/cetak" target="_blank" class="ml-1"><i class="feather icon-printer info"></i></a>
                                         @if ($d->status_sj == 0)
-                                        <a href="/suratjalan/{{Crypt::encrypt($d->no_mutasi_gudang)}}/batalkansuratjalan" class="ml-1"><i class="fa fa-close danger"></i></a>
+                                        <a href="/suratjalan/{{Crypt::encrypt($d->no_mutasi_gudang)}}/batalkansuratjalan" class="ml-1"><i class="feather icon-trash danger"></i></a>
+                                        <a href="#" class="ml-1 prosescabang" no_mutasi_gudang="{{Crypt::encrypt($d->no_mutasi_gudang)}}"><i class="feather icon-external-link success"></i></a>
                                         @endif
-
                                     </td>
                                 </tr>
                                 @endforeach
@@ -136,13 +136,31 @@
         </div>
     </div>
 </div>
-
+<div class="modal fade text-left" id="mdlapprove" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Approve Surat Jalan</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loadapprove"></div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @push('myscript')
 <script>
     $(function() {
         function loaddetail(no_mutasi_gudang) {
             $("#loaddetail").load("/suratjalan/" + no_mutasi_gudang + "/show");
+        }
+
+        function loadapprove(no_mutasi_gudang) {
+            $("#loadapprove").load("/suratjalan/" + no_mutasi_gudang + "/prosescabang");
         }
         $('.detail').click(function(e) {
             e.preventDefault();
@@ -152,6 +170,17 @@
                 , keyboard: false
             });
             loaddetail(no_mutasi_gudang);
+
+        });
+
+        $('.prosescabang').click(function(e) {
+            e.preventDefault();
+            var no_mutasi_gudang = $(this).attr("no_mutasi_gudang");
+            $('#mdlapprove').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+            loadapprove(no_mutasi_gudang);
 
         });
 

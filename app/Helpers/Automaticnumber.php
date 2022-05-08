@@ -19,6 +19,10 @@ function desimal($nilai)
 
     return number_format($nilai, '2', ',', '.');
 }
+function desimal3($nilai)
+{
+    return number_format($nilai, '3', ',', '.');
+}
 
 function rupiah($nilai)
 {

@@ -78,7 +78,65 @@
             </a>
             @endif
 
+        </ul>
+    </div>
+</div>
 
+<div class="card">
+    <div class="card-content">
+        <div class="card-body">
+            <h4 class="card-title">Gudang Jadi</h4>
+        </div>
+        <ul class="list-group list-group-flush">
+            @if (in_array($level,$laporan_persediaan_gj))
+            <a href="/laporangudangjadi/persediaan" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporangudangjadi/persediaan']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Laporan Persediaan
+                </li>
+            </a>
+            @endif
+            @if (in_array($level,$rekap_persediaan_gj))
+            <a href="/laporangudangjadi/rekappersediaan" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporangudangjadi/rekappersediaan']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Rekap Persediaan
+                </li>
+            </a>
+            @endif
+            @if (in_array($level,$rekap_hasiproduksi_gj))
+            <a href="/laporangudangjadi/rekaphasilproduksi" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporangudangjadi/rekaphasilproduksi']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Rekap Hasil Produksi
+                </li>
+            </a>
+            @endif
+            @if (in_array($level,$rekap_pengeluaran_gj))
+            <a href="/laporangudangjadi/rekappengeluaran" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporangudangjadi/rekappengeluaran']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Rekap Pengeluaran
+                </li>
+            </a>
+            @endif
+            @if (in_array($level,$realisasi_kiriman_gj))
+            <a href="/laporangudangjadi/realisasikiriman" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporangudangjadi/realisasikiriman']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Realisasi Kiriman
+                </li>
+            </a>
+            @endif
+            @if (in_array($level,$realisasi_oman_gj))
+            <a href="/laporangudangjadi/realisasioman" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporangudangjadi/realisasioman']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Realisasi OMAN
+                </li>
+            </a>
+            @endif
+            @if (in_array($level,$laporan_angkutan))
+            <a href="/laporangudangjadi/angkutan" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporangudangjadi/angkutan']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Laporan Angkutan
+                </li>
+            </a>
+            @endif
         </ul>
     </div>
 </div>

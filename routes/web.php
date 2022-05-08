@@ -13,6 +13,8 @@ use App\Http\Controllers\CabangController;
 use App\Http\Controllers\CoaController;
 use App\Http\Controllers\DaftarController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DpbController;
+use App\Http\Controllers\DriverhelperController;
 use App\Http\Controllers\FsthpController;
 use App\Http\Controllers\GiroController;
 use App\Http\Controllers\GudangController;
@@ -26,6 +28,7 @@ use App\Http\Controllers\KlaimController;
 use App\Http\Controllers\KontrabonangkutanController;
 use App\Http\Controllers\KontrabonController;
 use App\Http\Controllers\LaporangudangbahanController;
+use App\Http\Controllers\LaporangudangjadiController;
 use App\Http\Controllers\LaporangudanglogistikController;
 use App\Http\Controllers\LaporankeuanganController;
 use App\Http\Controllers\LaporanpembelianController;
@@ -59,6 +62,7 @@ use App\Http\Controllers\ProduksiController;
 use App\Http\Controllers\RatiokomisiController;
 use App\Http\Controllers\RepackrejectgudangjadiController;
 use App\Http\Controllers\ReturController;
+use App\Http\Controllers\SaldoawalBJController;
 use App\Http\Controllers\SaldoawalgudangbahanController;
 use App\Http\Controllers\SaldoawalgudanglogistikController;
 use App\Http\Controllers\SaldoawalkasbesarController;
@@ -114,6 +118,8 @@ Route::post('/salesman/getsalescab', [SalesmanController::class, 'getsalescab'])
 Route::post('/pelanggan/getpelanggansalesman', [PelangganController::class, 'getpelanggansalesman']);
 //Kendaraan
 Route::post('/kendaraan/getkendaraancab', [KendaraanController::class, 'getkendaraancab']);
+//Driver Helper
+Route::post('/driverhelper/getdriverhelpercab', [DriverhelperController::class, 'getdriverhelpercab']);
 //LoadStokCabang
 Route::post('/getsaldogudangcabang', [MutasigudangcabangController::class, 'getsaldogudangcabang']);
 Route::post('/getsaldogudangcabangbs', [MutasigudangcabangController::class, 'getsaldogudangcabangbs']);
@@ -801,8 +807,50 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/kontrabonangkutan/storetemp', [KontrabonangkutanController::class, 'storetemp']);
     Route::post('/kontrabonangkutan/store', [KontrabonangkutanController::class, 'store']);
     Route::post('/kontrabonangkutan/proseskontrabon', [KontrabonangkutanController::class, 'proseskontrabon']);
-    Route::get('/kontrabonangkutan/{no_kontrabon}/{no_ref}/batalkan', [KontrabonangkutanController::class, 'batalkan']);
+    Route::get('/kontrabonangkutan/{no_kontrabon}/batalkan', [KontrabonangkutanController::class, 'batalkan']);
     Route::delete('/kontrabonangkutan/{no_kontrabon}/delete', [KontrabonangkutanController::class, 'delete']);
+
+
+    //Laporan Persediaan Gudang Jadi
+    Route::get('/laporangudangjadi/persediaan', [LaporangudangjadiController::class, 'persediaan']);
+    Route::get('/laporangudangjadi/rekappersediaan', [LaporangudangjadiController::class, 'rekappersediaan']);
+    Route::get('/laporangudangjadi/rekaphasilproduksi', [LaporangudangjadiController::class, 'rekaphasilproduksi']);
+    Route::get('/laporangudangjadi/rekappengeluaran', [LaporangudangjadiController::class, 'rekappengeluaran']);
+    Route::get('/laporangudangjadi/realisasikiriman', [LaporangudangjadiController::class, 'realisasikiriman']);
+    Route::get('/laporangudangjadi/realisasioman', [LaporangudangjadiController::class, 'realisasioman']);
+    Route::get('/laporangudangjadi/angkutan', [LaporangudangjadiController::class, 'angkutan']);
+    Route::post('/laporangudangjadi/persediaan/cetak', [LaporangudangjadiController::class, 'cetak_persediaan']);
+    Route::post('/laporangudangjadi/rekappersediaan/cetak', [LaporangudangjadiController::class, 'cetak_rekappersediaan']);
+    Route::post('/laporangudangjadi/rekappengeluaran/cetak', [LaporangudangjadiController::class, 'cetak_rekappengeluaran']);
+    Route::post('/laporangudangjadi/realisasikiriman/cetak', [LaporangudangjadiController::class, 'cetak_realisasikiriman']);
+    Route::post('/laporangudangjadi/realisasioman/cetak', [LaporangudangjadiController::class, 'cetak_realisasioman']);
+    Route::post('/laporangudangjadi/angkutan/cetak', [LaporangudangjadiController::class, 'cetak_angkutan']);
+
+    //Gudang Cabang
+
+    //Saldo Awal
+    Route::get('/saldoawalgs/{jenis_bj}', [SaldoawalBJController::class, 'index']);
+    Route::get('/saldoawalbs/{jenis_bj}', [SaldoawalBJController::class, 'index']);
+    Route::get('/saldoawalgs/{jenis_bj}/create', [SaldoawalBJController::class, 'create']);
+    Route::get('/saldoawalbs/{jenis_bj}/create', [SaldoawalBJController::class, 'create']);
+    Route::get('/saldoawalbj/{kode_saldoawal}/show', [SaldoawalBJController::class, 'show']);
+    Route::delete('/saldoawalbj/{kode_saldoawal}/delete', [SaldoawalBJController::class, 'delete']);
+    Route::post('/saldoawalbj/getdetailsaldo', [SaldoawalBJController::class, 'getdetailsaldo']);
+    Route::post('/saldoawalbj/store', [SaldoawalBJController::class, 'store']);
+
+    //DPB
+    Route::get('/dpb', [DpbController::class, 'index']);
+    Route::get('/dpb/create', [DpbController::class, 'create']);
+    Route::post('/dpb/store', [DpbController::class, 'store']);
+    Route::get('/dpb/{no_dpb}/show', [DpbController::class, 'show']);
+    Route::get('/dpb/{no_dpb}/edit', [DpbController::class, 'edit']);
+    Route::delete('/dpb/{no_dpb}/delete', [DpbController::class, 'delete']);
+    Route::post('/dpb/{no_dpb}/update', [DpbController::class, 'update']);
+
+    //Surat Jalan Cabang
+    Route::get('/suratjalancab', [SuratjalanController::class, 'index']);
+    Route::get('/suratjalan/{no_mutasi_gudang}/prosescabang', [SuratjalanController::class, 'prosescabang']);
+    Route::post('/suratjalan/{no_mutasi_gudang}/storeprosescabang', [SuratjalanController::class, 'storeprosescabang']);
 });
 
 //Administrator | Direktur | General Manager | Manager Marketing | Manager Accounting | Kepala Penjualan | Staff Keuangan | Admin Kas Kecil

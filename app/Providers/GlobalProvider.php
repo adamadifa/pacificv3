@@ -289,6 +289,21 @@ class GlobalProvider extends ServiceProvider
             $gudang_jadi_keuangan = ['admin'];
             $kontrabon_angkutan_view = ['admin'];
 
+            //Laporan Gudang Jadi
+            $laporan_persediaan_gj = ['admin'];
+            $rekap_persediaan_gj = ['admin'];
+            $rekap_hasiproduksi_gj = ['admin'];
+            $rekap_pengeluaran_gj = ['admin'];
+            $realisasi_kiriman_gj = ['admin'];
+            $realisasi_oman_gj = ['admin'];
+            $laporan_angkutan = ['admin'];
+
+            //Gudang Cabang
+
+            $saldoawal_gs_view = ['admin'];
+            $saldoawal_bs_view = ['admin'];
+            $dpb_view = ['admin'];
+            $mutasi_barang_cab_view = ['admin'];
 
 
             $shareddata = [
@@ -532,7 +547,22 @@ class GlobalProvider extends ServiceProvider
 
                 //Kontrabon Angkutan
                 'gudang_jadi_keuangan' => $gudang_jadi_keuangan,
-                'kontrabon_angkutan_view' => $kontrabon_angkutan_view
+                'kontrabon_angkutan_view' => $kontrabon_angkutan_view,
+
+                //Laporan Gudang Jadi
+                'laporan_persediaan_gj' => $laporan_persediaan_gj,
+                'rekap_persediaan_gj' => $rekap_persediaan_gj,
+                'rekap_hasiproduksi_gj' => $rekap_hasiproduksi_gj,
+                'rekap_pengeluaran_gj' => $rekap_pengeluaran_gj,
+                'realisasi_kiriman_gj' => $realisasi_kiriman_gj,
+                'realisasi_oman_gj' => $realisasi_oman_gj,
+                'laporan_angkutan' => $laporan_angkutan,
+
+                //Gudang Cabang
+                'saldoawal_gs_view' => $saldoawal_gs_view,
+                'saldoawal_bs_view' => $saldoawal_bs_view,
+                'dpb_view' => $dpb_view,
+                'mutasi_barang_cab_view' => $mutasi_barang_cab_view
             ];
             View::share($shareddata);
         });
