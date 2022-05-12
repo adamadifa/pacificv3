@@ -263,7 +263,7 @@
 
         $("#tgl_pemasukan").change(function() {
             var tgl_pemasukan = $(this).val();
-            cektutuplaporan(tgl_pengeluaran);
+            cektutuplaporan(tgl_pemasukan);
         });
 
         function cektutuplaporan(tanggal) {
@@ -295,7 +295,7 @@
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
-                    $("#tgl_pengeluaran").focus();
+                    $("#tgl_pemasukan").focus();
                 });
                 return false;
             } else if (nobukti_pemasukan == "") {
@@ -316,7 +316,7 @@
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
-                    $("#tgl_pengeluaran").focus();
+                    $("#tgl_pemasukan").focus();
                 });
                 return false;
             } else if (departemen == "") {

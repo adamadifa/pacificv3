@@ -32,9 +32,9 @@
             <tr>
                 <td>Helper</td>
                 <td>
-                    1. {{ $dpb->nama_helper_1 }}<br>
-                    2. {{ $dpb->nama_helper_2 }}<br>
-                    3. {{ $dpb->nama_helper_3 }}<br>
+                    {{ !empty($dpb->nama_helper_1) ? '(1) '.$dpb->nama_helper_1 : '' }}
+                    {{ !empty($dpb->nama_helper_2) ? '(2) '.$dpb->nama_helper_2 : '' }}
+                    {{ !empty($dpb->nama_helper_3) ? '(3) '.$dpb->nama_helper_3 : '' }}
                 </td>
             </tr>
         </table>

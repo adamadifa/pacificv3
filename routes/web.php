@@ -28,6 +28,7 @@ use App\Http\Controllers\KlaimController;
 use App\Http\Controllers\KontrabonangkutanController;
 use App\Http\Controllers\KontrabonController;
 use App\Http\Controllers\LaporangudangbahanController;
+use App\Http\Controllers\LaporangudangcabangController;
 use App\Http\Controllers\LaporangudangjadiController;
 use App\Http\Controllers\LaporangudanglogistikController;
 use App\Http\Controllers\LaporankeuanganController;
@@ -762,6 +763,7 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/suratjalan/buatnomorsj', [SuratjalanController::class, 'buatnomorsj']);
     Route::post('/suratjalan/store', [SuratjalanController::class, 'store']);
     Route::get('/suratjalan/{no_mutasi_gudang}/batalkansuratjalan', [SuratjalanController::class, 'batalkansuratjalan']);
+    Route::post('/suratjalan/showsuratjalanmutasi', [SuratjalanController::class, 'showsuratjalanmutasi']);
 
     //Permintaan Pengiriman GJ
     Route::get('/permintaanpengirimangj', [PermintaanpengirimanController::class, 'index']);
@@ -846,11 +848,47 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::get('/dpb/{no_dpb}/edit', [DpbController::class, 'edit']);
     Route::delete('/dpb/{no_dpb}/delete', [DpbController::class, 'delete']);
     Route::post('/dpb/{no_dpb}/update', [DpbController::class, 'update']);
+    Route::post('/dpb/showdpbmutasi', [DpbController::class, 'showdpbmutasi']);
 
     //Surat Jalan Cabang
     Route::get('/suratjalancab', [SuratjalanController::class, 'index']);
     Route::get('/suratjalan/{no_mutasi_gudang}/prosescabang', [SuratjalanController::class, 'prosescabang']);
     Route::post('/suratjalan/{no_mutasi_gudang}/storeprosescabang', [SuratjalanController::class, 'storeprosescabang']);
+    Route::delete('/suratjalan/{no_mutasi_gudang}/batalkansjcabang', [SuratjalanController::class, 'batalkansjcabang']);
+
+    //Mutasi Gudang Cabang
+    Route::get('/mutasigudangcabang/transitin', [MutasigudangcabangController::class, 'transitin']);
+    Route::get('/mutasigudangcabang/transitin/{no_mutasi_gudang_cabang}/create', [MutasigudangcabangController::class, 'transitin_create']);
+    Route::post('/mutasigudangcabang/transitin/{no_mutasi_gudang_cabang}/store', [MutasigudangcabangController::class, 'transitin_store']);
+    Route::delete('/mutasigudangcabang/transitin/{no_suratjalan}/batal', [MutasigudangcabangController::class, 'transitin_batal']);
+    Route::get('/mutasigudangcabang/{jenis_mutasi}', [MutasigudangcabangController::class, 'index']);
+    Route::get('/mutasigudangcabang/{no_mutasi_gudang_cabang}/show', [MutasigudangcabangController::class, 'show']);
+    Route::get('/mutasigudangcabang/{no_mutasi_gudang_cabang}/showdetail', [MutasigudangcabangController::class, 'showdetail']);
+    Route::get('/mutasigudangcabang/{jenis_mutasi}/create', [MutasigudangcabangController::class, 'create']);
+    Route::get('/mutasigudangcabang/{jenis_mutasi}/mutasicreate', [MutasigudangcabangController::class, 'mutasicreate']);
+    Route::get('/mutasigudangcabang/{jenis_mutasi}/rejectgudangcreate', [MutasigudangcabangController::class, 'rejectgudangcreate']);
+    Route::post('/mutasigudangcabang/store', [MutasigudangcabangController::class, 'store']);
+    Route::post('/mutasigudangcabang/mutasistore', [MutasigudangcabangController::class, 'mutasistore']);
+    Route::delete('/mutasigudangcabang/{no_mutasi_gudang_cabang}/delete', [MutasigudangcabangController::class, 'delete']);
+    Route::get('/mutasigudangcabang/{no_mutasi_gudang_cabang}/edit', [MutasigudangcabangController::class, 'edit']);
+    Route::get('/mutasigudangcabang/{no_mutasi_gudang_cabang}/mutasiedit', [MutasigudangcabangController::class, 'mutasiedit']);
+    Route::post('/mutasigudangcabang/{no_mutasi_gudang_cabang}/update', [MutasigudangcabangController::class, 'update']);
+    Route::get('/repack', [MutasigudangcabangController::class, 'repack']);
+    Route::get('/kirimpusat', [MutasigudangcabangController::class, 'kirimpusat']);
+    Route::get('/rejectgudang', [MutasigudangcabangController::class, 'rejectgudang']);
+    Route::post('/rejectgudang/store', [MutasigudangcabangController::class, 'rejectgudangstore']);
+
+    //Laporan Gudang Cabang
+    Route::get('/laporangudangcabang/persediaan', [LaporangudangcabangController::class, 'persediaan']);
+    Route::get('/laporangudangcabang/badstok', [LaporangudangcabangController::class, 'badstok']);
+    Route::get('/laporangudangcabang/rekapbj', [LaporangudangcabangController::class, 'rekapbj']);
+    Route::get('/laporangudangcabang/mutasidpb', [LaporangudangcabangController::class, 'mutasidpb']);
+    Route::get('/laporangudangcabang/rekonsiliasibj', [LaporangudangcabangController::class, 'rekonsiliasibj']);
+    Route::post('/laporangudangcabang/persediaan/cetak', [LaporangudangcabangController::class, 'cetak_persediaan']);
+    Route::post('/laporangudangcabang/badstok/cetak', [LaporangudangcabangController::class, 'cetak_badstok']);
+    Route::post('/laporangudangcabang/rekapbj/cetak', [LaporangudangcabangController::class, 'cetak_rekapbj']);
+    Route::post('/laporangudangcabang/mutasidpb/cetak', [LaporangudangcabangController::class, 'cetak_mutasidpb']);
+    Route::post('/laporangudangcabang/rekonsiliasibj/cetak', [LaporangudangcabangController::class, 'cetak_rekonsiliasibj']);
 });
 
 //Administrator | Direktur | General Manager | Manager Marketing | Manager Accounting | Kepala Penjualan | Staff Keuangan | Admin Kas Kecil
@@ -920,6 +958,8 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan,manager accounting,ke
     Route::post('/harga/show', [HargaController::class, 'show']);
     Route::delete('/harga/{kode_barang}/delete', [HargaController::class, 'delete']);
     Route::post('getautocompleteharga', [HargaController::class, 'getautocompleteharga']);
+    Route::post('getautocompletedpb', [DpbController::class, 'getautocompletedpb']);
+    Route::post('getautocompletesj', [SuratjalanController::class, 'getautocompletesj']);
     Route::post('getautocompletehargaretur', [HargaController::class, 'getautocompletehargaretur']);
     Route::post('gethargabarang', [HargaController::class, 'gethargabarang']);
 

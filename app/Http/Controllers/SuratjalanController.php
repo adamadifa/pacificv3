@@ -3,22 +3,46 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
+use App\Models\Mutasigudangcabang;
 use App\Models\Mutasigudangjadi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\View;
 use Whoops\Run;
 
 class SuratjalanController extends Controller
 {
+    protected $cabang;
+    public function __construct()
+    {
+        // Fetch the Site Settings object
+        $this->middleware(function ($request, $next) {
+            $this->cabang = Auth::user()->kode_cabang;
+            return $next($request);
+        });
+
+
+        View::share('cabang', $this->cabang);
+    }
     public function index(Request $request)
     {
         $query = Mutasigudangjadi::query();
-        $query->select('mutasi_gudang_jadi.*', 'permintaan_pengiriman.kode_cabang', 'tgl_mutasi_gudang_cabang');
+        $query->select('mutasi_gudang_jadi.*', 'permintaan_pengiriman.kode_cabang', 'tgl_mutasi_gudang_cabang', 'tgl_transitin');
         $query->join('permintaan_pengiriman', 'mutasi_gudang_jadi.no_permintaan_pengiriman', '=', 'permintaan_pengiriman.no_permintaan_pengiriman');
         $query->leftJoin('mutasi_gudang_cabang', 'mutasi_gudang_jadi.no_mutasi_gudang', '=', 'mutasi_gudang_cabang.no_mutasi_gudang_cabang');
+        $query->leftJoin(
+            DB::raw("(
+                SELECT no_suratjalan,tgl_mutasi_gudang_cabang as tgl_transitin
+                FROM mutasi_gudang_cabang
+                WHERE jenis_mutasi ='TRANSIT IN'
+            ) transitin"),
+            function ($join) {
+                $join->on('mutasi_gudang_jadi.no_mutasi_gudang', '=', 'transitin.no_suratjalan');
+            }
+        );
         $query->where('mutasi_gudang_jadi.jenis_mutasi', 'SURAT JALAN');
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('tgl_mutasi_gudang', [$request->dari, $request->sampai]);
@@ -349,7 +373,7 @@ class SuratjalanController extends Controller
 
         $data_transitout = [
             'no_mutasi_gudang_cabang' => $no_transitout,
-            'tgl_mutasi_gudang_cabang' => $tgl_mutasi_gudang,
+            'tgl_mutasi_gudang_cabang' => $tgl_mutasi_gudang_cabang,
             'tgl_kirim' => $tgl_mutasi_gudang,
             'no_suratjalan' => $no_mutasi_gudang,
             'kode_cabang' => $kode_cabang,
@@ -363,19 +387,6 @@ class SuratjalanController extends Controller
         DB::beginTransaction();
         try {
             DB::table('mutasi_gudang_cabang')->insert($data_sj);
-            if ($status == "SURAT JALAN") {
-                $status = 1;
-            } else if ($status == "TRANSIT OUT") {
-                $data_to = array(
-                    'no_mutasi_gudang_cabang' => $no_transitout,
-                    'kode_produk' => $d->kode_produk,
-                    'jumlah' => $jumlah
-                );
-                DB::table('mutasi_gudang_cabang')->insert($data_transitout);
-                DB::table('detail_mutasi_gudang_cabang')->insert($data_to);
-                $status = 2;
-            }
-
             foreach ($detail as $d) {
                 $jumlah = $d->jumlah * $d->isipcsdus;
                 $data_detail = array(
@@ -385,6 +396,24 @@ class SuratjalanController extends Controller
                 );
                 DB::table('detail_mutasi_gudang_cabang')->insert($data_detail);
             }
+            if ($status == "SURAT JALAN") {
+                $status = 1;
+            } else if ($status == "TRANSIT OUT") {
+                DB::table('mutasi_gudang_cabang')->insert($data_transitout);
+                foreach ($detail as $d) {
+                    $jumlah = $d->jumlah * $d->isipcsdus;
+                    $data_to = array(
+                        'no_mutasi_gudang_cabang' => $no_transitout,
+                        'kode_produk' => $d->kode_produk,
+                        'jumlah' => $jumlah
+                    );
+                    DB::table('detail_mutasi_gudang_cabang')->insert($data_to);
+                }
+
+                $status = 2;
+            }
+
+
             DB::table('mutasi_gudang_jadi')->where('no_mutasi_gudang', $no_mutasi_gudang)->update(['status_sj' => $status]);
             DB::commit();
             return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
@@ -393,5 +422,79 @@ class SuratjalanController extends Controller
             DB::rollback();
             return Redirect::back()->with(['warning' => 'Data Gagal Disimpan, Hubungi Tim IT!']);
         }
+    }
+
+    public function batalkansjcabang($no_mutasi_gudang)
+    {
+        $no_mutasi_gudang = Crypt::decrypt($no_mutasi_gudang);
+        DB::beginTransaction();
+        try {
+            DB::table('mutasi_gudang_cabang')->where('no_mutasi_gudang_cabang', $no_mutasi_gudang)
+                ->orWhere('no_suratjalan', $no_mutasi_gudang)->delete();
+            DB::table('mutasi_gudang_jadi')->where('no_mutasi_gudang', $no_mutasi_gudang)->update([
+                'status_sj' => 0
+            ]);
+            DB::commit();
+            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+        } catch (\Exception $e) {
+            dd($e);
+            DB::rollback();
+            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan, Hubungi Tim IT!']);
+        }
+    }
+
+    public function getautocompletesj(Request $request)
+    {
+        $search = $request->search;
+        if ($search == '') {
+            $query = Mutasigudangcabang::query();
+            $query->select('mutasi_gudang_cabang.*', 'no_dok');
+            $query->leftjoin('mutasi_gudang_jadi', 'mutasi_gudang_cabang.no_mutasi_gudang_cabang', '=', 'mutasi_gudang_jadi.no_mutasi_gudang');
+            if ($this->cabang != "PCF") {
+                $query->where('mutasi_gudang_cabang.kode_cabang', $this->cabang);
+            }
+            $query->where('mutasi_gudang_cabang.jenis_mutasi', 'SURAT JALAN');
+            $query->orderBy('tgl_mutasi_gudang_cabang', 'desc');
+            $query->orderby('no_mutasi_gudang_cabang', 'desc');
+            $query->limit(10);
+            $autocomplate = $query->get();
+        } else {
+            $query = Mutasigudangcabang::query();
+            $query->select('mutasi_gudang_cabang.*', 'no_dok');
+            $query->leftjoin('mutasi_gudang_jadi', 'mutasi_gudang_cabang.no_mutasi_gudang_cabang', '=', 'mutasi_gudang_jadi.no_mutasi_gudang');
+            if ($this->cabang != "PCF") {
+                $query->where('mutasi_gudang_cabang.kode_cabang', $this->cabang);
+            }
+            $query->where('no_mutasi_gudang_cabang', 'like', '%' . $search . '%');
+            $query->where('mutasi_gudang_cabang.jenis_mutasi', 'SURAT JALAN');
+            $query->orWhere('no_dok', 'like', '%' . $search . '%');
+            $query->where('mutasi_gudang_cabang.jenis_mutasi', 'SURAT JALAN');
+            $query->orWhere('tgl_mutasi_gudang_cabang', 'like', '%' . $search . '%');
+            $query->where('mutasi_gudang_cabang.jenis_mutasi', 'SURAT JALAN');
+
+
+
+            $query->orderBy('tgl_mutasi_gudang_cabang', 'desc');
+            $query->orderby('no_mutasi_gudang_cabang', 'desc');
+            $query->limit(10);
+            $autocomplate = $query->get();
+        }
+
+        // dd($search);
+        $response = array();
+        foreach ($autocomplate as $autocomplate) {
+            $label = $autocomplate->no_mutasi_gudang_cabang . " - " . $autocomplate->no_dok . " - " . $autocomplate->tgl_mutasi_gudang_cabang;
+            $response[] = array("label" => $label, 'val' => $autocomplate->no_mutasi_gudang_cabang);
+        }
+
+        echo json_encode($response);
+        exit;
+    }
+
+    public function showsuratjalanmutasi(Request $request)
+    {
+        $no_suratjalan = $request->no_suratjalan;
+        $mutasi = DB::table('mutasi_gudang_cabang')->where('no_mutasi_gudang_cabang', $no_suratjalan)->first();
+        return view('suratjalan.showsuratjalanmutasi', compact('mutasi'));
     }
 }

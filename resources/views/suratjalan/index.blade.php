@@ -18,6 +18,7 @@
         </div>
     </div>
     <div class="content-body">
+        <input type="hidden" id="cektutuplaporan">
         <!-- Data list view starts -->
         <!-- DataTable starts -->
         @include('layouts.notification')
@@ -91,7 +92,11 @@
                                     <td>
                                         @if (!empty($d->tgl_mutasi_gudang_cabang))
                                         @if ($d->status_sj==1)
+                                        @if (empty($d->tgl_transitin))
                                         <span class="badge bg-success">{{date("d-m-Y",strtotime($d->tgl_mutasi_gudang_cabang))}}</span>
+                                        @else
+                                        <span class="badge bg-success">{{date("d-m-Y",strtotime($d->tgl_transitin))}}</span>
+                                        @endif
                                         @elseif($d->status_sj==2)
                                         <span class="badge bg-info">{{date("d-m-Y",strtotime($d->tgl_mutasi_gudang_cabang))}}</span>
                                         @endif
@@ -100,11 +105,21 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a href="/suratjalan/{{Crypt::encrypt($d->no_mutasi_gudang)}}/cetak" target="_blank" class="ml-1"><i class="feather icon-printer info"></i></a>
-                                        @if ($d->status_sj == 0)
-                                        <a href="/suratjalan/{{Crypt::encrypt($d->no_mutasi_gudang)}}/batalkansuratjalan" class="ml-1"><i class="feather icon-trash danger"></i></a>
-                                        <a href="#" class="ml-1 prosescabang" no_mutasi_gudang="{{Crypt::encrypt($d->no_mutasi_gudang)}}"><i class="feather icon-external-link success"></i></a>
-                                        @endif
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <a href="/suratjalan/{{Crypt::encrypt($d->no_mutasi_gudang)}}/cetak" target="_blank" class="ml-1"><i class="feather icon-printer info"></i></a>
+                                            @if ($d->status_sj == 0)
+                                            <a href="/suratjalan/{{Crypt::encrypt($d->no_mutasi_gudang)}}/batalkansuratjalan" class="ml-1"><i class="feather icon-trash danger"></i></a>
+                                            <a href="#" class="ml-1 prosescabang" no_mutasi_gudang="{{Crypt::encrypt($d->no_mutasi_gudang)}}"><i class="feather icon-external-link success"></i></a>
+                                            @else
+                                            <form method="POST" class="deleteform" action="/suratjalan/{{Crypt::encrypt($d->no_mutasi_gudang)}}/batalkansjcabang">
+                                                @csrf
+                                                @method('DELETE')
+                                                <a href="#" tanggal="{{ $d->tgl_mutasi_gudang_cabang }}" class="delete-confirm-batalkansj ml-1">
+                                                    <i class="fa fa-close danger"></i>
+                                                </a>
+                                            </form>
+                                            @endif
+                                        </div>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -182,6 +197,49 @@
             });
             loadapprove(no_mutasi_gudang);
 
+        });
+
+        function cektutuplaporan(tanggal) {
+            $.ajax({
+                type: "POST"
+                , url: "/cektutuplaporan"
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , tanggal: tanggal
+                    , jenislaporan: "gudangcabang"
+                }
+                , cache: false
+                , success: function(respond) {
+                    console.log(respond);
+                    $("#cektutuplaporan").val(respond);
+                }
+            });
+        }
+
+        $('.delete-confirm-batalkansj').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+            var tanggal = $(this).attr("tanggal");
+            cektutuplaporan(tanggal);
+            event.preventDefault();
+            swal({
+                    title: `Apakah Kamu Yakin Akan Membatalkan Data Ini ?`
+                    , text: "Jika Kamu Batalkan, Maka Data Ini Akan dikembalikan seperti semula."
+                    , icon: "warning"
+                    , buttons: true
+                    , dangerMode: true
+                , })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        var cektutuplaporan = $("#cektutuplaporan").val();
+                        if (cektutuplaporan > 0) {
+                            swal("Oops", "Laporan Periode Ini Sudah Di Tutup !", "warning");
+                            return false;
+                        } else {
+                            form.submit();
+                        }
+                    }
+                });
         });
 
 

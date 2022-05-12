@@ -366,4 +366,71 @@ class DpbController extends Controller
             return Redirect::back()->with(['warning' => 'Data Gagal Disimpan, Hubungi Tim IT']);
         }
     }
+
+    public function getautocompletedpb(Request $request)
+    {
+        $search = $request->search;
+        if ($search == '') {
+            $query = Dpb::query();
+            $query->select('dpb.*', 'nama_karyawan');
+            $query->join('karyawan', 'dpb.id_karyawan', '=', 'karyawan.id_karyawan');
+            if ($this->cabang != "PCF") {
+                $query->where('dpb.kode_cabang', $this->cabang);
+            }
+            $query->orderBy('tgl_pengambilan', 'desc');
+            $query->orderby('no_dpb', 'desc');
+            $query->limit(10);
+            $autocomplate = $query->get();
+        } else {
+            $query = Dpb::query();
+            $query->select('dpb.*', 'nama_karyawan');
+            $query->join('karyawan', 'dpb.id_karyawan', '=', 'karyawan.id_karyawan');
+            if ($this->cabang != "PCF") {
+                $query->where('dpb.kode_cabang', $this->cabang);
+            }
+            $query->where('no_dpb', 'like', '%' . $search . '%');
+            $query->orWhere('nama_karyawan', 'like', '%' . $search . '%');
+            if ($this->cabang != "PCF") {
+                $query->where('dpb.kode_cabang', $this->cabang);
+            }
+            $query->orderBy('tgl_pengambilan', 'desc');
+            $query->orderby('no_dpb', 'desc');
+            $query->limit(10);
+            $autocomplate = $query->get();
+        }
+
+
+        //dd($autocomplate);
+        $response = array();
+        foreach ($autocomplate as $autocomplate) {
+            $label = $autocomplate->no_dpb . " - " . $autocomplate->nama_karyawan . " - " . $autocomplate->kode_cabang . " - " . $autocomplate->tujuan . " - " . $autocomplate->no_kendaraan;
+            $response[] = array("value" => $autocomplate->nama_karyawan, "label" => $label, 'val' => $autocomplate->no_dpb);
+        }
+
+        echo json_encode($response);
+        exit;
+    }
+
+    public function showdpbmutasi(Request $request)
+    {
+        $no_dpb = $request->no_dpb;
+        $dpb = DB::table('dpb')
+            ->select(
+                'dpb.*',
+                'nama_karyawan',
+                'driver.nama_driver_helper as nama_driver',
+                'helper1.nama_driver_helper as nama_helper_1',
+                'helper2.nama_driver_helper as nama_helper_2',
+                'helper3.nama_driver_helper as nama_helper_3'
+            )
+            ->join('karyawan', 'dpb.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->leftJoin('driver_helper as driver', 'dpb.id_driver', '=', 'driver.id_driver_helper')
+            ->leftJoin('driver_helper as helper1', 'dpb.id_helper', '=', 'helper1.id_driver_helper')
+            ->leftJoin('driver_helper as helper2', 'dpb.id_helper_2', '=', 'helper2.id_driver_helper')
+            ->leftJoin('driver_helper as helper3', 'dpb.id_helper_3', '=', 'helper3.id_driver_helper')
+            ->where('no_dpb', $no_dpb)
+            ->first();
+
+        return view('dpb.showdpbmutasi', compact('dpb'));
+    }
 }

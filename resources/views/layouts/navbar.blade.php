@@ -466,7 +466,7 @@
                                 </a>
                             </li>
                             @endif
-                            @if (in_array($level, $mutasi_barang_cab_view))
+                            @if (in_array($level, $suratjalancab_view))
                             <li class="{{ request()->is(['suratjalancab', 'suratjalancab/*']) ? 'active' : '' }}">
                                 <a href="/suratjalancab">
                                     <i class="feather icon-truck"></i>
@@ -474,6 +474,15 @@
                                 </a>
                             </li>
                             @endif
+                            @if (in_array($level, $mutasi_barang_cab_view))
+                            <li class="{{ request()->is(['mutasigudangcabang', 'mutasigudangcabang/*','repack','kirimpusat']) ? 'active' : '' }}">
+                                <a href="/mutasigudangcabang/transitin">
+                                    <i class="feather icon-repeat"></i>
+                                    <span class="menu-item">Mutasi Produk</span>
+                                </a>
+                            </li>
+                            @endif
+
                         </ul>
                     </li>
                     @endif

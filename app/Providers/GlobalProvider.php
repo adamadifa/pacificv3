@@ -248,6 +248,12 @@ class GlobalProvider extends ServiceProvider
             $gudang_jadi_menu = ['admin'];
             $gudang_cabang_menu = ['admin'];
             $laporan_gudang = ['admin'];
+            $laporan_gudang_logistik = ['admin'];
+            $laporan_gudang_bahan = ['admin'];
+            $laporan_gudang_jadi = ['admin'];
+            $laporan_gudang_cabang = ['admin'];
+
+
             //Gudang Logistik
             $pemasukan_gudanglogisitik = ['admin'];
             $approve_pembelian = ['admin'];
@@ -262,17 +268,6 @@ class GlobalProvider extends ServiceProvider
             $pengeluaran_gudangbahan = ['admin'];
             $saldoawal_gudangbahan = ['admin'];
             $opname_gudangbahan = ['admin'];
-
-            $laporan_pemasukan_gl = ['admin'];
-            $laporan_pengeluaran_gl = ['admin'];
-            $laporan_persediaan_gl = ['admin'];
-            $laporan_persediaanopname_gl = ['admin'];
-
-            $laporan_pemasukan_gb = ['admin'];
-            $laporan_pengeluaran_gb = ['admin'];
-            $laporan_persediaan_gb = ['admin'];
-            $laporan_kartugudang = ['admin'];
-            $laporan_rekappersediaan = ['admin'];
 
             //Gudang Jadi Pusat
             $permintaan_produksi_view = ['admin'];
@@ -289,6 +284,28 @@ class GlobalProvider extends ServiceProvider
             $gudang_jadi_keuangan = ['admin'];
             $kontrabon_angkutan_view = ['admin'];
 
+            //Gudang Cabang
+
+            $saldoawal_gs_view = ['admin'];
+            $saldoawal_bs_view = ['admin'];
+            $dpb_view = ['admin'];
+            $mutasi_barang_cab_view = ['admin'];
+            $suratjalancab_view = ['admin'];
+
+
+            //Laporan Gudang Logistik
+            $laporan_pemasukan_gl = ['admin'];
+            $laporan_pengeluaran_gl = ['admin'];
+            $laporan_persediaan_gl = ['admin'];
+            $laporan_persediaanopname_gl = ['admin'];
+
+            //Laporan Gudang Bahan
+            $laporan_pemasukan_gb = ['admin'];
+            $laporan_pengeluaran_gb = ['admin'];
+            $laporan_persediaan_gb = ['admin'];
+            $laporan_kartugudang = ['admin'];
+            $laporan_rekappersediaan = ['admin'];
+
             //Laporan Gudang Jadi
             $laporan_persediaan_gj = ['admin'];
             $rekap_persediaan_gj = ['admin'];
@@ -298,12 +315,15 @@ class GlobalProvider extends ServiceProvider
             $realisasi_oman_gj = ['admin'];
             $laporan_angkutan = ['admin'];
 
-            //Gudang Cabang
+            //Laporan Gudang  Cabang\
 
-            $saldoawal_gs_view = ['admin'];
-            $saldoawal_bs_view = ['admin'];
-            $dpb_view = ['admin'];
-            $mutasi_barang_cab_view = ['admin'];
+            $laporan_persediaan_bj = ['admin'];
+            $laporan_badstok_bj = ['admin'];
+            $laporan_rekap_bj = ['admin'];
+            $laporan_mutasidpb = ['admin'];
+            $laporan_rekonsiliasibj = ['admin'];
+
+
 
 
             $shareddata = [
@@ -506,6 +526,11 @@ class GlobalProvider extends ServiceProvider
                 'gudang_jadi_menu' => $gudang_jadi_menu,
                 'gudang_cabang_menu' => $gudang_cabang_menu,
 
+                'laporan_gudang_logistik' => $laporan_gudang_logistik,
+                'laporan_gudang_bahan' => $laporan_gudang_bahan,
+                'laporan_gudang_jadi' => $laporan_gudang_jadi,
+                'laporan_gudang_cabang' => $laporan_gudang_cabang,
+
 
                 //Gudang Logistik
                 'pemasukan_gudanglogistik' => $pemasukan_gudanglogisitik,
@@ -521,20 +546,6 @@ class GlobalProvider extends ServiceProvider
                 'saldoawal_gudangbahan' => $saldoawal_gudangbahan,
                 'opname_gudangbahan' => $opname_gudangbahan,
 
-                //Laporan Gudang
-                'laporan_gudang' => $laporan_gudang,
-                'laporan_pemasukan_gl' => $laporan_pemasukan_gl,
-                'laporan_pengeluaran_gl' => $laporan_pengeluaran_gl,
-                'laporan_persediaan_gl' => $laporan_persediaan_gl,
-                'laporan_persediaanopname_gl' => $laporan_persediaanopname_gl,
-
-                'laporan_pemasukan_gb' => $laporan_pemasukan_gb,
-                'laporan_pengeluaran_gb' => $laporan_pengeluaran_gb,
-                'laporan_persediaan_gb' => $laporan_persediaan_gb,
-                'laporan_kartugudang' => $laporan_kartugudang,
-                'laporan_rekappersediaan' => $laporan_rekappersediaan,
-
-
                 //Gudang Jadi
                 'permintaan_produksi_view' => $permintaan_produksi_view,
                 'mutasi_produk_gj' => $mutasi_produk_gj,
@@ -544,10 +555,29 @@ class GlobalProvider extends ServiceProvider
                 'rejectgj_view' => $rejectgj_view,
                 'lainnyagj_view' => $lainnyagj_view,
                 'angkutan_view' => $angkutan_view,
-
                 //Kontrabon Angkutan
                 'gudang_jadi_keuangan' => $gudang_jadi_keuangan,
                 'kontrabon_angkutan_view' => $kontrabon_angkutan_view,
+                //Gudang Cabang
+                'saldoawal_gs_view' => $saldoawal_gs_view,
+                'saldoawal_bs_view' => $saldoawal_bs_view,
+                'dpb_view' => $dpb_view,
+                'suratjalancab_view' => $suratjalancab_view,
+                'mutasi_barang_cab_view' => $mutasi_barang_cab_view,
+
+                //Laporan Gudang Logistik
+                'laporan_gudang' => $laporan_gudang,
+                'laporan_pemasukan_gl' => $laporan_pemasukan_gl,
+                'laporan_pengeluaran_gl' => $laporan_pengeluaran_gl,
+                'laporan_persediaan_gl' => $laporan_persediaan_gl,
+                'laporan_persediaanopname_gl' => $laporan_persediaanopname_gl,
+
+                //Laporan Gudang Bahan
+                'laporan_pemasukan_gb' => $laporan_pemasukan_gb,
+                'laporan_pengeluaran_gb' => $laporan_pengeluaran_gb,
+                'laporan_persediaan_gb' => $laporan_persediaan_gb,
+                'laporan_kartugudang' => $laporan_kartugudang,
+                'laporan_rekappersediaan' => $laporan_rekappersediaan,
 
                 //Laporan Gudang Jadi
                 'laporan_persediaan_gj' => $laporan_persediaan_gj,
@@ -558,11 +588,22 @@ class GlobalProvider extends ServiceProvider
                 'realisasi_oman_gj' => $realisasi_oman_gj,
                 'laporan_angkutan' => $laporan_angkutan,
 
-                //Gudang Cabang
-                'saldoawal_gs_view' => $saldoawal_gs_view,
-                'saldoawal_bs_view' => $saldoawal_bs_view,
-                'dpb_view' => $dpb_view,
-                'mutasi_barang_cab_view' => $mutasi_barang_cab_view
+                //Laporan Gudang Jadi
+                'laporan_persediaan_gj' => $laporan_persediaan_gj,
+                'rekap_persediaan_gj' => $rekap_persediaan_gj,
+                'rekap_hasiproduksi_gj' => $rekap_hasiproduksi_gj,
+                'rekap_pengeluaran_gj' => $rekap_pengeluaran_gj,
+                'realisasi_kiriman_gj' => $realisasi_kiriman_gj,
+                'realisasi_oman_gj' => $realisasi_oman_gj,
+                'laporan_angkutan' => $laporan_angkutan,
+
+                'laporan_persediaan_bj' => $laporan_persediaan_bj,
+                'laporan_badstok_bj' => $laporan_badstok_bj,
+                'laporan_rekap_bj' => $laporan_rekap_bj,
+                'laporan_mutasidpb' => $laporan_mutasidpb,
+                'laporan_rekonsiliasibj' => $laporan_rekonsiliasibj,
+
+
             ];
             View::share($shareddata);
         });

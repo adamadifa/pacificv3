@@ -1,4 +1,5 @@
 <form action="/suratjalan/{{ Crypt::encrypt($mutasi->no_mutasi_gudang) }}/storeprosescabang" id="frmApprove" method="POST">
+    <input type="hidden" id="cektutuplaporan">
     @csrf
     <table class="table">
         <tr>
@@ -78,10 +79,42 @@
 <script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
 <script>
     $(function() {
+        $("#tgl_mutasi_gudang_cabang").change(function() {
+            var tgl_mutasi_gudang_cabang = $(this).val();
+            cektutuplaporan(tgl_mutasi_gudang_cabang);
+        });
+
+        function cektutuplaporan(tanggal) {
+            $.ajax({
+                type: "POST"
+                , url: "/cektutuplaporan"
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , tanggal: tanggal
+                    , jenislaporan: "gudangcabang"
+                }
+                , cache: false
+                , success: function(respond) {
+                    console.log(respond);
+                    $("#cektutuplaporan").val(respond);
+                }
+            });
+        }
         $("#frmApprove").submit(function() {
             var status = $("#status").val();
             var tgl_mutasi_gudang_cabang = $("#tgl_mutasi_gudang_cabang");
-            if (status == "") {
+            var cektutuplaporan = $("#cektutuplaporan").val();
+            if (cektutuplaporan > 0) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Laporan Periode Ini Sudah Ditutup !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#tgl_mutasi_gudang_cabang").focus();
+                });
+                return false;
+            } else if (status == "") {
                 swal({
                     title: 'Oops'
                     , text: 'Status Harus Dipilih !'

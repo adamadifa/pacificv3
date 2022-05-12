@@ -86,7 +86,7 @@ class PembelianController extends Controller
         );
 
         if (!empty($request->dari) && !empty($request->sampai)) {
-            $query->whereBetween('tgl_pembelian', [$request->dari, $request->sampai]);
+            $query->whereBetween('pembelian.tgl_pembelian', [$request->dari, $request->sampai]);
         }
         if (!empty($request->nobukti_pembelian)) {
             $query->where('pembelian.nobukti_pembelian', $request->nobukti_pembelian);

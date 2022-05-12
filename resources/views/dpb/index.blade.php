@@ -224,6 +224,7 @@
             });
         });
 
+
         $(".edit").click(function(e) {
             e.preventDefault();
             var no_dpb = $(this).attr("no_dpb");

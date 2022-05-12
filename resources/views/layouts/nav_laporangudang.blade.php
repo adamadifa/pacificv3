@@ -1,3 +1,4 @@
+@if (in_array($level,$laporan_gudang_logistik))
 <div class="card">
     <div class="card-content">
         <div class="card-body">
@@ -35,7 +36,8 @@
         </ul>
     </div>
 </div>
-
+@endif
+@if (in_array($level,$laporan_gudang_bahan))
 <div class="card">
     <div class="card-content">
         <div class="card-body">
@@ -81,7 +83,8 @@
         </ul>
     </div>
 </div>
-
+@endif
+@if (in_array($level,$laporan_gudang_jadi))
 <div class="card">
     <div class="card-content">
         <div class="card-body">
@@ -140,3 +143,50 @@
         </ul>
     </div>
 </div>
+@endif
+@if (in_array($level,$laporan_gudang_cabang))
+<div class="card">
+    <div class="card-content">
+        <div class="card-body">
+            <h4 class="card-title">Gudang Cabang</h4>
+        </div>
+        <ul class="list-group list-group-flush">
+            @if (in_array($level,$laporan_persediaan_bj))
+            <a href="/laporangudangcabang/persediaan" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporangudangcabang/persediaan']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Laporan Persediaan
+                </li>
+            </a>
+            @endif
+            @if (in_array($level,$laporan_badstok_bj))
+            <a href="/laporangudangcabang/badstok" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporangudangcabang/badstok']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Laporan Badstok
+                </li>
+            </a>
+            @endif
+            @if (in_array($level,$laporan_rekap_bj))
+            <a href="/laporangudangcabang/rekapbj" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporangudangcabang/rekapbj']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Rekap Persediaan
+                </li>
+            </a>
+            @endif
+            @if (in_array($level,$laporan_mutasidpb))
+            <a href="/laporangudangcabang/mutasidpb" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporangudangcabang/mutasidpb']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Mutasi DPB
+                </li>
+            </a>
+            @endif
+            @if (in_array($level,$laporan_rekonsiliasibj))
+            <a href="/laporangudangcabang/rekonsiliasibj" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporangudangcabang/rekonsiliasibj']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Rekonsiliasi BJ
+                </li>
+            </a>
+            @endif
+        </ul>
+    </div>
+</div>
+@endif
