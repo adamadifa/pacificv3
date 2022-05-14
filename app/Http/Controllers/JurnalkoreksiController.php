@@ -45,7 +45,7 @@ class JurnalkoreksiController extends Controller
         $nobukti_pembelian = Crypt::decrypt($request->nobukti_pembelian);
         $kode_barang = $request->kode_barang;
         $keterangan = $request->keterangan;
-        $qty = !empty($request->qty) ? $request->qty : 0;
+        $qty = !empty($request->qty) ? str_replace(".", "", $request->qty) : 0;
         $qty = str_replace(",", ".", $qty);
         $harga = !empty($request->harga) ? str_replace(".", "", $request->harga) : 0;
         $harga = str_replace(",", ".", $harga);

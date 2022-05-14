@@ -177,6 +177,14 @@
                                         </div>
 
                                     </div>
+                                    <div class="row mb-1">
+                                        <div class="col-12">
+                                            <select class="form-control" name="statusdppp" id="statusdppp">
+                                                <option value="2">Berdasarkan Tunai Kredit / Omset</option>
+                                                <option value="1">Berdasarkan Selling Out</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-12">
                                             <a href="#" id="tampilkandppp" class="btn btn-primary"><i class="fa fa-eye"></i></a>
@@ -309,7 +317,7 @@
     </div>
 </div>
 <div class="modal fade text-left" id="mdldppp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" style="max-width:60%" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-xl" style="max-width:60%" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel16">Rekap DPPP</h4>
@@ -412,6 +420,7 @@
             var cabang = $("#cabangdppp").val();
             var bulan = $("#bulandppp").val();
             var tahun = $("#tahundppp").val();
+            var statusdppp = $("#statusdppp").val();
             $.ajax({
                 type: 'POST'
                 , url: '/dpppdashboard'
@@ -420,6 +429,7 @@
                     , bulan: bulan
                     , tahun: tahun
                     , cabang: cabang
+                    , statusdppp: statusdppp
                 }
                 , cache: false
                 , success: function(respond) {

@@ -323,7 +323,18 @@ class GlobalProvider extends ServiceProvider
             $laporan_mutasidpb = ['admin'];
             $laporan_rekonsiliasibj = ['admin'];
 
-
+            //Acounting
+            $accounting_menu = ['admin'];
+            $hpp_menu = ['admin'];
+            $hpp_input = ['admin'];
+            $hargaawal_input = ['admin'];
+            $saldoawal_bukubesar_menu = ['admin'];
+            $jurnalumum_menu = ['admin'];
+            $costratio_menu = ['admin'];
+            $laporan_accounting = ['admin'];
+            $laporan_rekapbj_acc = ['admin'];
+            $laporan_bukubesar = ['admin'];
+            $laporan_jurnalumum = ['admin'];
 
 
             $shareddata = [
@@ -603,7 +614,18 @@ class GlobalProvider extends ServiceProvider
                 'laporan_mutasidpb' => $laporan_mutasidpb,
                 'laporan_rekonsiliasibj' => $laporan_rekonsiliasibj,
 
-
+                //Acounting
+                'accounting_menu' => $accounting_menu,
+                'hpp_menu' => $hpp_menu,
+                'hpp_input' => $hpp_input,
+                'hargaawal_input' => $hargaawal_input,
+                'saldoawal_bukubesar_menu' => $saldoawal_bukubesar_menu,
+                'jurnalumum_menu' => $jurnalumum_menu,
+                'costratio_menu' => $costratio_menu,
+                'laporan_accounting' => $laporan_accounting,
+                'laporan_rekapbj_acc' => $laporan_rekapbj_acc,
+                'laporan_bukubesar' => $laporan_bukubesar,
+                'laporan_jurnalumum' => $laporan_jurnalumum
             ];
             View::share($shareddata);
         });

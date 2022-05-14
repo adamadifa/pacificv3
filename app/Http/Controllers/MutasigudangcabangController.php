@@ -336,6 +336,34 @@ class MutasigudangcabangController extends Controller
             ->get();
         return view('mutasigudangcabang.mutasiedit', compact('mutasi', 'detail'));
     }
+
+    public function penyesuaianedit($no_mutasi_gudang_cabang)
+    {
+        $no_mutasi_gudang_cabang = Crypt::decrypt($no_mutasi_gudang_cabang);
+        $mutasi = DB::table('mutasi_gudang_cabang')
+            ->select(
+                'mutasi_gudang_cabang.*'
+            )
+            ->where('no_mutasi_gudang_cabang', $no_mutasi_gudang_cabang)->first();
+        $detail = DB::table('master_barang')
+            ->select('master_barang.*', 'jumlah')
+            ->leftJoin(
+                DB::raw("(
+            SELECT
+            kode_produk,
+            jumlah
+            FROM
+                detail_mutasi_gudang_cabang
+            WHERE
+                no_mutasi_gudang_cabang = '$no_mutasi_gudang_cabang'
+            ) dmc"),
+                function ($join) {
+                    $join->on('master_barang.kode_produk', '=', 'dmc.kode_produk');
+                }
+            )
+            ->get();
+        return view('mutasigudangcabang.penyesuaianedit', compact('mutasi', 'detail'));
+    }
     public function store(Request $request)
     {
         $no_dpb = $request->no_dpb_val;
@@ -687,10 +715,32 @@ class MutasigudangcabangController extends Controller
         $jmlpcs = $request->jmlpcs;
         $isipcsdus = $request->isipcsdus;
         $isipcs = $request->isipcs;
-        $data = array(
-            'tgl_mutasi_gudang_cabang' => $tgl_mutasi_gudang_cabang,
-            'id_admin'                 => $id_admin
-        );
+        if ($mutasi->jenis_mutasi == "PENYESUAIAN") {
+            $inout_good = $request->inout;
+            $keterangan = $request->keterangan;
+            $data = array(
+                'tgl_mutasi_gudang_cabang' => $tgl_mutasi_gudang_cabang,
+                'inout_good' => $inout_good,
+                'keterangan' => $keterangan,
+                'id_admin' => $id_admin,
+
+            );
+        } else if ($mutasi->jenis_mutasi == "PENYESUAIAN BAD") {
+            $inout_bad = $request->inout;
+            $keterangan = $request->keterangan;
+            $data = array(
+                'tgl_mutasi_gudang_cabang' => $tgl_mutasi_gudang_cabang,
+                'inout_bad' => $inout_bad,
+                'keterangan' => $keterangan,
+                'id_admin' => $id_admin,
+
+            );
+        } else {
+            $data = array(
+                'tgl_mutasi_gudang_cabang' => $tgl_mutasi_gudang_cabang,
+                'id_admin'                 => $id_admin
+            );
+        }
         for ($i = 0; $i < count($kode_produk); $i++) {
             $jml_dus = !empty($jmldus[$i]) ? $jmldus[$i] : 0;
             $jml_pack = !empty($jmlpack[$i]) ? $jmlpack[$i] : 0;
@@ -1031,5 +1081,153 @@ class MutasigudangcabangController extends Controller
             ->get();
 
         return view('mutasi_gudang_cabang.dashboard.saldogudangcabangbs', compact('saldo'));
+    }
+
+    public function penyesuaian($kondisi, Request $request)
+    {
+
+        $jenis_mutasi = $kondisi;
+        if ($kondisi == "good") {
+            $jm = "PENYESUAIAN";
+            $textjm = "PENYESUAIAN";
+        } else if ($kondisi == "bad") {
+            $jm = "PENYESUAIAN BAD";
+            $textjm = "PENYESUAIAN BAD";
+        }
+        $query = Mutasigudangcabang::query();
+        $query->select('mutasi_gudang_cabang.*');
+        if (!empty($request->dari) && !empty($request->sampai)) {
+            $query->whereBetween('mutasi_gudang_cabang.tgl_mutasi_gudang_cabang', [$request->dari, $request->sampai]);
+        }
+
+        if (!empty($request->kode_cabang)) {
+            $query->where('mutasi_gudang_cabang.kode_cabang', $request->kode_cabang);
+        }
+
+        $query->where('jenis_mutasi', $jm);
+        $query->orderBy('tgl_mutasi_gudang_cabang', 'desc');
+        $query->orderBy('no_mutasi_gudang_cabang', 'desc');
+        $mutasi = $query->paginate(15);
+        $mutasi->appends($request->all());
+        if ($this->cabang == "PCF") {
+            $cabang = DB::table('cabang')->get();
+        } else {
+            $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+        }
+        return view('mutasigudangcabang.penyesuaian', compact('jenis_mutasi', 'mutasi', 'cabang', 'jm', 'textjm'));
+    }
+
+    public function penyesuaiancreate($jenis_mutasi)
+    {
+        if ($jenis_mutasi == "bad") {
+            $jm = "PENYESUAIAN BAD";
+            $textjm = "PENYESUAIAN BAD";
+        } else if ($jenis_mutasi == "good") {
+            $jm = "PENYESUAIAN";
+            $textjm = "PENYESUAIAN";
+        }
+        if ($this->cabang == "PCF") {
+            $cabang = DB::table('cabang')->get();
+        } else {
+            $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+        }
+        $produk = Barang::orderBy('kode_produk')->get();
+        return view('mutasigudangcabang.penyesuaian_create', compact('jenis_mutasi', 'produk', 'jm', 'textjm', 'cabang'));
+    }
+
+    public function penyesuaianstore(Request $request)
+    {
+        $kode_cabang = $request->kode_cabang;
+        $tgl_mutasi_gudang_cabang = $request->tgl_mutasi_gudang_cabang;
+        $jenis_mutasi = $request->jenis_mutasi;
+        $keterangan = $request->keterangan;
+        $inout = $request->inout;
+        $tanggal  = explode("-", $tgl_mutasi_gudang_cabang);
+        $bulan    = $tanggal[1];
+        $tahun    = $tanggal[0];
+        $thn = substr($tahun, 2, 2);
+        if ($jenis_mutasi == "PENYESUAIAN") {
+            $kode = "PY";
+            $kondisi = "GOOD";
+            $inout_good = $inout;
+            $inout_bad = NULL;
+            $order = 13;
+        } else if ($jenis_mutasi == "PENYESUAIAN BAD") {
+            $kode = "PYB";
+            $kondisi = "BAD";
+            $inout_good = NULL;
+            $inout_bad = $inout;
+            $order = 16;
+        }
+        $mutasi = DB::table('mutasi_gudang_cabang')
+            ->select('no_mutasi_gudang_cabang')
+            ->where('jenis_mutasi', $jenis_mutasi)
+            ->whereRaw('YEAR(tgl_mutasi_gudang_cabang)=' . $tahun)
+            ->orderBy('no_mutasi_gudang_cabang', 'desc')
+            ->first();
+        $lastnomutasi = $mutasi != null ? $mutasi->no_mutasi_gudang_cabang : '';
+        $no_mutasi = buatkode($lastnomutasi, $kode . $thn, 5);
+
+        if ($bulan == 12) {
+            $bulan = 1;
+            $tahun = $tahun + 1;
+        } else {
+            $bulan = $bulan + 1;
+            $tahun = $tahun;
+        }
+        $id_admin  = Auth::user()->id;
+        $kode_produk = $request->kode_produk;
+        $jmldus = $request->jmldus;
+        $jmlpack = $request->jmlpack;
+        $jmlpcs = $request->jmlpcs;
+        $isipcsdus = $request->isipcsdus;
+        $isipcs = $request->isipcs;
+        $data = array(
+            'no_mutasi_gudang_cabang'  => $no_mutasi,
+            'tgl_mutasi_gudang_cabang' => $tgl_mutasi_gudang_cabang,
+            'kode_cabang'              => $kode_cabang,
+            'kondisi'                  => $kondisi,
+            'inout_good'               => $inout_good,
+            'inout_bad'                => $inout_bad,
+            'jenis_mutasi'             => $jenis_mutasi,
+            'keterangan'               => $keterangan,
+            'order'                    => $order,
+            'id_admin'                 => $id_admin
+        );
+        for ($i = 0; $i < count($kode_produk); $i++) {
+            $jml_dus = !empty($jmldus[$i]) ? $jmldus[$i] : 0;
+            $jml_pack = !empty($jmlpack[$i]) ? $jmlpack[$i] : 0;
+            $jml_pcs = !empty($jmlpcs[$i]) ? $jmlpcs[$i] : 0;
+
+            $jumlah = ($jml_dus * $isipcsdus[$i]) + ($jml_pack * $isipcs[$i]) + $jml_pcs;
+            if (!empty($jumlah)) {
+                $data_detail[]   = [
+                    'no_mutasi_gudang_cabang' => $no_mutasi,
+                    'kode_produk'             => $kode_produk[$i],
+                    'jumlah'                  => $jumlah
+                ];
+            }
+        }
+        //dd($data_detail);
+        $ceksa = DB::table('saldoawal_bj')->where('bulan', $bulan)->where('tahun', $tahun)->where('kode_cabang', $kode_cabang)->count();
+        if ($ceksa > 0) {
+            return Redirect::back()->with(['warning' => 'Data Periode Ini Sudah Ditutup, Karena Saldo Bulan Berikutnya Sudah Di Set']);
+        } else {
+            DB::beginTransaction();
+            try {
+
+                DB::table('mutasi_gudang_cabang')->insert($data);
+                $chunks = array_chunk($data_detail, 5);
+                foreach ($chunks as $chunk) {
+                    Detailmutasicabang::insert($chunk);
+                }
+                DB::commit();
+                return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+            } catch (\Exception $e) {
+                dd($e);
+                DB::rollback();
+                return Redirect::back()->with(['warning' => 'Data Gagal Disimpan, Hubungi Tim IT!']);
+            }
+        }
     }
 }

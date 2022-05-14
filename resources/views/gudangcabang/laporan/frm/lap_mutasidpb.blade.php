@@ -120,11 +120,9 @@
 
         $("#frmPembelian").submit(function() {
             var kode_cabang = $("#kode_cabang").val();
-            var dari = $("#dari").val();
-            var sampai = $("#sampai").val();
+            var bulan = $("#bulan").val();
+            var tahun = $("#tahun").val();
             var kode_produk = $("#kode_produk").val();
-            var start = new Date(dari);
-            var end = new Date(sampai);
             if (kode_cabang == "") {
                 swal({
                     title: 'Oops'
@@ -142,37 +140,27 @@
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
-                    $("#kode_produk").focus();
+                    $("#bulan").focus();
                 });
                 return false;
-            } else if (dari == "" || sampai == "") {
+            } else if (bulan == "") {
                 swal({
                     title: 'Oops'
-                    , text: 'Periode Harus Diisi !'
+                    , text: 'Bulan Harus Dipilih !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
-                    $("#dari").focus();
+                    $("#bulan").focus();
                 });
                 return false;
-            } else if (start.getTime() > end.getTime()) {
+            } else if (tahun == "") {
                 swal({
                     title: 'Oops'
-                    , text: 'Periode tidak Valid !'
+                    , text: 'Tahun Harus Dipilih !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
-                    $("#dari").focus();
-                });
-                return false;
-            } else if (start.getTime() < datestart.getTime()) {
-                swal({
-                    title: 'Oops'
-                    , text: 'Periode tidak Valid !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#dari").focus();
+                    $("#tahun").focus();
                 });
                 return false;
             } else {

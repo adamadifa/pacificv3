@@ -18,15 +18,19 @@ use App\Http\Controllers\DriverhelperController;
 use App\Http\Controllers\FsthpController;
 use App\Http\Controllers\GiroController;
 use App\Http\Controllers\GudangController;
+use App\Http\Controllers\HargaawalController;
 use App\Http\Controllers\HargaController;
 use App\Http\Controllers\HargaControoler;
+use App\Http\Controllers\HppController;
 use App\Http\Controllers\JenissimpananController;
 use App\Http\Controllers\JurnalkoreksiController;
+use App\Http\Controllers\JurnalumumController;
 use App\Http\Controllers\KaskecilController;
 use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\KlaimController;
 use App\Http\Controllers\KontrabonangkutanController;
 use App\Http\Controllers\KontrabonController;
+use App\Http\Controllers\LaporanaccountingController;
 use App\Http\Controllers\LaporangudangbahanController;
 use App\Http\Controllers\LaporangudangcabangController;
 use App\Http\Controllers\LaporangudangjadiController;
@@ -64,6 +68,7 @@ use App\Http\Controllers\RatiokomisiController;
 use App\Http\Controllers\RepackrejectgudangjadiController;
 use App\Http\Controllers\ReturController;
 use App\Http\Controllers\SaldoawalBJController;
+use App\Http\Controllers\SaldoawalbukubesarController;
 use App\Http\Controllers\SaldoawalgudangbahanController;
 use App\Http\Controllers\SaldoawalgudanglogistikController;
 use App\Http\Controllers\SaldoawalkasbesarController;
@@ -872,11 +877,15 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::delete('/mutasigudangcabang/{no_mutasi_gudang_cabang}/delete', [MutasigudangcabangController::class, 'delete']);
     Route::get('/mutasigudangcabang/{no_mutasi_gudang_cabang}/edit', [MutasigudangcabangController::class, 'edit']);
     Route::get('/mutasigudangcabang/{no_mutasi_gudang_cabang}/mutasiedit', [MutasigudangcabangController::class, 'mutasiedit']);
+    Route::get('/mutasigudangcabang/{no_mutasi_gudang_cabang}/penyesuaianedit', [MutasigudangcabangController::class, 'penyesuaianedit']);
     Route::post('/mutasigudangcabang/{no_mutasi_gudang_cabang}/update', [MutasigudangcabangController::class, 'update']);
     Route::get('/repack', [MutasigudangcabangController::class, 'repack']);
     Route::get('/kirimpusat', [MutasigudangcabangController::class, 'kirimpusat']);
     Route::get('/rejectgudang', [MutasigudangcabangController::class, 'rejectgudang']);
     Route::post('/rejectgudang/store', [MutasigudangcabangController::class, 'rejectgudangstore']);
+    Route::get('/mutasigudangcabang/{kondisi}/penyesuaian', [MutasigudangcabangController::class, 'penyesuaian']);
+    Route::get('/mutasigudangcabang/{jenis_mutasi}/penyesuaiancreate', [MutasigudangcabangController::class, 'penyesuaiancreate']);
+    Route::post('/mutasigudangcabang/penyesuaianstore', [MutasigudangcabangController::class, 'penyesuaianstore']);
 
     //Laporan Gudang Cabang
     Route::get('/laporangudangcabang/persediaan', [LaporangudangcabangController::class, 'persediaan']);
@@ -889,6 +898,41 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/laporangudangcabang/rekapbj/cetak', [LaporangudangcabangController::class, 'cetak_rekapbj']);
     Route::post('/laporangudangcabang/mutasidpb/cetak', [LaporangudangcabangController::class, 'cetak_mutasidpb']);
     Route::post('/laporangudangcabang/rekonsiliasibj/cetak', [LaporangudangcabangController::class, 'cetak_rekonsiliasibj']);
+
+    //Acounting
+    //Input HPP
+    Route::get('/hpp', [HppController::class, 'index']);
+    Route::post('/hpp/show', [HppController::class, 'show']);
+    Route::post('/hpp/store', [HppController::class, 'store']);
+
+    //Input Harga Awal
+    Route::get('/hargaawal', [HargaawalController::class, 'index']);
+    Route::post('/hargaawal/show', [HargaawalController::class, 'show']);
+    Route::post('/hargaawal/store', [HargaawalController::class, 'store']);
+
+    //Saldoawal Buku Besar
+    Route::get('/saldoawalbb', [SaldoawalbukubesarController::class, 'index']);
+    Route::delete('/saldoawalbb/{kode_saldoawal}/delete', [SaldoawalbukubesarController::class, 'delete']);
+    Route::get('/saldoawalbb/create', [SaldoawalbukubesarController::class, 'create']);
+    Route::get('/saldoawalbb/{kode_saldoawal}/show', [SaldoawalbukubesarController::class, 'show']);
+    Route::post('/saldoawalbb/getdetailsaldo', [SaldoawalbukubesarController::class, 'getdetailsaldo']);
+    Route::post('/saldoawalbb/store', [SaldoawalbukubesarController::class, 'store']);
+
+    //Jurnal Umum
+    Route::get('/jurnalumum', [JurnalumumController::class, 'index']);
+    Route::get('/jurnalumum/{kode_dept}/create', [JurnalumumController::class, 'create']);
+    Route::post('/jurnalumum/store', [JurnalumumController::class, 'store']);
+    Route::delete('/jurnalumum/{kode_jurnal}/delete', [JurnalumumController::class, 'delete']);
+
+    //Laporan Accounting
+    Route::get('/laporanaccounting/rekapbj', [LaporanaccountingController::class, 'rekapbj']);
+    Route::get('/laporanaccounting/rekappersediaan', [LaporanaccountingController::class, 'rekappersediaan']);
+    Route::get('/laporanaccounting/bukubesar', [LaporanaccountingController::class, 'bukubesar']);
+    Route::get('/laporanaccounting/jurnalumum', [LaporanaccountingController::class, 'jurnalumum']);
+    Route::post('/laporanaccounting/rekapbj/cetak', [LaporanaccountingController::class, 'cetak_rekapbj']);
+    Route::post('/laporanaccounting/rekappersediaan/cetak', [LaporanaccountingController::class, 'cetak_rekappersediaan']);
+    Route::post('/laporanaccounting/bukubesar/cetak', [LaporanaccountingController::class, 'cetak_bukubesar']);
+    Route::post('/laporanaccounting/jurnalumum/cetak', [LaporanaccountingController::class, 'cetak_jurnalumum']);
 });
 
 //Administrator | Direktur | General Manager | Manager Marketing | Manager Accounting | Kepala Penjualan | Staff Keuangan | Admin Kas Kecil

@@ -217,7 +217,7 @@
                 $isipcsdusSP8 = $b->isipcsdus;
                 }
             }
-            $totaltargetBBDP = 0;
+    $totaltargetBBDP = 0;
     $totalrealisasiBBDP = 0;
 
     $totaltargetDS = 0;
@@ -240,219 +240,220 @@
     $grandtotalrewardhelper = 0;
     $grandtotalrewardgudang = 0;
     $no = 1;
+
+    $poinBBDP = 40;
+    $poinDS = 7.5;
+    $poinSP = 15;
+    $poinAR = 22.5;
+    $poinASABCG5 = 15;
+
     foreach ($komisi as $d) {
-      $poinBBDP = 40;
-      $poinDS = 7.5;
-      $poinSP = 15;
-      $poinAR = 22.5;
-      $poinASABCG5 = 15;
-
-      $BB = $d->BB / $isipcsdusBB;
-      $DEP = $d->DEP / $isipcsdusDEP;
-      $realisasi_BB_DEP = $BB + $DEP;
-      if (empty($d->target_BB_DP)) {
-        $ratioBBDP = 0;
-      } else {
-        $ratioBBDP = $realisasi_BB_DEP / $d->target_BB_DP;
-      }
-
-      if ($ratioBBDP > 1) {
-        $hasilpoinBBDP =  $poinBBDP;
-      } else {
-        $hasilpoinBBDP = $ratioBBDP * $poinBBDP;
-      }
-
-      $DS = $d->DS / $isipcsdusDS;
-      $SP8 = $d->SP8 / $isipcsdusSP8;
-      $realisasi_DS = $DS + $SP8;
-      if (empty($d->target_DS)) {
-        $ratioDS = 0;
-      } else {
-        $ratioDS = $realisasi_DS / $d->target_DS;
-      }
-
-      if ($ratioDS > 1) {
-        $hasilpoinDS =  $poinDS;
-      } else {
-        $hasilpoinDS = $ratioDS * $poinDS;
-      }
-
-      $SP = $d->SP / $isipcsdusSP;
-      $SC = $d->SC / $isipcsdusSC;
-      $realisasi_SP = $SP + $SC;
-      if (empty($d->target_SP)) {
-        $ratioSP = 0;
-      } else {
-        $ratioSP = $realisasi_SP / $d->target_SP;
-      }
-
-      if ($ratioSP > 1) {
-        $hasilpoinSP =  $poinSP;
-      } else {
-        $hasilpoinSP = $ratioSP * $poinSP;
-      }
-
-      $AR = $d->AR / $isipcsdusAR;
-      $realisasi_AR = $AR;
-      if (empty($d->target_AR)) {
-        $ratioAR = 0;
-      } else {
-        $ratioAR = $realisasi_AR / $d->target_AR;
-      }
-
-      if ($ratioAR > 1) {
-        $hasilpoinAR =  $poinAR;
-      } else {
-        $hasilpoinAR = $ratioAR * $poinAR;
-      }
-
-
-
-      $AB = $d->AB / $isipcsdusAB;
-      $AS = $d->AS / $isipcsdusAS;
-      $CG5 = $d->CG5 / $isipcsdusCG5;
-      $realisasi_AB_AS_CG5 = $AB + $AS + $CG5;
-      if (empty($d->target_AB_AS_CG5)) {
-        $ratioAB_AS_CG5 = 0;
-      } else {
-        $ratioAB_AS_CG5 = $realisasi_AB_AS_CG5 / $d->target_AB_AS_CG5;
-      }
-
-
-      //$ratioAB_AS_CG5 = $d->realisasi_AB_AS_CG5 / $d->target_AB_AS_CG5;
-      if ($ratioAB_AS_CG5 > 1) {
-        $hasilpoinAB_AS_CG5 =  $poinASABCG5;
-      } else {
-        $hasilpoinAB_AS_CG5 = $ratioAB_AS_CG5 * $poinASABCG5;
-      }
-
-      $totalpoin = $hasilpoinBBDP + $hasilpoinDS + $hasilpoinAR + $hasilpoinSP + $hasilpoinAB_AS_CG5;
-
-      if ($bulan >= 2 and $tahun >= 2022) {
-        if ($d->kategori_salesman == "CANVASER") {
-          $ratiocashin = 0.30;
+        $BB = $d->BB / $isipcsdusBB;
+        $DEP = $d->DEP / $isipcsdusDEP;
+        $realisasi_BB_DEP = $BB + $DEP;
+        if (empty($d->target_BB_DP)) {
+            $ratioBBDP = 0;
         } else {
-          $ratiocashin = 0.10;
+            $ratioBBDP = $realisasi_BB_DEP / $d->target_BB_DP;
         }
-      } else {
-        $ratiocashin = 0.10;
-      }
 
-      $rewardcashin = $d->realisasi_cashin * ($ratiocashin / 100);
-
-      if ($bulan >= 2 and $tahun >= 2022) {
-        $kebijakan = 100;
-      } else {
-        if ($cabang == "BDG") {
-          $kebijakan = 25;
-        } else if ($cabang == "PWT") {
-          $kebijakan = 100;
-        } else if ($cabang == "SKB") {
-          $kebijakan = 100;
-        } else if ($cabang == "BGR") {
-          $kebijakan = 100;
-        } else if ($cabang == "TGL") {
-          $kebijakan = 50;
-        } else if ($cabang == "TSM") {
-          $kebijakan = 100;
-        } else if ($cabang == "KLT") {
-          $kebijakan = 100;
-        }
-      }
-
-      if(empty($d->realisasi_cashin)){
-          $ratioljt = 0;
-      }else{
-          $ratioljt = ($d->sisapiutang / $d->realisasi_cashin * 100) * ($kebijakan / 100);
-      }
-      if ($bulan == 12 && $tahun == 2021 || $bulan >= 1 && $tahun >= 2022) {
-        if ($ratioljt >= 0 and $ratioljt <= 0.50) {
-          $rewardljt = 1250000;
-        } else  if ($ratioljt > 0.50 and $ratioljt <= 1) {
-          $rewardljt = 1125000;
-        } else  if ($ratioljt > 1 and $ratioljt <= 1.50) {
-          $rewardljt = 1000000;
-        } else  if ($ratioljt > 1.50 and $ratioljt <= 2) {
-          $rewardljt = 875000;
-        } else  if ($ratioljt > 2 and $ratioljt <= 2.50) {
-          $rewardljt = 750000;
-        } else  if ($ratioljt > 2.50 and $ratioljt <= 3) {
-          $rewardljt = 625000;
-        } else  if ($ratioljt > 3 and $ratioljt <= 3.50) {
-          $rewardljt = 500000;
-        } else  if ($ratioljt > 3.50 and $ratioljt <= 4) {
-          $rewardljt = 375000;
-        } else  if ($ratioljt > 4 and $ratioljt <= 4.50) {
-          $rewardljt = 250000;
-        } else  if ($ratioljt > 4.50 and $ratioljt <= 5) {
-          $rewardljt = 125000;
+        if ($ratioBBDP > 1) {
+            $hasilpoinBBDP =  $poinBBDP;
         } else {
-          $rewardljt = 0;
+            $hasilpoinBBDP = $ratioBBDP * $poinBBDP;
         }
-      } else {
-        if ($ratioljt >= 0 and $ratioljt <= 2) {
-          $rewardljt = 2000000;
-        } else  if ($ratioljt > 2 and $ratioljt <= 4) {
-          $rewardljt = 1800000;
-        } else  if ($ratioljt > 4 and $ratioljt <= 6) {
-          $rewardljt = 1600000;
-        } else  if ($ratioljt > 6 and $ratioljt <= 8) {
-          $rewardljt = 1400000;
-        } else  if ($ratioljt > 8 and $ratioljt <= 10) {
-          $rewardljt = 1200000;
-        } else  if ($ratioljt > 10 and $ratioljt <= 12) {
-          $rewardljt = 1000000;
-        } else  if ($ratioljt > 12 and $ratioljt <= 14) {
-          $rewardljt = 800000;
-        } else  if ($ratioljt > 14 and $ratioljt <= 16) {
-          $rewardljt = 600000;
-        } else  if ($ratioljt > 16 and $ratioljt <= 18) {
-          $rewardljt = 400000;
-        } else  if ($ratioljt > 18 and $ratioljt <= 20) {
-          $rewardljt = 200000;
+
+        $DS = $d->DS / $isipcsdusDS;
+        $SP8 = $d->SP8 / $isipcsdusSP8;
+        $realisasi_DS = $DS + $SP8;
+        if (empty($d->target_DS)) {
+            $ratioDS = 0;
         } else {
-          $rewardljt = 0;
+            $ratioDS = $realisasi_DS / $d->target_DS;
         }
-      }
+
+        if ($ratioDS > 1) {
+            $hasilpoinDS =  $poinDS;
+        } else {
+            $hasilpoinDS = $ratioDS * $poinDS;
+        }
+
+        $SP = $d->SP / $isipcsdusSP;
+        $SC = $d->SC / $isipcsdusSC;
+        $realisasi_SP = $SP + $SC;
+        if (empty($d->target_SP)) {
+            $ratioSP = 0;
+        } else {
+            $ratioSP = $realisasi_SP / $d->target_SP;
+        }
+
+        if ($ratioSP > 1) {
+            $hasilpoinSP =  $poinSP;
+        } else {
+            $hasilpoinSP = $ratioSP * $poinSP;
+        }
+
+        $AR = $d->AR / $isipcsdusAR;
+        $realisasi_AR = $AR;
+        if (empty($d->target_AR)) {
+            $ratioAR = 0;
+        } else {
+            $ratioAR = $realisasi_AR / $d->target_AR;
+        }
+
+        if ($ratioAR > 1) {
+            $hasilpoinAR =  $poinAR;
+        } else {
+            $hasilpoinAR = $ratioAR * $poinAR;
+        }
 
 
-      if ($totalpoin < 70) {
-        $rewardpoin = 0;
-      } else if ($totalpoin >= 70 and $totalpoin <= 75) {
-        $rewardpoin = 750000;
-      } else if ($totalpoin > 75 and $totalpoin <= 80) {
-        $rewardpoin = 1500000;
-      } else if ($totalpoin > 80 and $totalpoin <= 85) {
-        $rewardpoin = 2250000;
-      } else if ($totalpoin > 85 and $totalpoin <= 90) {
-        $rewardpoin = 3000000;
-      } else if ($totalpoin > 90 and $totalpoin <= 95) {
-        $rewardpoin = 3750000;
-      } else if ($totalpoin > 95 and $totalpoin <= 100) {
-        $rewardpoin = 4500000;
-      } else {
-        $rewardpoin = "NA";
-      }
 
-      $totalreward = $rewardcashin + $rewardljt + $rewardpoin;
-      $grandtotalrewardsales += $totalreward;
-      $totaltargetBBDP += $d->target_BB_DP;
-      $totalrealisasiBBDP += $realisasi_BB_DEP;
+        $AB = $d->AB / $isipcsdusAB;
+        $AS = $d->AS / $isipcsdusAS;
+        $CG5 = $d->CG5 / $isipcsdusCG5;
+        $realisasi_AB_AS_CG5 = $AB + $AS + $CG5;
+        if (empty($d->target_AB_AS_CG5)) {
+            $ratioAB_AS_CG5 = 0;
+        } else {
+            $ratioAB_AS_CG5 = $realisasi_AB_AS_CG5 / $d->target_AB_AS_CG5;
+        }
 
-      $totaltargetDS += $d->target_DS;
-      $totalrealisasiDS += $realisasi_DS;
 
-      $totaltargetSP += $d->target_SP;
-      $totalrealisasiSP += $realisasi_SP;
+        //$ratioAB_AS_CG5 = $d->realisasi_AB_AS_CG5 / $d->target_AB_AS_CG5;
+        if ($ratioAB_AS_CG5 > 1) {
+            $hasilpoinAB_AS_CG5 =  $poinASABCG5;
+        } else {
+            $hasilpoinAB_AS_CG5 = $ratioAB_AS_CG5 * $poinASABCG5;
+        }
 
-      $totaltargetAR += $d->target_AR;
-      $totalrealisasiAR += $realisasi_AR;
+        $totalpoin = $hasilpoinBBDP + $hasilpoinDS + $hasilpoinAR + $hasilpoinSP + $hasilpoinAB_AS_CG5;
 
-      $totaltargetABASCG5 += $d->target_AB_AS_CG5;
-      $totalrealisasiABASCG5 += $realisasi_AB_AS_CG5;
+        if ($bulan >= 2 and $tahun >= 2022) {
+            if ($d->kategori_salesman == "CANVASER") {
+            $ratiocashin = 0.30;
+            } else {
+            $ratiocashin = 0.10;
+            }
+        } else {
+            $ratiocashin = 0.10;
+        }
 
-      $totalcashin += $d->realisasi_cashin;
-      $totalsisapiutang += $d->sisapiutang;
+        $rewardcashin = $d->realisasi_cashin * ($ratiocashin / 100);
+
+        if ($bulan >= 2 and $tahun >= 2022) {
+            $kebijakan = 100;
+        } else {
+            if ($cabang == "BDG") {
+            $kebijakan = 25;
+            } else if ($cabang == "PWT") {
+            $kebijakan = 100;
+            } else if ($cabang == "SKB") {
+            $kebijakan = 100;
+            } else if ($cabang == "BGR") {
+            $kebijakan = 100;
+            } else if ($cabang == "TGL") {
+            $kebijakan = 50;
+            } else if ($cabang == "TSM") {
+            $kebijakan = 100;
+            } else if ($cabang == "KLT") {
+            $kebijakan = 100;
+            }
+        }
+
+        if(empty($d->realisasi_cashin)){
+            $ratioljt = 0;
+        }else{
+            $ratioljt = ($d->sisapiutang / $d->realisasi_cashin * 100) * ($kebijakan / 100);
+        }
+        if ($bulan == 12 && $tahun == 2021 || $bulan >= 1 && $tahun >= 2022) {
+            if ($ratioljt >= 0 and $ratioljt <= 0.50) {
+            $rewardljt = 1250000;
+            } else  if ($ratioljt > 0.50 and $ratioljt <= 1) {
+            $rewardljt = 1125000;
+            } else  if ($ratioljt > 1 and $ratioljt <= 1.50) {
+            $rewardljt = 1000000;
+            } else  if ($ratioljt > 1.50 and $ratioljt <= 2) {
+            $rewardljt = 875000;
+            } else  if ($ratioljt > 2 and $ratioljt <= 2.50) {
+            $rewardljt = 750000;
+            } else  if ($ratioljt > 2.50 and $ratioljt <= 3) {
+            $rewardljt = 625000;
+            } else  if ($ratioljt > 3 and $ratioljt <= 3.50) {
+            $rewardljt = 500000;
+            } else  if ($ratioljt > 3.50 and $ratioljt <= 4) {
+            $rewardljt = 375000;
+            } else  if ($ratioljt > 4 and $ratioljt <= 4.50) {
+            $rewardljt = 250000;
+            } else  if ($ratioljt > 4.50 and $ratioljt <= 5) {
+            $rewardljt = 125000;
+            } else {
+            $rewardljt = 0;
+            }
+        } else {
+            if ($ratioljt >= 0 and $ratioljt <= 2) {
+            $rewardljt = 2000000;
+            } else  if ($ratioljt > 2 and $ratioljt <= 4) {
+            $rewardljt = 1800000;
+            } else  if ($ratioljt > 4 and $ratioljt <= 6) {
+            $rewardljt = 1600000;
+            } else  if ($ratioljt > 6 and $ratioljt <= 8) {
+            $rewardljt = 1400000;
+            } else  if ($ratioljt > 8 and $ratioljt <= 10) {
+            $rewardljt = 1200000;
+            } else  if ($ratioljt > 10 and $ratioljt <= 12) {
+            $rewardljt = 1000000;
+            } else  if ($ratioljt > 12 and $ratioljt <= 14) {
+            $rewardljt = 800000;
+            } else  if ($ratioljt > 14 and $ratioljt <= 16) {
+            $rewardljt = 600000;
+            } else  if ($ratioljt > 16 and $ratioljt <= 18) {
+            $rewardljt = 400000;
+            } else  if ($ratioljt > 18 and $ratioljt <= 20) {
+            $rewardljt = 200000;
+            } else {
+            $rewardljt = 0;
+            }
+        }
+
+
+        if ($totalpoin < 70) {
+            $rewardpoin = 0;
+        } else if ($totalpoin >= 70 and $totalpoin <= 75) {
+            $rewardpoin = 750000;
+        } else if ($totalpoin > 75 and $totalpoin <= 80) {
+            $rewardpoin = 1500000;
+        } else if ($totalpoin > 80 and $totalpoin <= 85) {
+            $rewardpoin = 2250000;
+        } else if ($totalpoin > 85 and $totalpoin <= 90) {
+            $rewardpoin = 3000000;
+        } else if ($totalpoin > 90 and $totalpoin <= 95) {
+            $rewardpoin = 3750000;
+        } else if ($totalpoin > 95 and $totalpoin <= 100) {
+            $rewardpoin = 4500000;
+        } else {
+            $rewardpoin = "NA";
+        }
+
+        $totalreward = $rewardcashin + $rewardljt + $rewardpoin;
+        $grandtotalrewardsales += $totalreward;
+        $totaltargetBBDP += $d->target_BB_DP;
+        $totalrealisasiBBDP += $realisasi_BB_DEP;
+
+        $totaltargetDS += $d->target_DS;
+        $totalrealisasiDS += $realisasi_DS;
+
+        $totaltargetSP += $d->target_SP;
+        $totalrealisasiSP += $realisasi_SP;
+
+        $totaltargetAR += $d->target_AR;
+        $totalrealisasiAR += $realisasi_AR;
+
+        $totaltargetABASCG5 += $d->target_AB_AS_CG5;
+        $totalrealisasiABASCG5 += $realisasi_AB_AS_CG5;
+
+        $totalcashin += $d->realisasi_cashin;
+        $totalsisapiutang += $d->sisapiutang;
     ?>
             <tr>
                 <td><?php echo $no; ?></td>
@@ -488,121 +489,121 @@
 
             </tr>
             <?php
-      $no++;
+            $no++;
 
-      if (empty($totaltargetBBDP)) {
-        $totalratioBBDP = 0;
-      } else {
-        $totalratioBBDP = $totalrealisasiBBDP / $totaltargetBBDP;
-      }
+            if (empty($totaltargetBBDP)) {
+                $totalratioBBDP = 0;
+            } else {
+                $totalratioBBDP = $totalrealisasiBBDP / $totaltargetBBDP;
+            }
 
-      if ($totalratioBBDP > 1) {
-        $totalhasilpoinBBDP =  $poinBBDP;
-      } else {
-        $totalhasilpoinBBDP = $totalratioBBDP * $poinBBDP;
-      }
+            if ($totalratioBBDP > 1) {
+                $totalhasilpoinBBDP =  $poinBBDP;
+            } else {
+                $totalhasilpoinBBDP = $totalratioBBDP * $poinBBDP;
+            }
 
-      if (empty($totaltargetDS)) {
-        $totalratioDS = 0;
-      } else {
-        $totalratioDS = $totalrealisasiDS / $totaltargetDS;
-      }
+            if (empty($totaltargetDS)) {
+                $totalratioDS = 0;
+            } else {
+                $totalratioDS = $totalrealisasiDS / $totaltargetDS;
+            }
 
-      if ($totalratioDS > 1) {
-        $totalhasilpoinDS =  $poinDS;
-      } else {
-        $totalhasilpoinDS = $totalratioDS * $poinDS;
-      }
+            if ($totalratioDS > 1) {
+                $totalhasilpoinDS =  $poinDS;
+            } else {
+                $totalhasilpoinDS = $totalratioDS * $poinDS;
+            }
 
-      if (empty($totaltargetSP)) {
-        $totalratioSP = 0;
-      } else {
-        $totalratioSP = $totalrealisasiSP / $totaltargetSP;
-      }
+            if (empty($totaltargetSP)) {
+                $totalratioSP = 0;
+            } else {
+                $totalratioSP = $totalrealisasiSP / $totaltargetSP;
+            }
 
-      if ($totalratioSP > 1) {
-        $totalhasilpoinSP =  $poinSP;
-      } else {
-        $totalhasilpoinSP = $totalratioSP * $poinSP;
-      }
+            if ($totalratioSP > 1) {
+                $totalhasilpoinSP =  $poinSP;
+            } else {
+                $totalhasilpoinSP = $totalratioSP * $poinSP;
+            }
 
-      if (empty($totaltargetAR)) {
-        $totalratioAR = 0;
-      } else {
-        $totalratioAR = $totalrealisasiAR / $totaltargetAR;
-      }
+            if (empty($totaltargetAR)) {
+                $totalratioAR = 0;
+            } else {
+                $totalratioAR = $totalrealisasiAR / $totaltargetAR;
+            }
 
-      if ($totalratioAR > 1) {
-        $totalhasilpoinAR =  $poinAR;
-      } else {
-        $totalhasilpoinAR = $totalratioAR * $poinAR;
-      }
+            if ($totalratioAR > 1) {
+                $totalhasilpoinAR =  $poinAR;
+            } else {
+                $totalhasilpoinAR = $totalratioAR * $poinAR;
+            }
 
-      if (empty($totaltargetABASCG5)) {
-        $totalratioABASCG5 = 0;
-      } else {
-        $totalratioABASCG5 = $totalrealisasiABASCG5 / $totaltargetABASCG5;
-      }
+            if (empty($totaltargetABASCG5)) {
+                $totalratioABASCG5 = 0;
+            } else {
+                $totalratioABASCG5 = $totalrealisasiABASCG5 / $totaltargetABASCG5;
+            }
 
-      if ($totalratioABASCG5 > 1) {
-        $totalhasilpoinABASCG5 =  $poinASABCG5;
-      } else {
-        $totalhasilpoinABASCG5 = $totalratioABASCG5 * $poinASABCG5;
-      }
+            if ($totalratioABASCG5 > 1) {
+                $totalhasilpoinABASCG5 =  $poinASABCG5;
+            } else {
+                $totalhasilpoinABASCG5 = $totalratioABASCG5 * $poinASABCG5;
+            }
 
-      $totalallpoin = $totalhasilpoinBBDP + $totalhasilpoinDS + $totalhasilpoinSP + $totalhasilpoinAR + $totalhasilpoinABASCG5;
+            $totalallpoin = $totalhasilpoinBBDP + $totalhasilpoinDS + $totalhasilpoinSP + $totalhasilpoinAR + $totalhasilpoinABASCG5;
 
-      if ($totalallpoin < 70) {
-        $rewardallpoin = 0;
-      } else if ($totalallpoin >= 70 and $totalallpoin <= 75) {
-        $rewardallpoin = 1500000;
-      } else if ($totalallpoin > 75 and $totalallpoin <= 80) {
-        $rewardallpoin = 3000000;
-      } else if ($totalallpoin > 80 and $totalallpoin <= 85) {
-        $rewardallpoin = 4500000;
-      } else if ($totalallpoin > 85 and $totalallpoin <= 90) {
-        $rewardallpoin = 6000000;
-      } else if ($totalallpoin > 90 and $totalallpoin <= 95) {
-        $rewardallpoin = 7500000;
-      } else if ($totalallpoin > 95 and $totalallpoin <= 100) {
-        $rewardallpoin = 9000000;
-      } else {
-        $rewardallpoin = "NA";
-      }
+            if ($totalallpoin < 70) {
+                $rewardallpoin = 0;
+            } else if ($totalallpoin >= 70 and $totalallpoin <= 75) {
+                $rewardallpoin = 1500000;
+            } else if ($totalallpoin > 75 and $totalallpoin <= 80) {
+                $rewardallpoin = 3000000;
+            } else if ($totalallpoin > 80 and $totalallpoin <= 85) {
+                $rewardallpoin = 4500000;
+            } else if ($totalallpoin > 85 and $totalallpoin <= 90) {
+                $rewardallpoin = 6000000;
+            } else if ($totalallpoin > 90 and $totalallpoin <= 95) {
+                $rewardallpoin = 7500000;
+            } else if ($totalallpoin > 95 and $totalallpoin <= 100) {
+                $rewardallpoin = 9000000;
+            } else {
+                $rewardallpoin = "NA";
+            }
 
-      $rewardcashinkp = $totalcashin * (0.05 / 100);
+            $rewardcashinkp = $totalcashin * (0.05 / 100);
 
-      if(empty($totalcashin)){
-          $ratioljtkp = 0;
-      }else{
-          $ratioljtkp = ($totalsisapiutang / $totalcashin) * 100;
-      }
+            if(empty($totalcashin)){
+                $ratioljtkp = 0;
+            }else{
+                $ratioljtkp = ($totalsisapiutang / $totalcashin) * 100;
+            }
 
-      if ($ratioljtkp >= 0 and $ratioljtkp <= 0.5) {
-        $rewardljtkp = 2500000;
-      } else  if ($ratioljtkp > 0.5 and $ratioljtkp <= 1) {
-        $rewardljtkp = 2250000;
-      } else  if ($ratioljtkp > 1 and $ratioljtkp <= 1.5) {
-        $rewardljtkp = 2000000;
-      } else  if ($ratioljtkp > 1.5 and $ratioljtkp <= 2) {
-        $rewardljtkp = 1750000;
-      } else  if ($ratioljtkp > 2 and $ratioljtkp <= 2.5) {
-        $rewardljtkp = 1500000;
-      } else  if ($ratioljtkp > 2.5 and $ratioljtkp <= 3) {
-        $rewardljtkp = 1250000;
-      } else  if ($ratioljtkp > 3 and $ratioljtkp <= 3.5) {
-        $rewardljtkp = 1000000;
-      } else  if ($ratioljtkp > 3.5 and $ratioljtkp <= 4) {
-        $rewardljtkp = 750000;
-      } else  if ($ratioljtkp > 4 and $ratioljtkp <= 4.5) {
-        $rewardljtkp = 500000;
-      } else  if ($ratioljtkp > 4.5 and $ratioljtkp <= 5) {
-        $rewardljtkp = 250000;
-      } else {
-        $rewardljtkp = 0;
-      }
+            if ($ratioljtkp >= 0 and $ratioljtkp <= 0.5) {
+                $rewardljtkp = 2500000;
+            } else  if ($ratioljtkp > 0.5 and $ratioljtkp <= 1) {
+                $rewardljtkp = 2250000;
+            } else  if ($ratioljtkp > 1 and $ratioljtkp <= 1.5) {
+                $rewardljtkp = 2000000;
+            } else  if ($ratioljtkp > 1.5 and $ratioljtkp <= 2) {
+                $rewardljtkp = 1750000;
+            } else  if ($ratioljtkp > 2 and $ratioljtkp <= 2.5) {
+                $rewardljtkp = 1500000;
+            } else  if ($ratioljtkp > 2.5 and $ratioljtkp <= 3) {
+                $rewardljtkp = 1250000;
+            } else  if ($ratioljtkp > 3 and $ratioljtkp <= 3.5) {
+                $rewardljtkp = 1000000;
+            } else  if ($ratioljtkp > 3.5 and $ratioljtkp <= 4) {
+                $rewardljtkp = 750000;
+            } else  if ($ratioljtkp > 4 and $ratioljtkp <= 4.5) {
+                $rewardljtkp = 500000;
+            } else  if ($ratioljtkp > 4.5 and $ratioljtkp <= 5) {
+                $rewardljtkp = 250000;
+            } else {
+                $rewardljtkp = 0;
+            }
 
-      $totalrewardkp = $rewardallpoin + $rewardcashinkp + $rewardljtkp;
+            $totalrewardkp = $rewardallpoin + $rewardcashinkp + $rewardljtkp;
     }
 
     ?>

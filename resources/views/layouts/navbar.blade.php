@@ -475,7 +475,7 @@
                             </li>
                             @endif
                             @if (in_array($level, $mutasi_barang_cab_view))
-                            <li class="{{ request()->is(['mutasigudangcabang', 'mutasigudangcabang/*','repack','kirimpusat']) ? 'active' : '' }}">
+                            <li class="{{ request()->is(['mutasigudangcabang', 'mutasigudangcabang/*','repack','kirimpusat','rejectgudang']) ? 'active' : '' }}">
                                 <a href="/mutasigudangcabang/transitin">
                                     <i class="feather icon-repeat"></i>
                                     <span class="menu-item">Mutasi Produk</span>
@@ -490,7 +490,7 @@
                     @if (in_array($level, $laporan_gudang))
                     <li class="{{ request()->is(['laporangudangbahan','laporangudangbahan/*',
                     'laporangudanglogistik','laporangudanglogistik/*',
-                    'laporangudangjadi','laporangudangjadi/*'])? 'active': '' }}">
+                    'laporangudangjadi','laporangudangjadi/*','laporangudangcabang','laporangudangcabang/*'])? 'active': '' }}">
                         <a href="/laporangudangbahan/pemasukan">
                             <i class="feather icon-file-text"></i>
                             <span class="menu-item">Laporan</span>
@@ -869,7 +869,66 @@
                 </ul>
             </li>
             @endif
+            @if (in_array($level, $accounting_menu))
+            <li class=" nav-item">
+                <a href="#"><i class="fa fa-balance-scale" style="color:blue"></i><span class="menu-title">Accounting</span></a>
+                <ul class="menu-content">
+                    @if (in_array($level, $saldoawal_bukubesar_menu))
+                    <li class="{{ request()->is(['saldoawalbb', 'saldoawalbb/*']) ? 'active' : '' }}">
+                        <a href="/saldoawalbb">
+                            <i class="feather icon-settings"></i>
+                            <span class="menu-item" data-i18n="Second Level">S. Awal Buku Besar</span>
+                        </a>
+                    </li>
+                    @endif
+                    @if (in_array($level, $jurnalumum_menu))
+                    <li class="{{ request()->is(['jurnalumum', 'jurnalumum/*']) ? 'active' : '' }}">
+                        <a href="/jurnalumum">
+                            <i class="feather icon-book"></i>
+                            <span class="menu-item" data-i18n="Second Level">Jurnal Umum</span>
+                        </a>
+                    </li>
+                    @endif
 
+                    @if (in_array($level, $hpp_menu))
+                    <li>
+                        <a href="#">
+                            <i class="feather icon-circle"></i>
+                            <span class="menu-item" data-i18n="Second Level">HPP</span>
+                        </a>
+                        <ul class="menu-content">
+                            @if (in_array($level, $hpp_input))
+                            <li class="{{ request()->is(['hpp', 'hpp/*']) ? 'active' : '' }}">
+                                <a href="/hpp">
+                                    <i class="feather icon-clipboard"></i>
+                                    <span class="menu-item" data-i18n="Second Level">Input HPP</span>
+                                </a>
+                            </li>
+                            @endif
+                            @if (in_array($level, $hargaawal_input))
+                            <li class="{{ request()->is(['hargaawal', 'hargaawal/*']) ? 'active' : '' }}">
+                                <a href="/hargaawal">
+                                    <i class="feather icon-dollar-sign"></i>
+                                    <span class="menu-item" data-i18n="Second Level">Input Harga</span>
+                                </a>
+                            </li>
+                            @endif
+
+                        </ul>
+                    </li>
+                    @endif
+                    @if (in_array($level, $laporan_accounting))
+                    <li class="{{ request()->is(['laporanaccounting', 'laporanaccounting/*']) ? 'active' : '' }}">
+                        <a href="/laporanaccounting/rekapbj">
+                            <i class="feather icon-file"></i>
+                            <span class="menu-item" data-i18n="Second Level">Laporan</span>
+                        </a>
+                    </li>
+                    @endif
+
+                </ul>
+            </li>
+            @endif
             <li class=" nav-item">
                 <a href="#"><i class="feather icon-settings"></i><span class="menu-title">Utilities</span></a>
                 <ul class="menu-content">

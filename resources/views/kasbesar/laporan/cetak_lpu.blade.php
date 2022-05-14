@@ -267,7 +267,7 @@
                 $gmlast = DB::table('giro')
                 ->selectRaw("giro.id_karyawan, SUM(jumlah) as jumlah")
                 ->leftJoin(
-                DB::raw("(SELECT id_giro FROM historibayar GROUP BY id_giro) hb"),
+                DB::raw("(SELECT id_giro,tglbayar FROM historibayar GROUP BY id_giro,tglbayar) hb"),
                 function ($join) {
                 $join->on('giro.id_giro', '=', 'hb.id_giro');
                 }
@@ -280,8 +280,8 @@
                 ->orWhere('giro.id_karyawan',$d->id_karyawan)
                 ->whereRaw('MONTH(tgl_giro) ='.$blnlast1)
                 ->whereRaw('YEAR(tgl_giro) ='.$thnlast1)
-                ->where('omset_bulan',$bulanskrg)
-                ->where('omset_tahun',$tahunskrg)
+                ->whereRaw('MONTH(tglbayar) ='.$bulanskrg)
+                ->whereRaw('YEAR(tglbayar) ='.$tahunskrg)
                 ->groupBy('giro.id_karyawan')
                 ->first();
                 if($gmlast != null){
@@ -312,7 +312,7 @@
                 $gmlast = DB::table('giro')
                 ->selectRaw("giro.id_karyawan, SUM(jumlah) as jumlah")
                 ->leftJoin(
-                DB::raw("(SELECT id_giro FROM historibayar GROUP BY id_giro) hb"),
+                DB::raw("(SELECT id_giro,tglbayar FROM historibayar GROUP BY id_giro,tglbayar) hb"),
                 function ($join) {
                 $join->on('giro.id_giro', '=', 'hb.id_giro');
                 }
@@ -325,8 +325,8 @@
                 ->orWhere('giro.id_karyawan',$d->id_karyawan)
                 ->whereRaw('MONTH(tgl_giro) ='.$blnlast1)
                 ->whereRaw('YEAR(tgl_giro) ='.$thnlast1)
-                ->where('omset_bulan',$bulanskrg)
-                ->where('omset_tahun',$tahunskrg)
+                ->whereRaw('MONTH(tglbayar) ='.$bulanskrg)
+                ->whereRaw('YEAR(tglbayar) ='.$tahunskrg)
                 ->groupBy('giro.id_karyawan')
                 ->first();
                 if($gmlast != null){
@@ -370,7 +370,7 @@
                 $query->where('omset_bulan','>=',1);
                 $query->where('omset_tahun','>=',$tahunskr);
                 } else {
-                $query->where('omset_bulan','>=',$bulanskrg);
+                $query->where('omset_bulan','>',$bulanskrg);
                 $query->where('omset_tahun','>=',$tahunskrg);
                 }
 
@@ -383,11 +383,16 @@
                 $query->where('omset_bulan','>=',1);
                 $query->where('omset_tahun','>=',$tahunskr);
                 } else {
-                $query->where('omset_bulan','>=',$bulanskrg);
+                $query->where('omset_bulan','>',$bulanskrg);
                 $query->where('omset_tahun','>=',$tahunskrg);
                 }
 
                 $query->where('penggantian',1);
+                $query->orWhere('giro.id_karyawan',$d->id_karyawan);
+                $query->whereBetween('tgl_giro',[$from,$sampai]);
+                $query->where('tglbayar','>=',$sampai);
+                $query->where('omset_bulan',0);
+                $query->where('omset_tahun','');
                 $query->groupBy('giro.id_karyawan');
                 $gmnow = $query->first();
 
@@ -431,7 +436,7 @@
                 $query->where('omset_bulan','>=',1);
                 $query->where('omset_tahun','>=',$tahunskr);
                 } else {
-                $query->where('omset_bulan','>=',$bulanskrg);
+                $query->where('omset_bulan','>',$bulanskrg);
                 $query->where('omset_tahun','>=',$tahunskrg);
                 }
 
@@ -444,11 +449,16 @@
                 $query->where('omset_bulan','>=',1);
                 $query->where('omset_tahun','>=',$tahunskr);
                 } else {
-                $query->where('omset_bulan','>=',$bulanskrg);
+                $query->where('omset_bulan','>',$bulanskrg);
                 $query->where('omset_tahun','>=',$tahunskrg);
                 }
 
                 $query->where('penggantian',1);
+                $query->orWhere('giro.id_karyawan',$d->id_karyawan);
+                $query->whereBetween('tgl_giro',[$from,$sampai]);
+                $query->where('tglbayar','>=',$sampai);
+                $query->where('omset_bulan',0);
+                $query->where('omset_tahun','');
                 $query->groupBy('giro.id_karyawan');
                 $gmnow = $query->first();
 
@@ -547,7 +557,7 @@
                 $gmlast = DB::table('giro')
                 ->selectRaw("giro.id_karyawan, SUM(jumlah) as jumlah")
                 ->leftJoin(
-                DB::raw("(SELECT id_giro FROM historibayar GROUP BY id_giro) hb"),
+                DB::raw("(SELECT id_giro,tglbayar FROM historibayar GROUP BY id_giro,tglbayar) hb"),
                 function ($join) {
                 $join->on('giro.id_giro', '=', 'hb.id_giro');
                 }
@@ -560,8 +570,8 @@
                 ->orWhere('giro.id_karyawan',$d->id_karyawan)
                 ->whereRaw('MONTH(tgl_giro) ='.$blnlast1)
                 ->whereRaw('YEAR(tgl_giro) ='.$thnlast1)
-                ->where('omset_bulan',$bulanskrg)
-                ->where('omset_tahun',$tahunskrg)
+                ->whereRaw('MONTH(tglbayar) ='.$bulanskrg)
+                ->whereRaw('YEAR(tglbayar) ='.$tahunskrg)
                 ->groupBy('giro.id_karyawan')
                 ->first();
                 if($gmlast != null){
@@ -592,7 +602,7 @@
                 $query->where('omset_bulan','>=',1);
                 $query->where('omset_tahun','>=',$tahunskr);
                 } else {
-                $query->where('omset_bulan','>=',$bulanskrg);
+                $query->where('omset_bulan','>',$bulanskrg);
                 $query->where('omset_tahun','>=',$tahunskrg);
                 }
 
@@ -605,11 +615,16 @@
                 $query->where('omset_bulan','>=',1);
                 $query->where('omset_tahun','>=',$tahunskr);
                 } else {
-                $query->where('omset_bulan','>=',$bulanskrg);
+                $query->where('omset_bulan','>',$bulanskrg);
                 $query->where('omset_tahun','>=',$tahunskrg);
                 }
 
                 $query->where('penggantian',1);
+                $query->orWhere('giro.id_karyawan',$d->id_karyawan);
+                $query->whereBetween('tgl_giro',[$from,$sampai]);
+                $query->where('tglbayar','>=',$sampai);
+                $query->where('omset_bulan',0);
+                $query->where('omset_tahun','');
                 $query->groupBy('giro.id_karyawan');
                 $gmnow = $query->first();
 
@@ -674,7 +689,7 @@
                 $gmlast = DB::table('giro')
                 ->selectRaw("giro.id_karyawan, SUM(jumlah) as jumlah")
                 ->leftJoin(
-                DB::raw("(SELECT id_giro FROM historibayar GROUP BY id_giro) hb"),
+                DB::raw("(SELECT id_giro,tglbayar FROM historibayar GROUP BY id_giro,tglbayar) hb"),
                 function ($join) {
                 $join->on('giro.id_giro', '=', 'hb.id_giro');
                 }
@@ -687,8 +702,8 @@
                 ->orWhere('giro.id_karyawan',$d->id_karyawan)
                 ->whereRaw('MONTH(tgl_giro) ='.$blnlast1)
                 ->whereRaw('YEAR(tgl_giro) ='.$thnlast1)
-                ->where('omset_bulan',$bulanskrg)
-                ->where('omset_tahun',$tahunskrg)
+                ->whereRaw('MONTH(tglbayar) ='.$bulanskrg)
+                ->whereRaw('YEAR(tglbayar) ='.$tahunskrg)
                 ->groupBy('giro.id_karyawan')
                 ->first();
                 if($gmlast != null){
@@ -719,7 +734,7 @@
                 $query->where('omset_bulan','>=',1);
                 $query->where('omset_tahun','>=',$tahunskr);
                 } else {
-                $query->where('omset_bulan','>=',$bulanskrg);
+                $query->where('omset_bulan','>',$bulanskrg);
                 $query->where('omset_tahun','>=',$tahunskrg);
                 }
 
@@ -732,11 +747,16 @@
                 $query->where('omset_bulan','>=',1);
                 $query->where('omset_tahun','>=',$tahunskr);
                 } else {
-                $query->where('omset_bulan','>=',$bulanskrg);
+                $query->where('omset_bulan','>',$bulanskrg);
                 $query->where('omset_tahun','>=',$tahunskrg);
                 }
 
                 $query->where('penggantian',1);
+                $query->orWhere('giro.id_karyawan',$d->id_karyawan);
+                $query->whereBetween('tgl_giro',[$from,$sampai]);
+                $query->where('tglbayar','>=',$sampai);
+                $query->where('omset_bulan',0);
+                $query->where('omset_tahun','');
                 $query->groupBy('giro.id_karyawan');
                 $gmnow = $query->first();
 

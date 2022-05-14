@@ -1962,6 +1962,8 @@ class PenjualanController extends Controller
         } else {
             $cbg = "";
         }
+
+        $statusdpp = $request->status_dpp;
         $query = Barang::query();
         $query->select(
             'master_barang.kode_produk',
@@ -2000,8 +2002,11 @@ class PenjualanController extends Controller
                 $join->on('target2.kode_produk', '=', 'master_barang.kode_produk');
             }
         );
-        $query->leftJoin(
-            DB::raw("(
+
+
+        if ($statusdpp = "2") {
+            $query->leftJoin(
+                DB::raw("(
                 SELECT b.kode_produk,SUM(jumlah) as realisasi_bulanini_tahunlalu
                 FROM detailpenjualan dp
                 INNER JOIN barang b ON dp.kode_barang = b.kode_barang
@@ -2010,13 +2015,13 @@ class PenjualanController extends Controller
                 WHERE tgltransaksi BETWEEN '$tgllalu1' AND '$tgllalu2'" . $cbg . "
                 GROUP BY b.kode_produk
             ) dpen"),
-            function ($join) {
-                $join->on('dpen.kode_produk', '=', 'master_barang.kode_produk');
-            }
-        );
+                function ($join) {
+                    $join->on('dpen.kode_produk', '=', 'master_barang.kode_produk');
+                }
+            );
 
-        $query->leftJoin(
-            DB::raw("(
+            $query->leftJoin(
+                DB::raw("(
                 SELECT b.kode_produk,SUM(jumlah) as realisasi_bulanini_tahunini
                 FROM detailpenjualan dp
                 INNER JOIN barang b ON dp.kode_barang = b.kode_barang
@@ -2025,13 +2030,13 @@ class PenjualanController extends Controller
                 WHERE tgltransaksi BETWEEN '$tglini1' AND '$tglini2'" . $cbg . "
 			GROUP BY b.kode_produk
             ) dpen2"),
-            function ($join) {
-                $join->on('dpen2.kode_produk', '=', 'master_barang.kode_produk');
-            }
-        );
+                function ($join) {
+                    $join->on('dpen2.kode_produk', '=', 'master_barang.kode_produk');
+                }
+            );
 
-        $query->leftJoin(
-            DB::raw("(
+            $query->leftJoin(
+                DB::raw("(
                 SELECT b.kode_produk,SUM(jumlah) as realisasi_sampaibulanini_tahunlalu
                 FROM detailpenjualan dp
                 INNER JOIN barang b ON dp.kode_barang = b.kode_barang
@@ -2040,13 +2045,13 @@ class PenjualanController extends Controller
                 WHERE tgltransaksi BETWEEN '$tglawaltahunlalu' AND '$tgllalu2'" . $cbg . "
                 GROUP BY b.kode_produk
             ) dpen3"),
-            function ($join) {
-                $join->on('dpen3.kode_produk', '=', 'master_barang.kode_produk');
-            }
-        );
+                function ($join) {
+                    $join->on('dpen3.kode_produk', '=', 'master_barang.kode_produk');
+                }
+            );
 
-        $query->leftJoin(
-            DB::raw("(
+            $query->leftJoin(
+                DB::raw("(
                 SELECT b.kode_produk,SUM(jumlah) as realisasi_sampaibulanini_tahunini
                 FROM detailpenjualan dp
                 INNER JOIN barang b ON dp.kode_barang = b.kode_barang
@@ -2055,10 +2060,91 @@ class PenjualanController extends Controller
                 WHERE tgltransaksi BETWEEN '$tglawaltahunini' AND '$tglini2'" . $cbg . "
                 GROUP BY b.kode_produk
             ) dpen4"),
-            function ($join) {
-                $join->on('dpen4.kode_produk', '=', 'master_barang.kode_produk');
-            }
-        );
+                function ($join) {
+                    $join->on('dpen4.kode_produk', '=', 'master_barang.kode_produk');
+                }
+            );
+        } else {
+            $query->leftJoin(
+                DB::raw("(
+                SELECT b.kode_produk,SUM(jumlah) as realisasi_bulanini_tahunlalu
+                FROM detailpenjualan dp
+                INNER JOIN barang b ON dp.kode_barang = b.kode_barang
+                INNER JOIN penjualan p ON dp.no_fak_penj = p.no_fak_penj
+                INNER JOIN karyawan ON p.id_karyawan = karyawan.id_karyawan
+                LEFT JOIN (
+                    SELECT no_fak_penj,max(tglbayar) as lastpayment
+                    FROM historibayar
+                    GROUP BY no_fak_penj
+                ) hb ON (hb.no_fak_penj = p.no_fak_penj)
+                WHERE lastpayment BETWEEN '$tgllalu1' AND '$tgllalu2' AND status_lunas='1'" . $cbg . "
+                GROUP BY b.kode_produk
+            ) dpen"),
+                function ($join) {
+                    $join->on('dpen.kode_produk', '=', 'master_barang.kode_produk');
+                }
+            );
+
+            $query->leftJoin(
+                DB::raw("(
+                SELECT b.kode_produk,SUM(jumlah) as realisasi_bulanini_tahunini
+                FROM detailpenjualan dp
+                INNER JOIN barang b ON dp.kode_barang = b.kode_barang
+                INNER JOIN penjualan p ON dp.no_fak_penj = p.no_fak_penj
+                INNER JOIN karyawan ON p.id_karyawan = karyawan.id_karyawan
+                LEFT JOIN (
+                    SELECT no_fak_penj,max(tglbayar) as lastpayment
+                    FROM historibayar
+                    GROUP BY no_fak_penj
+                ) hb ON (hb.no_fak_penj = p.no_fak_penj)
+                WHERE lastpayment BETWEEN '$tglini1' AND '$tglini2' AND status_lunas='1'" . $cbg . "
+			GROUP BY b.kode_produk
+            ) dpen2"),
+                function ($join) {
+                    $join->on('dpen2.kode_produk', '=', 'master_barang.kode_produk');
+                }
+            );
+
+            $query->leftJoin(
+                DB::raw("(
+                SELECT b.kode_produk,SUM(jumlah) as realisasi_sampaibulanini_tahunlalu
+                FROM detailpenjualan dp
+                INNER JOIN barang b ON dp.kode_barang = b.kode_barang
+                INNER JOIN penjualan p ON dp.no_fak_penj = p.no_fak_penj
+                INNER JOIN karyawan ON p.id_karyawan = karyawan.id_karyawan
+                LEFT JOIN (
+                    SELECT no_fak_penj,max(tglbayar) as lastpayment
+                    FROM historibayar
+                    GROUP BY no_fak_penj
+                ) hb ON (hb.no_fak_penj = p.no_fak_penj)
+                WHERE lastpayment BETWEEN '$tglawaltahunlalu' AND '$tgllalu2' AND status_lunas='1'" . $cbg . "
+                GROUP BY b.kode_produk
+            ) dpen3"),
+                function ($join) {
+                    $join->on('dpen3.kode_produk', '=', 'master_barang.kode_produk');
+                }
+            );
+
+            $query->leftJoin(
+                DB::raw("(
+                SELECT b.kode_produk,SUM(jumlah) as realisasi_sampaibulanini_tahunini
+                FROM detailpenjualan dp
+                INNER JOIN barang b ON dp.kode_barang = b.kode_barang
+                INNER JOIN penjualan p ON dp.no_fak_penj = p.no_fak_penj
+                INNER JOIN karyawan ON p.id_karyawan = karyawan.id_karyawan
+                LEFT JOIN (
+                    SELECT no_fak_penj,max(tglbayar) as lastpayment
+                    FROM historibayar
+                    GROUP BY no_fak_penj
+                ) hb ON (hb.no_fak_penj = p.no_fak_penj)
+                WHERE lastpayment BETWEEN '$tglawaltahunini' AND '$tglini2' AND status_lunas='1'" . $cbg . "
+                GROUP BY b.kode_produk
+            ) dpen4"),
+                function ($join) {
+                    $join->on('dpen4.kode_produk', '=', 'master_barang.kode_produk');
+                }
+            );
+        }
 
         $dppp = $query->get();
 
@@ -2787,7 +2873,7 @@ class PenjualanController extends Controller
 
         $query->where('penjualan.jenistransaksi', '!=', 'tunai');
         $query->where('tgltransaksi', '<=', $sampai);
-        $query->whereRaw('(ifnull(penjualan.total,0) - (ifnull(totalpf_last,0)-ifnull(totalgb_last,0))) != IFNULL(bayarsebelumbulanini,0)');
+        $query->whereRaw('(ifnull(penjualan.total,0) - (ifnull(totalpf_last,0)-ifnull(totalgb_last,0))) - IFNULL(bayarsebelumbulanini,0) > 0');
         if ($request->kode_cabang != "") {
             $query->where('cabangbarunew', $request->kode_cabang);
         }

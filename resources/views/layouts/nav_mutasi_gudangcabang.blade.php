@@ -90,4 +90,24 @@
         </ul>
     </div>
 </div>
+<div class="card">
+    <div class="card-content">
+        <div class="card-body">
+            <h4 class="card-title">Penyesuaian</h4>
+        </div>
+        <ul class="list-group list-group-flush">
+
+            <a href="/mutasigudangcabang/good/penyesuaian" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['mutasigudangcabang/good/penyesuaian']) ? 'active' : '' }}">
+                    <i class="feather icon-repeat mr-1"></i>Penyesuaian Good Stok
+                </li>
+            </a>
+            <a href="/mutasigudangcabang/bad/penyesuaian" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['mutasigudangcabang/bad/penyesuaian']) ? 'active' : '' }}">
+                    <i class="feather icon-repeat mr-1"></i>Penyesuaian Bad Stok
+                </li>
+            </a>
+        </ul>
+    </div>
+</div>
 @endif
