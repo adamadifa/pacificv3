@@ -28,7 +28,7 @@ class LebihsetorController extends Controller
     }
     public function index(Request $request)
     {
-        $query = lebihsetor::query();
+        $query = Lebihsetor::query();
         $query->where('tahun', $request->tahun);
         if (!empty($request->bulan)) {
             $query->where('bulan', $request->bulan);
