@@ -21,6 +21,34 @@ class DashboardController extends Controller
 
         View::share('cabang', $this->cabang);
     }
+
+    public function home()
+    {
+        if (
+            Auth::user()->level == "admin"
+            || Auth::user()->level == "manager marketing"
+            || Auth::user()->level == "general manager"
+            || Auth::user()->level == "direktur"
+        ) {
+            return $this->dashboardadmin();
+        } else if (Auth::user()->level == "admin penjualan") {
+            return $this->dashboardadminpenjualan();
+        } else if (Auth::user()->level == "kepala penjualan") {
+            return $this->dashboardkepalapenjualan();
+        } else if (Auth::user()->level == "kepala admin") {
+            return $this->dashboardkepalaadmin();
+        } else if (Auth::user()->level == "manager accounting") {
+            return $this->dashboardaccounting();
+        } else if (Auth::user()->level == "staff keuangan") {
+            return $this->dashboardstaffkeuangan();
+        } else if (Auth::user()->level == "admin kas kecil") {
+            return $this->dashboardadminkaskecil();
+        } else if (Auth::user()->level == "kasir") {
+            return $this->dashboardkasir();
+        } else if (Auth::user()->level == "manager pembelian" || Auth::user()->level == "admin pembelian") {
+            return $this->dashboardpembelian();
+        }
+    }
     public function dashboardadmin()
     {
         $cabang = DB::table('cabang')->get();

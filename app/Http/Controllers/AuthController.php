@@ -18,30 +18,7 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             //dd(Auth::user()->kode_cabang);
-            if (
-                Auth::user()->level == "admin"
-                || Auth::user()->level == "manager marketing"
-                || Auth::user()->level == "general manager"
-                || Auth::user()->level == "direktur"
-            ) {
-                return redirect()->intended('/dashboardadmin');
-            } else if (Auth::user()->level == "admin penjualan") {
-                return redirect()->intended('/dashboardadminpenjualan');
-            } else if (Auth::user()->level == "kepala penjualan") {
-                return redirect()->intended('/dashboardkepalapenjualan');
-            } else if (Auth::user()->level == "kepala admin") {
-                return redirect()->intended('/dashboardkepalaadmin');
-            } else if (Auth::user()->level == "manager accounting") {
-                return redirect()->intended('/dashboardaccounting');
-            } else if (Auth::user()->level == "staff keuangan") {
-                return redirect()->intended('/dashboardstaffkeuangan');
-            } else if (Auth::user()->level == "admin kas kecil") {
-                return redirect()->intended('/dashboardadminkaskecil');
-            } else if (Auth::user()->level == "kasir") {
-                return redirect()->intended('/dashboardkasir');
-            } else if (Auth::user()->level == "manager pembelian" || Auth::user()->level == "admin pembelian") {
-                return redirect()->intended('/dashboardpembelian');
-            }
+            return redirect()->intended('/home');
         } else {
             echo "Username Atau Password Salah";
         }

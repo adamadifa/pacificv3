@@ -90,6 +90,7 @@ use App\Models\Pemasukangudanglogistik;
 use App\Models\Saldoawalmutasibarangproduksi;
 use App\Models\Setoranpenjualan;
 use Illuminate\Support\Facades\Route;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
 |--------------------------------------------------------------------------
@@ -102,11 +103,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::middleware(['guest'])->group(function () {
+    Route::get('/', function () {
+        return view('Auth.login');
+    })->name('login');
+});
 
-Route::get('/', function () {
-    return view('Auth.login');
-})->name('login');
-
+Route::middleware(['auth'])->group(function () {
+    Route::get('/home', [DashboardController::class, 'home']);
+});
 
 Route::post('/postlogin', [AuthController::class, 'postlogin']);
 Route::post('/postlogout', [AuthController::class, 'postlogout']);

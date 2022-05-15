@@ -21,73 +21,12 @@
     <div class="shadow-bottom"></div>
     <div class="main-menu-content">
         <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
-            @if (in_array($level, $dashboardadmin))
-            <li class=" {{ request()->is(['dashboardadmin']) ? 'active' : '' }} nav-item">
-                <a href="/dashboardadmin">
+            <li class=" {{ request()->is(['home']) ? 'active' : '' }} nav-item">
+                <a href="/home">
                     <i class="feather icon-home"></i>
                     <span class="menu-title" data-i18n="Dashboard">Dashboard</span>
                 </a>
             </li>
-            @endif
-            @if (in_array($level, $dashboardkepalapenjualan))
-            <li class="{{ request()->is(['dashboardkepalapenjualan']) ? 'active' : '' }} nav-item">
-                <a href="/dashboardkepalapenjualan">
-                    <i class="feather icon-home"></i>
-                    <span class="menu-title" data-i18n="Dashboard">Dashboard</span>
-                </a>
-            </li>
-            @endif
-            @if (in_array($level, $dashboardkepalaadmin))
-            <li class="{{ request()->is(['dashboardkepalaadmin']) ? 'active' : '' }} nav-item">
-                <a href="/dashboardkepalaadmin">
-                    <i class="feather icon-home"></i>
-                    <span class="menu-title" data-i18n="Dashboard">Dashboard</span>
-                </a>
-            </li>
-            @endif
-            @if (in_array($level, $dashboardadminpenjualan))
-            <li class="{{ request()->is(['dashboardadminpenjualan']) ? 'active' : '' }} nav-item">
-                <a href="/dashboardadminpenjualan">
-                    <i class="feather icon-home"></i>
-                    <span class="menu-title" data-i18n="Dashboard">Dashboard</span>
-                </a>
-            </li>
-            @endif
-            @if (in_array($level, $dashboardaccounting))
-            <li class="{{ request()->is(['dashboardaccounting']) ? 'active' : '' }} nav-item">
-                <a href="/dashboardaccounting">
-                    <i class="feather icon-home"></i>
-                    <span class="menu-title" data-i18n="Dashboard">Dashboard</span>
-                </a>
-            </li>
-            @endif
-
-            @if (in_array($level, $dashboardstaffkeuangan))
-            <li class="{{ request()->is(['dashboardstaffkeuangan']) ? 'active' : '' }} nav-item">
-                <a href="/dashboardstaffkeuangan">
-                    <i class="feather icon-home"></i>
-                    <span class="menu-title" data-i18n="Dashboard">Dashboard</span>
-                </a>
-            </li>
-            @endif
-
-            @if (in_array($level, $dashboardadminkaskecil))
-            <li class="{{ request()->is(['dashboardadminkaskecil']) ? 'active' : '' }} nav-item">
-                <a href="/dashboardadminkaskecil">
-                    <i class="feather icon-home"></i>
-                    <span class="menu-title" data-i18n="Dashboard">Dashboard</span>
-                </a>
-            </li>
-            @endif
-
-            @if (in_array($level, $dashboardpembelian))
-            <li class="{{ request()->is(['dashboardpembelian']) ? 'active' : '' }} nav-item">
-                <a href="/dashboardpembelian">
-                    <i class="feather icon-home"></i>
-                    <span class="menu-title" data-i18n="Dashboard">Dashboard</span>
-                </a>
-            </li>
-            @endif
             @if (in_array($level, $datamaster_view))
             <li class=" nav-item">
                 <a href="#"><i class="feather icon-grid primary"></i><span class="menu-title">Data Master</span></a>
