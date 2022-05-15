@@ -117,10 +117,10 @@
             $totalsetorantransfer = 0;
             $grandtotallhp = 0;
             $grandtotalsetoranbank = 0;
-            $totalrinciankertas = $saldokasbesar->uang_kertas;
-            $totalrincianlogam = $saldokasbesar->uang_logam;
-            $totalrinciangiro = $saldokasbesar->giro;
-            $totalrinciantransfer = $saldokasbesar->transfer;
+            $totalrinciankertas = $saldokasbesar != null ? $saldokasbesar->uang_kertas : 0;
+            $totalrincianlogam = $saldokasbesar != null ? $saldokasbesar->uang_logam : 0;
+            $totalrinciangiro = $saldokasbesar != null ? $saldokasbesar->giro : 0;
+            $totalrinciantransfer = $saldokasbesar != null ? $saldokasbesar->transfer : 0;
             @endphp
             <?php
             while (strtotime($dari) <= strtotime($sampai)) {

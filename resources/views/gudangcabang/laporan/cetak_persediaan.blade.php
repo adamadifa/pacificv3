@@ -115,6 +115,9 @@
             $totaltransit_out =0;
             $totallainlain_out =0;
             $totalpeny_out = 0;
+            $jmldus = 0;
+            $jmlpack = 0;
+            $jmlpcs = 0;
             @endphp
             @foreach ($mutasi as $m)
             @php

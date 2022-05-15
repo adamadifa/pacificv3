@@ -36,10 +36,10 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-4 col-md-12 col-sm-12">
+                            <div class="col-lg-3 col-md-12 col-sm-12">
                                 <x-inputtext label="No. Dokumen" field="no_dok" value="{{Request('no_dok')}}" icon="fa fa-barcode" />
                             </div>
-                            <div class="col-lg-4 col-md-12 col-sm-12">
+                            <div class="col-lg-3 col-md-12 col-sm-12">
                                 <div class="form-group">
                                     <select name="status_sj" id="status_sj" class="form-control">
                                         <option value="">Status</option>
@@ -49,7 +49,21 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-lg-4 col-sm-12 col-md-12">
+                            <div class="col-lg-3 col-md-12 col-sm-12">
+                                <div class="form-group  ">
+                                    <select name="kode_cabang" id="kode_cabang" class="form-control">
+                                        @if (Auth::user()->kode_cabang!="PCF")
+                                        <option value="">Pilih Cabang</option>
+                                        @else
+                                        <option value="">Semua Cabang</option>
+                                        @endif
+                                        @foreach ($cabang as $c)
+                                        <option {{ (Request('kode_cabang')==$c->kode_cabang ? 'selected':'')}} value="{{ $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-sm-12 col-md-12">
                                 <div class="form-group">
                                     <button type="submit" name="submit" class="btn btn-primary"><i class="fa fa-search"></i> Cari</button>
                                 </div>
@@ -106,11 +120,16 @@
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
+                                            @if (in_array($level,$suratjalan_cetak))
                                             <a href="/suratjalan/{{Crypt::encrypt($d->no_mutasi_gudang)}}/cetak" target="_blank" class="ml-1"><i class="feather icon-printer info"></i></a>
+                                            @endif
                                             @if ($d->status_sj == 0)
+                                            @if (in_array($level,$suratjalan_hapus))
                                             <a href="/suratjalan/{{Crypt::encrypt($d->no_mutasi_gudang)}}/batalkansuratjalan" class="ml-1"><i class="feather icon-trash danger"></i></a>
+                                            @endif
                                             <a href="#" class="ml-1 prosescabang" no_mutasi_gudang="{{Crypt::encrypt($d->no_mutasi_gudang)}}"><i class="feather icon-external-link success"></i></a>
                                             @else
+
                                             <form method="POST" class="deleteform" action="/suratjalan/{{Crypt::encrypt($d->no_mutasi_gudang)}}/batalkansjcabang">
                                                 @csrf
                                                 @method('DELETE')
@@ -118,6 +137,7 @@
                                                     <i class="fa fa-close danger"></i>
                                                 </a>
                                             </form>
+
                                             @endif
                                         </div>
                                     </td>

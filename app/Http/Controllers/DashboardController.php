@@ -24,6 +24,7 @@ class DashboardController extends Controller
 
     public function home()
     {
+
         if (
             Auth::user()->level == "admin"
             || Auth::user()->level == "manager marketing"
@@ -47,6 +48,8 @@ class DashboardController extends Controller
             return $this->dashboardkasir();
         } else if (Auth::user()->level == "manager pembelian" || Auth::user()->level == "admin pembelian") {
             return $this->dashboardpembelian();
+        } else {
+            return $this->dashboardadminkaskecil();
         }
     }
     public function dashboardadmin()

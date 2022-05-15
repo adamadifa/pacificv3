@@ -33,7 +33,11 @@
                             <div class="col-4">
                                 <div class="form-group">
                                     <select name="kode_cabang" id="kode_cabang" class="form-control">
+                                        @if ($getcbg!="PCF")
+                                        <option value="">Pilih Cabang</option>
+                                        @else
                                         <option value="">Semua Cabang</option>
+                                        @endif
                                         @foreach ($cabang as $d)
                                         <option {{ Request('kode_cabang') == $d->kode_cabang ? "selected" : "" }} value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
                                         @endforeach

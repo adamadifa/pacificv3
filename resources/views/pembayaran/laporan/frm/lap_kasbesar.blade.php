@@ -70,7 +70,7 @@
                                                 <select name="jenisbayar" id="jenisbayar" class="form-control">
                                                     <option value="">Semua Jenis Pembayaran</option>
                                                     <option value="tunai">Tunai</option>
-                                                    <option value="kredit">Kredit</option>
+                                                    <option value="titipan">Titipan</option>
                                                     <option value="transfer">Transfer</option>
                                                     <option value="giro">Giro</option>
                                                 </select>

@@ -33,11 +33,10 @@
                                         <div class="col-lg-12 col-sm-12">
                                             <div class="form-group  ">
                                                 <select name="kode_bank" id="kode_bank" class="form-control">
-                                                    @if (in_array($level,$laporan_ledger))
-
-                                                    <option value="">Semua Ledger</option>
-                                                    @else
+                                                    @if ($getcbg != "PCF")
                                                     <option value="-">Pilih Bank</option>
+                                                    @else
+                                                    <option value="">Semua Ledger</option>
                                                     @endif
 
                                                     @foreach ($bank as $d)

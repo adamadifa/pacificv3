@@ -430,10 +430,18 @@
                     <li class="{{ request()->is(['laporangudangbahan','laporangudangbahan/*',
                     'laporangudanglogistik','laporangudanglogistik/*',
                     'laporangudangjadi','laporangudangjadi/*','laporangudangcabang','laporangudangcabang/*'])? 'active': '' }}">
-                        <a href="/laporangudangbahan/pemasukan">
+                        @if (in_array($level,$laporan_gudang_cabang))
+                        <a href="/laporangudangcabang/persediaan">
                             <i class="feather icon-file-text"></i>
                             <span class="menu-item">Laporan</span>
                         </a>
+                        @else
+                        <a href="/laporangudanglogistik/pemasukan">
+                            <i class="feather icon-file-text"></i>
+                            <span class="menu-item">Laporan</span>
+                        </a>
+                        @endif
+
                     </li>
                     @endif
 
@@ -799,10 +807,18 @@
                     @endif
                     @if (in_array($level, $laporankeuangan_view))
                     <li class="{{ request()->is(['laporankeuangan', 'laporankeuangan/*']) ? 'active' : '' }}">
+                        @if ($level == "kasir" || $level == "admin persediaan dan kasir" || $level == "admin penjualan dan kasir")
+                        <a href="/laporankeuangan/saldokasbesar">
+                            <i class="feather icon-file-text"></i>
+                            <span class="menu-item" data-i18n="Second Level">Laporan</span>
+                        </a>
+                        @else
                         <a href="/laporankeuangan/kaskecil">
                             <i class="feather icon-file-text"></i>
                             <span class="menu-item" data-i18n="Second Level">Laporan</span>
                         </a>
+                        @endif
+
                     </li>
                     @endif
                 </ul>

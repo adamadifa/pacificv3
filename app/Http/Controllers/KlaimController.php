@@ -35,6 +35,10 @@ class KlaimController extends Controller
         if (!empty($request->kode_cabang)) {
             $query->where('kode_cabang', $request->kode_cabang);
         }
+
+        if ($this->cabang != "PCF") {
+            $query->where('kode_cabang', $request->kode_cabang);
+        }
         $query->leftJoin('ledger_bank', 'klaim.kode_klaim', '=', 'ledger_bank.kode_klaim');
         $klaim = $query->get();
         if ($this->cabang == "PCF") {

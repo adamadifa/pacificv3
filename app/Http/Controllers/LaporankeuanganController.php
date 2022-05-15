@@ -288,7 +288,7 @@ class LaporankeuanganController extends Controller
             ->where('bulan', $bulan)
             ->where('tahun', $tahun)
             ->where('kode_cabang', $kode_cabang)->first();
-        $saldologam = $saldokasbesar->uang_logam;
+        $saldologam = $saldokasbesar != null ?  $saldokasbesar->uang_logam : 0;
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
         $namabulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         if (isset($_POST['export'])) {

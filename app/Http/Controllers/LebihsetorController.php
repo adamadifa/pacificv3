@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bank;
 use App\Models\Cabang;
-use App\Models\lebihsetor;
+use App\Models\Lebihsetor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;

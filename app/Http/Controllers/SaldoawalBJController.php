@@ -10,9 +10,23 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\View;
 
 class SaldoawalBJController extends Controller
 {
+
+    protected $cabang;
+    public function __construct()
+    {
+        // Fetch the Site Settings object
+        $this->middleware(function ($request, $next) {
+            $this->cabang = Auth::user()->kode_cabang;
+            return $next($request);
+        });
+
+
+        View::share('cabang', $this->cabang);
+    }
     public function index($jenis_bj, Request $request)
     {
         $query = SaldoawalBJ::query();
@@ -24,9 +38,9 @@ class SaldoawalBJController extends Controller
             $query->where('tahun', $request->tahun);
         }
 
-        if (!empty($request->kode_cabang)) {
-            $query->where('kode_cabang', $request->kode_cabang);
-        }
+        $query->where('kode_cabang', $request->kode_cabang);
+
+
 
         $query->where('status', $jenis_bj);
         $query->select('saldoawal_bj.*');
@@ -34,7 +48,11 @@ class SaldoawalBJController extends Controller
         $query->orderBy('bulan', 'asc');
         $saldoawal = $query->paginate(15);
         $saldoawal->appends($request->all());
-        $cabang = Cabang::orderBy('kode_cabang')->get();
+        if ($this->cabang == "PCF") {
+            $cabang = DB::table('cabang')->get();
+        } else {
+            $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+        }
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('saldoawalbj.index', compact('jenis_bj', 'bulan', 'cabang', 'saldoawal'));
     }
@@ -76,7 +94,11 @@ class SaldoawalBJController extends Controller
 
     public function create($jenis_bj)
     {
-        $cabang = Cabang::orderBy('kode_cabang')->get();
+        if ($this->cabang == "PCF") {
+            $cabang = DB::table('cabang')->get();
+        } else {
+            $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+        }
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('saldoawalbj.create', compact('bulan', 'jenis_bj', 'cabang'));
     }

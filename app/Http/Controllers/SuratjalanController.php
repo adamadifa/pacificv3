@@ -52,6 +52,8 @@ class SuratjalanController extends Controller
             $query->where('no_dok', $request->no_dok);
         }
 
+
+
         if (!empty($request->status_sj)) {
             if ($request->status_sj == "BTC") {
                 $query->where('status_sj', 0);
@@ -61,12 +63,19 @@ class SuratjalanController extends Controller
                 $query->where('status_sj', 2);
             }
         }
+
+        $query->where('permintaan_pengiriman.kode_cabang', $request->kode_cabang);
         $query->orderBy('tgl_mutasi_gudang', 'desc');
         $query->orderBy('mutasi_gudang_jadi.time_stamp', 'desc');
         $mutasi = $query->paginate(15);
         $mutasi->appends($request->all());
 
-        return view('suratjalan.index', compact('mutasi'));
+        if ($this->cabang == "PCF") {
+            $cabang = DB::table('cabang')->get();
+        } else {
+            $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+        }
+        return view('suratjalan.index', compact('mutasi', 'cabang'));
     }
     public function create($no_permintaan_pengiriman)
     {
@@ -450,10 +459,14 @@ class SuratjalanController extends Controller
             $query = Mutasigudangcabang::query();
             $query->select('mutasi_gudang_cabang.*', 'no_dok');
             $query->leftjoin('mutasi_gudang_jadi', 'mutasi_gudang_cabang.no_mutasi_gudang_cabang', '=', 'mutasi_gudang_jadi.no_mutasi_gudang');
+            $query->join('cabang', 'mutasi_gudang_cabang.kode_cabang', '=', 'cabang.kode_cabang');
             if ($this->cabang != "PCF") {
                 $query->where('mutasi_gudang_cabang.kode_cabang', $this->cabang);
+                $query->where('mutasi_gudang_cabang.jenis_mutasi', 'SURAT JALAN');
+                $query->orWhere('cabang.sub_cabang', $this->cabang);
+                $query->where('mutasi_gudang_cabang.jenis_mutasi', 'SURAT JALAN');
             }
-            $query->where('mutasi_gudang_cabang.jenis_mutasi', 'SURAT JALAN');
+
             $query->orderBy('tgl_mutasi_gudang_cabang', 'desc');
             $query->orderby('no_mutasi_gudang_cabang', 'desc');
             $query->limit(10);
@@ -462,15 +475,38 @@ class SuratjalanController extends Controller
             $query = Mutasigudangcabang::query();
             $query->select('mutasi_gudang_cabang.*', 'no_dok');
             $query->leftjoin('mutasi_gudang_jadi', 'mutasi_gudang_cabang.no_mutasi_gudang_cabang', '=', 'mutasi_gudang_jadi.no_mutasi_gudang');
+            $query->join('cabang', 'mutasi_gudang_cabang.kode_cabang', '=', 'cabang.kode_cabang');
             if ($this->cabang != "PCF") {
+                $query->where('no_mutasi_gudang_cabang', 'like', '%' . $search . '%');
+                $query->where('mutasi_gudang_cabang.jenis_mutasi', 'SURAT JALAN');
                 $query->where('mutasi_gudang_cabang.kode_cabang', $this->cabang);
+                $query->orWhere('no_mutasi_gudang_cabang', 'like', '%' . $search . '%');
+                $query->where('mutasi_gudang_cabang.jenis_mutasi', 'SURAT JALAN');
+                $query->where('cabang.sub_cabang', $this->cabang);
+                $query->orWhere('no_dok', 'like', '%' . $search . '%');
+                $query->where('mutasi_gudang_cabang.jenis_mutasi', 'SURAT JALAN');
+                $query->where('mutasi_gudang_cabang.kode_cabang', $this->cabang);
+                $query->orWhere('no_dok', 'like', '%' . $search . '%');
+                $query->where('mutasi_gudang_cabang.jenis_mutasi', 'SURAT JALAN');
+                $query->where('cabang.sub_cabang', $this->cabang);
+                $query->orWhere('tgl_mutasi_gudang_cabang', 'like', '%' . $search . '%');
+                $query->where('mutasi_gudang_cabang.jenis_mutasi', 'SURAT JALAN');
+                $query->where('mutasi_gudang_cabang.kode_cabang', $this->cabang);
+                $query->orWhere('tgl_mutasi_gudang_cabang', 'like', '%' . $search . '%');
+                $query->where('mutasi_gudang_cabang.jenis_mutasi', 'SURAT JALAN');
+                $query->where('cabang.sub_cabang', $this->cabang);
+            } else {
+                $query->where('no_mutasi_gudang_cabang', 'like', '%' . $search . '%');
+                $query->where('mutasi_gudang_cabang.jenis_mutasi', 'SURAT JALAN');
+                $query->orWhere('no_dok', 'like', '%' . $search . '%');
+                $query->where('mutasi_gudang_cabang.jenis_mutasi', 'SURAT JALAN');
+                $query->orWhere('tgl_mutasi_gudang_cabang', 'like', '%' . $search . '%');
+                $query->where('mutasi_gudang_cabang.jenis_mutasi', 'SURAT JALAN');
             }
-            $query->where('no_mutasi_gudang_cabang', 'like', '%' . $search . '%');
-            $query->where('mutasi_gudang_cabang.jenis_mutasi', 'SURAT JALAN');
-            $query->orWhere('no_dok', 'like', '%' . $search . '%');
-            $query->where('mutasi_gudang_cabang.jenis_mutasi', 'SURAT JALAN');
-            $query->orWhere('tgl_mutasi_gudang_cabang', 'like', '%' . $search . '%');
-            $query->where('mutasi_gudang_cabang.jenis_mutasi', 'SURAT JALAN');
+
+
+
+
 
 
 

@@ -74,7 +74,7 @@ class LimitkreditController extends Controller
                 $query->where('status', $status);
             }
         }
-        if ($this->level == "kepala cabang" || $this->level == "kepala penjualan") {
+        if ($this->level == "kepala penjualan") {
             if ($request->status == "pending") {
                 $query->whereNull('kacab');
             } else if ($request->status == "disetujui") {
@@ -90,26 +90,33 @@ class LimitkreditController extends Controller
             }
             $query->where('jumlah', '>', 2000000);
         }
-
-        if ($this->level == "manager marketing") {
+        // if ($this->level == "kepala admin") {
+        //     if ($request->status == "pending") {
+        //         $query->whereNull('kacab');
+        //     } else if ($request->status == "disetujui") {
+        //         $query->whereNotNull('kacab');
+        //         $query->where('status', '!=', 2);
+        //         $query->orwhereNotNull('kacab');
+        //         $query->where('status', '=', 2);
+        //         $query->where('level', '!=', Auth::user()->level);
+        //     } else if ($request->status == "ditolak") {
+        //         $query->whereNotNull('kacab');
+        //         $query->where('status', 2);
+        //         $query->where('level', Auth::user()->level);
+        //     }
+        // }
+        if (
+            $this->level == "kepala admin" ||
+            $this->level == "admin penjualan" || $this->level == "admin penjualan dan kas kecil" ||
+            $this->level == "admin penjualan dan kasir"
+        ) {
             if ($request->status == "pending") {
-                $query->whereNotNull('kacab');
-                $query->whereNull('mm');
+                $query->where('status', 0);
             } else if ($request->status == "disetujui") {
-                $query->whereNotNull('mm');
-                $query->where('status', '!=', 2);
-                $query->orwhereNotNull('mm');
-                $query->where('status', '=', 2);
-                $query->where('level', '!=', Auth::user()->level);
+                $query->where('status', 1);
             } else if ($request->status == "ditolak") {
-                $query->whereNotNull('kacab');
-                $query->whereNotNull('mm');
                 $query->where('status', 2);
-                $query->where('level', Auth::user()->level);
-            } else {
-                $query->whereNotNull('kacab');
             }
-            $query->where('jumlah', '>', 5000000);
         }
 
         if ($this->level == "general manager") {

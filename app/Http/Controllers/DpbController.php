@@ -50,9 +50,7 @@ class DpbController extends Controller
             $query->whereBetween('tgl_pengambilan', [$request->dari, $request->sampai]);
         }
 
-        if (!empty($request->kode_cabang)) {
-            $query->where('dpb.kode_cabang', $request->kode_cabang);
-        }
+        $query->where('dpb.kode_cabang', $request->kode_cabang);
 
         if (!empty($request->id_karyawan)) {
             $query->where('dpb.id_karyawan', $request->id_karyawan);
@@ -374,8 +372,10 @@ class DpbController extends Controller
             $query = Dpb::query();
             $query->select('dpb.*', 'nama_karyawan');
             $query->join('karyawan', 'dpb.id_karyawan', '=', 'karyawan.id_karyawan');
+            $query->join('cabang', 'dpb.kode_cabang', '=', 'cabang.kode_cabang');
             if ($this->cabang != "PCF") {
                 $query->where('dpb.kode_cabang', $this->cabang);
+                $query->orWhere('cabang.sub_cabang', $this->cabang);
             }
             $query->orderBy('tgl_pengambilan', 'desc');
             $query->orderby('no_dpb', 'desc');
@@ -385,13 +385,20 @@ class DpbController extends Controller
             $query = Dpb::query();
             $query->select('dpb.*', 'nama_karyawan');
             $query->join('karyawan', 'dpb.id_karyawan', '=', 'karyawan.id_karyawan');
+            $query->join('cabang', 'dpb.kode_cabang', '=', 'cabang.kode_cabang');
+
             if ($this->cabang != "PCF") {
+                $query->where('no_dpb', 'like', '%' . $search . '%');
                 $query->where('dpb.kode_cabang', $this->cabang);
-            }
-            $query->where('no_dpb', 'like', '%' . $search . '%');
-            $query->orWhere('nama_karyawan', 'like', '%' . $search . '%');
-            if ($this->cabang != "PCF") {
+                $query->orWhere('nama_karyawan', 'like', '%' . $search . '%');
                 $query->where('dpb.kode_cabang', $this->cabang);
+                $query->orWhere('no_dpb', 'like', '%' . $search . '%');
+                $query->where('cabang.sub_cabang', $this->cabang);
+                $query->orWhere('nama_karyawan', 'like', '%' . $search . '%');
+                $query->where('cabang.sub_cabang', $this->cabang);
+            } else {
+                $query->where('no_dpb', 'like', '%' . $search . '%');
+                $query->orWhere('nama_karyawan', 'like', '%' . $search . '%');
             }
             $query->orderBy('tgl_pengambilan', 'desc');
             $query->orderby('no_dpb', 'desc');
