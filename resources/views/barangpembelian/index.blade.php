@@ -34,6 +34,7 @@
                             <div class="col-lg-3 col-sm-12">
                                 <x-inputtext label="Nama Barang" field="nama_barang" icon="feather icon-box" value="{{ Request('nama_barang') }}" />
                             </div>
+                            @if (Auth::user()->level != "admin gudang logistik" AND Auth::user()->level != "general affair" )
                             <div class="col-lg-2 col-sm-12">
                                 <select class="form-control" id="jenis_barang" name="jenis_barang">
                                     <option value="">Pilih Jenis Barang</option>
@@ -44,6 +45,8 @@
                                     <option {{ Request('jenis_barang') == 'LAINNYA' ? 'selected' : '' }} value="LAINNYA">LAINNYA</option>
                                 </select>
                             </div>
+                            @endif
+
                             <div class="col-lg-2 col-sm-12">
                                 <select class="form-control" id="kode_kategori" name="kode_kategori">
                                     <option value="">Pilih Kategori</option>
@@ -52,6 +55,7 @@
                                     @endforeach
                                 </select>
                             </div>
+                            @if (Auth::user()->level != "admin gudang logistik" AND Auth::user()->level != "admin gudang bahan" AND Auth::user()->level != "general affair")
                             <div class="col-lg-2 col-sm-12">
                                 <select class="form-control" id="kode_dept" name="kode_dept">
                                     <option value="">Pilih Departemen</option>
@@ -60,6 +64,7 @@
                                     @endforeach
                                 </select>
                             </div>
+                            @endif
                             <div class="col-lg-3 col-sm-12">
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-search mr-1"></i> Cari</button>
                             </div>

@@ -63,8 +63,13 @@ class SuratjalanController extends Controller
                 $query->where('status_sj', 2);
             }
         }
-
-        $query->where('permintaan_pengiriman.kode_cabang', $request->kode_cabang);
+        if ($this->cabang == "PCF") {
+            if (!empty($request->kode_cabang)) {
+                $query->where('permintaan_pengiriman.kode_cabang', $request->kode_cabang);
+            }
+        } else {
+            $query->where('permintaan_pengiriman.kode_cabang', $request->kode_cabang);
+        }
         $query->orderBy('tgl_mutasi_gudang', 'desc');
         $query->orderBy('mutasi_gudang_jadi.time_stamp', 'desc');
         $mutasi = $query->paginate(15);

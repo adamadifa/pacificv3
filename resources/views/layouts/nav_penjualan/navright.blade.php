@@ -9,7 +9,7 @@
                     <i class="feather icon-file mr-1"></i>Penjualan
                 </li>
             </a>
-            @if (Auth::user()->level != "staff keuangan 2")
+            @if (Auth::user()->level != "staff keuangan 2" AND Auth::user()->level != "admin pajak")
 
 
             <a href="/laporanretur" style="color:#626262">

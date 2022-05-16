@@ -101,8 +101,11 @@
                                 </td>
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example">
+                                        @if (in_array($level,$penjualan_edit))
                                         <a class="ml-1" href="/penjualan/{{\Crypt::encrypt($d->no_fak_penj)}}/edit"><i class="feather icon-edit success"></i></a>
                                         <a class="ml-1 detailpenjualan" href="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/show"><i class=" feather icon-file-text info"></i></a>
+                                        @endif
+                                        @if (in_array($level,$penjualan_hapus))
                                         <form method="POST" name="deleteform" class="deleteform" action="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/delete">
                                             @csrf
                                             @method('DELETE')
@@ -110,6 +113,8 @@
                                                 <i class="feather icon-trash danger"></i>
                                             </a>
                                         </form>
+                                        @endif
+
                                         <div class="dropdown ml-1">
                                             <a class="dropdown-toggle mr-1" type="button" id="dropdownMenuButton300" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <i class="feather icon-printer primary"></i>

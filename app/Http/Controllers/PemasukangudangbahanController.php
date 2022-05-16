@@ -88,32 +88,32 @@ class PemasukangudangbahanController extends Controller
         $qty_lebih = $request->qty_lebih;
         $id_admin = Auth::user()->id;
 
-        $cek = DB::table('detailpemasukan_temp_gb')->where('kode_barang', $kode_barang)->where('id_admin', $id_admin)->count();
-        if ($cek > 0) {
-            echo 1;
+        // $cek = DB::table('detailpemasukan_temp_gb')->where('kode_barang', $kode_barang)->where('id_admin', $id_admin)->count();
+        // if ($cek > 0) {
+        //     echo 1;
+        // } else {
+        $data = [
+            'kode_barang' => $kode_barang,
+            'keterangan' => $keterangan,
+            'qty_unit' => $qty_unit,
+            'qty_berat' => $qty_berat,
+            'qty_lebih' => $qty_lebih,
+            'id_admin' => $id_admin
+        ];
+        $simpan = DB::table('detailpemasukan_temp_gb')->insert($data);
+        if ($simpan) {
+            echo 0;
         } else {
-            $data = [
-                'kode_barang' => $kode_barang,
-                'keterangan' => $keterangan,
-                'qty_unit' => $qty_unit,
-                'qty_berat' => $qty_berat,
-                'qty_lebih' => $qty_lebih,
-                'id_admin' => $id_admin
-            ];
-            $simpan = DB::table('detailpemasukan_temp_gb')->insert($data);
-            if ($simpan) {
-                echo 0;
-            } else {
-                echo 2;
-            }
+            echo 2;
         }
+        // }
     }
 
     public function deletetemp(Request $request)
     {
-        $kode_barang = $request->kode_barang;
+        $id = $request->id;
         $id_admin = Auth::user()->id;
-        $hapus = DB::table('detailpemasukan_temp_gb')->where('kode_barang', $kode_barang)->where('id_admin', $id_admin)->delete();
+        $hapus = DB::table('detailpemasukan_temp_gb')->where('id', $id)->delete();
         if ($hapus) {
             echo 0;
         } else {
@@ -197,24 +197,24 @@ class PemasukangudangbahanController extends Controller
         $qty_berat = !empty($request->qty_berat) ? $request->qty_berat : 0;
         $qty_lebih = !empty($request->qty_lebih) ? $request->qty_lebih : 0;
         $cek = DB::table('detail_pemasukan_gb')->where('kode_barang', $kode_barang)->where('nobukti_pemasukan', $nobukti_pemasukan)->count();
-        if ($cek > 0) {
-            echo 1;
+        // if ($cek > 0) {
+        //     echo 1;
+        // } else {
+        $data = [
+            'nobukti_pemasukan' => $nobukti_pemasukan,
+            'kode_barang' => $kode_barang,
+            'keterangan' => $keterangan,
+            'qty_unit' => $qty_unit,
+            'qty_berat' => $qty_berat,
+            'qty_lebih' => $qty_lebih,
+        ];
+        $simpan = DB::table('detail_pemasukan_gb')->insert($data);
+        if ($simpan) {
+            echo 0;
         } else {
-            $data = [
-                'nobukti_pemasukan' => $nobukti_pemasukan,
-                'kode_barang' => $kode_barang,
-                'keterangan' => $keterangan,
-                'qty_unit' => $qty_unit,
-                'qty_berat' => $qty_berat,
-                'qty_lebih' => $qty_lebih,
-            ];
-            $simpan = DB::table('detail_pemasukan_gb')->insert($data);
-            if ($simpan) {
-                echo 0;
-            } else {
-                echo 2;
-            }
+            echo 2;
         }
+        // }
     }
     public function editbarang(Request $request)
     {

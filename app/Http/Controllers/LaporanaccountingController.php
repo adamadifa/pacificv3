@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Coa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class LaporanaccountingController extends Controller
@@ -636,7 +637,13 @@ class LaporanaccountingController extends Controller
 
     public function jurnalumum()
     {
-        $departemen = DB::table('departemen')->where('status_pengajuan', 1)->get();
+        if (Auth::user()->level == "general affair") {
+            $departemen = DB::table('departemen')
+                ->where('kode_dept', 'GAF')
+                ->where('status_pengajuan', 1)->get();
+        } else {
+            $departemen = DB::table('departemen')->where('status_pengajuan', 1)->get();
+        }
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('laporanaccounting.laporan.frm.lap_jurnalumum', compact('bulan', 'departemen'));
     }

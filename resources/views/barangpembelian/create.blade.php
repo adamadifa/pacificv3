@@ -20,10 +20,12 @@
             <div class="form-group">
                 <select class="form-control" id="jenis_barang" name="jenis_barang">
                     <option value="">Pilih Jenis Barang</option>
+                    @if (Auth::user()->level != "admin gudang logistik" AND Auth::user()->level != "general affair")
                     <option value="BAHAN BAKU">BAHAN BAKU</option>
                     {{-- <option {{ Request('jenis_barang') == 'BAHAN PEMBANTU' ? 'selected' : '' }} value="BAHAN PEMBANTU">BAHAN PEMBANTU</option> --}}
                     <option value="KEMASAN">KEMASAN</option>
                     <option value="Bahan Tambahan">BAHAN TAMBAHAN</option>
+                    @endif
                     <option value="LAINNYA">LAINNYA</option>
                 </select>
             </div>
@@ -41,6 +43,7 @@
             </div>
         </div>
     </div>
+    @if (Auth::user()->level != "admin gudang logistik" AND Auth::user()->level != "admin gudang bahan" AND Auth::user()->level != "general affair")
     <div class="row">
         <div class="col-12">
             <div class="form-group">
@@ -53,6 +56,9 @@
             </div>
         </div>
     </div>
+    @else
+    <input type="hidden" id="kode_dept" name="kode_dept" value="GDLs">
+    @endif
     {{-- <div class="row">
         <div class="col-12">
             <div class="form-group">

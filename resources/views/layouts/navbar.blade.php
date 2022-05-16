@@ -874,10 +874,17 @@
                     @endif
                     @if (in_array($level, $laporan_accounting))
                     <li class="{{ request()->is(['laporanaccounting', 'laporanaccounting/*']) ? 'active' : '' }}">
+                        @if ($level =="general affair" || $level=="hrd")
+                        <a href="/laporanaccounting/jurnalumum">
+                            <i class="feather icon-file"></i>
+                            <span class="menu-item" data-i18n="Second Level">Laporan</span>
+                        </a>
+                        @else
                         <a href="/laporanaccounting/rekapbj">
                             <i class="feather icon-file"></i>
                             <span class="menu-item" data-i18n="Second Level">Laporan</span>
                         </a>
+                        @endif
                     </li>
                     @endif
 

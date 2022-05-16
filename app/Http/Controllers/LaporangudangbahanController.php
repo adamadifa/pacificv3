@@ -56,7 +56,7 @@ class LaporangudangbahanController extends Controller
 
         $barang = Barangpembelian::where('kode_barang', $kode_barang)->first();
         $query = Detailpengeluarangudangbahan::query();
-        $query->select('detail_pengeluaran_gb.*', 'tgl_pengeluaran', 'nama_barang', 'pengeluaran_gb.kode_dept');
+        $query->select('detail_pengeluaran_gb.*', 'tgl_pengeluaran', 'nama_barang', 'satuan', 'pengeluaran_gb.kode_dept');
         $query->join('pengeluaran_gb', 'detail_pengeluaran_gb.nobukti_pengeluaran', '=', 'pengeluaran_gb.nobukti_pengeluaran');
         $query->join('master_barang_pembelian', 'detail_pengeluaran_gb.kode_barang', '=', 'master_barang_pembelian.kode_barang');
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Barangpembelian;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -24,10 +25,19 @@ class BarangpembelianController extends Controller
         if (!empty($request->kode_kategori)) {
             $query->where('master_barang_pembelian.kode_kategori', $request->kode_kategori);
         }
+        if (Auth::user()->level == "admin gudang logistik") {
+            $query->where('master_barang_pembelian.kode_dept', 'GDL');
+        } elseif (Auth::user()->level == "admin gudang bahan") {
+            $query->where('master_barang_pembelian.kode_dept', 'GDB');
+        } elseif (Auth::user()->level == "general affair") {
+            $query->where('master_barang_pembelian.kode_dept', 'GAF');
+        } else {
 
-        if (!empty($request->kode_dept)) {
-            $query->where('master_barang_pembelian.kode_dept', $request->kode_dept);
+            if (!empty($request->kode_dept)) {
+                $query->where('master_barang_pembelian.kode_dept', $request->kode_dept);
+            }
         }
+
 
         if ($request->nama_barang != "") {
             $query->where('nama_barang', 'like', '%' . $request->nama_barang . '%');
@@ -35,14 +45,26 @@ class BarangpembelianController extends Controller
         $barang_pembelian = $query->paginate(15);
         $barang_pembelian->appends($request->all());
 
-        $kategori_barang_pembelian = DB::table('kategori_barang_pembelian')->orderBy('kategori')->get();
+        if (Auth::user()->level == "admin gudang logistik") {
+            $kategori_barang_pembelian = DB::table('kategori_barang_pembelian')->where('kode_dept', 'GDL')->orderBy('kategori')->get();
+        } else if (Auth::user()->level == "admin gudang bahan") {
+            $kategori_barang_pembelian = DB::table('kategori_barang_pembelian')->where('kode_dept', 'GDB')->orderBy('kategori')->get();
+        } else if (Auth::user()->level == "general affair") {
+            $kategori_barang_pembelian = DB::table('kategori_barang_pembelian')->where('kode_dept', 'GAF')->orderBy('kategori')->get();
+        } else {
+            $kategori_barang_pembelian = DB::table('kategori_barang_pembelian')->orderBy('kategori')->get();
+        }
         $departemen = DB::table('departemen')->where('nama_dept', 'NOT LIKE', '%CABANG%')->orderBy('nama_dept')->get();
         return view('barangpembelian.index', compact('barang_pembelian', 'kategori_barang_pembelian', 'departemen'));
     }
 
     public function create()
     {
-        $kategori_barang_pembelian = DB::table('kategori_barang_pembelian')->orderBy('kategori')->get();
+        if (Auth::user()->level == "admin gudang logistik") {
+            $kategori_barang_pembelian = DB::table('kategori_barang_pembelian')->where('kode_dept', 'GDL')->orderBy('kategori')->get();
+        } else {
+            $kategori_barang_pembelian = DB::table('kategori_barang_pembelian')->orderBy('kategori')->get();
+        }
         $departemen = DB::table('departemen')->where('nama_dept', 'NOT LIKE', '%CABANG%')->orderBy('nama_dept')->get();
         return view('barangpembelian.create', compact('kategori_barang_pembelian', 'departemen'));
     }

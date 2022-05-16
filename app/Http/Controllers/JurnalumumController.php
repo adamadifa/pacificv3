@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Coa;
 use App\Models\Jurnalumum;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -21,8 +22,13 @@ class JurnalumumController extends Controller
         $query->whereBetween('tanggal', [$dari, $sampai]);
         $query->where('kode_dept', $kode_dept);
         $jurnalumum = $query->get();
-
-        $departemen = DB::table('departemen')->where('status_pengajuan', 1)->get();
+        if (Auth::user()->level == "general affair") {
+            $departemen = DB::table('departemen')
+                ->where('kode_dept', 'GAF')
+                ->where('status_pengajuan', 1)->get();
+        } else {
+            $departemen = DB::table('departemen')->where('status_pengajuan', 1)->get();
+        }
         return view('jurnalumum.index', compact('jurnalumum', 'departemen'));
     }
 
@@ -115,7 +121,7 @@ class JurnalumumController extends Controller
     public function delete($kode_jurnal)
     {
         $kode_jurnal = Crypt::decrypt($kode_jurnal);
-        $jurnalumum = DB::table('jurnal_umum')->where('kode_jurnal', $kode_jurnal)->first();
+        //$jurnalumum = DB::table('jurnal_umum')->where('kode_jurnal', $kode_jurnal)->first();
         $jl = DB::table('jurnal_umum')->where('kode_jurnal', $kode_jurnal)->first();
         $nobukti_bukubesar = $jl->nobukti_bukubesar;
         DB::beginTransaction();

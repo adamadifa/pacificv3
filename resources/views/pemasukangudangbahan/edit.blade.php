@@ -266,24 +266,6 @@
                 }).then(function() {
                     $("#nama_barang").focus();
                 });
-            } else if (qty_unit == "" || qty_unit == 0) {
-                swal({
-                    title: 'Oops'
-                    , text: 'Qty Unit Diisi Dulu !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#qty_unit").focus();
-                });
-            } else if (qty_berat == "" || qty_berat == 0) {
-                swal({
-                    title: 'Oops'
-                    , text: 'Qty Berat Diisi Dulu !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#qty_berat").focus();
-                });
             } else {
 
 
