@@ -274,14 +274,10 @@ class DashboardController extends Controller
             ->groupBy('kode_pelanggan')
             ->get();
 
-        if ($pengajuanterakhir != null) {
-            foreach ($pengajuanterakhir as $d) {
-                $no_pengajuan[] = $d->no_pengajuan;
-            }
-        } else {
-            $no_pengajuan[] = "";
+        $no_pengajuan[] = "";
+        foreach ($pengajuanterakhir as $d) {
+            $no_pengajuan[] = $d->no_pengajuan;
         }
-
 
 
         $jmlpengajuan = DB::table('pengajuan_limitkredit_v3')
