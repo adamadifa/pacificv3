@@ -2655,6 +2655,7 @@ class PenjualanController extends Controller
         $sampai = $request->sampai;
         $cabang = DB::table('cabang')->where('kode_cabang', $request->kode_cabang)->first();
         $salesman = DB::table('karyawan')->where('id_karyawan', $request->id_karyawan)->first();
+        $id_karyawan = $request->id_karyawan;
         if ($request->kode_cabang     != "") {
             $kode_cabang = "AND karyawan.kode_cabang = '" . $request->kode_cabang . "' ";
         } else {
