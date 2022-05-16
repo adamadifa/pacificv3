@@ -193,7 +193,7 @@ class HargaController extends Controller
     {
         $search = $request->search;
         $kode_cabang = $request->kode_cabang;
-        if (empty($request->kategori_salesman)) {
+        if (!empty($request->kategori_salesman)) {
             $kategori_salesman = $request->kategori_salesman;
         } else {
             $kategori_salesman = "NORMAL";
@@ -201,7 +201,7 @@ class HargaController extends Controller
         if ($search == '') {
             $autocomplate = Harga::orderby('nama_barang', 'asc')->select('kode_produk', 'kode_barang', 'nama_barang', 'harga_dus', 'kategori_harga')
                 ->where('kode_cabang', $kode_cabang)
-                ->where('kategori_harga', $kategori_salesman)
+                ->where('kategori_hargad', $kategori_salesman)
                 ->limit(5)->get();
         } else {
             $autocomplate = Harga::orderby('nama_barang', 'asc')->select('kode_produk', 'kode_barang', 'nama_barang', 'harga_dus', 'kategori_harga')->where('nama_barang', 'like', '%' . $search . '%')
@@ -209,7 +209,7 @@ class HargaController extends Controller
                 ->where('kategori_harga', $kategori_salesman)
                 ->orWhere('kode_produk', 'like', '%' . $search . '%')
                 ->where('kode_cabang', $kode_cabang)
-                ->where('kategori_harga', $kategori_salesman)
+                ->where('kategori_hargad', $kategori_salesman)
                 ->limit(5)->get();
         }
 
