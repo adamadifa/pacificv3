@@ -57,6 +57,7 @@ class DashboardController extends Controller
         $cabang = DB::table('cabang')->get();
         $kode_cabang = Auth::user()->kode_cabang;
         $level = Auth::user()->level;
+        $no_pengajuan[] = "";
         $pengajuanterakhir = DB::table('pengajuan_limitkredit_v3')
             ->select(DB::raw('MAX(no_pengajuan) as no_pengajuan'))
             ->groupBy('kode_pelanggan')
@@ -166,6 +167,7 @@ class DashboardController extends Controller
                 }
             )
             ->get();
+        $no_pengajuan[] = "";
         $pengajuanterakhir = DB::table('pengajuan_limitkredit_v3')
             ->select(DB::raw('MAX(no_pengajuan) as no_pengajuan'))
             ->groupBy('kode_pelanggan')
