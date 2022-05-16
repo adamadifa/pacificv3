@@ -271,7 +271,7 @@ class GlobalProvider extends ServiceProvider
             ];
             $saldoawalkasbesar_view = ['admin', 'staff keuangan', 'staff keuangan 2'];
             $setoran_menu = ['admin', 'staff keuangan', 'staff keuangan 2', 'kepala admin', 'kasir', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
-            $setoranpenjualan_view = ['admin', 'kepala admin', 'kasir', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
+            $setoranpenjualan_view = ['admin', 'staff keuangan', 'staff keuangan 2', 'kepala admin', 'kasir', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
             $setoranpusat_view = ['admin', 'staff keuangan', 'staff keuangan 2', 'kepala admin', 'kasir', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
             $setoranpusat_add = ['admin', 'kasir', 'kepala admin', 'kasir', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
             $setoranpusat_edit = ['admin', 'kasir', 'kepala admin', 'kasir', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
