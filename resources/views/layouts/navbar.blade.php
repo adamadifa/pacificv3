@@ -903,6 +903,12 @@
                         </a>
                     </li>
                     @endif
+                    <li class="{{ request()->is(['user', 'user/gantipassword']) ? 'active' : '' }}">
+                        <a href="/user/gantipassword">
+                            <i class="fa fa-key"></i>
+                            <span class="menu-item">Ganti Password</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
 

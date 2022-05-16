@@ -85,6 +85,7 @@ use App\Http\Controllers\TabunganController;
 use App\Http\Controllers\TargetkomisiController;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\TutuplaporanController;
+use App\Http\Controllers\UserController;
 use App\Models\Barangpembelian;
 use App\Models\Pemasukangudanglogistik;
 use App\Models\Saldoawalmutasibarangproduksi;
@@ -111,6 +112,8 @@ Route::middleware(['guest'])->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', [DashboardController::class, 'home']);
+    Route::get('/user/gantipassword', [UserController::class, 'gantipassword']);
+    Route::post('/user/{id}/update', [UserController::class, 'update']);
 });
 
 Route::post('/postlogin', [AuthController::class, 'postlogin']);
