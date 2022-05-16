@@ -456,6 +456,7 @@ Route::middleware(['auth', 'ceklevel:admin,manager pembelian,admin pembelian,sta
     Route::get('/kontrabon/{no_kontrabon}/approvekontrabon', [KontrabonController::class, 'approvekontrabon']);
     Route::get('/kontrabon/{no_kontrabon}/cancelkontrabon', [KontrabonController::class, 'cancelkontrabon']);
 
+    Route::get('/pembelian', [PembelianController::class, 'index']);
     Route::post('/pembelian/showdetailpembelian', [PembelianController::class, 'showdetailpembelian']);
     Route::post('/pembelian/showdetailpembeliankontrabon', [PembelianController::class, 'showdetailpembeliankontrabon']);
     Route::post('/pembelian/showdetailpotongan', [PembelianController::class, 'showdetailpotongan']);
@@ -481,7 +482,6 @@ Route::middleware(['auth', 'ceklevel:admin,manager pembelian,admin pembelian'])-
     Route::get('/supplier/json', [SupplierController::class, 'json'])->name('supplier.json');
 
     //Pembelian
-    Route::get('/pembelian', [PembelianController::class, 'index']);
     Route::get('/pembelian/create', [PembelianController::class, 'create']);
     Route::post('/pembelian/storetemp', [PembelianController::class, 'storetemp']);
     Route::post('/pembelian/storedetailpembelian', [PembelianController::class, 'storedetailpembelian']);

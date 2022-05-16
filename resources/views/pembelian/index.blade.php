@@ -25,7 +25,9 @@
         <div class="col-md-12 col-sm-12">
             <div class="card">
                 <div class="card-header">
+                    @if (in_array($level,$pembelian_tambah))
                     <a href="/pembelian/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
+                    @endif
                 </div>
                 <div class="card-body">
                     <form action="/pembelian">
@@ -162,8 +164,12 @@
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             <a class="ml-1 detailpembelian" href="#" nobukti_pembelian="{{ $d->nobukti_pembelian }}"><i class=" feather icon-file-text info"></i></a>
+
                                             @if (empty($d->jmlbayar))
+                                            @if (in_array($level,$pembelian_edit))
                                             <a class="ml-1" href="/pembelian/{{\Crypt::encrypt($d->nobukti_pembelian)}}/edit"><i class="feather icon-edit success"></i></a>
+                                            @endif
+                                            @if (in_array($level,$pembelian_hapus))
                                             <form method="POST" class="deleteform" action="/pembelian/{{Crypt::encrypt($d->nobukti_pembelian)}}/delete">
                                                 @csrf
                                                 @method('DELETE')
@@ -172,6 +178,8 @@
                                                 </a>
                                             </form>
                                             @endif
+                                            @endif
+
 
                                             @if (in_array($level,$approve_pembelian))
                                             @if ($d->kode_dept=="GDL")
