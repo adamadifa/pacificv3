@@ -230,7 +230,11 @@ class HargaController extends Controller
     {
         $search = $request->search;
         $kode_cabang = $request->kode_cabang;
-        $kategori_salesman = $request->kategori_salesman;
+        if (!empty($request->kategori_salesman)) {
+            $kategori_salesman = $request->kategori_salesman;
+        } else {
+            $kategori_salesman = "NORMAL";
+        }
         if ($search == '') {
             $autocomplate = Harga::orderby('nama_barang', 'asc')->select('kode_produk', 'kode_barang', 'nama_barang', 'harga_returdus', 'kategori_harga')
                 ->where('kode_cabang', $kode_cabang)
