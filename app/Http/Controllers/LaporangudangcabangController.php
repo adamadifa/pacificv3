@@ -542,6 +542,7 @@ class LaporangudangcabangController extends Controller
                         INNER JOIN penjualan ON detailpenjualan.no_fak_penj = penjualan.no_fak_penj
                         INNER JOIN karyawan ON penjualan.id_karyawan = karyawan.id_karyawan
                         WHERE tgltransaksi BETWEEN '$dari' AND '$sampai' AND karyawan.kode_cabang ='$kode_cabang' AND promo !=1 " . $wherenotsalesgarut . $wheresalesgarut . "
+                        OR tgltransaksi BETWEEN '$dari' AND '$sampai' AND karyawan.kode_cabang ='$kode_cabang' AND promo IS NULL " . $wherenotsalesgarut . $wheresalesgarut . "
                         GROUP BY kode_produk
                     ) detailpenjualan"),
                     function ($join) {
