@@ -180,7 +180,7 @@ Route::middleware(['auth', 'ceklevel:admin,manager marketing,manager accounting,
 });
 
 
-Route::middleware(['auth', 'ceklevel:admin,manager marketing,admin gudang cabang dan marketing'])->group(function () {
+Route::middleware(['auth', 'ceklevel:admin,manager marketing,admin gudang cabang dan marketing,kepala gudang'])->group(function () {
     //Permintaan Pengiriman
     Route::get('/permintaanpengiriman', [PermintaanpengirimanController::class, 'index']);
     Route::get('/permintaanpengiriman/cektemp', [PermintaanpengirimanController::class, 'cektemp']);

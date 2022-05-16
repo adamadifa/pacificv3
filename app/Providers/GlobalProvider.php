@@ -156,7 +156,7 @@ class GlobalProvider extends ServiceProvider
                 'admin', 'admin penjualan', 'kepala penjualan',
                 'kepala admin', 'manager accounting', 'manager marketing',
                 'general manager', 'direktur', 'admin penjualan dan kas kecil',
-                'admin penjualan dan kasir', 'supervisor sales', 'admin gudang cabang dan marketing'
+                'admin penjualan dan kasir', 'supervisor sales', 'admin gudang cabang dan marketing', 'kepala gudang'
             ];
 
             //-----------------------------OMAN-------------------------------------------------
@@ -164,7 +164,7 @@ class GlobalProvider extends ServiceProvider
             $omancabang = ['admin'];
             $omanmarketing = ['admin'];
             //----------------------------Permintaaan Pengiriman--------------------------------
-            $permintaanpengiriman = ['admin', 'admin gudang cabang dan marketing'];
+            $permintaanpengiriman = ['admin', 'admin gudang cabang dan marketing', 'kepala gudang'];
             $permintaanpengiriman_tambah = ['admin', 'admin gudang cabang dan marketing'];
             $permintaanpengiriman_hapus = ['admin', 'admin gudang cabang dan marketing'];
             $permintaanpengiriman_proses = ['admin', 'kepala gudang', 'admin gudang pusat'];
