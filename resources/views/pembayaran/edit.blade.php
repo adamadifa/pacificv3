@@ -212,16 +212,6 @@
                     $("#id_karyawan_edit").focus();
                 });
                 return false;
-            } else if (parseInt(jmlbayar) > parseInt(sisabayar)) {
-                swal({
-                    title: 'Oops'
-                    , text: 'Jumlah Bayar Melebihi Sisa Bayar  !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#id_karyawan_edit").focus();
-                });
-                return false;
             } else if ($(".girotocash_edit").is(':checked') && id_giro == "") {
                 swal({
                     title: 'Oops'
