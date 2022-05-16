@@ -53,15 +53,15 @@
                         <td>{{ $d->kode_produk }}</td>
                         <td>{{ $d->nama_barang }}</td>
                         <td style="width: 12%">
-                            <input type="text" class="form-control" name="jmldus[]">
+                            <input type="text" class="form-control" autocomplete="off" name="jmldus[]">
                         </td>
                         <td>{{ $d->satuan }}</td>
                         <td style="width:12%">
-                            <input type="{{ !empty($d->isipack) ? 'text' : 'hidden' }}" class="form-control" name="jmlpack[]">
+                            <input type="{{ !empty($d->isipack) ? 'text' : 'hidden' }}" autocomplete="off" class="form-control" name="jmlpack[]">
                         </td>
                         <td>PACK</td>
                         <td style="width: 12%">
-                            <input type="text" class="form-control" name="jmlpcs[]">
+                            <input type="text" class="form-control" autocomplete="off" name="jmlpcs[]">
                         </td>
                         <td>PCS</td>
                     </tr>
