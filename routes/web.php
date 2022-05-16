@@ -180,7 +180,7 @@ Route::middleware(['auth', 'ceklevel:admin,manager marketing,manager accounting,
 });
 
 
-Route::middleware(['auth', 'ceklevel:admin,manager marketing'])->group(function () {
+Route::middleware(['auth', 'ceklevel:admin,manager marketing,admin gudang cabang dan marketing'])->group(function () {
     //Permintaan Pengiriman
     Route::get('/permintaanpengiriman', [PermintaanpengirimanController::class, 'index']);
     Route::get('/permintaanpengiriman/cektemp', [PermintaanpengirimanController::class, 'cektemp']);
@@ -511,7 +511,7 @@ Route::middleware(['auth', 'ceklevel:admin,manager pembelian,admin pembelian'])-
 });
 
 //Administrator | Kepala Admin | Admin Gudang Cabang | Admin Persediaan dan Kas Kecil | Admin Persedian dan Kasir
-Route::middleware(['auth', 'ceklevel:admin,kepala penjualan,kepala admin,admin gudang cabang,admin persediaan dan kas kecil,admin persediaan dan kasir,admin persediaan dan kas kecil,supervisor sales'])->group(function () {
+Route::middleware(['auth', 'ceklevel:admin,kepala penjualan,kepala admin,admin gudang cabang,admin persediaan dan kas kecil,admin persediaan dan kasir,admin persediaan dan kas kecil,supervisor sales,admin gudang cabang dan marketing'])->group(function () {
     //Gudang Cabang
 
     //Saldo Awal

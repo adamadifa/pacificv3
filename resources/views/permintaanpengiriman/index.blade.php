@@ -24,8 +24,12 @@
         <div class="col-md-12 col-sm-12 col-lg-12">
             <div class="card">
 
+
+
                 <div class="card-header">
+                    @if (in_array($level,$permintaanpengiriman_tambah))
                     <a href="#" class="btn btn-primary" id="inputpermintaan"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
+                    @endif
                 </div>
 
                 <div class="card-body">
@@ -114,6 +118,7 @@
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
+                                            @if (in_array($level,$permintaanpengiriman_hapus))
                                             @if ($d->status == 0)
                                             <form method="POST" class="deleteform" action="/permintaanpengiriman/{{ Crypt::encrypt($d->no_permintaan_pengiriman) }}/delete">
                                                 @csrf
@@ -123,12 +128,14 @@
                                                 </a>
                                             </form>
                                             @endif
-
+                                            @endif
+                                            @if (in_array($level,$permintaanpengiriman_proses))
                                             @if ($d->status==0)
                                             <a href="#" class="input_sj ml-1" no_permintaan_pengiriman="{{ Crypt::encrypt($d->no_permintaan_pengiriman) }}"><i class="feather icon-external-link success"></i></a>
                                             @else
                                             @if ($d->status==1 AND $d->status_sj==0)
                                             <a href="/suratjalan/{{Crypt::encrypt($d->no_mutasi_gudang)}}/batalkansuratjalan" class="ml-1"><i class="fa fa-close danger"></i></a>
+                                            @endif
                                             @endif
                                             @endif
                                         </div>

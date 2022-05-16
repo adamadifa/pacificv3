@@ -156,7 +156,7 @@ class GlobalProvider extends ServiceProvider
                 'admin', 'admin penjualan', 'kepala penjualan',
                 'kepala admin', 'manager accounting', 'manager marketing',
                 'general manager', 'direktur', 'admin penjualan dan kas kecil',
-                'admin penjualan dan kasir', 'supervisor sales'
+                'admin penjualan dan kasir', 'supervisor sales', 'admin gudang cabang dan marketing'
             ];
 
             //-----------------------------OMAN-------------------------------------------------
@@ -164,7 +164,10 @@ class GlobalProvider extends ServiceProvider
             $omancabang = ['admin'];
             $omanmarketing = ['admin'];
             //----------------------------Permintaaan Pengiriman--------------------------------
-            $permintaanpengiriman = ['admin'];
+            $permintaanpengiriman = ['admin', 'admin gudang cabang dan marketing'];
+            $permintaanpengiriman_tambah = ['admin', 'admin gudang cabang dan marketing'];
+            $permintaanpengiriman_hapus = ['admin', 'admin gudang cabang dan marketing'];
+            $permintaanpengiriman_proses = ['admin', 'kepala gudang', 'admin gudang pusat'];
             $permintaanpengiriman_gj = ['admin', 'kepala gudang'];
             //----------------------------Target Komisi--------------------------------
             $komisi = ['admin', 'kepala penjualan', 'kepala admin', 'manager marketing', 'general manager', 'direktur', 'manager accounting'];
@@ -336,7 +339,8 @@ class GlobalProvider extends ServiceProvider
                 'admin', 'admin gudang cabang',
                 'admin gudang', 'admin persediaan dan kasir',
                 'admin persediaan dan kas kecil', 'kepala penjualan',
-                'admin gudang', 'kepala admin', 'supervisor sales', 'kepala gudang'
+                'admin gudang', 'kepala admin', 'supervisor sales', 'kepala gudang',
+                'admin gudang cabang dan marketing'
             ];
             $gudang_bahan_menu = ['admin', 'kepala gudang', 'kepala gudang'];
             $gudang_logistik_menu =  ['admin', 'kepala gudang', 'kepala gudang'];
@@ -344,12 +348,14 @@ class GlobalProvider extends ServiceProvider
             $gudang_cabang_menu = [
                 'admin',
                 'admin gudang', 'kepala admin', 'admin gudang cabang',
-                'admin persediaan dan kasir', 'admin persediaan dan kas kecil'
+                'admin persediaan dan kasir', 'admin persediaan dan kas kecil',
+                'admin gudang cabang dan marketing'
             ];
             $laporan_gudang = [
                 'admin', 'kepala admin',
                 'admin gudang cabang', 'admin persediaan dan kasir',
-                'admin persediaan dan kas kecil', 'kepala penjualan', 'supervisor sales'
+                'admin persediaan dan kas kecil', 'kepala penjualan', 'supervisor sales',
+                'admin gudang cabang dan marketing'
             ];
             $laporan_gudang_logistik = ['admin'];
             $laporan_gudang_bahan = ['admin'];
@@ -357,7 +363,8 @@ class GlobalProvider extends ServiceProvider
             $laporan_gudang_cabang = [
                 'admin', 'kepala penjualan',
                 'kepala admin', 'admin gudang cabang', 'admin persediaan dan kasir',
-                'admin persediaan dan kas kecil', 'supervisor sales'
+                'admin persediaan dan kas kecil', 'supervisor sales',
+                'admin gudang cabang dan marketing'
             ];
 
 
@@ -395,11 +402,11 @@ class GlobalProvider extends ServiceProvider
 
             //Gudang Cabang
 
-            $saldoawal_gs_view = ['admin', 'admin gudang', 'kepala admin', 'admin gudang cabang', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil'];
-            $saldoawal_bs_view = ['admin', 'admin gudang', 'kepala admin', 'admin gudang cabang', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil'];
-            $dpb_view = ['admin', 'admin gudang', 'kepala admin', 'admin gudang cabang', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil'];
-            $mutasi_barang_cab_view = ['admin', 'admin gudang', 'kepala admin', 'admin gudang cabang', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil'];
-            $suratjalancab_view = ['admin', 'admin gudang', 'kepala admin', 'admin gudang cabang', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil'];
+            $saldoawal_gs_view = ['admin', 'admin gudang', 'kepala admin', 'admin gudang cabang', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'admin gudang cabang dan marketing'];
+            $saldoawal_bs_view = ['admin', 'admin gudang', 'kepala admin', 'admin gudang cabang', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'admin gudang cabang dan marketing'];
+            $dpb_view = ['admin', 'admin gudang', 'kepala admin', 'admin gudang cabang', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'admin gudang cabang dan marketing'];
+            $mutasi_barang_cab_view = ['admin', 'admin gudang', 'kepala admin', 'admin gudang cabang', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'admin gudang cabang dan marketing'];
+            $suratjalancab_view = ['admin', 'admin gudang', 'kepala admin', 'admin gudang cabang', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'admin gudang cabang dan marketing'];
 
 
             //Laporan Gudang Logistik
@@ -426,11 +433,11 @@ class GlobalProvider extends ServiceProvider
 
             //Laporan Gudang  Cabang
 
-            $laporan_persediaan_bj = ['admin', 'kepala penjualan', 'kepala admin', 'admin gudang cabang', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'supervisor sales'];
-            $laporan_badstok_bj = ['admin', 'kepala penjualan', 'kepala admin', 'admin gudang cabang', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'supervisor sales'];
-            $laporan_rekap_bj = ['admin', 'kepala penjualan', 'kepala admin', 'admin gudang cabang', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'supervisor sales'];
-            $laporan_mutasidpb = ['admin', 'kepala penjualan', 'kepala admin', 'admin gudang cabang', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'supervisor sales'];
-            $laporan_rekonsiliasibj = ['admin', 'kepala penjualan', 'kepala admin', 'admin gudang cabang', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'supervisor sales'];
+            $laporan_persediaan_bj = ['admin', 'kepala penjualan', 'kepala admin', 'admin gudang cabang', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'supervisor sales', 'admin gudang cabang dan marketing'];
+            $laporan_badstok_bj = ['admin', 'kepala penjualan', 'kepala admin', 'admin gudang cabang', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'supervisor sales', 'admin gudang cabang dan marketing'];
+            $laporan_rekap_bj = ['admin', 'kepala penjualan', 'kepala admin', 'admin gudang cabang', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'supervisor sales', 'admin gudang cabang dan marketing'];
+            $laporan_mutasidpb = ['admin', 'kepala penjualan', 'kepala admin', 'admin gudang cabang', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'supervisor sales', 'admin gudang cabang dan marketing'];
+            $laporan_rekonsiliasibj = ['admin', 'kepala penjualan', 'kepala admin', 'admin gudang cabang', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'supervisor sales', 'admin gudang cabang dan marketing'];
 
             //Acounting
             $accounting_menu = ['admin'];
@@ -512,6 +519,9 @@ class GlobalProvider extends ServiceProvider
 
                 //------------Permintaan Pengiriman------
                 'permintaanpengiriman' => $permintaanpengiriman,
+                'permintaanpengiriman_tambah' => $permintaanpengiriman_tambah,
+                'permintaanpengiriman_hapus' => $permintaanpengiriman_hapus,
+                'permintaanpengiriman_proses' => $permintaanpengiriman_proses,
                 'permintaanpengiriman_gj' => $permintaanpengiriman_gj,
                 //------------Komisi------
                 'komisi' => $komisi,
