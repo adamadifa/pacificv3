@@ -53,8 +53,8 @@ class LaporankeuanganController extends Controller
         }
         $query->where('kaskecil_detail.kode_cabang', $kode_cabang);
         $query->orderBy('tgl_kaskecil');
-        $query->orderBy('order');
         $query->orderBy('nobukti');
+        $query->orderBy('order');
         $kaskecil = $query->get();
 
         $queryrekap = Kaskecil::query();

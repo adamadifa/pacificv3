@@ -128,11 +128,11 @@
             </tr>
             @endforeach
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
-                <td style="font-weight: bold" colspan="5">TOTAL</td>
+                <td style="font-weight: bold" colspan="6">TOTAL</td>
                 <td style="font-weight: bold; text-align:right">{{ rupiah($totalpenerimaan) }}</td>
                 <td style="font-weight: bold; text-align:right">{{ rupiah($totalpengeluaran) }}</td>
                 <td style="font-weight: bold; text-align:right">{{ rupiah($saldo) }}</td>
-                <td colspan="3"></td>
+                <td colspan="2"></td>
             </tr>
         </tbody>
     </table>
