@@ -432,7 +432,7 @@ Route::middleware(['auth', 'ceklevel:admin,manager pembelian,admin pembelian,man
 
 
 //Administrator | Pembelian | Staff Keuangan
-Route::middleware(['auth', 'ceklevel:admin,manager pembelian,admin pembelian,staff keuangan'])->group(function () {
+Route::middleware(['auth', 'ceklevel:admin,manager pembelian,admin pembelian,staff keuangan,staff keuangan 2'])->group(function () {
     //Kontrabon
     Route::get('/kontrabon', [KontrabonController::class, 'index']);
     Route::post('/kontrabon/show', [KontrabonController::class, 'show']);
@@ -515,7 +515,7 @@ Route::middleware(['auth', 'ceklevel:admin,manager pembelian,admin pembelian'])-
     Route::delete('/jurnalkoreksi/{kode_jk}/delete', [JurnalkoreksiController::class, 'delete']);
 });
 //Administrator | Kepala Gudang | Admin Gudang Pusat | Staff keuangan
-Route::middleware(['auth', 'ceklevel:admin,kepala gudang,admin gudang pusat,staff keuangan'])->group(function () {
+Route::middleware(['auth', 'ceklevel:admin,kepala gudang,admin gudang pusat,staff keuangan,staff keuangan 2'])->group(function () {
     //Kontrabon Angkutan
     Route::get('/kontrabonangkutan', [KontrabonangkutanController::class, 'index']);
     Route::get('/kontrabonangkutan/{no_kontrabon}/show', [KontrabonangkutanController::class, 'show']);
@@ -966,7 +966,7 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
 });
 
 //Administrator | Direktur | General Manager | Manager Marketing | Manager Accounting | Kepala Penjualan | Staff Keuangan | Admin Kas Kecil
-Route::middleware(['auth', 'ceklevel:admin,direktur,general manager,manager marketing,manager accounting,kepala penjualan,staff keuangan,kepala admin,admin kas kecil,admin kas,admin persediaan dan kas kecil,admin penjualan dan kas kecil'])->group(function () {
+Route::middleware(['auth', 'ceklevel:admin,direktur,general manager,manager marketing,manager accounting,kepala penjualan,staff keuangan,staff keuangan 2,kepala admin,admin kas kecil,admin kas,admin persediaan dan kas kecil,admin penjualan dan kas kecil'])->group(function () {
     Route::get('/laporankeuangan/kaskecil', [LaporankeuanganController::class, 'kaskecil']);
     Route::post('/laporankeuangan/kaskecil/cetak', [LaporankeuanganController::class, 'cetak_kaskecil']);
 
@@ -988,7 +988,7 @@ Route::middleware(['auth', 'ceklevel:admin,direktur,general manager,manager mark
 });
 
 //Administrator | Direktur | General Manager | Manager Marketing | Manager Accounting | Kepala Penjualan | Staff Keuangan | Kasir | Admin Kas | Admin Persediaan dan Kasir
-Route::middleware(['auth', 'ceklevel:admin,direktur,general manager,manager marketing,manager accounting,kepala penjualan,staff keuangan,kepala admin,kasir,admin kas,admin persediaan dan kasir,admin penjualan dan kasir'])->group(function () {
+Route::middleware(['auth', 'ceklevel:admin,direktur,general manager,manager marketing,manager accounting,kepala penjualan,staff keuangan,staff keuangan 2,kepala admin,kasir,admin kas,admin persediaan dan kasir,admin penjualan dan kasir'])->group(function () {
 
     //Laporan Keuangan
 
@@ -1078,7 +1078,7 @@ Route::middleware(['auth', 'ceklevel:admin,staff keuangan'])->group(function () 
 });
 
 //Administrator | Admin Penjulan | Kepala Penjualan | Kepala Admin | Staff Keuangan
-Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,kepala admin,staff keuangan,admin penjualan dan kas kecil,admin penjualan dan kasir'])->group(function () {
+Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,kepala admin,staff keuangan,staff keuangan 2,admin penjualan dan kas kecil,admin penjualan dan kasir'])->group(function () {
     Route::get('/giro', [GiroController::class, 'index']);
     Route::post('/giro/detailfaktur', [GiroController::class, 'detailfaktur']);
     Route::post('/giro/prosesgiro', [GiroController::class, 'prosesgiro']);
@@ -1091,7 +1091,7 @@ Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,kepa
 });
 
 //Administrator | Staff Keuanagan | Kepala Penjualan | Kepala Admin | Kasir | Admin Kas | Admin Persedian dan Kasir
-Route::middleware(['auth', 'ceklevel:admin,staff keuangan,kepala penjualan,kepala admin,kasir,admin kas,admin persediaan dan kasir,admin penjualan dan kasir'])->group(function () {
+Route::middleware(['auth', 'ceklevel:admin,staff keuangan,staff keuangan 2,kepala penjualan,kepala admin,kasir,admin kas,admin persediaan dan kasir,admin penjualan dan kasir'])->group(function () {
 
     //Setoran Penjualan
     Route::get('/setoranpenjualan', [SetoranpenjualanController::class, 'index']);

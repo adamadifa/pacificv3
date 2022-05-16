@@ -49,7 +49,7 @@ class GlobalProvider extends ServiceProvider
             $dashboardkepalaadmin = ['kepala admin'];
             $dashboardadminpenjualan = ['admin penjualan'];
             $dashboardaccounting = ['manager accounting'];
-            $dashboardstaffkeuangan = ['staff keuangan'];
+            $dashboardstaffkeuangan = ['staff keuangan', 'staff keuangan 2'];
             $dashboardadminkaskecil = ['admin kas kecil'];
             $dashboardpembelian = ['manager pembelian', 'admin pembelian'];
 
@@ -183,7 +183,7 @@ class GlobalProvider extends ServiceProvider
                 'manager marketing', 'general manager', 'direktur', 'admin penjualan dan kas kecil', 'admin penjualan dan kasir'
             ];
             $penjualan_keuangan = [
-                'admin', 'admin penjualan', 'kepala admin', 'staff keuangan',
+                'admin', 'admin penjualan', 'kepala admin', 'staff keuangan', 'staff keuangan 2',
                 'admin penjualan dan kas kecil', 'admin penjualan dan kasir'
             ];
             $penjualan_input = [
@@ -221,40 +221,40 @@ class GlobalProvider extends ServiceProvider
             //--------------------------------Keuangan---------------------------------------------
             $keuangan = [
                 'admin', 'admin penjualan', 'kepala admin', 'direktur', 'manager accounting', 'general manager',
-                'manager marketing', 'kepala penjualan', 'staff keuangan', 'admin kas kecil', 'kasir', 'manager pembelian', 'admin pembelian',
+                'manager marketing', 'kepala penjualan', 'staff keuangan', 'staff keuangan 2', 'admin kas kecil', 'kasir', 'manager pembelian', 'admin pembelian',
                 'admin kas', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil',
                 'admin penjualan dan kasir', 'kepala gudang'
             ];
             $laporankeuangan_view = [
                 'admin', 'direktur', 'general manager', 'manager marketing', 'manager accounting',
-                'kepala penjualan', 'kepala admin', 'staff keuangan', 'admin kas kecil',
+                'kepala penjualan', 'kepala admin', 'staff keuangan', 'staff keuangan 2', 'admin kas kecil',
                 'kasir', 'admin kas', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil',
                 'admin penjualan dan kas kecil', 'admin penjualan dan kasir'
             ];
             $laporan_ledger = ['admin', 'direktur', 'general manager', 'manager accounting', 'admin kas kecil', 'admin kas', 'kepala penjualan', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil', 'staff keuangan'];
-            $laporan_kaskecil = ['admin', 'direktur', 'general manager', 'manager accounting', 'kepala admin', 'staff keuangan', 'admin kas kecil', 'admin kas', 'kepala penjualan', 'admin penjualan dan kas kecil'];
+            $laporan_kaskecil = ['admin', 'direktur', 'general manager', 'manager accounting', 'kepala admin', 'staff keuangan', 'staff keuangan 2', 'admin kas kecil', 'admin kas', 'kepala penjualan', 'admin penjualan dan kas kecil'];
 
-            $laporan_saldokasbesar = ['admin', 'direktur', 'general manager', 'manager accounting', 'kepala admin', 'staff keuangan', 'kasir', 'admin kas', 'kepala penjualan', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
-            $laporan_lpu = ['admin', 'direktur', 'general manager', 'manager accounting', 'kepala admin', 'staff keuangan', 'kasir', 'admin kas', 'kepala penjualan', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
-            $laporan_penjualan_keuangan = ['admin', 'direktur', 'general manager', 'manager accounting', 'kepala admin', 'staff keuangan', 'kasir', 'admin kas', 'kepala penjualan', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
-            $laporan_uanglogam = ['admin', 'direktur', 'general manager', 'manager accounting', 'kepala admin', 'staff keuangan', 'kasir', 'admin kas', 'kepala penjualan', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
-            $laporan_rekapbg = ['admin', 'direktur', 'general manager', 'manager accounting', 'kepala admin', 'staff keuangan', 'kasir', 'admin kas', 'kepala penjualan', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
+            $laporan_saldokasbesar = ['admin', 'direktur', 'general manager', 'manager accounting', 'kepala admin', 'staff keuangan', 'staff keuangan 2', 'kasir', 'admin kas', 'kepala penjualan', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
+            $laporan_lpu = ['admin', 'direktur', 'general manager', 'manager accounting', 'kepala admin', 'staff keuangan', 'staff keuangan 2', 'kasir', 'admin kas', 'kepala penjualan', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
+            $laporan_penjualan_keuangan = ['admin', 'direktur', 'general manager', 'manager accounting', 'kepala admin', 'staff keuangan', 'staff keuangan 2', 'kasir', 'admin kas', 'kepala penjualan', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
+            $laporan_uanglogam = ['admin', 'direktur', 'general manager', 'manager accounting', 'kepala admin', 'staff keuangan', 'staff keuangan 2', 'kasir', 'admin kas', 'kepala penjualan', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
+            $laporan_rekapbg = ['admin', 'direktur', 'general manager', 'manager accounting', 'kepala admin', 'staff keuangan', 'staff keuangan 2', 'kasir', 'admin kas', 'kepala penjualan', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
             //Giro
-            $giro_view = ['admin', 'admin penjualan', 'kepala admin', 'staff keuangan', 'admin penjualan dan kas kecil', 'admin penjualan dan kasir'];
-            $giro_approved = ['admin', 'staff keuangan', 'manager keuangan'];
+            $giro_view = ['admin', 'admin penjualan', 'kepala admin', 'staff keuangan', 'staff keuangan 2', 'admin penjualan dan kas kecil', 'admin penjualan dan kasir'];
+            $giro_approved = ['admin', 'staff keuangan', 'staff keuangan 2', 'manager keuangan'];
 
             //Transfer
-            $transfer_view = ['admin', 'admin penjualan', 'kepala admin', 'staff keuangan', 'admin penjualan dan kas kecil', 'admin penjualan dan kasir'];
-            $transfer_approved =  ['admin', 'staff keuangan', 'manager keuangan'];
+            $transfer_view = ['admin', 'admin penjualan', 'kepala admin', 'staff keuangan', 'staff keuangan 2', 'admin penjualan dan kas kecil', 'admin penjualan dan kasir'];
+            $transfer_approved =  ['admin', 'staff keuangan', 'staff keuangan 2', 'manager keuangan'];
 
             //Kas Kecil
-            $kaskecil_menu  = ['admin', 'staff keuangan', 'kepala admin', 'admin kas kecil', 'admin kas', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil'];
+            $kaskecil_menu  = ['admin', 'staff keuangan', 'staff keuangan 2', 'kepala admin', 'admin kas kecil', 'admin kas', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil'];
             $kaskecil_view = ['admin', 'kepala admin', 'admin kas kecil', 'admin kas', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil'];
-            $klaim_view = ['admin', 'staff keuangan', 'kepala admin', 'admin kas kecil', 'admin kas', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil'];
+            $klaim_view = ['admin', 'staff keuangan', 'staff keuangan 2', 'kepala admin', 'admin kas kecil', 'admin kas', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil'];
             $klaim_add = ['admin', 'kepala admin', 'admin kas kecil', 'admin kas', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil'];
             $klaim_hapus = ['admin', 'kepala admin', 'admin kas kecil', 'admin kas', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil'];
             $klaim_validasi = ['admin', 'kepala admin', 'admin kas kecil', 'admin kas', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil'];
-            $klaim_proses = ['admin', 'staff keuangan'];
+            $klaim_proses = ['admin', 'staff keuangan', 'staff keuangan 2'];
 
             //Mutasi Bank
             $mutasibank_view = ['admin', 'kepala admin', 'admin kas kecil', 'admin kas', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil'];
@@ -266,17 +266,17 @@ class GlobalProvider extends ServiceProvider
 
             //Kas Besar Keuangan
             $kasbesar_menu  = [
-                'admin', 'staff keuangan', 'kepala admin',
+                'admin', 'staff keuangan', 'staff keuangan 2', 'kepala admin',
                 'kasir', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir'
             ];
-            $saldoawalkasbesar_view = ['admin', 'staff keuangan'];
-            $setoran_menu = ['admin', 'staff keuangan', 'kepala admin', 'kasir', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
+            $saldoawalkasbesar_view = ['admin', 'staff keuangan', 'staff keuangan 2'];
+            $setoran_menu = ['admin', 'staff keuangan', 'staff keuangan 2', 'kepala admin', 'kasir', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
             $setoranpenjualan_view = ['admin', 'kepala admin', 'kasir', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
-            $setoranpusat_view = ['admin', 'staff keuangan', 'kepala admin', 'kasir', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
+            $setoranpusat_view = ['admin', 'staff keuangan', 'staff keuangan 2', 'kepala admin', 'kasir', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
             $setoranpusat_add = ['admin', 'kasir', 'kepala admin', 'kasir', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
             $setoranpusat_edit = ['admin', 'kasir', 'kepala admin', 'kasir', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
             $setoranpusat_hapus = ['admin', 'kasir', 'kepala admin', 'kasir', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
-            $setoranpusat_terimasetoran = ['admin', 'staff keuangan'];
+            $setoranpusat_terimasetoran = ['admin', 'staff keuangan', 'staff keuangan 2'];
             $setorangiro_view = ['admin', 'kepala admin', 'kasir', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
             $setorantransfer_view = ['admin', 'kepala admin', 'kasir', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
             $belum_disetorkan = ['admin', 'kepala admin', 'kasir', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
@@ -294,18 +294,18 @@ class GlobalProvider extends ServiceProvider
 
 
             //Pembelian
-            $pembelian_menu = ['admin', 'direktur', 'general manager', 'manager accounting', 'manager pembelian', 'admin pembelian', 'staff keuangan'];
-            $pembelian_view = ['admin', 'manager pembelian', 'admin pembelian', 'staff keuangan'];
+            $pembelian_menu = ['admin', 'direktur', 'general manager', 'manager accounting', 'manager pembelian', 'admin pembelian', 'staff keuangan', 'staff keuangan 2'];
+            $pembelian_view = ['admin', 'manager pembelian', 'admin pembelian', 'staff keuangan', 'staff keuangan 2'];
             $pembelian_hapus = ['admin', 'manager pembelian', 'admin pembelian'];
             $pembelian_tambah = ['admin', 'manager pembelian', 'admin pembelian'];
             $pembelian_edit = ['admin', 'manager pembelian', 'admin pembelian'];
 
 
-            $pembelian_keuangan = ['admin', 'manager pembelian', 'admin pembelian', 'staff keuangan'];
-            $kontrabon_view = ['admin', 'manager pembelian', 'admin pembelian', 'staff keuangan'];
+            $pembelian_keuangan = ['admin', 'manager pembelian', 'admin pembelian', 'staff keuangan', 'staff keuangan 2'];
+            $kontrabon_view = ['admin', 'manager pembelian', 'admin pembelian', 'staff keuangan', 'staff keuangan 2'];
             $kontrabon_edit_hapus = ['admin', 'admin pembelian'];
             $kontrabon_approve = ['admin', 'manager pembelian'];
-            $kontrabon_proses = ['admin', 'staff keuangan'];
+            $kontrabon_proses = ['admin', 'staff keuangan', 'staff keuangan 2'];
 
             $jatuhtempo_view = ['admin', 'manager pembelian', 'admin pembelian'];
             $jurnalkoreksi_view = ['admin', 'manager pembelian', 'admin pembelian'];
@@ -402,8 +402,8 @@ class GlobalProvider extends ServiceProvider
 
             //Kontrabon Angkutan
 
-            $gudang_jadi_keuangan = ['admin', 'kepala gudang', 'staff keuangan'];
-            $kontrabon_angkutan_view = ['admin', 'kepala gudang', 'staff keuangan'];
+            $gudang_jadi_keuangan = ['admin', 'kepala gudang', 'staff keuangan', 'staff keuangan 2'];
+            $kontrabon_angkutan_view = ['admin', 'kepala gudang', 'staff keuangan', 'staff keuangan 2'];
             $kontrabon_angkutan_hapus = ['admin', 'kepala gudang'];
 
             //Gudang Cabang
