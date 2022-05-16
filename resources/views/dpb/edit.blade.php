@@ -194,31 +194,31 @@
                         <td>{{ $d->kode_produk }}</td>
                         <td>{{ $d->nama_barang }}</td>
                         <td style="width: 5%">
-                            <input type="text" class="form-control" name="jmlduspengambilan[]" value="{{ !empty($jmlpengambilan_dus) ? $jmlpengambilan_dus : '' }}">
+                            <input type="text" autocomplete="off" class="form-control" name="jmlduspengambilan[]" value="{{ !empty($jmlpengambilan_dus) ? $jmlpengambilan_dus : '' }}">
                         </td>
                         <td>{{ $d->satuan }}</td>
                         <td style="width:5%">
-                            <input type="{{ !empty($d->isipack) ? 'text' : 'hidden' }}" class="form-control" name="jmlpackpengambilan[]" value="{{ !empty($jmlpack_pengambilan) ? $jmlpack_pengambilan : '' }}">
+                            <input type="{{ !empty($d->isipack) ? 'text' : 'hidden' }}" autocomplete="off" class="form-control" name="jmlpackpengambilan[]" value="{{ !empty($jmlpack_pengambilan) ? $jmlpack_pengambilan : '' }}">
                         </td>
                         <td>PACK</td>
                         <td style="width: 5%">
-                            <input type="text" class="form-control" name="jmlpcspengambilan[]" value="{{ !empty($jmlpcs_pengambilan) ? $jmlpcs_pengambilan : '' }}">
+                            <input type="text" class="form-control" autocomplete="off" name="jmlpcspengambilan[]" value="{{ !empty($jmlpcs_pengambilan) ? $jmlpcs_pengambilan : '' }}">
                         </td>
                         <td>PCS</td>
                         <td style="width: 5%">
-                            <input type="text" class="form-control" name="jmlduspengembalian[]" value="{{ !empty($jmlpengembalian_dus) ? $jmlpengembalian_dus : '' }}">
+                            <input type="text" class="form-control" autocomplete="off" name="jmlduspengembalian[]" value="{{ !empty($jmlpengembalian_dus) ? $jmlpengembalian_dus : '' }}">
                         </td>
                         <td>{{ $d->satuan }}</td>
                         <td style="width:5%">
-                            <input type="{{ !empty($d->isipack) ? 'text' : 'hidden' }}" class="form-control" name="jmlpackpengembalian[]" value="{{ !empty($jmlpack_pengembalian) ? $jmlpack_pengembalian : '' }}">
+                            <input type="{{ !empty($d->isipack) ? 'text' : 'hidden' }}" autocomplete="off" class="form-control" name="jmlpackpengembalian[]" value="{{ !empty($jmlpack_pengembalian) ? $jmlpack_pengembalian : '' }}">
                         </td>
                         <td>PACK</td>
                         <td style="width: 5%">
-                            <input type="text" class="form-control" name="jmlpcspengembalian[]" value="{{ !empty($jmlpcs_pengembalian) ? $jmlpcs_pengembalian : '' }}">
+                            <input type="text" class="form-control" name="jmlpcspengembalian[]" autocomplete="off" value="{{ !empty($jmlpcs_pengembalian) ? $jmlpcs_pengembalian : '' }}">
                         </td>
                         <td>PCS</td>
                         <td style="width: 5%">
-                            <input type="text" class="form-control" name="jmldusbarangkeluar[]" value="{{ !empty($jmlbarangkeluar_dus) ? $jmlbarangkeluar_dus : '' }}">
+                            <input type="text" class="form-control" name="jmldusbarangkeluar[]" autocomplete="off" value="{{ !empty($jmlbarangkeluar_dus) ? $jmlbarangkeluar_dus : '' }}">
                         </td>
                         <td>{{ $d->satuan }}</td>
                         <td style="width:5%">
@@ -228,7 +228,7 @@
                         </td>
                         <td>PACK</td>
                         <td style="width: 5%">
-                            <input type="text" class="form-control" name="jmlpcsbarangkeluar[]" value="{{ !empty($jmlpcs_barangkeluar) ? $jmlpcs_barangkeluar : '' }}">
+                            <input type="text" class="form-control" name="jmlpcsbarangkeluar[]" autocomplete="off" value="{{ !empty($jmlpcs_barangkeluar) ? $jmlpcs_barangkeluar : '' }}">
                         </td>
                         <td>PCS</td>
                     </tr>
