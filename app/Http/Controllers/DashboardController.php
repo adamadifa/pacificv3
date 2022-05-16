@@ -274,9 +274,16 @@ class DashboardController extends Controller
             ->groupBy('kode_pelanggan')
             ->get();
 
-        foreach ($pengajuanterakhir as $d) {
-            $no_pengajuan[] = $d->no_pengajuan;
+        if ($pengajuanterakhir != null) {
+            foreach ($pengajuanterakhir as $d) {
+                $no_pengajuan[] = $d->no_pengajuan;
+            }
+        } else {
+            $no_pengajuan[] = "";
         }
+
+
+
         $jmlpengajuan = DB::table('pengajuan_limitkredit_v3')
             ->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
             ->whereIn('no_pengajuan', $no_pengajuan)
