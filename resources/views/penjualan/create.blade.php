@@ -455,7 +455,9 @@
             var tgltransaksi = $("#tgltransaksi").val();
             var kode_pelanggan = $("#kode_pelanggan").val();
             var cektutuplaporan = $("#cektutuplaporan").val();
-            var nama_pelanggan = $("#nama_pelanggan").val();
+            var pelanggan = $("#nama_pelanggan").val();
+            var pl = pelanggan.split("|");
+            var nama_pelanggan = pl[1];
             var jenistransaksi = $("#jenistransaksi").val();
             var cektemp = $("#cektemp").val();
             if (cektutuplaporan > 0) {
@@ -491,8 +493,7 @@
                     $("#nama_pelanggan").focus();
                 });
                 return false;
-            } else if (nama_pelanggan != "BATAL" &&
-                cektemp == 0) {
+            } else if (nama_pelanggan != " BATAL" && cektemp == 0) {
                 swal({
                     title: 'Oops'
                     , text: 'Data Penjualan Masih Kosong !'
