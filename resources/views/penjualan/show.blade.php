@@ -1240,16 +1240,6 @@
                     $("#jumlah_giro").focus();
                 });
                 return false;
-            } else if (parseInt(jmlbayar) > parseInt(sisabayar)) {
-                swal({
-                    title: 'Oops'
-                    , text: 'Jumlah Bayar Melebihi Sisa Bayar  !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#id_karyawan").focus();
-                });
-                return false;
             } else {
                 return true;
             }
@@ -1316,16 +1306,6 @@
                 swal({
                     title: 'Oops'
                     , text: 'Jumlah  Harus Diisi  !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#jumlah_transfer").focus();
-                });
-                return false;
-            } else if (parseInt(jmlbayar) > parseInt(sisabayar)) {
-                swal({
-                    title: 'Oops'
-                    , text: 'Jumlah Bayar Melebihi Sisa Bayar  !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
