@@ -48,13 +48,14 @@
                 <th style="width:13%">TGL</th>
                 <th style="width:12%">No Bukti</th>
                 <th>Keterangan</th>
+                <th>Akun</th>
                 <th>Penerimaan</th>
                 <th>Pengeluaran</th>
                 <th>Saldo</th>
             </tr>
             <tr>
                 <th>SALDO AWAL</th>
-                <th colspan="4"></th>
+                <th colspan="5"></th>
                 <th style="text-align:right">
                     <?php
                 if (!empty($saldoawal)) {
@@ -91,6 +92,7 @@
                 <td><?php echo $d->tgl_kaskecil; ?></td>
                 <td><?php echo $d->nobukti; ?></td>
                 <td><?php echo ucwords(strtolower($d->keterangan)); ?></td>
+                <th>{{ $d->kode_akun }} {{ $d->nama_akun }}</th>
                 <td align="right" style="color:green"><?php if (!empty($penerimaan)) {echo number_format($penerimaan, '0', '', '.');} ?></td>
                 <td align="right" style="color:red"><?php if (!empty($pengeluaran)) {echo number_format($pengeluaran, '0', '', '.');} ?></td>
                 <td align="right"><?php if (!empty($saldo)) {echo number_format($saldo, '0', '', '.');} ?></td>
@@ -99,7 +101,7 @@
         </tbody>
         <tfoot>
             <tr>
-                <th colspan="3">TOTAL</th>
+                <th colspan="4">TOTAL</th>
                 <td align="right" style="color:green"><b><?php if (!empty($totalpenerimaan)) {echo number_format($totalpenerimaan, '0', '', '.');} ?></b></td>
                 <td align="right" style="color:red"><b><?php if (!empty($totalpengeluaran)) { echo number_format($totalpengeluaran, '0', '', '.');} ?></b></td>
                 <td align="right"><b><?php if (!empty($saldo)) {echo number_format($saldo, '0', '', '.');} ?></b></td>

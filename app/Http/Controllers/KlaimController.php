@@ -199,7 +199,9 @@ class KlaimController extends Controller
             $sa = DB::table('klaim')->where('kode_klaim', '<', $kode_klaim)->where('kode_cabang', $kode_cabang)->orderBy('kode_klaim', 'desc')->first();
             $saldoawal = $sa->saldo_akhir;
         }
-        $detail = DB::table('kaskecil_detail')->where('kode_klaim', $kode_klaim)->get();
+        $detail = DB::table('kaskecil_detail')
+            ->join('coa', 'kaskecil_detail.kode_akun', '=', 'coa.kode_akun')
+            ->where('kode_klaim', $kode_klaim)->get();
         $bank = DB::table('master_bank')->orderBy('kode_bank')->get();
         return view('klaim.prosesklaim', compact('saldoawal', 'klaim', 'detail', 'bank'));
     }
