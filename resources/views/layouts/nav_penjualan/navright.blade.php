@@ -9,6 +9,9 @@
                     <i class="feather icon-file mr-1"></i>Penjualan
                 </li>
             </a>
+            @if (Auth::user()->level != "staff keuangan 2")
+
+
             <a href="/laporanretur" style="color:#626262">
                 <li class="list-group-item {{ request()->is(['laporanretur']) ? 'active' : '' }}">
                     <i class="feather icon-file mr-1"></i>Retur
@@ -79,6 +82,7 @@
                     <i class="feather icon-file mr-1"></i>Harga Net
                 </li>
             </a>
+            @endif
             @endif
         </ul>
     </div>

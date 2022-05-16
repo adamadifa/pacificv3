@@ -273,7 +273,7 @@ Route::middleware(['auth', 'ceklevel:manager pembelian,admin pembelian'])->group
 });
 
 //Admin Penjualan | Kepala Penjualan | Kepala Cabang | Manager Accounting | Manager Marketing | General manager | Direktur
-Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,kepala admin,manager accounting,manager marketing,general manager,direktur,admin penjualan dan kas kecil,admin penjualan dan kasir,supervisor sales'])->group(function () {
+Route::middleware(['auth', 'ceklevel:admin,admin penjualan,kepala penjualan,kepala admin,manager accounting,manager marketing,general manager,direktur,admin penjualan dan kas kecil,admin penjualan dan kasir,supervisor sales,staff keuangan 2'])->group(function () {
 
     //Limit Kredit
     Route::get('/limitkredit', [LimitkreditController::class, 'index']);
