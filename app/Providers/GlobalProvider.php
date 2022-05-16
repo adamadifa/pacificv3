@@ -296,8 +296,10 @@ class GlobalProvider extends ServiceProvider
             //Pembelian
             $pembelian_menu = ['admin', 'direktur', 'general manager', 'manager accounting', 'manager pembelian', 'admin pembelian'];
             $pembelian_view = ['admin', 'manager pembelian', 'admin pembelian'];
-            $pembelian_keuangan = ['admin', 'manager pembelian', 'admin pembelian'];
-            $kontrabon_view = ['admin', 'manager pembelian', 'admin pembelian'];
+
+
+            $pembelian_keuangan = ['admin', 'manager pembelian', 'admin pembelian', 'staff keuangan'];
+            $kontrabon_view = ['admin', 'manager pembelian', 'admin pembelian', 'staff keuangan'];
             $kontrabon_edit_hapus = ['admin', 'admin pembelian'];
             $kontrabon_approve = ['admin', 'manager pembelian'];
             $kontrabon_proses = ['admin', 'staff keuangan'];
@@ -397,8 +399,9 @@ class GlobalProvider extends ServiceProvider
 
             //Kontrabon Angkutan
 
-            $gudang_jadi_keuangan = ['admin', 'kepala gudang'];
-            $kontrabon_angkutan_view = ['admin', 'kepala gudang'];
+            $gudang_jadi_keuangan = ['admin', 'kepala gudang', 'staff keuangan'];
+            $kontrabon_angkutan_view = ['admin', 'kepala gudang', 'staff keuangan'];
+            $kontrabon_angkutan_hapus = ['admin', 'kepala gudang'];
 
             //Gudang Cabang
 
@@ -690,6 +693,7 @@ class GlobalProvider extends ServiceProvider
                 //Kontrabon Angkutan
                 'gudang_jadi_keuangan' => $gudang_jadi_keuangan,
                 'kontrabon_angkutan_view' => $kontrabon_angkutan_view,
+                'kontrabon_angkutan_hapus' => $kontrabon_angkutan_hapus,
                 //Gudang Cabang
                 'saldoawal_gs_view' => $saldoawal_gs_view,
                 'saldoawal_bs_view' => $saldoawal_bs_view,

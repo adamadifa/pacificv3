@@ -75,6 +75,7 @@
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             <a class="ml-1 detail" href="#" no_kontrabon="{{ Crypt::encrypt($d->no_kontrabon) }}"><i class=" feather icon-file-text info"></i></a>
                                             @if ($d->status!=1)
+                                            @if (in_array($level,$kontrabon_angkutan_hapus))
                                             <form method="POST" class="deleteform" action="/kontrabonangkutan/{{Crypt::encrypt($d->no_kontrabon)}}/delete">
                                                 @csrf
                                                 @method('DELETE')
@@ -82,6 +83,7 @@
                                                     <i class="feather icon-trash danger"></i>
                                                 </a>
                                             </form>
+                                            @endif
                                             <a href="#" class="ml-1 proses" no_kontrabon="{{ Crypt::encrypt($d->no_kontrabon) }}"><i class="feather icon-external-link success"></i></a>
                                             @else
                                             <a href="/kontrabonangkutan/{{ Crypt::encrypt($d->no_kontrabon) }}/batalkan" class="ml-1"><i class="fa fa-close danger"></i></a>

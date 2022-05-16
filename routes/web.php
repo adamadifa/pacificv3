@@ -431,6 +431,31 @@ Route::middleware(['auth', 'ceklevel:admin,manager pembelian,admin pembelian,man
 });
 
 
+//Administrator | Pembelian | Staff Keuangan
+Route::middleware(['auth', 'ceklevel:admin,manager pembelian,admin pembelian,staff keuangan'])->group(function () {
+    //Kontrabon
+    Route::get('/kontrabon', [KontrabonController::class, 'index']);
+    Route::post('/kontrabon/show', [KontrabonController::class, 'show']);
+    Route::get('/kontrabon/create', [KontrabonController::class, 'create']);
+    Route::get('/kontrabon/{kode_supplier}create', [KontrabonController::class, 'create']);
+    Route::post('/kontrabon/storetemp', [KontrabonController::class, 'storetemp']);
+    Route::post('/kontrabon/deletetemp', [KontrabonController::class, 'deletetemp']);
+    Route::get('/kontrabon/showtemp', [KontrabonController::class, 'showtemp']);
+    Route::post('/kontrabon/store', [KontrabonController::class, 'store']);
+    Route::get('/kontrabon/{no_kontrabon}/edit', [KontrabonController::class, 'edit']);
+    Route::get('/kontrabon/showdetail', [KontrabonController::class, 'showdetail']);
+    Route::post('/kontrabon/storedetail', [KontrabonController::class, 'storedetail']);
+    Route::post('/kontrabon/deletedetail', [KontrabonController::class, 'deletedetail']);
+    Route::post('/kontrabon/updatedetail', [KontrabonController::class, 'updatedetail']);
+    Route::post('/kontrabon/{no_kontrabon}/update', [KontrabonController::class, 'update']);
+    Route::delete('/kontrabon/{no_kontrabon}/delete', [KontrabonController::class, 'delete']);
+    Route::get('/pembelian/jatuhtempo', [PembelianController::class, 'jatuhtempo']);
+    Route::post('/kontrabon/proseskontrabon', [KontrabonController::class, 'proseskontrabon']);
+    Route::post('/kontrabon/storeproseskontrabon', [KontrabonController::class, 'storeproseskontrabon']);
+    Route::delete('/kontrabon/{no_kontrabon}/batalkankontrabon', [KontrabonController::class, 'batalkankontrabon']);
+    Route::get('/kontrabon/{no_kontrabon}/approvekontrabon', [KontrabonController::class, 'approvekontrabon']);
+    Route::get('/kontrabon/{no_kontrabon}/cancelkontrabon', [KontrabonController::class, 'cancelkontrabon']);
+});
 
 Route::middleware(['auth', 'ceklevel:admin,manager pembelian,admin pembelian'])->group(function () {
     //Barang Pembelian
@@ -486,30 +511,24 @@ Route::middleware(['auth', 'ceklevel:admin,manager pembelian,admin pembelian'])-
     Route::get('/jurnalkoreksi/create', [JurnalkoreksiController::class, 'create']);
     Route::post('/jurnalkoreksi/store', [JurnalkoreksiController::class, 'store']);
     Route::delete('/jurnalkoreksi/{kode_jk}/delete', [JurnalkoreksiController::class, 'delete']);
-    //Kontrabon
-    Route::get('/kontrabon', [KontrabonController::class, 'index']);
-    Route::post('/kontrabon/show', [KontrabonController::class, 'show']);
-    Route::get('/kontrabon/create', [KontrabonController::class, 'create']);
-    Route::get('/kontrabon/{kode_supplier}create', [KontrabonController::class, 'create']);
-    Route::post('/kontrabon/storetemp', [KontrabonController::class, 'storetemp']);
-    Route::post('/kontrabon/deletetemp', [KontrabonController::class, 'deletetemp']);
-    Route::get('/kontrabon/showtemp', [KontrabonController::class, 'showtemp']);
-    Route::post('/kontrabon/store', [KontrabonController::class, 'store']);
-    Route::get('/kontrabon/{no_kontrabon}/edit', [KontrabonController::class, 'edit']);
-    Route::get('/kontrabon/showdetail', [KontrabonController::class, 'showdetail']);
-    Route::post('/kontrabon/storedetail', [KontrabonController::class, 'storedetail']);
-    Route::post('/kontrabon/deletedetail', [KontrabonController::class, 'deletedetail']);
-    Route::post('/kontrabon/updatedetail', [KontrabonController::class, 'updatedetail']);
-    Route::post('/kontrabon/{no_kontrabon}/update', [KontrabonController::class, 'update']);
-    Route::delete('/kontrabon/{no_kontrabon}/delete', [KontrabonController::class, 'delete']);
-    Route::get('/pembelian/jatuhtempo', [PembelianController::class, 'jatuhtempo']);
-    Route::post('/kontrabon/proseskontrabon', [KontrabonController::class, 'proseskontrabon']);
-    Route::post('/kontrabon/storeproseskontrabon', [KontrabonController::class, 'storeproseskontrabon']);
-    Route::delete('/kontrabon/{no_kontrabon}/batalkankontrabon', [KontrabonController::class, 'batalkankontrabon']);
-    Route::get('/kontrabon/{no_kontrabon}/approvekontrabon', [KontrabonController::class, 'approvekontrabon']);
-    Route::get('/kontrabon/{no_kontrabon}/cancelkontrabon', [KontrabonController::class, 'cancelkontrabon']);
 });
-
+//Administrator | Kepala Gudang | Admin Gudang Pusat | Staff keuangan
+Route::middleware(['auth', 'ceklevel:admin,kepala gudang,admin gudang pusat,staff keuangan'])->group(function () {
+    //Kontrabon Angkutan
+    Route::get('/kontrabonangkutan', [KontrabonangkutanController::class, 'index']);
+    Route::get('/kontrabonangkutan/{no_kontrabon}/show', [KontrabonangkutanController::class, 'show']);
+    Route::get('/kontrabonangkutan/{no_kontrabon}/proses', [KontrabonangkutanController::class, 'proses']);
+    Route::get('/kontrabonangkutan/create', [KontrabonangkutanController::class, 'create']);
+    Route::get('/kontrabonangkutan/getnosuratjalan', [KontrabonangkutanController::class, 'getnosuratjalan']);
+    Route::get('/kontrabonangkutan/showtemp', [KontrabonangkutanController::class, 'showtemp']);
+    Route::post('/kontrabonangkutan/deletetemp', [KontrabonangkutanController::class, 'deletetemp']);
+    Route::post('/kontrabonangkutan/cektemp', [KontrabonangkutanController::class, 'cektemp']);
+    Route::post('/kontrabonangkutan/storetemp', [KontrabonangkutanController::class, 'storetemp']);
+    Route::post('/kontrabonangkutan/store', [KontrabonangkutanController::class, 'store']);
+    Route::post('/kontrabonangkutan/proseskontrabon', [KontrabonangkutanController::class, 'proseskontrabon']);
+    Route::get('/kontrabonangkutan/{no_kontrabon}/batalkan', [KontrabonangkutanController::class, 'batalkan']);
+    Route::delete('/kontrabonangkutan/{no_kontrabon}/delete', [KontrabonangkutanController::class, 'delete']);
+});
 //Administrator | Kepala Admin | Admin Gudang Cabang | Admin Persediaan dan Kas Kecil | Admin Persedian dan Kasir
 Route::middleware(['auth', 'ceklevel:admin,kepala penjualan,kepala admin,admin gudang cabang,admin persediaan dan kas kecil,admin persediaan dan kasir,admin persediaan dan kas kecil,supervisor sales,admin gudang cabang dan marketing'])->group(function () {
     //Gudang Cabang
@@ -777,21 +796,6 @@ Route::middleware(['auth', 'ceklevel:admin,kepala gudang'])->group(function () {
     Route::delete('/angkutan/{no_surat_jalan}/delete', [AngkutanController::class, 'delete']);
     Route::get('/angkutan/{no_surat_jalan}/edit', [AngkutanController::class, 'edit']);
     Route::post('/angkutan/{no_surat_jalan}/update', [AngkutanController::class, 'update']);
-
-    //Kontrabon Angkutan
-    Route::get('/kontrabonangkutan', [KontrabonangkutanController::class, 'index']);
-    Route::get('/kontrabonangkutan/{no_kontrabon}/show', [KontrabonangkutanController::class, 'show']);
-    Route::get('/kontrabonangkutan/{no_kontrabon}/proses', [KontrabonangkutanController::class, 'proses']);
-    Route::get('/kontrabonangkutan/create', [KontrabonangkutanController::class, 'create']);
-    Route::get('/kontrabonangkutan/getnosuratjalan', [KontrabonangkutanController::class, 'getnosuratjalan']);
-    Route::get('/kontrabonangkutan/showtemp', [KontrabonangkutanController::class, 'showtemp']);
-    Route::post('/kontrabonangkutan/deletetemp', [KontrabonangkutanController::class, 'deletetemp']);
-    Route::post('/kontrabonangkutan/cektemp', [KontrabonangkutanController::class, 'cektemp']);
-    Route::post('/kontrabonangkutan/storetemp', [KontrabonangkutanController::class, 'storetemp']);
-    Route::post('/kontrabonangkutan/store', [KontrabonangkutanController::class, 'store']);
-    Route::post('/kontrabonangkutan/proseskontrabon', [KontrabonangkutanController::class, 'proseskontrabon']);
-    Route::get('/kontrabonangkutan/{no_kontrabon}/batalkan', [KontrabonangkutanController::class, 'batalkan']);
-    Route::delete('/kontrabonangkutan/{no_kontrabon}/delete', [KontrabonangkutanController::class, 'delete']);
 
 
     //Laporan Persediaan Gudang Jadi

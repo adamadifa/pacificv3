@@ -186,7 +186,7 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 <a href="#" class="cancelkontrabon-confirm ml-1 danger">
-                                                    <i class="fa fa-close danger"></i> Batalkan
+                                                    <i class="fa fa-close danger"></i>
                                                 </a>
                                             </form>
                                             @endif
