@@ -455,6 +455,10 @@ Route::middleware(['auth', 'ceklevel:admin,manager pembelian,admin pembelian,sta
     Route::delete('/kontrabon/{no_kontrabon}/batalkankontrabon', [KontrabonController::class, 'batalkankontrabon']);
     Route::get('/kontrabon/{no_kontrabon}/approvekontrabon', [KontrabonController::class, 'approvekontrabon']);
     Route::get('/kontrabon/{no_kontrabon}/cancelkontrabon', [KontrabonController::class, 'cancelkontrabon']);
+
+    Route::post('/pembelian/showdetailpembelian', [PembelianController::class, 'showdetailpembelian']);
+    Route::post('/pembelian/showdetailpembeliankontrabon', [PembelianController::class, 'showdetailpembeliankontrabon']);
+    Route::post('/pembelian/showdetailpotongan', [PembelianController::class, 'showdetailpotongan']);
 });
 
 Route::middleware(['auth', 'ceklevel:admin,manager pembelian,admin pembelian'])->group(function () {
@@ -487,9 +491,7 @@ Route::middleware(['auth', 'ceklevel:admin,manager pembelian,admin pembelian'])-
     Route::post('/pembelian/show', [PembelianController::class, 'show']);
     Route::post('/pembelian/prosespembelian', [PembelianController::class, 'prosespembelian']);
     Route::post('/pembelian/{nobukti_pembelian}/storeprosespembelian', [PembelianController::class, 'storeprosespembelian']);
-    Route::post('/pembelian/showdetailpembelian', [PembelianController::class, 'showdetailpembelian']);
-    Route::post('/pembelian/showdetailpembeliankontrabon', [PembelianController::class, 'showdetailpembeliankontrabon']);
-    Route::post('/pembelian/showdetailpotongan', [PembelianController::class, 'showdetailpotongan']);
+
     Route::get('/pembelian/{nobukti_pembelian}/edit', [PembelianController::class, 'edit']);
     Route::post('/pembelian/deletedetail', [PembelianController::class, 'deletedetail']);
     Route::post('/pembelian/editbarang', [PembelianController::class, 'editbarang']);
