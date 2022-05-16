@@ -2682,7 +2682,11 @@ class PenjualanController extends Controller
                 INNER JOIN penjualan ON detailpenjualan.no_fak_penj = penjualan.no_fak_penj
                 INNER JOIN karyawan ON penjualan.id_karyawan = karyawan.id_karyawan
                 INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
-                WHERE tgltransaksi BETWEEN '$dari' AND '$sampai' AND promo !='1' OR  tgltransaksi BETWEEN '$dari' AND '$sampai' AND promo IS NULL "
+                WHERE tgltransaksi BETWEEN '$dari' AND '$sampai' AND promo !='1' "
+                . $kode_cabang
+                . $id_karyawan
+                .
+                " OR  tgltransaksi BETWEEN '$dari' AND '$sampai' AND promo IS NULL "
                 . $kode_cabang
                 . $id_karyawan
                 . "
