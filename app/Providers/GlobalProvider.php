@@ -165,7 +165,7 @@ class GlobalProvider extends ServiceProvider
             $omanmarketing = ['admin'];
             //----------------------------Permintaaan Pengiriman--------------------------------
             $permintaanpengiriman = ['admin'];
-            $permintaanpengiriman_gj = ['admin'];
+            $permintaanpengiriman_gj = ['admin', 'kepala gudang'];
             //----------------------------Target Komisi--------------------------------
             $komisi = ['admin', 'kepala penjualan', 'kepala admin', 'manager marketing', 'general manager', 'direktur', 'manager accounting'];
             $targetkomisi = ['admin', 'kepala penjualan', 'kepala admin', 'manager marketing', 'general manager', 'direktur', 'manager accounting'];
@@ -220,7 +220,7 @@ class GlobalProvider extends ServiceProvider
                 'admin', 'admin penjualan', 'kepala admin', 'direktur', 'manager accounting', 'general manager',
                 'manager marketing', 'kepala penjualan', 'staff keuangan', 'admin kas kecil', 'kasir', 'manager pembelian', 'admin pembelian',
                 'admin kas', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil',
-                'admin penjualan dan kasir'
+                'admin penjualan dan kasir', 'kepala gudang'
             ];
             $laporankeuangan_view = [
                 'admin', 'direktur', 'general manager', 'manager marketing', 'manager accounting',
@@ -336,11 +336,11 @@ class GlobalProvider extends ServiceProvider
                 'admin', 'admin gudang cabang',
                 'admin gudang', 'admin persediaan dan kasir',
                 'admin persediaan dan kas kecil', 'kepala penjualan',
-                'admin gudang', 'kepala admin', 'supervisor sales'
+                'admin gudang', 'kepala admin', 'supervisor sales', 'kepala gudang'
             ];
-            $gudang_bahan_menu = ['admin'];
-            $gudang_logistik_menu = ['admin'];
-            $gudang_jadi_menu = ['admin'];
+            $gudang_bahan_menu = ['admin', 'kepala gudang', 'kepala gudang'];
+            $gudang_logistik_menu =  ['admin', 'kepala gudang', 'kepala gudang'];
+            $gudang_jadi_menu =  ['admin', 'kepala gudang', 'kepala gudang'];
             $gudang_cabang_menu = [
                 'admin',
                 'admin gudang', 'kepala admin', 'admin gudang cabang',
@@ -362,36 +362,36 @@ class GlobalProvider extends ServiceProvider
 
 
             //Gudang Logistik
-            $pemasukan_gudanglogisitik = ['admin'];
-            $approve_pembelian = ['admin'];
-            $pengeluaran_gudanglogistik = ['admin'];
-            $saldoawal_gudanglogistik = ['admin'];
-            $opname_gudanglogistik = ['admin'];
+            $pemasukan_gudanglogisitik = ['admin', 'kepala gudang'];
+            $approve_pembelian = ['admin', 'kepala gudang'];
+            $pengeluaran_gudanglogistik = ['admin', 'kepala gudang'];
+            $saldoawal_gudanglogistik = ['admin', 'kepala gudang'];
+            $opname_gudanglogistik = ['admin', 'kepala gudang'];
 
 
 
             //Gudang Bahan
-            $pemasukan_gudangbahan = ['admin'];
-            $pengeluaran_gudangbahan = ['admin'];
-            $saldoawal_gudangbahan = ['admin'];
-            $opname_gudangbahan = ['admin'];
+            $pemasukan_gudangbahan = ['admin', 'kepala gudang'];
+            $pengeluaran_gudangbahan = ['admin', 'kepala gudang'];
+            $saldoawal_gudangbahan = ['admin', 'kepala gudang'];
+            $opname_gudangbahan = ['admin', 'kepala gudang'];
 
             //Gudang Jadi Pusat
-            $permintaan_produksi_view = ['admin'];
-            $mutasi_produk_gj = ['admin'];
-            $fsthp_gj_view = ['admin'];
-            $suratjalan_view = ['admin'];
-            $suratjalan_cetak = ['admin', 'admin gudang'];
+            $permintaan_produksi_view = ['admin', 'kepala gudang'];
+            $mutasi_produk_gj = ['admin', 'kepala gudang'];
+            $fsthp_gj_view = ['admin', 'kepala gudang'];
+            $suratjalan_view = ['admin', 'kepala gudang'];
+            $suratjalan_cetak = ['admin', 'kepala gudang', 'admin gudang'];
             $suratjalan_hapus = ['admin', 'admin gudang'];
-            $repackgj_view = ['admin'];
-            $rejectgj_view = ['admin'];
-            $lainnyagj_view = ['admin'];
-            $angkutan_view = ['admin'];
+            $repackgj_view = ['admin', 'kepala gudang'];
+            $rejectgj_view = ['admin', 'kepala gudang'];
+            $lainnyagj_view = ['admin', 'kepala gudang'];
+            $angkutan_view = ['admin', 'kepala gudang'];
 
             //Kontrabon Angkutan
 
-            $gudang_jadi_keuangan = ['admin'];
-            $kontrabon_angkutan_view = ['admin'];
+            $gudang_jadi_keuangan = ['admin', 'kepala gudang'];
+            $kontrabon_angkutan_view = ['admin', 'kepala gudang'];
 
             //Gudang Cabang
 

@@ -578,117 +578,9 @@ Route::middleware(['auth', 'ceklevel:admin,kepala penjualan,kepala admin,admin g
     Route::post('/laporangudangcabang/mutasidpb/cetak', [LaporangudangcabangController::class, 'cetak_mutasidpb']);
     Route::post('/laporangudangcabang/rekonsiliasibj/cetak', [LaporangudangcabangController::class, 'cetak_rekonsiliasibj']);
 });
-//Administrator Super
-Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
-    //Saldo Awal Piutang
-    Route::get('/saldoawalpiutang', [PenjualanController::class, 'saldoawalpiutang']);
-    Route::post('/loadsaldoawalpiutang', [PenjualanController::class, 'loadsaldoawalpiutang']);
-    Route::post('/generatesaldoawalpiutang', [PenjualanController::class, 'generatesaldoawalpiutang']);
 
-    //Produksi
-    Route::get('/produksi/analytics', [ProduksiController::class, 'analytics']);
-    Route::post('/loadrekapproduksi', [ProduksiController::class, 'loadrekapproduksi']);
-    Route::post('/loadgrafikproduksi', [ProduksiController::class, 'loadgrafikproduksi']);
-
-    //BPBJ
-
-    Route::get('/bpbj', [BpbjController::class, 'index']);
-    Route::post('/bpbj/show', [BpbjController::class, 'show']);
-    Route::post('/bpbj/storetemp', [BpbjController::class, 'storetemp']);
-    Route::post('/bpbj/buat_nomor_bpbj', [BpbjController::class, 'buat_nomor_bpbj']);
-    Route::post('/bpbj/cekbpbjtemp', [BpbjController::class, 'cekbpbjtemp']);
-    Route::post('/bpbj/deletetemp', [BpbjController::class, 'deletetemp']);
-    Route::get('/bpbj/{kode_produk}/showtemp', [BpbjController::class, 'showtemp']);
-    Route::get('/bpbj/getbarang', [BpbjController::class, 'getbarang']);
-    Route::post('/bpbj/store', [BpbjController::class, 'store']);
-    Route::delete('/bpbj/{no_mutasi_produksi}/delete', [BpbjController::class, 'delete']);
-
-
-    //Fsthp
-    Route::get('/fsthp', [FsthpController::class, 'index']);
-    Route::post('/fsthp/show', [FsthpController::class, 'show']);
-    Route::post('/fsthp/storetemp', [FsthpController::class, 'storetemp']);
-    Route::post('/fsthp/buat_nomor_fsthp', [FsthpController::class, 'buat_nomor_fsthp']);
-    Route::post('/fsthp/cekfsthptemp', [FsthpController::class, 'cekfsthptemp']);
-    Route::post('/fsthp/deletetemp', [FsthpController::class, 'deletetemp']);
-    Route::get('/fsthp/{kode_produk}/{unit}/{shift}/showtemp', [FsthpController::class, 'showtemp']);
-    Route::get('/fsthp/getbarang', [FsthpController::class, 'getbarang']);
-    Route::post('/fsthp/store', [FsthpController::class, 'store']);
-    Route::delete('/fsthp/{no_mutasi_produksi}/delete', [FsthpController::class, 'delete']);
-
-    //Pemasukan Produksi
-    Route::get('/pemasukanproduksi', [PemasukanproduksiController::class, 'index']);
-    Route::get('/pemasukanproduksi/getbarang', [PemasukanproduksiController::class, 'getbarang']);
-    Route::get('/pemasukanproduksi/create', [PemasukanproduksiController::class, 'create']);
-    Route::get('/pemasukanproduksi/showtemp', [PemasukanproduksiController::class, 'showtemp']);
-    Route::get('/pemasukanproduksi/{nobukti_pemasukan}/showbarang', [PemasukanproduksiController::class, 'showbarang']);
-    Route::get('/pemasukanproduksi/{nobukti_pemasukan}/edit', [PemasukanproduksiController::class, 'edit']);
-    Route::post('/pemasukanproduksi/editbarang', [PemasukanproduksiController::class, 'editbarang']);
-    Route::post('/pemasukanproduksi/updatebarang', [PemasukanproduksiController::class, 'updatebarang']);
-    Route::post('/pemasukanproduksi/{nobukti_pemasukan}/update', [PemasukanproduksiController::class, 'update']);
-    Route::post('/pemasukanproduksi/deletetemp', [PemasukanproduksiController::class, 'deletetemp']);
-    Route::post('/pemasukanproduksi/deletebarang', [PemasukanproduksiController::class, 'deletebarang']);
-    Route::post('/pemasukanproduksi/show', [PemasukanproduksiController::class, 'show']);
-    Route::post('/pemasukanproduksi/cektemp', [PemasukanproduksiController::class, 'cektemp']);
-    Route::post('/pemasukanproduksi/cekbarang', [PemasukanproduksiController::class, 'cekbarang']);
-    Route::post('/pemasukanproduksi/storetemp', [PemasukanproduksiController::class, 'storetemp']);
-    Route::post('/pemasukanproduksi/storebarang', [PemasukanproduksiController::class, 'storebarang']);
-    Route::post('/pemasukanproduksi/store', [PemasukanproduksiController::class, 'store']);
-    Route::delete('/pemasukanproduksi/{nobukti_pemasukan}/delete', [PemasukanproduksiController::class, 'delete']);
-
-
-    //Pengeluaran Produksi
-    Route::get('/pengeluaranproduksi', [PengeluaranproduksiController::class, 'index']);
-    Route::get('/pengeluaranproduksi/getbarang', [PengeluaranproduksiController::class, 'getbarang']);
-    Route::post('/pengeluaranproduksi/show', [PengeluaranproduksiController::class, 'show']);
-    Route::get('/pengeluaranproduksi/showtemp', [PengeluaranproduksiController::class, 'showtemp']);
-    Route::get('/pengeluaranproduksi/create', [PengeluaranproduksiController::class, 'create']);
-    Route::post('/pengeluaranproduksi/cektemp', [PengeluaranproduksiController::class, 'cektemp']);
-    Route::post('/pengeluaranproduksi/storetemp', [PengeluaranproduksiController::class, 'storetemp']);
-    Route::post('/pengeluaranproduksi/deletetemp', [PengeluaranproduksiController::class, 'deletetemp']);
-    Route::post('/pengeluaranproduksi/store', [PengeluaranproduksiController::class, 'store']);
-    Route::get('/pengeluaranproduksi/{nobukti_pengeluaran}/edit', [PengeluaranproduksiController::class, 'edit']);
-    Route::post('/pengeluaranproduksi/cekbarang', [PengeluaranproduksiController::class, 'cekbarang']);
-    Route::get('/pengeluaranproduksi/{nobukti_pengeluaran}/showbarang', [PengeluaranproduksiController::class, 'showbarang']);
-    Route::post('/pengeluaranproduksi/storebarang', [PengeluaranproduksiController::class, 'storebarang']);
-    Route::post('/pengeluaranproduksi/editbarang', [PengeluaranproduksiController::class, 'editbarang']);
-    Route::post('/pengeluaranproduksi/updatebarang', [PengeluaranproduksiController::class, 'updatebarang']);
-    Route::post('/pengeluaranproduksi/deletebarang', [PengeluaranproduksiController::class, 'deletebarang']);
-    Route::post('/pengeluaranproduksi/{nobukti_pengeluaran}/update', [PengeluaranproduksiController::class, 'update']);
-    Route::delete('/pengeluaranproduksi/{nobukti_pengeluaran}/delete', [PengeluaranproduksiController::class, 'delete']);
-
-    //Saldo Awal Mutasi Barang Produksi
-    Route::get('/saldoawalmutasibarangproduksi', [SaldoawalmutasibarangproduksiController::class, 'index']);
-    Route::get('/saldoawalmutasibarangproduksi/create', [SaldoawalmutasibarangproduksiController::class, 'create']);
-    Route::delete('/saldoawalmutasibarangproduksi/{kode_saldoawal}/delete', [SaldoawalmutasibarangproduksiController::class, 'delete']);
-    Route::get('/saldoawalmutasibarangproduksi/{kode_saldoawal}/edit', [SaldoawalmutasibarangproduksiController::class, 'edit']);
-    Route::get('/saldoawalmutasibarangproduksi/{kode_saldoawal}/{kode_barang}/editbarang', [SaldoawalmutasibarangproduksiController::class, 'editbarang']);
-    Route::post('/saldoawalmutasibarangproduksi/{kode_saldoawal}/{kode_barang}/updatebarang', [SaldoawalmutasibarangproduksiController::class, 'updatebarang']);
-    Route::post('saldoawalmutasibarangproduksi/getdetailsaldo', [SaldoawalmutasibarangproduksiController::class, 'getdetailsaldo']);
-    Route::post('saldoawalmutasibarangproduksi/store', [SaldoawalmutasibarangproduksiController::class, 'store']);
-
-    //Opname Mutasi Barang Produksi
-    Route::get('/opnamemutasibarangproduksi', [OpnamemutasibarangproduksiController::class, 'index']);
-    Route::get('/opnamemutasibarangproduksi/create', [OpnamemutasibarangproduksiController::class, 'create']);
-    Route::post('opnamemutasibarangproduksi/getdetailopname', [OpnamemutasibarangproduksiController::class, 'getdetailopname']);
-    Route::delete('/opnamemutasibarangproduksi/{kode_opname}/delete', [OpnamemutasibarangproduksiController::class, 'delete']);
-    Route::get('/opnamemutasibarangproduksi/{kode_opname}/edit', [OpnamemutasibarangproduksiController::class, 'edit']);
-    Route::get('/opnamemutasibarangproduksi/{kode_opname}/{kode_barang}/editbarang', [OpnamemutasibarangproduksiController::class, 'editbarang']);
-    Route::post('/opnamemutasibarangproduksi/{kode_opname}/{kode_barang}/updatebarang', [OpnamemutasibarangproduksiController::class, 'updatebarang']);
-    Route::post('opnamemutasibarangproduksi/store', [OpnamemutasibarangproduksiController::class, 'store']);
-
-    //Laporanproduksi
-    Route::get('/laporanproduksi/mutasiproduksi', [LaporanproduksiController::class, 'mutasiproduksi']);
-    Route::get('/laporanproduksi/rekapmutasiproduksi', [LaporanproduksiController::class, 'rekapmutasiproduksi']);
-    Route::get('/laporanproduksi/pemasukanproduksi', [LaporanproduksiController::class, 'pemasukanproduksi']);
-    Route::get('/laporanproduksi/pengeluaranproduksi', [LaporanproduksiController::class, 'pengeluaranproduksi']);
-    Route::get('/laporanproduksi/rekappersediaanbarangproduksi', [LaporanproduksiController::class, 'rekappersediaanbarangproduksi']);
-    Route::post('/laporanproduksi/mutasiproduksi/cetak', [LaporanproduksiController::class, 'cetak_mutasiproduksi']);
-    Route::post('/laporanproduksi/rekapmutasiproduksi/cetak', [LaporanproduksiController::class, 'cetak_rekapmutasiproduksi']);
-    Route::post('/laporanproduksi/pemasukanproduksi/cetak', [LaporanproduksiController::class, 'cetak_pemasukanproduksi']);
-    Route::post('/laporanproduksi/pengeluaranproduksi/cetak', [LaporanproduksiController::class, 'cetak_pengeluaranproduksi']);
-    Route::post('/laporanproduksi/rekappersediaanbarangproduksi/cetak', [LaporanproduksiController::class, 'cetak_rekappersediaanbarangproduksi']);
-
+//Administrator | Kepala Gudang
+Route::middleware(['auth', 'ceklevel:admin,kepala gudang'])->group(function () {
     //Gudang Logistik
     Route::get('/pemasukangudanglogistik', [PemasukangudanglogistikController::class, 'index']);
     Route::post('/pemasukangudanglogistik/show', [PemasukangudanglogistikController::class, 'show']);
@@ -916,6 +808,119 @@ Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
     Route::post('/laporangudangjadi/realisasikiriman/cetak', [LaporangudangjadiController::class, 'cetak_realisasikiriman']);
     Route::post('/laporangudangjadi/realisasioman/cetak', [LaporangudangjadiController::class, 'cetak_realisasioman']);
     Route::post('/laporangudangjadi/angkutan/cetak', [LaporangudangjadiController::class, 'cetak_angkutan']);
+});
+
+//Administrator Super
+Route::middleware(['auth', 'ceklevel:admin'])->group(function () {
+    //Saldo Awal Piutang
+    Route::get('/saldoawalpiutang', [PenjualanController::class, 'saldoawalpiutang']);
+    Route::post('/loadsaldoawalpiutang', [PenjualanController::class, 'loadsaldoawalpiutang']);
+    Route::post('/generatesaldoawalpiutang', [PenjualanController::class, 'generatesaldoawalpiutang']);
+
+    //Produksi
+    Route::get('/produksi/analytics', [ProduksiController::class, 'analytics']);
+    Route::post('/loadrekapproduksi', [ProduksiController::class, 'loadrekapproduksi']);
+    Route::post('/loadgrafikproduksi', [ProduksiController::class, 'loadgrafikproduksi']);
+
+    //BPBJ
+
+    Route::get('/bpbj', [BpbjController::class, 'index']);
+    Route::post('/bpbj/show', [BpbjController::class, 'show']);
+    Route::post('/bpbj/storetemp', [BpbjController::class, 'storetemp']);
+    Route::post('/bpbj/buat_nomor_bpbj', [BpbjController::class, 'buat_nomor_bpbj']);
+    Route::post('/bpbj/cekbpbjtemp', [BpbjController::class, 'cekbpbjtemp']);
+    Route::post('/bpbj/deletetemp', [BpbjController::class, 'deletetemp']);
+    Route::get('/bpbj/{kode_produk}/showtemp', [BpbjController::class, 'showtemp']);
+    Route::get('/bpbj/getbarang', [BpbjController::class, 'getbarang']);
+    Route::post('/bpbj/store', [BpbjController::class, 'store']);
+    Route::delete('/bpbj/{no_mutasi_produksi}/delete', [BpbjController::class, 'delete']);
+
+
+    //Fsthp
+    Route::get('/fsthp', [FsthpController::class, 'index']);
+    Route::post('/fsthp/show', [FsthpController::class, 'show']);
+    Route::post('/fsthp/storetemp', [FsthpController::class, 'storetemp']);
+    Route::post('/fsthp/buat_nomor_fsthp', [FsthpController::class, 'buat_nomor_fsthp']);
+    Route::post('/fsthp/cekfsthptemp', [FsthpController::class, 'cekfsthptemp']);
+    Route::post('/fsthp/deletetemp', [FsthpController::class, 'deletetemp']);
+    Route::get('/fsthp/{kode_produk}/{unit}/{shift}/showtemp', [FsthpController::class, 'showtemp']);
+    Route::get('/fsthp/getbarang', [FsthpController::class, 'getbarang']);
+    Route::post('/fsthp/store', [FsthpController::class, 'store']);
+    Route::delete('/fsthp/{no_mutasi_produksi}/delete', [FsthpController::class, 'delete']);
+
+    //Pemasukan Produksi
+    Route::get('/pemasukanproduksi', [PemasukanproduksiController::class, 'index']);
+    Route::get('/pemasukanproduksi/getbarang', [PemasukanproduksiController::class, 'getbarang']);
+    Route::get('/pemasukanproduksi/create', [PemasukanproduksiController::class, 'create']);
+    Route::get('/pemasukanproduksi/showtemp', [PemasukanproduksiController::class, 'showtemp']);
+    Route::get('/pemasukanproduksi/{nobukti_pemasukan}/showbarang', [PemasukanproduksiController::class, 'showbarang']);
+    Route::get('/pemasukanproduksi/{nobukti_pemasukan}/edit', [PemasukanproduksiController::class, 'edit']);
+    Route::post('/pemasukanproduksi/editbarang', [PemasukanproduksiController::class, 'editbarang']);
+    Route::post('/pemasukanproduksi/updatebarang', [PemasukanproduksiController::class, 'updatebarang']);
+    Route::post('/pemasukanproduksi/{nobukti_pemasukan}/update', [PemasukanproduksiController::class, 'update']);
+    Route::post('/pemasukanproduksi/deletetemp', [PemasukanproduksiController::class, 'deletetemp']);
+    Route::post('/pemasukanproduksi/deletebarang', [PemasukanproduksiController::class, 'deletebarang']);
+    Route::post('/pemasukanproduksi/show', [PemasukanproduksiController::class, 'show']);
+    Route::post('/pemasukanproduksi/cektemp', [PemasukanproduksiController::class, 'cektemp']);
+    Route::post('/pemasukanproduksi/cekbarang', [PemasukanproduksiController::class, 'cekbarang']);
+    Route::post('/pemasukanproduksi/storetemp', [PemasukanproduksiController::class, 'storetemp']);
+    Route::post('/pemasukanproduksi/storebarang', [PemasukanproduksiController::class, 'storebarang']);
+    Route::post('/pemasukanproduksi/store', [PemasukanproduksiController::class, 'store']);
+    Route::delete('/pemasukanproduksi/{nobukti_pemasukan}/delete', [PemasukanproduksiController::class, 'delete']);
+
+
+    //Pengeluaran Produksi
+    Route::get('/pengeluaranproduksi', [PengeluaranproduksiController::class, 'index']);
+    Route::get('/pengeluaranproduksi/getbarang', [PengeluaranproduksiController::class, 'getbarang']);
+    Route::post('/pengeluaranproduksi/show', [PengeluaranproduksiController::class, 'show']);
+    Route::get('/pengeluaranproduksi/showtemp', [PengeluaranproduksiController::class, 'showtemp']);
+    Route::get('/pengeluaranproduksi/create', [PengeluaranproduksiController::class, 'create']);
+    Route::post('/pengeluaranproduksi/cektemp', [PengeluaranproduksiController::class, 'cektemp']);
+    Route::post('/pengeluaranproduksi/storetemp', [PengeluaranproduksiController::class, 'storetemp']);
+    Route::post('/pengeluaranproduksi/deletetemp', [PengeluaranproduksiController::class, 'deletetemp']);
+    Route::post('/pengeluaranproduksi/store', [PengeluaranproduksiController::class, 'store']);
+    Route::get('/pengeluaranproduksi/{nobukti_pengeluaran}/edit', [PengeluaranproduksiController::class, 'edit']);
+    Route::post('/pengeluaranproduksi/cekbarang', [PengeluaranproduksiController::class, 'cekbarang']);
+    Route::get('/pengeluaranproduksi/{nobukti_pengeluaran}/showbarang', [PengeluaranproduksiController::class, 'showbarang']);
+    Route::post('/pengeluaranproduksi/storebarang', [PengeluaranproduksiController::class, 'storebarang']);
+    Route::post('/pengeluaranproduksi/editbarang', [PengeluaranproduksiController::class, 'editbarang']);
+    Route::post('/pengeluaranproduksi/updatebarang', [PengeluaranproduksiController::class, 'updatebarang']);
+    Route::post('/pengeluaranproduksi/deletebarang', [PengeluaranproduksiController::class, 'deletebarang']);
+    Route::post('/pengeluaranproduksi/{nobukti_pengeluaran}/update', [PengeluaranproduksiController::class, 'update']);
+    Route::delete('/pengeluaranproduksi/{nobukti_pengeluaran}/delete', [PengeluaranproduksiController::class, 'delete']);
+
+    //Saldo Awal Mutasi Barang Produksi
+    Route::get('/saldoawalmutasibarangproduksi', [SaldoawalmutasibarangproduksiController::class, 'index']);
+    Route::get('/saldoawalmutasibarangproduksi/create', [SaldoawalmutasibarangproduksiController::class, 'create']);
+    Route::delete('/saldoawalmutasibarangproduksi/{kode_saldoawal}/delete', [SaldoawalmutasibarangproduksiController::class, 'delete']);
+    Route::get('/saldoawalmutasibarangproduksi/{kode_saldoawal}/edit', [SaldoawalmutasibarangproduksiController::class, 'edit']);
+    Route::get('/saldoawalmutasibarangproduksi/{kode_saldoawal}/{kode_barang}/editbarang', [SaldoawalmutasibarangproduksiController::class, 'editbarang']);
+    Route::post('/saldoawalmutasibarangproduksi/{kode_saldoawal}/{kode_barang}/updatebarang', [SaldoawalmutasibarangproduksiController::class, 'updatebarang']);
+    Route::post('saldoawalmutasibarangproduksi/getdetailsaldo', [SaldoawalmutasibarangproduksiController::class, 'getdetailsaldo']);
+    Route::post('saldoawalmutasibarangproduksi/store', [SaldoawalmutasibarangproduksiController::class, 'store']);
+
+    //Opname Mutasi Barang Produksi
+    Route::get('/opnamemutasibarangproduksi', [OpnamemutasibarangproduksiController::class, 'index']);
+    Route::get('/opnamemutasibarangproduksi/create', [OpnamemutasibarangproduksiController::class, 'create']);
+    Route::post('opnamemutasibarangproduksi/getdetailopname', [OpnamemutasibarangproduksiController::class, 'getdetailopname']);
+    Route::delete('/opnamemutasibarangproduksi/{kode_opname}/delete', [OpnamemutasibarangproduksiController::class, 'delete']);
+    Route::get('/opnamemutasibarangproduksi/{kode_opname}/edit', [OpnamemutasibarangproduksiController::class, 'edit']);
+    Route::get('/opnamemutasibarangproduksi/{kode_opname}/{kode_barang}/editbarang', [OpnamemutasibarangproduksiController::class, 'editbarang']);
+    Route::post('/opnamemutasibarangproduksi/{kode_opname}/{kode_barang}/updatebarang', [OpnamemutasibarangproduksiController::class, 'updatebarang']);
+    Route::post('opnamemutasibarangproduksi/store', [OpnamemutasibarangproduksiController::class, 'store']);
+
+    //Laporanproduksi
+    Route::get('/laporanproduksi/mutasiproduksi', [LaporanproduksiController::class, 'mutasiproduksi']);
+    Route::get('/laporanproduksi/rekapmutasiproduksi', [LaporanproduksiController::class, 'rekapmutasiproduksi']);
+    Route::get('/laporanproduksi/pemasukanproduksi', [LaporanproduksiController::class, 'pemasukanproduksi']);
+    Route::get('/laporanproduksi/pengeluaranproduksi', [LaporanproduksiController::class, 'pengeluaranproduksi']);
+    Route::get('/laporanproduksi/rekappersediaanbarangproduksi', [LaporanproduksiController::class, 'rekappersediaanbarangproduksi']);
+    Route::post('/laporanproduksi/mutasiproduksi/cetak', [LaporanproduksiController::class, 'cetak_mutasiproduksi']);
+    Route::post('/laporanproduksi/rekapmutasiproduksi/cetak', [LaporanproduksiController::class, 'cetak_rekapmutasiproduksi']);
+    Route::post('/laporanproduksi/pemasukanproduksi/cetak', [LaporanproduksiController::class, 'cetak_pemasukanproduksi']);
+    Route::post('/laporanproduksi/pengeluaranproduksi/cetak', [LaporanproduksiController::class, 'cetak_pengeluaranproduksi']);
+    Route::post('/laporanproduksi/rekappersediaanbarangproduksi/cetak', [LaporanproduksiController::class, 'cetak_rekappersediaanbarangproduksi']);
+
 
 
     //Acounting
