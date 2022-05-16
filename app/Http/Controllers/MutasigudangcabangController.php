@@ -388,6 +388,7 @@ class MutasigudangcabangController extends Controller
             $kode = "PNJ";
             $kondisi = "GOOD";
             $inout_good = "OUT";
+            $inout_bad = NULL;
             $order = 4;
         } else if ($jenis_mutasi == "GANTI BARANG") {
             $kode = "RGB";
