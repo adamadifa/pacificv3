@@ -355,11 +355,11 @@ class GlobalProvider extends ServiceProvider
                 'admin', 'kepala admin',
                 'admin gudang cabang', 'admin persediaan dan kasir',
                 'admin persediaan dan kas kecil', 'kepala penjualan', 'supervisor sales',
-                'admin gudang cabang dan marketing'
+                'admin gudang cabang dan marketing', 'kepala gudang'
             ];
-            $laporan_gudang_logistik = ['admin'];
-            $laporan_gudang_bahan = ['admin'];
-            $laporan_gudang_jadi = ['admin'];
+            $laporan_gudang_logistik = ['admin', 'kepala gudang'];
+            $laporan_gudang_bahan = ['admin', 'kepala gudang'];
+            $laporan_gudang_jadi = ['admin', 'kepala gudang'];
             $laporan_gudang_cabang = [
                 'admin', 'kepala penjualan',
                 'kepala admin', 'admin gudang cabang', 'admin persediaan dan kasir',
@@ -410,26 +410,26 @@ class GlobalProvider extends ServiceProvider
 
 
             //Laporan Gudang Logistik
-            $laporan_pemasukan_gl = ['admin'];
-            $laporan_pengeluaran_gl = ['admin'];
-            $laporan_persediaan_gl = ['admin'];
-            $laporan_persediaanopname_gl = ['admin'];
+            $laporan_pemasukan_gl = ['admin', 'kepala gudang'];
+            $laporan_pengeluaran_gl = ['admin', 'kepala gudang'];
+            $laporan_persediaan_gl = ['admin', 'kepala gudang'];
+            $laporan_persediaanopname_gl = ['admin', 'kepala gudang'];
 
             //Laporan Gudang Bahan
-            $laporan_pemasukan_gb = ['admin'];
-            $laporan_pengeluaran_gb = ['admin'];
-            $laporan_persediaan_gb = ['admin'];
-            $laporan_kartugudang = ['admin'];
-            $laporan_rekappersediaan = ['admin'];
+            $laporan_pemasukan_gb = ['admin', 'kepala gudang'];
+            $laporan_pengeluaran_gb = ['admin', 'kepala gudang'];
+            $laporan_persediaan_gb = ['admin', 'kepala gudang'];
+            $laporan_kartugudang = ['admin', 'kepala gudang'];
+            $laporan_rekappersediaan = ['admin', 'kepala gudang'];
 
             //Laporan Gudang Jadi
-            $laporan_persediaan_gj = ['admin'];
-            $rekap_persediaan_gj = ['admin'];
-            $rekap_hasiproduksi_gj = ['admin'];
-            $rekap_pengeluaran_gj = ['admin'];
-            $realisasi_kiriman_gj = ['admin'];
-            $realisasi_oman_gj = ['admin'];
-            $laporan_angkutan = ['admin'];
+            $laporan_persediaan_gj = ['admin', 'kepala gudang'];
+            $rekap_persediaan_gj = ['admin', 'kepala gudang'];
+            $rekap_hasiproduksi_gj = ['admin', 'kepala gudang'];
+            $rekap_pengeluaran_gj = ['admin', 'kepala gudang'];
+            $realisasi_kiriman_gj = ['admin', 'kepala gudang'];
+            $realisasi_oman_gj = ['admin', 'kepala gudang'];
+            $laporan_angkutan = ['admin', 'kepala gudang'];
 
             //Laporan Gudang  Cabang
 
