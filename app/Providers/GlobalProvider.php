@@ -351,9 +351,10 @@ class GlobalProvider extends ServiceProvider
             //Pembelian
             $pembelian_menu = [
                 'admin', 'direktur', 'general manager', 'manager accounting',
-                'spv accounting', 'manager pembelian', 'admin pembelian', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'emf', 'admin pajak'
+                'spv accounting', 'manager pembelian', 'admin pembelian',
+                'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'emf', 'admin pajak', 'admin gudang logistik'
             ];
-            $pembelian_view = ['admin', 'manager pembelian', 'admin pembelian', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'admin pajak'];
+            $pembelian_view = ['admin', 'manager pembelian', 'admin pembelian', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'admin pajak', 'admin gudang logistik'];
             $pembelian_hapus = ['admin', 'manager pembelian', 'admin pembelian'];
             $pembelian_tambah = ['admin', 'manager pembelian', 'admin pembelian'];
             $pembelian_edit = ['admin', 'manager pembelian', 'admin pembelian'];

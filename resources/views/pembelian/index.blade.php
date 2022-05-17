@@ -45,6 +45,8 @@
                             </div>
                         </div>
                         <div class="row">
+                            @if (!in_array($level,$levelgudang))
+
                             <div class="col-lg-2 col-sm-12">
                                 <div class="form-group">
                                     <select name="kode_dept" id="kode_dept" class="form-control">
@@ -55,6 +57,7 @@
                                     </select>
                                 </div>
                             </div>
+                            @endif
                             <div class="col-lg-3 col-sm-12">
                                 <div class="form-group">
                                     <select name="kode_supplier" id="kode_supplier" class="form-control select2">

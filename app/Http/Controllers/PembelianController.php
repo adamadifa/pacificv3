@@ -92,8 +92,13 @@ class PembelianController extends Controller
             $query->where('pembelian.nobukti_pembelian', $request->nobukti_pembelian);
         }
 
-        if (!empty($request->kode_dept)) {
-            $query->where('pembelian.kode_dept', $request->kode_dept);
+        $levelgudang = ['kepala gudang', 'admin gudang logistik'];
+        if (in_array(Auth::user()->level, $levelgudang)) {
+            $query->where('pembelian.kode_dept', 'GDL');
+        } else {
+            if (!empty($request->kode_dept)) {
+                $query->where('pembelian.kode_dept', $request->kode_dept);
+            }
         }
 
         if (!empty($request->kode_supplier)) {
@@ -113,7 +118,7 @@ class PembelianController extends Controller
         $pembelian->appends($request->all());
         $departemen = DB::table('departemen')->where('status_pengajuan', 1)->get();
         $supplier = Supplier::orderBy('nama_supplier')->get();
-        return view('pembelian.index', compact('departemen', 'supplier', 'pembelian'));
+        return view('pembelian.index', compact('departemen', 'supplier', 'pembelian', 'levelgudang'));
     }
 
     public function create()
