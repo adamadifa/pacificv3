@@ -39,6 +39,12 @@ class LaporanproduksiController extends Controller
             ->get();
 
         $produk = DB::table('master_barang')->where('kode_produk', $kode_produk)->first();
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Mutasi Produksi $dari-$sampai.xls");
+        }
         return view('produksi.laporan.cetak_mutasiproduksi', compact('produk', 'saldoawal', 'mutasi', 'dari', 'sampai'));
     }
 
@@ -95,7 +101,12 @@ class LaporanproduksiController extends Controller
                     $join->on('master_barang.kode_produk', '=', 'dm.kode_produk');
                 }
             )->get();
-
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Rekap Mutasi Produksi $dari-$sampai.xls");
+        }
         return view('produksi.laporan.cetak_rekapmutasiproduksi', compact('dari', 'sampai', 'mutasi'));
     }
 
@@ -122,7 +133,12 @@ class LaporanproduksiController extends Controller
         $query->orderBy('detail_pemasukan_gp.kode_barang');
         $query->orderBy('pemasukan_gp.nobukti_pemasukan');
         $pemasukan = $query->get();
-
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Pemasukan Produksi $dari-$sampai.xls");
+        }
         return view('produksi.laporan.cetak_pemasukanproduksi', compact('pemasukan', 'dari', 'sampai'));
     }
 
@@ -154,6 +170,12 @@ class LaporanproduksiController extends Controller
         $query->orderBy('detail_pengeluaran_gp.kode_barang');
         $query->orderBy('pengeluaran_gp.nobukti_pengeluaran');
         $pengeluaran = $query->get();
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Pengeluran Produksi $dari-$sampai.xls");
+        }
         return view('produksi.laporan.cetak_pengeluaranproduksi', compact('pengeluaran', 'dari', 'sampai'));
     }
 
@@ -241,6 +263,12 @@ class LaporanproduksiController extends Controller
             ->orderBy('nama_barang')
             ->get();
         $namabulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Rekap Persediaan Barang Produksi.xls");
+        }
         return view('produksi.laporan.cetak_rekappersediaanbarangproduksi', compact('bulan', 'tahun', 'rekap', 'namabulan'));
     }
 }

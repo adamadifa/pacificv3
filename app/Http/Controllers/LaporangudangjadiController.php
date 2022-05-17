@@ -300,6 +300,12 @@ class LaporangudangjadiController extends Controller
         $sampai = date("Y-m-t", strtotime($dari));
         $produk = Barang::orderBy('kode_produk')->get();
         $cabang = Cabang::orderBy('kode_cabang')->get();
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Realisasi OMAN $dari-$sampai.xls");
+        }
         return view('gudangjadi.laporan.cetak_realisasioman', compact('dari', 'sampai', 'produk', 'cabang', 'bulan', 'tahun'));
     }
 

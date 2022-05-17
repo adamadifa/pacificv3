@@ -61,6 +61,12 @@ class LaporanpembelianController extends Controller
         $query->orderBy('detail_pembelian.status');
         $query->orderBy('detail_pembelian.no_urut');
         $pmb = $query->get();
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Pembelian $dari-$sampai.xls");
+        }
         return view('pembelian.laporan.cetak_pembelian', compact('dari', 'sampai', 'supplier', 'kode_dept', 'ppn', 'pmb', 'departemen'));
     }
 
@@ -103,6 +109,12 @@ class LaporanpembelianController extends Controller
         }
         $query->groupByRaw("detail_kontrabon.no_kontrabon,detail_kontrabon.nobukti_pembelian,tglbayar,nama_supplier,historibayar_pembelian.log,historibayar_pembelian.date_updated");
         $pmb = $query->get();
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Penjualan Pembayaran $dari-$sampai.xls");
+        }
         return view('pembelian.laporan.cetak_pembayaran', compact('dari', 'sampai', 'supplier', 'pmb'));
     }
 
@@ -124,6 +136,12 @@ class LaporanpembelianController extends Controller
         $query->groupByRaw('pembelian.kode_supplier,nama_supplier');
         $pmb = $query->get();
         // /dd($pmb);
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Rekap Supplier $dari-$sampai.xls");
+        }
         return view('pembelian.laporan.cetak_rekapsupplier', compact('dari', 'sampai', 'pmb'));
     }
 
@@ -164,6 +182,13 @@ class LaporanpembelianController extends Controller
             return view('pembelian.laporan.cetak_rekappembelian_supplier', compact('dari', 'sampai', 'pmb', 'jenis_barang'));
         } else {
             return view('pembelian.laporan.cetak_rekappembelian_jenisbarang', compact('dari', 'sampai', 'pmb', 'jenis_barang'));
+        }
+
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Rekap Pembelian $dari-$sampai.xls");
         }
     }
 
@@ -251,6 +276,12 @@ class LaporanpembelianController extends Controller
         $query->orderBy('tgl_pembelian');
         $query->orderBy('pembelian.nobukti_pembelian');
         $pmb = $query->get();
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Cetak Kartu Hutang $dari-$sampai.xls");
+        }
         if ($jenislaporan == 1) {
             return view('pembelian.laporan.cetak_kartuhutang', compact('dari', 'sampai', 'supplier', 'coa', 'pmb'));
         } else {
@@ -301,7 +332,12 @@ class LaporanpembelianController extends Controller
         GROUP BY detail_pembelian.nobukti_pembelian,pembelian.kode_supplier,nama_supplier,hb.jmlbayar,jk.jmlpenyesuaian,tgl_pembelian
         ORDER BY pembelian.kode_supplier ASC
         ) as kp WHERE sisahutang !=0");
-
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Analisa Umur Hutang.xls");
+        }
         return view('pembelian.laporan.cetak_auh', compact('sampai', 'pmb'));
     }
 
@@ -338,6 +374,12 @@ class LaporanpembelianController extends Controller
         }
         $query->groupByRaw("detail_pembelian.kode_barang,satuan,nama_barang,jenis_barang");
         $pmb = $query->get();
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Bahan Kemasan $dari-$sampai.xls");
+        }
         return view('pembelian.laporan.cetak_bahankemasan', compact('dari', 'sampai', 'pmb', 'jenis_barang'));
     }
 
@@ -378,6 +420,12 @@ class LaporanpembelianController extends Controller
         $query->orderBy('pembelian.kode_supplier');
         $query->orderBy('tgl_pembelian');
         $pmb = $query->get();
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Rekap Bahan Kemasan $dari-$sampai.xls");
+        }
         return view('pembelian.laporan.cetak_rekapbahankemasan', compact('dari', 'sampai', 'barang', 'supplier', 'pmb'));
     }
 
@@ -397,6 +445,12 @@ class LaporanpembelianController extends Controller
         $query->leftJoin('coa', 'jurnal_koreksi.kode_akun', '=', 'coa.kode_akun');
         $query->whereBetween('tgl_jurnalkoreksi', [$dari, $sampai]);
         $jurnalkoreksi = $query->get();
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Jurnal Koreksi $dari-$sampai.xls");
+        }
         return view('pembelian.laporan.cetak_jurnalkoreksi', compact('dari', 'sampai', 'jurnalkoreksi'));
     }
 
@@ -461,6 +515,12 @@ class LaporanpembelianController extends Controller
         $query2->whereBetween('tgl_jurnalkoreksi', [$dari, $sampai]);
         $query2->groupByRaw(' kode_akun,nama_akun,pnj,pmb');
         $jurnalkoreksi = $query2->get();
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Rekap Akun $dari-$sampai.xls");
+        }
         return view('pembelian.laporan.cetak_rekapakun', compact('dari', 'sampai', 'pmb', 'jurnalkoreksi'));
     }
 
@@ -491,7 +551,12 @@ class LaporanpembelianController extends Controller
         $query2->where('ppn', 1);
         $query2->groupByRaw("detail_kontrabon.no_kontrabon,no_dokumen,nama_supplier,ppn,norekening");
         $pf = $query2->get();
-
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Rekap Kontrabon $dari-$sampai.xls");
+        }
         return view('pembelian.laporan.cetak_rekapkontrabon', compact('dari', 'sampai', 'kb', 'pf'));
     }
 }

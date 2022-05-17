@@ -724,6 +724,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/laporangudangjadi/angkutan', [LaporangudangjadiController::class, 'angkutan']);
     Route::post('/laporangudangjadi/persediaan/cetak', [LaporangudangjadiController::class, 'cetak_persediaan']);
     Route::post('/laporangudangjadi/rekappersediaan/cetak', [LaporangudangjadiController::class, 'cetak_rekappersediaan']);
+    Route::post('/laporangudangjadi/rekaphasilproduksi/cetak', [LaporangudangjadiController::class, 'cetak_rekaphasilproduksi']);
     Route::post('/laporangudangjadi/rekappengeluaran/cetak', [LaporangudangjadiController::class, 'cetak_rekappengeluaran']);
     Route::post('/laporangudangjadi/realisasikiriman/cetak', [LaporangudangjadiController::class, 'cetak_realisasikiriman']);
     Route::post('/laporangudangjadi/realisasioman/cetak', [LaporangudangjadiController::class, 'cetak_realisasioman']);

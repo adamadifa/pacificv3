@@ -157,6 +157,12 @@ class LaporangudangcabangController extends Controller
             $saldoawal    = 0  + $jmlmtsa;
             $realsaldoawal = 0  + $realjmlmtsa;
         }
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Persediaan $dari-$sampai.xls");
+        }
         return view('gudangcabang.laporan.cetak_persediaan', compact('dari', 'sampai', 'produk', 'cabang', 'mutasi', 'saldoawal', 'realsaldoawal'));
     }
 
@@ -271,6 +277,13 @@ class LaporangudangcabangController extends Controller
             $saldoawal    = 0  + $jmlmtsa;
             $realsaldoawal = 0  + $realjmlmtsa;
         }
+
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Bad Stok $dari-$sampai.xls");
+        }
         return view('gudangcabang.laporan.cetak_badstok', compact('dari', 'sampai', 'produk', 'cabang', 'mutasi', 'saldoawal', 'realsaldoawal'));
     }
 
@@ -353,6 +366,12 @@ class LaporangudangcabangController extends Controller
 
         $rekap = $query->get();
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Rekap BJ $dari-$sampai.xls");
+        }
         return view('gudangcabang.laporan.cetak_rekapbj', compact('dari', 'sampai', 'rekap', 'cabang'));
     }
 
@@ -491,7 +510,12 @@ class LaporangudangcabangController extends Controller
         } else {
             $saldoawal    = 0  + $jmlmtsa;
         }
-
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Mutasi DPB $dari-$sampai.xls");
+        }
         return view('gudangcabang.laporan.cetak_mutasidpb', compact('dari', 'sampai', 'suratjalan', 'repack', 'reject', 'penyesuaian', 'dpbpengambilan', 'saldoawal', 'cabang', 'produk'));
     }
 
@@ -602,7 +626,12 @@ class LaporangudangcabangController extends Controller
                 )
                 ->get();
         }
-
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Rekonsiliasi BJ $dari-$sampai.xls");
+        }
         return view('gudangcabang.laporan.cetak_rekonsiliasibj', compact('dari', 'sampai', 'cabang', 'rekap', 'jk'));
     }
 }

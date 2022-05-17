@@ -1333,6 +1333,12 @@ class TargetkomisiController extends Controller
             $query->where('cabang.kode_cabang', $cbg);
         }
         $insentif = $query->get();
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Insentif $dari-$sampai.xls");
+        }
         return view('targetkomisi.laporan.cetak_insentif', compact('insentif', 'cabang', 'namabulan', 'bulan', 'tahun'));
     }
 }

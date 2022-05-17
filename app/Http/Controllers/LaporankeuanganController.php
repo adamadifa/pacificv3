@@ -379,6 +379,12 @@ class LaporankeuanganController extends Controller
             ->orderBy('no_giro')
             ->get();
         $namabulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Rekap BG $dari-$sampai.xls");
+        }
         return view('giro.laporan.cetak_rekapbg', compact('dari', 'sampai', 'cabang', 'rekapbg', 'bulan', 'tahun', 'namabulan'));
     }
 

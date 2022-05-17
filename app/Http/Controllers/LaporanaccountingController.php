@@ -485,7 +485,12 @@ class LaporanaccountingController extends Controller
 		) mcab ON (mcab.kode_produk = m.kode_produk)
 		ORDER BY urutan ASC
 		) harga ON (harga.kode_produk = mb.kode_produk) ORDER BY urutan ASC");
-
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Rekap BJ.xls");
+        }
         return view('laporanaccounting.laporan.cetak_rekapbj', compact('rekaphpp', 'tgl1', 'tgl2'));
     }
 
@@ -590,7 +595,12 @@ class LaporanaccountingController extends Controller
             ORDER BY kode_cabang,kode_produk");
         } else {
         }
-
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Persediaan Cabang $dari-$sampai.xls");
+        }
         return view('laporanaccounting.laporan.cetak_rekappersediaan', compact('dari', 'sampai', 'rekap'));
     }
 
@@ -632,6 +642,12 @@ class LaporanaccountingController extends Controller
             ->get();
         $dariakun = DB::table('coa')->where('kode_akun', $dari_akun)->first();
         $sampaiakun = DB::table('coa')->where('kode_akun', $sampai_akun)->first();
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Buku Besar $dari-$sampai.xls");
+        }
         return view('laporanaccounting.laporan.cetak_bukubesar', compact('dari', 'sampai', 'dariakun', 'sampaiakun', 'bukubesar', 'bulan', 'tahun'));
     }
 
@@ -663,6 +679,12 @@ class LaporanaccountingController extends Controller
             ->orderBy('tanggal')
             ->get();
         $departemen = DB::table('departemen')->where('kode_dept', $kode_dept)->first();
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Jurnal Umum.xls");
+        }
         return view('laporanaccounting.laporan.cetak_jurnalumum', compact('dari', 'sampai', 'departemen', 'jurnalumum'));
     }
 }
