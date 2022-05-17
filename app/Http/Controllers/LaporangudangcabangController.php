@@ -301,15 +301,16 @@ class LaporangudangcabangController extends Controller
     public function cetak_rekapbj(Request $request)
     {
         $kode_cabang = $request->kode_cabang;
-        $bulan = $request->bulan;
-        $tahun = $request->tahun;
-        $dari = $tahun . "-" . $bulan . "-01";
-        $sampai = date("Y-m-t", strtotime($dari));
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $tanggal = explode("-", $dari);
+        $bulan = $tanggal[1];
+        $tahun = $tanggal[0];
         $mulai = $tahun . "-" . $bulan . "-01";
         $query = Barang::query();
         $query->selectRaw("master_barang.*,saldo_awal_gs,saldo_awal_bs,pusat,transit_in,retur,lainlain_in,penyesuaian_in,penyesuaianbad_in,repack,
         penjualan,promosi,reject_pasar,reject_mobil,reject_gudang,
-        transit_out,lainlain_out,penyesuaian_out,penyesuaianbad_out,kirim_pusat");
+        transit_out,lainlain_out,penyesuaian_out,penyesuaianbad_out,kirim_pusat,sisamutasi,sisamutasibad");
         $query->leftJoin(
             DB::raw("(
                 SELECT kode_produk,kode_cabang,jumlah as saldo_awal_gs
@@ -367,19 +368,20 @@ class LaporangudangcabangController extends Controller
             }
         );
 
-        // $query->leftJoin(
-        //     DB::raw("(
-        //         SELECT kode_produk,
-        //         SUM( IF(kode_cabang ='$kode_cabang' AND jenis_mutasi !='KIRIM PUSAT' AND inout_good='IN',jumlah,0)) - SUM(IF(kode_cabang='$kode_cabang' AND jenis_mutasi !='KIRIM PUSAT' AND inout_good='OUT',jumlah,0)) as sisamutasi
-        //         FROM detail_mutasi_gudang_cabang
-        //         INNER JOIN mutasi_gudang_cabang ON detail_mutasi_gudang_cabang.no_mutasi_gudang_cabang = mutasi_gudang_cabang.no_mutasi_gudang_cabang
-        //         WHERE tgl_mutasi_gudang_cabang BETWEEN '$mulai' AND '$sampai' AND kode_cabang='$kode_cabang'
-        //         GROUP BY kode_produk
-        //     ) mutasi"),
-        //     function ($join) {
-        //         $join->on('master_barang.kode_produk', '=', 'dmc.kode_produk');
-        //     }
-        // );
+        $query->leftJoin(
+            DB::raw("(
+                SELECT kode_produk,
+                SUM( IF(kode_cabang ='$kode_cabang' AND jenis_mutasi !='KIRIM PUSAT' AND inout_good='IN',jumlah,0)) - SUM(IF(kode_cabang='$kode_cabang' AND jenis_mutasi !='KIRIM PUSAT' AND inout_good='OUT',jumlah,0)) as sisamutasi,
+                SUM(IF(kode_cabang='$kode_cabang' AND kondisi ='BAD' AND inout_bad='IN',jumlah,0)) - SUM(IF(kode_cabang='$kode_cabang' AND kondisi ='BAD' AND inout_bad='OUT',jumlah,0)) as sisamutasibad
+                FROM detail_mutasi_gudang_cabang
+                INNER JOIN mutasi_gudang_cabang ON detail_mutasi_gudang_cabang.no_mutasi_gudang_cabang = mutasi_gudang_cabang.no_mutasi_gudang_cabang
+                WHERE tgl_mutasi_gudang_cabang >= '$mulai' AND tgl_mutasi_gudang_cabang < '$dari' AND kode_cabang='$kode_cabang'
+                GROUP BY kode_produk
+            ) mutasi"),
+            function ($join) {
+                $join->on('master_barang.kode_produk', '=', 'mutasi.kode_produk');
+            }
+        );
 
         $rekap = $query->get();
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();

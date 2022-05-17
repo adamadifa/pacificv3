@@ -36,7 +36,7 @@
 </head>
 <body>
     <b style="font-size:14px;">
-        PACIFIC CABANG {{ $cabang->nama_cabang }}}<br>
+        PACIFIC CABANG {{ $cabang->nama_cabang }}<br>
         REKAPITULASI PERSEDIAAN BARANG<br>
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
         <br>
@@ -77,7 +77,8 @@
             <?php
             foreach ($rekap as $key => $d) {
                 $kode_cabang = @$rekap[$key + 1]->kode_cabang;
-                $saldoawal_gs = $d->saldo_awal_gs / $d->isipcsdus;
+                $saldoawal_gs = ($d->saldo_awal_gs + $d->sisamutasi) / $d->isipcsdus;
+                //$saldoawal_gs = ($d->saldo_awal_gs) / $d->isipcsdus;
                 $pusat = $d->pusat / $d->isipcsdus;
                 $transit_in = $d->transit_in / $d->isipcsdus;
                 $retur = $d->retur / $d->isipcsdus;
@@ -270,7 +271,7 @@
 		$no = 1;
 		foreach ($rekap as $d) {
 
-			$sabs = $d->saldo_awal_bs /$d->isipcsdus;
+			$sabs = ($d->saldo_awal_bs + $d->sisamutasibad) /$d->isipcsdus;
 			$repack = $d->repack / $d->isipcsdus;
 			$rejectpasar = $d->reject_pasar / $d->isipcsdus;
 			$rejectmobil = $d->reject_mobil / $d->isipcsdus;
