@@ -57,7 +57,7 @@
         </div>
     </div>
     @else
-    <input type="hidden" id="kode_dept" name="kode_dept" value="GDLs">
+    <input type="hidden" id="kode_dept" name="kode_dept" value="GDL">
     @endif
     {{-- <div class="row">
         <div class="col-12">
