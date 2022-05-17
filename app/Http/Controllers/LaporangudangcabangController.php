@@ -305,6 +305,7 @@ class LaporangudangcabangController extends Controller
         $tahun = $request->tahun;
         $dari = $tahun . "-" . $bulan . "-01";
         $sampai = date("Y-m-t", strtotime($dari));
+        $mulai = $tahun . "-" . $bulan . "-01";
         $query = Barang::query();
         $query->selectRaw("master_barang.*,saldo_awal_gs,saldo_awal_bs,pusat,transit_in,retur,lainlain_in,penyesuaian_in,penyesuaianbad_in,repack,
         penjualan,promosi,reject_pasar,reject_mobil,reject_gudang,
@@ -331,6 +332,8 @@ class LaporangudangcabangController extends Controller
                 $join->on('master_barang.kode_produk', '=', 'saldo_bs.kode_produk');
             }
         );
+
+
         $query->leftJoin(
             DB::raw("(
                 SELECT kode_produk,
@@ -363,6 +366,20 @@ class LaporangudangcabangController extends Controller
                 $join->on('master_barang.kode_produk', '=', 'dmc.kode_produk');
             }
         );
+
+        // $query->leftJoin(
+        //     DB::raw("(
+        //         SELECT kode_produk,
+        //         SUM( IF(kode_cabang ='$kode_cabang' AND jenis_mutasi !='KIRIM PUSAT' AND inout_good='IN',jumlah,0)) - SUM(IF(kode_cabang='$kode_cabang' AND jenis_mutasi !='KIRIM PUSAT' AND inout_good='OUT',jumlah,0)) as sisamutasi
+        //         FROM detail_mutasi_gudang_cabang
+        //         INNER JOIN mutasi_gudang_cabang ON detail_mutasi_gudang_cabang.no_mutasi_gudang_cabang = mutasi_gudang_cabang.no_mutasi_gudang_cabang
+        //         WHERE tgl_mutasi_gudang_cabang BETWEEN '$mulai' AND '$sampai' AND kode_cabang='$kode_cabang'
+        //         GROUP BY kode_produk
+        //     ) mutasi"),
+        //     function ($join) {
+        //         $join->on('master_barang.kode_produk', '=', 'dmc.kode_produk');
+        //     }
+        // );
 
         $rekap = $query->get();
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();

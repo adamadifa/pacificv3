@@ -206,7 +206,9 @@ class PenjualanController extends Controller
             ->join('barang', 'detailpenjualan_temp.kode_barang', '=', 'barang.kode_barang')
             ->leftJoin(
                 DB::raw("(
-                    SELECT kode_barang,COUNT(kode_barang) as cekjmlbarang FROM detailpenjualan_temp GROUP BY kode_barang
+                    SELECT kode_barang,COUNT(kode_barang) as cekjmlbarang FROM detailpenjualan_temp
+                    WHERE id_admin = '$id_user'
+                    GROUP BY kode_barang
                 ) dbtemp"),
                 function ($join) {
                     $join->on('detailpenjualan_temp.kode_barang', '=', 'dbtemp.kode_barang');
