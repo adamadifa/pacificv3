@@ -306,8 +306,8 @@ class GlobalProvider extends ServiceProvider
                 'staff keuangan 3'
             ];
             $klaim_view = ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'kepala admin', 'admin kas kecil', 'admin kas', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil'];
-            $klaim_add = ['admin', 'kepala admin', 'admin kas kecil', 'admin kas', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil'];
-            $klaim_hapus = ['admin', 'kepala admin', 'admin kas kecil', 'admin kas', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil'];
+            $klaim_add = ['admin', 'kepala admin', 'admin kas kecil', 'admin kas', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil', 'staff keuangan 3'];
+            $klaim_hapus = ['admin', 'kepala admin', 'admin kas kecil', 'admin kas', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil', 'staff keuangan 3'];
             $klaim_validasi = ['admin', 'kepala admin', 'admin kas kecil', 'admin kas', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil', 'staff keuangan 3'];
             $klaim_proses = ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3'];
 
