@@ -227,6 +227,28 @@
 </script>
 <script>
     $(function() {
+        function loadNoKB() {
+            var tgl_kontrabon = $("#tgl_kontrabon").val();
+            var kategori = $("#kategori").val();
+            //alert(tgl_kontrabon);
+            $.ajax({
+                type: 'POST'
+                , url: '/kontrabon/getNokontrabon'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , tgl_kontrabon: tgl_kontrabon
+                    , kategori: kategori
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#no_kontrabon").val(respond);
+                }
+            });
+        }
+
+        $("#kategori,#tgl_kontrabon").change(function(e) {
+            loadNoKB();
+        });
 
         function cektutuplaporan() {
             var tgltransaksi = $("#tgl_kontrabon").val();

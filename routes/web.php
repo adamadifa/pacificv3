@@ -375,7 +375,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/kontrabon/{no_kontrabon}/batalkankontrabon', [KontrabonController::class, 'batalkankontrabon']);
     Route::get('/kontrabon/{no_kontrabon}/approvekontrabon', [KontrabonController::class, 'approvekontrabon']);
     Route::get('/kontrabon/{no_kontrabon}/cancelkontrabon', [KontrabonController::class, 'cancelkontrabon']);
-
+    Route::post('/kontrabon/getNokontrabon', [KontrabonController::class, 'getNokontrabon']);
     Route::get('/pembelian', [PembelianController::class, 'index']);
     Route::post('/pembelian/showdetailpembelian', [PembelianController::class, 'showdetailpembelian']);
     Route::post('/pembelian/showdetailpembeliankontrabon', [PembelianController::class, 'showdetailpembeliankontrabon']);

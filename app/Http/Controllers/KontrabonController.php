@@ -568,4 +568,23 @@ class KontrabonController extends Controller
             return Redirect::back()->with(['warning' => 'Data Gagal di Approve']);
         }
     }
+
+    public function getNokontrabon(Request $request)
+    {
+        $tgl_kontrabon = $request->tgl_kontrabon;
+        $kategori = $request->kategori;
+        $tanggal = explode("-", $tgl_kontrabon);
+        $bulan = $tanggal[1];
+        $tahun = $tanggal[0];
+        $dari = $tahun . "-" . $bulan . "-01";
+        $sampai = date("Y-m-t", strtotime($dari));
+        $kontrabon = DB::table('kontrabon')
+            ->whereBetween('tgl_kontrabon', [$dari, $sampai])
+            ->where('kategori', $kategori)
+            ->orderBy('no_kontrabon', 'desc')
+            ->first();
+        $lastnokontrabon = $kontrabon != null ? $kontrabon->no_kontrabon : '';
+        $no_kontrabon = buatkode($lastnokontrabon, $kategori, 3) . "/" . $bulan . "/" . $tahun;
+        echo $no_kontrabon;
+    }
 }
