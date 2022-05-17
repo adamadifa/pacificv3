@@ -1148,6 +1148,13 @@ class PenjualanController extends Controller
     }
     public function cetakfaktur($no_fak_penj)
     {
+        $pelangganmp = [
+            'TSM-00548',
+            'TSM-00493',
+            'TSM-02234',
+            'TSM-01117',
+            'TSM-00494'
+        ];
         $no_fak_penj = Crypt::decrypt($no_fak_penj);
         $faktur = DB::table('penjualan')
             ->select(
@@ -1185,11 +1192,18 @@ class PenjualanController extends Controller
             ->join('barang', 'detailpenjualan.kode_barang', '=', 'barang.kode_barang')
             ->where('no_fak_penj', $no_fak_penj)
             ->get();
-        return view('penjualan.laporan.cetakfaktur', compact('faktur', 'detail'));
+        return view('penjualan.laporan.cetakfaktur', compact('faktur', 'detail', 'pelangganmp'));
     }
 
     public function cetaksuratjalan($no_fak_penj, $type)
     {
+        $pelangganmp = [
+            'TSM-00548',
+            'TSM-00493',
+            'TSM-02234',
+            'TSM-01117',
+            'TSM-00494'
+        ];
         $no_fak_penj = Crypt::decrypt($no_fak_penj);
         $faktur = DB::table('penjualan')
             ->select(
@@ -1228,9 +1242,9 @@ class PenjualanController extends Controller
             ->where('no_fak_penj', $no_fak_penj)
             ->get();
         if ($type == 1) {
-            return view('penjualan.laporan.cetaksuratjalan', compact('faktur', 'detail'));
+            return view('penjualan.laporan.cetaksuratjalan', compact('faktur', 'detail', 'pelangganmp'));
         } else if ($type == 2) {
-            return view('penjualan.laporan.cetaksuratjalan2', compact('faktur', 'detail'));
+            return view('penjualan.laporan.cetaksuratjalan2', compact('faktur', 'detail', 'pelangganmp'));
         }
     }
 

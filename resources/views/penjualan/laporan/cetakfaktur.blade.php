@@ -51,10 +51,17 @@
             </table>
         </td>
         <td colspan="6" align="left">
+            @if (in_array($faktur->kode_pelanggan,$pelangganmp))
+            <b>CV MAKMUR PERMATA </b><br>
+            <b>Jln. Perintis Kemerdekaan RT 001 / RW 003 Kelurahan Karsamenak Kecamatan Kawalu Kota Tasikmalaya 46182 <br>
+                NPWP : 863860342425000</b>
+            @else
             <b>
                 <b>CV PACIFIC CABANG {{ strtoupper($faktur->nama_cabang) }}</b><br>
                 <b>{{ $faktur->alamat_cabang }}</b>
             </b>
+            @endif
+
 
         </td>
     </tr>
@@ -185,8 +192,16 @@
         </td>
         <td colspan="6" align="left">
             <b>
-                <b>CV PACIFIC CABANG {{ strtoupper($faktur->nama_cabang) }}</b><br>
-                <b>{{ $faktur->alamat_cabang }}</b>
+                @if (in_array($faktur->kode_pelanggan,$pelangganmp))
+                <b>CV MAKMUR PERMATA </b><br>
+                <b>Jln. Perintis Kemerdekaan RT 001 / RW 003 Kelurahan Karsamenak Kecamatan Kawalu Kota Tasikmalaya 46182 <br>
+                    NPWP : 863860342425000</b>
+                @else
+                <b>
+                    <b>CV PACIFIC CABANG {{ strtoupper($faktur->nama_cabang) }}</b><br>
+                    <b>{{ $faktur->alamat_cabang }}</b>
+                </b>
+                @endif
             </b>
 
         </td>
