@@ -256,6 +256,9 @@ class KendaraanController extends Controller
     public function getkendaraancab(Request $request)
     {
         $kode_cabang = $request->kode_cabang;
+        if ($kode_cabang == "GRT") {
+            $kode_cabang = "TSM";
+        }
         $no_polisi = $request->no_polisi;
         $kendaraan = Kendaraan::where('kode_cabang', $kode_cabang)->get();
         echo "<option value=''>Pilih Kendaraan</option>";
