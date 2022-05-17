@@ -87,10 +87,12 @@
     <b style="font-size:14px;">
         BUKU BESAR<br>
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }} <br>
+        @if ($dariakun !=null)
         AKUN {{ $dariakun->kode_akun }} {{ $dariakun->nama_akun }}
         @if ($sampaiakun->kode_akun != $dariakun->kode_akun)
         s/d
         {{ $sampaiakun->kode_akun }} {{ $sampaiakun->nama_akun }}
+        @endif
         @endif
         <br>
         <table class="datatable3" style="width:90%" border="1">
