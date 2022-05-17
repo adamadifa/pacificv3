@@ -48,6 +48,8 @@ class DashboardController extends Controller
             return $this->dashboardkasir();
         } else if (Auth::user()->level == "manager pembelian" || Auth::user()->level == "admin pembelian") {
             return $this->dashboardpembelian();
+        } else if (Auth::user()->level == "kepala gudang" || Auth::user()->level == "admin gudang pusat") {
+            return $this->dashboardgudang();
         } else {
             return $this->dashboardadminkaskecil();
         }
@@ -100,6 +102,13 @@ class DashboardController extends Controller
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('dashboard.administrator', compact('jmlpengajuan', 'bulan', 'cabang'));
     }
+
+    public function dashboardgudang()
+    {
+
+        return view('dashboard.gudang');
+    }
+
 
     public function dashboardaccounting()
     {
