@@ -4,12 +4,21 @@
             <h4 class="card-title">Laporan Penjualan</h4>
         </div>
         <ul class="list-group list-group-flush">
+            @if (Auth::user()->level!="admin medsos")
             <a href="/laporanpenjualan/penjualan" style="color:#626262">
                 <li class="list-group-item {{ request()->is(['laporanpenjualan/penjualan']) ? 'active' : '' }}">
                     <i class="feather icon-file mr-1"></i>Penjualan
                 </li>
             </a>
+            @endif
             @if (Auth::user()->level != "staff keuangan 2" AND Auth::user()->level != "staff keuangan 3" AND Auth::user()->level != "admin pajak")
+            <a href="/laporankasbesarpenjualan" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporankasbesarpenjualan']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Kas Besar
+                </li>
+            </a>
+            @endif
+            @if (Auth::user()->level != "staff keuangan 2" AND Auth::user()->level != "staff keuangan 3" AND Auth::user()->level != "admin pajak" AND Auth::user()->level!="admin medsos")
 
 
             <a href="/laporanretur" style="color:#626262">
@@ -17,11 +26,7 @@
                     <i class="feather icon-file mr-1"></i>Retur
                 </li>
             </a>
-            <a href="/laporankasbesarpenjualan" style="color:#626262">
-                <li class="list-group-item {{ request()->is(['laporankasbesarpenjualan']) ? 'active' : '' }}">
-                    <i class="feather icon-file mr-1"></i>Kas Besar
-                </li>
-            </a>
+
             <a href="/laporanpenjualan/tunaikredit" style="color:#626262">
                 <li class="list-group-item {{ request()->is(['laporanpenjualan/tunaikredit']) ? 'active' : '' }}">
                     <i class="feather icon-file mr-1"></i>Tunai Kredit
