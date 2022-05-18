@@ -45,9 +45,9 @@
         <thead bgcolor="#024a75" style="color:white; font-size:12;">
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
                 <th>No</th>
+                <th>TGL</th>
                 <th>No Bukti</th>
                 <th>No.Ref</th>
-                <th>TGL</th>
                 <th>TGL Penerimaan</th>
                 <th>Pelanggan</th>
                 <th style="width:10%">Keterangan</th>
@@ -87,9 +87,9 @@
             @endphp
             <tr>
                 <td style="text-align:center">{{ $loop->iteration }}</td>
+                <td style="text-align:center">{{ date("d-m-Y",strtotime($d->tgl_ledger)) }}</td>
                 <td style="text-align:center">{{ $d->no_bukti }}</td>
                 <td style="text-align:center">{{ $d->no_ref }}</td>
-                <td style="text-align:center">{{ date("d-m-Y",strtotime($d->tgl_ledger)) }}</td>
                 <td style="text-align:center">{{ !empty($d->tgl_penerimaan) ? date("d-m-Y",strtotime($d->tgl_penerimaan)) : '' }}</td>
                 <td>{{ ucwords(strtolower($d->pelanggan)) }}</td>
                 <td>{{ ucwords(strtoupper($d->keterangan)) }}</td>
