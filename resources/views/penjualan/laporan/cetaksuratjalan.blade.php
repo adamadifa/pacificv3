@@ -171,7 +171,7 @@
                     <tr>
                         <td colspan="4"></td>
                         <td colspan="3" align="center">Total Pembayaran</td>
-                        <td align="right">{{ rupiah($faktur->total) }}</td>
+                        <td align="right">{{ rupiah($faktur->total-$faktur->potongan) }}</td>
                     </tr>
                 </tbody>
 
