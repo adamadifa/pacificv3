@@ -300,6 +300,7 @@
                 , success: function(respond) {
                     if (respond == 0) {
                         swal("Success", "Data Berhasil Disimpan", "success");
+                        loadkaskeciltemp();
                         reset();
                     } else {
                         swal("Oops", "Data Gagal Disimpan, Hubungi Tim IT", "warning");
@@ -387,7 +388,7 @@
                 });
             } else {
                 simpantemp();
-                loadkaskeciltemp();
+
             }
 
         });
