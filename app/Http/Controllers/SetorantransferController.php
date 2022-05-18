@@ -134,7 +134,7 @@ class SetorantransferController extends Controller
             'kode_cabang' => $kode_cabang,
             'bank' => $kode_bank,
             'no_ref' => $kode_transfer,
-            'giro' => $jumlah,
+            'transfer' => $jumlah,
             'keterangan' => "SETOR TRANSFER PELANGGAN " . $pelanggan,
             'status' => '0',
             'omset_bulan' => $omset_bulan,
