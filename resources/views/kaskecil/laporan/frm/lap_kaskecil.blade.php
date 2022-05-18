@@ -119,6 +119,7 @@
                 }
             });
         }
+        loadAkun();
 
         $("#kode_cabang").change(function() {
             // alert('test');
