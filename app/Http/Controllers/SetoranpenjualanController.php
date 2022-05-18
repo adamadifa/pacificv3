@@ -464,10 +464,15 @@ class SetoranpenjualanController extends Controller
     public function cetak(Request $request)
     {
         $query = Setoranpenjualan::query();
-        $query->selectRaw(" kode_setoran,tgl_lhp,setoran_penjualan.id_karyawan,setoran_penjualan.kode_cabang,nama_karyawan,lhp_tunai,
-        ifnull(cektunai,0) AS cektunai,lhp_tagihan,ifnull(cekkredit,0) AS cekkredit,ifnull(ceksetorangiro,0) AS ceksetorangiro,
-        ifnull(ceksetorantransfer,0) AS ceksetorantransfer,ifnull(cekgirotocash,0) AS cekgirotocash,
-        setoran_kertas,setoran_logam,setoran_bg,setoran_transfer,keterangan,girotocash,girototransfer,
+        $query->selectRaw(" kode_setoran,tgl_lhp,setoran_penjualan.id_karyawan,setoran_penjualan.kode_cabang,
+        nama_karyawan,lhp_tunai,
+        ifnull(cektunai,0) AS cektunai,
+        lhp_tagihan,ifnull(cekkredit,0) AS cekkredit,
+        ifnull(ceksetorangiro,0) AS ceksetorangiro,
+        ifnull(ceksetorantransfer,0) AS ceksetorantransfer,
+        ifnull(cekgirotocash,0) AS cekgirotocash,
+        setoran_kertas,setoran_logam,setoran_bg,setoran_transfer,
+        keterangan,girotocash,girototransfer,
         ifnull(kurangsetorlogam,0) AS kurangsetorlogam,ifnull(kurangsetorkertas,0) AS kurangsetorkertas,
         ifnull(lebihsetorlogam,0) AS lebihsetorlogam,ifnull(lebihsetorkertas,0) AS lebihsetorkertas");
         $query->join('karyawan', 'setoran_penjualan.id_karyawan', '=', 'karyawan.id_karyawan');

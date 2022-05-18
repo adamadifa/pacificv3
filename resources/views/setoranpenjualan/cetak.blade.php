@@ -190,8 +190,8 @@
                     <td style="text-align:right"><u><a class="text-white" target="_blank" href=" /setoranpenjualan/detailsetoran?kode_cabang={{ $d->kode_cabang }}&tgl_lhp={{ $d->tgl_lhp }}&id_karyawan={{ $d->id_karyawan }}">{{ rupiah($totallhp) }}</a></u></td>
                     <td style="text-align:right"><a href="#" class="detailkertas" data-toggle="popover" data-placement="{{ $position }}" data-container="body" data-original-title="Keterangan" data-content="{{ $kontenkertas }}">{{ !empty($d->setoran_kertas + $uk) ? rupiah($d->setoran_kertas + $uk) : '' }}</a></td>
                     <td style="text-align:right"><a href="#" class="detaillogam" data-toggle="popover" data-placement="{{ $position }}" data-container="body" data-original-title="Keterangan" data-content="{{ $kontenlogam }}">{{ !empty($d->setoran_logam + $ul) ? rupiah($d->setoran_logam + $ul) : '' }}</a></td>
-                    <td style="text-align:right">{{ !empty($d->setoran_bg) ? rupiah($d->setoran_bg) : '' }}</td>
                     <td style="text-align:right">{{ !empty($d->setoran_transfer) ? rupiah($d->setoran_transfer) : '' }}</td>
+                    <td style="text-align:right">{{ !empty($d->setoran_bg) ? rupiah($d->setoran_bg) : '' }}</td>
                     <td style="text-align:right">{{ rupiah($totalsetoran) }}</td>
                     <td style="text-align:right">{{ rupiah($selisih) }}</td>
                     <td>{{ $d->keterangan }}</td>
@@ -206,8 +206,8 @@
                     <td style='text-align:right'>" . number_format($totallhppertgl, '0', '', '.') . "</td>
                     <td style='text-align:right'>" . number_format($totalsetorankertas, '0', '', '.') . "</td>
                     <td style='text-align:right'>" . number_format($totalsetoranlogam, '0', '', '.') . "</td>
-                    <td style='text-align:right'>" . number_format($totalsetoranbg, '0', '', '.') . "</td>
                     <td style='text-align:right'>" . number_format($totalsetorantransfer, '0', '', '.') . "</td>
+                    <td style='text-align:right'>" . number_format($totalsetoranbg, '0', '', '.') . "</td>
                     <td style='text-align:right'>" . number_format($totalsetoranpertgl, '0', '', '.') . "</td>
                     <td style='text-align:right'>" . number_format($totalselisih, '0', '', '.') . "</td>
                     <td></td>
