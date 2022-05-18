@@ -212,8 +212,14 @@ class KontrabonangkutanController extends Controller
             $last_no_bukti_bukubesar = "";
         }
 
-        $nobukti_bukubesar = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $tahun, 4);
-        $nobukti_bukubesar_bank = buatkode($nobukti_bukubesar, 'GJ' . $bulan . $tahun, 4);
+        // echo $last_no_bukti_bukubesar;
+
+
+        $nobukti_bukubesar_angkutan = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $tahun, 4);
+        $nobukti_bukubesar_bank_angkutan = buatkode($nobukti_bukubesar_angkutan, 'GJ' . $bulan . $tahun, 4);
+        $nobukti_bukubesar_hutang = buatkode($nobukti_bukubesar_bank_angkutan, 'GJ' . $bulan . $tahun, 4);
+        $nobukti_bukubesar_bank_hutang = buatkode($nobukti_bukubesar_hutang, 'GJ' . $bulan . $tahun, 4);
+
 
         $kontrabon = DB::table('detail_kontrabon_angkutan')
             ->selectRaw("SUM(IF(MONTH(tgl_mutasi_gudang)='$bulan' AND YEAR(tgl_mutasi_gudang)='$thn',(tarif+bs+tepung),0)) as jmlangkutan,
@@ -233,6 +239,8 @@ class KontrabonangkutanController extends Controller
             $jmlangkutan = 0;
             $jmlhutang = 0;
         }
+
+
         DB::beginTransaction();
         try {
             if (!empty($jmlangkutan)) {
@@ -250,12 +258,12 @@ class KontrabonangkutanController extends Controller
                     'peruntukan'          => 'MP',
                     'ket_peruntukan'      => 'PST',
                     'kategori' => 'GDJ',
-                    'nobukti_bukubesar' => $nobukti_bukubesar,
-                    'nobukti_bukubesar_2' => $nobukti_bukubesar_bank
+                    'nobukti_bukubesar' => $nobukti_bukubesar_angkutan,
+                    'nobukti_bukubesar_2' => $nobukti_bukubesar_angkutan
                 );
 
                 $databukubesar = array(
-                    'no_bukti' => $nobukti_bukubesar,
+                    'no_bukti' => $nobukti_bukubesar_angkutan,
                     'tanggal' => $tgl_ledger,
                     'sumber' => 'ledger',
                     'keterangan' => $keterangan,
@@ -267,7 +275,7 @@ class KontrabonangkutanController extends Controller
 
 
                 $databukubesarbank = array(
-                    'no_bukti' => $nobukti_bukubesar_bank,
+                    'no_bukti' => $nobukti_bukubesar_bank_angkutan,
                     'tanggal' => $tgl_ledger,
                     'sumber' => 'ledger',
                     'keterangan' => $keterangan,
@@ -282,12 +290,13 @@ class KontrabonangkutanController extends Controller
             }
 
             if (!empty($jmlhutang)) {
+
                 $no_bukti_hutang = buatkode($no_bukti, 'LR' . $cbg . $tahun, 4);
                 $data = array(
                     'no_bukti'            => $no_bukti_hutang,
                     'tgl_ledger'          => $tgl_ledger,
                     'no_ref'              => $no_kontrabon,
-                    'bank'                => $bank,
+                    'bank'                => $kode_bank,
                     'pelanggan'           => $pelanggan,
                     'keterangan'          => $keterangan,
                     'kode_akun'           => '2-1800',
@@ -297,11 +306,11 @@ class KontrabonangkutanController extends Controller
                     'peruntukan'          => 'MP',
                     'ket_peruntukan'      => 'PST',
                     'kategori' => 'GDJ',
-                    'nobukti_bukubesar' => $nobukti_bukubesar,
-                    'nobukti_bukubesar_2' => $nobukti_bukubesar_bank
+                    'nobukti_bukubesar' => $nobukti_bukubesar_hutang,
+                    'nobukti_bukubesar_2' => $nobukti_bukubesar_bank_hutang
                 );
                 $databukubesar = array(
-                    'no_bukti' => $nobukti_bukubesar,
+                    'no_bukti' => $nobukti_bukubesar_hutang,
                     'tanggal' => $tgl_ledger,
                     'sumber' => 'ledger',
                     'keterangan' => $keterangan,
@@ -313,7 +322,7 @@ class KontrabonangkutanController extends Controller
 
 
                 $databukubesarbank = array(
-                    'no_bukti' => $nobukti_bukubesar_bank,
+                    'no_bukti' => $nobukti_bukubesar_bank_hutang,
                     'tanggal' => $tgl_ledger,
                     'sumber' => 'ledger',
                     'keterangan' => $keterangan,
@@ -334,6 +343,7 @@ class KontrabonangkutanController extends Controller
             DB::table('angkutan')->whereIn('no_surat_jalan', $no_surat_jalan)->update($dataangkutan);
             DB::table('kontrabon_angkutan')->where('no_kontrabon', $no_kontrabon)->update(['status' => 1]);
             DB::commit();
+            //die;
             return Redirect::back()->with(['success' => 'Data Kontrabon Berhasil di Simpan']);
         } catch (\Exception $e) {
             dd($e);
