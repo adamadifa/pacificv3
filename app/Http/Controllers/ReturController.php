@@ -181,7 +181,6 @@ class ReturController extends Controller
             ->select('no_fak_penj')
             ->where('kode_pelanggan', $request->kode_pelanggan)
             ->orderBy('tgltransaksi', 'desc')
-            ->limit(5)
             ->get();
         echo "<option value=''>Pilih No. Faktur</option>";
         foreach ($faktur as $d) {
