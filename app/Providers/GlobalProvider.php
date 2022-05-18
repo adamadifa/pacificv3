@@ -238,7 +238,7 @@ class GlobalProvider extends ServiceProvider
                 'admin', 'admin penjualan', 'kepala admin', 'direktur', 'manager accounting', 'spv accounting', 'general manager',
                 'manager marketing', 'kepala penjualan', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'admin kas kecil', 'kasir', 'manager pembelian', 'admin pembelian',
                 'admin kas', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil',
-                'admin penjualan dan kasir', 'kepala gudang', 'audit'
+                'admin penjualan dan kasir', 'kepala gudang', 'audit', 'admin gudang pusat'
             ];
             $laporankeuangan_view = [
                 'admin', 'direktur', 'general manager', 'manager marketing', 'manager accounting', 'spv accounting',
@@ -471,9 +471,9 @@ class GlobalProvider extends ServiceProvider
 
             //Kontrabon Angkutan
 
-            $gudang_jadi_keuangan = ['admin', 'kepala gudang', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3'];
-            $kontrabon_angkutan_view = ['admin', 'kepala gudang', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3'];
-            $kontrabon_angkutan_hapus = ['admin', 'kepala gudang'];
+            $gudang_jadi_keuangan = ['admin', 'kepala gudang', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'admin gudang pusat'];
+            $kontrabon_angkutan_view = ['admin', 'kepala gudang', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'admin gudang pusat'];
+            $kontrabon_angkutan_hapus = ['admin', 'kepala gudang', 'admin gudang pusat'];
 
             //Gudang Cabang
 
