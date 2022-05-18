@@ -139,7 +139,9 @@ class LaporankeuanganController extends Controller
             $query->orderBy('tgl_ledger');
             $query->orderBy('date_created');
             $query->whereBetween('tgl_ledger', [$request->dari, $request->sampai]);
-            $query->where('ledger_bank.bank', $kode_bank);
+            if ($kode_bank != "") {
+                $query->where('ledger_bank.bank', $kode_bank);
+            }
             if (!empty($dari_kode_akun) && !empty($sampai_kode_akun)) {
                 $query->whereBetween('ledger_bank.kode_akun', [$dari_kode_akun, $sampai_kode_akun]);
             }
