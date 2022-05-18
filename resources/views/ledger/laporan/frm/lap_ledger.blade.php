@@ -164,17 +164,8 @@
             var dari = $("#dari").val();
             var sampai = $("#sampai").val();
 
-            if (kode_bank == "" && jenislaporan == "detail" || kode_bank == "-") {
-                swal({
-                    title: 'Oops'
-                    , text: 'Pilih Ledger Terlebih Dahulu !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#kode_bank").focus();
-                });
-                return false;
-            } else if (jenislaporan == "") {
+
+            if (jenislaporan == "") {
                 swal({
                     title: 'Oops'
                     , text: 'Pilih Jenis Laporan Terlebih Dahulu !'
