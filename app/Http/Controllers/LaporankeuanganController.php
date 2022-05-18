@@ -188,7 +188,7 @@ class LaporankeuanganController extends Controller
                 // Fungsi header dengan mengirimkan raw data excel
                 header("Content-type: application/vnd-ms-excel");
                 // Mendefinisikan nama file ekspor "hasil-export.xls"
-                header("Content-Disposition: attachment; filename=Ledger $bank->nama_bank Periode $dari-$sampai.xls");
+                header("Content-Disposition: attachment; filename=Ledger  Periode $dari-$sampai.xls");
             }
             return view('ledger.laporan.cetak_ledger', compact('ledger', 'saldoawal', 'bank', 'dari', 'sampai'));
         } else {
