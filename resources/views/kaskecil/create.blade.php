@@ -3,7 +3,7 @@
     <input type="hidden" id="cekkaskeciltemp">
     @csrf
     <div class="row">
-        @if (Auth::user()->kode_cabang =="PCF" && Auth::user()->level != "admin keuangan")
+        {{-- @if (Auth::user()->kode_cabang =="PCF" && Auth::user()->level != "admin keuangan")
         <div class="col-lg-12 col-sm-12">
             <div class="form-group  ">
                 <select name="kode_cabang" id="kode_cabang" class="form-control">
@@ -11,22 +11,45 @@
                     @foreach ($cabang as $c)
                     <option {{ (Request('kode_cabang')==$c->kode_cabang ? 'selected':'')}} value="{{
                                             $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
-                    @endforeach
-                </select>
-            </div>
+        @endforeach
+        </select>
+    </div>
+    </div>
+    @else
+    @if (Auth::user()->kode_cabang=="PCF")
+    @php
+    $cbg = "PST";
+    @endphp
+    @else
+    @php
+    $cbg = Auth::user()->kode_cabang;
+    @endphp
+    @endif
+    <input type="hidden" name="kode_cabang" id="kode_cabang" value="{{ $cbg }}">
+    @endif --}}
+
+    <div class="col-lg-12 col-sm-12">
+        <div class="form-group  ">
+            <select name="kode_cabang" id="kode_cabang" class="form-control">
+                <option value="">Pilih Cabang</option>
+                @foreach ($cabang as $c)
+                @if ($c->kode_cabang=="PCF")
+                @php
+                $kode_cabang = "PST";
+                $nama_cabang = "PUSAT";
+                @endphp
+                @else
+                @php
+                $kode_cabang = $c->kode_cabang;
+                $nama_cabang = $c->nama_cabang;
+                @endphp
+                @endif
+                <option {{ (Request('kode_cabang')==$kode_cabang ? 'selected':'')}} value="{{
+                    $kode_cabang }}">{{ strtoupper($nama_cabang) }}</option>
+                @endforeach
+            </select>
         </div>
-        @else
-        @if (Auth::user()->kode_cabang=="PCF")
-        @php
-        $cbg = "PST";
-        @endphp
-        @else
-        @php
-        $cbg = Auth::user()->kode_cabang;
-        @endphp
-        @endif
-        <input type="hidden" name="kode_cabang" id="kode_cabang" value="{{ $cbg }}">
-        @endif
+    </div>
     </div>
     <div class="row">
         <div class="col-12">

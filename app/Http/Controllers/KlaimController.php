@@ -41,10 +41,14 @@ class KlaimController extends Controller
         }
         $query->leftJoin('ledger_bank', 'klaim.kode_klaim', '=', 'ledger_bank.kode_klaim');
         $klaim = $query->get();
-        if ($this->cabang == "PCF") {
-            $cabang = Cabang::orderBy('kode_cabang')->get();
+        $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->first();
+        if ($this->cabang != "PCF") {
+            $cabang = Cabang::orderBy('kode_cabang')
+                ->where('kode_cabang', $this->cabang)
+                ->orWhere('kode_cabang', $cbg->sub_cabang)
+                ->get();
         } else {
-            $cabang = Cabang::where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+            $cabang = Cabang::orderBy('kode_cabang')->get();
         }
         return view('klaim.index', compact('klaim', 'cabang'));
     }
@@ -138,7 +142,15 @@ class KlaimController extends Controller
         }
 
 
-        $cabang = Cabang::orderBy('kode_cabang')->get();
+        $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->first();
+        if ($this->cabang != "PCF") {
+            $cabang = Cabang::orderBy('kode_cabang')
+                ->where('kode_cabang', $this->cabang)
+                ->orWhere('kode_cabang', $cbg->sub_cabang)
+                ->get();
+        } else {
+            $cabang = Cabang::orderBy('kode_cabang')->get();
+        }
         return view('klaim.create', compact('kaskecil', 'cabang', 'saldoawal'));
     }
 

@@ -35,7 +35,29 @@
                             </div>
                         </div>
                         <div class="row">
-                            @if (Auth::user()->kode_cabang =="PCF")
+                            <div class="col-lg-4 col-sm-12">
+                                <div class="form-group  ">
+                                    <select name="kode_cabang" id="kode_cabang" class="form-control">
+                                        <option value="">Pilih Cabang</option>
+                                        @foreach ($cabang as $c)
+                                        @if ($c->kode_cabang=="PCF")
+                                        @php
+                                        $kode_cabang = "PST";
+                                        $nama_cabang = "PUSAT";
+                                        @endphp
+                                        @else
+                                        @php
+                                        $kode_cabang = $c->kode_cabang;
+                                        $nama_cabang = $c->nama_cabang;
+                                        @endphp
+                                        @endif
+                                        <option {{ (Request('kode_cabang')==$kode_cabang ? 'selected':'')}} value="{{
+                                            $kode_cabang }}">{{ strtoupper($nama_cabang) }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            {{-- @if (Auth::user()->kode_cabang =="PCF")
                             <div class="col-lg-4 col-sm-12">
                                 <div class="form-group  ">
                                     <select name="kode_cabang" id="kode_cabang" class="form-control">
@@ -43,166 +65,166 @@
                                         @foreach ($cabang as $c)
                                         <option {{ (Request('kode_cabang')==$c->kode_cabang ? 'selected':'')}} value="{{
                                             $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            @else
-                            @if (Auth::user()->level=="admin keuangan")
-                            @php
-                            $kode_cabang = "PST";
-                            @endphp
-                            @else
-                            @php
-                            $kode_cabang = Auth::user()->kode_cabang;
-                            @endphp
-                            @endif
-                            <input type="hidden" name="kode_cabang" id="kode_cabang" value="{{ $kode_cabang }}">
-                            @endif
-                            <div class="col-lg-4 col-sm-12">
-                                <x-inputtext field="nobukti" label="No. Bukti" icon="feather icon-credit-card" value="{{ Request('nobukti') }}" />
-                            </div>
-                            <div class="col-lg-4 col-sm-12">
-                                <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search"></i> Cari Data </button>
-                            </div>
-                        </div>
-                    </form>
-                    @include('layouts.notification')
-                    <table class="table table-hover-animation">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>No</th>
-                                <th>Tanggal</th>
-                                <th>No. Bukti</th>
-                                <th>Keterangan</th>
-                                <th>Akun</th>
-                                <th>Penerimaan</th>
-                                <th>Pengeluaran</th>
-                                <th>Saldo</th>
-                                @if (Auth::user()->kode_cabang=="PCF")
-                                <th>Peruntukan</th>
-                                @endif
-                                <th>CR</th>
-                                <th>Aksi</th>
-                            </tr>
-                            <tr>
-                                <th colspan="7"><b>SALDO AWAL</b></th>
-                                <th align="right" style="font-weight:bold">
-                                    @if (!empty($saldoawal->saldo_awal))
-                                    {{ rupiah($saldoawal->saldo_awal) }}
-                                    @endif
-                                </th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if ($kaskecil == null)
-                            <tr>
-                                <td colspan="11">
-                                    <div class="alert alert-info">
-                                        <i class="fa fa-info mr-2"></i>
-                                        Silahkan Pilih Periode Pencarian Terlebih Dahulu !
-                                    </div>
-                                </td>
-                            </tr>
-                            @else
-
-                            @php
-                            $saldo = $saldoawal->saldo_awal;
-                            $totalpenerimaan = 0;
-                            $totalpengeluaran = 0;
-                            @endphp
-                            @foreach ($kaskecil as $d)
-                            @php
-                            if ($d->status_dk == 'K') {
-                            $penerimaan = $d->jumlah;
-                            $s = $penerimaan;
-                            $pengeluaran = "0";
-                            } else {
-                            $penerimaan = "0";
-                            $pengeluaran = $d->jumlah;
-                            $s = -$pengeluaran;
-                            }
-
-                            $totalpenerimaan = $totalpenerimaan + $penerimaan;
-                            $totalpengeluaran = $totalpengeluaran + $pengeluaran;
-                            $saldo = $saldo + $s;
-
-                            if ($d->no_ref != "") {
-                            $color = "#6db5c3";
-                            $text = "white";
-                            } else {
-                            $color = "";
-                            $text = "";
-                            }
-                            @endphp
-                            <tr style="color:{{ $text }}; background-color:{{ $color }} ">
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ date("d-m-Y",strtotime($d->tgl_kaskecil)) }}</td>
-                                <td>{{ $d->nobukti; }}</td>
-                                <td style="width:25%">{{ ucwords(strtolower($d->keterangan)) }}</td>
-                                <td style="width:20%">{{ $d->kode_akun }} - {{ $d->nama_akun }}</td>
-                                <td align="right" class="success">
-                                    @if (!empty($penerimaan))
-                                    {{ rupiah($penerimaan) }}
-                                    @endif
-                                </td>
-                                <td align=" right" class="danger">
-                                    @if (!empty($pengeluaran))
-                                    {{ rupiah($pengeluaran) }}
-                                    @endif
-                                </td>
-                                <td align="right" class="info">
-                                    @if (!empty($saldo))
-                                    {{ rupiah($saldo) }}
-                                    @endif
-                                </td>
-                                @if (Auth::user()->kode_cabang=="PCF")
-                                <td>{{ $d->peruntukan }}</td>
-                                @endif
-                                <td class="success">
-                                    @if (!empty($d->kode_cr))
-                                    <i class="fa fa-check"></i>
-                                    @endif
-                                </td>
-                                <td>
-
-                                    @if (empty($d->kode_klaim) && $d->keterangan != "Penerimaan Kas Kecil")
-                                    <div class="btn-group" role="group" aria-label="Basic example">
-                                        @if(empty($d->no_ref))
-                                        <a href="#" data-status="0" data-id="{{ $d->id }}" class="success edit"><i class="feather icon-edit"></i></a>
-                                        <form method="POST" name="deleteform" class="deleteform" action="/kaskecil/{{ Crypt::encrypt($d->id) }}/delete">
-                                            @csrf
-                                            @method('DELETE')
-                                            <a href="#" class="delete-confirm ml-1">
-                                                <i class="feather icon-trash danger"></i>
-                                            </a>
-                                        </form>
-                                        @endif
-                                    </div>
-                                    @else
-                                    <a href="#" data-status="1" data-id="{{ $d->id }}" class="success edit"><i class="feather icon-edit"></i></a>
-                                    @endif
-                                </td>
-                            </tr>
                             @endforeach
-                            <tr>
-                                <td style="font-weight: bold" colspan="5">TOTAL</td>
-                                <td class="text-right" style="font-weight: bold">{{ rupiah($totalpenerimaan) }}</td>
-                                <td class="text-right" style="font-weight: bold">{{ rupiah($totalpengeluaran) }}</td>
-                                <td class="text-right" style="font-weight: bold">{{ rupiah($saldo) }}</td>
-                                <td colspan="3"></td>
-                            </tr>
-                            @endif
-                        </tbody>
-                    </table>
+                            </select>
+                        </div>
+                </div>
+                @else
+                @if (Auth::user()->level=="admin keuangan")
+                @php
+                $kode_cabang = "PST";
+                @endphp
+                @else
+                @php
+                $kode_cabang = Auth::user()->kode_cabang;
+                @endphp
+                @endif
+                <input type="hidden" name="kode_cabang" id="kode_cabang" value="{{ $kode_cabang }}">
+                @endif --}}
+                <div class="col-lg-4 col-sm-12">
+                    <x-inputtext field="nobukti" label="No. Bukti" icon="feather icon-credit-card" value="{{ Request('nobukti') }}" />
+                </div>
+                <div class="col-lg-4 col-sm-12">
+                    <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search"></i> Cari Data </button>
                 </div>
             </div>
+            </form>
+            @include('layouts.notification')
+            <table class="table table-hover-animation">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>No</th>
+                        <th>Tanggal</th>
+                        <th>No. Bukti</th>
+                        <th>Keterangan</th>
+                        <th>Akun</th>
+                        <th>Penerimaan</th>
+                        <th>Pengeluaran</th>
+                        <th>Saldo</th>
+                        @if (Auth::user()->kode_cabang=="PCF")
+                        <th>Peruntukan</th>
+                        @endif
+                        <th>CR</th>
+                        <th>Aksi</th>
+                    </tr>
+                    <tr>
+                        <th colspan="7"><b>SALDO AWAL</b></th>
+                        <th align="right" style="font-weight:bold">
+                            @if (!empty($saldoawal->saldo_awal))
+                            {{ rupiah($saldoawal->saldo_awal) }}
+                            @endif
+                        </th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @if ($kaskecil == null)
+                    <tr>
+                        <td colspan="11">
+                            <div class="alert alert-info">
+                                <i class="fa fa-info mr-2"></i>
+                                Silahkan Pilih Periode Pencarian Terlebih Dahulu !
+                            </div>
+                        </td>
+                    </tr>
+                    @else
+
+                    @php
+                    $saldo = $saldoawal->saldo_awal;
+                    $totalpenerimaan = 0;
+                    $totalpengeluaran = 0;
+                    @endphp
+                    @foreach ($kaskecil as $d)
+                    @php
+                    if ($d->status_dk == 'K') {
+                    $penerimaan = $d->jumlah;
+                    $s = $penerimaan;
+                    $pengeluaran = "0";
+                    } else {
+                    $penerimaan = "0";
+                    $pengeluaran = $d->jumlah;
+                    $s = -$pengeluaran;
+                    }
+
+                    $totalpenerimaan = $totalpenerimaan + $penerimaan;
+                    $totalpengeluaran = $totalpengeluaran + $pengeluaran;
+                    $saldo = $saldo + $s;
+
+                    if ($d->no_ref != "") {
+                    $color = "#6db5c3";
+                    $text = "white";
+                    } else {
+                    $color = "";
+                    $text = "";
+                    }
+                    @endphp
+                    <tr style="color:{{ $text }}; background-color:{{ $color }} ">
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ date("d-m-Y",strtotime($d->tgl_kaskecil)) }}</td>
+                        <td>{{ $d->nobukti; }}</td>
+                        <td style="width:25%">{{ ucwords(strtolower($d->keterangan)) }}</td>
+                        <td style="width:20%">{{ $d->kode_akun }} - {{ $d->nama_akun }}</td>
+                        <td align="right" class="success">
+                            @if (!empty($penerimaan))
+                            {{ rupiah($penerimaan) }}
+                            @endif
+                        </td>
+                        <td align=" right" class="danger">
+                            @if (!empty($pengeluaran))
+                            {{ rupiah($pengeluaran) }}
+                            @endif
+                        </td>
+                        <td align="right" class="info">
+                            @if (!empty($saldo))
+                            {{ rupiah($saldo) }}
+                            @endif
+                        </td>
+                        @if (Auth::user()->kode_cabang=="PCF")
+                        <td>{{ $d->peruntukan }}</td>
+                        @endif
+                        <td class="success">
+                            @if (!empty($d->kode_cr))
+                            <i class="fa fa-check"></i>
+                            @endif
+                        </td>
+                        <td>
+
+                            @if (empty($d->kode_klaim) && $d->keterangan != "Penerimaan Kas Kecil")
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                @if(empty($d->no_ref))
+                                <a href="#" data-status="0" data-id="{{ $d->id }}" class="success edit"><i class="feather icon-edit"></i></a>
+                                <form method="POST" name="deleteform" class="deleteform" action="/kaskecil/{{ Crypt::encrypt($d->id) }}/delete">
+                                    @csrf
+                                    @method('DELETE')
+                                    <a href="#" class="delete-confirm ml-1">
+                                        <i class="feather icon-trash danger"></i>
+                                    </a>
+                                </form>
+                                @endif
+                            </div>
+                            @else
+                            <a href="#" data-status="1" data-id="{{ $d->id }}" class="success edit"><i class="feather icon-edit"></i></a>
+                            @endif
+                        </td>
+                    </tr>
+                    @endforeach
+                    <tr>
+                        <td style="font-weight: bold" colspan="5">TOTAL</td>
+                        <td class="text-right" style="font-weight: bold">{{ rupiah($totalpenerimaan) }}</td>
+                        <td class="text-right" style="font-weight: bold">{{ rupiah($totalpengeluaran) }}</td>
+                        <td class="text-right" style="font-weight: bold">{{ rupiah($saldo) }}</td>
+                        <td colspan="3"></td>
+                    </tr>
+                    @endif
+                </tbody>
+            </table>
         </div>
     </div>
+</div>
+</div>
 </div>
 <!-- Input Kas Kecil -->
 <div class="modal fade text-left" id="mdlinputkaskecil" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">

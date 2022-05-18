@@ -41,8 +41,19 @@
                                     <select name="kode_cabang" id="kode_cabang" class="form-control">
                                         <option value="">Pilih Cabang</option>
                                         @foreach ($cabang as $c)
-                                        <option {{ (Request('kode_cabang')==$c->kode_cabang ? 'selected':'')}} value="{{
-                                            $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
+                                        @if ($c->kode_cabang=="PCF")
+                                        @php
+                                        $kode_cabang = "PST";
+                                        $nama_cabang = "PUSAT";
+                                        @endphp
+                                        @else
+                                        @php
+                                        $kode_cabang = $c->kode_cabang;
+                                        $nama_cabang = $c->nama_cabang;
+                                        @endphp
+                                        @endif
+                                        <option {{ (Request('kode_cabang')==$kode_cabang ? 'selected':'')}} value="{{
+                                            $kode_cabang }}">{{ strtoupper($nama_cabang) }}</option>
                                         @endforeach
                                     </select>
                                 </div>
