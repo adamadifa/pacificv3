@@ -36,12 +36,15 @@
 </head>
 <body>
     <b style="font-size:14px;">
+        @if ($cabang != null)
         @if ($cabang->kode_cabang=="PST")
         PACIFIC PUSAT
         @else
         PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
         @endif
         <br>
+        @endif
+
         LAPORAN KAS KECIL<br>
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
     </b>
