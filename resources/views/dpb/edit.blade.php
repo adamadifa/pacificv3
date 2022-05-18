@@ -196,41 +196,41 @@
                         <td style="width: 5%" class="bg-info">
                             <input type="text" autocomplete="off" class="form-control" name="jmlduspengambilan[]" value="{{ !empty($jmlpengambilan_dus) ? $jmlpengambilan_dus : '' }}">
                         </td>
-                        <td class="bg-info">{{ $d->satuan }}</td>
+                        <td>{{ $d->satuan }}</td>
                         <td style="width:5%" class="bg-info">
                             <input type="{{ !empty($d->isipack) ? 'text' : 'hidden' }}" autocomplete="off" class="form-control" name="jmlpackpengambilan[]" value="{{ !empty($jmlpack_pengambilan) ? $jmlpack_pengambilan : '' }}">
                         </td>
-                        <td class="bg-info">PACK</td>
+                        <td>PACK</td>
                         <td style="width: 5%" class="bg-info">
                             <input type="text" class="form-control" autocomplete="off" name="jmlpcspengambilan[]" value="{{ !empty($jmlpcs_pengambilan) ? $jmlpcs_pengambilan : '' }}">
                         </td>
-                        <td class="bg-info">PCS</td>
+                        <td>PCS</td>
                         <td style="width: 5%" class="bg-success">
                             <input type="text" class="form-control" autocomplete="off" name="jmlduspengembalian[]" value="{{ !empty($jmlpengembalian_dus) ? $jmlpengembalian_dus : '' }}">
                         </td>
-                        <td class="bg-success">{{ $d->satuan }}</td>
+                        <td>{{ $d->satuan }}</td>
                         <td style="width:5%" class="bg-success">
                             <input type="{{ !empty($d->isipack) ? 'text' : 'hidden' }}" autocomplete="off" class="form-control" name="jmlpackpengembalian[]" value="{{ !empty($jmlpack_pengembalian) ? $jmlpack_pengembalian : '' }}">
                         </td>
-                        <td class="bg-success">PACK</td>
+                        <td>PACK</td>
                         <td style="width: 5%" class="bg-success">
                             <input type="text" class="form-control" name="jmlpcspengembalian[]" autocomplete="off" value="{{ !empty($jmlpcs_pengembalian) ? $jmlpcs_pengembalian : '' }}">
                         </td>
-                        <td class="bg-success">PCS</td>
+                        <td>PCS</td>
                         <td style="width: 5%" class="bg-danger">
                             <input type="text" class="form-control" name="jmldusbarangkeluar[]" autocomplete="off" value="{{ !empty($jmlbarangkeluar_dus) ? $jmlbarangkeluar_dus : '' }}">
                         </td>
-                        <td class="bg-danger">{{ $d->satuan }}</td>
+                        <td>{{ $d->satuan }}</td>
                         <td style="width:5%" class="bg-danger">
 
                             <input type="{{ !empty($d->isipack) ? 'text' : 'hidden' }}" class="form-control" name="jmlpackbarangkeluar[]" value="{{ !empty($jmlpack_barangkeluar) ? $jmlpack_barangkeluar : '' }}">
 
                         </td>
-                        <td class="bg-danger">PACK</td>
+                        <td>PACK</td>
                         <td style="width: 5%" class="bg-danger">
                             <input type="text" class="form-control" name="jmlpcsbarangkeluar[]" autocomplete="off" value="{{ !empty($jmlpcs_barangkeluar) ? $jmlpcs_barangkeluar : '' }}">
                         </td>
-                        <td class="bg-danger">PCS</td>
+                        <td>PCS</td>
                     </tr>
                     @endforeach
                 </tbody>
