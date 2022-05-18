@@ -131,17 +131,7 @@
             var sampai_kode_akun = $("#sampai_kode_akun").val();
             var dari = $("#dari").val();
             var sampai = $("#sampai").val();
-            if (kode_cabang == "") {
-                swal({
-                    title: 'Oops'
-                    , text: 'Pilih Cabang Terlebih Dahulu !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#kode_cabang").focus();
-                });
-                return false;
-            } else if (dari_kode_akun != "" && sampai_kode_akun == "" || dari_kode_akun == "" && sampai_kode_akun != "") {
+            if (dari_kode_akun != "" && sampai_kode_akun == "" || dari_kode_akun == "" && sampai_kode_akun != "") {
                 swal({
                     title: 'Oops'
                     , text: 'Range Akun Harus Lengkap !'

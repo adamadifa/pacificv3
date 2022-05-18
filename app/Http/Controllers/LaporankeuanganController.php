@@ -51,7 +51,9 @@ class LaporankeuanganController extends Controller
         if (!empty($dari_kode_akun) && !empty($sampai_kode_akun)) {
             $query->whereBetween('kaskecil_detail.kode_akun', [$dari_kode_akun, $sampai_kode_akun]);
         }
-        $query->where('kaskecil_detail.kode_cabang', $kode_cabang);
+        if ($kode_cabang != "") {
+            $query->where('kaskecil_detail.kode_cabang', $kode_cabang);
+        }
         $query->orderBy('tgl_kaskecil');
         $query->orderBy('nobukti');
         $query->orderBy('order');
