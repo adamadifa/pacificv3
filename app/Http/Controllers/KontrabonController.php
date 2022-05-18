@@ -302,6 +302,7 @@ class KontrabonController extends Controller
     public function storeproseskontrabon(Request $request)
     {
         $no_kontrabon = $request->no_kontrabon;
+        $supplier = DB::table('supplier')->where('kode_supplier', $request->kode_supplier)->first();
         $tglbayar = $request->tglbayar;
         $bayar = $request->jmlbayar;
         $kode_bank = $request->kode_bank;
@@ -310,7 +311,7 @@ class KontrabonController extends Controller
         $kode_cabang = $request->kode_cabang;
         $keterangan = $request->keterangan;
         $no_bkk = $request->no_bkk;
-        $pelanggan = $request->kode_supplier;
+        $pelanggan = $supplier->nama_supplier;;
         $id_user = Auth::user()->id;
         $tanggal = explode("-", $tglbayar);
         $bulan = $tanggal[1];
