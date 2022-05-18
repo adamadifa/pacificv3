@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CoaController extends Controller
@@ -17,10 +18,17 @@ class CoaController extends Controller
                 ->join('coa', 'set_coa_cabang.kode_akun', '=', 'coa.kode_akun')
                 ->where('set_coa_cabang.kode_cabang', $kode_cabang)->groupBy('set_coa_cabang.kode_akun', 'nama_akun')->get();
         } else {
-            $coa = DB::table('set_coa_cabang')
-                ->select('set_coa_cabang.kode_akun', 'nama_akun')
-                ->join('coa', 'set_coa_cabang.kode_akun', '=', 'coa.kode_akun')
-                ->groupBy('set_coa_cabang.kode_akun', 'nama_akun')->get();
+            if (Auth::user()->kode_cabang == "PCF") {
+                $coa = DB::table('set_coa_cabang')
+                    ->select('set_coa_cabang.kode_akun', 'nama_akun')
+                    ->join('coa', 'set_coa_cabang.kode_akun', '=', 'coa.kode_akun')
+                    ->groupBy('set_coa_cabang.kode_akun', 'nama_akun')->get();
+            } else {
+                $coa = DB::table('set_coa_cabang')
+                    ->select('set_coa_cabang.kode_akun', 'nama_akun')
+                    ->join('coa', 'set_coa_cabang.kode_akun', '=', 'coa.kode_akun')
+                    ->where('set_coa_cabang.kode_cabang', $kode_cabang)->groupBy('set_coa_cabang.kode_akun', 'nama_akun')->get();
+            }
         }
 
         echo "<option value=''>Semua Akun</option>";

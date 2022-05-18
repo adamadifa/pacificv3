@@ -296,7 +296,7 @@
                 <tr>
                     <td colspan="4"></td>
                     <td colspan="3" align="center">Total </td>
-                    <td align="right">{{ rupiah($faktur->subtotal - $faktur->potongan) }}</td>
+                    <td align="right">{{ rupiah($faktur->total) }}</td>
                 </tr>
             </table>
         </td>

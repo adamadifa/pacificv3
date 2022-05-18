@@ -163,9 +163,19 @@
             var sampai_kode_akun = $("#sampai_kode_akun").val();
             var dari = $("#dari").val();
             var sampai = $("#sampai").val();
-
-
-            if (jenislaporan == "") {
+            var cabang = "{{ Auth::user()->kode_cabang }}";
+            //alert(kode_bank);
+            if (cabang !== "PCF" && kode_bank == "-") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Bank Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#sampai_kode_akun").focus();
+                });
+                return false;
+            } else if (jenislaporan == "") {
                 swal({
                     title: 'Oops'
                     , text: 'Pilih Jenis Laporan Terlebih Dahulu !'

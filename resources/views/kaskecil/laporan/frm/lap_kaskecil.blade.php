@@ -33,7 +33,11 @@
                                         <div class="col-lg-12 col-sm-12">
                                             <div class="form-group  ">
                                                 <select name="kode_cabang" id="kode_cabang" class="form-control">
+                                                    @if ($getcbg!="PCF")
                                                     <option value="">Pilih Cabang</option>
+                                                    @else
+                                                    <option value="">Semua Cabang</option>
+                                                    @endif
                                                     @foreach ($cabang as $c)
                                                     <option value="{{ $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
                                                     @endforeach
@@ -132,7 +136,18 @@
             var sampai_kode_akun = $("#sampai_kode_akun").val();
             var dari = $("#dari").val();
             var sampai = $("#sampai").val();
-            if (dari_kode_akun != "" && sampai_kode_akun == "" || dari_kode_akun == "" && sampai_kode_akun != "") {
+            var cabang = "{{ Auth::user()->kode_cabang }}";
+            if (cabang !== "PCF" && kode_cabang == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Cabang Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#sampai_kode_akun").focus();
+                });
+                return false;
+            } else if (dari_kode_akun != "" && sampai_kode_akun == "" || dari_kode_akun == "" && sampai_kode_akun != "") {
                 swal({
                     title: 'Oops'
                     , text: 'Range Akun Harus Lengkap !'
