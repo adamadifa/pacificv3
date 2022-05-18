@@ -217,8 +217,8 @@ class SetoranpusatController extends Controller
         $kode_setoranpusat = Crypt::decrypt($kode_setoranpusat);
         $tgl_diterimapusat = $request->tgl_diterimapusat;
         $bank = $request->bank;
-        $omset_bulan = $request->omset_bulan;
-        $omset_tahun = $request->omset_tahun;
+        $omset_bulan = $request->bulan;
+        $omset_tahun = $request->tahun;
         $setoranpusat = DB::table('setoran_pusat')->where('kode_setoranpusat', $kode_setoranpusat)->first();
 
 
