@@ -379,6 +379,25 @@
 </script>
 <script>
     $(function() {
+        $("#no_fak_penj").on('change', function(e) {
+            if (e.keyCode == 32) return false;
+            var no_fak_penj = $("#no_fak_penj").val();
+            $.ajax({
+                type: 'POST'
+                , url: '/penjualan/ceknofaktur'
+                , data: {
+                    no_fak_penj: no_fak_penj
+                }
+                , cache: false
+                , success: function(respond) {
+                    var status = respond;
+                    if (status != 0) {
+                        swal("Oops!", "No Faktur " + nofaktur + " Sudah Digunakan !", "warning");
+                        $("#nofaktur").val("");
+                    }
+                }
+            });
+        });
 
         function convertToRupiah(number) {
             if (number) {
