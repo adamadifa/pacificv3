@@ -46,6 +46,7 @@
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
                 <th>No</th>
                 <th>No Bukti</th>
+                <th>No.Ref</th>
                 <th>TGL</th>
                 <th>TGL Penerimaan</th>
                 <th>Pelanggan</th>
@@ -59,7 +60,7 @@
                 <th rowspan="2">Tanggal Input</th>
                 <th rowspan="2">Tanggal Update</th>
             <tr>
-                <th colspan='11'>SALDO AWAL</th>
+                <th colspan='12'>SALDO AWAL</th>
                 <th style="text-align:right">{{ desimal($saldoawal) }}</th>
             </tr>
         </thead>
@@ -87,6 +88,7 @@
             <tr>
                 <td style="text-align:center">{{ $loop->iteration }}</td>
                 <td style="text-align:center">{{ $d->no_bukti }}</td>
+                <td style="text-align:center">{{ $d->no_ref }}</td>
                 <td style="text-align:center">{{ date("d-m-Y",strtotime($d->tgl_ledger)) }}</td>
                 <td style="text-align:center">{{ !empty($d->tgl_penerimaan) ? date("d-m-Y",strtotime($d->tgl_penerimaan)) : '' }}</td>
                 <td>{{ ucwords(strtolower($d->pelanggan)) }}</td>
@@ -108,7 +110,7 @@
             </tr>
             @endforeach
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
-                <th colspan="9">TOTAL</th>
+                <th colspan="8">TOTAL</th>
                 <th style="text-align: right">{{ desimal($totaldebet) }}</th>
                 <th style="text-align: right">{{ desimal($totalkredit) }}</th>
                 <th style="text-align: right">{{ desimal($saldo) }}</th>
