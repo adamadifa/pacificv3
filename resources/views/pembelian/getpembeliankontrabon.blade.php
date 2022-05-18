@@ -35,7 +35,7 @@
 <script>
     $(function() {
         $("#tabelpembelian").DataTable();
-        $("#tabelpembelian").find(".pilih").click(function() {
+        $('#tabelpembelian tbody').on('click', '.pilih', function() {
             var nobukti_pembelian = $(this).attr('nobukti_pembelian');
             var totalpembelian = $(this).attr('totalpembelian');
             var jmlbayar = $(this).attr('jmlbayar');
