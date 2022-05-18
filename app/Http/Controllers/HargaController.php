@@ -138,7 +138,6 @@ class HargaController extends Controller
             ->where('kode_barang', $kode_barang)
             ->update([
                 'kode_barang' => $request->kode_barang,
-                'kategori' => $request->kategori,
                 'satuan' => $request->satuan,
                 'isipcsdus' => $request->isipcsdus,
                 'isipack' => $request->isipack,
