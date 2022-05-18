@@ -110,7 +110,7 @@
             </tr>
             @endforeach
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
-                <th colspan="8">TOTAL</th>
+                <th colspan="10">TOTAL</th>
                 <th style="text-align: right">{{ desimal($totaldebet) }}</th>
                 <th style="text-align: right">{{ desimal($totalkredit) }}</th>
                 <th style="text-align: right">{{ desimal($saldo) }}</th>
