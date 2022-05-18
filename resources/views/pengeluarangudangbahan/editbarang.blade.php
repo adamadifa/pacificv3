@@ -68,59 +68,48 @@
 
         $("#updatebarang").click(function(e) {
             e.preventDefault();
-            var nobukti_pengeluaran = "{{ $barang->nobukti_pengeluaran }}";
-            var kode_barang = "{{ $barang->kode_barang }}";
+            var id = "{{ $barang->id }}";
             var keterangan = $("#frmEdit").find("#keterangan").val();
             var qty_unit = $("#frmEdit").find("#qty_unit").val();
             var qty_berat = $("#frmEdit").find("#qty_berat").val();
             var qty_lebih = $("#frmEdit").find("#qty_lebih").val();
 
-            if (qty_unit == "" || qty_unit == 0) {
-                swal({
-                    title: 'Oops'
-                    , text: 'Qty Harus Diisi Dulu !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#frmEdit").find("#qty_unit").focus();
-                });
-            } else {
 
 
-                $.ajax({
-                    type: 'POST'
-                    , url: '/pengeluarangudangbahan/updatebarang'
-                    , data: {
-                        _token: "{{ csrf_token() }}"
-                        , nobukti_pengeluaran: nobukti_pengeluaran
-                        , kode_barang: kode_barang
-                        , keterangan: keterangan
-                        , qty_unit: qty_unit
-                        , qty_berat: qty_berat
-                        , qty_lebih: qty_lebih
-                    }
-                    , cache: false
-                    , success: function(respond) {
-                        if (respond == 2) {
-                            swal("Oops", "Data Gagal Disimpan", "warning");
-                        } else {
-                            swal("Berhasil", "Data Berhasil Disimpan", "success");
-                            $("#kode_barang").val("");
-                            $("#nama_barang").val("");
-                            $("#keterangan").val("");
-                            $("#qty_unit").val("");
-                            $("#qty_berat").val("");
-                            $("#qty_lebih").val("");
-                            $("#nama_barang").focus();
-                        }
 
-                        loaddetail();
-                        $("#mdledit").modal("hide");
+            $.ajax({
+                type: 'POST'
+                , url: '/pengeluarangudangbahan/updatebarang'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , id: id
+                    , keterangan: keterangan
+                    , qty_unit: qty_unit
+                    , qty_berat: qty_berat
+                    , qty_lebih: qty_lebih
+                }
+                , cache: false
+                , success: function(respond) {
+                    if (respond == 2) {
+                        swal("Oops", "Data Gagal Disimpan", "warning");
+                    } else {
+                        swal("Berhasil", "Data Berhasil Disimpan", "success");
+                        $("#kode_barang").val("");
+                        $("#nama_barang").val("");
+                        $("#keterangan").val("");
+                        $("#qty_unit").val("");
+                        $("#qty_berat").val("");
+                        $("#qty_lebih").val("");
+                        $("#nama_barang").focus();
                     }
 
+                    loaddetail();
+                    $("#mdledit").modal("hide");
+                }
 
-                });
-            }
+
+            });
+
         });
     });
 

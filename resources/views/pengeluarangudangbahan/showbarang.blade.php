@@ -10,8 +10,8 @@
     <td>
         <div class="btn-group" role="group" aria-label="Basic example">
 
-            <a href="#" kode_barang="{{ $d->kode_barang }}" nobukti_pengeluaran="{{ $d->nobukti_pengeluaran }}" class="edit"><i class="feather icon-edit success"></i></a>
-            <a href="#" kode_barang="{{ $d->kode_barang }}" nobukti_pengeluaran="{{ $d->nobukti_pengeluaran }}" class="hapus ml-1"><i class="feather icon-trash danger"></i></a>
+            <a href="#" id="{{ $d->id }}" class="edit"><i class="feather icon-edit success"></i></a>
+            <a href="#" id="{{ $d->id }}" class="hapus ml-1"><i class="feather icon-trash danger"></i></a>
         </div>
     </td>
 </tr>
@@ -19,8 +19,7 @@
 <script>
     $(function() {
         $(".edit").click(function(e) {
-            var nobukti_pengeluaran = $(this).attr("nobukti_pengeluaran");
-            var kode_barang = $(this).attr("kode_barang");
+            var id = $(this).attr("id");
             var cektutuplaporan = $("#cektutuplaporan").val();
             if (cektutuplaporan > 0) {
                 swal("Oops", "Laporan Periode Ini Sudah Ditutup !", "warning");
@@ -30,8 +29,8 @@
                     , url: '/pengeluarangudangbahan/editbarang'
                     , data: {
                         _token: "{{ csrf_token() }}"
-                        , nobukti_pengeluaran: nobukti_pengeluaran
-                        , kode_barang: kode_barang
+                        , id: id
+
                     }
                     , cache: false
                     , success: function(respond) {
@@ -72,8 +71,7 @@
 
         $(".hapus").click(function(e) {
             e.preventDefault();
-            var kode_barang = $(this).attr("kode_barang");
-            var nobukti_pengeluaran = $("#nobukti_pengeluaran").val();
+            var id = $(this).attr("id");
             event.preventDefault();
             swal({
                     title: `Anda Yakin Data ini Akan Dihapus ?`
@@ -93,8 +91,7 @@
                                 , url: '/pengeluarangudangbahan/deletebarang'
                                 , data: {
                                     _token: "{{ csrf_token() }}"
-                                    , nobukti_pengeluaran: nobukti_pengeluaran
-                                    , kode_barang: kode_barang
+                                    , id: id
                                 }
                                 , cache: false
                                 , success: function(respond) {

@@ -218,13 +218,12 @@ class PemasukangudangbahanController extends Controller
     }
     public function editbarang(Request $request)
     {
-        $nobukti_pemasukan = $request->nobukti_pemasukan;
-        $kode_barang = $request->kode_barang;
+        $id = $request->id;
+
         $barang = DB::table('detail_pemasukan_gb')
             ->select('detail_pemasukan_gb.*', 'nama_barang', 'satuan')
             ->join('master_barang_pembelian', 'detail_pemasukan_gb.kode_barang', '=', 'master_barang_pembelian.kode_barang')
-            ->where('nobukti_pemasukan', $nobukti_pemasukan)
-            ->where('detail_pemasukan_gb.kode_barang', $kode_barang)
+            ->where('id', $id)
             ->first();
 
         return view('pemasukangudangbahan.editbarang', compact('barang'));
@@ -232,8 +231,7 @@ class PemasukangudangbahanController extends Controller
 
     public function updatebarang(Request $request)
     {
-        $nobukti_pemasukan = $request->nobukti_pemasukan;
-        $kode_barang = $request->kode_barang;
+        $id = $request->id;
         $keterangan = $request->keterangan;
         $qty_unit = !empty($request->qty_unit) ? $request->qty_unit : 0;
         $qty_berat = !empty($request->qty_berat) ? $request->qty_berat : 0;
@@ -245,7 +243,7 @@ class PemasukangudangbahanController extends Controller
             'qty_lebih' => $qty_lebih,
         ];
 
-        $update = DB::table('detail_pemasukan_gb')->where('nobukti_pemasukan', $nobukti_pemasukan)->where('kode_barang', $kode_barang)->update($data);
+        $update = DB::table('detail_pemasukan_gb')->where('id', $id)->update($data);
         if ($update) {
             echo 0;
         } else {
@@ -255,9 +253,8 @@ class PemasukangudangbahanController extends Controller
 
     public function deletebarang(Request $request)
     {
-        $nobukti_pemasukan = $request->nobukti_pemasukan;
-        $kode_barang = $request->kode_barang;
-        $hapus = DB::table('detail_pemasukan_gb')->where('kode_barang', $kode_barang)->where('nobukti_pemasukan', $nobukti_pemasukan)->delete();
+        $id = $request->id;
+        $hapus = DB::table('detail_pemasukan_gb')->where('id', $id)->delete();
         if ($hapus) {
             echo 0;
         } else {

@@ -93,25 +93,25 @@ class PengeluarangudangbahanController extends Controller
         $qty_lebih = $request->qty_lebih;
         $id_admin = Auth::user()->id;
 
-        $cek = DB::table('detailpengeluaran_temp_gb')->where('kode_barang', $kode_barang)->where('id_admin', $id_admin)->count();
-        if ($cek > 0) {
-            echo 1;
+        // $cek = DB::table('detailpengeluaran_temp_gb')->where('kode_barang', $kode_barang)->where('id_admin', $id_admin)->count();
+        // if ($cek > 0) {
+        //     echo 1;
+        // } else {
+        $data = [
+            'kode_barang' => $kode_barang,
+            'keterangan' => $keterangan,
+            'qty_unit' => $qty_unit,
+            'qty_berat' => $qty_berat,
+            'qty_lebih' => $qty_lebih,
+            'id_admin' => $id_admin
+        ];
+        $simpan = DB::table('detailpengeluaran_temp_gb')->insert($data);
+        if ($simpan) {
+            echo 0;
         } else {
-            $data = [
-                'kode_barang' => $kode_barang,
-                'keterangan' => $keterangan,
-                'qty_unit' => $qty_unit,
-                'qty_berat' => $qty_berat,
-                'qty_lebih' => $qty_lebih,
-                'id_admin' => $id_admin
-            ];
-            $simpan = DB::table('detailpengeluaran_temp_gb')->insert($data);
-            if ($simpan) {
-                echo 0;
-            } else {
-                echo 2;
-            }
+            echo 2;
         }
+        // }
     }
 
     public function deletetemp(Request $request)
@@ -206,13 +206,11 @@ class PengeluarangudangbahanController extends Controller
 
     public function editbarang(Request $request)
     {
-        $nobukti_pengeluaran = $request->nobukti_pengeluaran;
-        $kode_barang = $request->kode_barang;
+        $id = $request->id;
         $barang = DB::table('detail_pengeluaran_gb')
             ->select('detail_pengeluaran_gb.*', 'nama_barang', 'satuan')
             ->join('master_barang_pembelian', 'detail_pengeluaran_gb.kode_barang', '=', 'master_barang_pembelian.kode_barang')
-            ->where('nobukti_pengeluaran', $nobukti_pengeluaran)
-            ->where('detail_pengeluaran_gb.kode_barang', $kode_barang)
+            ->where('id', $id)
             ->first();
 
         return view('pengeluarangudangbahan.editbarang', compact('barang'));
@@ -220,8 +218,7 @@ class PengeluarangudangbahanController extends Controller
 
     public function updatebarang(Request $request)
     {
-        $nobukti_pengeluaran = $request->nobukti_pengeluaran;
-        $kode_barang = $request->kode_barang;
+        $id = $request->id;
         $keterangan = $request->keterangan;
         $qty_unit = !empty($request->qty_unit) ? $request->qty_unit : 0;
         $qty_berat = !empty($request->qty_berat) ? $request->qty_berat : 0;
@@ -233,7 +230,7 @@ class PengeluarangudangbahanController extends Controller
             'qty_lebih' => $qty_lebih,
         ];
 
-        $update = DB::table('detail_pengeluaran_gb')->where('nobukti_pengeluaran', $nobukti_pengeluaran)->where('kode_barang', $kode_barang)->update($data);
+        $update = DB::table('detail_pengeluaran_gb')->where('id', $id)->update($data);
         if ($update) {
             echo 0;
         } else {
@@ -243,9 +240,9 @@ class PengeluarangudangbahanController extends Controller
 
     public function deletebarang(Request $request)
     {
-        $nobukti_pengeluaran = $request->nobukti_pengeluaran;
-        $kode_barang = $request->kode_barang;
-        $hapus = DB::table('detail_pengeluaran_gb')->where('kode_barang', $kode_barang)->where('nobukti_pengeluaran', $nobukti_pengeluaran)->delete();
+        $id = $request->id;
+
+        $hapus = DB::table('detail_pengeluaran_gb')->where('id', $id)->delete();
         if ($hapus) {
             echo 0;
         } else {
@@ -261,25 +258,25 @@ class PengeluarangudangbahanController extends Controller
         $qty_unit = !empty($request->qty_unit) ? $request->qty_unit : 0;
         $qty_berat = !empty($request->qty_berat) ? $request->qty_berat : 0;
         $qty_lebih = !empty($request->qty_lebih) ? $request->qty_lebih : 0;
-        $cek = DB::table('detail_pengeluaran_gb')->where('kode_barang', $kode_barang)->where('nobukti_pengeluaran', $nobukti_pengeluaran)->count();
-        if ($cek > 0) {
-            echo 1;
+        // $cek = DB::table('detail_pengeluaran_gb')->where('kode_barang', $kode_barang)->where('nobukti_pengeluaran', $nobukti_pengeluaran)->count();
+        // if ($cek > 0) {
+        //     echo 1;
+        // } else {
+        $data = [
+            'nobukti_pengeluaran' => $nobukti_pengeluaran,
+            'kode_barang' => $kode_barang,
+            'keterangan' => $keterangan,
+            'qty_unit' => $qty_unit,
+            'qty_berat' => $qty_berat,
+            'qty_lebih' => $qty_lebih,
+        ];
+        $simpan = DB::table('detail_pengeluaran_gb')->insert($data);
+        if ($simpan) {
+            echo 0;
         } else {
-            $data = [
-                'nobukti_pengeluaran' => $nobukti_pengeluaran,
-                'kode_barang' => $kode_barang,
-                'keterangan' => $keterangan,
-                'qty_unit' => $qty_unit,
-                'qty_berat' => $qty_berat,
-                'qty_lebih' => $qty_lebih,
-            ];
-            $simpan = DB::table('detail_pengeluaran_gb')->insert($data);
-            if ($simpan) {
-                echo 0;
-            } else {
-                echo 2;
-            }
+            echo 2;
         }
+        // }
     }
 
     public function update($nobukti_pengeluaran, Request $request)
