@@ -431,7 +431,7 @@ body.fixed-footer footer.footer-dark {
 }
 
 .main-menu.menu-light .navigation .navigation-header span {
-    font-weight: 500;
+    font-weight: 700;
 }
 
 .main-menu.menu-light .navigation li.has-sub ul.menu-content {
@@ -440,7 +440,7 @@ body.fixed-footer footer.footer-dark {
 }
 
 .main-menu.menu-light .navigation li a {
-    color: #565656;
+    color: #070707;
     padding: 10px 15px 10px 15px;
     line-height: 1.45;
     transition: padding 0.35s ease 0s !important;
