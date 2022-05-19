@@ -436,10 +436,17 @@
                             <span class="menu-item">Laporan</span>
                         </a>
                         @else
+                        @if ($level=="admin pembelian")
+                        <a href="/laporangudangbahan/pemasukan">
+                            <i class="feather icon-file-text"></i>
+                            <span class="menu-item">Laporan</span>
+                        </a>
+                        @else
                         <a href="/laporangudanglogistik/pemasukan">
                             <i class="feather icon-file-text"></i>
                             <span class="menu-item">Laporan</span>
                         </a>
+                        @endif
                         @endif
 
                     </li>
