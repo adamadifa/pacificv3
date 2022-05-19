@@ -142,16 +142,6 @@
                     $("#jumlah_transfer_edit").focus();
                 });
                 return false;
-            } else if (parseInt(jmlbayar) > parseInt(sisabayar)) {
-                swal({
-                    title: 'Oops'
-                    , text: 'Jumlah Bayar Melebihi Sisa Bayar  !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#jumlah_transfer_edit").focus();
-                });
-                return false;
             } else {
                 return true;
             }

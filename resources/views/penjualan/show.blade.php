@@ -581,7 +581,7 @@
                                                     @if ($d->status===0)
                                                     <div class="btn-group" role="group" aria-label="Basic example">
                                                         <a class="ml-1 edittransfer" href="#" id_transfer="{{ $d->id_transfer; }}" kode_cabang="{{ $data->kode_cabang }}" sisabayar="{{ $sisabayar - $d->jumlah }}"><i class="feather icon-edit success"></i></a>
-                                                        @if (in_array($level,$harga_hapus))
+
                                                         <form method="POST" class="deleteform" action="/pembayaran/{{ Crypt::encrypt($d->id_transfer) }}/deletetransfer">
                                                             @csrf
                                                             @method('DELETE')
@@ -589,7 +589,7 @@
                                                                 <i class="feather icon-trash danger"></i>
                                                             </a>
                                                         </form>
-                                                        @endif
+
                                                     </div>
                                                     @else
                                                     <span class="badge bg-success">Keuangan</span>
