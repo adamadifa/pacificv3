@@ -575,7 +575,7 @@ class GlobalProvider extends ServiceProvider
 
             //Acounting
             $accounting_menu = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'general affair', 'hrd'];
-            $coa_menu = ['admin', 'accounting'];
+            $coa_menu = ['admin', 'spv accounting'];
             $hpp_menu = ['admin', 'manager accounting', 'spv accounting'];
             $hpp_input = ['admin', 'manager accounting', 'spv accounting'];
             $hargaawal_input = ['admin', 'manager accounting', 'spv accounting'];
