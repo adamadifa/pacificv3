@@ -172,9 +172,9 @@ class SetorantransferController extends Controller
         $kode_transfer = Crypt::decrypt($kode_transfer);
         $hapus = DB::table('setoran_pusat')->where('no_ref', $kode_transfer)->delete();
         if ($hapus) {
-            return Redirect::back()->with(['success' => 'Setoran Giro Di Batalkan']);
+            return Redirect::back()->with(['success' => 'Setoran Transfer Di Batalkan']);
         } else {
-            return Redirect::back()->with(['warning' => 'Setoran Giro Gagal Di Batalkan']);
+            return Redirect::back()->with(['warning' => 'Setoran Transfer Gagal Di Batalkan']);
         }
     }
 }
