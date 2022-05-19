@@ -906,6 +906,29 @@
                 </ul>
             </li>
             @endif
+            @if (in_array($level,$maintenance_menu))
+            <li class=" nav-item">
+                <a href="#"><i class="feather icon-umbrella"></i><span class="menu-title">Maintenance</span></a>
+                <ul class="menu-content">
+                    @if (in_array($level, $maintenance_pembelian))
+                    <li class="{{ request()->is(['maintenance/pembelian']) ? 'active' : '' }}">
+                        <a href="/maintenance/pembelian">
+                            <i class="feather icon-clipboard"></i>
+                            <span class="menu-item">Pembelian</span>
+                        </a>
+                    </li>
+                    @endif
+                    @if (in_array($level, $maintenance_pemasukan))
+                    <li class="{{ request()->is(['pemasukanmaintenance', 'pemasukanmaintenance/*']) ? 'active' : '' }}">
+                        <a href="/pemasukanmaintenance">
+                            <i class="feather icon-arrow-right"></i>
+                            <span class="menu-item">Barang Masuk</span>
+                        </a>
+                    </li>
+                    @endif
+                </ul>
+            </li>
+            @endif
             <li class=" nav-item">
                 <a href="#"><i class="feather icon-settings"></i><span class="menu-title">Utilities</span></a>
                 <ul class="menu-content">

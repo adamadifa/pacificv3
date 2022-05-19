@@ -588,6 +588,12 @@ class GlobalProvider extends ServiceProvider
             $laporan_jurnalumum = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'general affair', 'hrd'];
 
 
+            //Maintenance
+
+            $maintenance_menu  = ['admin'];
+            $maintenance_pembelian = ['admin'];
+            $maintenance_pemasukan = ['admin'];
+
             $shareddata = [
                 'level' => $level,
                 'getcbg' => $getcbg,
@@ -888,7 +894,12 @@ class GlobalProvider extends ServiceProvider
                 'laporan_accounting' => $laporan_accounting,
                 'laporan_rekapbj_acc' => $laporan_rekapbj_acc,
                 'laporan_bukubesar' => $laporan_bukubesar,
-                'laporan_jurnalumum' => $laporan_jurnalumum
+                'laporan_jurnalumum' => $laporan_jurnalumum,
+
+                'maintenance_menu' => $maintenance_menu,
+                'maintenance_pembelian' => $maintenance_pembelian,
+                'maintenance_pemasukan' => $maintenance_pemasukan,
+
             ];
             View::share($shareddata);
         });

@@ -43,6 +43,7 @@ use App\Http\Controllers\LebihsetorController;
 use App\Http\Controllers\LedgerController;
 use App\Http\Controllers\LimitkreditController;
 use App\Http\Controllers\LpcController;
+use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\MutasibankController;
 use App\Http\Controllers\MutasigudangcabangController;
 use App\Http\Controllers\MutasilaingjController;
@@ -54,6 +55,7 @@ use App\Http\Controllers\OpnamemutasibarangproduksiController;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PemasukangudangbahanController;
 use App\Http\Controllers\PemasukangudanglogistikController;
+use App\Http\Controllers\PemasukanmaintenanceController;
 use App\Http\Controllers\PemasukanproduksiController;
 use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PembelianController;
@@ -1129,4 +1131,12 @@ Route::middleware(['auth'])->group(function () {
 
     //Coa
     Route::get('/coa', [CoaController::class, 'index']);
+
+    //Maintenance
+    Route::get('/maintenance/pembelian', [MaintenanceController::class, 'pembelian']);
+    Route::post('/maintenance/showpembelian', [MaintenanceController::class, 'showpembelian']);
+    Route::post('/maintenance/{nobukti_pembelian}/storepembelian', [MaintenanceController::class, 'storepembelian']);
+
+    //Pemasukan Maintenance
+    Route::get('/pemasukanmaintenance', [PemasukanmaintenanceController::class, 'index']);
 });

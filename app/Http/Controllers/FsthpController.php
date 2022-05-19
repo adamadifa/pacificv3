@@ -185,39 +185,46 @@ class FsthpController extends Controller
             ->where('unit', $unit)
             ->where('inout', 'OUT')
             ->where('id_admin', $id_admin)->get();
-        DB::beginTransaction();
-        try {
-            $data = [
-                'no_mutasi_produksi' => $no_mutasi_produksi,
-                'tgl_mutasi_produksi' => $tgl_mutasi_produksi,
-                'unit' => $unit,
-                'inout' => 'OUT',
-                'id_admin' => $id_admin,
-                'jenis_mutasi' => 'FSTHP'
-            ];
+        $cek = DB::table('mutasi_produksi')->where('no_mutasi_produksi', $no_mutasi_produksi)->count();
+        if ($cek > 0) {
+            return Redirect::back()->with(['warning' => 'Data Sudah Ada']);
+        } else {
 
-            DB::table('mutasi_produksi')->insert($data);
-            foreach ($detailtemp as $d) {
-                $datadetail = [
+
+            DB::beginTransaction();
+            try {
+                $data = [
                     'no_mutasi_produksi' => $no_mutasi_produksi,
-                    'kode_produk' => $d->kode_produk,
-                    'shift' => $d->shift,
-                    'jumlah' => $d->jumlah
+                    'tgl_mutasi_produksi' => $tgl_mutasi_produksi,
+                    'unit' => $unit,
+                    'inout' => 'OUT',
+                    'id_admin' => $id_admin,
+                    'jenis_mutasi' => 'FSTHP'
                 ];
 
-                DB::table('detail_mutasi_produksi')->insert($datadetail);
-            }
+                DB::table('mutasi_produksi')->insert($data);
+                foreach ($detailtemp as $d) {
+                    $datadetail = [
+                        'no_mutasi_produksi' => $no_mutasi_produksi,
+                        'kode_produk' => $d->kode_produk,
+                        'shift' => $d->shift,
+                        'jumlah' => $d->jumlah
+                    ];
 
-            DB::table('detail_mutasi_produksi_temp')->where('kode_produk', $kode_produk)
-                ->where('shift', $shift)
-                ->where('unit', $unit)
-                ->where('inout', 'OUT')->where('id_admin', $id_admin)->delete();
-            DB::commit();
-            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
-        } catch (\Exception $e) {
-            dd($e);
-            DB::rollback();
-            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan, Hubunti Tim IT']);
+                    DB::table('detail_mutasi_produksi')->insert($datadetail);
+                }
+
+                DB::table('detail_mutasi_produksi_temp')->where('kode_produk', $kode_produk)
+                    ->where('shift', $shift)
+                    ->where('unit', $unit)
+                    ->where('inout', 'OUT')->where('id_admin', $id_admin)->delete();
+                DB::commit();
+                return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+            } catch (\Exception $e) {
+                dd($e);
+                DB::rollback();
+                return Redirect::back()->with(['warning' => 'Data Gagal Disimpan, Hubunti Tim IT']);
+            }
         }
     }
 

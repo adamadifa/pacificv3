@@ -165,9 +165,9 @@
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             <a class="ml-1 detail" href="#" no_mutasi_produksi="{{ Crypt::encrypt($d->no_mutasi_produksi) }}"><i class=" feather icon-file-text info"></i></a>
                                             @if ($d->status != 1)
-                                            <form method="POST" class="deleteform" action="/bpbj/{{Crypt::encrypt($d->no_mutasi_produksi)}}/delete">
+                                            <form method="POST" class="deleteform" action="/fsthp/{{Crypt::encrypt($d->no_mutasi_produksi)}}/delete">
                                                 @csrf
-
+                                                @method('DELETE')
                                                 <a href="#" tanggal="{{ $d->tgl_mutasi_produksi }}" class="delete-confirm ml-1">
                                                     <i class="feather icon-trash danger"></i>
                                                 </a>
