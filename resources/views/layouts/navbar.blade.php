@@ -436,7 +436,7 @@
                             <span class="menu-item">Laporan</span>
                         </a>
                         @else
-                        @if ($level=="admin pembelian")
+                        @if ($level=="admin pembelian" || $level=="admin gudang bahan")
                         <a href="/laporangudangbahan/pemasukan">
                             <i class="feather icon-file-text"></i>
                             <span class="menu-item">Laporan</span>
