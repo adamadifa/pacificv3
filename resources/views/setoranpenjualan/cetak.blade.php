@@ -206,8 +206,8 @@
                     <td style='text-align:right'>" . number_format($totallhppertgl, '0', '', '.') . "</td>
                     <td style='text-align:right'>" . number_format($totalsetorankertas, '0', '', '.') . "</td>
                     <td style='text-align:right'>" . number_format($totalsetoranlogam, '0', '', '.') . "</td>
-                    <td style='text-align:right'>" . number_format($totalsetoranbg, '0', '', '.') . "</td>
                     <td style='text-align:right'>" . number_format($totalsetorantransfer, '0', '', '.') . "</td>
+                    <td style='text-align:right'>" . number_format($totalsetoranbg, '0', '', '.') . "</td>
                     <td style='text-align:right'>" . number_format($totalsetoranpertgl, '0', '', '.') . "</td>
                     <td style='text-align:right'>" . number_format($totalselisih, '0', '', '.') . "</td>
                     <td></td>
@@ -232,8 +232,8 @@
                     <td style='text-align:right'>{{ rupiah($grandtotallhppertgl) }}</td>
                     <td style='text-align:right'>{{ rupiah($grandtotalsetorankertas) }}</td>
                     <td style='text-align:right'>{{ rupiah($grandtotalsetoranlogam) }}</td>
-                    <td style='text-align:right'>{{ rupiah($grandtotalsetoranbg) }}</td>
                     <td style='text-align:right'>{{ rupiah($grandtotalsetorantransfer) }}</td>
+                    <td style='text-align:right'>{{ rupiah($grandtotalsetoranbg) }}</td>
                     <td style='text-align:right'>{{ rupiah($grandtotalsetoran) }}</td>
                     <td style='text-align:right'>{{ rupiah($grandtotalselisih) }}</td>
                     <td></td>
