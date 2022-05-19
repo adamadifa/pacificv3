@@ -182,6 +182,20 @@
 
     <tr>
         <table class="garis5" width="100%">
+            <tr>
+                <td colspan="5">
+                    @if (in_array($faktur->kode_pelanggan,$pelangganmp))
+                    <i>
+                        Untuk Pembayaran bisa Melalui:<br>
+                        <b>Rekening BCA CV Makmur Permata No. 0543772221</b><br>
+                        <b>Rekening BCA CV Makmur Permata No. 0773092265</b><br>
+                    </i>
+                    @endif
+                    <br>
+                    <br>
+                    <br>
+                </td>
+            </tr>
             <tr style="font-weight:bold; text-align:center">
                 <td>Dibuat</td>
                 <td>Diserahkan</td>
