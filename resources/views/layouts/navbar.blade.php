@@ -835,6 +835,14 @@
             <li class=" nav-item">
                 <a href="#"><i class="fa fa-balance-scale" style="color:blue"></i><span class="menu-title">Accounting</span></a>
                 <ul class="menu-content">
+                    @if (in_array($level, $coa_menu))
+                    <li class="{{ request()->is(['coa', 'coa/*']) ? 'active' : '' }}">
+                        <a href="/coa">
+                            <i class="feather icon-settings"></i>
+                            <span class="menu-item" data-i18n="Second Level">Chart Of Account</span>
+                        </a>
+                    </li>
+                    @endif
                     @if (in_array($level, $saldoawal_bukubesar_menu))
                     <li class="{{ request()->is(['saldoawalbb', 'saldoawalbb/*']) ? 'active' : '' }}">
                         <a href="/saldoawalbb">

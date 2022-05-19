@@ -1126,4 +1126,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/limitkredit/store', [LimitkreditController::class, 'store']);
     Route::post('/limitkredit/get_topup_terakhir', [LimitkreditController::class, 'get_topup_terakhir']);
     Route::delete('/limitkredit/{no_pengajuan}/{kode_pelanggan}/delete', [LimitkreditController::class, 'delete']);
+
+    //Coa
+    Route::get('/coa', [CoaController::class, 'index']);
 });

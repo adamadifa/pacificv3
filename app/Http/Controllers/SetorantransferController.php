@@ -161,7 +161,7 @@ class SetorantransferController extends Controller
             DB::commit();
             return Redirect::back()->with(['success' => 'Transfer Berhasil di Setorkan']);
         } catch (\Exception $e) {
-            //dd($e);
+            dd($e);
             DB::rollback();
             return Redirect::back()->with(['warning' => 'Transfer Gagal di Setorkan,  Silahkan Hubungi Tim IT']);
         }

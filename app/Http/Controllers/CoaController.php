@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\DB;
 
 class CoaController extends Controller
 {
+    public function index()
+    {
+        $coa = DB::table('coa')->orderBy('kode_akun')->get();
+        return view('coa.index', compact('coa'));
+    }
     public function getcoacabang(Request $request)
     {
         $kode_cabang = $request->kode_cabang;
