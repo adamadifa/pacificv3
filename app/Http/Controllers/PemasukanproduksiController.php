@@ -186,9 +186,9 @@ class PemasukanproduksiController extends Controller
         $bulan = $tanggal[1];
         $tahun = $tanggal[0];
         $thn = substr($tahun, 2, 2);
+        $blnthn = $bulan . $thn;
         $pemasukanproduksi = DB::table('pemasukan_gp')
-            ->whereRaw('MONTH(tgl_pemasukan)=' . $bulan)
-            ->whereRaw('YEAR(tgl_pemasukan)=' . $tahun)
+            ->whereRaw('MID(nobukti_pemasukan,6,4)=' . $blnthn)
             ->orderBy('nobukti_pemasukan', 'desc')
             ->first();
 
@@ -200,7 +200,7 @@ class PemasukanproduksiController extends Controller
 
         $format = "PRDM/" . $bulan . $thn . "/";
         $nobukti_pemasukan = buatkode($lastnobukti_pemasukan, $format, 3);
-
+        //dd($lastnobukti_pemasukan);
         $kode_dept = $request->kode_dept;
         $id_admin = Auth::user()->id;
         $detail = DB::table('detailpemasukan_temp_gp')->where('id_admin', $id_admin)->get();

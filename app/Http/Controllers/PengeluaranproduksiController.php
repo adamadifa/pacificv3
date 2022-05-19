@@ -129,9 +129,9 @@ class PengeluaranproduksiController extends Controller
         $bulan = $tanggal[1];
         $tahun = $tanggal[0];
         $thn = substr($tahun, 2, 2);
+        $blnthn = $bulan . $thn;
         $pengeluaranproduksi = DB::table('pengeluaran_gp')
-            ->whereRaw('MONTH(tgl_pengeluaran)=' . $bulan)
-            ->whereRaw('YEAR(tgl_pengeluaran)=' . $tahun)
+            ->whereRaw('MID(nobukti_pengeluaran,6,4)=' . $blnthn)
             ->orderBy('nobukti_pengeluaran', 'desc')
             ->first();
 

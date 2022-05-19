@@ -140,7 +140,8 @@ class PengeluarangudangbahanController extends Controller
         $unit = $request->unit;
         $kode_cabang = $request->kode_cabang;
         $pengeluaran = DB::table('pengeluaran_gb')
-            ->select('nobukti_pengeluaran')->whereBetween('tgl_pengeluaran', [$dari, $sampai])
+            ->select('nobukti_pengeluaran')
+            ->whereBetween('tgl_pengeluaran', [$dari, $sampai])
             ->orderBy('nobukti_pengeluaran', 'desc')
             ->first();
         $lastnobukti_pengeluaran = $pengeluaran != null ? $pengeluaran->nobukti_pengeluaran : '';
