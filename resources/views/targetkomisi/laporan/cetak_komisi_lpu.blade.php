@@ -649,6 +649,12 @@
                 <td><?php echo $nextno; ?></td>
                 <td><?php echo $d->nama_driver_helper; ?></td>
                 <td><?php echo $d->kategori; ?></td>
+                <td colspan="24"></td>
+                <td align="center">{{ desimal($d->jml_driver) }}</td>
+                <td align="center"><?php echo $ratio; ?></td>
+                <td align="center"><?php echo rupiah($rewarddriver); ?></td>
+                <td></td>
+                <td></td>
             </tr>
             <?php
             $nextno++;
