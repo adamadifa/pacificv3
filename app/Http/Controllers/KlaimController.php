@@ -231,7 +231,11 @@ class KlaimController extends Controller
         $tgl = explode("-", $tanggal);
         $bulan = $tgl[1];
         $tahun = substr($tgl[0], 2, 2);
-        $akun = "1-1104";
+        if ($kode_cabang != 'GRT') {
+            $akun = "1-1104";
+        } else {
+            $akun = "1-1119";
+        }
         $databank = DB::table('master_bank')->where('kode_bank', $bank)->first();
         $akunbank = $databank->kode_akun;
 
@@ -339,6 +343,7 @@ class KlaimController extends Controller
             'SBY' => '1-1116',
             'SMR' => '1-1117',
             'KLT' => '1-1118',
+            'GRT' => '1-1119'
         ];
         $kode_akun = $akun[$kode_cabang];
         $jumlah = $ledger->jumlah;
