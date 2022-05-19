@@ -110,6 +110,7 @@
     $poinASABCG5 = 10;
     $poinSC = 12.5;
     $kebijakan = 100;
+
     @endphp
     <table class="datatable3" style="width:120%">
         <thead>
@@ -136,7 +137,7 @@
                 <th colspan="3" style="background-color: #ffcb00;"><?php echo $poinDS; ?></th>
                 <th colspan="3" style="background-color: #058cbe;"><?php echo $poinSP; ?></th>
                 <th colspan="3" style="background-color: #ce3ae4;"><?php echo $poinAR; ?></th>
-                <th colspan="3" style="background-color: #ff9b0d;" <?php echo $poinASABCG5; ?></th>
+                <th colspan="3" style="background-color: #ff9b0d;"> <?php echo $poinASABCG5; ?></th>
                 <th colspan="3" style="background-color: #ff9b0d;"><?php echo $poinSC; ?></th>
 
             </tr>
@@ -220,21 +221,34 @@
             }
             $totaltargetBBDP = 0;
             $totalrealisasiBBDP = 0;
+            $totalhasilpoinBBDP = 0;
 
             $totaltargetDS = 0;
             $totalrealisasiDS = 0;
+            $totalhasilpoinDS = 0;
 
             $totaltargetSP = 0;
             $totalrealisasiSP = 0;
+            $totalhasilpoinSP = 0;
 
             $totaltargetAR = 0;
             $totalrealisasiAR = 0;
+            $totalhasilpoinAR = 0;
 
             $totaltargetABASCG5 = 0;
             $totalrealisasiABASCG5 = 0;
+            $totalhasilpoinABASCG5 = 0;
 
             $totaltargetSC = 0;
             $totalrealisasiSC = 0;
+            $totalhasilpoinSC = 0;
+
+            $totalallpoin =0;
+            $rewardallpoin = 0;
+            $rewardcashinkp = 0;
+            $ratioljtkp  = 0;
+            $rewardljtkp  =0;
+            $totalrewardkp  = 0;
 
             $totalcashin = 0;
             $totalsisapiutang = 0;
@@ -620,8 +634,8 @@
             </tr>
             <tr>
                 <th>NO</th>
-                <th>ID KARYAWAN</th>
                 <th>NAMA KARYAWAN</th>
+                <th>KATEGORI</th>
                 <th colspan="24"></th>
                 <th>QTY</th>
                 <th>RATIO</th>
@@ -657,9 +671,91 @@
                 <td></td>
             </tr>
             <?php
-            $nextno++;
+                $nextno++;
             }
-            ?>
+                $nextno = $no + 1;
+                foreach ($helper as $d) {
+                    $jmlqty = $d->jml_helper;
+                    // if (empty($d->ratioaktif)) {
+                    //   if (empty($d->ratioterakhir)) {
+                    //     $ratio = $d->ratiodefault;
+                    //   } else {
+                    //     $ratio = $d->ratioterakhir;
+                    //   }
+                    // } else {
+                    //   $ratio = $d->ratioaktif;
+                    // }
+
+                    if (empty($d->ratiohelperaktif) || $d->ratiohelperaktif == 0.00) {
+                        if (empty($d->ratiohelperterakhir) || $d->ratiohelperterakhir == 0.00) {
+                        if (empty($d->ratiohelperdefault) || $d->ratiohelperdefault == 0.00) {
+                            $ratio = $d->ratiodefault;
+                        } else {
+                            $ratio = $d->ratiohelperdefault;
+                        }
+                        } else {
+                        $ratio = $d->ratiohelperterakhir;
+                        }
+                    } else {
+                        $ratio = $d->ratiohelperaktif;
+                    }
+                    $rewardhelper = $jmlqty * $ratio;
+                    $grandtotalrewardhelper += $rewardhelper;
+                ?>
+            <tr>
+                <td><?php echo $nextno; ?></td>
+                <td><?php echo $d->nama_driver_helper; ?></td>
+                <td>HELPER</td>
+                <td colspan="24"></td>
+                <td align="center">
+                    {{ desimal($d->jml_helper) }}
+                </td>
+                <td align="center"><?php echo $ratio; ?></td>
+                <td align="right">{{ rupiah($rewardhelper) }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <?php
+                $nextno++;
+            }
+            $nextno = $no + 1;
+                foreach ($gudang as $d) {
+                    $jmlqty = $tunaikredit->total;
+                    if (empty($d->ratioaktif)) {
+                        if (empty($d->ratioterakhir)) {
+                        $ratio = $d->ratiodefault;
+                        } else {
+                        $ratio = $d->ratioterakhir;
+                        }
+                    } else {
+                        $ratio = $d->ratioaktif;
+                    }
+                    $rewardgudang = $jmlqty * $ratio;
+                    $grandtotalrewardgudang += $rewardgudang;
+        ?>
+            <tr>
+                <td><?php echo $nextno; ?></td>
+                <td><?php echo $d->nama_driver_helper; ?></td>
+                <td>GUDANG</td>
+                <td colspan="24"></td>
+                <td align="center">{{ desimal($jmlqty) }}</td>
+                <td align="center"><?php echo $ratio; ?></td>
+                <td align="right">{{ rupiah($rewardgudang) }}</td>
+                <td></td>
+                <td></td>
+            </tr>
+            <?php
+            $nextno++;
+        }
+        $grandtotalreward = $grandtotalrewardsales + $totalrewardkp + $grandtotalrewarddriver + $grandtotalrewardhelper + $grandtotalrewardgudang;
+    ?>
+            <tr>
+                <td colspan="27" style="font-size:24px; font-weight:bold" align="center">TOTAL</td>
+                <td></td>
+                <td></td>
+                <td style="font-size:24px; font-weight:bold" align="right"><?php echo rupiah($grandtotalreward); ?>
+                </td>
+            </tr>
         </tbody>
     </table>
     <br>

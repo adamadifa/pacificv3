@@ -724,9 +724,9 @@ class TargetkomisiController extends Controller
                     $join->on('karyawan.id_karyawan', '=', 'penj.salesbarunew');
                 }
             );
-
-            $query->leftJoin(
-                DB::raw("(
+            if ($aturankomisi == 2) {
+                $query->leftJoin(
+                    DB::raw("(
                     SELECT karyawan.id_karyawan,
                     (IFNULL(jml_belumsetorbulanlalu,0)+IFNULL(totalsetoran,0)) + IFNULL(jml_gmlast,0) - IFNULL(jml_gmnow,0) - IFNULL(jml_belumsetorbulanini,0) as realisasi_cashin
                     FROM karyawan
@@ -786,11 +786,22 @@ class TargetkomisiController extends Controller
                         WHERE bulan ='$bulan' AND tahun ='$tahun' GROUP BY id_karyawan
                     ) bsnow ON (karyawan.id_karyawan = bsnow.id_karyawan)
                     ) hb"),
-                function ($join) {
-                    $join->on('karyawan.id_karyawan', '=', 'hb.id_karyawan');
-                }
-            );
-
+                    function ($join) {
+                        $join->on('karyawan.id_karyawan', '=', 'hb.id_karyawan');
+                    }
+                );
+            } else {
+                $query->leftJoin(
+                    DB::raw("(
+                        SELECT historibayar.id_karyawan,SUM(bayar) as realisasi_cashin
+                        FROM historibayar WHERE tglbayar BETWEEN '$dari' AND '$sampai' AND status_bayar IS NULL
+                        GROUP BY historibayar.id_karyawan
+                    ) hb"),
+                    function ($join) {
+                        $join->on('karyawan.id_karyawan', '=', 'hb.id_karyawan');
+                    }
+                );
+            }
             $query->leftJoin(
                 DB::raw("(
                     SELECT penjualan.id_karyawan,
