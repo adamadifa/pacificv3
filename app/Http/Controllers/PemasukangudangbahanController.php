@@ -22,6 +22,7 @@ class PemasukangudangbahanController extends Controller
             $query->where('nobukti_pemasukan', $request->nobukti_pemasukan);
         }
         $query->orderBy('tgl_pemasukan', 'desc');
+        $query->orderBy('nobukti_pemasukan', 'desc');
         $pemasukan = $query->paginate(15);
         $pemasukan->appends($request->all());
 

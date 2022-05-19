@@ -99,7 +99,7 @@
             <h4 class="card-title">Laporan Komisi</h4>
         </div>
         <ul class="list-group list-group-flush">
-            <a href="#" style="color:#626262">
+            <a href="/laporankomisi" style="color:#626262">
                 <li class="list-group-item {{ request()->is(['laporankomisi']) ? 'active' : '' }}">
                     <i class="feather icon-file mr-1"></i>Komisi <span class="badge bg-danger"><i class="fa fa-stop-circle-o"></i> Sedang Proses Maintenaince</span>
                 </li>

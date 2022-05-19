@@ -8,7 +8,7 @@
     <td class="text-right">{{ desimal($d->qty_berat) }}</td>
     <td class="text-right">{{ desimal($d->qty_lebih) }}</td>
     <td>
-        <a href="#" kode_barang="{{ $d->kode_barang }}" class="hapus"><i class="feather icon-trash danger"></i></a>
+        <a href="#" id="{{ $d->id }}" class="hapus"><i class="feather icon-trash danger"></i></a>
     </td>
 </tr>
 @endforeach
@@ -43,7 +43,7 @@
 
         $(".hapus").click(function(e) {
             e.preventDefault();
-            var kode_barang = $(this).attr("kode_barang");
+            var id = $(this).attr("id");
             event.preventDefault();
             swal({
                     title: `Anda Yakin Data ini Akan Dihapus ?`
@@ -59,7 +59,7 @@
                             , url: '/pengeluarangudangbahan/deletetemp'
                             , data: {
                                 _token: "{{ csrf_token() }}"
-                                , kode_barang: kode_barang
+                                , id: id
                             }
                             , cache: false
                             , success: function(respond) {

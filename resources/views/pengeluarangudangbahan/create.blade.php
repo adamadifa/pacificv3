@@ -29,7 +29,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12">
-                                    <x-inputtext field="nobukti_pengeluaran" label="No. Bukti Pemasukan" icon="fa fa-barcode" />
+                                    <x-inputtext field="nobukti_pengeluaran" label="Auto" icon="fa fa-barcode" readonly />
                                 </div>
                             </div>
                             <div class="row">
@@ -347,16 +347,6 @@
                     , showConfirmButton: false
                 }).then(function() {
                     $("#tgl_pengeluaran").focus();
-                });
-                return false;
-            } else if (nobukti_pengeluaran == "") {
-                swal({
-                    title: 'Oops'
-                    , text: 'No. Bukti Pemasukan Harus Diisi Dulu !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#nobukti_pengeluaran").focus();
                 });
                 return false;
             } else if (tgl_pengeluaran == "") {

@@ -27,6 +27,7 @@ class PengeluarangudangbahanController extends Controller
             $query->where('kode_dept', $request->kode_dept);
         }
         $query->orderBy('tgl_pengeluaran', 'desc');
+        $query->orderBy('nobukti_pengeluaran', 'desc');
         $pengeluaran = $query->paginate(15);
         $pengeluaran->appends($request->all());
 
@@ -116,9 +117,8 @@ class PengeluarangudangbahanController extends Controller
 
     public function deletetemp(Request $request)
     {
-        $kode_barang = $request->kode_barang;
-        $id_admin = Auth::user()->id;
-        $hapus = DB::table('detailpengeluaran_temp_gb')->where('kode_barang', $kode_barang)->where('id_admin', $id_admin)->delete();
+        $id = $request->id;
+        $hapus = DB::table('detailpengeluaran_temp_gb')->where('id', $id)->delete();
         if ($hapus) {
             echo 0;
         } else {
@@ -128,12 +128,23 @@ class PengeluarangudangbahanController extends Controller
 
     public function store(Request $request)
     {
-        $nobukti_pengeluaran = $request->nobukti_pengeluaran;
+        //$nobukti_pengeluaran = $request->nobukti_pengeluaran;
         $tgl_pengeluaran = $request->tgl_pengeluaran;
+        $tanggal = explode("-", $tgl_pengeluaran);
+        $bulan = $tanggal[1];
+        $tahun = $tanggal[0];
+        $thn = substr($tahun, 2, 2);
+        $dari = $tahun . "-" . $bulan . "-01";
+        $sampai = date("Y-m-t", strtotime($dari));
         $kode_dept = $request->kode_dept;
         $unit = $request->unit;
         $kode_cabang = $request->kode_cabang;
-
+        $pengeluaran = DB::table('pengeluaran_gb')
+            ->select('nobukti_pengeluaran')->whereBetween('tgl_pengeluaran', [$dari, $sampai])
+            ->orderBy('nobukti_pengeluaran', 'desc')
+            ->first();
+        $lastnobukti_pengeluaran = $pengeluaran != null ? $pengeluaran->nobukti_pengeluaran : '';
+        $nobukti_pengeluaran = buatkode($lastnobukti_pengeluaran, 'GBK/' . $bulan . $thn . "/", 3);
         if ($kode_dept == "Produksi") {
             $u = $unit;
         } else if ($kode_dept == "Cabang") {
@@ -172,7 +183,7 @@ class PengeluarangudangbahanController extends Controller
                 DB::commit();
                 return Redirect::back()->with(['success' => 'Data  Berhasil di Simpan']);
             } catch (\Exception $e) {
-                //dd($e);
+                dd($e);
                 DB::rollback();
                 return Redirect::back()->with(['warning' => 'Data  Gagal di Simpan, Hubungi Tim IT']);
             }
