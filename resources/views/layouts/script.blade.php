@@ -36,18 +36,20 @@
 
 <!-- END: Page JS-->
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.13.4/jquery.mask.min.js"></script>
-<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script src="{{ asset('app-assets/js/external/jquery.mask.min.js') }}"></script>
+<script src="{{ asset('app-assets/js/external/sweetalert.min.js') }}"></script>
+<script src="{{ asset('app-assets/js/external/jquery-ui.js') }}"></script>
+
 <!-- BEGIN: Page JS-->
 <script src="{{asset('app-assets/js/scripts/forms/validation/form-validation.js')}}"></script>
 <script src="{{asset('app-assets/js/scripts/datatables/datatable.js')}}"></script>
 
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/series-label.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
-<script src="https://code.highcharts.com/modules/export-data.js"></script>
-<script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script src="{{ asset('app-assets/js/external/highcharts.js') }}"></script>
+<script src="{{ asset('app-assets/js/external/series-label.js') }}"></script>
+<script src="{{ asset('app-assets/js/external/exporting.js') }}"></script>
+<script src="{{ asset('app-assets/js/external/export-data.js') }}"></script>
+<script src="{{ asset('app-assets/js/external/accessibility.js') }}"></script>
+
 <script>
     $(function() {
         function toggleZoomScreen() {
