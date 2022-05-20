@@ -602,7 +602,11 @@ class PembelianController extends Controller
             ->where('nobukti_pembelian', $nobukti_pembelian)
             ->where('detail_pembelian.status', 'PMB')
             ->get();
-        return view('kontrabon.showdetailpembeliankontrabon', compact('detail'));
+        $detailpenjualan = DB::table('detail_pembelian')
+            ->where('status', 'PNJ')
+            ->where('nobukti_pembelian', $nobukti_pembelian)
+            ->get();
+        return view('kontrabon.showdetailpembeliankontrabon', compact('detail', 'detailpenjualan'));
     }
 
     public function deletedetail(Request $request)

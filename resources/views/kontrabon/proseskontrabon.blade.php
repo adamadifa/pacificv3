@@ -42,25 +42,7 @@
         </tr>
     </tbody>
 </table>
-<table class="table table-hover-animation">
-    <thead class="thead-dark">
-        <tr>
-            <th colspan="9">Data Pembelian <span id="nobuktipembelian"></span></th>
-        </tr>
-        <tr>
-            <th>No</th>
-            <th>Kode Barang</th>
-            <th>Nama Barang</th>
-            <th>Keterangan</th>
-            <th>Qty</th>
-            <th>Harga</th>
-            <th>Subtotal</th>
-            <th>Penyesuaian</th>
-            <th>Total</th>
-        </tr>
-    </thead>
-    <tbody id="loaddetailpembelian"></tbody>
-</table>
+<div id="loaddetailpembelian"></div>
 <form action="/kontrabon/storeproseskontrabon" method="POST" id="frmKontrabon">
     @csrf
     <div class="row">
