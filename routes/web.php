@@ -1143,6 +1143,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pemasukanmaintenance/getbarang', [PemasukanmaintenanceController::class, 'getbarang']);
     Route::get('/pemasukanmaintenance/showtemp', [PemasukanmaintenanceController::class, 'showtemp']);
     Route::post('/pemasukanmaintenance/storetemp', [PemasukanmaintenanceController::class, 'storetemp']);
+    Route::post('/pemasukanmaintenance/deletetemp', [PemasukanmaintenanceController::class, 'deletetemp']);
     Route::post('/pemasukanmaintenance/show', [PemasukanmaintenanceController::class, 'show']);
     Route::post('/pemasukanmaintenance/cektemp', [PemasukanmaintenanceController::class, 'cektemp']);
     Route::delete('/pemasukanmaintenance/{nobukti_pemasukan}/delete', [PemasukanmaintenanceController::class, 'delete']);

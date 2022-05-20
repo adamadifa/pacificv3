@@ -459,7 +459,7 @@ class GlobalProvider extends ServiceProvider
             $opname_gudangbahan = ['admin', 'kepala gudang', 'admin gudang bahan'];
 
             //Gudang Jadi Pusat
-            $permintaan_produksi_view = ['admin', 'kepala gudang', 'admin gudang pusat', 'kepala gudang'];
+            $permintaan_produksi_view = ['admin', 'kepala gudang', 'admin gudang pusat', 'kepala gudang', 'admin produksi'];
             $mutasi_produk_gj = ['admin', 'kepala gudang', 'admin gudang pusat'];
             $fsthp_gj_view = ['admin', 'kepala gudang', 'admin gudang pusat'];
             $suratjalan_view = ['admin', 'kepala gudang', 'admin gudang pusat'];

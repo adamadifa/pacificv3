@@ -112,4 +112,16 @@ class PemasukanmaintenanceController extends Controller
             }
         }
     }
+
+    public function deletetemp(Request $request)
+    {
+        $kode_barang = $request->kode_barang;
+        $id_admin = Auth::user()->id;
+        $hapus = DB::table('detailpemasukan_temp_bb')->where('kode_barang', $kode_barang)->where('id_admin', $id_admin)->delete();
+        if ($hapus) {
+            echo 0;
+        } else {
+            echo 1;
+        }
+    }
 }

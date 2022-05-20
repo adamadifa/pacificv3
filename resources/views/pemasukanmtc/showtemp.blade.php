@@ -16,7 +16,7 @@
         function cektemp() {
             $.ajax({
                 type: 'POST'
-                , url: '/pemasukanproduksi/cektemp'
+                , url: '/pemasukanmaintenance/cektemp'
                 , data: {
                     _token: "{{ csrf_token() }}"
                 }
@@ -28,7 +28,7 @@
         }
 
         function loaddetail() {
-            $("#loaddetailpemasukan").load("/pemasukanproduksi/showtemp");
+            $("#loaddetailpemasukan").load("/pemasukanmaintenance/showtemp");
             cektemp();
         }
 
@@ -47,7 +47,7 @@
                     if (willDelete) {
                         $.ajax({
                             type: 'POST'
-                            , url: '/pemasukanproduksi/deletetemp'
+                            , url: '/pemasukanmaintenance/deletetemp'
                             , data: {
                                 _token: "{{ csrf_token() }}"
                                 , kode_barang: kode_barang
