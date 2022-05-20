@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Pemasukanmaintenance;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
 
 class PemasukanmaintenanceController extends Controller
 {
@@ -23,5 +25,17 @@ class PemasukanmaintenanceController extends Controller
         $pemasukanmtc  = $query->paginate(15);
 
         return view('pemasukanmtc.index', compact('pemasukanmtc'));
+    }
+
+    public function show(Request $request)
+    {
+        $nobukti_pemasukan = Crypt::decrypt($request->nobukti_pemasukan);
+        $pemasukanmtc = DB::table('pemasukan_bb')->where('nobukti_pemasukan', $nobukti_pemasukan)->first();
+        $detail = DB::table('detail_pemasukan_bb')
+            ->select('detail_pemasukan_bb.*', 'nama_barang', 'satuan')
+            ->join('master_barang_pembelian', 'detail_pemasukan_bb.kode_barang', '=', 'master_barang_pembelian.kode_barang')
+            ->join('supplier', 'pemasukan_bb.kode_supplier', '=', 'supplier.kode_supplier')
+            ->where('nobukti_pemasukan', $nobukti_pemasukan)->get();
+        return view('pemasukanmtc.show', compact('detail', 'pemasukanmtc'));
     }
 }

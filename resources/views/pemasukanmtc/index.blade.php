@@ -22,7 +22,7 @@
         <!-- Data list view starts -->
         <!-- DataTable starts -->
         @include('layouts.notification')
-        <div class="col-md-8 col-sm-8">
+        <div class="col-md-12 col-sm-12 col-lg-8">
             <div class="card">
                 <div class="card-header">
                     <a href="/pemasukanmaintenance/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
@@ -104,7 +104,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel18">Detail Pemasukan Produksi</h4>
+                <h4 class="modal-title" id="myModalLabel18">Detail Pemasukan Maintenance</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>

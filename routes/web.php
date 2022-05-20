@@ -1139,4 +1139,5 @@ Route::middleware(['auth'])->group(function () {
 
     //Pemasukan Maintenance
     Route::get('/pemasukanmaintenance', [PemasukanmaintenanceController::class, 'index']);
+    Route::post('/pemasukanmaintenance/show', [PemasukanmaintenanceController::class, 'show']);
 });
