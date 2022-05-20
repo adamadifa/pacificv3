@@ -74,9 +74,9 @@ $isipcs_sp8 = $p->isipcsdus;
                 <!-- <th>CGG</th> -->
                 <th>DEP</th>
                 <!-- <th>DK</th> -->
-                <th>DS</th>
+                {{-- <th>DS</th> --}}
                 <th>SP</th>
-                <th>SPP</th>
+                {{-- <th>SPP</th> --}}
                 <th>SC</th>
                 <th>SP8</th>
             </tr>
@@ -268,9 +268,9 @@ $isipcs_sp8 = $p->isipcsdus;
 
                 <td><span class="badge <?php echo $colorgDEP; ?>"><?php echo number_format(floor($gDEP), '0', ',', '.'); ?></span></td>
 
-                <td><span class="badge <?php echo $colorgDS; ?>"><?php echo number_format(floor($gDS), '0', ',', '.'); ?></span></td>
+                {{-- <td><span class="badge <?php echo $colorgDS; ?>"><?php echo number_format(floor($gDS), '0', ',', '.'); ?></span></td> --}}
                 <td><span class="badge <?php echo $colorgSP; ?>"><?php echo number_format(floor($gSP), '0', ',', '.'); ?></span></td>
-                <td><span class="badge <?php echo $colorgSPP; ?>"><?php echo number_format(floor($gSPP), '0', ',', '.'); ?></span></td>
+                {{-- <td><span class="badge <?php echo $colorgSPP; ?>"><?php echo number_format(floor($gSPP), '0', ',', '.'); ?></span></td> --}}
                 <td><span class="badge <?php echo $colorgSC; ?>"><?php echo number_format(floor($gSC), '0', ',', '.'); ?></span></td>
                 <td><span class="badge <?php echo $colorgSP8; ?>"><?php echo number_format(floor($gSP8), '0', ',', '.'); ?></span></td>
             </tr>
@@ -396,9 +396,9 @@ $isipcs_sp8 = $p->isipcsdus;
                 <td><span class="badge <?php echo $coloras; ?>"><?php echo number_format(floor($sas), '0', ',', '.'); ?></span></td>
                 <td><span class="badge <?php echo $colorbb; ?>"><?php echo number_format(floor($sbb), '0', ',', '.'); ?></span></td>
                 <td><span class="badge <?php echo $colorsdep; ?>"><?php echo number_format(floor($sdep), '0', ',', '.'); ?></span></td>
-                <td><span class="badge <?php echo $colorsds; ?>"><?php echo number_format(floor($sds), '0', ',', '.'); ?></span></td>
+                {{-- <td><span class="badge <?php echo $colorsds; ?>"><?php echo number_format(floor($sds), '0', ',', '.'); ?></span></td> --}}
                 <td><span class="badge <?php echo $colorssp; ?>"><?php echo number_format(floor($ssp), '0', ',', '.'); ?></span></td>
-                <td><span class="badge <?php echo $colorsspp; ?>"><?php echo number_format(floor($sspp), '0', ',', '.'); ?></span></td>
+                {{-- <td><span class="badge <?php echo $colorsspp; ?>"><?php echo number_format(floor($sspp), '0', ',', '.'); ?></span></td> --}}
                 <td><span class="badge <?php echo $colorssc; ?>"><?php echo number_format(floor($ssc), '0', ',', '.'); ?></span></td>
                 <td><span class="badge <?php echo $colorsp8; ?>"><?php echo number_format(floor($ssp8), '0', ',', '.'); ?></span></td>
             </tr>
