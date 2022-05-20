@@ -1139,5 +1139,11 @@ Route::middleware(['auth'])->group(function () {
 
     //Pemasukan Maintenance
     Route::get('/pemasukanmaintenance', [PemasukanmaintenanceController::class, 'index']);
+    Route::get('/pemasukanmaintenance/create', [PemasukanmaintenanceController::class, 'create']);
+    Route::get('/pemasukanmaintenance/getbarang', [PemasukanmaintenanceController::class, 'getbarang']);
+    Route::get('/pemasukanmaintenance/showtemp', [PemasukanmaintenanceController::class, 'showtemp']);
+    Route::post('/pemasukanmaintenance/storetemp', [PemasukanmaintenanceController::class, 'storetemp']);
     Route::post('/pemasukanmaintenance/show', [PemasukanmaintenanceController::class, 'show']);
+    Route::post('/pemasukanmaintenance/cektemp', [PemasukanmaintenanceController::class, 'cektemp']);
+    Route::delete('/pemasukanmaintenance/{nobukti_pemasukan}/delete', [PemasukanmaintenanceController::class, 'delete']);
 });

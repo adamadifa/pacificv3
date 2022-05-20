@@ -71,8 +71,6 @@
                                     <td>{{ $d->kode_supplier }} {{ $d->nama_supplier }}</td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
-
-                                            <a class="ml-1" href="/pemasukanmaintenance/{{\Crypt::encrypt($d->nobukti_pemasukan)}}/edit"><i class="feather icon-edit success"></i></a>
                                             <a class="ml-1 detail" href="#" nobukti_pemasukan="{{ Crypt::encrypt($d->nobukti_pemasukan) }}"><i class=" feather icon-file-text info"></i></a>
                                             <form method="POST" class="deleteform" action="/pemasukanmaintenance/{{Crypt::encrypt($d->nobukti_pemasukan)}}/delete">
                                                 @csrf
@@ -151,7 +149,7 @@
                 , data: {
                     _token: "{{ csrf_token() }}"
                     , tanggal: tanggal
-                    , jenislaporan: "produksi"
+                    , jenislaporan: "maintenance"
                 }
                 , cache: false
                 , success: function(respond) {
