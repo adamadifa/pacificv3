@@ -43,9 +43,11 @@ class ProduksiController extends Controller
                     $join->on('detail_permintaan_produksi.kode_produk', '=', 'mutasiproduksi.kode_produk');
                 }
             )
-            ->where('bulan', $bulan)
+            ->where('bulan', $bulanini)
             ->where('tahun', $tahun)
             ->get();
+
+        //dd($detail);
         return view('produksi.analytics', compact('bulan', 'permintaan', 'detail', 'namabulan', 'tahun'));
     }
 
