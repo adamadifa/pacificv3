@@ -31,6 +31,9 @@
                 <div class="card-body">
                     <form action="/barangpembelian">
                         <div class="row">
+                            <div class="col-lg-2 col-sm-12">
+                                <x-inputtext label="Kode Barang" field="kode_barang" icon="feather icon-box" value="{{ Request('kode_barang') }}" />
+                            </div>
                             <div class="col-lg-3 col-sm-12">
                                 <x-inputtext label="Nama Barang" field="nama_barang" icon="feather icon-box" value="{{ Request('nama_barang') }}" />
                             </div>
@@ -65,8 +68,8 @@
                                 </select>
                             </div>
                             @endif
-                            <div class="col-lg-3 col-sm-12">
-                                <button type="submit" class="btn btn-primary"><i class="fa fa-search mr-1"></i> Cari</button>
+                            <div class="col-lg-1 col-sm-12">
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-search mr-1"></i></button>
                             </div>
                         </div>
                     </form>

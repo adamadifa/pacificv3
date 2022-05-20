@@ -10,9 +10,22 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\View;
 
 class PermintaanpengirimanController extends Controller
 {
+    protected $cabang;
+    public function __construct()
+    {
+        // Fetch the Site Settings object
+        $this->middleware(function ($request, $next) {
+            $this->cabang = Auth::user()->kode_cabang;
+            return $next($request);
+        });
+
+
+        View::share('cabang', $this->cabang);
+    }
     public function index(Request $request)
     {
         $query = Permintaanpengiriman::query();
@@ -38,6 +51,10 @@ class PermintaanpengirimanController extends Controller
 
         if (!empty($request->cabang)) {
             $query->where('permintaan_pengiriman.kode_cabang', $request->cabang);
+        } else {
+            if ($this->cabang != "PCF") {
+                $query->where('permintaan_pengiriman.kode_cabang', $this->cabang);
+            }
         }
         $query->leftJoin('karyawan', 'permintaan_pengiriman.id_karyawan', '=', 'karyawan.id_karyawan');
         $query->leftJoin('mutasi_gudang_jadi', 'permintaan_pengiriman.no_permintaan_pengiriman', '=', 'mutasi_gudang_jadi.no_permintaan_pengiriman');
@@ -47,7 +64,11 @@ class PermintaanpengirimanController extends Controller
         $pp = $query->paginate(15);
         $pp->appends($request->all());
 
-        $cabang = Cabang::all();
+        if ($this->cabang != "PCF") {
+            $cabang = Cabang::where('kode_cabang', $this->cabang)->get();
+        } else {
+            $cabang = Cabang::all();
+        }
         $produk = Barang::orderBy('kode_produk')->get();
         return view('permintaanpengiriman.index', compact('pp', 'cabang', 'produk'));
     }

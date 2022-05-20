@@ -410,7 +410,7 @@ class GlobalProvider extends ServiceProvider
                 'admin gudang', 'kepala admin', 'supervisor sales', 'kepala gudang',
                 'admin gudang cabang dan marketing', 'direktur', 'manager accounting',
                 'spv accounting', 'manager marketing', 'general manager', 'audit', 'admin gudang pusat', 'emf', 'admin gudang logistik',
-                'admin gudang bahan', 'admin pembelian'
+                'admin gudang bahan', 'admin pembelian', 'manager pembelian'
             ];
             $gudang_bahan_menu = ['admin', 'kepala gudang', 'kepala gudang', 'admin gudang bahan'];
             $gudang_logistik_menu =  ['admin', 'kepala gudang', 'kepala gudang', 'admin gudang logistik'];

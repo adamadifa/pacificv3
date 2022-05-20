@@ -42,6 +42,10 @@ class BarangpembelianController extends Controller
         if ($request->nama_barang != "") {
             $query->where('nama_barang', 'like', '%' . $request->nama_barang . '%');
         }
+
+        if ($request->kode_barang != "") {
+            $query->where('kode_barang', $request->kode_barang);
+        }
         $barang_pembelian = $query->paginate(15);
         $barang_pembelian->appends($request->all());
 
