@@ -362,7 +362,7 @@ class ReturController extends Controller
 
     public function laporanretur()
     {
-        if ($this->cabang != "PCF") {
+        if ($this->cabang != "PCF" && $this->cabang != "PST") {
             if ($this->cabang == "GRT") {
                 $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
             } else {

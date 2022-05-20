@@ -120,7 +120,7 @@
                                             @php
                                             $kode_cabang = Auth::user()->kode_cabang;
                                             @endphp
-                                            @if ($level=="kepala penjualan" && $d->mm > 0)
+                                            @if ($level=="kepala penjualan" && $d->mm > 0 || $level=="admin pusat" && $d->mm > 0)
                                             @if ($d->kp > 0)
                                             <a href="/targetkomisi/{{Crypt::encrypt($d->kode_target)}}/{{Crypt::encrypt($kode_cabang)}}/approvetarget" class="ml-1 success"><i class="fa fa-check"></i></a>
                                             @else

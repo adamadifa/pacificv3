@@ -454,7 +454,7 @@ class PembayaranController extends Controller
 
     public function laporankasbesarpenjualan()
     {
-        if ($this->cabang != "PCF") {
+        if ($this->cabang != "PCF" && $this->cabang != "PST") {
             if ($this->cabang == "GRT") {
                 $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
             } else {

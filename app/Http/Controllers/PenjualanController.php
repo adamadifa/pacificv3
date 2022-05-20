@@ -2174,7 +2174,7 @@ class PenjualanController extends Controller
     public function laporanpenjualan()
     {
 
-        if ($this->cabang != "PCF") {
+        if ($this->cabang != "PCF" && $this->cabang != "PST") {
             if ($this->cabang == "GRT") {
                 $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
             } else {
@@ -2672,7 +2672,7 @@ class PenjualanController extends Controller
 
     public function laporantunaikredit()
     {
-        if ($this->cabang != "PCF") {
+        if ($this->cabang != "PCF" && $this->cabang != "PST") {
             if ($this->cabang == "GRT") {
                 $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
             } else {
@@ -2786,7 +2786,7 @@ class PenjualanController extends Controller
 
     public function laporankartupiutang()
     {
-        if ($this->cabang != "PCF") {
+        if ($this->cabang != "PCF" && $this->cabang != "PST") {
             if ($this->cabang == "GRT") {
                 $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
             } else {
@@ -2976,7 +2976,7 @@ class PenjualanController extends Controller
 
     public function laporanaup()
     {
-        if ($this->cabang != "PCF") {
+        if ($this->cabang != "PCF" && $this->cabang != "PST") {
             if ($this->cabang == "GRT") {
                 $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
             } else {
@@ -3255,7 +3255,7 @@ class PenjualanController extends Controller
 
     public function laporanlebihsatufaktur()
     {
-        if ($this->cabang != "PCF") {
+        if ($this->cabang != "PCF" && $this->cabang != "PST") {
             if ($this->cabang == "GRT") {
                 $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
             } else {
@@ -3335,7 +3335,7 @@ class PenjualanController extends Controller
 
     public function laporandppp()
     {
-        if ($this->cabang != "PCF") {
+        if ($this->cabang != "PCF" && $this->cabang != "PST") {
             if ($this->cabang == "GRT") {
                 $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
             } else {
@@ -3857,7 +3857,7 @@ class PenjualanController extends Controller
     public function laporandpp()
     {
 
-        if ($this->cabang != "PCF") {
+        if ($this->cabang != "PCF" && $this->cabang != "PST") {
             if ($this->cabang == "GRT") {
                 $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
             } else {
@@ -3931,7 +3931,7 @@ class PenjualanController extends Controller
 
     public function laporanrekapomsetpelanggan()
     {
-        if ($this->cabang != "PCF") {
+        if ($this->cabang != "PCF" && $this->cabang != "PST") {
             if ($this->cabang == "GRT") {
                 $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
             } else {
@@ -4003,7 +4003,7 @@ class PenjualanController extends Controller
 
     public function laporanrekappelanggan()
     {
-        if ($this->cabang != "PCF") {
+        if ($this->cabang != "PCF" && $this->cabang != "PST") {
             if ($this->cabang == "GRT") {
                 $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
             } else {
@@ -4314,7 +4314,7 @@ class PenjualanController extends Controller
 
     public function laporanrekappenjualan()
     {
-        if ($this->cabang != "PCF") {
+        if ($this->cabang != "PCF" && $this->cabang != "PST") {
             if ($this->cabang == "GRT") {
                 $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
             } else {
