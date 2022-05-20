@@ -33,7 +33,7 @@ class ProduksiController extends Controller
             ->join('oman', 'permintaan_produksi.no_order', '=', 'oman.no_order')
             ->leftJoin(
                 DB::raw("(
-                    SELECT kode_produkd, SUM(jumlah) as jmlrealisasi FROM detail_mutasi_produksi
+                    SELECT kode_produk, SUM(jumlah) as jmlrealisasi FROM detail_mutasi_produksi
                     INNER JOIN mutasi_produksi  ON detail_mutasi_produksi.no_mutasi_produksi = mutasi_produksi.no_mutasi_produksi
                     WHERE jenis_mutasi = 'BPBJ'
                     AND tgl_mutasi_produksi BETWEEN '$dari' AND '$sampai'
