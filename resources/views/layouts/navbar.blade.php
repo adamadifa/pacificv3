@@ -926,6 +926,22 @@
                         </a>
                     </li>
                     @endif
+                    @if (in_array($level, $maintenance_pengeluaran))
+                    <li class="{{ request()->is(['pengeluaranmaintenance', 'pengeluaranmaintenance/*']) ? 'active' : '' }}">
+                        <a href="/pengeluaranmaintenance">
+                            <i class="feather icon-arrow-left"></i>
+                            <span class="menu-item">Barang Keluar</span>
+                        </a>
+                    </li>
+                    @endif
+                    @if (in_array($level, $laporan_maintenance))
+                    <li class="{{ request()->is(['laporanmaintenance', 'laporanmaintenance/*']) ? 'active' : '' }}">
+                        <a href="/laporanmaintenance/rekapbahanbakar">
+                            <i class="feather icon-file"></i>
+                            <span class="menu-item">Laporan</span>
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </li>
             @endif

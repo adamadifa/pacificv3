@@ -36,6 +36,7 @@ use App\Http\Controllers\LaporangudangcabangController;
 use App\Http\Controllers\LaporangudangjadiController;
 use App\Http\Controllers\LaporangudanglogistikController;
 use App\Http\Controllers\LaporankeuanganController;
+use App\Http\Controllers\LaporanmaintenanceController;
 use App\Http\Controllers\LaporanpembelianController;
 use App\Http\Controllers\Laporanproduksi;
 use App\Http\Controllers\LaporanproduksiController;
@@ -61,6 +62,7 @@ use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PembelianController;
 use App\Http\Controllers\PengeluarangudangbahanController;
 use App\Http\Controllers\PengeluarangudanglogistikController;
+use App\Http\Controllers\PengeluaranmaintenanceController;
 use App\Http\Controllers\PengeluaranproduksiController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\PermintaanpengirimanController;
@@ -1142,9 +1144,24 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pemasukanmaintenance/create', [PemasukanmaintenanceController::class, 'create']);
     Route::get('/pemasukanmaintenance/getbarang', [PemasukanmaintenanceController::class, 'getbarang']);
     Route::get('/pemasukanmaintenance/showtemp', [PemasukanmaintenanceController::class, 'showtemp']);
+    Route::post('/pemasukanmaintenance/store', [PemasukanmaintenanceController::class, 'store']);
     Route::post('/pemasukanmaintenance/storetemp', [PemasukanmaintenanceController::class, 'storetemp']);
     Route::post('/pemasukanmaintenance/deletetemp', [PemasukanmaintenanceController::class, 'deletetemp']);
     Route::post('/pemasukanmaintenance/show', [PemasukanmaintenanceController::class, 'show']);
     Route::post('/pemasukanmaintenance/cektemp', [PemasukanmaintenanceController::class, 'cektemp']);
     Route::delete('/pemasukanmaintenance/{nobukti_pemasukan}/delete', [PemasukanmaintenanceController::class, 'delete']);
+
+    Route::get('/pengeluaranmaintenance', [PengeluaranmaintenanceController::class, 'index']);
+    Route::get('/pengeluaranmaintenance/create', [PengeluaranmaintenanceController::class, 'create']);
+    Route::post('/pengeluaranmaintenance/cektemp', [PengeluaranmaintenanceController::class, 'cektemp']);
+    Route::get('/pengeluaranmaintenance/showtemp', [PengeluaranmaintenanceController::class, 'showtemp']);
+    Route::post('/pengeluaranmaintenance/storetemp', [PengeluaranmaintenanceController::class, 'storetemp']);
+    Route::post('/pengeluaranmaintenance/deletetemp', [PengeluaranmaintenanceController::class, 'deletetemp']);
+    Route::post('/pengeluaranmaintenance/store', [PengeluaranmaintenanceController::class, 'store']);
+    Route::post('/pengeluaranmaintenance/show', [PengeluaranmaintenanceController::class, 'show']);
+    Route::delete('/pengeluaranmaintenance/{nobukti_pengeluaran}/delete', [PengeluaranmaintenanceController::class, 'delete']);
+
+    //Laporan Maintenance
+    Route::get('/laporanmaintenance/rekapbahanbakar', [LaporanmaintenanceController::class, 'rekapbahanbakar']);
+    Route::post('/laporanmaintenance/rekapbahanbakar/cetak', [LaporanmaintenanceController::class, 'cetak_rekapbahanbakar']);
 });

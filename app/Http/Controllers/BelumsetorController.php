@@ -70,6 +70,8 @@ class BelumsetorController extends Controller
                 //dd($cabang);
                 $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
             }
+        } else {
+            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         }
 
 

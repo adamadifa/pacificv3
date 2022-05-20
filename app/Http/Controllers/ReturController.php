@@ -371,8 +371,11 @@ class ReturController extends Controller
                 foreach ($cbg as $c) {
                     $cabang[] = $c->kode_cabang;
                 }
+                //dd($cabang);
                 $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
             }
+        } else {
+            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         }
         return view('retur.laporan.frm.lap_retur', compact('cabang'));
     }

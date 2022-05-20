@@ -69,7 +69,7 @@ class PemasukanmaintenanceController extends Controller
 
     public function getbarang()
     {
-        $kode_barang = ['GA-002', 'GA-007', 'GA-558'];
+        $kode_barang = ['GA-002', 'GA-007', 'GA-588'];
         $barang = DB::table('master_barang_pembelian')
             ->whereIn('kode_barang', $kode_barang)
             ->orderBy('kode_barang')->get();
@@ -122,6 +122,61 @@ class PemasukanmaintenanceController extends Controller
             echo 0;
         } else {
             echo 1;
+        }
+    }
+
+    public function store(Request $request)
+    {
+        $nobukti_pemasukan = $request->nobukti_pemasukan;
+        $tgl_pemasukan = $request->tgl_pemasukan;
+        $tanggal = explode("-", $tgl_pemasukan);
+        $bulan = $tanggal[1];
+        $tahun = $tanggal[0];
+        $thn = substr($tahun, 2, 2);
+        $blnthn = $bulan . $thn;
+        // $pemasukanproduksi = DB::table('pemasukan_bb')
+        //     ->whereRaw('MID(nobukti_pemasukan,6,4)=' . $blnthn)
+        //     ->orderBy('nobukti_pemasukan', 'desc')
+        //     ->first();
+
+        // if ($pemasukanproduksi != null) {
+        //     $lastnobukti_pemasukan = $pemasukanproduksi->nobukti_pemasukan;
+        // } else {
+        //     $lastnobukti_pemasukan = "";
+        // }
+
+        // $format = "PRDM/" . $bulan . $thn . "/";
+        // $nobukti_pemasukan = buatkode($lastnobukti_pemasukan, $format, 3);
+        //dd($lastnobukti_pemasukan);
+        $kode_supplier = $request->kode_supplier;
+        $id_admin = Auth::user()->id;
+        $detail = DB::table('detailpemasukan_temp_bb')->where('id_admin', $id_admin)->get();
+        DB::beginTransaction();
+        try {
+            $data = [
+                'nobukti_pemasukan' => $nobukti_pemasukan,
+                'tgl_pemasukan' => $tgl_pemasukan,
+                'kode_supplier' => $kode_supplier,
+                'status' => 2
+            ];
+            DB::table('pemasukan_bb')->insert($data);
+            foreach ($detail as $d) {
+                $datadetail = [
+                    'nobukti_pemasukan' => $nobukti_pemasukan,
+                    'kode_barang' => $d->kode_barang,
+                    'keterangan' => $d->keterangan,
+                    'qty' => $d->qty
+                ];
+
+                DB::table('detail_pemasukan_bb')->insert($datadetail);
+            }
+            DB::table('detailpemasukan_temp_bb')->where('id_admin', $id_admin)->delete();
+            DB::commit();
+            return Redirect::back()->with(['success' => 'Data  Berhasil di Simpan']);
+        } catch (\Exception $e) {
+            dd($e);
+            DB::rollback();
+            return Redirect::back()->with(['warning' => 'Data  Gagal di Simpan, Hubungi Tim IT']);
         }
     }
 }

@@ -463,8 +463,11 @@ class PembayaranController extends Controller
                 foreach ($cbg as $c) {
                     $cabang[] = $c->kode_cabang;
                 }
+                //dd($cabang);
                 $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
             }
+        } else {
+            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         }
         return view('pembayaran.laporan.frm.lap_kasbesar', compact('cabang'));
     }

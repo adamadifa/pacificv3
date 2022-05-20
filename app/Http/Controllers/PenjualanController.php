@@ -2186,6 +2186,8 @@ class PenjualanController extends Controller
                 //dd($cabang);
                 $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
             }
+        } else {
+            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         }
         return view('penjualan.laporan.frm.lap_penjualan', compact('cabang'));
     }
@@ -2679,8 +2681,11 @@ class PenjualanController extends Controller
                 foreach ($cbg as $c) {
                     $cabang[] = $c->kode_cabang;
                 }
+                //dd($cabang);
                 $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
             }
+        } else {
+            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         }
         return view('penjualan.laporan.frm.lap_tunaikredit', compact('cabang'));
     }
@@ -2790,8 +2795,11 @@ class PenjualanController extends Controller
                 foreach ($cbg as $c) {
                     $cabang[] = $c->kode_cabang;
                 }
+                //dd($cabang);
                 $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
             }
+        } else {
+            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         }
         return view('penjualan.laporan.frm.lap_kartupiutang', compact('cabang'));
     }
@@ -2977,8 +2985,11 @@ class PenjualanController extends Controller
                 foreach ($cbg as $c) {
                     $cabang[] = $c->kode_cabang;
                 }
+                //dd($cabang);
                 $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
             }
+        } else {
+            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         }
         return view('penjualan.laporan.frm.lap_aup', compact('cabang'));
     }
@@ -3253,8 +3264,11 @@ class PenjualanController extends Controller
                 foreach ($cbg as $c) {
                     $cabang[] = $c->kode_cabang;
                 }
+                //dd($cabang);
                 $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
             }
+        } else {
+            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         }
 
 
@@ -3330,8 +3344,11 @@ class PenjualanController extends Controller
                 foreach ($cbg as $c) {
                     $cabang[] = $c->kode_cabang;
                 }
+                //dd($cabang);
                 $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
             }
+        } else {
+            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         }
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('penjualan.laporan.frm.lap_dppp', compact('cabang', 'bulan'));
@@ -3849,8 +3866,11 @@ class PenjualanController extends Controller
                 foreach ($cbg as $c) {
                     $cabang[] = $c->kode_cabang;
                 }
+                //dd($cabang);
                 $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
             }
+        } else {
+            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         }
         return view('penjualan.laporan.frm.lap_dpp', compact('cabang'));
     }
@@ -3920,8 +3940,11 @@ class PenjualanController extends Controller
                 foreach ($cbg as $c) {
                     $cabang[] = $c->kode_cabang;
                 }
+                //dd($cabang);
                 $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
             }
+        } else {
+            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         }
         return view('penjualan.laporan.frm.lap_rekapomsetpelanggan', compact('cabang'));
     }
@@ -3989,8 +4012,11 @@ class PenjualanController extends Controller
                 foreach ($cbg as $c) {
                     $cabang[] = $c->kode_cabang;
                 }
+                //dd($cabang);
                 $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
             }
+        } else {
+            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         }
         return view('penjualan.laporan.frm.lap_rekappelanggan', compact('cabang'));
     }
@@ -4297,8 +4323,11 @@ class PenjualanController extends Controller
                 foreach ($cbg as $c) {
                     $cabang[] = $c->kode_cabang;
                 }
+                //dd($cabang);
                 $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
             }
+        } else {
+            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         }
         return view('penjualan.laporan.frm.lap_rekappenjualan', compact('cabang'));
     }

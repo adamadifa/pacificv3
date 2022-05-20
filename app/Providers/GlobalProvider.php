@@ -336,7 +336,7 @@ class GlobalProvider extends ServiceProvider
                 'kasir', 'admin garut', 'admin kas', 'admin persediaan dan kasir',
                 'admin penjualan dan kasir', 'audit'
             ];
-            $saldoawalkasbesar_view = ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3'];
+            $saldoawalkasbesar_view = ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'admin garut'];
             $setoran_menu = ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'kepala admin', 'kasir', 'admin garut', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir', 'audit'];
             $setoranpenjualan_view = ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'kepala admin', 'kasir', 'admin garut', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
             $setoranpusat_view = ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'kepala admin', 'kasir', 'admin garut', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir', 'audit'];
@@ -628,10 +628,12 @@ class GlobalProvider extends ServiceProvider
 
             //Maintenance
 
-            $maintenance_menu  = ['admin'];
-            $maintenance_pembelian = ['admin'];
-            $maintenance_pemasukan = ['admin'];
+            $maintenance_menu  = ['admin', 'admin maintenance', 'spv accounting', 'manager accounting', 'direktur', 'general manager'];
+            $maintenance_pembelian = ['admin', 'admin maintenance'];
+            $maintenance_pemasukan = ['admin', 'admin maintenance'];
 
+            $maintenance_pengeluaran = ['admin', 'admin maintenance'];
+            $laporan_maintenance = ['admin', 'admin maintenance', 'spv accounting', 'manager accounting', 'direktur', 'general manager'];
             $shareddata = [
                 'level' => $level,
                 'getcbg' => $getcbg,
@@ -937,6 +939,10 @@ class GlobalProvider extends ServiceProvider
                 'maintenance_menu' => $maintenance_menu,
                 'maintenance_pembelian' => $maintenance_pembelian,
                 'maintenance_pemasukan' => $maintenance_pemasukan,
+                'maintenance_pengeluaran' => $maintenance_pengeluaran,
+                'laporan_maintenance' => $laporan_maintenance,
+
+
 
             ];
             View::share($shareddata);

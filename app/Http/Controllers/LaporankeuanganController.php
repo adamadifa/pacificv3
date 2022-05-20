@@ -230,6 +230,8 @@ class LaporankeuanganController extends Controller
                 //dd($cabang);
                 $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
             }
+        } else {
+            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         }
         return view('penjualan.laporan.frm.lap_penjualan_keuangan', compact('cabang'));
     }
@@ -271,6 +273,8 @@ class LaporankeuanganController extends Controller
                 //dd($cabang);
                 $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
             }
+        } else {
+            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         }
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('uanglogam.laporan.frm.lap_uanglogam', compact('cabang', 'bulan'));
@@ -334,6 +338,8 @@ class LaporankeuanganController extends Controller
                 //dd($cabang);
                 $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
             }
+        } else {
+            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         }
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('giro.laporan.frm.lap_rekapbg', compact('cabang', 'bulan'));
@@ -430,6 +436,8 @@ class LaporankeuanganController extends Controller
                 //dd($cabang);
                 $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
             }
+        } else {
+            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         }
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('kasbesar.laporan.frm.lap_saldokasbesar', compact('cabang', 'bulan'));
@@ -493,6 +501,8 @@ class LaporankeuanganController extends Controller
                 //dd($cabang);
                 $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
             }
+        } else {
+            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         }
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('kasbesar.laporan.frm.lap_lpu', compact('cabang', 'bulan'));

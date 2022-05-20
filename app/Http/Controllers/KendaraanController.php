@@ -254,8 +254,11 @@ class KendaraanController extends Controller
                 foreach ($cbg as $c) {
                     $cabang[] = $c->kode_cabang;
                 }
+                //dd($cabang);
                 $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
             }
+        } else {
+            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         }
         return view('kendaraan.laporan.frm.lap_rekapkendaraan', compact('cabang'));
     }

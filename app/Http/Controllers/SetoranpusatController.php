@@ -54,6 +54,8 @@ class SetoranpusatController extends Controller
                 //dd($cabang);
                 $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
             }
+        } else {
+            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         }
         $bank = Bank::where('show_on_cabang', 1)->get();
         $kode_cabang = $this->cabang;
@@ -74,6 +76,8 @@ class SetoranpusatController extends Controller
                 //dd($cabang);
                 $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
             }
+        } else {
+            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         }
         $bank = Bank::where('show_on_cabang', 1)->get();
         return view('setoranpusat.create', compact('bank', 'cabang'));

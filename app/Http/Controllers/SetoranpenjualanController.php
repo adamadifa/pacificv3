@@ -121,6 +121,8 @@ class SetoranpenjualanController extends Controller
                 //dd($cabang);
                 $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
             }
+        } else {
+            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         }
         $kode_cabang = $this->cabang;
         return view('setoranpenjualan.index', compact('cabang', 'setoranpenjualan', 'kode_cabang'));
@@ -300,6 +302,8 @@ class SetoranpenjualanController extends Controller
                 //dd($cabang);
                 $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
             }
+        } else {
+            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         }
         return view('setoranpenjualan.create', compact('cabang'));
     }

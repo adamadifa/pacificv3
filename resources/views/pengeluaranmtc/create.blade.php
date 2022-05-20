@@ -1,15 +1,15 @@
 @extends('layouts.midone')
-@section('titlepage','Input Data Barang Masuk')
+@section('titlepage','Input Data Barang Keluar')
 @section('content')
 <div class="content-wrapper">
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Input Data Barang Masuk</h2>
+                    <h2 class="content-header-title float-left mb-0">Input Data Barang Keluar</h2>
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/pemasukanmaintenance/create">Input Data Barang Masuk</a>
+                            <li class="breadcrumb-item"><a href="/pengeluaranmtc/create">Input Data Barang Keluar</a>
                             </li>
                         </ol>
                     </div>
@@ -19,7 +19,7 @@
     </div>
     <div class="content-body">
         @include('layouts.notification')
-        <form action="/pemasukanmaintenance/store" method="POST" id="frmBarangmasukproduksi">
+        <form action="/pengeluaranmaintenance/store" method="POST" id="frmBarangkeluarproduksi">
             @csrf
             <input type="hidden" id="cektemp">
             <input type="hidden" id="cektutuplaporan">
@@ -29,21 +29,21 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12">
-                                    <x-inputtext field="nobukti_pemasukan" label="No. Bukti Pemasukan" icon="feather icon-credit-card" />
+                                    <x-inputtext field="nobukti_pengeluaran" label="No. Bukti Pengeluaran" icon="feather icon-credit-card" />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <x-inputtext field="tgl_pemasukan" label="Tanggal Pemasukan" icon="feather icon-calendar" datepicker />
+                                    <x-inputtext field="tgl_pengeluaran" label="Tanggal pengeluaran" icon="feather icon-calendar" datepicker />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <select name="kode_supplier" id="kode_supplier" class="form-control select2">
-                                            <option value="">Supplier</option>
-                                            @foreach ($supplier as $d)
-                                            <option value="{{ $d->kode_supplier }}">{{ $d->nama_supplier }}</option>
+                                        <select name="kode_dept" id="kode_dept" class="form-control">
+                                            <option value="">Departemen</option>
+                                            @foreach ($departemen as $d)
+                                            <option value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -56,11 +56,11 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-lg-4 col-sm-12 col-md-12">
+                                <div class="col-lg-3 col-sm-12 col-md-12">
                                     <input type="hidden" name="kode_barang" id="kode_barang">
                                     <x-inputtext field="nama_barang" label="Nama Barang" icon="feather icon-box" readonly />
                                 </div>
-                                <div class="col-lg-4 col-sm-12 col-md-12">
+                                <div class="col-lg-5 col-sm-12 col-md-12">
                                     <x-inputtext field="keterangan" label="Keterangan" icon="feather icon-file" />
                                 </div>
                                 <div class="col-lg-2 col-sm-12 col-md-12">
@@ -83,7 +83,7 @@
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
-                                        <tbody id="loaddetailpemasukan"></tbody>
+                                        <tbody id="loaddetailpengeluaran"></tbody>
                                     </table>
                                 </div>
                             </div>
@@ -140,7 +140,7 @@
         function cektemp() {
             $.ajax({
                 type: 'POST'
-                , url: '/pemasukanmaintenance/cektemp'
+                , url: '/pengeluaranmaintenance/cektemp'
                 , data: {
                     _token: "{{ csrf_token() }}"
                 }
@@ -156,7 +156,7 @@
         }
 
         function loaddetail() {
-            $("#loaddetailpemasukan").load("/pemasukanmaintenance/showtemp");
+            $("#loaddetailpengeluaran").load("/pengeluaranmaintenance/showtemp");
             cektemp();
         }
 
@@ -209,7 +209,7 @@
             } else {
                 $.ajax({
                     type: 'POST'
-                    , url: '/pemasukanmaintenance/storetemp'
+                    , url: '/pengeluaranmaintenance/storetemp'
                     , data: {
                         _token: "{{ csrf_token() }}"
                         , kode_barang: kode_barang
@@ -237,9 +237,9 @@
             }
         });
 
-        $("#tgl_pemasukan").change(function() {
-            var tgl_pemasukan = $(this).val();
-            cektutuplaporan(tgl_pemasukan);
+        $("#tgl_pengeluaran").change(function() {
+            var tgl_pengeluaran = $(this).val();
+            cektutuplaporan(tgl_pengeluaran);
         });
 
         function cektutuplaporan(tanggal) {
@@ -258,10 +258,10 @@
                 }
             });
         }
-        $("#frmBarangmasukproduksi").submit(function() {
-            var nobukti_pemasukan = $("#nobukti_pemasukan").val()
-            var tgl_pemasukan = $("#tgl_pemasukan").val();
-            var kode_supplier = $("#kode_supplier").val();
+        $("#frmBarangkeluarproduksi").submit(function() {
+            var nobukti_pengeluaran = $("#nobukti_pengeluaran").val();
+            var tgl_pengeluaran = $("#tgl_pengeluaran").val();
+            var kode_dept = $("#kode_dept").val();
             var cektemp = $("#cektemp").val();
             var cektutuplaporan = $("#cektutuplaporan").val();
             if (cektutuplaporan > 0) {
@@ -271,37 +271,37 @@
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
-                    $("#tgl_pemasukan").focus();
+                    $("#tgl_pengeluaran").focus();
                 });
                 return false;
-            } else if (nobukti_pemasukan == "") {
+            } else if (nobukti_pengeluaran == "") {
                 swal({
                     title: 'Oops'
-                    , text: 'No. Bukti Harus Diisi Dulu !'
+                    , text: 'No. Bukti Pengeluaran Harus Diisi Dulu !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
-                    $("#nobukti_pemasukan").focus();
+                    $("#nobukti_pengeluaran").focus();
                 });
                 return false;
-            } else if (tgl_pemasukan == "") {
+            } else if (tgl_pengeluaran == "") {
                 swal({
                     title: 'Oops'
                     , text: 'Tanggal Harus Diisi Dulu !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
-                    $("#tgl_pemasukan").focus();
+                    $("#tgl_pengeluaran").focus();
                 });
                 return false;
-            } else if (kode_supplier == "") {
+            } else if (kode_dept == "") {
                 swal({
                     title: 'Oops'
-                    , text: 'Supplier Harus Diisi !'
+                    , text: 'Jenis Pengeluaran Harus Diisi Dulu !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
-                    $("#kode_supplier").focus();
+                    $("#kode_dept").focus();
                 });
                 return false;
             } else if (cektemp == "" || cektemp == 0) {
@@ -311,7 +311,7 @@
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
-                    $("#nama_barang").focus();
+                    $("#kode_dept").focus();
                 });
                 return false;
             }
