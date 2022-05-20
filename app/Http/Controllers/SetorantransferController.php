@@ -69,12 +69,16 @@ class SetorantransferController extends Controller
         }
 
         if ($this->cabang != "PCF") {
-            $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-            $cabang[] = "";
-            foreach ($cbg as $c) {
-                $cabang[] = $c->kode_cabang;
+            if ($this->cabang == "GRT") {
+                $query->where('karyawan.kode_cabang', 'TSM');
+            } else {
+                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+                $cabang[] = "";
+                foreach ($cbg as $c) {
+                    $cabang[] = $c->kode_cabang;
+                }
+                $query->whereIn('karyawan.kode_cabang', $cabang);
             }
-            $query->whereIn('karyawan.kode_cabang', $cabang);
         }
         $transfer = $query->paginate(15);
         $transfer->appends($request->all());

@@ -29,12 +29,14 @@
                 <div class="card-body">
                     <form action="/omancabang">
                         <div class="row">
-
-                            @if (Auth::user()->kode_cabang == 'PCF')
                             <div class="col-lg-3 col-sm-12">
                                 <div class="form-group  ">
                                     <select name="kode_cabang" id="" class="form-control">
+                                        @if ($getcbg == "PCF")
                                         <option value="">Semua Cabang</option>
+                                        @else
+                                        <option value="">Pilih Cabang</option>
+                                        @endif
                                         @foreach ($cabang as $c)
                                         <option {{ Request('kode_cabang')==$c->kode_cabang ? 'selected' : '' }} value="{{ $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}
                                         </option>
@@ -42,7 +44,6 @@
                                     </select>
                                 </div>
                             </div>
-                            @endif
                             <div class="col-lg-3 col-sm-12">
                                 {{-- <label for="" class="form-label mb-1">Omset Bulan</label> --}}
                                 <div class="form-group">

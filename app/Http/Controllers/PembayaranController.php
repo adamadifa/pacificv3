@@ -454,10 +454,17 @@ class PembayaranController extends Controller
 
     public function laporankasbesarpenjualan()
     {
-        if ($this->cabang == "PCF") {
-            $cabang = DB::table('cabang')->get();
-        } else {
-            $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+        if ($this->cabang != "PCF") {
+            if ($this->cabang == "GRT") {
+                $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
+            } else {
+                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+                $cabang[] = "";
+                foreach ($cbg as $c) {
+                    $cabang[] = $c->kode_cabang;
+                }
+                $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
+            }
         }
         return view('pembayaran.laporan.frm.lap_kasbesar', compact('cabang'));
     }

@@ -6,12 +6,26 @@ use App\Models\Barang;
 use App\Models\Cabang;
 use App\Models\Omancabang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\View;
 
 class OmancabangController extends Controller
 {
+    protected $cabang;
+    public function __construct()
+    {
+        // Fetch the Site Settings object
+        $this->middleware(function ($request, $next) {
+            $this->cabang = Auth::user()->kode_cabang;
+            return $next($request);
+        });
+
+
+        View::share('cabang', $this->cabang);
+    }
     public function index(Request $request)
     {
         $bulansekarang = date("m");
@@ -35,14 +49,22 @@ class OmancabangController extends Controller
 
         $oman_cabang = $query->paginate(12);
         $oman_cabang->appends($request->all());
-        $cabang = Cabang::orderBy('kode_cabang')->get();
+        if ($this->cabang !== "PCF") {
+            $cabang = Cabang::where('kode_cabang', $this->cabang)->get();
+        } else {
+            $cabang = Cabang::orderBy('kode_cabang')->get();
+        }
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('omancabang.index', compact('oman_cabang', 'cabang', 'bulan'));
     }
 
     public function create()
     {
-        $cabang = Cabang::orderBy('kode_cabang')->get();
+        if ($this->cabang !== "PCF") {
+            $cabang = Cabang::where('kode_cabang', $this->cabang)->get();
+        } else {
+            $cabang = Cabang::orderBy('kode_cabang')->get();
+        }
         $produk = Barang::orderBy('kode_produk')->get();
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('omancabang.create', compact('cabang', 'produk', 'bulan'));
@@ -56,7 +78,11 @@ class OmancabangController extends Controller
         $m2 = DB::table('detail_oman_cabang')->where('no_order', $no_order)->where('mingguke', 2)->first();
         $m3 = DB::table('detail_oman_cabang')->where('no_order', $no_order)->where('mingguke', 3)->first();
         $m4 = DB::table('detail_oman_cabang')->where('no_order', $no_order)->where('mingguke', 4)->first();
-        $cabang = Cabang::orderBy('kode_cabang')->get();
+        if ($this->cabang !== "PCF") {
+            $cabang = Cabang::where('kode_cabang', $this->cabang)->get();
+        } else {
+            $cabang = Cabang::orderBy('kode_cabang')->get();
+        }
         $produk = DB::table('master_barang')
             ->select('master_barang.kode_produk', 'nama_barang', 'mingguke_1', 'mingguke_2', 'mingguke_3', 'mingguke_4')
             ->leftJoin(

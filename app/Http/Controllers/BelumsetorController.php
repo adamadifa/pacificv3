@@ -34,7 +34,16 @@ class BelumsetorController extends Controller
         }
 
         if ($this->cabang != "PCF") {
-            $query->where('kode_cabang', $this->cabang);
+            if ($this->cabang == "GRT") {
+                $query->where('kode_cabang', 'TSM');
+            } else {
+                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+                $cabang[] = "";
+                foreach ($cbg as $c) {
+                    $cabang[] = $c->kode_cabang;
+                }
+                $query->whereIn('kode_cabang', $cabang);
+            }
         }
         $query->orderBy('kode_cabang');
         $query->orderBy('bulan');
@@ -49,10 +58,18 @@ class BelumsetorController extends Controller
     public function create()
     {
 
-        if ($this->cabang == "PCF") {
-            $cabang = Cabang::orderBy('kode_cabang')->get();
-        } else {
-            $cabang = Cabang::where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+        if ($this->cabang != "PCF") {
+            if ($this->cabang == "GRT") {
+                $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
+            } else {
+                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+                $cabang[] = "";
+                foreach ($cbg as $c) {
+                    $cabang[] = $c->kode_cabang;
+                }
+                //dd($cabang);
+                $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
+            }
         }
 
 

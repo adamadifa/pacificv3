@@ -109,7 +109,19 @@ class SetoranpenjualanController extends Controller
         $query->orderBy('nama_karyawan');
         $setoranpenjualan = $query->get();
         //dd($setoranpenjualan);
-        $cabang = Cabang::orderBy('kode_cabang')->get();
+        if ($this->cabang != "PCF") {
+            if ($this->cabang == "GRT") {
+                $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
+            } else {
+                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+                $cabang[] = "";
+                foreach ($cbg as $c) {
+                    $cabang[] = $c->kode_cabang;
+                }
+                //dd($cabang);
+                $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
+            }
+        }
         $kode_cabang = $this->cabang;
         return view('setoranpenjualan.index', compact('cabang', 'setoranpenjualan', 'kode_cabang'));
     }
@@ -276,7 +288,19 @@ class SetoranpenjualanController extends Controller
 
     public function create()
     {
-        $cabang = Cabang::orderBy('kode_cabang')->get();
+        if ($this->cabang != "PCF") {
+            if ($this->cabang == "GRT") {
+                $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
+            } else {
+                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+                $cabang[] = "";
+                foreach ($cbg as $c) {
+                    $cabang[] = $c->kode_cabang;
+                }
+                //dd($cabang);
+                $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
+            }
+        }
         return view('setoranpenjualan.create', compact('cabang'));
     }
 

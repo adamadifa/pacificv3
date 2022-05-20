@@ -55,12 +55,16 @@ class ReturController extends Controller
             $query->whereBetween('tglretur', [$request->dari, $request->sampai]);
         }
         if ($this->cabang != "PCF") {
-            $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-            $cabang[] = "";
-            foreach ($cbg as $c) {
-                $cabang[] = $c->kode_cabang;
+            if ($this->cabang == "GRT") {
+                $query->where('karyawan.kode_cabang', 'TSM');
+            } else {
+                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+                $cabang[] = "";
+                foreach ($cbg as $c) {
+                    $cabang[] = $c->kode_cabang;
+                }
+                $query->whereIn('karyawan.kode_cabang', $cabang);
             }
-            $query->whereIn('karyawan.kode_cabang', $cabang);
         }
         $retur = $query->paginate(15);
 
@@ -358,10 +362,17 @@ class ReturController extends Controller
 
     public function laporanretur()
     {
-        if ($this->cabang == "PCF") {
-            $cabang = DB::table('cabang')->get();
-        } else {
-            $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+        if ($this->cabang != "PCF") {
+            if ($this->cabang == "GRT") {
+                $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
+            } else {
+                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+                $cabang[] = "";
+                foreach ($cbg as $c) {
+                    $cabang[] = $c->kode_cabang;
+                }
+                $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
+            }
         }
         return view('retur.laporan.frm.lap_retur', compact('cabang'));
     }

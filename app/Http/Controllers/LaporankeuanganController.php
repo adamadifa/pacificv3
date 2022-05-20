@@ -218,10 +218,18 @@ class LaporankeuanganController extends Controller
 
     public function penjualan()
     {
-        if ($this->cabang == "PCF") {
-            $cabang = DB::table('cabang')->get();
-        } else {
-            $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+        if ($this->cabang != "PCF") {
+            if ($this->cabang == "GRT") {
+                $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
+            } else {
+                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+                $cabang[] = "";
+                foreach ($cbg as $c) {
+                    $cabang[] = $c->kode_cabang;
+                }
+                //dd($cabang);
+                $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
+            }
         }
         return view('penjualan.laporan.frm.lap_penjualan_keuangan', compact('cabang'));
     }
@@ -251,10 +259,18 @@ class LaporankeuanganController extends Controller
 
     public function uanglogam()
     {
-        if ($this->cabang == "PCF") {
-            $cabang = DB::table('cabang')->get();
-        } else {
-            $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+        if ($this->cabang != "PCF") {
+            if ($this->cabang == "GRT") {
+                $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
+            } else {
+                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+                $cabang[] = "";
+                foreach ($cbg as $c) {
+                    $cabang[] = $c->kode_cabang;
+                }
+                //dd($cabang);
+                $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
+            }
         }
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('uanglogam.laporan.frm.lap_uanglogam', compact('cabang', 'bulan'));
@@ -306,10 +322,18 @@ class LaporankeuanganController extends Controller
 
     public function rekapbg()
     {
-        if ($this->cabang == "PCF") {
-            $cabang = DB::table('cabang')->get();
-        } else {
-            $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+        if ($this->cabang != "PCF") {
+            if ($this->cabang == "GRT") {
+                $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
+            } else {
+                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+                $cabang[] = "";
+                foreach ($cbg as $c) {
+                    $cabang[] = $c->kode_cabang;
+                }
+                //dd($cabang);
+                $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
+            }
         }
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('giro.laporan.frm.lap_rekapbg', compact('cabang', 'bulan'));
@@ -394,10 +418,18 @@ class LaporankeuanganController extends Controller
 
     public function saldokasbesar()
     {
-        if ($this->cabang == "PCF") {
-            $cabang = DB::table('cabang')->get();
-        } else {
-            $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+        if ($this->cabang != "PCF") {
+            if ($this->cabang == "GRT") {
+                $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
+            } else {
+                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+                $cabang[] = "";
+                foreach ($cbg as $c) {
+                    $cabang[] = $c->kode_cabang;
+                }
+                //dd($cabang);
+                $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
+            }
         }
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('kasbesar.laporan.frm.lap_saldokasbesar', compact('cabang', 'bulan'));
@@ -449,10 +481,18 @@ class LaporankeuanganController extends Controller
 
     public function lpu()
     {
-        if ($this->cabang == "PCF") {
-            $cabang = DB::table('cabang')->get();
-        } else {
-            $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+        if ($this->cabang != "PCF") {
+            if ($this->cabang == "GRT") {
+                $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
+            } else {
+                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+                $cabang[] = "";
+                foreach ($cbg as $c) {
+                    $cabang[] = $c->kode_cabang;
+                }
+                //dd($cabang);
+                $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
+            }
         }
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('kasbesar.laporan.frm.lap_lpu', compact('cabang', 'bulan'));

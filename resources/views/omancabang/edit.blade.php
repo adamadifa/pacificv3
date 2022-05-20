@@ -27,7 +27,6 @@
                     <form method="POST" action="/omancabang/{{ Crypt::encrypt($dataoman->no_order) }}/update">
                         @csrf
                         <div class="row">
-                            @if (Auth::user()->kode_cabang =="PCF")
                             <div class="col-lg-4 col-sm-12">
                                 <div class="form-group  ">
                                     <select name="kode_cabang" id="kode_cabang" class="form-control" disabled>
@@ -40,9 +39,6 @@
                                     </select>
                                 </div>
                             </div>
-                            @else
-                            <input type="hidden" name="kode_cabang" id="kode_cabang" value="{{ Auth::user()->kode_cabang }}">
-                            @endif
                             <div class="col-lg-4 col-sm-12">
                                 {{-- <label for="" class="form-label mb-1">Omset Bulan</label> --}}
                                 <div class="form-group">

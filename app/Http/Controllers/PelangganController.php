@@ -412,12 +412,11 @@ class PelangganController extends Controller
         $query->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang');
         $query->where('status_pelanggan', '1');
         if ($this->cabang != "PCF") {
-            $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-            $cabang[] = "";
-            foreach ($cbg as $c) {
-                $cabang[] = $c->kode_cabang;
+            if ($this->cabang == "GRT") {
+                $query->where('karyawan.kode_cabang', 'TSM');
+            } else {
+                $query->where('karyawan.kode_cabang', $this->cabang);
             }
-            $query->whereIn('karyawan.kode_cabang', $cabang);
         }
 
         $pelanggan = $query;

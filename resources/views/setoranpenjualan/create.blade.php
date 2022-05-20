@@ -8,7 +8,6 @@
         </div>
     </div>
     <div class="row">
-        @if (Auth::user()->kode_cabang =="PCF")
         <div class="col-lg-12 col-sm-12">
             <div class="form-group  ">
                 <select name="kode_cabang" id="kode_cabang" class="form-control">
@@ -20,9 +19,6 @@
                 </select>
             </div>
         </div>
-        @else
-        <input type="hidden" name="kode_cabang" id="kode_cabang" value="{{ Auth::user()->kode_cabang }}">
-        @endif
     </div>
     <div class="row" id="pilihsalesman">
         <div class="col-12">

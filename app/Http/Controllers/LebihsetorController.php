@@ -35,16 +35,25 @@ class LebihsetorController extends Controller
         }
 
         if ($this->cabang != "PCF") {
-            $query->where('kode_cabang', $this->cabang);
+            if ($this->cabang == "GRT") {
+                $query->where('kode_cabang', 'TSM');
+            } else {
+                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+                $cabang[] = "";
+                foreach ($cbg as $c) {
+                    $cabang[] = $c->kode_cabang;
+                }
+                $query->whereIn('kode_cabang', $cabang);
+            }
         }
         $query->orderBy('kode_cabang');
         $query->orderBy('bulan');
         $lebihsetor = $query->get();
 
 
-        $cabang = Cabang::orderBy('kode_cabang')->get();
+        // $cabang = Cabang::orderBy('kode_cabang')->get();
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
-        return view('lebihsetor.index', compact('cabang', 'bulan', 'lebihsetor'));
+        return view('lebihsetor.index', compact('bulan', 'lebihsetor'));
     }
 
     public function show($kode_ls)
@@ -61,10 +70,18 @@ class LebihsetorController extends Controller
 
     public function create()
     {
-        if ($this->cabang == "PCF") {
-            $cabang = Cabang::orderBy('kode_cabang')->get();
-        } else {
-            $cabang = Cabang::where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+        if ($this->cabang != "PCF") {
+            if ($this->cabang == "GRT") {
+                $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
+            } else {
+                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+                $cabang[] = "";
+                foreach ($cbg as $c) {
+                    $cabang[] = $c->kode_cabang;
+                }
+                //dd($cabang);
+                $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
+            }
         }
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         $bank = Bank::where('show_on_cabang', 1)->orderBy('kode_bank')->get();
