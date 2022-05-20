@@ -43,8 +43,8 @@ class BarangpembelianController extends Controller
             $query->where('nama_barang', 'like', '%' . $request->nama_barang . '%');
         }
 
-        if ($request->kode_barang != "") {
-            $query->where('kode_barang', 'like', '%' . $request->kode_barang . '%');
+        if ($request->kode_barang_search != "") {
+            $query->where('kode_barang', 'like', '%' . $request->kode_barang_search . '%');
         }
 
         $query->orderBy('kode_barang', 'desc');
