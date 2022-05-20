@@ -47,7 +47,7 @@
                                     <th width="10px" style="vertical-align: middle;">No</th>
                                     <th style="vertical-align: middle; text-align: center;">Produk</th>
                                     <th style="text-align:center;vertical-align: middle;">Permintaan</th>
-                                    <th style="text-align:center;vertical-align: middle;">Reliasi</th>
+                                    <th style="text-align:center;vertical-align: middle;">Realisasi</th>
                                     <th style="text-align:center;vertical-align: middle;">%</th>
                                 </tr>
                             </thead>
