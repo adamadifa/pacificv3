@@ -337,9 +337,23 @@ class GlobalProvider extends ServiceProvider
                 'admin penjualan dan kasir', 'audit'
             ];
             $saldoawalkasbesar_view = ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'admin garut'];
-            $setoran_menu = ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'kepala admin', 'admin pusat', 'kasir', 'admin garut', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir', 'audit'];
-            $setoranpenjualan_view = ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'kepala admin', 'admin pusat', 'kasir', 'admin garut', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
-            $setoranpusat_view = ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'kepala admin', 'admin pusat', 'kasir', 'admin garut', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir', 'audit'];
+            $setoran_menu = [
+                'admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'kepala admin',
+                'admin pusat', 'kasir', 'admin garut', 'admin kas', 'admin persediaan dan kasir',
+                'admin penjualan dan kasir', 'audit'
+            ];
+            $setoranpenjualan_view = [
+                'admin', 'staff keuangan', 'staff keuangan 2',
+                'staff keuangan 3', 'kepala admin', 'admin pusat', 'kasir',
+                'admin garut', 'admin kas', 'admin persediaan dan kasir',
+                'admin penjualan dan kasir', 'audit'
+            ];
+            $setoranpusat_view = [
+                'admin', 'staff keuangan',
+                'staff keuangan 2', 'staff keuangan 3', 'kepala admin',
+                'admin pusat', 'kasir', 'admin garut', 'admin kas',
+                'admin persediaan dan kasir', 'admin penjualan dan kasir', 'audit'
+            ];
             $setoranpusat_add = ['admin', 'kasir', 'admin garut', 'kepala admin', 'admin pusat', 'kasir', 'admin garut', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
             $setoranpusat_edit = ['admin', 'kasir', 'admin garut', 'kepala admin', 'admin pusat', 'kasir', 'admin garut', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
             $setoranpusat_hapus = ['admin', 'kasir', 'admin garut', 'kepala admin', 'admin pusat', 'kasir', 'admin garut', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];

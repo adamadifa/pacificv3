@@ -38,7 +38,7 @@ class DashboardController extends Controller
             return $this->dashboardkepalapenjualan();
         } else if (Auth::user()->level == "kepala admin") {
             return $this->dashboardkepalaadmin();
-        } else if (Auth::user()->level == "manager accounting") {
+        } else if (Auth::user()->level == "manager accounting" || Auth::user()->level == "audit") {
             return $this->dashboardaccounting();
         } else if (Auth::user()->level == "staff keuangan") {
             return $this->dashboardstaffkeuangan();
