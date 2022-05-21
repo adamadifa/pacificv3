@@ -28,7 +28,7 @@
     <div class="row">
         <div class="col-12">
             <div class="form-group">
-                <select name="kode_akun" id="kode_akun" class="form-control select2">
+                <select name="kode_akun" id="kode_akun_2" class="form-control akun">
                     <option value="">Kode Akun</option>
                     @foreach ($coa as $d)
                     <option {{ $detailpembelian->kode_akun ==  $d->kode_akun ? 'selected' : '' }} value="{{ $d->kode_akun }}"><b>{{ $d->kode_akun }}</b> - {{ $d->nama_akun }}</option>
@@ -79,10 +79,12 @@
         </div>
     </div>
 </form>
-<script src="{{asset('app-assets/vendors/js/forms/select/select2.full.min.js')}}"></script>
-<script src="{{asset('app-assets/js/scripts/forms/select/form-select2.js')}}"></script>
+
 <script>
     $(function() {
+        $('#kode_akun_2').select2({
+            dropdownParent: $('#mdleditbarang')
+        });
         $("#frmEditbarang").find('.cabangcheck').change(function() {
             if (this.checked) {
                 $("#frmEditbarang").find("#pilihcabang").show();

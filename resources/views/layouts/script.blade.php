@@ -52,6 +52,20 @@
 
 <script>
     $(function() {
+        //fix modal force focus
+        $.fn.modal.Constructor.prototype.enforceFocus = function() {
+            var that = this;
+            $(document).on('focusin.modal', function(e) {
+                if ($(e.target).hasClass('select2')) {
+                    return true;
+                }
+
+                if (that.$element[0] !== e.target && !that.$element.has(e.target).length) {
+                    that.$element.focus();
+                }
+            });
+        };
+
         function toggleZoomScreen() {
             var width = window.screen.width;
             if (width <= 1366) {

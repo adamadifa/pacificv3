@@ -42,11 +42,8 @@ class KlaimController extends Controller
         $query->leftJoin('ledger_bank', 'klaim.kode_klaim', '=', 'ledger_bank.kode_klaim');
         $klaim = $query->get();
         $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->first();
-        if ($this->cabang != "PCF") {
-            $cabang = Cabang::orderBy('kode_cabang')
-                ->where('kode_cabang', $this->cabang)
-                ->orWhere('kode_cabang', $cbg->sub_cabang)
-                ->get();
+        if ($this->cabang !== "PCF") {
+            $cabang = Cabang::where('kode_cabang', $this->cabang)->get();
         } else {
             $cabang = Cabang::orderBy('kode_cabang')->get();
         }
@@ -143,11 +140,8 @@ class KlaimController extends Controller
 
 
         $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->first();
-        if ($this->cabang != "PCF") {
-            $cabang = Cabang::orderBy('kode_cabang')
-                ->where('kode_cabang', $this->cabang)
-                ->orWhere('kode_cabang', $cbg->sub_cabang)
-                ->get();
+        if ($this->cabang !== "PCF") {
+            $cabang = Cabang::where('kode_cabang', $this->cabang)->get();
         } else {
             $cabang = Cabang::orderBy('kode_cabang')->get();
         }
