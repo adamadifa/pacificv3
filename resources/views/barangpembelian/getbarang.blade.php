@@ -11,6 +11,8 @@
 </table>
 <script>
     $(function() {
+        // var kode_dept = "{{ $kode_dept }}";
+        // alert(kode_dept);
         $('.tabelbarang').DataTable({
             processing: true
             , serverSide: true
