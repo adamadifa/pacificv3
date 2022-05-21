@@ -153,7 +153,7 @@
                         echo  "";
                     } ?>
                 </td>
-                <td align="center" class="str"><?php echo $d->kode_akun; ?></td>
+                <td align="center" class="str"><?php echo "'".$d->kode_akun; ?></td>
                 <td><?php echo $d->nama_akun; ?></td>
                 <td align="center"><?php echo $cekppn; ?></td>
                 <td align="center"><?php echo desimal($d->qty); ?></td>
