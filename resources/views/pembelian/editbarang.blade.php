@@ -14,6 +14,19 @@
             <x-inputtext label="Keterangan" field="keterangan" icon="feather icon-file" value="{{ $detailpembelian->keterangan }}" />
         </div>
     </div>
+    @if ($cekpembayaran > 0)
+    <div class="row">
+        <div class="col-4">
+            <x-inputtext label="Qty" field="qty" icon="feather icon-file" value="{{ desimal($detailpembelian->qty) }}" readonly />
+        </div>
+        <div class="col-4">
+            <x-inputtext label="Harga" field="harga" icon="feather icon-file" value="{{ desimal($detailpembelian->harga) }}" right readonly />
+        </div>
+        <div class="col-4">
+            <x-inputtext label="Penyesuaian" field="penyesuaian" icon="feather icon-file" value="{{ desimal($detailpembelian->penyesuaian) }}" right readonly />
+        </div>
+    </div>
+    @else
     <div class="row">
         <div class="col-4">
             <x-inputtext label="Qty" field="qty" icon="feather icon-file" value="{{ desimal($detailpembelian->qty) }}" />
@@ -25,6 +38,8 @@
             <x-inputtext label="Penyesuaian" field="penyesuaian" icon="feather icon-file" value="{{ desimal($detailpembelian->penyesuaian) }}" right />
         </div>
     </div>
+    @endif
+
     <div class="row">
         <div class="col-12">
             <div class="form-group">

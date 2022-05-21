@@ -78,14 +78,6 @@
                 <div class="card-body">
                     <form action="/pelanggan">
                         <div class="row">
-                            <div class="col-lg-5">
-                                <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker value="{{ Request('dari') }}" />
-                            </div>
-                            <div class="col-lg-5">
-                                <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker value="{{ Request('sampai') }}" />
-                            </div>
-                        </div>
-                        <div class="row">
                             @if (Auth::user()->kode_cabang=="PCF")
                             <div class="col-lg-2 col-sm-12">
                                 <div class="form-group  ">
@@ -117,14 +109,28 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-lg-2 col-sm-12">
+                                <x-inputtext label="Kode Pelanggan" field="kode_pelanggan" icon="feather icon-credit-card" value="{{ Request('kode_pelanggan') }}" />
+                            </div>
                             <div class="col-lg-3 col-sm-12">
                                 <x-inputtext label="Nama Pelanggan" field="nama" icon="feather icon-user" value="{{ Request('nama') }}" />
                             </div>
-                            <div class="col-lg-2 col-sm-12">
-                                <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search"></i> </button>
-                                <button type="submit" name="export" value="2" class="btn btn-success"><i class="fa fa-download"></i> </button>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-5">
+                                <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker value="{{ Request('dari') }}" />
+                            </div>
+                            <div class="col-lg-5">
+                                <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker value="{{ Request('sampai') }}" />
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group">
+                                    <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search"></i> </button>
+                                    <button type="submit" name="export" value="2" class="btn btn-success"><i class="fa fa-download"></i> </button>
+                                </div>
                             </div>
                         </div>
+
 
                     </form>
                     <div class="table-responsive">

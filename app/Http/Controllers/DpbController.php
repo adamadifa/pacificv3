@@ -122,7 +122,7 @@ class DpbController extends Controller
         } else {
             $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
         }
-        $produk = Barang::orderBy('kode_produk')->get();
+        $produk = Barang::orderBy('nama_barang')->where('status', 1)->get();
         return view('dpb.create', compact('cabang', 'produk'));
     }
 
@@ -182,20 +182,24 @@ class DpbController extends Controller
                 ];
             }
         }
-
-        DB::beginTransaction();
-        try {
-            DB::table('dpb')->insert($data);
-            $chunks = array_chunk($detail_dpb, 5);
-            foreach ($chunks as $chunk) {
-                Detaildpb::insert($chunk);
+        $cek = DB::table('dpb')->where('no_dpb', $no_dpb)->count();
+        if ($cek > 0) {
+            return Redirect::back()->with(['warning' => 'Data Sudah Ada']);
+        } else {
+            DB::beginTransaction();
+            try {
+                DB::table('dpb')->insert($data);
+                $chunks = array_chunk($detail_dpb, 5);
+                foreach ($chunks as $chunk) {
+                    Detaildpb::insert($chunk);
+                }
+                DB::commit();
+                return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+            } catch (\Exception $e) {
+                dd($e);
+                DB::rollback();
+                return Redirect::back()->with(['warning' => 'Data Gagal Disimpan, Hubungi Tim IT']);
             }
-            DB::commit();
-            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
-        } catch (\Exception $e) {
-            dd($e);
-            DB::rollback();
-            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan, Hubungi Tim IT']);
         }
     }
 
@@ -246,6 +250,7 @@ class DpbController extends Controller
                     $join->on('master_barang.kode_produk', '=', 'detaildpb.kode_produk');
                 }
             )
+            ->where('master_barang.status', 1)
             ->get();
         return view('dpb.edit', compact('cabang', 'produk', 'dpb'));
     }

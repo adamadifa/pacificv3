@@ -6,6 +6,7 @@
 </style>
 <form action="/mutasigudangcabang/store" method="post" id="frmDpb">
     @csrf
+    <input type="hidden" id="cektutuplaporan">
     <div class="row">
         <div class="col-12">
             <x-inputtext field="no_dpb" label="Ketikan No. DPB / Nama Karyawan" icon="fa fa-barcode" />
@@ -84,6 +85,28 @@
 <script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
 <script>
     $(function() {
+        function cektutuplaporan() {
+            var tanggal = $("#tgl_mutasi_gudang_cabang").val();
+            $.ajax({
+                type: "POST"
+                , url: "/cektutuplaporan"
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , tanggal: tanggal
+                    , jenislaporan: "gudangcabang"
+                }
+                , cache: false
+                , success: function(respond) {
+                    console.log(respond);
+                    $("#frmDpb").find("#cektutuplaporan").val(respond);
+                }
+            });
+        }
+
+        $("#tgl_mutasi_gudang_cabang").change(function() {
+            cektutuplaporan();
+        });
+
         function loaddpb(no_dpb) {
             $.ajax({
                 type: 'POST'
@@ -127,7 +150,19 @@
         $("#frmDpb").submit(function() {
             var no_dpb = $("#no_dpb_val").val();
             var tgl_mutasi_gudang_cabang = $("#frmDpb").find("#tgl_mutasi_gudang_cabang").val();
-            if (no_dpb == "") {
+            var cektutuplaporan = $("#frmDpb").find("#cektutuplaporan").val();
+            if (cektutuplaporan == 1) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Laporan Sudah Di Tutup !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $('#frmDpb').find('#tgl_mutasi_gudang_cabang').focus();
+                });
+
+                return false;
+            } else if (no_dpb == "") {
                 swal({
                     title: 'Oops'
                     , text: 'No. DPB Harus Diisi !'

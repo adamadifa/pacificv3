@@ -60,6 +60,10 @@ class PelangganController extends Controller
             if ($request->dari != "" && $request->sampai != "") {
                 $query->whereBetween('pelanggan.time_stamps', [$request->dari, $request->sampai]);
             }
+
+            if (!empty($request->kode_pelanggan)) {
+                $query->where('pelanggan.kode_pelanggan', $request->kode_pelanggan);
+            }
         }
         $query->select('pelanggan.*', 'nama_karyawan');
         $query->orderBy('status_pelanggan', 'desc');
@@ -98,6 +102,10 @@ class PelangganController extends Controller
             if ($request->dari != "" && $request->sampai != "") {
                 $query2->whereBetween('pelanggan.time_stamps', [$request->dari, $request->sampai]);
             }
+
+            if (!empty($request->kode_pelanggan)) {
+                $query2->where('pelanggan.kode_pelanggan', $request->kode_pelanggan);
+            }
         }
         $query2->select('pelanggan.*', 'nama_karyawan');
         $query2->orderBy('status_pelanggan', 'desc');
@@ -123,6 +131,10 @@ class PelangganController extends Controller
 
             if ($request->dari != "" && $request->sampai != "") {
                 $queryaktif->whereBetween('pelanggan.time_stamps', [$request->dari, $request->sampai]);
+            }
+
+            if (!empty($request->kode_pelanggan)) {
+                $queryaktif->where('pelanggan.kode_pelanggan', $request->kode_pelanggan);
             }
         }
         $queryaktif->select('pelanggan.*', 'nama_karyawan');
@@ -151,6 +163,10 @@ class PelangganController extends Controller
 
             if ($request->dari != "" && $request->sampai != "") {
                 $querynonaktif->whereBetween('pelanggan.time_stamps', [$request->dari, $request->sampai]);
+            }
+
+            if (!empty($request->kode_pelanggan)) {
+                $querynonaktif->where('pelanggan.kode_pelanggan', $request->kode_pelanggan);
             }
         }
         $querynonaktif->select('pelanggan.*', 'nama_karyawan');

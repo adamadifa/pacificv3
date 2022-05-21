@@ -32,7 +32,7 @@
                     <form action="/barangpembelian">
                         <div class="row">
                             <div class="col-lg-2 col-sm-12">
-                                <x-inputtext label="Kode Barang" field="kode_barang_search" icon="feather icon-box" value="{{ Request('kode_barang') }}" />
+                                <x-inputtext label="Kode Barang" field="kode_barang_search" icon="feather icon-box" value="{{ Request('kode_barang_search') }}" />
                             </div>
                             <div class="col-lg-3 col-sm-12">
                                 <x-inputtext label="Nama Barang" field="nama_barang" icon="feather icon-box" value="{{ Request('nama_barang') }}" />

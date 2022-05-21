@@ -557,10 +557,25 @@ class PembelianController extends Controller
     {
         $nobukti_pembelian = Crypt::decrypt($nobukti_pembelian);
         $pembelian = DB::table('pembelian')
-            ->select('pembelian.*', 'nama_supplier', 'nama_dept')
+            ->select('pembelian.*', 'nama_supplier', 'nama_dept', 'jmlbayar')
             ->join('supplier', 'pembelian.kode_supplier', '=', 'supplier.kode_supplier')
             ->join('departemen', 'pembelian.kode_dept', '=', 'departemen.kode_dept')
-            ->where('nobukti_pembelian', $nobukti_pembelian)
+            ->leftJoin(
+                DB::raw('(
+                    SELECT
+                    nobukti_pembelian,
+                    SUM(jmlbayar) as jmlbayar
+                    FROM
+                    historibayar_pembelian hb
+                    INNER JOIN detail_kontrabon ON hb.no_kontrabon = detail_kontrabon.no_kontrabon
+                    GROUP BY
+                    nobukti_pembelian
+                ) historibayar'),
+                function ($join) {
+                    $join->on('pembelian.nobukti_pembelian', '=', 'historibayar.nobukti_pembelian');
+                }
+            )
+            ->where('pembelian.nobukti_pembelian', $nobukti_pembelian)
             ->first();
         $detailpembelian = DB::table('detail_pembelian')
             ->select('detail_pembelian.*', 'nama_barang')
@@ -667,6 +682,10 @@ class PembelianController extends Controller
         $nobukti_pembelian = $request->nobukti_pembelian;
         $kode_barang = $request->kode_barang;
         $no_urut = $request->no_urut;
+        $cekpembayaran = DB::table('detail_kontrabon')
+            ->leftJoin('historibayar_pembelian', 'detail_kontrabon.no_kontrabon', '=', 'historibayar_pembelian.no_kontrabon')
+            ->where('nobukti_pembelian', $nobukti_pembelian)
+            ->whereNotNull('historibayar_pembelian.no_kontrabon')->count();
         $coa = DB::table('set_coa_cabang')
             ->select('set_coa_cabang.kode_akun', 'nama_akun')
             ->join('coa', 'set_coa_cabang.kode_akun', '=', 'coa.kode_akun')
@@ -675,7 +694,7 @@ class PembelianController extends Controller
             ->join('master_barang_pembelian', 'detail_pembelian.kode_barang', '=', 'master_barang_pembelian.kode_barang')
             ->where('nobukti_pembelian', $nobukti_pembelian)->where('detail_pembelian.kode_barang', $kode_barang)->where('no_urut', $no_urut)->first();
         $cabang = Cabang::orderBy('kode_cabang')->get();
-        return view('pembelian.editbarang', compact('detailpembelian', 'coa', 'cabang'));
+        return view('pembelian.editbarang', compact('detailpembelian', 'coa', 'cabang', 'cekpembayaran'));
     }
 
     public function updatebarang(Request $request)

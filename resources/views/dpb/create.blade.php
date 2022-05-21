@@ -1,12 +1,10 @@
 <form action="/dpb/store" method="post" id="frmDpb">
     @csrf
     <div class="row">
-        <div class="col-12">
+        <div class="col-4">
             <x-inputtext label="No. DPB" field="no_dpb" icon="feather icon-file" />
         </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
+        <div class="col-4">
             <div class="form-group">
                 <select name="kode_cabang" id="kode_cabang" class="form-control">
                     <option value="">Pilih Cabang</option>
@@ -16,27 +14,23 @@
                 </select>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12 col-sm-12">
+        <div class="col-lg-4 col-sm-12">
             <div class="form-group  ">
-                <select name="id_karyawan" id="id_karyawan" class="form-control">
+                <select name="id_karyawan" id="id_karyawan" class="form-control select2">
                     <option value="">Semua Salesman</option>
                 </select>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-12 col-sm-12">
+        <div class="col-lg-6 col-sm-12">
             <div class="form-group">
                 <select name="no_polisi" id="no_polisi" class="form-control">
                     <option value="">Pilih Kendaraan</option>
                 </select>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
+        <div class="col-6">
             <div class="form-group">
                 <select name="id_driver" id="id_driver" class="form-control select2">
                     <option value="">Pilih Driver</option>
@@ -45,25 +39,21 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-12">
+        <div class="col-4">
             <div class="form-group">
                 <select name="id_helper_1" id="id_helper_1" class="form-control select2">
                     <option value="">Pilih Helper</option>
                 </select>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
+        <div class="col-4">
             <div class="form-group">
                 <select name="id_helper_2" id="id_helper_2" class="form-control select2">
                     <option value="">Pilih Helper</option>
                 </select>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
+        <div class="col-4">
             <div class="form-group">
                 <select name="id_helper_3" id="id_helper_3" class="form-control select2">
                     <option value="">Pilih Helper</option>
@@ -71,6 +61,7 @@
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="col-12">
             <x-inputtext label="Tujuan" field="tujuan" icon="feather icon-map" />
@@ -143,6 +134,10 @@
     $(function() {
         $("#tgl_pengambilan").datepicker({
             dateFormat: 'yy-mm-dd'
+        });
+
+        $("#frmDpb").find('#id_karyawan').select2({
+            dropdownParent: $('#mdlinput')
         });
 
         function loadsalesmancabang(kode_cabang) {
@@ -228,6 +223,17 @@
                 swal({
                     title: 'Oops'
                     , text: 'No. DPB Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#frmDpb").find("#no_dpb").focus();
+                });
+
+                return false;
+            } else if (no_dpb.length > 10) {
+                swal({
+                    title: 'Oops'
+                    , text: 'No. DPB Maksimal 10 Character !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {

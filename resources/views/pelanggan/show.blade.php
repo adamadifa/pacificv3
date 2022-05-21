@@ -212,74 +212,81 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-lg-12 col-sm-12">
-                                                <button type="submit" name="submit" value="1" class="btn btn-primary btn-block"><i class="fa fa-search"></i> Cari Data </button>
+                                                <div class="form-group">
+                                                    <button type="submit" name="submit" value="1" class="btn btn-primary btn-block"><i class="fa fa-search"></i> Cari Data </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </form>
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>No. Faktur</th>
-                                                <th>Tanggal</th>
-                                                <th>Salesman</th>
-                                                <th>T/K</th>
-                                                <th>Total</th>
-                                                <th>Status</th>
-                                                <th>Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($penjualan as $d)
-                                            <tr>
-                                                <td>{{ $loop->iteration; }}</td>
-                                                <td>{{ $d->no_fak_penj }}</td>
-                                                <td>{{ date("d-m-Y",strtotime($d->tgltransaksi)) }}</td>
-                                                <td>{{ ucwords(strtolower($d->nama_karyawan)) }}</td>
-                                                <td>
-                                                    @if ($d->jenistransaksi=="tunai")
-                                                    <span class="badge bg-success">Tunai</span>
-                                                    @else
-                                                    <span class="badge bg-warning">Kredit</span>
-                                                    @endif
-                                                </td>
-                                                <td class="text-right">{{rupiah($d->total)}}</td>
-                                                <td>
-                                                    @if ($d->status_lunas=="1")
-                                                    <span class="badge bg-success">Lunas</span>
-                                                    @else
-                                                    <span class="badge bg-danger">Belum Lunas</span>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    <div class="btn-group" role="group" aria-label="Basic example">
-                                                        <a class="ml-1" href="/penjualan/{{\Crypt::encrypt($d->no_fak_penj)}}/edit"><i class="feather icon-edit success"></i></a>
-                                                        <a class="ml-1 detailpenjualan" href="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/show"><i class=" feather icon-file-text info"></i></a>
-                                                        <form method="POST" name="deleteform" class="deleteform" action="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/delete">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <a href="#" tanggal="{{ $d->tgltransaksi }}" class="delete-confirm ml-1">
-                                                                <i class="feather icon-trash danger"></i>
-                                                            </a>
-                                                        </form>
-                                                        <div class="dropdown ml-1">
-                                                            <a class="dropdown-toggle mr-1" type="button" id="dropdownMenuButton300" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <i class="feather icon-printer primary"></i>
-                                                            </a>
-                                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton300" x-placement="top-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -7px, 0px);">
-                                                                <a class="dropdown-item" target="_blank" href="/penjualan/cetakfaktur/{{ Crypt::encrypt($d->no_fak_penj) }}"><i class="feather icon-printer mr-1"></i>Cetak Faktur</a>
-                                                                <a class="dropdown-item" target="_blank" href="/penjualan/cetaksuratjalan/{{ Crypt::encrypt($d->no_fak_penj) }}/1"><i class="feather icon-printer mr-1"></i>Cetak Surat Jalan 1</a>
-                                                                <a class="dropdown-item" target="_blank" href="/penjualan/cetaksuratjalan/{{ Crypt::encrypt($d->no_fak_penj) }}/2"><i class="feather icon-printer mr-1"></i>Cetak Surat Jalan 2</a>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>No</th>
+                                                        <th>No. Faktur</th>
+                                                        <th>Tanggal</th>
+                                                        <th>Salesman</th>
+                                                        <th>T/K</th>
+                                                        <th>Total</th>
+                                                        <th>Status</th>
+                                                        <th>Aksi</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($penjualan as $d)
+                                                    <tr>
+                                                        <td>{{ $loop->iteration; }}</td>
+                                                        <td>{{ $d->no_fak_penj }}</td>
+                                                        <td>{{ date("d-m-Y",strtotime($d->tgltransaksi)) }}</td>
+                                                        <td>{{ ucwords(strtolower($d->nama_karyawan)) }}</td>
+                                                        <td>
+                                                            @if ($d->jenistransaksi=="tunai")
+                                                            <span class="badge bg-success">Tunai</span>
+                                                            @else
+                                                            <span class="badge bg-warning">Kredit</span>
+                                                            @endif
+                                                        </td>
+                                                        <td class="text-right">{{rupiah($d->total)}}</td>
+                                                        <td>
+                                                            @if ($d->status_lunas=="1")
+                                                            <span class="badge bg-success">Lunas</span>
+                                                            @else
+                                                            <span class="badge bg-danger">Belum Lunas</span>
+                                                            @endif
+                                                        </td>
+                                                        <td>
+                                                            <div class="btn-group" role="group" aria-label="Basic example">
+                                                                <a class="ml-1" href="/penjualan/{{\Crypt::encrypt($d->no_fak_penj)}}/edit"><i class="feather icon-edit success"></i></a>
+                                                                <a class="ml-1 detailpenjualan" href="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/show"><i class=" feather icon-file-text info"></i></a>
+                                                                <form method="POST" name="deleteform" class="deleteform" action="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/delete">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <a href="#" tanggal="{{ $d->tgltransaksi }}" class="delete-confirm ml-1">
+                                                                        <i class="feather icon-trash danger"></i>
+                                                                    </a>
+                                                                </form>
+                                                                <div class="dropdown ml-1">
+                                                                    <a class="dropdown-toggle mr-1" type="button" id="dropdownMenuButton300" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                        <i class="feather icon-printer primary"></i>
+                                                                    </a>
+                                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton300" x-placement="top-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -7px, 0px);">
+                                                                        <a class="dropdown-item" target="_blank" href="/penjualan/cetakfaktur/{{ Crypt::encrypt($d->no_fak_penj) }}"><i class="feather icon-printer mr-1"></i>Cetak Faktur</a>
+                                                                        <a class="dropdown-item" target="_blank" href="/penjualan/cetaksuratjalan/{{ Crypt::encrypt($d->no_fak_penj) }}/1"><i class="feather icon-printer mr-1"></i>Cetak Surat Jalan 1</a>
+                                                                        <a class="dropdown-item" target="_blank" href="/penjualan/cetaksuratjalan/{{ Crypt::encrypt($d->no_fak_penj) }}/2"><i class="feather icon-printer mr-1"></i>Cetak Surat Jalan 2</a>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                    </div>
 
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                    {{ $penjualan->links('vendor.pagination.vuexy') }}
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                            {{ $penjualan->links('vendor.pagination.vuexy') }}
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <div class="tab-pane" id="limitkredit" aria-labelledby="limitkredit-tab" role="tabpanel">
                                     <table class="table table-hover-animation">

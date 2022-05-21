@@ -1,12 +1,10 @@
 <form action="/dpb/{{ Crypt::encrypt($dpb->no_dpb) }}/update" method="post" id="frmDpb">
     @csrf
     <div class="row">
-        <div class="col-12">
-            <x-inputtext label="No. DPB" field="no_dpb" value="{{ $dpb->no_dpb }}" icon="feather icon-file" />
+        <div class="col-3">
+            <x-inputtext label="No. DPB" readonly field="no_dpb" value="{{ $dpb->no_dpb }}" icon="feather icon-file" />
         </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
+        <div class="col-3">
             <div class="form-group">
                 <select name="kode_cabang" id="kode_cabang" class="form-control">
                     <option value="">Pilih Cabang</option>
@@ -16,18 +14,14 @@
                 </select>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12 col-sm-12">
+        <div class="col-lg-3 col-sm-12">
             <div class="form-group  ">
                 <select name="id_karyawan" id="id_karyawan" class="form-control">
                     <option value="">Semua Salesman</option>
                 </select>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12 col-sm-12">
+        <div class="col-lg-3 col-sm-12">
             <div class="form-group">
                 <select name="no_polisi" id="no_polisi" class="form-control">
                     <option value="">Pilih Kendaraan</option>
@@ -36,34 +30,28 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-12">
+        <div class="col-3">
             <div class="form-group">
                 <select name="id_driver" id="id_driver" class="form-control select2">
                     <option value="">Pilih Driver</option>
                 </select>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
+        <div class="col-3">
             <div class="form-group">
                 <select name="id_helper_1" id="id_helper_1" class="form-control select2">
                     <option value="">Pilih Helper</option>
                 </select>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
+        <div class="col-3">
             <div class="form-group">
                 <select name="id_helper_2" id="id_helper_2" class="form-control select2">
                     <option value="">Pilih Helper</option>
                 </select>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
+        <div class="col-3">
             <div class="form-group">
                 <select name="id_helper_3" id="id_helper_3" class="form-control select2">
                     <option value="">Pilih Helper</option>
@@ -71,6 +59,7 @@
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="col-12">
             <x-inputtext label="Tujuan" value="{{ $dpb->tujuan }}" field="tujuan" icon="feather icon-map" />
@@ -196,41 +185,41 @@
                         <td style="width: 5%" class="bg-info">
                             <input type="text" autocomplete="off" class="form-control" name="jmlduspengambilan[]" value="{{ !empty($jmlpengambilan_dus) ? $jmlpengambilan_dus : '' }}">
                         </td>
-                        <td>{{ $d->satuan }}</td>
+                        <td class="bg-info text-white">{{ $d->satuan }}</td>
                         <td style="width:5%" class="bg-info">
                             <input type="{{ !empty($d->isipack) ? 'text' : 'hidden' }}" autocomplete="off" class="form-control" name="jmlpackpengambilan[]" value="{{ !empty($jmlpack_pengambilan) ? $jmlpack_pengambilan : '' }}">
                         </td>
-                        <td>PACK</td>
+                        <td class="bg-info text-white">PACK</td>
                         <td style="width: 5%" class="bg-info">
                             <input type="text" class="form-control" autocomplete="off" name="jmlpcspengambilan[]" value="{{ !empty($jmlpcs_pengambilan) ? $jmlpcs_pengambilan : '' }}">
                         </td>
-                        <td>PCS</td>
+                        <td class="bg-info text-white">PCS</td>
                         <td style="width: 5%" class="bg-success">
                             <input type="text" class="form-control" autocomplete="off" name="jmlduspengembalian[]" value="{{ !empty($jmlpengembalian_dus) ? $jmlpengembalian_dus : '' }}">
                         </td>
-                        <td>{{ $d->satuan }}</td>
+                        <td class="bg-success text-white">{{ $d->satuan }}</td>
                         <td style="width:5%" class="bg-success">
                             <input type="{{ !empty($d->isipack) ? 'text' : 'hidden' }}" autocomplete="off" class="form-control" name="jmlpackpengembalian[]" value="{{ !empty($jmlpack_pengembalian) ? $jmlpack_pengembalian : '' }}">
                         </td>
-                        <td>PACK</td>
+                        <td class="bg-success text-white">PACK</td>
                         <td style="width: 5%" class="bg-success">
                             <input type="text" class="form-control" name="jmlpcspengembalian[]" autocomplete="off" value="{{ !empty($jmlpcs_pengembalian) ? $jmlpcs_pengembalian : '' }}">
                         </td>
-                        <td>PCS</td>
+                        <td class="bg-success text-white">PCS</td>
                         <td style="width: 5%" class="bg-danger">
                             <input type="text" class="form-control" name="jmldusbarangkeluar[]" autocomplete="off" value="{{ !empty($jmlbarangkeluar_dus) ? $jmlbarangkeluar_dus : '' }}">
                         </td>
-                        <td>{{ $d->satuan }}</td>
+                        <td class="bg-danger text-white">{{ $d->satuan }}</td>
                         <td style="width:5%" class="bg-danger">
 
                             <input type="{{ !empty($d->isipack) ? 'text' : 'hidden' }}" class="form-control" name="jmlpackbarangkeluar[]" value="{{ !empty($jmlpack_barangkeluar) ? $jmlpack_barangkeluar : '' }}">
 
                         </td>
-                        <td>PACK</td>
+                        <td class="bg-danger text-white">PACK</td>
                         <td style="width: 5%" class="bg-danger">
                             <input type="text" class="form-control" name="jmlpcsbarangkeluar[]" autocomplete="off" value="{{ !empty($jmlpcs_barangkeluar) ? $jmlpcs_barangkeluar : '' }}">
                         </td>
-                        <td>PCS</td>
+                        <td class="bg-danger text-white">PCS</td>
                     </tr>
                     @endforeach
                 </tbody>

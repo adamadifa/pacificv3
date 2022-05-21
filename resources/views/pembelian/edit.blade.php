@@ -83,16 +83,32 @@
                     </div>
                 </div>
                 <div class="col-8">
-                    <div class="card">
-                        <div class="card-header d-flex align-items-start pb-0">
-                            <div class="avatar bg-rgba-danger m-2" style="padding:3rem ">
-                                <div class="avatar-content">
-                                    <i class="feather icon-shopping-cart text-danger" style="font-size: 4rem"></i>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header d-flex align-items-start pb-0">
+                                    <div class="avatar bg-rgba-danger m-2" style="padding:3rem ">
+                                        <div class="avatar-content">
+                                            <i class="feather icon-shopping-cart text-danger" style="font-size: 4rem"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2 class="text-bold-700" style="font-size: 6rem; padding:2rem" id="grandtotal">0,00</h2>
+
+                                    </div>
                                 </div>
                             </div>
-                            <div>
-                                <h2 class="text-bold-700" style="font-size: 6rem; padding:2rem" id="grandtotal">0,00</h2>
-
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="alert alert-warning">
+                                <h4 class="alert-heading"><i class="fa fa-info mr-1"></i> <b>Informasi</b></h4>
+                                <p>
+                                    Data Pembelian dengan No. Bukti <b>{{ $pembelian->nobukti_pembelian }}</b> Sudah Memiliki
+                                    Histori Pembayaran, Untuk melakukan Tambah Data Pembelian, ataupun Edit Quantiy atau Harga
+                                    silahkan Hubungi <b>Bagian Keuangan</b> Untuk melakukan Pembatalan Pembayaran Terlebih Dahulu
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -131,7 +147,7 @@
                                 </div>
                                 <div class="col-lg-1 col-sm-12">
                                     <div class="form-group">
-                                        <a href="#" class="btn btn-primary" id="tambahbarang"><i class="fa fa-plus"></i></a>
+                                        <a href="#" class="btn btn-primary @if ($pembelian->jmlbayar > 0) disabled" @endif id="tambahbarang"><i class="fa fa-plus"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -184,7 +200,7 @@
                                     </table>
                                 </div>
                             </div>
-                            <a href="#" id="tambahpotongan" class="btn btn-danger mt-1 mb-1"> <i class="feather icon-tag"></i> Tambah Potongan</a>
+                            <a href="#" id="tambahpotongan" class="btn btn-danger mt-1 mb-1 @if ($pembelian->jmlbayar > 0) disabled" @endif"> <i class="feather icon-tag"></i> Tambah Potongan</a>
                             <div class="row">
                                 <div class="col-12">
                                     <table class="table table-hover-animation">
@@ -270,7 +286,7 @@
 
 <!-- Edit Barang -->
 <div class="modal fade text-left" id="mdleditbarang" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 640px">
         <div class=" modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel18">Edit Barang <span id="dept"></span></h4>
