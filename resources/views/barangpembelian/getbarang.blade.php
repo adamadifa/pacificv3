@@ -50,6 +50,15 @@
             var jenis_barang = $(this).attr("jenis_barang");
             $("#kode_barang").val(kode_barang);
             $("#nama_barang").val(nama_barang + " - (" + jenis_barang + ")");
+            if (jenis_barang == "BAHAN BAKU") {
+                $("#kode_akun").val('5-1101').trigger('change');
+            } else if (jenis_barang == "KEMASAN") {
+                $("#kode_akun").val('1-1503').trigger('change');
+            } else if (jenis_barang == "Bahan Tambahan") {
+                $("#kode_akun").val('5-1102').trigger('change');
+            } else {
+                $("#kode_akun").val('').trigger('change');
+            }
             $("#mdlbarang").modal("hide");
         });
 
