@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 
 class CoaController extends Controller
@@ -12,6 +13,13 @@ class CoaController extends Controller
     {
         $coa = DB::table('coa')->orderBy('kode_akun')->get();
         return view('coa.index', compact('coa'));
+    }
+
+    public function edit($kode_akun)
+    {
+        $kode_akun = Crypt::decrypt($kode_akun);
+        $akun = DB::table('coa')->where('kode_akun', $kode_akun)->first();
+        return view('coa.edit', compact('akun'));
     }
     public function getcoacabang(Request $request)
     {

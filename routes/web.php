@@ -1133,6 +1133,7 @@ Route::middleware(['auth'])->group(function () {
 
     //Coa
     Route::get('/coa', [CoaController::class, 'index']);
+    Route::get('/coa/{kode_akun}/edit', [CoaController::class, 'edit']);
 
     //Maintenance
     Route::get('/maintenance/pembelian', [MaintenanceController::class, 'pembelian']);

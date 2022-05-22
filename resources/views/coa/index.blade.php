@@ -28,15 +28,37 @@
                         <table class="table table-hover-animation">
                             <thead class="thead-dark">
                                 <tr>
-                                    <th>Kode Akun</th>
-                                    <th>Nama Akun</th>
+                                    <th>Akun</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
+
                                 @foreach ($coa as $d)
+                                @if ($d->level==1)
+                                @php
+                                $padding = "20px";
+                                @endphp
+                                @elseif($d->level== 2)
+                                @php
+                                $padding ="40px";
+                                @endphp
+                                @elseif($d->level==3)
+                                @php
+                                $padding ="60px";
+                                @endphp
+                                @else
+                                @php
+                                $padding = 0;
+                                @endphp
+                                @endif
                                 <tr>
-                                    <td>{{ $d->kode_akun }}</td>
-                                    <td>{{ $d->nama_akun }}</td>
+                                    <td style="padding-left:{{ $padding }}; font-weight:{{ $d->level== 0 ? 'bold' : '' }}">{{ $d->kode_akun }} {{ $d->nama_akun }}</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a href="/coa/{{ Crypt::encrypt($d->kode_akun) }}/edit"><i class="feather icon-edit success"></i></a>
+                                        </div>
+                                    </td>
                                 </tr>
                                 @endforeach
 
