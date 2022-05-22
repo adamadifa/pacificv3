@@ -4931,4 +4931,69 @@ class PenjualanController extends Controller
             }
         }
     }
+
+    public function updatepending($no_fak_penj)
+    {
+        $no_fak_penj = Crypt::decrypt($no_fak_penj);
+        $faktur = DB::table('penjualan')->where('no_fak_penj', $no_fak_penj)->first();
+        $kode_pelanggan = $faktur->kode_pelanggan;
+        $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)->first();
+        $limitpel = $pelanggan->limitpel;
+        DB::beginTransaction();
+        try {
+            if ($faktur->status_lunas == 1) {
+                DB::table('penjualan')->where('no_fak_penj', $no_fak_penj)->update(['status' => 2]);
+            } else {
+                $piutang = DB::table('penjualan')
+                    ->selectRaw('
+                        SUM(((IFNULL(penjualan.total, 0)) - (IFNULL(retur.total, 0)))) AS totalpiutang,
+                        SUM(jmlbayar) AS jmlbayar
+                        ')
+                    ->leftJoin(
+                        DB::raw("(
+                            SELECT historibayar.no_fak_penj,
+                            IFNULL(SUM(bayar), 0) AS jmlbayar
+                            FROM
+                            historibayar
+                            GROUP BY historibayar.no_fak_penj
+                        ) hb"),
+                        function ($join) {
+                            $join->on('penjualan.no_fak_penj', '=', 'hb.no_fak_penj');
+                        }
+                    )
+                    ->leftJoin(
+                        DB::raw("(
+                            SELECT
+                            retur.no_fak_penj AS no_fak_penj,
+                            SUM(total) AS total
+                            FROM
+                                retur
+                            GROUP BY
+                                retur.no_fak_penj
+                        ) retur"),
+                        function ($join) {
+                            $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
+                        }
+                    )
+                    ->where('penjualan.kode_pelanggan', $kode_pelanggan)
+                    ->where('penjualan.status', '!=', 1)
+                    ->orWhere('penjualan.kode_pelanggan', $kode_pelanggan)
+                    ->whereNull('penjualan.status')
+                    ->first();
+
+                $sisapiutang = $piutang->totalpiutang - $piutang->jmlbayar;
+                $totalpiutang  = $sisapiutang + $faktur->total;
+                if ($totalpiutang <= $limitpel) {
+                    DB::table('penjualan')->where('no_fak_penj', $no_fak_penj)->update(['status' => 2]);
+                }
+            }
+
+            DB::commit();
+            return Redirect::back()->with(['success' => 'Data Berhasil Di Update']);
+        } catch (\Exception $e) {
+            //dd($e);
+            DB::rollback();
+            return Redirect::back()->with(['success' => 'Data Gagal Di Update']);
+        }
+    }
 }

@@ -1079,7 +1079,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/penjualan/storebarang', [PenjualanController::class, 'storebarang']);
     Route::post('/penjualan/update', [PenjualanController::class, 'update']);
     Route::get('/penjualan/{no_fak_penj}/show', [PenjualanController::class, 'show']);
-
+    Route::get('/penjualan/{no_fak_penj}/updatepending', [PenjualanController::class, 'updatepending']);
 
     //Pembayaran
     Route::post('/pembayaran/store', [PembayaranController::class, 'store']);

@@ -114,7 +114,7 @@
                                             </a>
                                         </form>
                                         @endif
-
+                                        <a href="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/updatepending" class="ml-1"><i class="fa fa-refresh accent-1"></i></a>
                                         <div class="dropdown ml-1">
                                             <a class="dropdown-toggle mr-1" type="button" id="dropdownMenuButton300" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <i class="feather icon-printer primary"></i>
