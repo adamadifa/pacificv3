@@ -585,6 +585,7 @@ class LaporankeuanganController extends Controller
         if ($format == 2) {
             return view('kasbesar.laporan.cetak_lpu_2', compact('salesman', 'bank', 'jmlbank', 'jmlsales', 'cabang', 'bulan', 'tahun', 'namabulan', 'dari', 'sampai', 'kode_cabang'));
         } else {
+
             return view('kasbesar.laporan.cetak_lpu', compact('salesman', 'bank', 'jmlbank', 'jmlsales', 'cabang', 'bulan', 'tahun', 'namabulan', 'dari', 'sampai', 'kode_cabang'));
         }
     }
