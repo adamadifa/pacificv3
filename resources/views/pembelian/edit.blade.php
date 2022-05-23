@@ -149,7 +149,7 @@
                                 </div>
                                 <div class="col-lg-1 col-sm-12">
                                     <div class="form-group">
-                                        <a href="#" class="btn btn-primary @if ($pembelian->jmlbayar > 0) disabled" @endif id="tambahbarang"><i class="fa fa-plus"></i></a>
+                                        <a href="#" class="btn btn-primary @if ($pembelian->jmlbayar > 0) disabled @endif" id="tambahbarang"><i class="fa fa-plus"></i></a>
                                     </div>
                                 </div>
                             </div>

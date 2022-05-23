@@ -17,6 +17,20 @@
         @endphp
         <input type="text" data-id="<?php echo $d->id_driver_helper ?>" class="form-control ratio" style="text-align: right;" value="<?php echo $ratio; ?>">
     </td>
+    <td>
+        @php
+        if (empty($d->ratiohelperaktif) || $d->ratiohelperaktif==0.00) {
+        if (empty($d->ratiohelperterakhir) || $d->ratiohelperterakhir == 0.00) {
+        $ratiohelper = $d->ratiohelper_default;
+        } else {
+        $ratiohelper = $d->ratiohelper_default;
+        }
+        } else {
+        $ratiohelper = $d->ratiohelperaktif;
+        }
+        @endphp
+        <input type="text" data-id="<?php echo $d->id_driver_helper ?>" class="form-control ratiohelper" style="text-align: right;" value="<?php echo $ratiohelper; ?>">
+    </td>
 </tr>
 @endforeach
 <script>

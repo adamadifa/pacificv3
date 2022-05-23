@@ -100,6 +100,7 @@
                                     <th>Nama</th>
                                     <th>Kategori</th>
                                     <th>Ratio</th>
+                                    <th>Ratio Helper</th>
                                 </tr>
                             </thead>
                             <tbody id="loadratiokomisi">

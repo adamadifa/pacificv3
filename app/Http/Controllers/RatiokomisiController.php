@@ -18,10 +18,18 @@ class RatiokomisiController extends Controller
     public function getratiokomisi(Request $request)
     {
         $ratiokomisi = DB::table('driver_helper')
-            ->selectRaw('id_driver_helper,nama_driver_helper,kategori,driver_helper.ratio as ratio_default,ratioaktif,ratioterakhir')
+            ->selectRaw('
+            id_driver_helper,nama_driver_helper,kategori,
+            driver_helper.ratio as ratio_default,
+            driver_helper.ratio_helper as ratiohelper_default,
+            ratioaktif,
+            ratiohelperaktif,
+            ratioterakhir,
+            ratiohelperterakhir
+            ')
             ->leftJoin(
                 DB::raw("(
-                SELECT id,set_ratio_komisi.ratio as ratioaktif
+                SELECT id,set_ratio_komisi.ratio as ratioaktif, set_ratio_komisi.ratio_helper as ratiohelperaktif
                 FROM set_ratio_komisi
                 INNER JOIN driver_helper ON set_ratio_komisi.id = driver_helper.id_driver_helper
                 WHERE bulan = '$request->bulan' AND tahun = '$request->tahun' AND kode_cabang='$request->kode_cabang'
@@ -33,7 +41,7 @@ class RatiokomisiController extends Controller
 
             ->leftJoin(
                 DB::raw("(
-                SELECT id,set_ratio_komisi.ratio as ratioterakhir
+                SELECT id,set_ratio_komisi.ratio as ratioterakhir, set_ratio_komisi.ratio_helper as ratiohelperterakhir
                 FROM set_ratio_komisi
                 INNER JOIN driver_helper ON set_ratio_komisi.id = driver_helper.id_driver_helper
                 WHERE kode_cabang ='$request->kode_cabang' AND tgl_berlaku IN (SELECT max(tgl_berlaku) FROM set_ratio_komisi)
