@@ -45,7 +45,7 @@ class LaporanmaintenanceController extends Controller
         }
 
         $tglakhirpenerimaan = date("Y-m-t", strtotime($dari));
-        if ($level == 'manager accounting' ||  $level == 'spv accounting' ||  $level == 'admin') {
+        if ($level == 'manager accounting' ||  $level == 'spv accounting' ||  $level == 'admin' || $level == "admin pusat") {
             return view('maintenance.laporan.cetak_rekapbahanbakar_harga', compact('kode_barang', 'saldoawal', 'barang', 'dari', 'sampai'));
         } else {
             return view('maintenance.laporan.cetak_rekapbahanbakar', compact('kode_barang', 'saldoawal', 'barang', 'dari', 'sampai'));
