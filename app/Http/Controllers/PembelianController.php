@@ -556,6 +556,10 @@ class PembelianController extends Controller
     public function edit($nobukti_pembelian)
     {
         $nobukti_pembelian = Crypt::decrypt($nobukti_pembelian);
+        $cekpembayaran = DB::table('detail_kontrabon')
+            ->leftJoin('historibayar_pembelian', 'detail_kontrabon.no_kontrabon', '=', 'historibayar_pembelian.no_kontrabon')
+            ->where('nobukti_pembelian', $nobukti_pembelian)
+            ->whereNotNull('historibayar_pembelian.no_kontrabon')->count();
         $pembelian = DB::table('pembelian')
             ->select('pembelian.*', 'nama_supplier', 'nama_dept', 'jmlbayar')
             ->join('supplier', 'pembelian.kode_supplier', '=', 'supplier.kode_supplier')
@@ -593,7 +597,7 @@ class PembelianController extends Controller
             ->where('kategori', 'pembelian')->get();
         $departemen = DB::table('departemen')->where('status_pengajuan', 1)->get();
         $cabang = Cabang::orderBy('kode_cabang')->get();
-        return view('pembelian.edit', compact('departemen', 'coa', 'cabang', 'pembelian', 'detailpembelian', 'detailpenjualan'));
+        return view('pembelian.edit', compact('departemen', 'coa', 'cabang', 'pembelian', 'detailpembelian', 'detailpenjualan', 'cekpembayaran'));
     }
 
     public function showdetailpembelian(Request $request)
