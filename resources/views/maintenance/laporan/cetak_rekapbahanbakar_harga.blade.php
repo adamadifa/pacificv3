@@ -146,7 +146,7 @@
 
                 if(substr($dari,8,2) == '01'){
                     $qtysaldoawal   = $saldoawalqty;
-                    $hargasaldoawal = $saldoawalharga / $qtysaldoawal;
+                    $hargasaldoawal = $qtysaldoawal != 0 ? $saldoawalharga / $qtysaldoawal : 0;
                     $jmlhsaldoawal  = $qtysaldoawal * $hargasaldoawal;
                     $qtypemakaian   =  $keluar != null ? $keluar->qtypemakaian : 0;
                     $qtykeluarlainnya   =  $keluar != null ? $keluar->qtykeluarlainnya : 0;
