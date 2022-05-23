@@ -17,25 +17,25 @@
     @if ($cekpembayaran > 0)
     <div class="row">
         <div class="col-4">
-            <x-inputtext label="Qty" field="qty" icon="feather icon-file" value="{{ desimal($detailpembelian->qty) }}" readonly />
+            <x-inputtext label="Qty" field="qty_edit" icon="feather icon-file" value="{{ desimal($detailpembelian->qty) }}" readonly />
         </div>
         <div class="col-4">
-            <x-inputtext label="Harga" field="harga" icon="feather icon-file" value="{{ desimal($detailpembelian->harga) }}" right readonly />
+            <x-inputtext label="Harga" field="harga_edit" icon="feather icon-file" value="{{ desimal($detailpembelian->harga) }}" right readonly />
         </div>
         <div class="col-4">
-            <x-inputtext label="Penyesuaian" field="penyesuaian" icon="feather icon-file" value="{{ desimal($detailpembelian->penyesuaian) }}" right readonly />
+            <x-inputtext label="Penyesuaian" field="penyesuaian_edit" icon="feather icon-file" value="{{ desimal($detailpembelian->penyesuaian) }}" right readonly />
         </div>
     </div>
     @else
     <div class="row">
         <div class="col-4">
-            <x-inputtext label="Qty" field="qty" icon="feather icon-file" value="{{ desimal($detailpembelian->qty) }}" />
+            <x-inputtext label="Qty" field="qty_edit" icon="feather icon-file" value="{{ desimal($detailpembelian->qty) }}" />
         </div>
         <div class="col-4">
-            <x-inputtext label="Harga" field="harga" icon="feather icon-file" value="{{ desimal($detailpembelian->harga) }}" right />
+            <x-inputtext label="Harga" field="harga_edit" icon="feather icon-file" value="{{ desimal($detailpembelian->harga) }}" right />
         </div>
         <div class="col-4">
-            <x-inputtext label="Penyesuaian" field="penyesuaian" icon="feather icon-file" value="{{ desimal($detailpembelian->penyesuaian) }}" right />
+            <x-inputtext label="Penyesuaian" field="penyesuaian_edit" icon="feather icon-file" value="{{ desimal($detailpembelian->penyesuaian) }}" right />
         </div>
     </div>
     @endif
@@ -94,7 +94,50 @@
         </div>
     </div>
 </form>
+<script>
+    var h = document.getElementById('harga_edit');
+    h.addEventListener('keyup', function(e) {
+        h.value = formatRupiah(this.value, '');
+        //alert(b);
+    });
 
+    var p = document.getElementById('penyesuaian_edit');
+    p.addEventListener('keyup', function(e) {
+        p.value = formatRupiah(this.value, '');
+        //alert(b);
+    });
+
+    var q = document.getElementById('qty_edit');
+    q.addEventListener('keyup', function(e) {
+        q.value = formatRupiah(this.value, '');
+        //alert(b);
+    });
+    /* Fungsi formatRupiah */
+    function formatRupiah(angka, prefix) {
+        var number_string = angka.replace(/[^,\d-]/g, '').toString()
+            , split = number_string.split(',')
+            , sisa = split[0].length % 3
+            , rupiah = split[0].substr(0, sisa)
+            , ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        // tambahkan titik jika yang di input sudah menjadi angka ribuan
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return prefix == undefined ? rupiah : (rupiah ? rupiah : '');
+    }
+
+    function convertToRupiah(angka) {
+        var rupiah = '';
+        var angkarev = angka.toString().split('').reverse().join('');
+        for (var i = 0; i < angkarev.length; i++)
+            if (i % 3 == 0) rupiah += angkarev.substr(i, 3) + '.';
+        return rupiah.split('', rupiah.length - 1).reverse().join('');
+    }
+
+</script>
 <script>
     $(function() {
         $("#frmEditbarang").find('#kode_akun').select2({
@@ -185,9 +228,9 @@
             var kode_barang = $("#frmEditbarang").find("#kode_barang").val();
             var kode_akun = $("#frmEditbarang").find("#kode_akun").val();
             var keterangan = $("#frmEditbarang").find("#keterangan").val();
-            var qty = $("#frmEditbarang").find("#qty").val();
-            var harga = $("#frmEditbarang").find("#harga").val();
-            var penyesuaian = $("#frmEditbarang").find("#penyesuaian").val();
+            var qty = $("#frmEditbarang").find("#qty_edit").val();
+            var harga = $("#frmEditbarang").find("#harga_edit").val();
+            var penyesuaian = $("#frmEditbarang").find("#penyesuaian_edit").val();
             var kode_cabang = $("#frmEditbarang").find("#kode_cabang").val();
             var no_urut = "{{ $detailpembelian->no_urut }}";
             var konversi_gram = $("#konversi_gram").val();

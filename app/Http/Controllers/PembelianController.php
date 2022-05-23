@@ -139,6 +139,7 @@ class PembelianController extends Controller
         $kode_barang = $request->kode_barang;
         $kode_dept = $request->kode_dept;
         $qty = $request->qty;
+        $qty = !empty($qty) ? str_replace(".", "", $qty) : 0;
         $qty = str_replace(",", ".", $qty);
         $harga = !empty($request->harga) ? str_replace(".", "", $request->harga) : 0;
         $harga = str_replace(",", ".", $harga);
@@ -523,7 +524,7 @@ class PembelianController extends Controller
             ->selectRaw("detail_kontrabon.no_kontrabon,jmlbayar
             ,tgl_kontrabon,kategori,tglbayar")
             ->join('kontrabon', 'detail_kontrabon.no_kontrabon', '=', 'kontrabon.no_kontrabon')
-            ->join('historibayar_pembelian', 'historibayar_pembelian.no_kontrabon', '=', 'kontrabon.no_kontrabon')
+            ->leftjoin('historibayar_pembelian', 'historibayar_pembelian.no_kontrabon', '=', 'kontrabon.no_kontrabon')
             ->where('nobukti_pembelian', $nobukti_pembelian)
             ->orderBy('tgl_kontrabon', 'desc')
             ->get();
@@ -712,7 +713,8 @@ class PembelianController extends Controller
         $thn = substr($tahun, 2, 2);
         $kode_barang = $request->kode_barang;
         $keterangan = $request->keterangan;
-        $qty = !empty($request->qty) ? $request->qty : 0;
+        $qty = $request->qty;
+        $qty = !empty($qty) ? str_replace(".", "", $qty) : 0;
         $qty = str_replace(",", ".", $qty);
         $harga = !empty($request->harga) ? str_replace(".", "", $request->harga) : 0;
         $harga = str_replace(",", ".", $harga);

@@ -134,9 +134,9 @@
             <td>{{ $kategori }}</td>
             <td>
                 @if (empty($d->tglbayar))
-                <span class="danger">Belum Bayar</span>
+                <span class="badge bg-danger">Belum Bayar</span>
                 @else
-                <span class="success">{{ DateToIndo2($d->tglbayar) }}</span>
+                <span class="badge bg-success">{{ DateToIndo2($d->tglbayar) }}</span>
                 @endif
             </td>
         </tr>
