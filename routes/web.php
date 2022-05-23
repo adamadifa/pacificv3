@@ -1134,6 +1134,7 @@ Route::middleware(['auth'])->group(function () {
     //Coa
     Route::get('/coa', [CoaController::class, 'index']);
     Route::get('/coa/{kode_akun}/edit', [CoaController::class, 'edit']);
+    Route::post('/coa/{kode_akun}/update', [CoaController::class, 'update']);
 
     //Maintenance
     Route::get('/maintenance/pembelian', [MaintenanceController::class, 'pembelian']);

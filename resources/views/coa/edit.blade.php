@@ -35,18 +35,30 @@
                                 <div class="form-body">
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="ID Salesman" field="id_karyawan" icon="feather icon-credit-card" value="{{ $akun->kode_akun }}" readonly />
+                                            <x-inputtext label="Kode Akun" field="kode_akun" icon="feather icon-credit-card" value="{{ $akun->kode_akun }}" readonly />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="Nama Salesman" field="nama_karyawan" icon="feather icon-user" value="{{ $akun->nama_akun }}" />
+                                            <x-inputtext label="Nama Akun" field="nama_akun" icon="feather icon-file" value="{{ $akun->nama_akun }}" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <select name="sub_akun" id="sub_akun" class="form-control select2">
+                                                    <option value="">Parent Account</option>
+                                                    @foreach ($coa as $d)
+                                                    <option {{ $akun->sub_akun == $d->kode_akun ? 'selected' : '' }} value="{{ $d->kode_akun }}">{{ $d->kode_akun }} {{ $d->nama_akun }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
                                             <button type="submit" class="btn btn-primary mr-1 mb-1"><i class="fa fa-send mr-1"></i> Simpan</button>
-                                            <a href="/salesman" class="btn btn-outline-warning mr-1 mb-1"><i class="fa fa-arrow-left mr-2"></i>Kembali</a>
+                                            <a href="/coa" class="btn btn-outline-warning mr-1 mb-1"><i class="fa fa-arrow-left mr-2"></i>Kembali</a>
                                         </div>
                                     </div>
                                 </div>

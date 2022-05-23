@@ -57,6 +57,13 @@
                                     <td>
                                         <div class="btn-group">
                                             <a href="/coa/{{ Crypt::encrypt($d->kode_akun) }}/edit"><i class="feather icon-edit success"></i></a>
+                                            <form method="POST" class="deleteform" action="/coa/{{Crypt::encrypt($d->kode_akun)}}/delete">
+                                                @csrf
+                                                @method('DELETE')
+                                                <a href="#" class="delete-confirm ml-1">
+                                                    <i class="feather icon-trash danger"></i>
+                                                </a>
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>
@@ -64,9 +71,7 @@
 
                             </tbody>
                         </table>
-
                     </div>
-
                     <!-- DataTable ends -->
                 </div>
             </div>
@@ -74,5 +79,28 @@
         <!-- Data list view end -->
     </div>
 </div>
-
 @endsection
+@push('myscript')
+<script>
+    $(function() {
+        $('.delete-confirm').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+            event.preventDefault();
+            swal({
+                    title: `Are you sure you want to delete this record?`
+                    , text: "If you delete this, it will be gone forever."
+                    , icon: "warning"
+                    , buttons: true
+                    , dangerMode: true
+                , })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
+        });
+    });
+
+</script>
+@endpush

@@ -128,17 +128,7 @@
         $("#frmDpb").submit(function() {
             var no_sj = $("#no_sj").val();
             var tgl_mutasi_gudang_cabang = $("#frmDpb").find("#tgl_mutasi_gudang_cabang").val();
-            if (no_sj == "") {
-                swal({
-                    title: 'Oops'
-                    , text: 'No. SJ Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#no_sj_search").focus();
-                });
-                return false;
-            } else if (tgl_mutasi_gudang_cabang == "") {
+            if (tgl_mutasi_gudang_cabang == "") {
                 swal({
                     title: 'Oops'
                     , text: 'Tanggal Harus Diisi !'
