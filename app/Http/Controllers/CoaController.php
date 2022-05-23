@@ -29,6 +29,18 @@ class CoaController extends Controller
     public function delete($kode_akun)
     {
         $kode_akun = Crypt::decrypt($kode_akun);
+        $hapus = DB::table('coa')->where('kode_akun', $kode_akun)->delete();
+        if ($hapus) {
+            return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
+        } else {
+            return Redirect::back()->with(['warning' => 'Data Gagal Dihapus, Hubungi Tim IT']);
+        }
+    }
+
+    public function create()
+    {
+        $coa = Coa::orderBy('kode_akun')->get();
+        return view('coa.create', compact('akun', 'coa'));
     }
 
     public function update($kode_akun, Request $request)
