@@ -843,6 +843,14 @@
                         </a>
                     </li>
                     @endif
+                    @if (in_array($level, $setcoacabang))
+                    <li class="{{ request()->is(['setcoacabang', 'setcoacabang/*']) ? 'active' : '' }}">
+                        <a href="/setcoacabang">
+                            <i class="feather icon-settings"></i>
+                            <span class="menu-item" data-i18n="Second Level">Set Coa Cabang</span>
+                        </a>
+                    </li>
+                    @endif
                     @if (in_array($level, $saldoawal_bukubesar_menu))
                     <li class="{{ request()->is(['saldoawalbb', 'saldoawalbb/*']) ? 'active' : '' }}">
                         <a href="/saldoawalbb">

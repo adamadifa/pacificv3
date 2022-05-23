@@ -78,6 +78,7 @@ use App\Http\Controllers\SaldoawalgudanglogistikController;
 use App\Http\Controllers\SaldoawalkasbesarController;
 use App\Http\Controllers\SaldoawalmutasibarangproduksiController;
 use App\Http\Controllers\SalesmanController;
+use App\Http\Controllers\SetcoacabangController;
 use App\Http\Controllers\SetorangiroController;
 use App\Http\Controllers\SetoranpenjualanController;
 use App\Http\Controllers\SetoranpusatController;
@@ -93,6 +94,7 @@ use App\Http\Controllers\UserController;
 use App\Models\Barangpembelian;
 use App\Models\Pemasukangudanglogistik;
 use App\Models\Saldoawalmutasibarangproduksi;
+use App\Models\Setcoacabang;
 use App\Models\Setoranpenjualan;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
@@ -1139,6 +1141,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/coa/{kode_akun}/update', [CoaController::class, 'update']);
     Route::delete('/coa/{kode_akun}/delete', [CoaController::class, 'delete']);
 
+
+    //Set Coa Cabang
+
+    Route::get('/setcoacabang', [SetcoacabangController::class, 'index']);
+    Route::delete('/setcoacabang/{id}/delete', [SetcoacabangController::class, 'delete']);
     //Maintenance
     Route::get('/maintenance/pembelian', [MaintenanceController::class, 'pembelian']);
     Route::post('/maintenance/showpembelian', [MaintenanceController::class, 'showpembelian']);
