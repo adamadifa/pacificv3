@@ -230,7 +230,7 @@ class MutasigudangcabangController extends Controller
             $jm = $jenis_mutasi;
             $textjm = $jenis_mutasi;
         }
-        $produk = Barang::orderBy('kode_produk')->get();
+        $produk = Barang::orderBy('kode_produk')->where('status', 1)->get();
         return view('mutasigudangcabang.create', compact('jenis_mutasi', 'produk', 'jm', 'textjm'));
     }
 
@@ -248,7 +248,7 @@ class MutasigudangcabangController extends Controller
         } else {
             $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
         }
-        $produk = Barang::orderBy('kode_produk')->get();
+        $produk = Barang::orderBy('kode_produk')->where('status', 1)->get();
         return view('mutasigudangcabang.mutasicreate', compact('jenis_mutasi', 'produk', 'jm', 'textjm', 'cabang'));
     }
 
@@ -258,7 +258,7 @@ class MutasigudangcabangController extends Controller
             $jm = "REJECT GUDANG";
             $textjm = "REJECT GUDANG";
         }
-        $produk = Barang::orderBy('kode_produk')->get();
+        $produk = Barang::orderBy('kode_produk')->where('status', 1)->get();
         return view('mutasigudangcabang.rejectgudangcreate', compact('jenis_mutasi', 'produk', 'jm', 'textjm'));
     }
 
@@ -300,6 +300,7 @@ class MutasigudangcabangController extends Controller
                     $join->on('master_barang.kode_produk', '=', 'dmc.kode_produk');
                 }
             )
+            ->where('master_barang.status', 1)
             ->get();
         return view('mutasigudangcabang.edit', compact('mutasi', 'detail'));
     }

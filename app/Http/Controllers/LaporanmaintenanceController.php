@@ -25,6 +25,11 @@ class LaporanmaintenanceController extends Controller
         $bulan = $request->bulan;
         $tahun = $request->tahun;
         $dari = $tahun . "-" . $bulan . "-01";
+        if (strlen($bulan) == 1) {
+            $bulan = "0" . $bulan;
+        } else {
+            $bulan = $bulan;
+        }
         $nextbulan = DB::table('pengeluaran_bb')
             ->whereRaw('MONTH(tgl_pengeluaran)=' . $bulan)
             ->whereRaw('YEAR(tgl_pengeluaran)=' . $tahun)
