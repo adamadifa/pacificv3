@@ -37,6 +37,12 @@ class LaporangudangbahanController extends Controller
         $query->orderBy('detail_pemasukan_gb.nobukti_pemasukan');
         $pemasukan = $query->get();
         $barang = Barangpembelian::where('kode_barang', $kode_barang)->first();
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Pemasukan $dari-$sampai.xls");
+        }
         return view('gudangbahan.laporan.cetak_pemasukan', compact('dari', 'sampai', 'pemasukan', 'barang'));
     }
 
@@ -79,7 +85,12 @@ class LaporangudangbahanController extends Controller
         $pengeluaran = $query->get();
 
         $barang = Barangpembelian::where('kode_barang', $kode_barang)->first();
-
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Pengeluaran Periode $dari-$sampai.xls");
+        }
         return view('gudangbahan.laporan.cetak_pengeluaran', compact('dari', 'sampai', 'kode_dept', 'pengeluaran', 'barang'));
     }
 
@@ -235,6 +246,12 @@ class LaporangudangbahanController extends Controller
 
         $kategori = DB::table('kategori_barang_pembelian')->where('kode_kategori', $kode_kategori)->first();
         $namabulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Persediaan.xls");
+        }
         return view('gudangbahan.laporan.cetak_persediaan', compact('bulan', 'tahun', 'persediaan', 'kategori', 'namabulan'));
     }
 
@@ -274,7 +291,12 @@ class LaporangudangbahanController extends Controller
             ->first();
 
         $barang = DB::table('master_barang_pembelian')->where('kode_barang', $kode_barang)->first();
-
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Kartu Gudang.xls");
+        }
         return view('gudangbahan.laporan.cetak_kartugudang', compact('dari', 'sampai', 'barang', 'saldoawal', 'kode_barang'));
     }
 
@@ -431,6 +453,12 @@ class LaporangudangbahanController extends Controller
 
         $kategori = DB::table('kategori_barang_pembelian')->where('kode_kategori', $kode_kategori)->first();
         $namabulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Rekap Persediaan.xls");
+        }
         return view('gudangbahan.laporan.cetak_rekappersediaan', compact('bulan', 'tahun', 'persediaan', 'kategori', 'namabulan'));
     }
 }
