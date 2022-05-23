@@ -1145,6 +1145,7 @@ Route::middleware(['auth'])->group(function () {
     //Set Coa Cabang
 
     Route::get('/setcoacabang', [SetcoacabangController::class, 'index']);
+    Route::get('/setcoacabang/create', [SetcoacabangController::class, 'create']);
     Route::delete('/setcoacabang/{id}/delete', [SetcoacabangController::class, 'delete']);
     //Maintenance
     Route::get('/maintenance/pembelian', [MaintenanceController::class, 'pembelian']);

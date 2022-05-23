@@ -50,7 +50,14 @@ class LaporanmaintenanceController extends Controller
         }
 
         $tglakhirpenerimaan = date("Y-m-t", strtotime($dari));
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Rekap Bahan Bakar.xls");
+        }
         if ($level == 'manager accounting' ||  $level == 'spv accounting' ||  $level == 'admin' || $level == "admin pusat") {
+
             return view('maintenance.laporan.cetak_rekapbahanbakar_harga', compact('kode_barang', 'saldoawal', 'barang', 'dari', 'sampai'));
         } else {
             return view('maintenance.laporan.cetak_rekapbahanbakar', compact('kode_barang', 'saldoawal', 'barang', 'dari', 'sampai'));
