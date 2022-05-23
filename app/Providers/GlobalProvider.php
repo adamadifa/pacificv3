@@ -163,7 +163,7 @@ class GlobalProvider extends ServiceProvider
                 'general manager', 'direktur', 'admin penjualan dan kas kecil',
                 'admin penjualan dan kasir', 'supervisor sales', 'admin gudang cabang dan marketing',
                 'staff keuangan 2', 'staff keuangan 3', 'audit', 'kepala gudang', 'admin gudang pusat',
-                'admin pajak', 'admin medsos', 'admin garut'
+                'admin pajak', 'admin medsos', 'admin garut', 'admin gudang cabang'
             ];
 
             //-----------------------------OMAN-------------------------------------------------
@@ -234,7 +234,7 @@ class GlobalProvider extends ServiceProvider
                 'manager accounting', 'spv accounting', 'general manager', 'direktur',
                 'admin penjualan dan kas kecil', 'admin penjualan dan kasir',
                 'supervisor sales', 'staff keuangan 2',
-                'staff keuangan 3', 'audit', 'admin pajak', 'admin medsos', 'admin garut'
+                'staff keuangan 3', 'audit', 'admin pajak', 'admin medsos', 'admin garut', 'admin gudang cabang'
             ];
             $harga_net = [
                 'admin', 'manager accounting', 'spv accounting',
