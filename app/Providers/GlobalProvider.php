@@ -188,7 +188,7 @@ class GlobalProvider extends ServiceProvider
                 'admin', 'admin penjualan',
                 'kepala admin', 'admin pusat', 'manager accounting', 'spv accounting',
                 'manager marketing', 'general manager', 'direktur',
-                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'admin pajak', 'admin garut'
+                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'admin pajak', 'admin garut', 'audit'
             ];
             $penjualan_keuangan = [
                 'admin', 'admin penjualan', 'kepala admin', 'admin pusat', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3',
@@ -208,7 +208,7 @@ class GlobalProvider extends ServiceProvider
             ];
             $penjualan_view = [
                 'admin', 'admin penjualan', 'kepala admin', 'admin pusat',
-                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'admin pajak', 'admin garut'
+                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'admin pajak', 'admin garut', 'audit'
             ];
             //Retur
             $retur_view = [
@@ -220,7 +220,8 @@ class GlobalProvider extends ServiceProvider
                 'admin', 'admin penjualan',
                 'kepala admin', 'admin pusat', 'manager marketing',
                 'manager accounting', 'spv accounting', 'general manager',
-                'direktur', 'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'admin garut'
+                'direktur', 'admin penjualan dan kas kecil', 'admin penjualan dan kasir',
+                'admin garut', 'audit'
             ];
             $limitkredit_hapus = ['admin', 'admin penjualan', 'kepala admin', 'admin pusat', 'kepala penjualan', 'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'admin garut'];
             $limitkredit_analisa = ['admin', 'admin penjualan', 'kepala admin', 'admin pusat', 'kepala penjualan', 'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'admin garut'];
@@ -481,7 +482,7 @@ class GlobalProvider extends ServiceProvider
                 'admin',
                 'admin gudang', 'kepala admin', 'admin pusat', 'admin gudang cabang', 'admin garut',
                 'admin persediaan dan kasir', 'admin persediaan dan kas kecil',
-                'admin gudang cabang dan marketing'
+                'admin gudang cabang dan marketing', 'audit'
             ];
             $laporan_gudang = [
                 'admin', 'kepala admin', 'admin pusat',
@@ -550,11 +551,11 @@ class GlobalProvider extends ServiceProvider
 
             //Gudang Cabang
 
-            $saldoawal_gs_view = ['admin', 'admin gudang', 'kepala admin', 'admin pusat', 'admin gudang cabang', 'admin garut', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'admin gudang cabang dan marketing'];
-            $saldoawal_bs_view = ['admin', 'admin gudang', 'kepala admin', 'admin pusat', 'admin gudang cabang', 'admin garut', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'admin gudang cabang dan marketing'];
-            $dpb_view = ['admin', 'admin gudang', 'kepala admin', 'admin pusat', 'admin gudang cabang', 'admin garut', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'admin gudang cabang dan marketing'];
-            $mutasi_barang_cab_view = ['admin', 'admin gudang', 'kepala admin', 'admin pusat', 'admin gudang cabang', 'admin garut', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'admin gudang cabang dan marketing'];
-            $suratjalancab_view = ['admin', 'admin gudang', 'kepala admin', 'admin pusat', 'admin gudang cabang', 'admin garut', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'admin gudang cabang dan marketing'];
+            $saldoawal_gs_view = ['admin', 'admin gudang', 'kepala admin', 'admin pusat', 'admin gudang cabang', 'admin garut', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'admin gudang cabang dan marketing', 'audit'];
+            $saldoawal_bs_view = ['admin', 'admin gudang', 'kepala admin', 'admin pusat', 'admin gudang cabang', 'admin garut', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'admin gudang cabang dan marketing', 'audit'];
+            $dpb_view = ['admin', 'admin gudang', 'kepala admin', 'admin pusat', 'admin gudang cabang', 'admin garut', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'admin gudang cabang dan marketing', 'audit'];
+            $mutasi_barang_cab_view = ['admin', 'admin gudang', 'kepala admin', 'admin pusat', 'admin gudang cabang', 'admin garut', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'admin gudang cabang dan marketing', 'audit'];
+            $suratjalancab_view = ['admin', 'admin gudang', 'kepala admin', 'admin pusat', 'admin gudang cabang', 'admin garut', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'admin gudang cabang dan marketing', 'audit'];
 
 
             //Laporan Gudang Logistik
