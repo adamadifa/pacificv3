@@ -26,6 +26,27 @@ class CoaController extends Controller
         return view('coa.edit', compact('akun', 'coa'));
     }
 
+    public function store(Request $request)
+    {
+        $kode_akun = $request->kode_akun;
+        $nama_akun = $request->nama_akun;
+        $sub_akun = $request->sub_akun;
+        $cek_subakun = DB::table('coa')->where('kode_akun', $sub_akun)->first();
+        $level = $cek_subakun->level + 1;
+        $data = [
+            'kode_akun' => $kode_akun,
+            'nama_akun' => $nama_akun,
+            'sub_akun' => $sub_akun,
+            'level' => $level
+        ];
+
+        $simpan = DB::table('coa')->insert($data);
+        if ($simpan) {
+            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+        } else {
+            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan, Hubungi Tim IT']);
+        }
+    }
     public function delete($kode_akun)
     {
         $kode_akun = Crypt::decrypt($kode_akun);
@@ -40,7 +61,7 @@ class CoaController extends Controller
     public function create()
     {
         $coa = Coa::orderBy('kode_akun')->get();
-        return view('coa.create', compact('akun', 'coa'));
+        return view('coa.create', compact('coa'));
     }
 
     public function update($kode_akun, Request $request)
