@@ -45,6 +45,7 @@ use App\Http\Controllers\LedgerController;
 use App\Http\Controllers\LimitkreditController;
 use App\Http\Controllers\LpcController;
 use App\Http\Controllers\MaintenanceController;
+use App\Http\Controllers\MemoController;
 use App\Http\Controllers\MutasibankController;
 use App\Http\Controllers\MutasigudangcabangController;
 use App\Http\Controllers\MutasilaingjController;
@@ -1178,4 +1179,10 @@ Route::middleware(['auth'])->group(function () {
     //Laporan Maintenance
     Route::get('/laporanmaintenance/rekapbahanbakar', [LaporanmaintenanceController::class, 'rekapbahanbakar']);
     Route::post('/laporanmaintenance/rekapbahanbakar/cetak', [LaporanmaintenanceController::class, 'cetak_rekapbahanbakar']);
+
+    Route::get('/memo', [MemoController::class, 'index']);
+    Route::get('/memo/create', [MemoController::class, 'create']);
+    Route::post('/memo/store', [MemoController::class, 'store']);
+    Route::post('/memo/downloadcount', [MemoController::class, 'downloadcount']);
+    Route::delete('/memo/{id}/delete', [MemoController::class, 'delete']);
 });

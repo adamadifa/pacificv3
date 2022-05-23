@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Schema;
 use App\Profil;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View as View;
 use Request;
 
@@ -37,12 +38,50 @@ class GlobalProvider extends ServiceProvider
             if (Auth::check()) {
                 $level = $auth->user()->level;
                 $getcbg = $auth->user()->kode_cabang;
+                $id_user = $auth->user()->id;
+                $memo = DB::table('memo')
+                    ->selectRaw("memo.id,tanggal,no_memo,judul_memo,kode_dept,kategori,link,totaldownload,name,memo.id_user,cekread.id_user as status_read")
+                    ->leftJoin(
+                        DB::raw("(
+                                SELECT id,COUNT(id_user) as totaldownload FROM memo_download GROUP BY id
+                        ) download"),
+                        function ($join) {
+                            $join->on('memo.id', '=', 'download.id');
+                        }
+                    )
+                    ->leftJoin(
+                        DB::raw("(
+                            SELECT id,id_user FROM memo_download WHERE id_user='$id_user'
+                        ) cekread"),
+                        function ($join) {
+                            $join->on('memo.id', '=', 'cekread.id');
+                        }
+                    )
+                    ->leftJoin(
+                        DB::raw("(
+                                SELECT id,name FROM users
+                        ) user"),
+                        function ($join) {
+                            $join->on('memo.id_user', '=', 'user.id');
+                        }
+                    )
+                    ->whereNull('cekread.id_user');
+
+                $memo_unread = $memo->count();
+                $memo_data = $memo->get();
             } else {
                 $level = "";
                 $getcbg = "";
+                $id_user = "";
+                $memo_unread =  null;
+                $memo_data =  null;
             }
 
+
             //Dashboard
+
+            $memo_menu = ['admin'];
+            $memo_tambah_hapus = ['admin', 'admin medsos', 'manager accounting', 'hrd'];
 
             $dashboardadmin = ['admin', 'manager marketing', 'general manager', 'direktur'];
             $dashboardkepalapenjualan = ['kepala penjualan'];
@@ -701,6 +740,10 @@ class GlobalProvider extends ServiceProvider
             $shareddata = [
                 'level' => $level,
                 'getcbg' => $getcbg,
+                'memo_unread' => $memo_unread,
+                'memo_data' => $memo_data,
+                'memo_menu' => $memo_menu,
+                'memo_tambah_hapus' => $memo_tambah_hapus,
                 //Dashboard
                 'dashboardadmin' => $dashboardadmin,
                 'dashboardkepalapenjualan' => $dashboardkepalapenjualan,
