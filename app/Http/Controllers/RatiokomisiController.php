@@ -61,17 +61,28 @@ class RatiokomisiController extends Controller
     {
         $id = $request->id;
         $ratio = $request->ratio;
+        $ratiohelper = $request->ratiohelper;
         $bulan = $request->bulan;
         $tahun = $request->tahun;
         $tgl_berlaku = $tahun . "-" . $bulan . "-01";
 
-        $data = [
-            'id' => $id,
-            'tgl_berlaku' => $tgl_berlaku,
-            'bulan' => $bulan,
-            'tahun' => $tahun,
-            'ratio' => $ratio
-        ];
+        if ($ratio != "false") {
+            $data = [
+                'id' => $id,
+                'tgl_berlaku' => $tgl_berlaku,
+                'bulan' => $bulan,
+                'tahun' => $tahun,
+                'ratio' => $ratio
+            ];
+        } else {
+            $data = [
+                'id' => $id,
+                'tgl_berlaku' => $tgl_berlaku,
+                'bulan' => $bulan,
+                'tahun' => $tahun,
+                'ratio_helper' => $ratiohelper
+            ];
+        }
 
         $dataupdate = [
             'ratio' => $ratio
@@ -80,7 +91,7 @@ class RatiokomisiController extends Controller
         if (empty($cek)) {
             DB::table('set_ratio_komisi')->insert($data);
         } else {
-            DB::table('set_ratio_komisi')->where('id', $id)->where('bulan', $bulan)->where('tahun', $tahun)->update($dataupdate);
+            DB::table('set_ratio_komisi')->where('id', $id)->where('bulan', $bulan)->where('tahun', $tahun)->update($data);
         }
     }
 }

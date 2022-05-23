@@ -36,8 +36,8 @@
 <script>
     $(function() {
         $(".ratio").keyup(function() {
-            var tgl_berlaku = $("#tgl_berlaku").val();
             var ratio = $(this).val();
+            var ratiohelper = 'false';
             var bulan = $("#bulan").val();
             var tahun = $("#tahun").val();
             var id = $(this).attr("data-id");
@@ -48,6 +48,32 @@
                 , data: {
                     _token: "{{csrf_token()}}"
                     , id: id
+                    , ratiohelper: ratiohelper
+                    , ratio: ratio
+                    , bulan: bulan
+                    , tahun: tahun
+                }
+                , cache: false
+                , success: function(respond) {
+
+                }
+            });
+        });
+
+        $(".ratiohelper").keyup(function() {
+            var ratiohelper = $(this).val();
+            var ratio = 'false';
+            var bulan = $("#bulan").val();
+            var tahun = $("#tahun").val();
+            var id = $(this).attr("data-id");
+            //alert(id);
+            $.ajax({
+                type: 'POST'
+                , url: '/ratiokomisi/store'
+                , data: {
+                    _token: "{{csrf_token()}}"
+                    , id: id
+                    , ratiohelper: ratiohelper
                     , ratio: ratio
                     , bulan: bulan
                     , tahun: tahun

@@ -473,7 +473,8 @@ class TargetkomisiController extends Controller
         $cbg = DB::table('cabang')->where('kode_cabang', $cabang)->first();
         $driver = DB::table('driver_helper')
             ->selectRaw("driver_helper.id_driver_helper,nama_driver_helper,kategori,IFNULL(jml_driver,0) as jml_driver,driver_helper.ratio as ratiodefault,
-                ratioaktif,ratioterakhir")
+            driver_helper.ratio_helper as ratiohelperdefault,
+            ratioaktif,ratiohelperaktif,ratioterakhir,ratiohelperterakhir")
             ->join(
                 DB::raw("(
                         SELECT id_driver,ROUND(SUM(jml_penjualan),2) as jml_driver
@@ -487,10 +488,10 @@ class TargetkomisiController extends Controller
             )
             ->leftJoin(
                 DB::raw("(
-                        SELECT id,set_ratio_komisi.ratio as ratioaktif
-                        FROM set_ratio_komisi
-                        INNER JOIN driver_helper ON set_ratio_komisi.id = driver_helper.id_driver_helper
-                        WHERE bulan = '$bulan' AND tahun = '$tahun' AND kode_cabang='$cabang'
+                    SELECT id,set_ratio_komisi.ratio as ratioaktif,set_ratio_komisi.ratio_helper as ratiohelperaktif
+                    FROM set_ratio_komisi
+                    INNER JOIN driver_helper ON set_ratio_komisi.id = driver_helper.id_driver_helper
+                    WHERE bulan = '$bulan' AND tahun = '$tahun' AND kode_cabang='$cabang'
                     ) ratio"),
                 function ($join) {
                     $join->on('driver_helper.id_driver_helper', '=', 'ratio.id');
@@ -498,10 +499,10 @@ class TargetkomisiController extends Controller
             )
             ->leftJoin(
                 DB::raw("(
-                        SELECT id,set_ratio_komisi.ratio as ratioterakhir
-                        FROM set_ratio_komisi
-                        INNER JOIN driver_helper ON set_ratio_komisi.id = driver_helper.id_driver_helper
-                        WHERE kode_cabang ='$cabang' AND tgl_berlaku IN (SELECT max(tgl_berlaku) FROM set_ratio_komisi)
+                    SELECT id,set_ratio_komisi.ratio as ratioterakhir,set_ratio_komisi.ratio_helper as ratiohelperterakhir
+                    FROM set_ratio_komisi
+                    INNER JOIN driver_helper ON set_ratio_komisi.id = driver_helper.id_driver_helper
+                    WHERE kode_cabang ='$cabang' AND tgl_berlaku IN (SELECT max(tgl_berlaku) FROM set_ratio_komisi)
                     ) lastratio"),
                 function ($join) {
                     $join->on('driver_helper.id_driver_helper', '=', 'lastratio.id');
@@ -514,7 +515,8 @@ class TargetkomisiController extends Controller
 
         $helper = DB::table('driver_helper')
             ->selectRaw("driver_helper.id_driver_helper,nama_driver_helper,kategori,IFNULL(jml_helper,0) + IFNULL(jml_helper_2,0) + IFNULL(jml_helper_3,0) as jml_helper,driver_helper.ratio as ratiodefault,
-            ratioaktif,ratioterakhir")
+            driver_helper.ratio_helper as ratiohelperdefault,
+            ratioaktif,ratiohelperaktif,ratioterakhir,ratiohelperterakhir")
             ->leftJoin(
                 DB::raw("(
                     SELECT id_helper,ROUND(SUM(jml_penjualan),2) as jml_helper
@@ -552,7 +554,7 @@ class TargetkomisiController extends Controller
 
             ->leftJoin(
                 DB::raw("(
-                    SELECT id,set_ratio_komisi.ratio as ratioaktif
+                    SELECT id,set_ratio_komisi.ratio as ratioaktif,set_ratio_komisi.ratio_helper as ratiohelperaktif
                     FROM set_ratio_komisi
                     INNER JOIN driver_helper ON set_ratio_komisi.id = driver_helper.id_driver_helper
                     WHERE bulan = '$bulan' AND tahun = '$tahun' AND kode_cabang='$cabang'
@@ -564,7 +566,7 @@ class TargetkomisiController extends Controller
 
             ->leftJoin(
                 DB::raw("(
-                    SELECT id,set_ratio_komisi.ratio as ratioterakhir
+                    SELECT id,set_ratio_komisi.ratio as ratioterakhir,set_ratio_komisi.ratio_helper as ratiohelperterakhir
                     FROM set_ratio_komisi
                     INNER JOIN driver_helper ON set_ratio_komisi.id = driver_helper.id_driver_helper
                     WHERE kode_cabang ='$cabang' AND tgl_berlaku IN (SELECT max(tgl_berlaku) FROM set_ratio_komisi)

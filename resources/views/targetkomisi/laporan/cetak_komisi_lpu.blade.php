@@ -666,7 +666,7 @@
                 <td colspan="24"></td>
                 <td align="center">{{ desimal($d->jml_driver) }}</td>
                 <td align="center"><?php echo $ratio; ?></td>
-                <td align="center"><?php echo rupiah($rewarddriver); ?></td>
+                <td align="right"><?php echo rupiah($rewarddriver); ?></td>
                 <td></td>
                 <td></td>
             </tr>
