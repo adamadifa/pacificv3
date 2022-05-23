@@ -26,6 +26,11 @@ class CoaController extends Controller
         return view('coa.edit', compact('akun', 'coa'));
     }
 
+    public function delete($kode_akun)
+    {
+        $kode_akun = Crypt::decrypt($kode_akun);
+    }
+
     public function update($kode_akun, Request $request)
     {
         $kode_akun = Crypt::decrypt($kode_akun);

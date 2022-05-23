@@ -603,7 +603,11 @@ class MutasigudangcabangController extends Controller
     {
         $no_suratjalan = $request->no_sj;
         $sj = DB::table('mutasi_gudang_cabang')->where('no_mutasi_gudang_cabang', $no_suratjalan)->first();
-        $kode_cabang = $sj->kode_cabang;
+        if ($sj != null) {
+            $kode_cabang = $sj->kode_cabang;
+        } else {
+            $kode_cabang = Auth::user()->kode_cabang;
+        }
         $tgl_mutasi_gudang_cabang = $request->tgl_mutasi_gudang_cabang;
         $jenis_mutasi = $request->jenis_mutasi;
         $tanggal  = explode("-", $tgl_mutasi_gudang_cabang);
