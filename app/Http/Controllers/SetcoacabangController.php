@@ -59,9 +59,14 @@ class SetcoacabangController extends Controller
 
         $cek = DB::table('set_coa_cabang')->where('kode_cabang', $kode_cabang)->where('kategori', $kategori)->where('kode_akun', $kode_akun)->count();
         if ($cek > 0) {
-            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+            return Redirect::back()->with(['warning' => 'Data Sudah Ada ']);
         } else {
-            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan, Hubungi Tim IT']);
+            $simpan = DB::table('set_coa_cabang')->insert($data);
+            if ($simpan) {
+                return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+            } else {
+                return Redirect::back()->with(['warning' => 'Data Gagal Disimpan, Hubungi Tim IT']);
+            }
         }
     }
 }
