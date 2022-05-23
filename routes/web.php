@@ -1146,6 +1146,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/setcoacabang', [SetcoacabangController::class, 'index']);
     Route::get('/setcoacabang/create', [SetcoacabangController::class, 'create']);
+    Route::post('/setcoacabang/store', [SetcoacabangController::class, 'store']);
     Route::delete('/setcoacabang/{id}/delete', [SetcoacabangController::class, 'delete']);
     //Maintenance
     Route::get('/maintenance/pembelian', [MaintenanceController::class, 'pembelian']);

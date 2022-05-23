@@ -24,7 +24,7 @@
         <div class="col-md-5 col-sm-5">
             <div class="card">
                 <div class="card-header">
-                    <a href="/coa/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i>Tambah Data</a>
+                    <a href="/setcoacabang/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i>Tambah Data</a>
                 </div>
                 <div class="card-body">
                     <div class="row">

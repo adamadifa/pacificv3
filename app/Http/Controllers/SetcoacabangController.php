@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cabang;
+use App\Models\Coa;
 use App\Models\Setcoacabang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
@@ -34,6 +35,33 @@ class SetcoacabangController extends Controller
             return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
         } else {
             return Redirect::back()->with(['success' => 'Data Gagal Dihapus, Hubungi Tim IT']);
+        }
+    }
+
+    public function create()
+    {
+        $cabang = Cabang::orderBy('kode_cabang')->get();
+        $coa = Coa::orderBy('kode_akun')->get();
+        return view('setcoacabang.create', compact('cabang', 'coa'));
+    }
+
+    public function store(Request $request)
+    {
+        $kode_cabang = $request->kode_cabang;
+        $kategori = $request->kategori;
+        $kode_akun = $request->kode_akun;
+
+        $data = [
+            'kode_cabang' => $kode_cabang,
+            'kategori' => $kategori,
+            'kode_akun' => $kode_akun
+        ];
+
+        $cek = DB::table('set_coa_cabang')->where('kode_cabang', $kode_cabang)->where('kategori', $kategori)->where('kode_akun', $kode_akun)->count();
+        if ($cek > 0) {
+            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+        } else {
+            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan, Hubungi Tim IT']);
         }
     }
 }
