@@ -192,7 +192,7 @@
         <tfoot bgcolor="#024a75" style="color:white; font-size:14;">
             <tr>
                 <th style="color:white; font-size:14;" colspan="4">TOTAL</th>
-                <th align="center"><?phpecho desimal($totqtysaldoawal);?>
+                <th align="center"><?php echo desimal($totqtysaldoawal);?>
                 </th>
                 <?php if ($kategori == "K001") { ?>
                 <th align="center"></th>
