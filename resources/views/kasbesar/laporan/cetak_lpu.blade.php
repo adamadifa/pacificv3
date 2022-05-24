@@ -180,7 +180,7 @@
                 <?php
                 $totalsetoranpusat = 0;
                 foreach ($bank as $b) {
-                    $setoranpusat = DB::table('setoran_pusatd')
+                    $setoranpusat = DB::table('setoran_pusat')
                     ->selectRaw("SUM(IFNULL(uang_kertas,0)+IFNULL(uang_logam,0)+IFNULL(giro,0)+IFNULL(transfer,0)) as totalsetoranpusat")
                     ->where('tgl_diterimapusat',$dari)
                     ->where('bank',$b->kode_bank)
