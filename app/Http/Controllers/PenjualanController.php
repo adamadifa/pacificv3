@@ -1703,7 +1703,8 @@ class PenjualanController extends Controller
 
         $historibayar = DB::table('historibayar')
             ->join('karyawan', 'historibayar.id_karyawan', '=', 'karyawan.id_karyawan')
-            ->where('no_fak_penj', $no_fak_penj)
+            ->leftJoin('giro', 'historibayar.id_giro', '=', 'giro.id_giro')
+            ->where('historibayar.no_fak_penj', $no_fak_penj)
             ->orderBy('tglbayar', 'asc')
             ->get();
 
@@ -2963,6 +2964,9 @@ class PenjualanController extends Controller
         } else if ($ljt == 2) {
             $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) > pelanggan.jatuhtempo");
         }
+
+        $query->orderBy('tgltransaksi');
+        $query->orderBy('penjualan.no_fak_penj');
         $kartupiutang = $query->get();
         if (isset($_POST['export'])) {
             $time = date("H:i:s");
