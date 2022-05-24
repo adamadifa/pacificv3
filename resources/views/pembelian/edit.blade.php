@@ -333,6 +333,12 @@
         p.value = formatRupiah(this.value, '');
         //alert(b);
     });
+
+    var q = document.getElementById('qty');
+    q.addEventListener('keyup', function(e) {
+        q.value = formatRupiah(this.value, '');
+        //alert(b);
+    });
     /* Fungsi formatRupiah */
     function formatRupiah(angka, prefix) {
         var number_string = angka.replace(/[^,\d-]/g, '').toString()

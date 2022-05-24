@@ -8,10 +8,13 @@
                          <li class="nav-item mobile-menu d-xl-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ficon feather icon-menu"></i></a></li>
                      </ul>
                      <ul class="nav navbar-nav bookmark-icons">
-                         <!-- li.nav-item.mobile-menu.d-xl-none.mr-auto-->
-                         <!--   a.nav-link.nav-menu-main.menu-toggle.hidden-xs(href='#')-->
-                         <!--     i.ficon.feather.icon-menu-->
-
+                         <div class="custom-control custom-switch custom-switch-primary mr-2 mb-1">
+                             <input type="checkbox" class="custom-control-input" id="customSwitch11" onclick="darkLight()">
+                             <label class="custom-control-label" for="customSwitch11">
+                                 <span class="switch-icon-left"><i class="feather icon-moon"></i></span>
+                                 <span class="switch-icon-right"><i class="feather icon-sun"></i></span>
+                             </label>
+                         </div>
 
                      </ul>
                  </div>
@@ -58,7 +61,10 @@
                                      {{ ucwords(Auth::user()->level) }}
                                  </span></div><span><img class="round" src="{{asset('app-assets/images/portrait/small/avatar-s-11.jpg')}}" alt="avatar" height="40" width="40"></span>
                          </a>
-                         <div class="dropdown-menu dropdown-menu-right"><a class="dropdown-item" href="page-user-profile.html"><i class="feather icon-user"></i> Edit Profile</a><a class="dropdown-item" href="app-email.html"><i class="feather icon-mail"></i> My Inbox</a><a class="dropdown-item" href="app-todo.html"><i class="feather icon-check-square"></i> Task</a><a class="dropdown-item" href="app-chat.html"><i class="feather icon-message-square"></i> Chats</a>
+                         <div class="dropdown-menu dropdown-menu-right">
+                             <a class="dropdown-item" href="page-user-profile.html">
+
+                             </a>
                              <div class="dropdown-divider"></div>
                              <form action="/postlogout" method="POST">
                                  @csrf

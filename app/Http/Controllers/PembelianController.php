@@ -184,7 +184,7 @@ class PembelianController extends Controller
         $thn = substr($tahun, 2, 2);
         $kode_barang = $request->kode_barang;
         $kode_dept = $request->kode_dept;
-        $qty = $request->qty;
+        $qty = !empty($request->qty) ? str_replace(".", "", $request->harga) : 0;
         $qty = str_replace(",", ".", $qty);
         $harga = !empty($request->harga) ? str_replace(".", "", $request->harga) : 0;
         $harga = str_replace(",", ".", $harga);
@@ -297,7 +297,9 @@ class PembelianController extends Controller
                 $datakontrabon = array(
                     'jmlbayar' => $jmlbayar->jmlbayar
                 );
-                DB::table('detail_kontrabon')->where('nobukti_pembelian', $nobukti_pembelian)->where('no_kontrabon', $kontrabon->no_kontrabon)->update($datakontrabon);
+                if ($kontrabon != null) {
+                    DB::table('detail_kontrabon')->where('nobukti_pembelian', $nobukti_pembelian)->where('no_kontrabon', $kontrabon->no_kontrabon)->update($datakontrabon);
+                }
                 DB::table('buku_besar')->where('no_bukti', $pembelian->nobukti_bukubesar)->update($databukubesar);
                 echo 0;
                 DB::commit();

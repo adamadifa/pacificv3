@@ -152,6 +152,8 @@
             var jumlah = $("#jumlah").val();
             var kode_akun = $("#kode_akun").val();
             var kode_cabang = $('#frmInputkaskecil').find('#kode_cabang').val();
+
+
             if (nobukti == "") {
                 swal({
                     title: 'Oops'
@@ -214,6 +216,13 @@
                     $("#kode_akun").focus();
                 });
                 return false;
+            } else {
+                $('#frmEditkaskecil').find('#nobukti').prop('disabled', false);
+                $("#keterangan").prop('disabled', false);
+                $("#jumlah").prop('disabled', false);
+                $("#tgl_kaskecil").prop('disabled', false);
+                $('input[name="inout"]').prop('disabled', false);
+                $('input[name="peruntukan"]').prop('disabled', false);
             }
 
         });

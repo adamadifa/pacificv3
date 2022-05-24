@@ -116,7 +116,7 @@
                         </th>
                         <th></th>
                         <th></th>
-
+                        <th></th>
 
                     </tr>
                 </thead>
@@ -282,7 +282,8 @@
                     }
                 });
         });
-        $("#inputkaskecil").click(function() {
+        $("#inputkaskecil").click(function(e) {
+            e.preventDefault();
             $('#mdlinputkaskecil').modal({
                 backdrop: 'static'
                 , keyboard: false
@@ -290,7 +291,8 @@
             $("#loadinputkaskecil").load('/kaskecil/create');
         });
 
-        $(".edit").click(function() {
+        $(".edit").click(function(e) {
+            e.preventDefault();
             var id = $(this).attr("data-id");
             $('#mdleditkaskecil').modal({
                 backdrop: 'static'

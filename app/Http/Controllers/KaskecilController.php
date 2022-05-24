@@ -38,11 +38,13 @@ class KaskecilController extends Controller
             $query->leftJoin('costratio_biaya', 'kaskecil_detail.kode_cr', '=', 'costratio_biaya.kode_cr');
             $query->whereBetween('tgl_kaskecil', [$request->dari, $request->sampai]);
             $query->where('kaskecil_detail.kode_cabang', $kode_cabang);
+            if (!empty($request->nobukti)) {
+                $query->where('nobukti', $request->nobukti);
+            }
             $query->orderBy('tgl_kaskecil');
             $query->orderBy('order');
             $query->orderBy('nobukti');
             $kaskecil = $query->get();
-
 
             $qsaldoawal = Kaskecil::query();
             $qsaldoawal->selectRaw("SUM(IF( `status_dk` = 'K', jumlah, 0)) -SUM(IF( `status_dk` = 'D', jumlah, 0)) as saldo_awal");

@@ -49,7 +49,29 @@
 <script src="{{ asset('app-assets/js/external/exporting.js') }}"></script>
 <script src="{{ asset('app-assets/js/external/export-data.js') }}"></script>
 <script src="{{ asset('app-assets/js/external/accessibility.js') }}"></script>
+<script>
+    $('body').toggleClass(localStorage.toggled);
 
+    function darkLight() {
+        /*DARK CLASS*/
+        if (localStorage.toggled != 'dark-layout') {
+            $('body').toggleClass('dark-layout', true);
+            localStorage.toggled = "dark-layout";
+
+        } else {
+            $('body').toggleClass('dark-layout', false);
+            localStorage.toggled = "";
+        }
+    }
+
+    /*Add 'checked' property to input if background == dark*/
+    if ($('body').hasClass('dark-layout')) {
+        $('#customSwitch11').prop("checked", true)
+    } else {
+        $('#customSwitch11').prop("checked", false)
+    }
+
+</script>
 <script>
     $(function() {
         //fix modal force focus
