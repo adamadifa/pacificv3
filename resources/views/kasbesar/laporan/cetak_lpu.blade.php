@@ -129,7 +129,7 @@
                 $totalsetoranpusatlast = 0;
                 foreach ($bank as $b) {
                     $setoranpusatlast = DB::table('setoran_pusat')
-                    ->selectRaw("SUM(uang_kertas+uang_logam+giro+IFNULL(transfer,0)) as totalsetoranpusat")
+                    ->selectRaw("SUM(IFNULL(uang_kertas,0)+IFNULL(uang_logam,0)+IFNULL(giro,0)+IFNULL(transfer,0)) as totalsetoranpusat")
                     ->where('tgl_diterimapusat','<',$dari)
                     ->where('bank',$b->kode_bank)
                     ->where('kode_cabang',$kode_cabang)
