@@ -195,11 +195,17 @@ class PembelianController extends Controller
         $keterangan = $request->keterangan;
         $id_admin = Auth::user()->id;
         $detailpembelian = DB::table('detail_pembelian')->where('nobukti_pembelian', $nobukti_pembelian)->orderBy('no_urut', 'desc')->first();
-        $no_urut = $detailpembelian->no_urut + 1;
+        $no_urut = $detailpembelian != null ? $detailpembelian->no_urut + 1 : 1;
         $barang = DB::table('master_barang_pembelian')->where('kode_barang', $kode_barang)->first();
         $nama_barang = $barang->nama_barang;
         $cek = DB::table('detail_pembelian')->where('kode_barang', $kode_barang)->where('nobukti_pembelian', $nobukti_pembelian)->count();
         $kode_dept = $pembelian->kode_dept;
+        $kontrabon = DB::table('detail_kontrabon')->where('nobukti_pembelian', $nobukti_pembelian)
+            ->join('kontrabon', 'detail_kontrabon.no_kontrabon', '=', 'kontrabon.no_kontrabon')
+            ->whereNull('status')
+            ->orderBy('tgl_kontrabon', 'desc')
+            ->first();
+
         if ($cek > 0) {
             echo 1;
         } else {
@@ -288,6 +294,10 @@ class PembelianController extends Controller
                     'debet' => 0,
                     'kredit' => $jmlbayar->jmlbayar,
                 );
+                $datakontrabon = array(
+                    'jmlbayar' => $jmlbayar->jmlbayar
+                );
+                DB::table('detail_kontrabon')->where('nobukti_pembelian', $nobukti_pembelian)->where('no_kontrabon', $kontrabon->no_kontrabon)->update($datakontrabon);
                 DB::table('buku_besar')->where('no_bukti', $pembelian->nobukti_bukubesar)->update($databukubesar);
                 echo 0;
                 DB::commit();
@@ -653,7 +663,7 @@ class PembelianController extends Controller
                     ->where('nobukti_pembelian', $nobukti_pembelian)
                     ->first();
                 $data = [
-                    'jmlbayar' => $bayar->totalpembelian
+                    'jmlbayar' => !empty($bayar->totalpembelian) ?  $bayar->totalpembelian : 0,
                 ];
 
                 DB::table('detail_kontrabon')->where('no_kontrabon', $no_kontrabbon)->update($data);
@@ -980,6 +990,25 @@ class PembelianController extends Controller
 
                 DB::table('kontrabon')->where('no_kontrabon', $ref_tunai)->delete();
                 DB::table('detail_kontrabon')->where('no_kontrabon', $ref_tunai)->delete();
+            } else {
+                $kontrabon = DB::table('detail_kontrabon')
+                    ->join('kontrabon', 'detail_kontrabon.no_kontrabon', '=', 'kontrabon.no_kontrabon')
+                    ->where('nobukti_pembelian', $nobukti_pembelian)
+                    ->whereNull('status')
+                    ->orderBy('tgl_kontrabon', 'desc')
+                    ->first();
+                if ($jenistransaksi == "tunai") {
+                    $datakb = [
+                        'kode_supplier' => $kode_supplier,
+                        'tgl_kontrabon' => $tgl_pembelian
+                    ];
+                } else {
+                    $datakb = [
+                        'kode_supplier' => $kode_supplier
+                    ];
+                }
+
+                DB::table('kontrabon')->where('no_kontrabon', $kontrabon->no_kontrabon)->update($datakb);
             }
 
 
