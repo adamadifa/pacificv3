@@ -23,7 +23,7 @@ $grandtotal += $total;
     <td>
         <div class="btn-group" role="group" aria-label="Basic example">
             <a href="#" class="info ml-1 edit" nobukti_pembelian="{{ $d->nobukti_pembelian }}" kode_barang="{{ $d->kode_barang }}" no_urut="{{ $d->no_urut }}"><i class="feather icon-edit"></i></a>
-            <a href="#" class="ml-1 danger hapus" nobukti_pembelian="{{ $d->nobukti_pembelian }}" kode_barang="{{ $d->kode_barang }}" no_urut="{{ $d->no_urut }}"><i class="feather icon-trash"></i></a>
+            <a href="#" class="ml-1 danger  hapus" nobukti_pembelian="{{ $d->nobukti_pembelian }}" kode_barang="{{ $d->kode_barang }}" no_urut="{{ $d->no_urut }}"><i class="feather icon-trash"></i></a>
         </div>
     </td>
 </tr>
@@ -145,56 +145,64 @@ $jmldata++;
             var nobukti_pembelian = $(this).attr("nobukti_pembelian");
             var kode_barang = $(this).attr("kode_barang");
             var no_urut = $(this).attr("no_urut");
+            var cekpembayaran = "{{ $cekpembayaran }}";
             event.preventDefault();
-            swal({
-                    title: `Anda Yakin Data ini Akan Dihapus ?`
-                    , text: "Jika dihapus Data Ini Akan Hilang Dari Keranjang"
-                    , icon: "warning"
-                    , buttons: true
-                    , dangerMode: true
-                , })
-                .then((willDelete) => {
-                    if (willDelete) {
-                        var cektutuplaporan = $("#cektutuplaporan").val();
-                        if (cektutuplaporan > 0) {
-                            swal("Oops", "Laporan Periode Ini Sudah Di Tutup !", "warning");
-                            return false;
-                        } else {
-                            $.ajax({
-                                type: 'POST'
-                                , url: '/pembelian/deletedetail'
-                                , data: {
-                                    _token: "{{ csrf_token() }}"
-                                    , nobukti_pembelian: nobukti_pembelian
-                                    , kode_barang: kode_barang
-                                    , no_urut: no_urut
-                                }
-                                , cache: false
-                                , success: function(respond) {
-                                    if (respond == 0) {
-                                        swal(
-                                            'Deleted!'
-                                            , 'Data Berhasil Dihapus'
-                                            , 'success'
-                                        )
-                                    } else {
-                                        swal(
-                                            'Deleted!'
-                                            , 'Data Gagal Dihapus'
-                                            , 'danger'
-                                        )
+            if (cekpembayaran > 0) {
+                swal("Oops", "Data Ini Sudah Melakukan Pembayaran, Tidak dapat Dihapus, Hubungi Bagian Keuangan Untuk Konfirmasi", "warning");
+            } else {
+                swal({
+                        title: `Anda Yakin Data ini Akan Dihapus ?`
+                        , text: "Jika dihapus Data Ini Akan Hilang Dari Keranjang"
+                        , icon: "warning"
+                        , buttons: true
+                        , dangerMode: true
+                    , })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            var cektutuplaporan = $("#cektutuplaporan").val();
+                            if (cektutuplaporan > 0) {
+                                swal("Oops", "Laporan Periode Ini Sudah Di Tutup !", "warning");
+                                return false;
+                            } else {
+                                $.ajax({
+                                    type: 'POST'
+                                    , url: '/pembelian/deletedetail'
+                                    , data: {
+                                        _token: "{{ csrf_token() }}"
+                                        , nobukti_pembelian: nobukti_pembelian
+                                        , kode_barang: kode_barang
+                                        , no_urut: no_urut
                                     }
+                                    , cache: false
+                                    , success: function(respond) {
+                                        if (respond == 0) {
+                                            swal(
+                                                'Deleted!'
+                                                , 'Data Berhasil Dihapus'
+                                                , 'success'
+                                            )
+                                        } else {
+                                            swal(
+                                                'Deleted!'
+                                                , 'Data Gagal Dihapus'
+                                                , 'danger'
+                                            )
+                                        }
 
-                                    loaddetailpembelian();
-                                }
-                            });
+                                        loaddetailpembelian();
+                                    }
+                                });
+                            }
+
+
+
+
                         }
+                    });
+
+            }
 
 
-
-
-                    }
-                });
         });
     });
 

@@ -494,6 +494,7 @@
                 , data: {
                     _token: "{{ csrf_token() }}"
                     , nobukti_pembelian: nobukti_pembelian
+                    , cekpembayaran: "{{ $cekpembayaran }}"
 
                 }
                 , cache: false
@@ -546,10 +547,21 @@
             var tgl_jatuhtempo = $("#tgl_jatuhtempo").val();
             var cektutuplaporan = $("#cektutuplaporan").val();
             var jmldata = $("#jmldata").val();
+            var cekpembayaran = "{{ $cekpembayaran }}";
             if (cektutuplaporan > 0) {
                 swal({
                     title: 'Oops'
                     , text: 'Laporan Periode Ini Sudah Ditutup !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#tgl_pembelian").focus();
+                });
+                return false;
+            } else if (cekpembayaran > 0) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Data Ini Tidak Bisa Di Ubah Karena, Sudah Memiliki Pembayaran, Hubungi Keuangan Untuk Konfirmasi !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
@@ -756,16 +768,16 @@
         });
 
 
-        $("#frmPembelian").submit(function() {
-            var nobukti_pembelian = $("#nobukti_pembelian").val();
-            var tgl_pembelian = $("#tgl_pembelian").val();
-            var kode_supplier = $("#kode_supplier").val();
-            var kode_dept = $("#kode_dept").val();
-            var jenistransaksi = $("#jenistransaksi").val();
-            var tgl_jatuhtempo = $("#tgl_jatuhtempo").val();
-            var cektutuplaporan = $("#cektutuplaporan").val();
-            var jmldata = $("#jmldata").val();
-        });
+        // $("#frmPembelian").submit(function() {
+        //     var nobukti_pembelian = $("#nobukti_pembelian").val();
+        //     var tgl_pembelian = $("#tgl_pembelian").val();
+        //     var kode_supplier = $("#kode_supplier").val();
+        //     var kode_dept = $("#kode_dept").val();
+        //     var jenistransaksi = $("#jenistransaksi").val();
+        //     var tgl_jatuhtempo = $("#tgl_jatuhtempo").val();
+        //     var cektutuplaporan = $("#cektutuplaporan").val();
+        //     var jmldata = $("#jmldata").val();
+        // });
     });
 
 </script>

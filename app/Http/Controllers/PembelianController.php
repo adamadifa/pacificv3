@@ -604,13 +604,14 @@ class PembelianController extends Controller
     public function showdetailpembelian(Request $request)
     {
         $nobukti_pembelian = $request->nobukti_pembelian;
+        $cekpembayaran = $request->cekpembayaran;
         $detail = DB::table('detail_pembelian')
             ->select('detail_pembelian.*', 'nama_barang')
             ->join('master_barang_pembelian', 'detail_pembelian.kode_barang', '=', 'master_barang_pembelian.kode_barang')
             ->where('nobukti_pembelian', $nobukti_pembelian)
             ->where('detail_pembelian.status', 'PMB')
             ->get();
-        return view('pembelian.showdetailpembelian', compact('detail'));
+        return view('pembelian.showdetailpembelian', compact('detail', 'cekpembayaran'));
     }
 
     public function showdetailpembeliankontrabon(Request $request)
