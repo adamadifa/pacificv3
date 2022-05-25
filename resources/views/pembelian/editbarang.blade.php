@@ -94,6 +94,7 @@
         </div>
     </div>
 </form>
+
 <script>
     var h = document.getElementById('harga_edit');
     h.addEventListener('keyup', function(e) {
@@ -140,6 +141,8 @@
 </script>
 <script>
     $(function() {
+
+        // $("#frmEditbarang").find('#kode_akun').selectize();
         $("#frmEditbarang").find('#kode_akun').select2({
             dropdownParent: $('#mdleditbarang')
         });

@@ -139,7 +139,7 @@
                                 </div>
                                 <div class="col-lg-2 col-sm-12">
                                     <div class="form-group">
-                                        <select name="kode_akun" id="kode_akun" class="form-control select2">
+                                        <select name="kode_akun" id="kode_akun" class="form-control">
                                             <option value="">Kode Akun</option>
                                             @foreach ($coa as $d)
                                             <option value="{{ $d->kode_akun }}"><b>{{ $d->kode_akun }}</b> - {{ $d->nama_akun }}</option>
@@ -367,6 +367,7 @@
 </script>
 <script>
     $(function() {
+        $("#kode_akun").selectize();
 
         function cektutuplaporan() {
             var tgltransaksi = $("#tgl_pembelian").val();

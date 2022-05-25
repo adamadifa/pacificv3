@@ -486,7 +486,7 @@ body.dark-layout {
     border-right-color: transparent !important; }
   body.dark-layout input.form-control,
   body.dark-layout .custom-file-label,
-  body.dark-layout textarea.form-control {
+  body.dark-layout textarea.form-control .selectize-input {
     background-color: #262c49;
     color: #c2c6dc; }
     body.dark-layout input.form-control:not(:focus),

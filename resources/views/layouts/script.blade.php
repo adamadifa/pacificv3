@@ -49,6 +49,7 @@
 <script src="{{ asset('app-assets/js/external/exporting.js') }}"></script>
 <script src="{{ asset('app-assets/js/external/export-data.js') }}"></script>
 <script src="{{ asset('app-assets/js/external/accessibility.js') }}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.5/js/standalone/selectize.js" integrity="sha512-JFjt3Gb92wFay5Pu6b0UCH9JIOkOGEfjIi7yykNWUwj55DBBp79VIJ9EPUzNimZ6FvX41jlTHpWFUQjog8P/sw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     $('body').toggleClass(localStorage.toggled);
 
