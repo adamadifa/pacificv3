@@ -379,6 +379,7 @@
 </script>
 <script>
     $(function() {
+        $("body").removeClass("dark-layout");
         $("#no_fak_penj").on('change', function(e) {
             if (e.keyCode == 32) return false;
             var no_fak_penj = $("#no_fak_penj").val();
