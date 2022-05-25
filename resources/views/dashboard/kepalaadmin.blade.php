@@ -203,7 +203,17 @@
                                             @php
                                             $totalnettopending = $rekappenjualan->totalbrutopending - $rekappenjualan->totalreturpending - $rekappenjualan->totalpenyhargapending - $rekappenjualan->totalpotonganpending - $rekappenjualan->totalpotistimewapending;
                                             @endphp
-                                            <td class="text-right text-warning">{{ rupiah($totalnettopending) }}</td>
+                                            <td class="text-right text-warning">
+                                                <form action="/laporanpenjualan/cetak" method="post" id="frmpending" target="_blank">
+                                                    @csrf
+                                                    <input type="hidden" name="kode_cabang" value="{{ Auth::user()->kode_cabang }}">
+                                                    <input type="hidden" name="dari" value="{{ $dari }}">
+                                                    <input type="hidden" name="sampai" value="{{ $sampai }}">
+                                                    <input type="hidden" name="jenislaporan" value="standar">
+                                                    <input type="hidden" name="status" value="pending">
+                                                    <a href="#" class="warning" id="showpending">{{ rupiah($totalnettopending) }}</a>
+                                                </form>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>Reguler</td>
@@ -373,6 +383,10 @@
 @push('myscript')
 <script>
     $(function() {
+        $("#showpending").click(function(e) {
+            $("#frmpending").submit();
+        });
+
         function loaddppp() {
             $('#loaddppp').html("");
             $('#loadingdppp').show();

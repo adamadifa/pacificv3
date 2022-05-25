@@ -35,7 +35,7 @@ class DashboardController extends Controller
         } else if (Auth::user()->level == "admin penjualan") {
             return $this->dashboardadminpenjualan();
         } else if (Auth::user()->level == "kepala penjualan") {
-            return $this->dashboardkepalapenjualan();
+            return $this->dashboardkepalaadmin();
         } else if (Auth::user()->level == "kepala admin" || Auth::user()->level == "admin pusat") {
             return $this->dashboardkepalaadmin();
         } else if (Auth::user()->level == "manager accounting" || Auth::user()->level == "audit") {
@@ -274,7 +274,7 @@ class DashboardController extends Controller
             ->first();
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-        return view('dashboard.kepalaadmin', compact('rekappenjualan', 'bulan', 'cabang'));
+        return view('dashboard.kepalaadmin', compact('rekappenjualan', 'bulan', 'cabang', 'dari', 'sampai'));
     }
 
     function dashboardkepalapenjualan()
