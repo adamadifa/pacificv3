@@ -227,7 +227,7 @@ class GlobalProvider extends ServiceProvider
                 'admin', 'admin penjualan',
                 'kepala admin', 'admin pusat', 'manager accounting', 'spv accounting',
                 'manager marketing', 'general manager', 'direktur',
-                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'admin pajak', 'admin garut', 'audit'
+                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'admin pajak', 'admin garut', 'audit', 'kepala penjualan'
             ];
             $penjualan_keuangan = [
                 'admin', 'admin penjualan', 'kepala admin', 'admin pusat', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3',
