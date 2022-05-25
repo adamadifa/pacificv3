@@ -491,12 +491,17 @@ class MutasigudangcabangController extends Controller
         } else {
             DB::beginTransaction();
             try {
-
-                DB::table('mutasi_gudang_cabang')->insert($data);
-                $chunks = array_chunk($data_detail, 5);
-                foreach ($chunks as $chunk) {
-                    Detailmutasicabang::insert($chunk);
+                $cek = DB::table('mutasi_gudang_cabang')->where('no_dpb', $no_dpb)->where('jenis_mutasi', $jenis_mutasi)->count();
+                if ($cek > 0) {
+                    return Redirect::back()->with(['warning' => 'No. DPB Sudah Ada']);
+                } else {
+                    DB::table('mutasi_gudang_cabang')->insert($data);
+                    $chunks = array_chunk($data_detail, 5);
+                    foreach ($chunks as $chunk) {
+                        Detailmutasicabang::insert($chunk);
+                    }
                 }
+
                 DB::commit();
                 return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
             } catch (\Exception $e) {
