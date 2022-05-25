@@ -349,18 +349,18 @@ class GlobalProvider extends ServiceProvider
                 'admin', 'staff keuangan',
                 'staff keuangan 2', 'staff keuangan 3',
                 'kepala admin', 'admin pusat', 'admin kas kecil', 'admin kas', 'admin persediaan dan kas kecil',
-                'admin penjualan dan kas kecil', 'admin garut'
+                'admin penjualan dan kas kecil', 'admin garut', 'manager accounting'
             ];
             $kaskecil_view = [
                 'admin', 'kepala admin', 'admin pusat', 'admin kas kecil', 'admin kas',
                 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil',
                 'staff keuangan 3', 'admin garut'
             ];
-            $klaim_view = ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'kepala admin', 'admin pusat', 'admin kas kecil', 'admin kas', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil', 'admin garut', 'admin garut'];
+            $klaim_view = ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'kepala admin', 'admin pusat', 'admin kas kecil', 'admin kas', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil', 'admin garut', 'admin garut', 'manager accounting'];
             $klaim_add = ['admin', 'kepala admin', 'admin pusat', 'admin kas kecil', 'admin kas', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil', 'staff keuangan 3', 'admin garut'];
             $klaim_hapus = ['admin', 'kepala admin', 'admin pusat', 'admin kas kecil', 'admin kas', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil', 'staff keuangan 3', 'admin garut'];
             $klaim_validasi = ['admin', 'kepala admin', 'admin pusat', 'admin kas kecil', 'admin kas', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil', 'staff keuangan 3', 'admin garut'];
-            $klaim_proses = ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3'];
+            $klaim_proses = ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'manager accounting'];
 
             //Mutasi Bank
             $mutasibank_view = ['admin', 'kepala admin', 'admin pusat', 'admin kas kecil', 'admin kas', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil'];
