@@ -260,10 +260,10 @@ class GlobalProvider extends ServiceProvider
                 'kepala admin', 'admin pusat', 'manager marketing',
                 'manager accounting', 'spv accounting', 'general manager',
                 'direktur', 'admin penjualan dan kas kecil', 'admin penjualan dan kasir',
-                'admin garut', 'audit'
+                'admin garut', 'audit', 'kepala penjualan'
             ];
             $limitkredit_hapus = ['admin', 'admin penjualan', 'kepala admin', 'admin pusat', 'kepala penjualan', 'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'admin garut'];
-            $limitkredit_analisa = ['admin', 'admin penjualan', 'kepala admin', 'admin pusat', 'kepala penjualan', 'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'admin garut'];
+            $limitkredit_analisa = ['admin', 'admin penjualan', 'kepala admin', 'admin pusat', 'kepala penjualan', 'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'admin garut', 'kepala penjualan'];
             $penyesuaian_limit = ['admin', 'direktur'];
             //Laporan
             $laporan_penjualan = [
