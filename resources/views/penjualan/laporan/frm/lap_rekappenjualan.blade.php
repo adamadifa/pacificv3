@@ -35,7 +35,7 @@
                                                 <select name="jenislaporan" id="jenislaporan" class="form-control">
                                                     <option value="1">Rekap Penjualan Produk</option>
                                                     <option value="2">Rekap Penjualan</option>
-                                                    @if (Auth::user()->kode_cabang == "PCF")
+                                                    @if (Auth::user()->kode_cabang == "PCF" && Auth::user()->kode_cabang == "PST")
                                                     <option value="3">Rekap Penjualan (QTY)</option>
                                                     @endif
                                                     <option value="4">Rekap Retur</option>
@@ -49,7 +49,7 @@
                                         <div class="col-lg-12 col-sm-12">
                                             <div class="form-group  ">
                                                 <select name="kode_cabang" id="kode_cabang" class="form-control">
-                                                    @if (Auth::user()->kode_cabang!="PCF")
+                                                    @if (Auth::user()->kode_cabang!="PCF" && Auth::user()->kode_cabang != "PST")
                                                     <option value="">Pilih Cabang</option>
                                                     @else
                                                     <option value="">Semua Cabang</option>
@@ -130,7 +130,7 @@
             var end = new Date(sampai);
             var tgl_aup = $("#tgl_aup").val();
             var datestart = new Date('2018-09-01');
-            if (cabang != "PCF" && kode_cabang == "" && jenislaporan != 3) {
+            if (cabang != "PCF" && kode_cabang == "" && jenislaporan != 3 && cabang != "PST" && kode_cabang == "" && jenislaporan != 3) {
                 swal({
                     title: 'Oops'
                     , text: 'Pilih Cabang Terlebih Dahulu !'
