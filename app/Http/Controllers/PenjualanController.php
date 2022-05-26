@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use PDOException;
+use Svg\Tag\Rect;
 
 class PenjualanController extends Controller
 {
@@ -5004,5 +5005,64 @@ class PenjualanController extends Controller
             DB::rollback();
             return Redirect::back()->with(['success' => 'Data Gagal Di Update']);
         }
+    }
+
+    public function rekappenjualandashboard(Request $request)
+    {
+        $bulan = $request->bulan;
+        $tahun =  $request->tahun;
+        $dari = $tahun . "-" . $bulan . "-01";
+        $sampai = date("Y-m-t", strtotime($dari));
+        $rekappenjualancabang = DB::table('penjualan')
+            ->selectRaw("
+            karyawan.kode_cabang AS kode_cabang,nama_cabang,
+            (ifnull( SUM( penjualan.subtotal ), 0 ) ) AS totalbruto,
+			ifnull(SUM(IF(penjualan.`status`=1,penjualan.subtotal,0)),0) as totalbrutopending,
+			ifnull(totalretur,0) as totalretur,
+			ifnull(totalreturpending,0) as totalreturpending,
+
+			ifnull( SUM( penjualan.penyharga ), 0 ) AS totalpenyharga,
+			ifnull(SUM(IF(penjualan.`status`=1,penjualan.penyharga,0)),0) as totalpenyhargapending,
+
+
+			ifnull( SUM( penjualan.potongan ), 0 ) AS totalpotongan,
+			ifnull(SUM(IF(penjualan.`status`=1,penjualan.potongan,0)),0) as totalpotonganpending,
+
+			ifnull( SUM( penjualan.potistimewa ), 0 ) AS totalpotistimewa,
+			ifnull(SUM(IF(penjualan.`status`=1,penjualan.potistimewa,0)),0) as totalpotistimewapending
+            ")
+            ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
+            ->leftJoin(
+                DB::raw("(
+                    SELECT karyawan.kode_cabang, SUM(retur.total )AS totalretur ,
+                    SUM(IF(penjualan.`status`=1,retur.total,0)) as totalreturpending
+                    FROM retur
+                    INNER JOIN penjualan ON retur.no_fak_penj = penjualan.no_fak_penj
+                    INNER JOIN karyawan ON penjualan.id_karyawan = karyawan.id_karyawan
+                    WHERE tglretur BETWEEN '$dari' AND '$sampai' GROUP BY karyawan.kode_cabang
+                ) retur"),
+                function ($join) {
+                    $join->on('karyawan.kode_cabang', '=', 'retur.kode_cabang');
+                }
+            )
+            ->whereBetween('tgltransaksi', [$dari, $sampai])
+            ->groupByRaw('karyawan.kode_cabang,nama_cabang,totalretur,totalreturpending')
+            ->get();
+        return view('penjualan.dashboard.rekappenjualandashboard', compact('rekappenjualancabang', 'dari', 'sampai'));
+    }
+
+    public function rekapkasbesardashboard(Request $request)
+    {
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $kasbesar = DB::table('historibayar')
+            ->selectRaw("karyawan.kode_cabang,nama_cabang,SUM(IF(status_bayar='voucher',bayar,0)) as voucher,SUM(IF(status_bayar IS NULL,bayar,0)) as cashin")
+            ->join('karyawan', 'historibayar.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
+            ->groupByRaw('karyawan.kode_cabang,nama_cabang')
+            ->get();
+
+        return view('penjualan.dashboard.rekapkasbesardashboard', compact('kasbesar'));
     }
 }

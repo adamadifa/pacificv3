@@ -199,6 +199,8 @@ Route::middleware(['auth'])->group(function () {
 
     //Dashboard
     Route::post('/rekapcashin', [PenjualanController::class, 'rekapcashin']);
+    Route::post('/rekappenjualandashboard', [PenjualanController::class, 'rekappenjualandashboard']);
+    Route::post('/rekapkasbesardashboard', [PenjualanController::class, 'rekapkasbesardashboard']);
 
     Route::post('/dpppdashboard', [PenjualanController::class, 'dpppdashboard']);
     Route::post('/rekapkendaraandashboard', [KendaraanController::class, 'rekapkendaraandashboard']);
