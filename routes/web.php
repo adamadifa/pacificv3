@@ -1185,4 +1185,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/memo/store', [MemoController::class, 'store']);
     Route::post('/memo/downloadcount', [MemoController::class, 'downloadcount']);
     Route::delete('/memo/{id}/delete', [MemoController::class, 'delete']);
+
+    Route::get('/tutuplaporan', [TutuplaporanController::class, 'index']);
+    Route::get('/tutuplaporan/create', [TutuplaporanController::class, 'create']);
+    Route::post('/tutuplaporan/store', [TutuplaporanController::class, 'store']);
+    Route::get('/tutuplaporan/{kode_tutuplaporan}/bukalaporan', [TutuplaporanController::class, 'bukalaporan']);
+    Route::get('/tutuplaporan/{kode_tutuplaporan}/tutuplaporan', [TutuplaporanController::class, 'tutuplaporan']);
 });

@@ -87,6 +87,7 @@
                                                 <select name="aturankomisi" id="aturankomisi" class="form-control">
                                                     <option value="2"> Cash IN Berdasarkan LPU</option>
                                                     <option value="3"> Cash IN Berdasarkan Kas Besar</option>
+                                                    <option value="4"> Cash IN Berdasarkan 14 Hari Dari Transaksi</option>
                                                 </select>
                                             </div>
                                         </div>

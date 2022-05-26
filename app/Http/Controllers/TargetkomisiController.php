@@ -792,11 +792,25 @@ class TargetkomisiController extends Controller
                         $join->on('karyawan.id_karyawan', '=', 'hb.id_karyawan');
                     }
                 );
-            } else {
+            } else if ($aturankomisi == 3) {
                 $query->leftJoin(
                     DB::raw("(
                         SELECT historibayar.id_karyawan,SUM(bayar) as realisasi_cashin
                         FROM historibayar WHERE tglbayar BETWEEN '$dari' AND '$sampai' AND status_bayar IS NULL
+                        GROUP BY historibayar.id_karyawan
+                    ) hb"),
+                    function ($join) {
+                        $join->on('karyawan.id_karyawan', '=', 'hb.id_karyawan');
+                    }
+                );
+            } else if ($aturankomisi == 4) {
+                $query->leftJoin(
+                    DB::raw("(
+                        SELECT historibayar.id_karyawan,SUM(bayar) as realisasi_cashin
+                        FROM historibayar
+                        INNER JOIN penjualan ON historibayar.no_fak_penj = penjualan.no_fak_penj
+                        WHERE tglbayar BETWEEN '$dari' AND '$sampai' AND status_bayar IS NULL
+                        AND datediff(tglbayar, tgltransaksi) <= 14
                         GROUP BY historibayar.id_karyawan
                     ) hb"),
                     function ($join) {

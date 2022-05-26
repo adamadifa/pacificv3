@@ -737,6 +737,9 @@ class GlobalProvider extends ServiceProvider
                 'admin', 'admin maintenance', 'spv accounting',
                 'manager accounting', 'direktur', 'general manager', 'admin pusat'
             ];
+
+            $tutuplaporan = ['admin', 'manager accounting'];
+
             $shareddata = [
                 'level' => $level,
                 'getcbg' => $getcbg,
@@ -1049,6 +1052,8 @@ class GlobalProvider extends ServiceProvider
                 'maintenance_pemasukan' => $maintenance_pemasukan,
                 'maintenance_pengeluaran' => $maintenance_pengeluaran,
                 'laporan_maintenance' => $laporan_maintenance,
+
+                'tutuplaporan' => $tutuplaporan
 
 
 

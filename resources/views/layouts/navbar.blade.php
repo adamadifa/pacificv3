@@ -978,6 +978,14 @@
                         </a>
                     </li>
                     @endif
+                    @if (in_array($level, $tutuplaporan))
+                    <li class="{{ request()->is(['tutuplaporan', 'tutuplaporan/*']) ? 'active' : '' }}">
+                        <a href="/tutuplaporan">
+                            <i class="feather icon-file-text"></i>
+                            <span class="menu-item">Tutup Laporan</span>
+                        </a>
+                    </li>
+                    @endif
                     <li class="{{ request()->is(['user', 'user/gantipassword']) ? 'active' : '' }}">
                         <a href="/user/gantipassword">
                             <i class="fa fa-key"></i>
