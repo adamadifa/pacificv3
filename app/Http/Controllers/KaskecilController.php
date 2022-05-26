@@ -186,8 +186,8 @@ class KaskecilController extends Controller
                     $last_no_bukti = "";
                 }
 
-                $no_bukti = buatkode($last_no_bukti, 'GJ' . $bulan . $thn, 4);
-                $no_bukti_2 = buatkode($no_bukti, 'GJ' . $bulan . $thn, 4);
+                $no_bukti = buatkode($last_no_bukti, 'GJ' . $bulan . $thn, 6);
+                $no_bukti_2 = buatkode($no_bukti, 'GJ' . $bulan . $thn, 6);
                 if ($t->status_dk == 'D' and $cekakun == '6-1' and $t->peruntukan != 'MP' or $t->status_dk == 'D' and $cekakun == '6-2' and $t->peruntukan != 'MP') {
                     $kode = "CR" . $bulan . $thn;
                     $cr = DB::table('costratio_biaya')

@@ -184,7 +184,7 @@ class PembelianController extends Controller
         $thn = substr($tahun, 2, 2);
         $kode_barang = $request->kode_barang;
         $kode_dept = $request->kode_dept;
-        $qty = !empty($request->qty) ? str_replace(".", "", $request->harga) : 0;
+        $qty = !empty($request->qty) ? str_replace(".", "", $request->qty) : 0;
         $qty = str_replace(",", ".", $qty);
         $harga = !empty($request->harga) ? str_replace(".", "", $request->harga) : 0;
         $harga = str_replace(",", ".", $harga);
@@ -249,7 +249,7 @@ class PembelianController extends Controller
                     $last_no_bukti_bukubesar = "";
                 }
 
-                $nobukti_bukubesar = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $thn, 4);
+                $nobukti_bukubesar = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $thn, 6);
 
                 $databukubesar = array(
                     'no_bukti' => $nobukti_bukubesar,
@@ -380,7 +380,7 @@ class PembelianController extends Controller
             $last_no_bukti_bukubesar = "";
         }
 
-        $nobukti_bukubesar = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $thn, 4);
+        $nobukti_bukubesar = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $thn, 6);
         $databukubesar = array(
             'no_bukti' => $nobukti_bukubesar,
             'tanggal' => $tgl_pembelian,
@@ -465,9 +465,9 @@ class PembelianController extends Controller
 
 
                 if (empty($no_bb)) {
-                    $nobukti_bukubesar_detail = buatkode($nobukti_bukubesar, 'GJ' . $bulan . $thn, 4);
+                    $nobukti_bukubesar_detail = buatkode($nobukti_bukubesar, 'GJ' . $bulan . $thn, 6);
                 } else {
-                    $nobukti_bukubesar_detail = buatkode($no_bb, 'GJ' . $bulan . $thn, 4);
+                    $nobukti_bukubesar_detail = buatkode($no_bb, 'GJ' . $bulan . $thn, 6);
                 }
                 $databukubesar = array(
                     'no_bukti' => $nobukti_bukubesar_detail,
@@ -654,22 +654,28 @@ class PembelianController extends Controller
         $jenistransaksi = $pembelian->jenistransaksi;
         $no_kontrabbon = $pembelian->ref_tunai;
         $kode_dept = $pembelian->kode_dept;
+        $kontrabon = DB::table('detail_kontrabon')->where('nobukti_pembelian', $nobukti_pembelian)
+            ->join('kontrabon', 'detail_kontrabon.no_kontrabon', '=', 'kontrabon.no_kontrabon')
+            ->whereNull('status')
+            ->orderBy('tgl_kontrabon', 'desc')
+            ->first();
         DB::beginTransaction();
         try {
             DB::table('detail_pembelian')->where('nobukti_pembelian', $nobukti_pembelian)->where('no_urut', $no_urut)->where('kode_barang', $kode_barang)->delete();
             DB::table('costratio_biaya')->where('kode_cr', $kode_cr)->delete();
             DB::table('buku_besar')->where('no_bukti', $nobukti_bukubesar)->delete();
-            if ($jenistransaksi == "tunai") {
-                $bayar = DB::table('detail_pembelian')
-                    ->selectRaw("(SUM( IF ( STATUS = 'PMB', ((qty*harga)+penyesuaian), 0 ) ) - SUM( IF ( STATUS = 'PNJ',(qty*harga), 0 ) )) as totalpembelian")
-                    ->where('nobukti_pembelian', $nobukti_pembelian)
-                    ->first();
-                $data = [
-                    'jmlbayar' => !empty($bayar->totalpembelian) ?  $bayar->totalpembelian : 0,
-                ];
+            // if ($jenistransaksi == "tunai") {
+            //     $bayar = DB::table('detail_pembelian')
+            //         ->selectRaw("(SUM( IF ( STATUS = 'PMB', ((qty*harga)+penyesuaian), 0 ) ) - SUM( IF ( STATUS = 'PNJ',(qty*harga), 0 ) )) as totalpembelian")
+            //         ->where('nobukti_pembelian', $nobukti_pembelian)
+            //         ->first();
+            //     $data = [
+            //         'jmlbayar' => !empty($bayar->totalpembelian) ?  $bayar->totalpembelian : 0,
+            //     ];
 
-                DB::table('detail_kontrabon')->where('no_kontrabon', $no_kontrabbon)->update($data);
-            }
+            //     DB::table('detail_kontrabon')->where('no_kontrabon', $no_kontrabbon)->update($data);
+            // } else {
+            // }
             if ($kode_dept != "GDB") {
                 $kode_akun = "2-1300";
             } else {
@@ -685,6 +691,12 @@ class PembelianController extends Controller
                 'debet' => 0,
                 'kredit' => $jmlbayar->jmlbayar,
             );
+            $datakontrabon = array(
+                'jmlbayar' => $jmlbayar->jmlbayar
+            );
+            if ($kontrabon != null) {
+                DB::table('detail_kontrabon')->where('nobukti_pembelian', $nobukti_pembelian)->where('no_kontrabon', $kontrabon->no_kontrabon)->update($datakontrabon);
+            }
             DB::table('buku_besar')->where('no_bukti', $pembelian->nobukti_bukubesar)->update($databukubesar);
             echo 0;
             DB::commit();
@@ -741,6 +753,11 @@ class PembelianController extends Controller
         $detailpembelian = DB::table('detail_pembelian')
             ->join('master_barang_pembelian', 'detail_pembelian.kode_barang', '=', 'master_barang_pembelian.kode_barang')
             ->where('nobukti_pembelian', $nobukti_pembelian)->where('detail_pembelian.kode_barang', $kode_barang)->where('no_urut', $no_urut)->first();
+        $kontrabon = DB::table('detail_kontrabon')->where('nobukti_pembelian', $nobukti_pembelian)
+            ->join('kontrabon', 'detail_kontrabon.no_kontrabon', '=', 'kontrabon.no_kontrabon')
+            ->whereNull('status')
+            ->orderBy('tgl_kontrabon', 'desc')
+            ->first();
         DB::beginTransaction();
         try {
 
@@ -810,6 +827,12 @@ class PembelianController extends Controller
                 'debet' => 0,
                 'kredit' => $jmlbayar->jmlbayar,
             );
+            $datakontrabon = array(
+                'jmlbayar' => $jmlbayar->jmlbayar
+            );
+            if ($kontrabon != null) {
+                DB::table('detail_kontrabon')->where('nobukti_pembelian', $nobukti_pembelian)->where('no_kontrabon', $kontrabon->no_kontrabon)->update($datakontrabon);
+            }
             DB::table('buku_besar')->where('no_bukti', $pembelian->nobukti_bukubesar)->update($databukubesar);
             echo 0;
             DB::commit();
@@ -847,6 +870,11 @@ class PembelianController extends Controller
         $tahun = $tanggal[0];
         $thn = substr($tahun, 2, 2);
         $kode_dept = $pembelian->kode_dept;
+        $kontrabon = DB::table('detail_kontrabon')->where('nobukti_pembelian', $nobukti_pembelian)
+            ->join('kontrabon', 'detail_kontrabon.no_kontrabon', '=', 'kontrabon.no_kontrabon')
+            ->whereNull('status')
+            ->orderBy('tgl_kontrabon', 'desc')
+            ->first();
         $detailpotongan = DB::table('detail_pembelian')->where('status', 'PNJ')->where('nobukti_pembelian', $nobukti_pembelian)->first();
         if ($detailpotongan != null) {
             $no_urut = $detailpotongan->no_urut + 1;
@@ -862,7 +890,7 @@ class PembelianController extends Controller
             $last_no_bukti_bukubesar = "";
         }
 
-        $nobukti_bukubesar = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $thn, 4);
+        $nobukti_bukubesar = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $thn, 6);
 
 
         DB::beginTransaction();
@@ -906,6 +934,12 @@ class PembelianController extends Controller
                 'debet' => 0,
                 'kredit' => $jmlbayar->jmlbayar,
             );
+            $datakontrabon = array(
+                'jmlbayar' => $jmlbayar->jmlbayar
+            );
+            if ($kontrabon != null) {
+                DB::table('detail_kontrabon')->where('nobukti_pembelian', $nobukti_pembelian)->where('no_kontrabon', $kontrabon->no_kontrabon)->update($datakontrabon);
+            }
             DB::table('buku_besar')->where('no_bukti', $pembelian->nobukti_bukubesar)->update($databukubesar);
             echo 0;
             DB::commit();
@@ -995,14 +1029,14 @@ class PembelianController extends Controller
             } else {
                 $kontrabon = DB::table('detail_kontrabon')
                     ->join('kontrabon', 'detail_kontrabon.no_kontrabon', '=', 'kontrabon.no_kontrabon')
-                    ->where('nobukti_pembelian', $nobukti_pembelian)
+                    ->where('nobukti_pembelian', $pembelian->nobukti_pembelian)
                     ->whereNull('status')
                     ->orderBy('tgl_kontrabon', 'desc')
                     ->first();
                 if ($jenistransaksi == "tunai") {
                     $datakb = [
                         'kode_supplier' => $kode_supplier,
-                        'tgl_kontrabon' => $tgl_pembelian
+                        'tgl_kontrabon' => $tgl_pembelian,
                     ];
                 } else {
                     $datakb = [
@@ -1070,7 +1104,7 @@ class PembelianController extends Controller
         $nobukti_pembelian = Crypt::decrypt($nobukti_pembelian);
         DB::beginTransaction();
         try {
-
+            $cekdetailkontrabon = DB::table('detail_kontrabon')->where('nobukti_pembelian', $nobukti_pembelian)->get();
             DB::table('costratio_biaya')
                 ->leftJoin('detail_pembelian', 'costratio_biaya.kode_cr', '=', 'detail_pembelian.kode_cr')
                 ->where('nobukti_pembelian', $nobukti_pembelian)
@@ -1078,16 +1112,16 @@ class PembelianController extends Controller
             DB::table('pembelian')->where('nobukti_pembelian', $nobukti_pembelian)->delete();
             DB::table('buku_besar')->where('nobukti_transaksi', $nobukti_pembelian)->delete();
 
-            $cekdetailkontrabon = DB::table('detail_kontrabon')->where('nobukti_pembelian', $nobukti_pembelian)->get();
             foreach ($cekdetailkontrabon as $d) {
+                $no_kontrabon = $d->no_kontrabon;
                 DB::table('detail_kontrabon')->where('nobukti_pembelian', $nobukti_pembelian)->where('no_kontrabon', $d->no_kontrabon)->delete();
-                $cekkontrabon = DB::table('detail_kontrabon')->where('no_kontrabon', $d->no_kontrabon)->count();
+                $cekkontrabon = DB::table('detail_kontrabon')->where('no_kontrabon', $no_kontrabon)->count();
                 if (empty($cekkontrabon)) {
-                    DB::table('kontrabon')->where('no_kontrabon', $d->no_kontrabon)->delete();
+                    DB::table('kontrabon')->where('no_kontrabon', $no_kontrabon)->delete();
                 }
             }
 
-
+            //die;
             DB::commit();
             return Redirect::back()->with(['success' => 'Data Penjualan Berhasil di Update']);
         } catch (\Exception $e) {

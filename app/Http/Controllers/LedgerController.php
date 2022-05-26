@@ -171,8 +171,8 @@ class LedgerController extends Controller
                     $last_no_bukti_bukubesar = "";
                 }
 
-                $nobukti_bukubesar = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $tahun, 4);
-                $nobukti_bukubesar_bank = buatkode($nobukti_bukubesar, 'GJ' . $bulan . $tahun, 4);
+                $nobukti_bukubesar = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $tahun, 6);
+                $nobukti_bukubesar_bank = buatkode($nobukti_bukubesar, 'GJ' . $bulan . $tahun, 6);
 
                 if ($d->status_dk == "D") {
                     $debet = $d->jumlah;

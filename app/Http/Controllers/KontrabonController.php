@@ -351,10 +351,10 @@ class KontrabonController extends Controller
             $last_no_bukti_bukubesar = "";
         }
 
-        $nobukti_bukubesar = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $tahun, 4);
-        $nobukti_bukubesar_bank = buatkode($nobukti_bukubesar, 'GJ' . $bulan . $tahun, 4);
-        $nobukti_bukubesar_trans_kk = buatkode($nobukti_bukubesar_bank, 'GJ' . $bulan . $tahun, 4);
-        $nobukti_bukubesar_kk = buatkode($nobukti_bukubesar_trans_kk, 'GJ' . $bulan . $tahun, 4);
+        $nobukti_bukubesar = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $tahun, 6);
+        $nobukti_bukubesar_bank = buatkode($nobukti_bukubesar, 'GJ' . $bulan . $tahun, 6);
+        $nobukti_bukubesar_trans_kk = buatkode($nobukti_bukubesar_bank, 'GJ' . $bulan . $tahun, 6);
+        $nobukti_bukubesar_kk = buatkode($nobukti_bukubesar_trans_kk, 'GJ' . $bulan . $tahun, 6);
 
 
         $nobukti_pembelian = "";

@@ -215,10 +215,11 @@ class KontrabonangkutanController extends Controller
         // echo $last_no_bukti_bukubesar;
 
 
-        $nobukti_bukubesar_angkutan = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $tahun, 4);
-        $nobukti_bukubesar_bank_angkutan = buatkode($nobukti_bukubesar_angkutan, 'GJ' . $bulan . $tahun, 4);
-        $nobukti_bukubesar_hutang = buatkode($nobukti_bukubesar_bank_angkutan, 'GJ' . $bulan . $tahun, 4);
-        $nobukti_bukubesar_bank_hutang = buatkode($nobukti_bukubesar_hutang, 'GJ' . $bulan . $tahun, 4);
+        $nobukti_bukubesar_angkutan = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $tahun, 6);
+        $nobukti_bukubesar_bank_angkutan = buatkode($nobukti_bukubesar_angkutan, 'GJ' . $bulan . $tahun, 6);
+
+        $nobukti_bukubesar_hutang = buatkode($nobukti_bukubesar_bank_angkutan, 'GJ' . $bulan . $tahun, 6);
+        $nobukti_bukubesar_bank_hutang = buatkode($nobukti_bukubesar_hutang, 'GJ' . $bulan . $tahun, 6);
 
 
         $kontrabon = DB::table('detail_kontrabon_angkutan')
@@ -259,7 +260,7 @@ class KontrabonangkutanController extends Controller
                     'ket_peruntukan'      => 'PST',
                     'kategori' => 'GDJ',
                     'nobukti_bukubesar' => $nobukti_bukubesar_angkutan,
-                    'nobukti_bukubesar_2' => $nobukti_bukubesar_angkutan
+                    'nobukti_bukubesar_2' => $nobukti_bukubesar_bank_angkutan
                 );
 
                 $databukubesar = array(

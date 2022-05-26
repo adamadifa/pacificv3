@@ -133,7 +133,7 @@ class MutasibankController extends Controller
             $last_no_bukti_bukubesar = "";
         }
 
-        $nobukti_bukubesar = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $tahun, 4);
+        $nobukti_bukubesar = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $tahun, 6);
 
 
 
@@ -162,7 +162,7 @@ class MutasibankController extends Controller
             $kredit = $jumlah;
         }
 
-        $nobukti_bukubesar_bank = buatkode($nobukti_bukubesar, 'GJ' . $bulan . $tahun, 4);
+        $nobukti_bukubesar_bank = buatkode($nobukti_bukubesar, 'GJ' . $bulan . $tahun, 6);
 
 
         $databukubesar = array(

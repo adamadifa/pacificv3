@@ -75,11 +75,11 @@ class PembayaranController extends Controller
             ->orderBy("no_bukti", "desc")
             ->first();
         if ($bukubesar == null) {
-            $lastno_bukti = 'GJ' . $bulan . $tahun . '0000';
+            $lastno_bukti = '';
         } else {
             $lastno_bukti = $bukubesar->no_bukti;
         }
-        $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 4);
+        $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 6);
 
 
         if ($kode_cabang == 'TSM') {

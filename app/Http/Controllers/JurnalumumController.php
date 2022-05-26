@@ -74,7 +74,7 @@ class JurnalumumController extends Controller
             $last_no_bukti_bukubesar = "";
         }
 
-        $nobukti_bukubesar = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $tahun, 4);
+        $nobukti_bukubesar = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $tahun, 6);
         $data = [
             'kode_jurnal' => $kode_jurnal,
             'tanggal' => $tanggal,

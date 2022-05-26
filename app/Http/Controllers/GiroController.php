@@ -197,11 +197,11 @@ class GiroController extends Controller
                     ->orderBy('no_bukti', 'desc')
                     ->first();
                 if ($lastbukubesar == null) {
-                    $last_no_bukti_bb = 'GJ' . $bln . $tahun . '0000';
+                    $last_no_bukti_bb = '';
                 } else {
                     $last_no_bukti_bb =  $lastbukubesar->no_bukti;
                 }
-                $no_bukti_bb   = buatkode($last_no_bukti_bb, 'GJ' . $bln . $tahun, 4);
+                $no_bukti_bb   = buatkode($last_no_bukti_bb, 'GJ' . $bln . $tahun, 6);
 
                 //Update Setoran Pusat
                 DB::table('setoran_pusat')
@@ -336,8 +336,8 @@ class GiroController extends Controller
                         ->whereRaw('LEFT(no_bukti,6) = "GJ' . $bulan . $tahun . '"')
                         ->orderBy("no_bukti", "desc")
                         ->first();
-                    $lastno_bukti = $bukubesar->no_bukti;
-                    $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 4);
+                    $lastno_bukti = $bukubesar != null ? $bukubesar->no_bukti : '';
+                    $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 6);
 
                     DB::table('buku_besar')
                         ->insert([

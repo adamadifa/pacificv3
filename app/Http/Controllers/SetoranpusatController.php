@@ -280,11 +280,11 @@ class SetoranpusatController extends Controller
             ->orderBy('no_bukti', 'desc')
             ->first();
         if ($lastbukubesar == null) {
-            $last_no_bukti_bb = 'GJ' . $bulan . $tahun . '0000';
+            $last_no_bukti_bb = '';
         } else {
             $last_no_bukti_bb =  $lastbukubesar->no_bukti;
         }
-        $no_bukti_bb   = buatkode($last_no_bukti_bb, 'GJ' . $bulan . $tahun, 4);
+        $no_bukti_bb   = buatkode($last_no_bukti_bb, 'GJ' . $bulan . $tahun, 6);
 
         if ($cabang == 'TSM') {
             $akun = "1-1468";

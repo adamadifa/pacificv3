@@ -80,8 +80,8 @@ class JurnalkoreksiController extends Controller
             $last_no_bukti_bukubesar = "";
         }
 
-        $nobukti_bukubesar_debet = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $tahun, 4);
-        $nobukti_bukubesar_kredit = buatkode($nobukti_bukubesar_debet, 'GJ' . $bulan . $tahun, 4);
+        $nobukti_bukubesar_debet = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $tahun, 6);
+        $nobukti_bukubesar_kredit = buatkode($nobukti_bukubesar_debet, 'GJ' . $bulan . $tahun, 6);
         $datadebet = [
             'kode_jk' => $kode_jk_debet,
             'tgl_jurnalkoreksi' => $tgl_jurnalkoreksi,
@@ -138,7 +138,7 @@ class JurnalkoreksiController extends Controller
             DB::commit();
             return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
         } catch (\Exception $e) {
-            //dd($e);
+            dd($e);
             return Redirect::back()->with(['warning' => 'Data Gagal Disimpan, Hubungi Tim IT']);
             DB::rollback();
         }

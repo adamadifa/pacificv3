@@ -250,7 +250,7 @@ class KlaimController extends Controller
             $last_no_bukti_bukubesar = "";
         }
 
-        $nobukti_bukubesar = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $tahun, 4);
+        $nobukti_bukubesar = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $tahun, 6);
 
         $databukubesar = array(
             'no_bukti' => $nobukti_bukubesar,
@@ -307,7 +307,7 @@ class KlaimController extends Controller
         try {
             DB::table('ledger_bank')->where('kode_klaim', $kode_klaim)->delete();
             DB::table('klaim')->where('kode_klaim', $kode_klaim)->update($dataklaim);
-            DB::table('buku_besar')->where("no_bukti", $nobukti_bukubesar);
+            DB::table('buku_besar')->where("no_bukti", $nobukti_bukubesar)->delete();
             DB::commit();
             return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
         } catch (\Exception $e) {

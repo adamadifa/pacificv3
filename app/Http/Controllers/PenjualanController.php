@@ -962,7 +962,7 @@ class PenjualanController extends Controller
                 } else {
                     $lastno_bukti = "";
                 }
-                $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 4);
+                $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 6);
 
                 DB::table('buku_besar')
                     ->insert([
@@ -985,7 +985,7 @@ class PenjualanController extends Controller
                     ->orderBy("no_bukti", "desc")
                     ->first();
                 $lastno_bukti = $bukubesar->no_bukti;
-                $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 4);
+                $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 6);
 
 
                 DB::table('historibayar')
@@ -1040,7 +1040,7 @@ class PenjualanController extends Controller
                         $lastno_bukti = $bukubesar->no_bukti;
                     }
 
-                    $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 4);
+                    $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 6);
                     DB::table('historibayar')
                         ->insert([
                             'nobukti' => $nobukti,
@@ -1479,7 +1479,7 @@ class PenjualanController extends Controller
                 } else {
                     $lastno_bukti = $bukubesar->no_bukti;
                 }
-                $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 4);
+                $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 6);
 
                 DB::table('buku_besar')
                     ->insert([
@@ -1512,11 +1512,11 @@ class PenjualanController extends Controller
                     ->orderBy("no_bukti", "desc")
                     ->first();
                 if ($bukubesar == null) {
-                    $lastno_bukti = 'GJ' . $bulan . $tahun . '0000';
+                    $lastno_bukti = '';
                 } else {
                     $lastno_bukti = $bukubesar->no_bukti;
                 }
-                $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 4);
+                $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 6);
 
 
                 DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->delete();
@@ -1597,7 +1597,7 @@ class PenjualanController extends Controller
                         $lastno_bukti = $bukubesar->no_bukti;
                     }
 
-                    $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 4);
+                    $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 6);
 
                     DB::table('historibayar')
                         ->insert([
