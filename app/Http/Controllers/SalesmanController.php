@@ -157,7 +157,7 @@ class SalesmanController extends Controller
     {
         $kode_cabang = $request->kode_cabang;
         $id_karyawan = $request->id_karyawan;
-        $salesman = Salesman::where('kode_cabang', $kode_cabang)->get();
+        $salesman = Salesman::where('kode_cabang', $kode_cabang)->where('status_aktif_sales', 1)->get();
         $type = $request->type;
         if ($type == 1) {
             echo "<option value=''>Pilih Salesman</option>";
