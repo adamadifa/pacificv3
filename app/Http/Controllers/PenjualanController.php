@@ -1169,7 +1169,7 @@ class PenjualanController extends Controller
                 'nama_cabang',
                 'alamat_cabang',
                 DB::raw('IFNULL(totalpf,0) - IFNULL(totalgb,0) as totalretur'),
-                DB::raw('IFNULL(total,0) - IFNULL(totalpf,0) - IFNULL(totalgb,0) as total')
+                DB::raw('IFNULL(total,0) - (IFNULL(totalpf,0) - IFNULL(totalgb,0)) as total')
             )
             ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
             ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
@@ -1196,6 +1196,8 @@ class PenjualanController extends Controller
             ->join('barang', 'detailpenjualan.kode_barang', '=', 'barang.kode_barang')
             ->where('no_fak_penj', $no_fak_penj)
             ->get();
+
+        //dd($faktur);
         return view('penjualan.laporan.cetakfaktur', compact('faktur', 'detail', 'pelangganmp'));
     }
 
@@ -1219,7 +1221,7 @@ class PenjualanController extends Controller
                 'nama_cabang',
                 'alamat_cabang',
                 DB::raw('IFNULL(totalpf,0) - IFNULL(totalgb,0) as totalretur'),
-                DB::raw('IFNULL(total,0) - IFNULL(totalpf,0) - IFNULL(totalgb,0) as total')
+                DB::raw('IFNULL(total,0) - (IFNULL(totalpf,0) - IFNULL(totalgb,0)) as total')
             )
             ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
             ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
