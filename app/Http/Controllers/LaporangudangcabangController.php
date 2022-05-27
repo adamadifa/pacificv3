@@ -243,7 +243,7 @@ class LaporangudangcabangController extends Controller
             ->where('bulan', $bulan)
             ->where('tahun', $tahun)
             ->where('kode_cabang', $kode_cabang)
-            ->where('status', 'BS')
+            ->where('saldoawal_bj.status', 'BS')
             ->where('saldoawal_bj_detail.kode_produk', $kode_produk)
             ->first();
 
