@@ -5056,11 +5056,14 @@ class PenjualanController extends Controller
     {
         $bulan = $request->bulan;
         $tahun = $request->tahun;
+        $dari = $tahun . "-" . $bulan . "-01";
+        $sampai = date("Y-mt", strtotime($dari));
         $kasbesar = DB::table('historibayar')
             ->selectRaw("karyawan.kode_cabang,nama_cabang,SUM(IF(status_bayar='voucher',bayar,0)) as voucher,SUM(IF(status_bayar IS NULL,bayar,0)) as cashin")
             ->join('karyawan', 'historibayar.id_karyawan', '=', 'karyawan.id_karyawan')
             ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
             ->groupByRaw('karyawan.kode_cabang,nama_cabang')
+            ->whereBetween('tglbayar', [$dari, $sampai])
             ->get();
 
         return view('penjualan.dashboard.rekapkasbesardashboard', compact('kasbesar'));
