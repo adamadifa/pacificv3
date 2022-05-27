@@ -89,6 +89,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\SuratjalanController;
 use App\Http\Controllers\TabunganController;
 use App\Http\Controllers\TargetkomisiController;
+use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\TutuplaporanController;
 use App\Http\Controllers\UserController;
@@ -1193,4 +1194,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/tutuplaporan/store', [TutuplaporanController::class, 'store']);
     Route::get('/tutuplaporan/{kode_tutuplaporan}/bukalaporan', [TutuplaporanController::class, 'bukalaporan']);
     Route::get('/tutuplaporan/{kode_tutuplaporan}/tutuplaporan', [TutuplaporanController::class, 'tutuplaporan']);
+
+    Route::get('/ticket', [TicketController::class, 'index']);
+    Route::get('/ticket/create', [TicketController::class, 'create']);
+    Route::post('/ticket/store', [TicketController::class, 'store']);
+    Route::delete('/ticket/{kode_pengajuan}/delete', [TicketController::class, 'delete']);
+    Route::get('/ticket/{kode_pengajuan}/approve', [TicketController::class, 'approve']);
+    Route::get('/ticket/{kode_pengajuan}/batalapprove', [TicketController::class, 'batalapprove']);
+    Route::get('/ticket/{kode_pengajuan}/done', [TicketController::class, 'done']);
+    Route::get('/ticket/{kode_pengajuan}/bataldone', [TicketController::class, 'bataldone']);
 });

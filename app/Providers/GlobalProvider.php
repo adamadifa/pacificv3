@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 
@@ -69,12 +70,25 @@ class GlobalProvider extends ServiceProvider
 
                 $memo_unread = $memo->count();
                 $memo_data = $memo->get();
+
+                $ticket_pending = DB::table('ticket')->where('status', '!=', 2)->where('id_user', $id_user)->count();
+                $ticket_pending_approve = DB::table('ticket')->where('status', 0)->count();
+                $ticket_pending_done = DB::table('ticket')->where('status', 1)->count();
+
+                $users = User::select("*")
+                    ->whereNotNull('last_seen')
+                    ->orderBy('last_seen', 'DESC')
+                    ->paginate(10);
             } else {
                 $level = "";
                 $getcbg = "";
                 $id_user = "";
                 $memo_unread =  null;
                 $memo_data =  null;
+                $ticket_pending =  null;
+                $ticket_pending_approve =  null;
+                $ticket_pending_done =  null;
+                $users = null;
             }
 
 
@@ -82,6 +96,8 @@ class GlobalProvider extends ServiceProvider
 
             $memo_menu = ['admin'];
             $memo_tambah_hapus = ['admin', 'admin medsos', 'manager accounting', 'hrd'];
+
+
 
             $dashboardadmin = ['admin', 'manager marketing', 'general manager', 'direktur'];
             $dashboardkepalapenjualan = ['kepala penjualan'];
@@ -739,7 +755,9 @@ class GlobalProvider extends ServiceProvider
             ];
 
             $tutuplaporan = ['admin', 'manager accounting'];
-
+            $ticket_hapus = ['manager accounting'];
+            $ticket_approve = ['admin', 'manager accounting'];
+            $ticket_done = ['admin'];
             $shareddata = [
                 'level' => $level,
                 'getcbg' => $getcbg,
@@ -747,6 +765,10 @@ class GlobalProvider extends ServiceProvider
                 'memo_data' => $memo_data,
                 'memo_menu' => $memo_menu,
                 'memo_tambah_hapus' => $memo_tambah_hapus,
+
+                'ticket_pending' => $ticket_pending,
+                'ticket_pending_approve' => $ticket_pending_approve,
+                'ticket_pending_done' => $ticket_pending_done,
                 //Dashboard
                 'dashboardadmin' => $dashboardadmin,
                 'dashboardkepalapenjualan' => $dashboardkepalapenjualan,
@@ -1053,9 +1075,13 @@ class GlobalProvider extends ServiceProvider
                 'maintenance_pengeluaran' => $maintenance_pengeluaran,
                 'laporan_maintenance' => $laporan_maintenance,
 
-                'tutuplaporan' => $tutuplaporan
+                'tutuplaporan' => $tutuplaporan,
 
+                'ticket_hapus' => $ticket_hapus,
+                'ticket_approve' => $ticket_approve,
+                'ticket_done' => $ticket_done,
 
+                'users' => $users
 
             ];
             View::share($shareddata);

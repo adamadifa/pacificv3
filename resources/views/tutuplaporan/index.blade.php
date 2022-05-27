@@ -1,5 +1,5 @@
 @extends('layouts.midone')
-@section('titlepage','Data Pengiriman LPC')
+@section('titlepage','Data Tutup Laporan')
 @section('content')
 <div class="content-wrapper">
     <div class="content-header row">

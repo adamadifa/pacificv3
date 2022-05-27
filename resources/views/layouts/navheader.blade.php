@@ -19,7 +19,23 @@
                      </ul>
                  </div>
                  <ul class="nav navbar-nav float-right">
-                     <li class="dropdown dropdown-notification nav-item"><a class="nav-link nav-link-label" href="#" data-toggle="dropdown"><i class="ficon feather icon-book"></i><span class="badge badge-pill badge-danger badge-up">{{ $memo_unread }}</span></a>
+                     <li class="dropdown dropdown-notification nav-item">
+                         <a class="nav-link nav-link-label" href="/ticket">
+                             <i class="ficon" data-feather="tool"></i>
+                             @if ($level== "manager accounting")
+                             <span class="badge badge-pill badge-warning badge-up mr-1">{{ $ticket_pending_approve }}</span>
+                             @elseif($level=="admin")
+                             <span class="badge badge-pill badge-info badge-up mr-1">{{ $ticket_pending_done }}</span>
+                             @else
+                             <span class="badge badge-pill badge-warning badge-up mr-1">{{ $ticket_pending }}</span>
+                             @endif
+                         </a>
+                     </li>
+                     <li class="dropdown dropdown-notification nav-item">
+                         <a class="nav-link nav-link-label" href="#" data-toggle="dropdown">
+                             <i class="ficon feather icon-book"></i>
+                             <span class="badge badge-pill badge-danger badge-up">{{ $memo_unread }}</span>
+                         </a>
                          <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
                              <li class="dropdown-menu-header bg-danger">
                                  <div class="dropdown-header m-0 p-2">
