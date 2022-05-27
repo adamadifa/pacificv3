@@ -242,9 +242,19 @@
         $("#frmKlaim").submit(function() {
             var tgl_klaim = $("#tgl_klaim").val();
             var keterangan = $("#keterangan").val();
+            var kode_cabang = $("#kode_cabang").val();
 
-
-            if (tgl_klaim == "") {
+            if (kode_cabang == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Cabang Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#tgl_klaim").focus();
+                });
+                return false;
+            } else if (tgl_klaim == "") {
                 swal({
                     title: 'Oops'
                     , text: 'Tanggal Klaim Harus Diisi !'
