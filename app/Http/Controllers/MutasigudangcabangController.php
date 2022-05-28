@@ -1156,8 +1156,9 @@ class MutasigudangcabangController extends Controller
         $bulan    = $tanggal[1];
         $tahun    = $tanggal[0];
         $thn = substr($tahun, 2, 2);
+
         if ($jenis_mutasi == "PENYESUAIAN") {
-            $kode = "PY";
+            $kode = "PYG";
             $kondisi = "GOOD";
             $inout_good = $inout;
             $inout_bad = NULL;
