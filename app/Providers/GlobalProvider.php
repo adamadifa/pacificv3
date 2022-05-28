@@ -795,9 +795,9 @@ class GlobalProvider extends ServiceProvider
 
 
                 'supplier_view' => $supplier_menu,
-                'supplier_tambah' => $salesman_tambah,
-                'supplier_edit' => $salesman_edit,
-                'supplier_hapus' => $salesman_hapus,
+                'supplier_tambah' => $supplier_tambah,
+                'supplier_edit' => $supplier_edit,
+                'supplier_hapus' => $supplier_hapus,
 
                 //Barang Produk
                 'barang_view' => $barang,
