@@ -502,9 +502,9 @@ class GlobalProvider extends ServiceProvider
 
             $produksi_menu = [
                 'admin', 'direktur', 'manager accounting', 'spv accounting',
-                'admin produksi', 'audit', 'admin produksi 2', 'kepala gudang', 'admin gudang pusat', 'emf'
+                'admin produksi', 'audit', 'admin produksi 2', 'kepala gudang', 'admin gudang pusat', 'emf', 'admin pdqc'
             ];
-            $produksi_analytics = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'admin produksi', 'emf'];
+            $produksi_analytics = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'admin produksi', 'emf', 'admin pdqc'];
             $mutasi_produk = ['admin', 'admin produksi 2', 'admin produksi'];
             $bpbj_view = ['admin', 'admin produksi'];
             $fsthp_view = ['admin', 'admin produksi 2', 'admin produksi'];
@@ -513,12 +513,12 @@ class GlobalProvider extends ServiceProvider
             $pengeluaran_produksi = ['admin', 'admin produksi'];
             $saldoawal_mutasibarang_produksi = ['admin', 'admin produksi'];
             $opname_mutasibarang_produksi = ['admin', 'admin produksi'];
-            $laporan_produksi = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'audit', 'admin produksi', 'emf'];
-            $laporan_mutasiproduksi = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'audit', 'admin produksi', 'emf'];
-            $laporan_rekapmutasiproduksi = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'audit', 'admin produksi', 'emf'];
-            $laporan_pemasukanproduksi = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'audit', 'admin produksi', 'emf'];
-            $laporan_pengeluaranproduksi = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'audit', 'admin produksi', 'emf'];
-            $laporan_rekappersediaanbarangproduksi = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'audit', 'admin produksi', 'emf'];
+            $laporan_produksi = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'audit', 'admin produksi', 'emf', 'admin pdqc'];
+            $laporan_mutasiproduksi = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'audit', 'admin produksi', 'emf', 'admin pdqc'];
+            $laporan_rekapmutasiproduksi = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'audit', 'admin produksi', 'emf', 'admin pdqc'];
+            $laporan_pemasukanproduksi = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'audit', 'admin produksi', 'emf', 'admin pdqc'];
+            $laporan_pengeluaranproduksi = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'audit', 'admin produksi', 'emf', 'admin pdqc'];
+            $laporan_rekappersediaanbarangproduksi = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'audit', 'admin produksi', 'emf', 'admin pdqc'];
 
             //Gudang
             $gudang_menu = [
@@ -528,7 +528,7 @@ class GlobalProvider extends ServiceProvider
                 'admin gudang', 'kepala admin', 'admin pusat', 'supervisor sales', 'kepala gudang',
                 'admin gudang cabang dan marketing', 'direktur', 'manager accounting',
                 'spv accounting', 'manager marketing', 'general manager', 'audit', 'admin gudang pusat', 'emf', 'admin gudang logistik',
-                'admin gudang bahan', 'admin pembelian', 'manager pembelian', 'admin pusat'
+                'admin gudang bahan', 'admin pembelian', 'manager pembelian', 'admin pusat', 'admin pdqc'
             ];
             $gudang_bahan_menu = ['admin', 'kepala gudang', 'kepala gudang', 'admin gudang bahan'];
             $gudang_logistik_menu =  ['admin', 'kepala gudang', 'kepala gudang', 'admin gudang logistik'];
@@ -546,7 +546,7 @@ class GlobalProvider extends ServiceProvider
                 'admin gudang cabang dan marketing', 'kepala gudang', 'direktur',
                 'manager accounting', 'spv accounting', 'manager marketing', 'general manager',
                 'audit', 'admin gudang pusat', 'emf', 'admin gudang logistik', 'admin gudang bahan',
-                'admin pembelian', 'manager pembelian', 'admin pusat'
+                'admin pembelian', 'manager pembelian', 'admin pusat', 'admin pdqc'
             ];
             $laporan_gudang_logistik = [
                 'admin', 'kepala gudang', 'direktur',
@@ -556,12 +556,12 @@ class GlobalProvider extends ServiceProvider
             $laporan_gudang_bahan = [
                 'admin', 'kepala gudang', 'direktur', 'manager accounting',
                 'spv accounting', 'audit', 'admin gudang pusat',
-                'emf', 'admin gudang bahan', 'admin pembelian', 'manager pembelian', 'admin pusat'
+                'emf', 'admin gudang bahan', 'admin pembelian', 'manager pembelian', 'admin pusat', 'admin pdqc'
             ];
             $laporan_gudang_jadi = [
                 'admin', 'kepala gudang', 'admin gudang pusat', 'direktur',
                 'manager accounting', 'spv accounting', 'manager marketing',
-                'general manager', 'audit', 'emf', 'admin pembelian', 'manager pembelian'
+                'general manager', 'audit', 'emf', 'admin pembelian', 'manager pembelian', 'admin pdqc'
             ];
             $laporan_gudang_cabang = [
                 'admin', 'kepala penjualan',
@@ -635,59 +635,59 @@ class GlobalProvider extends ServiceProvider
             $laporan_pemasukan_gb = [
                 'admin', 'kepala gudang', 'admin gudang bahan',
                 'direktur', 'manager accounting', 'spv accounting',
-                'audit', 'admin gudang pusat', 'emf', 'admin pembelian', 'manager pembelian', 'admin pusat'
+                'audit', 'admin gudang pusat', 'emf', 'admin pembelian', 'manager pembelian', 'admin pusat', 'admin pdqc'
             ];
             $laporan_pengeluaran_gb = [
                 'admin', 'kepala gudang', 'admin gudang bahan', 'direktur',
                 'manager accounting', 'spv accounting', 'audit', 'admin gudang pusat',
-                'emf', 'admin pembelian', 'manager pembelian', 'admin pusat'
+                'emf', 'admin pembelian', 'manager pembelian', 'admin pusat', 'admin pdqc'
             ];
             $laporan_persediaan_gb = [
                 'admin', 'kepala gudang', 'admin gudang bahan',
                 'direktur', 'manager accounting', 'spv accounting', 'audit',
-                'admin gudang pusat', 'emf', 'admin pembelian', 'manager pembelian', 'admin pusat'
+                'admin gudang pusat', 'emf', 'admin pembelian', 'manager pembelian', 'admin pusat', 'admin pdqc'
             ];
             $laporan_kartugudang = [
                 'admin', 'kepala gudang', 'admin gudang bahan',
                 'direktur', 'manager accounting', 'spv accounting', 'audit',
-                'emf', 'admin pembelian', 'manager pembelian', 'admin pusat'
+                'emf', 'admin pembelian', 'manager pembelian', 'admin pusat', 'admin pdqc'
             ];
             $laporan_rekappersediaan = [
                 'admin', 'kepala gudang',
                 'admin gudang bahan', 'direktur', 'manager accounting',
-                'spv accounting', 'audit', 'emf', 'admin pembelian', 'manager pembelian', 'admin pusat'
+                'spv accounting', 'audit', 'emf', 'admin pembelian', 'manager pembelian', 'admin pusat', 'admin pdqc'
             ];
 
             //Laporan Gudang Jadi
             $laporan_persediaan_gj = [
                 'admin', 'kepala gudang', 'direktur',
-                'manager accounting', 'spv accounting', 'manager marketing', 'general manager', 'audit', 'admin gudang pusat', 'emf'
+                'manager accounting', 'spv accounting', 'manager marketing', 'general manager', 'audit', 'admin gudang pusat', 'emf', 'admin pdqc'
             ];
             $rekap_persediaan_gj = [
                 'admin', 'kepala gudang', 'direktur',
                 'manager accounting', 'spv accounting',
                 'manager marketing', 'general manager', 'audit', 'admin gudang pusat', 'emf',
-                'admin pembelian', 'manager pembelian'
+                'admin pembelian', 'manager pembelian', 'admin pdqc'
             ];
             $rekap_hasiproduksi_gj = [
                 'admin', 'kepala gudang', 'direktur',
-                'manager accounting', 'spv accounting', 'manager marketing', 'general manager', 'audit', 'admin gudang pusat', 'emf'
+                'manager accounting', 'spv accounting', 'manager marketing', 'general manager', 'audit', 'admin gudang pusat', 'emf', 'admin pdqc'
             ];
             $rekap_pengeluaran_gj = [
                 'admin', 'kepala gudang', 'direktur',
-                'manager accounting', 'spv accounting', 'manager marketing', 'general manager', 'audit', 'admin gudang pusat', 'emf'
+                'manager accounting', 'spv accounting', 'manager marketing', 'general manager', 'audit', 'admin gudang pusat', 'emf', 'admin pdqc'
             ];
             $realisasi_kiriman_gj = [
                 'admin', 'kepala gudang', 'direktur', 'manager accounting', 'spv accounting',
-                'manager marketing', 'general manager', 'audit', 'admin gudang pusat', 'emf'
+                'manager marketing', 'general manager', 'audit', 'admin gudang pusat', 'emf', 'admin pdqc'
             ];
             $realisasi_oman_gj = [
                 'admin', 'kepala gudang', 'direktur',
-                'manager accounting', 'spv accounting', 'manager marketing', 'general manager', 'audit', 'admin gudang pusat', 'emf'
+                'manager accounting', 'spv accounting', 'manager marketing', 'general manager', 'audit', 'admin gudang pusat', 'emf', 'admin pdqc'
             ];
             $laporan_angkutan = [
                 'admin', 'kepala gudang', 'direktur',
-                'manager accounting', 'spv accounting', 'manager marketing', 'general manager', 'audit', 'admin gudang pusat', 'emf'
+                'manager accounting', 'spv accounting', 'manager marketing', 'general manager', 'audit', 'admin gudang pusat', 'emf', 'admin pdqc'
             ];
 
             //Laporan Gudang  Cabang

@@ -104,6 +104,7 @@
                 </ul>
             </li>
             @endif
+
             @if (in_array($level, $produksi_menu))
             <li class=" nav-item">
                 <a href="#"><i class="fa fa-cubes success"></i><span class="menu-title">Produksi</span></a>
