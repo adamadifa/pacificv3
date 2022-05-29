@@ -43,6 +43,7 @@ use App\Http\Controllers\LaporanproduksiController;
 use App\Http\Controllers\LebihsetorController;
 use App\Http\Controllers\LedgerController;
 use App\Http\Controllers\LimitkreditController;
+use App\Http\Controllers\LogamtokertasController;
 use App\Http\Controllers\LpcController;
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\MemoController;
@@ -54,6 +55,7 @@ use App\Http\Controllers\OmanController;
 use App\Http\Controllers\OpnamegudangbahanController;
 use App\Http\Controllers\OpnamegudanglogistikController;
 use App\Http\Controllers\OpnamemutasibarangproduksiController;
+use App\Http\Controllers\Pasarcontroller;
 use App\Http\Controllers\PelangganController;
 use App\Http\Controllers\PemasukangudangbahanController;
 use App\Http\Controllers\PemasukangudanglogistikController;
@@ -94,6 +96,7 @@ use App\Http\Controllers\TransferController;
 use App\Http\Controllers\TutuplaporanController;
 use App\Http\Controllers\UserController;
 use App\Models\Barangpembelian;
+use App\Models\Logamtokertas;
 use App\Models\Pemasukangudanglogistik;
 use App\Models\Saldoawalmutasibarangproduksi;
 use App\Models\Setcoacabang;
@@ -1040,6 +1043,16 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/lebihsetor/cektemp', [LebihsetorController::class, 'cektemp']);
     Route::post('/lebihsetor/store', [LebihsetorController::class, 'store']);
     Route::delete('/lebihsetor/{kode_ls}/delete', [LebihsetorController::class, 'delete']);
+
+    Route::get('/logamtokertas', [LogamtokertasController::class, 'index']);
+    Route::get('/logamtokertas/create', [LogamtokertasController::class, 'create']);
+    Route::post('/logamtokertas/store', [LogamtokertasController::class, 'store']);
+    Route::delete('/logamtokertas/{kode_logamtokertas}/delete', [LogamtokertasController::class, 'delete']);
+
+    Route::get('/pasar', [Pasarcontroller::class, 'index']);
+    Route::get('/pasar/create', [Pasarcontroller::class, 'create']);
+    Route::post('/pasar/store', [Pasarcontroller::class, 'store']);
+    Route::delete('/pasar/{id}/delete', [Pasarcontroller::class, 'delete']);
 
     //Setoran Pusat
     Route::get('/setoranpusat', [SetoranpusatController::class, 'index']);

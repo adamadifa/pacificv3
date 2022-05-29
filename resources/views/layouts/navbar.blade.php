@@ -101,6 +101,14 @@
                         </a>
                     </li>
                     @endif
+                    @if (in_array($level, $pasar_menu))
+                    <li class="{{ request()->is(['pasar', 'pasar/*']) ? 'active' : '' }}">
+                        <a href="/pasar">
+                            <i class="fa fa-bank"></i>
+                            <span class="menu-item">Data Pasar</span>
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </li>
             @endif
@@ -749,6 +757,14 @@
                                         <a href="/lebihsetor">
                                             <i class="feather icon-file-text"></i>
                                             <span class="menu-item">Lebih Setor</span>
+                                        </a>
+                                    </li>
+                                    @endif
+                                    @if (in_array($level, $gantilogamtokertas))
+                                    <li class="{{ request()->is(['logamtokertas', 'logamtokertas/*']) ? 'active' : '' }}">
+                                        <a href="/logamtokertas">
+                                            <i class="feather icon-file-text"></i>
+                                            <span class="menu-item">Ganti Logam </span>
                                         </a>
                                     </li>
                                     @endif

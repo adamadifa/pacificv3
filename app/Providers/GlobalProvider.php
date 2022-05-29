@@ -117,6 +117,10 @@ class GlobalProvider extends ServiceProvider
                 'admin penjualan dan kasir', 'audit', 'admin gudang logistik', 'admin gudang bahan',
                 'general affair'
             ];
+
+            $pasar_menu = ['admin', 'admin penjualan', 'kepala admin', 'direktur', 'manager accounting', 'general manager'];
+            $pasar_tambah = ['admin', 'admin penjualan', 'kepala admin'];
+            $pasar_hapus = ['admin', 'admin penjualan', 'kepala admin'];
             //Pelanggan
             $pelanggan = [
                 'admin', 'admin penjualan', 'manager accounting', 'spv accounting', 'kepala penjualan', 'kepala admin', 'admin pusat', 'manager marketing', 'direktur', 'admin penjualan dan kas kecil',
@@ -418,6 +422,7 @@ class GlobalProvider extends ServiceProvider
             $setorantransfer_view = ['admin', 'kepala admin', 'admin pusat', 'kasir', 'admin garut', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
             $belum_disetorkan = ['admin', 'kepala admin', 'admin pusat', 'kasir', 'admin garut', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
             $lebih_disetorkan = ['admin', 'kepala admin', 'admin pusat', 'kasir', 'admin garut', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
+            $gantilogamtokertas = ['admin', 'kepala admin', 'admin pusat', 'kasir', 'admin garut', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
 
             $saldoawalpiutang = ['admin'];
 
@@ -780,6 +785,10 @@ class GlobalProvider extends ServiceProvider
                 'dashboardpembelian' => $dashboardpembelian,
                 //Data Master
                 'datamaster_view' => $datamaster,
+
+                'pasar_menu' => $pasar_menu,
+                'pasar_tambah' => $pasar_tambah,
+                'pasar_hapus' => $pasar_hapus,
                 //Pelanggan
                 'pelanggan_view' => $pelanggan,
                 'pelanggan_tambah' => $pelanggan_tambah,
@@ -911,6 +920,7 @@ class GlobalProvider extends ServiceProvider
                 'setorantransfer_view' => $setorantransfer_view,
                 'belum_disetorkan' => $belum_disetorkan,
                 'lebih_disetorkan' => $lebih_disetorkan,
+                'gantilogamtokertas' => $gantilogamtokertas,
                 'setoranpusat_terimasetoran' => $setoranpusat_terimasetoran,
 
 
