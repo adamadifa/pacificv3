@@ -198,7 +198,12 @@ class PelangganController extends Controller
     public function create()
     {
         $cabang = Cabang::all();
-        return view('pelanggan.create', compact('cabang'));
+        if ($this->cabang == "PCF") {
+            $pasar = DB::table('master_pasar')->get();
+        } else {
+            $pasar = DB::table('master_pasar')->where('kode_cabang', $this->cabang)->get();
+        }
+        return view('pelanggan.create', compact('cabang', 'pasar'));
     }
 
     public function store(Request $request)

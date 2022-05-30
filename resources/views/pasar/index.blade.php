@@ -73,20 +73,23 @@
                             </thead>
                             <tbody>
                                 @foreach ($pasar as $d)
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $d->nama_pasar }}</td>
-                                <td>{{ $d->kode_cabang }}</td>
-                                <td>
-                                    @if (in_array($level,$pasar_hapus))
-                                    <form method="POST" class="deleteform" action="/pasar/{{Crypt::encrypt($d->id)}}/delete">
-                                        @csrf
-                                        @method('DELETE')
-                                        <a href="#" class="delete-confirm ml-1">
-                                            <i class="feather icon-trash danger"></i>
-                                        </a>
-                                    </form>
-                                    @endif
-                                </td>
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $d->nama_pasar }}</td>
+                                    <td>{{ $d->kode_cabang }}</td>
+                                    <td>
+                                        @if (in_array($level,$pasar_hapus))
+                                        <form method="POST" class="deleteform" action="/pasar/{{Crypt::encrypt($d->id)}}/delete">
+                                            @csrf
+                                            @method('DELETE')
+                                            <a href="#" class="delete-confirm ml-1">
+                                                <i class="feather icon-trash danger"></i>
+                                            </a>
+                                        </form>
+                                        @endif
+                                    </td>
+                                </tr>
+
                                 @endforeach
                             </tbody>
                         </table>
