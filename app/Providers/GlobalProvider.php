@@ -118,9 +118,9 @@ class GlobalProvider extends ServiceProvider
                 'general affair'
             ];
 
-            $pasar_menu = ['admin', 'admin penjualan', 'kepala admin', 'direktur', 'manager accounting', 'general manager'];
-            $pasar_tambah = ['admin', 'admin penjualan', 'kepala admin'];
-            $pasar_hapus = ['admin', 'admin penjualan', 'kepala admin'];
+            $pasar_menu = ['admin', 'admin penjualan', 'kepala admin', 'admin penjualan dan kas kecil', 'direktur', 'manager accounting', 'general manager'];
+            $pasar_tambah = ['admin', 'admin penjualan', 'kepala admin', 'admin penjualan dan kas kecil'];
+            $pasar_hapus = ['admin', 'admin penjualan', 'kepala admin', 'admin penjualan dan kas kecil'];
             //Pelanggan
             $pelanggan = [
                 'admin', 'admin penjualan', 'manager accounting', 'spv accounting', 'kepala penjualan', 'kepala admin', 'admin pusat', 'manager marketing', 'direktur', 'admin penjualan dan kas kecil',
