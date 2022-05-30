@@ -95,6 +95,7 @@ use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\TutuplaporanController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WhatsappController;
 use App\Models\Barangpembelian;
 use App\Models\Logamtokertas;
 use App\Models\Pemasukangudanglogistik;
@@ -123,7 +124,8 @@ Route::middleware(['guest'])->group(function () {
 
 Route::post('/postlogin', [AuthController::class, 'postlogin']);
 Route::post('/postlogout', [AuthController::class, 'postlogout']);
-
+Route::get('/cekdpbwa', [WhatsappController::class, 'cekdpb']);
+Route::get('/cekpenjualanwa', [WhatsappController::class, 'cekpenjualan']);
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', [DashboardController::class, 'home']);
     Route::get('/user/gantipassword', [UserController::class, 'gantipassword']);
