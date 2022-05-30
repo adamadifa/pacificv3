@@ -245,6 +245,7 @@
     </script>
     <script>
         $(function() {
+            $("body").removeClass("dark-layout");
 
             function loadtotal() {
                 var kode_pelanggan = $("#kode_pelanggan").val();
