@@ -290,7 +290,12 @@ class PelangganController extends Controller
         $kode_pelanggan = Crypt::decrypt($kode_pelanggan);
         $data = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)->first();
         $cabang = Cabang::all();
-        return view('pelanggan.edit', compact('data', 'cabang'));
+        if ($this->cabang == "PCF") {
+            $pasar = DB::table('master_pasar')->get();
+        } else {
+            $pasar = DB::table('master_pasar')->where('kode_cabang', $this->cabang)->orderBy('nama_pasar')->get();
+        }
+        return view('pelanggan.edit', compact('data', 'cabang', 'pasar'));
     }
 
     public function delete($kode_pelanggan)
