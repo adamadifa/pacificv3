@@ -201,7 +201,7 @@ class PelangganController extends Controller
         if ($this->cabang == "PCF") {
             $pasar = DB::table('master_pasar')->get();
         } else {
-            $pasar = DB::table('master_pasar')->where('kode_cabang', $this->cabang)->get();
+            $pasar = DB::table('master_pasar')->where('kode_cabang', $this->cabang)->orderBy('nama_pasar')->get();
         }
         return view('pelanggan.create', compact('cabang', 'pasar'));
     }

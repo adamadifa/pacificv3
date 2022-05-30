@@ -73,7 +73,7 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <select name="pasar" id="pasar" class="form-control">
+                                                <select name="pasar" id="pasar" class="form-control select2">
                                                     <option value="">Pilih Pasar</option>
                                                     @foreach ($pasar as $d)
                                                     <option value="{{ $d->nama_pasar }}">{{ $d->nama_pasar }}</option>
