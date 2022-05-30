@@ -356,7 +356,7 @@ class LaporangudangcabangController extends Controller
                 OR jenis_mutasi='TTR' AND inout_good='OUT'
                 OR jenis_mutasi='GANTI BARANG' AND inout_good='OUT',jumlah,0)) as lainlain_out,
                 SUM(IF(jenis_mutasi = 'PENYESUAIAN' AND inout_good='OUT',jumlah,0)) as penyesuaian_out,
-                SUM(IF(jenis_mutasi = 'PENYESUAIAN BAD' AND inout_good='OUT',jumlah,0)) as penyesuaianbad_out,
+                SUM(IF(jenis_mutasi = 'PENYESUAIAN BAD' AND inout_bad='OUT',jumlah,0)) as penyesuaianbad_out,
                 SUM(IF(jenis_mutasi = 'KIRIM PUSAT',jumlah,0)) as kirim_pusat
                 FROM detail_mutasi_gudang_cabang
                 INNER JOIN mutasi_gudang_cabang ON detail_mutasi_gudang_cabang.no_mutasi_gudang_cabang = mutasi_gudang_cabang.no_mutasi_gudang_cabang
