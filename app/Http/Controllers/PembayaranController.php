@@ -386,6 +386,7 @@ class PembayaranController extends Controller
                 'jumlah' => $jumlah,
                 'id_karyawan' => $id_karyawan,
                 'kode_transfer' => $kode_transfer,
+                'ket' => $ket,
                 'status' => 0
             ]);
 
