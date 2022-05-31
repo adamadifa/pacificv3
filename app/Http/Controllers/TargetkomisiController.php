@@ -903,7 +903,7 @@ class TargetkomisiController extends Controller
         }
 
         $query = Cabang::query();
-        $query->selectRaw("cabang.kode_cabang,nama_cabang,(IFNULL(jml_belumsetorbulanlalu,0) + IFNULL(totalsetoran,0) + IFNULL(jml_gmlast,0) - IFNULL(jml_gmnow,0) - IFNULL(jml_belumsetorbulanini,0)) as cashin,sisapiutang,lamalpc");
+        $query->selectRaw("cabang.kode_cabang,nama_cabang,(IFNULL(jml_belumsetorbulanlalu,0) + IFNULL(totalsetoran,0) + IFNULL(jml_gmlast,0) - IFNULL(jml_gmnow,0) - IFNULL(jml_belumsetorbulanini,0)) as cashin,sisapiutang,lamalpc,jam_lpc");
         $query->leftJoin(
             DB::raw("(
                 SELECT belumsetor.kode_cabang,SUM(jumlah) as jml_belumsetorbulanlalu
@@ -1000,7 +1000,7 @@ class TargetkomisiController extends Controller
 
         $query->leftJoin(
             DB::raw("(
-                SELECT kode_cabang,datediff(tgl_lpc,'$sampai') as lamalpc
+                SELECT kode_cabang,datediff(tgl_lpc,'$sampai') as lamalpc,jam_lpc
                 FROM lpc
                 WHERE bulan ='$bulan' AND tahun = '$tahun'
             ) app_lpc"),
@@ -1064,6 +1064,11 @@ class TargetkomisiController extends Controller
             // Mendefinisikan nama file ekspor "hasil-export.xls"
             header("Content-Disposition: attachment; filename=Insentif $dari-$sampai.xls");
         }
-        return view('targetkomisi.laporan.cetak_insentif', compact('insentif', 'cabang', 'namabulan', 'bulan', 'tahun'));
+
+        if ($bulan >= 5 && $tahun >= 2022) {
+            return view('targetkomisi.laporan.cetak_insentif_mei2022', compact('insentif', 'cabang', 'namabulan', 'bulan', 'tahun'));
+        } else {
+            return view('targetkomisi.laporan.cetak_insentif', compact('insentif', 'cabang', 'namabulan', 'bulan', 'tahun'));
+        }
     }
 }

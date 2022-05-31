@@ -2,68 +2,67 @@
     <div class="row">
         <div class="col-12">
             <div class="form-group">
-                <div class="col-12">
-                    <select name="kode_cabang" id="kode_cabang" class="form-control">
-                        <option value="">Cabang</option>
-                        @foreach ($cabang as $d)
-                        <option value="{{$d->kode_cabang}}">{{$d->nama_cabang}}</option>
-                        @endforeach
-                    </select>
-                </div>
+
+                <select name="kode_cabang" id="kode_cabang" class="form-control">
+                    <option value="">Cabang</option>
+                    @foreach ($cabang as $d)
+                    <option value="{{$d->kode_cabang}}">{{$d->nama_cabang}}</option>
+                    @endforeach
+                </select>
+
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-12">
             <div class="form-group">
-                <div class="col-12">
-                    <select name="bulaninput" id="bulaninput" class="form-control">
-                        <option value="">Bulan</option>
-                        <?php
+
+                <select name="bulaninput" id="bulaninput" class="form-control">
+                    <option value="">Bulan</option>
+                    <?php
                             $bl = date("m");
                             for ($i = 1; $i < count($bln); $i++) {
                             ?>
-                        <option <?php if ($bl == $i) {
+                    <option <?php if ($bl == $i) {
                                         echo "selected";
                                     } ?> value="<?php echo $i; ?>"><?php echo $bln[$i]; ?></option>
-                        <?php
+                    <?php
                             }
                             ?>
-                    </select>
-                </div>
+                </select>
+
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-12">
             <div class="form-group">
-                <div class="col-12">
-                    <select name="tahuninput" id="tahuninput" class="form-control">
-                        <option value="">Tahun</option>
-                        <?php
+                <select name="tahuninput" id="tahuninput" class="form-control">
+                    <option value="">Tahun</option>
+                    <?php
                             $tahun = date("Y");
                             $tahunmulai = 2021;
                             for ($thn = $tahunmulai; $thn <= date('Y'); $thn++) {
                             ?>
-                        <option <?php if ($tahun == $thn) {
+                    <option <?php if ($tahun == $thn) {
                                         echo "selected";
                                     } ?> value="<?php echo $thn; ?>"><?php echo $thn; ?>
-                        </option>
-                        <?php
+                    </option>
+                    <?php
                             }
                             ?>
-                    </select>
-                </div>
+                </select>
             </div>
         </div>
     </div>
     <div class="row">
         <div class="col-12">
-            <div class="form-group">
-                <div class="col-12">
-                    <x-inputtext label="Tanggal LPC" field="tgl_lpc" datepicker icon="feather icon-calendar" />
-                </div>
-            </div>
+            <x-inputtext label="Tanggal LPC" field="tgl_lpc" datepicker icon="feather icon-calendar" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <x-inputtext label="00:00" field="jam_lpc" icon="feather icon-clock" />
         </div>
     </div>
     <div class="row">
@@ -77,6 +76,13 @@
 <script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
 <script>
     $(function() {
+        $('#jam_lpc').mask('00:00', {
+            'translation': {
+                A: {
+                    pattern: /[0-9]/
+                }
+            }
+        });
 
         function loadlpc() {
             var tahun = $("#tahun").val();
@@ -101,6 +107,7 @@
             var bulan = $("#bulaninput").val();
             var tahun = $("#tahuninput").val();
             var tgl_lpc = $("#tgl_lpc").val();
+            var jam_lpc = $("#jam_lpc").val();
             if (kode_cabang == "") {
                 swal({
                     title: 'Oops'
@@ -137,6 +144,15 @@
                 }).then(function() {
                     $("#tgl_lpc").focus();
                 });
+            } else if (jam_lpc == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Jam Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#jam_lpc").focus();
+                });
             } else {
                 $.ajax({
                     type: 'POST'
@@ -147,6 +163,7 @@
                         , bulan: bulan
                         , tahun: tahun
                         , tgl_lpc: tgl_lpc
+                        , jam_lpc: jam_lpc
                     }
                     , cache: false
                     , success: function(respond) {

@@ -81,6 +81,7 @@
                                     <th>Bulan</th>
                                     <th>Tahun</th>
                                     <th>Tgl Kirim</th>
+                                    <th>Jam Kirim</th>
                                     <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>

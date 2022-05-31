@@ -59,6 +59,11 @@
             </div>
         </div>
         <div class="form-group">
+            <div class="col-12">
+                <x-inputtext label="00:00" value="{{ $lpc->jam_lpc }}" field="jam_lpc_edit" icon="feather icon-clock" />
+            </div>
+        </div>
+        <div class="form-group">
             <button class="btn btn-primary btn-block" id="updatelpc"><i class="feather icon-send"></i> Submit</button>
         </div>
     </div>
@@ -66,6 +71,13 @@
 <script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
 <script>
     $(function() {
+        $('#jam_lpc_edit').mask('00:00', {
+            'translation': {
+                A: {
+                    pattern: /[0-9]/
+                }
+            }
+        });
 
         function loadlpc() {
             var tahun = $("#tahun").val();
@@ -88,6 +100,7 @@
             e.preventDefault();
             var kode_lpc = $("#kode_lpc").val();
             var tgl_lpc = $("#tgl_lpc").val();
+            var jam_lpc = $("#jam_lpc_edit").val();
             if (tgl_lpc == "") {
                 swal({
                     title: 'Oops'
@@ -97,6 +110,15 @@
                 }).then(function() {
                     $("#tgl_lpc").focus();
                 });
+            } else if (jam_lpc == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Jam Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#jam_lpc").focus();
+                });
             } else {
                 $.ajax({
                     type: 'POST'
@@ -105,6 +127,7 @@
                         _token: "{{ csrf_token() }}"
                         , kode_lpc: kode_lpc
                         , tgl_lpc: tgl_lpc
+                        , jam_lpc: jam_lpc
                     }
                     , cache: false
                     , success: function(respond) {

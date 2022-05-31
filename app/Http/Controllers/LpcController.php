@@ -64,7 +64,8 @@ class LpcController extends Controller
                     'kode_cabang' => $request->kode_cabang,
                     'bulan' => $request->bulan,
                     'tahun' => $request->tahun,
-                    'tgl_lpc' => $request->tgl_lpc
+                    'tgl_lpc' => $request->tgl_lpc,
+                    'jam_lpc' => $request->jam_lpc
                 ]);
             if ($simpan) {
                 echo 0;
@@ -97,7 +98,8 @@ class LpcController extends Controller
         $update = DB::table('lpc')
             ->where('kode_lpc', $request->kode_lpc)
             ->update([
-                'tgl_lpc' => $request->tgl_lpc
+                'tgl_lpc' => $request->tgl_lpc,
+                'jam_lpc' => $request->jam_lpc
             ]);
         if ($update) {
             echo 0;

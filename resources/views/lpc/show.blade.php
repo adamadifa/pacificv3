@@ -5,6 +5,7 @@
     <td>{{$bln[$d->bulan]}}</td>
     <td>{{$d->tahun}}</td>
     <td>{{date("d-m-Y",strtotime($d->tgl_lpc))}}</td>
+    <td>{{date("H:i:s",strtotime($d->jam_lpc))}}</td>
     <td>
         @if ($d->status==0)
         <span class="badge bg-warning"><i class="fa fa-history"></i> Pending</span>
