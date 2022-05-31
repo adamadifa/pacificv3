@@ -1043,8 +1043,9 @@ class PembelianController extends Controller
                         'kode_supplier' => $kode_supplier
                     ];
                 }
-
-                DB::table('kontrabon')->where('no_kontrabon', $kontrabon->no_kontrabon)->update($datakb);
+                if ($kontrabon != null) {
+                    DB::table('kontrabon')->where('no_kontrabon', $kontrabon->no_kontrabon)->update($datakb);
+                }
             }
 
 
