@@ -46,7 +46,7 @@ $level = Auth::user()->level;
                 <hr>
                 @foreach ($users as $d)
                 <div class="customizer-menu px-2">
-                    @if(Cache::has('user-is-online-' . $d->id))
+
                     <div id="customizer-menu-collapsible" class="d-flex justify-content-start align-items-center">
                         <div class="avatar mr-50">
                             <img src="{{ asset('app-assets/images/avatar.png') }}" alt="avtar img holder" height="35" width="35">
@@ -54,12 +54,15 @@ $level = Auth::user()->level;
                         <div class="user-page-info ml-1">
                             <p class="mt-1">{{ $d->name }}<br><small>Last Seen {{ Carbon\Carbon::parse($d->last_seen)->diffForHumans() }}</small></p>
                         </div>
-
+                        @if(Cache::has('user-is-online-' . $d->id))
                         <div class="ml-auto"><i class="fa fa-circle success"></i></div>
+                        @else
+                        <div class="ml-auto"><i class="fa fa-circle danger"></i></div>
+                        @endif
 
 
                     </div>
-                    @endif
+
                 </div>
                 @endforeach
 
