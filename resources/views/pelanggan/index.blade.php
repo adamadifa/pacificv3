@@ -141,6 +141,7 @@
                                     <th>Kode Pelanggan</th>
                                     <th>Nama Pelanggan</th>
                                     <th>Jatuh Tempo</th>
+                                    <th>Pasar</th>
                                     <th>Limit</th>
                                     <th>Foto</th>
                                     <th>Salesman</th>
@@ -157,6 +158,7 @@
                                     <td>{{ $d->kode_pelanggan }}</td>
                                     <td>{{ $d->nama_pelanggan }}</td>
                                     <td>{{ (!empty($d->jatuhtempo) ? $d->jatuhtempo.' Hari' : '' )}} </td>
+                                    <td>{{ $d->pasar }}</td>
                                     <td class="text-right">{{ (!empty($d->limitpel) ? rupiah($d->limitpel) : '') }}</td>
                                     <td>
                                         @if (!empty($d->foto))
