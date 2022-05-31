@@ -43,7 +43,11 @@ class KlaimController extends Controller
         $klaim = $query->get();
         $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->first();
         if ($this->cabang !== "PCF") {
-            $cabang = Cabang::where('kode_cabang', $this->cabang)->get();
+            if (Auth::user()->level == "kepala admin") {
+                $cabang = Cabang::where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+            } else {
+                $cabang = Cabang::where('kode_cabang', $this->cabang)->get();
+            }
         } else {
             $cabang = Cabang::orderBy('kode_cabang')->get();
         }
@@ -141,7 +145,11 @@ class KlaimController extends Controller
 
         $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->first();
         if ($this->cabang !== "PCF") {
-            $cabang = Cabang::where('kode_cabang', $this->cabang)->get();
+            if (Auth::user()->level == "kepala admin") {
+                $cabang = Cabang::where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+            } else {
+                $cabang = Cabang::where('kode_cabang', $this->cabang)->get();
+            }
         } else {
             $cabang = Cabang::orderBy('kode_cabang')->get();
         }
