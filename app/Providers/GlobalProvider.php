@@ -115,50 +115,50 @@ class GlobalProvider extends ServiceProvider
                 'kepala admin', 'admin pusat', 'manager marketing', 'direktur',
                 'manager pembelian', 'admin pembelian', 'admin penjualan dan kas kecil',
                 'admin penjualan dan kasir', 'audit', 'admin gudang logistik', 'admin gudang bahan',
-                'general affair'
+                'general affair', 'admin garut'
             ];
 
-            $pasar_menu = ['admin', 'admin penjualan', 'kepala admin', 'admin penjualan dan kas kecil', 'direktur', 'manager accounting', 'general manager'];
-            $pasar_tambah = ['admin', 'admin penjualan', 'kepala admin', 'admin penjualan dan kas kecil'];
-            $pasar_hapus = ['admin', 'admin penjualan', 'kepala admin', 'admin penjualan dan kas kecil'];
+            $pasar_menu = ['admin', 'admin penjualan', 'kepala admin', 'admin penjualan dan kas kecil', 'direktur', 'manager accounting', 'general manager', 'admin garut'];
+            $pasar_tambah = ['admin', 'admin penjualan', 'kepala admin', 'admin penjualan dan kas kecil', 'admin garut'];
+            $pasar_hapus = ['admin', 'admin penjualan', 'kepala admin', 'admin penjualan dan kas kecil', 'admin garut'];
             //Pelanggan
             $pelanggan = [
                 'admin', 'admin penjualan', 'manager accounting', 'spv accounting', 'kepala penjualan', 'kepala admin', 'admin pusat', 'manager marketing', 'direktur', 'admin penjualan dan kas kecil',
-                'admin penjualan dan kasir', 'audit'
+                'admin penjualan dan kasir', 'audit', 'admin garut'
             ];
             $pelanggan_tambah = [
                 'admin', 'kepala penjualan', 'kepala admin', 'admin pusat', 'admin penjualan', 'admin penjualan dan kas kecil',
-                'admin penjualan dan kasir'
+                'admin penjualan dan kasir', 'admin garut'
             ];
             $pelanggan_edit = [
                 'admin', 'kepala penjualan', 'kepala admin', 'admin pusat', 'admin penjualan', 'admin penjualan dan kas kecil',
-                'admin penjualan dan kasir'
+                'admin penjualan dan kasir', 'admin garut'
             ];
             $pelanggan_hapus = [
                 'admin', 'kepala penjualan', 'kepala admin', 'admin pusat', 'admin penjualan', 'admin penjualan dan kas kecil',
-                'admin penjualan dan kasir'
+                'admin penjualan dan kasir', 'admin garut'
             ];
             $pelanggan_ajuanlimit = [
                 'admin', 'kepala penjualan', 'kepala admin', 'admin pusat', 'admin penjualan', 'admin penjualan dan kas kecil',
-                'admin penjualan dan kasir'
+                'admin penjualan dan kasir', 'admin garut'
             ];
 
             //Salesman
             $salesman = [
                 'admin', 'admin penjualan', 'kepala penjualan', 'kepala admin', 'admin pusat', 'manager accounting', 'spv accounting', 'manager marketing', 'direktur', 'admin penjualan dan kas kecil',
-                'admin penjualan dan kasir', 'audit'
+                'admin penjualan dan kasir', 'audit', 'admin garut'
             ];
             $salesman_tambah = [
                 'admin', 'kepala penjualan', 'kepala admin', 'admin pusat', 'admin penjualan', 'admin penjualan dan kas kecil',
-                'admin penjualan dan kasir'
+                'admin penjualan dan kasir', 'admin garut'
             ];
             $salesman_edit = [
                 'admin', 'kepala penjualan', 'kepala admin', 'admin pusat', 'admin penjualan', 'admin penjualan dan kas kecil',
-                'admin penjualan dan kasir'
+                'admin penjualan dan kasir', 'admin garut'
             ];
             $salesman_hapus = [
                 'admin', 'kepala penjualan', 'kepala admin', 'admin pusat', 'admin penjualan', 'admin penjualan dan kas kecil',
-                'admin penjualan dan kasir'
+                'admin penjualan dan kasir', 'admin garut'
             ];
 
             //Supplier
@@ -187,24 +187,24 @@ class GlobalProvider extends ServiceProvider
             $harga = [
                 'admin', 'admin penjualan', 'kepala penjualan', 'kepala admin', 'admin pusat',
                 'manager accounting', 'spv accounting', 'manager marketing', 'direktur',
-                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'audit'
+                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'audit', 'admin garut'
             ];
             $harga_hapus = ['admin'];
             $harga_tambah = ['admin'];
             $harga_edit = [
                 'admin', 'admin penjualan', 'kepala penjualan', 'kepala admin', 'admin pusat',
-                'admin penjualan dan kas kecil', 'admin penjualan dan kasir'
+                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'admin garut'
             ];
 
             $kendaraan = [
                 'admin', 'admin penjualan', 'kepala penjualan',
                 'kepala admin', 'admin pusat', 'manager accounting', 'spv accounting', 'manager marketing', 'direktur',
-                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'audit'
+                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'audit', 'admin garut'
             ];
             $kendaraan_tambah = ['admin'];
             $kendaraan_edit = [
                 'admin', 'admin penjualan', 'kepala penjualan', 'kepala admin', 'admin pusat',
-                'admin penjualan dan kas kecil', 'admin penjualan dan kasir'
+                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'admin garut'
             ];
             $kendaraan_hapus = ['admin'];
 
