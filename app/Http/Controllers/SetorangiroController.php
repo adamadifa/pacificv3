@@ -79,11 +79,11 @@ class SetorangiroController extends Controller
     {
         $no_giro = $request->no_giro;
         $giro = DB::table('giro')
-            ->select('no_giro', 'nama_pelanggan', 'namabank', 'jumlah', 'tglcair')
+            ->select('no_giro', 'nama_pelanggan', 'namabank', DB::raw('SUM(jumlah) as jumlah'), 'tglcair')
             ->join('penjualan', 'giro.no_fak_penj', '=', 'penjualan.no_fak_penj')
             ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
             ->where('no_giro', $no_giro)
-            ->groupByRaw('no_giro,nama_pelanggan,namabank,jumlah,tglcair')
+            ->groupByRaw('no_giro,nama_pelanggan,namabank,tglcair')
             ->first();
         $bank = Bank::where('show_on_cabang', 1)->get();
         return view('setorangiro.create', compact('giro', 'bank'));

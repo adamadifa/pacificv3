@@ -90,11 +90,11 @@ class SetorantransferController extends Controller
     {
         $kode_transfer = $request->kode_transfer;
         $transfer = DB::table('transfer')
-            ->select('kode_transfer', 'nama_pelanggan', 'namabank', 'jumlah', 'tglcair')
+            ->select('kode_transfer', 'nama_pelanggan', 'namabank', DB::raw('SUM(jumlah) as jumlah'), 'tglcair')
             ->join('penjualan', 'transfer.no_fak_penj', '=', 'penjualan.no_fak_penj')
             ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
             ->where('kode_transfer', $kode_transfer)
-            ->groupByRaw('kode_transfer,nama_pelanggan,namabank,jumlah,tglcair')
+            ->groupByRaw('kode_transfer,nama_pelanggan,namabank,tglcair')
             ->first();
         $bank = Bank::where('show_on_cabang', 1)->get();
         return view('setorantransfer.create', compact('transfer', 'bank'));
