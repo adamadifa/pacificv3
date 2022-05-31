@@ -111,6 +111,8 @@ class GiroController extends Controller
         $jumlah  = $request->jumlah;
         $id_admin = Auth::user()->id;
         $bank = $request->bank;
+
+
         if ($status == 1) {
             $tglcair = $request->tgl_diterima;
         } else if ($status == 2) {
@@ -143,8 +145,10 @@ class GiroController extends Controller
 
 
         $listfaktur = "";
+        $id_giro = [];
         foreach ($datagiro as $d) {
             $listfaktur = $listfaktur .= $d->no_fak_penj . ",";
+            $id_giro[] = $d->id_giro;
         }
 
         if ($cabang == 'TSM') {
@@ -174,7 +178,10 @@ class GiroController extends Controller
         DB::beginTransaction();
         try {
             if ($status == 1) {
+                $b = DB::table('master_bank')->where('kode_bank', $bank)->first();
+                $kode_akun_bank = $b->kode_akun;
                 //Ledger
+                $ledger = DB::table('ledger_bank')->where('no_ref', $no_giro)->first();
                 $tanggal = explode("-", $tglcair);
                 $tahun = substr($tanggal[0], 2, 2);
                 $bln = $tanggal[1];
@@ -202,6 +209,7 @@ class GiroController extends Controller
                     $last_no_bukti_bb =  $lastbukubesar->no_bukti;
                 }
                 $no_bukti_bb   = buatkode($last_no_bukti_bb, 'GJ' . $bln . $tahun, 6);
+                $nobukti_bukubesar_bank   = buatkode($no_bukti_bb, 'GJ' . $bln . $tahun, 6);
 
                 //Update Setoran Pusat
                 DB::table('setoran_pusat')
@@ -214,11 +222,32 @@ class GiroController extends Controller
                         'omset_tahun' => $omsettahun
                     ]);
 
+
+                //dd($id_giro);
+
+                //Hapus Buku Besar
+
+                if ($ledger != null) {
+                    DB::table('buku_besar')->where('no_bukti', $ledger->nobukti_bukubesar)->delete();
+                    DB::table('buku_besar')->where('no_bukti', $ledger->nobukti_bukubesar_2)->delete();
+                }
+
+                //dd($id_giro);
                 //Hapus Ledger
                 DB::table('ledger_bank')
                     ->where('no_ref', $no_giro)
                     ->delete();
+                //Hapus Kas Besar
+                $hb = DB::table('historibayar')->whereIn('id_giro', $id_giro)->get();
+                $nobukti_hb = [];
+                foreach ($hb as $d) {
+                    $nobukti_hb[] = $d->nobukti;
+                }
 
+                if ($hb != null) {
+                    DB::table('buku_besar')->whereIn('nobukti_transaksi', $nobukti_hb)->delete();
+                }
+                DB::table('historibayar')->whereIn('id_giro', $id_giro)->delete();
                 //Insert Ledger
                 DB::table('ledger_bank')
                     ->insert([
@@ -233,7 +262,9 @@ class GiroController extends Controller
                         'jumlah'          => $jumlah,
                         'status_dk'       => 'K',
                         'status_validasi' => 1,
-                        'kategori'        => 'PNJ'
+                        'kategori'        => 'PNJ',
+                        'nobukti_bukubesar' => $no_bukti_bb,
+                        'nobukti_bukubesar_2' => $nobukti_bukubesar_bank
                     ]);
 
                 //Insert Buku Besar
@@ -249,6 +280,20 @@ class GiroController extends Controller
                         'nobukti_transaksi' => $no_bukti,
                         'no_ref' => $no_bukti
                     ]);
+
+                $databukubesarbank = array(
+                    'no_bukti' => $nobukti_bukubesar_bank,
+                    'tanggal' => $tglcair,
+                    'sumber' => 'ledger',
+                    'keterangan' => "INV " . $listfaktur,
+                    'kode_akun' => $kode_akun_bank,
+                    'debet' => $jumlah,
+                    'kredit' => 0,
+                    'no_ref' => $no_bukti,
+                    'nobukti_transaksi' => $no_bukti
+                );
+
+                DB::table('buku_besar')->insert($databukubesarbank);
             } else if ($status == 2) {
                 $ledger = DB::table('ledger_bank')->where('no_ref', $no_giro)->first();
                 if ($ledger != null) {

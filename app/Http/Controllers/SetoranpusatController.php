@@ -250,7 +250,8 @@ class SetoranpusatController extends Controller
         $setoranpusat = DB::table('setoran_pusat')->where('kode_setoranpusat', $kode_setoranpusat)->first();
 
 
-
+        $b = DB::table('master_bank')->where('kode_bank', $bank)->first();
+        $kode_akun_bank = $b->kode_akun;
 
         $tgl_diterima = explode("-", $tgl_diterimapusat);
         $tahun = substr($tgl_diterima[0], 2, 2);
@@ -285,7 +286,7 @@ class SetoranpusatController extends Controller
             $last_no_bukti_bb =  $lastbukubesar->no_bukti;
         }
         $no_bukti_bb   = buatkode($last_no_bukti_bb, 'GJ' . $bulan . $tahun, 6);
-
+        $nobukti_bukubesar_bank = buatkode($no_bukti_bb, 'GJ' . $bulan . $tahun, 6);
         if ($cabang == 'TSM') {
             $akun = "1-1468";
         } else if ($cabang == 'BDG') {
@@ -322,6 +323,7 @@ class SetoranpusatController extends Controller
             'status_validasi'       => 1,
             'kategori'              => 'PNJ',
             'nobukti_bukubesar'     => $no_bukti_bb,
+            'nobukti_bukubesar_2'   => $nobukti_bukubesar_bank
         );
 
         $data = array(
@@ -343,11 +345,22 @@ class SetoranpusatController extends Controller
             'nobukti_transaksi' => $no_bukti
         );
 
+        $databukubesarbank = array(
+            'no_bukti' => $nobukti_bukubesar_bank,
+            'tanggal' => $tgl_diterimapusat,
+            'sumber' => 'ledger',
+            'keterangan' => "SETORAN CAB " . $cabang,
+            'kode_akun' => $kode_akun_bank,
+            'debet' => $jmlbayar,
+            'kredit' => 0,
+            'nobukti_transaksi' => $no_bukti
+        );
         DB::beginTransaction();
         try {
             DB::table('setoran_pusat')->where('kode_setoranpusat', $kode_setoranpusat)->update($data);
             DB::table('ledger_bank')->insert($dataledger);
             DB::table('buku_besar')->insert($databukubesar);
+            DB::table('buku_besar')->insert($databukubesarbank);
             DB::commit();
             return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
         } catch (\Exception $e) {
@@ -366,12 +379,14 @@ class SetoranpusatController extends Controller
         );
         $ledger = DB::table('ledger_bank')->where('no_ref', $kode_setoranpusat)->first();
         $no_bukti_bb = $ledger->nobukti_bukubesar;
+        $nobukti_bukubesar_bank = $ledger->nobukti_bukubesar_2;
 
         DB::beginTransaction();
         try {
             DB::table('setoran_pusat')->where('kode_setoranpusat', $kode_setoranpusat)->update($data);
             DB::table('ledger_bank')->where('no_ref', $kode_setoranpusat)->delete();
             DB::table('buku_besar')->where('no_bukti', $no_bukti_bb)->delete();
+            DB::table('buku_besar')->where('no_bukti', $nobukti_bukubesar_bank)->delete();
             DB::commit();
             return Redirect::back()->with(['success' => 'Data Berhasil Dibatalkan']);
         } catch (\Exception $e) {

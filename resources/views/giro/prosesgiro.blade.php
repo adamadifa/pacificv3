@@ -7,118 +7,118 @@
     <input type="hidden" name="pelanggan" value="{{$giro->nama_pelanggan}}">
     <input type="hidden" name="jenistransaksi" value="{{$giro->jenistransaksi}}">
     <input type="hidden" name="kode_cabang" value="{{$giro->kode_cabang}}">
-<table class="table">
-    <tr>
-        <td>No. Giro</td>
-        <td>{{$giro->no_giro}}</td>
-    </tr>
-    <tr>
-        <td>Kode Pelanggan</td>
-        <td>{{$giro->kode_pelanggan}}</td>
-    </tr>
-    <tr>
-        <td>Nama Pelanggan</td>
-        <td>{{$giro->nama_pelanggan}}</td>
-    </tr>
-    <tr>
-        <td>Nama Bank</td>
-        <td>{{$giro->namabank}}</td>
-    </tr>
-    <tr>
-        <td>Jumlah</td>
-        <input type="hidden" name="jumlah" value="{{$giro->jumlah}}">
-        <td style="font-weight: bold">{{rupiah($giro->jumlah)}}</td>
-    </tr>
-    <tr>
-        <td>Jatuh Tempo</td>
-        <input type="hidden" value="{{$giro->tglcair}}" name="jatuhtempo">
-        <td>{{ DateToIndo2($giro->tglcair)}}</td>
-    </tr>
-</table>
-<div class="row">
-    <div class="col-12">
-        <div class="form-group">
-            <select name="statusaksi" id="statusaksi" class="form-control">
-                <option value="">Status</option>
-                <option value="0">Pending</option>
-                <option value="1">Diterima</option>
-                <option value="2">Ditolak</option>
-            </select>
+    <table class="table">
+        <tr>
+            <td>No. Giro</td>
+            <td>{{$giro->no_giro}}</td>
+        </tr>
+        <tr>
+            <td>Kode Pelanggan</td>
+            <td>{{$giro->kode_pelanggan}}</td>
+        </tr>
+        <tr>
+            <td>Nama Pelanggan</td>
+            <td>{{$giro->nama_pelanggan}}</td>
+        </tr>
+        <tr>
+            <td>Nama Bank</td>
+            <td>{{$giro->namabank}}</td>
+        </tr>
+        <tr>
+            <td>Jumlah</td>
+            <input type="hidden" name="jumlah" value="{{$giro->jumlah}}">
+            <td style="font-weight: bold">{{rupiah($giro->jumlah)}}</td>
+        </tr>
+        <tr>
+            <td>Jatuh Tempo</td>
+            <input type="hidden" value="{{$giro->tglcair}}" name="jatuhtempo">
+            <td>{{ DateToIndo2($giro->tglcair)}}</td>
+        </tr>
+    </table>
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group">
+                <select name="statusaksi" id="statusaksi" class="form-control">
+                    <option value="">Status</option>
+                    <option value="0">Pending</option>
+                    <option value="1">Diterima</option>
+                    <option value="2">Ditolak</option>
+                </select>
+            </div>
         </div>
     </div>
-</div>
-<div class="row" id="tglditerima">
-    <div class="col-12">
-        <x-inputtext label="Tanggal Diterima" field="tgl_diterima" icon="feather icon-calendar" datepicker />
+    <div class="row" id="tglditerima">
+        <div class="col-12">
+            <x-inputtext label="Tanggal Diterima" field="tgl_diterima" icon="feather icon-calendar" datepicker />
+        </div>
     </div>
-</div>
-<div class="row" id="tglditolak">
-    <div class="col-12">
-        <x-inputtext label="Tanggal Ditolak" field="tgl_ditolak" icon="feather icon-calendar" datepicker />
+    <div class="row" id="tglditolak">
+        <div class="col-12">
+            <x-inputtext label="Tanggal Ditolak" field="tgl_ditolak" icon="feather icon-calendar" datepicker />
+        </div>
     </div>
-</div>
-<div class="row" id="bank">
-    <div class="col-12">
-        <div class="form-group">
-            <select class="form-control" id="bankpenerima" name="bank">
-                <option value="">Bank Penerima</option>
-                @foreach ($bank as $d)
+    <div class="row" id="bank">
+        <div class="col-12">
+            <div class="form-group">
+                <select class="form-control" id="bankpenerima" name="bank">
+                    <option value="">Bank Penerima</option>
+                    @foreach ($bank as $d)
                     <option value="{{$d->kode_bank}}">{{$d->nama_bank}}</option>
-                @endforeach
-            </select>
+                    @endforeach
+                </select>
+            </div>
         </div>
     </div>
-</div>
-<h5 id="omset">Omset</h5>
-<hr>
-<div class="row" id="omsetbulan">
-    <div class="col-12">
-        {{-- <label for="" class="form-label mb-1">Omset Bulan</label> --}}
-        <div class="form-group">
-            <select  class="form-control" id="bulan" name="bulan">
-                <option value="">Omset Bulan</option>
-                <?php
+    <h5 id="omset">Omset</h5>
+    <hr>
+    <div class="row" id="omsetbulan">
+        <div class="col-12">
+            {{-- <label for="" class="form-label mb-1">Omset Bulan</label> --}}
+            <div class="form-group">
+                <select class="form-control" id="bulan" name="bulan">
+                    <option value="">Omset Bulan</option>
+                    <?php
                 $bulanini = date("m");
                 for ($i = 1; $i < count($bulan); $i++) {
                 ?>
-                <option <?php if ($bulanini == $i) {echo "selected";} ?> value="<?php echo $i; ?>"><?php echo $bulan[$i]; ?></option>
-                <?php
+                    <option <?php if ($bulanini == $i) {echo "selected";} ?> value="<?php echo $i; ?>"><?php echo $bulan[$i]; ?></option>
+                    <?php
                 }
                 ?>
-            </select>
+                </select>
+            </div>
         </div>
     </div>
-</div>
-<div class="row" id="omsettahun">
-    <div class="col-12">
-        <div class="form-group">
-            <select  class="form-control" id="tahun" name="tahun">
-                <?php
+    <div class="row" id="omsettahun">
+        <div class="col-12">
+            <div class="form-group">
+                <select class="form-control" id="tahun" name="tahun">
+                    <?php
                 $tahunmulai = 2020;
                 for ($thn = $tahunmulai; $thn <= date('Y'); $thn++) {
                 ?>
-                <option <?php if (date('Y') == $thn) { echo "Selected";} ?> value="<?php echo $thn; ?>"><?php echo $thn; ?></option>
-                <?php
+                    <option <?php if (date('Y') == $thn) { echo "Selected";} ?> value="<?php echo $thn; ?>"><?php echo $thn; ?></option>
+                    <?php
                 }
                 ?>
-            </select>
+                </select>
+            </div>
         </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-12">
-        <div class="form-group">
-            <button class="btn btn-primary btn-block">
-                <i class="feather icon-send"></i>
-                Proses
-            </button>
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group">
+                <button class="btn btn-primary btn-block" id="btnSubmit">
+                    <i class="feather icon-send"></i>
+                    Proses
+                </button>
+            </div>
         </div>
     </div>
-</div>
 </form>
 <script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
 <script>
-    $(function(){
+    $(function() {
         function diterima() {
             $("#tglditerima").show();
             $("#tglditolak").hide();
@@ -158,15 +158,15 @@
             }
         });
 
-        $("#frmUpdategiro").submit(function(e){
+        $("#frmUpdategiro").submit(function(e) {
             var status = $("#statusaksi").val();
             var tgl_diterima = $("#tgl_diterima").val();
             var tgl_ditolak = $("#tgl_ditolak").val();
             var bankpenerima = $("#bankpenerima").val();
             var bulan = $("#bulan").val();
             var tahun = $("#tahun").val();
-
-            if(status == ""){
+            $("#btnSubmit").attr("disabled", true);
+            if (status == "") {
                 swal({
                     title: 'Oops'
                     , text: 'Pilih Status Aksi!'
@@ -176,9 +176,9 @@
                     $("#statusaksi").focus();
                 });
                 return false;
-            }else{
-                if(status == 1){
-                    if(tgl_diterima == ""){
+            } else {
+                if (status == 1) {
+                    if (tgl_diterima == "") {
                         swal({
                             title: 'Oops'
                             , text: 'Tanggal Cair Harus Diisi !'
@@ -188,7 +188,7 @@
                             $("#tgl_diterima").focus();
                         });
                         return false;
-                    }else if(bankpenerima == ""){
+                    } else if (bankpenerima == "") {
                         swal({
                             title: 'Oops'
                             , text: 'Bank Harus Diisi !'
@@ -198,7 +198,7 @@
                             $("#bank").focus();
                         });
                         return false;
-                    }else if(bulan ==""){
+                    } else if (bulan == "") {
                         swal({
                             title: 'Oops'
                             , text: 'Omset Bulan Harus Diisi !'
@@ -208,7 +208,7 @@
                             $("#bulan").focus();
                         });
                         return false;
-                    }else if(tahun==""){
+                    } else if (tahun == "") {
                         swal({
                             title: 'Oops'
                             , text: 'Omset Tahun Harus Diisi !'
@@ -218,11 +218,11 @@
                             $("#tgl_diterima").focus();
                         });
                         return false;
-                    }else{
+                    } else {
                         return true;
                     }
-                }else if(status==2){
-                    if(tgl_ditolak == ""){
+                } else if (status == 2) {
+                    if (tgl_ditolak == "") {
                         swal({
                             title: 'Oops'
                             , text: 'Tanggal Ditolak Harus Diisi !'
@@ -232,7 +232,7 @@
                             $("#tgl_ditolak").focus();
                         });
                         return false;
-                    }else if(bankpenerima == ""){
+                    } else if (bankpenerima == "") {
                         swal({
                             title: 'Oops'
                             , text: 'Bank Harus Diisi !'
@@ -242,7 +242,7 @@
                             $("#bank").focus();
                         });
                         return false;
-                    }else{
+                    } else {
                         return true;
                     }
                 }
@@ -251,4 +251,5 @@
 
 
     });
+
 </script>

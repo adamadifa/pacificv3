@@ -151,8 +151,10 @@ class TransferController extends Controller
 
 
         $listfaktur = "";
+        $id_transfer = [];
         foreach ($datatransfer as $d) {
             $listfaktur = $listfaktur .= $d->no_fak_penj . ",";
+            $id_transfer[] = $d->id_transfer;
         }
 
         if ($cabang == 'TSM') {
@@ -182,7 +184,10 @@ class TransferController extends Controller
         DB::beginTransaction();
         try {
             if ($status == 1) {
+                $b = DB::table('master_bank')->where('kode_bank', $bank)->first();
+                $kode_akun_bank = $b->kode_akun;
                 //Ledger
+                $ledger = DB::table('ledger_bank')->where('no_ref', $kode_transfer)->first();
                 $tanggal = explode("-", $tglcair);
                 $tahun = substr($tanggal[0], 2, 2);
                 $bln = $tanggal[1];
@@ -210,7 +215,7 @@ class TransferController extends Controller
                     $last_no_bukti_bb =  $lastbukubesar->no_bukti;
                 }
                 $no_bukti_bb   = buatkode($last_no_bukti_bb, 'GJ' . $bln . $tahun, 6);
-
+                $nobukti_bukubesar_bank   = buatkode($no_bukti_bb, 'GJ' . $bln . $tahun, 6);
                 //Update Setoran Pusat
                 DB::table('setoran_pusat')
                     ->where('no_ref', $kode_transfer)
@@ -222,11 +227,27 @@ class TransferController extends Controller
                         'omset_tahun' => $omsettahun
                     ]);
 
+                //Hapus Buku Besar
+
+                //dd($ledger);
+                if ($ledger != null) {
+                    DB::table('buku_besar')->where('no_bukti', $ledger->nobukti_bukubesar)->delete();
+                    DB::table('buku_besar')->where('no_bukti', $ledger->nobukti_bukubesar_2)->delete();
+                }
                 //Hapus Ledger
                 DB::table('ledger_bank')
                     ->where('no_ref', $kode_transfer)
                     ->delete();
+                $hb = DB::table('historibayar')->whereIn('id_transfer', $id_transfer)->get();
+                $nobukti_hb = [];
+                foreach ($hb as $d) {
+                    $nobukti_hb[] = $d->nobukti;
+                }
 
+                if ($hb != null) {
+                    DB::table('buku_besar')->whereIn('nobukti_transaksi', $nobukti_hb)->delete();
+                }
+                DB::table('historibayar')->whereIn('id_transfer', $id_transfer)->delete();
                 //Insert Ledger
                 DB::table('ledger_bank')
                     ->insert([
@@ -241,7 +262,9 @@ class TransferController extends Controller
                         'jumlah'          => $jumlah,
                         'status_dk'       => 'K',
                         'status_validasi' => 1,
-                        'kategori'        => 'PNJ'
+                        'kategori'        => 'PNJ',
+                        'nobukti_bukubesar' => $no_bukti_bb,
+                        'nobukti_bukubesar_2' => $nobukti_bukubesar_bank
                     ]);
 
                 //Insert Buku Besar
@@ -257,6 +280,20 @@ class TransferController extends Controller
                         'nobukti_transaksi' => $no_bukti,
                         'no_ref' => $no_bukti
                     ]);
+
+                $databukubesarbank = array(
+                    'no_bukti' => $nobukti_bukubesar_bank,
+                    'tanggal' => $tglcair,
+                    'sumber' => 'ledger',
+                    'keterangan' => "INV " . $listfaktur,
+                    'kode_akun' => $kode_akun_bank,
+                    'debet' => $jumlah,
+                    'kredit' => 0,
+                    'no_ref' => $no_bukti,
+                    'nobukti_transaksi' => $no_bukti
+                );
+
+                DB::table('buku_besar')->insert($databukubesarbank);
             } else if ($status == 2) {
                 $ledger = DB::table('ledger_bank')->where('no_ref', $kode_transfer)->first();
                 if ($ledger != null) {

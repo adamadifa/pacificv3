@@ -108,7 +108,7 @@
     <div class="row">
         <div class="col-12">
             <div class="form-group">
-                <button class="btn btn-primary btn-block">
+                <button class="btn btn-primary btn-block" id="btnSubmit">
                     <i class="feather icon-send"></i>
                     Proses
                 </button>
@@ -165,7 +165,7 @@
             var bankpenerima = $("#bankpenerima").val();
             var bulan = $("#bulan").val();
             var tahun = $("#tahun").val();
-
+            $("#btnSubmit").attr("disabled", true);
             if (status == "") {
                 swal({
                     title: 'Oops'
