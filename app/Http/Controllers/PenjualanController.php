@@ -1158,7 +1158,10 @@ class PenjualanController extends Controller
             'TSM-02234',
             'TSM-01117',
             'TSM-00494',
-            'TSM-00466'
+            'TSM-00466',
+            'PST00007',
+            'PST00008',
+            'PST00002'
         ];
         $no_fak_penj = Crypt::decrypt($no_fak_penj);
         $faktur = DB::table('penjualan')
@@ -1210,7 +1213,10 @@ class PenjualanController extends Controller
             'TSM-02234',
             'TSM-01117',
             'TSM-00494',
-            'TSM-00466'
+            'TSM-00466',
+            'PST00007',
+            'PST00008',
+            'PST00002'
         ];
         $no_fak_penj = Crypt::decrypt($no_fak_penj);
         $faktur = DB::table('penjualan')
