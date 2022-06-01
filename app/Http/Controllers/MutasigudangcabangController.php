@@ -864,7 +864,7 @@ class MutasigudangcabangController extends Controller
         $tgl_mutasi_gudang_cabang =  $request->tgl_mutasi_gudang_cabang;
         $kode_cabang = $mutasi_gudang_cabang->kode_cabang;
         $id_admin = Auth::user()->id;
-        $tahunini = date("Y");
+        $tahunini = substr(date("Y"), 2, 2);
         $transitin = DB::table('mutasi_gudang_cabang')
             ->select('no_mutasi_gudang_cabang as no_transit_in')
             ->where('kode_cabang', $kode_cabang)
