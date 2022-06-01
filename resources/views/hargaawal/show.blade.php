@@ -13,8 +13,8 @@
 @endforeach
 
 <script>
-    $(function() {
-        $(".harga_awal").maskMoney();
-    });
+    // $(function() {
+    //     $(".harga_awal").maskMoney();
+    // });
 
 </script>
