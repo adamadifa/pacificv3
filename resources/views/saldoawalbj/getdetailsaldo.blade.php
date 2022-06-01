@@ -38,8 +38,8 @@
     </td>
     <td style="width:50px"><?php echo $b->satuan; ?></td>
     <td style="width:100px" class="text-right">
-        <?php if(!empty($b->isipack)){ ?>
         <input type="hidden" style="text-align:right" value="<?php if(!empty($jmlpack)){ echo $jmlpack; } ?>" id="jmlpack" name="jmlpack[]" class="form-control" data-error=".errorTxt19" />
+        <?php if(!empty($b->isipack)){ ?>
         {{ !empty($jmlpack) ? rupiah($jmlpack) : '' }}
         <?php } ?>
     </td>
