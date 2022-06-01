@@ -357,6 +357,7 @@ class DashboardController extends Controller
 
     public function dashboardpembelian()
     {
-        return view('dashboard.pembelian');
+        $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
+        return view('dashboard.pembelian', compact('cabang'));
     }
 }
