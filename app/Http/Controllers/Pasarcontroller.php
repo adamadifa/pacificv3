@@ -23,7 +23,11 @@ class Pasarcontroller extends Controller
                 $query->where('kode_cabang', $request->kode_cabang);
             }
         } else {
-            $query->where('kode_cabang', Auth::user()->kode_cabang);
+            if (Auth::user()->kode_cabang == "GRT") {
+                $query->where('kode_cabang', 'TSM');
+            } else {
+                $query->where('kode_cabang', Auth::user()->kode_cabang);
+            }
         }
         $query->orderBy('id', 'desc');
 
@@ -31,7 +35,11 @@ class Pasarcontroller extends Controller
         $pasar->appends($request->all());
 
         if (Auth::user()->kode_cabang != 'PCF') {
-            $cabang = Cabang::orderBy('kode_cabang')->where('kode_cabang', Auth::user()->kode_cabang)->get();
+            if (Auth::user()->kode_cabang == 'GRT') {
+                $cabang = Cabang::orderBy('kode_cabang')->where('kode_cabang', 'TSM')->get();
+            } else {
+                $cabang = Cabang::orderBy('kode_cabang')->where('kode_cabang', Auth::user()->kode_cabang)->get();
+            }
             $option = "Pilih Cabang";
         } else {
             $cabang = Cabang::orderBy('kode_cabang')->get();
@@ -43,7 +51,11 @@ class Pasarcontroller extends Controller
     public function create()
     {
         if (Auth::user()->kode_cabang != 'PCF') {
-            $cabang = Cabang::orderBy('kode_cabang')->where('kode_cabang', Auth::user()->kode_cabang)->get();
+            if (Auth::user()->kode_cabang == 'GRT') {
+                $cabang = Cabang::orderBy('kode_cabang')->where('kode_cabang', 'TSM')->get();
+            } else {
+                $cabang = Cabang::orderBy('kode_cabang')->where('kode_cabang', Auth::user()->kode_cabang)->get();
+            }
             $option = "Pilih Cabang";
         } else {
             $cabang = Cabang::orderBy('kode_cabang')->get();

@@ -37,7 +37,11 @@ class PelangganController extends Controller
 
         $query = Pelanggan::query();
         if ($this->cabang != "PCF") {
-            $query->where('pelanggan.kode_cabang', $this->cabang);
+            if ($this->cabang == "GRT") {
+                $query->where('pelanggan.kode_cabang', 'TSM');
+            } else {
+                $query->where('pelanggan.kode_cabang', $this->cabang);
+            }
         }
         if (isset($request->submit) || isset($request->export)) {
             if ($request->nama != "") {
@@ -79,7 +83,9 @@ class PelangganController extends Controller
 
 
         $query2 = Pelanggan::query();
-        if ($this->cabang != "PCF") {
+        if ($this->cabang == "GRT") {
+            $query2->where('pelanggan.kode_cabang', 'TSM');
+        } else {
             $query2->where('pelanggan.kode_cabang', $this->cabang);
         }
         if (isset($request->submit)) {
@@ -113,7 +119,9 @@ class PelangganController extends Controller
         $query2->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
 
         $queryaktif = Pelanggan::query();
-        if ($this->cabang != "PCF") {
+        if ($this->cabang == "GRT") {
+            $queryaktif->where('pelanggan.kode_cabang', 'TSM');
+        } else {
             $queryaktif->where('pelanggan.kode_cabang', $this->cabang);
         }
         if (isset($request->submit)) {
@@ -145,7 +153,9 @@ class PelangganController extends Controller
 
 
         $querynonaktif = Pelanggan::query();
-        if ($this->cabang != "PCF") {
+        if ($this->cabang == "GRT") {
+            $querynonaktif->where('pelanggan.kode_cabang', 'TSM');
+        } else {
             $querynonaktif->where('pelanggan.kode_cabang', $this->cabang);
         }
         if (isset($request->submit)) {
@@ -201,7 +211,11 @@ class PelangganController extends Controller
         if ($this->cabang == "PCF") {
             $pasar = DB::table('master_pasar')->get();
         } else {
-            $pasar = DB::table('master_pasar')->where('kode_cabang', $this->cabang)->orderBy('nama_pasar')->get();
+            if ($this->cabang == "GRT") {
+                $pasar = DB::table('master_pasar')->where('kode_cabang', 'TSM')->orderBy('nama_pasar')->get();
+            } else {
+                $pasar = DB::table('master_pasar')->where('kode_cabang', $this->cabang)->orderBy('nama_pasar')->get();
+            }
         }
         return view('pelanggan.create', compact('cabang', 'pasar'));
     }
