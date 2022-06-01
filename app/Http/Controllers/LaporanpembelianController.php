@@ -178,17 +178,16 @@ class LaporanpembelianController extends Controller
         }
 
         $pmb = $query->get();
-        if ($sortby == "supplier") {
-            return view('pembelian.laporan.cetak_rekappembelian_supplier', compact('dari', 'sampai', 'pmb', 'jenis_barang'));
-        } else {
-            return view('pembelian.laporan.cetak_rekappembelian_jenisbarang', compact('dari', 'sampai', 'pmb', 'jenis_barang'));
-        }
-
         if (isset($_POST['export'])) {
             // Fungsi header dengan mengirimkan raw data excel
             header("Content-type: application/vnd-ms-excel");
             // Mendefinisikan nama file ekspor "hasil-export.xls"
             header("Content-Disposition: attachment; filename=Rekap Pembelian $dari-$sampai.xls");
+        }
+        if ($sortby == "supplier") {
+            return view('pembelian.laporan.cetak_rekappembelian_supplier', compact('dari', 'sampai', 'pmb', 'jenis_barang'));
+        } else {
+            return view('pembelian.laporan.cetak_rekappembelian_jenisbarang', compact('dari', 'sampai', 'pmb', 'jenis_barang'));
         }
     }
 
