@@ -233,15 +233,15 @@
                 foreach ($voucher as $v) {
                     $totalvoucher = $totalvoucher + $v->bayar;
                     if ($v->ket_voucher == "1") {
-                        $voucher = "Voucher Penghapusan Piutang";
+                        $ket_voucher = "Voucher Penghapusan Piutang";
                     } else if ($v->ket_voucher == "2") {
-                        $voucher = "Voucher Diskon Program";
+                        $ket_voucher = "Voucher Diskon Program";
                     } else if ($v->ket_voucher == "3") {
-                        $voucher = "Voucher Penyelesaian Piutang Oleh Salesman";
+                        $ket_voucher = "Voucher Penyelesaian Piutang Oleh Salesman";
                     } else if ($v->ket_voucher == "4") {
-                        $voucher = "Voucher Pengalihan Piutang Dgng Jd Piutang Kary";
+                        $ket_voucher = "Voucher Pengalihan Piutang Dgng Jd Piutang Kary";
                     } else {
-                        $voucher = "Lainnya";
+                        $ket_voucher = "Lainnya";
                     }
                 ?>
                 <tr>
@@ -249,7 +249,7 @@
                     <td><?php echo $v->no_fak_penj; ?></td>
                     <td><?php echo $v->kode_pelanggan; ?></td>
                     <td><?php echo $v->nama_pelanggan; ?></td>
-                    <td><?php echo $voucher; ?></td>
+                    <td><?php echo $ket_voucher; ?></td>
                     <td align="right"><?php echo number_format($v->bayar, '0', '', '.'); ?></td>
                 </tr>
                 <?php

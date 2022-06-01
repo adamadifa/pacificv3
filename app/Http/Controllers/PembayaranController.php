@@ -547,6 +547,7 @@ class PembayaranController extends Controller
                 historibayar.id_karyawan,
                 penjualan.kode_pelanggan,
                 nama_pelanggan,
+                ket_voucher,
                 (
                     SELECT IFNULL(penjualan.total, 0) - (ifnull(r.totalpf, 0) - ifnull(r.totalgb, 0)) AS totalpiutang
                     FROM penjualan
