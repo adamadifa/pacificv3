@@ -358,7 +358,7 @@ class SuratjalanController extends Controller
         $status = $request->status;
         $id_admin = Auth::user()->id;
 
-        $tahun = date('Y');
+        $tahun = substr(date('Y'), 2, 2);
         $transitout = DB::table('mutasi_gudang_cabang')
             ->selectRaw("no_mutasi_gudang_cabang as no_transitout")
             ->where('kode_cabang', $kode_cabang)
