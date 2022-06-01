@@ -272,9 +272,7 @@ class LaporanpembelianController extends Controller
         if (!empty($jenishutang)) {
             $query->where('pembelian.kode_akun', $jenishutang);
         }
-        $query->orderBy('tgl_pembelian');
-        $query->orderBy('pembelian.nobukti_pembelian');
-        $pmb = $query->get();
+
         if (isset($_POST['export'])) {
             // Fungsi header dengan mengirimkan raw data excel
             header("Content-type: application/vnd-ms-excel");
@@ -282,8 +280,13 @@ class LaporanpembelianController extends Controller
             header("Content-Disposition: attachment; filename=Cetak Kartu Hutang $dari-$sampai.xls");
         }
         if ($jenislaporan == 1) {
+            $query->orderBy('tgl_pembelian');
+            $query->orderBy('pembelian.nobukti_pembelian');
+            $pmb = $query->get();
             return view('pembelian.laporan.cetak_kartuhutang', compact('dari', 'sampai', 'supplier', 'coa', 'pmb'));
         } else {
+            $query->orderBy('kode_supplier');
+            $pmb = $query->get();
             return view('pembelian.laporan.cetak_rekapkartuhutang', compact('dari', 'sampai', 'supplier', 'coa', 'pmb'));
         }
     }
