@@ -67,7 +67,7 @@ class HargaawalController extends Controller
         //dd($detail);
         DB::beginTransaction();
         try {
-            DB::table('harga_awal')->where('bulan', $bulan)->where('tahun', $tahun)->delete();
+            DB::table('harga_awal')->where('bulan', $bulan)->where('tahun', $tahun)->where('lokasi', $kode_cabang)->delete();
             if (!empty($cek)) {
                 $chunks = array_chunk($detail, 5);
                 foreach ($chunks as $chunk) {
