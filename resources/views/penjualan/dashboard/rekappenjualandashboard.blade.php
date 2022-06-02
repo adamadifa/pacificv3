@@ -61,7 +61,58 @@
         </td>
         <td style="text-align:right; font-weight:bold"><?php echo rupiah($totalnetto - $totalnettopending); ?></td>
     </tr>
+
     <?php } ?>
+    <tr style="font-size:12">
+        <?php
+            $totalnettotsm = $rekappenjualantsm->totalbruto - $rekappenjualantsm->totalretur - $rekappenjualantsm->totalpenyharga - $rekappenjualantsm->totalpotongan - $rekappenjualantsm->totalpotistimewa;
+            $totalnettopendingtsm  = $rekappenjualantsm->totalbrutopending - $rekappenjualantsm->totalreturpending - $rekappenjualantsm->totalpenyhargapending - $rekappenjualantsm->totalpotonganpending - $rekappenjualantsm->totalpotistimewapending;
+        ?>
+        <td class="cabang" style="font-weight:bold"><?php echo strtoUpper($rekappenjualantsm->nama_cabang); ?></td>
+        <td style="text-align:right; font-weight:"><?php echo rupiah($rekappenjualantsm->totalbruto); ?></td>
+        <td style="text-align:right; font-weight:"><?php echo rupiah($rekappenjualantsm->totalretur); ?></td>
+        <td style="text-align:right; font-weight:"><?php echo rupiah($rekappenjualantsm->totalpenyharga); ?></td>
+        <td style="text-align:right; font-weight:"><?php echo rupiah($rekappenjualantsm->totalpotongan); ?></td>
+        <td style="text-align:right; font-weight:"><?php echo rupiah($rekappenjualantsm->totalpotistimewa); ?></td>
+        <td style="text-align:right; font-weight:bold"><?php echo rupiah($totalnetto); ?></td>
+        <td style="text-align:right; font-weight:bold">
+            <form action="/laporanpenjualan/cetak" method="post" class="frmpending" target="_blank">
+                @csrf
+                <input type="hidden" name="kode_cabang" value="{{ $rekappenjualantsm->kode_cabang }}">
+                <input type="hidden" name="dari" value="{{ $dari }}">
+                <input type="hidden" name="sampai" value="{{ $sampai }}">
+                <input type="hidden" name="jenislaporan" value="standar">
+                <input type="hidden" name="status" value="pending">
+                <a href="#" class="warning showpending">{{ rupiah($totalnettopendingtsm ) }}</a>
+            </form>
+        </td>
+        <td style="text-align:right; font-weight:bold">{{ rupiah($totalnettotsm - $totalnettopendingtsm ) }}</td>
+    </tr>
+    <tr style="font-size:12">
+        <?php
+            $totalnettogrt = $rekappenjualangrt->totalbruto - $rekappenjualangrt->totalretur - $rekappenjualangrt->totalpenyharga - $rekappenjualangrt->totalpotongan - $rekappenjualangrt->totalpotistimewa;
+            $totalnettopendinggrt  = $rekappenjualangrt->totalbrutopending - $rekappenjualangrt->totalreturpending - $rekappenjualangrt->totalpenyhargapending - $rekappenjualangrt->totalpotonganpending - $rekappenjualangrt->totalpotistimewapending;
+        ?>
+        <td class="cabang" style="font-weight:bold">GARUT</td>
+        <td style="text-align:right; font-weight:"><?php echo rupiah($rekappenjualangrt->totalbruto); ?></td>
+        <td style="text-align:right; font-weight:"><?php echo rupiah($rekappenjualangrt->totalretur); ?></td>
+        <td style="text-align:right; font-weight:"><?php echo rupiah($rekappenjualangrt->totalpenyharga); ?></td>
+        <td style="text-align:right; font-weight:"><?php echo rupiah($rekappenjualangrt->totalpotongan); ?></td>
+        <td style="text-align:right; font-weight:"><?php echo rupiah($rekappenjualangrt->totalpotistimewa); ?></td>
+        <td style="text-align:right; font-weight:bold"><?php echo rupiah($totalnetto); ?></td>
+        <td style="text-align:right; font-weight:bold">
+            <form action="/laporanpenjualan/cetak" method="post" class="frmpending" target="_blank">
+                @csrf
+                <input type="hidden" name="kode_cabang" value="{{ $rekappenjualangrt->kode_cabang }}">
+                <input type="hidden" name="dari" value="{{ $dari }}">
+                <input type="hidden" name="sampai" value="{{ $sampai }}">
+                <input type="hidden" name="jenislaporan" value="standar">
+                <input type="hidden" name="status" value="pending">
+                <a href="#" class="warning showpending">{{ rupiah($totalnettopendinggrt ) }}</a>
+            </form>
+        </td>
+        <td style="text-align:right; font-weight:bold">{{ rupiah($totalnettogrt - $totalnettopendinggrt ) }}</td>
+    </tr>
     </tbody>
     <tfoot class="thead-dark">
         <tr>

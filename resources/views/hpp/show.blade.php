@@ -13,8 +13,6 @@
 @endforeach
 
 <script>
-    $(function() {
-        $(".harga_hpp").maskMoney();
-    });
+
 
 </script>
