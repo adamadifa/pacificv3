@@ -5055,6 +5055,7 @@ class PenjualanController extends Controller
                     $join->on('karyawan.kode_cabang', '=', 'retur.kode_cabang');
                 }
             )
+            ->whereNotIn('karyawan.kode_cabang', $exclude)
             ->whereBetween('tgltransaksi', [$dari, $sampai])
             ->groupByRaw('karyawan.kode_cabang,nama_cabang,totalretur,totalreturpending')
             ->get();
