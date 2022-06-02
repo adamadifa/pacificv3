@@ -343,7 +343,7 @@ class LaporangudangcabangController extends Controller
                 SUM(IF(jenis_mutasi = 'RETUR',jumlah,0)) as retur,
                 SUM(IF(jenis_mutasi = 'HUTANG KIRIM' AND inout_good='IN' OR jenis_mutasi='PL TTR' AND inout_good='IN',jumlah,0)) as lainlain_in,
                 SUM(IF(jenis_mutasi = 'PENYESUAIAN' AND inout_good='IN',jumlah,0)) as penyesuaian_in,
-                SUM(IF(jenis_mutasi = 'PENYESUAIAN BAD' AND inout_good='IN',jumlah,0)) as penyesuaianbad_in,
+                SUM(IF(jenis_mutasi = 'PENYESUAIAN BAD' AND inout_bad='IN',jumlah,0)) as penyesuaianbad_in,
                 SUM(IF(jenis_mutasi = 'REPACK',jumlah,0)) as repack,
 
                 SUM(IF(jenis_mutasi = 'PENJUALAN',jumlah,0)) as penjualan,
