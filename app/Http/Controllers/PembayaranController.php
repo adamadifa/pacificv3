@@ -481,7 +481,9 @@ class PembayaranController extends Controller
         $salesman = DB::table('karyawan')->where('id_karyawan', $request->id_karyawan)->first();
         $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $request->kode_pelanggan)->first();
         $jenislaporan = $request->jenislaporan;
-        if (empty($request->kode_cabang)) {
+
+        if (empty($request->kode_cabang) && $jenislaporan == "rekap") {
+            //echo 1;
             $query = Pembayaran::query();
             $query->selectRaw('karyawan.kode_cabang,nama_cabang,SUM(IF(status_bayar="voucher",bayar,0)) as voucher,
             SUM(IF(status_bayar IS NULL,bayar,0)) as cashin');
@@ -505,6 +507,7 @@ class PembayaranController extends Controller
             return view('pembayaran.laporan.cetak_kasbesar_rekapallcabang', compact('kasbesar', 'cabang', 'dari', 'sampai', 'salesman', 'pelanggan'));
         } else {
             if ($jenislaporan == "rekap") {
+                //echo 2;
                 $query = Pembayaran::query();
                 $query->selectRaw('historibayar.id_karyawan,nama_karyawan,SUM(IF(status_bayar="voucher",bayar,0)) as voucher,
                 SUM(IF(status_bayar IS NULL,bayar,0)) as cashin');
@@ -528,6 +531,7 @@ class PembayaranController extends Controller
                 }
                 return view('pembayaran.laporan.cetak_kasbesar_rekapallsalesman', compact('kasbesar', 'cabang', 'dari', 'sampai', 'salesman', 'pelanggan'));
             } else {
+                //echo 3;
                 $query = Pembayaran::query();
                 $query->selectRaw('historibayar.no_fak_penj,
                 karyawan.nama_karyawan,
@@ -576,7 +580,9 @@ class PembayaranController extends Controller
                 $query->orderBy('tglbayar', 'asc');
                 $query->orderBy('historibayar.no_fak_penj', 'asc');
                 $query->whereBetween('tglbayar', [$dari, $sampai]);
-                $query->where('cabangbarunew', $request->kode_cabang);
+                if (!empty($request->kode_cabang)) {
+                    $query->where('cabangbarunew', $request->kode_cabang);
+                }
                 if (!empty($request->id_karyawan)) {
                     $query->where('historibayar.id_karyawan', $request->id_karyawan);
                 }

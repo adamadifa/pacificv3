@@ -394,7 +394,7 @@ class ReturController extends Controller
         $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
         $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
         $query->whereBetween('tglretur', [$dari, $sampai]);
-        if ($request->cabang != "") {
+        if ($request->kode_cabang != "") {
             $query->where('karyawan.kode_cabang', $request->kode_cabang);
         }
         if ($request->id_karyawan != "") {

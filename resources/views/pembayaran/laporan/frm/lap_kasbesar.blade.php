@@ -137,13 +137,13 @@
             if (kode_cabang == "") {
                 $("#id_karyawan").prop("disabled", true);
                 $("#kode_pelanggan").prop("disabled", true);
-                $("#jenislaporan").prop("disabled", true);
+                //$("#jenislaporan").prop("disabled", true);
                 $('.jenislaporan option[value="rekap"]').attr('selected', 'selected');
             } else {
                 $("#id_karyawan").prop("disabled", false);
                 $("#kode_pelanggan").prop("disabled", false);
                 $('#jenislaporan option[value=""]').attr('selected', 'selected');
-                $(".jenislaporan").prop("disabled", false);
+                //$(".jenislaporan").prop("disabled", false);
             }
         }
 
