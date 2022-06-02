@@ -34,7 +34,7 @@
                                         <div class="col-lg-12 col-sm-12">
                                             <div class="form-group  ">
                                                 <select name="kode_cabang" id="kode_cabang" class="form-control">
-                                                    @if (Auth::user()->kode_cabang!="PCF")
+                                                    @if (Auth::user()->kode_cabang!="PCF" && Auth::user()->kode_cabang!="PST")
                                                     <option value="">Pilih Cabang</option>
                                                     @else
                                                     <option value="">Semua Cabang</option>
@@ -129,7 +129,7 @@
             var end = new Date(sampai);
 
             var datestart = new Date('2018-09-01');
-            if (cabang != "PCF" && kode_cabang == "") {
+            if (cabang != "PCF" && kode_cabang == "" && cabang != "PST" && kode_cabang == "") {
                 swal({
                     title: 'Oops'
                     , text: 'Pilih Cabang Terlebih Dahulu !'
