@@ -140,7 +140,7 @@
 <script>
     $(function() {
         function nonaktif() {
-            var kp = "{{ $cektarget->kp}}";
+            var kp = "{{ $cektarget != null $cektarget->kp : 0}}";
             if (parseInt(kp) == 0) {
                 swal("Oops", "Target Sudah Di Kunci, Silahkan Hubungi Tim IT Untuk Membuka Target", "warning");
                 $(".settargetproduksales").prop("disabled", true);
