@@ -547,7 +547,7 @@ class LaporanaccountingController extends Controller
                 FROM saldoawal_bj_detail
                 INNER JOIN saldoawal_bj ON saldoawal_bj_detail.kode_saldoawal = saldoawal_bj.kode_saldoawal
                 INNER JOIN master_barang ON saldoawal_bj_detail.kode_produk = master_barang.kode_produk
-                WHERE status ='GS' AND bulan ='$bulan' AND tahun='$tahun'
+                WHERE saldoawal_bj.status ='GS' AND bulan ='$bulan' AND tahun='$tahun'
             ) saldo_gs ON (dmc.kode_produk = saldo_gs.kode_produk AND dmc.kode_cabang = saldo_gs.kode_cabang)
 
             UNION
@@ -590,7 +590,7 @@ class LaporanaccountingController extends Controller
                 FROM saldoawal_bj_detail
                 INNER JOIN saldoawal_bj ON saldoawal_bj_detail.kode_saldoawal = saldoawal_bj.kode_saldoawal
                 INNER JOIN master_barang ON saldoawal_bj_detail.kode_produk = master_barang.kode_produk
-                WHERE status ='GS' AND bulan ='$bulan' AND tahun='$tahun'
+                WHERE saldoawal_bj.status ='GS' AND bulan ='$bulan' AND tahun='$tahun'
             ) saldo_gs ON (dmc.kode_produk = saldo_gs.kode_produk AND dmc.kode_cabang = saldo_gs.kode_cabang)
             ORDER BY kode_cabang,kode_produk");
         } else {
