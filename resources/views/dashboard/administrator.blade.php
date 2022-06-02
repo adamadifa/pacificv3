@@ -372,7 +372,7 @@
             var tahun = $("#tahunpenjualan").val();
             $.ajax({
                 type: 'POST'
-                , url: '/rekapcashin'
+                , url: '/rekappenjualandashboard'
                 , data: {
                     _token: "{{ csrf_token() }}"
                     , bulan: bulan
