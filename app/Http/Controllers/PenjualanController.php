@@ -5048,14 +5048,14 @@ class PenjualanController extends Controller
                     FROM retur
                     INNER JOIN penjualan ON retur.no_fak_penj = penjualan.no_fak_penj
                     INNER JOIN karyawan ON penjualan.id_karyawan = karyawan.id_karyawan
-                    WHERE tglretur BETWEEN '$dari' AND '$sampai' GROUP BY karyawan.kode_cabang
+                    WHERE tglretur BETWEEN '$dari' AND '$sampai'
+                    GROUP BY karyawan.kode_cabang
                 ) retur"),
                 function ($join) {
                     $join->on('karyawan.kode_cabang', '=', 'retur.kode_cabang');
                 }
             )
             ->whereBetween('tgltransaksi', [$dari, $sampai])
-            ->whereNotIn('karyawan.kode_cabang', $exclude)
             ->groupByRaw('karyawan.kode_cabang,nama_cabang,totalretur,totalreturpending')
             ->get();
 
@@ -5086,7 +5086,9 @@ class PenjualanController extends Controller
                     FROM retur
                     INNER JOIN penjualan ON retur.no_fak_penj = penjualan.no_fak_penj
                     INNER JOIN karyawan ON penjualan.id_karyawan = karyawan.id_karyawan
-                    WHERE tglretur BETWEEN '$dari' AND '$sampai' GROUP BY karyawan.kode_cabang
+                    WHERE tglretur BETWEEN '$dari' AND '$sampai'
+                    AND penjualan.id_karyawan NOT IN ('STSM05', 'STSM09', 'STSM11')
+                    GROUP BY karyawan.kode_cabang
                 ) retur"),
                 function ($join) {
                     $join->on('karyawan.kode_cabang', '=', 'retur.kode_cabang');
@@ -5125,7 +5127,9 @@ class PenjualanController extends Controller
                     FROM retur
                     INNER JOIN penjualan ON retur.no_fak_penj = penjualan.no_fak_penj
                     INNER JOIN karyawan ON penjualan.id_karyawan = karyawan.id_karyawan
-                    WHERE tglretur BETWEEN '$dari' AND '$sampai' GROUP BY karyawan.kode_cabang
+                    WHERE tglretur BETWEEN '$dari' AND '$sampai'
+                    AND penjualan.id_karyawan  IN ('STSM05', 'STSM09', 'STSM11')
+                    GROUP BY karyawan.kode_cabang
                 ) retur"),
                 function ($join) {
                     $join->on('karyawan.kode_cabang', '=', 'retur.kode_cabang');

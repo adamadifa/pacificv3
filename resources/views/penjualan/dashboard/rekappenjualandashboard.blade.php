@@ -74,7 +74,7 @@
         <td style="text-align:right; font-weight:"><?php echo rupiah($rekappenjualantsm->totalpenyharga); ?></td>
         <td style="text-align:right; font-weight:"><?php echo rupiah($rekappenjualantsm->totalpotongan); ?></td>
         <td style="text-align:right; font-weight:"><?php echo rupiah($rekappenjualantsm->totalpotistimewa); ?></td>
-        <td style="text-align:right; font-weight:bold"><?php echo rupiah($totalnetto); ?></td>
+        <td style="text-align:right; font-weight:bold"><?php echo rupiah($totalnettotsm); ?></td>
         <td style="text-align:right; font-weight:bold">
             <form action="/laporanpenjualan/cetak" method="post" class="frmpending" target="_blank">
                 @csrf
@@ -99,7 +99,7 @@
         <td style="text-align:right; font-weight:"><?php echo rupiah($rekappenjualangrt->totalpenyharga); ?></td>
         <td style="text-align:right; font-weight:"><?php echo rupiah($rekappenjualangrt->totalpotongan); ?></td>
         <td style="text-align:right; font-weight:"><?php echo rupiah($rekappenjualangrt->totalpotistimewa); ?></td>
-        <td style="text-align:right; font-weight:bold"><?php echo rupiah($totalnetto); ?></td>
+        <td style="text-align:right; font-weight:bold"><?php echo rupiah($totalnettogrt); ?></td>
         <td style="text-align:right; font-weight:bold">
             <form action="/laporanpenjualan/cetak" method="post" class="frmpending" target="_blank">
                 @csrf
