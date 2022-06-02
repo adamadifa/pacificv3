@@ -279,8 +279,9 @@
 </div>
 
 <!-- Rekap Penjualan -->
+<!-- Rekap Penjualan -->
 <div class="modal fade text-left" id="mdlrekappenjualan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 1024px" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel18">Rekap Penjualan</h4>
@@ -289,7 +290,18 @@
                 </button>
             </div>
             <div class="modal-body">
+                <div class="text-center" id="loadingrekappenjualan">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
                 <div id="loadrekappenjualan"></div>
+                <div class="text-center" id="loadingrekapkasbesar">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+                <div id="loadrekapkasbesar"></div>
             </div>
         </div>
     </div>
@@ -370,6 +382,7 @@
         function loadrekappenjualan() {
             var bulan = $("#bulanpenjualan").val();
             var tahun = $("#tahunpenjualan").val();
+            $('#loadingrekappenjualan').show();
             $.ajax({
                 type: 'POST'
                 , url: '/rekappenjualandashboard'
@@ -381,6 +394,27 @@
                 , cache: false
                 , success: function(respond) {
                     $("#loadrekappenjualan").html(respond);
+                    $('#loadingrekappenjualan').hide();
+                }
+            });
+        }
+
+        function loadrekapkasbesar() {
+            var bulan = $("#bulanpenjualan").val();
+            var tahun = $("#tahunpenjualan").val();
+            $('#loadingrekapkasbesar').show();
+            $.ajax({
+                type: 'POST'
+                , url: '/rekapkasbesardashboard'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , bulan: bulan
+                    , tahun: tahun
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loadrekapkasbesar").html(respond);
+                    $('#loadingrekapkasbesar').hide();
                 }
             });
         }
@@ -480,6 +514,7 @@
         $("#tampilkanpenjualancashin").click(function(e) {
             e.preventDefault();
             loadrekappenjualan();
+            loadrekapkasbesar();
             $('#mdlrekappenjualan').modal({
                 backdrop: 'static'
                 , keyboard: false
