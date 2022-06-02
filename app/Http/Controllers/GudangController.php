@@ -12,7 +12,7 @@ class GudangController extends Controller
     public function rekappersediaandashboard()
     {
         $query = Cabang::query();
-        $query->where('cabang.kode_cabang', '!=', 'GRT');
+
         $query->select(
             'cabang.kode_cabang',
             'nama_cabang',
