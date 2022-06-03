@@ -489,13 +489,21 @@ class PelangganController extends Controller
 
     public function getpelanggansalesman(Request $request)
     {
+        $kode_cabang = $request->kode_cabang;
         $id_karyawan = $request->id_karyawan;
-        $pelanggan =
-            DB::table('penjualan')
-            ->select('penjualan.kode_pelanggan', 'nama_pelanggan')
-            ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
-            ->where('id_sales', $id_karyawan)
-            ->distinct()->get(['penjualan.kode_pelanggan']);
+        $query = Penjualan::query();
+        $query->select('penjualan.kode_pelanggan', 'nama_pelanggan');
+        $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        if (!empty($kode_cabang)) {
+            $query->where('karyawan.kode_cabang', $kode_cabang);
+        }
+        if (!empty($id_karyawan)) {
+            $query->where('id_sales', $id_karyawan);
+        }
+        $pelanggan = $query->distinct()->get(['penjualan.kode_pelanggan']);
+
+
         //Pelanggan::where('id_sales', $id_karyawan)->where('status_pelanggan', 1)->get();
         echo "<option value=''>Semua Pelanggan</option>";
         foreach ($pelanggan as $d) {

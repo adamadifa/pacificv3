@@ -229,12 +229,13 @@
             });
         }
 
-        function loadpelanggansalesman(id_karyawan) {
+        function loadpelanggansalesman(kode_cabang, id_karyawan) {
             $.ajax({
                 type: 'POST'
                 , url: '/pelanggan/getpelanggansalesman'
                 , data: {
                     _token: "{{ csrf_token() }}"
+                    , kode_cabang: kode_cabang
                     , id_karyawan: id_karyawan
                 }
                 , cache: false
@@ -246,17 +247,16 @@
 
         $("#kode_cabang").change(function() {
             var kode_cabang = $(this).val();
-            if (kode_cabang == "") {
-                $("#jenislaporan").val('rekap');
-            }
             disabledform();
             loadsalesmancabang(kode_cabang);
+            loadpelanggansalesman(kode_cabang, id_karyawan = "");
         });
 
         $("#id_karyawan").change(function() {
             var id_karyawan = $(this).val();
-            loadpelanggansalesman(id_karyawan);
+            loadpelanggansalesman(kode_cabang = "", id_karyawan);
         });
+
     });
 
 </script>
