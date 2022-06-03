@@ -46,7 +46,15 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    <div class="row" id="pilihsalesman">
+                                        <div class="col-12">
+                                            <div class="form-group  ">
+                                                <select name="id_karyawan" id="id_karyawan" class="form-control">
+                                                    <option value="">Semua Salesman</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="row" id="pilihperiode">
                                         <div class="col-6">
                                             <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker />
@@ -90,7 +98,24 @@
 @push('myscript')
 <script>
     $(function() {
-
+        function loadsalesmancabang(kode_cabang) {
+            $.ajax({
+                type: 'POST'
+                , url: '/salesman/getsalescab'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , kode_cabang: kode_cabang
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#id_karyawan").html(respond);
+                }
+            });
+        }
+        $("#kode_cabang").change(function() {
+            var kode_cabang = $(this).val();
+            loadsalesmancabang(kode_cabang);
+        });
         $("#frmPenjualan").submit(function() {
             var cabang = $("#cabang").val();
             var kode_cabang = $("#kode_cabang").val();

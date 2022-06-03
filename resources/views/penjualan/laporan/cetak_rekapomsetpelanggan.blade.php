@@ -47,6 +47,9 @@
         @endif
         <br>
         LAPORAN REKAP OMSET PELANGGAN<br>
+        @if ($karyawan != null)
+        SALESMAN : {{ $karyawan->nama_karyawan }}<br>
+        @endif
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
         <br>
 

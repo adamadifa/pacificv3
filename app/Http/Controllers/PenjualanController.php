@@ -4002,9 +4002,15 @@ class PenjualanController extends Controller
         if ($request->kode_cabang != "") {
             $query->where('karyawan.kode_cabang', $request->kode_cabang);
         }
+
+        if (!empty($request->id_karyawan)) {
+            $query->where('penjualan.id_karyawan', $request->id_karyawan);
+        }
         $query->groupByRaw('penjualan.kode_pelanggan,nama_pelanggan,pasar');
         $query->orderBy('nama_pelanggan');
         $rekapomsetpelanggan = $query->get();
+
+        $karyawan = DB::table('karyawan')->where('id_karyawan', $request->id_karyawan)->first();
         if (isset($_POST['export'])) {
             $time = date("H:i:s");
             // Fungsi header dengan mengirimkan raw data excel
@@ -4012,7 +4018,7 @@ class PenjualanController extends Controller
             // Mendefinisikan nama file ekspor "hasil-export.xls"
             header("Content-Disposition: attachment; filename=Rekap Omset Pelanggan Periode $dari-$sampai-$time.xls");
         }
-        return view('penjualan.laporan.cetak_rekapomsetpelanggan', compact('rekapomsetpelanggan', 'cabang', 'dari', 'sampai', 'periode'));
+        return view('penjualan.laporan.cetak_rekapomsetpelanggan', compact('rekapomsetpelanggan', 'cabang', 'dari', 'sampai', 'periode', 'karyawan'));
     }
 
     public function laporanrekappelanggan()
