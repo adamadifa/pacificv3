@@ -117,14 +117,14 @@
     <tfoot class="thead-dark">
         <tr>
             <th style="font-weight:bold">TOTAL</th>
-            <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalbruto); ?></th>
-            <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalretur); ?></th>
-            <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalpenyharga); ?></th>
-            <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalpotongan); ?></th>
-            <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalpotistimewa); ?></th>
-            <th style="text-align:right; font-weight:bold"><?php echo rupiah($grandnetto); ?></th>
-            <th style="text-align:right; font-weight:bold"><?php echo rupiah($grandnettopending); ?></th>
-            <th style="text-align:right; font-weight:bold"><?php echo rupiah($grandnetto - $grandnettopending); ?></th>
+            <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalbruto + $rekappenjualantsm->totalbruto + $rekappenjualangrt->totalbruto); ?></th>
+            <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalretur + $rekappenjualantsm->totalretur + $rekappenjualangrt->totalretur); ?></th>
+            <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalpenyharga + $rekappenjualantsm->totalpenyharga + $rekappenjualangrt->totalpenyharga ); ?></th>
+            <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalpotongan + $rekappenjualantsm->totalpotongan + $rekappenjualangrt->totalpotongan); ?></th>
+            <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalpotistimewa + $rekappenjualantsm->totalpotistimewa + $rekappenjualangrt->totalpotistimewa); ?></th>
+            <th style="text-align:right; font-weight:bold"><?php echo rupiah($grandnetto + $totalnettotsm + $totalnettogrt); ?></th>
+            <th style="text-align:right; font-weight:bold"><?php echo rupiah($grandnettopending + $totalnettopendingtsm + $totalnettopendinggrt); ?></th>
+            <th style="text-align:right; font-weight:bold"><?php echo rupiah(($grandnetto + $totalnettotsm + $totalnettogrt) - ($grandnettopending + $totalnettopendingtsm + $totalnettopendinggrt)); ?></th>
         </tr>
     </tfoot>
 </table>

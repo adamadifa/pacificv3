@@ -5155,6 +5155,7 @@ class PenjualanController extends Controller
             ->join('karyawan', 'historibayar.id_karyawan', '=', 'karyawan.id_karyawan')
             ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
             ->whereBetween('tglbayar', [$dari, $sampai])
+            ->where('karyawan.kode_cabang', '!=', 'TSM')
             ->groupByRaw('karyawan.kode_cabang,nama_cabang')
             ->get();
 

@@ -146,6 +146,7 @@ class TargetkomisiController extends Controller
 
         $cek = DB::table('komisi_target_qty_detail')->where('kode_target', $kode_target)->where('id_karyawan', $id_karyawan)->where('kode_produk', $kode_produk)->count();
         if (empty($cek)) {
+            echo 1;
             $data = [
                 'kode_target' => $kode_target,
                 'id_karyawan' => $id_karyawan,
@@ -155,6 +156,7 @@ class TargetkomisiController extends Controller
 
             DB::table('komisi_target_qty_detail')->insert($data);
         } else {
+            echo 2;
             $dataupdate = [
                 'jumlah_target' => $jmltarget
             ];
