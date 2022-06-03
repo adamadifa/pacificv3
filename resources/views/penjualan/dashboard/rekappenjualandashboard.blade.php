@@ -93,7 +93,7 @@
             $totalnettogrt = $rekappenjualangrt->totalbruto - $rekappenjualangrt->totalretur - $rekappenjualangrt->totalpenyharga - $rekappenjualangrt->totalpotongan - $rekappenjualangrt->totalpotistimewa;
             $totalnettopendinggrt  = $rekappenjualangrt->totalbrutopending - $rekappenjualangrt->totalreturpending - $rekappenjualangrt->totalpenyhargapending - $rekappenjualangrt->totalpotonganpending - $rekappenjualangrt->totalpotistimewapending;
         ?>
-        <td class="cabang" style="font-weight:bold">GARUT</td>
+        <td class="cabang" style="font-weight:bold"><?php echo strtoUpper($rekappenjualantsm->nama_cabang); ?> (GRT)</td>
         <td style="text-align:right; font-weight:"><?php echo rupiah($rekappenjualangrt->totalbruto); ?></td>
         <td style="text-align:right; font-weight:"><?php echo rupiah($rekappenjualangrt->totalretur); ?></td>
         <td style="text-align:right; font-weight:"><?php echo rupiah($rekappenjualangrt->totalpenyharga); ?></td>

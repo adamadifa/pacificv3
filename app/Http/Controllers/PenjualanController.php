@@ -5146,6 +5146,7 @@ class PenjualanController extends Controller
 
     public function rekapkasbesardashboard(Request $request)
     {
+        $salesgarut = ['STSM05', 'STSM09', 'STSM11'];
         $bulan = $request->bulan;
         $tahun = $request->tahun;
         $dari = $tahun . "-" . $bulan . "-01";
@@ -5158,7 +5159,26 @@ class PenjualanController extends Controller
             ->where('karyawan.kode_cabang', '!=', 'TSM')
             ->groupByRaw('karyawan.kode_cabang,nama_cabang')
             ->get();
+        $kasbesartsm = DB::table('historibayar')
+            ->selectRaw("karyawan.kode_cabang,nama_cabang,SUM(IF(status_bayar='voucher',bayar,0)) as voucher,SUM(IF(status_bayar IS NULL,bayar,0)) as cashin")
+            ->join('karyawan', 'historibayar.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
+            ->whereBetween('tglbayar', [$dari, $sampai])
+            ->where('karyawan.kode_cabang', 'TSM')
+            ->whereNotIn('historibayar.id_karyawan', $salesgarut)
+            ->groupByRaw('karyawan.kode_cabang,nama_cabang')
+            ->first();
 
-        return view('penjualan.dashboard.rekapkasbesardashboard', compact('kasbesar'));
+        $kasbesargrt = DB::table('historibayar')
+            ->selectRaw("karyawan.kode_cabang,nama_cabang,SUM(IF(status_bayar='voucher',bayar,0)) as voucher,SUM(IF(status_bayar IS NULL,bayar,0)) as cashin")
+            ->join('karyawan', 'historibayar.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
+            ->whereBetween('tglbayar', [$dari, $sampai])
+            ->where('karyawan.kode_cabang', 'TSM')
+            ->whereIn('historibayar.id_karyawan', $salesgarut)
+            ->groupByRaw('karyawan.kode_cabang,nama_cabang')
+            ->first();
+
+        return view('penjualan.dashboard.rekapkasbesardashboard', compact('kasbesar', 'kasbesartsm', 'kasbesargrt'));
     }
 }
