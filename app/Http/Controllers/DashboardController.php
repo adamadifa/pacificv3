@@ -287,7 +287,7 @@ class DashboardController extends Controller
         $cabang = $this->cabang;
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-        return view('dashboard.gudangcabang', compact('rekappenjualan', 'bulan', 'cabang', 'dari', 'sampai'));
+        return view('dashboard.gudangcabang', compact('bulan', 'cabang', 'dari', 'sampai'));
     }
 
     function dashboardkepalapenjualan()
