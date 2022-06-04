@@ -11,6 +11,7 @@ use App\Http\Controllers\BelumsetorController;
 use App\Http\Controllers\BpbjController;
 use App\Http\Controllers\CabangController;
 use App\Http\Controllers\CoaController;
+use App\Http\Controllers\CostratioController;
 use App\Http\Controllers\DaftarController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DpbController;
@@ -1218,4 +1219,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/ticket/{kode_pengajuan}/batalapprove', [TicketController::class, 'batalapprove']);
     Route::get('/ticket/{kode_pengajuan}/done', [TicketController::class, 'done']);
     Route::get('/ticket/{kode_pengajuan}/bataldone', [TicketController::class, 'bataldone']);
+
+    //Costratio
+    Route::get('/costratio', [CostratioController::class, 'index']);
 });

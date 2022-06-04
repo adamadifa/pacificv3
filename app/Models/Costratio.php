@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Costratio extends Model
 {
     use HasFactory;
+    protected $table = 'costratio_biaya';
+    protected $guarded = [];
 }

@@ -267,131 +267,177 @@ $total += $d->subtotal;
 
 
                 if (harga_pack === 0) {
-                    if (jmlpcs >= isipcsdus) {
-                        swal("Oops", "Jml Pcs Melebihi Batas Maksimal, Masukan Ke Satuan Dus/Ball", "warning");
-                        $tblrow.find('.jmlpcs').val(0);
-                        var total = (jmldus * harga_dus) + (jmlpack * harga_pack) + (0 * harga_pcs);
-                        $.ajax({
-                            type: 'POST'
-                            , url: '/retur/updatedetailtemp'
-                            , data: {
-                                _token: "{{ csrf_token() }}"
-                                , kode_barang: kode_barang
-                                , jmldus: jmldus
-                                , jmlpack: jmlpack
-                                , jmlpcs: 0
-                                , harga_dus: harga_dus
-                                , harga_pack: harga_pack
-                                , harga_pcs: harga_pcs
-                                , total: total
-                                , kode_pelanggan: kode_pelanggan
-                            }
-                            , cache: false
-                            , success: function(respond) {
-                                console.log(respond);
-                                loadtotal();
-                            }
-                        });
-                    } else {
-                        var total = (jmldus * harga_dus) + (jmlpack * harga_pack) + (jmlpcs * harga_pcs);
-                        $.ajax({
-                            type: 'POST'
-                            , url: '/retur/updatedetailtemp'
-                            , data: {
-                                _token: "{{ csrf_token() }}"
-                                , kode_barang: kode_barang
-                                , jmldus: jmldus
-                                , jmlpack: jmlpack
-                                , jmlpcs: jmlpcs
-                                , harga_dus: harga_dus
-                                , harga_pack: harga_pack
-                                , harga_pcs: harga_pcs
-                                , total: total
-                                , kode_pelanggan: kode_pelanggan
-                            }
-                            , cache: false
-                            , success: function(respond) {
-                                console.log(respond);
-                                loadtotal();
-                            }
-                        });
-                    }
-                } else {
-                    if (jmlpack >= isipack) {
-                        swal("Oops", "Jml Pack Melebihi Batas Maksimal, Masukan Ke Satuan Dus/Ball", "warning");
-                        $tblrow.find('.jmlpack').val(0);
-                        var total = (jmldus * harga_dus) + (0 * harga_pack) + (jmlpcs * harga_pcs);
-                        $.ajax({
-                            type: 'POST'
-                            , url: '/retur/updatedetailtemp'
-                            , data: {
-                                _token: "{{ csrf_token() }}"
-                                , kode_barang: kode_barang
-                                , jmldus: jmldus
-                                , jmlpack: 0
-                                , jmlpcs: jmlpcs
-                                , harga_dus: harga_dus
-                                , harga_pack: harga_pack
-                                , harga_pcs: harga_pcs
-                                , total: total
-                                , kode_pelanggan: kode_pelanggan
-                            }
-                            , cache: false
-                            , success: function(respond) {
-                                console.log(respond);
-                                loadtotal();
-                            }
-                        });
+                    // if (jmlpcs >= isipcsdus) {
+                    //     swal("Oops", "Jml Pcs Melebihi Batas Maksimal, Masukan Ke Satuan Dus/Ball", "warning");
+                    //     $tblrow.find('.jmlpcs').val(0);
+                    //     var total = (jmldus * harga_dus) + (jmlpack * harga_pack) + (0 * harga_pcs);
+                    //     $.ajax({
+                    //         type: 'POST'
+                    //         , url: '/retur/updatedetailtemp'
+                    //         , data: {
+                    //             _token: "{{ csrf_token() }}"
+                    //             , kode_barang: kode_barang
+                    //             , jmldus: jmldus
+                    //             , jmlpack: jmlpack
+                    //             , jmlpcs: 0
+                    //             , harga_dus: harga_dus
+                    //             , harga_pack: harga_pack
+                    //             , harga_pcs: harga_pcs
+                    //             , total: total
+                    //             , kode_pelanggan: kode_pelanggan
+                    //         }
+                    //         , cache: false
+                    //         , success: function(respond) {
+                    //             console.log(respond);
+                    //             loadtotal();
+                    //         }
+                    //     });
+                    // } else {
+                    //     var total = (jmldus * harga_dus) + (jmlpack * harga_pack) + (jmlpcs * harga_pcs);
+                    //     $.ajax({
+                    //         type: 'POST'
+                    //         , url: '/retur/updatedetailtemp'
+                    //         , data: {
+                    //             _token: "{{ csrf_token() }}"
+                    //             , kode_barang: kode_barang
+                    //             , jmldus: jmldus
+                    //             , jmlpack: jmlpack
+                    //             , jmlpcs: jmlpcs
+                    //             , harga_dus: harga_dus
+                    //             , harga_pack: harga_pack
+                    //             , harga_pcs: harga_pcs
+                    //             , total: total
+                    //             , kode_pelanggan: kode_pelanggan
+                    //         }
+                    //         , cache: false
+                    //         , success: function(respond) {
+                    //             console.log(respond);
+                    //             loadtotal();
+                    //         }
+                    //     });
+                    // }
 
-                    } else if (jmlpcs >= isipcs) {
-                        swal("Oops", "Jml Pcs Melebihi Batas Maksimal, Masukan Ke Satuan Pack", "warning");
-                        $tblrow.find('.jmlpcs').val(0);
-                        var total = (jmldus * harga_dus) + (jmlpack * harga_pack) + (0 * harga_pcs);
-                        $.ajax({
-                            type: 'POST'
-                            , url: '/retur/updatedetailtemp'
-                            , data: {
-                                _token: "{{ csrf_token() }}"
-                                , kode_barang: kode_barang
-                                , jmldus: jmldus
-                                , jmlpack: jmlpack
-                                , jmlpcs: 0
-                                , harga_dus: harga_dus
-                                , harga_pack: harga_pack
-                                , harga_pcs: harga_pcs
-                                , total: total
-                                , kode_pelanggan: kode_pelanggan
-                            }
-                            , cache: false
-                            , success: function(respond) {
-                                console.log(respond);
-                                loadtotal();
-                            }
-                        });
-                    } else {
-                        var total = (jmldus * harga_dus) + (jmlpack * harga_pack) + (jmlpcs * harga_pcs);
-                        $.ajax({
-                            type: 'POST'
-                            , url: '/retur/updatedetailtemp'
-                            , data: {
-                                _token: "{{ csrf_token() }}"
-                                , kode_barang: kode_barang
-                                , jmldus: jmldus
-                                , jmlpack: jmlpack
-                                , jmlpcs: jmlpcs
-                                , harga_dus: harga_dus
-                                , harga_pack: harga_pack
-                                , harga_pcs: harga_pcs
-                                , total: total
-                                , kode_pelanggan: kode_pelanggan
-                            }
-                            , cache: false
-                            , success: function(respond) {
-                                console.log(respond);
-                                loadtotal();
-                            }
-                        });
-                    }
+                    var total = (jmldus * harga_dus) + (jmlpack * harga_pack) + (jmlpcs * harga_pcs);
+                    $.ajax({
+                        type: 'POST'
+                        , url: '/retur/updatedetailtemp'
+                        , data: {
+                            _token: "{{ csrf_token() }}"
+                            , kode_barang: kode_barang
+                            , jmldus: jmldus
+                            , jmlpack: jmlpack
+                            , jmlpcs: jmlpcs
+                            , harga_dus: harga_dus
+                            , harga_pack: harga_pack
+                            , harga_pcs: harga_pcs
+                            , total: total
+                            , kode_pelanggan: kode_pelanggan
+                        }
+                        , cache: false
+                        , success: function(respond) {
+                            console.log(respond);
+                            loadtotal();
+                        }
+                    });
+                } else {
+                    // if (jmlpack >= isipack) {
+                    //     swal("Oops", "Jml Pack Melebihi Batas Maksimal, Masukan Ke Satuan Dus/Ball", "warning");
+                    //     $tblrow.find('.jmlpack').val(0);
+                    //     var total = (jmldus * harga_dus) + (0 * harga_pack) + (jmlpcs * harga_pcs);
+                    //     $.ajax({
+                    //         type: 'POST'
+                    //         , url: '/retur/updatedetailtemp'
+                    //         , data: {
+                    //             _token: "{{ csrf_token() }}"
+                    //             , kode_barang: kode_barang
+                    //             , jmldus: jmldus
+                    //             , jmlpack: 0
+                    //             , jmlpcs: jmlpcs
+                    //             , harga_dus: harga_dus
+                    //             , harga_pack: harga_pack
+                    //             , harga_pcs: harga_pcs
+                    //             , total: total
+                    //             , kode_pelanggan: kode_pelanggan
+                    //         }
+                    //         , cache: false
+                    //         , success: function(respond) {
+                    //             console.log(respond);
+                    //             loadtotal();
+                    //         }
+                    //     });
+
+                    // } else if (jmlpcs >= isipcs) {
+                    //     swal("Oops", "Jml Pcs Melebihi Batas Maksimal, Masukan Ke Satuan Pack", "warning");
+                    //     $tblrow.find('.jmlpcs').val(0);
+                    //     var total = (jmldus * harga_dus) + (jmlpack * harga_pack) + (0 * harga_pcs);
+                    //     $.ajax({
+                    //         type: 'POST'
+                    //         , url: '/retur/updatedetailtemp'
+                    //         , data: {
+                    //             _token: "{{ csrf_token() }}"
+                    //             , kode_barang: kode_barang
+                    //             , jmldus: jmldus
+                    //             , jmlpack: jmlpack
+                    //             , jmlpcs: 0
+                    //             , harga_dus: harga_dus
+                    //             , harga_pack: harga_pack
+                    //             , harga_pcs: harga_pcs
+                    //             , total: total
+                    //             , kode_pelanggan: kode_pelanggan
+                    //         }
+                    //         , cache: false
+                    //         , success: function(respond) {
+                    //             console.log(respond);
+                    //             loadtotal();
+                    //         }
+                    //     });
+                    // } else {
+                    //     var total = (jmldus * harga_dus) + (jmlpack * harga_pack) + (jmlpcs * harga_pcs);
+                    //     $.ajax({
+                    //         type: 'POST'
+                    //         , url: '/retur/updatedetailtemp'
+                    //         , data: {
+                    //             _token: "{{ csrf_token() }}"
+                    //             , kode_barang: kode_barang
+                    //             , jmldus: jmldus
+                    //             , jmlpack: jmlpack
+                    //             , jmlpcs: jmlpcs
+                    //             , harga_dus: harga_dus
+                    //             , harga_pack: harga_pack
+                    //             , harga_pcs: harga_pcs
+                    //             , total: total
+                    //             , kode_pelanggan: kode_pelanggan
+                    //         }
+                    //         , cache: false
+                    //         , success: function(respond) {
+                    //             console.log(respond);
+                    //             loadtotal();
+                    //         }
+                    //     });
+                    // }
+
+                    var total = (jmldus * harga_dus) + (jmlpack * harga_pack) + (jmlpcs * harga_pcs);
+                    $.ajax({
+                        type: 'POST'
+                        , url: '/retur/updatedetailtemp'
+                        , data: {
+                            _token: "{{ csrf_token() }}"
+                            , kode_barang: kode_barang
+                            , jmldus: jmldus
+                            , jmlpack: jmlpack
+                            , jmlpcs: jmlpcs
+                            , harga_dus: harga_dus
+                            , harga_pack: harga_pack
+                            , harga_pcs: harga_pcs
+                            , total: total
+                            , kode_pelanggan: kode_pelanggan
+                        }
+                        , cache: false
+                        , success: function(respond) {
+                            console.log(respond);
+                            loadtotal();
+                        }
+                    });
                 }
                 if (!isNaN(total)) {
                     $tblrow.find('.total').text(convertToRupiah(total));

@@ -918,6 +918,14 @@
                         </ul>
                     </li>
                     @endif
+                    @if (in_array($level, $costratio_menu))
+                    <li class="{{ request()->is(['costratio', 'costratio/*']) ? 'active' : '' }}">
+                        <a href="/costratio">
+                            <i class="feather icon-dollar-sign"></i>
+                            <span class="menu-item" data-i18n="Second Level">Cost Ratio</span>
+                        </a>
+                    </li>
+                    @endif
                     @if (in_array($level, $laporan_accounting))
                     <li class="{{ request()->is(['laporanaccounting', 'laporanaccounting/*']) ? 'active' : '' }}">
                         @if ($level =="general affair" || $level=="hrd")
