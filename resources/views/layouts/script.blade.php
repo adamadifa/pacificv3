@@ -6,7 +6,7 @@
 <script src="{{asset('app-assets/vendors/js/pickers/pickadate/picker.date.js')}}"></script>
 <script src="{{asset('app-assets/vendors/js/pickers/pickadate/picker.time.js')}}"></script>
 <script src="{{asset('app-assets/vendors/js/pickers/pickadate/legacy.js')}}"></script>
-<script src="{{asset('app-assets/vendors/js/forms/validation/jqBootstrapValidation.js')}}"></script>
+
 <script src="{{asset('app-assets/vendors/js/extensions/dropzone.min.js')}}"></script>
 
 

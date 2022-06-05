@@ -23,7 +23,8 @@ class CostratioController extends Controller
         }
 
         $query->whereBetween('tgl_transaksi', [$request->dari, $request->sampai]);
-
+        $query->orderBy('tgl_transaksi');
+        $query->orderBy('costratio_biaya.kode_akun');
         $costratio = $query->get();
         return view('costratio.index', compact('cabang', 'sumber', 'costratio'));
     }

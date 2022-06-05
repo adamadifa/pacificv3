@@ -461,4 +461,45 @@ class KaskecilController extends Controller
             return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);;
         }
     }
+
+    public function updatecostratio()
+    {
+        $dari = "2022-05-01";
+        $sampai = date("Y-m-t", strtotime($dari));
+        $kaskecil = DB::table('kaskecil_detail')
+            ->whereBetween('tgl_kaskecil', [$dari, $sampai])
+            ->whereRaw('LEFT(kode_akun,3)="6-1"')
+            ->orWhereBetween('tgl_kaskecil', [$dari, $sampai])
+            ->whereRaw('LEFT(kode_akun,3)="6-2"')
+            ->get();
+
+        $kode = "CR0522";
+        $cr = DB::table('costratio_biaya')
+            ->select('kode_cr')
+            ->whereRaw('LEFT(kode_cr,6) ="' . $kode . '"')
+            ->orderBy('kode_cr', 'desc')
+            ->first();
+        if ($cr != null) {
+            $last_kode_cr = $cr->kode_cr;
+        } else {
+            $last_kode_cr = "";
+        }
+        $kode_cr = $last_kode_cr != null ? $cr->kode_cr : "";
+
+        foreach ($kaskecil as $d) {
+            $kode_cr = buatkode($kode_cr, "CR0522", 4);
+            $data = [
+                'kode_cr' => $kode_cr,
+                'tgl_transaksi' => $d->tgl_kaskecil,
+                'kode_akun' => $d->kode_akun,
+                'keterangan' => $d->keterangan,
+                'kode_cabang' => $d->kode_cabang,
+                'id_sumber_costratio' => 1,
+                'jumlah' => $d->jumlah
+            ];
+            DB::table('costratio_biaya')->insert($data);
+            DB::table('kaskecil_detail')->where('id', $d->id)->update(['kode_cr' => $kode_cr]);
+            $kode_cr = $kode_cr;
+        }
+    }
 }

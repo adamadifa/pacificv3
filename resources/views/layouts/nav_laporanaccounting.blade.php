@@ -33,6 +33,13 @@
                 </li>
             </a>
             @endif
+            @if (in_array($level,$laporan_costratio))
+            <a href="/laporanaccounting/costratio" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanaccounting/costratio']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Cost Ratio
+                </li>
+            </a>
+            @endif
         </ul>
     </div>
 </div>

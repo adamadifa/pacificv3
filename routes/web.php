@@ -891,10 +891,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/laporanaccounting/rekappersediaan', [LaporanaccountingController::class, 'rekappersediaan']);
     Route::get('/laporanaccounting/bukubesar', [LaporanaccountingController::class, 'bukubesar']);
     Route::get('/laporanaccounting/jurnalumum', [LaporanaccountingController::class, 'jurnalumum']);
+    Route::get('/laporanaccounting/costratio', [LaporanaccountingController::class, 'costratio']);
     Route::post('/laporanaccounting/rekapbj/cetak', [LaporanaccountingController::class, 'cetak_rekapbj']);
     Route::post('/laporanaccounting/rekappersediaan/cetak', [LaporanaccountingController::class, 'cetak_rekappersediaan']);
     Route::post('/laporanaccounting/bukubesar/cetak', [LaporanaccountingController::class, 'cetak_bukubesar']);
     Route::post('/laporanaccounting/jurnalumum/cetak', [LaporanaccountingController::class, 'cetak_jurnalumum']);
+    Route::post('/laporanaccounting/costratio/cetak', [LaporanaccountingController::class, 'cetak_costratio']);
 
     Route::get('/laporankeuangan/kaskecil', [LaporankeuanganController::class, 'kaskecil']);
     Route::post('/laporankeuangan/kaskecil/cetak', [LaporankeuanganController::class, 'cetak_kaskecil']);
@@ -1221,5 +1223,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/ticket/{kode_pengajuan}/bataldone', [TicketController::class, 'bataldone']);
 
     //Costratio
+    Route::get('/updatekaskecilcr', [KaskecilController::class, 'updatecostratio']);
+    Route::get('/updatepmbcr', [PembelianController::class, 'updatecostratio']);
+    Route::get('/updateledgercr', [LedgerController::class, 'updatecostratio']);
+
     Route::get('/costratio', [CostratioController::class, 'index']);
 });

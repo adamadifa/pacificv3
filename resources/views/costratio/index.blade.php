@@ -23,9 +23,6 @@
         @include('layouts.notification')
         <div class="col-md-12 col-sm-12 col-lg-12">
             <div class="card">
-                <div class="card-header">
-                    <a href="/costratio/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
-                </div>
                 <div class="card-body">
                     <form action="/costratio">
                         <div class="row">
@@ -81,15 +78,37 @@
                                     <th>Jumlah</th>
                                     <th>Sumber</th>
                                     <th>Cabang</th>
-                                    <th>Aksi</th>
+
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($costratio as $d)
-                                <tr>
+                                @if ($d->id_sumber_costratio==1)
+                                @php
+                                $color = "bg-info";
+                                @endphp
+                                @elseif($d->id_sumber_costratio==2)
+                                @php
+                                $color="bg-success";
+                                @endphp
+                                @elseif($d->id_sumber_costratio==4)
+                                @php
+                                $color="bg-danger";
+                                @endphp
+                                @else
+                                @php
+                                $color="";
+                                @endphp
+                                @endif
+                                <tr class="{{ $color }}">
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ date("d-m-Y",strtotime($d->tgl_transaksi)) }}</td>
                                     <td>{{ $d->kode_akun }}</td>
+                                    <td>{{ $d->nama_akun }}</td>
+                                    <td style="width: 40%">{{ ucwords(strtolower($d->keterangan)) }}</td>
+                                    <td class="text-right">{{ rupiah($d->jumlah) }}</td>
+                                    <td>{{ $d->nama_sumber }}</td>
+                                    <td>{{ $d->kode_cabang }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>

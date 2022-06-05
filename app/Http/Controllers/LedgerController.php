@@ -206,7 +206,8 @@ class LedgerController extends Controller
 
                 DB::table('buku_besar')->insert($databukubesar);
                 DB::table('buku_besar')->insert($databukubesarbank);
-                if ($d->status_dk == "D" && $d->peruntukan == "PC") {
+                $cekakun = substr($d->kode_akun, 0, 3);
+                if ($d->status_dk == 'D' and $cekakun == '6-1' and $d->peruntukan == 'PC' or $d->status_dk == 'D' and $cekakun == '6-2' and $d->peruntukan == 'PC') {
                     $kode = "CR" . $bulan . $tahun;
                     $cr = DB::table('costratio_biaya')
                         ->select('kode_cr')
@@ -358,7 +359,8 @@ class LedgerController extends Controller
             DB::table('buku_besar')->where('no_bukti', $ledger->nobukti_bukubesar)->update($databukubesar);
             DB::table('buku_besar')->where('no_bukti', $ledger->nobukti_bukubesar_2)->update($databukubesarbank);
             if (empty($ledger->kode_cr)) {
-                if ($status_dk == "D" && $peruntukan == "PC") {
+                $cekakun = substr($kode_akun, 0, 3);
+                if ($status_dk == 'D' and $cekakun == '6-1' and $peruntukan == 'PC' or $status_dk == 'D' and $cekakun == '6-2' and $peruntukan == 'PC') {
                     $kode = "CR" . $bulan . $tahun;
                     $cr = DB::table('costratio_biaya')
                         ->select('kode_cr')
@@ -562,6 +564,49 @@ class LedgerController extends Controller
             return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
         } else {
             return Redirect::back()->with(['warning' => 'Data Gagal Dihapus Hubungi Tim IT']);
+        }
+    }
+
+    public function updatecostratio()
+    {
+        $dari = "2022-05-01";
+        $sampai = date("Y-m-t", strtotime($dari));
+        $ledger = DB::table('ledger_bank')
+            ->whereBetween('tgl_ledger', [$dari, $sampai])
+            ->whereRaw('LEFT(kode_akun,3)="6-1"')
+            ->where('peruntukan', 'PC')
+            ->orWhereBetween('tgl_ledger', [$dari, $sampai])
+            ->whereRaw('LEFT(kode_akun,3)="6-2"')
+            ->where('peruntukan', 'PC')
+            ->get();
+
+        $kode = "CR0522";
+        $cr = DB::table('costratio_biaya')
+            ->select('kode_cr')
+            ->whereRaw('LEFT(kode_cr,6) ="' . $kode . '"')
+            ->orderBy('kode_cr', 'desc')
+            ->first();
+        if ($cr != null) {
+            $last_kode_cr = $cr->kode_cr;
+        } else {
+            $last_kode_cr = "";
+        }
+        $kode_cr = $last_kode_cr != null ? $cr->kode_cr : "";
+        //dd($ledger);
+        foreach ($ledger as $d) {
+            $kode_cr = buatkode($kode_cr, "CR0522", 4);
+            $data = [
+                'kode_cr' => $kode_cr,
+                'tgl_transaksi' => $d->tgl_ledger,
+                'kode_akun' => $d->kode_akun,
+                'keterangan' => $d->keterangan,
+                'kode_cabang' => $d->ket_peruntukan,
+                'id_sumber_costratio' => 2,
+                'jumlah' => $d->jumlah
+            ];
+            DB::table('costratio_biaya')->insert($data);
+            DB::table('ledger_bank')->where('no_bukti', $d->no_bukti)->update(['kode_cr' => $kode_cr]);
+            $kode_cr = $kode_cr;
         }
     }
 }

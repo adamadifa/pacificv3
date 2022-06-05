@@ -38,7 +38,13 @@ class SaldoawalBJController extends Controller
             $query->where('tahun', $request->tahun);
         }
 
-        $query->where('kode_cabang', $request->kode_cabang);
+        if (Auth::user()->kode_cabang != "PCF") {
+            $query->where('kode_cabang', $request->kode_cabang);
+        } else {
+            if (!empty($request->kode_cabang)) {
+                $query->where('kode_cabang', $request->kode_cabang);
+            }
+        }
 
 
 

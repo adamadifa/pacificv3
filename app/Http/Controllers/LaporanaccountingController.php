@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cabang;
 use App\Models\Coa;
+use App\Models\Costratio;
+use App\Models\Detailretur;
+use App\Models\Penjualan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -686,5 +690,199 @@ class LaporanaccountingController extends Controller
             header("Content-Disposition: attachment; filename=Jurnal Umum.xls");
         }
         return view('laporanaccounting.laporan.cetak_jurnalumum', compact('dari', 'sampai', 'departemen', 'jurnalumum'));
+    }
+
+    public function costratio()
+    {
+        $cabang = Cabang::orderBy('kode_cabang')->get();
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        return view('laporanaccounting.laporan.frm.lap_costratio', compact('bulan', 'cabang'));
+    }
+
+    public function cetak_costratio(Request $request)
+    {
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $kode_cabang = $request->kode_cabang;
+        $dari = $tahun . "-" . $bulan . "-01";
+        $sampai = date("Y-m-t", strtotime($dari));
+        $query = Costratio::query();
+        $query->selectRaw("costratio_biaya.kode_akun,nama_akun,
+        SUM(IF(kode_cabang='BDG',jumlah,0)) as bdg,
+        SUM(IF(kode_cabang='BGR',jumlah,0)) as bgr,
+        SUM(IF(kode_cabang='GRT',jumlah,0)) as grt,
+        SUM(IF(kode_cabang='KLT',jumlah,0)) as klt,
+        SUM(IF(kode_cabang='PST',jumlah,0)) as pst,
+        SUM(IF(kode_cabang='PWT',jumlah,0)) as pwt,
+        SUM(IF(kode_cabang='SBY',jumlah,0)) as sby,
+        SUM(IF(kode_cabang='SKB',jumlah,0)) as skb,
+        SUM(IF(kode_cabang='SMR',jumlah,0)) as smr,
+        SUM(IF(kode_cabang='TGL',jumlah,0)) as tgl,
+        SUM(IF(kode_cabang='TSM',jumlah,0)) as tsm,
+        SUM(jumlah) as total");
+        $query->join('coa', 'costratio_biaya.kode_akun', '=', 'coa.kode_akun');
+        $query->whereBetween('tgl_transaksi', [$dari, $sampai]);
+        $query->orderBy('costratio_biaya.kode_akun');
+        $query->groupByRaw('costratio_biaya.kode_akun,nama_akun');
+        $query->get();
+        $biaya = $query->get();
+
+        $qpenjualan = Penjualan::query();
+        $qpenjualan->selectRaw("
+        SUM(IF(karyawan.kode_cabang ='TSM',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0) ,0)) as netswanTSM,
+		SUM(IF(karyawan.kode_cabang ='TSM',brutoaida-potaida - potisaida-penyaida,0)) as netaidaTSM,
+		SUM(IF(karyawan.kode_cabang ='BDG',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanBDG,
+		SUM(IF(karyawan.kode_cabang ='BDG',brutoaida-potaida - potisaida-penyaida,0)) as netaidaBDG,
+		SUM(IF(karyawan.kode_cabang ='SKB',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanSKB,
+		SUM(IF(karyawan.kode_cabang ='SKB',brutoaida-potaida - potisaida-penyaida,0)) as netaidaSKB,
+		SUM(IF(karyawan.kode_cabang ='TGL',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanTGL,
+		SUM(IF(karyawan.kode_cabang ='TGL',brutoaida-potaida - potisaida-penyaida,0)) as netaidaTGL,
+		SUM(IF(karyawan.kode_cabang ='BGR',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanBGR,
+		SUM(IF(karyawan.kode_cabang ='BGR',brutoaida-potaida - potisaida-penyaida,0)) as netaidaBGR,
+		SUM(IF(karyawan.kode_cabang ='PWT',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanPWT,
+		SUM(IF(karyawan.kode_cabang ='PWT',brutoaida-potaida - potisaida-penyaida,0)) as netaidaPWT,
+		SUM(IF(karyawan.kode_cabang ='PST',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanPST,
+		SUM(IF(karyawan.kode_cabang ='PST',brutoaida-potaida - potisaida-penyaida,0)) as netaidaPST,
+		SUM(IF(karyawan.kode_cabang ='GRT',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanGRT,
+		SUM(IF(karyawan.kode_cabang ='GRT',brutoaida-potaida - potisaida-penyaida,0)) as netaidaGRT,
+		SUM(IF(karyawan.kode_cabang ='SBY',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanSBY,
+		SUM(IF(karyawan.kode_cabang ='SBY',brutoaida-potaida - potisaida-penyaida,0)) as netaidaSBY,
+		SUM(IF(karyawan.kode_cabang ='SMR',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanSMR,
+		SUM(IF(karyawan.kode_cabang ='SMR',brutoaida-potaida - potisaida-penyaida,0)) as netaidaSMR,
+		SUM(IF(karyawan.kode_cabang ='KLT',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanKLT,
+		SUM(IF(karyawan.kode_cabang ='KLT',brutoaida-potaida - potisaida-penyaida,0)) as netaidaKLT,
+        SUM(brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0)) as totalswan,
+		SUM(brutoaida-potaida - potisaida-penyaida) as totalaida
+        ");
+        $qpenjualan->leftJoin(
+            DB::raw("(
+                SELECT no_fak_penj,
+                SUM(IF(master_barang.jenis_produk = 'SWAN',detailpenjualan.subtotal,0)) as brutoswan,
+                SUM(IF(master_barang.jenis_produk = 'AIDA',detailpenjualan.subtotal,0)) as brutoaida
+                FROM detailpenjualan
+                INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
+                INNER JOIN master_barang ON barang.kode_produk = master_barang.kode_produk
+                GROUP BY no_fak_penj
+            ) dp"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'dp.no_fak_penj');
+            }
+        );
+        $qpenjualan->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $qpenjualan->whereBetween('tgltransaksi', [$dari, $sampai]);
+        $penjualan = $qpenjualan->first();
+
+        $qretur = Detailretur::query();
+        $qretur->selectRaw("
+        SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='TSM',detailretur.subtotal,0)) as returswanTSM,
+		SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='TSM',detailretur.subtotal,0)) as returaidaTSM,
+		SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='BDG',detailretur.subtotal,0)) as returswanBDG,
+		SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='BDG',detailretur.subtotal,0)) as returaidaBDG,
+		SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='SKB',detailretur.subtotal,0)) as returswanSKB,
+		SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='SKB',detailretur.subtotal,0)) as returaidaSKB,
+		SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='TGL',detailretur.subtotal,0)) as returswanTGL,
+		SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='TGL',detailretur.subtotal,0)) as returaidaTGL,
+		SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='BGR',detailretur.subtotal,0)) as returswanBGR,
+		SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='BGR',detailretur.subtotal,0)) as returaidaBGR,
+		SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='PST',detailretur.subtotal,0)) as returswanPST,
+		SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='PST',detailretur.subtotal,0)) as returaidaPST,
+		SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='GRT',detailretur.subtotal,0)) as returswanGRT,
+		SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='GRT',detailretur.subtotal,0)) as returaidaGRT,
+		SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='SBY',detailretur.subtotal,0)) as returswanSBY,
+		SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='SBY',detailretur.subtotal,0)) as returaidaSBY,
+		SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='SMR',detailretur.subtotal,0)) as returswanSMR,
+		SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='SMR',detailretur.subtotal,0)) as returaidaSMR,
+		SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='PWT',detailretur.subtotal,0)) as returswanPWT,
+		SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='PWT',detailretur.subtotal,0)) as returaidaPWT,
+		SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='KLT',detailretur.subtotal,0)) as returswanKLT,
+		SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='KLT',detailretur.subtotal,0)) as returaidaKLT,
+        SUM(IF(master_barang.jenis_produk = 'SWAN',detailretur.subtotal,0)) as totalreturswan,
+		SUM(IF(master_barang.jenis_produk = 'AIDA',detailretur.subtotal,0)) as totalreturaida
+        ");
+        $qretur->join('barang', 'detailretur.kode_barang', '=', 'barang.kode_barang');
+        $qretur->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk');
+        $qretur->join('retur', 'detailretur.no_retur_penj', '=', 'retur.no_retur_penj');
+        $qretur->join('penjualan', 'retur.no_fak_penj', '=', 'penjualan.no_fak_penj');
+        $qretur->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $qretur->whereBetween('tglretur', [$dari, $sampai]);
+        $qretur->where('jenis_retur', 'pf');
+        $retur = $qretur->first();
+
+
+        $qpiutang = Penjualan::query();
+        $qpiutang->selectRaw("
+            SUM(CASE WHEN cabangbarunew = 'TSM' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS TSM,
+            SUM(CASE WHEN cabangbarunew = 'BDG' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS BDG,
+            SUM(CASE WHEN cabangbarunew = 'SKB' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS SKB,
+            SUM(CASE WHEN cabangbarunew = 'TGL' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS TGL,
+            SUM(CASE WHEN cabangbarunew = 'BGR' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS BGR,
+            SUM(CASE WHEN cabangbarunew = 'PWT' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS PWT,
+            SUM(CASE WHEN cabangbarunew = 'PST' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS PST,
+            SUM(CASE WHEN cabangbarunew = 'GRT' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS GRT,
+            SUM(CASE WHEN cabangbarunew = 'SBY' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS SBY,
+            SUM(CASE WHEN cabangbarunew = 'SMR' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS SMR,
+            SUM(CASE WHEN cabangbarunew = 'KLT' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS KLT,
+            SUM(ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0)) as totalpiutang
+        ");
+        $qpiutang->leftJoin(
+            DB::raw("(
+                SELECT pj.no_fak_penj,
+                IF(salesbaru IS NULL,pj.id_karyawan,salesbaru) as salesbarunew, karyawan.nama_karyawan as nama_sales,
+                IF(cabangbaru IS NULL,karyawan.kode_cabang,cabangbaru) as cabangbarunew
+                FROM penjualan pj
+                INNER JOIN karyawan ON pj.id_karyawan = karyawan.id_karyawan
+                LEFT JOIN (
+                    SELECT MAX(id_move) as id_move,no_fak_penj,move_faktur.id_karyawan as salesbaru,karyawan.kode_cabang as cabangbaru
+                    FROM move_faktur
+                    INNER JOIN karyawan ON move_faktur.id_karyawan = karyawan.id_karyawan
+                    WHERE tgl_move <= '$sampai'
+                    GROUP BY no_fak_penj,move_faktur.id_karyawan,karyawan.kode_cabang
+                ) move_fak ON (pj.no_fak_penj = move_fak.no_fak_penj)
+            ) pjmove"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'pjmove.no_fak_penj');
+            }
+        );
+        $qpiutang->leftJoin(
+            DB::raw("(
+                SELECT
+                    historibayar.no_fak_penj AS no_fak_penj,
+                    sum(historibayar.bayar) AS jmlbayar
+                FROM
+                    historibayar
+                WHERE
+                    historibayar.tglbayar <= '$sampai'
+                GROUP BY
+                    historibayar.no_fak_penj
+            ) hblalu"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'hblalu.no_fak_penj');
+            }
+        );
+        $qpiutang->leftJoin(
+            DB::raw("(
+                SELECT
+                    retur.no_fak_penj AS no_fak_penj,
+                    sum(retur.total) AS total
+                FROM
+                    retur
+                WHERE
+                    retur.tglretur <= '$sampai'
+                GROUP BY
+                    retur.no_fak_penj
+            ) retur"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
+            }
+        );
+
+        $qpiutang->where('penjualan.jenisbayar', '!=', 'tunai');
+        $qpiutang->where('tgltransaksi', '<=', $sampai);
+        $qpiutang->whereRaw('ifnull(penjualan.total, 0) - ifnull(retur.total, 0) <> ifnull(hblalu.jmlbayar, 0)');
+        $qpiutang->whereRaw('to_days("' . $sampai . '") - to_days(penjualan.tgltransaksi) > 31');
+        $piutang = $qpiutang->first();
+
+        $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        return view('laporanaccounting.laporan.cetak_costratio', compact('dari', 'sampai', 'biaya', 'penjualan', 'retur', 'piutang'));
     }
 }

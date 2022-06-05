@@ -742,6 +742,7 @@ class GlobalProvider extends ServiceProvider
             $laporan_rekapbj_acc = ['admin', 'direktur', 'manager accounting', 'spv accounting'];
             $laporan_bukubesar = ['admin', 'direktur', 'manager accounting', 'spv accounting'];
             $laporan_jurnalumum = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'general affair', 'hrd'];
+            $laporan_costratio = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'general affair', 'hrd'];
 
 
             //Maintenance
@@ -1078,6 +1079,7 @@ class GlobalProvider extends ServiceProvider
                 'laporan_rekapbj_acc' => $laporan_rekapbj_acc,
                 'laporan_bukubesar' => $laporan_bukubesar,
                 'laporan_jurnalumum' => $laporan_jurnalumum,
+                'laporan_costratio' => $laporan_costratio,
 
                 'maintenance_menu' => $maintenance_menu,
                 'maintenance_pembelian' => $maintenance_pembelian,

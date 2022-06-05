@@ -244,10 +244,10 @@
             var pelanggan = $("#pelanggan").val();
             var jumlah = $("#jumlah").val();
             var kode_akun = $("#kode_akun").val();
-            var kode_cabang = $('#frmInputkaskecil').find('#kode_cabang').val();
+            var kode_cabang = $('#FrmInputledger').find('#kode_cabang').val();
             var cektutuplaporan = $("#cektutuplaporan").val();
             var peruntukan = $("input[name='peruntukan']:checked").val();
-            var kode_cabang = $("#kode_cabang").val();
+
             if (cektutuplaporan == 1) {
                 swal({
                     title: 'Oops'
@@ -302,14 +302,14 @@
                 }).then(function() {
                     $("#kode_akun").focus();
                 });
-            } else if (peruntukan == "PCF" && kode_cabang == "") {
+            } else if (peruntukan == "PC" && kode_cabang == "") {
                 swal({
                     title: 'Oops'
                     , text: 'Kode Cabang Harus Diisi !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
-                    $("#kode_cabang").focus();
+                    $('#FrmInputledger').find('#kode_cabang').focus();
                 });
             } else {
                 simpantemp();
