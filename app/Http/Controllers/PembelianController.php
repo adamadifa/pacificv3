@@ -1389,7 +1389,7 @@ class PembelianController extends Controller
             ->whereRaw('LEFT(detail_pembelian.kode_akun,3)="6-2"')
             ->where('detail_pembelian.kode_cabang', '!=', '')
             ->get();
-        dd($pembelian);
+        //dd($pembelian);
 
         $kode = "CR0122";
         $cr = DB::table('costratio_biaya')
