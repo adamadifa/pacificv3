@@ -133,8 +133,6 @@
                                             <a href="/targetkomisi/{{Crypt::encrypt($d->kode_target)}}/{{Crypt::encrypt($kode_cabang)}}/canceltarget" class="ml-1 danger"><i class="fa fa-close"></i></a>
                                             @endif
                                             @endif
-
-                                            @endif
                                         </div>
 
                                     </td>
