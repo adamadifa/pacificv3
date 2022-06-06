@@ -736,7 +736,7 @@ class GlobalProvider extends ServiceProvider
             $hpp_input = ['admin', 'manager accounting', 'spv accounting'];
             $hargaawal_input = ['admin', 'manager accounting', 'spv accounting'];
             $saldoawal_bukubesar_menu = ['admin', 'manager accounting', 'spv accounting'];
-            $jurnalumum_menu = ['admin', 'manager accounting', 'spv accoupnting', 'general affair', 'hrd'];
+            $jurnalumum_menu = ['admin', 'manager accounting', 'spv accounting', 'general affair', 'hrd'];
             $costratio_menu = ['admin', 'manager accounting', 'spv accounting', 'kepala admin', 'kepala penjualan'];
             $laporan_accounting = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'general affair', 'hrd', 'kepala admin', 'kepala penjualan'];
             $laporan_rekapbj_acc = ['admin', 'direktur', 'manager accounting', 'spv accounting'];
