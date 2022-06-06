@@ -71,6 +71,7 @@
                                     <th>Debet</th>
                                     <th>Kredit</th>
                                     <th>Departemen</th>
+                                    <th>CR</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -93,6 +94,7 @@
                                     <td class="text-right">{{ desimal($debet) }}</td>
                                     <td class="text-right">{{ desimal($kredit) }}</td>
                                     <td>{{ $d->kode_dept }}</td>
+                                    <td>{!! !empty($d->kode_cr) ? "<i class='fa fa-check success'></i>" : "" !!}</td>
                                     <td>
                                         <form method="POST" class="deleteform" action="/jurnalumum/{{Crypt::encrypt($d->kode_jurnal)}}/delete">
                                             @csrf

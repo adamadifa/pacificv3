@@ -27,7 +27,7 @@ class JurnalumumController extends Controller
                 ->where('kode_dept', 'GAF')
                 ->where('status_pengajuan', 1)->get();
         } else {
-            $departemen = DB::table('departemen')->where('status_pengajuan', 1)->get();
+            $departemen = DB::table('departemen')->orderBy('nama_dept')->get();
         }
         return view('jurnalumum.index', compact('jurnalumum', 'departemen'));
     }
@@ -41,6 +41,7 @@ class JurnalumumController extends Controller
 
     public function store(Request $request)
     {
+        $cabang = ['BDG', 'BGR', 'GRT', 'PWT', 'SMR', 'SKB', 'SBY', 'TSM', 'TGL'];
         $tanggal = $request->tanggal;
         $keterangan = $request->keterangan;
         $jumlah = !empty($request->jumlah) ? str_replace(".", "", $request->jumlah) : 0;
@@ -75,16 +76,46 @@ class JurnalumumController extends Controller
         }
 
         $nobukti_bukubesar = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $tahun, 6);
+
+        $cekakun = substr($kode_akun, 0, 3);
+        if ($status_dk == 'D' and $cekakun == '6-1' and in_array($kode_dept, $cabang) or $status_dk == 'D' and $cekakun == '6-2' and in_array($kode_dept, $cabang)) {
+            $kode = "CR" . $bulan . $tahun;
+            $cr = DB::table('costratio_biaya')
+                ->select('kode_cr')
+                ->whereRaw('LEFT(kode_cr,6) ="' . $kode . '"')
+                ->orderBy('kode_cr', 'desc')
+                ->first();
+            if ($cr != null) {
+                $last_kode_cr = $cr->kode_cr;
+            } else {
+                $last_kode_cr = "";
+            }
+            $kode_cr = buatkode($last_kode_cr, "CR" . $bulan . $tahun, 4);
+
+            $datacr = [
+                'kode_cr' => $kode_cr,
+                'tgl_transaksi' => $tanggal,
+                'kode_akun'    => $kode_akun,
+                'keterangan'   => $keterangan,
+                'kode_cabang'  => $kode_dept,
+                'id_sumber_costratio' => 5,
+                'jumlah' => $jumlah
+            ];
+
+            DB::table('costratio_biaya')->insert($datacr);
+        } else {
+            $kode_cr = NULL;
+        }
         $data = [
             'kode_jurnal' => $kode_jurnal,
             'tanggal' => $tanggal,
             'jumlah' => $jumlah,
             'keterangan' => $keterangan,
-            'status_dk' => 'D',
             'kode_akun' => $kode_akun,
             'status_dk' => $status_dk,
             'nobukti_bukubesar' => $nobukti_bukubesar,
-            'kode_dept' => $kode_dept
+            'kode_dept' => $kode_dept,
+            'kode_cr' => $kode_cr
         ];
 
         if ($status_dk == "D") {
@@ -124,10 +155,12 @@ class JurnalumumController extends Controller
         //$jurnalumum = DB::table('jurnal_umum')->where('kode_jurnal', $kode_jurnal)->first();
         $jl = DB::table('jurnal_umum')->where('kode_jurnal', $kode_jurnal)->first();
         $nobukti_bukubesar = $jl->nobukti_bukubesar;
+        $kode_cr = $jl->kode_cr;
         DB::beginTransaction();
         try {
             DB::table('jurnal_umum')->where('kode_jurnal', $kode_jurnal)->delete();
             DB::table('buku_besar')->where('no_bukti', $nobukti_bukubesar)->delete();
+            DB::table('costratio_biaya')->where('kode_cr', $kode_cr)->delete();
             DB::commit();
             return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
         } catch (\Exception $e) {

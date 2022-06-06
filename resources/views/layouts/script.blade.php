@@ -41,7 +41,7 @@
 <script src="{{ asset('app-assets/js/external/jquery-ui.js') }}"></script>
 
 <!-- BEGIN: Page JS-->
-<script src="{{asset('app-assets/js/scripts/forms/validation/form-validation.js')}}"></script>
+
 <script src="{{asset('app-assets/js/scripts/datatables/datatable.js')}}"></script>
 
 <script src="{{ asset('app-assets/js/external/highcharts.js') }}"></script>
