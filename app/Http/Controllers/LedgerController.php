@@ -592,7 +592,7 @@ class LedgerController extends Controller
             $last_kode_cr = "";
         }
         $kode_cr = $last_kode_cr != null ? $cr->kode_cr : "";
-        dd($ledger);
+        //dd($ledger);
         $ceksimpan = 0;
         $cekupdate = 0;
         foreach ($ledger as $d) {
