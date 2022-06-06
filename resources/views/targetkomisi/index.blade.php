@@ -129,6 +129,9 @@
                                             @elseif($level=="manager marketing" && $d->em > 0 && $d->kp==0)
                                             @if ($d->mm > 0)
                                             <a href="/targetkomisi/{{Crypt::encrypt($d->kode_target)}}/{{Crypt::encrypt($kode_cabang)}}/approvetarget" class="ml-1 success"><i class="fa fa-check"></i></a>
+                                            @else
+                                            <a href="/targetkomisi/{{Crypt::encrypt($d->kode_target)}}/{{Crypt::encrypt($kode_cabang)}}/canceltarget" class="ml-1 danger"><i class="fa fa-close"></i></a>
+                                            @endif
                                             @endif
 
                                             @endif
