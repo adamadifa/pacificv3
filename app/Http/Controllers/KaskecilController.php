@@ -485,7 +485,8 @@ class KaskecilController extends Controller
             $last_kode_cr = "";
         }
         $kode_cr = $last_kode_cr != null ? $cr->kode_cr : "";
-
+        $ceksimpan = 0;
+        $cekupdate = 0;
         foreach ($kaskecil as $d) {
             $kode_cr = buatkode($kode_cr, $kode, 4);
             $data = [
@@ -497,9 +498,19 @@ class KaskecilController extends Controller
                 'id_sumber_costratio' => 1,
                 'jumlah' => $d->jumlah
             ];
-            DB::table('costratio_biaya')->insert($data);
-            DB::table('kaskecil_detail')->where('id', $d->id)->update(['kode_cr' => $kode_cr]);
+            $simpan = DB::table('costratio_biaya')->insert($data);
+            $update = DB::table('kaskecil_detail')->where('id', $d->id)->update(['kode_cr' => $kode_cr]);
+            if ($simpan) {
+                $ceksimpan++;
+            }
+
+            if ($update) {
+                $cekupdate++;
+            }
             $kode_cr = $kode_cr;
         }
+
+        echo $ceksimpan . "<br>";
+        echo $cekupdate;
     }
 }
