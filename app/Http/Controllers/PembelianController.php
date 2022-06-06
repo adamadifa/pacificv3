@@ -1376,7 +1376,7 @@ class PembelianController extends Controller
 
     public function updatecostratio()
     {
-        $dari = "2022-01-01";
+        $dari = "2022-02-01";
         $sampai = date("Y-m-t", strtotime($dari));
         $pembelian = DB::table('detail_pembelian')
             ->select('tgl_pembelian', 'detail_pembelian.*', 'nama_barang')
@@ -1391,7 +1391,7 @@ class PembelianController extends Controller
             ->get();
         //dd($pembelian);
 
-        $kode = "CR0122";
+        $kode = "CR0222";
         $cr = DB::table('costratio_biaya')
             ->select('kode_cr')
             ->whereRaw('LEFT(kode_cr,6) ="' . $kode . '"')
@@ -1405,30 +1405,36 @@ class PembelianController extends Controller
         $kode_cr = $last_kode_cr != null ? $cr->kode_cr : "";
         $ceksimpan = 0;
         $cekupdate = 0;
-        foreach ($pembelian as $d) {
-            $kode_cr = buatkode($kode_cr, $kode, 4);
-            $data = [
-                'kode_cr' => $kode_cr,
-                'tgl_transaksi' => $d->tgl_pembelian,
-                'kode_akun' => $d->kode_akun,
-                'keterangan'   => "Pembelian " . $d->nama_barang . "(" . $d->qty . ")",
-                'kode_cabang'  => $d->kode_cabang,
-                'id_sumber_costratio' => 4,
-                'jumlah' => ($d->qty * $d->harga) + $d->penyesuaian
-            ];
-            $simpan = DB::table('costratio_biaya')->insert($data);
-            $update = DB::table('detail_pembelian')->where('nobukti_pembelian', $d->nobukti_pembelian)->where('kode_barang', $d->kode_barang)->update(['kode_cr' => $kode_cr]);
-            if ($simpan) {
-                $ceksimpan++;
+        DB::beginTransaction();
+        try {
+            foreach ($pembelian as $d) {
+                $kode_cr = buatkode($kode_cr, $kode, 4);
+                $data = [
+                    'kode_cr' => $kode_cr,
+                    'tgl_transaksi' => $d->tgl_pembelian,
+                    'kode_akun' => $d->kode_akun,
+                    'keterangan'   => "Pembelian " . $d->nama_barang . "(" . $d->qty . ")",
+                    'kode_cabang'  => $d->kode_cabang,
+                    'id_sumber_costratio' => 4,
+                    'jumlah' => ($d->qty * $d->harga) + $d->penyesuaian
+                ];
+                $simpan = DB::table('costratio_biaya')->insert($data);
+                $update = DB::table('detail_pembelian')->where('nobukti_pembelian', $d->nobukti_pembelian)->where('kode_barang', $d->kode_barang)->update(['kode_cr' => $kode_cr]);
+                if ($simpan) {
+                    $ceksimpan++;
+                }
+
+                if ($update) {
+                    $cekupdate++;
+                }
+                $kode_cr = $kode_cr;
             }
 
-            if ($update) {
-                $cekupdate++;
-            }
-            $kode_cr = $kode_cr;
+            echo $ceksimpan . "<br>";
+            echo $cekupdate;
+        } catch (\Exception $e) {
+            dd($e);
+            DB::rollback();
         }
-
-        echo $ceksimpan . "<br>";
-        echo $cekupdate;
     }
 }

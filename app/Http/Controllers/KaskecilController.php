@@ -464,7 +464,7 @@ class KaskecilController extends Controller
 
     public function updatecostratio()
     {
-        $dari = "2022-01-01";
+        $dari = "2022-02-01";
         $sampai = date("Y-m-t", strtotime($dari));
         $kaskecil = DB::table('kaskecil_detail')
             ->whereBetween('tgl_kaskecil', [$dari, $sampai])
@@ -473,7 +473,7 @@ class KaskecilController extends Controller
             ->whereRaw('LEFT(kode_akun,3)="6-2"')
             ->get();
         //dd($kaskecil);
-        $kode = "CR0122";
+        $kode = "CR0222";
         $cr = DB::table('costratio_biaya')
             ->select('kode_cr')
             ->whereRaw('LEFT(kode_cr,6) ="' . $kode . '"')
@@ -487,30 +487,36 @@ class KaskecilController extends Controller
         $kode_cr = $last_kode_cr != null ? $cr->kode_cr : "";
         $ceksimpan = 0;
         $cekupdate = 0;
-        foreach ($kaskecil as $d) {
-            $kode_cr = buatkode($kode_cr, $kode, 4);
-            $data = [
-                'kode_cr' => $kode_cr,
-                'tgl_transaksi' => $d->tgl_kaskecil,
-                'kode_akun' => $d->kode_akun,
-                'keterangan' => $d->keterangan,
-                'kode_cabang' => $d->kode_cabang,
-                'id_sumber_costratio' => 1,
-                'jumlah' => $d->jumlah
-            ];
-            $simpan = DB::table('costratio_biaya')->insert($data);
-            $update = DB::table('kaskecil_detail')->where('id', $d->id)->update(['kode_cr' => $kode_cr]);
-            if ($simpan) {
-                $ceksimpan++;
+        DB::beginTransaction();
+        try {
+            foreach ($kaskecil as $d) {
+                $kode_cr = buatkode($kode_cr, $kode, 4);
+                $data = [
+                    'kode_cr' => $kode_cr,
+                    'tgl_transaksi' => $d->tgl_kaskecil,
+                    'kode_akun' => $d->kode_akun,
+                    'keterangan' => $d->keterangan,
+                    'kode_cabang' => $d->kode_cabang,
+                    'id_sumber_costratio' => 1,
+                    'jumlah' => $d->jumlah
+                ];
+                $simpan = DB::table('costratio_biaya')->insert($data);
+                $update = DB::table('kaskecil_detail')->where('id', $d->id)->update(['kode_cr' => $kode_cr]);
+                if ($simpan) {
+                    $ceksimpan++;
+                }
+
+                if ($update) {
+                    $cekupdate++;
+                }
+                $kode_cr = $kode_cr;
             }
 
-            if ($update) {
-                $cekupdate++;
-            }
-            $kode_cr = $kode_cr;
+            echo $ceksimpan . "<br>";
+            echo $cekupdate;
+        } catch (\Exception $e) {
+            dd($e);
+            DB::rollback();
         }
-
-        echo $ceksimpan . "<br>";
-        echo $cekupdate;
     }
 }

@@ -569,7 +569,7 @@ class LedgerController extends Controller
 
     public function updatecostratio()
     {
-        $dari = "2022-01-01";
+        $dari = "2022-02-01";
         $sampai = date("Y-m-t", strtotime($dari));
         $ledger = DB::table('ledger_bank')
             ->whereBetween('tgl_ledger', [$dari, $sampai])
@@ -580,7 +580,7 @@ class LedgerController extends Controller
             ->where('peruntukan', 'PC')
             ->get();
 
-        $kode = "CR0122";
+        $kode = "CR0222";
         $cr = DB::table('costratio_biaya')
             ->select('kode_cr')
             ->whereRaw('LEFT(kode_cr,6) ="' . $kode . '"')
@@ -595,30 +595,36 @@ class LedgerController extends Controller
         //dd($ledger);
         $ceksimpan = 0;
         $cekupdate = 0;
-        foreach ($ledger as $d) {
-            $kode_cr = buatkode($kode_cr, $kode, 4);
-            $data = [
-                'kode_cr' => $kode_cr,
-                'tgl_transaksi' => $d->tgl_ledger,
-                'kode_akun' => $d->kode_akun,
-                'keterangan' => $d->keterangan,
-                'kode_cabang' => $d->ket_peruntukan,
-                'id_sumber_costratio' => 2,
-                'jumlah' => $d->jumlah
-            ];
-            $simpan = DB::table('costratio_biaya')->insert($data);
-            $update = DB::table('ledger_bank')->where('no_bukti', $d->no_bukti)->update(['kode_cr' => $kode_cr]);
-            if ($simpan) {
-                $ceksimpan++;
+        DB::beginTransaction();
+        try {
+            foreach ($ledger as $d) {
+                $kode_cr = buatkode($kode_cr, $kode, 4);
+                $data = [
+                    'kode_cr' => $kode_cr,
+                    'tgl_transaksi' => $d->tgl_ledger,
+                    'kode_akun' => $d->kode_akun,
+                    'keterangan' => $d->keterangan,
+                    'kode_cabang' => $d->ket_peruntukan,
+                    'id_sumber_costratio' => 2,
+                    'jumlah' => $d->jumlah
+                ];
+                $simpan = DB::table('costratio_biaya')->insert($data);
+                $update = DB::table('ledger_bank')->where('no_bukti', $d->no_bukti)->update(['kode_cr' => $kode_cr]);
+                if ($simpan) {
+                    $ceksimpan++;
+                }
+
+                if ($update) {
+                    $cekupdate++;
+                }
+                $kode_cr = $kode_cr;
             }
 
-            if ($update) {
-                $cekupdate++;
-            }
-            $kode_cr = $kode_cr;
+            echo $ceksimpan . "<br>";
+            echo $cekupdate;
+        } catch (\Exception $e) {
+            dd($e);
+            DB::rollback();
         }
-
-        echo $ceksimpan . "<br>";
-        echo $cekupdate;
     }
 }
