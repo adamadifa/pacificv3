@@ -373,7 +373,7 @@ class TargetkomisiController extends Controller
             ->join('karyawan', 'komisi_target_qty_detail.id_karyawan', '=', 'karyawan.id_karyawan')
             ->join('komisi_target', 'komisi_target_qty_detail.kode_target', '=', 'komisi_target.kode_target')
             ->where('komisi_target_qty_detail.kode_target', $kode_target)
-            ->where('karyawan.kode_cabang', $kode_cabang)
+            ->where('karyawan.kode_cabangd', $kode_cabang)
             ->update($data);
 
         if ($update) {
