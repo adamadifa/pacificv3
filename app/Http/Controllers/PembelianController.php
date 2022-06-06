@@ -1378,7 +1378,7 @@ class PembelianController extends Controller
     {
         $dari = "2022-01-01";
         $sampai = date("Y-m-t", strtotime($dari));
-        $pembelian = DB::table('detail_pembeliand')
+        $pembelian = DB::table('detail_pembelian')
             ->select('tgl_pembelian', 'detail_pembelian.*', 'nama_barang')
             ->join('pembelian', 'detail_pembelian.nobukti_pembelian', '=', 'pembelian.nobukti_pembelian')
             ->join('master_barang_pembelian', 'detail_pembelian.kode_barang', '=', 'master_barang_pembelian.kode_barang')
