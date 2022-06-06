@@ -729,7 +729,7 @@ class GlobalProvider extends ServiceProvider
             ];
 
             //Acounting
-            $accounting_menu = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'general affair', 'hrd'];
+            $accounting_menu = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'general affair', 'hrd', 'kepala admin', 'kepala penjualan'];
             $coa_menu = ['admin', 'spv accounting'];
             $setcoacabang = ['admin', 'spv accounting'];
             $hpp_menu = ['admin', 'manager accounting', 'spv accounting'];
@@ -737,12 +737,12 @@ class GlobalProvider extends ServiceProvider
             $hargaawal_input = ['admin', 'manager accounting', 'spv accounting'];
             $saldoawal_bukubesar_menu = ['admin', 'manager accounting', 'spv accounting'];
             $jurnalumum_menu = ['admin', 'manager accounting', 'spv accoupnting', 'general affair', 'hrd'];
-            $costratio_menu = ['admin', 'manager accounting', 'spv accounting'];
-            $laporan_accounting = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'general affair', 'hrd'];
+            $costratio_menu = ['admin', 'manager accounting', 'spv accounting', 'kepala admin', 'kepala penjualan'];
+            $laporan_accounting = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'general affair', 'hrd', 'kepala admin', 'kepala penjualan'];
             $laporan_rekapbj_acc = ['admin', 'direktur', 'manager accounting', 'spv accounting'];
             $laporan_bukubesar = ['admin', 'direktur', 'manager accounting', 'spv accounting'];
             $laporan_jurnalumum = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'general affair', 'hrd'];
-            $laporan_costratio = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'general affair', 'hrd'];
+            $laporan_costratio = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'general affair', 'hrd', 'kepala admin', 'kepala penjualan'];
 
 
             //Maintenance

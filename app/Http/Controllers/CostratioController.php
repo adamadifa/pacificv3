@@ -5,13 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Cabang;
 use App\Models\Costratio;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class CostratioController extends Controller
 {
     public function index(Request $request)
     {
-        $cabang = Cabang::orderBy('kode_cabang')->get();
+        if (Auth::user()->kode_cabang != "PCF") {
+            $cabang = Cabang::orderBy('kode_cabang')->where('kode_cabang', Auth::user()->kode_cabang)->get();
+        } else {
+            $cabang = Cabang::orderBy('kode_cabang')->get();
+        }
         $sumber = DB::table('costratio_sumber')->orderBy('id_sumber_costratio')->get();
         $query = Costratio::query();
         $query->join('coa', 'costratio_biaya.kode_akun', '=', 'coa.kode_akun');

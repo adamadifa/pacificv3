@@ -933,6 +933,11 @@
                             <i class="feather icon-file"></i>
                             <span class="menu-item" data-i18n="Second Level">Laporan</span>
                         </a>
+                        @elseif ($level =="kepala admin" || $level=="kepala penjualan")
+                        <a href="/laporanaccounting/costratio">
+                            <i class="feather icon-file"></i>
+                            <span class="menu-item" data-i18n="Second Level">Laporan</span>
+                        </a>
                         @else
                         <a href="/laporanaccounting/rekapbj">
                             <i class="feather icon-file"></i>
