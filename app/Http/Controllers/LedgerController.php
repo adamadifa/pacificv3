@@ -569,7 +569,7 @@ class LedgerController extends Controller
 
     public function updatecostratio()
     {
-        $dari = "2022-03-01";
+        $dari = "2022-04-01";
         $sampai = date("Y-m-t", strtotime($dari));
         $ledger = DB::table('ledger_bank')
             ->whereBetween('tgl_ledger', [$dari, $sampai])
@@ -580,7 +580,7 @@ class LedgerController extends Controller
             ->where('peruntukan', 'PC')
             ->get();
 
-        $kode = "CR0322";
+        $kode = "CR0422";
         $cr = DB::table('costratio_biaya')
             ->select('kode_cr')
             ->whereRaw('LEFT(kode_cr,6) ="' . $kode . '"')
