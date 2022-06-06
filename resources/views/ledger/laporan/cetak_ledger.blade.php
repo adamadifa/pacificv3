@@ -57,6 +57,7 @@
                 <th>Debet</th>
                 <th>Kredit</th>
                 <th>Saldo</th>
+                <th rowspan="2">Sumber</th>
                 <th rowspan="2">Tanggal Input</th>
                 <th rowspan="2">Tanggal Update</th>
             <tr>
@@ -105,6 +106,7 @@
                 <td style="text-align:right">{{ !empty($debet) ? desimal($debet) : '' }}</td>
                 <td style="text-align:right">{{ !empty($kredit) ? desimal($kredit) : '' }}</td>
                 <td style="text-align:right">{{ !empty($saldo) ? desimal($saldo) : '' }}</td>
+                <td>{{ $d->nama_bank }}</td>
                 <td>{{ date("d-m-Y H:i:s",strtotime($d->date_created)) }}</td>
                 <td>{{ !empty($d->date_updated) ?  date("d-m-Y H:i:s",strtotime($d->date_updated)) : '' }}</td>
             </tr>

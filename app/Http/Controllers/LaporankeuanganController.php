@@ -135,7 +135,7 @@ class LaporankeuanganController extends Controller
         }
         if ($jenislaporan == "detail") {
             $query = Ledger::query();
-            $query->select('ledger_bank.*', 'nama_akun');
+            $query->select('ledger_bank.*', 'nama_akun', 'nama_bank');
             $query->join('coa', 'ledger_bank.kode_akun', '=', 'coa.kode_akun');
             $query->join('master_bank', 'ledger_bank.bank', '=', 'master_bank.kode_bank');
             $query->orderBy('tgl_ledger');
