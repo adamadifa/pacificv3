@@ -1376,7 +1376,7 @@ class PembelianController extends Controller
 
     public function updatecostratio()
     {
-        $dari = "2022-02-01";
+        $dari = "2022-03-01";
         $sampai = date("Y-m-t", strtotime($dari));
         $pembelian = DB::table('detail_pembelian')
             ->select('tgl_pembelian', 'detail_pembelian.*', 'nama_barang')
@@ -1391,7 +1391,7 @@ class PembelianController extends Controller
             ->get();
         //dd($pembelian);
 
-        $kode = "CR0222";
+        $kode = "CR0322";
         $cr = DB::table('costratio_biaya')
             ->select('kode_cr')
             ->whereRaw('LEFT(kode_cr,6) ="' . $kode . '"')
