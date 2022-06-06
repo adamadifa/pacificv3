@@ -571,7 +571,7 @@ class LedgerController extends Controller
     {
         $dari = "2022-05-01";
         $sampai = date("Y-m-t", strtotime($dari));
-        $ledger = DB::table('ledger_bankd')
+        $ledger = DB::table('ledger_bank')
             ->whereBetween('tgl_ledger', [$dari, $sampai])
             ->whereRaw('LEFT(kode_akun,3)="6-1"')
             ->where('peruntukan', 'PC')
