@@ -622,6 +622,7 @@ class LedgerController extends Controller
 
             echo $ceksimpan . "<br>";
             echo $cekupdate;
+            DB::commit();
         } catch (\Exception $e) {
             dd($e);
             DB::rollback();
