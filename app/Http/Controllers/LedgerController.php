@@ -571,7 +571,7 @@ class LedgerController extends Controller
     {
         $dari = "2022-05-01";
         $sampai = date("Y-m-t", strtotime($dari));
-        $ledger = DB::table('ledger_bank')
+        $ledger = DB::table('ledger_bankd')
             ->whereBetween('tgl_ledger', [$dari, $sampai])
             ->whereRaw('LEFT(kode_akun,3)="6-1"')
             ->where('peruntukan', 'PC')
@@ -592,9 +592,11 @@ class LedgerController extends Controller
             $last_kode_cr = "";
         }
         $kode_cr = $last_kode_cr != null ? $cr->kode_cr : "";
-        //dd($ledger);
+        dd($ledger);
+        $ceksimpan = 0;
+        $cekupdate = 0;
         foreach ($ledger as $d) {
-            $kode_cr = buatkode($kode_cr, "CR0522", 4);
+            $kode_cr = buatkode($kode_cr, $kode, 4);
             $data = [
                 'kode_cr' => $kode_cr,
                 'tgl_transaksi' => $d->tgl_ledger,
@@ -604,9 +606,19 @@ class LedgerController extends Controller
                 'id_sumber_costratio' => 2,
                 'jumlah' => $d->jumlah
             ];
-            DB::table('costratio_biaya')->insert($data);
-            DB::table('ledger_bank')->where('no_bukti', $d->no_bukti)->update(['kode_cr' => $kode_cr]);
+            $simpan = DB::table('costratio_biaya')->insert($data);
+            $update = DB::table('ledger_bank')->where('no_bukti', $d->no_bukti)->update(['kode_cr' => $kode_cr]);
+            if ($simpan) {
+                $ceksimpan++;
+            }
+
+            if ($update) {
+                $cekupdate++;
+            }
             $kode_cr = $kode_cr;
         }
+
+        echo $ceksimpan . "<br>";
+        echo $cekupdate;
     }
 }

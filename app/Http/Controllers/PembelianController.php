@@ -1378,7 +1378,7 @@ class PembelianController extends Controller
     {
         $dari = "2022-05-01";
         $sampai = date("Y-m-t", strtotime($dari));
-        $pembelian = DB::table('detail_pembelian')
+        $pembelian = DB::table('detail_pembeliand')
             ->select('tgl_pembelian', 'detail_pembelian.*', 'nama_barang')
             ->join('pembelian', 'detail_pembelian.nobukti_pembelian', '=', 'pembelian.nobukti_pembelian')
             ->join('master_barang_pembelian', 'detail_pembelian.kode_barang', '=', 'master_barang_pembelian.kode_barang')
@@ -1389,7 +1389,7 @@ class PembelianController extends Controller
             ->whereRaw('LEFT(detail_pembelian.kode_akun,3)="6-2"')
             ->where('detail_pembelian.kode_cabang', '!=', '')
             ->get();
-        //dd($pembelian);
+        dd($pembelian);
 
         $kode = "CR0522";
         $cr = DB::table('costratio_biaya')
@@ -1403,9 +1403,10 @@ class PembelianController extends Controller
             $last_kode_cr = "";
         }
         $kode_cr = $last_kode_cr != null ? $cr->kode_cr : "";
-
+        $ceksimpan = 0;
+        $cekupdate = 0;
         foreach ($pembelian as $d) {
-            $kode_cr = buatkode($kode_cr, "CR0522", 4);
+            $kode_cr = buatkode($kode_cr, $kode, 4);
             $data = [
                 'kode_cr' => $kode_cr,
                 'tgl_transaksi' => $d->tgl_pembelian,
@@ -1415,9 +1416,19 @@ class PembelianController extends Controller
                 'id_sumber_costratio' => 4,
                 'jumlah' => ($d->qty * $d->harga) + $d->penyesuaian
             ];
-            DB::table('costratio_biaya')->insert($data);
-            DB::table('detail_pembelian')->where('nobukti_pembelian', $d->nobukti_pembelian)->where('kode_barang', $d->kode_barang)->update(['kode_cr' => $kode_cr]);
+            $simpan = DB::table('costratio_biaya')->insert($data);
+            $update = DB::table('detail_pembelian')->where('nobukti_pembelian', $d->nobukti_pembelian)->where('kode_barang', $d->kode_barang)->update(['kode_cr' => $kode_cr]);
+            if ($simpan) {
+                $ceksimpan++;
+            }
+
+            if ($update) {
+                $cekupdate++;
+            }
             $kode_cr = $kode_cr;
         }
+
+        echo $ceksimpan . "<br>";
+        echo $cekupdate;
     }
 }
