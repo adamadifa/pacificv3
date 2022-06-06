@@ -464,7 +464,7 @@ class KaskecilController extends Controller
 
     public function updatecostratio()
     {
-        $dari = "2022-01-01";
+        $dari = "2022-05-01";
         $sampai = date("Y-m-t", strtotime($dari));
         $kaskecil = DB::table('kaskecil_detail')
             ->whereBetween('tgl_kaskecil', [$dari, $sampai])
@@ -472,8 +472,8 @@ class KaskecilController extends Controller
             ->orWhereBetween('tgl_kaskecil', [$dari, $sampai])
             ->whereRaw('LEFT(kode_akun,3)="6-2"')
             ->get();
-
-        $kode = "CR0122";
+        //dd($kaskecil);
+        $kode = "CR0522";
         $cr = DB::table('costratio_biaya')
             ->select('kode_cr')
             ->whereRaw('LEFT(kode_cr,6) ="' . $kode . '"')
@@ -487,7 +487,7 @@ class KaskecilController extends Controller
         $kode_cr = $last_kode_cr != null ? $cr->kode_cr : "";
 
         foreach ($kaskecil as $d) {
-            $kode_cr = buatkode($kode_cr, "CR0122", 4);
+            $kode_cr = buatkode($kode_cr, $kode, 4);
             $data = [
                 'kode_cr' => $kode_cr,
                 'tgl_transaksi' => $d->tgl_kaskecil,
