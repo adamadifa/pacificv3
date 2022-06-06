@@ -464,7 +464,7 @@ class KaskecilController extends Controller
 
     public function updatecostratio()
     {
-        $dari = "2021-07-01";
+        $dari = "2021-08-01";
         $sampai = date("Y-m-t", strtotime($dari));
         $kaskecil = DB::table('kaskecil_detail')
             ->whereBetween('tgl_kaskecil', [$dari, $sampai])
@@ -473,7 +473,7 @@ class KaskecilController extends Controller
             ->whereRaw('LEFT(kode_akun,3)="6-2"')
             ->get();
         //dd($kaskecil);
-        $kode = "CR0721";
+        $kode = "CR0821";
         $cr = DB::table('costratio_biaya')
             ->select('kode_cr')
             ->whereRaw('LEFT(kode_cr,6) ="' . $kode . '"')
