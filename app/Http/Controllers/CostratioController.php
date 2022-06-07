@@ -33,4 +33,52 @@ class CostratioController extends Controller
         $costratio = $query->get();
         return view('costratio.index', compact('cabang', 'sumber', 'costratio'));
     }
+
+    public function updatecostratio()
+    {
+        $backup = DB::table('back_cost')->get();
+        //dd($kaskecil);
+
+        $ceksimpan = 0;
+        DB::beginTransaction();
+        try {
+            foreach ($backup as $d) {
+                $tanggal = explode("-", $d->tgl_transaksi);
+                $bulan = $tanggal[1];
+                $tahun = substr($tanggal[0], 2, 2);
+                $kode = "CR" . $bulan . $tahun;
+                $cr = DB::table('costratio_biaya')
+                    ->select('kode_cr')
+                    ->whereRaw('LEFT(kode_cr,6) ="' . $kode . '"')
+                    ->orderBy('kode_cr', 'desc')
+                    ->first();
+                if ($cr != null) {
+                    $last_kode_cr = $cr->kode_cr;
+                } else {
+                    $last_kode_cr = "";
+                }
+                $kode_cr = buatkode($last_kode_cr, $kode, 4);
+                echo $kode_cr . "<br>";
+                $data = [
+                    'kode_cr' => $kode_cr,
+                    'tgl_transaksi' => $d->tgl_transaksi,
+                    'kode_akun' => $d->kode_akun,
+                    'keterangan' => $d->keterangan,
+                    'kode_cabang' => $d->kode_cabang,
+                    'id_sumber_costratio' => 3,
+                    'jumlah' => $d->jumlah
+                ];
+                $simpan = DB::table('costratio_biaya')->insert($data);
+                if ($simpan) {
+                    $ceksimpan++;
+                }
+            }
+
+            echo $ceksimpan . "<br>";
+            DB::commit();
+        } catch (\Exception $e) {
+            dd($e);
+            DB::rollback();
+        }
+    }
 }

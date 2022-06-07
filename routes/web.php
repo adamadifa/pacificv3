@@ -1226,6 +1226,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/updatekaskecilcr', [KaskecilController::class, 'updatecostratio']);
     Route::get('/updatepmbcr', [PembelianController::class, 'updatecostratio']);
     Route::get('/updateledgercr', [LedgerController::class, 'updatecostratio']);
+    Route::get('/updatebackupcr', [CostratioController::class, 'updatecostratio']);
 
     Route::get('/costratio', [CostratioController::class, 'index']);
 });
