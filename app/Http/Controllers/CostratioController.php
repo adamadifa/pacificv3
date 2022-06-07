@@ -24,7 +24,7 @@ class CostratioController extends Controller
         $query->where('kode_cabang', $request->kode_cabang);
 
         if (!empty($request->id_sumber_costratio)) {
-            $query->where('id_sumber_costratio', $request->id_sumber_costratio);
+            $query->where('costratio_biaya.id_sumber_costratio', $request->id_sumber_costratio);
         }
 
         $query->whereBetween('tgl_transaksi', [$request->dari, $request->sampai]);
