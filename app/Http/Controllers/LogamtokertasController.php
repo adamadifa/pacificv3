@@ -61,7 +61,7 @@ class LogamtokertasController extends Controller
         $tanggal = explode("-", $tgl_logamtokertas);
         $bulan = $tanggal[1];
         $tahun = $tanggal[0];
-        $lg = DB::table('logamtokertas')->whereRaw('MONTH(tgl_logamtokertas)=' . $bulan)->whereRaw('YEAR(tgl_logamtokertas)=' . $tahun)->orderBy('kode_logamtokertas', 'desc')->first();
+        $lg = DB::table('logamtokertas')->whereRaw('YEAR(tgl_logamtokertas)=' . $tahun)->orderBy('kode_logamtokertas', 'desc')->first();
         $lastkode_logamtokertas = $lg != null ? $lg->kode_logamtokertas : '';
         $kode_logamtokertas = buatkode($lastkode_logamtokertas, "LG" . substr($tahun, 2, 2), 4);
 
