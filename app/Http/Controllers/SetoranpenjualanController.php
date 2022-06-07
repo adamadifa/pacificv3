@@ -216,6 +216,7 @@ class SetoranpenjualanController extends Controller
                 ->where('historibayar.id_karyawan', $id_karyawan)
                 ->groupBy('historibayar.id_karyawan')
                 ->first();
+
             $girotocash = DB::table('historibayar')
                 ->selectRaw("historibayar.id_karyawan,SUM(bayar) as setoran_girotocash")
                 ->where('historibayar.id_karyawan', $id_karyawan)
@@ -250,10 +251,10 @@ class SetoranpenjualanController extends Controller
                 ->groupBy('transfer.id_karyawan')
                 ->first();
 
-            $setoran_tunai = $tunaitagihan->setoran_tunai;
+            $setoran_tunai = $tunaitagihan != null ? $tunaitagihan->setoran_tunai : 0;
             $setoran_giro = $giro != null ? $giro->setoran_giro : 0;
             $setoran_transfer = $transfer != null ? $transfer->setoran_transfer : 0;
-            $setoran_tagihan = $tunaitagihan->setoran_tagihan + $setoran_giro + $setoran_transfer;
+            $setoran_tagihan = $tunaitagihan != null ? $tunaitagihan->setoran_tagihan : 0 + $setoran_giro + $setoran_transfer;
             $gantigirokecash = $girotocash != null  ?  $girotocash->setoran_girotocash : 0;
             $gantigiroketransfer = $girototransfer != null ? $girototransfer->setoran_girototransfer : 0;
 
