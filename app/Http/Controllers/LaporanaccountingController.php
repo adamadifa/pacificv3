@@ -918,6 +918,12 @@ class LaporanaccountingController extends Controller
         $qpiutang->whereRaw('to_days("' . $sampai . '") - to_days(penjualan.tgltransaksi) > 31');
         $qpiutang->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
         $piutang = $qpiutang->first();
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Cost Ratio.xls");
+        }
         if (!empty($request->kode_cabang)) {
             $cabang = Cabang::where('kode_cabang', $request->kode_cabang)->first();
             return view('laporanaccounting.laporan.cetak_costratio_cabang', compact('dari', 'sampai', 'biaya', 'penjualan', 'retur', 'piutang', 'cabang'));
