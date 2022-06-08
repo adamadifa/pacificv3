@@ -70,10 +70,11 @@ class KlaimController extends Controller
         }
         $detail = DB::table('kaskecil_detail')->where('kode_klaim', $kode_klaim)->get();
 
+        //dd($klaim);
         if ($excel == 'true') {
             header("Content-type: application/vnd-ms-excel");
             // Mendefinisikan nama file ekspor "hasil-export.xls"
-            header("Content-Disposition: attachment; filename=$klaim->keterangan.xls");
+            header("Content-Disposition: attachment; filename=$kode_klaim.xls");
         }
         return view('klaim.cetak', compact('saldoawal', 'klaim', 'detail'));
     }
