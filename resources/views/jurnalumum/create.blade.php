@@ -1,7 +1,7 @@
 <form action="/jurnalumum/store" method="post" id="frmjurnalumum">
-    <input type="hidden" name="kode_dept" value="{{ $kode_dept }}">
     @csrf
     <input type="hidden" id="cektutuplaporan">
+    <input type="hidden" id="cektemp">
     <div class="row">
         <div class="col-12">
             <x-inputtext field="tanggal" label="Tanggal Jurnal Umum" icon="feather icon-calendar" datepicker />
@@ -9,11 +9,19 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext label="Keterangan" field="keterangan" icon="feather icon-file" />
+            <div class="form-group">
+                <select name="kode_dept" id="kode_dept" class="form-control">
+                    <option value="">Pilih Departemen / Cabang</option>
+                    @foreach ($departemen as $d)
+                    <option value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
+                    @endforeach
+                </select>
+            </div>
         </div>
     </div>
+
     <div class="row">
-        <div class="col-12">
+        <div class="col-4">
             <div class="form-group">
                 <select name="kode_akun" id="kode_akun" class="form-control select2">
                     <option value="">Pilih Akun</option>
@@ -23,18 +31,20 @@
                 </select>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
+        <div class="col-4">
+            <x-inputtext label="Keterangan" field="keterangan" icon="feather icon-file" />
+        </div>
+        <div class="col-4">
             <x-inputtext label="Jumlah" field="jumlah" icon="feather icon-file" right />
         </div>
     </div>
+
     <div class="form-group">
         <ul class="list-unstyled mb-0">
             <li class="d-inline-block mr-2">
                 <fieldset>
                     <div class="vs-radio-con vs-radio-success">
-                        <input type="radio" name="status_dk" value="D">
+                        <input type="radio" name="status_dk" checked value="D">
                         <span class="vs-radio">
                             <span class="vs-radio--border"></span>
                             <span class="vs-radio--circle"></span>
@@ -46,7 +56,7 @@
             <li class="d-inline-block mr-2">
                 <fieldset>
                     <div class="vs-radio-con vs-radio-danger">
-                        <input type="radio" name="status_dk" checked value="K">
+                        <input type="radio" name="status_dk" value="K">
                         <span class="vs-radio">
                             <span class="vs-radio--border"></span>
                             <span class="vs-radio--circle"></span>
@@ -58,6 +68,43 @@
         </ul>
     </div>
     <div class="row">
+        <div class="col-12">
+            <div class="form-group">
+                <a href="#" id="tambahitem" class="btn btn-primary btn-block"><i class="fa fa-plus mr-1"></i>Tambah Item</a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-hover-animation">
+                <thead>
+                    <tr>
+                        <th>Kode Akun</th>
+                        <th>Nama Akun</th>
+                        <th>Keterangan</th>
+                        <th>Debet</th>
+                        <th>Kredit</th>
+                        <th>#</th>
+                    </tr>
+                </thead>
+                <tbody id="loadtemp"></tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row mb-1">
+        <div class="col-12">
+            <div class="vs-checkbox-con vs-checkbox-primary">
+                <input type="checkbox" class="aggrement" name="aggrement" value="aggrement">
+                <span class="vs-checkbox">
+                    <span class="vs-checkbox--check">
+                        <i class="vs-icon feather icon-check"></i>
+                    </span>
+                </span>
+                <span class="">Yakin Akan Disimpan ?</span>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="tombolsimpan">
         <div class="col-12">
             <div class="form-group">
                 <button class="btn btn-primary btn-block"><i class="fa fa-send mr-1"></i>Submit</button>
@@ -103,7 +150,19 @@
 </script>
 <script>
     $(function() {
+        $('.aggrement').change(function() {
+            if (this.checked) {
+                $("#tombolsimpan").show();
+            } else {
+                $("#tombolsimpan").hide();
+            }
+        });
 
+        function hidetombolsimpan() {
+            $("#tombolsimpan").hide();
+        }
+
+        hidetombolsimpan();
         // function cektutuplaporan() {
         //     var tgltransaksi = $("#tgl_jurnalumum").val();
         //     $.ajax({
@@ -126,11 +185,123 @@
         //     cektutuplaporan();
         // });
 
+        function loadtemp() {
+            var kode_dept = $("#frmjurnalumum").find("#kode_dept").val();
+            $("#loadtemp").load("/jurnalumum/" + kode_dept + "/showtemp");
+            cektemp();
+        }
+
+        $("#frmjurnalumum").find("#kode_dept").change(function() {
+            loadtemp();
+        });
+
+
+        function cektemp() {
+            var kode_dept = $("#frmjurnalumum").find("#kode_dept").val();
+            $.ajax({
+                type: 'POST'
+                , url: '/jurnalumum/cektemp'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , kode_dept: kode_dept
+                }
+                , cache: false
+                , success: function(respond) {
+                    console.log(respond);
+                    $("#cektemp").val(respond);
+                }
+            });
+        }
+        $("#tambahitem").click(function() {
+            var tanggal = $("#tanggal").val();
+            var kode_dept = $("#frmjurnalumum").find("#kode_dept").val();
+            var kode_akun = $("#frmjurnalumum").find("#kode_akun").val();
+            var keterangan = $("#frmjurnalumum").find("#keterangan").val();
+            var jumlah = $("#frmjurnalumum").find("#jumlah").val();
+            var status_dk = $("input[name='status_dk']:checked").val();
+            if (tanggal == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Tanggal Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#tanggal").focus();
+                });
+            } else if (kode_dept == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Departemen / Cabang Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#frmjurnalumum").find("#kode_akun").focus();
+                });
+            } else if (kode_akun == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Kode Akun Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#frmjurnalumum").find("#kode_akun").focus();
+                });
+            } else if (keterangan == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Keterangan Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#frmjurnalumum").find("#keterangan").focus();
+                });
+            } else if (jumlah == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Jumlah Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#frmjurnalumum").find("#jumlah").focus();
+                });
+            } else {
+                $.ajax({
+                    type: 'POST'
+                    , url: '/jurnalumum/storetemp'
+                    , data: {
+                        _token: "{{ csrf_token() }}"
+                        , kode_dept: kode_dept
+                        , kode_akun: kode_akun
+                        , keterangan: keterangan
+                        , status_dk: status_dk
+                        , jumlah: jumlah
+                    }
+                    , cache: false
+                    , success: function(respond) {
+                        console.log(respond);
+                        if (respond == 0) {
+                            swal({
+                                title: 'Success'
+                                , text: 'Data Berhasil Disimpan !'
+                                , icon: 'success'
+                                , showConfirmButton: false
+                            }).then(function() {
+                                $("#frmjurnalumum").find("#kode_akun").focus();
+                                $("#frmjurnalumum").find("#kode_akun").val("").change();
+                                $("#keterangan").val("");
+                                $("#jumlah").val("");
+                                loadtemp();
+                            });
+                        }
+                    }
+                });
+            }
+        });
+
         $("#frmjurnalumum").submit(function(e) {
             var tanggal = $("#tanggal").val();
-            var keterangan = $("#keterangan").val();
-            var jumlah = $("#jumlah").val();
-            var kode_akun = $("#kode_akun").val();
+            var kode_dept = $("#frmjurnalumum").find("#kode_dept").val();
+            var cektemp = $("#frmjurnalumum").find("#cektemp").val();
             // var cektutuplaporan = $("#cektutuplaporan").val();
             // if (cektutuplaporan > 0) {
             //     swal({
@@ -153,34 +324,24 @@
                     $("#tanggal").focus();
                 });
                 return false;
-            } else if (keterangan == "") {
+            } else if (kode_dept == "") {
                 swal({
                     title: 'Oops'
-                    , text: 'Keterangan Harus Diisi !'
+                    , text: 'Departemen Harus Diisi !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
-                    $("#keterangan").focus();
+                    $("#frmjurnalumum").find("#kode_dept").focus();
                 });
                 return false;
-            } else if (jumlah == "") {
+            } else if (cektemp == "" || cektemp == 0) {
                 swal({
                     title: 'Oops'
-                    , text: 'Jumlah Harus Diisi !'
+                    , text: 'Data Masih Kosong !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
-                    $("#jumlah").focus();
-                });
-                return false;
-            } else if (kode_akun == "") {
-                swal({
-                    title: 'Oops'
-                    , text: 'Kode Akun  Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#kode_akun").focus();
+                    $("#frmjurnalumum").find("#kode_akun").focus();
                 });
                 return false;
             }

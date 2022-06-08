@@ -882,8 +882,14 @@ Route::middleware(['auth'])->group(function () {
 
     //Jurnal Umum
     Route::get('/jurnalumum', [JurnalumumController::class, 'index']);
-    Route::get('/jurnalumum/{kode_dept}/create', [JurnalumumController::class, 'create']);
+    Route::get('/jurnalumum/create', [JurnalumumController::class, 'create']);
+    Route::get('/jurnalumum/{kodejurnal}/edit', [JurnalumumController::class, 'edit']);
     Route::post('/jurnalumum/store', [JurnalumumController::class, 'store']);
+    Route::post('/jurnalumum/{kode_jurnal}/update', [JurnalumumController::class, 'update']);
+    Route::post('/jurnalumum/storetemp', [JurnalumumController::class, 'storetemp']);
+    Route::get('/jurnalumum/{kode_dept}/showtemp', [JurnalumumController::class, 'showtemp']);
+    Route::post('/jurnalumum/deletetemp', [JurnalumumController::class, 'deletetemp']);
+    Route::post('/jurnalumum/cektemp', [JurnalumumController::class, 'cektemp']);
     Route::delete('/jurnalumum/{kode_jurnal}/delete', [JurnalumumController::class, 'delete']);
 
     //Laporan Accounting

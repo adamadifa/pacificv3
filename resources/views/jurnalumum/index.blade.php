@@ -96,13 +96,18 @@
                                     <td>{{ $d->kode_dept }}</td>
                                     <td>{!! !empty($d->kode_cr) ? "<i class='fa fa-check success'></i>" : "" !!}</td>
                                     <td>
-                                        <form method="POST" class="deleteform" action="/jurnalumum/{{Crypt::encrypt($d->kode_jurnal)}}/delete">
-                                            @csrf
-                                            @method('DELETE')
-                                            <a href="#" tanggal="{{ $d->tanggal }}" class="delete-confirm ml-1">
-                                                <i class="feather icon-trash danger"></i>
-                                            </a>
-                                        </form>
+                                        <div class="btn-group">
+                                            <a href="#" class="edit" kode_jurnal="{{ Crypt::encrypt($d->kode_jurnal) }}"><i class="feather icon-edit info"></i></a>
+                                            <form method="POST" class="deleteform" action="/jurnalumum/{{Crypt::encrypt($d->kode_jurnal)}}/delete">
+                                                @csrf
+                                                @method('DELETE')
+                                                <a href="#" tanggal="{{ $d->tanggal }}" class="delete-confirm ml-1">
+                                                    <i class="feather icon-trash danger"></i>
+                                                </a>
+                                            </form>
+
+                                        </div>
+
                                     </td>
                                 </tr>
                                 @endforeach
@@ -121,7 +126,7 @@
 </div>
 <!-- Input Jurnal Umum -->
 <div class="modal fade text-left" id="mdlinputjurnalumum" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel18">Input Jurnal Umum</h4>
@@ -135,42 +140,43 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade text-left" id="mdledit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Edit Jurnal Umum</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loadedit"></div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @push('myscript')
 <script>
     $(function() {
         $("#inputjurnalumum").click(function(e) {
             e.preventDefault();
-            var dari = "{{ Request('dari') }}";
-            var sampai = "{{ Request('sampai') }}";
-            var kode_dept = "{{ Request('kode_dept') }}";
-            if (dari == "" || sampai == "") {
-                swal({
-                    title: 'Oops'
-                    , text: 'Periode harus di Set Terlebih Dahulu !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#dari").focus();
-                });
-                return false;
-            } else if (kode_dept == "") {
-                swal({
-                    title: 'Oops'
-                    , text: 'Departemen harus Dipilih !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#kode_dept").focus();
-                });
-                return false;
-            } else {
-                $('#mdlinputjurnalumum').modal({
-                    backdrop: 'static'
-                    , keyboard: false
-                });
-                $("#loadinputjurnalumum").load("/jurnalumum/" + kode_dept + "/create");
-            }
+            $('#mdlinputjurnalumum').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+            $("#loadinputjurnalumum").load("/jurnalumum/create");
+        });
+
+        $(".edit").click(function(e) {
+            e.preventDefault();
+            var kode_jurnal = $(this).attr("kode_jurnal");
+            $('#mdledit').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+            $("#loadedit").load("/jurnalumum/" + kode_jurnal + "/edit");
         });
 
 
