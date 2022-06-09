@@ -87,7 +87,7 @@ class JurnalumumController extends Controller
     }
     public function store(Request $request)
     {
-        $cabang = ['BDG', 'BGR', 'GRT', 'PWT', 'SMR', 'SKB', 'SBY', 'TSM', 'TGL'];
+        $cabang = ['BDG', 'BGR', 'GRT', 'PWT', 'SMR', 'SKB', 'SBY', 'TSM', 'TGL', 'PST', 'KLT'];
         $tanggal = $request->tanggal;
         $kode_dept = $request->kode_dept;
         $tgl = explode("-", $tanggal);
