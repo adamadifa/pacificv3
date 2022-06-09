@@ -19,9 +19,13 @@
             </div>
         </div>
     </div>
-
     <div class="row">
-        <div class="col-4">
+        <div class="col-12">
+            <x-inputtext label="Keterangan" field="keterangan" icon="feather icon-file" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-5">
             <div class="form-group">
                 <select name="kode_akun" id="kode_akun" class="form-control select2">
                     <option value="">Pilih Akun</option>
@@ -31,10 +35,7 @@
                 </select>
             </div>
         </div>
-        <div class="col-4">
-            <x-inputtext label="Keterangan" field="keterangan" icon="feather icon-file" />
-        </div>
-        <div class="col-4">
+        <div class="col-7">
             <x-inputtext label="Jumlah" field="jumlah" icon="feather icon-file" right />
         </div>
     </div>
@@ -81,7 +82,6 @@
                     <tr>
                         <th>Kode Akun</th>
                         <th>Nama Akun</th>
-                        <th>Keterangan</th>
                         <th>Debet</th>
                         <th>Kredit</th>
                         <th>#</th>
@@ -216,7 +216,6 @@
             var tanggal = $("#tanggal").val();
             var kode_dept = $("#frmjurnalumum").find("#kode_dept").val();
             var kode_akun = $("#frmjurnalumum").find("#kode_akun").val();
-            var keterangan = $("#frmjurnalumum").find("#keterangan").val();
             var jumlah = $("#frmjurnalumum").find("#jumlah").val();
             var status_dk = $("input[name='status_dk']:checked").val();
             if (tanggal == "") {
@@ -246,15 +245,6 @@
                 }).then(function() {
                     $("#frmjurnalumum").find("#kode_akun").focus();
                 });
-            } else if (keterangan == "") {
-                swal({
-                    title: 'Oops'
-                    , text: 'Keterangan Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#frmjurnalumum").find("#keterangan").focus();
-                });
             } else if (jumlah == "") {
                 swal({
                     title: 'Oops'
@@ -272,7 +262,6 @@
                         _token: "{{ csrf_token() }}"
                         , kode_dept: kode_dept
                         , kode_akun: kode_akun
-                        , keterangan: keterangan
                         , status_dk: status_dk
                         , jumlah: jumlah
                     }
@@ -288,7 +277,6 @@
                             }).then(function() {
                                 $("#frmjurnalumum").find("#kode_akun").focus();
                                 $("#frmjurnalumum").find("#kode_akun").val("").change();
-                                $("#keterangan").val("");
                                 $("#jumlah").val("");
                                 loadtemp();
                             });
@@ -302,6 +290,7 @@
             var tanggal = $("#tanggal").val();
             var kode_dept = $("#frmjurnalumum").find("#kode_dept").val();
             var cektemp = $("#frmjurnalumum").find("#cektemp").val();
+            var keterangan = $("#keterangan").val();
             // var cektutuplaporan = $("#cektutuplaporan").val();
             // if (cektutuplaporan > 0) {
             //     swal({
@@ -328,6 +317,16 @@
                 swal({
                     title: 'Oops'
                     , text: 'Departemen Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#frmjurnalumum").find("#kode_dept").focus();
+                });
+                return false;
+            } else if (keterangan == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Keterangna Harus Diisi !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {

@@ -44,14 +44,12 @@ class JurnalumumController extends Controller
     {
         $kode_dept = $request->kode_dept;
         $kode_akun = $request->kode_akun;
-        $keterangan = $request->keterangan;
         $status_dk = $request->status_dk;
         $jumlah = !empty($request->jumlah) ? str_replace(".", "", $request->jumlah) : 0;
         $jumlah = str_replace(",", ".", $jumlah);
         $data = [
             'kode_dept' => $kode_dept,
             'kode_akun' => $kode_akun,
-            'keterangan' => $keterangan,
             'status_dk' => $status_dk,
             'jumlah' => $jumlah
         ];
@@ -90,6 +88,7 @@ class JurnalumumController extends Controller
         $cabang = ['BDG', 'BGR', 'GRT', 'PWT', 'SMR', 'SKB', 'SBY', 'TSM', 'TGL', 'PST', 'KLT'];
         $tanggal = $request->tanggal;
         $kode_dept = $request->kode_dept;
+        $keterangan = $request->keterangan;
         $tgl = explode("-", $tanggal);
         $tahun  = substr($tgl[0], 2, 2);
         $bulan = $tgl[1];
@@ -100,7 +99,6 @@ class JurnalumumController extends Controller
         try {
             foreach ($jurnaltemp as $d) {
                 $kode_akun = $d->kode_akun;
-                $keterangan = $d->keterangan;
                 $status_dk = $d->status_dk;
                 $jumlah = $d->jumlah;
 

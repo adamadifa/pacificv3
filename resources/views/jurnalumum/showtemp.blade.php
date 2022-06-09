@@ -13,7 +13,6 @@ $kredit = $d->jumlah;
 <tr>
     <td>{{ $d->kode_akun }}</td>
     <td>{{ $d->nama_akun }}</td>
-    <td>{{ $d->keterangan }}</td>
     <td class="text-right">{{ rupiah($debet) }}</td>
     <td class="text-right">{{ rupiah($kredit) }}</td>
     <td>
