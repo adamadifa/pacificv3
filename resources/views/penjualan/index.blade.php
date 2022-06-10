@@ -35,6 +35,9 @@
                             <div class="col-lg-3 col-sm-12">
                                 <x-inputtext label="No Faktur" field="no_fak_penj" icon="feather icon-credit-card" value="{{ Request('no_fak_penj') }}" />
                             </div>
+                            <div class="col-lg-2 col-sm-12">
+                                <x-inputtext label="Kode Pelanggan" field="kode_pelanggan" icon="fa fa-barcode" value="{{ Request('kode_pelanggan') }}" />
+                            </div>
                             <div class="col-lg-3 col-sm-12">
                                 <x-inputtext label="Nama Pelanggan" field="nama_pelanggan" icon="feather icon-user" value="{{ Request('nama_pelanggan') }}" />
                             </div>
@@ -47,8 +50,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-2 col-sm-12">
-                                <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search"></i> Cari Data </button>
+                            <div class="col-lg-1 col-sm-12">
+                                <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search"></i> </button>
                             </div>
                         </div>
                     </form>

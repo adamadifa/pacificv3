@@ -43,13 +43,15 @@ class PenjualanController extends Controller
         $query->orderBy('no_fak_penj', 'asc');
         $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
         $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
-        if (empty($request->no_fak_penj) && empty($request->nama_pelanggan) && empty($request->dari) && empty($request->sampai)) {
+        if (empty($request->no_fak_penj) && empty($request->nama_pelanggan) && empty($request->kode_pelanggan) && empty($request->dari) && empty($request->sampai)) {
             $query->WhereRaw("MATCH(nama_pelanggan) AGAINST('" . $pelanggan .  "')");
         }
         if (!empty($request->nama_pelanggan)) {
             $query->WhereRaw("MATCH(nama_pelanggan) AGAINST('" . $pelanggan .  "')");
         }
-
+        if (!empty($request->kode_pelanggan)) {
+            $query->where('penjualan.kode_pelanggan', $request->kode_pelanggan);
+        }
         if (!empty($request->no_fak_penj)) {
             $query->where('no_fak_penj', $request->no_fak_penj);
         }
