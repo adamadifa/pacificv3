@@ -149,28 +149,28 @@ class PembelianController extends Controller
         $kode_cabang = $request->kode_cabang;
         $keterangan = $request->keterangan;
         $id_admin = Auth::user()->id;
-        $cek = DB::table('detailpembelian_temp')->where('kode_barang', $kode_barang)->where('id_admin', $id_admin)->count();
-        if ($cek > 0) {
-            echo 1;
+        //$cek = DB::table('detailpembelian_temp')->where('kode_barang', $kode_barang)->where('id_admin', $id_admin)->count();
+        // if ($cek > 0) {
+        //     echo 1;
+        // } else {
+        $data = [
+            'kode_barang' => $kode_barang,
+            'kode_dept' => $kode_dept,
+            'qty' => $qty,
+            'harga' => $harga,
+            'penyesuaian' => $peny_harga,
+            'kode_akun' => $kode_akun,
+            'kode_cabang' => $kode_cabang,
+            'keterangan' => $keterangan,
+            'id_admin' => $id_admin
+        ];
+        $simpan =  DB::table('detailpembelian_temp')->insert($data);
+        if ($simpan) {
+            echo 0;
         } else {
-            $data = [
-                'kode_barang' => $kode_barang,
-                'kode_dept' => $kode_dept,
-                'qty' => $qty,
-                'harga' => $harga,
-                'penyesuaian' => $peny_harga,
-                'kode_akun' => $kode_akun,
-                'kode_cabang' => $kode_cabang,
-                'keterangan' => $keterangan,
-                'id_admin' => $id_admin
-            ];
-            $simpan =  DB::table('detailpembelian_temp')->insert($data);
-            if ($simpan) {
-                echo 0;
-            } else {
-                echo 2;
-            }
+            echo 2;
         }
+        // }
     }
 
     public function storedetailpembelian(Request $request)
