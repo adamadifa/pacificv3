@@ -463,6 +463,9 @@ class TargetkomisiController extends Controller
         } else {
             $sampai = $sampai;
         }
+
+        echo $sampai;
+        die;
         $lastmonth = date('Y-m-d', strtotime(date($dari) . '- 1 month'));
         $lastdate = explode("-", $lastmonth);
         $bulanlast = $lastdate[1] + 0;
