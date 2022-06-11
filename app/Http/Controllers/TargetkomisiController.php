@@ -455,7 +455,14 @@ class TargetkomisiController extends Controller
         $tahun = $request->tahun;
         $aturankomisi = $request->aturankomisi;
         $dari = $tahun . "-" . $bulan . "-01";
+        $hariini = date("Y-m-d");
+
         $sampai = date('Y-m-t', strtotime($dari));
+        if ($hariini < $sampai) {
+            $sampai = $hariini;
+        } else {
+            $sampai = $sampai;
+        }
         $lastmonth = date('Y-m-d', strtotime(date($dari) . '- 1 month'));
         $lastdate = explode("-", $lastmonth);
         $bulanlast = $lastdate[1] + 0;
