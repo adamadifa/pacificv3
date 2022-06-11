@@ -64,6 +64,7 @@
             $totalpenerimaan = 0;
             $totalpengeluaran = 0;
             while (strtotime($dari) <= strtotime($end)) {
+                $dari = date("Y-m-d",strtotime($dari));
                 $penerimaan = DB::table('setoran_penjualan')
                 ->selectRaw('SUM(setoran_logam) as ul_setoranpenjualan')
                 ->where('tgl_lhp',$dari)
