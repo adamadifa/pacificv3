@@ -2956,7 +2956,7 @@ class PenjualanController extends Controller
         if ($ljt == 1) {
             $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) <= pelanggan.jatuhtempo");
         } else if ($ljt == 2) {
-            $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) > pelanggan.jatuhtempo");
+            $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) > 15");
         }
         $query->orWhere('penjualan.jenistransaksi', '!=', 'tunai');
         $query->where('tgltransaksi', '<=', $sampai);
@@ -2974,7 +2974,7 @@ class PenjualanController extends Controller
         if ($ljt == 1) {
             $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) <= pelanggan.jatuhtempo");
         } else if ($ljt == 2) {
-            $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) > pelanggan.jatuhtempo");
+            $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) > 15");
         }
 
         $query->orderBy('tgltransaksi');
