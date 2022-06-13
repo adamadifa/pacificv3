@@ -150,7 +150,7 @@
                     if (substr($d->kode_akun, 0, 1) == "6" and !empty($d->kode_cabang) or substr($d->kode_akun, 0, 1) == "5" and !empty($d->kode_cabang)) {
                         echo  $d->kode_cabang;
                     } else {
-                        echo  "";
+                        echo  $d->kode_cabang;
                     } ?>
                 </td>
                 <td align="center" class="str"><?php echo "'".$d->kode_akun; ?></td>
