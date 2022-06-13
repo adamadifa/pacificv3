@@ -92,13 +92,13 @@
             });
         };
 
-        function toggleZoomScreen() {
-            var width = window.screen.width;
-            if (width <= 1366) {
-                document.body.style.zoom = "70%";
-            }
-        }
-        toggleZoomScreen();
+        // function toggleZoomScreen() {
+        //     var width = window.screen.width;
+        //     if (width <= 1366) {
+        //         document.body.style.zoom = "70%";
+        //     }
+        // }
+        // toggleZoomScreen();
     });
 
 </script>
