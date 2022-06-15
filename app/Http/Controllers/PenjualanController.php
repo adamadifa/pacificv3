@@ -938,46 +938,50 @@ class PenjualanController extends Controller
             ]);
 
             $tmp = DB::table('detailpenjualan_temp')->where('id_admin', $id_admin)
-                ->select('detailpenjualan_temp.*', 'kode_akun', 'barang.nama_barang')
+                ->select('detailpenjualan_temp.*', 'kode_akun', 'barang.nama_barang', 'barang.harga_dus as harga_dus_standar', 'barang.kode_produk')
                 ->join('barang', 'detailpenjualan_temp.kode_barang', '=', 'barang.kode_barang')
                 ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')
                 ->get();
             foreach ($tmp as $d) {
-                DB::table('detailpenjualan')->insert([
-                    'no_fak_penj' => $no_fak_penj,
-                    'kode_barang' => $d->kode_barang,
-                    'harga_dus' => $d->harga_dus,
-                    'harga_pack' => $d->harga_pack,
-                    'harga_pcs' => $d->harga_pcs,
-                    'jumlah' => $d->jumlah,
-                    'subtotal' => $d->subtotal,
-                    'promo' => $d->promo,
-                    'id_admin' => $id_admin
-                ]);
-
-                $bukubesar = DB::table("buku_besar")
-                    ->whereRaw('LEFT(no_bukti,6) = "GJ' . $bulan . $tahun . '"')
-                    ->orderBy("no_bukti", "desc")
-                    ->first();
-                if ($bukubesar != null) {
-                    $lastno_bukti = $bukubesar->no_bukti;
+                if ($d->harga_dus < $d->harga_dus_standar) {
+                    return Redirect::back()->with(['warning' => 'Harga ' . $d->kode_produk . ' Kurang Dari Harga Standar Pola Operasional']);
                 } else {
-                    $lastno_bukti = "";
-                }
-                $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 6);
-
-                DB::table('buku_besar')
-                    ->insert([
-                        'no_bukti' => $no_bukti_bukubesar,
-                        'tanggal' => $tgltransaksi,
-                        'sumber' => 'Penjualan',
-                        'keterangan' => "Penjualan " . $d->nama_barang,
-                        'kode_akun' => $d->kode_akun,
-                        'debet' => $d->subtotal,
-                        'kredit' => 0,
-                        'nobukti_transaksi' => $no_fak_penj,
-                        'no_ref' => $no_fak_penj . $d->kode_barang
+                    DB::table('detailpenjualan')->insert([
+                        'no_fak_penj' => $no_fak_penj,
+                        'kode_barang' => $d->kode_barang,
+                        'harga_dus' => $d->harga_dus,
+                        'harga_pack' => $d->harga_pack,
+                        'harga_pcs' => $d->harga_pcs,
+                        'jumlah' => $d->jumlah,
+                        'subtotal' => $d->subtotal,
+                        'promo' => $d->promo,
+                        'id_admin' => $id_admin
                     ]);
+
+                    $bukubesar = DB::table("buku_besar")
+                        ->whereRaw('LEFT(no_bukti,6) = "GJ' . $bulan . $tahun . '"')
+                        ->orderBy("no_bukti", "desc")
+                        ->first();
+                    if ($bukubesar != null) {
+                        $lastno_bukti = $bukubesar->no_bukti;
+                    } else {
+                        $lastno_bukti = "";
+                    }
+                    $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 6);
+
+                    DB::table('buku_besar')
+                        ->insert([
+                            'no_bukti' => $no_bukti_bukubesar,
+                            'tanggal' => $tgltransaksi,
+                            'sumber' => 'Penjualan',
+                            'keterangan' => "Penjualan " . $d->nama_barang,
+                            'kode_akun' => $d->kode_akun,
+                            'debet' => $d->subtotal,
+                            'kredit' => 0,
+                            'nobukti_transaksi' => $no_fak_penj,
+                            'no_ref' => $no_fak_penj . $d->kode_barang
+                        ]);
+                }
             }
 
             DB::table('detailpenjualan_temp')->where('id_admin', $id_admin)->delete();
