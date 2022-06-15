@@ -58,7 +58,14 @@ $tema = "";
 
                     <div id="customizer-menu-collapsible" class="d-flex justify-content-start align-items-center">
                         <div class="avatar mr-50">
+                            @if (!empty($d->foto))
+                            @php
+                            $path = Storage::url('users/'.$d->foto);
+                            @endphp
+                            <img src="{{ url($path) }}" alt="avtar img holder" height="35" width="35">
+                            @else
                             <img src="{{ asset('app-assets/images/avatar.png') }}" alt="avtar img holder" height="35" width="35">
+                            @endif
                         </div>
                         <div class="user-page-info ml-1">
                             <p class="mt-1">{{ $d->name }}<br><small>Last Seen {{ Carbon\Carbon::parse($d->last_seen)->diffForHumans() }}</small></p>
