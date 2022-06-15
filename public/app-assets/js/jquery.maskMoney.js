@@ -13,7 +13,7 @@
             prefix: "",
             suffix: "",
             affixesStay: true,
-            thousands: ".",
+            thousands: ",",
             decimal: ",",
             precision: 0,
             allowZero: true,

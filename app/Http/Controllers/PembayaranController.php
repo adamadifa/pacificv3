@@ -586,7 +586,7 @@ class PembayaranController extends Controller
                 if (!empty($request->id_karyawan)) {
                     $query->where('historibayar.id_karyawan', $request->id_karyawan);
                 }
-                if (!empty($request->pelanggan)) {
+                if (!empty($request->kode_pelanggan)) {
                     $query->where('penjualan.kode_pelanggan', $request->kode_pelanggan);
                 }
 
