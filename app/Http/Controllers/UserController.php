@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -15,6 +16,50 @@ class UserController extends Controller
     {
         $user = DB::table('users')->where('id', Auth::user()->id)->first();
         return view('user.gantipassword', compact('user'));
+    }
+
+    public function editprofile()
+    {
+        $user = DB::table('users')->where('id', Auth::user()->id)->first();
+        return view('user.editprofile', compact('user'));
+    }
+
+    public function updateprofile($id, Request $request)
+    {
+        $id = Crypt::decrypt($id);
+        $user = DB::table('users')->where('id', $id)->first();
+        $name = $request->name;
+        $theme = $request->theme;
+        $file = $user->foto;
+        $request->validate([
+            'name' => 'required',
+            'theme' => 'required',
+            'foto' => 'mimes:png,jpg,jpeg|max:1024',
+        ]);
+
+        if ($request->hasfile('foto')) {
+            $foto = $id . "." . $request->file('foto')->getClientOriginalExtension();
+        } else {
+            $foto = $file;
+        }
+        $data = [
+            'name' => $name,
+            'theme' => $theme,
+            'foto' => $foto
+        ];
+        $update = DB::table('users')->where('id', $id)->update($data);
+        if ($update) {
+            if ($request->hasfile('foto')) {
+                Storage::delete('public/users/' . $file);
+                $image = $request->file('foto');
+                $image_name =  $id . "." . $request->file('foto')->getClientOriginalExtension();
+                $destination_path = "/public/users";
+                $upload = $request->file('foto')->storeAs($destination_path, $image_name);
+            }
+            return Redirect::back()->with(['success' => 'Data User Berhasil Diupdate']);
+        } else {
+            return Redirect::back()->with(['warning' => 'Data User Gagal Diupdate, Hubungi Tim IT']);
+        }
     }
 
     public function update($id_user, Request $request)

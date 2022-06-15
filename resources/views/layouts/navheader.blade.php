@@ -7,16 +7,7 @@
                      <ul class="nav navbar-nav">
                          <li class="nav-item mobile-menu d-xl-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ficon feather icon-menu"></i></a></li>
                      </ul>
-                     <ul class="nav navbar-nav bookmark-icons">
-                         <div class="custom-control custom-switch custom-switch-primary mr-2 mb-1">
 
-                             <label class="custom-control-label" for="customSwitch11">
-                                 <span class="switch-icon-left"><i class="feather icon-moon"></i></span>
-                                 <span class="switch-icon-right"><i class="feather icon-sun"></i></span>
-                             </label>
-                         </div>
-
-                     </ul>
                  </div>
                  <ul class="nav navbar-nav float-right">
                      <li class="dropdown dropdown-notification nav-item">
@@ -75,7 +66,18 @@
                      <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
                              <div class="user-nav d-sm-flex d-none"><span class="user-name text-bold-600">{{ Auth::user()->name }}</span><span class="user-status">
                                      {{ ucwords(Auth::user()->level) }}
-                                 </span></div><span><img class="round" src="{{asset('app-assets/images/portrait/small/avatar-s-11.jpg')}}" alt="avatar" height="40" width="40"></span>
+                                 </span></div><span>
+                                 @if (!empty(Auth::user()->foto))
+                                 @php
+                                 $path = Storage::url('users/'.Auth::user()->foto);
+                                 @endphp
+
+
+                                 <img class="round" src="{{ url($path) }}" alt="avatar" height="40" width="40">
+                                 @else
+                                 <img class="round" src="{{asset('app-assets/images/portrait/small/avatar-s-11.jpg')}}" alt="avatar" height="40" width="40">
+                                 @endif
+                             </span>
                          </a>
                          <div class="dropdown-menu dropdown-menu-right">
                              <a class="dropdown-item" href="page-user-profile.html">

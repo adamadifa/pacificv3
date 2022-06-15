@@ -28,17 +28,22 @@
 <script src="{{asset('app-assets/js/scripts/components.js')}}"></script>
 <script src="{{ asset('app-assets/js/scripts//popover/popover.js') }}"></script>
 <!-- END: Theme JS-->
-
 <!-- BEGIN: Page JS-->
 <script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
 <script src="{{asset('app-assets/js/scripts/ui/data-list-view.js')}}"></script>
 <script src="{{asset('app-assets/js/jquery.maskMoney.js')}}"></script>
+<script src="{{asset('app-assets/js/scripts/forms/select/form-select2.js')}}"></script>
 
+<!-- END: Page JS-->
 
-<script src="{{asset('app-assets/js/scripts/datatables/datatable.js')}}"></script>
 <script src="{{ asset('app-assets/js/external/jquery.mask.min.js') }}"></script>
 <script src="{{ asset('app-assets/js/external/sweetalert.min.js') }}"></script>
 <script src="{{ asset('app-assets/js/external/jquery-ui.js') }}"></script>
+
+<!-- BEGIN: Page JS-->
+
+<script src="{{asset('app-assets/js/scripts/datatables/datatable.js')}}"></script>
+
 <script src="{{ asset('app-assets/js/external/highcharts.js') }}"></script>
 <script src="{{ asset('app-assets/js/external/series-label.js') }}"></script>
 <script src="{{ asset('app-assets/js/external/exporting.js') }}"></script>
@@ -46,8 +51,7 @@
 <script src="{{ asset('app-assets/js/external/accessibility.js') }}"></script>
 <script src="{{ asset('app-assets/js/external/selectize.js') }}"></script>
 <script src="{{ asset('app-assets/js/customizer.min.js') }}"></script>
-<script src="{{ asset('app-assets/js/external/feather.min.js') }}"></script>
-
+{{-- <script src="{{ asset('app-assets/js/external/feather.min.js') }}"></script> --}}
 <script>
     $(function() {
         //fix modal force focus
@@ -74,4 +78,5 @@
     });
 
 </script>
+<!-- END: Page JS-->
 @stack('myscript')

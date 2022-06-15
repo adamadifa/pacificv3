@@ -130,7 +130,9 @@ Route::get('/cekpenjualanwa', [WhatsappController::class, 'cekpenjualan']);
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', [DashboardController::class, 'home']);
     Route::get('/user/gantipassword', [UserController::class, 'gantipassword']);
+    Route::get('/user/editprofile', [UserController::class, 'editprofile']);
     Route::post('/user/{id}/update', [UserController::class, 'update']);
+    Route::post('/user/{id}/updateprofile', [UserController::class, 'updateprofile']);
 
     //Tutup Laporan
     Route::post('/cektutuplaporan', [TutuplaporanController::class, 'cektutuplaporan']);

@@ -1022,6 +1022,12 @@
                             <span class="menu-item">Ganti Password</span>
                         </a>
                     </li>
+                    <li class="{{ request()->is(['user', 'user/editprofile']) ? 'active' : '' }}">
+                        <a href="/user/editprofile">
+                            <i class="feather icon-user"></i>
+                            <span class="menu-item">Edit Profile</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
 

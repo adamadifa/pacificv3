@@ -17,9 +17,16 @@
 <!-- BEGIN: Body-->
 @php
 $level = Auth::user()->level;
+$theme = Auth::user()->theme;
+if($theme ==2){
+$tema = "dark-layout";
+}else{
+$tema = "";
+}
+
 
 @endphp
-<body class="vertical-layout vertical-menu-modern 2-columns  navbar-floating footer-static" data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+<body class="vertical-layout vertical-menu-modern 2-columns {{ $tema }}  navbar-floating footer-static" data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
 
 
