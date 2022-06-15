@@ -51,7 +51,11 @@
 <script src="{{ asset('app-assets/js/external/accessibility.js') }}"></script>
 <script src="{{ asset('app-assets/js/external/selectize.js') }}"></script>
 <script src="{{ asset('app-assets/js/customizer.min.js') }}"></script>
-{{-- <script src="{{ asset('app-assets/js/external/feather.min.js') }}"></script> --}}
+<script src="{{ asset('app-assets/js/external/feather.min.js') }}"></script>
+<script>
+    feather.replace();
+
+</script>
 <script>
     $(function() {
         //fix modal force focus

@@ -6,6 +6,7 @@ use App\Models\Cabang;
 use App\Models\Coa;
 use App\Models\Costratio;
 use App\Models\Detailretur;
+use App\Models\Jurnalumum;
 use App\Models\Penjualan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -676,12 +677,14 @@ class LaporanaccountingController extends Controller
         $sampai = date("Y-m-t", strtotime($dari));
         $kode_dept = $request->kode_dept;
 
-        $jurnalumum = DB::table('jurnal_umum')
-            ->join('coa', 'jurnal_umum.kode_akun', '=', 'coa.kode_akun')
-            ->whereBetween('tanggal', [$dari, $sampai])
-            ->where('kode_dept', $kode_dept)
-            ->orderBy('tanggal')
-            ->get();
+        $query = Jurnalumum::query();
+        $query->join('coa', 'jurnal_umum.kode_akun', '=', 'coa.kode_akun');
+        $query->whereBetween('tanggal', [$dari, $sampai]);
+        if (!empty($kode_dept)) {
+            $query->where('kode_dept', $kode_dept);
+        }
+        $query->orderBy('tanggal');
+        $jurnalumum = $query->get();
         $departemen = DB::table('departemen')->where('kode_dept', $kode_dept)->first();
         if (isset($_POST['export'])) {
             // Fungsi header dengan mengirimkan raw data excel

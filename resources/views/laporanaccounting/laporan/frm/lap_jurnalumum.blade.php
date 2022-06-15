@@ -68,7 +68,7 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <select name="kode_dept" id="kode_dept" class="form-control select2">
-                                                    <option value="">Departemen</option>
+                                                    <option value="">Semua Departemen</option>
                                                     @foreach ($departemen as $d)
                                                     <option value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
                                                     @endforeach

@@ -87,7 +87,7 @@
     <b style="font-size:14px;">
         JURNAL UMUM <br>
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }} <br>
-        DEPARTEMEN {{ $departemen->nama_dept }}
+        {{ $departemen != null ? 'DEPARTEMEN '. $departemen->nama_dept : '' }}
         <br>
         <table class="datatable3" style="width:90%" border="1">
             <thead>

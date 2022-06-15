@@ -943,7 +943,7 @@ class PenjualanController extends Controller
                 ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')
                 ->get();
             foreach ($tmp as $d) {
-                if ($d->harga_dus < $d->harga_dus_standar && $d->promo != 1) {
+                if ($d->harga_dus < $d->harga_dus_standar && $d->promo != 1  && strpos($nama_pelanggan, "KPBN") == false) {
                     return Redirect::back()->with(['warning' => 'Harga ' . $d->kode_produk . ' Kurang Dari Harga Standar Pola Operasional']);
                 } else {
                     DB::table('detailpenjualan')->insert([
