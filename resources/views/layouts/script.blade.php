@@ -51,9 +51,9 @@
 <script src="{{ asset('app-assets/js/external/accessibility.js') }}"></script>
 <script src="{{ asset('app-assets/js/external/selectize.js') }}"></script>
 <script src="{{ asset('app-assets/js/customizer.min.js') }}"></script>
-<script src="{{ asset('app-assets/js/external/feather.min.js') }}"></script>
+{{-- <script src="{{ asset('app-assets/js/external/feather.min.js') }}"></script> --}}
 <script>
-    feather.replace();
+    // feather.replace();
     $('body').toggleClass(localStorage.toggled);
 
     function darkLight() {
@@ -94,7 +94,7 @@
 
         function toggleZoomScreen() {
             var width = window.screen.width;
-            if (width <= 1366) {
+            if (width <= 1366 && width >= 1024) {
                 document.body.style.zoom = "70%";
             }
         }
