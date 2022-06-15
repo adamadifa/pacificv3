@@ -65,20 +65,14 @@ $level = Auth::user()->level;
 
                 </div>
                 @endforeach
-
-
-
-
             </div>
-
         </div>
         <!-- End: Customizer-->
 
     </div>
     <!-- END: Content-->
 
-    <div class="sidenav-overlay"></div>
-    <div class="drag-target"></div>
+
 
     @include('layouts.footer')
 

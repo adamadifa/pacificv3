@@ -83,10 +83,12 @@ class PelangganController extends Controller
 
 
         $query2 = Pelanggan::query();
-        if ($this->cabang == "GRT") {
-            $query2->where('pelanggan.kode_cabang', 'TSM');
-        } else {
-            $query2->where('pelanggan.kode_cabang', $this->cabang);
+        if ($this->cabang != "PCF") {
+            if ($this->cabang == "GRT") {
+                $query2->where('pelanggan.kode_cabang', 'TSM');
+            } else {
+                $query2->where('pelanggan.kode_cabang', $this->cabang);
+            }
         }
         if (isset($request->submit)) {
             if ($request->nama != "") {
@@ -118,11 +120,15 @@ class PelangganController extends Controller
         $query2->orderBy('nama_pelanggan', 'asc');
         $query2->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
 
+
+
         $queryaktif = Pelanggan::query();
-        if ($this->cabang == "GRT") {
-            $queryaktif->where('pelanggan.kode_cabang', 'TSM');
-        } else {
-            $queryaktif->where('pelanggan.kode_cabang', $this->cabang);
+        if ($this->cabang != "PCF") {
+            if ($this->cabang == "GRT") {
+                $queryaktif->where('pelanggan.kode_cabang', 'TSM');
+            } else {
+                $queryaktif->where('pelanggan.kode_cabang', $this->cabang);
+            }
         }
         if (isset($request->submit)) {
             if ($request->nama != "") {
@@ -153,10 +159,12 @@ class PelangganController extends Controller
 
 
         $querynonaktif = Pelanggan::query();
-        if ($this->cabang == "GRT") {
-            $querynonaktif->where('pelanggan.kode_cabang', 'TSM');
-        } else {
-            $querynonaktif->where('pelanggan.kode_cabang', $this->cabang);
+        if ($this->cabang != "PCF") {
+            if ($this->cabang == "GRT") {
+                $querynonaktif->where('pelanggan.kode_cabang', 'TSM');
+            } else {
+                $querynonaktif->where('pelanggan.kode_cabang', $this->cabang);
+            }
         }
         if (isset($request->submit)) {
             if ($request->nama != "") {
