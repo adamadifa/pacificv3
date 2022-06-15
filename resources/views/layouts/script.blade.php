@@ -28,22 +28,17 @@
 <script src="{{asset('app-assets/js/scripts/components.js')}}"></script>
 <script src="{{ asset('app-assets/js/scripts//popover/popover.js') }}"></script>
 <!-- END: Theme JS-->
+
 <!-- BEGIN: Page JS-->
 <script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
 <script src="{{asset('app-assets/js/scripts/ui/data-list-view.js')}}"></script>
 <script src="{{asset('app-assets/js/jquery.maskMoney.js')}}"></script>
-<script src="{{asset('app-assets/js/scripts/forms/select/form-select2.js')}}"></script>
 
-<!-- END: Page JS-->
 
+<script src="{{asset('app-assets/js/scripts/datatables/datatable.js')}}"></script>
 <script src="{{ asset('app-assets/js/external/jquery.mask.min.js') }}"></script>
 <script src="{{ asset('app-assets/js/external/sweetalert.min.js') }}"></script>
 <script src="{{ asset('app-assets/js/external/jquery-ui.js') }}"></script>
-
-<!-- BEGIN: Page JS-->
-
-<script src="{{asset('app-assets/js/scripts/datatables/datatable.js')}}"></script>
-
 <script src="{{ asset('app-assets/js/external/highcharts.js') }}"></script>
 <script src="{{ asset('app-assets/js/external/series-label.js') }}"></script>
 <script src="{{ asset('app-assets/js/external/exporting.js') }}"></script>
@@ -51,31 +46,8 @@
 <script src="{{ asset('app-assets/js/external/accessibility.js') }}"></script>
 <script src="{{ asset('app-assets/js/external/selectize.js') }}"></script>
 <script src="{{ asset('app-assets/js/customizer.min.js') }}"></script>
-{{-- <script src="{{ asset('app-assets/js/external/feather.min.js') }}"></script> --}}
-<script>
-    // feather.replace();
-    $('body').toggleClass(localStorage.toggled);
+<script src="{{ asset('app-assets/js/external/feather.min.js') }}"></script>
 
-    function darkLight() {
-        /*DARK CLASS*/
-        if (localStorage.toggled != 'dark-layout') {
-            $('body').toggleClass('dark-layout', true);
-            localStorage.toggled = "dark-layout";
-
-        } else {
-            $('body').toggleClass('dark-layout', false);
-            localStorage.toggled = "";
-        }
-    }
-
-    /*Add 'checked' property to input if background == dark*/
-    if ($('body').hasClass('dark-layout')) {
-        $('#customSwitch11').prop("checked", true)
-    } else {
-        $('#customSwitch11').prop("checked", false)
-    }
-
-</script>
 <script>
     $(function() {
         //fix modal force focus
@@ -102,5 +74,4 @@
     });
 
 </script>
-<!-- END: Page JS-->
 @stack('myscript')

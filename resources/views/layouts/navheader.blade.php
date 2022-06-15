@@ -9,7 +9,7 @@
                      </ul>
                      <ul class="nav navbar-nav bookmark-icons">
                          <div class="custom-control custom-switch custom-switch-primary mr-2 mb-1">
-                             <input type="checkbox" class="custom-control-input" id="customSwitch11" onclick="darkLight()">
+
                              <label class="custom-control-label" for="customSwitch11">
                                  <span class="switch-icon-left"><i class="feather icon-moon"></i></span>
                                  <span class="switch-icon-right"><i class="feather icon-sun"></i></span>
