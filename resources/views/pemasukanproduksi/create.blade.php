@@ -152,7 +152,12 @@
         }
 
         function loadBarang() {
-            $("#loadpilihbarang").load("/pemasukanproduksi/getbarang");
+            var kode_dept = $("#kode_dept").val();
+            if (kode_dept == "") {
+                swal("Oops", "Silahkan Pilih Sumber Barang", "warning");
+            } else {
+                $("#loadpilihbarang").load("/pemasukanproduksi/" + kode_dept + "/getbarang");
+            }
         }
 
         function loaddetail() {

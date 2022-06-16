@@ -62,9 +62,11 @@ class PemasukanproduksiController extends Controller
         return view('pemasukanproduksi.edit', compact('pemasukanproduksi'));
     }
 
-    public function getbarang()
+    public function getbarang($kode_dept)
     {
-        $barang = DB::table('master_barang_produksi')->orderBy('kode_barang')->get();
+        $barang = DB::table('master_barang_produksi')
+            ->where('kode_dept', $kode_dept)
+            ->orderBy('kode_barang')->get();
         return view('pemasukanproduksi.getbarang', compact('barang'));
     }
 

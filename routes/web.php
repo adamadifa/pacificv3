@@ -800,7 +800,7 @@ Route::middleware(['auth'])->group(function () {
 
     //Pemasukan Produksi
     Route::get('/pemasukanproduksi', [PemasukanproduksiController::class, 'index']);
-    Route::get('/pemasukanproduksi/getbarang', [PemasukanproduksiController::class, 'getbarang']);
+    Route::get('/pemasukanproduksi/{kode_dept}/getbarang', [PemasukanproduksiController::class, 'getbarang']);
     Route::get('/pemasukanproduksi/create', [PemasukanproduksiController::class, 'create']);
     Route::get('/pemasukanproduksi/showtemp', [PemasukanproduksiController::class, 'showtemp']);
     Route::get('/pemasukanproduksi/{nobukti_pemasukan}/showbarang', [PemasukanproduksiController::class, 'showbarang']);
