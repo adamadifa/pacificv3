@@ -476,7 +476,8 @@ class PelangganController extends Controller
         return DataTables::of($pelanggan)
             ->addColumn('action', function ($pelanggan) {
                 return '<a href="#" class="btn btn-sm btn-primary"
-                kode_pelanggan="' . $pelanggan->kode_pelanggan . '" nama_pelanggan="' . $pelanggan->nama_pelanggan . '"
+                kode_pelanggan="' . $pelanggan->kode_pelanggan . '"
+                nama_pelanggan="' . $pelanggan->nama_pelanggan . '"
                 id_karyawan ="' . $pelanggan->id_sales . '"
                 nama_karyawan ="' . $pelanggan->nama_karyawan . '"
                 kategori_salesman ="' . $pelanggan->kategori_salesman . '"
