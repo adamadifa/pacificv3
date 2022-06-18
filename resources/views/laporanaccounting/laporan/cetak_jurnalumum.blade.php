@@ -95,6 +95,7 @@
                     <th style="width: 10%;">TGL</th>
                     <th>NO BUKTI</th>
                     <th>KETERANGAN</th>
+                    <th>PERUNTUKAN</th>
                     <th>KODE AKUN</th>
                     <th>NAMA AKUN</th>
                     <th>DEBET</th>
@@ -122,6 +123,7 @@
                     <td>{{ DateToIndo2($d->tanggal) }}</td>
                     <td>{{ $d->kode_jurnal }}</td>
                     <td>{{ $d->keterangan }}</td>
+                    <td>{{ $d->kode_dept }}</td>
                     <td>{{ $d->kode_akun }}</td>
                     <td>{{ $d->nama_akun }}</td>
                     <td align="right">{{ !empty($debet) ? desimal($debet) : '' }}</td>
