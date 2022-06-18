@@ -60,7 +60,7 @@ class TicketController extends Controller
         $id_user = Auth::user()->id;
         $ticket = DB::table('ticket')->whereBetween('tanggal_pengajuan', [$dari, $sampai])->orderBy('kode_pengajuan', 'desc')->first();
         $lastkode_pengajuan = $ticket != null ? $ticket->kode_pengajuan : '';
-        $kode_pengajuan = buatkode($lastkode_pengajuan, "MT", 4);
+        $kode_pengajuan = buatkode($lastkode_pengajuan, "MT" . $bulan . $tahun, 4);
         $data = [
             'kode_pengajuan' => $kode_pengajuan,
             'tanggal_pengajuan' => $tanggal_pengajuan,
