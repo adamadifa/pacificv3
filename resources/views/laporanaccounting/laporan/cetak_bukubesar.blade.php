@@ -127,6 +127,7 @@
                 ->where('tahun',$tahun)
                 ->first();
                 $saldo_awal = $saldoawal != null ? $saldoawal->jumlah : 0;
+                $saldo = $saldo_awal;
                 echo '
                 <tr style="background-color:rgba(116, 170, 227, 0.465);">
                     <th style="text-align: left" colspan="7">Akun : '.$d->kode_akun.' '. $d->nama_akun.'</th>
@@ -136,7 +137,7 @@
                     <th style="text-align: right">'.desimal($saldo_awal).'</th>
                 </tr>';
                 }
-                $saldo = $saldo_awal + $d->debet - $d->kredit;
+                $saldo = $saldo + $d->debet - $d->kredit;
                 @endphp
                 <tr>
                     <td>{{ DateToIndo2($d->tanggal) }}</td>
