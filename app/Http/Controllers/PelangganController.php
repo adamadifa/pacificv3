@@ -398,6 +398,8 @@ class PelangganController extends Controller
                 'cara_pembayaran' => $request->cara_pembayaran,
                 'lama_langganan' => $request->lama_langganan,
                 'jaminan' => $request->jaminan,
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude,
                 'foto' => $foto,
                 'omset_toko' => str_replace(".", "", $request->omset_toko)
             ]);
