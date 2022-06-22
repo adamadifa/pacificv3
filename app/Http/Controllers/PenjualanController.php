@@ -43,7 +43,7 @@ class PenjualanController extends Controller
         $query->orderBy('no_fak_penj', 'asc');
         $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
         $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
-        if (empty($request->no_fak_penj) && empty($request->nama_pelanggan) && empty($request->kode_pelanggan) && empty($request->dari) && empty($request->sampai)) {
+        if (empty($request->no_fak_penj) && empty($request->nama_pelanggan) && empty($request->kode_pelanggan) && empty($request->id_karyawan) && empty($request->dari) && empty($request->sampai)) {
             $query->WhereRaw("MATCH(nama_pelanggan) AGAINST('" . $pelanggan .  "')");
         }
         if (!empty($request->nama_pelanggan)) {
@@ -51,6 +51,10 @@ class PenjualanController extends Controller
         }
         if (!empty($request->kode_pelanggan)) {
             $query->where('penjualan.kode_pelanggan', $request->kode_pelanggan);
+        }
+
+        if (!empty($request->id_karyawan)) {
+            $query->where('penjualan.id_karyawan', $request->id_karyawan);
         }
         if (!empty($request->no_fak_penj)) {
             $query->where('no_fak_penj', $request->no_fak_penj);
@@ -80,7 +84,27 @@ class PenjualanController extends Controller
         $penjualan = $query->paginate(15);
 
         $penjualan->appends($request->all());
-        return view('penjualan.index', compact('penjualan'));
+
+
+        if ($this->cabang != "PCF") {
+            if ($this->cabang == "GRT") {
+                $salesman = Salesman::where('kode_cabang', 'TSM')->where('nama_karyawan', '!=', '-')->orderBy('nama_karyawan')->get();
+            } else {
+                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)
+                    ->orWhere('sub_cabang', $this->cabang)
+                    ->get();
+                $cabang[] = "";
+                foreach ($cbg as $c) {
+                    $cabang[] = $c->kode_cabang;
+                }
+                $salesman = Salesman::whereIn('kode_cabang', $cabang)
+                    ->where('nama_karyawan', '!=', '-')
+                    ->orderBy('nama_karyawan')->get();
+            }
+        } else {
+            $salesman = Salesman::orderBy('nama_karyawan')->where('nama_karyawan', '!=', '-')->get();
+        }
+        return view('penjualan.index', compact('penjualan', 'salesman'));
     }
 
 

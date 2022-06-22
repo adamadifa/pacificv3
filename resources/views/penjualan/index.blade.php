@@ -32,8 +32,18 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-3 col-sm-12">
+                            <div class="col-lg-2 col-sm-12">
                                 <x-inputtext label="No Faktur" field="no_fak_penj" icon="feather icon-credit-card" value="{{ Request('no_fak_penj') }}" />
+                            </div>
+                            <div class="col-lg-2 col-sm-12">
+                                <div class="form-group">
+                                    <select name="id_karyawan" id="id_karyawan" class="form-control select2">
+                                        <option value="">Pilih Salesman</option>
+                                        @foreach ($salesman as $d)
+                                        <option {{ (Request('id_karyawan')==$d->id_karyawan ? 'selected':'')}} value="{{ $d->id_karyawan }}">{{ $d->nama_karyawan }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
                             </div>
                             <div class="col-lg-2 col-sm-12">
                                 <x-inputtext label="Kode Pelanggan" field="kode_pelanggan" icon="fa fa-barcode" value="{{ Request('kode_pelanggan') }}" />
@@ -41,7 +51,7 @@
                             <div class="col-lg-3 col-sm-12">
                                 <x-inputtext label="Nama Pelanggan" field="nama_pelanggan" icon="feather icon-user" value="{{ Request('nama_pelanggan') }}" />
                             </div>
-                            <div class="col-lg-3 col-sm-12">
+                            <div class="col-lg-2 col-sm-12">
                                 <div class="form-group">
                                     <select name="status" id="status" class="form-control">
                                         <option value="">Status</option>
