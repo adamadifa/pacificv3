@@ -141,14 +141,14 @@
                 @endphp
                 <tr>
                     <td>{{ DateToIndo2($d->tanggal) }}</td>
-                    <td>{{ $d->no_bukti }}</td>
+                    <td>{{ $d->nobukti_transaksi }}</td>
                     <td>
                         <?php
-                        if ($d->sumber == "Ledger") {
-                            $sumber = $d->sumber . " " . $d->bank;
-                        } else if ($d->sumber == "Kas Kecil") {
-                            $sumber = $d->nama_akun;
-                        }else {
+                        if ($d->sumber == "ledger") {
+                            $ledger = DB::table('ledger_bank')->where('no_bukti',$d->nobukti_transaksi)
+                            ->leftJoin('master_bank','ledger_bank.bank','=','master_bank.kode_bank')->first();
+                            $sumber = $ledger->nama_bank;
+                        } else{
                             $sumber = $d->sumber;
                         }
                         echo $sumber;
