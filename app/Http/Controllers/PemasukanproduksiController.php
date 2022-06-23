@@ -64,9 +64,14 @@ class PemasukanproduksiController extends Controller
 
     public function getbarang($kode_dept)
     {
-        $barang = DB::table('master_barang_produksi')
-            ->where('kode_dept', $kode_dept)
-            ->orderBy('kode_barang')->get();
+        if ($kode_dept != "Trial") {
+            $barang = DB::table('master_barang_produksi')
+                ->where('kode_dept', $kode_dept)
+                ->orderBy('kode_barang')->get();
+        } else {
+            $barang = DB::table('master_barang_produksi')
+                ->orderBy('kode_barang')->get();
+        }
         return view('pemasukanproduksi.getbarang', compact('barang'));
     }
 
