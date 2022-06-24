@@ -644,6 +644,7 @@ class LaporanaccountingController extends Controller
             ->whereBetween('tanggal', [$dari, $sampai])
             ->whereBetween('buku_besar.kode_akun', [$dari_akun, $sampai_akun])
             ->orderBy('buku_besar.kode_akun')
+            ->orderBy('buku_besar.debet', 'desc')
             ->get();
         $dariakun = DB::table('coa')->where('kode_akun', $dari_akun)->first();
         $sampaiakun = DB::table('coa')->where('kode_akun', $sampai_akun)->first();
