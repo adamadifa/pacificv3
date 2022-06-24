@@ -237,6 +237,7 @@ class ReturController extends Controller
                         ->first();
                     DB::table('historibayar')
                         ->where('no_fak_penj', $no_fak_penj)
+                        ->where('status_bayar', '!=', 'voucher')
                         ->where('tglbayar', $cekfaktur->tgltransaksi)
                         ->update([
                             'bayar' =>  DB::raw('bayar -' . $total)
