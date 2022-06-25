@@ -634,7 +634,6 @@ class LaporanaccountingController extends Controller
                     SELECT kode_akun,tanggal,debet,kredit,sumber,keterangan,nobukti_transaksi
                     FROM buku_besar
                     WHERE tanggal BETWEEN '$dari' AND '$sampai'
-                    ORDER BY tanggal,debet asc
                 ) bb"),
                 function ($join) {
                     $join->on('coa.kode_akun', '=', 'bb.kode_akun');
@@ -642,6 +641,8 @@ class LaporanaccountingController extends Controller
             )
             ->whereBetween('coa.kode_akun', [$dari_akun, $sampai_akun])
             ->orderBy('coa.kode_akun')
+            ->orderBy('bb.tanggal')
+            ->orderBy('bb.debet', 'desc')
             ->get();
         $dariakun = DB::table('coa')->where('kode_akun', $dari_akun)->first();
         $sampaiakun = DB::table('coa')->where('kode_akun', $sampai_akun)->first();
