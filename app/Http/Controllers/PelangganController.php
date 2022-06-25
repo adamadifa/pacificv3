@@ -315,7 +315,11 @@ class PelangganController extends Controller
         if ($this->cabang == "PCF") {
             $pasar = DB::table('master_pasar')->get();
         } else {
-            $pasar = DB::table('master_pasar')->where('kode_cabang', $this->cabang)->orderBy('nama_pasar')->get();
+            if ($this->cabang == "GRT") {
+                $pasar = DB::table('master_pasar')->where('kode_cabang', 'TSM')->orderBy('nama_pasar')->get();
+            } else {
+                $pasar = DB::table('master_pasar')->where('kode_cabang', $this->cabang)->orderBy('nama_pasar')->get();
+            }
         }
         return view('pelanggan.edit', compact('data', 'cabang', 'pasar'));
     }
