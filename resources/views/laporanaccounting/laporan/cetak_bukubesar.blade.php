@@ -139,6 +139,10 @@
                 }
                 $saldo = $saldo + $d->debet - $d->kredit;
                 @endphp
+
+                @if ($d->tanggal != null)
+
+
                 <tr>
                     <td>{{ DateToIndo2($d->tanggal) }}</td>
                     <td>{{ $d->nobukti_transaksi }}</td>
@@ -161,6 +165,7 @@
                     <td align="right">{{ !empty($d->kredit) ? desimal($d->kredit) : '' }}</td>
                     <td align="right">{{ desimal($saldo) }}</td>
                 </tr>
+                @endif
                 @php
                 if ($akun != $d->kode_akun) {
                 echo
