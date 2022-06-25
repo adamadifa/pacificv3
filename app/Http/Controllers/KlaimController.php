@@ -331,6 +331,7 @@ class KlaimController extends Controller
         $kode_klaim = Crypt::decrypt($kode_klaim);
         $klaim = DB::table('klaim')->where('kode_klaim', $kode_klaim)->first();
         $kode_cabang = $klaim->kode_cabang;
+        $kasbank_perantara = ['PST', 'TSM'];
         $ledger = DB::table('ledger_bank')->where('kode_klaim', $kode_klaim)->first();
         $no_bukti = $ledger->no_bukti;
         $tgl_ledger = $ledger->tgl_ledger;
@@ -348,34 +349,83 @@ class KlaimController extends Controller
             'KLT' => '1-1118',
             'GRT' => '1-1119'
         ];
+
+        $akunpsttsm = [
+            'PST' => '1-1111',
+            'TSM' => '1-1112'
+        ];
         $kode_akun = $akun[$kode_cabang];
         $jumlah = $ledger->jumlah;
         $tgl = explode("-", $tgl_ledger);
         $tahun = $tgl[0];
+        $thn = substr($tahun, 2, 2);
         $bulan = $tgl[1];
         $cektutuplaporan = DB::table('tutup_laporan')->where('bulan', $bulan)->where('tahun', $tahun)->where('status', 1)->where('jenis_laporan', 'Kas Kecil')->count();
         if ($cektutuplaporan > 0) {
             return Redirect::back()->with(['warning' => 'Laporan Sudah Ditutup !']);
         } else {
-            $data = array(
-                'nobukti'         => $no_bukti,
-                'tgl_kaskecil'    => $tgl_ledger,
-                'keterangan'      => $keterangan,
-                'jumlah'          => $jumlah,
-                'status_dk'       => 'K',
-                'kode_akun'       => $kode_akun,
-                'kode_cabang'     => $kode_cabang,
-                'order'           => 1
-            );
+
 
             DB::beginTransaction();
             try {
+                if (in_array($kode_cabang, $kasbank_perantara)) {
+
+                    $psttsm = $akunpsttsm[$kode_cabang];
+                    $bukubesar = DB::table('buku_besar')->whereRaw('LEFT(no_bukti,6)="GJ' . $bulan . $thn . '"')
+                        ->orderBy('no_bukti', 'desc')
+                        ->first();
+                    if ($bukubesar != null) {
+                        $last_no_bukti_bukubesar = $bukubesar->no_bukti;
+                    } else {
+                        $last_no_bukti_bukubesar = "";
+                    }
+
+                    $nobukti_bukubesar = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $thn, 6);
+                    $databukubesar = array(
+                        'no_bukti' => $nobukti_bukubesar,
+                        'tanggal' => $tgl_ledger,
+                        'sumber' => 'Kas Kecil',
+                        'keterangan' => $keterangan,
+                        'kode_akun' => $psttsm,
+                        'debet' => $jumlah,
+                        'kredit' => 0,
+                        'nobukti_transaksi' => $no_bukti
+                    );
+
+
+
+                    DB::table('buku_besar')->insert($databukubesar);
+
+                    $data = array(
+                        'nobukti'         => $no_bukti,
+                        'tgl_kaskecil'    => $tgl_ledger,
+                        'keterangan'      => $keterangan,
+                        'jumlah'          => $jumlah,
+                        'status_dk'       => 'K',
+                        'kode_akun'       => $kode_akun,
+                        'kode_cabang'     => $kode_cabang,
+                        'order'           => 1,
+                        'nobukti_bukubesar' => $nobukti_bukubesar
+                    );
+                } else {
+                    $data = array(
+                        'nobukti'         => $no_bukti,
+                        'tgl_kaskecil'    => $tgl_ledger,
+                        'keterangan'      => $keterangan,
+                        'jumlah'          => $jumlah,
+                        'status_dk'       => 'K',
+                        'kode_akun'       => $kode_akun,
+                        'kode_cabang'     => $kode_cabang,
+                        'order'           => 1
+                    );
+                }
                 DB::table('kaskecil_detail')->insert($data);
                 DB::table('ledger_bank')->where('no_bukti', $no_bukti)->update(['status_validasi' => 1]);
+
                 DB::commit();
                 return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
             } catch (\Exception $e) {
-                // /dd($e);
+                dd($e);
                 DB::rollback();
                 return Redirect::back()->with(['warning' => 'Data Gagal Disimpan Hubungi Tim IT']);;
             }
