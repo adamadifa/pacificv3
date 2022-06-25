@@ -627,20 +627,9 @@ class LaporanaccountingController extends Controller
         $dari_akun = $request->dari_akun;
         $sampai_akun = $request->sampai_akun;
 
-        $bukubesar = DB::table('buku_besar')
-            ->select('buku_besar.*', 'nama_akun', 'saldo_awal')
-            ->join('coa', 'buku_besar.kode_akun', '=', 'coa.kode_akun')
-            ->leftJoin(
-                DB::raw("(
-                    SELECT kode_akun,jumlah as saldo_awal
-                    FROM detailsaldoawal_bb
-                    INNER JOIN saldoawal_bb ON detailsaldoawal_bb.kode_saldoawal_bb = saldoawal_bb.kode_saldoawal_bb
-                    WHERE bulan = '$bulan' AND tahun='$tahun'
-                ) sa"),
-                function ($join) {
-                    $join->on('buku_besar.kode_akun', '=', 'sa.kode_akun');
-                }
-            )
+        $bukubesar = DB::table('coa')
+            ->select('buku_besar.*', 'nama_akun')
+            ->leftJoin('buku_besar', 'coa.kode_akun', '=', 'buku_besar.kode_akun')
             ->whereBetween('tanggal', [$dari, $sampai])
             ->whereBetween('buku_besar.kode_akun', [$dari_akun, $sampai_akun])
             ->orderBy('buku_besar.kode_akun')
