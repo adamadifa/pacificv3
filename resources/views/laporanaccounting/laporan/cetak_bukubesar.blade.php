@@ -117,6 +117,7 @@
                 $totaldebet = $totaldebet + $d->debet;
                 $totalkredit = $totalkredit + $d->kredit;
                 $akun = @$bukubesar[$key + 1]->kode_akun;
+
                 if ($kode_akun != $d->kode_akun) {
                 $saldo = 0;
                 $saldoawal = DB::table('detailsaldoawal_bb')
@@ -139,7 +140,9 @@
                 }
                 $saldo = $saldo + $d->debet - $d->kredit;
                 @endphp
-
+                {{-- <tr>
+                    <td>{{ $d->kode_akun }}</td>
+                </tr> --}}
                 @if ($d->tanggal != null)
 
 
