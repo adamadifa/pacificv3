@@ -435,8 +435,11 @@ class KlaimController extends Controller
     public function batalkanvalidasi($no_bukti)
     {
         $no_bukti = Crypt::decrypt($no_bukti);
+        $kaskecil = DB::table('kaskecil_detail')->where('nobukti', $no_bukti)->first();
+        $nobukti_bukubesar = $kaskecil->nobukti_bukubesar;
         DB::beginTransaction();
         try {
+            DB::table('buku_besar')->where('no_bukti', $nobukti_bukubesar)->delete();
             DB::table('kaskecil_detail')->where('nobukti', $no_bukti)->delete();
             DB::table('ledger_bank')->where('no_bukti', $no_bukti)->update(['status_validasi' => 0]);
             DB::commit();
