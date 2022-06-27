@@ -670,10 +670,10 @@ class LaporanaccountingController extends Controller
 
     public function cetak_jurnalumum(Request $request)
     {
-        $bulan = $request->bulan;
-        $tahun = $request->tahun;
-        $dari = $tahun . "-" . $bulan . "-01";
-        $sampai = date("Y-m-t", strtotime($dari));
+        // $bulan = $request->bulan;
+        // $tahun = $request->tahun;
+        $dari = $request->dari;
+        $sampai = $request->sampai;
         $kode_dept = $request->kode_dept;
 
         $query = Jurnalumum::query();
