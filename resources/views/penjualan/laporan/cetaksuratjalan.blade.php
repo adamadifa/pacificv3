@@ -83,12 +83,12 @@
         <td>{{ strtoupper($faktur->jenistransaksi) }}</td>
         <td>Salesman</td>
         <td>:</td>
-        <td><b>{{ $faktur->id_karyawan }}</b> - {{ $faktur->nama_karyawan }} - {{ $faktur->kategori_salesman }}</td>
+        <td><b>{{ $faktur->id_karyawan }}</b> - {{ $faktur->nama_karyawan }}</td>
     </tr>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td>Pola Operasi</td>
+        <td>:</td>
+        <td> {{ $faktur->kategori_salesman }}</td>
         <td>Alamat</td>
         <td>:</td>
         <td>

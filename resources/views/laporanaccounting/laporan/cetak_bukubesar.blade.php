@@ -131,7 +131,7 @@
                 $saldo = $saldo_awal;
                 echo '
                 <tr style="background-color:rgba(116, 170, 227, 0.465);">
-                    <th style="text-align: left" colspan="7">Akun : '.$d->kode_akun.' '. $d->nama_akun.'</th>
+                    <th style="text-align: left" colspan="7">Akun : '.$d->kode_akun.' '. $d->nama_akun.' '.$d->jenis_akun.'</th>
                 </tr>
                 <tr style="background-color:rgba(116, 170, 227, 0.465);">
                     <th style="text-align: left" colspan="6">SALDO AWAL</th>

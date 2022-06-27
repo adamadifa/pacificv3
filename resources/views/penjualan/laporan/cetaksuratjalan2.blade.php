@@ -83,7 +83,7 @@
         <td></td>
         <td>Salesman</td>
         <td>:</td>
-        <td><b>{{ $faktur->id_karyawan }}</b> - {{ $faktur->nama_karyawan }} - {{ $faktur->kategori_salesman }}</td>
+        <td><b>{{ $faktur->id_karyawan }}</b> - {{ $faktur->nama_karyawan }}</td>
     </tr>
     <tr>
         <td>Jenis Transaksi</td>
@@ -98,6 +98,11 @@
             {{ $faktur->alamat_pelanggan }}
             @endif
         </td>
+    </tr>
+    <tr>
+        <td>Pola Operasi</td>
+        <td>:</td>
+        <td>{{ $faktur->kategori_salesman }}</td>
     </tr>
     <tr>
         <td colspan="7">
