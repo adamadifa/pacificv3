@@ -99,32 +99,35 @@ class PengeluarangudanglogistikController extends Controller
         $qty = $request->qty;
         $kode_cabang = $request->kode_cabang;
         $id_admin = Auth::user()->id;
-
-        $cek = DB::table('detailpengeluaran_temp')->where('kode_barang', $kode_barang)->where('id_admin', $id_admin)->count();
-        if ($cek > 0) {
-            echo 1;
+        $detailpengeluaran = DB::table('detailpengeluaran_temp')->where('id_admin', $id_admin)->orderBy('no_urut', 'desc')->first();
+        $no_urut = $detailpengeluaran != null ? $detailpengeluaran->no_urut + 1 : 1;
+        // $cek = DB::table('detailpengeluaran_temp')->where('kode_barang', $kode_barang)->where('id_admin', $id_admin)->count();
+        // if ($cek > 0) {
+        //     echo 1;
+        // } else {
+        $data = [
+            'kode_barang' => $kode_barang,
+            'keterangan' => $keterangan,
+            'qty' => $qty,
+            'kode_cabang' => $kode_cabang,
+            'id_admin' => $id_admin,
+            'no_urut' => $no_urut
+        ];
+        $simpan = DB::table('detailpengeluaran_temp')->insert($data);
+        if ($simpan) {
+            echo 0;
         } else {
-            $data = [
-                'kode_barang' => $kode_barang,
-                'keterangan' => $keterangan,
-                'qty' => $qty,
-                'kode_cabang' => $kode_cabang,
-                'id_admin' => $id_admin
-            ];
-            $simpan = DB::table('detailpengeluaran_temp')->insert($data);
-            if ($simpan) {
-                echo 0;
-            } else {
-                echo 2;
-            }
+            echo 2;
         }
+        // }
     }
 
     public function deletetemp(Request $request)
     {
         $kode_barang = $request->kode_barang;
+        $no_urut = $request->no_urut;
         $id_admin = Auth::user()->id;
-        $hapus = DB::table('detailpengeluaran_temp')->where('kode_barang', $kode_barang)->where('id_admin', $id_admin)->delete();
+        $hapus = DB::table('detailpengeluaran_temp')->where('kode_barang', $kode_barang)->where('no_urut', $no_urut)->where('id_admin', $id_admin)->delete();
         if ($hapus) {
             echo 0;
         } else {
@@ -154,7 +157,8 @@ class PengeluarangudanglogistikController extends Controller
                     'kode_barang' => $d->kode_barang,
                     'keterangan' => $d->keterangan,
                     'qty' => $d->qty,
-                    'kode_cabang' => $d->kode_cabang
+                    'kode_cabang' => $d->kode_cabang,
+                    'no_urut' => $d->no_urut
                 ];
 
                 DB::table('detail_pengeluaran')->insert($datadetail);
@@ -228,12 +232,14 @@ class PengeluarangudanglogistikController extends Controller
     {
         $nobukti_pengeluaran = $request->nobukti_pengeluaran;
         $kode_barang = $request->kode_barang;
+        $no_urut = $request->no_urut;
         $cabang = Cabang::orderBy('kode_cabang')->get();
         $barang = DB::table('detail_pengeluaran')
             ->select('detail_pengeluaran.*', 'nama_barang', 'satuan')
             ->join('master_barang_pembelian', 'detail_pengeluaran.kode_barang', '=', 'master_barang_pembelian.kode_barang')
             ->where('nobukti_pengeluaran', $nobukti_pengeluaran)
             ->where('detail_pengeluaran.kode_barang', $kode_barang)
+            ->where('detail_pengeluaran.no_urut', $no_urut)
             ->first();
 
         return view('pengeluarangudanglogistik.editbarang', compact('barang', 'cabang'));
@@ -243,7 +249,11 @@ class PengeluarangudanglogistikController extends Controller
     {
         $nobukti_pengeluaran = $request->nobukti_pengeluaran;
         $kode_barang = $request->kode_barang;
-        $hapus = DB::table('detail_pengeluaran')->where('kode_barang', $kode_barang)->where('nobukti_pengeluaran', $nobukti_pengeluaran)->delete();
+        $no_urut = $request->no_urut;
+        $hapus = DB::table('detail_pengeluaran')
+            ->where('kode_barang', $kode_barang)
+            ->where('no_urut', $no_urut)
+            ->where('nobukti_pengeluaran', $nobukti_pengeluaran)->delete();
         if ($hapus) {
             echo 0;
         } else {
@@ -255,6 +265,7 @@ class PengeluarangudanglogistikController extends Controller
     {
         $nobukti_pengeluaran = $request->nobukti_pengeluaran;
         $kode_barang = $request->kode_barang;
+        $no_urut = $request->no_urut;
         $keterangan = $request->keterangan;
         $qty = !empty($request->qty) ? $request->qty : 0;
         $kode_cabang = $request->kode_cabang;
@@ -264,7 +275,11 @@ class PengeluarangudanglogistikController extends Controller
             'kode_cabang' => $kode_cabang,
         ];
 
-        $update = DB::table('detail_pengeluaran')->where('nobukti_pengeluaran', $nobukti_pengeluaran)->where('kode_barang', $kode_barang)->update($data);
+        $update = DB::table('detail_pengeluaran')
+            ->where('nobukti_pengeluaran', $nobukti_pengeluaran)
+            ->where('kode_barang', $kode_barang)
+            ->where('no_urut', $no_urut)
+            ->update($data);
         if ($update) {
             echo 0;
         } else {

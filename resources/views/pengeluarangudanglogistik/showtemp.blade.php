@@ -3,11 +3,12 @@
     <td>{{ $loop->iteration }}</td>
     <td>{{ $d->kode_barang }}</td>
     <td>{{ $d->nama_barang }}</td>
+    <td>{{ strtoupper($d->satuan) }}</td>
     <td>{{ $d->keterangan }}</td>
     <td>{{ $d->kode_cabang }}</td>
     <td class="text-right">{{ desimal($d->qty) }}</td>
     <td>
-        <a href="#" kode_barang="{{ $d->kode_barang }}" class="hapus"><i class="feather icon-trash danger"></i></a>
+        <a href="#" kode_barang="{{ $d->kode_barang }}" no_urut="{{ $d->no_urut }}" class="hapus"><i class="feather icon-trash danger"></i></a>
     </td>
 </tr>
 @endforeach
@@ -38,6 +39,7 @@
         $(".hapus").click(function(e) {
             e.preventDefault();
             var kode_barang = $(this).attr("kode_barang");
+            var no_urut = $(this).attr("no_urut");
             event.preventDefault();
             swal({
                     title: `Anda Yakin Data ini Akan Dihapus ?`
@@ -54,6 +56,7 @@
                             , data: {
                                 _token: "{{ csrf_token() }}"
                                 , kode_barang: kode_barang
+                                , no_urut: no_urut
                             }
                             , cache: false
                             , success: function(respond) {

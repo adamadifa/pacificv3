@@ -104,6 +104,7 @@
             e.preventDefault();
             var nobukti_pengeluaran = "{{ $barang->nobukti_pengeluaran }}";
             var kode_barang = "{{ $barang->kode_barang }}";
+            var no_urut = "{{ $barang->no_urut }}";
             var keterangan = $("#frmEdit").find("#keterangan").val();
             var qty = $("#frmEdit").find("#qty").val();
             var kode_cabang = $("#frmEdit").find("#kode_cabang").val();
@@ -134,6 +135,7 @@
                         _token: "{{ csrf_token() }}"
                         , nobukti_pengeluaran: nobukti_pengeluaran
                         , kode_barang: kode_barang
+                        , no_urut: no_urut
                         , keterangan: keterangan
                         , qty: qty
                         , kode_cabang: kode_cabang

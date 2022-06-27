@@ -56,11 +56,11 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-lg-3 col-sm-12 col-md-12">
+                                <div class="col-lg-5 col-sm-12 col-md-12">
                                     <input type="hidden" name="kode_barang" id="kode_barang">
                                     <x-inputtext field="nama_barang" label="Nama Barang" icon="feather icon-box" readonly />
                                 </div>
-                                <div class="col-lg-5 col-sm-12 col-md-12">
+                                <div class="col-lg-3 col-sm-12 col-md-12">
                                     <x-inputtext field="keterangan" label="Keterangan" icon="feather icon-file" />
                                 </div>
                                 <div class="col-lg-2 col-sm-12 col-md-12">
@@ -104,6 +104,7 @@
                                                 <th>No.</th>
                                                 <th>Kode barang</th>
                                                 <th>Nama Barang</th>
+                                                <th>Satuan</th>
                                                 <th>Keterangan</th>
                                                 <th>Cabang</th>
                                                 <th>Qty</th>

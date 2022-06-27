@@ -9,8 +9,8 @@
     <td>
         <div class="btn-group" role="group" aria-label="Basic example">
 
-            <a href="#" kode_barang="{{ $d->kode_barang }}" nobukti_pengeluaran="{{ $d->nobukti_pengeluaran }}" class="edit"><i class="feather icon-edit success"></i></a>
-            <a href="#" kode_barang="{{ $d->kode_barang }}" nobukti_pengeluaran="{{ $d->nobukti_pengeluaran }}" class="hapus ml-1"><i class="feather icon-trash danger"></i></a>
+            <a href="#" kode_barang="{{ $d->kode_barang }}" nobukti_pengeluaran="{{ $d->nobukti_pengeluaran }}" no_urut="{{ $d->no_urut }}" class="edit"><i class="feather icon-edit success"></i></a>
+            <a href="#" kode_barang="{{ $d->kode_barang }}" nobukti_pengeluaran="{{ $d->nobukti_pengeluaran }}" no_urut="{{ $d->no_urut }}" class="hapus ml-1"><i class="feather icon-trash danger"></i></a>
         </div>
     </td>
 </tr>
@@ -20,6 +20,7 @@
         $(".edit").click(function(e) {
             var nobukti_pengeluaran = $(this).attr("nobukti_pengeluaran");
             var kode_barang = $(this).attr("kode_barang");
+            var no_urut = $(this).attr("no_urut");
             var cektutuplaporan = $("#cektutuplaporan").val();
             if (cektutuplaporan > 0) {
                 swal("Oops", "Laporan Periode Ini Sudah Ditutup !", "warning");
@@ -31,6 +32,7 @@
                         _token: "{{ csrf_token() }}"
                         , nobukti_pengeluaran: nobukti_pengeluaran
                         , kode_barang: kode_barang
+                        , no_urut: no_urut
                     }
                     , cache: false
                     , success: function(respond) {
@@ -72,6 +74,7 @@
         $(".hapus").click(function(e) {
             e.preventDefault();
             var kode_barang = $(this).attr("kode_barang");
+            var no_urut = $(this).attr("no_urut");
             var nobukti_pengeluaran = $("#nobukti_pengeluaran").val();
             event.preventDefault();
             swal({
@@ -94,6 +97,7 @@
                                     _token: "{{ csrf_token() }}"
                                     , nobukti_pengeluaran: nobukti_pengeluaran
                                     , kode_barang: kode_barang
+                                    , no_urut: no_urut
                                 }
                                 , cache: false
                                 , success: function(respond) {
