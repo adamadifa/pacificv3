@@ -3,6 +3,7 @@
         <tr>
             <th>Kode Barang</th>
             <th>Nama Barang</th>
+            <th>Satuan</th>
             <th>#</th>
         </tr>
     </thead>
@@ -11,6 +12,7 @@
         <tr>
             <td>{{ $d->kode_barang }}</td>
             <td>{{ $d->nama_barang }}</td>
+            <td>{{ strtoupper($d->satuan) }}</td>
             <td><a href="#" class="pilihbarang" kode_barang="{{ $d->kode_barang }}" nama_barang="{{ $d->nama_barang }}"><i class="feather icon-external-link success"></i></a></td>
         </tr>
         @endforeach
