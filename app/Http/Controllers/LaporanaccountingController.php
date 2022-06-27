@@ -628,7 +628,7 @@ class LaporanaccountingController extends Controller
         $sampai_akun = $request->sampai_akun;
 
         $bukubesar = DB::table('coa')
-            ->select('coa.kode_akun', 'nama_akun', 'tanggal', 'debet', 'kredit', 'sumber', 'keterangan', 'nobukti_transaksi')
+            ->select('coa.kode_akun', 'nama_akun', 'tanggal', 'debet', 'kredit', 'sumber', 'keterangan', 'nobukti_transaksi', 'jenis_akun')
             ->leftJoin(
                 DB::raw("(
                     SELECT kode_akun,tanggal,debet,kredit,sumber,keterangan,nobukti_transaksi

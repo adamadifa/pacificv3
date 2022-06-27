@@ -138,7 +138,11 @@
                     <th style="text-align: right">'.desimal($saldo_awal).'</th>
                 </tr>';
                 }
+                if($d->jenis_akun==1){
+                $saldo = $saldo + $d->kredit - $d->debet;
+                }else{
                 $saldo = $saldo + $d->debet - $d->kredit;
+                }
                 @endphp
                 {{-- <tr>
                     <td>{{ $d->kode_akun }}</td>

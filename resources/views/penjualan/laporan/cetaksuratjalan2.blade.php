@@ -75,12 +75,20 @@
         <td width="25%">{{ DateToIndo2($faktur->tgltransaksi) }}</td>
         <td>Nama Customer</td>
         <td>:</td>
-        <td>{{ $faktur->nama_pelanggan }}</td>
+        <td><b>{{ $faktur->kode_pelanggan }}</b> - {{ $faktur->nama_pelanggan }}</td>
     </tr>
     <tr>
         <td>No. Kendaraan</td>
         <td>:</td>
         <td></td>
+        <td>Salesman</td>
+        <td>:</td>
+        <td><b>{{ $faktur->id_karyawan }}</b> - {{ $faktur->nama_karyawan }} - {{ $faktur->kategori_salesman }}</td>
+    </tr>
+    <tr>
+        <td>Jenis Transaksi</td>
+        <td>:</td>
+        <td>{{ ucwords($faktur->jenistransaksi) }}</td>
         <td>Alamat</td>
         <td>:</td>
         <td>
@@ -90,11 +98,6 @@
             {{ $faktur->alamat_pelanggan }}
             @endif
         </td>
-    </tr>
-    <tr>
-        <td>Jenis Transaksi</td>
-        <td>:</td>
-        <td>{{ ucwords($faktur->jenistransaksi) }}</td>
     </tr>
     <tr>
         <td colspan="7">

@@ -1257,6 +1257,8 @@ class PenjualanController extends Controller
                 'alamat_toko',
                 'nama_cabang',
                 'alamat_cabang',
+                'nama_karyawan',
+                'kategori_salesman',
                 DB::raw('IFNULL(totalpf,0) - IFNULL(totalgb,0) as totalretur'),
                 DB::raw('IFNULL(total,0) - (IFNULL(totalpf,0) - IFNULL(totalgb,0)) as total')
             )
