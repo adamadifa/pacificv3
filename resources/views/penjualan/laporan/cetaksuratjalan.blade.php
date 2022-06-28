@@ -69,6 +69,7 @@
             <hr>
         </td>
     </tr>
+    @if ($faktur->kode_cabang =="BDG")
     <tr>
         <td width="10%">Tgl Faktur</td>
         <td width="1%">:</td>
@@ -99,6 +100,31 @@
             @endif
         </td>
     </tr>
+    @else
+    <tr>
+        <td width="10%">Tgl Faktur</td>
+        <td width="1%">:</td>
+        <td width="25%">{{ DateToIndo2($faktur->tgltransaksi) }}</td>
+        <td>Nama Customer</td>
+        <td>:</td>
+        <td><b>{{ $faktur->kode_pelanggan }}</b> - {{ $faktur->nama_pelanggan }}</td>
+    </tr>
+    <tr>
+        <td>Jenis Transaksi</td>
+        <td>:</td>
+        <td>{{ strtoupper($faktur->jenistransaksi) }}</td>
+        <td>Alamat</td>
+        <td>:</td>
+        <td>
+            @if (!empty($faktur->alamat_toko))
+            {{ $faktur->alamat_toko }}
+            @else
+            {{ $faktur->alamat_pelanggan }}
+            @endif
+        </td>
+    </tr>
+    @endif
+
 
     <tr>
         <td colspan="7">

@@ -1256,6 +1256,7 @@ class PenjualanController extends Controller
                 'alamat_pelanggan',
                 'alamat_toko',
                 'nama_cabang',
+                'karyawan.kode_cabang',
                 'alamat_cabang',
                 'nama_karyawan',
                 'kategori_salesman',
