@@ -32,7 +32,7 @@
                 <div class="card-body">
                     <form action="/kendaraan">
                         <div class="row">
-                            @if ($level == "PCF")
+                            @if ($getcbg == "PCF")
                             <div class="col-lg-4 col-sm-12">
                                 <div class="form-group  ">
                                     <select name="kode_cabang" id="" class="form-control">
