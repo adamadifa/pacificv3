@@ -47,8 +47,8 @@ class SaldoawalgudangbahanController extends Controller
     {
         $kode_saldoawal = Crypt::decrypt($kode_saldoawal);
         $saldoawal = DB::table('saldoawal_gb')->where('kode_saldoawal_gb', $kode_saldoawal)->first();
-        $detail = DB::table('master_barang_pembelian')
-            ->leftJoin('saldoawal_gb_detail', 'master_barang_pembelian.kode_barang', '=', 'saldoawal_gb_detail.kode_barang')
+        $detail = DB::table('saldoawal_gb_detail')
+            ->join('master_barang_pembelian', 'saldoawal_gb_detail.kode_barang', '=', 'master_barang_pembelian.kode_barang')
             ->join('kategori_barang_pembelian', 'master_barang_pembelian.kode_kategori', '=', 'kategori_barang_pembelian.kode_kategori')
             ->where('kode_saldoawal_gb', $kode_saldoawal)
             ->orderBy('master_barang_pembelian.jenis_barang')
