@@ -89,7 +89,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="Tanggal KIR" field="kir" icon="feather icon-calendar" datepicker value="{{ $data->kir }}" />
+                                            <x-inputtext label="Tanggal KIR" field="kir" icon="feather icon-calendar" value="{!! $data->kir !!}" />
                                         </div>
                                     </div>
                                     <div class="row">
