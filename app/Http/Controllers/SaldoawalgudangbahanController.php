@@ -51,7 +51,8 @@ class SaldoawalgudangbahanController extends Controller
             ->join('master_barang_pembelian', 'saldoawal_gb_detail.kode_barang', '=', 'master_barang_pembelian.kode_barang')
             ->join('kategori_barang_pembelian', 'master_barang_pembelian.kode_kategori', '=', 'kategori_barang_pembelian.kode_kategori')
             ->where('kode_saldoawal_gb', $kode_saldoawal)
-            ->orderBy('nama_barang')
+            ->orderBy('master_barang_pembelian.jenis_barang')
+            ->orderByRaw('cast(substr(saldoawal_gb_detail.kode_barang from 4) AS UNSIGNED)')
             ->get();
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('saldoawalgudangbahan.edit', compact('detail', 'saldoawal', 'bulan'));
@@ -199,7 +200,8 @@ class SaldoawalgudangbahanController extends Controller
                 )
                 ->where('master_barang_pembelian.kode_dept', 'GDB')
                 ->where('master_barang_pembelian.kode_kategori', '!=', 'K002')
-                ->orderBy('master_barang_pembelian.nama_barang')
+                ->orderBy('master_barang_pembelian.jenis_barang')
+                ->orderByRaw('cast(substr(master_barang_pembelian.kode_barang FROM 4) AS UNSIGNED)')
                 ->get();
 
             return view('saldoawalgudangbahan.getdetailsaldo', compact('detail'));

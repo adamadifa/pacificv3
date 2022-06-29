@@ -51,7 +51,8 @@ class OpnamegudangbahanController extends Controller
             ->join('master_barang_pembelian', 'opname_gb_detail.kode_barang', '=', 'master_barang_pembelian.kode_barang')
             ->join('kategori_barang_pembelian', 'master_barang_pembelian.kode_kategori', '=', 'kategori_barang_pembelian.kode_kategori')
             ->where('kode_opname_gb', $kode_opname)
-            ->orderBy('nama_barang')
+            ->orderBy('master_barang_pembelian.jenis_barang')
+            ->orderByRaw('cast(substr(opname_gb_detail.kode_barang from 4) AS UNSIGNED)')
             ->get();
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('opnamegudangbahan.edit', compact('detail', 'opname', 'bulan'));
@@ -200,7 +201,8 @@ class OpnamegudangbahanController extends Controller
                 )
                 ->where('master_barang_pembelian.kode_dept', 'GDB')
                 ->where('master_barang_pembelian.kode_kategori', '!=', 'K002')
-                ->orderBy('master_barang_pembelian.nama_barang')
+                ->orderBy('master_barang_pembelian.jenis_barang')
+                ->orderByRaw('cast(substr(master_barang_pembelian.kode_barang from 4) as UNSIGNED)')
                 ->get();
 
             return view('opnamegudangbahan.getdetailsaldo', compact('detail'));

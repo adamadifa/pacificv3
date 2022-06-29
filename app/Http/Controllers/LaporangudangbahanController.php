@@ -240,8 +240,8 @@ class LaporangudangbahanController extends Controller
             ->where('master_barang_pembelian.kode_dept', 'GDB')
             ->where('master_barang_pembelian.kode_kategori', $kode_kategori)
             ->orderBy('jenis_barang')
+            ->orderByRaw('cast(substr(master_barang_pembelian.kode_barang from 4) AS UNSIGNED)')
             ->orderBy('nama_barang')
-            ->orderByRaw('MID(4,3,master_barang_pembelian.kode_barang)')
             ->orderBy('urutan')
             ->get();
 
@@ -448,8 +448,8 @@ class LaporangudangbahanController extends Controller
             ->where('master_barang_pembelian.kode_dept', 'GDB')
             ->where('master_barang_pembelian.kode_kategori', $kode_kategori)
             ->orderBy('jenis_barang')
+            ->orderByRaw('cast(substr(master_barang_pembelian.kode_barang from 4) as UNSIGNED)')
             ->orderBy('nama_barang')
-            ->orderByRaw('MID(4,3,master_barang_pembelian.kode_barang)')
             ->orderBy('urutan')
             ->get();
 
