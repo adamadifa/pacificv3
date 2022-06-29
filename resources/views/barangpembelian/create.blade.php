@@ -57,7 +57,13 @@
         </div>
     </div>
     @else
+    @if (Auth::user()->level != "admin gudang logistik")
     <input type="hidden" id="kode_dept" name="kode_dept" value="GDL">
+    @elseif (Auth::user()->level != "admin gudang bahan")
+    <input type="hidden" id="kode_dept" name="kode_dept" value="GDB">
+    @elseif (Auth::user()->level != "general affair")
+    <input type="hidden" id="kode_dept" name="kode_dept" value="GA">
+    @endif
     @endif
     {{-- <div class="row">
         <div class="col-12">

@@ -11,7 +11,13 @@ use Illuminate\Support\Facades\Redirect;
 
 class MemoController extends Controller
 {
-    public function index(Request $request)
+
+    public function index()
+    {
+        return view('memo.index');
+    }
+
+    public function show($kode_dept, Request $request)
     {
         $id_user = Auth::user()->id;
         $query = Memo::query();
@@ -40,6 +46,7 @@ class MemoController extends Controller
                 $join->on('memo.id_user', '=', 'user.id');
             }
         );
+        $query->where('kode_dept', $kode_dept);
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('tanggal', [$request->dari, $request->sampai]);
         }
@@ -47,11 +54,13 @@ class MemoController extends Controller
         if (!empty($request->judul_memo)) {
             $query->where('judul_memo', 'like', '%' . $request->judul_memo . '%');
         }
+
+        $query->orderBy('kategori', 'asc');
+        $query->orderBy('no_memo', 'asc');
         $query->orderBy('tanggal', 'desc');
-        $query->orderBy('id', 'desc');
-        $memo = $query->paginate(15);
+        $memo = $query->paginate(30);
         $memo->appends($request->all());
-        return view('memo.index', compact('memo'));
+        return view('memo.show', compact('memo'));
     }
 
     public function downloadcount(Request $request)
