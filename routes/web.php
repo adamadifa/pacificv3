@@ -390,6 +390,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pembelian/jatuhtempo', [PembelianController::class, 'jatuhtempo']);
     Route::post('/kontrabon/proseskontrabon', [KontrabonController::class, 'proseskontrabon']);
     Route::post('/kontrabon/storeproseskontrabon', [KontrabonController::class, 'storeproseskontrabon']);
+    Route::post('/kontrabon/editkontrabon', [KontrabonController::class, 'editkontrabon']);
+    Route::post('/kontrabon/updatekontrabon', [KontrabonController::class, 'updatekontrabon']);
     Route::delete('/kontrabon/{no_kontrabon}/batalkankontrabon', [KontrabonController::class, 'batalkankontrabon']);
     Route::get('/kontrabon/{no_kontrabon}/approvekontrabon', [KontrabonController::class, 'approvekontrabon']);
     Route::get('/kontrabon/{no_kontrabon}/cancelkontrabon', [KontrabonController::class, 'cancelkontrabon']);

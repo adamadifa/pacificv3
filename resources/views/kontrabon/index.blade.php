@@ -153,13 +153,16 @@
 
                                             {{-- Approve Kontrabon --}}
                                             @if (in_array($level,$kontrabon_approve))
+
                                             @if (empty($d->tglbayar))
+
                                             @if ($d->status ==1 )
                                             <a href="/kontrabon/{{ Crypt::encrypt($d->no_kontrabon) }}/cancelkontrabon" class="danger ml-1"><i class="fa fa-close"></i></a>
                                             @else
                                             @if ($d->kategori != "TN")
                                             <a href="/kontrabon/{{ Crypt::encrypt($d->no_kontrabon) }}/approvekontrabon" class="success ml-1"><i class="fa fa-check"></i></a>
                                             @endif
+
                                             @endif
                                             @endif
                                             @endif
@@ -168,19 +171,23 @@
                                             {{-- Kontrabon Proses --}}
                                             @if (in_array($level,$kontrabon_proses))
                                             @if (empty($d->tglbayar))
+
                                             @if ($d->status==1)
-                                            @if($d->kategori != 'TN')
+
                                             <a class="ml-1 proseskontrabon" href="#" no_kontrabon="{{ Crypt::encrypt($d->no_kontrabon) }}"><i class=" feather icon-external-link success"></i></a>
+
+
                                             @else
-                                            <a class="ml-1 proseskontrabon" href="#" no_kontrabon="{{ Crypt::encrypt($d->no_kontrabon) }}"><i class=" feather icon-external-link success"></i></a>
-                                            @endif
-                                            @else
+
                                             @if ($d->kategori != 'TN')
                                             <span class="badge bg-warning ml-1"><i class="fa fa-history mr-1"></i>Waiting Approval</span>
                                             @else
                                             <a class="ml-1 proseskontrabon" href="#" no_kontrabon="{{ Crypt::encrypt($d->no_kontrabon) }}"><i class=" feather icon-external-link success"></i></a>
                                             @endif
+
                                             @endif
+
+
                                             @else
                                             <form method="POST" class="cancelkontrabon" action="/kontrabon/{{Crypt::encrypt($d->no_kontrabon)}}/batalkankontrabon">
                                                 @csrf
@@ -189,6 +196,7 @@
                                                     <i class="fa fa-close danger"></i>
                                                 </a>
                                             </form>
+                                            <a class="ml-1 editkontrabon" href="#" no_kontrabon="{{ Crypt::encrypt($d->no_kontrabon) }}"><i class="feather icon-edit success"></i></a>
                                             @endif
                                             @endif
 
@@ -240,6 +248,21 @@
         </div>
     </div>
 </div>
+<div class="modal fade text-left" id="mdleditkontrabon" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width:968px" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Edit Kontrabon</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loadeditkontrabon"></div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @push('myscript')
 <script>
@@ -273,6 +296,21 @@
                 }
             });
         }
+
+        function loadeditkontrabon(no_kontrabon) {
+            $.ajax({
+                type: 'POST'
+                , url: '/kontrabon/editkontrabon'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , no_kontrabon: no_kontrabon
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loadeditkontrabon").html(respond);
+                }
+            });
+        }
         $('.detailkontrabon').click(function(e) {
             var no_kontrabon = $(this).attr("no_kontrabon");
             e.preventDefault();
@@ -288,6 +326,16 @@
             e.preventDefault();
             loadproseskontrabon(no_kontrabon);
             $('#mdlproseskontrabon').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+        });
+
+        $('.editkontrabon').click(function(e) {
+            var no_kontrabon = $(this).attr("no_kontrabon");
+            e.preventDefault();
+            loadeditkontrabon(no_kontrabon);
+            $('#mdleditkontrabon').modal({
                 backdrop: 'static'
                 , keyboard: false
             });
