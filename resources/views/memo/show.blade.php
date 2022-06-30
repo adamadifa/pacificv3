@@ -31,7 +31,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-                            <form action="/memo">
+                            <form action="{{ URL::current(); }}">
                                 <div class="row">
                                     <div class="col-6">
                                         <x-inputtext field="dari" label="Dari" icon="feather icon-calendar" value="{{ Request('dari') }}" datepicker />
@@ -74,7 +74,17 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @php
+                                $kategori = "";
+                                @endphp
                                 @foreach ($memo as $d)
+                                @if ($kategori != $d->kategori)
+                                <tr>
+                                    <thead class="thead-dark">
+                                        <th colspan="10">KATEGORI {{ strtoupper($d->kategori) }}</th>
+                                    </thead>
+                                </tr>
+                                @endif
                                 <tr>
                                     <td>{{ $loop->iteration + $memo->firstItem() -1 }}</td>
                                     <td>{{ date("d-m-Y",strtotime($d->tanggal)) }}</td>
@@ -108,6 +118,9 @@
                                         @endif
                                     </td>
                                 </tr>
+                                @php
+                                $kategori = $d->kategori;
+                                @endphp
                                 @endforeach
                             </tbody>
                         </table>

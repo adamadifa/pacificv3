@@ -18,6 +18,11 @@
         </div>
     </div>
     <div class="content-body">
+        <div class="row mb-1">
+            <div class="col-12">
+                <a href="/memo/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i>Tambah Data</a>
+            </div>
+        </div>
         <div class="row">
             <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6">
                 <a href="/memo/MKT/show">
@@ -27,24 +32,32 @@
                 </a>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6">
-                <div class="card text-white">
-                    <img src="{{ asset('app-assets/memo/Accounting.jpg') }}" class="card-img" alt="card-img-6">
-                </div>
+                <a href="/memo/ACC/show">
+                    <div class="card text-white">
+                        <img src="{{ asset('app-assets/memo/Accounting.jpg') }}" class="card-img" alt="card-img-6">
+                    </div>
+                </a>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6">
-                <div class="card text-white">
-                    <img src="{{ asset('app-assets/memo/finance.jpg') }}" class="card-img" alt="card-img-6">
-                </div>
+                <a href="/memo/KEU/show">
+                    <div class="card text-white">
+                        <img src="{{ asset('app-assets/memo/finance.jpg') }}" class="card-img" alt="card-img-6">
+                    </div>
+                </a>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-6 col-xs-6">
-                <div class="card text-white">
-                    <img src="{{ asset('app-assets/memo/HRD.jpg') }}" class="card-img" alt="card-img-6">
-                </div>
+                <a href="/memo/HRD/show">
+                    <div class="card text-white">
+                        <img src="{{ asset('app-assets/memo/HRD.jpg') }}" class="card-img" alt="card-img-6">
+                    </div>
+                </a>
             </div>
             <div class="col-lg-3">
-                <div class="card text-white">
-                    <img src="{{ asset('app-assets/memo/alldepartment.jpg') }}" class="card-img" alt="card-img-6">
-                </div>
+                <a href="/memo/ALL/show">
+                    <div class="card text-white">
+                        <img src="{{ asset('app-assets/memo/alldepartment.jpg') }}" class="card-img" alt="card-img-6">
+                    </div>
+                </a>
             </div>
         </div>
 
