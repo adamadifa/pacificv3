@@ -9,7 +9,7 @@
     </tr>
     <tr>
         <td>Tanggal Pembelian</td>
-        <td>{{ DateToIndo2($pemasukan->tgl_pembelian) }}</td>
+        <td>{{ $pemasukan->tgl_pembelian != null ? DateToIndo2($pemasukan->tgl_pembelian) : '' }}</td>
     </tr>
     <tr>
         <td>Tanggal Approve</td>

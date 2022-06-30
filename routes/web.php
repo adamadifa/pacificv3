@@ -544,6 +544,13 @@ Route::middleware(['auth'])->group(function () {
 
     //Gudang Logistik
     Route::get('/pemasukangudanglogistik', [PemasukangudanglogistikController::class, 'index']);
+    Route::get('/pemasukangudanglogistik/create', [PemasukangudanglogistikController::class, 'create']);
+    Route::post('/pemasukangudanglogistik/cektemp', [PemasukangudanglogistikController::class, 'cektemp']);
+    Route::get('/pemasukangudanglogistik/getbarang', [PemasukangudanglogistikController::class, 'getbarang']);
+    Route::get('/pemasukangudanglogistik/showtemp', [PemasukangudanglogistikController::class, 'showtemp']);
+    Route::post('/pemasukangudanglogistik/storetemp', [PemasukangudanglogistikController::class, 'storetemp']);
+    Route::post('/pemasukangudanglogistik/store', [PemasukangudanglogistikController::class, 'store']);
+    Route::post('/pemasukangudanglogistik/deletetemp', [PemasukangudanglogistikController::class, 'deletetemp']);
     Route::post('/pemasukangudanglogistik/show', [PemasukangudanglogistikController::class, 'show']);
     Route::delete('/pemasukangudanglogistik/{nobukti_pemasukan}/delete', [PemasukangudanglogistikController::class, 'delete']);
     Route::get('/pengeluarangudanglogistik', [PengeluarangudanglogistikController::class, 'index']);

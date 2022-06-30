@@ -189,11 +189,38 @@ class MutasibankController extends Controller
 
 
 
-
+        $cekakun = substr($kode_akun, 0, 3);
 
         DB::beginTransaction();
         try {
+            if ($debetkredit == 'D' and $cekakun == '6-1'  or $debetkredit == 'D' and $cekakun == '6-2') {
+                $kode = "CR" . $bulan . $tahun;
+                $cr = DB::table('costratio_biaya')
+                    ->select('kode_cr')
+                    ->whereRaw('LEFT(kode_cr,6) ="' . $kode . '"')
+                    ->orderBy('kode_cr', 'desc')
+                    ->first();
+                if ($cr != null) {
+                    $last_kode_cr = $cr->kode_cr;
+                } else {
+                    $last_kode_cr = "";
+                }
+                $kode_cr = buatkode($last_kode_cr, "CR" . $bulan . $tahun, 4);
 
+                $datacr = [
+                    'kode_cr' => $kode_cr,
+                    'tgl_transaksi' => $tgl_ledger,
+                    'kode_akun'    => $kode_akun,
+                    'keterangan'   => $keterangan,
+                    'kode_cabang'  => $kode_cabang,
+                    'id_sumber_costratio' => 2,
+                    'jumlah' => $jumlah
+                ];
+
+                DB::table('costratio_biaya')->insert($datacr);
+            } else {
+                $kode_cr = null;
+            }
 
             $dataledger = array(
                 'no_bukti'        => $no_bukti,
@@ -205,8 +232,11 @@ class MutasibankController extends Controller
                 'status_dk'       => $debetkredit,
                 'nobukti_bukubesar' => $nobukti_bukubesar,
                 'nobukti_bukubesar_2' => $nobukti_bukubesar_bank,
+                'kode_cr' => $kode_cr,
                 'status_validasi' => 1
             );
+
+
             DB::table('ledger_bank')->insert($dataledger);
             DB::table('buku_besar')->insert($databukubesar);
             DB::table('buku_besar')->insert($databukubesarbank);
@@ -225,6 +255,7 @@ class MutasibankController extends Controller
         $no_bukti = Crypt::decrypt($no_bukti);
         $mutasibank = DB::table('ledger_bank')->where('no_bukti', $no_bukti)->first();
         $tgl_ledger = $mutasibank->tgl_ledger;
+        $kode_cr = $mutasibank->kode_cr;
         $tanggal = explode("-", $tgl_ledger);
         $bulan = $tanggal[1];
         $tahun = $tanggal[0];
@@ -235,6 +266,7 @@ class MutasibankController extends Controller
             DB::beginTransaction();
             try {
                 DB::table('ledger_bank')->where('no_bukti', $no_bukti)->delete();
+                DB::table('costratio_biaya')->where('kode_cr', $kode_cr)->delete();
                 DB::table('buku_besar')->where('no_bukti', $mutasibank->nobukti_bukubesar)->delete();
                 DB::table('buku_besar')->where('no_bukti', $mutasibank->nobukti_bukubesar_2)->delete();
                 DB::commit();
@@ -280,8 +312,9 @@ class MutasibankController extends Controller
         $tanggal = explode("-", $tgl_ledger);
         $tahun = substr($tanggal[0], 2, 2);
         $bulan = $tanggal[1];
-
-
+        $cekakun = substr($kode_akun, 0, 3);
+        $kode_cr = $mutasibank->kode_cr;
+        $kode_cabang = $mutasibank->kode_cabang;
 
         // $bukubesar = DB::table('buku_besar')->whereRaw('LEFT(no_bukti,6)="GJ' . $bulan . $tahun . '"')
         //     ->orderBy('no_bukti', 'desc')
@@ -344,6 +377,54 @@ class MutasibankController extends Controller
                 'status_dk'       => $debetkredit,
                 'status_validasi' => 1
             );
+
+            if ($debetkredit == 'D' and $cekakun == '6-1'  or $debetkredit == 'D' and $cekakun == '6-2') {
+                if (empty($kode_cr)) {
+                    $kode = "CR" . $bulan . $tahun;
+                    $cr = DB::table('costratio_biaya')
+                        ->select('kode_cr')
+                        ->whereRaw('LEFT(kode_cr,6) ="' . $kode . '"')
+                        ->orderBy('kode_cr', 'desc')
+                        ->first();
+                    if ($cr != null) {
+                        $last_kode_cr = $cr->kode_cr;
+                    } else {
+                        $last_kode_cr = "";
+                    }
+                    $kode_cr = buatkode($last_kode_cr, "CR" . $bulan . $tahun, 4);
+                    $datacr = [
+                        'kode_cr' => $kode_cr,
+                        'tgl_transaksi' => $tgl_ledger,
+                        'kode_akun'    => $kode_akun,
+                        'keterangan'   => $keterangan,
+                        'kode_cabang'  => $kode_cabang,
+                        'id_sumber_costratio' => 2,
+                        'jumlah' => $jumlah
+                    ];
+                    DB::table('costratio_biaya')->insert($datacr);
+
+                    $datamb = [
+                        'kode_cr' => $kode_cr
+                    ];
+                    DB::table('ledger_bank')->where('no_bukti', $no_bukti)->update($datamb);
+                } else {
+                    $datacr = [
+                        'tgl_transaksi' => $tgl_ledger,
+                        'keterangan' => $keterangan,
+                        'kode_akun' => $kode_akun,
+                        'jumlah' => $jumlah
+                    ];
+                    DB::table('costratio_biaya')->where('kode_cr', $kode_cr)->update($datacr);
+                }
+            } else {
+                if (!empty($kode_cr)) {
+                    DB::table('costratio_biaya')->where('kode_cr', $kode_cr)->delete();
+                    $datamb = [
+                        'kode_cr' => null
+                    ];
+                    DB::table('ledger_bank')->where('no_bukti', $no_bukti)->update($datamb);
+                }
+            }
             DB::table('buku_besar')->where('no_bukti', $mutasibank->nobukti_bukubesar)->update($databukubesar);
             DB::table('buku_besar')->where('no_bukti', $mutasibank->nobukti_bukubesar_2)->update($databukubesarbank);
             DB::table('ledger_bank')->where('no_bukti', $no_bukti)->update($dataledger);
