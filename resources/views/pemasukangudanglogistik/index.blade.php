@@ -67,8 +67,8 @@
                                 <tr>
                                     <td class="text-center">{{ $loop->iteration + $pemasukan->firstItem() - 1 }}</td>
                                     <td>{{ $d->nobukti_pemasukan }}</td>
+                                    <td>{{ $d->tgl_pembelian != null ? date("d-m-y",strtotime($d->tgl_pembelian)) : '' }}</td>
                                     <td>{{ date("d-m-y",strtotime($d->tgl_pemasukan)) }}</td>
-                                    <td>{{ date("d-m-y",strtotime($d->tgl_pembelian)) }}</td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             <a class="ml-1 detail" href="#" nobukti_pemasukan="{{ Crypt::encrypt($d->nobukti_pemasukan) }}"><i class=" feather icon-file-text info"></i></a>
