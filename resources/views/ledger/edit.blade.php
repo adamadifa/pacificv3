@@ -24,7 +24,7 @@
     <div class="row">
         <div class="col-12">
             <div class="form-group">
-                <select name="kode_akun" id="kode_akun" class="form-control select2">
+                <select name="kode_akun" id="kode_akun" class="form-control">
                     <option value="">Pilih Akun</option>
                     @foreach ($coa as $d)
                     <option {{ $ledger->kode_akun == $d->kode_akun ? 'selected' : '' }} value="{{ $d->kode_akun }}">{{ $d->kode_akun }} {{ $d->nama_akun }}</option>
@@ -123,7 +123,7 @@
 <script src="{{asset('app-assets/js/scripts/forms/select/form-select2.js')}}"></script>
 <script>
     $(function() {
-
+        $("#kode_akun").selectize();
 
         function cektutuplaporan() {
             var tanggal = $("#tgl_ledger").val();
