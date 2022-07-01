@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Rekap Pemasukan Barang Gudang Logistik {{ date("d-m-y") }}</title>
+    <title>Rekap Pengeluaran Barang Gudang Logistik {{ date("d-m-y") }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -42,7 +42,7 @@
 </head>
 <body>
     <b style="font-size:14px;">
-        REKAP BARANG MASUK<br>
+        REKAP BARANG KELUAR<br>
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
         <br>
         @if ($departemen != null)
