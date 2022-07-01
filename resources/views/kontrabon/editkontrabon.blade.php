@@ -52,7 +52,7 @@
                     <input type="hidden" value="{{ $kontrabon->no_kontrabon }}" name="no_kontrabon" id="no_kontrabon">
                     <input type="hidden" value="{{ $totalkontrabon }}" name="jmlbayar" id="jmlbayar">
                     <input type="hidden" value="{{ $kontrabon->kode_supplier }}" name="kode_supplier" id="kode_supplier">
-                    <x-inputtext label="Tanggal Bayar" field="tglbayar" value="{{ $ledger->tgl_ledger }}" icon="feather icon-calendar" datepicker />
+                    <x-inputtext label="Tanggal Bayar" field="tglbayar" value="{{ $ledger != null ?  $ledger->tgl_ledger : $kaskecil->tgl_kaskecil }}" icon="feather icon-calendar" datepicker />
                 </div>
             </div>
             <div class="row">

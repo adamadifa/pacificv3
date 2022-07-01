@@ -85,7 +85,7 @@
                     <option value="MSA">ANGKUTAN MSA</option>
                     <option value="MITRA KOMANDO">ANGKUTAN MITRA KOMANDO</option>
                     <option value="ARP MANDIRI">ANGKUTAN ARP MANDIRI</option>
-                    <option value="CAHAYA BIRU">ANGKUTAN CAHAYA BIRU</option>
+                    <option value="CAHAYA BARU">ANGKUTAN CAHAYA BIRU</option>
 
                 </select>
             </div>
