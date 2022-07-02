@@ -3176,7 +3176,7 @@ class PenjualanController extends Controller
         if ($tgl_aup < '2020-01-01') {
             $query->where('cabangbarunew', '!=', 'GRT');
         }
-        $query->whereRaw('(ifnull(penjualan.total,0) - (ifnull(retur.total,0))) != IFNULL(jmlbayar,0)');
+        $query->whereRaw('(ifnull(penjualan.total,0) - (ifnull(retur.total,0))) - IFNULL(jmlbayar,0) > 0');
         $aup = $query->get();
         //dd($aup);
         if (isset($_POST['export'])) {
@@ -4904,7 +4904,7 @@ class PenjualanController extends Controller
 
             $query->where('jenistransaksi', '!=', 'tunai');
             $query->where('tgltransaksi', '<=', $tgl_aup);
-            $query->whereRaw('(ifnull(penjualan.total,0) - (ifnull(retur.total,0))) != IFNULL(jmlbayar,0)');
+            $query->whereRaw('(ifnull(penjualan.total,0) - (ifnull(retur.total,0))) - IFNULL(jmlbayar,0) > 0');
             if ($request->kode_cabang != "") {
                 $query->where('cabangbarunew', $request->kode_cabang);
             } else {
