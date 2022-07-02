@@ -4537,8 +4537,8 @@ class PenjualanController extends Controller
             pphk,
             vsp,
             lainnya,
-            saldoawalpiutang,
-            IFNULL(saldoawalpiutang,0) + (IFNULL(totalbruto,0) - IFNULL(totalpotongan,0)-IFNULL(totalretur,0) - IFNULL(totalpotistimewa,0) - IFNULL(totalpenyharga,0)) - IFNULL(totalbayarpiutang,0) as saldoakhirpiutang");
+            IFNULL(saldoawalpiutang,0) - IFNULL(piutanglama,0) + IFNULL(piutangpindahanbulanlalu,0) as saldoawalpiutang,
+            IFNULL(saldoawalpiutang,0) -  IFNULL(piutanglamanow,0) -  IFNULL(piutanglamaberjalan,0) + IFNULL(piutangpindahan,0) + IFNULL(piutangberjalan,0) + (IFNULL(totalbruto,0) - IFNULL(totalpotongan,0)-IFNULL(totalretur,0) - IFNULL(totalpotistimewa,0) - IFNULL(totalpenyharga,0)) - IFNULL(totalbayarpiutang,0)  as saldoakhirpiutang");
             $query->leftJoin(
                 DB::raw("(
                     SELECT
@@ -4673,6 +4673,65 @@ class PenjualanController extends Controller
                     $join->on('karyawan.id_karyawan', '=', 'sp.id_karyawan');
                 }
             );
+
+            $query->leftJoin(
+                DB::raw("(
+                    SELECT move_faktur.id_karyawan,
+                    SUM(IF(tgltransaksi < '$dari',( IFNULL( total, 0 ) - IFNULL( totalreturbulanlalu, 0 ) - IFNULL( totalbayar, 0 )), 0 )) AS piutangpindahanbulanlalu,
+                    SUM(IF(tgltransaksi < '$dari',( IFNULL( total, 0 ) - IFNULL( totalreturbulanlalu, 0 ) - IFNULL( totalreturberjalan, 0 )  - IFNULL( totalbayar, 0 )), 0 )) AS piutangpindahan,
+                    SUM(IF( tgltransaksi >= '$dari' AND tgltransaksi <= '$sampai',( IFNULL( total, 0 ) - IFNULL( totalreturberjalan, 0 ) - IFNULL( totalbayar, 0 )), 0 )) AS piutangberjalan
+                    FROM move_faktur
+                    INNER JOIN penjualan ON move_faktur.no_fak_penj = penjualan.no_fak_penj
+                    LEFT JOIN (
+                        SELECT retur.no_fak_penj AS no_fak_penj,
+                        sum(IF( tglretur < '$dari',( IFNULL( retur.subtotal_pf, 0 ) - IFNULL( retur.subtotal_gb, 0 )), 0 )) AS totalreturbulanlalu,
+		                sum(IF( tglretur >= '$dari' AND tglretur <= '$sampai',( IFNULL( retur.subtotal_pf, 0 ) - IFNULL( retur.subtotal_gb, 0 )), 0 )) AS totalreturberjalan
+                        FROM
+                        retur
+                        GROUP BY
+                        retur.no_fak_penj ) retur ON (move_faktur.no_fak_penj = retur.no_fak_penj)
+
+                    LEFT JOIN (
+                        SELECT no_fak_penj,sum( historibayar.bayar ) AS totalbayar
+                        FROM historibayar
+                        WHERE tglbayar < '$dari'
+                        GROUP BY no_fak_penj
+                    ) hb ON (move_faktur.no_fak_penj = hb.no_fak_penj)
+                    WHERE tgl_move = '$dari'  GROUP BY move_faktur.id_karyawan
+                ) piutangpindahan"),
+                function ($join) {
+                    $join->on('karyawan.id_karyawan', '=', 'piutangpindahan.id_karyawan');
+                }
+            );
+
+            $query->leftJoin(
+                DB::raw("(
+                    SELECT
+                        move_faktur.id_karyawan_lama,
+                        SUM(IF( tgltransaksi < '$dari',( IFNULL( total, 0 ) - IFNULL( totalreturbulanlalu, 0 ) - IFNULL( totalbayar, 0 )), 0 )) AS piutanglama,
+                        SUM(IF( tgltransaksi < '$dari',( IFNULL( total, 0 ) - IFNULL( totalreturbulanlalu, 0 ) - IFNULL( totalreturberjalan, 0 ) - IFNULL( totalbayar, 0 )), 0 )) AS piutanglamanow,
+                        SUM(IF( tgltransaksi >= '$dari' AND tgltransaksi <= '2022-06-30',( IFNULL( total, 0 ) - IFNULL( totalreturberjalan, 0 ) - IFNULL( totalbayar, 0 )), 0 )) AS piutanglamaberjalan
+                    FROM
+                        move_faktur
+                        INNER JOIN penjualan ON move_faktur.no_fak_penj = penjualan.no_fak_penj
+                        LEFT JOIN (
+                        SELECT
+                            retur.no_fak_penj AS no_fak_penj,
+                            sum(IF( tglretur < '$dari',( IFNULL( retur.subtotal_pf, 0 ) - IFNULL( retur.subtotal_gb, 0 )), 0 )) AS totalreturbulanlalu,
+                            sum(IF( tglretur >= '$dari' AND tglretur <= '2022-06-30',( IFNULL( retur.subtotal_pf, 0 ) - IFNULL( retur.subtotal_gb, 0 )), 0 )) AS totalreturberjalan
+                            FROM retur
+                            GROUP BY retur.no_fak_penj ) retur ON ( move_faktur.no_fak_penj = retur.no_fak_penj )
+                            LEFT JOIN ( SELECT no_fak_penj, sum( historibayar.bayar ) AS totalbayar FROM historibayar WHERE tglbayar < '$dari' GROUP BY no_fak_penj ) hb ON ( move_faktur.no_fak_penj = hb.no_fak_penj )
+                        WHERE
+                            tgl_move = '$dari'
+                    GROUP BY
+                        move_faktur.id_karyawan_lama
+                ) piutanglama"),
+                function ($join) {
+                    $join->on('karyawan.id_karyawan', '=', 'piutanglama.id_karyawan_lama');
+                }
+            );
+
             if ($request->kode_cabang != "") {
                 $query->where('karyawan.kode_cabang', $request->kode_cabang);
             } else {
