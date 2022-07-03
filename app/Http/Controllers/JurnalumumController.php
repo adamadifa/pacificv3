@@ -22,20 +22,52 @@ class JurnalumumController extends Controller
         $query->whereBetween('tanggal', [$dari, $sampai]);
         $query->where('kode_dept', $kode_dept);
         $jurnalumum = $query->get();
-        if (Auth::user()->level == "general affair") {
-            $departemen = DB::table('departemen')
-                ->where('kode_dept', 'GAF')
-                ->where('status_pengajuan', 1)->get();
-        } else {
-            $departemen = DB::table('departemen')->orderBy('nama_dept')->get();
-        }
+        $departemen = DB::table('departemen')->orderBy('nama_dept')->get();
         return view('jurnalumum.index', compact('jurnalumum', 'departemen'));
     }
 
     public function create()
     {
+        $ga = [
+            '5-2401',
+            '6-2301',
+            '6-2303',
+            '6-1305',
+            '5-2402',
+            '5-2403',
+            '6-2302',
+            '1-2220',
+            '1-2720',
+            '1-2320',
+            '1-2420',
+            '1-2620',
+        ];
 
-        $coa = Coa::orderBy('kode_akun')->get();
+        $hrd = [
+            '6-2101',
+            '5-1301',
+            '5-2101',
+            '2-3100',
+            '8-5000',
+            '2-1600',
+            '2-1700',
+            '2-1400',
+            '2-1500',
+            '2-3100',
+            '1-1451',
+            '8-5000',
+            '2-1600',
+            '2-1700',
+            '2-1400',
+            '2-1500'
+        ];
+        if (Auth::user()->level == "hrd") {
+            $coa = Coa::orderBy('kode_akun')->whereIn('kode_akun', $hrd)->get();
+        } else if (Auth::user()->level == "general affair") {
+            $coa = Coa::orderBy('kode_akun')->whereIn('kode_akun', $ga)->get();
+        } else {
+            $coa = Coa::orderBy('kode_akun')->get();
+        }
         $departemen = DB::table('departemen')->orderBy('nama_dept')->get();
         return view('jurnalumum/create', compact('coa', 'departemen'));
     }

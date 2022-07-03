@@ -155,10 +155,10 @@
                     <td>{{ $d->nobukti_transaksi }}</td>
                     <td>
                         <?php
-                        if ($d->sumber == "ledger") {
+                        $smbr = strtolower($d->sumber);
+                        if ($smbr == "ledger") {
                             $ledger = DB::table('ledger_bank')->where('no_bukti',$d->nobukti_transaksi)
                             ->leftJoin('master_bank','ledger_bank.bank','=','master_bank.kode_bank')->first();
-
                             $ledger != null ? $sumber = $ledger->nama_bank : 'Ledger';
 
                         } else{

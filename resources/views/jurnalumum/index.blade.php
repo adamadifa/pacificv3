@@ -37,18 +37,24 @@
                                 <x-inputtext field="sampai" value="{{ Request('sampai') }}" label="Sampai" icon="feather icon-calendar" datepicker />
                             </div>
                         </div>
+                        @if ($level=="hrd")
+                        <input type="hidden" name="kode_dept" id="kode_dept" value="HRD" />
+                        @elseif($level=="general affair")
+                        <input type="hidden" name="kode_dept" id="kode_dept" value="GAF" />
+                        @else
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
                                     <select name="kode_dept" id="kode_dept" class="form-control">
-                                        <option value="">Pilih Departemen</option>
+                                        <option value="">Semua Departemen</option>
                                         @foreach ($departemen as $d)
-                                        <option {{ Request('kode_dept') == $d->kode_dept ? 'selected' : '' }} value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
+                                        <option value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                         </div>
+                        @endif
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">

@@ -7,6 +7,11 @@
             <x-inputtext field="tanggal" label="Tanggal Jurnal Umum" icon="feather icon-calendar" datepicker />
         </div>
     </div>
+    @if ($level=="hrd")
+    <input type="hidden" name="kode_dept" id="kode_dept" value="HRD" />
+    @elseif($level=="general affair")
+    <input type="hidden" name="kode_dept" id="kode_dept" value="GAF" />
+    @else
     <div class="row">
         <div class="col-12">
             <div class="form-group">
@@ -19,6 +24,8 @@
             </div>
         </div>
     </div>
+    @endif
+
     <div class="row">
         <div class="col-12">
             <x-inputtext label="Keterangan" field="keterangan" icon="feather icon-file" />
