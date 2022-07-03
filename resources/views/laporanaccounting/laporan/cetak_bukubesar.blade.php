@@ -159,7 +159,7 @@
                             $ledger = DB::table('ledger_bank')->where('no_bukti',$d->nobukti_transaksi)
                             ->leftJoin('master_bank','ledger_bank.bank','=','master_bank.kode_bank')->first();
 
-                            $leger != null ? $sumber = $ledger->nama_bank : 'Ledger';
+                            $ledger != null ? $sumber = $ledger->nama_bank : 'Ledger';
 
                         } else{
                             $sumber = $d->sumber;
