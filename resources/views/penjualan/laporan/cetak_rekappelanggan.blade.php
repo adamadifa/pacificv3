@@ -67,6 +67,7 @@
                 <td rowspan="2">No</td>
                 <td rowspan="2">Kode Pel.</td>
                 <td rowspan="2">Nama Pelanggan</td>
+                <td rowspan="2">Pasar</td>
                 <td colspan="16">Produk</td>
             </tr>
             <tr>
@@ -132,6 +133,7 @@
                 <td><?php echo $no; ?></td>
                 <td><?php echo $p->kode_pelanggan; ?></td>
                 <td><?php echo $p->nama_pelanggan; ?></td>
+                <td><?php echo $p->pasar; ?></td>
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($p->AB)) {
 																		echo desimal($p->AB);
 																	} ?></td>
@@ -189,7 +191,7 @@
         </tbody>
         <tfoot>
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
-                <td style="text-align:center; font-weight:bold" colspan="3">TOTAL</td>
+                <td style="text-align:center; font-weight:bold" colspan="4">TOTAL</td>
                 <td align="right"><?php if (!empty($totalAB)) {
 										echo desimal($totalAB);
 									} ?></td>

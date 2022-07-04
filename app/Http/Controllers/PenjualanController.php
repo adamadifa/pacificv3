@@ -4084,7 +4084,7 @@ class PenjualanController extends Controller
         $salesman = DB::table('karyawan')->where('id_karyawan', $request->id_karyawan)->first();
         $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $request->kode_pelanggan)->first();
         $query = Detailpenjualan::query();
-        $query->selectRaw("penjualan.kode_pelanggan,nama_pelanggan,nama_karyawan,
+        $query->selectRaw("penjualan.kode_pelanggan,nama_pelanggan,nama_karyawan,pasar,
         SUM( IF ( kode_produk = 'AB', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS AB,
         SUM( IF ( kode_produk = 'AR', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS AR,
         SUM( IF ( kode_produk = 'AS', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS ASE,
@@ -4117,7 +4117,7 @@ class PenjualanController extends Controller
             $query->where('penjualan.kode_pelanggan', $request->kode_pelanggan);
         }
 
-        $query->groupByRaw('penjualan.kode_pelanggan,nama_pelanggan,nama_karyawan');
+        $query->groupByRaw('penjualan.kode_pelanggan,nama_pelanggan,nama_karyawan,pasar');
         $rekappelanggan = $query->get();
         if (isset($_POST['export'])) {
             $time = date("H:i:s");
