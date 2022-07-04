@@ -4906,7 +4906,7 @@ class PenjualanController extends Controller
 
             $query->where('jenistransaksi', '!=', 'tunai');
             $query->where('tgltransaksi', '<=', $tgl_aup);
-            $query->whereRaw('(ifnull(penjualan.total,0) - (ifnull(retur.total,0))) != - IFNULL(jmlbayar,0)');
+            $query->whereRaw('(ifnull(penjualan.total,0) - (ifnull(retur.total,0))) != IFNULL(jmlbayar,0)');
             if ($request->kode_cabang != "") {
                 $query->where('cabangbarunew', $request->kode_cabang);
             } else {
