@@ -2973,7 +2973,8 @@ class PenjualanController extends Controller
 
         $query->where('penjualan.jenistransaksi', '!=', 'tunai');
         $query->where('tgltransaksi', '<=', $sampai);
-        $query->whereRaw('(ifnull(penjualan.total,0) - (ifnull(totalpf_last,0)-ifnull(totalgb_last,0))) - IFNULL(bayarsebelumbulanini,0) > 0');
+        // $query->whereRaw('(ifnull(penjualan.total,0) - (ifnull(totalpf_last,0)-ifnull(totalgb_last,0))) - IFNULL(bayarsebelumbulanini,0) > 0');
+        $query->whereRaw('(ifnull(penjualan.total,0) - (ifnull(totalpf_last,0)-ifnull(totalgb_last,0))) != IFNULL(bayarsebelumbulanini,0)');
         if ($request->kode_cabang != "") {
             $query->where('cabangbarunew', $request->kode_cabang);
         }
