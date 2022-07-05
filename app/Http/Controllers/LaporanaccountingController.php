@@ -618,14 +618,23 @@ class LaporanaccountingController extends Controller
 
     public function cetak_bukubesar(Request $request)
     {
-        $bulan = $request->bulan;
-        $tahun = $request->tahun;
+        // $bulan = $request->bulan;
+        // $tahun = $request->tahun;
 
-        $dari = $tahun . "-" . $bulan . "-01";
-        $sampai = date("Y-m-t", strtotime($dari));
+        $dari = $request->dari;
+        $sampai = $request->sampai;
 
         $dari_akun = $request->dari_akun;
         $sampai_akun = $request->sampai_akun;
+        if (!empty($request->dari)) {
+            $tanggal = explode("-", $request->dari);
+            $bulan = $tanggal[1] + 0;
+            $tahun = $tanggal[0];
+        } else {
+            $bulan = "";
+            $tahun = "";
+        }
+
 
         $bukubesar = DB::table('coa')
             ->select('coa.kode_akun', 'nama_akun', 'tanggal', 'debet', 'kredit', 'sumber', 'keterangan', 'nobukti_transaksi', 'jenis_akun')
