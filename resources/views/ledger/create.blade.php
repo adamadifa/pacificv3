@@ -230,6 +230,7 @@
                 , success: function(respond) {
                     if (respond == 0) {
                         swal("Success", "Data Berhasil Disimpan", "success");
+                        loadledgertemp();
                         reset();
                     } else {
                         swal("Oops", "Data Gagal Disimpan, Hubungi Tim IT", "warning");
@@ -314,7 +315,7 @@
             } else {
                 simpantemp();
                 reset();
-                loadledgertemp();
+
             }
 
         });
