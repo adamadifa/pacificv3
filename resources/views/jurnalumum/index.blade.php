@@ -42,18 +42,7 @@
                         @elseif($level=="general affair")
                         <input type="hidden" name="kode_dept" id="kode_dept" value="GAF" />
                         @else
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <select name="kode_dept" id="kode_dept" class="form-control">
-                                        <option value="">Semua Departemen</option>
-                                        @foreach ($departemen as $d)
-                                        <option value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
+                        <input type="hidden" name="kode_dept" id="kode_dept" value="ALL">
                         @endif
                         <div class="row">
                             <div class="col-12">
@@ -76,8 +65,8 @@
                                     <th>Akun</th>
                                     <th>Debet</th>
                                     <th>Kredit</th>
-                                    <th>Departemen</th>
                                     <th>CR</th>
+                                    <th>Dept</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -95,12 +84,13 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ date("d-m-Y",strtotime($d->tanggal)) }}</td>
-                                    <td>{{ $d->keterangan }}</td>
+                                    <td>{{ $d->keterangan }} <b>{{ $d->peruntukan=='PC' ? '('.$d->kode_cabang.')' : '' }}</b></td>
                                     <td><b>{{ $d->kode_akun }} </b>{{ $d->nama_akun }}</td>
                                     <td class="text-right">{{ desimal($debet) }}</td>
                                     <td class="text-right">{{ desimal($kredit) }}</td>
-                                    <td>{{ $d->kode_dept }}</td>
+
                                     <td>{!! !empty($d->kode_cr) ? "<i class='fa fa-check success'></i>" : "" !!}</td>
+                                    <td>{{ $d->kode_dept }}</td>
                                     <td>
                                         <div class="btn-group">
                                             <a href="#" class="edit" kode_jurnal="{{ Crypt::encrypt($d->kode_jurnal) }}"><i class="feather icon-edit info"></i></a>
@@ -132,7 +122,7 @@
 </div>
 <!-- Input Jurnal Umum -->
 <div class="modal fade text-left" id="mdlinputjurnalumum" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="max-width: 960px">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel18">Input Jurnal Umum</h4>

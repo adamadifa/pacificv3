@@ -11,10 +11,12 @@ $kredit = $d->jumlah;
 @endphp
 @endif
 <tr>
+    <td>{{ date("d-m-Y",strtotime($d->tanggal)) }}</td>
     <td>{{ $d->kode_akun }}</td>
     <td>{{ $d->nama_akun }}</td>
     <td class="text-right">{{ rupiah($debet) }}</td>
     <td class="text-right">{{ rupiah($kredit) }}</td>
+    <td>{{ $d->peruntukan }} {{ $d->peruntukan == "PC" ? '('.$d->kode_cabang.')' : '' }}</td>
     <td>
         <a href="#" class="hapus" data-id="{{ $d->id }}"><i class="feather icon-trash danger"></i></a>
     </td>

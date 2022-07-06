@@ -7,30 +7,22 @@
             <x-inputtext field="tanggal" label="Tanggal Jurnal Umum" icon="feather icon-calendar" datepicker />
         </div>
     </div>
-    @if ($level=="hrd")
-    <input type="hidden" name="kode_dept" id="kode_dept" value="HRD" />
-    @elseif($level=="general affair")
-    <input type="hidden" name="kode_dept" id="kode_dept" value="GAF" />
-    @else
-    <div class="row">
-        <div class="col-12">
-            <div class="form-group">
-                <select name="kode_dept" id="kode_dept" class="form-control">
-                    <option value="">Pilih Departemen / Cabang</option>
-                    @foreach ($departemen as $d)
-                    <option value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-    </div>
-    @endif
-
     <div class="row">
         <div class="col-12">
             <x-inputtext label="Keterangan" field="keterangan" icon="feather icon-file" />
         </div>
     </div>
+    @if ($level=="hrd")
+    <input type="hidden" name="kode_dept" id="kode_dept" value="HRD" />
+    @elseif($level=="general affair")
+    <input type="hidden" name="kode_dept" id="kode_dept" value="GAF" />
+    @elseif($level=="spv accounting" || $level=="manager accounting")
+    <input type="hidden" name="kode_dept" id="kode_dept" value="ACC" />
+    @else
+    <input type="hidden" name="kode_dept" id="kode_dept" value="ADM" />
+    @endif
+
+
     <div class="row">
         <div class="col-5">
             <div class="form-group">
@@ -78,6 +70,50 @@
     <div class="row">
         <div class="col-12">
             <div class="form-group">
+                <ul class="list-unstyled mb-0">
+                    <li class="d-inline-block mr-2">
+                        <fieldset>
+                            <div class="vs-radio-con vs-radio-primary">
+                                <input type="radio" class="peruntukan" name="peruntukan" value="PC">
+                                <span class="vs-radio">
+                                    <span class="vs-radio--border"></span>
+                                    <span class="vs-radio--circle"></span>
+                                </span>
+                                <span class="">Pacific</span>
+                            </div>
+                        </fieldset>
+                    </li>
+                    <li class="d-inline-block mr-2">
+                        <fieldset>
+                            <div class="vs-radio-con vs-radio-primary">
+                                <input type="radio" class="peruntukan" name="peruntukan" value="MP" checked>
+                                <span class="vs-radio">
+                                    <span class="vs-radio--border"></span>
+                                    <span class="vs-radio--circle"></span>
+                                </span>
+                                <span class="">Makmur Permata</span>
+                            </div>
+                        </fieldset>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group" id="pilihcabang">
+                <select name="kode_cabang" id="kode_cabang" class="form-control ">
+                    <option value="">Pilih Cabang</option>
+                    @foreach ($cabang as $d)
+                    <option value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group">
                 <a href="#" id="tambahitem" class="btn btn-primary btn-block"><i class="fa fa-plus mr-1"></i>Tambah Item</a>
             </div>
         </div>
@@ -87,10 +123,12 @@
             <table class="table table-hover-animation">
                 <thead>
                     <tr>
+                        <th>Tanggal</th>
                         <th>Kode Akun</th>
                         <th>Nama Akun</th>
                         <th>Debet</th>
                         <th>Kredit</th>
+                        <th>Peruntukan</th>
                         <th>#</th>
                     </tr>
                 </thead>
@@ -157,6 +195,21 @@
 </script>
 <script>
     $(function() {
+
+        function loadpilihcabang() {
+            var peruntukan = $("input[name='peruntukan']:checked").val();
+            if (peruntukan == "PC") {
+                $("#pilihcabang").show();
+            } else {
+                $("#pilihcabang").hide();
+            }
+        }
+
+        loadpilihcabang();
+        $('.peruntukan').change(function() {
+            loadpilihcabang();
+
+        });
         $('.aggrement').change(function() {
             if (this.checked) {
                 $("#tombolsimpan").show();
@@ -193,14 +246,13 @@
         // });
 
         function loadtemp() {
-            var kode_dept = $("#frmjurnalumum").find("#kode_dept").val();
-            $("#loadtemp").load("/jurnalumum/" + kode_dept + "/showtemp");
+            $("#loadtemp").load("/jurnalumum/showtemp");
             cektemp();
         }
 
-        $("#frmjurnalumum").find("#kode_dept").change(function() {
-            loadtemp();
-        });
+        loadtemp();
+
+
 
 
         function cektemp() {
@@ -225,6 +277,8 @@
             var kode_akun = $("#frmjurnalumum").find("#kode_akun").val();
             var jumlah = $("#frmjurnalumum").find("#jumlah").val();
             var status_dk = $("input[name='status_dk']:checked").val();
+            var peruntukan = $("input[name='peruntukan']:checked").val();
+            var kode_cabang = $("#kode_cabang").val();
             if (tanggal == "") {
                 swal({
                     title: 'Oops'
@@ -233,15 +287,6 @@
                     , showConfirmButton: false
                 }).then(function() {
                     $("#tanggal").focus();
-                });
-            } else if (kode_dept == "") {
-                swal({
-                    title: 'Oops'
-                    , text: 'Departemen / Cabang Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#frmjurnalumum").find("#kode_akun").focus();
                 });
             } else if (kode_akun == "") {
                 swal({
@@ -261,15 +306,27 @@
                 }).then(function() {
                     $("#frmjurnalumum").find("#jumlah").focus();
                 });
+            } else if (peruntukan == "PC" && kode_cabang == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Kode Cabang Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $('#frmjurnalumum').find('#kode_cabang').focus();
+                });
             } else {
                 $.ajax({
                     type: 'POST'
                     , url: '/jurnalumum/storetemp'
                     , data: {
                         _token: "{{ csrf_token() }}"
+                        , tanggal: tanggal
                         , kode_dept: kode_dept
                         , kode_akun: kode_akun
                         , status_dk: status_dk
+                        , peruntukan: peruntukan
+                        , kode_cabang: kode_cabang
                         , jumlah: jumlah
                     }
                     , cache: false
@@ -310,27 +367,7 @@
             //     });
             //     return false;
             // } else
-            if (tanggal == "") {
-                swal({
-                    title: 'Oops'
-                    , text: 'Tanggal Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#tanggal").focus();
-                });
-                return false;
-            } else if (kode_dept == "") {
-                swal({
-                    title: 'Oops'
-                    , text: 'Departemen Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#frmjurnalumum").find("#kode_dept").focus();
-                });
-                return false;
-            } else if (keterangan == "") {
+            if (keterangan == "") {
                 swal({
                     title: 'Oops'
                     , text: 'Keterangna Harus Diisi !'

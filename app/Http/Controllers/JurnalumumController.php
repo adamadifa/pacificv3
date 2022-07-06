@@ -20,10 +20,11 @@ class JurnalumumController extends Controller
         $query = Jurnalumum::query();
         $query->join('coa', 'jurnal_umum.kode_akun', '=', 'coa.kode_akun');
         $query->whereBetween('tanggal', [$dari, $sampai]);
-        $query->where('kode_dept', $kode_dept);
+        if ($kode_dept != 'ALL') {
+            $query->where('kode_dept', $kode_dept);
+        }
         $jurnalumum = $query->get();
-        $departemen = DB::table('departemen')->orderBy('nama_dept')->get();
-        return view('jurnalumum.index', compact('jurnalumum', 'departemen'));
+        return view('jurnalumum.index', compact('jurnalumum'));
     }
 
     public function create()
@@ -68,22 +69,29 @@ class JurnalumumController extends Controller
         } else {
             $coa = Coa::orderBy('kode_akun')->get();
         }
-        $departemen = DB::table('departemen')->orderBy('nama_dept')->get();
-        return view('jurnalumum/create', compact('coa', 'departemen'));
+        $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
+        return view('jurnalumum/create', compact('coa', 'cabang'));
     }
 
     public function storetemp(Request $request)
     {
+        $tanggal = $request->tanggal;
+        $peruntukan = $request->peruntukan;
+        $kode_cabang = $request->kode_cabang;
         $kode_dept = $request->kode_dept;
         $kode_akun = $request->kode_akun;
         $status_dk = $request->status_dk;
         $jumlah = !empty($request->jumlah) ? str_replace(".", "", $request->jumlah) : 0;
         $jumlah = str_replace(",", ".", $jumlah);
         $data = [
+            'tanggal' => $tanggal,
+            'peruntukan' => $peruntukan,
+            'kode_cabang' => $kode_cabang,
             'kode_dept' => $kode_dept,
             'kode_akun' => $kode_akun,
             'status_dk' => $status_dk,
-            'jumlah' => $jumlah
+            'jumlah' => $jumlah,
+            'id_user' => Auth::user()->id
         ];
         $simpan = DB::table('jurnal_umum_temp')->insert($data);
         if ($simpan) {
@@ -100,9 +108,12 @@ class JurnalumumController extends Controller
         echo $cektemp;
     }
 
-    public function showtemp($kode_dept)
+    public function showtemp()
     {
-        $jurnaltemp = DB::table('jurnal_umum_temp')->where('kode_dept', $kode_dept)->join('coa', 'jurnal_umum_temp.kode_akun', '=', 'coa.kode_akun')->get();
+        $id_user = Auth::user()->id;
+        $jurnaltemp = DB::table('jurnal_umum_temp')
+            ->where('id_user', $id_user)
+            ->join('coa', 'jurnal_umum_temp.kode_akun', '=', 'coa.kode_akun')->get();
         return view('jurnalumum.showtemp', compact('jurnaltemp'));
     }
 
@@ -118,12 +129,9 @@ class JurnalumumController extends Controller
     public function store(Request $request)
     {
         $cabang = ['BDG', 'BGR', 'GRT', 'PWT', 'SMR', 'SKB', 'SBY', 'TSM', 'TGL', 'PST', 'KLT'];
-        $tanggal = $request->tanggal;
         $kode_dept = $request->kode_dept;
         $keterangan = $request->keterangan;
-        $tgl = explode("-", $tanggal);
-        $tahun  = substr($tgl[0], 2, 2);
-        $bulan = $tgl[1];
+
 
 
         $jurnaltemp = DB::table('jurnal_umum_temp')->where('kode_dept', $kode_dept)->get();
@@ -133,7 +141,12 @@ class JurnalumumController extends Controller
                 $kode_akun = $d->kode_akun;
                 $status_dk = $d->status_dk;
                 $jumlah = $d->jumlah;
-
+                $tanggal = $d->tanggal;
+                $peruntukan = $d->peruntukan;
+                $kode_cabang = $d->kode_cabang;
+                $tgl = explode("-", $tanggal);
+                $tahun  = substr($tgl[0], 2, 2);
+                $bulan = $tgl[1];
                 $jurnalumum = DB::table('jurnal_umum')
                     ->select('kode_jurnal')
                     ->whereRaw('LEFT(kode_jurnal,6)="JL' . $tahun . $bulan . '"')
@@ -197,7 +210,10 @@ class JurnalumumController extends Controller
                     'status_dk' => $status_dk,
                     'nobukti_bukubesar' => $nobukti_bukubesar,
                     'kode_dept' => $kode_dept,
-                    'kode_cr' => $kode_cr
+                    'peruntukan' => $peruntukan,
+                    'kode_cabang' => $kode_cabang,
+                    'kode_cr' => $kode_cr,
+                    'id_user' => Auth::user()->id
                 ];
 
                 if ($status_dk == "D") {
