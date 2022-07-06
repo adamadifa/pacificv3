@@ -100,6 +100,7 @@
                     <th>NAMA AKUN</th>
                     <th>DEBET</th>
                     <th>KREDIT</th>
+                    <th>#</th>
                 </tr>
             </thead>
             <tbody>
@@ -123,17 +124,19 @@
                     <td>{{ DateToIndo2($d->tanggal) }}</td>
                     <td>{{ $d->kode_jurnal }}</td>
                     <td>{{ $d->keterangan }}</td>
-                    <td>{{ $d->kode_dept }}</td>
+                    <td>{{ $d->kode_cabang }}</td>
                     <td>{{ $d->kode_akun }}</td>
                     <td>{{ $d->nama_akun }}</td>
                     <td align="right">{{ !empty($debet) ? desimal($debet) : '' }}</td>
                     <td align="right">{{ !empty($kredit) ? desimal($kredit) : '' }}</td>
+                    <th>{{ $d->kode_dept }}</th>
                 </tr>
                 @endforeach
                 <tr>
                     <th colspan="6">TOTAL</th>
                     <th style="text-align: right">{{ desimal($totaldebet)}}</th>
                     <th style="text-align: right">{{ desimal($totalkredit)}}</th>
+                    <th></th>
                 </tr>
             </tbody>
         </table>

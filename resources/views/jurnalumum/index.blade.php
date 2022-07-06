@@ -62,6 +62,7 @@
                                     <th>No.</th>
                                     <th>Tanggal</th>
                                     <th>Keterangan</th>
+                                    <th>Peruntukan</th>
                                     <th>Akun</th>
                                     <th>Debet</th>
                                     <th>Kredit</th>
@@ -84,7 +85,8 @@
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ date("d-m-Y",strtotime($d->tanggal)) }}</td>
-                                    <td>{{ $d->keterangan }} <b>{{ $d->peruntukan=='PC' ? '('.$d->kode_cabang.')' : '' }}</b></td>
+                                    <td>{{ $d->keterangan }}</td>
+                                    <td>{{ $d->peruntukan }} <b>{{ $d->peruntukan=='PC' ? '('.$d->kode_cabang.')' : '' }}</b></td>
                                     <td><b>{{ $d->kode_akun }} </b>{{ $d->nama_akun }}</td>
                                     <td class="text-right">{{ desimal($debet) }}</td>
                                     <td class="text-right">{{ desimal($kredit) }}</td>
@@ -168,6 +170,7 @@
         $(".edit").click(function(e) {
             e.preventDefault();
             var kode_jurnal = $(this).attr("kode_jurnal");
+
             $('#mdledit').modal({
                 backdrop: 'static'
                 , keyboard: false

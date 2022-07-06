@@ -2,10 +2,6 @@
     @csrf
     <table class="table">
         <tr>
-            <td>Departemen /Cabang</td>
-            <td>{{ $jurnalumum->nama_dept }}</td>
-        </tr>
-        <tr>
             <td>Tanggal</td>
             <td>{{ DateToIndo2($jurnalumum->tanggal) }}</td>
         </tr>
@@ -30,6 +26,50 @@
     <div class="row">
         <div class="col-12">
             <x-inputtext field="jumlah" label="Jumlah" value="{{ rupiah($jurnalumum->jumlah) }}" right icon="feather icon-file" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group">
+                <ul class="list-unstyled mb-0">
+                    <li class="d-inline-block mr-2">
+                        <fieldset>
+                            <div class="vs-radio-con vs-radio-primary">
+                                <input type="radio" class="peruntukan" name="peruntukan" value="PC" {{ $jurnalumum->peruntukan=="PC" ? 'checked' : '' }}>
+                                <span class="vs-radio">
+                                    <span class="vs-radio--border"></span>
+                                    <span class="vs-radio--circle"></span>
+                                </span>
+                                <span class="">Pacific</span>
+                            </div>
+                        </fieldset>
+                    </li>
+                    <li class="d-inline-block mr-2">
+                        <fieldset>
+                            <div class="vs-radio-con vs-radio-primary">
+                                <input type="radio" class="peruntukan" name="peruntukan" value="MP" {{ $jurnalumum->peruntukan=="MP" ? 'checked' : '' }}>
+                                <span class="vs-radio">
+                                    <span class="vs-radio--border"></span>
+                                    <span class="vs-radio--circle"></span>
+                                </span>
+                                <span class="">Makmur Permata</span>
+                            </div>
+                        </fieldset>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group" id="pilihcabang">
+                <select name="kode_cabang" id="kode_cabang" class="form-control ">
+                    <option value="">Pilih Cabang</option>
+                    @foreach ($cabang as $d)
+                    <option {{ $jurnalumum->kode_cabang == $d->kode_cabang ? 'selected' : '' }} value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
+                    @endforeach
+                </select>
+            </div>
         </div>
     </div>
     <div class="row" id="tombolsimpan">
@@ -74,5 +114,24 @@
             if (i % 3 == 0) rupiah += angkarev.substr(i, 3) + '.';
         return rupiah.split('', rupiah.length - 1).reverse().join('');
     }
+
+</script>
+<script>
+    $(function() {
+        function loadpilihcabang() {
+            var peruntukan = $("input[name='peruntukan']:checked").val();
+            if (peruntukan == "PC") {
+                $("#pilihcabang").show();
+            } else {
+                $("#pilihcabang").hide();
+            }
+        }
+
+        loadpilihcabang();
+        $('.peruntukan').change(function() {
+            loadpilihcabang();
+
+        });
+    })
 
 </script>

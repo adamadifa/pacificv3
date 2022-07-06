@@ -173,7 +173,7 @@ class JurnalumumController extends Controller
                 $nobukti_bukubesar = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $tahun, 6);
 
                 $cekakun = substr($kode_akun, 0, 3);
-                if ($status_dk == 'D' and $cekakun == '6-1' and in_array($kode_dept, $cabang) or $status_dk == 'D' and $cekakun == '6-2' and in_array($kode_dept, $cabang)) {
+                if ($status_dk == 'D' and $cekakun == '6-1'  or $status_dk == 'D' and $cekakun == '6-2') {
                     $kode = "CR" . $bulan . $tahun;
                     $cr = DB::table('costratio_biaya')
                         ->select('kode_cr')
@@ -251,10 +251,10 @@ class JurnalumumController extends Controller
     {
         $kodejurnal = Crypt::decrypt($kodejurnal);
         $jurnalumum = DB::table('jurnal_umum')
-            ->join('departemen', 'jurnal_umum.kode_dept', '=', 'departemen.kode_dept')
             ->where('kode_jurnal', $kodejurnal)->first();
         $coa = Coa::orderBy('kode_akun')->get();
-        return view('jurnalumum.edit', compact('jurnalumum', 'coa'));
+        $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
+        return view('jurnalumum.edit', compact('jurnalumum', 'coa', 'cabang'));
     }
 
     public function update($kode_jurnal, Request $request)
@@ -268,10 +268,14 @@ class JurnalumumController extends Controller
         $keterangan = $request->keterangan;
         $jumlah = !empty($request->jumlah) ? str_replace(".", "", $request->jumlah) : 0;
         $jumlah = str_replace(",", ".", $jumlah);
+        $peruntukan = $request->peruntukan;
+        $kode_cabang = $request->kode_cabang;
         $data = [
             'kode_akun' => $kode_akun,
             'keterangan' => $keterangan,
-            'jumlah' => $jumlah
+            'jumlah' => $jumlah,
+            'peruntukan' => $peruntukan,
+            'kode_cabang' => $kode_cabang
         ];
 
         if ($status_dk == "D") {
