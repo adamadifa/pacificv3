@@ -36,75 +36,142 @@ class PenjualanController extends Controller
     }
     public function index(Request $request)
     {
-        $pelanggan = '"' . $request->nama_pelanggan . '"';
-        $query = Penjualan::query();
-        $query->select('penjualan.*', 'nama_pelanggan', 'nama_karyawan', 'karyawan.kode_cabang');
-        $query->orderBy('tgltransaksi', 'desc');
-        $query->orderBy('no_fak_penj', 'asc');
-        $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
-        $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
-        if (empty($request->no_fak_penj) && empty($request->nama_pelanggan) && empty($request->kode_pelanggan) && empty($request->id_karyawan) && empty($request->dari) && empty($request->sampai)) {
-            $query->WhereRaw("MATCH(nama_pelanggan) AGAINST('" . $pelanggan .  "')");
-        }
-        if (!empty($request->nama_pelanggan)) {
-            $query->WhereRaw("MATCH(nama_pelanggan) AGAINST('" . $pelanggan .  "')");
-        }
-        if (!empty($request->kode_pelanggan)) {
-            $query->where('penjualan.kode_pelanggan', $request->kode_pelanggan);
-        }
 
-        if (!empty($request->id_karyawan)) {
-            $query->where('penjualan.id_karyawan', $request->id_karyawan);
-        }
-        if (!empty($request->no_fak_penj)) {
-            $query->where('no_fak_penj', $request->no_fak_penj);
-        }
-
-        if (!empty($request->status)) {
-            $query->where('status', $request->status);
-        }
-
-        if (!empty($request->dari) && !empty($request->sampai)) {
+        if (isset($request->print)) {
+            $pelangganmp = [
+                'TSM-00548',
+                'TSM-00493',
+                'TSM-02234',
+                'TSM-01117',
+                'TSM-00494',
+                'TSM-00466',
+                'PST00007',
+                'PST00008',
+                'PST00002'
+            ];
+            $query = Penjualan::query();
+            $query->select(
+                'penjualan.*',
+                'nama_pelanggan',
+                'alamat_pelanggan',
+                'alamat_toko',
+                'nama_cabang',
+                'karyawan.kode_cabang',
+                'alamat_cabang',
+                'nama_karyawan',
+                'kategori_salesman',
+                DB::raw('IFNULL(totalpf,0) - IFNULL(totalgb,0) as totalretur'),
+                DB::raw('IFNULL(total,0) - (IFNULL(totalpf,0) - IFNULL(totalgb,0)) as total')
+            );
+            $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+            $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+            $query->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang');
+            $query->leftJoin(
+                DB::raw("(
+                    SELECT
+                    no_fak_penj,
+                    SUM(subtotal_gb) AS totalgb,
+                    SUM(subtotal_pf) AS totalpf
+                FROM
+                    retur
+                GROUP BY
+                    no_fak_penj
+                ) retur"),
+                function ($join) {
+                    $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
+                }
+            );
             $query->whereBetween('tgltransaksi', [$request->dari, $request->sampai]);
-        }
-
-        if ($this->cabang != "PCF") {
-            if ($this->cabang == "GRT") {
-                $query->where('karyawan.kode_cabang', 'TSM');
-            } else {
-                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-                $cabang[] = "";
-                foreach ($cbg as $c) {
-                    $cabang[] = $c->kode_cabang;
-                }
-                $query->whereIn('karyawan.kode_cabang', $cabang);
+            if (!empty($request->id_karyawan)) {
+                $query->where('penjualan.id_karyawan', $request->id_karyawan);
             }
-        }
 
-        $penjualan = $query->paginate(15);
-
-        $penjualan->appends($request->all());
-
-
-        if ($this->cabang != "PCF") {
-            if ($this->cabang == "GRT") {
-                $salesman = Salesman::where('kode_cabang', 'TSM')->where('nama_karyawan', '!=', '-')->orderBy('nama_karyawan')->get();
-            } else {
-                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)
-                    ->orWhere('sub_cabang', $this->cabang)
-                    ->get();
-                $cabang[] = "";
-                foreach ($cbg as $c) {
-                    $cabang[] = $c->kode_cabang;
+            if ($this->cabang != "PCF") {
+                if ($this->cabang == "GRT") {
+                    $query->where('karyawan.kode_cabang', 'TSM');
+                } else {
+                    $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+                    $cabang[] = "";
+                    foreach ($cbg as $c) {
+                        $cabang[] = $c->kode_cabang;
+                    }
+                    $query->whereIn('karyawan.kode_cabang', $cabang);
                 }
-                $salesman = Salesman::whereIn('kode_cabang', $cabang)
-                    ->where('nama_karyawan', '!=', '-')
-                    ->orderBy('nama_karyawan')->get();
             }
+            $penjualan = $query->get();
+            return view('penjualan.laporan.cetaksuratjalantanggal', compact('penjualan', 'pelangganmp'));
         } else {
-            $salesman = Salesman::orderBy('nama_karyawan')->where('nama_karyawan', '!=', '-')->get();
+            $pelanggan = '"' . $request->nama_pelanggan . '"';
+            $query = Penjualan::query();
+            $query->select('penjualan.*', 'nama_pelanggan', 'nama_karyawan', 'karyawan.kode_cabang');
+            $query->orderBy('tgltransaksi', 'desc');
+            $query->orderBy('no_fak_penj', 'asc');
+            $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+            $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+            if (empty($request->no_fak_penj) && empty($request->nama_pelanggan) && empty($request->kode_pelanggan) && empty($request->id_karyawan) && empty($request->dari) && empty($request->sampai)) {
+                $query->WhereRaw("MATCH(nama_pelanggan) AGAINST('" . $pelanggan .  "')");
+            }
+            if (!empty($request->nama_pelanggan)) {
+                $query->WhereRaw("MATCH(nama_pelanggan) AGAINST('" . $pelanggan .  "')");
+            }
+            if (!empty($request->kode_pelanggan)) {
+                $query->where('penjualan.kode_pelanggan', $request->kode_pelanggan);
+            }
+
+            if (!empty($request->id_karyawan)) {
+                $query->where('penjualan.id_karyawan', $request->id_karyawan);
+            }
+            if (!empty($request->no_fak_penj)) {
+                $query->where('no_fak_penj', $request->no_fak_penj);
+            }
+
+            if (!empty($request->status)) {
+                $query->where('status', $request->status);
+            }
+
+            if (!empty($request->dari) && !empty($request->sampai)) {
+                $query->whereBetween('tgltransaksi', [$request->dari, $request->sampai]);
+            }
+
+            if ($this->cabang != "PCF") {
+                if ($this->cabang == "GRT") {
+                    $query->where('karyawan.kode_cabang', 'TSM');
+                } else {
+                    $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+                    $cabang[] = "";
+                    foreach ($cbg as $c) {
+                        $cabang[] = $c->kode_cabang;
+                    }
+                    $query->whereIn('karyawan.kode_cabang', $cabang);
+                }
+            }
+
+            $penjualan = $query->paginate(15);
+
+            $penjualan->appends($request->all());
+
+
+            if ($this->cabang != "PCF") {
+                if ($this->cabang == "GRT") {
+                    $salesman = Salesman::where('kode_cabang', 'TSM')->where('nama_karyawan', '!=', '-')->orderBy('nama_karyawan')->get();
+                } else {
+                    $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)
+                        ->orWhere('sub_cabang', $this->cabang)
+                        ->get();
+                    $cabang[] = "";
+                    foreach ($cbg as $c) {
+                        $cabang[] = $c->kode_cabang;
+                    }
+                    $salesman = Salesman::whereIn('kode_cabang', $cabang)
+                        ->where('nama_karyawan', '!=', '-')
+                        ->orderBy('nama_karyawan')->get();
+                }
+            } else {
+                $salesman = Salesman::orderBy('nama_karyawan')->where('nama_karyawan', '!=', '-')->get();
+            }
+            $cabang = Cabang::orderBy('kode_cabang')->get();
+            return view('penjualan.index', compact('penjualan', 'salesman', 'cabang'));
         }
-        return view('penjualan.index', compact('penjualan', 'salesman'));
     }
 
 

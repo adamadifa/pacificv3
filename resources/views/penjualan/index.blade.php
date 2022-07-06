@@ -22,7 +22,7 @@
         <div class="col-md-12 col-sm-12">
             <div class="card">
                 <div class="card-body">
-                    <form action="/penjualan">
+                    <form action="/penjualan" id="frmPenjualan">
                         <div class="row">
                             <div class="col-lg-6">
                                 <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker value="{{ Request('dari') }}" />
@@ -61,11 +61,17 @@
                             </div>
 
                             <div class="col-lg-1 col-sm-12">
-                                <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search"></i> </button>
+                                <button type="submit" name="submit" value="1" class="btn btn-primary search"><i class="fa fa-search"></i> </button>
+                            </div>
+                        </div>
+                        <div class="row mb-1">
+                            <div class="col-12">
+                                <button class="btn btn-info" type="submit" name="print" id="cetaksuratjalan" value="submit"><i class="feather icon-printer mr-1"></i> Cetak Surat Jalan</button>
                             </div>
                         </div>
                     </form>
                     @include('layouts.notification')
+
                     <table class="table ">
                         <thead class="thead-dark">
                             <tr>
@@ -154,10 +160,59 @@
         </div>
     </div>
 </div>
+{{-- <div class="modal fade text-left" id="mdlprint" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Cetak Surat Jalan</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="">
+                    <div class="row">
+                        <div class="col-12">
+                            <x-inputtext label="Tanggal" field="tanggal" datepicker icon="feather icon-calendar" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <select name="kode_cabang" id="kode_cabang" class="form-control">
+                                    <option value="">Cabang</option>
+                                    @foreach ($cabang as $d)
+                                    <option value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
+@endforeach
+</select>
+</div>
+</div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="form-group">
+            <button class="btn btn-primary btn-block"><i class="feather icon-printer"></i>Cetak</button>
+        </div>
+    </div>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div> --}}
 @endsection
 @push('myscript')
 <script>
     $(function() {
+        $('#cetaksuratjalan').click(function(e) {
+            //e.preventDefault(); //prevents the default submit action
+            $(this).closest('form').attr('target', '_blank').submit();
+        });
+
+        $('.search').click(function(e) {
+            //e.preventDefault(); //prevents the default submit action
+            $(this).closest('form').attr('target', '').submit();
+        });
 
         function cektutuplaporan(tanggal) {
             $.ajax({
