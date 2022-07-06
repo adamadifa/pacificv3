@@ -38,6 +38,9 @@ class PenjualanController extends Controller
     {
 
         if (isset($request->print)) {
+            if (empty($request->dari) || empty($request->sampai)) {
+                return Redirect::back()->with(['danger' => 'Periode Harus Diisi']);
+            }
             $pelangganmp = [
                 'TSM-00548',
                 'TSM-00493',
