@@ -44,7 +44,7 @@ $kredit = $d->jumlah;
 
         function loadtemp() {
             var kode_dept = $("#frmjurnalumum").find("#kode_dept").val();
-            $("#loadtemp").load("/jurnalumum/" + kode_dept + "/showtemp");
+            $("#loadtemp").load("/jurnalumum/showtemp");
             cektemp();
         }
 
