@@ -386,8 +386,8 @@ class GlobalProvider extends ServiceProvider
             $mutasibank_view = ['admin', 'kepala admin', 'admin pusat', 'admin kas kecil', 'admin kas', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil'];
 
             //Ledger
-            $ledger_menu  = ['admin', 'staff keuangan'];
-            $ledger_view = ['admin', 'staff keuangan'];
+            $ledger_menu  = ['admin', 'staff keuangan', 'spv accounting'];
+            $ledger_view = ['admin', 'staff keuangan', 'spv accounting'];
             $ledger_saldoawal = ['admin', 'staff keuangan'];
 
             //Kas Besar Keuangan
