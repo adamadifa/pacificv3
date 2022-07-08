@@ -340,7 +340,7 @@
                                 , showConfirmButton: false
                             }).then(function() {
                                 $("#frmjurnalumum").find("#kode_akun").focus();
-                                $("#frmjurnalumum").find("#kode_akun").val("").change();
+                                //$("#frmjurnalumum").find("#kode_akun").val("").change();
                                 $("#jumlah").val("");
                                 loadtemp();
                             });
