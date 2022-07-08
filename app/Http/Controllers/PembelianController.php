@@ -858,7 +858,8 @@ class PembelianController extends Controller
         $nobukti_pembelian = $request->nobukti_pembelian;
 
         $keterangan = $request->keterangan;
-        $qty = !empty($request->qty) ? $request->qty : 0;
+        $qty =  $request->qty;
+        $qty = !empty($qty) ? str_replace(".", "", $qty) : 0;
         $qty = str_replace(",", ".", $qty);
         $harga = !empty($request->harga) ? str_replace(".", "", $request->harga) : 0;
         $harga = str_replace(",", ".", $harga);
