@@ -145,8 +145,9 @@ class PemasukangudanglogistikController extends Controller
             ->leftJoin('supplier', 'pembelian.kode_supplier', '=', 'supplier.kode_supplier')
             ->first();
         $detail = DB::table('detail_pemasukan')
-            ->select('detail_pemasukan.*', 'nama_barang', 'satuan')
+            ->select('detail_pemasukan.*', 'nama_barang', 'satuan', 'nama_akun')
             ->join('master_barang_pembelian', 'detail_pemasukan.kode_barang', '=', 'master_barang_pembelian.kode_barang')
+            ->leftJoin('coa', 'detail_pemasukan.kode_akun', '=', 'coa.kode_akun')
             ->where('nobukti_pemasukan', $nobukti_pemasukan)->get();
         return view('pemasukangudanglogistik.show', compact('detail', 'pemasukan'));
     }
