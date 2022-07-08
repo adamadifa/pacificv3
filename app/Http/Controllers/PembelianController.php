@@ -555,8 +555,9 @@ class PembelianController extends Controller
             ->where('nobukti_pembelian', $nobukti_pembelian)
             ->first();
         $detailpembelian = DB::table('detail_pembelian')
-            ->select('detail_pembelian.*', 'nama_barang')
+            ->select('detail_pembelian.*', 'nama_barang', 'nama_akun')
             ->join('master_barang_pembelian', 'detail_pembelian.kode_barang', '=', 'master_barang_pembelian.kode_barang')
+            ->leftJoin('coa', 'detail_pembelian.kode_akun', '=', 'coa.kode_akun')
             ->where('nobukti_pembelian', $nobukti_pembelian)
             ->where('detail_pembelian.status', 'PMB')
             ->get();

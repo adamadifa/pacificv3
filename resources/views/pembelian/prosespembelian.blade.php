@@ -29,11 +29,12 @@
     <table class="table table-hover-animation">
         <thead class="thead-dark">
             <tr>
-                <th colspan="8">Data Pembelian</th>
+                <th colspan="9">Data Pembelian</th>
             </tr>
             <tr>
                 <th>Kode Barang</th>
                 <th>Nama Barang</th>
+                <th>Kode Akun</th>
                 <th>Keterangan</th>
                 <th>Qty</th>
                 <th>Harga</th>
@@ -54,6 +55,7 @@
             <tr>
                 <td>{{ $d->kode_barang }}</td>
                 <td>{{ $d->nama_barang }}</td>
+                <td>{{ $d->kode_akun }} - {{ $d->nama_akun }}</td>
                 <td>{{ $d->keterangan }}</td>
                 <td class="text-center">{{ desimal($d->qty) }}</td>
                 <td class="text-right">{{ desimal($d->harga) }}</td>
@@ -63,7 +65,7 @@
             </tr>
             @endforeach
             <tr class="thead-dark">
-                <th colspan="7">TOTAL</th>
+                <th colspan="8">TOTAL</th>
                 <th class="text-righ">{{ desimal($totalpembelian) }}</th>
             </tr>
         </tbody>
