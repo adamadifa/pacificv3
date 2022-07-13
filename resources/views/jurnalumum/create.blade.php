@@ -278,7 +278,7 @@
             var jumlah = $("#frmjurnalumum").find("#jumlah").val();
             var status_dk = $("input[name='status_dk']:checked").val();
             var peruntukan = $("input[name='peruntukan']:checked").val();
-            var kode_cabang = $("#kode_cabang").val();
+            var kode_cabang = $("#frmjurnalumum") find("#kode_cabang").val();
             if (tanggal == "") {
                 swal({
                     title: 'Oops'
