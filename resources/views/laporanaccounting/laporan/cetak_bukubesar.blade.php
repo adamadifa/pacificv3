@@ -131,14 +131,14 @@
                 $tgl_mulai = $saldoawal->tahun . "-" . $saldoawal->bulan . "-01";
                 } else {
                 $sa = 0;
-                $tgl_mulai = "";
+                $tgl_mulai = $tahun."-".$bulan."-01";
                 }
 
                 if (!empty($dari)) {
                 $mutasi = DB::table('buku_besar')
                 ->selectRaw("SUM(IFNULL(debet,0) - IFNULL(kredit,0)) as sisamutasi")
                 ->where('kode_akun', $d->kode_akun)
-                ->where('tanggald', '>=', $tgl_mulai)
+                ->where('tanggal', '>=', $tgl_mulai)
                 ->where('tanggal', '<', $dari) ->first();
                     $saldo_awal = $sa + $mutasi->sisamutasi;
                     } else {
