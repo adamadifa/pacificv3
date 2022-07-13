@@ -197,7 +197,7 @@ class JurnalumumController extends Controller
                         'tgl_transaksi' => $tanggal,
                         'kode_akun'    => $kode_akun,
                         'keterangan'   => $keterangan,
-                        'kode_cabang'  => $kode_dept,
+                        'kode_cabang'  => $kode_cabang,
                         'id_sumber_costratio' => 5,
                         'jumlah' => $jumlah
                     ];
