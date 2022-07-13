@@ -108,6 +108,105 @@
         </div>
     </div>
     @endif
+    @if (Auth::user()->kode_cabang == "PCF")
+    <div class="row mb-1">
+        <div class="col-12">
+            <div class="vs-checkbox-con vs-checkbox-primary">
+
+                <input type="checkbox" class="split_akun" name="split_akun" value="1">
+                <span class="vs-checkbox">
+                    <span class="vs-checkbox--check">
+                        <i class="vs-icon feather icon-check"></i>
+                    </span>
+                </span>
+                <span class="">Split Akun</span>
+            </div>
+        </div>
+    </div>
+    <div id="splitakunform">
+        <div class="row">
+            <div class="col-12">
+                <x-inputtext label="Keterangan" field="keterangan_split" icon="feather icon-file" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <select name="kode_akun_split" id="kode_akun_split" class="form-control select2">
+                        <option value="">Pilih Akun</option>
+                        @foreach ($coa as $d)
+                        <option value="{{ $d->kode_akun }}">{{ $d->kode_akun }} {{ $d->nama_akun }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <x-inputtext label="Jumlah" field="jumlah_split" icon="feather icon-file" value="" right />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <ul class="list-unstyled mb-0">
+                        <li class="d-inline-block mr-2">
+                            <fieldset>
+                                <div class="vs-radio-con vs-radio-primary">
+                                    <input type="radio" name="peruntukan_split" value="PCF">
+                                    <span class="vs-radio">
+                                        <span class="vs-radio--border"></span>
+                                        <span class="vs-radio--circle"></span>
+                                    </span>
+                                    <span class="">Pacific</span>
+                                </div>
+                            </fieldset>
+                        </li>
+                        <li class="d-inline-block mr-2">
+                            <fieldset>
+                                <div class="vs-radio-con vs-radio-primary">
+                                    <input type="radio" name="peruntukan_split" value="MP">
+                                    <span class="vs-radio">
+                                        <span class="vs-radio--border"></span>
+                                        <span class="vs-radio--circle"></span>
+                                    </span>
+                                    <span class="">Makmur Permata</span>
+                                </div>
+                            </fieldset>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Kode Akun</th>
+                            <th>Keterangan</th>
+                            <th>Jumlah</th>
+                            <th>#</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+    @endif
+    <div class="row mb-1">
+        <div class="col-12">
+            <div class="vs-checkbox-con vs-checkbox-primary">
+                <input type="checkbox" class="aggrement" name="aggrement" value="aggrement">
+                <span class="vs-checkbox">
+                    <span class="vs-checkbox--check">
+                        <i class="vs-icon feather icon-check"></i>
+                    </span>
+                </span>
+                <span class="">Yakin Akan Disimpan ?</span>
+            </div>
+        </div>
+    </div>
     <div class="row" id="tombolsimpan">
         <div class="col-12">
             <div class="form-group">
@@ -122,6 +221,29 @@
 <script>
     $(function() {
         $("#jumlah").maskMoney();
+        $("#jumlah_split").maskMoney();
+        $("#splitakunform").hide();
+        $('.aggrement').change(function() {
+            if (this.checked) {
+                $("#tombolsimpan").show();
+            } else {
+                $("#tombolsimpan").hide();
+            }
+        });
+
+        function hidetombolsimpan() {
+            $("#tombolsimpan").hide();
+        }
+
+        hidetombolsimpan();
+        $('.split_akun').change(function() {
+            if (this.checked) {
+                $("#splitakunform").show();
+            } else {
+                $("#splitakunform").hide();
+            }
+
+        });
 
         function cektutuplaporan() {
             var tanggal = $("#tgl_kaskecil").val();

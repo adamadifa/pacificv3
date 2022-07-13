@@ -23,8 +23,13 @@ class JurnalumumController extends Controller
         if ($kode_dept != 'ALL') {
             $query->where('kode_dept', $kode_dept);
         }
+        if ($request->kode_cabang) {
+            $query->where('kode_cabang', $request->kode_cabang);
+        }
+
+        $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         $jurnalumum = $query->get();
-        return view('jurnalumum.index', compact('jurnalumum'));
+        return view('jurnalumum.index', compact('jurnalumum', 'cabang'));
     }
 
     public function create()

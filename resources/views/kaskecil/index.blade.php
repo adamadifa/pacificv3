@@ -245,7 +245,7 @@
 
 <!-- Edit Kas Kecil -->
 <div class="modal fade text-left" id="mdleditkaskecil" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel18">Edit Kas Kecil</h4>
