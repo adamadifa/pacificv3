@@ -125,54 +125,54 @@
                 $saldo = 0;
                 $saldoawal = DB::table('detailsaldoawal_bb')
                 ->join('saldoawal_bb','detailsaldoawal_bb.kode_saldoawal_bb','=','saldoawal_bb.kode_saldoawal_bb')
-                ->where('kode_akun',$d->kode_akun)->where('bulan','<=', $bulan)->where('tahun','<=', $tahun)->first();
-                        if ($saldoawal != null) {
-                        $sa = $saldoawal->jumlah;
-                        $tgl_mulai = $saldoawal->tahun . "-" . $saldoawal->bulan . "-01";
-                        } else {
-                        $sa = 0;
-                        $tgl_mulai = "";
-                        }
+                ->where('kode_akun',$d->kode_akun)->where('bulan', $bulan)->where('tahun', $tahun)->first();
+                if ($saldoawal != null) {
+                $sa = $saldoawal->jumlah;
+                $tgl_mulai = $saldoawal->tahun . "-" . $saldoawal->bulan . "-01";
+                } else {
+                $sa = 0;
+                $tgl_mulai = "";
+                }
 
-                        if (!empty($dari)) {
-                        $mutasi = DB::table('buku_besar')
-                        ->selectRaw("SUM(IFNULL(debet,0) - IFNULL(kredit,0)) as sisamutasi")
-                        ->where('kode_akun', $d->kode_akun)
-                        ->where('tanggal', '>=', $tgl_mulai)
-                        ->where('tanggal', '<', $dari) ->first();
-                            $saldo_awal = $sa + $mutasi->sisamutasi;
-                            } else {
-                            $saldo_awal = 0;
-                            }
+                if (!empty($dari)) {
+                $mutasi = DB::table('buku_besar')
+                ->selectRaw("SUM(IFNULL(debet,0) - IFNULL(kredit,0)) as sisamutasi")
+                ->where('kode_akun', $d->kode_akun)
+                ->where('tanggal', '>=', $tgl_mulai)
+                ->where('tanggal', '<', $dari) ->first();
+                    $saldo_awal = $sa + $mutasi->sisamutasi;
+                    } else {
+                    $saldo_awal = 0;
+                    }
 
-                            $saldo = $saldo_awal;
-                            echo '
-                            <tr style="background-color:rgba(116, 170, 227, 0.465);">
-                                <th style="text-align: left" colspan="7">Akun : '.$d->kode_akun.' '. $d->nama_akun.'
-                                    '.$d->jenis_akun.'</th>
-                            </tr>
-                            <tr style="background-color:rgba(116, 170, 227, 0.465);">
-                                <th style="text-align: left" colspan="6">SALDO AWAL</th>
-                                <th style="text-align: right">'.desimal($saldo_awal).'</th>
-                            </tr>';
-                            }
-                            if($d->jenis_akun==1){
-                            $saldo = $saldo + $d->kredit - $d->debet;
-                            }else{
-                            $saldo = $saldo + $d->debet - $d->kredit;
-                            }
-                            @endphp
-                            {{-- <tr>
+                    $saldo = $saldo_awal;
+                    echo '
+                    <tr style="background-color:rgba(116, 170, 227, 0.465);">
+                        <th style="text-align: left" colspan="7">Akun : '.$d->kode_akun.' '. $d->nama_akun.'
+                            '.$d->jenis_akun.'</th>
+                    </tr>
+                    <tr style="background-color:rgba(116, 170, 227, 0.465);">
+                        <th style="text-align: left" colspan="6">SALDO AWAL</th>
+                        <th style="text-align: right">'.desimal($saldo_awal).'</th>
+                    </tr>';
+                    }
+                    if($d->jenis_akun==1){
+                    $saldo = $saldo + $d->kredit - $d->debet;
+                    }else{
+                    $saldo = $saldo + $d->debet - $d->kredit;
+                    }
+                    @endphp
+                    {{-- <tr>
                     <td>{{ $d->kode_akun }}</td>
-                            </tr> --}}
-                            @if ($d->tanggal != null)
+                    </tr> --}}
+                    @if ($d->tanggal != null)
 
 
-                            <tr>
-                                <td>{{ DateToIndo2($d->tanggal) }}</td>
-                                <td>{{ $d->nobukti_transaksi }}</td>
-                                <td>
-                                    <?php
+                    <tr>
+                        <td>{{ DateToIndo2($d->tanggal) }}</td>
+                        <td>{{ $d->nobukti_transaksi }}</td>
+                        <td>
+                            <?php
                         $smbr = strtolower($d->sumber);
                         if ($smbr == "ledger") {
                             $ledger = DB::table('ledger_bank')->where('no_bukti',$d->nobukti_transaksi)
@@ -185,26 +185,26 @@
                         // $sumber = $d->sumber;
                         echo $sumber;
                         ?>
-                                </td>
-                                <td>{{ $d->keterangan }}</td>
-                                <td align="right">{{ !empty($d->debet) ? desimal($d->debet) : '' }}</td>
-                                <td align="right">{{ !empty($d->kredit) ? desimal($d->kredit) : '' }}</td>
-                                <td align="right">{{ desimal($saldo) }}</td>
-                            </tr>
-                            @endif
-                            @php
-                            if ($akun != $d->kode_akun) {
-                            echo
-                            '<tr style="background-color:rgb(195, 195, 195);">
-                                <th colspan="4">TOTAL</th>
-                                <th style="text-align: right">'.desimal($totaldebet).'</th>
-                                <th style="text-align: right">'.desimal($totalkredit).'</th>
-                                <th style="text-align: right">'.desimal($saldo).'</th>
-                            </tr>';
-                            }
-                            $kode_akun = $d->kode_akun;
-                            @endphp
-                            @endforeach
+                        </td>
+                        <td>{{ $d->keterangan }}</td>
+                        <td align="right">{{ !empty($d->debet) ? desimal($d->debet) : '' }}</td>
+                        <td align="right">{{ !empty($d->kredit) ? desimal($d->kredit) : '' }}</td>
+                        <td align="right">{{ desimal($saldo) }}</td>
+                    </tr>
+                    @endif
+                    @php
+                    if ($akun != $d->kode_akun) {
+                    echo
+                    '<tr style="background-color:rgb(195, 195, 195);">
+                        <th colspan="4">TOTAL</th>
+                        <th style="text-align: right">'.desimal($totaldebet).'</th>
+                        <th style="text-align: right">'.desimal($totalkredit).'</th>
+                        <th style="text-align: right">'.desimal($saldo).'</th>
+                    </tr>';
+                    }
+                    $kode_akun = $d->kode_akun;
+                    @endphp
+                    @endforeach
             </tbody>
         </table>
 
