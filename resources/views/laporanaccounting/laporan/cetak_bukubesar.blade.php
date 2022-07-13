@@ -138,7 +138,7 @@
                 $mutasi = DB::table('buku_besar')
                 ->selectRaw("SUM(IFNULL(debet,0) - IFNULL(kredit,0)) as sisamutasi")
                 ->where('kode_akun', $d->kode_akun)
-                ->where('tanggald', '>=', $tgl_mulai)
+                ->where('tanggal', '>=', $tgl_mulai)
                 ->where('tanggal', '<', $dari) ->first();
                     $saldo_awal = $sa + $mutasi->sisamutasi;
                     } else {
