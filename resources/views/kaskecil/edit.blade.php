@@ -1,4 +1,5 @@
 <form action="/kaskecil/{{ Crypt::encrypt($kaskecil->id) }}/update" method="POST" id="frmEditkaskecil">
+    <input type="hidden" name="id" id="id_kaskecil" value="{{ $kaskecil->id }}">
     <input type="hidden" id="cektutuplaporan">
     @csrf
     @php
@@ -74,7 +75,7 @@
             </div>
         </div>
     </div>
-    @if (Auth::user()->kode_cabang == "PCF")
+    @if ($kaskecil->kode_cabang == "PCF")
     <div class="row">
         <div class="col-12">
             <div class="form-group">
@@ -146,6 +147,7 @@
                 <x-inputtext label="Jumlah" field="jumlah_split" icon="feather icon-file" value="" right />
             </div>
         </div>
+        @if ($kaskecil->kode_cabang == "PST")
         <div class="row">
             <div class="col-12">
                 <div class="form-group">
@@ -178,6 +180,14 @@
                 </div>
             </div>
         </div>
+        @endif
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <a href="#" class="btn btn-info btn-block" id="tambahitem"><i class="feather icon-plus"></i>Tambah</a>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-12">
                 <table class="table">
@@ -186,13 +196,16 @@
                             <th>Kode Akun</th>
                             <th>Keterangan</th>
                             <th>Jumlah</th>
+                            <th>Peruntukan</th>
                             <th>#</th>
                         </tr>
                     </thead>
+                    <tbody id="loadsplit"></tbody>
                 </table>
             </div>
         </div>
     </div>
+
     @endif
     <div class="row mb-1">
         <div class="col-12">
@@ -231,6 +244,101 @@
             }
         });
 
+        function loadsplit() {
+            var no_bukti = $("#id_kaskecil").val();
+            $("#loadsplit").load('/kaskecil/' + no_bukti + '/showsplit');
+        }
+
+
+
+        $("#tambahitem").click(function(e) {
+            e.preventDefault();
+            let keterangan = $("#keterangan_split").val();
+            let kode_akun = $("#kode_akun_split").val();
+            let jumlah = $("#jumlah_split").val();
+            let peruntukan = $("input[name='peruntukan']:checked").val();
+            let no_bukti = "{{ $kaskecil->id }}";
+
+
+            if (keterangan == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Keterangan Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#keterangan_split").focus();
+                });
+            } else if (kode_akun == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Kode AKun Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#kode_akun_split").focus();
+                });
+            } else if (jumlah == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Jumlah Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#jumlah_split").focus();
+                });
+            } else {
+                $.ajax({
+                    type: 'POST'
+                    , url: '/kaskecil/storesplitakun'
+                    , data: {
+                        _token: "{{ csrf_token() }}"
+                        , kode_akun: kode_akun
+                        , keterangan: keterangan
+                        , jumlah: jumlah
+                        , peruntukan: peruntukan
+                        , no_bukti: no_bukti
+                    , }
+                    , cache: false
+                    , success: function(respond) {
+                        if (respond == 0) {
+                            swal({
+                                title: 'Oops'
+                                , text: 'Data Berhasil Disimpan !'
+                                , icon: 'success'
+                                , showConfirmButton: false
+                            }).then(function() {
+                                $("#keterangan_split").val('');
+                                $("#jumlah_split").val('');
+                                $("#kode_akun").val('').change();
+                                $("#keterangan_split").focus();
+                                loadsplit();
+                            });
+                        } else if (respond == 1) {
+                            swal({
+                                title: 'Oops'
+                                , text: 'Data Sudah Ada !'
+                                , icon: 'warning'
+                                , showConfirmButton: false
+                            }).then(function() {
+                                $("#keterangan_split").focus();
+                            });
+                        } else {
+                            swal({
+                                title: 'Oops'
+                                , text: 'Data Gagal Disimpan, Hubungi Tim IT !'
+                                , icon: 'error'
+                                , showConfirmButton: false
+                            }).then(function() {
+                                $("#keterangan_split").focus();
+                            });
+                        }
+                    }
+
+                });
+            }
+        });
+
         function hidetombolsimpan() {
             $("#tombolsimpan").hide();
         }
@@ -239,6 +347,7 @@
         $('.split_akun').change(function() {
             if (this.checked) {
                 $("#splitakunform").show();
+                loadsplit();
             } else {
                 $("#splitakunform").hide();
             }

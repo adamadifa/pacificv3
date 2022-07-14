@@ -338,6 +338,9 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/kaskecil/{id}/delete', [KaskecilController::class, 'delete']);
     Route::get('/kaskecil/{id}/edit', [KaskecilController::class, 'edit']);
     Route::post('/kaskecil/{id}/update', [KaskecilController::class, 'update']);
+    Route::post('/kaskecil/storesplitakun', [KaskecilController::class, 'storesplitakun']);
+    Route::get('/kaskecil/{id}/showsplit', [KaskecilController::class, 'showsplit']);
+    Route::post('/kaskecil/deletesplit', [KaskecilController::class, 'deletesplit']);
 
     //Mutasi Bank
     Route::get('/mutasibank', [MutasibankController::class, 'index']);

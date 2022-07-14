@@ -335,6 +335,53 @@ class KaskecilController extends Controller
         return view('kaskecil.edit', compact('kaskecil', 'coa'));
     }
 
+    public function storesplitakun(Request $request)
+    {
+        $kode_akun = $request->kode_akun;
+        $keterangan = $request->keterangan;
+        $jumlah = str_replace(".", "", $request->jumlah);
+        $peruntukan = $request->peruntukan;
+        $no_bukti = $request->no_bukti;
+
+        $data = [
+            'kode_akun' => $kode_akun,
+            'keterangan' => $keterangan,
+            'kode_akun' => $kode_akun,
+            'jumlah' => $jumlah,
+            'no_bukti' => $no_bukti,
+        ];
+
+        $cek = DB::table('split_akun')->where('kode_akun', $kode_akun)
+            ->where('no_bukti', $no_bukti)
+            ->count();
+        if ($cek > 0) {
+            echo 1;
+        } else {
+            $simpan = DB::table('split_akun')->insert($data);
+            if ($simpan) {
+                echo 0;
+            } else {
+                echo 2;
+            }
+        }
+    }
+
+    public function showsplit($id)
+    {
+        $split = DB::table('split_akun')
+            ->select('split_akun.*', 'nama_akun')
+            ->join('coa', 'split_akun.kode_akun', '=', 'coa.kode_akun')
+            ->where('no_bukti', $id)
+            ->get();
+        return view('kaskecil/showsplit', compact('split'));
+    }
+
+    public function deletesplit(Request $request)
+    {
+        $id = $request->id;
+        DB::table('split_akun')->where('id', $id)->delete();
+    }
+
     public function update($id, Request $request)
     {
         $id = Crypt::decrypt($id);
