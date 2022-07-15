@@ -183,7 +183,7 @@
                         } else if($smbr=="kas kecil"){
                             $sumber = substr($d->nobukti_transaksi,0,3);
                         }else{
-                            $sumber = $d->sumber;
+                            $sumber = "Kas Kecil ". $d->sumber;
                         }
                         // $sumber = $d->sumber;
                         echo $sumber;
