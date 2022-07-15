@@ -692,6 +692,7 @@ class LaporanaccountingController extends Controller
             $query->where('kode_dept', $kode_dept);
         }
         $query->orderBy('tanggal');
+        $query->orderBy('keterangan');
         $jurnalumum = $query->get();
         $departemen = DB::table('departemen')->where('kode_dept', $kode_dept)->first();
         if (isset($_POST['export'])) {
