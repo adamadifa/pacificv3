@@ -181,7 +181,7 @@
                             $ledger != null ? $sumber = $ledger->nama_bank : 'Ledger';
 
                         } else if($smbr=="kas kecil"){
-                            $c = ['TSK','TGL','BDG','SKB','BGR','PST','PWT','KLT','SMR','SBY','GRT'];
+                            $c = ['TSK','TGL','BDG','SKB','BGR','PST','PWT','KLT','SMR','SBY','GRT','BRG'];
 
                             $kodecbg = substr($d->nobukti_transaksi,0,3);
 
