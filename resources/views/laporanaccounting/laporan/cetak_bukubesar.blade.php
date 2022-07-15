@@ -181,9 +181,9 @@
                             $ledger != null ? $sumber = $ledger->nama_bank : 'Ledger';
 
                         } else if($smbr=="kas kecil"){
-                            $sumber = substr($d->nobukti_transaksi,0,3);
+                            $sumber = "Kas Kecil ". substr($d->nobukti_transaksi,0,3);
                         }else{
-                            $sumber = "Kas Kecil ". $d->sumber;
+                            $sumber =  $d->sumber;
                         }
                         // $sumber = $d->sumber;
                         echo $sumber;
