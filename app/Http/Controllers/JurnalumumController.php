@@ -135,7 +135,7 @@ class JurnalumumController extends Controller
     {
         $cabang = ['BDG', 'BGR', 'GRT', 'PWT', 'SMR', 'SKB', 'SBY', 'TSM', 'TGL', 'PST', 'KLT'];
         $kode_dept = $request->kode_dept;
-        $keterangan = $request->keterangan;
+        //$keterangan = $request->keterangan;
 
 
 
@@ -150,6 +150,7 @@ class JurnalumumController extends Controller
                 $peruntukan = $d->peruntukan;
                 $kode_cabang = $d->kode_cabang;
                 $tgl = explode("-", $tanggal);
+                $keterangan = $d->keterangan;
                 $tahun  = substr($tgl[0], 2, 2);
                 $bulan = $tgl[1];
                 $jurnalumum = DB::table('jurnal_umum')

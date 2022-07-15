@@ -123,6 +123,8 @@
 
                 if ($kode_akun != $d->kode_akun) {
                 $saldo = 0;
+                $totaldebet =0;
+                $otalkredit = 0;
                 $saldoawal = DB::table('detailsaldoawal_bb')
                 ->join('saldoawal_bb','detailsaldoawal_bb.kode_saldoawal_bb','=','saldoawal_bb.kode_saldoawal_bb')
                 ->where('kode_akun',$d->kode_akun)->where('bulan', $bulan)->where('tahun', $tahun)->first();
