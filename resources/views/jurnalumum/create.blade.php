@@ -7,11 +7,7 @@
             <x-inputtext field="tanggal" label="Tanggal Jurnal Umum" icon="feather icon-calendar" datepicker />
         </div>
     </div>
-    <div class="row">
-        <div class="col-12">
-            <x-inputtext label="Keterangan" field="keterangan" icon="feather icon-file" />
-        </div>
-    </div>
+
     @if ($level=="hrd")
     <input type="hidden" name="kode_dept" id="kode_dept" value="HRD" />
     @elseif($level=="general affair")
@@ -38,7 +34,11 @@
             <x-inputtext label="Jumlah" field="jumlah" icon="feather icon-file" right />
         </div>
     </div>
-
+    <div class="row">
+        <div class="col-12">
+            <x-inputtext label="Keterangan" field="keterangan" icon="feather icon-file" />
+        </div>
+    </div>
     <div class="form-group">
         <ul class="list-unstyled mb-0">
             <li class="d-inline-block mr-2">
@@ -126,6 +126,7 @@
                         <th>Tanggal</th>
                         <th>Kode Akun</th>
                         <th>Nama Akun</th>
+                        <th>Keterangan</th>
                         <th>Debet</th>
                         <th>Kredit</th>
                         <th>Peruntukan</th>
@@ -279,6 +280,7 @@
             var status_dk = $("input[name='status_dk']:checked").val();
             var peruntukan = $("input[name='peruntukan']:checked").val();
             var kode_cabang = $("#frmjurnalumum").find("#kode_cabang").val();
+            var keterangan = $("#frmjurnalumum").find("#keterangan").val();
             if (tanggal == "") {
                 swal({
                     title: 'Oops'
@@ -328,6 +330,7 @@
                         , peruntukan: peruntukan
                         , kode_cabang: kode_cabang
                         , jumlah: jumlah
+                        , keterangan: keterangan
                     }
                     , cache: false
                     , success: function(respond) {

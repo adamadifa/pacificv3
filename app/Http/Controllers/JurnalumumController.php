@@ -88,6 +88,7 @@ class JurnalumumController extends Controller
         $status_dk = $request->status_dk;
         $jumlah = !empty($request->jumlah) ? str_replace(".", "", $request->jumlah) : 0;
         $jumlah = str_replace(",", ".", $jumlah);
+        $keterangan = $request->keterangan;
         $data = [
             'tanggal' => $tanggal,
             'peruntukan' => $peruntukan,
@@ -96,6 +97,7 @@ class JurnalumumController extends Controller
             'kode_akun' => $kode_akun,
             'status_dk' => $status_dk,
             'jumlah' => $jumlah,
+            'keterangan' => $keterangan,
             'id_user' => Auth::user()->id
         ];
         $simpan = DB::table('jurnal_umum_temp')->insert($data);

@@ -14,6 +14,7 @@ $kredit = $d->jumlah;
     <td>{{ date("d-m-Y",strtotime($d->tanggal)) }}</td>
     <td>{{ $d->kode_akun }}</td>
     <td>{{ $d->nama_akun }}</td>
+    <td>{{ $d->keterangan }}</td>
     <td class="text-right">{{ rupiah($debet) }}</td>
     <td class="text-right">{{ rupiah($kredit) }}</td>
     <td>{{ $d->peruntukan }} {{ $d->peruntukan == "PC" ? '('.$d->kode_cabang.')' : '' }}</td>
