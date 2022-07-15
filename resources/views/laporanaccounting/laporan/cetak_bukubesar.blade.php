@@ -181,7 +181,16 @@
                             $ledger != null ? $sumber = $ledger->nama_bank : 'Ledger';
 
                         } else if($smbr=="kas kecil"){
-                            $sumber = "Kas Kecil ". substr($d->nobukti_transaksi,0,3);
+                            $c = ['TSM','TGL','BDG','SKB','BGR','PST','PWT','KLT','SMR','SBY','GRT'];
+
+                            $kodecbg = substr($d->nobukti_transaksi,0,3);
+
+                            if(in_array($kodecbg,$c)){
+                                $kodecbg = $kodecbg;
+                            }else{
+                                $kodecbg = "TGL";
+                            }
+                            $sumber = "Kas Kecil ". $kodecbg;
                         }else{
                             $sumber =  $d->sumber;
                         }
