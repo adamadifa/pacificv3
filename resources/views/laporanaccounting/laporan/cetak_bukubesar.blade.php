@@ -180,7 +180,9 @@
                             ->leftJoin('master_bank','ledger_bank.bank','=','master_bank.kode_bank')->first();
                             $ledger != null ? $sumber = $ledger->nama_bank : 'Ledger';
 
-                        } else{
+                        } else if($smbr=="kas kecil"){
+                            $sumber = substr($d->no_bukti_transaksi,0,3);
+                        }else{
                             $sumber = $d->sumber;
                         }
                         // $sumber = $d->sumber;
