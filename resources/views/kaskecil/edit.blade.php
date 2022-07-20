@@ -310,7 +310,7 @@
                             }).then(function() {
                                 $("#keterangan_split").val('');
                                 $("#jumlah_split").val('');
-                                $("#kode_akun").val('').change();
+                                $("#kode_akun_split").val('').change();
                                 $("#keterangan_split").focus();
                                 loadsplit();
                             });
@@ -383,9 +383,20 @@
             var jumlah = $("#jumlah").val();
             var kode_akun = $("#kode_akun").val();
             var kode_cabang = $('#frmInputkaskecil').find('#kode_cabang').val();
+            var totalsplit = $("#totalsplit").val();
+            var split = $("input[name='split_akun']:checked").val();
+            if (split == 1 && parseInt(jumlah.replace(/\./g, '')) != parseInt(totalsplit)) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Jumlah Harus Sama !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#jumlah").focus();
+                });
 
-
-            if (nobukti == "") {
+                return false;
+            } else if (nobukti == "") {
                 swal({
                     title: 'Oops'
                     , text: 'No. Bukti Harus Diisi !'

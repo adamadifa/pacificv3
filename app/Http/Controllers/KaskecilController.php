@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bukubesar;
 use App\Models\Cabang;
+use App\Models\Costratio;
 use App\Models\Kaskecil;
 use App\Models\Setcoacabang;
 use Illuminate\Http\Request;
@@ -385,6 +387,7 @@ class KaskecilController extends Controller
     public function update($id, Request $request)
     {
         $id = Crypt::decrypt($id);
+        $split = $request->split_akun;
         $nobukti = $request->nobukti;
         $nobukti_old = $request->nobukti_old;
         $tgl_kaskecil = $request->tgl_kaskecil;
@@ -397,115 +400,251 @@ class KaskecilController extends Controller
         $status_dk = $request->inout;
         $peruntukan = $request->peruntukan;
         $jumlah = str_replace(".", "", $request->jumlah);
+
+
         $kaskecil = DB::table('kaskecil_detail')->where('id', $id)->first();
         $kode_cr = $kaskecil->kode_cr;
         $kode_cabang = $kaskecil->kode_cabang;
         $nobukti_bukubesar = $kaskecil->nobukti_bukubesar;
         $nobukti_bukubesar_2 = $kaskecil->nobukti_bukubesar_2;
+        $kode_klaim = $kaskecil->kode_klaim;
+
         $cekakun = substr($kode_akun, 0, 3);
 
-        DB::beginTransaction();
-        try {
-            //Update Kas Kecil
-            $datakaskecil = [
-                'nobukti' => $nobukti,
-                'tgl_kaskecil' => $tgl_kaskecil,
-                'keterangan' => $keterangan,
-                'kode_akun' => $kode_akun,
-                'status_dk' => $status_dk,
-                'peruntukan' => $peruntukan,
-                'jumlah' => $jumlah
-            ];
-            DB::table('kaskecil_detail')->where('id', $id)->update($datakaskecil);
-            //Update No Bukti
-            $datanobukti = [
-                'nobukti' => $nobukti
-            ];
-            DB::table('kaskecil_detail')->where('nobukti', $nobukti_old)->update($datanobukti);
-            if ($status_dk == 'D' and $peruntukan != "MP" and $cekakun == '6-1' or $status_dk == 'D' and $peruntukan != "MP" and $cekakun == '6-2') {
-                //Update Cost Ratio
-                if (empty($kode_cr)) {
-                    $kode = "CR" . $bulan . $thn;
-                    $cr = DB::table('costratio_biaya')
-                        ->select('kode_cr')
-                        ->whereRaw('LEFT(kode_cr,6) ="' . $kode . '"')
-                        ->orderBy('kode_cr', 'desc')
+        $akun = [
+            'BDG' => '1-1102',
+            'BGR' => '1-1103',
+            'PST' => '1-1111',
+            'TSM' => '1-1112',
+            'SKB' => '1-1113',
+            'PWT' => '1-1114',
+            'TGL' => '1-1115',
+            'SBY' => '1-1116',
+            'SMR' => '1-1117',
+            'KLT' => '1-1118',
+            'GRT' => '1-1119'
+        ];
+        if ($split == 1) {
+            DB::beginTransaction();
+            try {
+                //Hapus Data Kas Kecil
+                DB::table('kaskecil_detail')->where('id', $id)->delete();
+                //Hapus Data Buku Besar
+                DB::table('buku_besar')->whereIn('no_bukti', [$nobukti_bukubesar, $nobukti_bukubesar_2])->delete();
+                //Hapus Cost Ratio
+                DB::table('costratio_biaya')->where('kode_cr', $kode_cr)->delete();
+                $datasplit = DB::table('split_akun')->where('no_bukti', $id)->get();
+                foreach ($datasplit as $d) {
+                    $cekakun = substr($d->kode_akun, 0, 3);
+                    $bukubesar = DB::table('buku_besar')->whereRaw('LEFT(no_bukti,6)="GJ' . $bulan . $thn . '"')
+                        ->orderBy('no_bukti', 'desc')
                         ->first();
-                    if ($cr != null) {
-                        $last_kode_cr = $cr->kode_cr;
+                    if ($bukubesar != null) {
+                        $last_no_bukti = $bukubesar->no_bukti;
                     } else {
-                        $last_kode_cr = "";
+                        $last_no_bukti = "";
                     }
-                    $kode_cr = buatkode($last_kode_cr, "CR" . $bulan . $thn, 4);
-                    $datacr = [
+
+                    $no_bukti = buatkode($last_no_bukti, 'GJ' . $bulan . $thn, 6);
+                    $no_bukti_2 = buatkode($no_bukti, 'GJ' . $bulan . $thn, 6);
+
+                    if ($status_dk == 'D' and $cekakun == '6-1' and $peruntukan != 'MP' or $status_dk == 'D' and $cekakun == '6-2' and $peruntukan != 'MP') {
+                        $kode = "CR" . $bulan . $thn;
+                        $cr = DB::table('costratio_biaya')
+                            ->select('kode_cr')
+                            ->whereRaw('LEFT(kode_cr,6) ="' . $kode . '"')
+                            ->orderBy('kode_cr', 'desc')
+                            ->first();
+                        if ($cr != null) {
+                            $last_kode_cr = $cr->kode_cr;
+                        } else {
+                            $last_kode_cr = "";
+                        }
+                        $kode_cr = buatkode($last_kode_cr, "CR" . $bulan . $thn, 4);
+
+                        $datacr = [
+                            'kode_cr' => $kode_cr,
+                            'tgl_transaksi' => $tgl_kaskecil,
+                            'kode_akun' => $d->kode_akun,
+                            'keterangan' => $d->keterangan,
+                            'kode_cabang'  => $kode_cabang,
+                            'id_sumber_costratio' => 1,
+                            'jumlah' => $d->jumlah
+                        ];
+                        DB::table('costratio_biaya')->insert($datacr);
+                    } else {
+                        $kode_cr = null;
+                    }
+
+
+                    if ($status_dk == "D") {
+                        $debet = $d->jumlah;
+                        $kredit = 0;
+                    } else {
+                        $debet = 0;
+                        $kredit = $d->jumlah;
+                    }
+                    $databukubesar = array(
+                        'no_bukti' => $no_bukti,
+                        'tanggal' => $tgl_kaskecil,
+                        'sumber' => 'Kas Kecil',
+                        'keterangan' => $d->keterangan,
+                        'kode_akun' => $akun[$kode_cabang],
+                        'debet' => $kredit,
+                        'kredit' => $debet,
+                        'nobukti_transaksi' => $nobukti,
+                    );
+
+
+                    $databukubesartrans = array(
+                        'no_bukti' => $no_bukti_2,
+                        'tanggal' => $tgl_kaskecil,
+                        'sumber' => 'Kas Kecil',
+                        'keterangan' => $d->keterangan,
+                        'kode_akun' => $d->kode_akun,
+                        'debet' => $debet,
+                        'kredit' => $kredit,
+                        'nobukti_transaksi' => $nobukti,
+                    );
+
+
+                    $datakaskecil[] = [
+                        'nobukti' => $nobukti,
+                        'tgl_kaskecil' => $tgl_kaskecil,
+                        'keterangan' => $d->keterangan,
+                        'kode_akun' => $d->kode_akun,
+                        'kode_cabang' => $kode_cabang,
+                        'status_dk' => $status_dk,
+                        'peruntukan' => $peruntukan,
+                        'jumlah' => $d->jumlah,
+                        'kode_klaim' => $kode_klaim,
                         'kode_cr' => $kode_cr,
-                        'tgl_transaksi' => $tgl_kaskecil,
-                        'kode_akun'    => $kode_akun,
-                        'keterangan'   => $keterangan,
-                        'kode_cabang'  => $kode_cabang,
-                        'id_sumber_costratio' => 1,
-                        'jumlah' => $jumlah
+                        'order' => 2,
+                        'nobukti_bukubesar' => $no_bukti,
+                        'nobukti_bukubesar_2' => $no_bukti_2
                     ];
-                    DB::table('costratio_biaya')->insert($datacr);
 
-                    $datakaskecil = [
-                        'kode_cr' => $kode_cr
-                    ];
-                    DB::table('kaskecil_detail')->where('id', $id)->update($datakaskecil);
+                    DB::table('buku_besar')->insert($databukubesar);
+                    DB::table('buku_besar')->insert($databukubesartrans);
+                }
+
+
+                Kaskecil::insert($datakaskecil);
+                DB::table('split_akun')->where('no_bukti', $id)->delete();
+
+                DB::commit();
+
+                //echo "Sukses";
+                return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+            } catch (\Exception $e) {
+                dd($e);
+                DB::rollback();
+                return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);;
+            }
+        } else {
+            DB::beginTransaction();
+            try {
+                //Update Kas Kecil
+                $datakaskecil = [
+                    'nobukti' => $nobukti,
+                    'tgl_kaskecil' => $tgl_kaskecil,
+                    'keterangan' => $keterangan,
+                    'kode_akun' => $kode_akun,
+                    'status_dk' => $status_dk,
+                    'peruntukan' => $peruntukan,
+                    'jumlah' => $jumlah
+                ];
+                DB::table('kaskecil_detail')->where('id', $id)->update($datakaskecil);
+                //Update No Bukti
+                $datanobukti = [
+                    'nobukti' => $nobukti
+                ];
+                DB::table('kaskecil_detail')->where('nobukti', $nobukti_old)->update($datanobukti);
+                if ($status_dk == 'D' and $peruntukan != "MP" and $cekakun == '6-1' or $status_dk == 'D' and $peruntukan != "MP" and $cekakun == '6-2') {
+                    //Update Cost Ratio
+                    if (empty($kode_cr)) {
+                        $kode = "CR" . $bulan . $thn;
+                        $cr = DB::table('costratio_biaya')
+                            ->select('kode_cr')
+                            ->whereRaw('LEFT(kode_cr,6) ="' . $kode . '"')
+                            ->orderBy('kode_cr', 'desc')
+                            ->first();
+                        if ($cr != null) {
+                            $last_kode_cr = $cr->kode_cr;
+                        } else {
+                            $last_kode_cr = "";
+                        }
+                        $kode_cr = buatkode($last_kode_cr, "CR" . $bulan . $thn, 4);
+                        $datacr = [
+                            'kode_cr' => $kode_cr,
+                            'tgl_transaksi' => $tgl_kaskecil,
+                            'kode_akun'    => $kode_akun,
+                            'keterangan'   => $keterangan,
+                            'kode_cabang'  => $kode_cabang,
+                            'id_sumber_costratio' => 1,
+                            'jumlah' => $jumlah
+                        ];
+                        DB::table('costratio_biaya')->insert($datacr);
+
+                        $datakaskecil = [
+                            'kode_cr' => $kode_cr
+                        ];
+                        DB::table('kaskecil_detail')->where('id', $id)->update($datakaskecil);
+                    } else {
+
+                        $datacr = [
+                            'tgl_transaksi' => $tgl_kaskecil,
+                            'keterangan' => $keterangan,
+                            'kode_akun' => $kode_akun,
+                            'jumlah' => $jumlah
+                        ];
+                        DB::table('costratio_biaya')->where('kode_cr', $kode_cr)->update($datacr);
+                    }
                 } else {
-
-                    $datacr = [
-                        'tgl_transaksi' => $tgl_kaskecil,
-                        'keterangan' => $keterangan,
-                        'kode_akun' => $kode_akun,
-                        'jumlah' => $jumlah
-                    ];
-                    DB::table('costratio_biaya')->where('kode_cr', $kode_cr)->update($datacr);
+                    if (!empty($kode_cr)) {
+                        DB::table('costratio_biaya')->where('kode_cr', $kode_cr)->delete();
+                        $datakaskecil = [
+                            'kode_cr' => null
+                        ];
+                        DB::table('kaskecil_detail')->where('id', $id)->update($datakaskecil);
+                    }
                 }
-            } else {
-                if (!empty($kode_cr)) {
-                    DB::table('costratio_biaya')->where('kode_cr', $kode_cr)->delete();
-                    $datakaskecil = [
-                        'kode_cr' => null
-                    ];
-                    DB::table('kaskecil_detail')->where('id', $id)->update($datakaskecil);
+
+                //Update Buku Besar
+
+                if ($status_dk == "D") {
+                    $debet = $jumlah;
+                    $kredit = 0;
+                } else {
+                    $debet = 0;
+                    $kredit = $jumlah;
                 }
+
+                $databukubesar = [
+                    'tanggal' => $tgl_kaskecil,
+                    'keterangan' => $keterangan,
+                    'debet' => $kredit,
+                    'kredit' => $debet,
+                    'nobukti_transaksi' => $nobukti
+                ];
+
+                $databukubesartrans = [
+                    'tanggal' => $tgl_kaskecil,
+                    'keterangan' => $keterangan,
+                    'debet' => $debet,
+                    'kredit' => $kredit,
+                    'nobukti_transaksi' => $nobukti
+                ];
+
+                DB::table('buku_besar')->where('no_bukti', $nobukti_bukubesar)->update($databukubesar);
+                DB::table('buku_besar')->where('no_bukti', $nobukti_bukubesar_2)->update($databukubesartrans);
+                DB::commit();
+                return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+            } catch (\Exception $e) {
+                dd($e);
+                DB::rollback();
+                return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);;
             }
-
-            //Update Buku Besar
-
-            if ($status_dk == "D") {
-                $debet = $jumlah;
-                $kredit = 0;
-            } else {
-                $debet = 0;
-                $kredit = $jumlah;
-            }
-
-            $databukubesar = [
-                'tanggal' => $tgl_kaskecil,
-                'keterangan' => $keterangan,
-                'debet' => $kredit,
-                'kredit' => $debet,
-                'nobukti_transaksi' => $nobukti
-            ];
-
-            $databukubesartrans = [
-                'tanggal' => $tgl_kaskecil,
-                'keterangan' => $keterangan,
-                'debet' => $debet,
-                'kredit' => $kredit,
-                'nobukti_transaksi' => $nobukti
-            ];
-
-            DB::table('buku_besar')->where('no_bukti', $nobukti_bukubesar)->update($databukubesar);
-            DB::table('buku_besar')->where('no_bukti', $nobukti_bukubesar_2)->update($databukubesartrans);
-            DB::commit();
-            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
-        } catch (\Exception $e) {
-            dd($e);
-            DB::rollback();
-            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);;
         }
     }
 

@@ -17,7 +17,9 @@ $total += $d->jumlah
 @endforeach
 <tr>
     <th colspan="2">TOTAL</th>
-    <th style="text-align: right">{{ rupiah($total) }}</th>
+    <th style="text-align: right">{{ rupiah($total) }}
+        <input type="hidden" id="totalsplit" value="{{ $total }}">
+    </th>
     <th colspan="2"></th>
 </tr>
 
