@@ -378,8 +378,8 @@ class SetoranpusatController extends Controller
             'tgl_diterimapusat' => NULL
         );
         $ledger = DB::table('ledger_bank')->where('no_ref', $kode_setoranpusat)->first();
-        $no_bukti_bb = $ledger->nobukti_bukubesar;
-        $nobukti_bukubesar_bank = $ledger->nobukti_bukubesar_2;
+        $no_bukti_bb = $ledger != null ? $ledger->nobukti_bukubesar : '';
+        $nobukti_bukubesar_bank = $ledger != null ?  $ledger->nobukti_bukubesar_2 : '';
 
         DB::beginTransaction();
         try {
