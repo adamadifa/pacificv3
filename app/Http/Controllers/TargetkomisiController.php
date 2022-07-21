@@ -448,6 +448,8 @@ class TargetkomisiController extends Controller
         return view('targetkomisi.laporan.frm.lap_komisi', compact('cabang', 'bulan'));
     }
 
+
+
     public function cetaklaporankomisi(Request $request)
     {
         $cabang = $request->kode_cabang;
@@ -902,6 +904,198 @@ class TargetkomisiController extends Controller
         } else {
             return view('targetkomisi.laporan.cetak_komisi_juni', compact('komisi', 'cbg', 'nmbulan', 'tahun', 'produk', 'driver', 'helper', 'gudang', 'tunaikredit', 'bulan', 'cabang'));
         }
+    }
+
+    public function laporankomisidriverhelper()
+    {
+        $cabang = DB::table('cabang')->get();
+        return view('targetkomisi.laporan.frm.lap_komisidriverhelper', compact('cabang'));
+    }
+
+    public function cetakkomisidriverhelper(Request $request)
+    {
+        $cabang = $request->kode_cabang;
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $tanggal = explode("-", $dari);
+        $bulan = $tanggal[1];
+        $tahun = $tanggal[0];
+        $cbg = Cabang::where('kode_cabang', $cabang)->first();
+        $driver = DB::table('driver_helper')
+            ->selectRaw("driver_helper.id_driver_helper,nama_driver_helper,kategori,IFNULL(jml_driver,0) as jml_driver,driver_helper.ratio as ratiodefault,
+            driver_helper.ratio_helper as ratiohelperdefault,
+            ratioaktif,ratiohelperaktif,ratioterakhir,ratiohelperterakhir")
+            ->join(
+                DB::raw("(
+                        SELECT id_driver,ROUND(SUM(jml_penjualan),2) as jml_driver
+                        FROM detail_dpb
+                        INNER JOIN dpb ON detail_dpb.no_dpb = dpb.no_dpb
+                        WHERE tgl_pengambilan BETWEEN '$dari' AND '$sampai' GROUP BY id_driver
+                    ) driver"),
+                function ($join) {
+                    $join->on('driver_helper.id_driver_helper', '=', 'driver.id_driver');
+                }
+            )
+            ->leftJoin(
+                DB::raw("(
+                    SELECT id,set_ratio_komisi.ratio as ratioaktif,set_ratio_komisi.ratio_helper as ratiohelperaktif
+                    FROM set_ratio_komisi
+                    INNER JOIN driver_helper ON set_ratio_komisi.id = driver_helper.id_driver_helper
+                    WHERE bulan = '$bulan' AND tahun = '$tahun' AND kode_cabang='$cabang'
+                    ) ratio"),
+                function ($join) {
+                    $join->on('driver_helper.id_driver_helper', '=', 'ratio.id');
+                }
+            )
+            ->leftJoin(
+                DB::raw("(
+                    SELECT id,set_ratio_komisi.ratio as ratioterakhir,set_ratio_komisi.ratio_helper as ratiohelperterakhir
+                    FROM set_ratio_komisi
+                    INNER JOIN driver_helper ON set_ratio_komisi.id = driver_helper.id_driver_helper
+                    WHERE kode_cabang ='$cabang' AND tgl_berlaku IN (SELECT max(tgl_berlaku) FROM set_ratio_komisi)
+                    ) lastratio"),
+                function ($join) {
+                    $join->on('driver_helper.id_driver_helper', '=', 'lastratio.id');
+                }
+            )
+            ->where('kode_cabang', $cabang)
+            ->orderBy('kategori')
+            ->orderBy('nama_driver_helper')
+            ->get();
+
+        $helper = DB::table('driver_helper')
+            ->selectRaw("driver_helper.id_driver_helper,nama_driver_helper,kategori,IFNULL(jml_helper,0) + IFNULL(jml_helper_2,0) + IFNULL(jml_helper_3,0) as jml_helper,driver_helper.ratio as ratiodefault,
+            driver_helper.ratio_helper as ratiohelperdefault,
+            ratioaktif,ratiohelperaktif,ratioterakhir,ratiohelperterakhir")
+            ->leftJoin(
+                DB::raw("(
+                    SELECT id_helper,ROUND(SUM(jml_penjualan),2) as jml_helper
+                    FROM detail_dpb
+                    INNER JOIN dpb ON detail_dpb.no_dpb = dpb.no_dpb
+                    WHERE tgl_pengambilan BETWEEN '$dari' AND '$sampai' GROUP BY id_helper
+                    ) helper"),
+                function ($join) {
+                    $join->on('driver_helper.id_driver_helper', '=', 'helper.id_helper');
+                }
+            )
+            ->leftJoin(
+                DB::raw("(
+                    SELECT id_helper_2,ROUND(SUM(jml_penjualan),2) as jml_helper_2
+                    FROM detail_dpb
+                    INNER JOIN dpb ON detail_dpb.no_dpb = dpb.no_dpb
+                    WHERE tgl_pengambilan BETWEEN '$dari' AND '$sampai' GROUP BY id_helper_2
+                    ) helper2"),
+                function ($join) {
+                    $join->on('driver_helper.id_driver_helper', '=', 'helper2.id_helper_2');
+                }
+            )
+
+            ->leftJoin(
+                DB::raw("(
+                    SELECT id_helper_3,ROUND(SUM(jml_penjualan),2) as jml_helper_3
+                    FROM detail_dpb
+                    INNER JOIN dpb ON detail_dpb.no_dpb = dpb.no_dpb
+                    WHERE tgl_pengambilan BETWEEN '$dari' AND '$sampai' GROUP BY id_helper_3
+                    ) helper3"),
+                function ($join) {
+                    $join->on('driver_helper.id_driver_helper', '=', 'helper3.id_helper_3');
+                }
+            )
+
+            ->leftJoin(
+                DB::raw("(
+                    SELECT id,set_ratio_komisi.ratio as ratioaktif,set_ratio_komisi.ratio_helper as ratiohelperaktif
+                    FROM set_ratio_komisi
+                    INNER JOIN driver_helper ON set_ratio_komisi.id = driver_helper.id_driver_helper
+                    WHERE bulan = '$bulan' AND tahun = '$tahun' AND kode_cabang='$cabang'
+                    ) ratio"),
+                function ($join) {
+                    $join->on('driver_helper.id_driver_helper', '=', 'ratio.id');
+                }
+            )
+
+            ->leftJoin(
+                DB::raw("(
+                    SELECT id,set_ratio_komisi.ratio as ratioterakhir,set_ratio_komisi.ratio_helper as ratiohelperterakhir
+                    FROM set_ratio_komisi
+                    INNER JOIN driver_helper ON set_ratio_komisi.id = driver_helper.id_driver_helper
+                    WHERE kode_cabang ='$cabang' AND tgl_berlaku IN (SELECT max(tgl_berlaku) FROM set_ratio_komisi)
+                    ) lastratio"),
+                function ($join) {
+                    $join->on('driver_helper.id_driver_helper', '=', 'lastratio.id');
+                }
+            )
+            ->where('kode_cabang', $cabang)
+            ->whereRaw('(IFNULL(jml_helper,0) + IFNULL(jml_helper_2,0) + IFNULL(jml_helper_3,0)) != 0.00')
+            ->orderBy('kategori')
+            ->orderBy('nama_driver_helper')
+            ->get();
+
+        $tunaikredit = DB::table('detailpenjualan')
+            ->selectRaw("IFNULL(FLOOR(SUM( IF ( kode_produk = 'AB', detailpenjualan.jumlah/isipcsdus, NULL ) )),0) +
+            IFNULL(FLOOR(SUM( IF ( kode_produk = 'AR', detailpenjualan.jumlah/isipcsdus, NULL ) )),0) +
+            IFNULL(FLOOR(SUM( IF ( kode_produk = 'AS', detailpenjualan.jumlah/isipcsdus, NULL ) )),0) +
+            IFNULL(FLOOR(SUM( IF ( kode_produk = 'BB', detailpenjualan.jumlah/isipcsdus, NULL ) )),0) +
+            IFNULL(FLOOR(SUM( IF ( kode_produk = 'CG', detailpenjualan.jumlah/isipcsdus, NULL ) )),0) +
+            IFNULL(FLOOR(SUM( IF ( kode_produk = 'CGG', detailpenjualan.jumlah/isipcsdus, NULL ) )),0) +
+            IFNULL(FLOOR(SUM( IF ( kode_produk = 'DB', detailpenjualan.jumlah/isipcsdus, NULL ) )),0) +
+            IFNULL(FLOOR(SUM( IF ( kode_produk = 'DEP', detailpenjualan.jumlah/isipcsdus,NULL ) )),0) +
+            IFNULL(FLOOR(SUM( IF ( kode_produk = 'DK', detailpenjualan.jumlah/isipcsdus, NULL ) )),0) +
+            IFNULL(FLOOR(SUM( IF ( kode_produk = 'DS', detailpenjualan.jumlah/isipcsdus, NULL ) )),0) +
+            IFNULL(FLOOR(SUM( IF ( kode_produk = 'SP', detailpenjualan.jumlah/isipcsdus, NULL ) )),0) +
+            IFNULL(FLOOR(SUM( IF ( kode_produk = 'BBP', detailpenjualan.jumlah/isipcsdus, NULL ) )),0) +
+            IFNULL(FLOOR(SUM( IF ( kode_produk = 'SPP', detailpenjualan.jumlah/isipcsdus, NULL ) )),0) +
+            IFNULL(FLOOR(SUM( IF ( kode_produk = 'CG5', detailpenjualan.jumlah/isipcsdus, NULL ) )),0) +
+            IFNULL(FLOOR(SUM( IF ( kode_produk = 'SC', detailpenjualan.jumlah/isipcsdus, NULL ) )),0) +
+            IFNULL(FLOOR(SUM( IF ( kode_produk = 'SP8', detailpenjualan.jumlah/isipcsdus, NULL ) )),0) AS total")
+            ->join('barang', 'detailpenjualan.kode_barang', '=', 'barang.kode_barang')
+            ->join('penjualan', 'detailpenjualan.no_fak_penj', '=', 'penjualan.no_fak_penj')
+            ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->where('promo', '!=', 1)
+            ->whereBetween('tgltransaksi', [$dari, $sampai])
+            ->where('karyawan.kode_cabang', $cabang)
+            ->orWhereNull('promo')
+            ->whereBetween('tgltransaksi', [$dari, $sampai])
+            ->where('karyawan.kode_cabang', $cabang)
+            ->first();
+
+        $gudang = DB::table('driver_helper')
+            ->selectRaw("id_driver_helper,nama_driver_helper ,driver_helper.ratio as ratiodefault,ratioaktif,ratioterakhir")
+            ->leftJoin(
+                DB::raw("(
+                    SELECT id,set_ratio_komisi.ratio as ratioaktif
+                    FROM set_ratio_komisi
+                    INNER JOIN driver_helper ON set_ratio_komisi.id = driver_helper.id_driver_helper
+                    WHERE bulan = '$bulan' AND tahun = '$tahun' AND kode_cabang='$cabang'
+                    ) ratio"),
+                function ($join) {
+                    $join->on('driver_helper.id_driver_helper', '=', 'ratio.id');
+                }
+            )
+
+            ->leftJoin(
+                DB::raw("(
+                    SELECT id,set_ratio_komisi.ratio as ratioterakhir
+                    FROM set_ratio_komisi
+                    INNER JOIN driver_helper ON set_ratio_komisi.id = driver_helper.id_driver_helper
+                    WHERE kode_cabang ='$cabang' AND tgl_berlaku IN (SELECT max(tgl_berlaku) FROM set_ratio_komisi)
+                    ) lastratio"),
+                function ($join) {
+                    $join->on('driver_helper.id_driver_helper', '=', 'lastratio.id');
+                }
+            )
+            ->where('kode_cabang', $cabang)
+            ->where('kategori', 'GUDANG')
+            ->get();
+
+        if (isset($_POST['export'])) {
+            $time = date("H:i:s");
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Komisi Driver Helper $time.xls");
+        }
+        return view('targetkomisi.laporan.cetak_komisi_driverhelper', compact('cbg', 'dari', 'sampai', 'driver', 'helper', 'gudang', 'tunaikredit'));
     }
 
     public function laporaninsentif()
