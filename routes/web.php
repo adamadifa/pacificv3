@@ -117,6 +117,9 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 |
 */
 
+Route::get('/agent', function () {
+    return request()->userAgent();
+});
 Route::middleware(['guest'])->group(function () {
     Route::get('/', function () {
         return view('Auth.login');
@@ -447,7 +450,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pembelian/{kode_supplier}/getpembelianjurnalkoreksi', [PembelianController::class, 'getpembelianjurnalkoreksi']);
     Route::get('/pembelian/{nobukti_pembelian}/getbarangjurnalkoreksi', [PembelianController::class, 'getbarangjurnalkoreksi']);
     Route::get('/jatuhtempo', [PembelianController::class, 'jatuhtempo']);
-
+    Route::post('/pembelian/storesplitakun', [PembelianController::class, 'storesplitakun']);
+    Route::get('/pembelian/{id}/{kode_barang}/showsplit', [PembelianController::class, 'showsplit']);
+    Route::post('/pembelian/deletesplit', [PembelianController::class, 'deletesplit']);
     //Jurnal Koreksi
     Route::get('/jurnalkoreksi', [JurnalkoreksiController::class, 'index']);
     Route::get('/jurnalkoreksi/create', [JurnalkoreksiController::class, 'create']);

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Barang;
+use App\Models\Barangpembelian;
 use App\Models\Cabang;
 use App\Models\Pembelian;
 use App\Models\Supplier;
@@ -725,7 +727,9 @@ class PembelianController extends Controller
             ->join('master_barang_pembelian', 'detail_pembelian.kode_barang', '=', 'master_barang_pembelian.kode_barang')
             ->where('nobukti_pembelian', $nobukti_pembelian)->where('detail_pembelian.kode_barang', $kode_barang)->where('no_urut', $no_urut)->first();
         $cabang = Cabang::orderBy('kode_cabang')->get();
-        return view('pembelian.editbarang', compact('detailpembelian', 'coa', 'cabang', 'cekpembayaran'));
+        $pembelian = Pembelian::where('nobukti_pembelian', $nobukti_pembelian)->first();
+        $barang = Barangpembelian::where('kode_dept', $pembelian->kode_dept)->get();
+        return view('pembelian.editbarang', compact('detailpembelian', 'coa', 'cabang', 'cekpembayaran', 'barang'));
     }
 
     public function updatebarang(Request $request)
@@ -751,96 +755,216 @@ class PembelianController extends Controller
         $no_urut = $request->no_urut;
         $kode_dept = $pembelian->kode_dept;
         $konversi_gram = $request->konversi_gram;
+        $split = $request->split_akun;
         $detailpembelian = DB::table('detail_pembelian')
             ->join('master_barang_pembelian', 'detail_pembelian.kode_barang', '=', 'master_barang_pembelian.kode_barang')
             ->where('nobukti_pembelian', $nobukti_pembelian)->where('detail_pembelian.kode_barang', $kode_barang)->where('no_urut', $no_urut)->first();
+
         $kontrabon = DB::table('detail_kontrabon')->where('nobukti_pembelian', $nobukti_pembelian)
             ->join('kontrabon', 'detail_kontrabon.no_kontrabon', '=', 'kontrabon.no_kontrabon')
             ->whereNull('status')
             ->orderBy('tgl_kontrabon', 'desc')
             ->first();
-        DB::beginTransaction();
-        try {
-
-            if (substr($kode_akun, 0, 3) == "6-1" && !empty($kode_cabang) or substr($kode_akun, 0, 3) == "6-2" && !empty($kode_cabang)) {
-
-                $kode = "CR" . $bulan . $thn;
-                $cr = DB::table('costratio_biaya')
-                    ->select('kode_cr')
-                    ->whereRaw('LEFT(kode_cr,6) ="' . $kode . '"')
-                    ->orderBy('kode_cr', 'desc')
-                    ->first();
-                if ($cr != null) {
-                    $last_kode_cr = $cr->kode_cr;
-                } else {
-                    $last_kode_cr = "";
-                }
-                $kode_cr = buatkode($last_kode_cr, "CR" . $bulan . $thn, 4);
-
-                $datacr = [
-                    'kode_cr' => $kode_cr,
-                    'tgl_transaksi' => $tgl_pembelian,
-                    'kode_akun' => $kode_akun,
-                    'keterangan'   => "Pembelian " . $detailpembelian->nama_barang . "(" . $qty . ")",
-                    'kode_cabang'  => $kode_cabang,
-                    'id_sumber_costratio' => 4,
-                    'jumlah' => ($qty * $harga) + $penyesuaian
-                ];
-                DB::table('costratio_biaya')->where('kode_cr', $detailpembelian->kode_cr)->delete();
-                DB::table('costratio_biaya')->insert($datacr);
-            } else {
-                DB::table('costratio_biaya')->where('kode_cr', $detailpembelian->kode_cr)->delete();
-                $kode_cr = NULL;
-            }
-
-            $databukubesar_detail = array(
-                'keterangan' => "Pembelian " . $detailpembelian->nama_barang,
-                'kode_akun' => $kode_akun,
-                'debet' => ($qty * $harga) + $penyesuaian,
-                'kredit' => 0,
-            );
 
 
+        if ($split == 1) {
+            $kode_cr_delete = $detailpembelian->kode_cr;
+            $nobukti_bukubesar_delete = $detailpembelian->nobukti_bukubesar;
 
-            $data = [
-                'keterangan' => $keterangan,
-                'qty' => $qty,
-                'harga' => $harga,
-                'penyesuaian' => $penyesuaian,
-                'kode_akun' => $kode_akun,
-                'kode_cabang' => $kode_cabang,
-                'konversi_gram' => $konversi_gram,
-                'kode_cr' => $kode_cr
-            ];
-            DB::table('buku_besar')->where('no_bukti', $detailpembelian->nobukti_bukubesar)->update($databukubesar_detail);
-            if ($kode_dept != "GDB") {
-                $kode_akun = "2-1300";
-            } else {
-                $kode_akun = "2-1200";
-            }
-            DB::table('detail_pembelian')->where('nobukti_pembelian', $nobukti_pembelian)->where('kode_barang', $kode_barang)->where('no_urut', $no_urut)->update($data);
-            $jmlbayar = DB::table('detail_pembelian')
-                ->selectRaw("SUM(IF(status='PMB',(qty*harga+penyesuaian),0)) - SUM(IF(status='PNJ',(qty*harga+penyesuaian),0))  as jmlbayar")
-                ->where('nobukti_pembelian', $nobukti_pembelian)
+            $cekdetailpembelian = DB::table('detail_pembelian')
+                ->join('master_barang_pembelian', 'detail_pembelian.kode_barang', '=', 'master_barang_pembelian.kode_barang')
+                ->where('nobukti_pembelian', $nobukti_pembelian)->orderBy('no_urut', 'desc')->first();
+
+            $detailtemp = DB::table('split_akun_pembelian')
+                ->select('split_akun_pembelian.*', 'nama_akun', 'nama_barang', 'satuan')
+                ->join('master_barang_pembelian', 'split_akun_pembelian.kode_barang', '=', 'master_barang_pembelian.kode_barang')
+                ->join('coa', 'split_akun_pembelian.kode_akun', '=', 'coa.kode_akun')
+                ->where('no_bukti', $nobukti_pembelian)
+                ->where('kode_barang_old', $kode_barang)
+                ->get();
+
+            $bukubesar = DB::table('buku_besar')->whereRaw('LEFT(no_bukti,6)="GJ' . $bulan . $thn . '"')
+                ->orderBy('no_bukti', 'desc')
                 ->first();
-            $databukubesar = array(
-                'kode_akun' => $kode_akun,
-                'debet' => 0,
-                'kredit' => $jmlbayar->jmlbayar,
-            );
-            $datakontrabon = array(
-                'jmlbayar' => $jmlbayar->jmlbayar
-            );
-            if ($kontrabon != null) {
-                DB::table('detail_kontrabon')->where('nobukti_pembelian', $nobukti_pembelian)->where('no_kontrabon', $kontrabon->no_kontrabon)->update($datakontrabon);
+            if ($bukubesar != null) {
+                $last_no_bukti_bukubesar = $bukubesar->no_bukti;
+            } else {
+                $last_no_bukti_bukubesar = "";
             }
-            DB::table('buku_besar')->where('no_bukti', $pembelian->nobukti_bukubesar)->update($databukubesar);
-            echo 0;
-            DB::commit();
-        } catch (\Exception $e) {
-            dd($e);
-            echo 1;
-            DB::rollback();
+
+            $nobukti_bukubesar = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $thn, 6);
+            DB::beginTransaction();
+            try {
+                //Hapus Data Barang di Detial Pembelian
+                DB::table('detail_pembelian')->where('nobukti_pembelian', $nobukti_pembelian)->where('no_urut', $no_urut)->where('kode_barang', $kode_barang)->delete();
+                //Hapus Data Di Cost Ratio
+                DB::table('costratio_biaya')->where('kode_cr', $kode_cr_delete)->delete();
+                DB::table('buku_besar')->where('no_bukti', $nobukti_bukubesar_delete)->delete();
+                $no = $cekdetailpembelian->no_urut + 1;
+                $no_bb = "";
+                foreach ($detailtemp as $d) {
+                    if (substr($d->kode_akun, 0, 3) == "6-1" && !empty($d->kode_cabang) or substr($d->kode_akun, 0, 3) == "6-2" && !empty($d->kode_cabang)) {
+                        $kode = "CR" . $bulan . $thn;
+                        $cr = DB::table('costratio_biaya')
+                            ->select('kode_cr')
+                            ->whereRaw('LEFT(kode_cr,6) ="' . $kode . '"')
+                            ->orderBy('kode_cr', 'desc')
+                            ->first();
+                        if ($cr != null) {
+                            $last_kode_cr = $cr->kode_cr;
+                        } else {
+                            $last_kode_cr = "";
+                        }
+                        $kode_cr = buatkode($last_kode_cr, "CR" . $bulan . $thn, 4);
+
+                        $datacr = [
+                            'kode_cr' => $kode_cr,
+                            'tgl_transaksi' => $tgl_pembelian,
+                            'kode_akun' => $d->kode_akun,
+                            'keterangan'   => "Pembelian " . $d->nama_barang . "(" . $d->qty . ")",
+                            'kode_cabang'  => $d->kode_cabang,
+                            'id_sumber_costratio' => 4,
+                            'jumlah' => ($d->qty * $d->harga) + $d->penyesuaian
+                        ];
+
+                        DB::table('costratio_biaya')->insert($datacr);
+                    } else {
+                        $kode_cr = NULL;
+                    }
+
+
+
+                    if (empty($no_bb)) {
+                        $nobukti_bukubesar_detail = buatkode($nobukti_bukubesar, 'GJ' . $bulan . $thn, 6);
+                    } else {
+                        $nobukti_bukubesar_detail = buatkode($no_bb, 'GJ' . $bulan . $thn, 6);
+                    }
+                    $databukubesar = array(
+                        'no_bukti' => $nobukti_bukubesar_detail,
+                        'tanggal' => $tgl_pembelian,
+                        'sumber' => 'pembelian',
+                        'keterangan' => "Pembelian " . $d->nama_barang,
+                        'kode_akun' => $d->kode_akun,
+                        'debet' => ($d->qty * $d->harga) + $d->penyesuaian,
+                        'kredit' => 0,
+                        'nobukti_transaksi' => $nobukti_pembelian
+                    );
+
+
+                    $datadetail = array(
+                        'nobukti_pembelian' => $nobukti_pembelian,
+                        'kode_barang'       => $d->kode_barang,
+                        'keterangan'        => $d->keterangan,
+                        'qty'               => $d->qty,
+                        'harga'             => $d->harga,
+                        'penyesuaian'       => $d->penyesuaian,
+                        'status'            => 'PMB',
+                        'kode_akun'         => $d->kode_akun,
+                        'no_urut'           => $no,
+                        'kode_cabang'       => $d->kode_cabang,
+                        'kode_cr'           => $kode_cr,
+                        'nobukti_bukubesar' => $nobukti_bukubesar_detail
+                    );
+
+                    DB::table('detail_pembelian')->insert($datadetail);
+                    DB::table('buku_besar')->insert($databukubesar);
+                    $no_bb = $nobukti_bukubesar_detail;
+                    $no++;
+                }
+
+                DB::table('split_akun_pembelian')->where('no_bukti', $nobukti_pembelian)->where('kode_barang_old', $kode_barang)->delete();
+
+                echo 0;
+                DB::commit();
+            } catch (\Exception $e) {
+                dd($e);
+                echo 1;
+                DB::rollback();
+            }
+        } else {
+            DB::beginTransaction();
+            try {
+
+                if (substr($kode_akun, 0, 3) == "6-1" && !empty($kode_cabang) or substr($kode_akun, 0, 3) == "6-2" && !empty($kode_cabang)) {
+
+                    $kode = "CR" . $bulan . $thn;
+                    $cr = DB::table('costratio_biaya')
+                        ->select('kode_cr')
+                        ->whereRaw('LEFT(kode_cr,6) ="' . $kode . '"')
+                        ->orderBy('kode_cr', 'desc')
+                        ->first();
+                    if ($cr != null) {
+                        $last_kode_cr = $cr->kode_cr;
+                    } else {
+                        $last_kode_cr = "";
+                    }
+                    $kode_cr = buatkode($last_kode_cr, "CR" . $bulan . $thn, 4);
+
+                    $datacr = [
+                        'kode_cr' => $kode_cr,
+                        'tgl_transaksi' => $tgl_pembelian,
+                        'kode_akun' => $kode_akun,
+                        'keterangan'   => "Pembelian " . $detailpembelian->nama_barang . "(" . $qty . ")",
+                        'kode_cabang'  => $kode_cabang,
+                        'id_sumber_costratio' => 4,
+                        'jumlah' => ($qty * $harga) + $penyesuaian
+                    ];
+                    DB::table('costratio_biaya')->where('kode_cr', $detailpembelian->kode_cr)->delete();
+                    DB::table('costratio_biaya')->insert($datacr);
+                } else {
+                    DB::table('costratio_biaya')->where('kode_cr', $detailpembelian->kode_cr)->delete();
+                    $kode_cr = NULL;
+                }
+
+                $databukubesar_detail = array(
+                    'keterangan' => "Pembelian " . $detailpembelian->nama_barang,
+                    'kode_akun' => $kode_akun,
+                    'debet' => ($qty * $harga) + $penyesuaian,
+                    'kredit' => 0,
+                );
+
+
+
+                $data = [
+                    'keterangan' => $keterangan,
+                    'qty' => $qty,
+                    'harga' => $harga,
+                    'penyesuaian' => $penyesuaian,
+                    'kode_akun' => $kode_akun,
+                    'kode_cabang' => $kode_cabang,
+                    'konversi_gram' => $konversi_gram,
+                    'kode_cr' => $kode_cr
+                ];
+                DB::table('buku_besar')->where('no_bukti', $detailpembelian->nobukti_bukubesar)->update($databukubesar_detail);
+                if ($kode_dept != "GDB") {
+                    $kode_akun = "2-1300";
+                } else {
+                    $kode_akun = "2-1200";
+                }
+                DB::table('detail_pembelian')->where('nobukti_pembelian', $nobukti_pembelian)->where('kode_barang', $kode_barang)->where('no_urut', $no_urut)->update($data);
+                $jmlbayar = DB::table('detail_pembelian')
+                    ->selectRaw("SUM(IF(status='PMB',(qty*harga+penyesuaian),0)) - SUM(IF(status='PNJ',(qty*harga+penyesuaian),0))  as jmlbayar")
+                    ->where('nobukti_pembelian', $nobukti_pembelian)
+                    ->first();
+                $databukubesar = array(
+                    'kode_akun' => $kode_akun,
+                    'debet' => 0,
+                    'kredit' => $jmlbayar->jmlbayar,
+                );
+                $datakontrabon = array(
+                    'jmlbayar' => $jmlbayar->jmlbayar
+                );
+                if ($kontrabon != null) {
+                    DB::table('detail_kontrabon')->where('nobukti_pembelian', $nobukti_pembelian)->where('no_kontrabon', $kontrabon->no_kontrabon)->update($datakontrabon);
+                }
+                DB::table('buku_besar')->where('no_bukti', $pembelian->nobukti_bukubesar)->update($databukubesar);
+                echo 0;
+                DB::commit();
+            } catch (\Exception $e) {
+                dd($e);
+                echo 1;
+                DB::rollback();
+            }
         }
     }
 
@@ -964,6 +1088,7 @@ class PembelianController extends Controller
             ->get();
         return view('pembelian.showdetailpotongan', compact('detail'));
     }
+
 
     public function update($nobukti_pembelian, Request $request)
     {
@@ -1439,5 +1564,64 @@ class PembelianController extends Controller
             dd($e);
             DB::rollback();
         }
+    }
+
+    public function storesplitakun(Request $request)
+    {
+        $no_bukti = $request->no_bukti;
+        $kode_barang = $request->kode_barang;
+        $kode_barang_old = $request->kode_barang_old;
+        $qty = $request->qty;
+        $qty = !empty($qty) ? str_replace(".", "", $qty) : 0;
+        $qty = str_replace(",", ".", $qty);
+        $harga = !empty($request->harga) ? str_replace(".", "", $request->harga) : 0;
+        $harga = str_replace(",", ".", $harga);
+        $penyesuaian = !empty($request->penyesuaian) ? str_replace(".", "", $request->penyesuaian) : 0;
+        $penyesuaian = str_replace(",", ".", $penyesuaian);
+        $keterangan = $request->keterangan;
+        $kode_akun = $request->kode_akun;
+        $konversi_gram = $request->konversi_garam;
+        $kode_cabang = $request->kode_cabang;
+        $no_bukti = $request->no_bukti;
+
+        $data = [
+            'no_bukti' => $no_bukti,
+            'kode_barang' => $kode_barang,
+            'qty' => $qty,
+            'harga' => $harga,
+            'penyesuaian' => $penyesuaian,
+            'konversi_gram' => $konversi_gram,
+            'keterangan' => $keterangan,
+            'kode_akun' => $kode_akun,
+            'keterangan' => $keterangan,
+            'kode_cabang' => $kode_cabang,
+            'kode_barang_old' => $kode_barang_old
+        ];
+
+        $simpan = DB::table('split_akun_pembelian')->insert($data);
+        if ($simpan) {
+            echo 0;
+        } else {
+            echo 2;
+        }
+    }
+
+    public function showsplit($id, $kode_barang)
+    {
+        $no_bukti = Crypt::decrypt($id);
+        $split = DB::table('split_akun_pembelian')
+            ->select('split_akun_pembelian.*', 'nama_akun', 'nama_barang', 'satuan')
+            ->join('master_barang_pembelian', 'split_akun_pembelian.kode_barang', '=', 'master_barang_pembelian.kode_barang')
+            ->join('coa', 'split_akun_pembelian.kode_akun', '=', 'coa.kode_akun')
+            ->where('no_bukti', $no_bukti)
+            ->where('kode_barang_old', $kode_barang)
+            ->get();
+        return view('pembelian/showsplit', compact('split'));
+    }
+
+    public function deletesplit(Request $request)
+    {
+        $id = $request->id;
+        DB::table('split_akun_pembelian')->where('id', $id)->delete();
     }
 }

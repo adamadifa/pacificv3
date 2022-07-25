@@ -1,4 +1,5 @@
 <form action="#" method="POST" id="frmEditbarang">
+    <input type="hidden" id="no_bukti" value="{{ Crypt::encrypt($detailpembelian->nobukti_pembelian) }}">
     <div class="row">
         <div class="col-12">
             <x-inputtext label="Kode Barang" field="kode_barang" icon="feather icon-credit-card" value="{{ $detailpembelian->kode_barang }}" readonly />
@@ -6,7 +7,7 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext label="Nama Barang" field="nama_barang" icon="feather icon-box" value="{{ $detailpembelian->nama_barang }}" readonly />
+            <x-inputtext label="Nama Barang" field="nama_barang" icon="feather icon-box" value="{!! $detailpembelian->nama_barang !!}" readonly />
         </div>
     </div>
     <div class="row">
@@ -39,7 +40,7 @@
         </div>
     </div>
     @endif
-
+    <input type="hidden" id="total_edit" value="{{ ($detailpembelian->qty * $detailpembelian->harga) + $detailpembelian->penyesuaian }}">
     <div class="row">
         <div class="col-12">
             <div class="form-group">
@@ -85,8 +86,144 @@
             </div>
         </div>
     </div>
+    @php
+    $level_split = ['admin','staff keuangan','spv accounting'];
+    @endphp
+    @if (in_array(Auth::user()->level,$level_split))
+    <div class="row mb-1">
+        <div class="col-12">
+            <div class="vs-checkbox-con vs-checkbox-primary">
+                <input type="checkbox" class="split_akun" name="split_akun" value="1">
+                <span class="vs-checkbox">
+                    <span class="vs-checkbox--check">
+                        <i class="vs-icon feather icon-check"></i>
+                    </span>
+                </span>
+                <span class="">Split Akun</span>
+            </div>
+        </div>
+    </div>
+    <div id="splitakunform">
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <select name="kode_barang_split" id="kode_barang_split" class="form-control">
+                        <option value="">Pilih Barang</option>
+                        @foreach ($barang as $d)
+                        <option value="{{ $d->kode_barang }}">{{ $d->kode_barang }} - {{ $d->nama_barang }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+        </div>
 
-    <div class="row">
+        <div class="row">
+            <div class="col-4">
+                <x-inputtext label="Qty" field="qty_split" icon="feather icon-file" />
+            </div>
+            <div class="col-4">
+                <x-inputtext label="Harga" field="harga_split" icon="feather icon-file" right />
+            </div>
+            <div class="col-4">
+                <x-inputtext label="Penyesuaian" field="penyesuaian_split" icon="feather icon-file" right />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <x-inputtext label="Keterangan" field="keterangan_split" icon="feather icon-file" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <select name="kode_akun_split" id="kode_akun_split" class="form-control select2">
+                        <option value="">Pilih Akun</option>
+                        @foreach ($coa as $d)
+                        <option value="{{ $d->kode_akun }}">{{ $d->kode_akun }} {{ $d->nama_akun }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <x-inputtext label="Konversi Gram" field="konversi_gram_split" icon="fa fa-balance-scale" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <div class="vs-checkbox-con vs-checkbox-primary">
+                        <input type="checkbox" class="cabangcheck_split" name="cabangcheck_split" value="1">
+                        <span class="vs-checkbox">
+                            <span class="vs-checkbox--check">
+                                <i class="vs-icon feather icon-check"></i>
+                            </span>
+                        </span>
+                        <span class="">Cabang ?</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 col-sm-12" id="pilihcabang_split">
+                <div class="form-group">
+                    <select name="kode_cabang_split" id="kode_cabang_split" class="form-control">
+                        <option value="">Cabang</option>
+                        @foreach ($cabang as $d)
+                        <option {{ $detailpembelian->kode_cabang == $d->kode_cabang ?'selected':'' }} value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <a href="#" class="btn btn-info btn-block" id="tambahitem"><i class="feather icon-plus"></i>Tambah</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <table class="table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Kode Barang</th>
+                            <th>Nama Barang</th>
+                            <th>Keterangan</th>
+                            <th>Qty</th>
+                            <th>Harga</th>
+                            <th>Subtotal</th>
+                            <th>Peny</th>
+                            <th>Kode Akun</th>
+                            <th>Total</th>
+                            <th>Cabang</th>
+                            <th>#</th>
+                        </tr>
+                    </thead>
+                    <tbody id="loadsplit"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    @endif
+    <div class="row mb-1">
+        <div class="col-12">
+            <div class="vs-checkbox-con vs-checkbox-primary">
+                <input type="checkbox" class="aggrement" name="aggrement" value="aggrement">
+                <span class="vs-checkbox">
+                    <span class="vs-checkbox--check">
+                        <i class="vs-icon feather icon-check"></i>
+                    </span>
+                </span>
+                <span class="">Yakin Akan Disimpan ?</span>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="tombolsimpan">
         <div class="col-12">
             <div class="form-group">
                 <a href="#" id="updatebarang" class="btn btn-primary btn-block"><i class="fa fa-send mr-1"></i>Submit</a>
@@ -102,15 +239,33 @@
         //alert(b);
     });
 
+    var h_split = document.getElementById('harga_split');
+    h_split.addEventListener('keyup', function(e) {
+        h_split.value = formatRupiah(this.value, '');
+        //alert(b);
+    });
+
     var p = document.getElementById('penyesuaian_edit');
     p.addEventListener('keyup', function(e) {
         p.value = formatRupiah(this.value, '');
         //alert(b);
     });
 
+    var p_split = document.getElementById('penyesuaian_split');
+    p_split.addEventListener('keyup', function(e) {
+        p_split.value = formatRupiah(this.value, '');
+        //alert(b);
+    });
+
     var q = document.getElementById('qty_edit');
     q.addEventListener('keyup', function(e) {
         q.value = formatRupiah(this.value, '');
+        //alert(b);
+    });
+
+    var q_split = document.getElementById('qty_split');
+    q_split.addEventListener('keyup', function(e) {
+        q_split.value = formatRupiah(this.value, '');
         //alert(b);
     });
     /* Fungsi formatRupiah */
@@ -141,7 +296,173 @@
 </script>
 <script>
     $(function() {
+        $('.aggrement').change(function() {
+            if (this.checked) {
+                $("#tombolsimpan").show();
+            } else {
+                $("#tombolsimpan").hide();
+            }
+        });
 
+        function hidetombolsimpan() {
+            $("#tombolsimpan").hide();
+        }
+
+        hidetombolsimpan();
+        $("#jumlah_split").maskMoney();
+        $("#splitakunform").hide();
+
+        $('.split_akun').change(function() {
+            if (this.checked) {
+                $("#splitakunform").show();
+                loadsplit();
+            } else {
+                $("#splitakunform").hide();
+            }
+
+        });
+
+        function loadsplit() {
+            var no_bukti = "{{ Crypt::encrypt($detailpembelian->nobukti_pembelian) }}";
+            var kode_barang_old = $("#frmEditbarang").find("#kode_barang").val();
+            $("#loadsplit").load('/pembelian/' + no_bukti + '/' + kode_barang_old + '/showsplit');
+        }
+
+        loadsplit();
+        $("#kode_barang_split").selectize();
+        $("#kode_akun_split").selectize();
+
+        $("#frmEditbarang").find('.cabangcheck_split').change(function() {
+            if (this.checked) {
+                $("#frmEditbarang").find("#pilihcabang_split").show();
+            } else {
+                $("#frmEditbarang").find("#pilihcabang_split").hide();
+                $("#frmEditbarang").find("#kode_cabang_split").val("").change();
+            }
+        });
+
+        function hidecabangsplit() {
+            if ($("#frmEditbarang").find('.cabangcheck_split').is(':checked')) {
+                $("#frmEditbarang").find("#pilihcabang_split").show();
+            } else {
+                $("#frmEditbarang").find("#pilihcabang_split").hide();
+                $("#frmEditbarang").find("#kode_cabang").val("").change();
+            }
+        }
+
+        hidecabangsplit();
+
+        $("#tambahitem").click(function(e) {
+            e.preventDefault();
+            let kode_barang_old = $("#frmEditbarang").find("#kode_barang").val();
+            let kode_barang = $("#kode_barang_split").val();
+            let qty = $("#qty_split").val();
+            let harga = $("#harga_split").val();
+            let penyesuaian = $("#penyesuaian_split").val();
+            let keterangan = $("#keterangan_split").val();
+            let kode_akun = $("#kode_akun_split").val();
+            let konversi_gram = $("#konversi_gram_split").val();
+            let kode_cabang = $("input[name='kode_cabang_split']:checked").val();
+            let no_bukti = "{{ $detailpembelian->nobukti_pembelian }}";
+
+
+            if (kode_barang == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Barang Harus Dipilih !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#kode_barang_split").focus();
+                });
+            } else if (qty == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Qty Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#qty_split").focus();
+                });
+            } else if (harga == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Harga Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#harga_split").focus();
+                });
+            } else if (keterangan == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Keterangan Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#keterangan_split").focus();
+                });
+            } else if (kode_akun == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Kode Akun Harus Dipilih !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#kode_akun_split").focus();
+                });
+            } else {
+                $.ajax({
+                    type: 'POST'
+                    , url: '/pembelian/storesplitakun'
+                    , data: {
+                        _token: "{{ csrf_token() }}"
+                        , kode_barang_old: kode_barang_old
+                        , kode_barang: kode_barang
+                        , qty: qty
+                        , harga: harga
+                        , penyesuaian: penyesuaian
+                        , keterangan: keterangan
+                        , konversi_gram: konversi_gram
+                        , kode_akun: kode_akun
+                        , kode_cabang: kode_cabang
+                        , no_bukti: no_bukti
+                    , }
+                    , cache: false
+                    , success: function(respond) {
+                        if (respond == 0) {
+                            swal({
+                                title: 'Oops'
+                                , text: 'Data Berhasil Disimpan !'
+                                , icon: 'success'
+                                , showConfirmButton: false
+                            }).then(function() {
+                                $("#keterangan_split").val('');
+                                var $select = $('#kode_akun_split').selectize();
+                                var control = $select[0].selectize;
+                                control.clear();
+                                $("#keterangan_split").focus();
+                                $("#qty_split").val('');
+                                $("#harga_split").val('');
+                                $("#penyesuian_split").val('');
+                                $("#konversi_gram_split").val('');
+                                loadsplit();
+                            });
+                        } else {
+                            swal({
+                                title: 'Oops'
+                                , text: 'Data Gagal Disimpan, Hubungi Tim IT !'
+                                , icon: 'error'
+                                , showConfirmButton: false
+                            }).then(function() {
+                                $("#keterangan_split").focus();
+                            });
+                        }
+                    }
+
+                });
+            }
+        });
         // $("#frmEditbarang").find('#kode_akun').selectize();
         $("#frmEditbarang").find('#kode_akun').select2({
             dropdownParent: $('#mdleditbarang')
@@ -237,7 +558,22 @@
             var kode_cabang = $("#frmEditbarang").find("#kode_cabang").val();
             var no_urut = "{{ $detailpembelian->no_urut }}";
             var konversi_gram = $("#konversi_gram").val();
-            if (kode_akun == "") {
+            var split = $("input[name='split_akun']:checked").val();
+            var jumlah = $("#total_edit").val();
+            var totalsplit = $("#totalsplit").val();
+            console.log(jumlah);
+            if (split == 1 && parseInt(jumlah) != parseInt(totalsplit)) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Jumlah Harus Sama !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#jumlah").focus();
+                });
+
+                return false;
+            } else if (kode_akun == "") {
                 swal({
                     title: 'Oops'
                     , text: 'Kode Akun Harus Diisi !'
@@ -271,9 +607,11 @@
                         , kode_cabang: kode_cabang
                         , no_urut: no_urut
                         , konversi_gram: konversi_gram
+                        , split_akun: split
                     }
                     , cache: false
                     , success: function(respond) {
+                        console.log(respond);
                         if (respond == 0) {
                             swal("Berhasil", "Data Berhasil Diupdate", "success");
                         } else {

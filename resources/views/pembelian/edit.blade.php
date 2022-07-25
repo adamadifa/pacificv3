@@ -288,7 +288,7 @@
 
 <!-- Edit Barang -->
 <div class="modal fade text-left" id="mdleditbarang" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 640px">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 960px">
         <div class=" modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel18">Edit Barang <span id="dept"></span></h4>

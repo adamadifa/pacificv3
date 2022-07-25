@@ -353,18 +353,20 @@ class KaskecilController extends Controller
             'no_bukti' => $no_bukti,
         ];
 
-        $cek = DB::table('split_akun')->where('kode_akun', $kode_akun)
-            ->where('no_bukti', $no_bukti)
-            ->count();
-        if ($cek > 0) {
-            echo 1;
+        // $cek = DB::table('split_akun')->where('kode_akun', $kode_akun)
+        //     ->where('no_bukti', $no_bukti)
+        //     ->count();
+        // if ($cek > 0) {
+        //     echo 1;
+        // } else {
+
+        // }
+
+        $simpan = DB::table('split_akun')->insert($data);
+        if ($simpan) {
+            echo 0;
         } else {
-            $simpan = DB::table('split_akun')->insert($data);
-            if ($simpan) {
-                echo 0;
-            } else {
-                echo 2;
-            }
+            echo 2;
         }
     }
 

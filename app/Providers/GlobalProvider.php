@@ -369,12 +369,12 @@ class GlobalProvider extends ServiceProvider
                 'admin', 'staff keuangan',
                 'staff keuangan 2', 'staff keuangan 3',
                 'kepala admin', 'admin pusat', 'admin kas kecil', 'admin kas', 'admin persediaan dan kas kecil',
-                'admin penjualan dan kas kecil', 'admin garut', 'manager accounting'
+                'admin penjualan dan kas kecil', 'admin garut', 'manager accounting', 'spv accounting'
             ];
             $kaskecil_view = [
                 'admin', 'kepala admin', 'admin pusat', 'admin kas kecil', 'admin kas',
                 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil',
-                'staff keuangan 3', 'admin garut'
+                'staff keuangan 3', 'admin garut', 'spv accounting'
             ];
             $klaim_view = ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'kepala admin', 'admin pusat', 'admin kas kecil', 'admin kas', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil', 'admin garut', 'admin garut', 'manager accounting'];
             $klaim_add = ['admin', 'kepala admin', 'admin pusat', 'admin kas kecil', 'admin kas', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil', 'staff keuangan 3', 'admin garut'];
@@ -440,15 +440,15 @@ class GlobalProvider extends ServiceProvider
                 'admin', 'direktur', 'general manager', 'manager accounting',
                 'spv accounting', 'manager pembelian', 'admin pembelian',
                 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3',
-                'emf', 'admin pajak', 'admin gudang logistik', 'admin pusat'
+                'emf', 'admin pajak', 'admin gudang logistik', 'admin pusat', 'spv accounting'
             ];
             $pembelian_view = [
                 'admin', 'manager pembelian', 'admin pembelian',
-                'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'admin pajak', 'admin gudang logistik'
+                'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'admin pajak', 'admin gudang logistik', 'spv accounting'
             ];
             $pembelian_hapus = ['admin', 'manager pembelian', 'admin pembelian'];
             $pembelian_tambah = ['admin', 'manager pembelian', 'admin pembelian'];
-            $pembelian_edit = ['admin', 'manager pembelian', 'admin pembelian'];
+            $pembelian_edit = ['admin', 'manager pembelian', 'admin pembelian', 'spv accounting'];
 
 
             $pembelian_keuangan = ['admin', 'manager pembelian', 'admin pembelian', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3'];
