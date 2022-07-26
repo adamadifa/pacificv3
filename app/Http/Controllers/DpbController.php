@@ -289,6 +289,13 @@ class DpbController extends Controller
         $jml_helper = $request->jml_helper;
         $jml_helper_2 = $request->jml_helper_2;
         $jml_helper_3 = $request->jml_helper_3;
+
+        $total_helper = $jml_helper + $jml_helper_2 + $jml_helper_3;
+        $totalbarangkeluar_dus = $request->totalbarangkeluar_dus;
+
+        if ($total_helper > $totalbarangkeluar_dus) {
+            return Redirect::back()->with(['warning' => 'Total Helper Lebih Dari Total Barang Keluar']);
+        }
         //dd($jmlpackpengambilan);
         $data = [
             'no_dpb' => $no_dpb,

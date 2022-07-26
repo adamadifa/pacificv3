@@ -65,9 +65,9 @@
                             </div>
                         </div>
                     </form>
-
+                    <a href="/costratio/cetak?dari={{ Request('dari') }}&sampai={{ Request('sampai') }}&kode_cabang={{ Request('kode_cabang') }}&id_sumber_costratio={{ Request('id_sumber_costratio') }}&excel=true" class="btn btn-success"><i class="feather icon-download"></i></a>
                     <div class="table-responsive">
-                        <table class="table table-hover-animation">
+                        <table class="table table-hover-animation mt-2">
                             <thead class="thead-dark">
                                 <tr>
                                     <th class="text-center">No</th>

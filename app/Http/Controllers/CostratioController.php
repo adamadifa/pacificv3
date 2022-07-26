@@ -81,4 +81,32 @@ class CostratioController extends Controller
             DB::rollback();
         }
     }
+
+    public function cetak(Request $request)
+    {
+
+        $sumber = DB::table('costratio_sumber')->where('id_sumber_costratio', $request->id_sumber_costratio)->first();
+        $cabang = Cabang::where('kode_cabang', $request->kode_cabang)->first();
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $query = Costratio::query();
+        $query->join('coa', 'costratio_biaya.kode_akun', '=', 'coa.kode_akun');
+        $query->join('costratio_sumber', 'costratio_biaya.id_sumber_costratio', '=', 'costratio_sumber.id_sumber_costratio');
+        $query->where('kode_cabang', $request->kode_cabang);
+
+        if (!empty($request->id_sumber_costratio)) {
+            $query->where('costratio_biaya.id_sumber_costratio', $request->id_sumber_costratio);
+        }
+
+        $query->whereBetween('tgl_transaksi', [$request->dari, $request->sampai]);
+        $query->orderBy('tgl_transaksi');
+        $query->orderBy('costratio_biaya.kode_akun');
+        $costratio = $query->get();
+        $time = date("H:i:s");
+        // Fungsi header dengan mengirimkan raw data excel
+        header("Content-type: application/vnd-ms-excel");
+        // Mendefinisikan nama file ekspor "hasil-export.xls"
+        header("Content-Disposition: attachment; filename=Detail Cost Ratio $dari-$sampai-$time.xls");
+        return view('costratio.cetak', compact('cabang', 'sumber', 'costratio', 'cabang', 'dari', 'sampai'));
+    }
 }

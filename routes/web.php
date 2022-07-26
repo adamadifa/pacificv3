@@ -1257,4 +1257,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/updatebackupcr', [CostratioController::class, 'updatecostratio']);
 
     Route::get('/costratio', [CostratioController::class, 'index']);
+    Route::get('/costratio/cetak', [CostratioController::class, 'cetak']);
 });

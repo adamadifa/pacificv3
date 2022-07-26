@@ -969,9 +969,8 @@ class TargetkomisiController extends Controller
             ratioaktif,ratiohelperaktif,ratioterakhir,ratiohelperterakhir")
             ->leftJoin(
                 DB::raw("(
-                    SELECT id_helper,ROUND(SUM(jml_penjualan),2) as jml_helper
-                    FROM detail_dpb
-                    INNER JOIN dpb ON detail_dpb.no_dpb = dpb.no_dpb
+                    SELECT id_helper,ROUND(SUM(jml_helper),2) as jml_helper
+                    FROM dpb
                     WHERE tgl_pengambilan BETWEEN '$dari' AND '$sampai' GROUP BY id_helper
                     ) helper"),
                 function ($join) {
@@ -980,9 +979,8 @@ class TargetkomisiController extends Controller
             )
             ->leftJoin(
                 DB::raw("(
-                    SELECT id_helper_2,ROUND(SUM(jml_penjualan),2) as jml_helper_2
-                    FROM detail_dpb
-                    INNER JOIN dpb ON detail_dpb.no_dpb = dpb.no_dpb
+                    SELECT id_helper_2,ROUND(SUM(jml_helper_2),2) as jml_helper_2
+                    FROM dpb
                     WHERE tgl_pengambilan BETWEEN '$dari' AND '$sampai' GROUP BY id_helper_2
                     ) helper2"),
                 function ($join) {
@@ -992,9 +990,8 @@ class TargetkomisiController extends Controller
 
             ->leftJoin(
                 DB::raw("(
-                    SELECT id_helper_3,ROUND(SUM(jml_penjualan),2) as jml_helper_3
-                    FROM detail_dpb
-                    INNER JOIN dpb ON detail_dpb.no_dpb = dpb.no_dpb
+                    SELECT id_helper_3,ROUND(SUM(jml_helper_3),2) as jml_helper_3
+                    FROM dpb
                     WHERE tgl_pengambilan BETWEEN '$dari' AND '$sampai' GROUP BY id_helper_3
                     ) helper3"),
                 function ($join) {

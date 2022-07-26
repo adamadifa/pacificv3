@@ -47,7 +47,7 @@
                     </div>
                 </div>
                 <div class="col-4">
-                    <x-inputtext label="Jumlah" field="jml_helper" icon="feather icon-file" right />
+                    <x-inputtext label="Jumlah" field="jml_helper" value="{{ $dpb->jml_helper }}" icon="feather icon-file" right />
                 </div>
             </div>
 
@@ -63,7 +63,7 @@
                     </div>
                 </div>
                 <div class="col-4">
-                    <x-inputtext label="Jumlah" field="jml_helper_2" icon="feather icon-file" right />
+                    <x-inputtext label="Jumlah" field="jml_helper_2" value="{{ $dpb->jml_helper_2 }}" icon="feather icon-file" right />
                 </div>
             </div>
         </div>
@@ -77,7 +77,7 @@
                     </div>
                 </div>
                 <div class="col-4">
-                    <x-inputtext label="Jumlah" field="jml_helper_3" icon="feather icon-file" right />
+                    <x-inputtext label="Jumlah" field="jml_helper_3" value="{{ $dpb->jml_helper_3 }}" icon="feather icon-file" right />
                 </div>
             </div>
         </div>
@@ -137,6 +137,9 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @php
+                    $totalbarangkeluar_dus = 0;
+                    @endphp
                     @foreach ($produk as $d)
                     @php
                     $isipcsdus = $d->isipcsdus;
@@ -197,6 +200,8 @@
                     }
 
                     $jmlpcs_barangkeluar = $sisapack_barangkeluar;
+
+                    $totalbarangkeluar_dus += $jmlbarangkeluar_dus;
                     @endphp
                     <input type="hidden" name="isipcsdus[]" value="{{ $d->isipcsdus }}">
                     <input type="hidden" name="isipcs[]" value="{{ $d->isipcs }}">
@@ -247,6 +252,7 @@
                     @endforeach
                 </tbody>
             </table>
+            <input type="hidden" name="totalbarangkeluar_dus" id="totalbarangkeluar_dus" value="{{ $totalbarangkeluar_dus }}">
         </div>
     </div>
     <div class="row">
