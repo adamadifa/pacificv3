@@ -285,6 +285,10 @@ class DpbController extends Controller
 
         $isipcsdus = $request->isipcsdus;
         $isipcs = $request->isipcs;
+
+        $jml_helper = $request->jml_helper;
+        $jml_helper_2 = $request->jml_helper_2;
+        $jml_helper_3 = $request->jml_helper_3;
         //dd($jmlpackpengambilan);
         $data = [
             'no_dpb' => $no_dpb,
@@ -296,8 +300,11 @@ class DpbController extends Controller
             'tgl_pengembalian' => $tgl_pengembalian,
             'id_driver' => $id_driver,
             'id_helper' => $id_helper_1,
+            'jml_helper' => $jml_helper,
             'id_helper_2' => $id_helper_2,
-            'id_helper_3' => $id_helper_3
+            'jml_helper_2' => $jml_helper_2,
+            'id_helper_3' => $id_helper_3,
+            'jml_helper_3' => $jml_helper_3
         ];
 
         for ($i = 0; $i < count($kode_produk); $i++) {

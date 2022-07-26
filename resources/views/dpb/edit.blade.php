@@ -38,24 +38,47 @@
             </div>
         </div>
         <div class="col-3">
-            <div class="form-group">
-                <select name="id_helper_1" id="id_helper_1" class="form-control select2">
-                    <option value="">Pilih Helper</option>
-                </select>
+            <div class="row">
+                <div class="col-8">
+                    <div class="form-group">
+                        <select name="id_helper_1" id="id_helper_1" class="form-control select2">
+                            <option value="">Pilih Helper</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <x-inputtext label="Jumlah" field="jml_helper" icon="feather icon-file" right />
+                </div>
+            </div>
+
+
+        </div>
+        <div class="col-3">
+            <div class="row">
+                <div class="col-8">
+                    <div class="form-group">
+                        <select name="id_helper_2" id="id_helper_2" class="form-control select2">
+                            <option value="">Pilih Helper</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <x-inputtext label="Jumlah" field="jml_helper_2" icon="feather icon-file" right />
+                </div>
             </div>
         </div>
         <div class="col-3">
-            <div class="form-group">
-                <select name="id_helper_2" id="id_helper_2" class="form-control select2">
-                    <option value="">Pilih Helper</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-3">
-            <div class="form-group">
-                <select name="id_helper_3" id="id_helper_3" class="form-control select2">
-                    <option value="">Pilih Helper</option>
-                </select>
+            <div class="row">
+                <div class="col-8">
+                    <div class="form-group">
+                        <select name="id_helper_3" id="id_helper_3" class="form-control select2">
+                            <option value="">Pilih Helper</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <x-inputtext label="Jumlah" field="jml_helper_3" icon="feather icon-file" right />
+                </div>
             </div>
         </div>
     </div>
