@@ -502,6 +502,8 @@ class LaporangudangcabangController extends Controller
             ->whereBetween('tgl_pengambilan', [$dari, $sampai])
             ->where('dpb.kode_cabang', $kode_cabang)
             ->where('kode_produk', $kode_produk)
+            ->orderBy('tgl_pengambilan')
+            ->orderBy('no_dpb')
             ->get();
 
         $mtsa = DB::table('detail_mutasi_gudang_cabang')
