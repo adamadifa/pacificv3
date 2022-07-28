@@ -162,7 +162,6 @@ class SetoranpusatController extends Controller
         if ($status == 0) {
             $data = [
                 'tgl_setoranpusat' => $request->tgl_setoranpusat,
-                'kode_cabang' => $request->kode_cabang,
                 'bank' => $request->kode_bank,
                 'uang_kertas' => $uang_kertas,
                 'uang_logam' => $uang_logam,
