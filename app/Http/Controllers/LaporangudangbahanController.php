@@ -6,6 +6,7 @@ use App\Models\Barangpembelian;
 use App\Models\Detailpemasukangudangbahan;
 use App\Models\Detailpengeluarangudangbahan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class LaporangudangbahanController extends Controller
@@ -312,9 +313,9 @@ class LaporangudangbahanController extends Controller
         $bulan = $request->bulan;
         $tahun = $request->tahun;
         $kode_kategori = $request->kode_kategori;
+        $query = Barangpembelian::query();
 
-        $persediaan = DB::table('master_barang_pembelian')
-            ->selectRaw("master_barang_pembelian.kode_barang,
+        $query->selectRaw("master_barang_pembelian.kode_barang,
             master_barang_pembelian.nama_barang,
             master_barang_pembelian.satuan,
             master_barang_pembelian.jenis_barang,
@@ -341,9 +342,9 @@ class LaporangudangbahanController extends Controller
             gk.qtycabang4,
             gk.qtylain4,
             hrgsa.harga,
-            dp.totalharga")
-            ->leftJoin(
-                DB::raw("(
+            dp.totalharga");
+        $query->leftJoin(
+            DB::raw("(
                 SELECT saldoawal_gb_detail.kode_barang,
                 SUM( qty_unit ) AS qtyunitsa,
                 SUM( qty_berat ) AS qtyberatsa
@@ -351,12 +352,12 @@ class LaporangudangbahanController extends Controller
                 INNER JOIN saldoawal_gb ON saldoawal_gb.kode_saldoawal_gb=saldoawal_gb_detail.kode_saldoawal_gb
                 WHERE bulan = '$bulan' AND tahun = '$tahun' GROUP BY saldoawal_gb_detail.kode_barang
             ) sa"),
-                function ($join) {
-                    $join->on('master_barang_pembelian.kode_barang', '=', 'sa.kode_barang');
-                }
-            )
-            ->leftJoin(
-                DB::raw("(
+            function ($join) {
+                $join->on('master_barang_pembelian.kode_barang', '=', 'sa.kode_barang');
+            }
+        );
+        $query->leftJoin(
+            DB::raw("(
                 SELECT opname_gb_detail.kode_barang,
                 SUM( qty_unit ) AS qtyunitop,
                 SUM( qty_berat ) AS qtyberatop
@@ -364,39 +365,39 @@ class LaporangudangbahanController extends Controller
                 INNER JOIN opname_gb ON opname_gb.kode_opname_gb=opname_gb_detail.kode_opname_gb
                 WHERE bulan = '$bulan' AND tahun = '$tahun' GROUP BY opname_gb_detail.kode_barang
             ) op"),
-                function ($join) {
-                    $join->on('master_barang_pembelian.kode_barang', '=', 'op.kode_barang');
-                }
-            )
-            ->leftJoin(
-                DB::raw("(
+            function ($join) {
+                $join->on('master_barang_pembelian.kode_barang', '=', 'op.kode_barang');
+            }
+        );
+        $query->leftJoin(
+            DB::raw("(
                 SELECT SUM((qty*harga)+penyesuaian) as totalharga,kode_barang
                 FROM detail_pembelian
                 INNER JOIN pembelian ON detail_pembelian.nobukti_pembelian = pembelian.nobukti_pembelian
                 WHERE MONTH(tgl_pembelian) = '$bulan' AND YEAR(tgl_pembelian) = '$tahun'
                 GROUP BY kode_barang
             ) dp"),
-                function ($join) {
-                    $join->on('master_barang_pembelian.kode_barang', '=', 'dp.kode_barang');
-                }
-            )
+            function ($join) {
+                $join->on('master_barang_pembelian.kode_barang', '=', 'dp.kode_barang');
+            }
+        );
 
-            ->leftJoin(
-                DB::raw("(
+        $query->leftJoin(
+            DB::raw("(
                 SELECT kode_barang,harga
                 FROM saldoawal_harga_gb
                 WHERE bulan = '$bulan' AND tahun = '$tahun'
                 GROUP BY kode_barang,harga
             ) hrgsa"),
-                function ($join) {
-                    $join->on('master_barang_pembelian.kode_barang', '=', 'hrgsa.kode_barang');
-                }
-            )
+            function ($join) {
+                $join->on('master_barang_pembelian.kode_barang', '=', 'hrgsa.kode_barang');
+            }
+        );
 
 
 
-            ->leftJoin(
-                DB::raw("(
+        $query->leftJoin(
+            DB::raw("(
                 SELECT
                 detail_pemasukan_gb.kode_barang,
                 SUM( IF( departemen = 'Pembelian' , qty_unit ,0 )) AS qtypemb1,
@@ -413,13 +414,13 @@ class LaporangudangbahanController extends Controller
                 WHERE MONTH(tgl_pemasukan) = '$bulan' AND YEAR(tgl_pemasukan) = '$tahun'
                 GROUP BY detail_pemasukan_gb.kode_barang
             ) gm"),
-                function ($join) {
-                    $join->on('master_barang_pembelian.kode_barang', '=', 'gm.kode_barang');
-                }
-            )
+            function ($join) {
+                $join->on('master_barang_pembelian.kode_barang', '=', 'gm.kode_barang');
+            }
+        );
 
-            ->leftJoin(
-                DB::raw("(
+        $query->leftJoin(
+            DB::raw("(
                 SELECT
                 detail_pengeluaran_gb.kode_barang,
                 SUM( IF( pengeluaran_gb.kode_dept = 'Produksi' , qty_unit ,0 )) AS qtyprod3,
@@ -440,18 +441,21 @@ class LaporangudangbahanController extends Controller
                 WHERE MONTH(tgl_pengeluaran) = '$bulan' AND YEAR(tgl_pengeluaran) = '$tahun'
                 GROUP BY detail_pengeluaran_gb.kode_barang
             ) gk"),
-                function ($join) {
-                    $join->on('master_barang_pembelian.kode_barang', '=', 'gk.kode_barang');
-                }
-            )
+            function ($join) {
+                $join->on('master_barang_pembelian.kode_barang', '=', 'gk.kode_barang');
+            }
+        );
 
-            ->where('master_barang_pembelian.kode_dept', 'GDB')
-            ->where('master_barang_pembelian.kode_kategori', $kode_kategori)
-            ->orderBy('jenis_barang')
-            ->orderByRaw('cast(substr(master_barang_pembelian.kode_barang from 4) as UNSIGNED)')
-            ->orderBy('nama_barang')
-            ->orderBy('urutan')
-            ->get();
+        $query->where('master_barang_pembelian.kode_dept', 'GDB');
+        $query->where('master_barang_pembelian.kode_kategori', $kode_kategori);
+        $query->orderBy('jenis_barang');
+        if (Auth::user()->level != "admin pembelian") {
+            $query->orderByRaw('cast(substr(master_barang_pembelian.kode_barang from 4) as UNSIGNED)');
+        }
+
+        $query->orderBy('nama_barang');
+        $query->orderBy('urutan');
+        $persediaan = $query->get();
 
         $kategori = DB::table('kategori_barang_pembelian')->where('kode_kategori', $kode_kategori)->first();
         $namabulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
