@@ -565,7 +565,7 @@ class LaporangudangcabangController extends Controller
         }
 
         if ($kode_cabang == 'GRT') {
-            $wheresalesgarut = "AND penjualan.id_karyawan IN ('STSM05','STSM09','STSM11','STSM99')";
+            $wheresalesgarut = "AND penjualan.id_karyawan IN ('STSM05','STSM09','STSM11','STSM97')";
         } else {
             $wheresalesgarut = "";
         }

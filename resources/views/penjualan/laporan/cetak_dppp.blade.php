@@ -430,7 +430,7 @@
             if ($reallastbulanini_ab == 0) {
               $grw_ab_bulanini = 0;
             } else {
-              $grw_ab_bulanini   = ($realbulanini_ab / $reallastbulanini_ab) * 100;
+              $grw_ab_bulanini   = ($realbulanini_ab - $reallastbulanini_ab / $reallastbulanini_ab) * 100;
             }
 
             if ($targetsampaibulanini_ab == 0) {
@@ -442,7 +442,7 @@
             if ($reallastsampaibulanini_ab == 0) {
               $grw_ab_sampaibulanini = 0;
             } else {
-              $grw_ab_sampaibulanini   = ($realsampaibulanini_ab / $reallastsampaibulanini_ab) * 100;
+              $grw_ab_sampaibulanini   = ($realsampaibulanini_ab  - $reallastsampaibulanini_ab / $reallastsampaibulanini_ab) * 100;
             }
 
 
