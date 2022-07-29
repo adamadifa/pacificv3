@@ -326,6 +326,19 @@ class PembayaranController extends Controller
         }
     }
 
+    public function deleteallnogiro($no_giro)
+    {
+        $no_giro = Crypt::decrypt($no_giro);
+        $hapus = DB::table('giro')
+            ->where('no_giro', $no_giro)
+            ->delete();
+        if ($hapus) {
+            return Redirect::back()->with(['success' => 'Data Giro Berhasil Di Hapus']);
+        } else {
+            return Redirect::back()->with(['warning' => 'Data Giro Gagal Di Hapus']);
+        }
+    }
+
     public function editgiro(Request $request)
     {
         $kode_cabang = $request->kode_cabang;

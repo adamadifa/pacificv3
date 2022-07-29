@@ -52,7 +52,7 @@
                                             <x-inputtext label="No. HP" field="no_hp" icon="feather icon-phone" />
                                         </div>
                                     </div>
-                                    @if (Auth::user()->cabang =="PCF")
+                                    @if (Auth::user()->kode_cabang =="PCF")
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group  @error('kode_cabang') error @enderror">

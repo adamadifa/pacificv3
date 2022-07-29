@@ -155,7 +155,7 @@ class PenjualanController extends Controller
 
 
             if ($this->cabang != "PCF") {
-                if ($this->cabang == "GRT") {
+                if ($this->cabang == "GRT" || $this->cabang == "TSM") {
                     $salesman = Salesman::where('kode_cabang', 'TSM')->where('nama_karyawan', '!=', '-')->orderBy('nama_karyawan')->get();
                 } else {
                     $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)

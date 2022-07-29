@@ -1141,6 +1141,7 @@ Route::middleware(['auth'])->group(function () {
     //Giro
     Route::post('/pembayaran/storegiro', [PembayaranController::class, 'storegiro']);
     Route::delete('/pembayaran/{id_giro}/deletegiro', [PembayaranController::class, 'deletegiro']);
+    Route::delete('/pembayaran/{no_giro}/deleteallnogiro', [PembayaranController::class, 'deleteallnogiro']);
     Route::post('/pembayaran/editgiro', [PembayaranController::class, 'editgiro']);
     Route::post('/pembayaran/{id_giro}/updategiro', [PembayaranController::class, 'updategiro']);
 

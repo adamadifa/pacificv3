@@ -94,10 +94,23 @@
                                 </td>
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example">
+                                        @if (in_array($level,$giro_hapus))
+                                        @if ($d->status==0)
+                                        <form method="POST" class="deleteform" action="/pembayaran/{{ Crypt::encrypt($d->no_giro) }}/deleteallnogiro">
+                                            @csrf
+                                            @method('DELETE')
+                                            <a href=" #" class="delete-confirm ml-1">
+                                                <i class="feather icon-trash danger"></i>
+                                            </a>
+                                        </form>
+                                        @endif
+                                        @endif
                                         @if (in_array($level,$giro_approved))
                                         <a class="ml-1 prosesgiro" href="#" no_giro="{{ $d->no_giro }}"><i class=" feather icon-external-link success"></i></a>
                                         @endif
+
                                         <a class="ml-1 detailfaktur" href="#" no_giro="{{ $d->no_giro }}"><i class=" feather icon-file-text info"></i></a>
+
                                     </div>
                                 </td>
                             </tr>
@@ -149,6 +162,30 @@
 @push('myscript')
 <script>
     $(function() {
+
+        $('.delete-confirm').click(function(event) {
+            event.preventDefault();
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+
+            swal({
+                    title: `Are you sure you want to delete this record?`
+                    , text: "If you delete this, it will be gone forever."
+                    , icon: "warning"
+                    , buttons: true
+                    , dangerMode: true
+                , })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        var cektutup = $("#cektutuplaporan").val();
+                        if (cektutup > 0) {
+                            swal("Oops", "Laporan Periode Ini Sudah Di Tutup !", "warning");
+                        } else {
+                            form.submit();
+                        }
+                    }
+                });
+        });
 
         function loaddetailfaktur(no_giro) {
             $.ajax({

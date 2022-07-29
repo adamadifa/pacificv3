@@ -359,6 +359,7 @@ class GlobalProvider extends ServiceProvider
             //Giro
             $giro_view = ['admin', 'admin penjualan', 'kepala admin', 'admin pusat', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'audit'];
             $giro_approved = ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'manager keuangan'];
+            $giro_hapus = ['admin', 'admin penjualan', 'kepala admin'];
 
             //Transfer
             $transfer_view = ['admin', 'admin penjualan', 'kepala admin', 'admin pusat', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'audit'];
@@ -885,6 +886,7 @@ class GlobalProvider extends ServiceProvider
                 //Giro
                 'giro_view' => $giro_view,
                 'giro_approved' => $giro_approved,
+                'giro_hapus' => $giro_hapus,
                 //Transfer
                 'transfer_view' => $transfer_view,
                 'transfer_approved' => $transfer_approved,
