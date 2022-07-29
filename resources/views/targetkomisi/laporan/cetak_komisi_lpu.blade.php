@@ -356,11 +356,18 @@
 
 
                 $totalpoin = $hasilpoinBBDP + $hasilpoinDS + $hasilpoinAR + $hasilpoinSP + $hasilpoinAB_AS_CG5 + $hasilpoinSC;
-
-                if ($d->kategori_salesman == "RETAIL") {
-                    $ratiocashin = 0.30;
-                } else {
-                    $ratiocashin = 0.10;
+                if($cbg->kode_cabang == "BGR"){
+                    if ($d->kategori_salesman == "RETAIL") {
+                        $ratiocashin = 0.30;
+                    } else {
+                        $ratiocashin = 0.10;
+                    }
+                }else{
+                    if ($d->kategori_salesman == "CANVASER" || $d->kategori_salesman == "RETAIL") {
+                        $ratiocashin = 0.30;
+                    } else {
+                        $ratiocashin = 0.10;
+                    }
                 }
 
                 $rewardcashin = $d->realisasi_cashin * ($ratiocashin / 100);
