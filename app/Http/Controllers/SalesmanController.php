@@ -170,7 +170,7 @@ class SalesmanController extends Controller
             } else {
                 $selected = '';
             }
-            echo "<option $selected value='$d->id_karyawan'>$d->nama_karyawan</option>";
+            echo "<option $selected value='$d->id_karyawan'>$d->nama_karyawan ($d->kode_cabang)</option>";
         }
     }
 }

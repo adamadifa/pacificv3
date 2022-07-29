@@ -559,13 +559,13 @@ class LaporangudangcabangController extends Controller
         $sampai = $request->sampai;
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
         if ($kode_cabang == 'TSM') {
-            $wherenotsalesgarut = "AND penjualan.id_karyawan NOT IN ('STSM05','STSM09','STSM11')";
+            $wherenotsalesgarut = "AND penjualan.id_karyawan NOT IN ('STSM05','STSM09','STSM11','STSM97)";
         } else {
             $wherenotsalesgarut = "";
         }
 
         if ($kode_cabang == 'GRT') {
-            $wheresalesgarut = "AND penjualan.id_karyawan IN ('STSM05','STSM09','STSM11')";
+            $wheresalesgarut = "AND penjualan.id_karyawan IN ('STSM05','STSM09','STSM11','STSM99')";
         } else {
             $wheresalesgarut = "";
         }
