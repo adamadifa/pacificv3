@@ -81,7 +81,7 @@
                 <td><?php echo $j->nama_supplier; ?></td>
                 <td><?php echo $j->nama_barang; ?></td>
                 <td><?php echo $j->keterangan; ?></td>
-                <td><?php echo $j->kode_akun; ?></td>
+                <td>'<?php echo $j->kode_akun; ?></td>
                 <td><?php echo $j->nama_akun; ?></td>
                 <td align="right"><?php echo  number_format($j->qty, '2', ',', '.'); ?></td>
                 <td align="right"><?php echo  number_format($j->harga, '2', ',', '.'); ?></td>
