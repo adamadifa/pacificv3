@@ -267,8 +267,8 @@
                 $returBB = $d->retur_BB / $isipcsdusBB;
                 $DEP = $d->DEP / $isipcsdusDEP;
                 $returDEP = $d->retur_DEP / $isipcsdusDEP;
-
-                $realisasi_BB_DEP = ($BB - $returBB) + ($returDEP - $DEP);
+                $realisasi_BB_DEP = $BB + $DEP;
+                //$realisasi_BB_DEP = ($BB - $returBB) + ($returDEP - $DEP);
                 if (empty($d->target_BB_DP)) {
                     $ratioBBDP = 0;
                 } else {
@@ -283,7 +283,8 @@
                 //SP8
                 $SP8 = $d->SP8 / $isipcsdusSP8;
                 $returSP8 = $d->retur_SP8 / $isipcsdusSP8;
-                $realisasi_DS = $SP8 - $returSP8;
+                $realisasi_DS = $SP8;
+                //$realisasi_DS = $SP8 - $returSP8;
                 if (empty($d->target_DS)) {
                     $ratioDS = 0;
                 } else {
@@ -299,7 +300,8 @@
                 //SP
                 $SP = $d->SP / $isipcsdusSP;
                 $returSP = $d->retur_SP / $isipcsdusSP;
-                $realisasi_SP = $SP-$returSP;
+                //$realisasi_SP = $SP-$returSP;
+                $realisasi_SP = $SP;
                 if (empty($d->target_SP)) {
                     $ratioSP = 0;
                 } else {
@@ -315,7 +317,8 @@
                 //AR
                 $AR = $d->AR / $isipcsdusAR;
                 $returAR = $d->retur_AR / $isipcsdusAR;
-                $realisasi_AR = $AR - $returAR;
+                $realisasi_AR = $AR;
+                //$realisasi_AR = $AR - $returAR;
                 if (empty($d->target_AR)) {
                     $ratioAR = 0;
                 } else {
@@ -336,7 +339,8 @@
                 $CG5 = $d->CG5 / $isipcsdusCG5;
                 $returCG5 = $d->retur_CG5 / $isipcsdusCG5;
 
-                $realisasi_AB_AS_CG5 = ($AB - $returAB) + ($AS-$returAS) + ($CG5-$returCG5);
+                $realisasi_AB_AS_CG5 =$AB + $AS + $CG5;
+                //$realisasi_AB_AS_CG5 = ($AB - $returAB) + ($AS-$returAS) + ($CG5-$returCG5);
                 if (empty($d->target_AB_AS_CG5)) {
                     $ratioAB_AS_CG5 = 0;
                 } else {
@@ -352,7 +356,8 @@
                 //SC
                 $SC = $d->SC / $isipcsdusSC;
                 $returSC = $d->retur_SC / $isipcsdusSC;
-                $realisasi_SC = $SC-$returSC;
+                $realisasi_SC = $SC;
+                //$realisasi_SC = $SC-$returSC;
                 if (empty($d->target_SC)) {
                     $ratioSC = 0;
                 } else {
