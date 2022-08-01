@@ -284,7 +284,10 @@
 			$sisamutasibad = ($sabs + $rejectpasar + $rejectmobil + $rejectgd + $penybad_in) - ($kirimpusat + $repack + $penybad_out);
 			$realsaldobad = ($d->saldo_awal_bs + $d->reject_pasar + $d->reject_mobil + $d->reject_gudang + $d->penyesuaianbad_in) -
 				($d->kirim_pusat + $d->repack + $d->penyesuaianbad_out);
-
+            $ceksaldobad = $realsaldobad;
+            if($realsaldobad < 0){
+                $realsaldobad = $realsaldobad * -1;
+            }
 			if ($realsaldobad != 0) {
 				$jmldus    = floor($realsaldobad / $d->isipcsdus);
 				$sisadus   = $realsaldobad % $d->isipcsdus;
@@ -302,10 +305,18 @@
 					$jmlpcs = $realsaldobad;
 				}
 			} else {
+
+
 				$jmldus 	= 0;
 				$jmlpack	= 0;
 				$jmlpcs 	= 0;
 			}
+
+            if($ceksaldobad < 0){
+                $jmldus = $jmldus * -1;
+                $jmlpack = $jmlpack * -1;
+                $jmlpcs = $jmlpcs * -1;
+            }
 
 		?>
             <tr>

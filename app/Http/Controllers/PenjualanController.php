@@ -2623,6 +2623,7 @@ class PenjualanController extends Controller
                 penjualan.id_karyawan,karyawan.nama_karyawan,
                 pelanggan.pasar,pelanggan.hari,
                 AB,AR,`AS`,BB,CG,CGG,DEP,DK,DS,SP,BBP,SPP,CG5,SC,SP8,
+                retur_AB,retur_AR,`retur_AS`,retur_BB,retur_CG,retur_CGG,retur_DEP,retur_DK,retur_DS,retur_SP,retur_BBP,retur_SPP,retur_CG5,retur_SC,retur_SP8,
                 penjualan.subtotal as totalbruto,
                 (ifnull( r.totalpf, 0 ) - ifnull( r.totalgb, 0 ) ) AS totalretur,
                 penjualan.penyharga AS penyharga,
@@ -2662,6 +2663,35 @@ class PenjualanController extends Controller
                     ) dp"),
                     function ($join) {
                         $join->on('penjualan.no_fak_penj', '=', 'dp.no_fak_penj');
+                    }
+                );
+
+                $query->leftJoin(
+                    DB::raw("(
+                        SELECT retur.no_fak_penj,
+                        SUM(IF(kode_produk = 'AB',jumlah,0)) as retur_AB,
+                        SUM(IF(kode_produk = 'AR',jumlah,0)) as retur_AR,
+                        SUM(IF(kode_produk = 'AS',jumlah,0)) as `retur_AS`,
+                        SUM(IF(kode_produk = 'BB',jumlah,0)) as retur_BB,
+                        SUM(IF(kode_produk = 'CG',jumlah,0)) as retur_CG,
+                        SUM(IF(kode_produk = 'CGG',jumlah,0)) as retur_CGG,
+                        SUM(IF(kode_produk = 'DEP',jumlah,0)) as retur_DEP,
+                        SUM(IF(kode_produk = 'DK',jumlah,0)) as retur_DK,
+                        SUM(IF(kode_produk = 'DS',jumlah,0)) as retur_DS,
+                        SUM(IF(kode_produk = 'SP',jumlah,0)) as retur_SP,
+                        SUM(IF(kode_produk = 'BBP',jumlah,0)) as retur_BBP,
+                        SUM(IF(kode_produk = 'SPP' ,jumlah,0)) as retur_SPP,
+                        SUM(IF(kode_produk = 'CG5',jumlah,0)) as retur_CG5,
+                        SUM(IF(kode_produk = 'SC',jumlah,0)) as retur_SC,
+                        SUM(IF(kode_produk = 'SP8',jumlah,0)) as retur_SP8
+                        FROM detailretur dr
+                        INNER JOIN retur ON dr.no_retur_penj = retur.no_retur_penj
+                        INNER JOIN barang b ON dr.kode_barang = b.kode_barang
+                        WHERE retur.jenis_retur = 'pf'
+                        GROUP BY retur.no_fak_penj
+                    ) returpf"),
+                    function ($join) {
+                        $join->on('penjualan.no_fak_penj', '=', 'returpf.no_fak_penj');
                     }
                 );
 

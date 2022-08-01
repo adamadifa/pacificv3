@@ -677,20 +677,30 @@ class TargetkomisiController extends Controller
             karyawan.id_karyawan,nama_karyawan,kategori_salesman,
             target_BB_DP,
             BB,
+            retur_BB,
             DEP,
+            retur_DEP,
             target_DS,
             DS,
+            retur_DS,
             SP8,
+            retur_SP8,
             target_SP,
             SP,
+            retur_SP,
             target_SC,
             SC,
+            retur_SC,
             target_AR,
             AR,
+            retur_AR,
             target_AB_AS_CG5,
             AB,
+            retur_AB,
             `AS`,
+            retur_AS,
             CG5,
+            retur_CG5,
             realisasi_cashin,
             sisapiutang
             ');
@@ -883,6 +893,41 @@ class TargetkomisiController extends Controller
                 ) realisasi"),
                 function ($join) {
                     $join->on('karyawan.id_karyawan', '=', 'realisasi.id_karyawan');
+                }
+            );
+
+            $query->leftJoin(
+                DB::raw("(
+                    SELECT penjualan.id_karyawan,
+                    SUM(IF(kode_produk = 'AB',jumlah,0)) as retur_AB,
+                    SUM(IF(kode_produk = 'AR',jumlah,0)) as retur_AR,
+                    SUM(IF(kode_produk = 'AS',jumlah,0)) as `retur_AS`,
+                    SUM(IF(kode_produk = 'BB',jumlah,0)) as retur_BB,
+                    SUM(IF(kode_produk = 'CG' ,jumlah,0)) as retur_CG,
+                    SUM(IF(kode_produk = 'CGG',jumlah,0)) as retur_CGG,
+                    SUM(IF(kode_produk = 'DEP',jumlah,0)) as retur_DEP,
+                    SUM(IF(kode_produk = 'DK',jumlah,0)) as retur_DK,
+                    SUM(IF(kode_produk = 'DS',jumlah,0)) as retur_DS,
+                    SUM(IF(kode_produk = 'SP',jumlah,0)) as retur_SP,
+                    SUM(IF(kode_produk = 'BBP',jumlah,0)) as retur_BBP,
+                    SUM(IF(kode_produk = 'SPP',jumlah,0)) as retur_SPP,
+                    SUM(IF(kode_produk = 'CG5',jumlah,0)) as retur_CG5,
+                    SUM(IF(kode_produk = 'SP8',jumlah,0)) as retur_SP8,
+                    SUM(IF(kode_produk = 'SC',jumlah,0)) as retur_SC
+                    FROM detailretur
+                    INNER JOIN retur ON detailretur.no_retur_penj = retur.no_retur_penj
+                    INNER JOIN penjualan ON retur.no_fak_penj = penjualan.no_fak_penj
+                    INNER JOIN barang ON detailretur.kode_barang = barang.kode_barang
+                    LEFT JOIN (
+                    SELECT no_fak_penj,max(tglbayar) as lastpayment
+                    FROM historibayar
+                    GROUP BY no_fak_penj
+                    ) hb ON (hb.no_fak_penj = penjualan.no_fak_penj)
+                    WHERE  status_lunas ='1' AND lastpayment BETWEEN '$dari' AND '$sampai'
+                    GROUP BY penjualan.id_karyawan
+                ) returpf"),
+                function ($join) {
+                    $join->on('karyawan.id_karyawan', '=', 'returpf.id_karyawan');
                 }
             );
 
