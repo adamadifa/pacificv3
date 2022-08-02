@@ -58,7 +58,7 @@
                 <!-- <th rowspan="2" bgcolor="#024a75" style="color:white; font-size:14;">BTB</th> -->
                 <th rowspan="1" colspan="2" bgcolor="#024a75" style="color:white; font-size:14;">UNIT</th>
                 <th rowspan="1" bgcolor="#024a75" style="color:white; font-size:14;">SALDO</th>
-                <th rowspan="3" bgcolor="#024a75" style="color:white; font-size:14;">KETERANGAN</th>
+                <th rowspan="2" bgcolor="#024a75" style="color:white; font-size:14;">KETERANGAN</th>
                 <th rowspan="1" colspan="3" bgcolor="#024a75" style="color:white; font-size:14;">MASUK</th>
                 <th rowspan="1" colspan="6" bgcolor="#024a75" style="color:white; font-size:14;">KELUAR</th>
                 <th rowspan="1" bgcolor="#024a75" style="color:white; font-size:14;">SALDO AKHIR</th>
