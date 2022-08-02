@@ -5,10 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak DPPP {{ date("d-m-y") }}</title>
+    <title>Cetak Laporan Analisa Umur Piutang (AUP) {{ date("d-m-y") }}</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
-
         body {
             font-family: 'Poppins'
         }
@@ -91,7 +89,15 @@
 
 <body>
     <b style="font-size:14px;">
+        @if ($cabang!=null)
+        @if ($cabang->kode_cabang=="PST")
+        PACIFIC PUSAT
+        @else
+        PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
+        @endif
+        @else
         PACIFC ALL CABANG
+        @endif
         <br>
         LAPORAN DATA PERTUMBUHAN PRODUK (DPPP)<br>
         {{ $namabulan }} {{ $tahun }}
@@ -103,7 +109,7 @@
                 <thead bgcolor="#295ea9" style="color:white; font-size:14;">
                     <tr>
                         <td rowspan="4" style="background-color:#295ea9; color:white" class="fixed-side" scope="col">#</td>
-                        <td rowspan="4" style="background-color:#295ea9; color:white;" class="fixed-side" scope="col">Cabang</td>
+                        <td rowspan="4" style="background-color:#295ea9; color:white;" class="fixed-side" scope="col">Salesman</td>
                         <td colspan="108">Produk</td>
                     </tr>
                     <tr style="text-align:center">
@@ -430,7 +436,7 @@
             if ($reallastbulanini_ab == 0) {
               $grw_ab_bulanini = 0;
             } else {
-              $grw_ab_bulanini   = ($realbulanini_ab - $reallastbulanini_ab / $reallastbulanini_ab) * 100;
+              $grw_ab_bulanini   = (($realbulanini_ab - $reallastbulanini_ab) / $reallastbulanini_ab) * 100;
             }
 
             if ($targetsampaibulanini_ab == 0) {
@@ -442,7 +448,7 @@
             if ($reallastsampaibulanini_ab == 0) {
               $grw_ab_sampaibulanini = 0;
             } else {
-              $grw_ab_sampaibulanini   = ($realsampaibulanini_ab  - $reallastsampaibulanini_ab / $reallastsampaibulanini_ab) * 100;
+              $grw_ab_sampaibulanini   = (($realsampaibulanini_ab -$reallastsampaibulanini_ab)  / $reallastsampaibulanini_ab) * 100;
             }
 
 
@@ -462,7 +468,7 @@
             if ($reallastbulanini_ar == 0) {
               $grw_ar_bulanini = 0;
             } else {
-              $grw_ar_bulanini   = ($realbulanini_ar / $reallastbulanini_ar) * 100;
+              $grw_ar_bulanini   = (($realbulanini_ar - $reallastbulanini_ar) / $reallastbulanini_ar) * 100;
             }
 
             if ($targetsampaibulanini_ar == 0) {
@@ -474,7 +480,7 @@
             if ($reallastsampaibulanini_ar == 0) {
               $grw_ar_sampaibulanini = 0;
             } else {
-              $grw_ar_sampaibulanini   = ($realsampaibulanini_ar / $reallastsampaibulanini_ar) * 100;
+              $grw_ar_sampaibulanini   = (($realsampaibulanini_ar -$reallastsampaibulanini_ar) / $reallastsampaibulanini_ar) * 100;
             }
 
             $reallastbulanini_as = round($d->reallastbulanini_as / $isipcs_as, 2);
@@ -493,7 +499,7 @@
             if ($reallastbulanini_as == 0) {
               $grw_as_bulanini = 0;
             } else {
-              $grw_as_bulanini   = ($realbulanini_as / $reallastbulanini_as) * 100;
+              $grw_as_bulanini   = (($realbulanini_as - $reallastbulanini_as) / $reallastbulanini_as) * 100;
             }
 
             if ($targetsampaibulanini_as == 0) {
@@ -505,7 +511,7 @@
             if ($reallastsampaibulanini_as == 0) {
               $grw_as_sampaibulanini = 0;
             } else {
-              $grw_as_sampaibulanini   = ($realsampaibulanini_as / $reallastsampaibulanini_as) * 100;
+              $grw_as_sampaibulanini   = (($realsampaibulanini_as - $reallastsampaibulanini_as) / $reallastsampaibulanini_as) * 100;
             }
 
             $reallastbulanini_bb = round($d->reallastbulanini_bb / $isipcs_bb, 2);
@@ -524,7 +530,7 @@
             if ($reallastbulanini_bb == 0) {
               $grw_bb_bulanini = 0;
             } else {
-              $grw_bb_bulanini   = ($realbulanini_bb / $reallastbulanini_bb) * 100;
+              $grw_bb_bulanini   = (($realbulanini_bb - $reallastbulanini_bb) / $reallastbulanini_bb) * 100;
             }
 
             if ($targetsampaibulanini_bb == 0) {
@@ -536,7 +542,7 @@
             if ($reallastsampaibulanini_bb == 0) {
               $grw_bb_sampaibulanini = 0;
             } else {
-              $grw_bb_sampaibulanini   = ($realsampaibulanini_bb / $reallastsampaibulanini_bb) * 100;
+              $grw_bb_sampaibulanini   = (($realsampaibulanini_bb - $reallastsampaibulanini_bb) / $reallastsampaibulanini_bb) * 100;
             }
 
 
@@ -556,7 +562,7 @@
             if ($reallastbulanini_cg == 0) {
               $grw_cg_bulanini = 0;
             } else {
-              $grw_cg_bulanini   = ($realbulanini_cg / $reallastbulanini_cg) * 100;
+              $grw_cg_bulanini   = (($realbulanini_cg - $reallastbulanini_cg) / $reallastbulanini_cg) * 100;
             }
 
             if ($targetsampaibulanini_cg == 0) {
@@ -568,7 +574,7 @@
             if ($reallastsampaibulanini_cg == 0) {
               $grw_cg_sampaibulanini = 0;
             } else {
-              $grw_cg_sampaibulanini   = ($realsampaibulanini_cg / $reallastsampaibulanini_cg) * 100;
+              $grw_cg_sampaibulanini   = (($realsampaibulanini_cg - $reallastsampaibulanini_cg) / $reallastsampaibulanini_cg) * 100;
             }
 
             $reallastbulanini_cgg = round($d->reallastbulanini_cgg / $isipcs_cgg, 2);
@@ -587,7 +593,7 @@
             if ($reallastbulanini_cgg == 0) {
               $grw_cgg_bulanini = 0;
             } else {
-              $grw_cgg_bulanini   = ($realbulanini_cgg / $reallastbulanini_cgg) * 100;
+              $grw_cgg_bulanini   = (($realbulanini_cgg - $reallastbulanini_cgg) / $reallastbulanini_cgg) * 100;
             }
 
             if ($targetsampaibulanini_cgg == 0) {
@@ -599,7 +605,7 @@
             if ($reallastsampaibulanini_cgg == 0) {
               $grw_cgg_sampaibulanini = 0;
             } else {
-              $grw_cgg_sampaibulanini   = ($realsampaibulanini_cgg / $reallastsampaibulanini_cgg) * 100;
+              $grw_cgg_sampaibulanini   = (($realsampaibulanini_cgg - $reallastsampaibulanini_cgg) / $reallastsampaibulanini_cgg) * 100;
             }
 
             $reallastbulanini_dep = round($d->reallastbulanini_dep / $isipcs_dep, 2);
@@ -618,7 +624,7 @@
             if ($reallastbulanini_dep == 0) {
               $grw_dep_bulanini = 0;
             } else {
-              $grw_dep_bulanini   = ($realbulanini_dep / $reallastbulanini_dep) * 100;
+              $grw_dep_bulanini   = (($realbulanini_dep - $reallastbulanini_dep) / $reallastbulanini_dep) * 100;
             }
 
             if ($targetsampaibulanini_dep == 0) {
@@ -630,7 +636,7 @@
             if ($reallastsampaibulanini_dep == 0) {
               $grw_dep_sampaibulanini = 0;
             } else {
-              $grw_dep_sampaibulanini   = ($realsampaibulanini_dep / $reallastsampaibulanini_dep) * 100;
+              $grw_dep_sampaibulanini   = (($realsampaibulanini_dep -$reallastsampaibulanini_dep)  / $reallastsampaibulanini_dep) * 100;
             }
 
             $reallastbulanini_ds = round($d->reallastbulanini_ds / $isipcs_ds, 2);
@@ -649,7 +655,7 @@
             if ($reallastbulanini_ds == 0) {
               $grw_ds_bulanini = 0;
             } else {
-              $grw_ds_bulanini   = ($realbulanini_ds / $reallastbulanini_ds) * 100;
+              $grw_ds_bulanini   = (($realbulanini_ds - $reallastbulanini_ds) / $reallastbulanini_ds) * 100;
             }
 
             if ($targetsampaibulanini_ds == 0) {
@@ -661,7 +667,7 @@
             if ($reallastsampaibulanini_ds == 0) {
               $grw_ds_sampaibulanini = 0;
             } else {
-              $grw_ds_sampaibulanini   = ($realsampaibulanini_ds / $reallastsampaibulanini_ds) * 100;
+              $grw_ds_sampaibulanini   = (($realsampaibulanini_ds - $reallastsampaibulanini_ds) / $reallastsampaibulanini_ds) * 100;
             }
 
             $reallastbulanini_sp = round($d->reallastbulanini_sp / $isipcs_sp, 2);
@@ -680,7 +686,7 @@
             if ($reallastbulanini_sp == 0) {
               $grw_sp_bulanini = 0;
             } else {
-              $grw_sp_bulanini   = ($realbulanini_sp / $reallastbulanini_sp) * 100;
+              $grw_sp_bulanini   = (($realbulanini_sp - $reallastbulanini_sp) / $reallastbulanini_sp) * 100;
             }
 
             if ($targetsampaibulanini_sp == 0) {
@@ -692,7 +698,7 @@
             if ($reallastsampaibulanini_sp == 0) {
               $grw_sp_sampaibulanini = 0;
             } else {
-              $grw_sp_sampaibulanini   = ($realsampaibulanini_sp / $reallastsampaibulanini_sp) * 100;
+              $grw_sp_sampaibulanini   = (($realsampaibulanini_sp - $reallastsampaibulanini_sp) / $reallastsampaibulanini_sp) * 100;
             }
 
             $total_reallastbulanini_ab += $reallastbulanini_ab;
@@ -711,7 +717,7 @@
             if ($total_reallastbulanini_ab == 0) {
               $total_grw_ab_bulanini = 0;
             } else {
-              $total_grw_ab_bulanini   = ($total_realbulanini_ab / $total_reallastbulanini_ab) * 100;
+              $total_grw_ab_bulanini   = (($total_realbulanini_ab - $total_reallastbulanini_ab) / $total_reallastbulanini_ab) * 100;
             }
 
             if ($total_targetsampaibulanini_ab == 0) {
@@ -723,7 +729,7 @@
             if ($total_reallastsampaibulanini_ab == 0) {
               $total_grw_ab_sampaibulanini = 0;
             } else {
-              $total_grw_ab_sampaibulanini   = ($total_realsampaibulanini_ab / $total_reallastsampaibulanini_ab) * 100;
+              $total_grw_ab_sampaibulanini   = (($total_realsampaibulanini_ab -$total_reallastsampaibulanini_ab) / $total_reallastsampaibulanini_ab) * 100;
             }
 
 
@@ -743,7 +749,7 @@
             if ($total_reallastbulanini_ar == 0) {
               $total_grw_ar_bulanini = 0;
             } else {
-              $total_grw_ar_bulanini   = ($total_realbulanini_ar / $total_reallastbulanini_ar) * 100;
+              $total_grw_ar_bulanini   = (($total_realbulanini_ar-$total_reallastbulanini_ar) / $total_reallastbulanini_ar) * 100;
             }
 
             if ($total_targetsampaibulanini_ar == 0) {
@@ -755,7 +761,7 @@
             if ($total_reallastsampaibulanini_ar == 0) {
               $total_grw_ar_sampaibulanini = 0;
             } else {
-              $total_grw_ar_sampaibulanini   = ($total_realsampaibulanini_ar / $total_reallastsampaibulanini_ar) * 100;
+              $total_grw_ar_sampaibulanini   = (($total_realsampaibulanini_ar - $total_reallastsampaibulanini_ar) / $total_reallastsampaibulanini_ar) * 100;
             }
 
 
@@ -775,7 +781,7 @@
             if ($total_reallastbulanini_as == 0) {
               $total_grw_as_bulanini = 0;
             } else {
-              $total_grw_as_bulanini   = ($total_realbulanini_as / $total_reallastbulanini_as) * 100;
+              $total_grw_as_bulanini   = (($total_realbulanini_as - $total_reallastbulanini_as) / $total_reallastbulanini_as) * 100;
             }
 
             if ($total_targetsampaibulanini_as == 0) {
@@ -787,7 +793,7 @@
             if ($total_reallastsampaibulanini_as == 0) {
               $total_grw_as_sampaibulanini = 0;
             } else {
-              $total_grw_as_sampaibulanini   = ($total_realsampaibulanini_as / $total_reallastsampaibulanini_as) * 100;
+              $total_grw_as_sampaibulanini   = (($total_realsampaibulanini_as - $total_reallastsampaibulanini_as) / $total_reallastsampaibulanini_as) * 100;
             }
 
             $total_reallastbulanini_bb += $reallastbulanini_bb;
@@ -806,7 +812,7 @@
             if ($total_reallastbulanini_bb == 0) {
               $total_grw_bb_bulanini = 0;
             } else {
-              $total_grw_bb_bulanini   = ($total_realbulanini_bb / $total_reallastbulanini_bb) * 100;
+              $total_grw_bb_bulanini   = (($total_realbulanini_bb - $total_reallastbulanini_bb) / $total_reallastbulanini_bb) * 100;
             }
 
             if ($total_targetsampaibulanini_bb == 0) {
@@ -818,7 +824,7 @@
             if ($total_reallastsampaibulanini_bb == 0) {
               $total_grw_bb_sampaibulanini = 0;
             } else {
-              $total_grw_bb_sampaibulanini   = ($total_realsampaibulanini_bb / $total_reallastsampaibulanini_bb) * 100;
+              $total_grw_bb_sampaibulanini   = (($total_realsampaibulanini_bb - $total_reallastsampaibulanini_bb) / $total_reallastsampaibulanini_bb) * 100;
             }
 
             $total_reallastbulanini_cg += $reallastbulanini_cg;
@@ -837,7 +843,7 @@
             if ($total_reallastbulanini_cg == 0) {
               $total_grw_cg_bulanini = 0;
             } else {
-              $total_grw_cg_bulanini   = ($total_realbulanini_cg / $total_reallastbulanini_cg) * 100;
+              $total_grw_cg_bulanini   = (($total_realbulanini_cg - $total_reallastbulanini_cg) / $total_reallastbulanini_cg) * 100;
             }
 
             if ($total_targetsampaibulanini_cg == 0) {
@@ -849,7 +855,7 @@
             if ($total_reallastsampaibulanini_cg == 0) {
               $total_grw_cg_sampaibulanini = 0;
             } else {
-              $total_grw_cg_sampaibulanini   = ($total_realsampaibulanini_cg / $total_reallastsampaibulanini_cg) * 100;
+              $total_grw_cg_sampaibulanini   = (($total_realsampaibulanini_cg - $total_reallastsampaibulanini_cg) / $total_reallastsampaibulanini_cg) * 100;
             }
 
             $total_reallastbulanini_cgg += $reallastbulanini_cgg;
@@ -868,7 +874,7 @@
             if ($total_reallastbulanini_cgg == 0) {
               $total_grw_cgg_bulanini = 0;
             } else {
-              $total_grw_cgg_bulanini   = ($total_realbulanini_cgg / $total_reallastbulanini_cgg) * 100;
+              $total_grw_cgg_bulanini   = (($total_realbulanini_cgg - $total_reallastbulanini_cgg) / $total_reallastbulanini_cgg) * 100;
             }
 
             if ($total_targetsampaibulanini_cgg == 0) {
@@ -880,7 +886,7 @@
             if ($total_reallastsampaibulanini_cgg == 0) {
               $total_grw_cgg_sampaibulanini = 0;
             } else {
-              $total_grw_cgg_sampaibulanini   = ($total_realsampaibulanini_cgg / $total_reallastsampaibulanini_cgg) * 100;
+              $total_grw_cgg_sampaibulanini   = (($total_realsampaibulanini_cgg - $total_reallastsampaibulanini_cgg) / $total_reallastsampaibulanini_cgg) * 100;
             }
 
 
@@ -900,7 +906,7 @@
             if ($total_reallastbulanini_dep == 0) {
               $total_grw_dep_bulanini = 0;
             } else {
-              $total_grw_dep_bulanini   = ($total_realbulanini_dep / $total_reallastbulanini_dep) * 100;
+              $total_grw_dep_bulanini   = (($total_realbulanini_dep - $total_reallastbulanini_dep) / $total_reallastbulanini_dep) * 100;
             }
 
             if ($total_targetsampaibulanini_dep == 0) {
@@ -912,7 +918,7 @@
             if ($total_reallastsampaibulanini_dep == 0) {
               $total_grw_dep_sampaibulanini = 0;
             } else {
-              $total_grw_dep_sampaibulanini   = ($total_realsampaibulanini_dep / $total_reallastsampaibulanini_dep) * 100;
+              $total_grw_dep_sampaibulanini   = (($total_realsampaibulanini_dep - $total_reallastsampaibulanini_dep) / $total_reallastsampaibulanini_dep) * 100;
             }
 
             $total_reallastbulanini_ds += $reallastbulanini_ds;
@@ -931,7 +937,7 @@
             if ($total_reallastbulanini_ds == 0) {
               $total_grw_ds_bulanini = 0;
             } else {
-              $total_grw_ds_bulanini   = ($total_realbulanini_ds / $total_reallastbulanini_ds) * 100;
+              $total_grw_ds_bulanini   = (($total_realbulanini_ds - $total_reallastbulanini_ds) / $total_reallastbulanini_ds) * 100;
             }
 
             if ($total_targetsampaibulanini_ds == 0) {
@@ -943,7 +949,7 @@
             if ($total_reallastsampaibulanini_ds == 0) {
               $total_grw_ds_sampaibulanini = 0;
             } else {
-              $total_grw_ds_sampaibulanini   = ($total_realsampaibulanini_ds / $total_reallastsampaibulanini_ds) * 100;
+              $total_grw_ds_sampaibulanini   = (($total_realsampaibulanini_ds - $total_reallastsampaibulanini_ds) / $total_reallastsampaibulanini_ds) * 100;
             }
 
             $total_reallastbulanini_sp += $reallastbulanini_sp;
@@ -962,7 +968,7 @@
             if ($total_reallastbulanini_sp == 0) {
               $total_grw_sp_bulanini = 0;
             } else {
-              $total_grw_sp_bulanini   = ($total_realbulanini_sp / $total_reallastbulanini_sp) * 100;
+              $total_grw_sp_bulanini   = (($total_realbulanini_sp - $total_reallastbulanini_sp) / $total_reallastbulanini_sp) * 100;
             }
 
             if ($total_targetsampaibulanini_sp == 0) {
@@ -974,7 +980,7 @@
             if ($total_reallastsampaibulanini_sp == 0) {
               $total_grw_sp_sampaibulanini = 0;
             } else {
-              $total_grw_sp_sampaibulanini   = ($total_realsampaibulanini_sp / $total_reallastsampaibulanini_sp) * 100;
+              $total_grw_sp_sampaibulanini   = (($total_realsampaibulanini_sp - $total_reallastsampaibulanini_sp) / $total_reallastsampaibulanini_sp) * 100;
             }
 
           ?>
