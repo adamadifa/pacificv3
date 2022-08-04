@@ -297,9 +297,7 @@ class DpbController extends Controller
         $total_helper = $jml_helper + $jml_helper_2 + $jml_helper_3;
         $totalbarangkeluar_dus = $request->totalbarangkeluar_dus;
 
-        if ($total_helper > $totalbarangkeluar_dus) {
-            return Redirect::back()->with(['warning' => 'Total Helper Lebih Dari Total Barang Keluar']);
-        }
+
         //dd($jmlpackpengambilan);
 
 
@@ -374,6 +372,11 @@ class DpbController extends Controller
             $jml_helper_3 = $jml_helper_3;
         } else {
             $jml_helper_3 = ($persentase_helper_3 / 100) * $totalbarangkeluar;
+        }
+
+        $totalhelper_keluar = $jml_helper + $jml_helper_2 + $jml_helper_3;
+        if ($totalhelper_keluar > $totalbarangkeluar) {
+            return Redirect::back()->with(['warning' => 'Total Helper Lebih Dari Total Barang Keluar']);
         }
 
         $data = [
