@@ -35,7 +35,7 @@
                                 <img class="card-img img-fluid" src="{{ asset('app-assets/images/slider/04.jpg') }}" alt="Card image">
                                 @endif
                                 <div class="card-img-overlay overflow-hidden overlay-primary overlay-lighten-2">
-                                    <h4 class="card-title text-white">{{ $data->no_fak_penj }} - {{ strtoupper($data->jenistransaksi) }}</h4>
+                                    <h4 class="card-title text-white">{{ $data->no_fak_penj }} - {{ strtoupper($data->jenistransaksi) }} - {{ strtoupper($data->jenisbayar) }}</h4>
                                     <p class="card-text text-white">{{ DateToIndo2($data->tgltransaksi) }}
                                         <h4 class="card-title text-white">{{ $data->nama_pelanggan }}</h4>
                                         <p class="card-text text-white">{{ $data->kode_pelanggan }} - {{ strtoupper($data->nama_cabang) }}
@@ -395,7 +395,10 @@
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="penjualan" aria-labelledby="penjualan-tab" role="tabpanel">
+                                    @if ($data->status_lunas != 1 && $data->jenisbayar != "transfer")
                                     <a href="#" id="inputpembayaran" class="btn btn-primary mb-2" class="href"><i class="feather icon-plus"></i></a>
+                                    @endif
+
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>
@@ -468,7 +471,9 @@
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="giro" aria-labelledby="giro-tab" role="tabpanel">
+                                    @if ($data->status_lunas != 1 && $data->jenisbayar != "transfer" )
                                     <a href="#" id="inputgiro" class="btn btn-primary mb-2" class="href"><i class="feather icon-plus"></i></a>
+                                    @endif
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>
@@ -539,7 +544,9 @@
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="transfer" aria-labelledby="transfer-tab" role="tabpanel">
+                                    @if ($data->status_lunas != 1)
                                     <a href="#" id="inputtransfer" class="btn btn-primary mb-2" class="href"><i class="feather icon-plus"></i></a>
+                                    @endif
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>

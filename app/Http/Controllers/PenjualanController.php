@@ -849,7 +849,8 @@ class PenjualanController extends Controller
         $limitpel = $request->limitpel;
         $sisapiutang = $request->sisapiutang;
         $jenistransaksi = $request->jenistransaksi;
-        $jenisbayar = $request->jenisbayar;
+        $jenisbayartunai = $request->jenisbayartunai;
+        $jenisbayar = $jenisbayartunai == "transfer" ? $jenisbayartunai : $request->jenisbayar;
         $subtotal = $request->subtotal;
         $jatuhtempo = $request->jatuhtempo;
         $bruto = $request->bruto;
@@ -955,7 +956,11 @@ class PenjualanController extends Controller
         $totalpiutang  = $sisapiutang + $subtotal;
         if ($jenistransaksi == "tunai") {
             $total = $subtotal + $voucher;
-            $status_lunas = "1";
+            if ($jenisbayartunai == "tunai") {
+                $status_lunas = "1";
+            } else {
+                $status_lunas = "2";
+            }
         } else {
             $status_lunas = "2";
             $total = $subtotal;
@@ -1080,40 +1085,42 @@ class PenjualanController extends Controller
 
             DB::table('detailpenjualan_temp')->where('id_admin', $id_admin)->delete();
             if ($jenistransaksi == "tunai") {
-                $bukubesar = DB::table("buku_besar")
-                    ->whereRaw('LEFT(no_bukti,6) = "GJ' . $bulan . $tahun . '"')
-                    ->orderBy("no_bukti", "desc")
-                    ->first();
-                $lastno_bukti = $bukubesar->no_bukti;
-                $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 6);
+                if ($jenisbayartunai == "tunai") {
+                    $bukubesar = DB::table("buku_besar")
+                        ->whereRaw('LEFT(no_bukti,6) = "GJ' . $bulan . $tahun . '"')
+                        ->orderBy("no_bukti", "desc")
+                        ->first();
+                    $lastno_bukti = $bukubesar->no_bukti;
+                    $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 6);
 
 
-                DB::table('historibayar')
-                    ->insert([
-                        'nobukti' => $nobukti,
-                        'no_fak_penj' => $no_fak_penj,
-                        'tglbayar' => $tgltransaksi,
-                        'jenistransaksi' => $jenistransaksi,
-                        'jenisbayar' => $jenisbayar,
-                        'bayar' => $subtotal,
-                        'id_admin' => $id_admin,
-                        'id_karyawan' => $id_karyawan
-                    ]);
+                    DB::table('historibayar')
+                        ->insert([
+                            'nobukti' => $nobukti,
+                            'no_fak_penj' => $no_fak_penj,
+                            'tglbayar' => $tgltransaksi,
+                            'jenistransaksi' => $jenistransaksi,
+                            'jenisbayar' => $jenisbayar,
+                            'bayar' => $subtotal,
+                            'id_admin' => $id_admin,
+                            'id_karyawan' => $id_karyawan
+                        ]);
 
-                DB::table('buku_besar')
-                    ->insert([
-                        'no_bukti' => $no_bukti_bukubesar,
-                        'tanggal' => $tgltransaksi,
-                        'sumber' => 'Kas Besar',
-                        'keterangan' => "Pembayaran Piutang Pelanggan " . $nama_pelanggan,
-                        'kode_akun' => $akun,
-                        'debet' => $subtotal,
-                        'kredit' => 0,
-                        'nobukti_transaksi' => $nobukti,
-                        'no_ref' => $nobukti
-                    ]);
+                    DB::table('buku_besar')
+                        ->insert([
+                            'no_bukti' => $no_bukti_bukubesar,
+                            'tanggal' => $tgltransaksi,
+                            'sumber' => 'Kas Besar',
+                            'keterangan' => "Pembayaran Piutang Pelanggan " . $nama_pelanggan,
+                            'kode_akun' => $akun,
+                            'debet' => $subtotal,
+                            'kredit' => 0,
+                            'nobukti_transaksi' => $nobukti,
+                            'no_ref' => $nobukti
+                        ]);
+                }
                 if (!empty($voucher)) {
-                    $nobukti = buatkode($nobukti, $kode_cabang . $tahunini . "-", 6);
+                    $nobukti = $jenisbayartunai == "transfer" ? $nobukti : buatkode($nobukti, $kode_cabang . $tahunini . "-", 6);
                     DB::table('historibayar')
                         ->insert([
                             'nobukti' => $nobukti,

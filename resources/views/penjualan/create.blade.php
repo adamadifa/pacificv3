@@ -303,6 +303,12 @@
                                         <input type="hidden" id="jenisbayar" name="jenisbayar">
                                     </div>
                                     <div class="form-group tunai">
+                                        <select class="form-control" name="jenisbayartunai" id="jenisbayartunai">
+                                            <option value="tunai">Cash</option>
+                                            <option value="transfer">Transfer</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group tunai">
                                         <div class="position-relative has-icon-left">
                                             <input type="text" id="voucher" class="form-control text-right money" name="voucher" placeholder="Voucher">
                                             <div class="form-control-position" style="top:10px">
@@ -310,6 +316,8 @@
                                             </div>
                                         </div>
                                     </div>
+
+
                                     <div class="form-group">
                                         <div class="position-relative has-icon-left">
                                             <input type="text" id="total" class="form-control text-right money" style="font-weight: bold" readonly name="total" placeholder="Total">

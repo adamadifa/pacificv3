@@ -290,6 +290,10 @@ class DpbController extends Controller
         $jml_helper_2 = $request->jml_helper_2;
         $jml_helper_3 = $request->jml_helper_3;
 
+        $persentase_helper = $request->persentase_helper;
+        $persentase_helper_2 = $request->persentase_helper_2;
+        $persentase_helper_3 = $request->persentase_helper_3;
+
         $total_helper = $jml_helper + $jml_helper_2 + $jml_helper_3;
         $totalbarangkeluar_dus = $request->totalbarangkeluar_dus;
 
@@ -297,23 +301,9 @@ class DpbController extends Controller
             return Redirect::back()->with(['warning' => 'Total Helper Lebih Dari Total Barang Keluar']);
         }
         //dd($jmlpackpengambilan);
-        $data = [
-            'no_dpb' => $no_dpb,
-            'id_karyawan' => $id_karyawan,
-            'kode_cabang' => $kode_cabang,
-            'tujuan' => $tujuan,
-            'no_kendaraan' => $no_polisi,
-            'tgl_pengambilan' => $tgl_pengambilan,
-            'tgl_pengembalian' => $tgl_pengembalian,
-            'id_driver' => $id_driver,
-            'id_helper' => $id_helper_1,
-            'jml_helper' => $jml_helper,
-            'id_helper_2' => $id_helper_2,
-            'jml_helper_2' => $jml_helper_2,
-            'id_helper_3' => $id_helper_3,
-            'jml_helper_3' => $jml_helper_3
-        ];
 
+
+        $totalbarangkeluar = 0;
         for ($i = 0; $i < count($kode_produk); $i++) {
             $jml_dus_pengambilan = !empty($jmlduspengambilan[$i]) ? $jmlduspengambilan[$i] : 0;
             $jml_pack_pengambilan = !empty($jmlpackpengambilan[$i]) ? $jmlpackpengambilan[$i] : 0;
@@ -355,7 +345,7 @@ class DpbController extends Controller
 
             $jmlbarangkeluar = round($jmlbarangkeluar, 3);
 
-
+            $totalbarangkeluar += $jmlbarangkeluar;
             if (!empty($jmlpengambilan) || !empty($jmlpengembalian) || !empty($jmlbarangkeluar)) {
                 $detail_dpb[]   = [
                     'no_dpb' => $no_dpb,
@@ -367,6 +357,43 @@ class DpbController extends Controller
             }
         }
 
+
+        if (!empty($jml_helper)) {
+            $jml_helper = $jml_helper;
+        } else {
+            $jml_helper = ($persentase_helper / 100) * $totalbarangkeluar;
+        }
+
+        if (!empty($jml_helper_2)) {
+            $jml_helper_2 = $jml_helper_2;
+        } else {
+            $jml_helper_2 = ($persentase_helper_2 / 100) * $totalbarangkeluar;
+        }
+
+        if (!empty($jml_helper_3)) {
+            $jml_helper_3 = $jml_helper_3;
+        } else {
+            $jml_helper_3 = ($persentase_helper_3 / 100) * $totalbarangkeluar;
+        }
+
+        $data = [
+            'no_dpb' => $no_dpb,
+            'id_karyawan' => $id_karyawan,
+            'kode_cabang' => $kode_cabang,
+            'tujuan' => $tujuan,
+            'no_kendaraan' => $no_polisi,
+            'tgl_pengambilan' => $tgl_pengambilan,
+            'tgl_pengembalian' => $tgl_pengembalian,
+            'id_driver' => $id_driver,
+            'id_helper' => $id_helper_1,
+            'jml_helper' => $jml_helper,
+            'id_helper_2' => $id_helper_2,
+            'jml_helper_2' => $jml_helper_2,
+            'id_helper_3' => $id_helper_3,
+            'jml_helper_3' => $jml_helper_3
+        ];
+        // echo $jml_helper . "-" . $persentase_helper . "-" . $totalbarangkeluar;
+        // die;
         DB::beginTransaction();
         try {
             DB::table('dpb')->where('no_dpb', $no_dpb_old)->update($data);

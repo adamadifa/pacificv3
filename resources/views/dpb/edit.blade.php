@@ -47,11 +47,18 @@
                     </div>
                 </div>
                 <div class="col-4">
-                    <x-inputtext label="Jumlah" field="jml_helper" value="{{ $dpb->jml_helper }}" icon="feather icon-file" right />
+                    <div class="row">
+                        <div class="col-12">
+                            <x-inputtext label="Jumlah" field="jml_helper" value="{{ $dpb->jml_helper }}" icon="feather icon-file" right />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <x-inputtext label="Persentase" field="persentase_helper" value="" icon="feather icon-percent" right />
+                        </div>
+                    </div>
                 </div>
             </div>
-
-
         </div>
         <div class="col-3">
             <div class="row">
@@ -63,7 +70,16 @@
                     </div>
                 </div>
                 <div class="col-4">
-                    <x-inputtext label="Jumlah" field="jml_helper_2" value="{{ $dpb->jml_helper_2 }}" icon="feather icon-file" right />
+                    <div class="row">
+                        <div class="col-12">
+                            <x-inputtext label="Jumlah" field="jml_helper_2" value="{{ $dpb->jml_helper_2 }}" icon="feather icon-file" right />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <x-inputtext label="Persentase" field="persentase_helper_2" value="" icon="feather icon-percent" right />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -77,7 +93,16 @@
                     </div>
                 </div>
                 <div class="col-4">
-                    <x-inputtext label="Jumlah" field="jml_helper_3" value="{{ $dpb->jml_helper_3 }}" icon="feather icon-file" right />
+                    <div class="row">
+                        <div class="col-12">
+                            <x-inputtext label="Jumlah" field="jml_helper_3" value="{{ $dpb->jml_helper_3 }}" icon="feather icon-file" right />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <x-inputtext label="Persentase" field="persentase_helper_3" value="" icon="feather icon-percent" right />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -138,7 +163,7 @@
                 </thead>
                 <tbody>
                     @php
-                    $totalbarangkeluar_dus = 0;
+                    $totalbarangkeluar = 0;
                     @endphp
                     @foreach ($produk as $d)
                     @php
@@ -184,6 +209,7 @@
                     $jmlpcs_pengembalian = $sisapack_pengembalian;
 
                     $jmlbarangkeluar = ROUND($d->jml_penjualan * $isipcsdus);
+
                     $jmlbarangkeluar_dus = floor($jmlbarangkeluar / $isipcsdus);
 
                     if ($jmlbarangkeluar != 0) {
@@ -201,7 +227,10 @@
 
                     $jmlpcs_barangkeluar = $sisapack_barangkeluar;
 
-                    $totalbarangkeluar_dus += $jmlbarangkeluar_dus;
+
+
+
+                    $totalbarangkeluar += $d->jml_penjualan;
                     @endphp
                     <input type="hidden" name="isipcsdus[]" value="{{ $d->isipcsdus }}">
                     <input type="hidden" name="isipcs[]" value="{{ $d->isipcs }}">
@@ -252,7 +281,7 @@
                     @endforeach
                 </tbody>
             </table>
-            <input type="hidden" name="totalbarangkeluar_dus" id="totalbarangkeluar_dus" value="{{ $totalbarangkeluar_dus }}">
+            <input type="hidden" name="totalbarangkeluar" id="totalbarangkeluar_dus" value="{{ $totalbarangkeluar }}">
         </div>
     </div>
     <div class="row">
@@ -281,6 +310,42 @@
         });
         $("#tgl_pengembalian").datepicker({
             dateFormat: 'yy-mm-dd'
+        });
+
+
+
+
+        function loadhelperjumlah() {
+            var id_helper_1 = $("#id_helper_1").val();
+            var id_helper_2 = $("#id_helper_2").val();
+            var id_helper_3 = $("#id_helper_3").val();
+            if (id_helper_1 == "") {
+                $("#jml_helper").prop("readonly", true);
+                $("#persentase_helper").prop("readonly", true);
+            } else {
+                $("#jml_helper").prop("readonly", false);
+                $("#persentase_helper").prop("readonly", false);
+            }
+
+            if (id_helper_2 == "") {
+                $("#jml_helper_2").prop("readonly", true);
+                $("#persentase_helper_2").prop("readonly", true);
+            } else {
+                $("#jml_helper_2").prop("readonly", false);
+                $("#persentase_helper_2").prop("readonly", false);
+            }
+
+            if (id_helper_3 == "") {
+                $("#jml_helper_3").prop("readonly", true);
+                $("#persentase_helper_3").prop("readonly", true);
+            } else {
+                $("#jml_helper_3").prop("readonly", false);
+                $("#persentase_helper_3").prop("readonly", false);
+            }
+        }
+
+        $("#id_helper_1, #id_helper_2, #id_helper_3").change(function() {
+            loadhelperjumlah();
         });
 
 
@@ -347,6 +412,12 @@
                 , cache: false
                 , success: function(respond) {
                     $("#frmDpb").find("#id_helper_1").html(respond);
+                    var cek = $("#id_helper_1").val();
+                    if (cek == "") {
+                        $("#jml_helper").prop("readonly", true);
+                        $("#persentase_helper").prop("readonly", true);
+                    }
+
                 }
             });
         }
@@ -364,6 +435,11 @@
                 , cache: false
                 , success: function(respond) {
                     $("#frmDpb").find("#id_helper_2").html(respond);
+                    var cek = $("#id_helper_2").val();
+                    if (cek == "") {
+                        $("#jml_helper_2").prop("readonly", true);
+                        $("#persentase_helper_2").prop("readonly", true);
+                    }
                 }
             });
         }
@@ -381,6 +457,11 @@
                 , cache: false
                 , success: function(respond) {
                     $("#frmDpb").find("#id_helper_3").html(respond);
+                    var cek = $("#id_helper_3").val();
+                    if (cek == "") {
+                        $("#jml_helper_3").prop("readonly", true);
+                        $("#persentase_helper_3").prop("readonly", true);
+                    }
                 }
             });
         }

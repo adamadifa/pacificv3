@@ -1341,6 +1341,7 @@ class TargetkomisiController extends Controller
         if ($bulan >= 5 && $tahun >= 2022) {
             return view('targetkomisi.laporan.cetak_insentif_mei2022', compact('insentif', 'cabang', 'namabulan', 'bulan', 'tahun'));
         } else {
+            echo "1";
             return view('targetkomisi.laporan.cetak_insentif', compact('insentif', 'cabang', 'namabulan', 'bulan', 'tahun'));
         }
     }

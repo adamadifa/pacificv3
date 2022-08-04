@@ -109,19 +109,19 @@
     $tgl1 = "2021-08-31";
     $bln = $bulan;
     $tanggal = $tahun . "-" . $bln . "-" . "31";
-    if ($bln == 9 and $tahun = "2021") {
+    if ($bln == 9 and $tahun == "2021") {
     $persentaseljt = 55;
-    } else if ($bln == 10 and $tahun = "2021") {
+    } else if ($bln == 10 and $tahun == "2021") {
     $persentaseljt = 60;
-    } else if ($bln == 11 and $tahun = "2021") {
+    } else if ($bln == 11 and $tahun == "2021") {
     $persentaseljt = 65;
-    } else if ($bln >= 12 and $tahun = "2021") {
+    } else if ($bln >= 12 and $tahun == "2021") {
     $persentaseljt = 70;
-    } else if ($bln == 1 and $tahun = "2022") {
+    } else if ($bln == 1 and $tahun == "2022") {
     $persentaseljt = 75;
-    } else if ($bln >= 2 and $tahun = "2022") {
+    } else if ($bln >= 2 and $tahun == "2022") {
     $persentaseljt = 80;
-    } else if ($bln <= 8 and $tahun = "2021") {
+    } else if ($bln <= 8 and $tahun == "2021") {
     $persentaseljt = 50;
     }
     ?>

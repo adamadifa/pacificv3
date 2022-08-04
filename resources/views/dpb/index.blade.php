@@ -98,9 +98,9 @@
                                     <td>{{ $d->tujuan }}</td>
                                     <td>{{ $d->no_kendaraan }}</td>
                                     <td>{{ $d->nama_driver }}</td>
-                                    <td>{{ $d->nama_helper_1 }} {{ !empty($d->jml_helper) ? '('. $d->jml_helper.')' : '' }}</td>
-                                    <td>{{ $d->nama_helper_2 }} {{ !empty($d->jml_helper_2) ? '('. $d->jml_helper_2.')' : '' }}</td>
-                                    <td>{{ $d->nama_helper_3 }} {{ !empty($d->jml_helper_3) ? '('. $d->jml_helper_3.')' : '' }}</td>
+                                    <td>{{ $d->nama_helper_1 }} {{ !empty($d->jml_helper) ? '('. ROUND($d->jml_helper,2).')' : '' }}</td>
+                                    <td>{{ $d->nama_helper_2 }} {{ !empty($d->jml_helper_2) ? '('. ROUND($d->jml_helper_2,2).')' : '' }}</td>
+                                    <td>{{ $d->nama_helper_3 }} {{ !empty($d->jml_helper_3) ? '('. ROUND($d->jml_helper_3,2).')' : '' }}</td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             <a class="ml-1 edit" no_dpb="{{ Crypt::encrypt($d->no_dpb) }}" href="#"><i class="feather icon-edit success"></i></a>
