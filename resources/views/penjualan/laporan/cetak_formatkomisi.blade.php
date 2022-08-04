@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,6 +36,7 @@
 
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
         @if ($cabang!=null)
@@ -65,15 +67,15 @@
     <table class="datatable3" style="width:200%" border="1">
         <thead bgcolor="#024a75" style="color:white; font-size:12;">
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
-                <th rowspan="2" style="width: 1%;">No</th>
-                <th rowspan="2" style="width: 3%;">No Faktur</th>
-                <th rowspan="2" style="width: 3%;">Tgl Transaksi</th>
-                <th rowspan="2" style="width: 3%;">Kode Pelanggan</th>
-                <th rowspan="2" style="width: 5%;">Nama Pelanggan</th>
-                <th rowspan="2" style="width: 4%;">Salesman</th>
-                <th rowspan="2" style="width: 3%;">Pasar</th>
-                <th rowspan="2" style="width: 3%;">Hari</th>
-                <th colspan="15" style="background-color: #19c116;">Produk</th>
+                <th rowspan="3" style="width: 1%;">No</th>
+                <th rowspan="3" style="width: 3%;">No Faktur</th>
+                <th rowspan="3" style="width: 3%;">Tgl Transaksi</th>
+                <th rowspan="3" style="width: 3%;">Kode Pelanggan</th>
+                <th rowspan="3" style="width: 5%;">Nama Pelanggan</th>
+                <th rowspan="3" style="width: 4%;">Salesman</th>
+                <th rowspan="3" style="width: 3%;">Pasar</th>
+                <th rowspan="3" style="width: 3%;">Hari</th>
+                <th colspan="30" style="background-color: #19c116;">Produk</th>
                 <th rowspan="2" style="width: 3%; background-color: #ef6a0b;">Total Bruto</th>
                 <th rowspan="2" style="width: 3%; background-color: #ef6a0b;">Total Retur</th>
                 <th colspan="5" style="background-color: #a71033;">Potongan</th>
@@ -86,27 +88,59 @@
 
             </tr>
             <tr style="background-color: #19c116;">
-                <th style="width: 1%;">AB</th>
-                <th style="width: 1%;">AR</th>
-                <th style="width: 1%;">AS</th>
-                <th style="width: 1%;">BB</th>
-                <th style="width: 1%;">CG</th>
-                <th style="width: 1%;">CGG</th>
-                <th style="width: 1%;">DEP</th>
-                <th style="width: 1%;">DK</th>
-                <th style="width: 1%;">DS</th>
-                <th style="width: 1%;">SP</th>
-                <th style="width: 1%;">BBP</th>
-                <th style="width: 1%;">SPP</th>
-                <th style="width: 1%;">CG5</th>
-                <th style="width: 1%;">SC</th>
-                <th style="width: 1%;">SP8</th>
+                <th style="width: 1%;" colspan="2">AB</th>
+                <th style="width: 1%;" colspan="2">AR</th>
+                <th style="width: 1%;" colspan="2">AS</th>
+                <th style="width: 1%;" colspan="2">BB</th>
+                <th style="width: 1%;" colspan="2">CG</th>
+                <th style="width: 1%;" colspan="2">CGG</th>
+                <th style="width: 1%;" colspan="2">DEP</th>
+                <th style="width: 1%;" colspan="2">DK</th>
+                <th style="width: 1%;" colspan="2">DS</th>
+                <th style="width: 1%;" colspan="2">SP</th>
+                <th style="width: 1%;" colspan="2">BBP</th>
+                <th style="width: 1%;" colspan="2">SPP</th>
+                <th style="width: 1%;" colspan="2">CG5</th>
+                <th style="width: 1%;" colspan="2">SC</th>
+                <th style="width: 1%;" colspan="2">SP8</th>
                 <th style="width: 1%; background-color: #a71033;">AIDA</th>
                 <th style="width: 1%; background-color: #a71033;">SWAN</th>
                 <th style="width: 1%; background-color: #a71033;">STICK</th>
                 <th style="width: 1%; background-color: #a71033;">SP</th>
                 <th style="width: 1%; background-color: #a71033;">POTONGAN</th>
 
+            </tr>
+            <tr>
+                <th>Qty</th>
+                <th style="background: red">Retur</th>
+                <th>Qty</th>
+                <th style="background: red">Retur</th>
+                <th>Qty</th>
+                <th style="background: red">Retur</th>
+                <th>Qty</th>
+                <th style="background: red">Retur</th>
+                <th>Qty</th>
+                <th style="background: red">Retur</th>
+                <th>Qty</th>
+                <th style="background: red">Retur</th>
+                <th>Qty</th>
+                <th style="background: red">Retur</th>
+                <th>Qty</th>
+                <th style="background: red">Retur</th>
+                <th>Qty</th>
+                <th style="background: red">Retur</th>
+                <th>Qty</th>
+                <th style="background: red">Retur</th>
+                <th>Qty</th>
+                <th style="background: red">Retur</th>
+                <th>Qty</th>
+                <th style="background: red">Retur</th>
+                <th>Qty</th>
+                <th style="background: red">Retur</th>
+                <th>Qty</th>
+                <th style="background: red">Retur</th>
+                <th>Qty</th>
+                <th style="background: red">Retur</th>
             </tr>
         </thead>
         <tbody>
@@ -488,35 +522,35 @@
                 <td align="left">{{ ucwords(strtolower($d->pasar))}}</td>
                 <td align="left">{{ ucwords(strtolower($d->hari))}}</td>
                 <td align="center">@php if (!empty($AB)) { echo desimal($AB); } @endphp </td>
-
+                <td align="center">@php if (!empty($returAB)) { echo desimal($returAB); } @endphp </td>
                 <td align="center">@php if (!empty($AR)) { echo desimal($AR); } @endphp </td>
-
+                <td align="center">@php if (!empty($returAR)) { echo desimal($returAR); } @endphp </td>
                 <td align="center">@php if (!empty($AS)) { echo desimal($AS); } @endphp </td>
-
+                <td align="center">@php if (!empty($returAS)) { echo desimal($returAS); } @endphp </td>
                 <td align="center">@php if (!empty($BB)) { echo desimal($BB); } @endphp </td>
-
+                <td align="center">@php if (!empty($returBB)) { echo desimal($returBB); } @endphp </td>
                 <td align="center">@php if (!empty($CG)) { echo desimal($CG); } @endphp </td>
-
+                <td align="center">@php if (!empty($returCG)) { echo desimal($returCG); } @endphp </td>
                 <td align="center">@php if (!empty($CGG)) { echo desimal($CGG); } @endphp </td>
-
+                <td align="center">@php if (!empty($returCGG)) { echo desimal($returCGG); } @endphp </td>
                 <td align="center">@php if (!empty($DEP)) { echo desimal($DEP); } @endphp </td>
-
+                <td align="center">@php if (!empty($returDEP)) { echo desimal($returDEP); } @endphp </td>
                 <td align="center">@php if (!empty($DK)) { echo desimal($DK); } @endphp </td>
-
+                <td align="center">@php if (!empty($returDK)) { echo desimal($returDK); } @endphp </td>
                 <td align="center">@php if (!empty($DS)) { echo desimal($DS); } @endphp </td>
-
+                <td align="center">@php if (!empty($returDS)) { echo desimal($returDS); } @endphp </td>
                 <td align="center">@php if (!empty($SP)) { echo desimal($SP); } @endphp </td>
-
+                <td align="center">@php if (!empty($returSP)) { echo desimal($returSP); } @endphp </td>
                 <td align="center">@php if (!empty($BBP)) { echo desimal($BBP); } @endphp </td>
-
+                <td align="center">@php if (!empty($returBBP)) { echo desimal($returBBP); } @endphp </td>
                 <td align="center">@php if (!empty($SPP)) { echo desimal($SPP); } @endphp </td>
-
+                <td align="center">@php if (!empty($returSPP)) { echo desimal($returSPP); } @endphp </td>
                 <td align="center">@php if (!empty($CG5)) { echo desimal($CG5); } @endphp </td>
-
+                <td align="center">@php if (!empty($returCG5)) { echo desimal($returCG5); } @endphp </td>
                 <td align="center">@php if (!empty($SC)) { echo desimal($SC); } @endphp </td>
-
+                <td align="center">@php if (!empty($returSC)) { echo desimal($returSC); } @endphp </td>
                 <td align="center">@php if (!empty($SP8)) { echo desimal($SP8); } @endphp </td>
-
+                <td align="center">@php if (!empty($returSP8)) { echo desimal($returSP8); } @endphp </td>
                 <td align="right"><b>{{ rupiah($d->totalbruto)}}</b></td>
                 <td align="right"><b>@php if (!empty($d->totalretur)) { echo rupiah($d->totalretur);}@endphp</b></td>
                 <td align="right"><b>@php if (!empty($d->potaida)) { echo rupiah($d->potaida);}@endphp</b></td>
@@ -538,35 +572,35 @@
             <tr style="background-color: #024a75; color:white">
                 <th colspan="8">TOTAL</th>
                 <th align="right"><b>{{ desimal($totalAB)}}</b></th>
-
+                <th align="right" style="background: red"><b>{{ desimal($totalreturAB)}}</b></th>
                 <th align="right"><b>{{ desimal($totalAR)}}</b></th>
-
+                <th align="right" style="background: red"><b>{{ desimal($totalreturAR)}}</b></th>
                 <th align="right"><b>{{ desimal($totalAS)}}</b></th>
-
+                <th align="right" style="background: red"><b>{{ desimal($totalreturAS)}}</b></th>
                 <th align="right"><b>{{ desimal($totalBB)}}</b></th>
-
+                <th align="right" style="background: red"><b>{{ desimal($totalreturBB)}}</b></th>
                 <th align="right"><b>{{ desimal($totalCG)}}</b></th>
-
+                <th align="right" style="background: red"><b>{{ desimal($totalreturCG)}}</b></th>
                 <th align="right"><b>{{ desimal($totalCGG)}}</b></th>
-
+                <th align="right" style="background: red"><b>{{ desimal($totalreturCGG)}}</b></th>
                 <th align="right"><b>{{ desimal($totalDEP)}}</b></th>
-
+                <th align="right" style="background: red"><b>{{ desimal($totalreturDEP)}}</b></th>
                 <th align="right"><b>{{ desimal($totalDK)}}</b></th>
-
+                <th align="right" style="background: red"><b>{{ desimal($totalreturDK)}}</b></th>
                 <th align="right"><b>{{ desimal($totalDS)}}</b></th>
-
+                <th align="right" style="background: red"><b>{{ desimal($totalreturDS)}}</b></th>
                 <th align="right"><b>{{ desimal($totalSP)}}</b></th>
-
+                <th align="right" style="background: red"><b>{{ desimal($totalreturSP)}}</b></th>
                 <th align="right"><b>{{ desimal($totalBBP)}}</b></th>
-
+                <th align="right" style="background: red"><b>{{ desimal($totalreturBBP)}}</b></th>
                 <th align="right"><b>{{ desimal($totalSPP)}}</b></th>
-
+                <th align="right" style="background: red"><b>{{ desimal($totalreturSPP)}}</b></th>
                 <th align="right"><b>{{ desimal($totalCG5)}}</b></th>
-
+                <th align="right" style="background: red"><b>{{ desimal($totalreturCG5)}}</b></th>
                 <th align="right"><b>{{ desimal($totalSC)}}</b></th>
-
+                <th align="right" style="background: red"><b>{{ desimal($totalreturSC)}}</b></th>
                 <th align="right"><b>{{ desimal($totalSP8)}}</b></th>
-
+                <th align="right" style="background: red"><b>{{ desimal($totalreturSP8)}}</b></th>
                 <th align="right"><b>{{ desimal($totalbruto)}}</b></th>
                 <th align="right"><b>{{ desimal($totalretur)}}</b></th>
                 <th align="right"><b>{{ desimal($totalpotaida)}}</b></th>
@@ -621,4 +655,5 @@
     </table>
 
 </body>
+
 </html>
