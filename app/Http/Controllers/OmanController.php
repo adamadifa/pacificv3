@@ -67,6 +67,7 @@ class OmanController extends Controller
                 'bulan' => $bulan,
                 'tahun' => $tahun,
                 'tgl_order' => $tgl_order,
+                'status' => 0
             );
 
             $cekoman = DB::table('oman')->where('no_order', $no_order)->count();

@@ -110,7 +110,7 @@
                     <tr>
                         <td rowspan="4" style="background-color:#295ea9; color:white" class="fixed-side" scope="col">#</td>
                         <td rowspan="4" style="background-color:#295ea9; color:white;" class="fixed-side" scope="col">Salesman</td>
-                        <td colspan="108">Produk</td>
+                        <td colspan="120">Produk</td>
                     </tr>
                     <tr style="text-align:center">
                         <td colspan="10">AB</td>
@@ -122,8 +122,22 @@
                         <td colspan="10">DEP</td>
                         <td colspan="10">DS</td>
                         <td colspan="10">SP</td>
+                        <td colspan="10">SP8</td>
+                        <td colspan="10">SC</td>
                     </tr>
                     <tr style="text-align: center;">
+                        <td colspan="5" style="background-color: #25b70a;">
+                            <?= $namabulan ?>
+                        </td>
+                        <td colspan="5">s/d
+                            <?= $namabulan ?>
+                        </td>
+                        <td colspan="5" style="background-color: #25b70a;">
+                            <?= $namabulan ?>
+                        </td>
+                        <td colspan="5">s/d
+                            <?= $namabulan ?>
+                        </td>
                         <td colspan="5" style="background-color: #25b70a;">
                             <?= $namabulan ?>
                         </td>
@@ -181,6 +195,36 @@
                     </tr>
 
                     <tr style="text-align: center;">
+                        <td style="background-color: #25b70a;">Real
+                            <?php echo $tahun - 1; ?>
+                        </td>
+                        <td style="background-color: #25b70a;">Target</td>
+                        <td style="background-color: #25b70a;">Realisasi</td>
+                        <td style="background-color: #25b70a;">Ach(%)</td>
+                        <td style="background-color: #25b70a;">Grw(%)</td>
+                        <td>Real
+                            <?php echo $tahun - 1; ?>
+                        </td>
+                        <td>Target</td>
+                        <td>Realisasi</td>
+                        <td>Ach(%)</td>
+                        <td>Grw(%)</td>
+
+                        <td style="background-color: #25b70a;">Real
+                            <?php echo $tahun - 1; ?>
+                        </td>
+                        <td style="background-color: #25b70a;">Target</td>
+                        <td style="background-color: #25b70a;">Realisasi</td>
+                        <td style="background-color: #25b70a;">Ach(%)</td>
+                        <td style="background-color: #25b70a;">Grw(%)</td>
+                        <td>Real
+                            <?php echo $tahun - 1; ?>
+                        </td>
+                        <td>Target</td>
+                        <td>Realisasi</td>
+                        <td>Ach(%)</td>
+                        <td>Grw(%)</td>
+
                         <td style="background-color: #25b70a;">Real
                             <?php echo $tahun - 1; ?>
                         </td>
@@ -350,6 +394,14 @@
                 if ($p->kode_produk == "SP") {
                 $isipcs_sp = $p->isipcsdus;
                 }
+
+                if ($p->kode_produk == "SP8") {
+                $isipcs_sp8 = $p->isipcsdus;
+                }
+
+                if ($p->kode_produk == "SC") {
+                $isipcs_sc = $p->isipcsdus;
+                }
             }
 
 
@@ -416,6 +468,19 @@
           $total_targetbulanini_sp = 0;
           $total_targetsampaibulanini_sp = 0;
 
+          $total_reallastbulanini_sp8 = 0;
+          $total_reallastsampaibulanini_sp8 = 0;
+          $total_realbulanini_sp8 = 0;
+          $total_realsampaibulanini_sp8 = 0;
+          $total_targetbulanini_sp8 = 0;
+          $total_targetsampaibulanini_sp8 = 0;
+
+          $total_reallastbulanini_sc = 0;
+          $total_reallastsampaibulanini_sc = 0;
+          $total_realbulanini_sc = 0;
+          $total_realsampaibulanini_sc = 0;
+          $total_targetbulanini_sc = 0;
+          $total_targetsampaibulanini_sc = 0;
 
 
           $no = 1;
@@ -701,6 +766,69 @@
               $grw_sp_sampaibulanini   = (($realsampaibulanini_sp - $reallastsampaibulanini_sp) / $reallastsampaibulanini_sp) * 100;
             }
 
+
+            $reallastbulanini_sp8 = round($d->reallastbulanini_sp8 / $isipcs_sp8, 2);
+            $reallastsampaibulanini_sp8 = round($d->reallastsampaibulanini_sp8 / $isipcs_sp8, 2);
+            $realbulanini_sp8 = round($d->realbulanini_sp8 / $isipcs_sp8, 2);
+            $realsampaibulanini_sp8 = round($d->realsampaibulanini_sp8 / $isipcs_sp8, 2);
+            $targetbulanini_sp8 = $d->sp8_bulanini;
+            $targetsampaibulanini_sp8 = $d->sp8_sampaibulanini;
+
+            if ($targetbulanini_sp8 == 0) {
+              $ach_sp8_bulanini = 0;
+            } else {
+              $ach_sp8_bulanini   = ($realbulanini_sp8 / $targetbulanini_sp8) * 100;
+            }
+
+            if ($reallastbulanini_sp8 == 0) {
+              $grw_sp8_bulanini = 0;
+            } else {
+              $grw_sp8_bulanini   = (($realbulanini_sp8 - $reallastbulanini_sp8) / $reallastbulanini_sp8) * 100;
+            }
+
+            if ($targetsampaibulanini_sp8 == 0) {
+              $ach_sp8_sampaibulanini = 0;
+            } else {
+              $ach_sp8_sampaibulanini   = ($realsampaibulanini_sp8 / $targetsampaibulanini_sp8) * 100;
+            }
+
+            if ($reallastsampaibulanini_sp8 == 0) {
+              $grw_sp8_sampaibulanini = 0;
+            } else {
+              $grw_sp8_sampaibulanini   = (($realsampaibulanini_sp8 - $reallastsampaibulanini_sp8) / $reallastsampaibulanini_sp8) * 100;
+            }
+
+            $reallastbulanini_sc = round($d->reallastbulanini_sc / $isipcs_sc, 2);
+            $reallastsampaibulanini_sc = round($d->reallastsampaibulanini_sc / $isipcs_sc, 2);
+            $realbulanini_sc = round($d->realbulanini_sc / $isipcs_sc, 2);
+            $realsampaibulanini_sc = round($d->realsampaibulanini_sc / $isipcs_sc, 2);
+            $targetbulanini_sc = $d->sc_bulanini;
+            $targetsampaibulanini_sc = $d->sc_sampaibulanini;
+
+            if ($targetbulanini_sc == 0) {
+              $ach_sc_bulanini = 0;
+            } else {
+              $ach_sc_bulanini   = ($realbulanini_sc / $targetbulanini_sc) * 100;
+            }
+
+            if ($reallastbulanini_sc == 0) {
+              $grw_sc_bulanini = 0;
+            } else {
+              $grw_sc_bulanini   = (($realbulanini_sc - $reallastbulanini_sc) / $reallastbulanini_sc) * 100;
+            }
+
+            if ($targetsampaibulanini_sc == 0) {
+              $ach_sc_sampaibulanini = 0;
+            } else {
+              $ach_sc_sampaibulanini   = ($realsampaibulanini_sc / $targetsampaibulanini_sc) * 100;
+            }
+
+            if ($reallastsampaibulanini_sc == 0) {
+              $grw_sc_sampaibulanini = 0;
+            } else {
+              $grw_sc_sampaibulanini   = (($realsampaibulanini_sc - $reallastsampaibulanini_sc) / $reallastsampaibulanini_sc) * 100;
+            }
+
             $total_reallastbulanini_ab += $reallastbulanini_ab;
             $total_reallastsampaibulanini_ab += $reallastsampaibulanini_ab;
             $total_realbulanini_ab += $realbulanini_ab;
@@ -981,6 +1109,70 @@
               $total_grw_sp_sampaibulanini = 0;
             } else {
               $total_grw_sp_sampaibulanini   = (($total_realsampaibulanini_sp - $total_reallastsampaibulanini_sp) / $total_reallastsampaibulanini_sp) * 100;
+            }
+
+
+            $total_reallastbulanini_sp8 += $reallastbulanini_sp8;
+            $total_reallastsampaibulanini_sp8 += $reallastsampaibulanini_sp8;
+            $total_realbulanini_sp8 += $realbulanini_sp8;
+            $total_realsampaibulanini_sp8 += $realsampaibulanini_sp8;
+            $total_targetbulanini_sp8 += $targetbulanini_sp8;
+            $total_targetsampaibulanini_sp8 += $targetsampaibulanini_sp8;
+
+            if ($total_targetbulanini_sp8 == 0) {
+              $total_ach_sp8_bulanini = 0;
+            } else {
+              $total_ach_sp8_bulanini   = ($total_realbulanini_sp8 / $total_targetbulanini_sp8) * 100;
+            }
+
+            if ($total_reallastbulanini_sp8 == 0) {
+              $total_grw_sp8_bulanini = 0;
+            } else {
+              $total_grw_sp8_bulanini   = (($total_realbulanini_sp8 - $total_reallastbulanini_sp8) / $total_reallastbulanini_sp8) * 100;
+            }
+
+            if ($total_targetsampaibulanini_sp8 == 0) {
+              $total_ach_sp8_sampaibulanini = 0;
+            } else {
+              $total_ach_sp8_sampaibulanini   = ($total_realsampaibulanini_sp8 / $total_targetsampaibulanini_sp8) * 100;
+            }
+
+            if ($total_reallastsampaibulanini_sp8 == 0) {
+              $total_grw_sp8_sampaibulanini = 0;
+            } else {
+              $total_grw_sp8_sampaibulanini   = (($total_realsampaibulanini_sp8 - $total_reallastsampaibulanini_sp8) / $total_reallastsampaibulanini_sp8) * 100;
+            }
+
+
+            $total_reallastbulanini_sc += $reallastbulanini_sc;
+            $total_reallastsampaibulanini_sc += $reallastsampaibulanini_sc;
+            $total_realbulanini_sc += $realbulanini_sc;
+            $total_realsampaibulanini_sc += $realsampaibulanini_sc;
+            $total_targetbulanini_sc += $targetbulanini_sc;
+            $total_targetsampaibulanini_sc += $targetsampaibulanini_sc;
+
+            if ($total_targetbulanini_sc == 0) {
+              $total_ach_sc_bulanini = 0;
+            } else {
+              $total_ach_sc_bulanini   = ($total_realbulanini_sc / $total_targetbulanini_sc) * 100;
+            }
+
+            if ($total_reallastbulanini_sc == 0) {
+              $total_grw_sc_bulanini = 0;
+            } else {
+              $total_grw_sc_bulanini   = (($total_realbulanini_sc - $total_reallastbulanini_sc) / $total_reallastbulanini_sc) * 100;
+            }
+
+            if ($total_targetsampaibulanini_sc == 0) {
+              $total_ach_sc_sampaibulanini = 0;
+            } else {
+              $total_ach_sc_sampaibulanini   = ($total_realsampaibulanini_sc / $total_targetsampaibulanini_sc) * 100;
+            }
+
+            if ($total_reallastsampaibulanini_sc == 0) {
+              $total_grw_sc_sampaibulanini = 0;
+            } else {
+              $total_grw_sc_sampaibulanini   = (($total_realsampaibulanini_sc - $total_reallastsampaibulanini_sc) / $total_reallastsampaibulanini_sc) * 100;
             }
 
           ?>
@@ -1469,6 +1661,113 @@
                   echo desimal($grw_sp_sampaibulanini);
                 } ?>
                         </td>
+
+
+                        <td align="right">
+                            <?php if (!empty($reallastbulanini_sp8)) {
+                        echo desimal($reallastbulanini_sp8);
+                        } ?>
+                        </td>
+                        <td align="right">
+                            <?php if (!empty($targetbulanini_sp8)) {
+                        echo desimal($targetbulanini_sp8);
+                        } ?>
+                        </td>
+                        <td align="right">
+                            <?php if (!empty($realbulanini_sp8)) {
+                        echo desimal($realbulanini_sp8);
+                        } ?>
+                        </td>
+                        <td align="right">
+                            <?php if (!empty($ach_sp8_bulanini)) {
+                        echo desimal($ach_sp8_bulanini);
+                        } ?>
+                        </td>
+                        <td align="right">
+                            <?php if (!empty($grw_sp8_bulanini)) {
+                        echo desimal($grw_sp8_bulanini);
+                        } ?>
+                        </td>
+                        <td align="right" style="background-color: #e2e2e2;">
+                            <?php if (!empty($reallastsampaibulanini_sp8)) {
+                        echo desimal($reallastsampaibulanini_sp8);
+                        } ?>
+                        </td>
+
+                        <td align="right" style="background-color: #e2e2e2;">
+                            <?php if (!empty($targetsampaibulanini_sp8)) {
+                        echo desimal($targetsampaibulanini_sp8);
+                        } ?>
+                        </td>
+
+                        <td align="right" style="background-color: #e2e2e2;">
+                            <?php if (!empty($realsampaibulanini_sp8)) {
+                        echo desimal($realsampaibulanini_sp8);
+                        } ?>
+                        </td>
+                        <td align="right" style="background-color: #e2e2e2;">
+                            <?php if (!empty($ach_sp8_sampaibulanini)) {
+                        echo desimal($ach_sp8_sampaibulanini);
+                        } ?>
+                        </td>
+                        <td align="right" style="background-color: #e2e2e2;">
+                            <?php if (!empty($grw_sp8_sampaibulanini)) {
+                        echo desimal($grw_sp8_sampaibulanini);
+                        } ?>
+                        </td>
+
+                        <td align="right">
+                            <?php if (!empty($reallastbulanini_sc)) {
+                        echo desimal($reallastbulanini_sc);
+                        } ?>
+                        </td>
+                        <td align="right">
+                            <?php if (!empty($targetbulanini_sc)) {
+                        echo desimal($targetbulanini_sc);
+                        } ?>
+                        </td>
+                        <td align="right">
+                            <?php if (!empty($realbulanini_sc)) {
+                        echo desimal($realbulanini_sc);
+                        } ?>
+                        </td>
+                        <td align="right">
+                            <?php if (!empty($ach_sc_bulanini)) {
+                        echo desimal($ach_sc_bulanini);
+                        } ?>
+                        </td>
+                        <td align="right">
+                            <?php if (!empty($grw_sc_bulanini)) {
+                        echo desimal($grw_sc_bulanini);
+                        } ?>
+                        </td>
+                        <td align="right" style="background-color: #e2e2e2;">
+                            <?php if (!empty($reallastsampaibulanini_sc)) {
+                        echo desimal($reallastsampaibulanini_sc);
+                        } ?>
+                        </td>
+
+                        <td align="right" style="background-color: #e2e2e2;">
+                            <?php if (!empty($targetsampaibulanini_sc)) {
+                        echo desimal($targetsampaibulanini_sc);
+                        } ?>
+                        </td>
+
+                        <td align="right" style="background-color: #e2e2e2;">
+                            <?php if (!empty($realsampaibulanini_sc)) {
+                        echo desimal($realsampaibulanini_sc);
+                        } ?>
+                        </td>
+                        <td align="right" style="background-color: #e2e2e2;">
+                            <?php if (!empty($ach_sc_sampaibulanini)) {
+                        echo desimal($ach_sc_sampaibulanini);
+                        } ?>
+                        </td>
+                        <td align="right" style="background-color: #e2e2e2;">
+                            <?php if (!empty($grw_sc_sampaibulanini)) {
+                        echo desimal($grw_sc_sampaibulanini);
+                        } ?>
+                        </td>
                     </tr>
 
                     <?php
@@ -1956,6 +2255,111 @@
                             <?php if (!empty($total_grw_sp_sampaibulanini)) {
                 echo desimal($total_grw_sp_sampaibulanini);
                 } ?>
+                        </td>
+                        <td align="right">
+                            <?php if (!empty($total_reallastbulanini_sp8)) {
+                        echo desimal($total_reallastbulanini_sp8);
+                        } ?>
+                        </td>
+                        <td align="right">
+                            <?php if (!empty($total_targetbulanini_sp8)) {
+                        echo desimal($total_targetbulanini_sp8);
+                        } ?>
+                        </td>
+                        <td align="right">
+                            <?php if (!empty($total_realbulanini_sp8)) {
+                        echo desimal($total_realbulanini_sp8);
+                        } ?>
+                        </td>
+                        <td align="right">
+                            <?php if (!empty($total_ach_sp8_bulanini)) {
+                        echo desimal($total_ach_sp8_bulanini);
+                        } ?>
+                        </td>
+                        <td align="right">
+                            <?php if (!empty($total_grw_sp8_bulanini)) {
+                        echo desimal($total_grw_sp8_bulanini);
+                        } ?>
+                        </td>
+                        <td align="right" style="background-color: #e2e2e2;">
+                            <?php if (!empty($total_reallastsampaibulanini_sp8)) {
+                        echo desimal($total_reallastsampaibulanini_sp8);
+                        } ?>
+                        </td>
+
+                        <td align="right" style="background-color: #e2e2e2;">
+                            <?php if (!empty($total_targetsampaibulanini_sp8)) {
+                        echo desimal($total_targetsampaibulanini_sp8);
+                        } ?>
+                        </td>
+
+                        <td align="right" style="background-color: #e2e2e2;">
+                            <?php if (!empty($total_realsampaibulanini_sp8)) {
+                        echo desimal($total_realsampaibulanini_sp8);
+                        } ?>
+                        </td>
+                        <td align="right" style="background-color: #e2e2e2;">
+                            <?php if (!empty($total_ach_sp8_sampaibulanini)) {
+                        echo desimal($total_ach_sp8_sampaibulanini);
+                        } ?>
+                        </td>
+                        <td align="right" style="background-color: #e2e2e2;">
+                            <?php if (!empty($total_grw_sp8_sampaibulanini)) {
+                        echo desimal($total_grw_sp8_sampaibulanini);
+                        } ?>
+                        </td>
+
+                        <td align="right">
+                            <?php if (!empty($total_reallastbulanini_sc)) {
+                        echo desimal($total_reallastbulanini_sc);
+                        } ?>
+                        </td>
+                        <td align="right">
+                            <?php if (!empty($total_targetbulanini_sc)) {
+                        echo desimal($total_targetbulanini_sc);
+                        } ?>
+                        </td>
+                        <td align="right">
+                            <?php if (!empty($total_realbulanini_sc)) {
+                        echo desimal($total_realbulanini_sc);
+                        } ?>
+                        </td>
+                        <td align="right">
+                            <?php if (!empty($total_ach_sc_bulanini)) {
+                        echo desimal($total_ach_sc_bulanini);
+                        } ?>
+                        </td>
+                        <td align="right">
+                            <?php if (!empty($total_grw_sc_bulanini)) {
+                        echo desimal($total_grw_sc_bulanini);
+                        } ?>
+                        </td>
+                        <td align="right" style="background-color: #e2e2e2;">
+                            <?php if (!empty($total_reallastsampaibulanini_sc)) {
+                        echo desimal($total_reallastsampaibulanini_sc);
+                        } ?>
+                        </td>
+
+                        <td align="right" style="background-color: #e2e2e2;">
+                            <?php if (!empty($total_targetsampaibulanini_sc)) {
+                        echo desimal($total_targetsampaibulanini_sc);
+                        } ?>
+                        </td>
+
+                        <td align="right" style="background-color: #e2e2e2;">
+                            <?php if (!empty($total_realsampaibulanini_sc)) {
+                        echo desimal($total_realsampaibulanini_sc);
+                        } ?>
+                        </td>
+                        <td align="right" style="background-color: #e2e2e2;">
+                            <?php if (!empty($total_ach_sc_sampaibulanini)) {
+                        echo desimal($total_ach_sc_sampaibulanini);
+                        } ?>
+                        </td>
+                        <td align="right" style="background-color: #e2e2e2;">
+                            <?php if (!empty($total_grw_sc_sampaibulanini)) {
+                        echo desimal($total_grw_sc_sampaibulanini);
+                        } ?>
                         </td>
                     </tr>
                 </tfoot>

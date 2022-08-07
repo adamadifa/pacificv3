@@ -3546,6 +3546,9 @@ class PenjualanController extends Controller
             reallastbulanini_ds,realbulanini_ds,realsampaibulanini_ds,reallastsampaibulanini_ds,
             reallastbulanini_sp,realbulanini_sp,realsampaibulanini_sp,reallastsampaibulanini_sp,
             reallastbulanini_cg5,realbulanini_cg5,realsampaibulanini_cg5,reallastsampaibulanini_cg5,
+
+            reallastbulanini_sp8,realbulanini_sp8,realsampaibulanini_sp8,reallastsampaibulanini_sp8,
+            reallastbulanini_sc,realbulanini_sc,realsampaibulanini_sc,reallastsampaibulanini_sc,
             ab_bulanini,ab_sampaibulanini,
             ar_bulanini,ar_sampaibulanini,
             as_bulanini,as_sampaibulanini,
@@ -3555,7 +3558,11 @@ class PenjualanController extends Controller
             dep_bulanini,dep_sampaibulanini,
             ds_bulanini,ds_sampaibulanini,
             sp_bulanini,sp_sampaibulanini,
-            cg5_bulanini,cg5_sampaibulanini');
+            cg5_bulanini,cg5_sampaibulanini,
+            sp8_bulanini,sp8_sampaibulanini,
+            sc_bulanini,sc_sampaibulanini
+
+            ');
             if ($sumber == 1) {
                 $query->leftJoin(
                     DB::raw("(
@@ -3610,7 +3617,17 @@ class PenjualanController extends Controller
                             SUM(IF( kode_produk = 'CG5' AND lastpayment >= '$awalbulaninilast' AND lastpayment <= '$akhirbulaninilast', jumlah, 0 )) AS reallastbulanini_cg5,
                             SUM(IF( kode_produk = 'CG5' AND lastpayment >= '$awaltahunlalu' AND lastpayment <= '$akhirbulaninilast', jumlah, 0 )) AS reallastsampaibulanini_cg5,
                             SUM(IF( kode_produk = 'CG5' AND lastpayment >= '$awalbulanini' AND lastpayment <= '$akhirbulanini', jumlah, 0 )) AS realbulanini_cg5,
-                            SUM(IF( kode_produk = 'CG5' AND lastpayment >= '$awaltahunini' AND lastpayment <= '$akhirbulanini', jumlah, 0 )) AS realsampaibulanini_cg5
+                            SUM(IF( kode_produk = 'CG5' AND lastpayment >= '$awaltahunini' AND lastpayment <= '$akhirbulanini', jumlah, 0 )) AS realsampaibulanini_cg5,
+
+                            SUM(IF( kode_produk = 'SP8' AND lastpayment >= '$awalbulaninilast' AND lastpayment <= '$akhirbulaninilast', jumlah, 0 )) AS reallastbulanini_sp8,
+                            SUM(IF( kode_produk = 'SP8' AND lastpayment >= '$awaltahunlalu' AND lastpayment <= '$akhirbulaninilast', jumlah, 0 )) AS reallastsampaibulanini_sp8,
+                            SUM(IF( kode_produk = 'SP8' AND lastpayment >= '$awalbulanini' AND lastpayment <= '$akhirbulanini', jumlah, 0 )) AS realbulanini_sp8,
+                            SUM(IF( kode_produk = 'SP8' AND lastpayment >= '$awaltahunini' AND lastpayment <= '$akhirbulanini', jumlah, 0 )) AS realsampaibulanini_sp8,
+
+                            SUM(IF( kode_produk = 'SC' AND lastpayment >= '$awalbulaninilast' AND lastpayment <= '$akhirbulaninilast', jumlah, 0 )) AS reallastbulanini_sc,
+                            SUM(IF( kode_produk = 'SC' AND lastpayment >= '$awaltahunlalu' AND lastpayment <= '$akhirbulaninilast', jumlah, 0 )) AS reallastsampaibulanini_sc,
+                            SUM(IF( kode_produk = 'SC' AND lastpayment >= '$awalbulanini' AND lastpayment <= '$akhirbulanini', jumlah, 0 )) AS realbulanini_sc,
+                            SUM(IF( kode_produk = 'SC' AND lastpayment >= '$awaltahunini' AND lastpayment <= '$akhirbulanini', jumlah, 0 )) AS realsampaibulanini_sc
 
                         FROM
                             detailpenjualan
@@ -3686,7 +3703,17 @@ class PenjualanController extends Controller
                             SUM(IF( kode_produk = 'CG5' AND tgltransaksi >= '$awalbulaninilast' AND tgltransaksi <= '$akhirbulaninilast', jumlah, 0 )) AS reallastbulanini_cg5,
                             SUM(IF( kode_produk = 'CG5' AND tgltransaksi >= '$awaltahunlalu' AND tgltransaksi <= '$akhirbulaninilast', jumlah, 0 )) AS reallastsampaibulanini_cg5,
                             SUM(IF( kode_produk = 'CG5' AND tgltransaksi >= '$awalbulanini' AND tgltransaksi <= '$akhirbulanini', jumlah, 0 )) AS realbulanini_cg5,
-                            SUM(IF( kode_produk = 'CG5' AND tgltransaksi >= '$awaltahunini' AND tgltransaksi <= '$akhirbulanini', jumlah, 0 )) AS realsampaibulanini_cg5
+                            SUM(IF( kode_produk = 'CG5' AND tgltransaksi >= '$awaltahunini' AND tgltransaksi <= '$akhirbulanini', jumlah, 0 )) AS realsampaibulanini_cg5,
+
+                            SUM(IF( kode_produk = 'SP8' AND tgltransaksi >= '$awalbulaninilast' AND tgltransaksi <= '$akhirbulaninilast', jumlah, 0 )) AS reallastbulanini_sp8,
+                            SUM(IF( kode_produk = 'SP8' AND tgltransaksi >= '$awaltahunlalu' AND tgltransaksi <= '$akhirbulaninilast', jumlah, 0 )) AS reallastsampaibulanini_sp8,
+                            SUM(IF( kode_produk = 'SP8' AND tgltransaksi >= '$awalbulanini' AND tgltransaksi <= '$akhirbulanini', jumlah, 0 )) AS realbulanini_sp8,
+                            SUM(IF( kode_produk = 'SP8' AND tgltransaksi >= '$awaltahunini' AND tgltransaksi <= '$akhirbulanini', jumlah, 0 )) AS realsampaibulanini_sp8,
+
+                            SUM(IF( kode_produk = 'SC' AND tgltransaksi >= '$awalbulaninilast' AND tgltransaksi <= '$akhirbulaninilast', jumlah, 0 )) AS reallastbulanini_sc,
+                            SUM(IF( kode_produk = 'SC' AND tgltransaksi >= '$awaltahunlalu' AND tgltransaksi <= '$akhirbulaninilast', jumlah, 0 )) AS reallastsampaibulanini_sc,
+                            SUM(IF( kode_produk = 'SC' AND tgltransaksi >= '$awalbulanini' AND tgltransaksi <= '$akhirbulanini', jumlah, 0 )) AS realbulanini_sc,
+                            SUM(IF( kode_produk = 'SC' AND tgltransaksi >= '$awaltahunini' AND tgltransaksi <= '$akhirbulanini', jumlah, 0 )) AS realsampaibulanini_sc
 
                         FROM
                             detailpenjualan
@@ -3746,7 +3773,15 @@ class PenjualanController extends Controller
 
 
                         SUM(IF(kode_produk = 'CG5' AND bulan = '$bulan',jumlah_target,0)) as cg5_bulanini,
-                        SUM(IF(kode_produk = 'CG5' AND bulan <= '$bulan',jumlah_target,0)) as cg5_sampaibulanini
+                        SUM(IF(kode_produk = 'CG5' AND bulan <= '$bulan',jumlah_target,0)) as cg5_sampaibulanini,
+
+                        SUM(IF(kode_produk = 'SP8' AND bulan = '$bulan',jumlah_target,0)) as sp8_bulanini,
+                        SUM(IF(kode_produk = 'SP8' AND bulan <= '$bulan',jumlah_target,0)) as sp8_sampaibulanini,
+
+                        SUM(IF(kode_produk = 'SC' AND bulan = '$bulan',jumlah_target,0)) as sc_bulanini,
+                        SUM(IF(kode_produk = 'SC' AND bulan <= '$bulan',jumlah_target,0)) as sc_sampaibulanini
+
+
                         FROM komisi_target_qty_detail dt
                         INNER JOIN komisi_target kt ON dt.kode_target = kt.kode_target
                         INNER JOIN karyawan ON dt.id_karyawan = karyawan.id_karyawan
@@ -3759,7 +3794,7 @@ class PenjualanController extends Controller
             );
 
             $query->where('karyawan.kode_cabang', $request->kode_cabang);
-
+            $query->where('karyawan.status_aktif_sales', 1);
             $dppp = $query->get();
             if (isset($_POST['export'])) {
                 $time = date("H:i:s");
@@ -3786,6 +3821,8 @@ class PenjualanController extends Controller
             reallastbulanini_ds,realbulanini_ds,realsampaibulanini_ds,reallastsampaibulanini_ds,
             reallastbulanini_sp,realbulanini_sp,realsampaibulanini_sp,reallastsampaibulanini_sp,
             reallastbulanini_cg5,realbulanini_cg5,realsampaibulanini_cg5,reallastsampaibulanini_cg5,
+            reallastbulanini_sp8,realbulanini_sp8,realsampaibulanini_sp8,reallastsampaibulanini_sp8,
+            reallastbulanini_sc,realbulanini_sc,realsampaibulanini_sc,reallastsampaibulanini_sc,
             ab_bulanini,ab_sampaibulanini,
             ar_bulanini,ar_sampaibulanini,
             as_bulanini,as_sampaibulanini,
@@ -3795,7 +3832,9 @@ class PenjualanController extends Controller
             dep_bulanini,dep_sampaibulanini,
             ds_bulanini,ds_sampaibulanini,
             sp_bulanini,sp_sampaibulanini,
-            cg5_bulanini,cg5_sampaibulanini');
+            cg5_bulanini,cg5_sampaibulanini,
+            sp8_bulanini,sp8_sampaibulanini,
+            sc_bulanini,sc_sampaibulanini');
             $query->leftJoin(
                 DB::raw("(
                     SELECT karyawan.kode_cabang,
@@ -3836,7 +3875,15 @@ class PenjualanController extends Controller
 
 
                     SUM(IF(kode_produk = 'CG5' AND bulan = '$bulan',jumlah_target,0)) as cg5_bulanini,
-                    SUM(IF(kode_produk = 'CG5' AND bulan <= '$bulan',jumlah_target,0)) as cg5_sampaibulanini
+                    SUM(IF(kode_produk = 'CG5' AND bulan <= '$bulan',jumlah_target,0)) as cg5_sampaibulanini,
+
+                    SUM(IF(kode_produk = 'SP8' AND bulan = '$bulan',jumlah_target,0)) as sp8_bulanini,
+                    SUM(IF(kode_produk = 'SP8' AND bulan <= '$bulan',jumlah_target,0)) as sp8_sampaibulanini,
+
+                    SUM(IF(kode_produk = 'SC' AND bulan = '$bulan',jumlah_target,0)) as sc_bulanini,
+                    SUM(IF(kode_produk = 'SC' AND bulan <= '$bulan',jumlah_target,0)) as sc_sampaibulanini
+
+
                     FROM komisi_target_qty_detail dt
                     INNER JOIN komisi_target kt ON dt.kode_target = kt.kode_target
                     INNER JOIN karyawan ON dt.id_karyawan = karyawan.id_karyawan
@@ -3902,7 +3949,17 @@ class PenjualanController extends Controller
                         SUM(IF( kode_produk = 'CG5' AND lastpayment >= '$awalbulaninilast' AND lastpayment <= '$akhirbulaninilast', jumlah, 0 )) AS reallastbulanini_cg5,
                         SUM(IF( kode_produk = 'CG5' AND lastpayment >= '$awaltahunlalu' AND lastpayment <= '$akhirbulaninilast', jumlah, 0 )) AS reallastsampaibulanini_cg5,
                         SUM(IF( kode_produk = 'CG5' AND lastpayment >= '$awalbulanini' AND lastpayment <= '$akhirbulanini', jumlah, 0 )) AS realbulanini_cg5,
-                        SUM(IF( kode_produk = 'CG5' AND lastpayment >= '$awaltahunini' AND lastpayment <= '$akhirbulanini', jumlah, 0 )) AS realsampaibulanini_cg5
+                        SUM(IF( kode_produk = 'CG5' AND lastpayment >= '$awaltahunini' AND lastpayment <= '$akhirbulanini', jumlah, 0 )) AS realsampaibulanini_cg5,
+
+                        SUM(IF( kode_produk = 'SP8' AND lastpayment >= '$awalbulaninilast' AND lastpayment <= '$akhirbulaninilast', jumlah, 0 )) AS reallastbulanini_sp8,
+                        SUM(IF( kode_produk = 'SP8' AND lastpayment >= '$awaltahunlalu' AND lastpayment <= '$akhirbulaninilast', jumlah, 0 )) AS reallastsampaibulanini_sp8,
+                        SUM(IF( kode_produk = 'SP8' AND lastpayment >= '$awalbulanini' AND lastpayment <= '$akhirbulanini', jumlah, 0 )) AS realbulanini_sp8,
+                        SUM(IF( kode_produk = 'SP8' AND lastpayment >= '$awaltahunini' AND lastpayment <= '$akhirbulanini', jumlah, 0 )) AS realsampaibulanini_sp8,
+
+                        SUM(IF( kode_produk = 'SC' AND lastpayment >= '$awalbulaninilast' AND lastpayment <= '$akhirbulaninilast', jumlah, 0 )) AS reallastbulanini_sc,
+                        SUM(IF( kode_produk = 'SC' AND lastpayment >= '$awaltahunlalu' AND lastpayment <= '$akhirbulaninilast', jumlah, 0 )) AS reallastsampaibulanini_sc,
+                        SUM(IF( kode_produk = 'SC' AND lastpayment >= '$awalbulanini' AND lastpayment <= '$akhirbulanini', jumlah, 0 )) AS realbulanini_sc,
+                        SUM(IF( kode_produk = 'SC' AND lastpayment >= '$awaltahunini' AND lastpayment <= '$akhirbulanini', jumlah, 0 )) AS realsampaibulanini_sc
 
                         FROM
                             detailpenjualan
@@ -3978,7 +4035,17 @@ class PenjualanController extends Controller
                         SUM(IF( kode_produk = 'CG5' AND tgltransaksi >= '$awalbulaninilast' AND tgltransaksi <= '$akhirbulaninilast', jumlah, 0 )) AS reallastbulanini_cg5,
                         SUM(IF( kode_produk = 'CG5' AND tgltransaksi >= '$awaltahunlalu' AND tgltransaksi <= '$akhirbulaninilast', jumlah, 0 )) AS reallastsampaibulanini_cg5,
                         SUM(IF( kode_produk = 'CG5' AND tgltransaksi >= '$awalbulanini' AND tgltransaksi <= '$akhirbulanini', jumlah, 0 )) AS realbulanini_cg5,
-                        SUM(IF( kode_produk = 'CG5' AND tgltransaksi >= '$awaltahunini' AND tgltransaksi <= '$akhirbulanini', jumlah, 0 )) AS realsampaibulanini_cg5
+                        SUM(IF( kode_produk = 'CG5' AND tgltransaksi >= '$awaltahunini' AND tgltransaksi <= '$akhirbulanini', jumlah, 0 )) AS realsampaibulanini_cg5,
+
+                        SUM(IF( kode_produk = 'SP8' AND tgltransaksi >= '$awalbulaninilast' AND tgltransaksi <= '$akhirbulaninilast', jumlah, 0 )) AS reallastbulanini_sp8,
+                        SUM(IF( kode_produk = 'SP8' AND tgltransaksi >= '$awaltahunlalu' AND tgltransaksi <= '$akhirbulaninilast', jumlah, 0 )) AS reallastsampaibulanini_sp8,
+                        SUM(IF( kode_produk = 'SP8' AND tgltransaksi >= '$awalbulanini' AND tgltransaksi <= '$akhirbulanini', jumlah, 0 )) AS realbulanini_sp8,
+                        SUM(IF( kode_produk = 'SP8' AND tgltransaksi >= '$awaltahunini' AND tgltransaksi <= '$akhirbulanini', jumlah, 0 )) AS realsampaibulanini_sp8,
+
+                        SUM(IF( kode_produk = 'SC' AND tgltransaksi >= '$awalbulaninilast' AND tgltransaksi <= '$akhirbulaninilast', jumlah, 0 )) AS reallastbulanini_sc,
+                        SUM(IF( kode_produk = 'SC' AND tgltransaksi >= '$awaltahunlalu' AND tgltransaksi <= '$akhirbulaninilast', jumlah, 0 )) AS reallastsampaibulanini_sc,
+                        SUM(IF( kode_produk = 'SC' AND tgltransaksi >= '$awalbulanini' AND tgltransaksi <= '$akhirbulanini', jumlah, 0 )) AS realbulanini_sc,
+                        SUM(IF( kode_produk = 'SC' AND tgltransaksi >= '$awaltahunini' AND tgltransaksi <= '$akhirbulanini', jumlah, 0 )) AS realsampaibulanini_sc
 
                     FROM
                         detailpenjualan

@@ -229,6 +229,7 @@ class GlobalProvider extends ServiceProvider
             $oman = ['admin', 'manager marketing', 'kepala gudang', 'admin gudang pusat', 'kepala admin', 'admin pusat', 'admin garut'];
             $omancabang = ['admin', 'manager marketing', 'kepala gudang', 'admin gudang pusat', 'kepala admin', 'admin pusat', 'admin garut'];
             $omanmarketing = ['admin', 'manager marketing', 'kepala gudang', 'admin gudang pusat'];
+
             //----------------------------Permintaaan Pengiriman--------------------------------
             $permintaanpengiriman = ['admin', 'admin gudang cabang dan marketing', 'admin garut'];
             $permintaanpengiriman_tambah = ['admin', 'admin gudang cabang dan marketing', 'admin gudang pusat', 'admin garut'];
