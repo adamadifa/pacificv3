@@ -86,7 +86,7 @@ class PermintaanproduksiController extends Controller
                 SUM(IF(`inout`='IN',jumlah,0)) - SUM(IF(`inout`='OUT',jumlah,0))  as saldoakhir
                 FROM detail_mutasi_gudang
                 INNER JOIN mutasi_gudang_jadi ON detail_mutasi_gudang.no_mutasi_gudang = mutasi_gudang_jadi.no_mutasi_gudang
-                WHERE tgl_mutasi_gudang <= '$akhirtanggal'
+                WHERE tgl_mutasi_gudang <= '$tanggal'
                 GROUP BY kode_produk
             ) dm"),
                 function ($join) {
