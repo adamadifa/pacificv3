@@ -75,7 +75,7 @@ class PermintaanproduksiController extends Controller
 
         $tahun = substr($dataoman->tahun, 2, 2);
         $no_permintaan = buatkode($no_permintaan_terakhir, 'PP' . $bulan . $tahun, 3);
-        $tanggal = $dataoman->tahun . "-" . $dataoman->bulan . "-01";
+        $tanggal = $dataoman->tahun . "-" . $dataoman->bulan - 1 . "-01";
         $akhirtanggal = date("Y-m-t", strtotime($tanggal));
         $detailoman = DB::table('detail_oman')
             ->select('detail_oman.kode_produk', 'nama_barang', DB::raw('SUM(jumlah) as jumlah'), 'saldoakhir')
@@ -86,7 +86,7 @@ class PermintaanproduksiController extends Controller
                 SUM(IF(`inout`='IN',jumlah,0)) - SUM(IF(`inout`='OUT',jumlah,0))  as saldoakhir
                 FROM detail_mutasi_gudang
                 INNER JOIN mutasi_gudang_jadi ON detail_mutasi_gudang.no_mutasi_gudang = mutasi_gudang_jadi.no_mutasi_gudang
-                WHERE tgl_mutasi_gudang <= '$tanggal'
+                WHERE tgl_mutasi_gudang <= '$akhirtanggal'
                 GROUP BY kode_produk
             ) dm"),
                 function ($join) {
