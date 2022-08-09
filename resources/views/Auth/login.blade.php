@@ -95,26 +95,7 @@
                     <img src="{{asset('pacific/css/login.png')}}" alt="welcome">
                 </div>
             </div>
-            <!-- END SIGN IN CONTENT -->
-            <!-- SIGN UP CONTENT -->
-            <div class="col align-items-center flex-col">
-                <div class="img sign-up">
-
-                </div>
-                <div class="text sign-up">
-                    <h2>
-                        Join with us
-                    </h2>
-                    <p>
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Impedit obcaecati, accusantium
-                        molestias, laborum, aspernatur deserunt officia voluptatum tempora dicta quo ab ullam. Assumenda
-                        enim harum minima possimus dignissimos deserunt rem.
-                    </p>
-                </div>
-            </div>
-            <!-- END SIGN UP CONTENT -->
         </div>
-        <!-- END CONTENT SECTION -->
     </div>
 
     <script src="{{asset('pacific/index.js')}}"></script>

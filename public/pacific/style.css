@@ -315,6 +315,7 @@ body {
         border-top-right-radius: 2rem;
         transform: translateY(100%);
         transition: 1s ease-in-out;
+        z-index: 9999;
     }
 
     .row {
@@ -340,5 +341,27 @@ body {
     .text h2 {
         margin: .5rem;
         font-size: 2rem;
+    }
+}
+
+
+@media (max-width:425px) {
+    .img img{
+        width: 350px;
+    }
+
+    .img{
+        margin-top: 0;
+    }
+
+    .social-list {
+        margin: 2rem 0;
+        padding: 1rem;
+        border-radius: 1.5rem;
+        width: 100%;
+        box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+        transform: scale(0);
+        transition: .5s ease-in-out;
+        transition-delay: 1.2s;
     }
 }
