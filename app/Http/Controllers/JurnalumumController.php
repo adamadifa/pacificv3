@@ -181,7 +181,7 @@ class JurnalumumController extends Controller
                 $nobukti_bukubesar = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $tahun, 6);
 
                 $cekakun = substr($kode_akun, 0, 3);
-                if ($status_dk == 'D' and $cekakun == '6-1'  or $status_dk == 'D' and $cekakun == '6-2') {
+                if ($status_dk == 'D' and $cekakun == '6-1' and $peruntukan == "PC"  or $status_dk == 'D' and $cekakun == '6-2' and $peruntukan == "PC") {
                     $kode = "CR" . $bulan . $tahun;
                     $cr = DB::table('costratio_biaya')
                         ->select('kode_cr')
