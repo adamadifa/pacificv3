@@ -358,8 +358,9 @@ class LedgerController extends Controller
 
             DB::table('buku_besar')->where('no_bukti', $ledger->nobukti_bukubesar)->update($databukubesar);
             DB::table('buku_besar')->where('no_bukti', $ledger->nobukti_bukubesar_2)->update($databukubesarbank);
+            $cekakun = substr($kode_akun, 0, 3);
             if (empty($ledger->kode_cr)) {
-                $cekakun = substr($kode_akun, 0, 3);
+
                 if ($status_dk == 'D' and $cekakun == '6-1' and $peruntukan == 'PC' or $status_dk == 'D' and $cekakun == '6-2' and $peruntukan == 'PC') {
                     $kode = "CR" . $bulan . $tahun;
                     $cr = DB::table('costratio_biaya')
@@ -413,7 +414,7 @@ class LedgerController extends Controller
 
                 //echo 1;
             } else {
-                if ($status_dk == "D" && $peruntukan == "PC") {
+                if ($status_dk == 'D' and $cekakun == '6-1' and $peruntukan == 'PC' or $status_dk == 'D' and $cekakun == '6-2' and $peruntukan == 'PC') {
                     $datacr = [
                         'tgl_transaksi' => $tgl_ledger,
                         'kode_akun'    => $kode_akun,
