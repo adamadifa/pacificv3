@@ -124,7 +124,7 @@
                     <td>{{ DateToIndo2($d->tanggal) }}</td>
                     <td>{{ $d->kode_jurnal }}</td>
                     <td>{{ $d->keterangan }}</td>
-                    <td>{{ $d->kode_cabang }}</td>
+                    <td>{{ $d->peruntukan =="PC" ? $d->kode_cabang : $d->peruntukan }}</td>
                     <td>{{ $d->kode_akun }}</td>
                     <td>{{ $d->nama_akun }}</td>
                     <td align="right">{{ !empty($debet) ? desimal($debet) : '' }}</td>
