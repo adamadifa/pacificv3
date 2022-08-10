@@ -395,7 +395,7 @@
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="penjualan" aria-labelledby="penjualan-tab" role="tabpanel">
-                                    @if ($data->status_lunas != 1 && $data->jenisbayar != "transfer")
+                                    @if ($data->status_lunas != 1)
                                     <a href="#" id="inputpembayaran" class="btn btn-primary mb-2" class="href"><i class="feather icon-plus"></i></a>
                                     @endif
 
