@@ -4215,7 +4215,7 @@ class PenjualanController extends Controller
         if (!empty($request->id_karyawan)) {
             $query->where('penjualan.id_karyawan', $request->id_karyawan);
         }
-        $query->groupByRaw('penjualan.kode_pelanggan,nama_pelanggan,pasar');
+        $query->groupByRaw('penjualan.kode_pelanggan,nama_pelanggan,pasar,nama_karyawan');
         $query->orderBy('nama_pelanggan');
         $rekapomsetpelanggan = $query->get();
 
