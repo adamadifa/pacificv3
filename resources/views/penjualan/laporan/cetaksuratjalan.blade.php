@@ -81,7 +81,7 @@
     <tr>
         <td>Jenis Transaksi</td>
         <td>:</td>
-        <td>{{ strtoupper($faktur->jenistransaksi) }}</td>
+        <td>{{ strtoupper($faktur->jenistransaksi) }} {{ $faktur->jenistransaksi=="kredit" ? "( JT : ". DateToIndo2(date('Y-m-d', strtotime('14 day', strtotime($faktur->tgltransaksi)))).")" : '' }}</td>
         <td>Salesman</td>
         <td>:</td>
         <td><b>{{ $faktur->id_karyawan }}</b> - {{ $faktur->nama_karyawan }}</td>
@@ -207,6 +207,13 @@
                         <td colspan="3" align="center">Total Pembayaran</td>
                         <td align="right">{{ rupiah($faktur->total) }}</td>
                     </tr>
+                    @if ($faktur->kode_cabang == "BDG" )
+                    <tr>
+                        <td colspan="4"></td>
+                        <td colspan="3" align="center">Terbilang</td>
+                        <td align="right"><i>{{ ucwords(terbilang($faktur->total)) }}</i></td>
+                    </tr>
+                    @endif
                 </tbody>
 
             </table>
