@@ -230,6 +230,45 @@ $detail = DB::table('detailpenjualan')
         </td>
     </tr>
 
+    @if ($faktur->kode_cabang == "BDG")
+    <tr>
+        <table class="garis5" width="100%">
+            <tr style="font-weight:bold; text-align:center">
+                <td>Dibuat</td>
+                <td>Diserahkan</td>
+                <td>Diterima</td>
+                <td>Mengetahui</td>
+                <td rowspan="3">
+
+                    <div style="display: flex; align-items: center; height:20px;">
+                        <div style="width:10px; height:10px; border:1px solid black; margin-bottom:5px; margin-left:5px"></div>
+                        <div style="margin-left: 10px; margin-bottom:5px">Cash</div>
+                    </div>
+                    <div style="display: flex; align-items: center; height:20px;">
+                        <div style="width:10px; height:10px; border:1px solid black; margin-bottom:5px; margin-left:5px"></div>
+                        <div style="margin-left: 10px; margin-bottom:5px">Transfer</div>
+                    </div>
+                    <div style="display: flex; align-items: center; height:20px;">
+                        <div style="width:10px; height:10px; border:1px solid black; margin-bottom:5px; margin-left:5px"></div>
+                        <div style="margin-left: 10px; margin-bottom:5px">Check/Giro</div>
+                    </div>
+                </td>
+            </tr>
+            <tr style="font-weight:bold;">
+                <td style="height: 40px"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr style="font-weight:bold; text-align:center">
+                <td>Penjualan</td>
+                <td>Pengirim</td>
+                <td>Pelanggan</td>
+                <td>Pejabat Cabang</td>
+            </tr>
+        </table>
+    </tr>
+    @else
     <tr>
         <table class="garis5" width="100%">
             <tr style="font-weight:bold; text-align:center">
@@ -261,6 +300,7 @@ $detail = DB::table('detailpenjualan')
             </tr>
         </table>
     </tr>
+    @endif
 </table>
 @if (in_array($faktur->kode_pelanggan,$pelangganmp))
 <i>
