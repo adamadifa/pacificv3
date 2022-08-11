@@ -332,6 +332,7 @@ class ReturController extends Controller
             ->where('no_fak_penj', $retur->no_fak_penj)
             ->where('tglbayar', $retur->tgltransaksi)
             ->first();
+        $nobukti = $historibayar != null ? $historibayar->nobukti : '';
         DB::beginTransaction();
         try {
             DB::table('retur')
@@ -347,7 +348,7 @@ class ReturController extends Controller
                     ]);
 
                 DB::table('buku_besar')
-                    ->where('no_ref', $historibayar->nobukti)
+                    ->where('no_ref', $nobukti)
                     ->update([
                         'debet' =>  DB::raw('debet +' . $retur->total)
                     ]);
