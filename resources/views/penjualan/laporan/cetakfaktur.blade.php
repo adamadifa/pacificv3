@@ -173,6 +173,13 @@
                     <td colspan="3" align="center">Total Pembayaran</td>
                     <td align="right">{{ rupiah($faktur->total) }}</td>
                 </tr>
+                @if (Auth::user()->kode_cabang=="BDG" || Auth::user()->kode_cabang=="PCF" )
+                <tr>
+                    <td colspan="4"></td>
+                    <td colspan="3" align="center">Terbilang</td>
+                    <td align="right"><i>{{ ucwords(terbilang($faktur->total)) }}</i></td>
+                </tr>
+                @endif
             </table>
         </td>
     </tr>
@@ -298,6 +305,13 @@
                     <td colspan="3" align="center">Total </td>
                     <td align="right">{{ rupiah($faktur->total) }}</td>
                 </tr>
+                @if (Auth::user()->kode_cabang=="BDG" || Auth::user()->kode_cabang=="PCF" )
+                <tr>
+                    <td colspan="4"></td>
+                    <td colspan="3" align="center">Terbilang</td>
+                    <td align="right"><i>{{ ucwords(terbilang($faktur->total)) }}</i></td>
+                </tr>
+                @endif
             </table>
         </td>
     </tr>
