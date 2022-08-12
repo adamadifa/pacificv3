@@ -5,7 +5,7 @@
     <input type="hidden" name="tgl_transfer" value="{{$transfer->tgl_transfer}}">
     <input type="hidden" name="tglcair" value="{{$transfer->tglcair}}">
     <input type="hidden" name="pelanggan" value="{{$transfer->nama_pelanggan}}">
-    <input type="hidden" name="jenistransaksi" value="{{$transfer->jenistransaksi}}">
+
     <input type="hidden" name="kode_cabang" value="{{$transfer->kode_cabang}}">
     <table class="table">
         <tr>
