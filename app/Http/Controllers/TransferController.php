@@ -90,7 +90,7 @@ class TransferController extends Controller
     public function prosestransfer(Request $request)
     {
         $transfer = DB::table('transfer')
-            ->select('transfer.kode_transfer', 'tgl_transfer', 'penjualan.kode_pelanggan', 'nama_pelanggan', 'karyawan.kode_cabang', 'namabank', DB::raw('SUM(transfer.jumlah) as jumlah'), 'tglcair', 'transfer.status', 'ket', 'tglbayar', 'ledger_bank.no_bukti', 'penjualan.jenistransaksi')
+            ->select('transfer.kode_transfer', 'tgl_transfer', 'penjualan.kode_pelanggan', 'nama_pelanggan', 'karyawan.kode_cabang', 'namabank', DB::raw('SUM(transfer.jumlah) as jumlah'), 'tglcair', 'transfer.status', 'ket', 'tglbayar', 'ledger_bank.no_bukti')
             ->leftJoin('historibayar', 'transfer.id_transfer', '=', 'historibayar.id_transfer')
             ->leftJoin('ledger_bank', 'transfer.kode_transfer', '=', 'ledger_bank.no_ref')
             ->join('penjualan', 'transfer.no_fak_penj', '=', 'penjualan.no_fak_penj')
