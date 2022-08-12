@@ -96,7 +96,7 @@ class TransferController extends Controller
             ->join('penjualan', 'transfer.no_fak_penj', '=', 'penjualan.no_fak_penj')
             ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
             ->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan')
-            ->groupBy('transfer.kode_transfer', 'tgl_transfer', 'penjualan.kode_pelanggan', 'nama_pelanggan', 'karyawan.kode_cabang', 'namabank', 'tglcair', 'transfer.status', 'ket', 'ledger_bank.no_bukti', 'tglbayar', 'penjualan.jenistransaksi')
+            ->groupBy('transfer.kode_transfer', 'tgl_transfer', 'penjualan.kode_pelanggan', 'nama_pelanggan', 'karyawan.kode_cabang', 'namabank', 'tglcair', 'transfer.status', 'ket', 'ledger_bank.no_bukti', 'tglbayar')
             ->where('kode_transfer', $request->kode_transfer)
             ->first();
         $bank = DB::table('master_bank')->where('kode_cabang', 'PST')->get();
