@@ -130,9 +130,12 @@ class TransferController extends Controller
 
         $tahunini = date('y');
         $cabang  = $request->kode_cabang;
-        $jenistransaksi = $request->jenistransaksi;
 
-        $datatransfer = DB::table('transfer')->where('kode_transfer', $kode_transfer)->get();
+
+        $datatransfer = DB::table('transfer')
+            ->select('transfer.*', 'penjualan.jenistransaksi')
+            ->join('penjualan', 'transfer.no_fak_penj', '=', 'penjualan.no_fak_penj')
+            ->where('kode_transfer', $kode_transfer)->get();
 
         // //Setoran Pusat
         // $lastsetoranpusat = DB::table('setoran_pusat')
@@ -337,6 +340,7 @@ class TransferController extends Controller
             }
 
             foreach ($datatransfer as $d) {
+                $jenistransaksi = $d->jenistransaksi;
                 if ($status == 1) {
                     $tanggal    = explode("-", $tglcair);
                     $tahun      = substr($tanggal[0], 2, 2);
