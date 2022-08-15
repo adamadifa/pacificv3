@@ -88,6 +88,11 @@
                 </li>
             </a>
             @endif
+            <a href="/laporanpenjualan/tandaterimafaktur" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanpenjualan/tandaterimafaktur']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Tanda Terima Faktur
+                </li>
+            </a>
             @endif
         </ul>
     </div>

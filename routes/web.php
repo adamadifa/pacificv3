@@ -272,6 +272,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/laporanpenjualan/aup', [PenjualanController::class, 'laporanaup']);
     Route::post('/laporanpenjualan/aup/cetak', [PenjualanController::class, 'cetaklaporanaup']);
     Route::get('/laporanpenjualan/detailaup/{cbg}/{sales}/{idpel}/{tgl_aup}/{kategori}/{exclude}', [PenjualanController::class, 'detailaup']);
+
+    //Laporan Tanda Terima Faktur
+    Route::get('/laporanpenjualan/tandaterimafaktur', [PenjualanController::class, 'laporantandaterimafaktur']);
+    Route::post('/laporanpenjualan/tandaterimafaktur/cetak', [PenjualanController::class, 'cetaktandaterimafaktur']);
     //Lebih Satu Faktur
     Route::get('/laporanpenjualan/lebihsatufaktur', [PenjualanController::class, 'laporanlebihsatufaktur']);
     Route::post('/laporanpenjualan/lebihsatufaktur/cetak', [PenjualanController::class, 'cetaklaporanlebihsatufaktur']);

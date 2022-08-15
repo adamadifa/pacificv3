@@ -2955,6 +2955,25 @@ class PenjualanController extends Controller
         return view('penjualan.laporan.frm.lap_kartupiutang', compact('cabang'));
     }
 
+    public function laporantandaterimafaktur()
+    {
+        if ($this->cabang != "PCF" && $this->cabang != "PST") {
+            if ($this->cabang == "GRT") {
+                $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
+            } else {
+                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+                $cabang[] = "";
+                foreach ($cbg as $c) {
+                    $cabang[] = $c->kode_cabang;
+                }
+                //dd($cabang);
+                $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
+            }
+        } else {
+            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
+        }
+        return view('penjualan.laporan.frm.lap_tandaterimafaktur', compact('cabang'));
+    }
     public function cetaklaporankartupiutang(Request $request)
     {
         $dari = $request->dari;
@@ -3126,7 +3145,12 @@ class PenjualanController extends Controller
             // Mendefinisikan nama file ekspor "hasil-export.xls"
             header("Content-Disposition: attachment; filename=Kartu Piutang Periode $dari-$sampai-$time.xls");
         }
-        return view('penjualan.laporan.cetak_kartupiutang', compact('kartupiutang', 'salesman', 'cabang', 'dari', 'sampai', 'pelanggan'));
+
+        if (isset($_POST['tandaterimafaktur'])) {
+            return view('penjualan.laporan.cetak_tandaterimafaktur', compact('kartupiutang', 'salesman', 'cabang', 'dari', 'sampai', 'pelanggan'));
+        } else {
+            return view('penjualan.laporan.cetak_kartupiutang', compact('kartupiutang', 'salesman', 'cabang', 'dari', 'sampai', 'pelanggan'));
+        }
     }
 
     public function laporanaup()
