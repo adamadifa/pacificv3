@@ -2976,6 +2976,7 @@ class PenjualanController extends Controller
     }
     public function cetaklaporankartupiutang(Request $request)
     {
+        $no_faktur = $request->no_faktur;
         $dari = $request->dari;
         $sampai = $request->sampai;
         $ljt = $request->ljt;
@@ -3116,6 +3117,10 @@ class PenjualanController extends Controller
         } else if ($ljt == 2) {
             $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) > 15");
         }
+
+        if (isset($_POST['tandaterimafaktur'])) {
+            $query->whereIn('penjualan.no_fak_penj', $no_faktur);
+        }
         $query->orWhere('penjualan.jenistransaksi', '!=', 'tunai');
         $query->where('tgltransaksi', '<=', $sampai);
         $query->whereRaw('IFNULL(bayarbulanini,0) != 0');
@@ -3135,6 +3140,10 @@ class PenjualanController extends Controller
             $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) > 15");
         }
 
+        if (isset($_POST['tandaterimafaktur'])) {
+            $query->whereIn('penjualan.no_fak_penj', $no_faktur);
+        }
+
         $query->orderBy('tgltransaksi');
         $query->orderBy('penjualan.no_fak_penj');
         $kartupiutang = $query->get();
@@ -3147,6 +3156,7 @@ class PenjualanController extends Controller
         }
 
         if (isset($_POST['tandaterimafaktur'])) {
+
             return view('penjualan.laporan.cetak_tandaterimafaktur', compact('kartupiutang', 'salesman', 'cabang', 'dari', 'sampai', 'pelanggan'));
         } else {
             return view('penjualan.laporan.cetak_kartupiutang', compact('kartupiutang', 'salesman', 'cabang', 'dari', 'sampai', 'pelanggan'));
@@ -5478,5 +5488,17 @@ class PenjualanController extends Controller
             ->first();
 
         return view('penjualan.dashboard.rekapkasbesardashboard', compact('kasbesar', 'kasbesartsm', 'kasbesargrt'));
+    }
+
+
+    public function getfaktur(Request $request)
+    {
+        $id_karyawan = $request->id_karyawan;
+        $faktur = DB::table('penjualan')->where('id_karyawan', $id_karyawan)
+            ->where('status_lunas', 2)
+            ->get();
+        foreach ($faktur as $d) {
+            echo "<option>" . $d->no_fak_penj . "</option>";
+        }
     }
 }

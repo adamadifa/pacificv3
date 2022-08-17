@@ -38,7 +38,7 @@
                                                     @if (Auth::user()->kode_cabang!="PCF" && Auth::user()->kode_cabang!="PST")
                                                     <option value="">Pilih Cabang</option>
                                                     @else
-                                                    <option value="">Semua Cabang</option>
+                                                    <option value="">Pilih Cabang</option>
                                                     @endif
                                                     @foreach ($cabang as $c)
                                                     <option {{ (Request('kode_cabang')==$c->kode_cabang ? 'selected':'')}} value="{{ $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
@@ -51,7 +51,7 @@
                                         <div class="col-12">
                                             <div class="form-group  ">
                                                 <select name="id_karyawan" id="id_karyawan" class="form-control">
-                                                    <option value="">Semua Salesman</option>
+                                                    <option value="">Pilih Salesman</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -62,6 +62,15 @@
                                         </div>
                                         <div class="col-6">
                                             <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <select id="no_faktur" name="no_faktur[]" class="select2 form-control" multiple="multiple">
+
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -105,12 +114,13 @@
             var kode_cabang = $("#kode_cabang").val();
             var dari = $("#dari").val();
             var sampai = $("#sampai").val();
-
+            var id_karyawan = $("#id_karyawan").val();
+            var no_faktur = $("#no_faktur").val();
             var start = new Date(dari);
             var end = new Date(sampai);
 
             var datestart = new Date('2018-09-01');
-            if (cabang != "PCF" && kode_cabang == "" && cabang != "PST" && kode_cabang == "") {
+            if (kode_cabang == "") {
                 swal({
                     title: 'Oops'
                     , text: 'Pilih Cabang Terlebih Dahulu !'
@@ -124,6 +134,26 @@
                 swal({
                     title: 'Oops'
                     , text: 'Periode Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#dari").focus();
+                });
+                return false;
+            } else if (id_karyawan == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Salesman Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#id_karyawan").focus();
+                });
+                return false;
+            } else if (no_faktur == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'No. Faktur Harus Diisi !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
@@ -170,18 +200,17 @@
             });
         }
 
-        function loadpelanggansalesman(kode_cabang, id_karyawan) {
+        function loadfaktur(id_karyawan) {
             $.ajax({
                 type: 'POST'
-                , url: '/pelanggan/getpelanggansalesman'
+                , url: '/penjualan/getfaktur'
                 , data: {
                     _token: "{{ csrf_token() }}"
-                    , kode_cabang: kode_cabang
                     , id_karyawan: id_karyawan
                 }
                 , cache: false
                 , success: function(respond) {
-                    $("#kode_pelanggan").html(respond);
+                    $("#no_faktur").html(respond);
                 }
             });
         }
@@ -189,12 +218,11 @@
         $("#kode_cabang").change(function() {
             var kode_cabang = $(this).val();
             loadsalesmancabang(kode_cabang);
-            loadpelanggansalesman(kode_cabang, id_karyawan = "");
         });
 
         $("#id_karyawan").change(function() {
             var id_karyawan = $(this).val();
-            loadpelanggansalesman(kode_cabang = "", id_karyawan);
+            loadfaktur(id_karyawan);
         });
     });
 

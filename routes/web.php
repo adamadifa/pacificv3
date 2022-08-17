@@ -1111,6 +1111,7 @@ Route::middleware(['auth'])->group(function () {
 
     //Penjualan
     Route::get('/penjualan', [PenjualanController::class, 'index']);
+    Route::post('/penjualan/getfaktur', [PenjualanController::class, 'getfaktur']);
     Route::get('/penjualan/create', [PenjualanController::class, 'create']);
     Route::post('/penjualan/storebarangtemp', [PenjualanController::class, 'storebarangtemp']);
     Route::post('/penjualan/deletebarangtemp', [PenjualanController::class, 'deletebarangtemp']);
