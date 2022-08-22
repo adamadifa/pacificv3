@@ -741,10 +741,11 @@ class GlobalProvider extends ServiceProvider
             $jurnalumum_menu = ['admin', 'manager accounting', 'spv accounting', 'general affair', 'hrd'];
             $costratio_menu = ['admin', 'manager accounting', 'spv accounting', 'kepala admin', 'kepala penjualan'];
             $laporan_accounting = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'general affair', 'hrd', 'kepala admin', 'kepala penjualan'];
+            $laporan_lk = ['admin', 'direktur', 'manager accounting', 'spv accounting'];
             $laporan_rekapbj_acc = ['admin', 'direktur', 'manager accounting', 'spv accounting'];
             $laporan_bukubesar = ['admin', 'direktur', 'manager accounting', 'spv accounting'];
             $laporan_jurnalumum = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'general affair', 'hrd'];
-            $laporan_costratio = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'general affair', 'hrd', 'kepala admin', 'kepala penjualan'];
+            $laporan_costratio = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'hrd', 'kepala admin', 'kepala penjualan'];
 
 
             //Maintenance
@@ -1079,6 +1080,7 @@ class GlobalProvider extends ServiceProvider
                 'jurnalumum_menu' => $jurnalumum_menu,
                 'costratio_menu' => $costratio_menu,
                 'laporan_accounting' => $laporan_accounting,
+                'laporan_lk' => $laporan_lk,
                 'laporan_rekapbj_acc' => $laporan_rekapbj_acc,
                 'laporan_bukubesar' => $laporan_bukubesar,
                 'laporan_jurnalumum' => $laporan_jurnalumum,

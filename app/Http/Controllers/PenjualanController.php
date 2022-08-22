@@ -3147,6 +3147,143 @@ class PenjualanController extends Controller
         $query->orderBy('tgltransaksi');
         $query->orderBy('penjualan.no_fak_penj');
         $kartupiutang = $query->get();
+
+        // $query->selectRaw("penjualan.no_fak_penj,
+        // tgltransaksi,
+        // datediff('$sampai', penjualan.tgltransaksi) as usiapiutang,
+        // penjualan.kode_pelanggan,
+        // nama_pelanggan,
+        // alamat_pelanggan,
+        // pelanggan.jatuhtempo,
+        // pelanggan.no_hp,
+        // pasar,
+        // hari,
+        // penjualan.total,
+        // penjualan.jenistransaksi,
+        // penjualan.jenisbayar,
+        // penjualan.`status`,
+        // status_lunas,
+        // IFNULL(IF(tgltransaksi >= '$dari' AND  tgltransaksi <= '$sampai',subtotal,0),0) as subtotal,
+        // IFNULL(IF(tgltransaksi >= '$dari' AND  tgltransaksi <= '$sampai',penyharga,0),0) as penyharga,
+        // IFNULL(IF(tgltransaksi >= '$dari' AND  tgltransaksi <= '$sampai',potongan,0),0) as potongan,
+        // IFNULL(IF(tgltransaksi >= '$dari' AND  tgltransaksi <= '$sampai',potistimewa,0),0) as potistimewa,
+        // lastpayment,
+        // penjualan.id_karyawan,
+        // salesbaru,
+        // nama_karyawan,
+        // karyawan.kode_cabang,
+        // IFNULL(salesbaru,penjualan.id_karyawan) as salesbarunew,
+        // (IFNULL(totalpf,0)-IFNULL(totalgb,0)) AS totalretur,
+        // IFNULL(IF(tgltransaksi >= '$dari' AND  tgltransaksi <= '$sampai',total,0),0) -(IFNULL(totalpf,0)-IFNULL(totalgb,0)) as piutangbulanini,
+        // (ifnull(penjualan.total,0) - (ifnull(totalpf_last,0)-ifnull(totalgb_last,0))) AS totalpiutang,
+        // IFNULL(bayarsebelumbulanini,0) as bayarsebelumbulanini,
+        // IFNULL(bayarbulanini,0) as bayarbulanini");
+        // $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        // $query->leftJoin(
+        //     DB::raw("(
+        //         SELECT MAX(id_move) as id_move,no_fak_penj,move_faktur.id_karyawan as salesbaru
+        //         FROM move_faktur
+        //         WHERE tgl_move <= '$sampai'
+        //         GROUP BY no_fak_penj,move_faktur.id_karyawan
+        //     ) move_fak"),
+        //     function ($join) {
+        //         $join->on('penjualan.no_fak_penj', '=', 'move_fak.no_fak_penj');
+        //     }
+        // );
+
+        // $query->join('karyawan', DB::raw("IFNULL(salesbaru,penjualan.id_karyawan)"), '=', 'karyawan.id_karyawan');
+        // $query->leftJoin(
+        //     DB::raw("(
+        //         SELECT no_fak_penj,max(tglbayar) as lastpayment
+        //         FROM historibayar
+        //         GROUP BY no_fak_penj
+        //     ) payment"),
+        //     function ($join) {
+        //         $join->on('penjualan.no_fak_penj', '=', 'payment.no_fak_penj');
+        //     }
+        // );
+
+        // $query->leftJoin(
+        //     DB::raw("(
+        //         SELECT retur.no_fak_penj AS no_fak_penj,
+        //             SUM(IF(tglretur >= '$dari' AND  tglretur <= '$sampai',retur.subtotal_gb,0)) AS totalgb,
+        //             SUM(IF(tglretur >= '$dari' AND  tglretur <= '$sampai',retur.subtotal_pf,0)) AS totalpf,
+        //             SUM(IF(tglretur < '$dari',retur.subtotal_gb,0)) AS totalgb_last,
+        //             SUM(IF(tglretur < '$dari',retur.subtotal_pf,0)) AS totalpf_last
+        //         FROM retur
+        //         GROUP BY retur.no_fak_penj
+        //     ) retur"),
+        //     function ($join) {
+        //         $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
+        //     }
+        // );
+
+        // $query->leftJoin(
+        //     DB::raw("(
+        //         SELECT no_fak_penj,
+        //         SUM(IF(tglbayar >= '$dari' AND  tglbayar <= '$sampai',bayar,0)) AS bayarbulanini,
+        //         SUM(IF(tglbayar < '$dari',bayar,0)) AS bayarsebelumbulanini
+        //         FROM historibayar
+        //         GROUP BY no_fak_penj
+        //     ) hb"),
+        //     function ($join) {
+        //         $join->on('penjualan.no_fak_penj', '=', 'hb.no_fak_penj');
+        //     }
+        // );
+
+        // $query->where('penjualan.status_lunas', '2');
+        // $query->where('penjualan.jenistransaksi', 'kredit');
+        // $query->where('tgltransaksi', '<=', $sampai);
+        // if ($request->kode_cabang != "") {
+        //     $query->where('karyawan.kode_cabang', $request->kode_cabang);
+        // }
+
+        // if ($request->id_karyawan != "") {
+        //     $query->whereRaw("IFNULL(salesbaru,penjualan.id_karyawan)='$request->id_karyawan'");
+        // }
+
+        // if ($request->kode_pelanggan != "") {
+        //     $query->where('penjualan.kode_pelanggan', $request->kode_pelanggan);
+        // }
+
+        // if ($ljt == 1) {
+        //     $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) <= pelanggan.jatuhtempo");
+        // } else if ($ljt == 2) {
+        //     $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) > 15");
+        // }
+
+        // if (isset($_POST['tandaterimafaktur'])) {
+        //     $query->whereIn('penjualan.no_fak_penj', $no_faktur);
+        // }
+
+        // $query->orwhere('penjualan.status_lunas', '1');
+        // $query->where('penjualan.jenistransaksi', 'kredit');
+        // $query->where('tgltransaksi', '<=', $sampai);
+        // $query->where('lastpayment', '>=', $dari);
+        // if ($request->kode_cabang != "") {
+        //     $query->where('karyawan.kode_cabang', $request->kode_cabang);
+        // }
+
+        // if ($request->id_karyawan != "") {
+        //     $query->whereRaw("IFNULL(salesbaru,penjualan.id_karyawan)='$request->id_karyawan'");
+        // }
+
+        // if ($request->kode_pelanggan != "") {
+        //     $query->where('penjualan.kode_pelanggan', $request->kode_pelanggan);
+        // }
+
+        // if ($ljt == 1) {
+        //     $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) <= pelanggan.jatuhtempo");
+        // } else if ($ljt == 2) {
+        //     $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) > 15");
+        // }
+
+        // if (isset($_POST['tandaterimafaktur'])) {
+        //     $query->whereIn('penjualan.no_fak_penj', $no_faktur);
+        // }
+        // $query->orderBy('tgltransaksi');
+        // $query->orderBy('penjualan.no_fak_penj');
+        // $kartupiutang = $query->get();
         if (isset($_POST['export'])) {
             $time = date("H:i:s");
             // Fungsi header dengan mengirimkan raw data excel

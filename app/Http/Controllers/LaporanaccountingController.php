@@ -616,6 +616,16 @@ class LaporanaccountingController extends Controller
         return view('laporanaccounting.laporan.frm.lap_bukubesar', compact('bulan', 'akun'));
     }
 
+    public function neraca()
+    {
+        return view('laporanaccounting.laporan.frm.lap_neraca');
+    }
+
+    public function labarugi()
+    {
+        return view('laporanaccounting.laporan.frm.lap_labarugi');
+    }
+
     public function cetak_bukubesar(Request $request)
     {
         // $bulan = $request->bulan;
@@ -664,6 +674,101 @@ class LaporanaccountingController extends Controller
         return view('laporanaccounting.laporan.cetak_bukubesar', compact('dari', 'sampai', 'dariakun', 'sampaiakun', 'bukubesar', 'bulan', 'tahun'));
     }
 
+    public function cetak_neraca(Request $request)
+    {
+        // $bulan = $request->bulan;
+        // $tahun = $request->tahun;
+
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+
+        if (!empty($request->dari)) {
+            $tanggal = explode("-", $request->dari);
+            $bulan = $tanggal[1] + 0;
+            $tahun = $tanggal[0];
+        } else {
+            $bulan = "";
+            $tahun = "";
+        }
+
+        $neraca = DB::table('neraca')
+            ->select('neraca.kode_akun', 'coa.nama_akun', 'neraca.level', 'kategori_1', 'coa1.nama_akun as nama_akun_1', 'kategori_2', 'coa2.nama_akun as nama_akun_2', 'kategori_3', 'coa3.nama_akun as nama_akun_3', 'saldoawal')
+            ->leftJoin('coa', 'neraca.kode_akun', '=', 'coa.kode_akun')
+            ->leftJoin('coa as coa1', 'neraca.kategori_1', '=', 'coa1.kode_akun')
+            ->leftJoin('coa as coa2', 'neraca.kategori_2', '=', 'coa2.kode_akun')
+            ->leftJoin('coa as coa3', 'neraca.kategori_3', '=', 'coa3.kode_akun')
+            ->leftJoin(
+                DB::raw("(
+                    SELECT kode_akun,jumlah as saldoawal
+                    FROM detailsaldoawal_bb
+                    INNER JOIN saldoawal_bb ON detailsaldoawal_bb .kode_saldoawal_bb = saldoawal_bb.kode_saldoawal_bb
+                    WHERE bulan = '$bulan' AND tahun = '$tahun'
+                ) sa"),
+                function ($join) {
+                    $join->on('neraca.kode_akun', '=', 'sa.kode_akun');
+                }
+            )
+            ->orderBy('neraca.kode_akun')
+            ->orderBy('neraca.level')
+            ->get();
+
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Buku Besar $dari-$sampai.xls");
+        }
+        return view('laporanaccounting.laporan.cetak_neraca', compact('neraca', 'dari', 'sampai', 'bulan', 'tahun'));
+    }
+
+
+    public function cetak_labarugi(Request $request)
+    {
+        // $bulan = $request->bulan;
+        // $tahun = $request->tahun;
+
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+
+        if (!empty($request->dari)) {
+            $tanggal = explode("-", $request->dari);
+            $bulan = $tanggal[1] + 0;
+            $tahun = $tanggal[0];
+        } else {
+            $bulan = "";
+            $tahun = "";
+        }
+
+        $labarugi = DB::table('labarugi')
+            ->select('labarugi.kode_akun', 'coa.nama_akun', 'labarugi.level', 'kategori_1', 'coa1.nama_akun as nama_akun_1', 'kategori_2', 'coa2.nama_akun as nama_akun_2', 'kategori_3', 'coa3.nama_akun as nama_akun_3', 'saldoawal')
+            ->leftJoin('coa', 'labarugi.kode_akun', '=', 'coa.kode_akun')
+            ->leftJoin('coa as coa1', 'labarugi.kategori_1', '=', 'coa1.kode_akun')
+            ->leftJoin('coa as coa2', 'labarugi.kategori_2', '=', 'coa2.kode_akun')
+            ->leftJoin('coa as coa3', 'labarugi.kategori_3', '=', 'coa3.kode_akun')
+            ->leftJoin(
+                DB::raw("(
+                    SELECT kode_akun,jumlah as saldoawal
+                    FROM detailsaldoawal_bb
+                    INNER JOIN saldoawal_bb ON detailsaldoawal_bb .kode_saldoawal_bb = saldoawal_bb.kode_saldoawal_bb
+                    WHERE bulan = '$bulan' AND tahun = '$tahun'
+                ) sa"),
+                function ($join) {
+                    $join->on('labarugi.kode_akun', '=', 'sa.kode_akun');
+                }
+            )
+            ->orderBy('labarugi.kode_akun')
+            ->orderBy('labarugi.level')
+            ->get();
+
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laba Rugi $dari-$sampai.xls");
+        }
+        return view('laporanaccounting.laporan.cetak_labarugi', compact('labarugi', 'dari', 'sampai', 'bulan', 'tahun'));
+    }
+
     public function jurnalumum()
     {
         if (Auth::user()->level == "general affair") {
@@ -688,8 +793,8 @@ class LaporanaccountingController extends Controller
         $query = Jurnalumum::query();
         $query->join('coa', 'jurnal_umum.kode_akun', '=', 'coa.kode_akun');
         $query->whereBetween('tanggal', [$dari, $sampai]);
-        if (!empty($kode_dept)) {
-            $query->where('kode_dept', $kode_dept);
+        if (Auth::user()->level == "general affair") {
+            $query->where('kode_dept', 'GA');
         }
         $query->orderBy('tanggal');
         $query->orderBy('keterangan');

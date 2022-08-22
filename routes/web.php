@@ -921,11 +921,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/laporanaccounting/rekapbj', [LaporanaccountingController::class, 'rekapbj']);
     Route::get('/laporanaccounting/rekappersediaan', [LaporanaccountingController::class, 'rekappersediaan']);
     Route::get('/laporanaccounting/bukubesar', [LaporanaccountingController::class, 'bukubesar']);
+    Route::get('/laporanaccounting/neraca', [LaporanaccountingController::class, 'neraca']);
+    Route::get('/laporanaccounting/labarugi', [LaporanaccountingController::class, 'labarugi']);
     Route::get('/laporanaccounting/jurnalumum', [LaporanaccountingController::class, 'jurnalumum']);
     Route::get('/laporanaccounting/costratio', [LaporanaccountingController::class, 'costratio']);
     Route::post('/laporanaccounting/rekapbj/cetak', [LaporanaccountingController::class, 'cetak_rekapbj']);
     Route::post('/laporanaccounting/rekappersediaan/cetak', [LaporanaccountingController::class, 'cetak_rekappersediaan']);
     Route::post('/laporanaccounting/bukubesar/cetak', [LaporanaccountingController::class, 'cetak_bukubesar']);
+    Route::post('/laporanaccounting/neraca/cetak', [LaporanaccountingController::class, 'cetak_neraca']);
+    Route::post('/laporanaccounting/labarugi/cetak', [LaporanaccountingController::class, 'cetak_labarugi']);
     Route::post('/laporanaccounting/jurnalumum/cetak', [LaporanaccountingController::class, 'cetak_jurnalumum']);
     Route::post('/laporanaccounting/costratio/cetak', [LaporanaccountingController::class, 'cetak_costratio']);
 
