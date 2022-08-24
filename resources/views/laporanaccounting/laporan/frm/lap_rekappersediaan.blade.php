@@ -64,7 +64,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row">
+                                    <input type="hidden" name="jenislaporan" value="detail">
+                                    {{-- <div class="row">
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <select name="jenislaporan" id="jenislaporan" class="form-control">
@@ -73,7 +74,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="row">
                                         <div class="col-lg-8 col-sm-12">
                                             <div class="form-group">

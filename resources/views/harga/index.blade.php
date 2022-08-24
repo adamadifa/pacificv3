@@ -42,8 +42,17 @@
                             </div>
                         </div>
                         @endif
+
                         <div class="col-lg-4 col-sm-12">
                             <div class="form-group  ">
+                                @if ($getcbg == "PST")
+                                <select name="mitradistribusi" id="" class="form-control">
+                                    <option value="">Mitra Distribusi</option>
+                                    @foreach ($md as $d)
+                                    <option value="{{ $d->kode_pelanggan }}">{{ $d->nama_pelanggan }}</option>
+                                    @endforeach
+                                </select>
+                                @else
                                 <select name="kategori_harga" id="" class="form-control">
                                     <option value="">Kategori Harga</option>
                                     <option {{ (Request('kategori_harga')=='NORMAL' ? 'selected':'')}} value="NORMAL">HARGA LAMA</option>
@@ -52,6 +61,8 @@
                                     <option {{ (Request('kategori_harga')=='RETAIL' ? 'selected':'')}} value="RETAIL">RETAIL</option>
                                     <option {{ (Request('kategori_harga')=='MOTORIS' ? 'selected':'')}} value="MOTORIS">MOTORIS</option>
                                 </select>
+                                @endif
+
                             </div>
                         </div>
                         <div class="col-lg-4 col-sm-12">

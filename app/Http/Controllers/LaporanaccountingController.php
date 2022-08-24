@@ -512,6 +512,55 @@ class LaporanaccountingController extends Controller
         $dari =  $tahun . "-" . $bulan . "-01";
         $sampai = date("Y-m-t", strtotime($dari));
         $jenislaporan = $request->jenislaporan;
+
+        $mutasigudangpusat = DB::table('master_barang')
+            ->selectRaw("master_barang.kode_produk,
+                nama_barang,
+                saldoawal,
+                jmlfsthp,
+                jmlrepack,
+                jmlreject,
+                jmllainlain_in,
+                jmllainlain_out,
+                jmlsuratjalan")
+            ->leftJoin(
+                DB::raw("(
+                    SELECT
+                        kode_produk,
+                        IFNULL(SUM( IF ( `inout` = 'IN', jumlah, 0 ) ) -
+                        SUM( IF ( `inout` = 'OUT', jumlah, 0 ) ),0) as saldoawal
+                    FROM
+                        detail_mutasi_gudang d
+                    INNER JOIN mutasi_gudang_jadi ON d.no_mutasi_gudang = mutasi_gudang_jadi.no_mutasi_gudang
+                    WHERE tgl_mutasi_gudang < '$dari'
+                    GROUP BY kode_produk
+                ) sa"),
+                function ($join) {
+                    $join->on('master_barang.kode_produk', '=', 'sa.kode_produk');
+                }
+            )
+            ->leftJoin(
+                DB::raw("(
+                SELECT
+                kode_produk,
+                SUM(IF(jenis_mutasi = 'FSTHP' ,jumlah,0)) as jmlfsthp,
+                SUM(IF(jenis_mutasi = 'REPACK',jumlah,0)) as jmlrepack,
+                SUM(IF(jenis_mutasi = 'REJECT',jumlah,0)) as jmlreject,
+                SUM(IF(jenis_mutasi = 'LAINLAIN' AND  `inout` ='IN',jumlah,0)) as jmllainlain_in,
+                SUM(IF(jenis_mutasi = 'LAINLAIN' AND  `inout` ='OUT',jumlah,0)) as jmllainlain_out,
+                SUM(IF(jenis_mutasi = 'SURAT JALAN',jumlah,0)) as jmlsuratjalan
+                FROM
+                    detail_mutasi_gudang d
+                INNER JOIN mutasi_gudang_jadi
+                ON d.no_mutasi_gudang = mutasi_gudang_jadi.no_mutasi_gudang
+                WHERE
+                tgl_mutasi_gudang BETWEEN '$dari' AND '$sampai' GROUP BY kode_produk
+            ) mutasi"),
+                function ($join) {
+                    $join->on('master_barang.kode_produk', '=', 'mutasi.kode_produk');
+                }
+            )
+            ->get();
         if ($jenislaporan == "detail") {
             $rekap = DB::select("SELECT
             IFNULL(dmc.kode_produk,saldo_gs.kode_produk) as kode_produk,IFNULL(dmc.nama_barang,saldo_gs.nama_barang) as nama_barang,
@@ -606,7 +655,7 @@ class LaporanaccountingController extends Controller
             // Mendefinisikan nama file ekspor "hasil-export.xls"
             header("Content-Disposition: attachment; filename=Laporan Persediaan Cabang $dari-$sampai.xls");
         }
-        return view('laporanaccounting.laporan.cetak_rekappersediaan', compact('dari', 'sampai', 'rekap'));
+        return view('laporanaccounting.laporan.cetak_rekappersediaan', compact('dari', 'sampai', 'mutasigudangpusat', 'rekap'));
     }
 
     public function bukubesar()
