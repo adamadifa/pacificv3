@@ -83,7 +83,7 @@ class ReturController extends Controller
         $barang = DB::table('detailretur_temp')
             ->select('detailretur_temp.*', 'nama_barang', 'isipcsdus', 'isipack', 'isipcs')
             ->join('barang', 'detailretur_temp.kode_barang', '=', 'barang.kode_barang')
-            ->where('kode_pelanggan', $kode_pelanggan)
+            ->where('detailretur_temp.kode_pelanggan', $kode_pelanggan)
             ->get();
         return view('retur.showbarangtemp', compact('barang'));
     }
