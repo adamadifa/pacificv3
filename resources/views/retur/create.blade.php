@@ -558,6 +558,7 @@
                             , search: request.term
                             , kode_cabang: $("#kode_cabang").val()
                             , kategori_salesman: $("#kategori_salesman").val()
+                            , kode_pelanggan: $("#kode_pelanggan").val()
                         }
                         , success: function(data) {
                             response(data);
