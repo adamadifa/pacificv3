@@ -200,6 +200,12 @@ $total += $d->subtotal;
 
         function hitungdiskon() {
             var jenistransaksi = $("#jenistransaksi").val();
+            var pelanggan = $("#nama_pelanggan").val();
+            var pl = pelanggan.split("|");
+            var nama_pelanggan = pl[1];
+            var kode_pelanggan = pl[0];
+            var kode_cabang = kode_pelanggan.substr(0, 3);
+
             $.ajax({
                 type: 'POST'
                 , url: '/hitungdiskon'
@@ -211,13 +217,20 @@ $total += $d->subtotal;
                 , success: function(respond) {
                     var result = respond.split("|");
                     console.log(result);
-                    $("#potswan").val(result[0]);
-                    $("#potaida").val(result[1]);
-                    $("#potstick").val(result[2]);
-                    $("#potsp").val(result[3]);
-                    $("#potsb").val(result[4]);
+                    if (nama_pelanggan.includes("KPBN") && kode_cabang == "TSM") {
+                        $("#potswan").val(0);
+                        $("#potaida").val(0);
+                        $("#potstick").val(0);
+                        $("#potsp").val(0);
+                        $("#potsb").val(0);
+                    } else {
+                        $("#potswan").val(result[0]);
+                        $("#potaida").val(result[1]);
+                        $("#potstick").val(result[2]);
+                        $("#potsp").val(result[3]);
+                        $("#potsb").val(result[4]);
+                    }
                     loadtotal();
-
                 }
             });
         }
