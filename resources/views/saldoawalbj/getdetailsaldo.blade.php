@@ -3,9 +3,18 @@
   foreach ($detail as $b) {
 
     //RETUR
-    $jmldus = floor($b->saldoakhir/ $b->isipcsdus);
+    if($b->saldoakhir < 0){
+        $saldoakhir = $b->saldoakhir * -1;
+    }else{
+        $saldoakhir = $b->saldoakhir;
+    }
+
+
+
+    $jmldus = floor($saldoakhir/ $b->isipcsdus);
+
     if($b->saldoakhir !=0 ){
-      $sisadus   = $b->saldoakhir % $b->isipcsdus;
+      $sisadus   = $saldoakhir % $b->isipcsdus;
     }else{
       $sisadus = 0;
     }
@@ -19,6 +28,12 @@
       $s          = "B";
     }
     $jmlpcs = $sisapack;
+
+    if($b->saldoakhir < 0){
+        $jmldus = $jmldus * -1;
+        $jmlpack = $jmlpack * -1;
+        $jmlpcs = $jmlpcs * -1;
+    }
 
     // echo $sisadus."-".$s."-".$sisapack."-".$jmlpcs."<br>";
 
