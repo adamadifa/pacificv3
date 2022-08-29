@@ -1,11 +1,16 @@
 <form action="/jurnalumum/{{ Crypt::encrypt($jurnalumum->kode_jurnal) }}/update" method="post" id="frmjurnalumum">
     @csrf
-    <table class="table">
+    {{-- <table class="table">
         <tr>
             <td>Tanggal</td>
             <td>{{ DateToIndo2($jurnalumum->tanggal) }}</td>
-        </tr>
-    </table>
+    </tr>
+    </table> --}}
+    <div class="row">
+        <div class="col-12">
+            <x-inputtext field="tanggal" label="Tanggal Jurnal Umum" icon="feather icon-calendar" value="{{ $jurnalumum->tanggal }}" datepicker />
+        </div>
+    </div>
     <div class="row">
         <div class="col-12">
             <div class="form-group">
@@ -27,6 +32,34 @@
         <div class="col-12">
             <x-inputtext field="jumlah" label="Jumlah" value="{{ rupiah($jurnalumum->jumlah) }}" right icon="feather icon-file" />
         </div>
+    </div>
+    <div class="form-group">
+        <ul class="list-unstyled mb-0">
+            <li class="d-inline-block mr-2">
+                <fieldset>
+                    <div class="vs-radio-con vs-radio-success">
+                        <input type="radio" name="status_dk" {{ $jurnalumum->status_dk=="D" ? 'checked' : ''  }} value="D">
+                        <span class="vs-radio">
+                            <span class="vs-radio--border"></span>
+                            <span class="vs-radio--circle"></span>
+                        </span>
+                        <span class="">Debet</span>
+                    </div>
+                </fieldset>
+            </li>
+            <li class="d-inline-block mr-2">
+                <fieldset>
+                    <div class="vs-radio-con vs-radio-danger">
+                        <input type="radio" name="status_dk" {{ $jurnalumum->status_dk=="K" ? 'checked' : ''  }} value="K">
+                        <span class="vs-radio">
+                            <span class="vs-radio--border"></span>
+                            <span class="vs-radio--circle"></span>
+                        </span>
+                        <span class="">Kredit</span>
+                    </div>
+                </fieldset>
+            </li>
+        </ul>
     </div>
     <div class="row">
         <div class="col-12">

@@ -201,6 +201,7 @@ class GudangController extends Controller
                 $join->on('cabang.kode_cabang', '=', 'mgudang.kode_cabang');
             }
         );
+        $query->orderBy('cabang.urutan');
         $rekapdpb = $query->get();
         $barang = Barang::all();
         $sampai = date("Y-m-d");
