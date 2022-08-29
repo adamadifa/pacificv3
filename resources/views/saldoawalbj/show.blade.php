@@ -49,10 +49,16 @@
                 <?php
                 $no = 1;
                 foreach ($detail as $d) {
-                    $jumlah = $d->jumlah / $d->isipcsdus;
-                    $jmldus = floor($d->jumlah / $d->isipcsdus);
+
+                    if($d->jumlah < 0){
+                        $jml = $d->jumlah * -1;
+                    }else{
+                        $jml = $d->jumlah;
+                    }
+                    $jumlah = $jml / $d->isipcsdus;
+                    $jmldus = floor($jml / $d->isipcsdus);
                     if ($d->jumlah != 0) {
-                        $sisadus   = $d->jumlah % $d->isipcsdus;
+                        $sisadus   = $jml % $d->isipcsdus;
                     } else {
                         $sisadus = 0;
                     }
@@ -66,6 +72,12 @@
                         $s          = "B";
                     }
                     $jmlpcs = $sisapack;
+
+                    if($d->jumlah < 0){
+                        $jmldus = $jmldus * -1;
+                        $jmlpack = $jmlpack * -1;
+                        $jmlpcs = $jmlpcs * -1;
+                    }
                 ?>
                 <tr>
                     <td><?php echo $no; ?></td>
