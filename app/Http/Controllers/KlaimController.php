@@ -436,7 +436,7 @@ class KlaimController extends Controller
     {
         $no_bukti = Crypt::decrypt($no_bukti);
         $kaskecil = DB::table('kaskecil_detail')->where('nobukti', $no_bukti)->first();
-        dd($kaskecil);
+        dd($no_bukti);
         $nobukti_bukubesar = $kaskecil->nobukti_bukubesar != null ?  $kaskecil->nobukti_bukubesar : '';
         DB::beginTransaction();
         try {
