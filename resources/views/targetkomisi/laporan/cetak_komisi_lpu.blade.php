@@ -575,20 +575,20 @@
 
                 $totalallpoin = $totalhasilpoinBBDP + $totalhasilpoinDS + $totalhasilpoinSP + $totalhasilpoinAR + $totalhasilpoinABASCG5 + $totalhasilpoinSC;
 
-                if ($totalallpoin < 70) {
+                if ($totalallpoin < 75) {
                     $rewardallpoin = 0;
-                } else if ($totalallpoin >= 70 and $totalallpoin <= 75) {
-                    $rewardallpoin = 1500000;
+                } else if ($totalallpoin == 75) {
+                    $rewardallpoin = 750000;
                 } else if ($totalallpoin > 75 and $totalallpoin <= 80) {
-                    $rewardallpoin = 3000000;
+                    $rewardallpoin = 1500000;
                 } else if ($totalallpoin > 80 and $totalallpoin <= 85) {
-                    $rewardallpoin = 4500000;
+                    $rewardallpoin = 2250000;
                 } else if ($totalallpoin > 85 and $totalallpoin <= 90) {
-                    $rewardallpoin = 6000000;
+                    $rewardallpoin = 3000000;
                 } else if ($totalallpoin > 90 and $totalallpoin <= 95) {
-                    $rewardallpoin = 7500000;
+                    $rewardallpoin = 3750000;
                 } else if ($totalallpoin > 95 and $totalallpoin <= 100) {
-                    $rewardallpoin = 9000000;
+                    $rewardallpoin = 4500000;
                 } else {
                     $rewardallpoin = "NA";
                 }
