@@ -253,7 +253,7 @@ class PelangganController extends Controller
             ->orderBy('kode_pelanggan', 'desc')
             ->first();
 
-        $kodepelangganterakhir = $pelanggan->kode_pelanggan;
+        $kodepelangganterakhir = $pelanggan != null ? $pelanggan->kode_pelanggan : '';
         $kodepelanggan = buatkode($kodepelangganterakhir, $request->kode_cabang . '-', 5);
 
         //Upload File
