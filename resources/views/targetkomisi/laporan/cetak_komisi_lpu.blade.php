@@ -423,7 +423,7 @@
 
                 if ($totalpoin < 75) {
                     $rewardpoin = 0;
-                } else if ($totalpoin == 75) {
+                } else if ($totalpoin >= 75 and $totalpoin < 76) {
                     $rewardpoin = 750000;
                 } else if ($totalpoin > 75 and $totalpoin <= 80) {
                     $rewardpoin = 1500000;
