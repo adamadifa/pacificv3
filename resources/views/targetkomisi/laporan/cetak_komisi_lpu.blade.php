@@ -421,9 +421,7 @@
                     $rewardljt = 0;
                 }
 
-                if ($totalpoin < 75) {
-                    $rewardpoin = 0;
-                } else if ($totalpoin >= 75 and $totalpoin < 76) {
+                if ($totalpoin >= 75 and $totalpoin < 76) {
                     $rewardpoin = 750000;
                 } else if ($totalpoin > 75 and $totalpoin <= 80) {
                     $rewardpoin = 1500000;
@@ -436,7 +434,7 @@
                 } else if ($totalpoin > 95 and $totalpoin <= 100) {
                     $rewardpoin = 4500000;
                 } else {
-                    $rewardpoin = "NA";
+                    $rewardpoin = 0;
                 }
 
                 $totalreward = $rewardcashin + $rewardljt + $rewardpoin;
