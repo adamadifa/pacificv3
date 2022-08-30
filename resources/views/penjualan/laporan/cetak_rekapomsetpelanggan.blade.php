@@ -60,7 +60,6 @@
                 <th rowspan="2">NO</th>
                 <th rowspan="2">KODE PELANGGAN</th>
                 <th rowspan="2">NAMA PELANGGAN</th>
-                <th rowspan="2">NAMA KARYAWAN</th>
                 <th rowspan="2">PASAR</th>
                 <th rowspan="2">TOTAL OMSET</th>
                 <th rowspan="2">RATA RATA OMSET</th>
@@ -88,7 +87,7 @@
                 <td><?php echo $no; ?></td>
                 <td><?php echo $r->kode_pelanggan; ?></td>
                 <td><?php echo $r->nama_pelanggan; ?></td>
-                <td><?php echo $r->nama_karyawan; ?></td>
+
                 <td><?php echo $r->pasar; ?></td>
                 <td align="right"><?php echo rupiah($r->netpenjualan); ?></td>
                 <td align="right"><?php echo rupiah($r->netpenjualan / $periode); ?></td>
@@ -97,7 +96,7 @@
             </tr>
             <?php $no++;} ?>
             <tr>
-                <th colspan="5" align="right">TOTAL</th>
+                <th colspan="4" align="right">TOTAL</th>
                 <th style="text-align:right"><?php echo rupiah($totalomset); ?></th>
                 <th style="text-align:right"><?php echo rupiah($totalratarataomset); ?></th>
                 <th style="text-align:right"><?php echo rupiah($totalratarataaida); ?></th>

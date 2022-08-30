@@ -4353,7 +4353,7 @@ class PenjualanController extends Controller
         $selisih = date_diff($date1, $date2);
         $periode = $selisih->m + 1;
         $query = Penjualan::query();
-        $query->selectRaw("penjualan.kode_pelanggan,nama_pelanggan,pasar,nama_karyawan,
+        $query->selectRaw("penjualan.kode_pelanggan,nama_pelanggan,pasar,
         SUM(bruto) as bruto,
         SUM(brutoswan) as brutoswan,
         SUM(brutoaida) as brutoaida,
@@ -4386,7 +4386,7 @@ class PenjualanController extends Controller
         if (!empty($request->id_karyawan)) {
             $query->where('penjualan.id_karyawan', $request->id_karyawan);
         }
-        $query->groupByRaw('penjualan.kode_pelanggan,nama_pelanggan,pasar,nama_karyawan');
+        $query->groupByRaw('penjualan.kode_pelanggan,nama_pelanggan,pasar');
         $query->orderBy('nama_pelanggan');
         $rekapomsetpelanggan = $query->get();
 

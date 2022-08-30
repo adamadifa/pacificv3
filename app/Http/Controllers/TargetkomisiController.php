@@ -944,10 +944,12 @@ class TargetkomisiController extends Controller
             header("Content-Disposition: attachment; filename=Laporan Komisi $time.xls");
         }
 
-        if ($bulan >= 7 && $tahun >= 2022) {
-            return view('targetkomisi.laporan.cetak_komisi_lpu', compact('komisi', 'cbg', 'nmbulan', 'tahun', 'produk', 'driver', 'helper', 'gudang', 'tunaikredit', 'bulan', 'cabang'));
-        } else {
+        if ($bulan == 7 && $tahun == 2022) {
+            return view('targetkomisi.laporan.cetak_komisi_juli', compact('komisi', 'cbg', 'nmbulan', 'tahun', 'produk', 'driver', 'helper', 'gudang', 'tunaikredit', 'bulan', 'cabang'));
+        } elseif ($bulan < 7 && $tahun <= 2022) {
             return view('targetkomisi.laporan.cetak_komisi_juni', compact('komisi', 'cbg', 'nmbulan', 'tahun', 'produk', 'driver', 'helper', 'gudang', 'tunaikredit', 'bulan', 'cabang'));
+        } else {
+            return view('targetkomisi.laporan.cetak_komisi_lpu', compact('komisi', 'cbg', 'nmbulan', 'tahun', 'produk', 'driver', 'helper', 'gudang', 'tunaikredit', 'bulan', 'cabang'));
         }
     }
 
