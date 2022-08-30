@@ -643,7 +643,7 @@
                 <td align="right" style="background-color: #35ce35;"><?php echo desimal($totaltargetSC); ?></td>
                 <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalrealisasiSC); ?></td>
                 <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalhasilpoinSC); ?></td>
-                <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalallpoin); ?></td>
+                <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalallpoin >= 75 && $totalallpoin < 76 ? 'true' : 'false'); ?></td>
                 <td align="right" style="background-color: #35ce35;"><?php echo desimal($rewardallpoin); ?></td>
                 <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalcashin); ?></td>
                 <td align="center" style="background-color: #35ce35;">0.05%</td>
