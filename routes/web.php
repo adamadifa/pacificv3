@@ -121,10 +121,16 @@ Route::get('/agent', function () {
     return request()->userAgent();
 });
 Route::middleware(['guest'])->group(function () {
-    Route::get('/', function () {
+    Route::get('/paneladmin', function () {
         return view('Auth.login');
     })->name('login');
+
+    Route::get('/', function () {
+        return view('welcome');
+    })->name('welcome');
 });
+
+
 
 Route::post('/postlogin', [AuthController::class, 'postlogin']);
 Route::post('/postlogout', [AuthController::class, 'postlogout']);
