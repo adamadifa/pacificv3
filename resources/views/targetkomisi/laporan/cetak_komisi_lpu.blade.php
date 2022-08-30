@@ -482,7 +482,7 @@
                 <td align="right" style="background-color: #ff9b0d;"><?php echo desimal($d->target_SC); ?></td>
                 <td align="right" style="background-color: #ff9b0d;"><?php echo desimal($realisasi_SC); ?></td>
                 <td align="right" style="background-color: #ff9b0d;"><?php echo desimal($hasilpoinSC); ?></td>
-                <td align="right" style="background-color: #ff570d;"><?php echo desimal($totalpoin); ?></td>
+                <td align="right" style="background-color: #ff570d;"><?php echo $totalpoin >= 75 && $totalpoin < 76 ? 'true' : 'false'; ?></td>
                 <td align="right" style="background-color: #ff570d;"><?php echo desimal($rewardpoin); ?></td>
                 <td align="right" style="background-color: #9e9895;"><?php echo desimal($d->realisasi_cashin); ?></td>
                 <td align="center" style="background-color: #9e9895;"><?php echo $ratiocashin; ?>%</td>
