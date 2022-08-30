@@ -575,7 +575,9 @@
 
                 $totalallpoin = $totalhasilpoinBBDP + $totalhasilpoinDS + $totalhasilpoinSP + $totalhasilpoinAR + $totalhasilpoinABASCG5 + $totalhasilpoinSC;
 
-                if ($totalallpoin == 75) {
+                if ($totalallpoin < 75) {
+                    $rewardallpoin = 0;
+                } else if ($totalallpoin >= 75 and $totalallpoin < 76) {
                     $rewardallpoin = 750000;
                 } else if ($totalallpoin > 75 and $totalallpoin <= 80) {
                     $rewardallpoin = 1500000;
