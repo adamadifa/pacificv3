@@ -421,7 +421,9 @@
                     $rewardljt = 0;
                 }
 
-                if ($totalpoin >= 75 and $totalpoin < 76) {
+                if ($totalpoin < 75) {
+                    $rewardpoin = 0;
+                } else if ($totalpoin >= 75 and $totalpoin < 76) {
                     $rewardpoin = 750000;
                 } else if ($totalpoin > 75 and $totalpoin <= 80) {
                     $rewardpoin = 1500000;
@@ -434,7 +436,7 @@
                 } else if ($totalpoin > 95 and $totalpoin <= 100) {
                     $rewardpoin = 4500000;
                 } else {
-                    $rewardpoin = 0;
+                    $rewardpoin = "NA";
                 }
 
                 $totalreward = $rewardcashin + $rewardljt + $rewardpoin;
@@ -482,7 +484,7 @@
                 <td align="right" style="background-color: #ff9b0d;"><?php echo desimal($d->target_SC); ?></td>
                 <td align="right" style="background-color: #ff9b0d;"><?php echo desimal($realisasi_SC); ?></td>
                 <td align="right" style="background-color: #ff9b0d;"><?php echo desimal($hasilpoinSC); ?></td>
-                <td align="right" style="background-color: #ff570d;"><?php echo $totalpoin >= 75 && $totalpoin < 76 ? 'true' : 'false'; ?></td>
+                <td align="right" style="background-color: #ff570d;"><?php echo desimal($totalpoin); ?></td>
                 <td align="right" style="background-color: #ff570d;"><?php echo desimal($rewardpoin); ?></td>
                 <td align="right" style="background-color: #9e9895;"><?php echo desimal($d->realisasi_cashin); ?></td>
                 <td align="center" style="background-color: #9e9895;"><?php echo $ratiocashin; ?>%</td>
