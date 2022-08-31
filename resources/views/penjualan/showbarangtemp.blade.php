@@ -94,10 +94,14 @@ $total += $d->subtotal;
         }
 
         function loadtotal() {
+            $("#btnsimpan").prop('disabled', true);
+            $("#btnsimpantext").text('Loading...');
             $.ajax({
                 type: 'GET'
                 , url: '/loadtotalpenjualantemp'
                 , success: function(respond) {
+                    $("#btnsimpan").prop('disabled', false);
+                    $("#btnsimpantext").text('Simpan');
                     var total = parseInt(respond.replace(/\./g, ''));
                     var potswan = $("#potswan").val();
                     var potaida = $("#potaida").val();
@@ -202,8 +206,8 @@ $total += $d->subtotal;
             var jenistransaksi = $("#jenistransaksi").val();
             var pelanggan = $("#nama_pelanggan").val();
             var pl = pelanggan.split("|");
-            var nama_pelanggan = pl[1];
-            var kode_pelanggan = pl[0];
+            var nama_pelanggan = pl[1] != undefined ? pl[1] : '';
+            var kode_pelanggan = pl[0] != undefined ? pl[0] : '';
             var kode_cabang = kode_pelanggan.substr(0, 3);
 
             $.ajax({

@@ -335,7 +335,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <button type="submit" class="btn btn-primary btn-block"><i class="feather icon-send mr-1"></i>Simpan</button>
+                                        <button type="submit" id="btnsimpan" class="btn btn-primary btn-block"><i class="feather icon-send mr-1"></i><span id="btnsimpantext">Simpan</span></button>
                                     </div>
                                 </div>
                             </div>
@@ -595,7 +595,162 @@
             ],
 
         });
+
+        function hitungdiskon() {
+            var jenistransaksi = $("#jenistransaksi").val();
+            var pelanggan = $("#nama_pelanggan").val();
+            var pl = pelanggan.split("|");
+            var nama_pelanggan = pl[1] != undefined ? pl[1] : '';
+            var kode_pelanggan = pl[0] != undefined ? pl[0] : '';
+            var kode_cabang = kode_pelanggan.substr(0, 3);
+
+            $.ajax({
+                type: 'POST'
+                , url: '/hitungdiskon'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , jenistransaksi: jenistransaksi
+                }
+                , cache: false
+                , success: function(respond) {
+                    var result = respond.split("|");
+                    console.log(result);
+                    if (nama_pelanggan.includes("KPBN") && kode_cabang == "TSM") {
+                        $("#potswan").val(0);
+                        $("#potaida").val(0);
+                        $("#potstick").val(0);
+                        $("#potsp").val(0);
+                        $("#potsb").val(0);
+                    } else {
+                        $("#potswan").val(result[0]);
+                        $("#potaida").val(result[1]);
+                        $("#potstick").val(result[2]);
+                        $("#potsp").val(result[3]);
+                        $("#potsb").val(result[4]);
+                    }
+                    loadtotal();
+                }
+            });
+        }
+
+        function loadtotal() {
+            $("#btnsimpan").prop('disabled', true);
+            $.ajax({
+                type: 'GET'
+                , url: '/loadtotalpenjualantemp'
+                , success: function(respond) {
+                    $("#btnsimpan").prop('disabled', false);
+                    var total = parseInt(respond.replace(/\./g, ''));
+                    var potswan = $("#potswan").val();
+                    var potaida = $("#potaida").val();
+                    var potstick = $("#potstick").val();
+                    var potsp = $("#potsp").val();
+                    var potsb = $("#potsb").val();
+                    var potisaida = $("#potisaida").val();
+                    var potisswan = $("#potisswan").val();
+                    var potisstick = $("#potisstick").val();
+                    var penyaida = $("#penyaida").val();
+                    var penyswan = $("#penyswan").val();
+                    var penystick = $("#penystick").val();
+                    var voucher = $("#voucher").val();
+
+                    if (potswan.length === 0) {
+                        var potswan = 0;
+                    } else {
+                        var potswan = parseInt(potswan.replace(/\./g, ''));
+                    }
+
+                    if (potaida.length === 0) {
+                        var potaida = 0;
+                    } else {
+                        var potaida = parseInt(potaida.replace(/\./g, ''));
+                    }
+
+                    if (potstick.length === 0) {
+                        var potstick = 0;
+                    } else {
+                        var potstick = parseInt(potstick.replace(/\./g, ''));
+                    }
+
+                    if (potsp.length === 0) {
+                        var potsp = 0;
+                    } else {
+                        var potsp = parseInt(potsp.replace(/\./g, ''));
+                    }
+
+                    if (potsb.length === 0) {
+                        var potsb = 0;
+                    } else {
+                        var potsb = parseInt(potsb.replace(/\./g, ''));
+                    }
+
+                    if (potisaida.length === 0) {
+                        var potisaida = 0;
+                    } else {
+                        var potisaida = parseInt(potisaida.replace(/\./g, ''));
+                    }
+
+                    if (potisswan.length === 0) {
+                        var potisswan = 0;
+                    } else {
+                        var potisswan = parseInt(potisswan.replace(/\./g, ''));
+                    }
+
+                    if (potisstick.length === 0) {
+                        var potisstick = 0;
+                    } else {
+                        var potisstick = parseInt(potisstick.replace(/\./g, ''));
+                    }
+
+                    if (penyaida.length === 0) {
+                        var penyaida = 0;
+                    } else {
+                        var penyaida = parseInt(penyaida.replace(/\./g, ''));
+                    }
+
+                    if (penyswan.length === 0) {
+                        var penyswan = 0;
+                    } else {
+                        var penyswan = parseInt(penyswan.replace(/\./g, ''));
+                    }
+
+                    if (penystick.length === 0) {
+                        var penystick = 0;
+                    } else {
+                        var penystick = parseInt(penystick.replace(/\./g, ''));
+                    }
+
+                    if (voucher.length === 0) {
+                        var voucher = 0;
+                    } else {
+                        var voucher = parseInt(voucher.replace(/\./g, ''));
+                    }
+
+                    var potongan = potswan + potaida + potstick + potsp + potsb;
+                    var potonganistimewa = potisaida + potisswan + potisstick;
+                    var penyesuaian = penyaida + penyswan + penystick;
+                    var grandtotal = total - potongan - potonganistimewa - penyesuaian - voucher;
+                    var bruto = total;
+                    $("#grandtotal").text(convertToRupiah(grandtotal));
+                    $("#total").val(convertToRupiah(grandtotal));
+                    $("#bruto").val(bruto);
+                    $("#subtotal").val(grandtotal);
+                    cektemp();
+                }
+            });
+        }
+
+        function cektemp() {
+            $.ajax({
+                type: 'GET'
+                , url: '/cekpenjtemp'
+                , success: function(respond) {
+                    $("#cektemp").val(respond);
+                }
+            });
+        }
         $('.tabelpelanggan tbody').on('click', 'a', function() {
+
             var kode_pelanggan = $(this).attr("kode_pelanggan");
             cekpiutang(kode_pelanggan);
             var nama_pelanggan = $(this).attr("nama_pelanggan");
@@ -636,7 +791,7 @@
             }
 
             $("#mdlpelanggan").modal("hide");
-
+            hitungdiskon();
         });
 
         function simpanbarangtemp(kode_barang) {
