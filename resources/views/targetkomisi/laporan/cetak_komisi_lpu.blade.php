@@ -423,7 +423,7 @@
 
                 if (round($totalpoin,2) < 75) {
                     $rewardpoin = 0;
-                } else if (round($totalpoin,2) >= 75 and round($totalpoin,2) < 76) {
+                } else if (round($totalpoin,2) >= 75 and round($totalpoin,2) <= 75) {
                     $rewardpoin = 750000;
                 } else if (round($totalpoin,2) > 75 and round($totalpoin,2) <= 80) {
                     $rewardpoin = 1500000;
