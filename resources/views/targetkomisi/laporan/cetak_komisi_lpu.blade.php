@@ -421,19 +421,19 @@
                     $rewardljt = 0;
                 }
 
-                if (desimal($totalpoin) < 75) {
+                if (round($totalpoin,2) < 75) {
                     $rewardpoin = 0;
-                } else if (desimal($totalpoin) >= 75 and desimal($totalpoin) < 76) {
+                } else if (round($totalpoin,2) >= 75 and round($totalpoin,2) < 76) {
                     $rewardpoin = 750000;
-                } else if (desimal($totalpoin) > 75 and desimal($totalpoin) <= 80) {
+                } else if (round($totalpoin,2) > 75 and round($totalpoin,2) <= 80) {
                     $rewardpoin = 1500000;
-                } else if (desimal($totalpoin) > 80 and desimal($totalpoin) <= 85) {
+                } else if (round($totalpoin,2) > 80 and round($totalpoin,2) <= 85) {
                     $rewardpoin = 2250000;
-                } else if (desimal($totalpoin) > 85 and desimal($totalpoin) <= 90) {
+                } else if (round($totalpoin,2) > 85 and round($totalpoin,2) <= 90) {
                     $rewardpoin = 3000000;
-                } else if (desimal($totalpoin) > 90 and desimal($totalpoin) <= 95) {
+                } else if (round($totalpoin,2) > 90 and round($totalpoin,2) <= 95) {
                     $rewardpoin = 3750000;
-                } else if (desimal($totalpoin) > 95 and desimal($totalpoin) <= 100) {
+                } else if (round($totalpoin,2) > 95 and round($totalpoin,2) <= 100) {
                     $rewardpoin = 4500000;
                 } else {
                     $rewardpoin = 0;
