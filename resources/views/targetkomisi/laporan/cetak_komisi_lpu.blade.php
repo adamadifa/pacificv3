@@ -436,7 +436,7 @@
                 } else if (desimal($totalpoin) > 95 and desimal($totalpoin) <= 100) {
                     $rewardpoin = 4500000;
                 } else {
-                    $rewardpoin = "NA";
+                    $rewardpoin = 0;
                 }
 
                 $totalreward = $rewardcashin + $rewardljt + $rewardpoin;
@@ -590,7 +590,7 @@
                 } else if ($totalallpoin > 95 and $totalallpoin <= 100) {
                     $rewardallpoin = 9000000;
                 } else {
-                    $rewardallpoin = "NA";
+                    $rewardallpoin = 0;
                 }
 
                 $rewardcashinkp = $totalcashin * (0.05 / 100);
