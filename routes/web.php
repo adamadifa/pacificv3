@@ -121,13 +121,13 @@ Route::get('/agent', function () {
     return request()->userAgent();
 });
 Route::middleware(['guest'])->group(function () {
-    Route::get('/paneladmin', function () {
-        return view('Auth.login');
-    })->name('login');
+    // Route::get('/paneladmin', function () {
+    //     return view('Auth.login');
+    // })->name('login');
 
     Route::get('/', function () {
-        return view('welcome');
-    })->name('welcome');
+        return view('Auth.login');
+    })->name('login');
 });
 
 
