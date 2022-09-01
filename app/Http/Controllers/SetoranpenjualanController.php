@@ -254,7 +254,7 @@ class SetoranpenjualanController extends Controller
             $setoran_tunai = $tunaitagihan != null ? $tunaitagihan->setoran_tunai : 0;
             $setoran_giro = $giro != null ? $giro->setoran_giro : 0;
             $setoran_transfer = $transfer != null ? $transfer->setoran_transfer : 0;
-            $setoran_tagihan = $tunaitagihan != null ? $tunaitagihan->setoran_tagihan : 0 + $setoran_giro + $setoran_transfer;
+            $setoran_tagihan = $tunaitagihan != null ? $tunaitagihan->setoran_tagihan + $setoran_giro + $setoran_transfer : 0;
             $gantigirokecash = $girotocash != null  ?  $girotocash->setoran_girotocash : 0;
             $gantigiroketransfer = $girototransfer != null ? $girototransfer->setoran_girototransfer : 0;
 
