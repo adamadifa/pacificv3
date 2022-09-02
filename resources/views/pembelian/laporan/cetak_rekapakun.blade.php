@@ -82,24 +82,7 @@
             $totalkredits   = 0;
             $totaldebets    = 0;
             $no            = 1;
-            foreach ($jurnalkoreksi as $key => $s) {
-                if ($s->status == 'PNJ') {
-                $debets      = $s->pmb - $s->pnj + $s->jurnaldebet;
-                $kredits     = $s->jurnalkredit;
-                } else {
-                $kredits     = $s->pmb - $s->pnj + $s->jurnalkredit;
-                $debets      = $s->jurnaldebet;
-                }
-                $totaldebets += $debets;
-                $totalkredits += $kredits;
-            ?>
-            <tr>
-                <td><?php echo "'" . $s->kode_akun; ?></td>
-                <td><?php echo $s->nama_akun; ?></td>
-                <td align="right"><?php if (!empty($debets)) {echo desimal($debets);} ?></td>
-                <td align="right"><?php if (!empty($kredits)) {echo desimal($kredits);} ?></td>
-            </tr>
-            <?php } ?>
+             ?>
             <tr bgcolor="#024a75" style="color:white">
                 <td colspan="2"><b>TOTAL</b></td>
                 <td align="right"><b><?php echo desimal($totaldebet + $totaldebets); ?></b></td>
