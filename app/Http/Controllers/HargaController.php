@@ -223,13 +223,30 @@ class HargaController extends Controller
                     ->where('kode_pelanggan', $kode_pelanggan)
                     ->limit(5)->get();
             } else {
-                $autocomplate = Harga::orderby('nama_barang', 'asc')->select('kode_produk', 'kode_barang', 'nama_barang', 'harga_dus', 'kategori_harga')->where('nama_barang', 'like', '%' . $search . '%')
-                    ->where('kode_cabang', $kode_cabang)
-                    ->where('kategori_harga', $kategori_salesman)
-                    ->orWhere('kode_produk', 'like', '%' . $search . '%')
-                    ->where('kode_cabang', $kode_cabang)
-                    ->where('kategori_harga', $kategori_salesman)
-                    ->limit(5)->get();
+                if ($kategori_salesman == "TOCANVASER") {
+                    $autocomplate = Harga::orderby('nama_barang', 'asc')->select('kode_produk', 'kode_barang', 'nama_barang', 'harga_dus', 'kategori_harga')->where('nama_barang', 'like', '%' . $search . '%')
+                        ->where('kode_cabang', $kode_cabang)
+                        ->where('kategori_harga', $kategori_salesman)
+                        ->orWhere('kode_produk', 'like', '%' . $search . '%')
+                        ->where('kode_cabang', $kode_cabang)
+                        ->where('kategori_harga', 'TO')
+
+                        ->orWhere('nama_barang', 'like', '%' . $search . '%')
+                        ->where('kode_cabang', $kode_cabang)
+                        ->where('kategori_harga', $kategori_salesman)
+                        ->orWhere('kode_produk', 'like', '%' . $search . '%')
+                        ->where('kode_cabang', $kode_cabang)
+                        ->where('kategori_harga', 'CANVASER')
+                        ->limit(5)->get();
+                } else {
+                    $autocomplate = Harga::orderby('nama_barang', 'asc')->select('kode_produk', 'kode_barang', 'nama_barang', 'harga_dus', 'kategori_harga')->where('nama_barang', 'like', '%' . $search . '%')
+                        ->where('kode_cabang', $kode_cabang)
+                        ->where('kategori_harga', $kategori_salesman)
+                        ->orWhere('kode_produk', 'like', '%' . $search . '%')
+                        ->where('kode_cabang', $kode_cabang)
+                        ->where('kategori_harga', $kategori_salesman)
+                        ->limit(5)->get();
+                }
             }
         }
 
