@@ -39,6 +39,7 @@
                     <option value="KLATEN" data-tarif="2700000">KLATEN</option>
                     <option value="KALIPUCANG" data-tarif="1000000">KALIPUCANG</option>
                     <option value="TASIKMALAYA" data-tarif="0">TASIKMALAYA</option>
+                    <option value="PURWAKARTA" data-tarif="0">PURWAKARTA</option>
 
                 </select>
             </div>
