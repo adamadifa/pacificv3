@@ -595,7 +595,11 @@
 
                 $rewardcashinkp = $totalcashin * (0.05 / 100);
                 $ratioljtkp = ($totalsisapiutang / $totalcashin) * 100;
-
+                if ($ratioljtkp > 0) {
+                    $ratioljtkp = $ratioljtkp;
+                } else {
+                    $ratioljtkp = 0;
+                }
                 if ($ratioljtkp >= 0 and $ratioljtkp <= 0.5) {
                     $rewardljtkp = 2500000;
                 } else  if ($ratioljtkp > 0.5 and $ratioljtkp <= 1) {
