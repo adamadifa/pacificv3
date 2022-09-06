@@ -561,7 +561,7 @@ class LaporangudangcabangController extends Controller
         if ($dari < '2022-09-01') {
             $salesgarut = "'STSM05', 'STSM09', 'STSM11', 'STSM97'";
         } else {
-            $salesgarut = "'STSM11', 'STSM09', 'STSM11', 'STSM97','STSM12'";
+            $salesgarut = "'STSM11', 'STSM09', 'STSM97','STSM12'";
         }
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
         if ($kode_cabang == 'TSM') {
