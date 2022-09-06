@@ -557,15 +557,21 @@ class LaporangudangcabangController extends Controller
         $jeniskonsolidasi = $request->jeniskonsolidasi;
         $dari = $request->dari;
         $sampai = $request->sampai;
+
+        if ($dari < '2022-09-01') {
+            $salesgarut = ['STSM05', 'STSM09', 'STSM11', 'STSM97'];
+        } else {
+            $salesgarut = ['STSM05', 'STSM09', 'STSM11', 'STSM97'];
+        }
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
         if ($kode_cabang == 'TSM') {
-            $wherenotsalesgarut = "AND penjualan.id_karyawan NOT IN ('STSM05','STSM09','STSM11','STSM97')";
+            $wherenotsalesgarut = "AND penjualan.id_karyawan NOT IN ($salesgarut)";
         } else {
             $wherenotsalesgarut = "";
         }
 
         if ($kode_cabang == 'GRT') {
-            $wheresalesgarut = "AND penjualan.id_karyawan IN ('STSM05','STSM09','STSM11','STSM97')";
+            $wheresalesgarut = "AND penjualan.id_karyawan IN ($salesgarut)";
         } else {
             $wheresalesgarut = "";
         }
