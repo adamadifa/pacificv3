@@ -408,6 +408,7 @@ $total += $d->subtotal;
                     $tblrow.find('.harga_pcs').val(0);
                     $tblrow.find('.harga_pcs').attr("readonly", "true");
                     var total = (jmldus * 0) + (jmlpack * 0) + (jmlpcs * 0);
+                    $("#btnsimpan").prop('disabled', true);
                     $.ajax({
                         type: 'POST'
                         , url: '/penjualan/updatedetailtemp'
@@ -426,6 +427,7 @@ $total += $d->subtotal;
                         }
                         , cache: false
                         , success: function(respond) {
+                            $("#btnsimpan").prop('disabled', false);
                             console.log(respond);
                             hitungdiskon();
                         }
@@ -483,6 +485,7 @@ $total += $d->subtotal;
                         }
 
                         var total = (jmldus * harga_dus) + (jmlpack * harga_pack) + (jmlpcs * harga_pcs);
+                        $("#btnsimpan").prop('disabled', true);
                         $.ajax({
                             type: 'POST'
                             , url: '/penjualan/updatedetailtemp'
@@ -501,6 +504,7 @@ $total += $d->subtotal;
                             }
                             , cache: false
                             , success: function(respond) {
+                                $("#btnsimpan").prop('disabled', false);
                                 console.log(respond);
                             }
                         });
@@ -598,7 +602,7 @@ $total += $d->subtotal;
                     var harga_pcs = parseInt(harga_pcs.replace(/\./g, ''));
                 }
 
-
+                $("#btnsimpan").prop('disabled', true);
                 if (harga_pack === 0) {
                     if (jmlpcs >= isipcsdus) {
                         swal("Oops", "Jml Pcs Melebihi Batas Maksimal, Masukan Ke Satuan Dus/Ball", "warning");
@@ -621,6 +625,7 @@ $total += $d->subtotal;
                             }
                             , cache: false
                             , success: function(respond) {
+                                $("#btnsimpan").prop('disabled', false);
                                 console.log(respond);
                                 hitungdiskon();
                             }
@@ -644,6 +649,7 @@ $total += $d->subtotal;
                             }
                             , cache: false
                             , success: function(respond) {
+                                $("#btnsimpan").prop('disabled', false);
                                 console.log(respond);
                                 hitungdiskon();
                             }
@@ -671,6 +677,7 @@ $total += $d->subtotal;
                             }
                             , cache: false
                             , success: function(respond) {
+                                $("#btnsimpan").prop('disabled', false);
                                 console.log(respond);
                                 hitungdiskon();
                             }
@@ -697,6 +704,7 @@ $total += $d->subtotal;
                             }
                             , cache: false
                             , success: function(respond) {
+                                $("#btnsimpan").prop('disabled', false);
                                 console.log(respond);
                                 hitungdiskon();
                             }
@@ -720,6 +728,7 @@ $total += $d->subtotal;
                             }
                             , cache: false
                             , success: function(respond) {
+                                $("#btnsimpan").prop('disabled', false);
                                 console.log(respond);
                                 hitungdiskon();
                             }
