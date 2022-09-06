@@ -948,7 +948,7 @@ class PenjualanController extends Controller
             ->whereRaw('LEFT(nobukti,6) = "' . $kode_cabang . $tahunini . '-"')
             ->orderBy("nobukti", "desc")
             ->first();
-        $lastnobukti = $bayar->nobukti;
+        $lastnobukti = $bayar != null ? $bayar->nobukti : '';
         $nobukti  = buatkode($lastnobukti, $kode_cabang . $tahunini . "-", 6);
 
 
