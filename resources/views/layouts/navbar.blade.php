@@ -849,6 +849,11 @@
                             <i class="feather icon-file-text"></i>
                             <span class="menu-item" data-i18n="Second Level">Laporan</span>
                         </a>
+                        @elseif($level=="admin pajak 2")
+                        <a href="/laporankeuangan/ledger">
+                            <i class="feather icon-file-text"></i>
+                            <span class="menu-item" data-i18n="Second Level">Laporan</span>
+                        </a>
                         @else
                         <a href="/laporankeuangan/kaskecil">
                             <i class="feather icon-file-text"></i>
