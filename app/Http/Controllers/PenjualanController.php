@@ -2735,14 +2735,26 @@ class PenjualanController extends Controller
                     }
                 );
 
+                $query->leftJoin(
+                    DB::raw("(
+                        SELECT MAX(id_move) as id_move,no_fak_penj,move_faktur.id_karyawan as salesbaru
+                        FROM move_faktur
+                        WHERE tgl_move <= '$sampai'
+                        GROUP BY no_fak_penj,move_faktur.id_karyawan
+                    ) move_fak"),
+                    function ($join) {
+                        $join->on('penjualan.no_fak_penj', '=', 'move_fak.no_fak_penj');
+                    }
+                );
+
                 $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
-                $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+                $query->join('karyawan', DB::raw("IFNULL(salesbaru,penjualan.id_karyawan)"), '=', 'karyawan.id_karyawan');
 
                 if ($request->kode_cabang != "") {
                     $query->where('karyawan.kode_cabang', $request->kode_cabang);
                 }
                 if ($request->id_karyawan != "") {
-                    $query->where('penjualan.id_karyawan', $request->id_karyawan);
+                    $query->whereRaw("IFNULL(salesbaru,penjualan.id_karyawan)='$request->id_karyawan'");
                 }
 
                 if ($request->kode_pelanggan != "") {
