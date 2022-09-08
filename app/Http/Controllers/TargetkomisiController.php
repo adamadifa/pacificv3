@@ -864,7 +864,7 @@ class TargetkomisiController extends Controller
             }
             $query->leftJoin(
                 DB::raw("(
-                    SELECT penjualan.id_karyawan,
+                    SELECT salesbarunew,
                     SUM(IF(kode_produk = 'AB' AND promo !='1' OR kode_produk = 'AB' AND promo IS NULL,jumlah,0)) as AB,
                     SUM(IF(kode_produk = 'AR' AND promo !='1' OR kode_produk = 'AR' AND promo IS NULL,jumlah,0)) as AR,
                     SUM(IF(kode_produk = 'AS' AND promo !='1' OR kode_produk = 'AS' AND promo IS NULL ,jumlah,0)) as `AS`,
@@ -888,11 +888,28 @@ class TargetkomisiController extends Controller
                     FROM historibayar
                     GROUP BY no_fak_penj
                     ) hb ON (hb.no_fak_penj = penjualan.no_fak_penj)
+
+                   LEFT JOIN (
+                    SELECT pj.no_fak_penj,
+                    IF(salesbaru IS NULL,pj.id_karyawan,salesbaru) as salesbarunew, karyawan.nama_karyawan as nama_sales,
+                    IF(cabangbaru IS NULL,karyawan.kode_cabang,cabangbaru) as cabangbarunew
+                    FROM penjualan pj
+                    INNER JOIN karyawan ON pj.id_karyawan = karyawan.id_karyawan
+                    LEFT JOIN (
+                        SELECT MAX(id_move) as id_move,no_fak_penj,move_faktur.id_karyawan as salesbaru,karyawan.kode_cabang as cabangbaru
+                        FROM move_faktur
+                        INNER JOIN karyawan ON move_faktur.id_karyawan = karyawan.id_karyawan
+                        WHERE tgl_move <= '$dari'
+                        GROUP BY no_fak_penj,move_faktur.id_karyawan,karyawan.kode_cabang
+                    ) move_fak ON (pj.no_fak_penj = move_fak.no_fak_penj)
+                   ) pjmove ON (penjualan.no_fak_penj = pjmove.no_fak_penj)
+
+
                     WHERE  status_lunas ='1' AND lastpayment BETWEEN '$dari' AND '$sampai'
-                    GROUP BY penjualan.id_karyawan
+                    GROUP BY salesbarunew
                 ) realisasi"),
                 function ($join) {
-                    $join->on('karyawan.id_karyawan', '=', 'realisasi.id_karyawan');
+                    $join->on('karyawan.id_karyawan', '=', 'realisasi.salesbarunew');
                 }
             );
 
