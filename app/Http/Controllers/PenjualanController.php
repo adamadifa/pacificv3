@@ -2650,25 +2650,6 @@ class PenjualanController extends Controller
                 lastpayment');
                 $query->leftJoin(
                     DB::raw("(
-                        SELECT pj.no_fak_penj,
-                        IF(salesbaru IS NULL,pj.id_karyawan,salesbaru) as salesbarunew, karyawan.nama_karyawan as nama_sales,
-                        IF(cabangbaru IS NULL,karyawan.kode_cabang,cabangbaru) as cabangbarunew
-                        FROM penjualan pj
-                        INNER JOIN karyawan ON pj.id_karyawan = karyawan.id_karyawan
-                        LEFT JOIN (
-                            SELECT MAX(id_move) as id_move,no_fak_penj,move_faktur.id_karyawan as salesbaru,karyawan.kode_cabang as cabangbaru
-                            FROM move_faktur
-                            INNER JOIN karyawan ON move_faktur.id_karyawan = karyawan.id_karyawan
-                            WHERE tgl_move <= '$dari'
-                            GROUP BY no_fak_penj,move_faktur.id_karyawan,karyawan.kode_cabang
-                        ) move_fak ON (pj.no_fak_penj = move_fak.no_fak_penj)
-                    ) pjmove"),
-                    function ($join) {
-                        $join->on('penjualan.no_fak_penj', '=', 'pjmove.no_fak_penj');
-                    }
-                );
-                $query->leftJoin(
-                    DB::raw("(
                     SELECT dp.no_fak_penj,
                     SUM(IF(kode_produk = 'AB' AND promo != 1 OR kode_produk ='AB' AND promo IS NULL,jumlah,0)) as AB,
                     SUM(IF(kode_produk = 'AR' AND promo != 1 OR kode_produk ='AR' AND promo IS NULL,jumlah,0)) as AR,
@@ -2755,13 +2736,13 @@ class PenjualanController extends Controller
                 );
 
                 $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
-                $query->join('karyawan', 'pjmove.salesbarunew', '=', 'karyawan.id_karyawan');
+                $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
 
                 if ($request->kode_cabang != "") {
-                    $query->where('pjmove.cabangbarunew', $request->kode_cabang);
+                    $query->where('karyawan.kode_cabang', $request->kode_cabang);
                 }
                 if ($request->id_karyawan != "") {
-                    $query->where('pjmove.salesbarunew', $request->id_karyawan);
+                    $query->where('penjualan.id_karyawan', $request->id_karyawan);
                 }
 
                 if ($request->kode_pelanggan != "") {
