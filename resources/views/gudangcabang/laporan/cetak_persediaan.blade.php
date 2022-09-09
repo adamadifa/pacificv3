@@ -252,7 +252,7 @@
             $totalpeny_out = $jmlpeny_out;
 
             $penerimaan = $penerimaanpusat + $transit_in + $retur + $jmllainlain_in + $repack + $jmlpeny_in;
-            $pengeluaran = $jmlpeny_out + $penjualan + $promosi + $reject_pasar + $reject_gudang + $transit_out + $jmllainlain_out;
+            $pengeluaran = $jmlpeny_out + $penjualan + $promosi + $reject_pasar + $reject_gudang + $transit_out + $jmllainlain_out + $reject_mobil;
             $saldoakhir = $saldoakhir + $penerimaan - $pengeluaran;
 
             $penerimaan_pcs = $m->penerimaanpusat + $m->transit_in + $m->retur + $jmllainlain_in_pcs + $m->repack + $jmlpeny_in_pcs;
