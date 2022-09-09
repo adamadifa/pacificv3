@@ -412,6 +412,7 @@ class MutasibankController extends Controller
                         'tgl_transaksi' => $tgl_ledger,
                         'keterangan' => $keterangan,
                         'kode_akun' => $kode_akun,
+                        'kode_cabang' => $kode_cabang,
                         'jumlah' => $jumlah
                     ];
                     DB::table('costratio_biaya')->where('kode_cr', $kode_cr)->update($datacr);

@@ -105,7 +105,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{-- {{ $giro->links('vendor.pagination.vuexy') }} --}}
+                    {{ $transfer->links('vendor.pagination.vuexy') }}
 
                 </div>
             </div>
