@@ -349,6 +349,7 @@ class JurnalumumController extends Controller
                     $datacr = [
                         'tgl_transaksi' => $tanggal,
                         'keterangan' => $keterangan,
+                        'kode_cabang' => $kode_cabang,
                         'kode_akun' => $kode_akun,
                         'jumlah' => $jumlah
                     ];
