@@ -4833,6 +4833,8 @@ class PenjualanController extends Controller
             SUM(IF(karyawan.kode_cabang = 'PST',detailpenjualan.subtotal,0)) as JML_PST,
             SUM(IF(karyawan.kode_cabang = 'KLT',jumlah,0)) as KLT,
             SUM(IF(karyawan.kode_cabang = 'KLT',detailpenjualan.subtotal,0)) as JML_KLT,
+            SUM(IF(karyawan.kode_cabang = 'PWK',jumlah,0)) as PWK,
+            SUM(IF(karyawan.kode_cabang = 'PWK',detailpenjualan.subtotal,0)) as JML_PWK,
             SUM(jumlah) as totalqty,
             SUM(detailpenjualan.subtotal) as JML");
             $query->join('barang', 'detailpenjualan.kode_barang', '=', 'barang.kode_barang');

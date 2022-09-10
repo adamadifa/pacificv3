@@ -50,7 +50,7 @@
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
                 <th rowspan="2">No</th>
                 <th rowspan="2">Nama Produk</th>
-                <th colspan="10">Cabang</th>
+                <th colspan="11">Cabang</th>
                 <th rowspan="2">Total</th>
             </tr>
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
@@ -63,6 +63,7 @@
                 <th>Semarang</th>
                 <th>Surabaya</th>
                 <th>Klaten</th>
+                <th>Purwakarta</th>
                 <th>Pusat</th>
 
             </tr>
@@ -81,6 +82,7 @@
                     $surabaya 	= $r->SBY / $r->isipcsdus;
                     $pusat 		= $r->PST / $r->isipcsdus;
                     $klaten 	= $r->KLT / $r->isipcsdus;
+                    $purwakarta 	= $r->PWK / $r->isipcsdus;
                     $totalqty 	= $r->totalqty / $r->isipcsdus;
 
             ?>
@@ -97,6 +99,7 @@
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($surabaya)){echo desimal($surabaya);} ?></td>
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($klaten)){echo desimal($klaten);} ?></td>
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($pusat)){echo desimal($pusat);} ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($purwakarta)){echo desimal($purwakarta);} ?></td>
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($totalqty)){echo desimal($totalqty);} ?></td>
             </tr>
             <?php $no++; } ?>
@@ -109,7 +112,7 @@
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
                 <th rowspan="2">No</th>
                 <th rowspan="2">Nama Produk</th>
-                <th colspan="10">Cabang</th>
+                <th colspan="11">Cabang</th>
                 <th rowspan="2">Total</th>
             </tr>
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
@@ -123,6 +126,7 @@
                 <th>Surabaya</th>
                 <th>Klaten</th>
                 <th>Pusat</th>
+                <th>Purwakarta</th>
 
             </tr>
         </thead>
@@ -201,8 +205,15 @@
                         $pusat 		= 0;
                     }
 
+                    if(!empty($r->PWK)){
 
-                    $totalqty 	= ($bandung+$bogor+$sukabumi+$purwokerto+$tegal+$tasik+$semarang+$surabaya+$pusat)/9;
+                        $purwakarta 		= $r->JML_PWK/($r->PWK / $r->isipcsdus);
+                    }else{
+                        $purwakarta 		= 0;
+                    }
+
+
+                    $totalqty 	= ($bandung+$bogor+$sukabumi+$purwokerto+$tegal+$tasik+$semarang+$surabaya+$pusat+$purwakarta)/10;
 
             ?>
             <tr>
@@ -218,6 +229,7 @@
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($r->TSM)){echo rupiah($surabaya);} ?></td>
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($r->KLT)){echo rupiah($klaten);} ?></td>
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($r->PST)){echo rupiah($pusat);} ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($r->PWK)){echo rupiah($purwakarta);} ?></td>
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($totalqty)){echo rupiah($totalqty);} ?></td>
             </tr>
             <?php $no++; } ?>
