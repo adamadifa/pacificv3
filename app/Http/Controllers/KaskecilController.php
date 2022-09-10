@@ -176,7 +176,8 @@ class KaskecilController extends Controller
             'SBY' => '1-1116',
             'SMR' => '1-1117',
             'KLT' => '1-1118',
-            'GRT' => '1-1119'
+            'GRT' => '1-1119',
+            'PWK' => '1-1120'
         ];
         $kaskecil_temp = DB::table('kaskecil_detail_temp')->where('nobukti', $nobukti)->get();
         DB::beginTransaction();
