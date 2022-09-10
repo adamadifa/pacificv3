@@ -182,6 +182,8 @@ class TransferController extends Controller
             $akun = "1-1489";
         } else if ($cabang == "KLT") {
             $akun = "1-1490";
+        } else if ($cabang == "PWK") {
+            $akun = "1-1492";
         }
 
         DB::beginTransaction();
