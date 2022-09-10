@@ -45,7 +45,7 @@ class TransferController extends Controller
         $query->leftJoin('ledger_bank', 'transfer.kode_transfer', '=', 'ledger_bank.no_ref');
         $query->join('penjualan', 'transfer.no_fak_penj', '=', 'penjualan.no_fak_penj');
         $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
-        $query->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
+        $query->join('karyawan', 'transfer.id_karyawan', '=', 'karyawan.id_karyawan');
         $query->orderBy('tglcair', 'desc');
         $query->groupBy('transfer.kode_transfer', 'tgl_transfer', 'nama_pelanggan', 'karyawan.kode_cabang', 'namabank', 'tglcair', 'transfer.status', 'ket', 'ledger_bank.no_bukti', 'tglbayar');
         if (empty($request->no_giro) && empty($request->nama_pelanggan) && empty($request->dari) && empty($request->sampai) && $request->status === null) {
