@@ -63,8 +63,8 @@
                 <th>Semarang</th>
                 <th>Surabaya</th>
                 <th>Klaten</th>
-                <th>Purwakarta</th>
                 <th>Pusat</th>
+                <th>Purwakarta</th>
 
             </tr>
         </thead>
