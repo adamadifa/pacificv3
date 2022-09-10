@@ -26,6 +26,7 @@
                     <option {{$angkutan->tujuan == "KLATEN" ? 'selected' : ''}} value="KLATEN">KLATEN</option>
                     <option {{$angkutan->tujuan == "KALIPUCANG" ? 'selected' : ''}} value="KALIPUCANG">KALIPUCANG</option>
                     <option {{$angkutan->tujuan == "TASIKMALAYA" ? 'selected' : ''}} value="TASIKMALAYA">TASIKMALAYA</option>
+                    <option {{$angkutan->tujuan == "PWK" ? 'selected' : ''}} value="PWK">PURWAKARTA</option>
                 </select>
             </div>
         </div>
