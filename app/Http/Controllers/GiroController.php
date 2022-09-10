@@ -32,7 +32,7 @@ class GiroController extends Controller
         $query->leftJoin('ledger_bank', 'giro.no_giro', '=', 'ledger_bank.no_ref');
         $query->join('penjualan', 'giro.no_fak_penj', '=', 'penjualan.no_fak_penj');
         $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
-        $query->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
+        $query->join('karyawan', 'giro.id_karyawan', '=', 'karyawan.id_karyawan');
         $query->orderBy('tglcair', 'desc');
         $query->groupBy('giro.no_giro', 'tgl_giro', 'nama_pelanggan', 'karyawan.kode_cabang', 'namabank', 'tglcair', 'giro.status', 'ket', 'ledger_bank.no_bukti', 'tglbayar');
         if (empty($request->no_giro) && empty($request->nama_pelanggan) && empty($request->dari) && empty($request->sampai) && $request->status === null) {
