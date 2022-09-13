@@ -40,6 +40,7 @@
                     <option value="KALIPUCANG" data-tarif="1000000">KALIPUCANG</option>
                     <option value="TASIKMALAYA" data-tarif="0">TASIKMALAYA</option>
                     <option value="PURWAKARTA" data-tarif="0">PURWAKARTA</option>
+                    <option value="PEMALANG" data-tarif="0">PEMALANG</option>
 
                 </select>
             </div>
