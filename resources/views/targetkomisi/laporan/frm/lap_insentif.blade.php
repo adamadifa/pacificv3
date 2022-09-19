@@ -31,7 +31,18 @@
                                     @csrf
 
 
-
+                                    <div class="row" id="pilihcabang">
+                                        <div class="col-lg-12 col-sm-12">
+                                            <div class="form-group  ">
+                                                <select name="kode_cabang" id="kode_cabang" class="form-control">
+                                                    <option value="">Pilih Cabang</option>
+                                                    @foreach ($cabang as $c)
+                                                    <option {{ (Request('kode_cabang')==$c->kode_cabang ? 'selected':'')}} value="{{ $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="row" id="pilihbulan">
                                         <div class="col-12">
                                             {{-- <label for="" class="form-label mb-1">Omset Bulan</label> --}}

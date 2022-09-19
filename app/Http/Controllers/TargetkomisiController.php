@@ -443,7 +443,8 @@ class TargetkomisiController extends Controller
 
     public function laporankomisi()
     {
-        $cabang = DB::table('cabang')->get();
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('targetkomisi.laporan.frm.lap_komisi', compact('cabang', 'bulan'));
     }
@@ -1011,7 +1012,8 @@ class TargetkomisiController extends Controller
 
     public function laporankomisidriverhelper()
     {
-        $cabang = DB::table('cabang')->get();
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
         return view('targetkomisi.laporan.frm.lap_komisidriverhelper', compact('cabang'));
     }
 
@@ -1200,8 +1202,10 @@ class TargetkomisiController extends Controller
 
     public function laporaninsentif()
     {
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
-        return view('targetkomisi.laporan.frm.lap_insentif', compact('bulan'));
+        return view('targetkomisi.laporan.frm.lap_insentif', compact('bulan', 'cabang'));
     }
 
     public function cetaklaporaninsentif(Request $request)
@@ -1212,6 +1216,7 @@ class TargetkomisiController extends Controller
         $dari = $tahun . "-" . $bulan . "-01";
         $sampai = date('Y-m-t', strtotime($dari));
         $cbg = Auth::user()->kode_cabang;
+        $kode_cabang = $request->kode_cabang;
         $cabang = DB::table('cabang')->where('kode_cabang', $cbg)->first();
         $lastmonth = date('Y-m-d', strtotime(date($dari) . '- 1 month'));
         $lastdate = explode("-", $lastmonth);
@@ -1386,7 +1391,7 @@ class TargetkomisiController extends Controller
         );
         $query->where('cabang.kode_cabang', '!=', 'GRT');
         if ($cbg != "PCF") {
-            $query->where('cabang.kode_cabang', $cbg);
+            $query->where('cabang.kode_cabang', $kode_cabang);
         }
         $insentif = $query->get();
         if (isset($_POST['export'])) {

@@ -26,11 +26,8 @@ class LaporangudangcabangController extends Controller
     }
     public function persediaan()
     {
-        if ($this->cabang == "PCF") {
-            $cabang = DB::table('cabang')->get();
-        } else {
-            $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-        }
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabanggudang($this->cabang);
         $barang = Barang::orderBy('nama_barang')->get();
         return view('gudangcabang.laporan.frm.lap_persediaan', compact('cabang', 'barang'));
     }
@@ -168,11 +165,8 @@ class LaporangudangcabangController extends Controller
 
     public function badstok()
     {
-        if ($this->cabang == "PCF") {
-            $cabang = DB::table('cabang')->get();
-        } else {
-            $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-        }
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabanggudang($this->cabang);
         $barang = Barang::orderBy('nama_barang')->get();
         return view('gudangcabang.laporan.frm.lap_badstok', compact('cabang', 'barang'));
     }
@@ -289,11 +283,8 @@ class LaporangudangcabangController extends Controller
 
     public function rekapbj()
     {
-        if ($this->cabang == "PCF") {
-            $cabang = DB::table('cabang')->get();
-        } else {
-            $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-        }
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabanggudang($this->cabang);
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('gudangcabang.laporan.frm.lap_rekapbj', compact('cabang', 'bulan'));
     }
@@ -396,11 +387,8 @@ class LaporangudangcabangController extends Controller
 
     public function mutasidpb()
     {
-        if ($this->cabang == "PCF") {
-            $cabang = DB::table('cabang')->get();
-        } else {
-            $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-        }
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabanggudang($this->cabang);
         $barang = Barang::orderBy('nama_barang')->get();
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('gudangcabang.laporan.frm.lap_mutasidpb', compact('cabang', 'bulan', 'barang'));
@@ -542,11 +530,8 @@ class LaporangudangcabangController extends Controller
 
     public function rekonsiliasibj()
     {
-        if ($this->cabang == "PCF") {
-            $cabang = DB::table('cabang')->get();
-        } else {
-            $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-        }
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabanggudang($this->cabang);
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('gudangcabang.laporan.frm.lap_rekonsiliasibj', compact('cabang', 'bulan'));
     }

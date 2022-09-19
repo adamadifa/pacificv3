@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cabang;
 use App\Models\Harga;
 use App\Models\Retur;
 use Illuminate\Http\Request;
@@ -364,21 +365,8 @@ class ReturController extends Controller
 
     public function laporanretur()
     {
-        if ($this->cabang != "PCF" && $this->cabang != "PST") {
-            if ($this->cabang == "GRT") {
-                $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
-            } else {
-                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-                $cabang[] = "";
-                foreach ($cbg as $c) {
-                    $cabang[] = $c->kode_cabang;
-                }
-                //dd($cabang);
-                $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
-            }
-        } else {
-            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
-        }
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
         return view('retur.laporan.frm.lap_retur', compact('cabang'));
     }
 

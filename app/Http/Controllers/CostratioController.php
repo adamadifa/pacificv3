@@ -7,16 +7,26 @@ use App\Models\Costratio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 
 class CostratioController extends Controller
 {
+    protected $cabang;
+    public function __construct()
+    {
+        // Fetch the Site Settings object
+        $this->middleware(function ($request, $next) {
+            $this->cabang = Auth::user()->kode_cabang;
+            return $next($request);
+        });
+
+
+        View::share('cabang', $this->cabang);
+    }
     public function index(Request $request)
     {
-        if (Auth::user()->kode_cabang != "PCF") {
-            $cabang = Cabang::orderBy('kode_cabang')->where('kode_cabang', Auth::user()->kode_cabang)->get();
-        } else {
-            $cabang = Cabang::orderBy('kode_cabang')->get();
-        }
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabanggudang($this->cabang);
         $sumber = DB::table('costratio_sumber')->orderBy('id_sumber_costratio')->get();
         $query = Costratio::query();
         $query->join('coa', 'costratio_biaya.kode_akun', '=', 'coa.kode_akun');

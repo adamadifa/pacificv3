@@ -4,10 +4,62 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Cabang extends Model
 {
     use HasFactory;
     protected $table = 'cabang';
     protected $guarded = [];
+
+    function getCabang($cbg)
+    {
+
+        $iduser = Auth::user()->id;
+        $oki = 27;
+        $listcabang = array('BDG', 'PWK');
+
+        if ($iduser == $oki) {
+            $cabang = DB::table('cabang')->whereIn('kode_cabang', $listcabang)->get();
+        } else {
+            if ($cbg != "PCF" && $cbg != "PST") {
+                if ($cbg == "GRT") {
+                    $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
+                } else {
+                    $cbg = DB::table('cabang')->where('kode_cabang', $cbg)->orWhere('sub_cabang', $cbg)->get();
+                    $cabang[] = "";
+                    foreach ($cbg as $c) {
+                        $cabang[] = $c->kode_cabang;
+                    }
+                    //dd($cabang);
+                    $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
+                }
+            } else {
+                $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
+            }
+        }
+
+
+        return $cabang;
+    }
+
+
+    function getCabanggudang($cbg)
+    {
+        $iduser = Auth::user()->id;
+        $oki = 27;
+        $listcabang = array('BDG', 'PWK');
+
+        if ($iduser == $oki) {
+            $cabang = DB::table('cabang')->whereIn('kode_cabang', $listcabang)->get();
+        } else {
+            if ($this->cabang == "PCF") {
+                $cabang = DB::table('cabang')->get();
+            } else {
+                $cabang = DB::table('cabang')->where('kode_cabang', $cbg)->orWhere('sub_cabang', $cbg)->get();
+            }
+        }
+        return $cabang;
+    }
 }

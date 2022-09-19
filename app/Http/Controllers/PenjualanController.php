@@ -2296,22 +2296,8 @@ class PenjualanController extends Controller
 
     public function laporanpenjualan()
     {
-
-        if ($this->cabang != "PCF" && $this->cabang != "PST") {
-            if ($this->cabang == "GRT") {
-                $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
-            } else {
-                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-                $cabang[] = "";
-                foreach ($cbg as $c) {
-                    $cabang[] = $c->kode_cabang;
-                }
-                //dd($cabang);
-                $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
-            }
-        } else {
-            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
-        }
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
         return view('penjualan.laporan.frm.lap_penjualan', compact('cabang'));
     }
 
@@ -2837,21 +2823,8 @@ class PenjualanController extends Controller
 
     public function laporantunaikredit()
     {
-        if ($this->cabang != "PCF" && $this->cabang != "PST") {
-            if ($this->cabang == "GRT") {
-                $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
-            } else {
-                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-                $cabang[] = "";
-                foreach ($cbg as $c) {
-                    $cabang[] = $c->kode_cabang;
-                }
-                //dd($cabang);
-                $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
-            }
-        } else {
-            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
-        }
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
         return view('penjualan.laporan.frm.lap_tunaikredit', compact('cabang'));
     }
 
@@ -2951,41 +2924,15 @@ class PenjualanController extends Controller
 
     public function laporankartupiutang()
     {
-        if ($this->cabang != "PCF" && $this->cabang != "PST") {
-            if ($this->cabang == "GRT") {
-                $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
-            } else {
-                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-                $cabang[] = "";
-                foreach ($cbg as $c) {
-                    $cabang[] = $c->kode_cabang;
-                }
-                //dd($cabang);
-                $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
-            }
-        } else {
-            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
-        }
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
         return view('penjualan.laporan.frm.lap_kartupiutang', compact('cabang'));
     }
 
     public function laporantandaterimafaktur()
     {
-        if ($this->cabang != "PCF" && $this->cabang != "PST") {
-            if ($this->cabang == "GRT") {
-                $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
-            } else {
-                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-                $cabang[] = "";
-                foreach ($cbg as $c) {
-                    $cabang[] = $c->kode_cabang;
-                }
-                //dd($cabang);
-                $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
-            }
-        } else {
-            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
-        }
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
         return view('penjualan.laporan.frm.lap_tandaterimafaktur', compact('cabang'));
     }
     public function cetaklaporankartupiutang(Request $request)
@@ -3316,21 +3263,8 @@ class PenjualanController extends Controller
 
     public function laporanaup()
     {
-        if ($this->cabang != "PCF" && $this->cabang != "PST") {
-            if ($this->cabang == "GRT") {
-                $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
-            } else {
-                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-                $cabang[] = "";
-                foreach ($cbg as $c) {
-                    $cabang[] = $c->kode_cabang;
-                }
-                //dd($cabang);
-                $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
-            }
-        } else {
-            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
-        }
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
         return view('penjualan.laporan.frm.lap_aup', compact('cabang'));
     }
 
@@ -3596,22 +3530,8 @@ class PenjualanController extends Controller
 
     public function laporanlebihsatufaktur()
     {
-        if ($this->cabang != "PCF" && $this->cabang != "PST") {
-            if ($this->cabang == "GRT") {
-                $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
-            } else {
-                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-                $cabang[] = "";
-                foreach ($cbg as $c) {
-                    $cabang[] = $c->kode_cabang;
-                }
-                //dd($cabang);
-                $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
-            }
-        } else {
-            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
-        }
-
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
 
         return view('penjualan.laporan.frm.lap_lebihsatufaktur', compact('cabang'));
     }
@@ -3676,21 +3596,8 @@ class PenjualanController extends Controller
 
     public function laporandppp()
     {
-        if ($this->cabang != "PCF" && $this->cabang != "PST") {
-            if ($this->cabang == "GRT") {
-                $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
-            } else {
-                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-                $cabang[] = "";
-                foreach ($cbg as $c) {
-                    $cabang[] = $c->kode_cabang;
-                }
-                //dd($cabang);
-                $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
-            }
-        } else {
-            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
-        }
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('penjualan.laporan.frm.lap_dppp', compact('cabang', 'bulan'));
     }
@@ -4265,21 +4172,8 @@ class PenjualanController extends Controller
     public function laporandpp()
     {
 
-        if ($this->cabang != "PCF" && $this->cabang != "PST") {
-            if ($this->cabang == "GRT") {
-                $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
-            } else {
-                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-                $cabang[] = "";
-                foreach ($cbg as $c) {
-                    $cabang[] = $c->kode_cabang;
-                }
-                //dd($cabang);
-                $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
-            }
-        } else {
-            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
-        }
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
         return view('penjualan.laporan.frm.lap_dpp', compact('cabang'));
     }
 
@@ -4339,21 +4233,8 @@ class PenjualanController extends Controller
 
     public function laporanrekapomsetpelanggan()
     {
-        if ($this->cabang != "PCF" && $this->cabang != "PST") {
-            if ($this->cabang == "GRT") {
-                $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
-            } else {
-                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-                $cabang[] = "";
-                foreach ($cbg as $c) {
-                    $cabang[] = $c->kode_cabang;
-                }
-                //dd($cabang);
-                $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
-            }
-        } else {
-            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
-        }
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
         return view('penjualan.laporan.frm.lap_rekapomsetpelanggan', compact('cabang'));
     }
 
@@ -4417,21 +4298,8 @@ class PenjualanController extends Controller
 
     public function laporanrekappelanggan()
     {
-        if ($this->cabang != "PCF" && $this->cabang != "PST") {
-            if ($this->cabang == "GRT") {
-                $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
-            } else {
-                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-                $cabang[] = "";
-                foreach ($cbg as $c) {
-                    $cabang[] = $c->kode_cabang;
-                }
-                //dd($cabang);
-                $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
-            }
-        } else {
-            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
-        }
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
         return view('penjualan.laporan.frm.lap_rekappelanggan', compact('cabang'));
     }
 
@@ -4728,21 +4596,8 @@ class PenjualanController extends Controller
 
     public function laporanrekappenjualan()
     {
-        if ($this->cabang != "PCF" && $this->cabang != "PST") {
-            if ($this->cabang == "GRT") {
-                $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
-            } else {
-                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-                $cabang[] = "";
-                foreach ($cbg as $c) {
-                    $cabang[] = $c->kode_cabang;
-                }
-                //dd($cabang);
-                $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
-            }
-        } else {
-            $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
-        }
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
         return view('penjualan.laporan.frm.lap_rekappenjualan', compact('cabang'));
     }
 

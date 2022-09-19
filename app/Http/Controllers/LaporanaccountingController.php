@@ -11,9 +11,23 @@ use App\Models\Penjualan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 
 class LaporanaccountingController extends Controller
 {
+
+    protected $cabang;
+    public function __construct()
+    {
+        // Fetch the Site Settings object
+        $this->middleware(function ($request, $next) {
+            $this->cabang = Auth::user()->kode_cabang;
+            return $next($request);
+        });
+
+
+        View::share('cabang', $this->cabang);
+    }
     public function rekapbj()
     {
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
@@ -860,11 +874,8 @@ class LaporanaccountingController extends Controller
 
     public function costratio()
     {
-        if (Auth::user()->kode_cabang != "PCF") {
-            $cabang = Cabang::orderBy('kode_cabang')->where('kode_cabang', Auth::user()->kode_cabang)->get();
-        } else {
-            $cabang = Cabang::orderBy('kode_cabang')->get();
-        }
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabanggudang($this->cabang);
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('laporanaccounting.laporan.frm.lap_costratio', compact('bulan', 'cabang'));
     }
