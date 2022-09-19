@@ -54,7 +54,7 @@ class Cabang extends Model
         if ($iduser == $oki) {
             $cabang = DB::table('cabang')->whereIn('kode_cabang', $listcabang)->get();
         } else {
-            if ($this->cabang == "PCF") {
+            if ($cbg == "PCF") {
                 $cabang = DB::table('cabang')->get();
             } else {
                 $cabang = DB::table('cabang')->where('kode_cabang', $cbg)->orWhere('sub_cabang', $cbg)->get();

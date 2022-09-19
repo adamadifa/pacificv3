@@ -30,7 +30,6 @@ class LaporankeuanganController extends Controller
     {
         $cbg = new Cabang();
         $cabang = $cbg->getCabanggudang($this->cabang);
-
         return view('kaskecil.laporan.frm.lap_kaskecil', compact('cabang'));
     }
 
