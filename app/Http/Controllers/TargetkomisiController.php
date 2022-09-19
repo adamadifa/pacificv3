@@ -1025,6 +1025,8 @@ class TargetkomisiController extends Controller
         $tanggal = explode("-", $dari);
         $bulan = $tanggal[1];
         $tahun = $tanggal[0];
+
+
         $cbg = Cabang::where('kode_cabang', $cabang)->first();
         $driver = DB::table('driver_helper')
             ->selectRaw("driver_helper.id_driver_helper,nama_driver_helper,kategori,IFNULL(jml_driver,0) as jml_driver,driver_helper.ratio as ratiodefault,

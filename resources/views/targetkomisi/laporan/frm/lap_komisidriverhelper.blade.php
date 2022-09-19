@@ -28,6 +28,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <form action="/laporankomisidriverhelper/cetak" method="POST" id="frmPenjualan" target="_blank">
+                                    @csrf
                                     {{-- @csrf
                                     @if (Auth::user()->kode_cabang != "PCF")
                                     <input type="hidden" name="kode_cabang" id="kode_cabang" value="{{ Auth::user()->kode_cabang }}">
