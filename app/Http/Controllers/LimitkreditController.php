@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cabang;
 use App\Models\Limitkredit;
-use Barryvdh\DomPDF\Facade as PDF;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use DateTime;
 use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
@@ -28,6 +28,8 @@ class LimitkreditController extends Controller
     }
     public function index(Request $request)
     {
+        $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB');
+        $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
         $pelanggan = '"' . $request->nama_pelanggan . '"';
         $query = Limitkredit::query();
         if ($this->cabang != "PCF") {
@@ -41,15 +43,19 @@ class LimitkreditController extends Controller
                 }
                 $query->whereIn('pelanggan.kode_cabang', $cabang);
             }
+        } else {
+            if (Auth::user()->id == 82) {
+                $query->whereIn('pelanggan.kode_cabang', $wilayah_barat);
+            }
         }
         $query->select('pengajuan_limitkredit_v3.*', 'nama_pelanggan');
         $query->orderBy('tgl_pengajuan', 'desc');
         $query->orderBy('no_pengajuan', 'desc');
         $query->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
         $query->leftJoin('users', 'pengajuan_limitkredit_v3.id_approval', '=', 'users.id');
-        if (empty($request->nama_pelanggan) && empty($request->dari) && empty($request->sampai) && empty($request->status)) {
-            $query->WhereRaw("MATCH(nama_pelanggan) AGAINST('" . $pelanggan .  "')");
-        }
+        // if (empty($request->nama_pelanggan) && empty($request->dari) && empty($request->sampai) && empty($request->status)) {
+        //     $query->WhereRaw("MATCH(nama_pelanggan) AGAINST('" . $pelanggan .  "')");
+        // }
         if (!empty($request->nama_pelanggan)) {
             $query->WhereRaw("MATCH(nama_pelanggan) AGAINST('" . $pelanggan .  "')");
         }
@@ -94,6 +100,50 @@ class LimitkreditController extends Controller
             }
             $query->where('jumlah', '>', 2000000);
         }
+
+
+        if ($this->level == "rsm") {
+            if ($request->status == "pending") {
+                $query->whereNotNull('kacab');
+                $query->whereNull('rsm');
+                $query->where('jumlah', '>', 5000000);
+            } else if ($request->status == "disetujui") {
+                $query->whereNotNull('rsm');
+                $query->where('status', '!=', 2);
+                $query->where('jumlah', '>', 5000000);
+                $query->orwhereNotNull('rsm');
+                $query->where('status', '=', 2);
+                $query->where('level', '!=', Auth::user()->level);
+                $query->where('jumlah', '>', 5000000);
+            } else if ($request->status == "ditolak") {
+                $query->whereNotNull('rsm');
+                $query->where('status', 2);
+                $query->where('level', Auth::user()->level);
+                $query->where('jumlah', '>', 5000000);
+            }
+        }
+
+        if ($this->level == "manager marketing") {
+            if ($request->status == "pending") {
+                $query->whereNotNull('rsm');
+                $query->whereNull('mm');
+                $query->where('status', 0);
+                $query->where('jumlah', '>', 10000000);
+            } else if ($request->status == "disetujui") {
+                $query->whereNotNull('mm');
+                $query->where('status', '!=', 2);
+                $query->where('jumlah', '>', 10000000);
+                $query->orwhereNotNull('mm');
+                $query->where('status', '=', 2);
+                $query->where('level', '!=', Auth::user()->level);
+                $query->where('jumlah', '>', 10000000);
+            } else if ($request->status == "ditolak") {
+                $query->whereNotNull('mm');
+                $query->where('status', 2);
+                $query->where('level', Auth::user()->level);
+                $query->where('jumlah', '>', 10000000);
+            }
+        }
         // if ($this->level == "kepala admin") {
         //     if ($request->status == "pending") {
         //         $query->whereNull('kacab');
@@ -123,46 +173,48 @@ class LimitkreditController extends Controller
             }
         }
 
-        if ($this->level == "general manager") {
-            if ($request->status == "pending") {
-                $query->whereNotNull('mm');
-                $query->whereNull('gm');
-            } else if ($request->status == "disetujui") {
-                $query->whereNotNull('gm');
-                $query->where('status', '!=', 2);
-                $query->orwhereNotNull('gm');
-                $query->where('status', '=', 2);
-                $query->where('level', '!=', Auth::user()->level);
-            } else if ($request->status == "ditolak") {
-                $query->whereNotNull('mm');
-                $query->whereNotNull('gm');
-                $query->where('status', 2);
-                $query->where('level', Auth::user()->level);
-            } else {
-                $query->whereNotNull('mm');
-            }
-            $query->where('jumlah', '>', 10000000);
-        }
+        // if ($this->level == "general manager") {
+        //     if ($request->status == "pending") {
+        //         $query->whereNotNull('mm');
+        //         $query->whereNull('gm');
+        //     } else if ($request->status == "disetujui") {
+        //         $query->whereNotNull('gm');
+        //         $query->where('status', '!=', 2);
+        //         $query->orwhereNotNull('gm');
+        //         $query->where('status', '=', 2);
+        //         $query->where('level', '!=', Auth::user()->level);
+        //     } else if ($request->status == "ditolak") {
+        //         $query->whereNotNull('mm');
+        //         $query->whereNotNull('gm');
+        //         $query->where('status', 2);
+        //         $query->where('level', Auth::user()->level);
+        //     } else {
+        //         $query->whereNotNull('mm');
+        //     }
+        //     $query->where('jumlah', '>', 10000000);
+        // }
 
         if ($this->level == "direktur") {
             if ($request->status == "pending") {
-                $query->whereNotNull('gm');
+                $query->whereNotNull('mm');
                 $query->whereNull('dirut');
+                $query->where('status', 0);
+                $query->where('jumlah', '>', 10000000);
             } else if ($request->status == "disetujui") {
                 $query->whereNotNull('dirut');
                 $query->where('status', '!=', 2);
+                $query->where('jumlah', '>', 10000000);
                 $query->orwhereNotNull('dirut');
                 $query->where('status', '=', 2);
                 $query->where('level', '!=', Auth::user()->level);
+                $query->where('jumlah', '>', 10000000);
             } else if ($request->status == "ditolak") {
                 $query->whereNotNull('gm');
                 $query->whereNotNull('dirut');
                 $query->where('status', 2);
                 $query->where('level', Auth::user()->level);
-            } else {
-                $query->whereNotNull('gm');
+                $query->where('jumlah', '>', 10000000);
             }
-            $query->where('jumlah', '>', 10000000);
         }
 
 
@@ -170,7 +222,8 @@ class LimitkreditController extends Controller
         $limitkredit = $query->paginate(15);
         $limitkredit->appends($request->all());
 
-        $cabang = Cabang::all();
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabanggudang($this->cabang);
         return view('limitkredit.index', compact('limitkredit', 'cabang'));
     }
 
@@ -596,15 +649,15 @@ class LimitkreditController extends Controller
             } else {
                 $status = 0;
             }
-        } else if ($level == 'manager marketing') {
-            $lv = 'mm';
+        } else if ($level == 'rsm') {
+            $lv = 'rsm';
             if ($jumlah <= 10000000) {
                 $status = 1;
             } else {
                 $status = 0;
             }
-        } else if ($level == 'general manager') {
-            $lv = 'gm';
+        } else if ($level == 'manager marketing') {
+            $lv = 'mm';
             if ($jumlah <= 15000000) {
                 $status = 1;
             } else {
@@ -617,6 +670,8 @@ class LimitkreditController extends Controller
 
         if ($level == "direktur") {
             $field_time = 'time_dirut';
+        } else if ($level == "rsm") {
+            $field_time = 'time_rsm';
         } else if ($level == "manager marketing") {
             $field_time = 'time_mm';
         } else if ($level == "general manager") {
@@ -732,6 +787,8 @@ class LimitkreditController extends Controller
 
         if ($level == 'kepala cabang' || $level == "kepala penjualan") {
             $lv = 'kacab';
+        } else if ($level == 'rsm') {
+            $lv = 'rsm';
         } else if ($level == 'manager marketing') {
             $lv = 'mm';
         } else if ($level == 'general manager') {

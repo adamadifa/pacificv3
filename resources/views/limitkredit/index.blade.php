@@ -51,10 +51,10 @@
                             <div class="col-lg-3 col-sm-12">
                                 <div class="form-group">
                                     <select name="status" id="status" class="form-control">
-                                        <option value="">Status</option>
-                                        <option {{ (Request('status')=='pending' ? 'selected' :'')}} value="pending">PENDING</option>
-                                        <option {{ (Request('status')=='disetujui' ? 'selected' :'')}} value="disetujui">DISETUJUI</option>
-                                        <option {{ (Request('status')=='ditolak' ? 'selected' :'')}} value="ditolak">DITOLAK</option>
+                                        <option value="">Semua Status Pengajuan</option>
+                                        <option {{ (Request('status')=='pending' ? 'selected' :'')}} value="pending">BELUM DISETUJUI {{ Str::upper(Auth::user()->level)  }}</option>
+                                        <option {{ (Request('status')=='disetujui' ? 'selected' :'')}} value="disetujui">DISETUJUI {{ Str::upper(Auth::user()->level)  }}</option>
+                                        <option {{ (Request('status')=='ditolak' ? 'selected' :'')}} value="ditolak">DITOLAK {{ Str::upper(Auth::user()->level)  }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -81,7 +81,7 @@
                                 <th>Ket</th>
                                 <th>KP</th>
                                 <th>RSM</th>
-                                <th>GM</th>
+                                <th>MM</th>
                                 <th>DIRUT</th>
                                 <th>Aksi</th>
                             </tr>
@@ -177,12 +177,11 @@
                                     @if (empty($d->kacab))
                                     <i class="fa fa-history warning"></i>
                                     @elseif(
-                                    !empty($d->kacab) && !empty($d->mm) && $d->status==2 ||
-                                    !empty($d->kacab) && empty($d->mm) && $d->status== 0 ||
-                                    !empty($d->kacab) && empty($d->mm) && $d->status== 1 ||
-                                    !empty($d->kacab) && empty($d->mm) && $d->status== 0 ||
-                                    !empty($d->kacab) && !empty($d->mm) && $d->status== 0 ||
-                                    !empty($d->kacab) && !empty($d->mm) && $d->status== 1
+                                    !empty($d->kacab) && !empty($d->rsm) && $d->status==2 ||
+                                    !empty($d->kacab) && empty($d->rsm) && $d->status== 0 ||
+                                    !empty($d->kacab) && empty($d->rsm) && $d->status== 1 ||
+                                    !empty($d->kacab) && !empty($d->rsm) && $d->status== 0 ||
+                                    !empty($d->kacab) && !empty($d->rsm) && $d->status== 1
                                     )
                                     <i class="fa fa-check success"></i>
                                     @else
@@ -192,14 +191,14 @@
                                 </td>
                                 <td>
                                     @if ($d->jumlah > 5000000)
-                                    @if (empty($d->mm))
+                                    @if (empty($d->rsm))
                                     <i class="fa fa-history warning"></i>
                                     @elseif(
-                                    !empty($d->mm) && !empty($d->gm) && $d->status == 2
-                                    || !empty($d->mm) && empty($d->gm) && $d->status == 1
-                                    || !empty($d->mm) && empty($d->gm) && $d->status == 0
-                                    || !empty($d->mm) && !empty($d->gm) && $d->status == 0
-                                    || !empty($d->mm) && !empty($d->gm) && $d->status == 1
+                                    !empty($d->rsm) && !empty($d->mm) && $d->status == 2
+                                    || !empty($d->rsm) && empty($d->mm) && $d->status == 1
+                                    || !empty($d->rsm) && empty($d->mm) && $d->status == 0
+                                    || !empty($d->rsm) && !empty($d->mm) && $d->status == 0
+                                    || !empty($d->rsm) && !empty($d->mm) && $d->status == 1
                                     )
                                     <i class="fa fa-check success"></i>
                                     @else
@@ -209,14 +208,14 @@
                                 </td>
                                 <td>
                                     @if ($d->jumlah > 10000000)
-                                    @if (empty($d->gm))
+                                    @if (empty($d->mm))
                                     <i class="fa fa-history warning"></i>
                                     @elseif(
-                                    !empty($d->gm) && !empty($d->dirut) && $d->status == 2
-                                    || !empty($d->gm) && empty($d->dirut) && $d->status == 1
-                                    || !empty($d->gm) && empty($d->dirut) && $d->status == 0
-                                    || !empty($d->gm) && !empty($d->dirut) && $d->status == 0
-                                    || !empty($d->gm) && !empty($d->dirut) && $d->status == 1
+                                    !empty($d->mm) && !empty($d->dirut) && $d->status == 2
+                                    || !empty($d->mm) && empty($d->dirut) && $d->status == 1
+                                    || !empty($d->mm) && empty($d->dirut) && $d->status == 0
+                                    || !empty($d->mm) && !empty($d->dirut) && $d->status == 0
+                                    || !empty($d->mm) && !empty($d->dirut) && $d->status == 1
                                     )
                                     <i class="fa fa-check success"></i>
                                     @else
@@ -274,19 +273,19 @@
                                         <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/decline"><i class=" fa fa-close danger"></i></a>
                                         @endif
 
-                                        <!-- Manager marketing -->
-                                        @if($level=="manager marketing" && !empty($d->kacab) && empty($d->mm) && empty($d->gm) && $d->status==0
-                                        || $level == "manager marketing" && !empty($d->kacab) && !empty($d->mm) && empty($d->gm) && $d->status==2
-                                        || $level == "manager marketing" && !empty($d->kacab) && !empty($d->mm) && empty($d->gm) && $d->status==0)
+                                        <!-- RSM -->
+                                        @if($level=="rsm" && !empty($d->kacab) && empty($d->rsm) && empty($d->mm) && $d->status==0
+                                        || $level == "rsm" && !empty($d->kacab) && !empty($d->rsm) && empty($d->mm) && $d->status==2
+                                        || $level == "rsm" && !empty($d->kacab) && !empty($d->rsm) && empty($d->mm) && $d->status==0)
                                         <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/approve"><i class=" fa fa-check success"></i></a>
                                         <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/decline"><i class=" fa fa-close danger"></i></a>
                                         @endif
 
                                         <!-- General Manager -->
 
-                                        @if ($level=="general manager" && !empty($d->mm) && empty($d->gm) && empty($d->dirut) && $d->status==0
-                                        || $level =="general manager" && !empty($d->mm) && !empty($d->gm) && empty($d->dirut) && $d->status==2
-                                        || $level =="general manager" && !empty($d->mm) && !empty($d->gm) && empty($d->dirut) && $d->status==0)
+                                        @if ($level=="manager marketing" && !empty($d->rsm) && empty($d->mm) && empty($d->dirut) && $d->status==0
+                                        || $level =="manager marketing" && !empty($d->rsm) && !empty($d->mm) && empty($d->dirut) && $d->status==2
+                                        || $level =="manager marketing" && !empty($d->rsm) && !empty($d->rsm) && empty($d->dirut) && $d->status==0)
                                         <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/approve"><i class=" fa fa-check success"></i></a>
                                         <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/decline"><i class=" fa fa-close danger"></i></a>
                                         @endif

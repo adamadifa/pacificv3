@@ -105,6 +105,8 @@ class PembayaranController extends Controller
             $akun = "1-1489";
         } else if ($kode_cabang == "KLT") {
             $akun = "1-1490";
+        } else if ($kode_cabang == "PWK") {
+            $akun = "1-1492";
         }
         DB::beginTransaction();
         try {
@@ -141,9 +143,9 @@ class PembayaranController extends Controller
             DB::commit();
             return Redirect::back()->with(['success' => 'Data Pembayaran Berhasil Disimpan']);
         } catch (\Exception $e) {
-            //dd($e);
+            dd($e);
             DB::rollback();
-            return Redirect::back()->with(['warning' => 'Data Pembayaran Gagal Disimpan']);
+            //return Redirect::back()->with(['warning' => 'Data Pembayaran Gagal Disimpan']);
         }
     }
 

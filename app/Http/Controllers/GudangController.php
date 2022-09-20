@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Barang;
 use App\Models\Cabang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class GudangController extends Controller
@@ -201,6 +202,11 @@ class GudangController extends Controller
                 $join->on('cabang.kode_cabang', '=', 'mgudang.kode_cabang');
             }
         );
+        if (Auth::user()->id == 82) {
+            $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB');
+            $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
+            $query->whereIn('cabang.kode_cabang', $wilayah_barat);
+        }
         $query->orderBy('cabang.urutan');
         $rekapdpb = $query->get();
         $barang = Barang::all();

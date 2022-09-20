@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Limitkredit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -28,6 +29,7 @@ class DashboardController extends Controller
         if (
             Auth::user()->level == "admin"
             || Auth::user()->level == "manager marketing"
+            || Auth::user()->level == "rsm"
             || Auth::user()->level == "general manager"
             || Auth::user()->level == "direktur"
         ) {
@@ -58,8 +60,12 @@ class DashboardController extends Controller
     }
     public function dashboardadmin()
     {
+
+        $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB');
+        $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
         $cabang = DB::table('cabang')->get();
         $kode_cabang = Auth::user()->kode_cabang;
+        $id_user = Auth::user()->id;
         $level = Auth::user()->level;
         $no_pengajuan[] = "";
         $pengajuanterakhir = DB::table('pengajuan_limitkredit_v3')
@@ -74,15 +80,28 @@ class DashboardController extends Controller
             $jmlpengajuan = DB::table('pengajuan_limitkredit_v3')
                 ->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
                 ->whereIn('no_pengajuan', $no_pengajuan)
-                ->whereNotNull('gm')
+                ->whereNotNull('mm')
                 ->whereNull('dirut')
                 ->where('status', 0)
                 ->count();
+        } else if ($level == "rsm") {
+            $query = Limitkredit::query();
+            $query->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+            $query->whereIn('no_pengajuan', $no_pengajuan);
+            $query->whereNotNull('kacab');
+            $query->whereNull('rsm');
+            $query->where('status', 0);
+            if ($id_user == 82) {
+                $query->whereIn('pelanggan.kode_cabang', $wilayah_barat);
+            }
+            $jmlpengajuan = $query->count();
+
+            //dd($jmlpengajuan);
         } else if ($level == "manager marketing") {
             $jmlpengajuan = DB::table('pengajuan_limitkredit_v3')
                 ->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
                 ->whereIn('no_pengajuan', $no_pengajuan)
-                ->whereNotNull('kacab')
+                ->whereNotNull('rsm')
                 ->whereNull('mm')
                 ->where('status', 0)
                 ->count();
@@ -101,6 +120,7 @@ class DashboardController extends Controller
                 ->where('status', 0)
                 ->count();
         }
+
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('dashboard.administrator', compact('jmlpengajuan', 'bulan', 'cabang'));
     }
