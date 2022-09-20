@@ -703,7 +703,8 @@ class TargetkomisiController extends Controller
             CG5,
             retur_CG5,
             realisasi_cashin,
-            sisapiutang
+            sisapiutang,
+            cashin_jt
             ');
             $query->join(
                 DB::raw("(
@@ -725,7 +726,18 @@ class TargetkomisiController extends Controller
                     $join->on('karyawan.id_karyawan', '=', 'komisi.id_karyawan');
                 }
             );
-
+            $query->leftJoin(
+                DB::raw("(
+                    SELECT historibayar.id_karyawan,SUM(bayar) as cashin_jt
+                    FROM historibayar
+                    INNER JOIN penjualan ON historibayar.no_fak_penj = penjualan.no_fak_penj
+                    WHERE tglbayar BETWEEN '$dari' AND '$sampai' AND status_bayar IS NULL
+                    GROUP BY historibayar.id_karyawan
+                ) hbjt"),
+                function ($join) {
+                    $join->on('karyawan.id_karyawan', '=', 'hbjt.id_karyawan');
+                }
+            );
             $query->leftJoin(
                 DB::raw("(
                     SELECT salesbarunew,SUM((ifnull(penjualan.total,0) - (ifnull(totalpf_last,0)-ifnull(totalgb_last,0)))-ifnull(totalbayar,0)) as sisapiutang
@@ -1003,6 +1015,8 @@ class TargetkomisiController extends Controller
 
         if ($bulan == 7 && $tahun == 2022) {
             return view('targetkomisi.laporan.cetak_komisi_juli', compact('komisi', 'cbg', 'nmbulan', 'tahun', 'produk', 'driver', 'helper', 'gudang', 'tunaikredit', 'bulan', 'cabang'));
+        } elseif ($bulan == 8 && $tahun == 2022) {
+            return view('targetkomisi.laporan.cetak_komisi_agustus', compact('komisi', 'cbg', 'nmbulan', 'tahun', 'produk', 'driver', 'helper', 'gudang', 'tunaikredit', 'bulan', 'cabang'));
         } elseif ($bulan < 7 && $tahun <= 2022) {
             return view('targetkomisi.laporan.cetak_komisi_juni', compact('komisi', 'cbg', 'nmbulan', 'tahun', 'produk', 'driver', 'helper', 'gudang', 'tunaikredit', 'bulan', 'cabang'));
         } else {
