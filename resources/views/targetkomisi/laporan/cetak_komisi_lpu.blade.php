@@ -390,7 +390,7 @@
 
                 //Ratio LJT
 
-                $ratioljt = ($d->sisapiutang / $d->realisasi_cashin * 100) * ($kebijakan / 100);
+                $ratioljt = (($d->sisapiutang + $d->cashin_jt) / $d->realisasi_cashin * 100) * ($kebijakan / 100);
                 if ($ratioljt > 0) {
                     $ratioljt = $ratioljt;
                 } else {
@@ -460,7 +460,7 @@
                 $totalrealisasiSC += $realisasi_SC;
 
                 $totalcashin += $d->realisasi_cashin;
-                $totalsisapiutang += $d->sisapiutang;
+                $totalsisapiutang += $d->sisapiutang + $d->cashin_jt;
                 ?>
             <tr>
                 <td><?php echo $no; ?></td>
