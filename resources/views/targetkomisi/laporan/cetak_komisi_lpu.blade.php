@@ -490,7 +490,7 @@
                 <td align="center" style="background-color: #9e9895;"><?php echo $ratiocashin; ?>%</td>
 
                 <td align="right" style="background-color: #9e9895;"><?php echo desimal($rewardcashin); ?></td>
-                <td align="right" style="background-color: #e43a90;"><?php if ($d->sisapiutang > 0) {echo desimal($d->sisapiutang + $d->cashin_jt); } else {echo 0;} ?></td>
+                <td align="right" style="background-color: #e43a90;"><?php if ($d->sisapiutang > 0) {echo desimal($d->cashin_jt); } else {echo 0;} ?></td>
                 <td align="center" style="background-color: #e43a90;"><?php echo round($ratioljt, 2); ?></td>
                 <td align="right" style="background-color: #e43a90;"><?php echo desimal($rewardljt); ?></td>
                 <td align="right" style="background-color: #ff570d;"><?php echo desimal($totalreward); ?></td>
