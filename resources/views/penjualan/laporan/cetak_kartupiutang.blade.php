@@ -67,6 +67,7 @@
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
                 <td>No</td>
                 <td>Tanggal</td>
+                <td>Last Payment</td>
                 <td>Usia</td>
                 <td>Kategori AUP</td>
                 <td>No Faktur</td>
@@ -182,6 +183,7 @@
             <tr bgcolor="<?php echo $bgcolor; ?>">
                 <td><?php echo $no; ?></td>
                 <td><?php echo DateToIndo2($k->tgltransaksi); ?></td>
+                <td>{{ $k->lastpayment != null ? DateToIndo2($k->lastpayment) : '' }}</td>
                 <td><?php echo $k->usiapiutang . " Hari"; ?></td>
                 <td><?php echo $kategori; ?></td>
                 <td><?php echo $k->no_fak_penj; ?></td>
@@ -217,7 +219,7 @@
             ?>
         </tbody>
         <tr bgcolor="#024a75" style="color:white; font-size:12;">
-            <td colspan="13">TOTAL</td>
+            <td colspan="14">TOTAL</td>
             <td style="text-align:right"><?php echo number_format($totalsaldoawal, '0', '', '.'); ?></td>
             <td style="text-align:right"><?php echo number_format($totalbruto, '0', '', '.'); ?></td>
 
