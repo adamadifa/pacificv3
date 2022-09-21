@@ -2971,9 +2971,11 @@ class PenjualanController extends Controller
         (IFNULL(totalpf,0)-IFNULL(totalgb,0)) AS totalretur,
         IFNULL(penjbulanini.total,0) -(IFNULL(totalpf,0)-IFNULL(totalgb,0))  AS piutangbulanini,
         (ifnull(penjualan.total,0) - (ifnull(totalpf_last,0)-ifnull(totalgb_last,0))) AS totalpiutang,
-        ifnull(bayarsebelumbulanini,0) AS bayarsebelumbulanini,
+        ifnull(bayarsebelumbulanini,0) AS bayarsebelumbulanini,lastpayment,
         ifnull(bayarbulanini,0) AS bayarbulanini");
         $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+
+
         $query->leftJoin(
             DB::raw("(
             SELECT no_fak_penj,subtotal,penyharga,potongan,potistimewa,total
@@ -3056,6 +3058,19 @@ class PenjualanController extends Controller
             ) r"),
             function ($join) {
                 $join->on('penjualan.no_fak_penj', '=', 'r.no_fak_penj');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+            SELECT hb.no_fak_penj,
+            MAX(tglbayar) as lastpayment,
+            SUM(bayar) as totalbayar
+            FROM historibayar hb WHERE tglbayar BETWEEN '$dari' AND '$sampai'
+            GROUP BY hb.no_fak_penj
+            ) hblast"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'hblast.no_fak_penj');
             }
         );
 

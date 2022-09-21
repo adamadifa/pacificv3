@@ -81,7 +81,7 @@
                                 <th>Ket</th>
                                 <th>KP</th>
                                 <th>RSM</th>
-                                <th>MM</th>
+                                <th>GM</th>
                                 <th>DIRUT</th>
                                 <th>Aksi</th>
                             </tr>
