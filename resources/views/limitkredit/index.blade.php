@@ -190,6 +190,7 @@
                                     @endif
                                 </td>
                                 <td>
+                                    @if (in_array($d->kode_cabang,$wilayah_barat))
                                     @if ($d->jumlah > 5000000)
                                     @if (empty($d->rsm))
                                     <i class="fa fa-history warning"></i>
@@ -205,8 +206,26 @@
                                     <i class="fa fa-close danger"></i>
                                     @endif
                                     @endif
+                                    @endif
                                 </td>
                                 <td>
+                                    @if (in_array($d->kode_cabang,$wilayah_timur))
+                                    @if ($d->jumlah > 5000000)
+                                    @if (empty($d->mm))
+                                    <i class="fa fa-history warning"></i>
+                                    @elseif(
+                                    !empty($d->mm) && !empty($d->dirut) && $d->status == 2
+                                    || !empty($d->mm) && empty($d->dirut) && $d->status == 1
+                                    || !empty($d->mm) && empty($d->dirut) && $d->status == 0
+                                    || !empty($d->mm) && !empty($d->dirut) && $d->status == 0
+                                    || !empty($d->mm) && !empty($d->dirut) && $d->status == 1
+                                    )
+                                    <i class="fa fa-check success"></i>
+                                    @else
+                                    <i class="fa fa-close danger"></i>
+                                    @endif
+                                    @endif
+                                    @else
                                     @if ($d->jumlah > 10000000)
                                     @if (empty($d->mm))
                                     <i class="fa fa-history warning"></i>
@@ -222,6 +241,8 @@
                                     <i class="fa fa-close danger"></i>
                                     @endif
                                     @endif
+                                    @endif
+
                                 </td>
                                 <td>
                                     @if ($d->jumlah > 15000000)
@@ -285,7 +306,10 @@
 
                                         @if ($level=="manager marketing" && !empty($d->rsm) && empty($d->mm) && empty($d->dirut) && $d->status==0
                                         || $level =="manager marketing" && !empty($d->rsm) && !empty($d->mm) && empty($d->dirut) && $d->status==2
-                                        || $level =="manager marketing" && !empty($d->rsm) && !empty($d->rsm) && empty($d->dirut) && $d->status==0)
+                                        || $level =="manager marketing" && !empty($d->rsm) && !empty($d->rsm) && empty($d->dirut) && $d->status==0
+                                        || $level =="manager marketing" && !empty($d->rsm) && !empty($d->rsm) && empty($d->dirut) && $d->status!=2)
+
+
                                         <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/approve"><i class=" fa fa-check success"></i></a>
                                         <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/decline"><i class=" fa fa-close danger"></i></a>
                                         @endif

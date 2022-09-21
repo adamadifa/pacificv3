@@ -48,7 +48,7 @@ class LimitkreditController extends Controller
                 $query->whereIn('pelanggan.kode_cabang', $wilayah_barat);
             }
         }
-        $query->select('pengajuan_limitkredit_v3.*', 'nama_pelanggan');
+        $query->select('pengajuan_limitkredit_v3.*', 'nama_pelanggan', 'pelanggan.kode_cabang');
         $query->orderBy('tgl_pengajuan', 'desc');
         $query->orderBy('no_pengajuan', 'desc');
         $query->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
@@ -129,6 +129,8 @@ class LimitkreditController extends Controller
                 $query->whereNull('mm');
                 $query->where('status', 0);
                 $query->where('jumlah', '>', 10000000);
+                $query->orWhereIn('pelanggan.kode_cabang', $wilayah_timur);
+                $query->whereNotNull('rsm');
             } else if ($request->status == "disetujui") {
                 $query->whereNotNull('mm');
                 $query->where('status', '!=', 2);
@@ -224,7 +226,9 @@ class LimitkreditController extends Controller
 
         $cbg = new Cabang();
         $cabang = $cbg->getCabanggudang($this->cabang);
-        return view('limitkredit.index', compact('limitkredit', 'cabang'));
+        $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB');
+        $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
+        return view('limitkredit.index', compact('limitkredit', 'cabang', 'wilayah_barat', 'wilayah_timur'));
     }
 
     public function create($kode_pelanggan)
@@ -601,6 +605,8 @@ class LimitkreditController extends Controller
         $no_pengajuan = Crypt::decrypt($no_pengajuan);
         $limitkredit = DB::table('pengajuan_limitkredit_v3')->where('no_pengajuan', $no_pengajuan)->first();
         $kode_pelanggan = $limitkredit->kode_pelanggan;
+        $cekpelanggan = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)->first();
+        $kode_cabang = $cekpelanggan->kode_cabang;
         $jumlah = $limitkredit->jumlah;
         $jatuhtempo = $limitkredit->jatuhtempo;
         $jumlah_rekomendasi = $limitkredit->jumlah_rekomendasi;
@@ -608,6 +614,8 @@ class LimitkreditController extends Controller
         $id_admin = Auth::user()->id;
         $level = Auth::user()->level;
         $time = date("Y-m-d H:i");
+        $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB');
+        $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
         if (empty($jumlah_rekomendasi) && empty($jatuhtempo_rekomendasi)) {
             if (!empty($jatuhtempo)) {
                 $data = [
@@ -686,6 +694,14 @@ class LimitkreditController extends Controller
             'id_approval' => $id_admin,
             $field_time => $time
         ];
+
+        $datastatus2 = [
+            'status' => $status,
+            'rsm' => $id_admin,
+            'id_approval' => $id_admin,
+            $field_time => $time
+        ];
+
         $ceklimit = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)->first();
         $penjualanpending = DB::table('penjualan')->where('kode_pelanggan', $kode_pelanggan)->where('status', 1)->get();
         //dd($penjualanpending);
@@ -695,6 +711,13 @@ class LimitkreditController extends Controller
             DB::table('pengajuan_limitkredit_v3')
                 ->where('no_pengajuan', $no_pengajuan)
                 ->update($datastatus);
+
+            if (in_array($kode_cabang, $wilayah_timur) && $jumlah > 5000000) {
+                DB::table('pengajuan_limitkredit_v3')
+                    ->where('no_pengajuan', $no_pengajuan)
+                    ->update($datastatus2);
+            }
+
             //Update Pelanggan
             if ($status == 1) {
                 DB::table('pelanggan')
