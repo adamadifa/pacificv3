@@ -753,7 +753,7 @@ class TargetkomisiController extends Controller
                         SELECT MAX(id_move) as id_move,no_fak_penj,move_faktur.id_karyawan as salesbaru,karyawan.kode_cabang as cabangbaru
                         FROM move_faktur
                         INNER JOIN karyawan ON move_faktur.id_karyawan = karyawan.id_karyawan
-                        WHERE tgl_move <= '$sampai'
+                        WHERE tgl_move <= '$sampai' AND datediff('$sampai', penjualan.tgltransaksi) > 14
                         GROUP BY no_fak_penj,move_faktur.id_karyawan,karyawan.kode_cabang
                         ) move_fak ON (pj.no_fak_penj = move_fak.no_fak_penj)
                     ) pjmove ON (penjualan.no_fak_penj = pjmove.no_fak_penj)
@@ -1397,7 +1397,7 @@ class TargetkomisiController extends Controller
                     WHERE tglbayar <= '$sampai'
                     GROUP BY no_fak_penj
                     ) hblalu ON (penjualan.no_fak_penj = hblalu.no_fak_penj)
-                WHERE tgltransaksi <= '$sampai' AND (ifnull(penjualan.total,0) - (ifnull(totalpf_last,0)-ifnull(totalgb_last,0)))-ifnull(totalbayar,0) !=0 AND datediff('$sampai', penjualan.tgltransaksi) > 15
+                WHERE tgltransaksi <= '$sampai' AND (ifnull(penjualan.total,0) - (ifnull(totalpf_last,0)-ifnull(totalgb_last,0)))-ifnull(totalbayar,0) !=0 AND datediff('$sampai', penjualan.tgltransaksi) > 14
                 AND penjualan.jenistransaksi ='kredit'
                 GROUP BY cabangbarunew
             ) penj"),
