@@ -69,6 +69,7 @@
                 <th rowspan="2">No Faktur</th>
                 <th rowspan="2">Jenis Transaksi</th>
                 <th rowspan="2">Tgl Faktur</th>
+                <th rowspan="2">LJT</th>
                 <th rowspan="2">Salesman</th>
                 <th rowspan="2">Sales (Penagih)</th>
                 <th rowspan="2">Kode Pel.</th>
@@ -99,6 +100,7 @@
             $totalother = 0;
             $totalpelunasan = 0;
             $totalbayar = 0;
+            $totalljt = 0;
             @endphp
             <?php
             foreach ($kasbesar as $k) {
@@ -164,13 +166,24 @@
             } else {
             $bgcolor = "";
             }
-            ?>
-            <tr bgcolor="<?php echo $bgcolor; ?>">
 
+            if ($k->ljt > 14) {
+            $bgcolor2 = "red";
+            $color = "white";
+            $totalljt += $bayar;
+            } else {
+            $bgcolor2 = "";
+            $color = "";
+            $totalljt += 0;
+            }
+            ?>
+
+            <tr bgcolor="<?php echo $bgcolor; ?>">
                 <td><?php echo DateToIndo2($k->tglbayar); ?></td>
                 <td><?php echo $k->no_fak_penj; ?></td>
                 <td><?php echo strtoupper($k->jenistransaksi); ?></td>
                 <td><?php echo DateToIndo2($k->tgltransaksi); ?></td>
+                <td style="background-color:<?php echo $bgcolor2; ?>; color:<?php echo $color; ?>"><?php echo $k->ljt; ?></td>
                 <td><?php echo $k->nama_karyawan; ?></td>
                 <td><?php echo $k->penagih; ?></td>
                 <td><?php echo $k->kode_pelanggan; ?></td>
@@ -197,7 +210,7 @@
             ?>
         </tbody>
         <tr bgcolor="#024a75" style="color:white; font-size:12;">
-            <td colspan="8">TOTAL</td>
+            <td colspan="9">TOTAL</td>
             <td style="text-align: right"><?php echo number_format($totaltunai, '0', '', '.');  ?></td>
             <td style="text-align: right"><?php echo number_format($totaltitip, '0', '', '.');  ?></td>
             <td style="text-align: right"><?php echo number_format($totalpelunasan, '0', '', '.');  ?></td>
@@ -212,6 +225,12 @@
         </tbody>
     </table>
     <br>
+    <table class="datatable3">
+        <tr>
+            <td style="font-weight: bold">TOTAL PEMBAYARAN LEBIH 14 HARI DARI TANGGAL TRANSAKSI</td>
+            <td style="font-weight: bold; background:red; color:white">{{ rupiah($totalljt) }}</td>
+        </tr>
+    </table>
     <b style="font-size:14px; font-family:Calibri">
         PEMBAYARAN VOUCHER<br>
         PERIODE <?php echo DateToIndo2($dari) . " s/d " . DateToIndo2($sampai); ?><br>

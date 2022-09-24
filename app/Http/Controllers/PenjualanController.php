@@ -1200,6 +1200,10 @@ class PenjualanController extends Controller
             ->leftJoin('ledger_bank', 'transfer.kode_transfer', '=', 'ledger_bank.no_ref')
             ->where('transfer.no_fak_penj', $no_fak_penj)
             ->get();
+
+        if ($giro != null || $transfer != null) {
+            return Redirect::back()->with(['warning' => 'Data Tidak Dapat Dihapus Karena Memiliki Pembayaran Transfer / Giro Yang Sudah Di Aksi Oleh Keuangan']);
+        }
         DB::beginTransaction();
         try {
             DB::table('penjualan')
@@ -3091,7 +3095,11 @@ class PenjualanController extends Controller
         if ($ljt == 1) {
             $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) <= pelanggan.jatuhtempo");
         } else if ($ljt == 2) {
-            $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) > 15");
+            if ($dari >= '2022-09-01') {
+                $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) > 14");
+            } else {
+                $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) > 15");
+            }
         }
 
         if (isset($_POST['tandaterimafaktur'])) {
@@ -3113,7 +3121,11 @@ class PenjualanController extends Controller
         if ($ljt == 1) {
             $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) <= pelanggan.jatuhtempo");
         } else if ($ljt == 2) {
-            $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) > 15");
+            if ($dari >= '2022-09-01') {
+                $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) > 14");
+            } else {
+                $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) > 15");
+            }
         }
 
         if (isset($_POST['tandaterimafaktur'])) {

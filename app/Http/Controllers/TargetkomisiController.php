@@ -1255,7 +1255,7 @@ class TargetkomisiController extends Controller
         }
 
         $query = Cabang::query();
-        $query->selectRaw("cabang.kode_cabang,nama_cabang,(IFNULL(jml_belumsetorbulanlalu,0) + IFNULL(totalsetoran,0) + IFNULL(jml_gmlast,0) - IFNULL(jml_gmnow,0) - IFNULL(jml_belumsetorbulanini,0)) as cashin,sisapiutang,lamalpc,jam_lpc");
+        $query->selectRaw("cabang.kode_cabang,nama_cabang,(IFNULL(jml_belumsetorbulanlalu,0) + IFNULL(totalsetoran,0) + IFNULL(jml_gmlast,0) - IFNULL(jml_gmnow,0) - IFNULL(jml_belumsetorbulanini,0)) as cashin,sisapiutang,lamalpc,jam_lpc,cashin_jt");
         $query->leftJoin(
             DB::raw("(
                 SELECT belumsetor.kode_cabang,SUM(jumlah) as jml_belumsetorbulanlalu
@@ -1360,7 +1360,20 @@ class TargetkomisiController extends Controller
                 $join->on('cabang.kode_cabang', '=', 'app_lpc.kode_cabang');
             }
         );
-
+        $query->leftJoin(
+            DB::raw("(
+                SELECT karyawan.kode_cabang,SUM(bayar) as cashin_jt
+                FROM historibayar
+                INNER JOIN penjualan ON historibayar.no_fak_penj = penjualan.no_fak_penj
+                INNER JOIN karyawan ON historibayar.id_karyawan = karyawan.id_karyawan
+                WHERE tglbayar BETWEEN '$dari' AND '$sampai' AND status_bayar IS NULL
+                AND datediff(tglbayar, tgltransaksi) > 14
+                GROUP BY karyawan.kode_cabang
+            ) hbjt"),
+            function ($join) {
+                $join->on('cabang.kode_cabang', '=', 'hbjt.kode_cabang');
+            }
+        );
         $query->leftJoin(
             DB::raw("(
                 SELECT cabangbarunew,SUM((ifnull(penjualan.total,0) - (ifnull(totalpf_last,0)-ifnull(totalgb_last,0)))-ifnull(totalbayar,0)) as sisapiutang
@@ -1417,7 +1430,9 @@ class TargetkomisiController extends Controller
             header("Content-Disposition: attachment; filename=Insentif $dari-$sampai.xls");
         }
 
-        if ($bulan >= 5 && $tahun >= 2022) {
+        if ($bulan >= 9 && $tahun >= 2022) {
+            return view('targetkomisi.laporan.cetak_insentif_september2022', compact('insentif', 'cabang', 'namabulan', 'bulan', 'tahun'));
+        } else if ($bulan >= 5 && $tahun >= 2022) {
             return view('targetkomisi.laporan.cetak_insentif_mei2022', compact('insentif', 'cabang', 'namabulan', 'bulan', 'tahun'));
         } else {
             echo "1";
