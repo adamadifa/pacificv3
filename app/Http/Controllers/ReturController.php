@@ -55,17 +55,26 @@ class ReturController extends Controller
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('tglretur', [$request->dari, $request->sampai]);
         }
+        // if ($this->cabang != "PCF") {
+        //     if ($this->cabang == "GRT") {
+        //         $query->where('karyawan.kode_cabang', 'TSM');
+        //     } else {
+        //         $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+        //         $cabang[] = "";
+        //         foreach ($cbg as $c) {
+        //             $cabang[] = $c->kode_cabang;
+        //         }
+        //         $query->whereIn('karyawan.kode_cabang', $cabang);
+        //     }
+        // }
+
         if ($this->cabang != "PCF") {
-            if ($this->cabang == "GRT") {
-                $query->where('karyawan.kode_cabang', 'TSM');
-            } else {
-                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-                $cabang[] = "";
-                foreach ($cbg as $c) {
-                    $cabang[] = $c->kode_cabang;
-                }
-                $query->whereIn('karyawan.kode_cabang', $cabang);
+            $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+            $cabang[] = "";
+            foreach ($cbg as $c) {
+                $cabang[] = $c->kode_cabang;
             }
+            $query->whereIn('karyawan.kode_cabang', $cabang);
         }
         $retur = $query->paginate(15);
 
