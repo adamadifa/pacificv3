@@ -493,9 +493,9 @@ class PelangganController extends Controller
         //         $query->where('karyawan.kode_cabang', $this->cabang);
         //     }
         // }
-
-        $query->where('karyawan.kode_cabang', $this->cabang);
-
+        if ($this->cabang != "PCF") {
+            $query->where('karyawan.kode_cabang', $this->cabang);
+        }
         $pelanggan = $query;
 
 
