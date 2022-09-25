@@ -27,18 +27,30 @@ class Cabang extends Model
         } else if ($iduser == $yulianto) {
             $cabang = DB::table('cabang')->whereIn('kode_cabang', $wilayah_barat)->get();
         } else {
+            // if ($cbg != "PCF" && $cbg != "PST") {
+            //     if ($cbg == "GRT") {
+            //         $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
+            //     } else {
+            //         $cbg = DB::table('cabang')->where('kode_cabang', $cbg)->orWhere('sub_cabang', $cbg)->get();
+            //         $cabang[] = "";
+            //         foreach ($cbg as $c) {
+            //             $cabang[] = $c->kode_cabang;
+            //         }
+            //         //dd($cabang);
+            //         $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
+            //     }
+            // } else {
+            //     $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
+            // }
+
             if ($cbg != "PCF" && $cbg != "PST") {
-                if ($cbg == "GRT") {
-                    $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
-                } else {
-                    $cbg = DB::table('cabang')->where('kode_cabang', $cbg)->orWhere('sub_cabang', $cbg)->get();
-                    $cabang[] = "";
-                    foreach ($cbg as $c) {
-                        $cabang[] = $c->kode_cabang;
-                    }
-                    //dd($cabang);
-                    $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
+                $cbg = DB::table('cabang')->where('kode_cabang', $cbg)->orWhere('sub_cabang', $cbg)->get();
+                $cabang[] = "";
+                foreach ($cbg as $c) {
+                    $cabang[] = $c->kode_cabang;
                 }
+                //dd($cabang);
+                $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
             } else {
                 $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
             }
