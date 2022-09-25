@@ -23,11 +23,13 @@ class Pasarcontroller extends Controller
                 $query->where('kode_cabang', $request->kode_cabang);
             }
         } else {
-            if (Auth::user()->kode_cabang == "GRT") {
-                $query->where('kode_cabang', 'TSM');
-            } else {
-                $query->where('kode_cabang', Auth::user()->kode_cabang);
-            }
+            // if (Auth::user()->kode_cabang == "GRT") {
+            //     $query->where('kode_cabang', 'TSM');
+            // } else {
+            //     $query->where('kode_cabang', Auth::user()->kode_cabang);
+            // }
+
+            $query->where('kode_cabang', Auth::user()->kode_cabang);
         }
         $query->orderBy('id', 'desc');
 
