@@ -89,17 +89,26 @@ class PenjualanController extends Controller
                 $query->where('penjualan.id_karyawan', $request->id_karyawan);
             }
 
+            // if ($this->cabang != "PCF") {
+            //     if ($this->cabang == "GRT") {
+            //         $query->where('karyawan.kode_cabang', 'TSM');
+            //     } else {
+            //         $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+            //         $cabang[] = "";
+            //         foreach ($cbg as $c) {
+            //             $cabang[] = $c->kode_cabang;
+            //         }
+            //         $query->whereIn('karyawan.kode_cabang', $cabang);
+            //     }
+            // }
+
             if ($this->cabang != "PCF") {
-                if ($this->cabang == "GRT") {
-                    $query->where('karyawan.kode_cabang', 'TSM');
-                } else {
-                    $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-                    $cabang[] = "";
-                    foreach ($cbg as $c) {
-                        $cabang[] = $c->kode_cabang;
-                    }
-                    $query->whereIn('karyawan.kode_cabang', $cabang);
+                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+                $cabang[] = "";
+                foreach ($cbg as $c) {
+                    $cabang[] = $c->kode_cabang;
                 }
+                $query->whereIn('karyawan.kode_cabang', $cabang);
             }
             $penjualan = $query->get();
             return view('penjualan.laporan.cetaksuratjalantanggal', compact('penjualan', 'pelangganmp'));
@@ -136,39 +145,62 @@ class PenjualanController extends Controller
                 $query->whereBetween('tgltransaksi', [$request->dari, $request->sampai]);
             }
 
-            if ($this->cabang != "PCF") {
-                if ($this->cabang == "GRT") {
-                    $query->where('karyawan.kode_cabang', 'TSM');
-                } else {
-                    $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-                    $cabang[] = "";
-                    foreach ($cbg as $c) {
-                        $cabang[] = $c->kode_cabang;
-                    }
-                    $query->whereIn('karyawan.kode_cabang', $cabang);
-                }
-            }
+            // if ($this->cabang != "PCF") {
+            //     if ($this->cabang == "GRT") {
+            //         $query->where('karyawan.kode_cabang', 'TSM');
+            //     } else {
+            //         $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+            //         $cabang[] = "";
+            //         foreach ($cbg as $c) {
+            //             $cabang[] = $c->kode_cabang;
+            //         }
+            //         $query->whereIn('karyawan.kode_cabang', $cabang);
+            //     }
+            // }
 
+            if ($this->cabang != "PCF") {
+                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+                $cabang[] = "";
+                foreach ($cbg as $c) {
+                    $cabang[] = $c->kode_cabang;
+                }
+                $query->whereIn('karyawan.kode_cabang', $cabang);
+            }
             $penjualan = $query->paginate(15);
 
             $penjualan->appends($request->all());
 
 
+            // if ($this->cabang != "PCF") {
+            //     if ($this->cabang == "GRT" || $this->cabang == "TSM") {
+            //         $salesman = Salesman::where('kode_cabang', 'TSM')->where('nama_karyawan', '!=', '-')->orderBy('nama_karyawan')->get();
+            //     } else {
+            //         $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)
+            //             ->orWhere('sub_cabang', $this->cabang)
+            //             ->get();
+            //         $cabang[] = "";
+            //         foreach ($cbg as $c) {
+            //             $cabang[] = $c->kode_cabang;
+            //         }
+            //         $salesman = Salesman::whereIn('kode_cabang', $cabang)
+            //             ->where('nama_karyawan', '!=', '-')
+            //             ->orderBy('nama_karyawan')->get();
+            //     }
+            // } else {
+            //     $salesman = Salesman::orderBy('nama_karyawan')->where('nama_karyawan', '!=', '-')->get();
+            // }
+
             if ($this->cabang != "PCF") {
-                if ($this->cabang == "GRT" || $this->cabang == "TSM") {
-                    $salesman = Salesman::where('kode_cabang', 'TSM')->where('nama_karyawan', '!=', '-')->orderBy('nama_karyawan')->get();
-                } else {
-                    $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)
-                        ->orWhere('sub_cabang', $this->cabang)
-                        ->get();
-                    $cabang[] = "";
-                    foreach ($cbg as $c) {
-                        $cabang[] = $c->kode_cabang;
-                    }
-                    $salesman = Salesman::whereIn('kode_cabang', $cabang)
-                        ->where('nama_karyawan', '!=', '-')
-                        ->orderBy('nama_karyawan')->get();
+                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)
+                    ->orWhere('sub_cabang', $this->cabang)
+                    ->get();
+                $cabang[] = "";
+                foreach ($cbg as $c) {
+                    $cabang[] = $c->kode_cabang;
                 }
+                $salesman = Salesman::whereIn('kode_cabang', $cabang)
+                    ->where('nama_karyawan', '!=', '-')
+                    ->orderBy('nama_karyawan')->get();
             } else {
                 $salesman = Salesman::orderBy('nama_karyawan')->where('nama_karyawan', '!=', '-')->get();
             }
