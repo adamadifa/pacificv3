@@ -88,12 +88,16 @@ class PelangganController extends Controller
 
 
         $query2 = Pelanggan::query();
+        // if ($this->cabang != "PCF") {
+        //     if ($this->cabang == "GRT") {
+        //         $query2->where('pelanggan.kode_cabang', 'TSM');
+        //     } else {
+        //         $query2->where('pelanggan.kode_cabang', $this->cabang);
+        //     }
+        // }
+
         if ($this->cabang != "PCF") {
-            if ($this->cabang == "GRT") {
-                $query2->where('pelanggan.kode_cabang', 'TSM');
-            } else {
-                $query2->where('pelanggan.kode_cabang', $this->cabang);
-            }
+            $query2->where('pelanggan.kode_cabang', $this->cabang);
         }
         if (isset($request->submit)) {
             if ($request->nama != "") {
@@ -128,12 +132,16 @@ class PelangganController extends Controller
 
 
         $queryaktif = Pelanggan::query();
+        // if ($this->cabang != "PCF") {
+        //     if ($this->cabang == "GRT") {
+        //         $queryaktif->where('pelanggan.kode_cabang', 'TSM');
+        //     } else {
+        //         $queryaktif->where('pelanggan.kode_cabang', $this->cabang);
+        //     }
+        // }
+
         if ($this->cabang != "PCF") {
-            if ($this->cabang == "GRT") {
-                $queryaktif->where('pelanggan.kode_cabang', 'TSM');
-            } else {
-                $queryaktif->where('pelanggan.kode_cabang', $this->cabang);
-            }
+            $queryaktif->where('pelanggan.kode_cabang', $this->cabang);
         }
         if (isset($request->submit)) {
             if ($request->nama != "") {
@@ -164,12 +172,16 @@ class PelangganController extends Controller
 
 
         $querynonaktif = Pelanggan::query();
+        // if ($this->cabang != "PCF") {
+        //     if ($this->cabang == "GRT") {
+        //         $querynonaktif->where('pelanggan.kode_cabang', 'TSM');
+        //     } else {
+        //         $querynonaktif->where('pelanggan.kode_cabang', $this->cabang);
+        //     }
+        // }
+
         if ($this->cabang != "PCF") {
-            if ($this->cabang == "GRT") {
-                $querynonaktif->where('pelanggan.kode_cabang', 'TSM');
-            } else {
-                $querynonaktif->where('pelanggan.kode_cabang', $this->cabang);
-            }
+            $querynonaktif->where('pelanggan.kode_cabang', $this->cabang);
         }
         if (isset($request->submit)) {
             if ($request->nama != "") {
@@ -224,11 +236,13 @@ class PelangganController extends Controller
         if ($this->cabang == "PCF") {
             $pasar = DB::table('master_pasar')->get();
         } else {
-            if ($this->cabang == "GRT") {
-                $pasar = DB::table('master_pasar')->where('kode_cabang', 'TSM')->orderBy('nama_pasar')->get();
-            } else {
-                $pasar = DB::table('master_pasar')->where('kode_cabang', $this->cabang)->orderBy('nama_pasar')->get();
-            }
+            // if ($this->cabang == "GRT") {
+            //     $pasar = DB::table('master_pasar')->where('kode_cabang', 'TSM')->orderBy('nama_pasar')->get();
+            // } else {
+            //     $pasar = DB::table('master_pasar')->where('kode_cabang', $this->cabang)->orderBy('nama_pasar')->get();
+            // }
+
+            $pasar = DB::table('master_pasar')->where('kode_cabang', $this->cabang)->orderBy('nama_pasar')->get();
         }
         return view('pelanggan.create', compact('cabang', 'pasar'));
     }
@@ -320,11 +334,13 @@ class PelangganController extends Controller
         if ($this->cabang == "PCF") {
             $pasar = DB::table('master_pasar')->get();
         } else {
-            if ($this->cabang == "GRT") {
-                $pasar = DB::table('master_pasar')->where('kode_cabang', 'TSM')->orderBy('nama_pasar')->get();
-            } else {
-                $pasar = DB::table('master_pasar')->where('kode_cabang', $this->cabang)->orderBy('nama_pasar')->get();
-            }
+            // if ($this->cabang == "GRT") {
+            //     $pasar = DB::table('master_pasar')->where('kode_cabang', 'TSM')->orderBy('nama_pasar')->get();
+            // } else {
+            //     $pasar = DB::table('master_pasar')->where('kode_cabang', $this->cabang)->orderBy('nama_pasar')->get();
+            // }
+
+            $pasar = DB::table('master_pasar')->where('kode_cabang', $this->cabang)->orderBy('nama_pasar')->get();
         }
         return view('pelanggan.edit', compact('data', 'cabang', 'pasar'));
     }
@@ -470,13 +486,15 @@ class PelangganController extends Controller
         $query->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
         $query->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang');
         $query->where('status_pelanggan', '1');
-        if ($this->cabang != "PCF") {
-            if ($this->cabang == "GRT") {
-                $query->where('karyawan.kode_cabang', 'TSM');
-            } else {
-                $query->where('karyawan.kode_cabang', $this->cabang);
-            }
-        }
+        // if ($this->cabang != "PCF") {
+        //     if ($this->cabang == "GRT") {
+        //         $query->where('karyawan.kode_cabang', 'TSM');
+        //     } else {
+        //         $query->where('karyawan.kode_cabang', $this->cabang);
+        //     }
+        // }
+
+        $query->where('karyawan.kode_cabang', $this->cabang);
 
         $pelanggan = $query;
 
