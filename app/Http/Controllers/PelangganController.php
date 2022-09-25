@@ -36,13 +36,18 @@ class PelangganController extends Controller
 
 
         $query = Pelanggan::query();
+        // if ($this->cabang != "PCF") {
+        //     if ($this->cabang == "GRT") {
+        //         $query->where('pelanggan.kode_cabang', 'TSM');
+        //     } else {
+        //         $query->where('pelanggan.kode_cabang', $this->cabang);
+        //     }
+        // }
+
         if ($this->cabang != "PCF") {
-            if ($this->cabang == "GRT") {
-                $query->where('pelanggan.kode_cabang', 'TSM');
-            } else {
-                $query->where('pelanggan.kode_cabang', $this->cabang);
-            }
+            $query->where('pelanggan.kode_cabang', $this->cabang);
         }
+
         if (isset($request->submit) || isset($request->export)) {
             if ($request->nama != "") {
                 $query->where('nama_pelanggan', 'like', '%' . $request->nama . '%');
