@@ -1000,7 +1000,11 @@ class TargetkomisiController extends Controller
                 }
             );
 
-            $query->where('kode_cabang', $cabang);
+            if (Auth::user()->id == 7) {
+                $query->whereIn('kode_cabang', ['GRT', 'TSM']);
+            } else {
+                $query->where('kode_cabang', $cabang);
+            }
             $query->where('nama_karyawan', '!=', '');
             $komisi = $query->get();
         }
