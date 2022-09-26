@@ -1233,9 +1233,12 @@ class PenjualanController extends Controller
             ->where('transfer.no_fak_penj', $no_fak_penj)
             ->get();
 
-        if ($giro != null || $transfer != null) {
+
+        if ($giro->isNotEmpty() || $transfer->isNotEmpty()) {
             return Redirect::back()->with(['warning' => 'Data Tidak Dapat Dihapus Karena Memiliki Pembayaran Transfer / Giro Yang Sudah Di Aksi Oleh Keuangan']);
         }
+
+
         DB::beginTransaction();
         try {
             DB::table('penjualan')
