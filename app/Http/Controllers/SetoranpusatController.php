@@ -38,6 +38,10 @@ class SetoranpusatController extends Controller
 
         if (!empty($request->kode_cabang)) {
             $query->where('setoran_pusat.kode_cabang', $request->kode_cabang);
+        } else {
+            if ($this->cabang != 'PCF') {
+                $query->where('setoran_pusat.kode_cabang', $this->cabang);
+            }
         }
         $query->orderBy('tgl_setoranpusat');
         $query->orderBy('kode_setoranpusat');
