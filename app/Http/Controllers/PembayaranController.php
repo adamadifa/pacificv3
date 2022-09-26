@@ -603,7 +603,7 @@ class PembayaranController extends Controller
                 $querytransfer = Transfer::query();
                 $querytransfer->selectRaw("transfer.no_fak_penj,penjualan.kode_pelanggan,nama_pelanggan,tgl_transfer,namabank,jumlah,tglcair,transfer.status,girotocash,kode_transfer");
                 $querytransfer->join('penjualan', 'transfer.no_fak_penj', '=', 'penjualan.no_fak_penj');
-                $querytransfer->join('karyawan', 'transfer.id_karyawan', '=', 'transfer.id_karyawan');
+                $querytransfer->join('karyawan', 'transfer.id_karyawan', '=', 'karyawan.id_karyawan');
                 $querytransfer->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
                 $querytransfer->leftJoin('historibayar', 'transfer.id_transfer', '=', 'historibayar.id_transfer');
                 $querytransfer->whereBetween('tgl_transfer', [$dari, $sampai]);
