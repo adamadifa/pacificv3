@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cabang;
+use App\Models\Giro;
 use App\Models\Pembayaran;
+use App\Models\Transfer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -485,6 +487,7 @@ class PembayaranController extends Controller
         $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $request->kode_pelanggan)->first();
         $jenislaporan = $request->jenislaporan;
 
+
         if (empty($request->kode_cabang) && $jenislaporan == "rekap") {
             //echo 1;
             $query = Pembayaran::query();
@@ -533,6 +536,88 @@ class PembayaranController extends Controller
                     header("Content-Disposition: attachment; filename=Laporan Kas Besar Salesman Periode $dari-$sampai-$time.xls");
                 }
                 return view('pembayaran.laporan.cetak_kasbesar_rekapallsalesman', compact('kasbesar', 'cabang', 'dari', 'sampai', 'salesman', 'pelanggan'));
+            } else if ($jenislaporan == "lhp") {
+                $query = Pembayaran::query();
+                $query->select('historibayar.no_fak_penj', 'tglbayar', 'penjualan.kode_pelanggan', 'nama_pelanggan', 'penjualan.jenistransaksi', 'bayar', 'girotocash');
+
+                $query->join('penjualan', 'historibayar.no_fak_penj', '=', 'penjualan.no_fak_penj');
+                $query->join('karyawan', 'historibayar.id_karyawan', '=', 'karyawan.id_karyawan');
+                $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+
+                $query->whereBetween('tglbayar', [$dari, $sampai]);
+                if (!empty($request->id_karyawan)) {
+                    $query->where('historibayar.id_karyawan', $request->id_karyawan);
+                }
+
+                if (!empty($request->kode_cabang)) {
+                    $query->where('karyawan.kode_cabang', $request->kode_cabang);
+                }
+                $query->whereNull('historibayar.id_giro');
+                $query->whereNull('historibayar.id_transfer');
+                $query->whereNull('historibayar.girotocash');
+
+                $query->orwhereBetween('tglbayar', [$dari, $sampai]);
+                if (!empty($request->id_karyawan)) {
+                    $query->where('historibayar.id_karyawan', $request->id_karyawan);
+                }
+
+                if (!empty($request->kode_cabang)) {
+                    $query->where('karyawan.kode_cabang', $request->kode_cabang);
+                }
+                $query->whereNull('historibayar.id_giro');
+                $query->whereNull('historibayar.id_transfer');
+                $query->where('historibayar.girotocash', 1);
+
+                $query->whereBetween('tglbayar', [$dari, $sampai]);
+                if (!empty($request->id_karyawan)) {
+                    $query->where('historibayar.id_karyawan', $request->id_karyawan);
+                }
+
+                if (!empty($request->kode_cabang)) {
+                    $query->where('karyawan.kode_cabang', $request->kode_cabang);
+                }
+                $query->whereNotNull('historibayar.id_giro');
+                $query->whereNull('historibayar.id_transfer');
+                $query->where('historibayar.girotocash', 1);
+
+                $query->orderBy('tglbayar');
+                $query->orderBy('historibayar.no_fak_penj');
+                $kasbesar = $query->get();
+
+
+                $querygiro = Giro::query();
+                $querygiro->selectRaw("giro.no_fak_penj,penjualan.kode_pelanggan,nama_pelanggan,tgl_giro,no_giro,namabank,jumlah,tglcair,giro.status");
+                $querygiro->join('penjualan', 'giro.no_fak_penj', '=', 'penjualan.no_fak_penj');
+                $querygiro->join('karyawan', 'giro.id_karyawan', '=', 'karyawan.id_karyawan');
+                $querygiro->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+                $querygiro->whereBetween('tgl_giro', [$dari, $sampai]);
+                if (!empty($request->id_karyawan)) {
+                    $querygiro->where('giro.id_karyawan', $request->id_karyawan);
+                }
+
+                if (!empty($request->kode_cabang)) {
+                    $querygiro->where('karyawan.kode_cabang', $request->kode_cabang);
+                }
+                $listgiro = $querygiro->get();
+
+                $querytransfer = Transfer::query();
+                $querytransfer->selectRaw("transfer.no_fak_penj,penjualan.kode_pelanggan,nama_pelanggan,tgl_transfer,namabank,jumlah,tglcair,transfer.status,girotocash,kode_transfer");
+                $querytransfer->join('penjualan', 'transfer.no_fak_penj', '=', 'penjualan.no_fak_penj');
+                $querytransfer->join('karyawan', 'transfer.id_karyawan', '=', 'transfer.id_karyawan');
+                $querytransfer->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+                $querytransfer->leftJoin('historibayar', 'transfer.id_transfer', '=', 'historibayar.id_transfer');
+                $querytransfer->whereBetween('tgl_transfer', [$dari, $sampai]);
+                if (!empty($request->id_karyawan)) {
+                    $querytransfer->where('transfer.id_karyawan', $request->id_karyawan);
+                }
+
+                if (!empty($request->kode_cabang)) {
+                    $querytransfer->where('karyawan.kode_cabang', $request->kode_cabang);
+                }
+                $listtransfer = $querytransfer->get();
+
+
+                return view('pembayaran.laporan.cetak_kasbesarlhp', compact('kasbesar', 'cabang', 'dari', 'sampai', 'salesman', 'pelanggan', 'listgiro', 'listtransfer'));
             } else {
                 //echo 3;
                 $query = Pembayaran::query();

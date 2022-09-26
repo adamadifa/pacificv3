@@ -84,6 +84,7 @@
                                                     <option value="">Pilih Jenis Laporan</option>
                                                     <option value="detail">Detail</option>
                                                     <option value="rekap">Rekap</option>
+                                                    <option value="lhp">LHP</option>
                                                 </select>
                                             </div>
                                         </div>
