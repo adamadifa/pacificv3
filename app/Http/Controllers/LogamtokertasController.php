@@ -34,7 +34,8 @@ class LogamtokertasController extends Controller
         $logamtokertas = $query->paginate(15);
         $logamtokertas->appends($request->all());
         if ($this->cabang != "PCF") {
-            $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->get();
+            $cbg = new Cabang();
+            $cabang = $cbg->getCabang($this->cabang);
         } else {
             $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         }
@@ -45,7 +46,8 @@ class LogamtokertasController extends Controller
     public function create()
     {
         if ($this->cabang != "PCF") {
-            $cabang = Cabang::where('kode_cabang', $this->cabang)->get();
+            $cbg = new Cabang();
+            $cabang = $cbg->getCabang($this->cabang);
         } else {
             $cabang = Cabang::orderBy('kode_cabang')->get();
         }

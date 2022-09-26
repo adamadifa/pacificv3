@@ -33,17 +33,26 @@ class BelumsetorController extends Controller
             $query->where('bulan', $request->bulan);
         }
 
+        // if ($this->cabang != "PCF") {
+        //     if ($this->cabang == "GRT") {
+        //         $query->where('kode_cabang', 'TSM');
+        //     } else {
+        //         $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+        //         $cabang[] = "";
+        //         foreach ($cbg as $c) {
+        //             $cabang[] = $c->kode_cabang;
+        //         }
+        //         $query->whereIn('kode_cabang', $cabang);
+        //     }
+        // }
+
         if ($this->cabang != "PCF") {
-            if ($this->cabang == "GRT") {
-                $query->where('kode_cabang', 'TSM');
-            } else {
-                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-                $cabang[] = "";
-                foreach ($cbg as $c) {
-                    $cabang[] = $c->kode_cabang;
-                }
-                $query->whereIn('kode_cabang', $cabang);
+            $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+            $cabang[] = "";
+            foreach ($cbg as $c) {
+                $cabang[] = $c->kode_cabang;
             }
+            $query->whereIn('kode_cabang', $cabang);
         }
         $query->orderBy('kode_cabang');
         $query->orderBy('bulan');
@@ -59,17 +68,8 @@ class BelumsetorController extends Controller
     {
 
         if ($this->cabang != "PCF") {
-            if ($this->cabang == "GRT") {
-                $cabang = DB::table('cabang')->where('kode_cabang', 'TSM')->get();
-            } else {
-                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-                $cabang[] = "";
-                foreach ($cbg as $c) {
-                    $cabang[] = $c->kode_cabang;
-                }
-                //dd($cabang);
-                $cabang = DB::table('cabang')->whereIn('kode_cabang', $cabang)->get();
-            }
+            $cbg = new Cabang();
+            $cabang = $cbg->getCabang($this->cabang);
         } else {
             $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         }
