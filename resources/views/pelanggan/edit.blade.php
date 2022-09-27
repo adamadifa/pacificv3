@@ -160,7 +160,7 @@
                                             </div>
                                         </div>
                                         @else
-                                        <input type="hidden" name="kode_cabang" id="kode_cabang" value="{{ Auth::user()->kode_cabang=="GRT" ? "TSM" :  Auth::user()->kode_cabang   }}" readonly>
+                                        <input type="hidden" name="kode_cabang" id="kode_cabang" value="{{ Auth::user()->kode_cabang   }}" readonly>
                                         @endif
                                         <div class="col-lg-6 col-sm-12">
                                             <div class="form-group   @error('id_karyawan') error @enderror"">
