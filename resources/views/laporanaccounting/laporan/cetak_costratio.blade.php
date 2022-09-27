@@ -106,6 +106,7 @@
                 <th style="background-color: rgb(0, 77, 0); color:white">SURABAYA</th>
                 <th style="background-color: rgb(0, 77, 0); color:white">SEMARANG</th>
                 <th style="background-color: rgb(0, 77, 0); color:white">YOGYAKARTA</th>
+                <th style="background-color: rgb(0, 77, 0); color:white">PURWAKARTA</th>
                 <th style="background-color:rgb(0, 52, 93); color:white">Jumlah</th>
             </tr>
         </thead>
@@ -122,6 +123,7 @@
             $totalsby = 0;
             $totalsmr = 0;
             $totalklt = 0;
+            $totalpwk = 0;
             $grandtotal = 0;
             @endphp
             @foreach ($biaya as $d)
@@ -137,6 +139,7 @@
             $totalsby += $d->sby;
             $totalsmr += $d->smr;
             $totalklt += $d->klt;
+            $totalpwk += $d->pwk;
             $grandtotal += $d->total;
             @endphp
             <tr>
@@ -154,6 +157,7 @@
                 <td style="text-align:right">{{ !empty($d->sby) ?  rupiah($d->sby) : '' }}</td>
                 <td style="text-align:right">{{ !empty($d->smr) ?  rupiah($d->smr) : '' }}</td>
                 <td style="text-align:right">{{ !empty($d->klt) ?  rupiah($d->klt) : '' }}</td>
+                <td style="text-align:right">{{ !empty($d->pwk) ?  rupiah($d->pwk) : '' }}</td>
                 <td style="text-align:right">{{ !empty($d->total) ?  rupiah($d->total) : '' }}</td>
             </tr>
             @endforeach
@@ -172,6 +176,7 @@
                 <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalsby) }}</th>
                 <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalsmr) }}</th>
                 <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalklt) }}</th>
+                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalpwk) }}</th>
                 <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($grandtotal) }}</th>
             </tr>
             @php
@@ -186,6 +191,7 @@
             $swan_sby = $penjualan->netswanSBY - $retur->returswanSBY;
             $swan_smr = $penjualan->netswanSMR - $retur->returswanSMR;
             $swan_klt = $penjualan->netswanKLT - $retur->returswanKLT;
+            $swan_pwk = $penjualan->netswanPWK - $retur->returswanPWK;
 
             $aida_tsm = $penjualan->netaidaTSM - $retur->returaidaTSM;
             $aida_bdg = $penjualan->netaidaBDG - $retur->returaidaBDG;
@@ -198,6 +204,7 @@
             $aida_sby = $penjualan->netaidaSBY - $retur->returaidaSBY;
             $aida_smr = $penjualan->netaidaSMR - $retur->returaidaSMR;
             $aida_klt = $penjualan->netaidaKLT - $retur->returaidaKLT;
+            $aida_pwk = $penjualan->netaidaPWK - $retur->returaidaPWK;
 
             $penjualan_tsm = $swan_tsm + $aida_tsm;
             $penjualan_bdg = $swan_bdg + $aida_bdg;
@@ -210,6 +217,7 @@
             $penjualan_sby = $swan_sby + $aida_sby;
             $penjualan_smr = $swan_smr + $aida_smr;
             $penjualan_klt = $swan_klt + $aida_klt;
+            $penjualan_pwk = $swan_pwk + $aida_pwk;
 
 
             $totalswan = $penjualan->totalswan - $retur->totalreturswan;
@@ -227,6 +235,7 @@
             $cr_swan_biaya_sby = $swan_sby != 0 ? ROUND(($totalsby/$swan_sby)*100) : 0;
             $cr_swan_biaya_smr = $swan_smr != 0 ? ROUND(($totalsmr/$swan_smr)*100) : 0;
             $cr_swan_biaya_klt = $swan_klt != 0 ? ROUND(($totalklt/$swan_klt)*100) : 0;
+            $cr_swan_biaya_pwk = $swan_pwk != 0 ? ROUND(($totalpwk/$swan_pwk)*100) : 0;
             $cr_swan_biaya_total = $totalswan != 0 ? ROUND(($grandtotal/$totalswan)*100) : 0;
 
             $cr_aida_biaya_tsm = $aida_tsm != 0 ? ROUND(($totaltsm/$aida_tsm)*100) : 0;
@@ -240,6 +249,7 @@
             $cr_aida_biaya_sby = $aida_sby != 0 ? ROUND(($totalsby/$aida_sby)*100) : 0;
             $cr_aida_biaya_smr = $aida_smr != 0 ? ROUND(($totalsmr/$aida_smr)*100) : 0;
             $cr_aida_biaya_klt = $aida_klt != 0 ? ROUND(($totalklt/$aida_klt)*100) : 0;
+            $cr_aida_biaya_pwk = $aida_pwk != 0 ? ROUND(($totalpwk/$aida_pwk)*100) : 0;
             $cr_aida_biaya_total = $totalaida != 0 ? ROUND(($grandtotal/$totalaida)*100) : 0;
 
             $cr_penjualan_biaya_tsm = $penjualan_tsm != 0 ? ROUND(($totaltsm/$penjualan_tsm)*100) : 0;
@@ -253,6 +263,7 @@
             $cr_penjualan_biaya_sby = $penjualan_sby != 0 ? ROUND(($totalsby/$penjualan_sby)*100) : 0;
             $cr_penjualan_biaya_smr = $penjualan_smr != 0 ? ROUND(($totalsmr/$penjualan_smr)*100) : 0;
             $cr_penjualan_biaya_klt = $penjualan_klt != 0 ? ROUND(($totalklt/$penjualan_klt)*100) : 0;
+            $cr_penjualan_biaya_pwk = $penjualan_pwk != 0 ? ROUND(($totalpwk/$penjualan_pwk)*100) : 0;
             $cr_penjualan_biaya_total = $totalpenjualan != 0 ? ROUND(($grandtotal/$totalpenjualan)*100) : 0;
 
             @endphp
@@ -270,6 +281,7 @@
                 <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($swan_sby) }}</th>
                 <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($swan_smr) }}</th>
                 <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($swan_klt) }}</th>
+                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($swan_pwk) }}</th>
                 <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalswan) }}</th>
             </tr>
             <tr>
@@ -285,6 +297,7 @@
                 <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_swan_biaya_sby }}%</th>
                 <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_swan_biaya_smr }}%</th>
                 <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_swan_biaya_klt }}%</th>
+                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_swan_biaya_pwk }}%</th>
                 <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_swan_biaya_total }}%</th>
             </tr>
             <tr>
@@ -300,6 +313,7 @@
                 <th style="background-color:rgb(93, 0, 0); color:white; text-align:right">{{ rupiah($aida_sby) }}</th>
                 <th style="background-color:rgb(93, 0, 0); color:white; text-align:right">{{ rupiah($aida_smr) }}</th>
                 <th style="background-color:rgb(93, 0, 0); color:white; text-align:right">{{ rupiah($aida_klt) }}</th>
+                <th style="background-color:rgb(93, 0, 0); color:white; text-align:right">{{ rupiah($aida_pwk) }}</th>
                 <th style="background-color:rgb(93, 0, 0); color:white; text-align:right">{{ rupiah($totalaida) }}</th>
             </tr>
             <tr>
@@ -315,6 +329,7 @@
                 <th style="background-color:rgb(93, 0, 0); color:white;">{{ $cr_aida_biaya_sby }}%</th>
                 <th style="background-color:rgb(93, 0, 0); color:white;">{{ $cr_aida_biaya_smr }}%</th>
                 <th style="background-color:rgb(93, 0, 0); color:white;">{{ $cr_aida_biaya_klt }}%</th>
+                <th style="background-color:rgb(93, 0, 0); color:white;">{{ $cr_aida_biaya_pwk }}%</th>
                 <th style="background-color:rgb(93, 0, 0); color:white;">{{ $cr_aida_biaya_total }}%</th>
             </tr>
             <tr>
@@ -330,6 +345,7 @@
                 <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($penjualan_sby) }}</th>
                 <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($penjualan_smr) }}</th>
                 <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($penjualan_klt) }}</th>
+                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($penjualan_pwk) }}</th>
                 <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalpenjualan) }}</th>
             </tr>
             <tr>
@@ -345,6 +361,7 @@
                 <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_penjualan_biaya_sby }}%</th>
                 <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_penjualan_biaya_smr }}%</th>
                 <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_penjualan_biaya_klt }}%</th>
+                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_penjualan_biaya_pwk }}%</th>
                 <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_penjualan_biaya_total }}%</th>
             </tr>
             <tr>
@@ -360,6 +377,7 @@
                 <th style="background-color:rgb(210, 59, 4); color:white; text-align:right">{{ rupiah($piutang->SBY) }}</th>
                 <th style="background-color:rgb(210, 59, 4); color:white; text-align:right">{{ rupiah($piutang->SMR) }}</th>
                 <th style="background-color:rgb(210, 59, 4); color:white; text-align:right">{{ rupiah($piutang->KLT) }}</th>
+                <th style="background-color:rgb(210, 59, 4); color:white; text-align:right">{{ rupiah($piutang->PWK) }}</th>
                 <th style="background-color:rgb(210, 59, 4); color:white; text-align:right">{{ rupiah($piutang->totalpiutang) }}</th>
 
             </tr>
@@ -375,6 +393,7 @@
             $piutang_sby = $piutang->SBY;
             $piutang_smr = $piutang->SMR;
             $piutang_klt = $piutang->KLT;
+            $piutang_pwk = $piutang->PWK;
             $totalpiutang = $piutang->totalpiutang;
 
             $cr_swan_piutang_tsm = $swan_tsm != 0 ? ROUND(($piutang_tsm/$swan_tsm)*100) : 0;
@@ -388,6 +407,7 @@
             $cr_swan_piutang_sby = $swan_sby != 0 ? ROUND(($piutang_sby/$swan_sby)*100) : 0;
             $cr_swan_piutang_smr = $swan_smr != 0 ? ROUND(($piutang_smr/$swan_smr)*100) : 0;
             $cr_swan_piutang_klt = $swan_klt != 0 ? ROUND(($piutang_klt/$swan_klt)*100) : 0;
+            $cr_swan_piutang_pwk = $swan_pwk != 0 ? ROUND(($piutang_pwk/$swan_pwk)*100) : 0;
             $cr_swan_piutang_total = $totalswan != 0 ? ROUND(($totalpiutang/$totalswan)*100) : 0;
 
             $cr_aida_piutang_tsm = $aida_tsm != 0 ? ROUND(($piutang_tsm/$aida_tsm)*100) : 0;
@@ -401,6 +421,7 @@
             $cr_aida_piutang_sby = $aida_sby != 0 ? ROUND(($piutang_sby/$aida_sby)*100) : 0;
             $cr_aida_piutang_smr = $aida_smr != 0 ? ROUND(($piutang_smr/$aida_smr)*100) : 0;
             $cr_aida_piutang_klt = $aida_klt != 0 ? ROUND(($piutang_klt/$aida_klt)*100) : 0;
+            $cr_aida_piutang_pwk = $aida_pwk != 0 ? ROUND(($piutang_pwk/$aida_pwk)*100) : 0;
             $cr_aida_piutang_total = $totalaida != 0 ? ROUND(($totalpiutang/$totalaida)*100) : 0;
 
             $cr_penjualan_piutang_tsm = $penjualan_tsm != 0 ? ROUND(($piutang_tsm/$penjualan_tsm)*100) : 0;
@@ -414,6 +435,7 @@
             $cr_penjualan_piutang_sby = $penjualan_sby != 0 ? ROUND(($piutang_sby/$penjualan_sby)*100) : 0;
             $cr_penjualan_piutang_smr = $penjualan_smr != 0 ? ROUND(($piutang_smr/$penjualan_smr)*100) : 0;
             $cr_penjualan_piutang_klt = $penjualan_klt != 0 ? ROUND(($piutang_klt/$penjualan_klt)*100) : 0;
+            $cr_penjualan_piutang_pwk = $penjualan_pwk != 0 ? ROUND(($piutang_pwk/$penjualan_pwk)*100) : 0;
             $cr_penjualan_piutang_total = $totalpenjualan != 0 ? ROUND(($totalpiutang/$totalpenjualan)*100) : 0;
             @endphp
             <tr>
@@ -429,6 +451,7 @@
                 <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_swan_piutang_sby }}%</th>
                 <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_swan_piutang_smr }}%</th>
                 <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_swan_piutang_klt }}%</th>
+                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_swan_piutang_pwk }}%</th>
                 <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_swan_piutang_total }}%</th>
             </tr>
             <tr>
@@ -444,6 +467,7 @@
                 <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_aida_piutang_sby }}%</th>
                 <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_aida_piutang_smr }}%</th>
                 <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_aida_piutang_klt }}%</th>
+                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_aida_piutang_pwk }}%</th>
                 <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_aida_piutang_total }}%</th>
             </tr>
             <tr>
@@ -459,6 +483,7 @@
                 <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_penjualan_piutang_sby }}%</th>
                 <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_penjualan_piutang_smr }}%</th>
                 <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_penjualan_piutang_klt }}%</th>
+                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_penjualan_piutang_pwk }}%</th>
                 <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_penjualan_piutang_total }}%</th>
             </tr>
             @php
@@ -473,6 +498,7 @@
             $biaya_piutang_sby = $totalsby + $piutang_sby;
             $biaya_piutang_smr = $totalsmr + $piutang_smr;
             $biaya_piutang_klt = $totalklt + $piutang_klt;
+            $biaya_piutang_pwk = $totalpwk + $piutang_pwk;
             $total_biaya_piutang = $grandtotal + $totalpiutang;
 
             $cr_swan_biayapiutang_tsm = $swan_tsm != 0 ? ROUND(($biaya_piutang_tsm/$swan_tsm)*100) : 0;
@@ -486,6 +512,7 @@
             $cr_swan_biayapiutang_sby = $swan_sby != 0 ? ROUND(($biaya_piutang_sby/$swan_sby)*100) : 0;
             $cr_swan_biayapiutang_smr = $swan_smr != 0 ? ROUND(($biaya_piutang_smr/$swan_smr)*100) : 0;
             $cr_swan_biayapiutang_klt = $swan_klt != 0 ? ROUND(($biaya_piutang_klt/$swan_klt)*100) : 0;
+            $cr_swan_biayapiutang_pwk = $swan_pwk != 0 ? ROUND(($biaya_piutang_pwk/$swan_pwk)*100) : 0;
             $cr_swan_biayapiutang_total = $totalswan != 0 ? ROUND(($total_biaya_piutang/$totalswan)*100) : 0;
 
             $cr_aida_biayapiutang_tsm = $aida_tsm != 0 ? ROUND(($biaya_piutang_tsm/$aida_tsm)*100) : 0;
@@ -499,6 +526,7 @@
             $cr_aida_biayapiutang_sby = $aida_sby != 0 ? ROUND(($biaya_piutang_sby/$aida_sby)*100) : 0;
             $cr_aida_biayapiutang_smr = $aida_smr != 0 ? ROUND(($biaya_piutang_smr/$aida_smr)*100) : 0;
             $cr_aida_biayapiutang_klt = $aida_klt != 0 ? ROUND(($biaya_piutang_klt/$aida_klt)*100) : 0;
+            $cr_aida_biayapiutang_pwk = $aida_pwk != 0 ? ROUND(($biaya_piutang_pwk/$aida_pwk)*100) : 0;
             $cr_aida_biayapiutang_total = $totalaida != 0 ? ROUND(($total_biaya_piutang/$totalaida)*100) : 0;
 
             $cr_penjualan_biayapiutang_tsm = $penjualan_tsm != 0 ? ROUND(($biaya_piutang_tsm/$penjualan_tsm)*100) : 0;
@@ -512,6 +540,7 @@
             $cr_penjualan_biayapiutang_sby = $penjualan_sby != 0 ? ROUND(($biaya_piutang_sby/$penjualan_sby)*100) : 0;
             $cr_penjualan_biayapiutang_smr = $penjualan_smr != 0 ? ROUND(($biaya_piutang_smr/$penjualan_smr)*100) : 0;
             $cr_penjualan_biayapiutang_klt = $penjualan_klt != 0 ? ROUND(($biaya_piutang_klt/$penjualan_klt)*100) : 0;
+            $cr_penjualan_biayapiutang_pwk = $penjualan_pwk != 0 ? ROUND(($biaya_piutang_pwk/$penjualan_pwk)*100) : 0;
             $cr_penjualan_biayapiutang_total = $totalpenjualan != 0 ? ROUND(($total_biaya_piutang/$totalpenjualan)*100) : 0;
 
             @endphp
@@ -528,6 +557,7 @@
                 <th style="background-color:rgba(145, 2, 59, 0.961); color:white; text-align:right">{{ rupiah($biaya_piutang_sby) }}</th>
                 <th style="background-color:rgba(145, 2, 59, 0.961); color:white; text-align:right">{{ rupiah($biaya_piutang_smr) }}</th>
                 <th style="background-color:rgba(145, 2, 59, 0.961); color:white; text-align:right">{{ rupiah($biaya_piutang_klt) }}</th>
+                <th style="background-color:rgba(145, 2, 59, 0.961); color:white; text-align:right">{{ rupiah($biaya_piutang_pwk) }}</th>
                 <th style="background-color:rgba(145, 2, 59, 0.961); color:white; text-align:right">{{ rupiah($total_biaya_piutang) }}</th>
             </tr>
             <tr>
@@ -543,6 +573,7 @@
                 <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_swan_biayapiutang_sby }}%</th>
                 <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_swan_biayapiutang_smr }}%</th>
                 <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_swan_biayapiutang_klt }}%</th>
+                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_swan_biayapiutang_pwk }}%</th>
                 <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_swan_biayapiutang_total }}%</th>
             </tr>
             <tr>
@@ -558,6 +589,7 @@
                 <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_aida_biayapiutang_sby }}%</th>
                 <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_aida_biayapiutang_smr }}%</th>
                 <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_aida_biayapiutang_klt }}%</th>
+                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_aida_biayapiutang_pwk }}%</th>
                 <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_aida_biayapiutang_total }}%</th>
             </tr>
             <tr>
@@ -573,6 +605,7 @@
                 <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_penjualan_biayapiutang_sby }}%</th>
                 <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_penjualan_biayapiutang_smr }}%</th>
                 <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_penjualan_biayapiutang_klt }}%</th>
+                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_penjualan_biayapiutang_pwk }}%</th>
                 <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_penjualan_biayapiutang_total }}%</th>
             </tr>
         </tfoot>

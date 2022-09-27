@@ -904,6 +904,7 @@ class LaporanaccountingController extends Controller
             SUM(IF(kode_cabang='SMR',jumlah,0)) as smr,
             SUM(IF(kode_cabang='TGL',jumlah,0)) as tgl,
             SUM(IF(kode_cabang='TSM',jumlah,0)) as tsm,
+            SUM(IF(kode_cabang='PWK',jumlah,0)) as pwk,
             SUM(jumlah) as total");
         }
 
@@ -945,6 +946,9 @@ class LaporanaccountingController extends Controller
             SUM(IF(karyawan.kode_cabang ='SMR',brutoaida-potaida - potisaida-penyaida,0)) as netaidaSMR,
             SUM(IF(karyawan.kode_cabang ='KLT',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanKLT,
             SUM(IF(karyawan.kode_cabang ='KLT',brutoaida-potaida - potisaida-penyaida,0)) as netaidaKLT,
+
+            SUM(IF(karyawan.kode_cabang ='PWK',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanPWK,
+            SUM(IF(karyawan.kode_cabang ='PWK',brutoaida-potaida - potisaida-penyaida,0)) as netaidaPWK,
             SUM(brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0)) as totalswan,
             SUM(brutoaida-potaida - potisaida-penyaida) as totalaida
             ");
@@ -999,6 +1003,8 @@ class LaporanaccountingController extends Controller
             SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='PWT',detailretur.subtotal,0)) as returaidaPWT,
             SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='KLT',detailretur.subtotal,0)) as returswanKLT,
             SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='KLT',detailretur.subtotal,0)) as returaidaKLT,
+            SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='PWK',detailretur.subtotal,0)) as returswanPWK,
+            SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='PWK',detailretur.subtotal,0)) as returaidaPWK,
             SUM(IF(master_barang.jenis_produk = 'SWAN',detailretur.subtotal,0)) as totalreturswan,
             SUM(IF(master_barang.jenis_produk = 'AIDA',detailretur.subtotal,0)) as totalreturaida
             ");
@@ -1033,6 +1039,7 @@ class LaporanaccountingController extends Controller
             SUM(CASE WHEN cabangbarunew = 'SBY' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS SBY,
             SUM(CASE WHEN cabangbarunew = 'SMR' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS SMR,
             SUM(CASE WHEN cabangbarunew = 'KLT' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS KLT,
+            SUM(CASE WHEN cabangbarunew =  'PWK' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS PWK,
             SUM(ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0)) as totalpiutang
         ");
         }
