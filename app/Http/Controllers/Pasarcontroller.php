@@ -53,11 +53,13 @@ class Pasarcontroller extends Controller
     public function create()
     {
         if (Auth::user()->kode_cabang != 'PCF') {
-            if (Auth::user()->kode_cabang == 'GRT') {
-                $cabang = Cabang::orderBy('kode_cabang')->where('kode_cabang', 'TSM')->get();
-            } else {
-                $cabang = Cabang::orderBy('kode_cabang')->where('kode_cabang', Auth::user()->kode_cabang)->get();
-            }
+            // if (Auth::user()->kode_cabang == 'GRT') {
+            //     $cabang = Cabang::orderBy('kode_cabang')->where('kode_cabang', 'TSM')->get();
+            // } else {
+            //     $cabang = Cabang::orderBy('kode_cabang')->where('kode_cabang', Auth::user()->kode_cabang)->get();
+            // }
+            $cbg = new Cabang();
+            $cabang = $cbg->getCabang($this->cabang);
             $option = "Pilih Cabang";
         } else {
             $cabang = Cabang::orderBy('kode_cabang')->get();
