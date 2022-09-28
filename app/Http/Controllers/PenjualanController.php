@@ -3130,11 +3130,7 @@ class PenjualanController extends Controller
         if ($ljt == 1) {
             $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) <= pelanggan.jatuhtempo");
         } else if ($ljt == 2) {
-            if ($dari >= '2022-09-01') {
-                $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) > 14");
-            } else {
-                $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) > 15");
-            }
+            $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) > 15");
         }
 
         if (isset($_POST['tandaterimafaktur'])) {
@@ -3156,11 +3152,7 @@ class PenjualanController extends Controller
         if ($ljt == 1) {
             $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) <= pelanggan.jatuhtempo");
         } else if ($ljt == 2) {
-            if ($dari >= '2022-09-01') {
-                $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) > 14");
-            } else {
-                $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) > 15");
-            }
+            $query->whereRaw("datediff('$sampai', penjualan.tgltransaksi) > 15");
         }
 
         if (isset($_POST['tandaterimafaktur'])) {

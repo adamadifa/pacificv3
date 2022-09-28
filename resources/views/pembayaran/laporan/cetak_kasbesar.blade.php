@@ -167,7 +167,7 @@
             $bgcolor = "";
             }
 
-            if ($k->ljt > 14) {
+            if ($k->ljt > 15) {
             $bgcolor2 = "red";
             $color = "white";
             $totalljt += $bayar;

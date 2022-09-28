@@ -732,7 +732,7 @@ class TargetkomisiController extends Controller
                     FROM historibayar
                     INNER JOIN penjualan ON historibayar.no_fak_penj = penjualan.no_fak_penj
                     WHERE tglbayar BETWEEN '$dari' AND '$sampai' AND status_bayar IS NULL
-                    AND datediff(tglbayar, tgltransaksi) > 14
+                    AND datediff(tglbayar, tgltransaksi) > 15
                     GROUP BY historibayar.id_karyawan
                 ) hbjt"),
                 function ($join) {
@@ -775,7 +775,7 @@ class TargetkomisiController extends Controller
                         WHERE tglbayar <= '$sampai'
                         GROUP BY no_fak_penj
                         ) hblalu ON (penjualan.no_fak_penj = hblalu.no_fak_penj)
-                    WHERE tgltransaksi <= '$sampai' AND (ifnull(penjualan.total,0) - (ifnull(totalpf_last,0)-ifnull(totalgb_last,0)))-ifnull(totalbayar,0) !=0 AND datediff('$sampai', penjualan.tgltransaksi) > 14
+                    WHERE tgltransaksi <= '$sampai' AND (ifnull(penjualan.total,0) - (ifnull(totalpf_last,0)-ifnull(totalgb_last,0)))-ifnull(totalbayar,0) !=0 AND datediff('$sampai', penjualan.tgltransaksi) > 15
                     AND penjualan.jenistransaksi ='kredit'
                     GROUP BY salesbarunew
                 ) penj"),
