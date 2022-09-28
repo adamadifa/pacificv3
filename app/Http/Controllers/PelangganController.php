@@ -267,7 +267,6 @@ class PelangganController extends Controller
 
         $pelanggan = DB::table('pelanggan')
             ->select('kode_pelanggan')
-            ->where('kode_cabang', $request->kode_cabang)
             ->whereRaw('LEFT(kode_pelanggan,3) = "' . $request->kode_cabang . '"')
             ->orderBy('kode_pelanggan', 'desc')
             ->first();
