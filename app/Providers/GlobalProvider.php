@@ -168,7 +168,7 @@ class GlobalProvider extends ServiceProvider
             $supplier_hapus = ['admin', 'manager pembelian', 'admin pembelian'];
 
             //Barang
-            $barang = ['admin', 'manager accounting', 'spv accounting', 'direktur', 'manager marketing', 'rsm', 'general manager', 'audit'];
+            $barang = ['admin', 'manager accounting', 'spv accounting', 'direktur', 'manager marketing', 'rsm', 'general manager', 'audit', 'admin pajak 2'];
             $barang_tambah = ['admin'];
             $barang_edit = ['admin'];
             $barang_hapus = ['admin'];
@@ -177,7 +177,7 @@ class GlobalProvider extends ServiceProvider
             $barangpembelian = [
                 'admin', 'manager pembelian', 'admin pembelian', 'manager accounting',
                 'spv accounting', 'audit', 'admin gudang logistik', 'admin gudang bahan',
-                'general affair'
+                'general affair', 'admin pajak 2'
             ];
             $barangpembelian_tambah = ['admin', 'manager pembelian', 'admin pembelian', 'admin gudang logistik', 'admin gudang bahan', 'general affair'];
             $barangpembelian_edit = ['admin', 'manager pembelian', 'admin pembelian', 'admin gudang logistik', 'admin gudang bahan', 'general affair'];
@@ -187,7 +187,7 @@ class GlobalProvider extends ServiceProvider
             $harga = [
                 'admin', 'admin penjualan', 'audit', 'kepala penjualan', 'kepala admin', 'admin pusat',
                 'manager accounting', 'spv accounting', 'manager marketing', 'rsm', 'direktur',
-                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'audit', 'admin garut'
+                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'audit', 'admin garut', 'admin pajak 2'
             ];
             $harga_hapus = ['admin'];
             $harga_tambah = ['admin'];
@@ -199,7 +199,7 @@ class GlobalProvider extends ServiceProvider
             $kendaraan = [
                 'admin', 'admin penjualan', 'audit', 'kepala penjualan',
                 'kepala admin', 'admin pusat', 'manager accounting', 'spv accounting', 'manager marketing', 'rsm', 'direktur',
-                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'audit', 'admin garut'
+                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'audit', 'admin garut', 'admin pajak 2'
             ];
             $kendaraan_tambah = ['admin'];
             $kendaraan_edit = [
