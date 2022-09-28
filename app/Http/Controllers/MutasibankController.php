@@ -422,8 +422,8 @@ class MutasibankController extends Controller
 
                 if (!empty($kode_cr)) {
                     echo $kode_cr;
-                    DB::table('costratio_biaya')->where('kode_crd', $kode_cr)->delete();
-                    die;
+                    DB::table('costratio_biaya')->where('kode_cr', $kode_cr)->delete();
+
                     $datamb = [
                         'kode_cr' => null
                     ];
