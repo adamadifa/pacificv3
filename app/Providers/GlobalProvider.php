@@ -115,16 +115,16 @@ class GlobalProvider extends ServiceProvider
                 'kepala admin', 'admin pusat', 'manager marketing', 'rsm', 'direktur',
                 'manager pembelian', 'admin pembelian', 'admin penjualan dan kas kecil',
                 'admin penjualan dan kasir', 'audit', 'admin gudang logistik', 'admin gudang bahan',
-                'general affair', 'admin garut'
+                'general affair', 'admin garut', 'admin pajak 2'
             ];
 
-            $pasar_menu = ['admin', 'admin penjualan', 'audit', 'kepala admin', 'admin penjualan dan kas kecil', 'direktur', 'manager accounting', 'general manager', 'admin garut'];
+            $pasar_menu = ['admin', 'admin penjualan', 'audit', 'kepala admin', 'admin penjualan dan kas kecil', 'direktur', 'manager accounting', 'general manager', 'admin garut', 'admin pajak 2'];
             $pasar_tambah = ['admin', 'admin penjualan', 'audit', 'kepala admin', 'admin penjualan dan kas kecil', 'admin garut'];
             $pasar_hapus = ['admin', 'admin penjualan', 'audit', 'kepala admin', 'admin penjualan dan kas kecil', 'admin garut'];
             //Pelanggan
             $pelanggan = [
                 'admin', 'admin penjualan', 'audit', 'manager accounting', 'spv accounting', 'kepala penjualan', 'kepala admin', 'admin pusat', 'manager marketing', 'rsm', 'direktur', 'admin penjualan dan kas kecil',
-                'admin penjualan dan kasir', 'audit', 'admin garut'
+                'admin penjualan dan kasir', 'audit', 'admin garut', 'admin pajak 2'
             ];
             $pelanggan_tambah = [
                 'admin', 'kepala penjualan', 'kepala admin', 'admin pusat', 'admin penjualan', 'audit', 'admin penjualan dan kas kecil',
@@ -146,7 +146,7 @@ class GlobalProvider extends ServiceProvider
             //Salesman
             $salesman = [
                 'admin', 'admin penjualan', 'audit', 'kepala penjualan', 'kepala admin', 'admin pusat', 'manager accounting', 'spv accounting', 'manager marketing', 'rsm', 'direktur', 'admin penjualan dan kas kecil',
-                'admin penjualan dan kasir', 'audit', 'admin garut'
+                'admin penjualan dan kasir', 'audit', 'admin garut', 'admin pajak 2'
             ];
             $salesman_tambah = [
                 'admin', 'kepala penjualan', 'kepala admin', 'admin pusat', 'admin penjualan', 'audit', 'admin penjualan dan kas kecil',
@@ -162,7 +162,7 @@ class GlobalProvider extends ServiceProvider
             ];
 
             //Supplier
-            $supplier_menu = ['admin', 'manager pembelian', 'admin pembelian', 'manager accounting', 'spv accounting', 'audit'];
+            $supplier_menu = ['admin', 'manager pembelian', 'admin pembelian', 'manager accounting', 'spv accounting', 'audit', 'admin pajak 2'];
             $supplier_tambah = ['admin', 'manager pembelian', 'admin pembelian'];
             $supplier_edit = ['admin', 'manager pembelian', 'admin pembelian'];
             $supplier_hapus = ['admin', 'manager pembelian', 'admin pembelian'];

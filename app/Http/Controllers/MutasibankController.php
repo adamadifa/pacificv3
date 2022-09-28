@@ -418,6 +418,9 @@ class MutasibankController extends Controller
                     DB::table('costratio_biaya')->where('kode_cr', $kode_cr)->update($datacr);
                 }
             } else {
+
+                echo $kode_cr;
+                die;
                 if (!empty($kode_cr)) {
                     DB::table('costratio_biaya')->where('kode_cr', $kode_cr)->delete();
                     $datamb = [
