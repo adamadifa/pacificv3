@@ -245,19 +245,22 @@ class ReturController extends Controller
                         ->where('no_fak_penj', $no_fak_penj)
                         ->where('tglbayar', $cekfaktur->tgltransaksi)
                         ->first();
-                    DB::table('historibayar')
-                        ->where('no_fak_penj', $no_fak_penj)
-                        ->wherenull('status_bayar')
-                        ->where('tglbayar', $cekfaktur->tgltransaksi)
-                        ->update([
-                            'bayar' =>  DB::raw('bayar -' . $total)
-                        ]);
 
-                    DB::table('buku_besar')
-                        ->where('no_ref', $historibayar->nobukti)
-                        ->update([
-                            'debet' =>  DB::raw('debet -' . $total)
-                        ]);
+                    if ($historibayar != null) {
+                        DB::table('historibayar')
+                            ->where('no_fak_penj', $no_fak_penj)
+                            ->wherenull('status_bayar')
+                            ->where('tglbayar', $cekfaktur->tgltransaksi)
+                            ->update([
+                                'bayar' =>  DB::raw('bayar -' . $total)
+                            ]);
+
+                        DB::table('buku_besar')
+                            ->where('no_ref', $historibayar->nobukti)
+                            ->update([
+                                'debet' =>  DB::raw('debet -' . $total)
+                            ]);
+                    }
                 }
             } else {
                 $subtotal_pf = $request->subtotal;
