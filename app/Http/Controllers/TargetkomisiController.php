@@ -1002,6 +1002,8 @@ class TargetkomisiController extends Controller
 
             if (Auth::user()->id == 7) {
                 $query->whereIn('kode_cabang', ['GRT', 'TSM']);
+            } else if (Auth::user()->id == 27) {
+                $query->whereIn('kode_cabang', ['BDG', 'PWK']);
             } else {
                 $query->where('kode_cabang', $cabang);
             }
