@@ -538,7 +538,7 @@ class PembayaranController extends Controller
                 return view('pembayaran.laporan.cetak_kasbesar_rekapallsalesman', compact('kasbesar', 'cabang', 'dari', 'sampai', 'salesman', 'pelanggan'));
             } else if ($jenislaporan == "lhp") {
                 $query = Pembayaran::query();
-                $query->select('historibayar.no_fak_penj', 'tglbayar', 'penjualan.kode_pelanggan', 'nama_pelanggan', 'penjualan.jenistransaksi', 'bayar', 'girotocash');
+                $query->select('historibayar.no_fak_penj', 'tglbayar', 'penjualan.kode_pelanggan', 'nama_pelanggan', 'penjualan.jenistransaksi', 'bayar', 'girotocash', 'status_bayar');
 
                 $query->join('penjualan', 'historibayar.no_fak_penj', '=', 'penjualan.no_fak_penj');
                 $query->join('karyawan', 'historibayar.id_karyawan', '=', 'karyawan.id_karyawan');
@@ -555,7 +555,7 @@ class PembayaranController extends Controller
                 $query->whereNull('historibayar.id_giro');
                 $query->whereNull('historibayar.id_transfer');
                 $query->whereNull('historibayar.girotocash');
-
+                $query->whereNull('status_bayar');
                 $query->orwhereBetween('tglbayar', [$dari, $sampai]);
                 if (!empty($request->id_karyawan)) {
                     $query->where('historibayar.id_karyawan', $request->id_karyawan);
@@ -567,6 +567,7 @@ class PembayaranController extends Controller
                 $query->whereNull('historibayar.id_giro');
                 $query->whereNull('historibayar.id_transfer');
                 $query->where('historibayar.girotocash', 1);
+                $query->whereNull('status_bayar');
 
                 $query->whereBetween('tglbayar', [$dari, $sampai]);
                 if (!empty($request->id_karyawan)) {
@@ -616,8 +617,8 @@ class PembayaranController extends Controller
                 }
                 $listtransfer = $querytransfer->get();
 
-
-                return view('pembayaran.laporan.cetak_kasbesarlhp', compact('kasbesar', 'cabang', 'dari', 'sampai', 'salesman', 'pelanggan', 'listgiro', 'listtransfer'));
+                $voucher = $query->where('status_bayar', 'voucher')->get();
+                return view('pembayaran.laporan.cetak_kasbesarlhp', compact('kasbesar', 'cabang', 'dari', 'sampai', 'salesman', 'pelanggan', 'listgiro', 'listtransfer', 'voucher'));
             } else {
                 //echo 3;
                 $query = Pembayaran::query();

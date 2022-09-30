@@ -294,5 +294,55 @@
         </tr>
 
     </table>
+
+    <b style="font-size:14px; font-family:Calibri">
+        PEMBAYARAN VOUCHER<br>
+        PERIODE <?php echo DateToIndo2($dari) . " s/d " . DateToIndo2($sampai); ?><br>
+    </b>
+    <table class="datatable3">
+        <thead bgcolor="#024a75" style="color:white; font-size:12;">
+            <tr bgcolor="#024a75" style="color:white; font-size:12;">
+                <th>Tanggal</th>
+                <th>No Faktur</th>
+                <th>Kode Pelanggan</th>
+                <th>Nama Pelanggan</th>
+                <th>Keterangan</th>
+                <th>Jumlah</th>
+            </tr>
+            <thead>
+            <tbody>
+                <?php
+                $totalvoucher = 0;
+                foreach ($voucher as $v) {
+                    $totalvoucher = $totalvoucher + $v->bayar;
+                    if ($v->ket_voucher == "1") {
+                        $ket_voucher = "Voucher Penghapusan Piutang";
+                    } else if ($v->ket_voucher == "2") {
+                        $ket_voucher = "Voucher Diskon Program";
+                    } else if ($v->ket_voucher == "3") {
+                        $ket_voucher = "Voucher Penyelesaian Piutang Oleh Salesman";
+                    } else if ($v->ket_voucher == "4") {
+                        $ket_voucher = "Voucher Pengalihan Piutang Dgng Jd Piutang Kary";
+                    } else {
+                        $ket_voucher = "Lainnya";
+                    }
+                ?>
+                <tr>
+                    <td><?php echo DateToIndo2($v->tglbayar); ?></td>
+                    <td><?php echo $v->no_fak_penj; ?></td>
+                    <td><?php echo $v->kode_pelanggan; ?></td>
+                    <td><?php echo $v->nama_pelanggan; ?></td>
+                    <td><?php echo $ket_voucher; ?></td>
+                    <td align="right"><?php echo number_format($v->bayar, '0', '', '.'); ?></td>
+                </tr>
+                <?php
+                }
+                ?>
+                <tr bgcolor="#024a75" style="color:white; font-size:12;">
+                    <td colspan="5">TOTAL</td>
+                    <td align="right"><?php echo number_format($totalvoucher, '0', '', '.'); ?></td>
+                </tr>
+            </tbody>
+    </table>
 </body>
 </html>
