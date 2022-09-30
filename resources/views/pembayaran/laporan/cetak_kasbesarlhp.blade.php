@@ -81,6 +81,9 @@
             $totalgirotocash = 0;
             @endphp
             @foreach ($kasbesar as $d)
+            @if (empty($k->status_bayar))
+
+
             @php
             if($d->jenistransaksi=="tunai"){
             $tunai = $d->bayar;
@@ -112,6 +115,7 @@
                 <td style="text-align: right">{{ !empty($tagihan) ? rupiah($tagihan) : '' }}</td>
                 <td style="text-align: right">{{ !empty($girotocash) ? rupiah($girotocash) : '' }}</td>
             </tr>
+            @endif
             @endforeach
             <tr>
                 <th colspan="4">TOTAL</th>
@@ -172,6 +176,7 @@
                 <td style="text-align: center">{{ date("d-m-Y",strtotime($d->tglcair)) }}</td>
                 <td>{{ $status }}</td>
             </tr>
+
             @endforeach
             <tr>
                 <th colspan="6">TOTAL</th>
