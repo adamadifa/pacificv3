@@ -314,7 +314,7 @@
     </table>
     <h4>SUMMARY <br> TANGGAL <?php echo DateToIndo2($dari); ?> s/d <?php echo $sampai; ?><br></h4>
     <?php
-                    $totalsummary = $totaltunai + $totaltagihan + $totalgiro + $totaltransfer - $totalgirotocash - $totalgirototransfer;
+                    $totalsummary = $totaltunai + $totaltagihan + $totalgiro + $totaltransfer - $totalgirotocash - $totalgirototransfer + $totalvoucher;
                     ?>
     <table class="datatable3">
 
@@ -325,6 +325,10 @@
         <tr>
             <th bgcolor="#024a75" style="color:white; font-size:12; padding:5px !important">Tagihan</th>
             <td style="text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totaltagihan, '0', '', '.');  ?></td>
+        </tr>
+        <tr>
+            <th bgcolor="#024a75" style="color:white; font-size:12; padding:5px !important">Voucher</th>
+            <td style="text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totalvoucher, '0', '', '.');  ?></td>
         </tr>
         <tr>
             <th bgcolor="#024a75" style="color:white; font-size:12; padding:5px !important">Giro</th>
