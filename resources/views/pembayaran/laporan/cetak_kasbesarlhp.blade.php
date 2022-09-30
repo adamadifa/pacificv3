@@ -81,7 +81,7 @@
             $totalgirotocash = 0;
             @endphp
             @foreach ($kasbesar as $d)
-            @if (empty($k->status_bayar))
+            @if (empty($d->status_bayar))
 
 
             @php
@@ -263,43 +263,6 @@
             </tr>
         </tbody>
     </table>
-    <h4>SUMMARY <br> TANGGAL <?php echo DateToIndo2($dari); ?> s/d <?php echo $sampai; ?><br></h4>
-    <?php
-                    $totalsummary = $totaltunai + $totaltagihan + $totalgiro + $totaltransfer - $totalgirotocash - $totalgirototransfer;
-                    ?>
-    <table class="datatable3">
-
-        <tr>
-            <th bgcolor="#024a75" style="color:white; font-size:12; padding:5px !important">Penjualan Tunai</th>
-            <td style="text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totaltunai, '0', '', '.');  ?></td>
-        </tr>
-        <tr>
-            <th bgcolor="#024a75" style="color:white; font-size:12; padding:5px !important">Tagihan</th>
-            <td style="text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totaltagihan, '0', '', '.');  ?></td>
-        </tr>
-        <tr>
-            <th bgcolor="#024a75" style="color:white; font-size:12; padding:5px !important">Giro</th>
-            <td style="text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totalgiro, '0', '', '.');  ?></td>
-        </tr>
-        <tr>
-            <th bgcolor="#024a75" style="color:white; font-size:12; padding:5px !important">Transfer</th>
-            <td style="text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totaltransfer, '0', '', '.');  ?></td>
-        </tr>
-        <tr>
-            <th bgcolor="#024a75" style="color:white; font-size:12; padding:5px !important">Ganti Giro Ke Cash</th>
-            <td style=" background-color:red; color:white; text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totalgirotocash, '0', '', '.');  ?></td>
-        </tr>
-        <tr>
-            <th bgcolor="#024a75" style="color:white; font-size:12; padding:5px !important">Ganti Giro Ke Transfer</th>
-            <td style=" background-color:red; color:white; text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totalgirototransfer, '0', '', '.');  ?></td>
-        </tr>
-        <tr>
-            <th bgcolor="#024a75" style="color:white; font-size:12; padding:5px !important">TOTAL</th>
-            <td style="background-color:green; color:white; text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totalsummary, '0', '', '.');  ?></td>
-        </tr>
-
-    </table>
-
     <b style="font-size:14px; font-family:Calibri">
         PEMBAYARAN VOUCHER<br>
         PERIODE <?php echo DateToIndo2($dari) . " s/d " . DateToIndo2($sampai); ?><br>
@@ -349,5 +312,43 @@
                 </tr>
             </tbody>
     </table>
+    <h4>SUMMARY <br> TANGGAL <?php echo DateToIndo2($dari); ?> s/d <?php echo $sampai; ?><br></h4>
+    <?php
+                    $totalsummary = $totaltunai + $totaltagihan + $totalgiro + $totaltransfer - $totalgirotocash - $totalgirototransfer;
+                    ?>
+    <table class="datatable3">
+
+        <tr>
+            <th bgcolor="#024a75" style="color:white; font-size:12; padding:5px !important">Penjualan Tunai</th>
+            <td style="text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totaltunai, '0', '', '.');  ?></td>
+        </tr>
+        <tr>
+            <th bgcolor="#024a75" style="color:white; font-size:12; padding:5px !important">Tagihan</th>
+            <td style="text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totaltagihan, '0', '', '.');  ?></td>
+        </tr>
+        <tr>
+            <th bgcolor="#024a75" style="color:white; font-size:12; padding:5px !important">Giro</th>
+            <td style="text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totalgiro, '0', '', '.');  ?></td>
+        </tr>
+        <tr>
+            <th bgcolor="#024a75" style="color:white; font-size:12; padding:5px !important">Transfer</th>
+            <td style="text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totaltransfer, '0', '', '.');  ?></td>
+        </tr>
+        <tr>
+            <th bgcolor="#024a75" style="color:white; font-size:12; padding:5px !important">Ganti Giro Ke Cash</th>
+            <td style=" background-color:red; color:white; text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totalgirotocash, '0', '', '.');  ?></td>
+        </tr>
+        <tr>
+            <th bgcolor="#024a75" style="color:white; font-size:12; padding:5px !important">Ganti Giro Ke Transfer</th>
+            <td style=" background-color:red; color:white; text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totalgirototransfer, '0', '', '.');  ?></td>
+        </tr>
+        <tr>
+            <th bgcolor="#024a75" style="color:white; font-size:12; padding:5px !important">TOTAL</th>
+            <td style="background-color:green; color:white; text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totalsummary, '0', '', '.');  ?></td>
+        </tr>
+
+    </table>
+
+
 </body>
 </html>
