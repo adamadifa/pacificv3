@@ -7,6 +7,7 @@ use App\Models\Cabang;
 use App\Models\Detailpenjualan;
 use App\Models\Detailretur;
 use App\Models\Harga;
+use App\Models\Pembayaran;
 use App\Models\Penjualan;
 use App\Models\Retur;
 use App\Models\Salesman;
@@ -5529,35 +5530,41 @@ class PenjualanController extends Controller
         $tahun = $request->tahun;
         $dari = $tahun . "-" . $bulan . "-01";
         $sampai = date("Y-m-t", strtotime($dari));
-        $kasbesar = DB::table('historibayar')
-            ->selectRaw("karyawan.kode_cabang,nama_cabang,SUM(IF(status_bayar='voucher',bayar,0)) as voucher,SUM(IF(status_bayar IS NULL,bayar,0)) as cashin")
-            ->join('karyawan', 'historibayar.id_karyawan', '=', 'karyawan.id_karyawan')
-            ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
-            ->whereBetween('tglbayar', [$dari, $sampai])
-            ->where('karyawan.kode_cabang', '!=', 'TSM')
-            ->groupByRaw('karyawan.kode_cabang,nama_cabang')
-            ->get();
-        $kasbesartsm = DB::table('historibayar')
-            ->selectRaw("karyawan.kode_cabang,nama_cabang,SUM(IF(status_bayar='voucher',bayar,0)) as voucher,SUM(IF(status_bayar IS NULL,bayar,0)) as cashin")
-            ->join('karyawan', 'historibayar.id_karyawan', '=', 'karyawan.id_karyawan')
-            ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
-            ->whereBetween('tglbayar', [$dari, $sampai])
-            ->where('karyawan.kode_cabang', 'TSM')
-            ->whereNotIn('historibayar.id_karyawan', $salesgarut)
-            ->groupByRaw('karyawan.kode_cabang,nama_cabang')
-            ->first();
+        $query = Pembayaran::query();
+        $query->selectRaw("karyawan.kode_cabang,nama_cabang,SUM(IF(status_bayar='voucher',bayar,0)) as voucher,SUM(IF(status_bayar IS NULL,bayar,0)) as cashin");
+        $query->join('karyawan', 'historibayar.id_karyawan', '=', 'karyawan.id_karyawan');
+        $query->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang');
+        $query->whereBetween('tglbayar', [$dari, $sampai]);
+        if ($bulan < 9 && $tahun <= 2022) {
+            $query->where('karyawan.kode_cabang', '!=', 'TSM');
+        }
+        $query->groupByRaw('karyawan.kode_cabang,nama_cabang');
+        $kasbesar = $query->get();
 
-        $kasbesargrt = DB::table('historibayar')
-            ->selectRaw("karyawan.kode_cabang,nama_cabang,SUM(IF(status_bayar='voucher',bayar,0)) as voucher,SUM(IF(status_bayar IS NULL,bayar,0)) as cashin")
-            ->join('karyawan', 'historibayar.id_karyawan', '=', 'karyawan.id_karyawan')
-            ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
-            ->whereBetween('tglbayar', [$dari, $sampai])
-            ->where('karyawan.kode_cabang', 'TSM')
-            ->whereIn('historibayar.id_karyawan', $salesgarut)
-            ->groupByRaw('karyawan.kode_cabang,nama_cabang')
-            ->first();
 
-        return view('penjualan.dashboard.rekapkasbesardashboard', compact('kasbesar', 'kasbesartsm', 'kasbesargrt'));
+        if ($bulan < 9 && $tahun <= 2022) {
+            $kasbesartsm = DB::table('historibayar')
+                ->selectRaw("karyawan.kode_cabang,nama_cabang,SUM(IF(status_bayar='voucher',bayar,0)) as voucher,SUM(IF(status_bayar IS NULL,bayar,0)) as cashin")
+                ->join('karyawan', 'historibayar.id_karyawan', '=', 'karyawan.id_karyawan')
+                ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
+                ->whereBetween('tglbayar', [$dari, $sampai])
+                ->where('karyawan.kode_cabang', 'TSM')
+                ->whereNotIn('historibayar.id_karyawan', $salesgarut)
+                ->groupByRaw('karyawan.kode_cabang,nama_cabang')
+                ->first();
+
+            $kasbesargrt = DB::table('historibayar')
+                ->selectRaw("karyawan.kode_cabang,nama_cabang,SUM(IF(status_bayar='voucher',bayar,0)) as voucher,SUM(IF(status_bayar IS NULL,bayar,0)) as cashin")
+                ->join('karyawan', 'historibayar.id_karyawan', '=', 'karyawan.id_karyawan')
+                ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
+                ->whereBetween('tglbayar', [$dari, $sampai])
+                ->where('karyawan.kode_cabang', 'TSM')
+                ->whereIn('historibayar.id_karyawan', $salesgarut)
+                ->groupByRaw('karyawan.kode_cabang,nama_cabang')
+                ->first();
+        }
+
+        return view('penjualan.dashboard.rekapkasbesardashboard', compact('kasbesar', 'kasbesartsm', 'kasbesargrt', 'bulan', 'tahun'));
     }
 
 

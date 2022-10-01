@@ -25,7 +25,11 @@
                     <td style="text-align:right; font-weight:bold"><?php echo rupiah($r->voucher); ?></td>
                     <td style="text-align:right; font-weight:bold"><?php echo rupiah($r->voucher + $r->cashin); ?></td>
                 </tr>
-                <?php } ?>
+                <?php }
+                if($bulan < 9 && $tahun <=2022){
+                ?>
+
+
                 <tr style="font-size:12">
                     <td style="font-weight:bold"><?php echo strtoUpper($kasbesartsm->nama_cabang); ?></td>
                     <td style="text-align:right; font-weight:bold"><?php echo rupiah($kasbesartsm->cashin); ?></td>
@@ -38,7 +42,11 @@
                     <td style="text-align:right; font-weight:bold"><?php echo rupiah($kasbesargrt->voucher); ?></td>
                     <td style="text-align:right; font-weight:bold"><?php echo rupiah($kasbesargrt->voucher + $kasbesargrt->cashin); ?></td>
                 </tr>
+                <?php } ?>
             </tbody>
+            <?php
+            if($bulan < 9 && $tahun <=2022){
+                ?>
             <tfoot class="thead-dark">
                 <?php
                     $totalcashintsm = $kasbesartsm->cashin + $kasbesargrt->cashin;
@@ -52,6 +60,7 @@
                     <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalvoucher + $totalcashin + $totaltsm); ?></th>
                 </tr>
             </tfoot>
+            <?php } ?>
         </table>
     </div>
 </div>
