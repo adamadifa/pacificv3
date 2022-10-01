@@ -62,11 +62,13 @@
         <td style="text-align:right; font-weight:bold"><?php echo rupiah($totalnetto - $totalnettopending); ?></td>
     </tr>
 
-    <?php } ?>
+    <?php }
+     if ($bulan < 9 && $tahun <= 2022) {
+    ?>
     <tr style="font-size:12">
         <?php
-            $totalnettotsm = $rekappenjualantsm->totalbruto - $rekappenjualantsm->totalretur - $rekappenjualantsm->totalpenyharga - $rekappenjualantsm->totalpotongan - $rekappenjualantsm->totalpotistimewa;
-            $totalnettopendingtsm  = $rekappenjualantsm->totalbrutopending - $rekappenjualantsm->totalreturpending - $rekappenjualantsm->totalpenyhargapending - $rekappenjualantsm->totalpotonganpending - $rekappenjualantsm->totalpotistimewapending;
+            $totalnettotsm = $rekappenjualantsm != null ? $rekappenjualantsm->totalbruto - $rekappenjualantsm->totalretur - $rekappenjualantsm->totalpenyharga - $rekappenjualantsm->totalpotongan - $rekappenjualantsm->totalpotistimewa : 0;
+            $totalnettopendingtsm  = $rekappenjualantsm != null ? $rekappenjualantsm->totalbrutopending - $rekappenjualantsm->totalreturpending - $rekappenjualantsm->totalpenyhargapending - $rekappenjualantsm->totalpotonganpending - $rekappenjualantsm->totalpotistimewapending : 0;
         ?>
         <td class="cabang" style="font-weight:bold"><?php echo strtoUpper($rekappenjualantsm->nama_cabang); ?></td>
         <td style="text-align:right; font-weight:"><?php echo rupiah($rekappenjualantsm->totalbruto); ?></td>
@@ -127,6 +129,7 @@
             <th style="text-align:right; font-weight:bold"><?php echo rupiah(($grandnetto + $totalnettotsm + $totalnettogrt) - ($grandnettopending + $totalnettopendingtsm + $totalnettopendinggrt)); ?></th>
         </tr>
     </tfoot>
+    <?php } ?>
 </table>
 <script>
     $(function() {

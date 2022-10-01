@@ -5391,8 +5391,8 @@ class PenjualanController extends Controller
         $tahun =  $request->tahun;
         $dari = $tahun . "-" . $bulan . "-01";
         $sampai = date("Y-m-t", strtotime($dari));
-        $rekappenjualancabang = DB::table('penjualan')
-            ->selectRaw("
+        $query = Penjualan::query();
+        $query->selectRaw("
             karyawan.kode_cabang AS kode_cabang,nama_cabang,
             (ifnull( SUM( penjualan.subtotal ), 0 ) ) AS totalbruto,
 			ifnull(SUM(IF(penjualan.`status`=1,penjualan.subtotal,0)),0) as totalbrutopending,
@@ -5408,11 +5408,11 @@ class PenjualanController extends Controller
 
 			ifnull( SUM( penjualan.potistimewa ), 0 ) AS totalpotistimewa,
 			ifnull(SUM(IF(penjualan.`status`=1,penjualan.potistimewa,0)),0) as totalpotistimewapending
-            ")
-            ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
-            ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
-            ->leftJoin(
-                DB::raw("(
+            ");
+        $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $query->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang');
+        $query->leftJoin(
+            DB::raw("(
                     SELECT karyawan.kode_cabang, SUM(retur.total )AS totalretur ,
                     SUM(IF(penjualan.`status`=1,retur.total,0)) as totalreturpending
                     FROM retur
@@ -5421,17 +5421,21 @@ class PenjualanController extends Controller
                     WHERE tglretur BETWEEN '$dari' AND '$sampai'
                     GROUP BY karyawan.kode_cabang
                 ) retur"),
-                function ($join) {
-                    $join->on('karyawan.kode_cabang', '=', 'retur.kode_cabang');
-                }
-            )
-            ->whereNotIn('karyawan.kode_cabang', $exclude)
-            ->whereBetween('tgltransaksi', [$dari, $sampai])
-            ->groupByRaw('karyawan.kode_cabang,nama_cabang,totalretur,totalreturpending')
-            ->get();
+            function ($join) {
+                $join->on('karyawan.kode_cabang', '=', 'retur.kode_cabang');
+            }
+        );
 
-        $rekappenjualantsm = DB::table('penjualan')
-            ->selectRaw("
+        if ($bulan < 9 && $tahun <= 2022) {
+            $query->whereNotIn('karyawan.kode_cabang', $exclude);
+        }
+        $query->whereBetween('tgltransaksi', [$dari, $sampai]);
+        $query->groupByRaw('karyawan.kode_cabang,nama_cabang,totalretur,totalreturpending');
+        $rekappenjualancabang = $query->get();
+
+        if ($bulan < 9 && $tahun <= 2022) {
+            $rekappenjualantsm = DB::table('penjualan')
+                ->selectRaw("
             karyawan.kode_cabang AS kode_cabang,nama_cabang,
             (ifnull( SUM( penjualan.subtotal ), 0 ) ) AS totalbruto,
 			ifnull(SUM(IF(penjualan.`status`=1,penjualan.subtotal,0)),0) as totalbrutopending,
@@ -5448,10 +5452,10 @@ class PenjualanController extends Controller
 			ifnull( SUM( penjualan.potistimewa ), 0 ) AS totalpotistimewa,
 			ifnull(SUM(IF(penjualan.`status`=1,penjualan.potistimewa,0)),0) as totalpotistimewapending
             ")
-            ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
-            ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
-            ->leftJoin(
-                DB::raw("(
+                ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+                ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
+                ->leftJoin(
+                    DB::raw("(
                     SELECT karyawan.kode_cabang, SUM(retur.total )AS totalretur ,
                     SUM(IF(penjualan.`status`=1,retur.total,0)) as totalreturpending
                     FROM retur
@@ -5461,18 +5465,18 @@ class PenjualanController extends Controller
                     AND penjualan.id_karyawan NOT IN ('STSM05', 'STSM09', 'STSM11')
                     GROUP BY karyawan.kode_cabang
                 ) retur"),
-                function ($join) {
-                    $join->on('karyawan.kode_cabang', '=', 'retur.kode_cabang');
-                }
-            )
-            ->whereBetween('tgltransaksi', [$dari, $sampai])
-            ->where('karyawan.kode_cabang', 'TSM')
-            ->whereNotIn('karyawan.id_karyawan', $salesgarut)
-            ->groupByRaw('karyawan.kode_cabang,nama_cabang,totalretur,totalreturpending')
-            ->first();
+                    function ($join) {
+                        $join->on('karyawan.kode_cabang', '=', 'retur.kode_cabang');
+                    }
+                )
+                ->whereBetween('tgltransaksi', [$dari, $sampai])
+                ->where('karyawan.kode_cabang', 'TSM')
+                ->whereNotIn('karyawan.id_karyawan', $salesgarut)
+                ->groupByRaw('karyawan.kode_cabang,nama_cabang,totalretur,totalreturpending')
+                ->first();
 
-        $rekappenjualangrt = DB::table('penjualan')
-            ->selectRaw("
+            $rekappenjualangrt = DB::table('penjualan')
+                ->selectRaw("
             karyawan.kode_cabang AS kode_cabang,nama_cabang,
             (ifnull( SUM( penjualan.subtotal ), 0 ) ) AS totalbruto,
 			ifnull(SUM(IF(penjualan.`status`=1,penjualan.subtotal,0)),0) as totalbrutopending,
@@ -5489,10 +5493,10 @@ class PenjualanController extends Controller
 			ifnull( SUM( penjualan.potistimewa ), 0 ) AS totalpotistimewa,
 			ifnull(SUM(IF(penjualan.`status`=1,penjualan.potistimewa,0)),0) as totalpotistimewapending
             ")
-            ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
-            ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
-            ->leftJoin(
-                DB::raw("(
+                ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+                ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
+                ->leftJoin(
+                    DB::raw("(
                     SELECT karyawan.kode_cabang, SUM(retur.total )AS totalretur ,
                     SUM(IF(penjualan.`status`=1,retur.total,0)) as totalreturpending
                     FROM retur
@@ -5502,16 +5506,20 @@ class PenjualanController extends Controller
                     AND penjualan.id_karyawan  IN ('STSM05', 'STSM09', 'STSM11')
                     GROUP BY karyawan.kode_cabang
                 ) retur"),
-                function ($join) {
-                    $join->on('karyawan.kode_cabang', '=', 'retur.kode_cabang');
-                }
-            )
-            ->whereBetween('tgltransaksi', [$dari, $sampai])
-            ->where('karyawan.kode_cabang', 'TSM')
-            ->whereIn('karyawan.id_karyawan', $salesgarut)
-            ->groupByRaw('karyawan.kode_cabang,nama_cabang,totalretur,totalreturpending')
-            ->first();
-        return view('penjualan.dashboard.rekappenjualandashboard', compact('rekappenjualancabang', 'dari', 'sampai', 'rekappenjualantsm', 'rekappenjualangrt'));
+                    function ($join) {
+                        $join->on('karyawan.kode_cabang', '=', 'retur.kode_cabang');
+                    }
+                )
+                ->whereBetween('tgltransaksi', [$dari, $sampai])
+                ->where('karyawan.kode_cabang', 'TSM')
+                ->whereIn('karyawan.id_karyawan', $salesgarut)
+                ->groupByRaw('karyawan.kode_cabang,nama_cabang,totalretur,totalreturpending')
+                ->first();
+        } else {
+            $rekappenjualantsm = null;
+            $rekappenjualangrt = null;
+        }
+        return view('penjualan.dashboard.rekappenjualandashboard', compact('rekappenjualancabang', 'dari', 'sampai', 'rekappenjualantsm', 'rekappenjualangrt', 'bulan', 'tahun'));
     }
 
     public function rekapkasbesardashboard(Request $request)
