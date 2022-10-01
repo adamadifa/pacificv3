@@ -115,7 +115,11 @@
         </td>
         <td style="text-align:right; font-weight:bold">{{ rupiah($totalnettogrt - $totalnettopendinggrt ) }}</td>
     </tr>
+    <?php } ?>
     </tbody>
+    <?php
+     if ($bulan < 9 && $tahun <= 2022) {
+    ?>
     <tfoot class="thead-dark">
         <tr>
             <th style="font-weight:bold">TOTAL</th>
@@ -129,7 +133,22 @@
             <th style="text-align:right; font-weight:bold"><?php echo rupiah(($grandnetto + $totalnettotsm + $totalnettogrt) - ($grandnettopending + $totalnettopendingtsm + $totalnettopendinggrt)); ?></th>
         </tr>
     </tfoot>
+    <?php }else{ ?>
+    <tfoot class="thead-dark">
+        <tr>
+            <th style="font-weight:bold">TOTAL</th>
+            <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalbruto); ?></th>
+            <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalretur); ?></th>
+            <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalpenyharg ); ?></th>
+            <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalpotongan); ?></th>
+            <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalpotistimewa); ?></th>
+            <th style="text-align:right; font-weight:bold"><?php echo rupiah($grandnetto); ?></th>
+            <th style="text-align:right; font-weight:bold"><?php echo rupiah($grandnettopending); ?></th>
+            <th style="text-align:right; font-weight:bold"><?php echo rupiah(($grandnetto) - ($grandnettopending)); ?></th>
+        </tr>
+    </tfoot>
     <?php } ?>
+
 </table>
 <script>
     $(function() {

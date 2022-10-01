@@ -60,6 +60,13 @@
                     <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalvoucher + $totalcashin + $totaltsm); ?></th>
                 </tr>
             </tfoot>
+            <?php }else{ ?>
+            <tr>
+                <th style="font-weight:bold">TOTAL</th>
+                <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalcashin); ?></th>
+                <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalvoucher); ?></th>
+                <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalvoucher + $totalcashin); ?></th>
+            </tr>
             <?php } ?>
         </table>
     </div>
