@@ -1424,7 +1424,7 @@ class TargetkomisiController extends Controller
                 $join->on('cabang.kode_cabang', '=', 'penj.cabangbarunew');
             }
         );
-        $query->where('cabang.kode_cabang', '!=', 'GRT');
+        // $query->where('cabang.kode_cabang', '!=', 'GRT');
         if ($cbg != "PCF") {
             $query->where('cabang.kode_cabang', $kode_cabang);
         }
