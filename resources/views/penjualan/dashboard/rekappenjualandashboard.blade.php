@@ -139,7 +139,7 @@
             <th style="font-weight:bold">TOTAL</th>
             <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalbruto); ?></th>
             <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalretur); ?></th>
-            <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalpenyharg ); ?></th>
+            <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalpenyharga ); ?></th>
             <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalpotongan); ?></th>
             <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalpotistimewa); ?></th>
             <th style="text-align:right; font-weight:bold"><?php echo rupiah($grandnetto); ?></th>
