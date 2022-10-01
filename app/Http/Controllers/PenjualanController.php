@@ -5562,6 +5562,9 @@ class PenjualanController extends Controller
                 ->whereIn('historibayar.id_karyawan', $salesgarut)
                 ->groupByRaw('karyawan.kode_cabang,nama_cabang')
                 ->first();
+        } else {
+            $kasbesartsm = null;
+            $kasbesargrt = null;
         }
 
         return view('penjualan.dashboard.rekapkasbesardashboard', compact('kasbesar', 'kasbesartsm', 'kasbesargrt', 'bulan', 'tahun'));
