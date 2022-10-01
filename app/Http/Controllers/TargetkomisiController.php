@@ -1416,7 +1416,7 @@ class TargetkomisiController extends Controller
                     WHERE tglbayar <= '$sampai'
                     GROUP BY no_fak_penj
                     ) hblalu ON (penjualan.no_fak_penj = hblalu.no_fak_penj)
-                WHERE tgltransaksi <= '$sampai' AND (ifnull(penjualan.total,0) - (ifnull(totalpf_last,0)-ifnull(totalgb_last,0)))-ifnull(totalbayar,0) !=0 AND datediff('$sampai', penjualan.tgltransaksi) > 15
+                WHERE tgltransaksi <= '$sampai' AND (ifnull(penjualan.total,0) - (ifnull(totalpf_last,0)-ifnull(totalgb_last,0)))-ifnull(totalbayar,0) !=0 AND datediff('$sampai', penjualan.tgltransaksi) > 15 AND penjualan.id_karyawan NOT IN ('SGRT01','SGRT02')
                 AND penjualan.jenistransaksi ='kredit'
                 GROUP BY cabangbarunew
             ) penj"),
@@ -1424,7 +1424,9 @@ class TargetkomisiController extends Controller
                 $join->on('cabang.kode_cabang', '=', 'penj.cabangbarunew');
             }
         );
-        // $query->where('cabang.kode_cabang', '!=', 'GRT');
+        if ($bulan < 9 and $tahun <= 2022) {
+            $query->where('cabang.kode_cabang', '!=', 'GRT');
+        }
         if ($cbg != "PCF") {
             $query->where('cabang.kode_cabang', $kode_cabang);
         }
