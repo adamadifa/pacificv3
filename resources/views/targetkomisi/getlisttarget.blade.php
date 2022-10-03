@@ -167,6 +167,11 @@
         }
 
         nonaktif();
+
+        $(".settargetproduksales").on('change', function() {
+            loadlisttarget();
+
+        });
         $(".settargetproduksales").on('keyup', function() {
             var id_karyawan = $(this).attr("idkaryawan");
             var kode_produk = $(this).attr("kodeproduk");
@@ -184,7 +189,7 @@
                 }
                 , cache: false
                 , success: function(respond) {
-                    loadlisttarget();
+
                 }
             });
 
