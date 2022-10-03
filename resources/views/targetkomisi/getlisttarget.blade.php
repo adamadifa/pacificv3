@@ -148,7 +148,23 @@
         }
 
 
-
+        function loadlisttarget() {
+            var kode_target = $("#kode_target").val();
+            var kode_cabang = $("#kode_cabang").val();
+            $.ajax({
+                type: 'POST'
+                , url: '/targetkomisi/getlisttarget'
+                , data: {
+                    _token: "{{csrf_token()}}"
+                    , kode_target: kode_target
+                    , kode_cabang: kode_cabang
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loadlisttarget").html(respond);
+                }
+            });
+        }
 
         nonaktif();
         $(".settargetproduksales").on('keyup', function() {
@@ -168,7 +184,7 @@
                 }
                 , cache: false
                 , success: function(respond) {
-
+                    loadlisttarget();
                 }
             });
 
