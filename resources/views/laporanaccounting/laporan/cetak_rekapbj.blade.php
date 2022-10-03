@@ -97,7 +97,7 @@
                     <tr>
                         <th rowspan="3" class="fixed-side" scope="col" style="background-color:#024a75 ;">NO</th>
                         <th rowspan="3" class="fixed-side" scope="col" style="background-color:#024a75 ;">PRODUK</th>
-                        <th colspan="39" bgcolor="#024a75">CABANG</th>
+                        <th colspan="42" bgcolor="#024a75">CABANG</th>
                     </tr>
                     <tr style="background-color: #03b058;">
                         <th colspan="3">TASIKMALAYA</th>
@@ -111,10 +111,14 @@
                         <th colspan="3">SEMARANG</th>
                         <th colspan="3">KLATEN</th>
                         <th colspan="3">GARUT</th>
+                        <th colspan="3">PWK</th>
                         <th colspan="3">GD PUSAT</th>
                         <th colspan="3">JUMLAH</th>
                     </tr>
                     <tr style="background-color: #03b058;">
+                        <th>QTY</th>
+                        <th>HARGA</th>
+                        <th>JUMLAH</th>
                         <th>QTY</th>
                         <th>HARGA</th>
                         <th>JUMLAH</th>
@@ -168,6 +172,7 @@
               $totalsmr = 0;
               $totalklt = 0;
               $totalgrt = 0;
+              $totalpwk = 0;
               $totalpst = 0;
               $totalgdpst = 0;
               $grandtotaljml = 0;
@@ -183,6 +188,7 @@
                 $qtyklt = ($d->sa_klt + $d->mutasi_klt) / $d->isipcsdus;
                 $qtypst = ($d->sa_pst + $d->mutasi_pst) / $d->isipcsdus;
                 $qtygrt = ($d->sa_grt + $d->mutasi_grt) / $d->isipcsdus;
+                $qtypwk = ($d->sa_pwk + $d->mutasi_pwk) / $d->isipcsdus;
                 $harga = ROUND($d->harga_hpp);
 
                 $jmltsm = ROUND(ROUND($qtytsm, 2) * ROUND($d->harga_tsm));
@@ -196,15 +202,16 @@
                 $jmlklt = ROUND(ROUND($qtyklt, 2) * ROUND($d->harga_klt));
                 $jmlpst = ROUND(ROUND($qtypst, 2) * ROUND($d->harga_pst));
                 $jmlgrt = ROUND(ROUND($qtygrt, 2) * ROUND($d->harga_grt));
+                $jmlpwk = ROUND(ROUND($qtypwk, 2) * ROUND($d->harga_pwk));
 
                 $sa_gdpusat = $d->saldoawal_gd + ($d->jmlfsthp_gd + $d->jmlrepack_gd + $d->jmllainlain_in_gd) - ($d->jmlsuratjalan_gd + $d->jmlreject_gd + $d->jmllainlain_out_gd);
                 $jmlgdpst = $sa_gdpusat * $d->harga_kirim_cabang;
 
 
                 $totalqty = ROUND($qtytsm) + ROUND($qtybdg, 2) + ROUND($qtyskb, 2) + ROUND($qtybgr, 2) + ROUND($qtytgl, 2) + ROUND($qtypwt, 2) + ROUND($qtysby, 2) + ROUND($qtysmr, 2) + ROUND($qtyklt, 2) + ROUND($qtypst, 2)
-                  + ROUND($qtygrt, 2)  + $sa_gdpusat;
+                  + ROUND($qtygrt, 2) + ROUND($qtypwk, 2)  + $sa_gdpusat;
 
-                $totaljml = $jmltsm + $jmlbdg + $jmlskb + $jmlbgr + $jmltgl + $jmlpwt + $jmlsby + $jmlsmr + $jmlklt + $jmlpst + $jmlgdpst + $jmlgrt;
+                $totaljml = $jmltsm + $jmlbdg + $jmlskb + $jmlbgr + $jmltgl + $jmlpwt + $jmlsby + $jmlsmr + $jmlklt + $jmlpst + $jmlgdpst + $jmlgrt + $jmlpwk;
                 if ($totalqty != 0) {
                   $hargatotal = $totaljml / $totalqty;
                 } else {
@@ -223,6 +230,7 @@
                 $totalklt += $jmlklt;
                 $totalpst += $jmlpst;
                 $totalgrt += $jmlgrt;
+                $totalpwk += $jmlpwk;
                 $totalgdpst += $jmlgdpst;
                 $grandtotaljml += $totaljml;
               ?>
@@ -351,6 +359,19 @@
                       echo number_format($jmlgrt, '0', ',', '.');
                     } ?>
                         </td>
+                        </td>
+
+                        <td align="right"><?php echo number_format($qtypwk, '2', ',', '.'); ?></td>
+                        <td align="right">
+                            <?php if (!empty($d->harga_pwk)) {
+                  echo number_format($d->harga_pwk, '0', ',', '.');
+                } ?>
+                        </td>
+                        <td align="right">
+                            <?php if (!empty($jmlpwk)) {
+                  echo number_format($jmlpwk, '0', ',', '.');
+                } ?>
+                        </td>
                         <td align="right"><?php echo number_format($sa_gdpusat, '2', ',', '.'); ?></td>
                         <td align="right">
                             <?php if (!empty($d->harga_kirim_cabang)) {
@@ -453,6 +474,13 @@
                         <td align="right">
                             <?php if (!empty($totalgrt)) {
                     echo number_format($totalgrt, '0', ',', '.');
+                  } ?>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td align="right">
+                            <?php if (!empty($totalpwk)) {
+                    echo number_format($totalpwk, '0', ',', '.');
                   } ?>
                         </td>
                         <td></td>
