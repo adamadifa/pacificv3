@@ -10,7 +10,7 @@
         $bgcolor = "";
         }
         @endphp
-        <input type="text" style="background-color:{{$bgcolor}}" class="form-control text-center settargetproduksales" value="{{$d->ab}}" idkaryawan="{{$d->id_karyawan}}" kodeproduk="AB">
+        <input type="number" style="background-color:{{$bgcolor}}" class="form-control text-center settargetproduksales" value="{{$d->ab}}" idkaryawan="{{$d->id_karyawan}}" kodeproduk="AB">
     </td>
     <td style="width:7%">
         @php
@@ -21,7 +21,7 @@
         }
         @endphp
 
-        <input type="text" style="background-color:{{$bgcolor}}" class="form-control text-center settargetproduksales" value="{{$d->ar}}" idkaryawan="{{$d->id_karyawan}}" kodeproduk="AR">
+        <input type="number" style="background-color:{{$bgcolor}}" class="form-control text-center settargetproduksales" value="{{$d->ar}}" idkaryawan="{{$d->id_karyawan}}" kodeproduk="AR">
     </td>
     <td style="width:7%">
         @php
@@ -32,7 +32,7 @@
         }
         @endphp
 
-        <input type="text" style="background-color:{{$bgcolor}}" class="form-control text-center settargetproduksales" value="{{$d->ase}}" idkaryawan="{{$d->id_karyawan}}" kodeproduk="AS">
+        <input type="number" style="background-color:{{$bgcolor}}" class="form-control text-center settargetproduksales" value="{{$d->ase}}" idkaryawan="{{$d->id_karyawan}}" kodeproduk="AS">
     </td>
     <td style="width:7%">
         @php
@@ -43,7 +43,7 @@
         }
         @endphp
 
-        <input type="text" style="background-color:{{$bgcolor}}" class="form-control text-center settargetproduksales" value="{{$d->bb}}" idkaryawan="{{$d->id_karyawan}}" kodeproduk="BB">
+        <input type="number" style="background-color:{{$bgcolor}}" class="form-control text-center settargetproduksales" value="{{$d->bb}}" idkaryawan="{{$d->id_karyawan}}" kodeproduk="BB">
     </td>
     <td style="width:7%">
         @php
@@ -54,7 +54,7 @@
         }
         @endphp
 
-        <input type="text" style="background-color:{{$bgcolor}}" class="form-control text-center settargetproduksales" value="{{$d->cg}}" idkaryawan="{{$d->id_karyawan}}" kodeproduk="CG">
+        <input type="number" style="background-color:{{$bgcolor}}" class="form-control text-center settargetproduksales" value="{{$d->cg}}" idkaryawan="{{$d->id_karyawan}}" kodeproduk="CG">
     </td>
     <td style="width:7%">
         @php
@@ -65,7 +65,7 @@
         }
         @endphp
 
-        <input type="text" style="background-color:{{$bgcolor}}" class="form-control text-center settargetproduksales" value="{{$d->cgg}}" idkaryawan="{{$d->id_karyawan}}" kodeproduk="CGG">
+        <input type="number" style="background-color:{{$bgcolor}}" class="form-control text-center settargetproduksales" value="{{$d->cgg}}" idkaryawan="{{$d->id_karyawan}}" kodeproduk="CGG">
     </td>
     <td style="width:7%">
         @php
@@ -76,7 +76,7 @@
         }
         @endphp
 
-        <input type="text" style="background-color:{{$bgcolor}}" class="form-control text-center settargetproduksales" value="{{$d->dep}}" idkaryawan="{{$d->id_karyawan}}" kodeproduk="DEP">
+        <input type="number" style="background-color:{{$bgcolor}}" class="form-control text-center settargetproduksales" value="{{$d->dep}}" idkaryawan="{{$d->id_karyawan}}" kodeproduk="DEP">
     </td>
     <td style="width:7%">
         @php
@@ -87,7 +87,7 @@
         }
         @endphp
 
-        <input type="text" style="background-color:{{$bgcolor}}" class="form-control text-center settargetproduksales" value="{{$d->ds}}" idkaryawan="{{$d->id_karyawan}}" kodeproduk="DS">
+        <input type="number" style="background-color:{{$bgcolor}}" class="form-control text-center settargetproduksales" value="{{$d->ds}}" idkaryawan="{{$d->id_karyawan}}" kodeproduk="DS">
     </td>
     <td style="width:7%">
         @php
@@ -98,7 +98,7 @@
         }
         @endphp
 
-        <input type="text" style="background-color:{{$bgcolor}}" class="form-control text-center settargetproduksales" value="{{$d->sp}}" idkaryawan="{{$d->id_karyawan}}" kodeproduk="SP">
+        <input type="number" style="background-color:{{$bgcolor}}" class="form-control text-center settargetproduksales" value="{{$d->sp}}" idkaryawan="{{$d->id_karyawan}}" kodeproduk="SP">
     </td>
     <td style="width:7%">
         @php
@@ -109,7 +109,7 @@
         }
         @endphp
 
-        <input type="text" style="background-color:{{$bgcolor}}" class="form-control text-center settargetproduksales" value="{{$d->cg5}}" idkaryawan="{{$d->id_karyawan}}" kodeproduk="CG5">
+        <input type="number" style="background-color:{{$bgcolor}}" class="form-control text-center settargetproduksales" value="{{$d->cg5}}" idkaryawan="{{$d->id_karyawan}}" kodeproduk="CG5">
     </td>
     <td style="width:7%">
         @php
@@ -120,7 +120,7 @@
         }
         @endphp
 
-        <input type="text" style="background-color:{{$bgcolor}}" class="form-control text-center settargetproduksales" value="{{$d->sc}}" idkaryawan="{{$d->id_karyawan}}" kodeproduk="SC">
+        <input type="number" style="background-color:{{$bgcolor}}" class="form-control text-center settargetproduksales" value="{{$d->sc}}" idkaryawan="{{$d->id_karyawan}}" kodeproduk="SC">
     </td>
     <td style="width:7%">
         @php
@@ -131,7 +131,7 @@
         }
         @endphp
 
-        <input type="text" style="background-color:{{$bgcolor}}" class="form-control text-center settargetproduksales" value="{{$d->sp8}}" idkaryawan="{{$d->id_karyawan}}" kodeproduk="SP8">
+        <input type="number" style="background-color:{{$bgcolor}}" class="form-control text-center settargetproduksales" value="{{$d->sp8}}" idkaryawan="{{$d->id_karyawan}}" kodeproduk="SP8">
     </td>
 
 </tr>
