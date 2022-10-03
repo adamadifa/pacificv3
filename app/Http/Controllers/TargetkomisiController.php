@@ -71,6 +71,8 @@ class TargetkomisiController extends Controller
         } else {
             $query->where('tahun', $tahunini);
         }
+
+        $query->orderBy('bulan');
         $target = $query->get();
 
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
