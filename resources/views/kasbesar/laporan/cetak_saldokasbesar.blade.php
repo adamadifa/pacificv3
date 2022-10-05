@@ -81,7 +81,7 @@
                 <th style="width:8%">PENUKARAN GIRO JADI TRANSFER</th>
             </tr>
             <tr style=" background-color:white; color:black; font-size:12;">
-                <th colspan="11">SALDO AWAL</th>
+                <th colspan="12">SALDO AWAL</th>
                 <th>
                     @php
                     if($saldokasbesar != null){
