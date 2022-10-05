@@ -48,7 +48,7 @@
     <table class="datatable3" border="1" style="width:160%">
         <thead style=" background-color:#31869b; color:white; font-size:12;">
             <tr style=" background-color:orange; color:white; font-size:12;">
-                <th colspan="5">PENERIMAAN LHP</th>
+                <th colspan="6">PENERIMAAN LHP</th>
                 <th>TOTAL</th>
                 <th colspan="4">SETORAN KE BANK</th>
                 <th>TOTAL</th>
@@ -62,6 +62,7 @@
                 <th>LOGAM</th>
                 <th>GIRO</th>
                 <th>TRANSFER</th>
+                <th>LAINNYA</th>
                 <th>PENERIMAAN</th>
                 <th>UANG KERTAS</th>
                 <th>LOGAM</th>
@@ -111,10 +112,12 @@
             $totallhplogam = 0;
             $totallhpgiro = 0;
             $totallhptransfer = 0;
+            $totallhplainnya = 0;
             $totalsetorankertas = 0;
             $totalsetoranlogam = 0;
             $totalsetorangiro = 0;
             $totalsetorantransfer = 0;
+            $totalsetoranlainnya = 0;
             $grandtotallhp = 0;
             $grandtotalsetoranbank = 0;
             $totalrinciankertas = $saldokasbesar != null ? $saldokasbesar->uang_kertas : 0;
@@ -130,6 +133,7 @@
                 SUM(setoran_kertas) as lhpkertas,
                 SUM(setoran_bg) as lhpgiro,
                 SUM(setoran_transfer) as lhptransfer,
+                SUM(setoran_lainnya) as lhplainnya,
                 SUM(girotocash) as lhpgirotocash,
                 SUM(girototransfer) as lhpgirototransfer')
                 ->where('tgl_lhp',$dari)
@@ -174,6 +178,7 @@
                     $setoran_logam = $penerimaan->lhplogam;
                     $setoran_giro = $penerimaan->lhpgiro;
                     $setoran_transfer = $penerimaan->lhptransfer;
+                    $setoran_lainnya = $penerimaan->lhplainnya;
                     $girotocash = $penerimaan->lhpgirotocash;
                     $girototransfer = $penerimaan->lhpgirototransfer;
                 }else{
@@ -181,6 +186,7 @@
                     $setoran_logam = 0;
                     $setoran_giro = 0;
                     $setoran_transfer=0;
+                    $setoran_lainnya=0;
                     $girotocash=0;
                     $girototransfer = 0;
                 }
@@ -218,7 +224,8 @@
                 $lhplogam = $setoran_logam + $kurang_logam - $lebih_logam;
                 $lhpgiro = $setoran_giro;
                 $lhptransfer = $setoran_transfer;
-                $totallhp = $lhpkertas + $lhplogam + $lhpgiro + $lhptransfer;
+                $lhplainnya = $setoran_lainnya;
+                $totallhp = $lhpkertas + $lhplogam + $lhpgiro + $lhptransfer + $lhplainnya;
                 $totalsetoranbank = $setoranbank_kertas + $setoranbank_logam + $setoranbank_transfer + $setoranbank_giro;
                 $mutasi = $totallhp - $totalsetoranbank;
                 $saldo += $mutasi;
@@ -227,6 +234,7 @@
                 $totallhplogam += $lhplogam;
                 $totallhpgiro += $lhpgiro;
                 $totallhptransfer += $lhptransfer;
+                $totallhplainnya += $lhplainnya ;
                 $grandtotallhp += $totallhp;
 
                 $totalsetorankertas += $setoranbank_kertas;
@@ -255,6 +263,7 @@
                 <td style="text-align:right; color:green; font-weight:bold">{{ !empty($lhplogam) ? rupiah($lhplogam) : '' }}</td>
                 <td style="text-align:right; color:green; font-weight:bold">{{ !empty($lhpgiro) ? rupiah($lhpgiro) : '' }}</td>
                 <td style="text-align:right; color:green; font-weight:bold">{{ !empty($lhptransfer) ? rupiah($lhptransfer) : '' }}</td>
+                <td style="text-align:right; color:green; font-weight:bold">{{ !empty($lhplainnya) ? rupiah($lhplainnya) : '' }}</td>
                 <td style="text-align:right; color:green; font-weight:bold">{{ !empty($totallhp) ? rupiah($totallhp) : '' }}</td>
                 <td style="text-align:right; color:red; font-weight:bold">{{ !empty($setoranbank_kertas) ? rupiah($setoranbank_kertas) : '' }}</td>
                 <td style="text-align:right; color:red; font-weight:bold">{{ !empty($setoranbank_logam) ? rupiah($setoranbank_logam) : '' }}</td>
@@ -282,6 +291,7 @@
                 <th style="text-align:right; color:rgb(255, 255, 255); font-weight:bold">{{ !empty($totallhplogam) ? rupiah($totallhplogam) : '' }}</th>
                 <th style="text-align:right; color:rgb(255, 255, 255); font-weight:bold">{{ !empty($totallhpgiro) ? rupiah($totallhpgiro) : '' }}</th>
                 <th style="text-align:right; color:rgb(255, 255, 255); font-weight:bold">{{ !empty($totallhptransfer) ? rupiah($totallhptransfer) : '' }}</th>
+                <th style="text-align:right; color:rgb(255, 255, 255); font-weight:bold">{{ !empty($totallhplainnya) ? rupiah($totallhplainnya) : '' }}</th>
                 <th style="text-align:right; color:rgb(255, 255, 255); font-weight:bold">{{ !empty($grandtotallhp) ? rupiah($grandtotallhp) : '' }}</th>
                 <th style="text-align:right; color:rgb(255, 255, 255); font-weight:bold">{{ !empty($totalsetorankertas) ? rupiah($totalsetorankertas) : '' }}</th>
                 <th style="text-align:right; color:rgb(255, 255, 255); font-weight:bold">{{ !empty($totalsetoranlogam) ? rupiah($totalsetoranlogam) : '' }}</th>

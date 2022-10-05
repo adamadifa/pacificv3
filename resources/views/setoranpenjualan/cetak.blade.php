@@ -52,7 +52,7 @@
                     <th rowspan="2">PENJUALAN TUNAI</th>
                     <th rowspan="2">TAGIHAN</th>
                     <th rowspan="2" style="color:red">TOTAL LHP</th>
-                    <th colspan="4">SETORAN</th>
+                    <th colspan="5">SETORAN</th>
                     <th rowspan="2" style="color:red">TOTAL SETORAN</th>
                     <th rowspan="2" style="background-color:red; color:white">SELISIH</th>
                     <th rowspan="2">KETERANGAN</th>
@@ -62,8 +62,10 @@
                     <th>U.LOGAM</th>
                     <th>TRANSFER</th>
                     <th>BG/CEK</th>
+                    <th>LAINNYA</th>
                 </tr>
                 <tr style=" background-color:#31869b;">
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th></th>
@@ -87,6 +89,7 @@
                 $totalsetoranlogam = 0;
                 $totalsetoranbg = 0;
                 $totalsetorantransfer = 0;
+                $totalsetoranlainnya = 0;
                 $totalsetoranpertgl = 0;
                 $totalselisih = 0;
 
@@ -97,6 +100,7 @@
                 $grandtotalsetoranlogam = 0;
                 $grandtotalsetoranbg = 0;
                 $grandtotalsetorantransfer = 0;
+                $grandtotalsetoranlainnya = 0;
                 $grandtotalsetoranpertgl = 0;
                 $grandtotalselisih = 0;
                 $grandtotalsetoran =0;
@@ -133,7 +137,7 @@
                 $oplogam = "+";
                 }
 
-                $totalsetoran = $d->setoran_kertas + $uk + $d->setoran_logam + $ul + $d->setoran_bg + $d->setoran_transfer;
+                $totalsetoran = $d->setoran_kertas + $uk + $d->setoran_logam + $ul + $d->setoran_bg + $d->setoran_transfer + $d->setoran_lainnya;
                 $selisih = $totalsetoran - $totallhp;
                 $kontenkertas = number_format($d->setoran_kertas, '0', '', '.') . $opkertas . number_format($uk, '0', '', '.');
                 $kontenlogam = number_format($d->setoran_logam, '0', '', '.') . $oplogam . number_format($ul, '0', '', '.');
@@ -162,6 +166,7 @@
                 $totalsetoranlogam = $totalsetoranlogam + ($d->setoran_logam + $ul);
                 $totalsetoranbg = $totalsetoranbg + $d->setoran_bg;
                 $totalsetorantransfer = $totalsetorantransfer + $d->setoran_transfer;
+                $totalsetoranlainnya = $totalsetoranlainnya + $d->setoran_lainnya;
                 $totalsetoranpertgl = $totalsetoranpertgl + $totalsetoran;
 
                 if($loop->iteration % 2){
@@ -180,6 +185,7 @@
                 $grandtotalsetoranlogam +=($d->setoran_logam + $ul);
                 $grandtotalsetoranbg +=$d->setoran_bg;
                 $grandtotalsetorantransfer +=$d->setoran_transfer;
+                $grandtotalsetoranlainnya +=$d->setoran_lainnya;
                 $grandtotalsetoran += $totalsetoran;
                 @endphp
                 <tr>
@@ -192,6 +198,7 @@
                     <td style="text-align:right"><a href="#" class="detaillogam" data-toggle="popover" data-placement="{{ $position }}" data-container="body" data-original-title="Keterangan" data-content="{{ $kontenlogam }}">{{ !empty($d->setoran_logam + $ul) ? rupiah($d->setoran_logam + $ul) : '' }}</a></td>
                     <td style="text-align:right">{{ !empty($d->setoran_transfer) ? rupiah($d->setoran_transfer) : '' }}</td>
                     <td style="text-align:right">{{ !empty($d->setoran_bg) ? rupiah($d->setoran_bg) : '' }}</td>
+                    <td style="text-align:right">{{ !empty($d->setoran_lainnya) ? rupiah($d->setoran_lainnya) : '' }}</td>
                     <td style="text-align:right">{{ rupiah($totalsetoran) }}</td>
                     <td style="text-align:right">{{ rupiah($selisih) }}</td>
                     <td>{{ $d->keterangan }}</td>
@@ -208,6 +215,7 @@
                     <td style='text-align:right'>" . number_format($totalsetoranlogam, '0', '', '.') . "</td>
                     <td style='text-align:right'>" . number_format($totalsetorantransfer, '0', '', '.') . "</td>
                     <td style='text-align:right'>" . number_format($totalsetoranbg, '0', '', '.') . "</td>
+                    <td style='text-align:right'>" . number_format($totalsetoranlainnya, '0', '', '.') . "</td>
                     <td style='text-align:right'>" . number_format($totalsetoranpertgl, '0', '', '.') . "</td>
                     <td style='text-align:right'>" . number_format($totalselisih, '0', '', '.') . "</td>
                     <td></td>
@@ -234,6 +242,7 @@
                     <td style='text-align:right'>{{ rupiah($grandtotalsetoranlogam) }}</td>
                     <td style='text-align:right'>{{ rupiah($grandtotalsetorantransfer) }}</td>
                     <td style='text-align:right'>{{ rupiah($grandtotalsetoranbg) }}</td>
+                    <td style='text-align:right'>{{ rupiah($grandtotalsetoranlainnya) }}</td>
                     <td style='text-align:right'>{{ rupiah($grandtotalsetoran) }}</td>
                     <td style='text-align:right'>{{ rupiah($grandtotalselisih) }}</td>
                     <td></td>

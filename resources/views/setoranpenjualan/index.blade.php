@@ -69,7 +69,7 @@
                                 <th rowspan="2" class="text-center bg-primary text-white">Salesman</th>
                                 <th colspan="2" class="text-center bg-info text-white">Penjualan</th>
                                 <th rowspan="2" class="text-center bg-info text-white">Total LHP</th>
-                                <th colspan="4" class="text-center bg-warning text-white">Setoran</th>
+                                <th colspan="5" class="text-center bg-warning text-white">Setoran</th>
                                 <th rowspan="2" class="text-center bg-warning text-white">Total Setoran</th>
                                 <th rowspan="2" class="text-center bg-primary text-white">Aksi</th>
                             </tr>
@@ -80,6 +80,7 @@
                                 <th class="text-center bg-warning text-white">U. Logam</th>
                                 <th class="text-center bg-warning text-white">BG/CEK</th>
                                 <th class="text-center bg-warning text-white">Transfer</th>
+                                <th class="text-center bg-warning text-white">Lainnya</th>
 
                             </tr>
                         </thead>
@@ -92,6 +93,7 @@
                             $totalsetoranlogam = 0;
                             $totalsetoranbg = 0;
                             $totalsetorantransfer = 0;
+                            $totalsetoranlainnya = 0;
                             $totalsetoranpertgl = 0;
 
                             @endphp
@@ -125,7 +127,7 @@
                             $oplogam = "+";
                             }
 
-                            $totalsetoran = $d->setoran_kertas + $uk + $d->setoran_logam + $ul + $d->setoran_bg + $d->setoran_transfer;
+                            $totalsetoran = $d->setoran_kertas + $uk + $d->setoran_logam + $ul + $d->setoran_bg + $d->setoran_transfer + $d->setoran_lainnya;
                             $selisih = $totalsetoran - $totallhp;
                             $kontenkertas = number_format($d->setoran_kertas, '0', '', '.') . $opkertas . number_format($uk, '0', '', '.');
                             $kontenlogam = number_format($d->setoran_logam, '0', '', '.') . $oplogam . number_format($ul, '0', '', '.');
@@ -154,6 +156,7 @@
                             $totalsetoranlogam = $totalsetoranlogam + ($d->setoran_logam + $ul);
                             $totalsetoranbg = $totalsetoranbg + $d->setoran_bg;
                             $totalsetorantransfer = $totalsetorantransfer + $d->setoran_transfer;
+                            $totalsetoranlainnya = $totalsetoranlainnya + $d->setoran_lainnya;
                             $totalsetoranpertgl = $totalsetoranpertgl + $totalsetoran;
 
                             if($loop->iteration % 2){
@@ -172,6 +175,7 @@
                                 <td class="text-right"><a href="#" class="detaillogam" data-toggle="popover" data-placement="{{ $position }}" data-container="body" data-original-title="Keterangan" data-content="{{ $kontenlogam }}">{{ !empty($d->setoran_logam + $ul) ? rupiah($d->setoran_logam + $ul) : '' }}</a></td>
                                 <td class="text-right">{{ !empty($d->setoran_bg) ? rupiah($d->setoran_bg) : '' }}</td>
                                 <td class="text-right">{{ !empty($d->setoran_transfer) ? rupiah($d->setoran_transfer) : '' }}</td>
+                                <td class="text-right">{{ !empty($d->setoran_lainnya) ? rupiah($d->setoran_lainnya) : '' }}</td>
                                 <td class="text-right">{{ rupiah($totalsetoran) }}</td>
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example">
@@ -200,6 +204,7 @@
                                 <th style='text-align:right'>" . number_format($totalsetoranlogam, '0', '', '.') . "</th>
                                 <th style='text-align:right'>" . number_format($totalsetoranbg, '0', '', '.') . "</th>
                                 <th style='text-align:right'>" . number_format($totalsetorantransfer, '0', '', '.') . "</th>
+                                <th style='text-align:right'>" . number_format($totalsetoranlainnya, '0', '', '.') . "</th>
                                 <th style='text-align:right'>" . number_format($totalsetoranpertgl, '0', '', '.') . "</th>
                                 <th></th>
                             </tr>";

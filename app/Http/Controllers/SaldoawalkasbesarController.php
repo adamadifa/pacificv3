@@ -145,10 +145,12 @@ class SaldoawalkasbesarController extends Controller
                 ->first();
 
             //Saldo Sebelumnya
-            $saldokertas = $saldoterakhir->uang_kertas;
-            $saldologam  = $saldoterakhir->uang_logam;
-            $saldogiro   = $saldoterakhir->giro;
-            $saldotransfer  = $saldoterakhir->transfer;
+            $saldokertas = $saldoterakhir->uang_kertas != null ? $saldoterakhir->uang_kertas : 0;
+            $saldologam  = $saldoterakhir->uang_logam != null ? $saldoterakhir->uang_logam : 0;
+            $saldogiro   = $saldoterakhir->giro != null ? $saldoterakhir->giro : 0;
+            $saldotransfer  = $saldoterakhir->transfer != null ? $saldoterakhir->transfer : 0;
+
+
             //Setoran Penjualan
             $setoranpenjkertas     = $setoranpenjualan->uangkertas;
             $setoranpenjlogam      = $setoranpenjualan->uanglogam;

@@ -176,7 +176,7 @@
                 @foreach ($salesman as $d)
                 @php
                 $setoran = DB::table('setoran_penjualan')
-                ->selectRaw("SUM(IFNULL(setoran_kertas,0) + IFNULL(setoran_logam,0) + IFNULL(setoran_transfer,0) + IFNULL(setoran_bg,0)) as jmlsetoran")
+                ->selectRaw("SUM(IFNULL(setoran_kertas,0) + IFNULL(setoran_logam,0) + IFNULL(setoran_transfer,0) + IFNULL(setoran_bg,0) + IFNULL(setoran_lainnya,0)) as jmlsetoran")
                 ->where('tgl_lhp',$dari)
                 ->where('id_karyawan',$d->id_karyawan)
                 ->groupByRaw('tgl_lhp,id_karyawan')->first();
@@ -231,7 +231,7 @@
                 @foreach ($salesman as $d)
                 @php
                 $allsetoran = DB::table('setoran_penjualan')
-                ->selectRaw("SUM(IFNULL(setoran_kertas,0) + IFNULL(setoran_logam,0) + IFNULL(setoran_transfer,0) + IFNULL(setoran_bg,0)) as jmlsetoran")
+                ->selectRaw("SUM(IFNULL(setoran_kertas,0) + IFNULL(setoran_logam,0) + IFNULL(setoran_transfer,0) + IFNULL(setoran_bg,0) + IFNULL(setoran_lainnya,0)) as jmlsetoran")
                 ->whereBetween('tgl_lhp',[$from,$sampai])
                 ->where('id_karyawan',$d->id_karyawan)
                 ->groupByRaw('id_karyawan')->first();
@@ -340,7 +340,7 @@
                 <td style="text-align: right; font-weight:bold;">{{ !empty($totalgmlast) ? rupiah($totalgmlast) : '' }}</td>
             </tr>
             <tr style="font-size:12px; background-color:#199291; color:white">
-                <td><b>GM <?php echo strtoupper($namabulan[$bulanskrg]) . " " . $tahunskrg; ?></b></td>
+                <td><b>GMD <?php echo strtoupper($namabulan[$bulanskrg]) . " " . $tahunskrg; ?></b></td>
                 @php
                 $totalgmnow = 0;
                 $tahunskr = $tahunskrg + 1;
@@ -408,7 +408,7 @@
                 @endforeach
                 <td style="text-align: right; font-weight:bold;">{{ !empty($totalgmnow) ? rupiah($totalgmnow) : '' }}</td>
                 <td style="border:none; width:5%; background-color:white"></td>
-                <td><b>GM <?php echo strtoupper($namabulan[$bulanskrg]) . " " . $tahunskrg; ?></b></td>
+                <td><b>GMC <?php echo strtoupper($namabulan[$bulanskrg]) . " " . $tahunskrg; ?></b></td>
                 @php
                 $totalgmnow = 0;
                 $tahunskr = $tahunskrg + 1;
@@ -429,6 +429,7 @@
                 $query->whereNull('tglbayar');
                 $query->where('omset_bulan',0);
                 $query->where('omset_tahun','');
+
                 $query->orWhere('giro.id_karyawan',$d->id_karyawan);
                 $query->whereBetween('tgl_giro',[$from,$sampai]);
                 $query->where('tglbayar','>=',$sampai);
@@ -437,7 +438,7 @@
                 $query->where('omset_bulan','>=',1);
                 $query->where('omset_tahun','>=',$tahunskr);
                 } else {
-                $query->where('omset_bulan','>=',$bulanskrg);
+                $query->where('omset_bulan','>',$bulanskrg);
                 $query->where('omset_tahun','>=',$tahunskrg);
                 }
 
@@ -459,7 +460,7 @@
                 $query->orWhere('giro.id_karyawan',$d->id_karyawan);
                 $query->whereBetween('tgl_giro',[$from,$sampai]);
                 $query->where('tglbayar','>=',$sampai);
-                $query->where('omset_bulan',0);
+                $query->where('omset_bulan','0');
                 $query->where('omset_tahun','');
                 $query->groupBy('giro.id_karyawan');
                 $gmnow = $query->first();
@@ -565,7 +566,7 @@
                 }
                 )
                 ->where('giro.id_karyawan',$d->id_karyawan)
-                ->whereRaw('MONTH(tgl_giro) ='.$bulanlast)
+                ->whereRaw('MONTH(tgl_girod) ='.$bulanlast)
                 ->whereRaw('YEAR(tgl_giro) ='.$tahunlast)
                 ->where('omset_bulan',$bulanskrg)
                 ->where('omset_tahun',$tahunskrg)
@@ -677,7 +678,7 @@
                 }
 
                 $allsetoran = DB::table('setoran_penjualan')
-                ->selectRaw("SUM(IFNULL(setoran_kertas,0) + IFNULL(setoran_logam,0) + IFNULL(setoran_transfer,0) + IFNULL(setoran_bg,0)) as jmlsetoran")
+                ->selectRaw("SUM(IFNULL(setoran_kertas,0) + IFNULL(setoran_logam,0) + IFNULL(setoran_transfer,0) + IFNULL(setoran_bg,0)+ IFNULL(setoran_lainnya,0)) as jmlsetoran")
                 ->whereBetween('tgl_lhp',[$from,$sampai])
                 ->where('id_karyawan',$d->id_karyawan)
                 ->groupByRaw('id_karyawan')->first();
