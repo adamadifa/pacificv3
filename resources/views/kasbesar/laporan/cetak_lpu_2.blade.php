@@ -566,7 +566,7 @@
                 }
                 )
                 ->where('giro.id_karyawan',$d->id_karyawan)
-                ->whereRaw('MONTH(tgl_girod) ='.$bulanlast)
+                ->whereRaw('MONTH(tgl_giro) ='.$bulanlast)
                 ->whereRaw('YEAR(tgl_giro) ='.$tahunlast)
                 ->where('omset_bulan',$bulanskrg)
                 ->where('omset_tahun',$tahunskrg)
