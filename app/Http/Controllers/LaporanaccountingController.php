@@ -786,7 +786,7 @@ class LaporanaccountingController extends Controller
         }
 
         $neraca = DB::table('neraca')
-            ->select('neraca.kode_akun', 'coa.nama_akun', 'neraca.level', 'kategori_1', 'coa1.nama_akun as nama_akun_1', 'kategori_2', 'coa2.nama_akun as nama_akun_2', 'kategori_3', 'coa3.nama_akun as nama_akun_3', 'saldoawal')
+            ->select('neraca.kode_akun', 'coa.nama_akun', 'neraca.level', 'kategori_1', 'coa1.nama_akun as nama_akun_1', 'kategori_2', 'coa2.nama_akun as nama_akun_2', 'kategori_3', 'coa3.nama_akun as nama_akun_3', 'saldoawal', 'sisamutasi')
             ->leftJoin('coa', 'neraca.kode_akun', '=', 'coa.kode_akun')
             ->leftJoin('coa as coa1', 'neraca.kategori_1', '=', 'coa1.kode_akun')
             ->leftJoin('coa as coa2', 'neraca.kategori_2', '=', 'coa2.kode_akun')
@@ -802,6 +802,20 @@ class LaporanaccountingController extends Controller
                     $join->on('neraca.kode_akun', '=', 'sa.kode_akun');
                 }
             )
+            ->leftJoin(
+                DB::raw("(
+                    SELECT buku_besar.kode_akun,
+                    SUM(IF(jenis_akun = 1,IFNULL(kredit,0) - IFNULL(debet,0),IFNULL(debet,0) - IFNULL(kredit,0))) as sisamutasi
+                    FROM buku_besar
+                    INNER JOIN coa ON buku_besar.kode_akun = coa.kode_akun
+                    WHERE tanggal BETWEEN '$dari' AND '$sampai'
+                    GROUP BY kode_akun
+                ) mutasi"),
+                function ($join) {
+                    $join->on('neraca.kode_akun', '=', 'mutasi.kode_akun');
+                }
+            )
+
             ->orderBy('neraca.kode_akun')
             ->orderBy('neraca.level')
             ->get();
@@ -834,7 +848,7 @@ class LaporanaccountingController extends Controller
         }
 
         $labarugi = DB::table('labarugi')
-            ->select('labarugi.kode_akun', 'coa.nama_akun', 'labarugi.level', 'kategori_1', 'coa1.nama_akun as nama_akun_1', 'kategori_2', 'coa2.nama_akun as nama_akun_2', 'kategori_3', 'coa3.nama_akun as nama_akun_3', 'saldoawal')
+            ->select('labarugi.kode_akun', 'coa.nama_akun', 'labarugi.level', 'kategori_1', 'coa1.nama_akun as nama_akun_1', 'kategori_2', 'coa2.nama_akun as nama_akun_2', 'kategori_3', 'coa3.nama_akun as nama_akun_3', 'saldoawal', 'sisamutasi')
             ->leftJoin('coa', 'labarugi.kode_akun', '=', 'coa.kode_akun')
             ->leftJoin('coa as coa1', 'labarugi.kategori_1', '=', 'coa1.kode_akun')
             ->leftJoin('coa as coa2', 'labarugi.kategori_2', '=', 'coa2.kode_akun')
@@ -848,6 +862,20 @@ class LaporanaccountingController extends Controller
                 ) sa"),
                 function ($join) {
                     $join->on('labarugi.kode_akun', '=', 'sa.kode_akun');
+                }
+            )
+
+            ->leftJoin(
+                DB::raw("(
+                    SELECT buku_besar.kode_akun,
+                    SUM(IF(jenis_akun = 1,IFNULL(kredit,0) - IFNULL(debet,0),IFNULL(debet,0) - IFNULL(kredit,0))) as sisamutasi
+                    FROM buku_besar
+                    INNER JOIN coa ON buku_besar.kode_akun = coa.kode_akun
+                    WHERE tanggal BETWEEN '$dari' AND '$sampai'
+                    GROUP BY kode_akun
+                ) mutasi"),
+                function ($join) {
+                    $join->on('labarugi.kode_akun', '=', 'mutasi.kode_akun');
                 }
             )
             ->orderBy('labarugi.kode_akun')

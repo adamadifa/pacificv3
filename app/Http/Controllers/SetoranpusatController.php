@@ -277,7 +277,7 @@ class SetoranpusatController extends Controller
         } else if ($cabang == "SKB") {
             $akun = "1-1407";
         } else if ($cabang == "GRT") {
-            $akun = "1-1468";
+            $akun = "1-1487";
         } else if ($cabang == "SMR") {
             $akun = "1-1488";
         } else if ($cabang == "SBY") {

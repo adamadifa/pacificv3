@@ -1133,6 +1133,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cekpenjtemp', [PenjualanController::class, 'cekpenjtemp']);
     Route::post('/cekpiutangpelanggan', [PenjualanController::class, 'cekpiutangpelanggan']);
     Route::post('/penjualan/store', [PenjualanController::class, 'store']);
+    Route::post('/penjualan/previewfaktur', [PenjualanController::class, 'previewfaktur']);
     Route::get('/penjualan/cetakfaktur/{no_fak_penj}', [PenjualanController::class, 'cetakfaktur']);
     Route::get('/penjualan/cetaksuratjalan/{no_fak_penj}/{type}', [PenjualanController::class, 'cetaksuratjalan']);
     Route::delete('/penjualan/{no_fak_penj}/delete', [PenjualanController::class, 'delete']);

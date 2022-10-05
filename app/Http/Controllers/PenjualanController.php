@@ -7,6 +7,7 @@ use App\Models\Cabang;
 use App\Models\Detailpenjualan;
 use App\Models\Detailretur;
 use App\Models\Harga;
+use App\Models\Pelanggan;
 use App\Models\Pembayaran;
 use App\Models\Penjualan;
 use App\Models\Retur;
@@ -5593,5 +5594,149 @@ class PenjualanController extends Controller
         foreach ($faktur as $d) {
             echo "<option>" . $d->no_fak_penj . "</option>";
         }
+    }
+
+
+    public function previewfaktur(Request $request)
+    {
+        $no_fak_penj = $request->no_fak_penj;
+        $tgltransaksi = $request->tgltransaksi;
+        $id_karyawan = $request->id_karyawan;
+        $salesman = Salesman::where('id_karyawan', $id_karyawan)->first();
+        $kode_pelanggan = $request->kode_pelanggan;
+        $pelanggan = Pelanggan::where('kode_pelanggan', $kode_pelanggan)->first();
+        $limitpel = $request->limitpel;
+        $sisapiutang = $request->sisapiutang;
+        $jenistransaksi = $request->jenistransaksi;
+        $jenisbayartunai = $request->jenisbayartunai;
+        $jenisbayar = $jenisbayartunai == "transfer" ? $jenisbayartunai : $request->jenisbayar;
+        $subtotal = $request->subtotal;
+        $jatuhtempo = $request->jatuhtempo;
+        $bruto = $request->bruto;
+        $nama_pelanggan = $request->nama_pelanggan;
+        $id_admin = Auth::user()->id;
+        //Potongan
+        $potaida        = str_replace(".", "", $request->potaida);
+        if (empty($potaida)) {
+            $potaida = 0;
+        } else {
+            $potaida = $potaida;
+        }
+        $potswan        = str_replace(".", "", $request->potswan);
+        if (empty($potswan)) {
+            $potswan = 0;
+        } else {
+            $potswan = $potswan;
+        }
+        $potstick       = str_replace(".", "", $request->potstick);
+        if (empty($potstick)) {
+            $potstick = 0;
+        } else {
+            $potstick = $potstick;
+        }
+        $potsp       = str_replace(".", "", $request->potsp);
+        if (empty($potsp)) {
+            $potsp = 0;
+        } else {
+            $potsp = $potsp;
+        }
+        $potsb       = str_replace(".", "", $request->potsb);
+        if (empty($potsb)) {
+            $potsambal = 0;
+        } else {
+            $potsambal = $potsb;
+        }
+
+        // Voucher
+        $voucher       = str_replace(".", "", $request->voucher);
+        if (empty($voucher)) {
+            $voucher = 0;
+        } else {
+            $voucher = $voucher;
+        }
+
+        // Potongan Istimewa
+        $potisaida        = str_replace(".", "", $request->potisaida);
+        $potisswan        = str_replace(".", "", $request->potisswan);
+        $potisstick       = str_replace(".", "", $request->potisstick);
+        if (empty($potisaida)) {
+            $potisaida = 0;
+        } else {
+            $potisaida = $potisaida;
+        }
+        if (empty($potisswan)) {
+            $potisswan = 0;
+        } else {
+            $potisswan = $potisswan;
+        }
+        if (empty($potisstick)) {
+            $potisstick = 0;
+        } else {
+            $potisstick = $potisstick;
+        }
+
+        //Penyesuaian
+        $penyaida        = str_replace(".", "", $request->penyaida);
+        $penyswan        = str_replace(".", "", $request->penyswan);
+        $penystick       = str_replace(".", "", $request->penystick);
+        if (empty($penyaida)) {
+            $penyaida = 0;
+        } else {
+            $penyaida = $penyaida;
+        }
+        if (empty($penyswan)) {
+            $penyswan = 0;
+        } else {
+            $penyswan = $penyswan;
+        }
+        if (empty($penystick)) {
+            $penystick = 0;
+        } else {
+            $penystick = $penystick;
+        }
+
+        $potongan = $potaida + $potswan + $potstick + $potsp + $potsambal;
+        $potistimewa = $potisaida + $potisswan + $potisstick;
+        $penyesuaian = $penyaida + $penyswan + $penystick;
+        $titipan = str_replace(".", "", $request->titipan);
+        $kode_cabang = $request->kode_cabang;
+        $tahunini  = date('y');
+
+
+        $data = [
+            'no_fak_penj' => $no_fak_penj,
+            'kode_pelanggan' => $kode_pelanggan,
+            'id_karyawan' => $id_karyawan,
+            'tgltransaksi' => $tgltransaksi,
+            'pelanggan' => $pelanggan,
+            'salesman' => $salesman,
+            'sisapiutang' => $sisapiutang,
+            'potaida' => $potaida,
+            'potswan' => $potswan,
+            'potstick' => $potstick,
+            'potsp' => $potsp,
+            'potsb' => $potsambal,
+            'potisaida' => $potisaida,
+            'potisswan' => $potisswan,
+            'potisstick' => $potisstick,
+            'penyaida' => $penyaida,
+            'penyswan' => $penyswan,
+            'penystick' => $penystick,
+            'jenistransaksi' => $jenistransaksi,
+            'jenisbayar' => $jenisbayar,
+            'subtotal' => $subtotal,
+            'voucher' => $voucher,
+            'titipan' => $titipan,
+            'totalpotongan' => $potaida + $potswan + $potstick + $potsp + $potsambal,
+            'totalpotis' => $potisaida + $potisswan + $potisstick,
+            'totalpeny' => $penyswan + $penystick + $penyaida
+        ];
+
+        $barang = DB::table('detailpenjualan_temp')
+            ->select('detailpenjualan_temp.*', 'nama_barang', 'isipcsdus', 'isipack', 'isipcs', 'barang.harga_dus as harga_dus_db', 'barang.harga_pack as harga_pack_db', 'barang.harga_pcs as harga_pcs_db')
+            ->join('barang', 'detailpenjualan_temp.kode_barang', '=', 'barang.kode_barang')
+            ->where('id_admin', $id_admin)
+            ->get();
+        return view('penjualan.preview', compact('data', 'barang'));
     }
 }

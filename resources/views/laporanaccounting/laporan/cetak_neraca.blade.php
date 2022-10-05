@@ -55,6 +55,7 @@
         $kategori_1 = $d->kategori_1;
         $kategori_2 = $d->kategori_2;
         $kategori_3 = $d->kategori_3;
+        $saldoakhir = $d->saldoawal + $d->sisamutasi;
         @endphp
         @if ($d->level==1)
         @php
@@ -83,7 +84,7 @@
             </td>
             <td style="text-align: right">
                 @if ($d->level==3)
-                {{ desimal($d->saldoawal) }}
+                {{ desimal($saldoakhir) }}
                 @endif
             </td>
 
