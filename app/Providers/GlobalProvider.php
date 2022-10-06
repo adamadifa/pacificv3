@@ -427,6 +427,7 @@ class GlobalProvider extends ServiceProvider
             $gantilogamtokertas = ['admin', 'kepala admin', 'admin pusat', 'kasir', 'audit', 'admin garut', 'admin kas', 'admin persediaan dan kasir', 'admin penjualan dan kasir'];
 
             $saldoawalpiutang = ['admin'];
+            $datausers = ['admin', 'manager accounting'];
 
             $kirimlpc = ['admin', 'admin penjualan', 'audit', 'kepala penjualan', 'kepala admin', 'admin pusat', 'manager accounting', 'spv accounting', 'manager marketing', 'rsm', 'general manager', 'direktur'];
             $kirimlpc_tambah = ['admin', 'kepala penjualan', 'kepala admin', 'admin pusat', 'manager accounting', 'spv accounting'];
@@ -932,6 +933,7 @@ class GlobalProvider extends ServiceProvider
 
                 //Utilities
                 'saldoawalpiutang' => $saldoawalpiutang,
+                'datausers' => $datausers,
 
                 'kirimlpc' => $kirimlpc,
                 'kirimlpc_tambah' => $kirimlpc_tambah,

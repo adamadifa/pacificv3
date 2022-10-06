@@ -2,16 +2,37 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cabang;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
+
+    public function index(Request $request)
+    {
+        $query = User::query();
+        $query->where('level', '!=', 'admin');
+        if (!empty($request->nama)) {
+            $query->where('name', 'like', '%' . $request->nama . '%');
+        }
+
+        if (!empty($request->kode_cabang)) {
+            $query->where('kode_cabang', $request->kode_cabang);
+        }
+        $query->orderBy('name');
+        $user = $query->get();
+
+        $cabang = Cabang::orderBy('nama_cabang')->get();
+        return view('user.index', compact('cabang', 'user'));
+    }
     public function gantipassword()
     {
         $user = DB::table('users')->where('id', Auth::user()->id)->first();
@@ -94,6 +115,42 @@ class UserController extends Controller
             }
         } else {
             return Redirect::back()->with(['warning' => 'Password Lama Salah, Hubungi Tim IT']);
+        }
+    }
+
+    public function activated($id)
+    {
+        $id = Crypt::decrypt($id);
+        $user = DB::table('users')->where('id', $id)->first();
+        $status = $user->status;
+        if ($status == 1) {
+            $status = 0;
+            $ket = "Dinonaktifkan";
+        } else {
+            $status = 1;
+            $ket = "Diaktifkan";
+        }
+
+        $data = [
+            'status' => $status
+        ];
+
+        $update = DB::table('users')->where('id', $id)->update($data);
+        if ($update) {
+            return Redirect::back()->with(['success' => 'Data Berhasil' . $ket]);
+        } else {
+            echo "gagal";
+        }
+    }
+
+    public function delete($id)
+    {
+        $id = Crypt::decrypt($id);
+        $hapus = DB::table('users')->where('id', $id)->delete();
+        if ($hapus) {
+            return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
+        } else {
+            echo "gagal";
         }
     }
 }

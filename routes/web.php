@@ -138,6 +138,9 @@ Route::get('/cekdpbwa', [WhatsappController::class, 'cekdpb']);
 Route::get('/cekpenjualanwa', [WhatsappController::class, 'cekpenjualan']);
 Route::middleware(['auth'])->group(function () {
     Route::get('/home', [DashboardController::class, 'home']);
+    Route::get('/user', [UserController::class, 'index']);
+    Route::get('/user/{id}/activated', [UserController::class, 'activated']);
+    Route::delete('/user/{id}/delete', [UserController::class, 'delete']);
     Route::get('/user/gantipassword', [UserController::class, 'gantipassword']);
     Route::get('/user/editprofile', [UserController::class, 'editprofile']);
     Route::post('/user/{id}/update', [UserController::class, 'update']);

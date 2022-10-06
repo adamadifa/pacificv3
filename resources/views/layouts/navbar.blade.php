@@ -1028,13 +1028,22 @@
                         </a>
                     </li>
                     @endif
-                    <li class="{{ request()->is(['user', 'user/gantipassword']) ? 'active' : '' }}">
+
+                    @if (in_array($level, $datausers))
+                    <li class="{{ request()->is(['user', 'user/index']) ? 'active' : '' }}">
+                        <a href="/user">
+                            <i class="feather icon-users"></i>
+                            <span class="menu-item">Users</span>
+                        </a>
+                    </li>
+                    @endif
+                    <li class="{{ request()->is(['user/gantipassword']) ? 'active' : '' }}">
                         <a href="/user/gantipassword">
                             <i class="fa fa-key"></i>
                             <span class="menu-item">Ganti Password</span>
                         </a>
                     </li>
-                    <li class="{{ request()->is(['user', 'user/editprofile']) ? 'active' : '' }}">
+                    <li class="{{ request()->is(['user/editprofile']) ? 'active' : '' }}">
                         <a href="/user/editprofile">
                             <i class="feather icon-user"></i>
                             <span class="menu-item">Edit Profile</span>
