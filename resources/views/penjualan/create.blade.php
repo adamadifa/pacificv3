@@ -1,7 +1,7 @@
 @include('layouts.style')
 <link rel="stylesheet" href="{{ asset('app-assets/css/penjualan.css') }}">
 <body style="margin:1px 4px 1px 4px">
-    <form name="autoSumForm" autocomplete="off" action="/penjualan/store" class="formValidate form-horizontal" id="formValidate" method="POST">
+    <form name="autoSumForm" autocomplete="off" action="/penjualan/previewfaktur" class="formValidate form-horizontal" id="formValidate" method="POST">
         @csrf
         <input type="hidden" id="cektutuplaporan">
         <input type="hidden" id="cektemp">

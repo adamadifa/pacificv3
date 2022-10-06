@@ -33,16 +33,12 @@ class LimitkreditController extends Controller
         $pelanggan = '"' . $request->nama_pelanggan . '"';
         $query = Limitkredit::query();
         if ($this->cabang != "PCF") {
-            if ($this->cabang == "GRT") {
-                $query->where('pelanggan.kode_cabang', 'TSM');
-            } else {
-                $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-                $cabang[] = "";
-                foreach ($cbg as $c) {
-                    $cabang[] = $c->kode_cabang;
-                }
-                $query->whereIn('pelanggan.kode_cabang', $cabang);
+            $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+            $cabang[] = "";
+            foreach ($cbg as $c) {
+                $cabang[] = $c->kode_cabang;
             }
+            $query->whereIn('pelanggan.kode_cabang', $cabang);
         } else {
             if (Auth::user()->id == 82) {
                 $query->whereIn('pelanggan.kode_cabang', $wilayah_barat);
