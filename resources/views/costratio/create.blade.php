@@ -21,12 +21,17 @@
     </div>
     <div class="row mb-2">
         <div class="col-12">
+            @if (Auth::user()->kode_cabang == "PCF")
             <select name="kode_cabang" id="kode_cabang" class="form-control">
                 <option value="">Cabang</option>
                 @foreach ($cabang as $d)
                 <option value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
                 @endforeach
             </select>
+            @else
+            <input type="hidden" name="kode_cabang" value="{{ Auth::user()->kode_cabang }}">
+            @endif
+
         </div>
     </div>
     <div class="row">
