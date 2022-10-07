@@ -1277,5 +1277,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/updatebackupcr', [CostratioController::class, 'updatecostratio']);
 
     Route::get('/costratio', [CostratioController::class, 'index']);
+    Route::get('/costratio/create', [CostratioController::class, 'create']);
+    Route::post('/costratio/store', [CostratioController::class, 'store']);
+    Route::delete('/costratio/{kode_cr}/delete', [CostratioController::class, 'delete']);
     Route::get('/costratio/cetak', [CostratioController::class, 'cetak']);
 });

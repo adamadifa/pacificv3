@@ -876,19 +876,19 @@ class PenjualanController extends Controller
 
     public function store(Request $request)
     {
-        $no_fak_penj = $request->no_fak_penj;
-        $tgltransaksi = $request->tgltransaksi;
-        $id_karyawan = $request->id_karyawan;
-        $kode_pelanggan = $request->kode_pelanggan;
-        $limitpel = $request->limitpel;
-        $sisapiutang = $request->sisapiutang;
-        $jenistransaksi = $request->jenistransaksi;
+        $no_fak_penj = $request->no_fak_penj; //ok
+        $tgltransaksi = $request->tgltransaksi; //ok
+        $id_karyawan = $request->id_karyawan; //ok
+        $kode_pelanggan = $request->kode_pelanggan; //ok
+        $limitpel = $request->limitpel; //ok
+        $sisapiutang = $request->sisapiutang; //ok
+        $jenistransaksi = $request->jenistransaksi; //ok
         $jenisbayartunai = $request->jenisbayartunai;
-        $jenisbayar = $jenisbayartunai == "transfer" ? $jenisbayartunai : $request->jenisbayar;
-        $subtotal = $request->subtotal;
-        $jatuhtempo = $request->jatuhtempo;
-        $bruto = $request->bruto;
-        $nama_pelanggan = $request->nama_pelanggan;
+        $jenisbayar = $jenisbayartunai == "transfer" ? $jenisbayartunai : $request->jenisbayar; //ok
+        $subtotal = $request->subtotal; //ok
+        $jatuhtempo = $request->jatuhtempo; //ok
+        $bruto = $request->bruto; //ok
+        $nama_pelanggan = $request->nama_pelanggan; //nama_pelanggan
         $id_admin = Auth::user()->id;
         //Potongan
         $potaida        = str_replace(".", "", $request->potaida);
@@ -896,34 +896,34 @@ class PenjualanController extends Controller
             $potaida = 0;
         } else {
             $potaida = $potaida;
-        }
+        } //ok
         $potswan        = str_replace(".", "", $request->potswan);
         if (empty($potswan)) {
             $potswan = 0;
         } else {
             $potswan = $potswan;
-        }
+        } //ok
         $potstick       = str_replace(".", "", $request->potstick);
         if (empty($potstick)) {
             $potstick = 0;
         } else {
             $potstick = $potstick;
-        }
+        } //ok
         $potsp       = str_replace(".", "", $request->potsp);
         if (empty($potsp)) {
             $potsp = 0;
         } else {
             $potsp = $potsp;
-        }
+        } //ok
         $potsb       = str_replace(".", "", $request->potsb);
         if (empty($potsb)) {
             $potsambal = 0;
         } else {
             $potsambal = $potsb;
-        }
+        } //ok
 
         // Voucher
-        $voucher       = str_replace(".", "", $request->voucher);
+        $voucher       = str_replace(".", "", $request->voucher); //ok
         if (empty($voucher)) {
             $voucher = 0;
         } else {
@@ -931,9 +931,9 @@ class PenjualanController extends Controller
         }
 
         // Potongan Istimewa
-        $potisaida        = str_replace(".", "", $request->potisaida);
-        $potisswan        = str_replace(".", "", $request->potisswan);
-        $potisstick       = str_replace(".", "", $request->potisstick);
+        $potisaida        = str_replace(".", "", $request->potisaida); //ok
+        $potisswan        = str_replace(".", "", $request->potisswan); //ok
+        $potisstick       = str_replace(".", "", $request->potisstick); //ok
         if (empty($potisaida)) {
             $potisaida = 0;
         } else {
@@ -951,9 +951,9 @@ class PenjualanController extends Controller
         }
 
         //Penyesuaian
-        $penyaida        = str_replace(".", "", $request->penyaida);
-        $penyswan        = str_replace(".", "", $request->penyswan);
-        $penystick       = str_replace(".", "", $request->penystick);
+        $penyaida        = str_replace(".", "", $request->penyaida); //ok
+        $penyswan        = str_replace(".", "", $request->penyswan); //ok
+        $penystick       = str_replace(".", "", $request->penystick); //ok
         if (empty($penyaida)) {
             $penyaida = 0;
         } else {
@@ -973,8 +973,8 @@ class PenjualanController extends Controller
         $potongan = $potaida + $potswan + $potstick + $potsp + $potsambal;
         $potistimewa = $potisaida + $potisswan + $potisstick;
         $penyesuaian = $penyaida + $penyswan + $penystick;
-        $titipan = str_replace(".", "", $request->titipan);
-        $kode_cabang = $request->kode_cabang;
+        $titipan = str_replace(".", "", $request->titipan); //ok
+        $kode_cabang = $request->kode_cabang; //ok
         $tahunini  = date('y');
 
         //Get No Bukti
@@ -5337,9 +5337,12 @@ class PenjualanController extends Controller
     {
         $no_fak_penj = Crypt::decrypt($no_fak_penj);
         $faktur = DB::table('penjualan')->where('no_fak_penj', $no_fak_penj)->first();
+
         $kode_pelanggan = $faktur->kode_pelanggan;
         $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)->first();
         $limitpel = $pelanggan->limitpel;
+
+
         DB::beginTransaction();
         try {
             if ($faktur->status_lunas == 1) {
@@ -5377,13 +5380,16 @@ class PenjualanController extends Controller
                         }
                     )
                     ->where('penjualan.kode_pelanggan', $kode_pelanggan)
-                    ->where('penjualan.status', '!=', 1)
+                    ->where('penjualan.status_lunas', '!=', 1)
                     ->orWhere('penjualan.kode_pelanggan', $kode_pelanggan)
-                    ->whereNull('penjualan.status')
+                    ->whereNull('penjualan.status_lunas')
                     ->first();
 
+                // dd($piutang);
                 $sisapiutang = $piutang->totalpiutang - $piutang->jmlbayar;
                 $totalpiutang  = $sisapiutang + $faktur->total;
+
+
                 if ($totalpiutang <= $limitpel) {
                     DB::table('penjualan')->where('no_fak_penj', $no_fak_penj)->update(['status' => 2]);
                 }
@@ -5392,7 +5398,7 @@ class PenjualanController extends Controller
             DB::commit();
             return Redirect::back()->with(['success' => 'Data Berhasil Di Update']);
         } catch (\Exception $e) {
-            //dd($e);
+            // dd($e);
             DB::rollback();
             return Redirect::back()->with(['success' => 'Data Gagal Di Update']);
         }
@@ -5723,13 +5729,17 @@ class PenjualanController extends Controller
             'penyswan' => $penyswan,
             'penystick' => $penystick,
             'jenistransaksi' => $jenistransaksi,
+            'jenisbayartunai' => $jenisbayartunai,
             'jenisbayar' => $jenisbayar,
             'subtotal' => $subtotal,
             'voucher' => $voucher,
             'titipan' => $titipan,
             'totalpotongan' => $potaida + $potswan + $potstick + $potsp + $potsambal,
             'totalpotis' => $potisaida + $potisswan + $potisstick,
-            'totalpeny' => $penyswan + $penystick + $penyaida
+            'totalpeny' => $penyswan + $penystick + $penyaida,
+            'jatuhtempo' => $jatuhtempo,
+            'bruto' => $bruto,
+            'kode_cabang' => $kode_cabang
         ];
 
         $barang = DB::table('detailpenjualan_temp')
@@ -5737,6 +5747,42 @@ class PenjualanController extends Controller
             ->join('barang', 'detailpenjualan_temp.kode_barang', '=', 'barang.kode_barang')
             ->where('id_admin', $id_admin)
             ->get();
-        return view('penjualan.preview', compact('data', 'barang'));
+
+        $piutang = DB::table('penjualan')
+            ->selectRaw('
+                        penjualan.no_fak_penj,tgltransaksi, IFNULL(penjualan.total,0) - IFNULL(retur.total,0) - IFNULL(jmlbayar,0) as sisapiutang')
+            ->leftJoin(
+                DB::raw("(
+                            SELECT historibayar.no_fak_penj,
+                            IFNULL(SUM(bayar), 0) AS jmlbayar
+                            FROM
+                            historibayar
+                            GROUP BY historibayar.no_fak_penj
+                        ) hb"),
+                function ($join) {
+                    $join->on('penjualan.no_fak_penj', '=', 'hb.no_fak_penj');
+                }
+            )
+            ->leftJoin(
+                DB::raw("(
+                            SELECT
+                            retur.no_fak_penj AS no_fak_penj,
+                            SUM(total) AS total
+                            FROM
+                                retur
+                            GROUP BY
+                                retur.no_fak_penj
+                        ) retur"),
+                function ($join) {
+                    $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
+                }
+            )
+            ->where('penjualan.kode_pelanggan', $kode_pelanggan)
+            ->where('penjualan.status_lunas', '!=', 1)
+            ->orWhere('penjualan.kode_pelanggan', $kode_pelanggan)
+            ->whereNull('penjualan.status_lunas')
+            ->get();
+
+        return view('penjualan.preview', compact('data', 'barang', 'piutang'));
     }
 }

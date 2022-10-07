@@ -967,7 +967,7 @@ class LaporanaccountingController extends Controller
             SUM(jumlah) as total");
         }
 
-        $query->join('coa', 'costratio_biaya.kode_akun', '=', 'coa.kode_akun');
+        $query->leftjoin('coa', 'costratio_biaya.kode_akun', '=', 'coa.kode_akun');
         $query->whereBetween('tgl_transaksi', [$dari, $sampai]);
         $query->orderBy('costratio_biaya.kode_akun');
         $query->groupByRaw('costratio_biaya.kode_akun,nama_akun');

@@ -335,7 +335,7 @@ class JurnalumumController extends Controller
                         'kode_akun'    => $kode_akun,
                         'keterangan'   => $keterangan,
                         'kode_cabang'  => $kode_cabang,
-                        'id_sumber_costratio' => 1,
+                        'id_sumber_costratio' => 5,
                         'jumlah' => $jumlah
                     ];
                     DB::table('costratio_biaya')->insert($datacr);

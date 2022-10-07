@@ -65,7 +65,12 @@
                             </div>
                         </div>
                     </form>
-                    <a href="/costratio/cetak?dari={{ Request('dari') }}&sampai={{ Request('sampai') }}&kode_cabang={{ Request('kode_cabang') }}&id_sumber_costratio={{ Request('id_sumber_costratio') }}&excel=true" class="btn btn-success"><i class="feather icon-download"></i></a>
+                    <div class="d-flex justify-content-between">
+                        <a href="#" class="btn btn-primary" id="tambahcostratio"><i class="feather icon-plus mr-1"></i>Tambah Data</a>
+                        <a href="/costratio/cetak?dari={{ Request('dari') }}&sampai={{ Request('sampai') }}&kode_cabang={{ Request('kode_cabang') }}&id_sumber_costratio={{ Request('id_sumber_costratio') }}&excel=true" class="btn btn-success"><i class="feather icon-download"></i></a>
+                    </div>
+
+
                     <div class="table-responsive">
                         <table class="table table-hover-animation mt-2">
                             <thead class="thead-dark">
@@ -78,6 +83,7 @@
                                     <th>Jumlah</th>
                                     <th>Sumber</th>
                                     <th>Cabang</th>
+                                    <th>#</th>
 
                                 </tr>
                             </thead>
@@ -109,6 +115,20 @@
                                     <td class="text-right">{{ rupiah($d->jumlah) }}</td>
                                     <td>{{ $d->nama_sumber }}</td>
                                     <td>{{ $d->kode_cabang }}</td>
+                                    <td>
+                                        @if ($d->id_sumber_costratio==3)
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <form method="POST" class="deleteform" action="/costratio/{{Crypt::encrypt($d->kode_cr)}}/delete">
+                                                @csrf
+                                                @method('DELETE')
+                                                <a href="#" class="delete-confirm ml-1">
+                                                    <i class="feather icon-trash danger"></i>
+                                                </a>
+                                            </form>
+
+                                        </div>
+                                        @endif
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -123,5 +143,53 @@
         <!-- Data list view end -->
     </div>
 </div>
-
+<div class="modal fade text-left" id="mdlinputcostratio" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Tambah Costratio</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loadinputcostratio"></div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
+
+
+@push('myscript')
+<script>
+    $(function() {
+        $('.delete-confirm').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+            event.preventDefault();
+            swal({
+                    title: `Are you sure you want to delete this record?`
+                    , text: "If you delete this, it will be gone forever."
+                    , icon: "warning"
+                    , buttons: true
+                    , dangerMode: true
+                , })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
+        });
+        $('#tambahcostratio').click(function(e) {
+            e.preventDefault();
+            $('#mdlinputcostratio').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+            $("#loadinputcostratio").load('/costratio/create');
+        });
+    });
+
+</script>
+@endpush
