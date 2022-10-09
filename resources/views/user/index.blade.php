@@ -58,6 +58,7 @@
                                     <th>Level</th>
                                     <th>Cabang</th>
                                     <th>Status</th>
+                                    <th>Last Seen</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -76,6 +77,7 @@
                                             <span class="badge bg-{{ $status==1?'success':'danger' }}">{{ $status==1?'Aktif':'Non Aktif' }}</span>
                                         </a>
                                     </td>
+                                    <td><span class="badge bg-info">{{ $d->last_seen }}</span></td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             <form method="POST" class="deleteform" action="/user/{{Crypt::encrypt($d->id)}}/delete">

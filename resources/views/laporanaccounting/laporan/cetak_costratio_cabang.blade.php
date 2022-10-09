@@ -109,7 +109,19 @@
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $d->kode_akun }}</td>
-                <td>{{ $d->nama_akun }}</td>
+                <td>
+                    @php
+                    if($d->kode_akun == 1){
+                    $nama_akun = 'Sewa Gedung';
+                    }elseif($d->kode_akun==2){
+                    $nama_akun = 'Ratio BS';
+                    }else{
+                    $nama_akun = $d->nama_akun;
+                    }
+
+                    echo $nama_akun;
+                    @endphp
+                </td>
                 <td align="right">{{ rupiah($d->total) }}</td>
             </tr>
             @endforeach

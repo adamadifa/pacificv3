@@ -974,6 +974,32 @@ class LaporanaccountingController extends Controller
         $query->get();
         $biaya = $query->get();
 
+        $qpotongan = Penjualan::query();
+        if (!empty($request->kode_cabang)) {
+            $qpotongan->selectRaw("SUM(potongan + potistimewa + penyharga) as total");
+            $qpotongan->where('karyawan.kode_cabang', $request->kode_cabang);
+        } else {
+            $qpotongan->selectRaw("
+            SUM(IF(karyawan.kode_cabang='BDG',potongan + potistimewa + penyharga,0)) as bdg,
+            SUM(IF(karyawan.kode_cabang='BGR',potongan + potistimewa + penyharga,0)) as bgr,
+            SUM(IF(karyawan.kode_cabang='GRT',potongan + potistimewa + penyharga,0)) as grt,
+            SUM(IF(karyawan.kode_cabang='KLT',potongan + potistimewa + penyharga,0)) as klt,
+            SUM(IF(karyawan.kode_cabang='PST',potongan + potistimewa + penyharga,0)) as pst,
+            SUM(IF(karyawan.kode_cabang='PWT',potongan + potistimewa + penyharga,0)) as pwt,
+            SUM(IF(karyawan.kode_cabang='SBY',potongan + potistimewa + penyharga,0)) as sby,
+            SUM(IF(karyawan.kode_cabang='SKB',potongan + potistimewa + penyharga,0)) as skb,
+            SUM(IF(karyawan.kode_cabang='SMR',potongan + potistimewa + penyharga,0)) as smr,
+            SUM(IF(karyawan.kode_cabang='TGL',potongan + potistimewa + penyharga,0)) as tgl,
+            SUM(IF(karyawan.kode_cabang='TSM',potongan + potistimewa + penyharga,0)) as tsm,
+            SUM(IF(karyawan.kode_cabang='PWK',potongan + potistimewa + penyharga,0)) as pwk,
+            SUM(potongan + potistimewa + penyharga) as total
+        ");
+        }
+        $qpotongan->leftJoin('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $qpotongan->whereBetween('tgltransaksi', [$dari, $sampai]);
+        $potongan = $qpotongan->first();
+
+        //dd($potongan);
         $qpenjualan = Penjualan::query();
         if (!empty($kode_cabang)) {
             $qpenjualan->selectRaw("
@@ -1161,6 +1187,8 @@ class LaporanaccountingController extends Controller
         $qpiutang->whereRaw('to_days("' . $sampai . '") - to_days(penjualan.tgltransaksi) > 31');
         $qpiutang->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
         $piutang = $qpiutang->first();
+
+
         if (isset($_POST['export'])) {
             // Fungsi header dengan mengirimkan raw data excel
             header("Content-type: application/vnd-ms-excel");
@@ -1169,9 +1197,9 @@ class LaporanaccountingController extends Controller
         }
         if (!empty($request->kode_cabang)) {
             $cabang = Cabang::where('kode_cabang', $request->kode_cabang)->first();
-            return view('laporanaccounting.laporan.cetak_costratio_cabang', compact('dari', 'sampai', 'biaya', 'penjualan', 'retur', 'piutang', 'cabang'));
+            return view('laporanaccounting.laporan.cetak_costratio_cabang', compact('dari', 'sampai', 'biaya', 'penjualan', 'retur', 'piutang', 'cabang', 'potongan'));
         } else {
-            return view('laporanaccounting.laporan.cetak_costratio', compact('dari', 'sampai', 'biaya', 'penjualan', 'retur', 'piutang'));
+            return view('laporanaccounting.laporan.cetak_costratio', compact('dari', 'sampai', 'biaya', 'penjualan', 'retur', 'piutang', 'potongan'));
         }
     }
 }

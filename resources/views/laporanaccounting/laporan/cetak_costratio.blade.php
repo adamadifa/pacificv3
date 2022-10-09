@@ -145,7 +145,19 @@
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td style="text-align: center">'{{$d->kode_akun }}</td>
-                <td>{{ $d->nama_akun }}</td>
+                <td>
+                    @php
+                    if($d->kode_akun == 1){
+                    $nama_akun = 'Sewa Gedung';
+                    }elseif($d->kode_akun==2){
+                    $nama_akun = 'Ratio BS';
+                    }else{
+                    $nama_akun = $d->nama_akun;
+                    }
+
+                    echo $nama_akun;
+                    @endphp
+                </td>
                 <td style="text-align:right">{{ !empty($d->tsm) ?  rupiah($d->tsm) : '' }}</td>
                 <td style="text-align:right">{{ !empty($d->bdg) ?  rupiah($d->bdg) : '' }}</td>
                 <td style="text-align:right">{{ !empty($d->skb) ?  rupiah($d->skb) : '' }}</td>
@@ -161,22 +173,57 @@
                 <td style="text-align:right">{{ !empty($d->total) ?  rupiah($d->total) : '' }}</td>
             </tr>
             @endforeach
+            <tr>
+                <td></td>
+                <td style="text-align: center"></td>
+                <td>
+                    Potongan Penjualan
+                </td>
+                <td style="text-align:right">{{ !empty($potongan->tsm) ?  rupiah($potongan->tsm) : '' }}</td>
+                <td style="text-align:right">{{ !empty($potongan->bdg) ?  rupiah($potongan->bdg) : '' }}</td>
+                <td style="text-align:right">{{ !empty($potongan->skb) ?  rupiah($potongan->skb) : '' }}</td>
+                <td style="text-align:right">{{ !empty($potongan->tgl) ?  rupiah($potongan->tgl) : '' }}</td>
+                <td style="text-align:right">{{ !empty($potongan->bgr) ?  rupiah($potongan->bgr) : '' }}</td>
+                <td style="text-align:right">{{ !empty($potongan->pwt) ?  rupiah($potongan->pwt) : '' }}</td>
+                <td style="text-align:right">{{ !empty($potongan->pst) ?  rupiah($potongan->pst) : '' }}</td>
+                <td style="text-align:right">{{ !empty($potongan->grt) ?  rupiah($potongan->grt) : '' }}</td>
+                <td style="text-align:right">{{ !empty($potongan->sby) ?  rupiah($potongan->sby) : '' }}</td>
+                <td style="text-align:right">{{ !empty($potongan->smr) ?  rupiah($potongan->smr) : '' }}</td>
+                <td style="text-align:right">{{ !empty($potongan->klt) ?  rupiah($potongan->klt) : '' }}</td>
+                <td style="text-align:right">{{ !empty($potongan->pwk) ?  rupiah($potongan->pwk) : '' }}</td>
+                <td style="text-align:right">{{ !empty($potongan->total) ?  rupiah($potongan->total) : '' }}</td>
+            </tr>
+            @php
+            $totaltsm += $potongan->tsm;
+            $totalbdg += $potongan->bdg;
+            $totalskb += $potongan->skb;
+            $totaltgl += $potongan->tgl;
+            $totalbgr += $potongan->bgr;
+            $totalpwt += $potongan->pwt;
+            $totalpst += $potongan->pst;
+            $totalgrt += $potongan->grt;
+            $totalsby += $potongan->sby;
+            $totalsmr += $potongan->smr;
+            $totalklt += $potongan->klt;
+            $totalpwk += $potongan->pwk;
+            $grandtotal += $potongan->total;
+            @endphp
         </tbody>
         <tfoot>
             <tr>
                 <th style="background-color:rgb(0, 52, 93); color:white" colspan="3">TOTAL</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totaltsm) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalbdg) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalskb) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totaltgl) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalbgr) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalpwt) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalpst) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalgrt) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalsby) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalsmr) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalklt) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalpwk) }}</th>
+                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totaltsm ) }}</th>
+                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalbdg ) }}</th>
+                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalskb ) }}</th>
+                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totaltgl ) }}</th>
+                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalbgr ) }}</th>
+                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalpwt ) }}</th>
+                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalpst ) }}</th>
+                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalgrt ) }}</th>
+                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalsby ) }}</th>
+                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalsmr ) }}</th>
+                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalklt ) }}</th>
+                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalpwk ) }}</th>
                 <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($grandtotal) }}</th>
             </tr>
             @php
@@ -224,32 +271,32 @@
             $totalaida = $penjualan->totalaida - $retur->totalreturaida;
             $totalpenjualan = $totalswan + $totalaida;
 
-            $cr_swan_biaya_tsm = $swan_tsm != 0 ? ROUND(($totaltsm/$swan_tsm)*100) : 0;
-            $cr_swan_biaya_bdg = $swan_bdg != 0 ? ROUND(($totalbdg/$swan_bdg)*100) : 0;
-            $cr_swan_biaya_skb = $swan_skb != 0 ? ROUND(($totalskb/$swan_skb)*100) : 0;
-            $cr_swan_biaya_tgl = $swan_tgl != 0 ? ROUND(($totaltgl/$swan_tgl)*100) : 0;
-            $cr_swan_biaya_bgr = $swan_bgr != 0 ? ROUND(($totalbgr/$swan_bgr)*100) : 0;
-            $cr_swan_biaya_pwt = $swan_pwt != 0 ? ROUND(($totalpwt/$swan_pwt)*100) : 0;
-            $cr_swan_biaya_pst = $swan_pst != 0 ? ROUND(($totalpst/$swan_pst)*100) : 0;
-            $cr_swan_biaya_grt = $swan_grt != 0 ? ROUND(($totalgrt/$swan_grt)*100) : 0;
-            $cr_swan_biaya_sby = $swan_sby != 0 ? ROUND(($totalsby/$swan_sby)*100) : 0;
-            $cr_swan_biaya_smr = $swan_smr != 0 ? ROUND(($totalsmr/$swan_smr)*100) : 0;
-            $cr_swan_biaya_klt = $swan_klt != 0 ? ROUND(($totalklt/$swan_klt)*100) : 0;
-            $cr_swan_biaya_pwk = $swan_pwk != 0 ? ROUND(($totalpwk/$swan_pwk)*100) : 0;
-            $cr_swan_biaya_total = $totalswan != 0 ? ROUND(($grandtotal/$totalswan)*100) : 0;
+            $cr_swan_biaya_tsm = $swan_tsm != 0 ? ROUND((($totaltsm)/$swan_tsm)*100) : 0;
+            $cr_swan_biaya_bdg = $swan_bdg != 0 ? ROUND((($totalbdg)/$swan_bdg)*100) : 0;
+            $cr_swan_biaya_skb = $swan_skb != 0 ? ROUND((($totalskb)/$swan_skb)*100) : 0;
+            $cr_swan_biaya_tgl = $swan_tgl != 0 ? ROUND((($totaltgl)/$swan_tgl)*100) : 0;
+            $cr_swan_biaya_bgr = $swan_bgr != 0 ? ROUND((($totalbgr)/$swan_bgr)*100) : 0;
+            $cr_swan_biaya_pwt = $swan_pwt != 0 ? ROUND((($totalpwt)/$swan_pwt)*100) : 0;
+            $cr_swan_biaya_pst = $swan_pst != 0 ? ROUND((($totalpst)/$swan_pst)*100) : 0;
+            $cr_swan_biaya_grt = $swan_grt != 0 ? ROUND((($totalgrt)/$swan_grt)*100) : 0;
+            $cr_swan_biaya_sby = $swan_sby != 0 ? ROUND((($totalsby)/$swan_sby)*100) : 0;
+            $cr_swan_biaya_smr = $swan_smr != 0 ? ROUND((($totalsmr)/$swan_smr)*100) : 0;
+            $cr_swan_biaya_klt = $swan_klt != 0 ? ROUND((($totalklt)/$swan_klt)*100) : 0;
+            $cr_swan_biaya_pwk = $swan_pwk != 0 ? ROUND((($totalpwk)/$swan_pwk)*100) : 0;
+            $cr_swan_biaya_total = $totalswan != 0 ? ROUND((($grandtotal)/$totalswan)*100) : 0;
 
-            $cr_aida_biaya_tsm = $aida_tsm != 0 ? ROUND(($totaltsm/$aida_tsm)*100) : 0;
-            $cr_aida_biaya_bdg = $aida_bdg != 0 ? ROUND(($totalbdg/$aida_bdg)*100) : 0;
-            $cr_aida_biaya_skb = $aida_skb != 0 ? ROUND(($totalskb/$aida_skb)*100) : 0;
-            $cr_aida_biaya_tgl = $aida_tgl != 0 ? ROUND(($totaltgl/$aida_tgl)*100) : 0;
-            $cr_aida_biaya_bgr = $aida_bgr != 0 ? ROUND(($totalbgr/$aida_bgr)*100) : 0;
-            $cr_aida_biaya_pwt = $aida_pwt != 0 ? ROUND(($totalpwt/$aida_pwt)*100) : 0;
-            $cr_aida_biaya_pst = $aida_pst != 0 ? ROUND(($totalpst/$aida_pst)*100) : 0;
-            $cr_aida_biaya_grt = $aida_grt != 0 ? ROUND(($totalgrt/$aida_grt)*100) : 0;
-            $cr_aida_biaya_sby = $aida_sby != 0 ? ROUND(($totalsby/$aida_sby)*100) : 0;
-            $cr_aida_biaya_smr = $aida_smr != 0 ? ROUND(($totalsmr/$aida_smr)*100) : 0;
-            $cr_aida_biaya_klt = $aida_klt != 0 ? ROUND(($totalklt/$aida_klt)*100) : 0;
-            $cr_aida_biaya_pwk = $aida_pwk != 0 ? ROUND(($totalpwk/$aida_pwk)*100) : 0;
+            $cr_aida_biaya_tsm = $aida_tsm != 0 ? ROUND((($totaltsm)/$aida_tsm)*100) : 0;
+            $cr_aida_biaya_bdg = $aida_bdg != 0 ? ROUND((($totalbdg)/$aida_bdg)*100) : 0;
+            $cr_aida_biaya_skb = $aida_skb != 0 ? ROUND((($totalskb)/$aida_skb)*100) : 0;
+            $cr_aida_biaya_tgl = $aida_tgl != 0 ? ROUND((($totaltgl)/$aida_tgl)*100) : 0;
+            $cr_aida_biaya_bgr = $aida_bgr != 0 ? ROUND((($totalbgr)/$aida_bgr)*100) : 0;
+            $cr_aida_biaya_pwt = $aida_pwt != 0 ? ROUND((($totalpwt)/$aida_pwt)*100) : 0;
+            $cr_aida_biaya_pst = $aida_pst != 0 ? ROUND((($totalpst)/$aida_pst)*100) : 0;
+            $cr_aida_biaya_grt = $aida_grt != 0 ? ROUND((($totalgrt)/$aida_grt)*100) : 0;
+            $cr_aida_biaya_sby = $aida_sby != 0 ? ROUND((($totalsby)/$aida_sby)*100) : 0;
+            $cr_aida_biaya_smr = $aida_smr != 0 ? ROUND((($totalsmr)/$aida_smr)*100) : 0;
+            $cr_aida_biaya_klt = $aida_klt != 0 ? ROUND((($totalklt)/$aida_klt)*100) : 0;
+            $cr_aida_biaya_pwk = $aida_pwk != 0 ? ROUND((($totalpwk)/$aida_pwk)*100) : 0;
             $cr_aida_biaya_total = $totalaida != 0 ? ROUND(($grandtotal/$totalaida)*100) : 0;
 
             $cr_penjualan_biaya_tsm = $penjualan_tsm != 0 ? ROUND(($totaltsm/$penjualan_tsm)*100) : 0;
