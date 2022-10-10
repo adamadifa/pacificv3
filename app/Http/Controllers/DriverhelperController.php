@@ -10,9 +10,9 @@ class DriverhelperController extends Controller
     public function getdriverhelpercab(Request $request)
     {
         $kode_cabang = $request->kode_cabang;
-        if ($kode_cabang == "GRT") {
-            $kode_cabang = "TSM";
-        }
+        // if ($kode_cabang == "GRT") {
+        //     $kode_cabang = "TSM";
+        // }
         $kategori = $request->kategori;
         $id_driver_helper = $request->id_driver_helper;
         $driverhelper = DB::table('driver_helper')
