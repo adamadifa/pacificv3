@@ -193,20 +193,60 @@
                 <td style="text-align:right">{{ !empty($potongan->pwk) ?  rupiah($potongan->pwk) : '' }}</td>
                 <td style="text-align:right">{{ !empty($potongan->total) ?  rupiah($potongan->total) : '' }}</td>
             </tr>
+            <tr>
+                <td></td>
+                <td style="text-align: center"></td>
+                <td>
+                    Logistik
+                </td>
+                <td style="text-align:right">{{ !empty($logistik->tsm) ?  rupiah($logistik->tsm) : '' }}</td>
+                <td style="text-align:right">{{ !empty($logistik->bdg) ?  rupiah($logistik->bdg) : '' }}</td>
+                <td style="text-align:right">{{ !empty($logistik->skb) ?  rupiah($logistik->skb) : '' }}</td>
+                <td style="text-align:right">{{ !empty($logistik->tgl) ?  rupiah($logistik->tgl) : '' }}</td>
+                <td style="text-align:right">{{ !empty($logistik->bgr) ?  rupiah($logistik->bgr) : '' }}</td>
+                <td style="text-align:right">{{ !empty($logistik->pwt) ?  rupiah($logistik->pwt) : '' }}</td>
+                <td style="text-align:right">{{ !empty($logistik->pst) ?  rupiah($logistik->pst) : '' }}</td>
+                <td style="text-align:right">{{ !empty($logistik->grt) ?  rupiah($logistik->grt) : '' }}</td>
+                <td style="text-align:right">{{ !empty($logistik->sby) ?  rupiah($logistik->sby) : '' }}</td>
+                <td style="text-align:right">{{ !empty($logistik->smr) ?  rupiah($logistik->smr) : '' }}</td>
+                <td style="text-align:right">{{ !empty($logistik->klt) ?  rupiah($logistik->klt) : '' }}</td>
+                <td style="text-align:right">{{ !empty($logistik->pwk) ?  rupiah($logistik->pwk) : '' }}</td>
+                <td style="text-align:right">{{ !empty($logistik->total) ?  rupiah($logistik->total) : '' }}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td style="text-align: center"></td>
+                <td>
+                    Penggunaan Bahan Kemasan
+                </td>
+                <td style="text-align:right">{{ !empty($bahan->tsm) ?  rupiah($bahan->tsm) : '' }}</td>
+                <td style="text-align:right">{{ !empty($bahan->bdg) ?  rupiah($bahan->bdg) : '' }}</td>
+                <td style="text-align:right">{{ !empty($bahan->skb) ?  rupiah($bahan->skb) : '' }}</td>
+                <td style="text-align:right">{{ !empty($bahan->tgl) ?  rupiah($bahan->tgl) : '' }}</td>
+                <td style="text-align:right">{{ !empty($bahan->bgr) ?  rupiah($bahan->bgr) : '' }}</td>
+                <td style="text-align:right">{{ !empty($bahan->pwt) ?  rupiah($bahan->pwt) : '' }}</td>
+                <td style="text-align:right">{{ !empty($bahan->pst) ?  rupiah($bahan->pst) : '' }}</td>
+                <td style="text-align:right">{{ !empty($bahan->grt) ?  rupiah($bahan->grt) : '' }}</td>
+                <td style="text-align:right">{{ !empty($bahan->sby) ?  rupiah($bahan->sby) : '' }}</td>
+                <td style="text-align:right">{{ !empty($bahan->smr) ?  rupiah($bahan->smr) : '' }}</td>
+                <td style="text-align:right">{{ !empty($bahan->klt) ?  rupiah($bahan->klt) : '' }}</td>
+                <td style="text-align:right">{{ !empty($bahan->pwk) ?  rupiah($bahan->pwk) : '' }}</td>
+                <td style="text-align:right">{{ !empty($bahan->total) ?  rupiah($bahan->total) : '' }}</td>
+            </tr>
             @php
-            $totaltsm += $potongan->tsm;
-            $totalbdg += $potongan->bdg;
-            $totalskb += $potongan->skb;
-            $totaltgl += $potongan->tgl;
-            $totalbgr += $potongan->bgr;
-            $totalpwt += $potongan->pwt;
-            $totalpst += $potongan->pst;
-            $totalgrt += $potongan->grt;
-            $totalsby += $potongan->sby;
-            $totalsmr += $potongan->smr;
-            $totalklt += $potongan->klt;
-            $totalpwk += $potongan->pwk;
-            $grandtotal += $potongan->total;
+            $totaltsm += ($potongan->tsm + $logistik->tsm + $bahan->tsm);
+            $totalbdg += ($potongan->bdg + $logistik->bdg + $bahan->bdg);
+            $totalskb += ($potongan->skb + $logistik->skb + $bahan->skb);
+            $totaltgl += ($potongan->tgl + $logistik->tgl + $bahan->tgl);
+            $totalbgr += ($potongan->bgr + $logistik->bgr + $bahan->bgr);
+            $totalpwt += ($potongan->pwt + $logistik->pwt + $bahan->pwt);
+            $totalpst += ($potongan->pst + $logistik->pst + $bahan->pst);
+            $totalgrt += ($potongan->grt + $logistik->grt + $bahan->grt);
+            $totalsby += ($potongan->sby + $logistik->sby + $bahan->sby);
+            $totalsmr += ($potongan->smr + $logistik->smr + $bahan->smr);
+            $totalklt += ($potongan->klt + $logistik->klt + $bahan->klt);
+            $totalpwk += ($potongan->pwk + $logistik->pwk + $bahan->pwk);
+            $grandtotal += ($potongan->total + $logistik->total + $bahan->total);
             @endphp
         </tbody>
         <tfoot>

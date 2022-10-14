@@ -108,7 +108,7 @@
             @endphp
             <tr>
                 <td>{{ $loop->iteration }}</td>
-                <td>{{ $d->kode_akun }}</td>
+                <td>'{{ $d->kode_akun }}</td>
                 <td>
                     @php
                     if($d->kode_akun == 1){
@@ -125,6 +125,24 @@
                 <td align="right">{{ rupiah($d->total) }}</td>
             </tr>
             @endforeach
+            <tr>
+                <td></td>
+                <td></td>
+                <td>Potongan Penjualan</td>
+                <td style="text-align: right">{{ rupiah($potongan->total) }}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td>Logistik</td>
+                <td style="text-align: right">{{ rupiah($logistik->total) }}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td>Bahan Kemasan</td>
+                <td style="text-align: right">{{ rupiah($bahan->total) }}</td>
+            </tr>
         </tbody>
         <tfoot>
             @php
@@ -136,6 +154,7 @@
             $cr_aida_biaya_total = $totalaida != 0 ? ROUND(($grandtotal/$totalaida)*100) : 0;
             $cr_penjualan_biaya_total = $totalpenjualan != 0 ? ROUND(($grandtotal/$totalpenjualan)*100) : 0;
 
+            $grandtotal = $grandtotal + $potongan->total + $logistik->total + $bahan->total;
 
             @endphp
             <tr>

@@ -455,6 +455,8 @@ class LaporangudangbahanController extends Controller
 
         $query->orderBy('nama_barang');
         $query->orderBy('urutan');
+        $query->where('master_barang_pembelian.kode_barang', 'BK-10');
+
         $persediaan = $query->get();
 
         $kategori = DB::table('kategori_barang_pembelian')->where('kode_kategori', $kode_kategori)->first();
