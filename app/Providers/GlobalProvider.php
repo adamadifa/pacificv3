@@ -750,6 +750,9 @@ class GlobalProvider extends ServiceProvider
             $laporan_costratio = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'hrd', 'kepala admin', 'kepala penjualan'];
 
 
+            //HRD
+            $hrd_menu = ['admin'];
+            $penilaian_karyawan = ['admin'];
             //Maintenance
 
             $maintenance_menu  = [
@@ -1074,6 +1077,7 @@ class GlobalProvider extends ServiceProvider
 
                 //Acounting
                 'accounting_menu' => $accounting_menu,
+
                 'coa_menu' => $coa_menu,
                 'setcoacabang' => $setcoacabang,
                 'hpp_menu' => $hpp_menu,
@@ -1088,6 +1092,11 @@ class GlobalProvider extends ServiceProvider
                 'laporan_bukubesar' => $laporan_bukubesar,
                 'laporan_jurnalumum' => $laporan_jurnalumum,
                 'laporan_costratio' => $laporan_costratio,
+
+                //HRD
+
+                'hrd_menu' => $hrd_menu,
+                'penilaian_karyawan' => $penilaian_karyawan,
 
                 'maintenance_menu' => $maintenance_menu,
                 'maintenance_pembelian' => $maintenance_pembelian,

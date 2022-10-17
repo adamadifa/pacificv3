@@ -77,7 +77,7 @@ class LimitkreditController extends Controller
             }
 
             if (!empty($request->status)) {
-                $query->where('status', $status);
+                $query->where('pengajuan_limitkredit_v3.status', $status);
             }
         }
         if ($this->level == "kepala penjualan") {
@@ -85,13 +85,13 @@ class LimitkreditController extends Controller
                 $query->whereNull('kacab');
             } else if ($request->status == "disetujui") {
                 $query->whereNotNull('kacab');
-                $query->where('status', '!=', 2);
+                $query->where('pengajuan_limitkreidt_v3.status', '!=', 2);
                 $query->orwhereNotNull('kacab');
-                $query->where('status', '=', 2);
+                $query->where('pengajuan_limitkreidt_v3.status', '=', 2);
                 $query->where('level', '!=', Auth::user()->level);
             } else if ($request->status == "ditolak") {
                 $query->whereNotNull('kacab');
-                $query->where('status', 2);
+                $query->where('pengajuan_limitkreidt_v3.status', 2);
                 $query->where('level', Auth::user()->level);
             }
             $query->where('jumlah', '>', 2000000);
@@ -105,15 +105,15 @@ class LimitkreditController extends Controller
                 $query->where('jumlah', '>', 5000000);
             } else if ($request->status == "disetujui") {
                 $query->whereNotNull('rsm');
-                $query->where('status', '!=', 2);
+                $query->where('pengajuan_limitkreidt_v3.status', '!=', 2);
                 $query->where('jumlah', '>', 5000000);
                 $query->orwhereNotNull('rsm');
-                $query->where('status', '=', 2);
+                $query->where('pengajuan_limitkreidt_v3.status', '=', 2);
                 $query->where('level', '!=', Auth::user()->level);
                 $query->where('jumlah', '>', 5000000);
             } else if ($request->status == "ditolak") {
                 $query->whereNotNull('rsm');
-                $query->where('status', 2);
+                $query->where('pengajuan_limitkreidt_v3.status', 2);
                 $query->where('level', Auth::user()->level);
                 $query->where('jumlah', '>', 5000000);
             }
@@ -123,21 +123,21 @@ class LimitkreditController extends Controller
             if ($request->status == "pending") {
                 $query->whereNotNull('rsm');
                 $query->whereNull('mm');
-                $query->where('status', 0);
+                $query->where('pengajuan_limitkreidt_v3.status', 0);
                 $query->where('jumlah', '>', 10000000);
                 $query->orWhereIn('pelanggan.kode_cabang', $wilayah_timur);
                 $query->whereNotNull('rsm');
             } else if ($request->status == "disetujui") {
                 $query->whereNotNull('mm');
-                $query->where('status', '!=', 2);
+                $query->where('pengajuan_limitkreidt_v3.status', '!=', 2);
                 $query->where('jumlah', '>', 10000000);
                 $query->orwhereNotNull('mm');
-                $query->where('status', '=', 2);
+                $query->where('pengajuan_limitkreidt_v3.status', '=', 2);
                 $query->where('level', '!=', Auth::user()->level);
                 $query->where('jumlah', '>', 10000000);
             } else if ($request->status == "ditolak") {
                 $query->whereNotNull('mm');
-                $query->where('status', 2);
+                $query->where('pengajuan_limitkreidt_v3.status', 2);
                 $query->where('level', Auth::user()->level);
                 $query->where('jumlah', '>', 10000000);
             }
@@ -163,11 +163,11 @@ class LimitkreditController extends Controller
             $this->level == "admin penjualan dan kasir"
         ) {
             if ($request->status == "pending") {
-                $query->where('status', 0);
+                $query->where('pengajuan_limitkreidt_v3.status', 0);
             } else if ($request->status == "disetujui") {
-                $query->where('status', 1);
+                $query->where('pengajuan_limitkreidt_v3.status', 1);
             } else if ($request->status == "ditolak") {
-                $query->where('status', 2);
+                $query->where('pengajuan_limitkreidt_v3.status', 2);
             }
         }
 
@@ -196,20 +196,20 @@ class LimitkreditController extends Controller
             if ($request->status == "pending") {
                 $query->whereNotNull('mm');
                 $query->whereNull('dirut');
-                $query->where('status', 0);
+                $query->where('pengajuan_limitkreidt_v3.status', 0);
                 $query->where('jumlah', '>', 10000000);
             } else if ($request->status == "disetujui") {
                 $query->whereNotNull('dirut');
-                $query->where('status', '!=', 2);
+                $query->where('pengajuan_limitkreidt_v3.status', '!=', 2);
                 $query->where('jumlah', '>', 10000000);
                 $query->orwhereNotNull('dirut');
-                $query->where('status', '=', 2);
+                $query->where('pengajuan_limitkreidt_v3.status', '=', 2);
                 $query->where('level', '!=', Auth::user()->level);
                 $query->where('jumlah', '>', 10000000);
             } else if ($request->status == "ditolak") {
                 $query->whereNotNull('gm');
                 $query->whereNotNull('dirut');
-                $query->where('status', 2);
+                $query->where('pengajuan_limitkreidt_v3.status', 2);
                 $query->where('level', Auth::user()->level);
                 $query->where('jumlah', '>', 10000000);
             }

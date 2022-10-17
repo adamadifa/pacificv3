@@ -68,6 +68,7 @@ use App\Http\Controllers\PengeluarangudangbahanController;
 use App\Http\Controllers\PengeluarangudanglogistikController;
 use App\Http\Controllers\PengeluaranmaintenanceController;
 use App\Http\Controllers\PengeluaranproduksiController;
+use App\Http\Controllers\PenilaiankaryawanController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\PermintaanpengirimanController;
 use App\Http\Controllers\PermintaanproduksiController;
@@ -312,6 +313,11 @@ Route::middleware(['auth'])->group(function () {
     //Rekap Kendaraan
     Route::get('/laporankendaraan/rekapkendaraan', [KendaraanController::class, 'laporanrekapkendaraan']);
     Route::post('/laporankendaraan/rekapkendaraan/cetak', [KendaraanController::class, 'cetaklaporanrekapkendaraan']);
+
+    //DPPP
+    Route::get('/laporanpenjualan/rekapwilayah', [PenjualanController::class, 'rekapwilayah']);
+    Route::post('/laporanpenjualan/rekapwilayah/cetak', [PenjualanController::class, 'cetakrekapwilayah']);
+
 
     //LPC
     Route::get('/lpc', [LpcController::class, 'index']);
@@ -984,6 +990,9 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/salesman/{id_karyawan}/delete', [SalesmanController::class, 'delete']);
     Route::post('/salesman/show', [SalesmanController::class, 'show']);
 
+    //Penilaian Karyawan
+    Route::get('/penilaiankaryawan', [PenilaiankaryawanController::class, 'index']);
+    Route::post('/penilaiankaryawan/create', [PenilaiankaryawanController::class, 'create']);
 
     //Harga
     Route::get('/harga', [HargaController::class, 'index']);

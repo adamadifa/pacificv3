@@ -93,6 +93,11 @@
                     <i class="feather icon-file mr-1"></i>Tanda Terima Faktur
                 </li>
             </a>
+            <a href="/laporanpenjualan/rekapwilayah" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanpenjualan/rekapwilayah']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Rekap Wilayah
+                </li>
+            </a>
             @endif
         </ul>
     </div>

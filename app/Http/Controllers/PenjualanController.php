@@ -3649,7 +3649,41 @@ class PenjualanController extends Controller
         }
         return view('penjualan.laporan.cetak_lebihsatufaktur', compact('lebihsatufaktur', 'salesman', 'cabang', 'tanggal'));
     }
+    public function rekapwilayah()
+    {
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
+        return view('penjualan.laporan.frm.lap_rekapwilayah', compact('cabang'));
+    }
 
+    public function cetakrekapwilayah(Request $request)
+    {
+        $cbg = $request->kode_cabang;
+        $tahun = $request->tahun;
+        $rekapwilayah = DB::table('penjualan')
+            ->selectRaw("pelanggan.pasar,
+                SUM(IF(MONTH(tgltransaksi)=1,total,0)) as jan,
+                SUM(IF(MONTH(tgltransaksi)=2,total,0)) as feb,
+                SUM(IF(MONTH(tgltransaksi)=3,total,0)) as mar,
+                SUM(IF(MONTH(tgltransaksi)=4,total,0)) as apr,
+                SUM(IF(MONTH(tgltransaksi)=5,total,0)) as mei,
+                SUM(IF(MONTH(tgltransaksi)=6,total,0)) as jun,
+                SUM(IF(MONTH(tgltransaksi)=7,total,0)) as jul,
+                SUM(IF(MONTH(tgltransaksi)=8,total,0)) as agu,
+                SUM(IF(MONTH(tgltransaksi)=9,total,0)) as sep,
+                SUM(IF(MONTH(tgltransaksi)=10,total,0)) as okt,
+                SUM(IF(MONTH(tgltransaksi)=11,total,0)) as nov,
+                SUM(IF(MONTH(tgltransaksi)=12,total,0)) as des,
+                SUM(total) as total")
+            ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+            ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->whereRaw('YEAR(tgltransaksi)="' . $tahun . '"')
+            ->where('karyawan.kode_cabang', $cbg)
+            ->groupBy('pelanggan.pasar')
+            ->get();
+        $cabang = Cabang::where('kode_cabang', $cbg)->first();
+        return view('penjualan.laporan.cetak_rekapwilayah', compact('cabang', 'tahun', 'rekapwilayah'));
+    }
     public function laporandppp()
     {
         $cbg = new Cabang();

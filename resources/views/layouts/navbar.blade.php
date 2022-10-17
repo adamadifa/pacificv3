@@ -962,6 +962,22 @@
                 </ul>
             </li>
             @endif
+
+            @if (in_array($level, $hrd_menu))
+            <li class=" nav-item">
+                <a href="#"><i class="fa fa-users" style="color:rgb(200, 5, 77)"></i><span class="menu-title">HRD</span></a>
+                <ul class="menu-content">
+                    @if (in_array($level, $penilaian_karyawan))
+                    <li class="{{ request()->is(['penilaiankaryawan', 'penilaiankaryawan/*']) ? 'active' : '' }}">
+                        <a href="/penilaiankaryawan">
+                            <i class="feather icon-edit"></i>
+                            <span class="menu-item" data-i18n="Second Level">Penilaian karyawan</span>
+                        </a>
+                    </li>
+                    @endif
+                </ul>
+            </li>
+            @endif
             @if (in_array($level,$maintenance_menu))
             <li class=" nav-item">
                 <a href="#"><i class="feather icon-umbrella"></i><span class="menu-title">Maintenance</span></a>
