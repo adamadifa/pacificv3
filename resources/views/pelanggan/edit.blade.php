@@ -74,7 +74,7 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <select name="pasar" id="pasar" class="form-control select2">
-                                                    <option value="">Pilih Pasar / Rute</option>
+                                                    <option value="">Pilih Wilayah / Rute</option>
                                                     @foreach ($pasar as $d)
                                                     <option {{ $data->pasar == $d->nama_pasar  ? 'selected' : ''}} value="{{ $d->nama_pasar }}">{{ $d->nama_pasar }}</option>
                                                     @endforeach
