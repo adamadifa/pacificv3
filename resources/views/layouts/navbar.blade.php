@@ -105,7 +105,7 @@
                     <li class="{{ request()->is(['pasar', 'pasar/*']) ? 'active' : '' }}">
                         <a href="/pasar">
                             <i class="fa fa-bank"></i>
-                            <span class="menu-item">Data Pasar</span>
+                            <span class="menu-item">Data Pasar / Rute</span>
                         </a>
                     </li>
                     @endif
