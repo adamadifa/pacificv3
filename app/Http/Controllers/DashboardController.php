@@ -37,7 +37,7 @@ class DashboardController extends Controller
         } else if (Auth::user()->level == "admin penjualan") {
             return $this->dashboardadminpenjualan();
         } else if (Auth::user()->level == "kepala penjualan") {
-            return $this->dashboardkepalaadmin();
+            return $this->dashboardkepalapenjualan();
         } else if (Auth::user()->level == "kepala admin" || Auth::user()->level == "admin pusat") {
             return $this->dashboardkepalaadmin();
         } else if (Auth::user()->level == "manager accounting" || Auth::user()->level == "audit") {
@@ -324,13 +324,19 @@ class DashboardController extends Controller
         }
 
 
-        $jmlpengajuan = DB::table('pengajuan_limitkredit_v3')
-            ->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
-            ->whereIn('no_pengajuan', $no_pengajuan)
-            ->where('pelanggan.kode_cabang', $kode_cabang)
-            ->whereNull('kacab')
-            ->where('status', 0)
-            ->count();
+        $qpengajuan = Limitkredit::query();
+        $qpengajuan->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        $qpengajuan->whereIn('no_pengajuan', $no_pengajuan);
+        $qpengajuan->where('pelanggan.kode_cabang', $kode_cabang);
+        $qpengajuan->whereNull('kacab');
+        $qpengajuan->where('status', 0);
+        if (Auth::user()->id == 7) {
+            $qpengajuan->orwhere('pelanggan.kode_cabang', 'GRT');
+            $qpengajuan->whereIn('no_pengajuan', $no_pengajuan);
+            $qpengajuan->whereNull('kacab');
+            $qpengajuan->where('status', 0);
+        }
+        $jmlpengajuan = $qpengajuan->count();
 
         $dari = date("Y") . "-" . date("m") . "-01";
         $sampai = date("Y-m-t", strtotime($dari));
