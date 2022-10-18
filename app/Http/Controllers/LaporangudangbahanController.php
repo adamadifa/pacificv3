@@ -455,7 +455,7 @@ class LaporangudangbahanController extends Controller
 
         $query->orderBy('nama_barang');
         $query->orderBy('urutan');
-        $query->where('master_barang_pembelian.kode_barang', 'BK-10');
+        // $query->where('master_barang_pembelian.kode_barang', 'BK-10');
 
         $persediaan = $query->get();
 
