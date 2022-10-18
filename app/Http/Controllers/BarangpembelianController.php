@@ -47,7 +47,7 @@ class BarangpembelianController extends Controller
             $query->where('kode_barang', 'like', '%' . $request->kode_barang_search . '%');
         }
 
-        $query->orderBy('kode_barang', 'desc');
+        $query->orderByRaw('cast(substr(master_barang_pembelian.kode_barang from 4) AS UNSIGNED) desc');
         $barang_pembelian = $query->paginate(15);
         $barang_pembelian->appends($request->all());
 

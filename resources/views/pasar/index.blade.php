@@ -93,7 +93,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-
+                        {{ $pasar->links('vendor.pagination.vuexy') }}
                     </div>
 
                     <!-- DataTable ends -->
