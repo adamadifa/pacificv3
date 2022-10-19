@@ -936,7 +936,11 @@ class LaporanaccountingController extends Controller
     public function costratio()
     {
         $cbg = new Cabang();
-        $cabang = $cbg->getCabanggudang($this->cabang);
+        if (Auth::user()->level == "admin pusat") {
+            $cabang = DB::table('cabang')->get();
+        } else {
+            $cabang = $cbg->getCabanggudang($this->cabang);
+        }
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('laporanaccounting.laporan.frm.lap_costratio', compact('bulan', 'cabang'));
     }

@@ -28,7 +28,14 @@ class CostratioController extends Controller
     public function index(Request $request)
     {
         $cbg = new Cabang();
-        $cabang = $cbg->getCabanggudang($this->cabang);
+
+
+        if (Auth::user()->level == "admin pusat") {
+            $cabang = DB::table('cabang')->get();
+        } else {
+            $cabang = $cbg->getCabanggudang($this->cabang);
+        }
+
         $sumber = DB::table('costratio_sumber')->orderBy('id_sumber_costratio')->get();
         $query = Costratio::query();
         $query->leftJoin('coa', 'costratio_biaya.kode_akun', '=', 'coa.kode_akun');

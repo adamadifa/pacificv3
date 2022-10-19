@@ -21,7 +21,7 @@
     </div>
     <div class="row mb-2">
         <div class="col-12">
-            @if (Auth::user()->kode_cabang == "PCF")
+            @if (Auth::user()->kode_cabang == "PCF" || Auth::user()->level=="admin pusat")
             <select name="kode_cabang" id="kode_cabang" class="form-control">
                 <option value="">Cabang</option>
                 @foreach ($cabang as $d)

@@ -733,21 +733,21 @@ class GlobalProvider extends ServiceProvider
             ];
 
             //Acounting
-            $accounting_menu = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'general affair', 'hrd', 'kepala admin', 'kepala penjualan'];
+            $accounting_menu = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'general affair', 'hrd', 'kepala admin', 'kepala penjualan', 'admin pusat'];
             $coa_menu = ['admin', 'spv accounting', 'manager accounting'];
             $setcoacabang = ['admin', 'spv accounting', 'manager accounting'];
             $hpp_menu = ['admin', 'manager accounting', 'spv accounting'];
             $hpp_input = ['admin', 'manager accounting', 'spv accounting'];
             $hargaawal_input = ['admin', 'manager accounting', 'spv accounting'];
             $saldoawal_bukubesar_menu = ['admin', 'manager accounting', 'spv accounting'];
-            $jurnalumum_menu = ['admin', 'manager accounting', 'spv accounting', 'general affair', 'hrd'];
-            $costratio_menu = ['admin', 'manager accounting', 'spv accounting', 'kepala admin', 'kepala penjualan'];
-            $laporan_accounting = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'general affair', 'hrd', 'kepala admin', 'kepala penjualan'];
+            $jurnalumum_menu = ['admin', 'manager accounting', 'spv accounting', 'general affair', 'hrd', 'admin pusat'];
+            $costratio_menu = ['admin', 'manager accounting', 'spv accounting', 'kepala admin', 'kepala penjualan', 'admin pusat'];
+            $laporan_accounting = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'general affair', 'hrd', 'kepala admin', 'kepala penjualan', 'admin pusat'];
             $laporan_lk = ['admin', 'direktur', 'manager accounting', 'spv accounting'];
             $laporan_rekapbj_acc = ['admin', 'direktur', 'manager accounting', 'spv accounting'];
             $laporan_bukubesar = ['admin', 'direktur', 'manager accounting', 'spv accounting'];
-            $laporan_jurnalumum = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'general affair', 'hrd'];
-            $laporan_costratio = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'hrd', 'kepala admin', 'kepala penjualan'];
+            $laporan_jurnalumum = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'general affair', 'hrd', 'admin pusat'];
+            $laporan_costratio = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'hrd', 'kepala admin', 'kepala penjualan', 'admin pusat'];
 
 
             //HRD
