@@ -1425,6 +1425,7 @@ class LaporanaccountingController extends Controller
             END ,0)) as total");
         }
         $qlogistik->join('pengeluaran', 'detail_pengeluaran.nobukti_pengeluaran', '=', 'pengeluaran.nobukti_pengeluaran');
+        $qlogistik->join('master_barang_pembelian', 'detail_pengeluaran.kode_barang', '=', 'master_barang_pembelian.kode_barang');
 
         $qlogistik->leftJoin(
             DB::raw("(
@@ -1452,6 +1453,7 @@ class LaporanaccountingController extends Controller
             }
         );
 
+        $qlogistik->where('master_barang_pembelian.kode_kategori', 'K001');
         $qlogistik->whereBetween('tgl_pengeluaran', [$dari, $sampai]);
         $logistik = $qlogistik->first();
         //dd($logistik);
