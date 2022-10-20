@@ -1025,6 +1025,8 @@ class TargetkomisiController extends Controller
             return view('targetkomisi.laporan.cetak_komisi_juli', compact('komisi', 'cbg', 'nmbulan', 'tahun', 'produk', 'driver', 'helper', 'gudang', 'tunaikredit', 'bulan', 'cabang'));
         } elseif ($bulan == 8 && $tahun == 2022) {
             return view('targetkomisi.laporan.cetak_komisi_agustus', compact('komisi', 'cbg', 'nmbulan', 'tahun', 'produk', 'driver', 'helper', 'gudang', 'tunaikredit', 'bulan', 'cabang'));
+        } elseif ($bulan == 8 && $tahun == 2022) {
+            return view('targetkomisi.laporan.cetak_komisi_september', compact('komisi', 'cbg', 'nmbulan', 'tahun', 'produk', 'driver', 'helper', 'gudang', 'tunaikredit', 'bulan', 'cabang'));
         } elseif ($bulan < 7 && $tahun <= 2022) {
             return view('targetkomisi.laporan.cetak_komisi_juni', compact('komisi', 'cbg', 'nmbulan', 'tahun', 'produk', 'driver', 'helper', 'gudang', 'tunaikredit', 'bulan', 'cabang'));
         } else {

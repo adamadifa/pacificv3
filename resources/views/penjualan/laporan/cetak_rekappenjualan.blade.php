@@ -232,12 +232,12 @@
             <tr>
                 <td class="fixed-side" scope="col"><?php echo $no; ?></td>
                 <td class="fixed-side" scope="col"><?php echo $p->nama_karyawan; ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->AB)) {
-                                                                                                                        echo rupiah($p->AB);
-                                                                                                                    } ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->AR)) {
-                                                                                                                        echo rupiah($p->AR);
-                                                                                                                    } ?></td>
+                <td style="text-align:right; font-weight:bold">
+                    <?php if (!empty($p->AB)) {echo rupiah($p->AB);} ?>
+                </td>
+                <td style="text-align:right; font-weight:bold">
+                    <?php if (!empty($p->AR)) { echo rupiah($p->AR);} ?>
+                </td>
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($p->ASE)) {
                                                                                                                         echo rupiah($p->ASE);
                                                                                                                     } ?></td>

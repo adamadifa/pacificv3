@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak Laporan Analisa Umur Piutang (AUP) {{ date("d-m-y") }}</title>
+    <title>Cetak Komisi {{ date("d-m-y") }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -390,7 +390,7 @@
 
                 //Ratio LJT
 
-                $ratioljt = ($d->sisapiutang / $d->realisasi_cashin * 100) * ($kebijakan / 100);
+                $ratioljt = (($d->sisapiutang + $d->cashin_jt) / $d->realisasi_cashin * 100) * ($kebijakan / 100);
                 if ($ratioljt > 0) {
                     $ratioljt = $ratioljt;
                 } else {
@@ -460,7 +460,7 @@
                 $totalrealisasiSC += $realisasi_SC;
 
                 $totalcashin += $d->realisasi_cashin;
-                $totalsisapiutang += $d->sisapiutang;
+                $totalsisapiutang += $d->sisapiutang + $d->cashin_jt;
                 ?>
             <tr>
                 <td><?php echo $no; ?></td>
@@ -490,7 +490,7 @@
                 <td align="center" style="background-color: #9e9895;"><?php echo $ratiocashin; ?>%</td>
 
                 <td align="right" style="background-color: #9e9895;"><?php echo desimal($rewardcashin); ?></td>
-                <td align="right" style="background-color: #e43a90;"><?php if ($d->sisapiutang > 0) {echo desimal($d->sisapiutang); } else {echo 0;} ?></td>
+                <td align="right" style="background-color: #e43a90;"><?php if (($d->sisapiutang + $d->cashin_jt) > 0) {echo desimal($d->sisapiutang + $d->cashin_jt); } else {echo 0;} ?></td>
                 <td align="center" style="background-color: #e43a90;"><?php echo round($ratioljt, 2); ?></td>
                 <td align="right" style="background-color: #e43a90;"><?php echo desimal($rewardljt); ?></td>
                 <td align="right" style="background-color: #ff570d;"><?php echo desimal($totalreward); ?></td>
