@@ -1660,4 +1660,182 @@ class LaporanaccountingController extends Controller
             return view('laporanaccounting.laporan.cetak_costratio', compact('dari', 'sampai', 'biaya', 'penjualan', 'retur', 'piutang', 'potongan', 'logistik', 'bahan'));
         }
     }
+
+    public function cetak_costratio_detaillogistik($dari, $sampai, $kode_cabang)
+    {
+
+        $tgl = explode("-", $dari);
+        $bulan = $tgl[1];
+        $tahun = $tgl[0];
+        $qlogistik = Detailpengeluarangudanglogistik::query();
+        $qlogistik->selectRaw("detail_pengeluaran.kode_barang,nama_barang,qty,CASE
+        WHEN sa.hargasaldoawal IS NULL THEN gm.hargapemasukan
+        WHEN gm.hargapemasukan IS NULL THEN sa.hargasaldoawal
+        ELSE
+        (sa.totalsa + gm.totalpemasukan) / (sa.qtysaldoawal + gm.qtypemasukan)
+        END as harga, SUM(qty *
+        CASE
+            WHEN sa.hargasaldoawal IS NULL THEN gm.hargapemasukan
+            WHEN gm.hargapemasukan IS NULL THEN sa.hargasaldoawal
+            ELSE
+            (sa.totalsa + gm.totalpemasukan) / (sa.qtysaldoawal + gm.qtypemasukan)
+            END) as total");
+
+        $qlogistik->join('pengeluaran', 'detail_pengeluaran.nobukti_pengeluaran', '=', 'pengeluaran.nobukti_pengeluaran');
+        $qlogistik->join('master_barang_pembelian', 'detail_pengeluaran.kode_barang', '=', 'master_barang_pembelian.kode_barang');
+
+        $qlogistik->leftJoin(
+            DB::raw("(
+                SELECT saldoawal_gl_detail.kode_barang,SUM(saldoawal_gl_detail.harga) AS hargasaldoawal,SUM( qty ) AS qtysaldoawal,SUM(saldoawal_gl_detail.harga*qty) AS
+                totalsa FROM saldoawal_gl_detail
+                INNER JOIN saldoawal_gl ON saldoawal_gl.kode_saldoawal_gl=saldoawal_gl_detail.kode_saldoawal_gl
+                WHERE bulan = '$bulan' AND tahun = '$tahun'
+                GROUP BY saldoawal_gl_detail.kode_barang
+            ) sa"),
+            function ($join) {
+                $join->on('detail_pengeluaran.kode_barang', '=', 'sa.kode_barang');
+            }
+        );
+
+        $qlogistik->leftJoin(
+            DB::raw("(
+                SELECT detail_pemasukan.kode_barang,SUM( penyesuaian ) AS penyesuaian,SUM( qty ) AS qtypemasukan,SUM( harga ) AS hargapemasukan,SUM(detail_pemasukan.harga * qty) AS totalpemasukan FROM
+                detail_pemasukan
+                INNER JOIN pemasukan ON detail_pemasukan.nobukti_pemasukan = pemasukan.nobukti_pemasukan
+                WHERE MONTH(tgl_pemasukan) = '$bulan' AND YEAR(tgl_pemasukan) = '$tahun'
+                GROUP BY detail_pemasukan.kode_barang
+            ) gm"),
+            function ($join) {
+                $join->on('detail_pengeluaran.kode_barang', '=', 'gm.kode_barang');
+            }
+        );
+
+        $qlogistik->where('master_barang_pembelian.kode_kategori', 'K001');
+        $qlogistik->whereBetween('tgl_pengeluaran', [$dari, $sampai]);
+        $qlogistik->where('detail_pengeluaran.kode_cabang', $kode_cabang);
+        $qlogistik->groupByRaw('detail_pengeluaran.kode_barang,nama_barang,qty,harga');
+
+        $logistik = $qlogistik->get();
+
+        $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
+        return view('laporanaccounting.laporan.cetak_cr_detaillogistik', compact('dari', 'sampai', 'logistik', 'cabang'));
+    }
+
+    public function cetak_costratio_detailbahan($dari, $sampai, $kode_cabang)
+    {
+        $tgl = explode("-", $dari);
+        $bulan2 = $tgl[1];
+        $tahun = $tgl[0];
+        $cabang = Cabang::where('kode_cabang', strtoupper($kode_cabang))->first();
+        $nama_cabang = $cabang->nama_cabang;
+        if ($bulan2 < 10) {
+            $bulan = $bulan2 * 1;
+        } else {
+            $bulan = $bulan2;
+        }
+
+
+
+
+        $qbahan = Detailpengeluarangudangbahan::query();
+
+        $qbahan->selectRaw("
+                detail_pengeluaran_gb.kode_barang,nama_barang,
+                CASE
+                    WHEN satuan = 'KG' THEN qty_berat * 1000
+                    WHEN satuan = 'Liter' THEN qty_berat * 1000 * IFNULL((SELECT harga FROM harga_minyak WHERE bulan ='$bulan' AND tahun = '$tahun'),0)
+                    ELSE qty_unit
+                END AS qty,
+                SUM(
+                    CASE
+                    WHEN satuan ='KG' THEN (harga +totalharga + IF(qtypengganti2=0,(qtypengganti2*1000) * 0,( (qtypengganti2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000))))) + IF(qtylainnya2=0,(qtylainnya2*1000) * 0,( (qtylainnya2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000)))))) /  ( (qtyberatsa*1000) + (qtypemb2 * 1000) + (qtylainnya2*1000) + (qtypengganti2*1000))
+                ELSE
+                (harga + totalharga + IF(qtylainnya1=0,qtylainnya1*0,qtylainnya1 * IF(qtylainnya1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  ))) + IF(qtypengganti1=0,qtypengganti1*0,qtypengganti1 * IF(qtypengganti1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  )))) / (qtyunitsa + qtypemb1 + qtylainnya1 + qtypengganti1)
+                END
+                ) AS harga,
+                SUM(
+                CASE
+                    WHEN satuan = 'KG' THEN qty_berat * 1000
+                    WHEN satuan = 'Liter' THEN qty_berat * 1000 * IFNULL((SELECT harga FROM harga_minyak WHERE bulan ='$bulan' AND tahun = '$tahun'),0)
+                    ELSE qty_unit
+                END
+                *
+                CASE
+                    WHEN satuan ='KG' THEN (harga +totalharga + IF(qtypengganti2=0,(qtypengganti2*1000) * 0,( (qtypengganti2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000))))) + IF(qtylainnya2=0,(qtylainnya2*1000) * 0,( (qtylainnya2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000)))))) /  ( (qtyberatsa*1000) + (qtypemb2 * 1000) + (qtylainnya2*1000) + (qtypengganti2*1000))
+                ELSE
+                (harga + totalharga + IF(qtylainnya1=0,qtylainnya1*0,qtylainnya1 * IF(qtylainnya1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  ))) + IF(qtypengganti1=0,qtypengganti1*0,qtypengganti1 * IF(qtypengganti1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  )))) / (qtyunitsa + qtypemb1 + qtylainnya1 + qtypengganti1)
+                END
+
+                ) as total");
+
+        $qbahan->join('master_barang_pembelian', 'detail_pengeluaran_gb.kode_barang', '=', 'master_barang_pembelian.kode_barang');
+        $qbahan->join('pengeluaran_gb', 'detail_pengeluaran_gb.nobukti_pengeluaran', '=', 'pengeluaran_gb.nobukti_pengeluaran');
+        $qbahan->leftJoin(
+            DB::raw("(
+                SELECT
+                detail_pemasukan_gb.kode_barang,
+                SUM( IF( departemen = 'Pembelian' , qty_unit ,0 )) AS qtypemb1,
+                SUM( IF( departemen = 'Lainnya' , qty_unit ,0 )) AS qtylainnya1,
+                SUM( IF( departemen = 'Retur Pengganti' , qty_unit ,0 )) AS qtypengganti1,
+
+                SUM( IF( departemen = 'Pembelian' , qty_berat ,0 )) AS qtypemb2,
+                SUM( IF( departemen = 'Lainnya' , qty_berat ,0 )) AS qtylainnya2,
+                SUM( IF( departemen = 'Retur Pengganti' , qty_berat ,0 )) AS qtypengganti2,
+                SUM( (IF( departemen = 'Pembelian' , qty_berat ,0 )) + (IF( departemen = 'Lainnya' , qty_berat ,0 ))) AS pemasukanqtyberat
+                FROM
+                detail_pemasukan_gb
+                INNER JOIN pemasukan_gb ON detail_pemasukan_gb.nobukti_pemasukan = pemasukan_gb.nobukti_pemasukan
+                WHERE MONTH(tgl_pemasukan) = '$bulan2' AND YEAR(tgl_pemasukan) = '$tahun'
+                GROUP BY detail_pemasukan_gb.kode_barang
+            ) gm"),
+            function ($join) {
+                $join->on('detail_pengeluaran_gb.kode_barang', '=', 'gm.kode_barang');
+            }
+        );
+
+        $qbahan->leftJoin(
+            DB::raw("(
+                SELECT SUM((qty*harga)+penyesuaian) as totalharga,kode_barang
+                FROM detail_pembelian
+                INNER JOIN pembelian ON detail_pembelian.nobukti_pembelian = pembelian.nobukti_pembelian
+                WHERE MONTH(tgl_pembelian) = '$bulan2' AND YEAR(tgl_pembelian) = '$tahun'
+                GROUP BY kode_barang
+            ) dp"),
+            function ($join) {
+                $join->on('detail_pengeluaran_gb.kode_barang', '=', 'dp.kode_barang');
+            }
+        );
+
+        $qbahan->leftJoin(
+            DB::raw("(
+                SELECT kode_barang,harga
+                FROM saldoawal_harga_gb
+                WHERE bulan = '$bulan' AND tahun = '$tahun'
+                GROUP BY kode_barang,harga
+            ) hrgsa"),
+            function ($join) {
+                $join->on('detail_pengeluaran_gb.kode_barang', '=', 'hrgsa.kode_barang');
+            }
+        );
+
+        $qbahan->leftJoin(
+            DB::raw("(
+                SELECT saldoawal_gb_detail.kode_barang,
+                SUM( qty_unit ) AS qtyunitsa,
+                SUM( qty_berat ) AS qtyberatsa
+                FROM saldoawal_gb_detail
+                INNER JOIN saldoawal_gb ON saldoawal_gb.kode_saldoawal_gb=saldoawal_gb_detail.kode_saldoawal_gb
+                WHERE bulan = '$bulan' AND tahun = '$tahun' GROUP BY saldoawal_gb_detail.kode_barang
+            ) sa"),
+            function ($join) {
+                $join->on('detail_pengeluaran_gb.kode_barang', '=', 'sa.kode_barang');
+            }
+        );
+        $qbahan->where('pengeluaran_gb.unit', $nama_cabang);
+        $qbahan->whereBetween('tgl_pengeluaran', [$dari, $sampai]);
+        $qbahan->where('pengeluaran_gb.kode_dept', 'Cabang');
+        $qbahan->groupByRaw('detail_pengeluaran_gb.kode_barang,nama_barang,qty');
+        $bahan = $qbahan->get();
+        return view('laporanaccounting.laporan.cetak_cr_detailbahan', compact('dari', 'sampai', 'bahan', 'cabang'));
+    }
 }

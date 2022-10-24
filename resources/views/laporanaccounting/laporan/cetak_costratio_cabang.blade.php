@@ -135,13 +135,13 @@
                 <td></td>
                 <td></td>
                 <td>Logistik</td>
-                <td style="text-align: right">{{ rupiah($logistik->total) }}</td>
+                <td style="text-align: right"><a href="/detailcrlogistik/{{ $dari }}/{{ $sampai }}/{{ $cabang->kode_cabang }}" target="_blank">{{ rupiah($logistik->total) }}</a></td>
             </tr>
             <tr>
                 <td></td>
                 <td></td>
                 <td>Bahan Kemasan</td>
-                <td style="text-align: right">{{ rupiah($bahan->total) }}</td>
+                <td style="text-align: right"><a href="/detailcrbahan/{{ $dari }}/{{ $sampai }}/{{ $cabang->kode_cabang }}" target="_blank">{{ rupiah($bahan->total) }}</a></td>
             </tr>
         </tbody>
         <tfoot>

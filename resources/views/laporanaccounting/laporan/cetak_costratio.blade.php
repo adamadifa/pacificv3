@@ -199,18 +199,18 @@
                 <td>
                     Logistik
                 </td>
-                <td style="text-align:right">{{ !empty($logistik->tsm) ?  rupiah($logistik->tsm) : '' }}</td>
-                <td style="text-align:right">{{ !empty($logistik->bdg) ?  rupiah($logistik->bdg) : '' }}</td>
-                <td style="text-align:right">{{ !empty($logistik->skb) ?  rupiah($logistik->skb) : '' }}</td>
-                <td style="text-align:right">{{ !empty($logistik->tgl) ?  rupiah($logistik->tgl) : '' }}</td>
-                <td style="text-align:right">{{ !empty($logistik->bgr) ?  rupiah($logistik->bgr) : '' }}</td>
-                <td style="text-align:right">{{ !empty($logistik->pwt) ?  rupiah($logistik->pwt) : '' }}</td>
-                <td style="text-align:right">{{ !empty($logistik->pst) ?  rupiah($logistik->pst) : '' }}</td>
-                <td style="text-align:right">{{ !empty($logistik->grt) ?  rupiah($logistik->grt) : '' }}</td>
-                <td style="text-align:right">{{ !empty($logistik->sby) ?  rupiah($logistik->sby) : '' }}</td>
-                <td style="text-align:right">{{ !empty($logistik->smr) ?  rupiah($logistik->smr) : '' }}</td>
-                <td style="text-align:right">{{ !empty($logistik->klt) ?  rupiah($logistik->klt) : '' }}</td>
-                <td style="text-align:right">{{ !empty($logistik->pwk) ?  rupiah($logistik->pwk) : '' }}</td>
+                <td style="text-align:right"><a href="detailcrlogistik/{{ $dari }}/{{ $sampai }}/tsm"></a> {{ !empty($logistik->tsm) ?  rupiah($logistik->tsm) : '' }}</a></td>
+                <td style="text-align:right"><a href="detailcrlogistik/{{ $dari }}/{{ $sampai }}/bdg"> {{ !empty($logistik->bdg) ?  rupiah($logistik->bdg) : '' }}</a></td>
+                <td style="text-align:right"><a href="detailcrlogistik/{{ $dari }}/{{ $sampai }}/skb"> {{ !empty($logistik->skb) ?  rupiah($logistik->skb) : '' }}</a></td>
+                <td style="text-align:right"><a href="detailcrlogistik/{{ $dari }}/{{ $sampai }}/tgl"> {{ !empty($logistik->tgl) ?  rupiah($logistik->tgl) : '' }}</a></td>
+                <td style="text-align:right"><a href="detailcrlogistik/{{ $dari }}/{{ $sampai }}/bgr"> {{ !empty($logistik->bgr) ?  rupiah($logistik->bgr) : '' }}</a></td>
+                <td style="text-align:right"><a href="detailcrlogistik/{{ $dari }}/{{ $sampai }}/pwt"> {{ !empty($logistik->pwt) ?  rupiah($logistik->pwt) : '' }}</a></td>
+                <td style="text-align:right"><a href="detailcrlogistik/{{ $dari }}/{{ $sampai }}/pst"> {{ !empty($logistik->pst) ?  rupiah($logistik->pst) : '' }}</a></td>
+                <td style="text-align:right"><a href="detailcrlogistik/{{ $dari }}/{{ $sampai }}/grt"> {{ !empty($logistik->grt) ?  rupiah($logistik->grt) : '' }}</a></td>
+                <td style="text-align:right"><a href="detailcrlogistik/{{ $dari }}/{{ $sampai }}/sby"> {{ !empty($logistik->sby) ?  rupiah($logistik->sby) : '' }}</a></td>
+                <td style="text-align:right"><a href="detailcrlogistik/{{ $dari }}/{{ $sampai }}/smr"> {{ !empty($logistik->smr) ?  rupiah($logistik->smr) : '' }}</a></td>
+                <td style="text-align:right"><a href="detailcrlogistik/{{ $dari }}/{{ $sampai }}/klt"> {{ !empty($logistik->klt) ?  rupiah($logistik->klt) : '' }}</a></td>
+                <td style="text-align:right"><a href="detailcrlogistik/{{ $dari }}/{{ $sampai }}/pwk"> {{ !empty($logistik->pwk) ?  rupiah($logistik->pwk) : '' }}</a></td>
                 <td style="text-align:right">{{ !empty($logistik->total) ?  rupiah($logistik->total) : '' }}</td>
             </tr>
             <tr>
@@ -219,18 +219,18 @@
                 <td>
                     Penggunaan Bahan Kemasan
                 </td>
-                <td style="text-align:right">{{ !empty($bahan->tsm) ?  rupiah($bahan->tsm) : '' }}</td>
-                <td style="text-align:right">{{ !empty($bahan->bdg) ?  rupiah($bahan->bdg) : '' }}</td>
-                <td style="text-align:right">{{ !empty($bahan->skb) ?  rupiah($bahan->skb) : '' }}</td>
-                <td style="text-align:right">{{ !empty($bahan->tgl) ?  rupiah($bahan->tgl) : '' }}</td>
-                <td style="text-align:right">{{ !empty($bahan->bgr) ?  rupiah($bahan->bgr) : '' }}</td>
-                <td style="text-align:right">{{ !empty($bahan->pwt) ?  rupiah($bahan->pwt) : '' }}</td>
-                <td style="text-align:right">{{ !empty($bahan->pst) ?  rupiah($bahan->pst) : '' }}</td>
-                <td style="text-align:right">{{ !empty($bahan->grt) ?  rupiah($bahan->grt) : '' }}</td>
-                <td style="text-align:right">{{ !empty($bahan->sby) ?  rupiah($bahan->sby) : '' }}</td>
-                <td style="text-align:right">{{ !empty($bahan->smr) ?  rupiah($bahan->smr) : '' }}</td>
-                <td style="text-align:right">{{ !empty($bahan->klt) ?  rupiah($bahan->klt) : '' }}</td>
-                <td style="text-align:right">{{ !empty($bahan->pwk) ?  rupiah($bahan->pwk) : '' }}</td>
+                <td style="text-align:right"><a href="/detailcrbahan/{{ $dari }}/{{ $sampai }}/tsm">{{ !empty($bahan->tsm) ?  rupiah($bahan->tsm) : '' }}</a></td>
+                <td style="text-align:right"><a href="/detailcrbahan/{{ $dari }}/{{ $sampai }}/bdg">{{ !empty($bahan->bdg) ?  rupiah($bahan->bdg) : '' }}</a></td>
+                <td style="text-align:right"><a href="/detailcrbahan/{{ $dari }}/{{ $sampai }}/skb">{{ !empty($bahan->skb) ?  rupiah($bahan->skb) : '' }}</a></td>
+                <td style="text-align:right"><a href="/detailcrbahan/{{ $dari }}/{{ $sampai }}/tgl">{{ !empty($bahan->tgl) ?  rupiah($bahan->tgl) : '' }}</a></td>
+                <td style="text-align:right"><a href="/detailcrbahan/{{ $dari }}/{{ $sampai }}/bgr">{{ !empty($bahan->bgr) ?  rupiah($bahan->bgr) : '' }}</a></td>
+                <td style="text-align:right"><a href="/detailcrbahan/{{ $dari }}/{{ $sampai }}/pwt">{{ !empty($bahan->pwt) ?  rupiah($bahan->pwt) : '' }}</a></td>
+                <td style="text-align:right"><a href="/detailcrbahan/{{ $dari }}/{{ $sampai }}/pst">{{ !empty($bahan->pst) ?  rupiah($bahan->pst) : '' }}</a></td>
+                <td style="text-align:right"><a href="/detailcrbahan/{{ $dari }}/{{ $sampai }}/grt">{{ !empty($bahan->grt) ?  rupiah($bahan->grt) : '' }}</a></td>
+                <td style="text-align:right"><a href="/detailcrbahan/{{ $dari }}/{{ $sampai }}/sby">{{ !empty($bahan->sby) ?  rupiah($bahan->sby) : '' }}</a></td>
+                <td style="text-align:right"><a href="/detailcrbahan/{{ $dari }}/{{ $sampai }}/smr">{{ !empty($bahan->smr) ?  rupiah($bahan->smr) : '' }}</a></td>
+                <td style="text-align:right"><a href="/detailcrbahan/{{ $dari }}/{{ $sampai }}/klt">{{ !empty($bahan->klt) ?  rupiah($bahan->klt) : '' }}</a></td>
+                <td style="text-align:right"><a href="/detailcrbahan/{{ $dari }}/{{ $sampai }}/pwk">{{ !empty($bahan->pwk) ?  rupiah($bahan->pwk) : '' }}</a></td>
                 <td style="text-align:right">{{ !empty($bahan->total) ?  rupiah($bahan->total) : '' }}</td>
             </tr>
             @php

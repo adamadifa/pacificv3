@@ -947,6 +947,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/laporanaccounting/labarugi/cetak', [LaporanaccountingController::class, 'cetak_labarugi']);
     Route::post('/laporanaccounting/jurnalumum/cetak', [LaporanaccountingController::class, 'cetak_jurnalumum']);
     Route::post('/laporanaccounting/costratio/cetak', [LaporanaccountingController::class, 'cetak_costratio']);
+    Route::get('/detailcrlogistik/{dari}/{sampai}/{kode_cabang}', [LaporanaccountingController::class, 'cetak_costratio_detaillogistik']);
+    Route::get('/detailcrbahan/{dari}/{sampai}/{kode_cabang}', [LaporanaccountingController::class, 'cetak_costratio_detailbahan']);
 
     Route::get('/laporankeuangan/kaskecil', [LaporankeuanganController::class, 'kaskecil']);
     Route::post('/laporankeuangan/kaskecil/cetak', [LaporankeuanganController::class, 'cetak_kaskecil']);
