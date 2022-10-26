@@ -47,6 +47,7 @@
                                                 <select name="jeniskonsolidasi" id="jeniskonsolidasi" class="form-control select2">
                                                     <option value="1">Penjualan</option>
                                                     <option value="2">Retur</option>
+                                                    <option value="3">Promosi</option>
                                                 </select>
                                             </div>
                                         </div>

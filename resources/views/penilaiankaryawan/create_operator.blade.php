@@ -50,38 +50,20 @@
                         <br>
                         <br>
                         <small>Checklist bobot penilaian dibawah ini (semakin besar angka yang dipilih semakin baik penilaian karyawan tersebut)</small>
-                        <table class="table mt-3">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:5%">No</th>
+                                    <th style="width:85%">Faktor Penilaian</th>
+                                    <th style="width:10%">Bobot Nilai</th>
+                                </tr>
+                            </thead>
                             <tbody>
-                                @php
-                                $no = 1;
-                                $id_jenis_penilaian = "";
-                                $id_jenis_kompetensi = "";
-                                @endphp
                                 @foreach ($kategori_penilaian as $d)
-                                @if ($id_jenis_penilaian != $d->id_jenis_penilaian)
-                                @php
-                                $no = 1;
-                                @endphp
                                 <tr>
-                                    <th colspan="3" style="text-align: center; background-color:rgba(0, 255, 72, 0.235)">{{ $d->jenis_penilaian }}</th>
-                                </tr>
-                                <tr>
-                                    <th>No.</th>
-                                    <th>Sasaran Kerja</th>
-                                    <th>Nilai</th>
-
-                                </tr>
-                                @endif
-
-                                @if (!empty($d->id_jenis_kompetensi) && $id_jenis_kompetensi != $d->id_jenis_kompetensi)
-                                <tr>
-                                    <td colspan="3" style="text-align: center">{{ $d->id_jenis_kompetensi == 1 ? 'Kompentensi Wajib' : 'Kompetensi' }}</td>
-                                </tr>
-                                @endif
-                                <tr>
-                                    <td>{{ $no }}</td>
-                                    <td>{{ $d->penilaian }}</td>
-                                    <td>
+                                    <td rowspan="2">{{ $loop->iteration }}</td>
+                                    <td class="bg-info">{{ $d->jenis_penilaian }}</td>
+                                    <td rowspan="2">
                                         <div class="form-group" style="margin-bottom: 0 !important">
                                             <select name="skor[]" id="skor" class="form-control skor">
                                                 <option value="1">1</option>
@@ -89,15 +71,14 @@
                                                 <option value="3">3</option>
                                                 <option value="4">4</option>
                                                 <option value="5">5</option>
+                                                <option value="6">6</option>
                                             </select>
                                         </div>
                                     </td>
                                 </tr>
-                                @php
-                                $no++;
-                                $id_jenis_penilaian = $d->id_jenis_penilaian;
-                                $id_jenis_kompetensi = $d->id_jenis_kompetensi;
-                                @endphp
+                                <tr>
+                                    <td>{{ $d->penilaian }}</td>
+                                </tr>
                                 @endforeach
                                 <tr>
                                     <th colspan="2">TOTAL</th>

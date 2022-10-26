@@ -613,7 +613,7 @@ class LaporangudangcabangController extends Controller
                     }
                 )
                 ->get();
-        } else {
+        } elseif ($jeniskonsolidasi == 2) {
             $jk = "RETUR";
             $rekap = DB::table('master_barang')
                 ->selectRaw("master_barang.kode_produk,nama_barang,isipcsdus,satuan,isipack,isipcs,
@@ -640,6 +640,41 @@ class LaporangudangcabangController extends Controller
                         INNER JOIN mutasi_gudang_cabang
                         ON detail_mutasi_gudang_cabang.no_mutasi_gudang_cabang = mutasi_gudang_cabang.no_mutasi_gudang_cabang
                         WHERE jenis_mutasi = 'RETUR'
+                        AND tgl_mutasi_gudang_cabang BETWEEN '$dari' AND '$sampai'
+                        AND kode_cabang ='$kode_cabang_2'
+                        GROUP BY kode_produk
+                    ) persediaan"),
+                    function ($join) {
+                        $join->on('master_barang.kode_produk', '=', 'persediaan.kode_produk');
+                    }
+                )
+                ->get();
+        } elseif ($jeniskonsolidasi == "3") {
+            $jk = "PENJUALAN";
+            $rekap = DB::table('master_barang')
+                ->selectRaw("master_barang.kode_produk,nama_barang,isipcsdus,satuan,isipack,isipcs,
+                totalpenjualan,totalpersediaan, IFNULL(totalpenjualan,0) - IFNULL(totalpersediaan,0) as selisih")
+                ->leftJoin(
+                    DB::raw("(
+                        SELECT kode_produk, SUM(jumlah) as totalpenjualan
+                        FROM detailpenjualan
+                        INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
+                        INNER JOIN penjualan ON detailpenjualan.no_fak_penj = penjualan.no_fak_penj
+                        INNER JOIN karyawan ON penjualan.id_karyawan = karyawan.id_karyawan
+                        WHERE tgltransaksi BETWEEN '$dari' AND '$sampai' AND karyawan.kode_cabang ='$kode_cabang' AND promo = 1 " . $wherenotsalesgarut . $wheresalesgarut . "
+                        GROUP BY kode_produk
+                    ) detailpenjualan"),
+                    function ($join) {
+                        $join->on('master_barang.kode_produk', '=', 'detailpenjualan.kode_produk');
+                    }
+                )
+                ->leftJoin(
+                    DB::raw("(
+                        SELECT kode_produk,SUM(jumlah) as totalpersediaan
+                        FROM detail_mutasi_gudang_cabang
+                        INNER JOIN mutasi_gudang_cabang
+                        ON detail_mutasi_gudang_cabang.no_mutasi_gudang_cabang = mutasi_gudang_cabang.no_mutasi_gudang_cabang
+                        WHERE jenis_mutasi = 'PROMOSI'
                         AND tgl_mutasi_gudang_cabang BETWEEN '$dari' AND '$sampai'
                         AND kode_cabang ='$kode_cabang_2'
                         GROUP BY kode_produk
