@@ -56,6 +56,10 @@ $isipcs_sc = $p->isipcsdus;
 if ($p->kode_produk == "SP8") {
 $isipcs_sp8 = $p->isipcsdus;
 }
+
+if ($p->kode_produk == "SP8-P") {
+$isipcs_sp8p = $p->isipcsdus;
+}
 @endphp
 @endforeach
 <div class="table-responsive">
@@ -79,6 +83,7 @@ $isipcs_sp8 = $p->isipcsdus;
                 {{-- <th>SPP</th> --}}
                 <th>SC</th>
                 <th>SP8</th>
+                <th>SP8-P</th>
             </tr>
         </thead>
         <tbody class="font-medium-2">
@@ -98,6 +103,7 @@ $isipcs_sp8 = $p->isipcsdus;
             $gSPP = 0;
             $gSC = 0;
             $gSP8 = 0;
+            $gSP8P = 0;
             @endphp
             @foreach ($rekapgudang as $g)
             @php
@@ -159,6 +165,10 @@ $isipcs_sp8 = $p->isipcsdus;
 
             if ($g->kode_produk == "SP8") {
             $gSP8 = $gSP8 + $g->saldoakhir;
+            }
+
+            if ($g->kode_produk == "SP8-P") {
+            $gSP8P = $gSP8P + $g->saldoakhir;
             }
             @endphp
             @endforeach
@@ -258,6 +268,12 @@ $isipcs_sp8 = $p->isipcsdus;
             } else {
                 $colorgSP8 = "bg-success";
             }
+
+            if ($gSP8P <= 0) {
+                $colorgSP8P = "bg-danger";
+            } else {
+                $colorgSP8P = "bg-success";
+            }
            ?>
             <tr>
                 <td>Gudang Pusat</td>
@@ -273,6 +289,7 @@ $isipcs_sp8 = $p->isipcsdus;
                 {{-- <td><span class="badge <?php echo $colorgSPP; ?>"><?php echo number_format(floor($gSPP), '0', ',', '.'); ?></span></td> --}}
                 <td><span class="badge <?php echo $colorgSC; ?>"><?php echo number_format(floor($gSC), '0', ',', '.'); ?></span></td>
                 <td><span class="badge <?php echo $colorgSP8; ?>"><?php echo number_format(floor($gSP8), '0', ',', '.'); ?></span></td>
+                <td><span class="badge <?php echo $colorgSP8; ?>"><?php echo number_format(floor($gSP8P), '0', ',', '.'); ?></span></td>
             </tr>
             @foreach ($rekapdpb as $d)
             <?php
@@ -286,6 +303,7 @@ $isipcs_sp8 = $p->isipcsdus;
                 $sspp  = $d['mg_spp'] + (ROUND($d['saldo_spp'] / 1, 2)) + (ROUND($d['mutasi_spp'] / 1, 2)) - $d['spp_ambil'] + $d['spp_kembali'];
                 $ssc  = $d['mg_sc'] + (ROUND($d['saldo_sc'] / 24, 2)) + (ROUND($d['mutasi_sc'] / 24, 2)) - $d['sc_ambil'] + $d['sc_kembali'];
                 $ssp8  = $d['mg_sp8'] + (ROUND($d['saldo_sp8'] / 480, 2)) + (ROUND($d['mutasi_sp8'] / 480, 2)) - $d['sp8_ambil'] + $d['sp8_kembali'];
+                $ssp8p  = $d['mg_sp8p'] + (ROUND($d['saldo_sp8p'] / 480, 2)) + (ROUND($d['mutasi_sp8p'] / 480, 2)) - $d['sp8p_ambil'] + $d['sp8p_kembali'];
 
                 if ($sab <= 0) {
                 $colorab = "bg-danger";
@@ -349,6 +367,12 @@ $isipcs_sp8 = $p->isipcsdus;
                 $colorsp8 = "bg-success";
                 }
 
+                if ($ssp8p <= 0) {
+                $colorsp8p = "bg-danger";
+                } else {
+                $colorsp8p = "bg-success";
+                }
+
                 if ($sab < 0) {
                 $sab = 0;
                 }
@@ -388,6 +412,10 @@ $isipcs_sp8 = $p->isipcsdus;
                 if ($ssp8 < 0) {
                 $ssp8 = 0;
                 }
+
+                if ($ssp8p < 0) {
+                $ssp8p = 0;
+                }
             ?>
             <tr>
                 <td><?php echo ucwords($d['nama_cabang']); ?></td>
@@ -401,6 +429,7 @@ $isipcs_sp8 = $p->isipcsdus;
                 {{-- <td><span class="badge <?php echo $colorsspp; ?>"><?php echo number_format(floor($sspp), '0', ',', '.'); ?></span></td> --}}
                 <td><span class="badge <?php echo $colorssc; ?>"><?php echo number_format(floor($ssc), '0', ',', '.'); ?></span></td>
                 <td><span class="badge <?php echo $colorsp8; ?>"><?php echo number_format(floor($ssp8), '0', ',', '.'); ?></span></td>
+                <td><span class="badge <?php echo $colorsp8p; ?>"><?php echo number_format(floor($ssp8p), '0', ',', '.'); ?></span></td>
             </tr>
             @endforeach
     </table>

@@ -27,6 +27,7 @@ class GudangController extends Controller
             'saldo_spp',
             'saldo_sc',
             'saldo_sp8',
+            'saldo_sp8p',
             'mutasi_ab',
             'mutasi_ar',
             'mutasi_as',
@@ -37,6 +38,7 @@ class GudangController extends Controller
             'mutasi_spp',
             'mutasi_sc',
             'mutasi_sp8',
+            'mutasi_sp8p',
             'ab_ambil',
             'ar_ambil',
             'as_ambil',
@@ -47,6 +49,7 @@ class GudangController extends Controller
             'spp_ambil',
             'sc_ambil',
             'sp8_ambil',
+            'sp8p_ambil',
             'ab_kembali',
             'ar_kembali',
             'as_kembali',
@@ -57,6 +60,7 @@ class GudangController extends Controller
             'spp_kembali',
             'sc_kembali',
             'sp8_kembali',
+            'sp8p_kembali',
             'mg_ab',
             'mg_as',
             'mg_ar',
@@ -66,7 +70,8 @@ class GudangController extends Controller
             'mg_sp',
             'mg_spp',
             'mg_sc',
-            'mg_sp8'
+            'mg_sp8',
+            'mg_spp'
         );
         $query->leftJoin(
             DB::raw("(
@@ -80,7 +85,8 @@ class GudangController extends Controller
                 SUM(IF(kode_produk='SP',jumlah,0)) as saldo_sp,
                 SUM(IF(kode_produk='SPP',jumlah,0)) as saldo_spp,
                 SUM(IF(kode_produk='SC',jumlah,0)) as saldo_sc,
-                SUM(IF(kode_produk='SP8',jumlah,0)) as saldo_sp8
+                SUM(IF(kode_produk='SP8',jumlah,0)) as saldo_sp8,
+                SUM(IF(kode_produk='SP8-P',jumlah,0)) as saldo_sp8p
                 FROM saldoawal_bj_detail detailsaldo
                 INNER JOIN saldoawal_bj saldo ON detailsaldo.kode_saldoawal = saldo.kode_saldoawal
                 WHERE status='GS' AND tanggal =
@@ -106,7 +112,8 @@ class GudangController extends Controller
                 IFNULL(SUM(IF(inout_good ='IN' AND kode_produk ='SP',jumlah,0)),0) - IFNULL(SUM(IF(inout_good ='OUT' AND kode_produk ='SP',jumlah,0)),0)   as mutasi_sp,
                 IFNULL(SUM(IF(inout_good ='IN' AND kode_produk ='SPP',jumlah,0)),0) - IFNULL(SUM(IF(inout_good ='OUT' AND kode_produk ='SPP',jumlah,0)),0)   as mutasi_spp,
                 IFNULL(SUM(IF(inout_good ='IN' AND kode_produk ='SC',jumlah,0)),0) - IFNULL(SUM(IF(inout_good ='OUT' AND kode_produk ='SC',jumlah,0)),0)   as mutasi_sc,
-                IFNULL(SUM(IF(inout_good ='IN' AND kode_produk ='SP8',jumlah,0)),0) - IFNULL(SUM(IF(inout_good ='OUT' AND kode_produk ='SP8',jumlah,0)),0)   as mutasi_sp8
+                IFNULL(SUM(IF(inout_good ='IN' AND kode_produk ='SP8',jumlah,0)),0) - IFNULL(SUM(IF(inout_good ='OUT' AND kode_produk ='SP8',jumlah,0)),0)   as mutasi_sp8,
+                IFNULL(SUM(IF(inout_good ='IN' AND kode_produk ='SP8-P',jumlah,0)),0) - IFNULL(SUM(IF(inout_good ='OUT' AND kode_produk ='SP8',jumlah,0)),0)   as mutasi_sp8p
                 FROM detail_mutasi_gudang_cabang dmc
                 INNER JOIN mutasi_gudang_cabang mc ON dmc.no_mutasi_gudang_cabang = mc.no_mutasi_gudang_cabang
                 WHERE tgl_mutasi_gudang_cabang >= (SELECT MAX(saldomax.tanggal)
@@ -157,6 +164,7 @@ class GudangController extends Controller
                 ROUND(SUM(IF(kode_produk ='SPP',jml_pengambilan,0)),2) as spp_ambil,
                 ROUND(SUM(IF(kode_produk ='SC',jml_pengambilan,0)),2) as sc_ambil,
                 ROUND(SUM(IF(kode_produk ='SP8',jml_pengambilan,0)),2) as sp8_ambil,
+                ROUND(SUM(IF(kode_produk ='SP8-P',jml_pengambilan,0)),2) as sp8p_ambil,
                 ROUND(SUM(IF(kode_produk ='AB',jml_pengembalian,0)),2) as ab_kembali,
                 ROUND(SUM(IF(kode_produk ='AR',jml_pengembalian,0)),2) as ar_kembali,
                 ROUND(SUM(IF(kode_produk ='AS',jml_pengembalian,0)),2) as as_kembali,
@@ -166,7 +174,8 @@ class GudangController extends Controller
                 ROUND(SUM(IF(kode_produk ='SP',jml_pengembalian,0)),2) as sp_kembali,
                 ROUND(SUM(IF(kode_produk ='SPP',jml_pengembalian,0)),2) as spp_kembali,
                 ROUND(SUM(IF(kode_produk ='SC',jml_pengembalian,0)),2) as sc_kembali,
-                ROUND(SUM(IF(kode_produk ='SP8',jml_pengembalian,0)),2) as sp8_kembali
+                ROUND(SUM(IF(kode_produk ='SP8',jml_pengembalian,0)),2) as sp8_kembali,
+                ROUND(SUM(IF(kode_produk ='SP8-P',jml_pengembalian,0)),2) as sp8p_kembali
                 FROM detail_dpb
                 INNER JOIN dpb ON detail_dpb.no_dpb = dpb.no_dpb
                 WHERE tgl_pengambilan  >= (SELECT MAX(saldomax.tanggal)
@@ -191,7 +200,8 @@ class GudangController extends Controller
 			SUM(IF(kode_produk='SP',jumlah,0)) as mg_sp,
 			SUM(IF(kode_produk='SPP',jumlah,0)) as mg_spp,
 			SUM(IF(kode_produk='SC',jumlah,0)) as mg_sc,
-			SUM(IF(kode_produk='SP8',jumlah,0)) as mg_sp8
+			SUM(IF(kode_produk='SP8',jumlah,0)) as mg_sp8,
+			SUM(IF(kode_produk='SP8-P',jumlah,0)) as mg_sp8p
 			FROM detail_mutasi_gudang dmg
 			INNER JOIN mutasi_gudang_jadi mg ON dmg.no_mutasi_gudang = mg.no_mutasi_gudang
 			INNER JOIN permintaan_pengiriman pp ON mg.no_permintaan_pengiriman = pp.no_permintaan_pengiriman
