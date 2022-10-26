@@ -196,7 +196,7 @@
                 $totalpps = $totalpps += $p->pps;
                 $totalpphk = $totalpphk += $p->pphk;
                 $totalvsp = $totalvsp += $p->vsp;
-                $totalkpbpb = $totalvsp += $p->kpbpb;
+                $totalkpbpb = $totalkpbpb += $p->kpbpb;
                 $totallainnya = $totallainnya += $p->lainnya;
                 $totalsapiutang 				= $totalsapiutang + $p->saldoawalpiutang;
                 $totalslpiutang 				= $totalslpiutang + $p->saldoakhirpiutang;
@@ -229,7 +229,7 @@
                 $grandtotalpps = $grandtotalpps += $p->pps;
                 $grandtotalpphk = $grandtotalpphk += $p->pphk;
                 $grandtotalvsp = $grandtotalvsp += $p->vsp;
-                $grandtotalkpbpb = $grandtotalvsp += $p->kpbpb;
+                $grandtotalkpbpb = $grandtotalkpbpb += $p->kpbpb;
                 $grandtotallainnya = $grandtotallainnya += $p->lainnya;
 
 
