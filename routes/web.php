@@ -321,7 +321,7 @@ Route::middleware(['auth'])->group(function () {
     //Effective Call
     Route::get('/laporanpenjualan/effectivecall', [PenjualanController::class, 'effectivecall']);
     Route::post('/laporanpenjualan/effectivecall/cetak', [PenjualanController::class, 'cetakeffectivecall']);
-    Route::post('/effectivecall/detailsalesman', [PenjualanController::class, 'detailsalesmanec']);
+    Route::post('/effectivecall/detailsalesman', [PenjualanController::class, 'detailsalesmanecen']);
 
     //LPC
     Route::get('/lpc', [LpcController::class, 'index']);

@@ -5836,16 +5836,42 @@ class PenjualanController extends Controller
         $dari = $request->dari;
         $sampai = $request->sampai;
         $kode_cabang = $request->kode_cabang;
+        $formatlaporan = $request->formatlaporan;
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
-        $query = Penjualan::query();
-        $query->selectRaw("penjualan.id_karyawan,nama_karyawan, COUNT(no_fak_penj) as ec ");
-        $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
-        $query->whereBetween('tgltransaksi', [$dari, $sampai]);
-        if (!empty($kode_cabang)) {
+
+        if ($formatlaporan == 1) {
+            $query = Penjualan::query();
+            $query->selectRaw("penjualan.id_karyawan,nama_karyawan, COUNT(no_fak_penj) as ec ");
+            $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+            $query->whereBetween('tgltransaksi', [$dari, $sampai]);
             $query->where('kode_cabang', $kode_cabang);
-        };
-        $query->groupBy('penjualan.id_karyawan', 'nama_karyawan');
-        $ec = $query->get();
-        return view('penjualan.laporan.cetak_effectivecall', compact('cabang', 'ec', 'dari', 'sampai'));
+            $query->groupBy('penjualan.id_karyawan', 'nama_karyawan');
+            $ec = $query->get();
+            return view('penjualan.laporan.cetak_effectivecall', compact('cabang', 'ec', 'dari', 'sampai'));
+        } else {
+            $query = Detailpenjualan::query();
+            $query->selectRaw("penjualan.id_karyawan,nama_karyawan,
+            SUM(IF(kode_produk='AB',1,0)) as ab,
+            SUM(IF(kode_produk='AR',1,0)) as ar,
+            SUM(IF(kode_produk='AS',1,0)) as `as`,
+            SUM(IF(kode_produk='BB',1,0)) as bb,
+            SUM(IF(kode_produk='DEP',1,0)) as dep,
+            SUM(IF(kode_produk='SP',1,0)) as sp,
+            SUM(IF(kode_produk='SC',1,0)) as sc,
+            SUM(IF(kode_produk='SP8',1,0)) as sp8
+            ");
+            $query->join('barang', 'detailpenjualan.kode_barang', '=', 'barang.kode_barang');
+            $query->join('penjualan', 'detailpenjualan.no_fak_penj', '=', 'penjualan.no_fak_penj');
+            $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+            $query->whereBetween('tgltransaksi', [$dari, $sampai]);
+            $query->where('karyawan.kode_cabang', $kode_cabang);
+            $query->where('promo', '!=', '1');
+            $query->orwhereBetween('tgltransaksi', [$dari, $sampai]);
+            $query->where('karyawan.kode_cabang', $kode_cabang);
+            $query->whereNull('promo');
+            $query->groupBy('penjualan.id_karyawan', 'nama_karyawan');
+            $ec = $query->get();
+            return view('penjualan.laporan.cetak_effectivecall_produk', compact('cabang', 'ec', 'dari', 'sampai'));
+        }
     }
 }
