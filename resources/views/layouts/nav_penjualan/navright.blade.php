@@ -98,6 +98,11 @@
                     <i class="feather icon-file mr-1"></i>Rekap Wilayah
                 </li>
             </a>
+            <a href="/laporanpenjualan/effectivecall" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanpenjualan/effectivecall']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Effective Call
+                </li>
+            </a>
             @endif
         </ul>
     </div>

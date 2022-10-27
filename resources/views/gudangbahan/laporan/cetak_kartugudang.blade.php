@@ -105,7 +105,7 @@
         </thead>
         <tbody>
             <?php
-            if ($barang->satuan == 'KG') {
+            if ($barang->satuan == 'KG' || $barang->satuan=="Liter") {
                 $saldoakhir  = $saldoawal->qtyberatsa;
                 $saldoakhirunit  = $saldoawal->qtyunitsa;
             } else {

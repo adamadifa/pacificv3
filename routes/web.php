@@ -314,10 +314,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/laporankendaraan/rekapkendaraan', [KendaraanController::class, 'laporanrekapkendaraan']);
     Route::post('/laporankendaraan/rekapkendaraan/cetak', [KendaraanController::class, 'cetaklaporanrekapkendaraan']);
 
-    //DPPP
+    //rekap Wilauah
     Route::get('/laporanpenjualan/rekapwilayah', [PenjualanController::class, 'rekapwilayah']);
     Route::post('/laporanpenjualan/rekapwilayah/cetak', [PenjualanController::class, 'cetakrekapwilayah']);
 
+    //Effective Call
+    Route::get('/laporanpenjualan/effectivecall', [PenjualanController::class, 'effectivecall']);
+    Route::post('/laporanpenjualan/effectivecall/cetak', [PenjualanController::class, 'cetakeffectivecall']);
+    Route::post('/effectivecall/detailsalesman', [PenjualanController::class, 'detailsalesmanec']);
 
     //LPC
     Route::get('/lpc', [LpcController::class, 'index']);

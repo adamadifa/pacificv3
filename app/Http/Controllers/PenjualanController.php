@@ -2869,6 +2869,7 @@ class PenjualanController extends Controller
         return view('penjualan.laporan.frm.lap_tunaikredit', compact('cabang'));
     }
 
+
     public function cetaklaporantunaikredit(Request $request)
     {
         $dari = $request->dari;
@@ -5821,5 +5822,30 @@ class PenjualanController extends Controller
             ->get();
 
         return view('penjualan.preview', compact('data', 'barang', 'piutang'));
+    }
+
+    public function effectivecall()
+    {
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
+        return view('penjualan.laporan.frm.lap_effectivecall', compact('cabang'));
+    }
+
+    public function cetakeffectivecall(Request $request)
+    {
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $kode_cabang = $request->kode_cabang;
+        $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
+        $query = Penjualan::query();
+        $query->selectRaw("penjualan.id_karyawan,nama_karyawan, COUNT(no_fak_penj) as ec ");
+        $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $query->whereBetween('tgltransaksi', [$dari, $sampai]);
+        if (!empty($kode_cabang)) {
+            $query->where('kode_cabang', $kode_cabang);
+        };
+        $query->groupBy('penjualan.id_karyawan', 'nama_karyawan');
+        $ec = $query->get();
+        return view('penjualan.laporan.cetak_effectivecall', compact('cabang', 'ec', 'dari', 'sampai'));
     }
 }
