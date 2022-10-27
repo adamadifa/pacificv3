@@ -3683,6 +3683,13 @@ class PenjualanController extends Controller
             ->groupBy('pelanggan.pasar')
             ->get();
         $cabang = Cabang::where('kode_cabang', $cbg)->first();
+        if (isset($_POST['export'])) {
+            $time = date("H:i:s");
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Rekap Omset Wilayah.xls");
+        }
         return view('penjualan.laporan.cetak_rekapwilayah', compact('cabang', 'tahun', 'rekapwilayah'));
     }
     public function laporandppp()
