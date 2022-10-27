@@ -31,6 +31,7 @@ class PembelianController extends Controller
         harga,
         kontrabon,
         penyesuaian,
+        kategori_transaksi,
         jmlbayar");
         $query->join('supplier', 'pembelian.kode_supplier', '=', 'supplier.kode_supplier');
         $query->leftJoin('pemasukan', 'pembelian.nobukti_pembelian', '=', 'pemasukan.nobukti_pemasukan');
@@ -346,7 +347,7 @@ class PembelianController extends Controller
         $jenistransaksi = $request->jenistransaksi;
         $tgl_jatuhtempo = $jenistransaksi == 'kredit' ? $request->tgl_jatuhtempo : $tgl_pembelian;
         $ppn = empty($request->ppn) ? 0 : $request->ppn;
-
+        $kategori_transaksi = $request->kategori_transaksi;
         $tanggal   = explode("-", $tgl_pembelian);
         $bulan = $tanggal[1];
         $tahun = $tanggal[0];
@@ -407,6 +408,7 @@ class PembelianController extends Controller
                 'jenistransaksi'     => $jenistransaksi,
                 'ref_tunai'          => $nokontrabon,
                 'nobukti_bukubesar'  => $nobukti_bukubesar,
+                'kategori_transaksi' => $kategori_transaksi,
                 'id_admin'           => $id_admin
             );
             DB::table('pembelian')->insert($data);

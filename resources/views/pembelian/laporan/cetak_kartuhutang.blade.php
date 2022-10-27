@@ -60,6 +60,7 @@
                 <td>NO</td>
                 <td>TGL</td>
                 <td>NO BUKTI</td>
+                <td>KATEGORI</td>
                 <td>SUPPLIER</td>
                 <td>AKUN</td>
                 <!-- <td>TOTAL HUTANG</td>
@@ -97,6 +98,7 @@
                 <td><?php echo $no; ?></td>
                 <td><?php echo DateToIndo2($d->tgl_pembelian); ?></td>
                 <td><?php echo $d->nobukti_pembelian; ?></td>
+                <td><?php echo $d->kategori_transaksi; ?></td>
                 <td><?php echo $d->nama_supplier; ?></td>
                 <td><?php echo $d->nama_akun; ?></td>
                 <!-- <td><?php echo $d->totalhutang; ?></td>

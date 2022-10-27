@@ -335,7 +335,7 @@ class KontrabonController extends Controller
         $tanggal = explode("-", $tglbayar);
         $bulan = $tanggal[1];
         $tahun = substr($tanggal[0], 2, 2);
-
+        $kategori_transaksi = $kode_bank == "KAS" ? $request->kategori_transaksi : NULL;
         $bank = DB::table('master_bank')->where('kode_bank', $kode_bank)->first();
         $kode_akun_bank = $bank->kode_akun;
         $akun = [
@@ -428,6 +428,7 @@ class KontrabonController extends Controller
                 'status_dk'             => 'D',
                 'status_validasi'       => 1,
                 'kategori'              => 'PMB',
+                'peruntukan'            => $kategori_transaksi,
                 'nobukti_bukubesar'     => $nobukti_bukubesar,
                 'nobukti_bukubesar_2'   => $nobukti_bukubesar_bank
             );

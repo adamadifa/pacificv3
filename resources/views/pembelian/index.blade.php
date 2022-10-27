@@ -112,6 +112,7 @@
                                     <th>Ket</th>
                                     {{-- <th>Fak. Pajak</th> --}}
                                     <th>T/K</th>
+                                    <th>K</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -162,6 +163,17 @@
                                         <span class="badge bg-success">T</span>
                                         @else
                                         <span class="badge bg-warning">K</span>
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if ($d->kategori_transaksi=="MP")
+                                        <span class="badge bg-success">MP</span>
+                                        @elseif($d->kategori_transaksi=="IP")
+                                        <span class="badge bg-warning">IP</span>
+                                        @elseif($d->kategori_transaksi=="P")
+                                        <span class="badge bg-primary">P</span>
+                                        @elseif($d->kategori_transaksi=="PCF")
+                                        <span class="badge bg-info">P</span>
                                         @endif
                                     </td>
                                     <td>

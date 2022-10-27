@@ -75,6 +75,60 @@
                                             <x-inputtext field="tgl_jatuhtempo" label="Tanggal Jatuh Tempo" icon="feather icon-calendar" datepicker />
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <ul class="list-unstyled mb-0">
+                                                <li class="d-inline-block mr-2">
+                                                    <fieldset>
+                                                        <div class="vs-radio-con">
+                                                            <input type="radio" name="kategori_transaksi" id="kategori_transaksi" value="MP">
+                                                            <span class="vs-radio">
+                                                                <span class="vs-radio--border"></span>
+                                                                <span class="vs-radio--circle"></span>
+                                                            </span>
+                                                            <span class="">MP</span>
+                                                        </div>
+                                                    </fieldset>
+                                                </li>
+                                                <li class="d-inline-block mr-2">
+                                                    <fieldset>
+                                                        <div class="vs-radio-con">
+                                                            <input type="radio" name="kategori_transaksi" id="kategori_transaksi" value="IP">
+                                                            <span class="vs-radio">
+                                                                <span class="vs-radio--border"></span>
+                                                                <span class="vs-radio--circle"></span>
+                                                            </span>
+                                                            <span class="">IP</span>
+                                                        </div>
+                                                    </fieldset>
+                                                </li>
+                                                <li class="d-inline-block mr-2">
+                                                    <fieldset>
+                                                        <div class="vs-radio-con">
+                                                            <input type="radio" name="kategori_transaksi" id="kategori_transaksi" value="P">
+                                                            <span class="vs-radio">
+                                                                <span class="vs-radio--border"></span>
+                                                                <span class="vs-radio--circle"></span>
+                                                            </span>
+                                                            <span class="">Pribadi</span>
+                                                        </div>
+                                                    </fieldset>
+                                                </li>
+                                                <li class="d-inline-block mr-2">
+                                                    <fieldset>
+                                                        <div class="vs-radio-con">
+                                                            <input type="radio" name="kategori_transaksi" id="kategori_transaksi" value="PCF">
+                                                            <span class="vs-radio">
+                                                                <span class="vs-radio--border"></span>
+                                                                <span class="vs-radio--circle"></span>
+                                                            </span>
+                                                            <span class="">Pacific</span>
+                                                        </div>
+                                                    </fieldset>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -429,7 +483,18 @@
             var tgl_jatuhtempo = $("#tgl_jatuhtempo").val();
             var cektutuplaporan = $("#cektutuplaporan").val();
             var jmldata = $("#jmldata").val();
-            if (cektutuplaporan > 0) {
+
+            if ($('input[name="kategori_transaksi"]:checked').length == 0) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Kategori Transaksi Harus Dipilih !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#kategori_transaksi").focus();
+                });
+                return false;
+            } else if (cektutuplaporan > 0) {
                 swal({
                     title: 'Oops'
                     , text: 'Laporan Periode Ini Sudah Ditutup !'

@@ -82,6 +82,7 @@
                 <td>TOTAL</td>
                 <td>DEBET</td>
                 <td>KREDIT</td>
+                <td>KATEGORI</td>
                 <td>TANGGAL INPUT</td>
                 <td>TANGGAL UPDATE</td>
             </tr>
@@ -163,6 +164,7 @@
                 <td align="right"><?php echo desimal($totalharga); ?></td>
                 <td align="right"><?php echo desimal($debet); ?></td>
                 <td align="right"><?php echo desimal($kredit); ?></td>
+                <td align="right"><?php echo $d->kategori_transaksi; ?></td>
                 <?php if ($d->tgl_pembelian < "2020-12-02") { ?>
                 <td><?php echo $d->date_created; ?></td>
                 <td><?php echo $d->date_updated; ?></td>
@@ -194,6 +196,7 @@
                             <td></td>
                             <td></td>
                             <td align=right>' . desimal($subtotal) . '</td>
+                            <td></td>
                             <td></td>
                             <td></td>
                         </tr>';

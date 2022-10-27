@@ -67,6 +67,60 @@
                     </div>
                 </div>
             </div>
+            <div class="row mb-2" id="kat_trans">
+                <div class="col-12">
+                    <ul class="list-unstyled mb-0">
+                        <li class="d-inline-block mr-2">
+                            <fieldset>
+                                <div class="vs-radio-con">
+                                    <input type="radio" name="kategori_transaksi" class="kategori_transaksi" value="MP">
+                                    <span class="vs-radio">
+                                        <span class="vs-radio--border"></span>
+                                        <span class="vs-radio--circle"></span>
+                                    </span>
+                                    <span class="">MP</span>
+                                </div>
+                            </fieldset>
+                        </li>
+                        <li class="d-inline-block mr-2">
+                            <fieldset>
+                                <div class="vs-radio-con">
+                                    <input type="radio" name="kategori_transaksi" class="kategori_transaksi" value="IP">
+                                    <span class="vs-radio">
+                                        <span class="vs-radio--border"></span>
+                                        <span class="vs-radio--circle"></span>
+                                    </span>
+                                    <span class="">IP</span>
+                                </div>
+                            </fieldset>
+                        </li>
+                        <li class="d-inline-block mr-2">
+                            <fieldset>
+                                <div class="vs-radio-con">
+                                    <input type="radio" name="kategori_transaksi" class="kategori_transaksi" value="P">
+                                    <span class="vs-radio">
+                                        <span class="vs-radio--border"></span>
+                                        <span class="vs-radio--circle"></span>
+                                    </span>
+                                    <span class="">Pribadi</span>
+                                </div>
+                            </fieldset>
+                        </li>
+                        <li class="d-inline-block mr-2">
+                            <fieldset>
+                                <div class="vs-radio-con">
+                                    <input type="radio" name="kategori_transaksi" class="kategori_transaksi" value="PC">
+                                    <span class="vs-radio">
+                                        <span class="vs-radio--border"></span>
+                                        <span class="vs-radio--circle"></span>
+                                    </span>
+                                    <span class="">Pacific</span>
+                                </div>
+                            </fieldset>
+                        </li>
+                    </ul>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
@@ -128,6 +182,17 @@
 <script src="{{asset('app-assets/js/scripts/forms/select/form-select2.js')}}"></script>
 <script>
     $(function() {
+
+        function hidekattrans() {
+            $("#kat_trans").hide();
+        }
+
+        function showkatrans() {
+            $("#kat_trans").show();
+        }
+
+        hidekattrans();
+
         function loaddetailpembelian(nobukti_pembelian) {
             $.ajax({
                 type: 'POST'
@@ -158,7 +223,15 @@
         });
 
         $("#kode_bank").change(function() {
+            var kode_bank = $(this).val();
+            if (kode_bank == "KAS") {
+                showkatrans();
+            } else {
+                hidekattrans();
+            }
             loadnobkk();
+
+
         });
 
         function loadnobkk() {
@@ -191,6 +264,17 @@
                 swal({
                     title: 'Oops'
                     , text: 'Bank Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#kode_bank").focus();
+                });
+                return false;
+
+            } else if (kode_bank == "KAS" && $('input[name="kategori_transaksi"]:checked').length == 0) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Peruntukan Harus Diisi !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
