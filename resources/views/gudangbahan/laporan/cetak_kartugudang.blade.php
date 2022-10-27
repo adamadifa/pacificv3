@@ -160,7 +160,7 @@
                 ->groupBy('tgl_pengeluaran')
                 ->first();
 
-                if ($barang->satuan == 'KG') {
+                if ($barang->satuan == 'KG' || $barang->satuan=="Liter") {
                 if($masuk != null){
                     $qtymasuk = $masuk->qty_berat;
                     $qtypemb = $masuk->qtypemb1;
