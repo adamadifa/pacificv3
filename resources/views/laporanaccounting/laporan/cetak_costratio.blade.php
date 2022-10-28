@@ -271,7 +271,7 @@
                 <td style="text-align:right">{{ !empty($bahan->sby) ?  rupiah($bahan->sby) : '' }}</td>
                 <td style="text-align:right">{{ !empty($bahan->smr) ?  rupiah($bahan->smr) : '' }}</td>
                 <td style="text-align:right">{{ !empty($bahan->klt) ?  rupiah($bahan->klt) : '' }}</td>
-                <td style="text-align:right"><a href="/detailcrbahan/{{ $dari }}/{{ $sampai }}/pwk">{{ !empty($bahan->pwk) ?  rupiah($bahan->pwk) : '' }}</a></td>
+                <td style="text-align:right">{{ !empty($bahan->pwk) ?  rupiah($bahan->pwk) : '' }}</td>
                 <td style="text-align:right">{{ !empty($bahan->total) ?  rupiah($bahan->total) : '' }}</td>
             </tr>
             @php
