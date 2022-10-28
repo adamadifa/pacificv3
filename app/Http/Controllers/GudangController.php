@@ -113,7 +113,7 @@ class GudangController extends Controller
                 IFNULL(SUM(IF(inout_good ='IN' AND kode_produk ='SPP',jumlah,0)),0) - IFNULL(SUM(IF(inout_good ='OUT' AND kode_produk ='SPP',jumlah,0)),0)   as mutasi_spp,
                 IFNULL(SUM(IF(inout_good ='IN' AND kode_produk ='SC',jumlah,0)),0) - IFNULL(SUM(IF(inout_good ='OUT' AND kode_produk ='SC',jumlah,0)),0)   as mutasi_sc,
                 IFNULL(SUM(IF(inout_good ='IN' AND kode_produk ='SP8',jumlah,0)),0) - IFNULL(SUM(IF(inout_good ='OUT' AND kode_produk ='SP8',jumlah,0)),0)   as mutasi_sp8,
-                IFNULL(SUM(IF(inout_good ='IN' AND kode_produk ='SP8-P',jumlah,0)),0) - IFNULL(SUM(IF(inout_good ='OUT' AND kode_produk ='SP8',jumlah,0)),0)   as mutasi_sp8p
+                IFNULL(SUM(IF(inout_good ='IN' AND kode_produk ='SP8-P',jumlah,0)),0) - IFNULL(SUM(IF(inout_good ='OUT' AND kode_produk ='SP8-P',jumlah,0)),0)   as mutasi_sp8p
                 FROM detail_mutasi_gudang_cabang dmc
                 INNER JOIN mutasi_gudang_cabang mc ON dmc.no_mutasi_gudang_cabang = mc.no_mutasi_gudang_cabang
                 WHERE tgl_mutasi_gudang_cabang >= (SELECT MAX(saldomax.tanggal)
