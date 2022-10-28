@@ -199,7 +199,7 @@
                 <td>
                     Logistik
                 </td>
-                <td style="text-align:right"><a href="/detailcrlogistik/{{ $dari }}/{{ $sampai }}/tsm"></a> {{ !empty($logistik->tsm) ?  rupiah($logistik->tsm) : '' }}</a></td>
+                <td style="text-align:right"><a href="/detailcrlogistik/{{ $dari }}/{{ $sampai }}/tsm">{{ !empty($logistik->tsm) ?  rupiah($logistik->tsm) : '' }}</a></td>
                 <td style="text-align:right"><a href="/detailcrlogistik/{{ $dari }}/{{ $sampai }}/bdg"> {{ !empty($logistik->bdg) ?  rupiah($logistik->bdg) : '' }}</a></td>
                 <td style="text-align:right"><a href="/detailcrlogistik/{{ $dari }}/{{ $sampai }}/skb"> {{ !empty($logistik->skb) ?  rupiah($logistik->skb) : '' }}</a></td>
                 <td style="text-align:right"><a href="/detailcrlogistik/{{ $dari }}/{{ $sampai }}/tgl"> {{ !empty($logistik->tgl) ?  rupiah($logistik->tgl) : '' }}</a></td>
