@@ -676,6 +676,7 @@ class PembayaranController extends Controller
                 $query->selectRaw('historibayar.no_fak_penj,
                 datediff(tglbayar,tgltransaksi) as ljt,
                 karyawan.nama_karyawan,
+                pasar,
                 k.nama_karyawan as penagih,
                 tgltransaksi,
                 tglbayar,

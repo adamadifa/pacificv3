@@ -74,6 +74,7 @@
                 <th rowspan="2">Sales (Penagih)</th>
                 <th rowspan="2">Kode Pel.</th>
                 <th rowspan="2">Nama Pelanggan</th>
+                <th rowspan="2">Wilayah</th>
                 <th rowspan="2">TUNAI</th>
                 <th rowspan="2">TITIP BAYAR</th>
                 <th rowspan="2">TAGIHAN</th>
@@ -188,6 +189,7 @@
                 <td><?php echo $k->penagih; ?></td>
                 <td><?php echo $k->kode_pelanggan; ?></td>
                 <td><?php echo $k->nama_pelanggan; ?></td>
+                <td><?php echo $k->pasar; ?></td>
                 <td style="text-align:right"><?php if (!empty($tunai)) {echo number_format($tunai, '0', '', '.'); } ?></td>
                 <td style="text-align:right"><?php if (!empty($titipan)) {echo number_format($titipan, '0', '', '.');} ?></td>
                 <td style="text-align:right"><?php if (!empty($pelunasan)) {echo number_format($pelunasan, '0', '', '.');} ?></td>
@@ -210,7 +212,7 @@
             ?>
         </tbody>
         <tr bgcolor="#024a75" style="color:white; font-size:12;">
-            <td colspan="9">TOTAL</td>
+            <td colspan="10">TOTAL</td>
             <td style="text-align: right"><?php echo number_format($totaltunai, '0', '', '.');  ?></td>
             <td style="text-align: right"><?php echo number_format($totaltitip, '0', '', '.');  ?></td>
             <td style="text-align: right"><?php echo number_format($totalpelunasan, '0', '', '.');  ?></td>
