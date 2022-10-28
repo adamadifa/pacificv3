@@ -33,13 +33,13 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <select name="kode_cabang" id="kode_cabang" class="form-control">
-                                                    @if ($getcbg != "PCF")
+                                                    @if (Auth::user()->kode_cabang!="PCF" && Auth::user()->kode_cabang!="PST" )
                                                     <option value="">Pilih Cabang</option>
                                                     @else
                                                     <option value="">Semua Cabang</option>
                                                     @endif
-                                                    @foreach ($cabang as $d)
-                                                    <option value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
+                                                    @foreach ($cabang as $c)
+                                                    <option {{ (Request('kode_cabang')==$c->kode_cabang ? 'selected':'')}} value="{{ $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
