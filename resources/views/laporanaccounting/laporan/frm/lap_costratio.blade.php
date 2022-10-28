@@ -115,7 +115,7 @@
             var tahun = $("#tahun").val();
             var cabang = "{{ $getcbg }}";
             var kode_cabang = $("#kode_cabang").val();
-            if (cabang != "PCF" && kode_cabang == "") {
+            if (cabang != "PCF" && kode_cabang == "" && cabang != "PST" && kode_cabang == "") {
                 swal({
                     title: 'Oops'
                     , text: 'Cabang Harus Dipilih !'
