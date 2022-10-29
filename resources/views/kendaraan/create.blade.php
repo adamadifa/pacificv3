@@ -39,22 +39,17 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="Type Kendaraan" field="type" icon="feather icon-file" />
+                                            <x-inputtext label="Merk" field="merk" icon="feather icon-truck" />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="Model Kendaraan" field="model" icon="feather icon-file" />
+                                            <x-inputtext label="Type Kendaraan" field="tipe_kendaraan" icon="feather icon-file" />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="Tahun" field="tahun" icon="feather icon-file" />
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <x-inputtext label="No. Mesin" field="no_mesin" icon="fa fa-barcode" />
+                                            <x-inputtext label="Tipe" field="tipe" icon="feather icon-file" />
                                         </div>
                                     </div>
                                     <div class="row">
@@ -64,12 +59,12 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="No. STNK" field="no_stnk" icon="fa fa-barcode" />
+                                            <x-inputtext label="No. Mesin" field="no_mesin" icon="fa fa-barcode" />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="Tanggal Pajak" field="pajak" icon="feather icon-calendar" datepicker />
+                                            <x-inputtext label="Tahun Pembuatan" field="tahun_pembuatan" icon="feather icon-file" />
                                         </div>
                                     </div>
                                     <div class="row">
@@ -79,68 +74,29 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="Tanggal KEUR" field="keur" icon="feather icon-calendar" datepicker />
+                                            <x-inputtext label="Alamat" field="atas_nama" icon="feather icon-map" />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="No. Uji" field="no_uji" icon="fa fa-barcode" />
+                                            <x-inputtext label="Jatuhtempo KIR" field="jatuhtempo_kir" icon="feather icon-calendar" datepicker />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="Tanggal KIR" field="kir" icon="feather icon-calendar" datepicker />
+                                            <x-inputtext label="Jatuhtempo Pajak 1 Tahun" field="jatuhtempo_pajak_satutahun" icon="feather icon-calendar" datepicker />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="Tanggal STNK" field="stnk" icon="feather icon-calendar" datepicker />
+                                            <x-inputtext label="Jatuhtempo Pajak 5 Tahun" field="jatuhtempo_pajak_limatahun" icon="feather icon-calendar" datepicker />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="Tanggal SIPA" field="sipa" icon="feather icon-calendar" datepicker />
+                                            <x-inputtext label="Jenis" field="jenis" icon="feather icon-file" />
                                         </div>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <x-inputtext label="Pengguna" field="pemakai" icon="feather icon-user" />
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <x-inputtext label="Jabatan" field="jabatan" icon="feather icon-file" />
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <x-inputtext label="Keterangan" field="keterangan" icon="feather icon-file" />
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="form-group  @error('status') error @enderror">
-                                                <select name="status" id="" class="form-control">
-                                                    <option value="">Status</option>
-                                                    <option @if (old('status')=='Non Operasional' ) selected @endif value="Non Operasional">Non Operasional</option>
-                                                    <option @if (old('status')=='Operasional' ) selected @endif value="Operasional">Operasional</option>
-                                                </select>
-                                                @error('status')
-                                                <div class="help-block">
-                                                    <ul role="alert">
-                                                        <li>{{ $message }}</li>
-                                                    </ul>
-                                                </div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-                                    @if ($level == "PCF")
-
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group  @error('kode_cabang') error @enderror">
@@ -162,9 +118,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    @else
-                                    <input type="hidden" name="kode_cabang" id="kode_cabang" value="{{ $getcbg }}">
-                                    @endif
                                     <div class="row">
                                         <div class="col-12">
                                             <button type="submit" class="btn btn-primary mr-1 mb-1"><i class="fa fa-send mr-1"></i> Simpan</button>

@@ -48,7 +48,7 @@
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
         <br>
         @if ($kendaraan != null)
-        NO POLISI {{ strtoupper($kendaraan->no_polisi) }} / MODEL {{ strtoupper($kendaraan->model) }}
+        NO POLISI {{ strtoupper($kendaraan->no_polisi) }} / MODEL {{ strtoupper($kendaraan->merk) }} {{ $kendaraan->tipe_kendaraan }} {{ $kendaraan->tipe }}
         @endif
         <br />
     </b>

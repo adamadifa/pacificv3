@@ -59,12 +59,13 @@
                                 <tr>
                                     <th>No</th>
                                     <th>No. Polisi</th>
+                                    <th>Merk</th>
+                                    <th>Tipe Kendaraan</th>
                                     <th>Type</th>
-                                    <th>Model</th>
                                     <th>Tahun</th>
-                                    <th>Pajak</th>
-                                    <th>Pengguna</th>
-                                    <th>Status</th>
+                                    <th>KIR</th>
+                                    <th>Pajak 1 Th</th>
+                                    <th>Pajak 5 Th</th>
                                     <th>Cabang</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -74,22 +75,23 @@
                                 <tr>
                                     <td>{{ $loop->iteration + $kendaraan->firstItem() - 1 }}</td>
                                     <td>{{ $d->no_polisi }}</td>
-                                    <td>{{ $d->type }}</td>
-                                    <td>{{ $d->model }}</td>
-                                    <td>{{ $d->tahun }}</td>
-                                    <td>{{ date("d-m-Y",strtotime($d->pajak)) }}</td>
-                                    <td>{{ strtoupper($d->pemakai) }}</td>
-                                    <td>{{ strtoupper($d->status) }}</td>
+                                    <td>{{ $d->merk }}</td>
+                                    <td>{{ $d->tipe_kendaraan }}</td>
+                                    <td>{{ $d->tipe }}</td>
+                                    <td>{{ $d->tahun_pembuatan }}</td>
+                                    <td>{{ $d->jatuhtempo_kir != null ? date("d-m-Y",strtotime($d->jatuhtempo_kir)) : '' }}</td>
+                                    <td>{{ $d->jatuhtempo_pajak_satutahun != null ? date("d-m-Y",strtotime($d->jatuhtempo_pajak_satutahun)) : '' }}</td>
+                                    <td>{{ $d->jatuhtempo_pajak_limatahun  != null ? date("d-m-Y",strtotime($d->jatuhtempo_pajak_limatahun)) : '' }}</td>
                                     <td>{{ strtoupper($d->kode_cabang) }}</td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             @if (in_array($level,$kendaraan_edit))
-                                            <a class="ml-1" href="/kendaraan/{{\Crypt::encrypt($d->id)}}/edit"><i class="feather icon-edit success"></i></a>
+                                            <a class="ml-1" href="/kendaraan/{{\Crypt::encrypt($d->no_polisi)}}/edit"><i class="feather icon-edit success"></i></a>
                                             @endif
-                                            <a class="ml-1 detailkendaraan" href="#" data-id="{{ $d->id }}"><i class=" feather icon-file-text info"></i></a>
+                                            <a class="ml-1 detailkendaraan" href="#" data-id="{{ Crypt::encrypt($d->no_polisi) }}"><i class=" feather icon-file-text info"></i></a>
 
                                             @if (in_array($level,$kendaraan_hapus))
-                                            <form method="POST" name="deleteform" class="deleteform" action="/kendaraan/{{ Crypt::encrypt($d->id) }}/delete">
+                                            <form method="POST" name="deleteform" class="deleteform" action="/kendaraan/{{ Crypt::encrypt($d->no_polisi) }}/delete">
                                                 @csrf
                                                 @method('DELETE')
                                                 <a href="#" class="delete-confirm ml-1">

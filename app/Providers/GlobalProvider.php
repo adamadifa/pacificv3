@@ -753,6 +753,11 @@ class GlobalProvider extends ServiceProvider
             //HRD
             $hrd_menu = ['admin'];
             $penilaian_karyawan = ['admin'];
+
+            //General Affair
+            $ga_menu = ['admin'];
+            $dashboard_ga = ['admin'];
+
             //Maintenance
 
             $maintenance_menu  = [
@@ -1097,6 +1102,11 @@ class GlobalProvider extends ServiceProvider
 
                 'hrd_menu' => $hrd_menu,
                 'penilaian_karyawan' => $penilaian_karyawan,
+
+
+                //GA
+                'ga_menu' => $ga_menu,
+                'dashboard_ga' => $dashboard_ga,
 
                 'maintenance_menu' => $maintenance_menu,
                 'maintenance_pembelian' => $maintenance_pembelian,

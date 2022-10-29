@@ -372,6 +372,7 @@
                     $totalpps = 0;
                     $totalpphk = 0;
                     $totalvsp = 0;
+                    $totalkpbpb = 0;
                     $totallainnya = 0;
                     $totalsapiutang			= 0;
                     $totalslpiutang 		= 0;

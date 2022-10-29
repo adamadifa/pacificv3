@@ -218,6 +218,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/ratiokomisi/store', [RatiokomisiController::class, 'store']);
 
     Route::get('/dashboardadmin', [DashboardController::class, 'dashboardadmin']);
+    Route::get('/dashboardga', [DashboardController::class, 'dashboardga']);
 
     //Dashboard
     Route::post('/rekapcashin', [PenjualanController::class, 'rekapcashin']);

@@ -59,47 +59,29 @@ class KendaraanController extends Controller
         //dd($request);
         $request->validate([
             'no_polisi' => 'required',
-            'type' => 'required',
-            'model' => 'required',
-            'tahun' => 'required',
-            // 'no_mesin' => 'required',
-            // 'no_rangka' => 'required',
-            // 'no_stnk' => 'required',
-            // 'pajak' => 'required',
-            // 'atas_nama' => 'required',
-            // 'keur' => 'required',
-            // 'no_uji' => 'required',
-            // 'kir' => 'required',
-            // 'stnk' => 'required',
-            // 'sipa' => 'required',
-            'pemakai' => 'required',
-            // 'jabatan' => 'required',
-            'kode_cabang' => 'required',
-            'status' => 'required'
+            'tipe_kendaraan' => 'required',
+            'tipe' => 'required',
+            'tahun_pembuatan' => 'required',
+            'kode_cabang' => 'required'
         ]);
 
 
         $simpan = DB::table('kendaraan')
             ->insert([
                 'no_polisi' => $request->no_polisi,
-                'type' => $request->type,
-                'model' => $request->model,
-                'tahun' => $request->tahun,
-                // 'no_mesin' => $request->no_mesin,
-                // 'no_rangka' => $request->no_rangka,
-                // 'no_stnk' => $request->no_stnk,
-                // 'pajak' => $request->pajak,
-                // 'atas_nama' => $request->atas_nama,
-                // 'keur' => $request->keur,
-                // 'no_uji' => $request->no_uji,
-                // 'kir' => $request->kir,
-                // 'stnk' => $request->stnk,
-                // 'sipa' => $request->sipa,
-                'pemakai' => $request->pemakai,
-                // 'jabatan' => $request->jabatan,
-                // 'keterangan' => $request->keterangan,
-                'kode_cabang' => $request->kode_cabang,
-                'status' => $request->status
+                'merk' => $request->merk,
+                'tipe_kendaraan' => $request->tipe_kendaraan,
+                'tipe' => $request->tipe,
+                'no_rangka' => $request->no_rangka,
+                'no_mesin' => $request->no_mesin,
+                'tahun_pembuatan' => $request->tahun_pembuatan,
+                'atas_nama' => $request->atas_nama,
+                'alamat' => $request->alamat,
+                'jatuhtempo_kir' => $request->jatuhtempo_kir,
+                'jatuhtempo_pajak_satutahun' => $request->jatuhtempo_pajak_satutahun,
+                'jatuhtempo_pajak_limatahun' => $request->jatuhtempo_pajak_limatahun,
+                'jenis' => $request->jenis,
+                'kode_cabang' => $request->kode_cabang
             ]);
 
         if ($simpan) {
@@ -115,50 +97,45 @@ class KendaraanController extends Controller
 
         $id = Crypt::decrypt($id);
         //dd($request);
-        $request->validate([
-            'no_polisi' => 'required',
-            'type' => 'required',
-            'model' => 'required',
-            'tahun' => 'required',
-            // 'no_mesin' => 'required',
-            // 'no_rangka' => 'required',
-            // 'no_stnk' => 'required',
-            // 'pajak' => 'required',
-            // 'atas_nama' => 'required',
-            // 'keur' => 'required',
-            // 'no_uji' => 'required',
-            // 'kir' => 'required',
-            // 'stnk' => 'required',
-            // 'sipa' => 'required',
-            'pemakai' => 'required',
-            // 'jabatan' => 'required',
-            'kode_cabang' => 'required',
-            'status' => 'required'
-        ]);
+        // $request->validate([
+        //     'no_polisi' => 'required',
+        //     'type' => 'required',
+        //     'model' => 'required',
+        //     'tahun' => 'required',
+        //     // 'no_mesin' => 'required',
+        //     // 'no_rangka' => 'required',
+        //     // 'no_stnk' => 'required',
+        //     // 'pajak' => 'required',
+        //     // 'atas_nama' => 'required',
+        //     // 'keur' => 'required',
+        //     // 'no_uji' => 'required',
+        //     // 'kir' => 'required',
+        //     // 'stnk' => 'required',
+        //     // 'sipa' => 'required',
+        //     'pemakai' => 'required',
+        //     // 'jabatan' => 'required',
+        //     'kode_cabang' => 'required',
+        //     'status' => 'required'
+        // ]);
 
 
         $simpan = DB::table('kendaraan')
-            ->where('id', $id)
+            ->where('no_polisi', $id)
             ->update([
                 'no_polisi' => $request->no_polisi,
-                'type' => $request->type,
-                'model' => $request->model,
-                'tahun' => $request->tahun,
-                'no_mesin' => $request->no_mesin,
+                'merk' => $request->merk,
+                'tipe_kendaraan' => $request->tipe_kendaraan,
+                'tipe' => $request->tipe,
                 'no_rangka' => $request->no_rangka,
-                'no_stnk' => $request->no_stnk,
-                'pajak' => $request->pajak,
+                'no_mesin' => $request->no_mesin,
+                'tahun_pembuatan' => $request->tahun_pembuatan,
                 'atas_nama' => $request->atas_nama,
-                'keur' => $request->keur,
-                'no_uji' => $request->no_uji,
-                'kir' => $request->kir,
-                'stnk' => $request->stnk,
-                'sipa' => $request->sipa,
-                'pemakai' => $request->pemakai,
-                'jabatan' => $request->jabatan,
-                'keterangan' => $request->keterangan,
+                'alamat' => $request->alamat,
+                'jatuhtempo_kir' => $request->jatuhtempo_kir,
+                'jatuhtempo_pajak_satutahun' => $request->jatuhtempo_pajak_satutahun,
+                'jatuhtempo_pajak_limatahun' => $request->jatuhtempo_pajak_limatahun,
+                'jenis' => $request->jenis,
                 'kode_cabang' => $request->kode_cabang,
-                'status' => $request->status
             ]);
 
         if ($simpan) {
@@ -172,7 +149,7 @@ class KendaraanController extends Controller
     {
         $id = Crypt::decrypt($id);
         $cabang = Cabang::all();
-        $data = Kendaraan::where('id', $id)->first();
+        $data = Kendaraan::where('no_polisi', $id)->first();
         return view('kendaraan.edit', compact('cabang', 'data'));
     }
     public function delete($id)
@@ -180,7 +157,7 @@ class KendaraanController extends Controller
         $id = Crypt::decrypt($id);
         try {
             $hapus = DB::table('kendaraan')
-                ->where('id', $id)
+                ->where('no_polisi', $id)
                 ->delete();
 
             if ($hapus) {
@@ -198,8 +175,8 @@ class KendaraanController extends Controller
 
     public function show(Request $request)
     {
-        $id = $request->id;
-        $data = Kendaraan::where('id', $id)->first();
+        $id = Crypt::decrypt($request->id);
+        $data = Kendaraan::where('no_polisi', $id)->first();
         return view('kendaraan.show', compact('data'));
     }
     function rekapkendaraandashboard(Request $request)
@@ -265,7 +242,7 @@ class KendaraanController extends Controller
             } else {
                 $selected = '';
             }
-            echo "<option $selected value='$d->no_polisi'>" . $d->no_polisi . " - " . $d->type . "</option>";
+            echo "<option $selected value='$d->no_polisi'>" . $d->no_polisi . " - " . $d->merk . " " . $d->tipe_kendaraan . "</option>";
         }
     }
 

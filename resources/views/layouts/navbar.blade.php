@@ -978,6 +978,21 @@
                 </ul>
             </li>
             @endif
+            @if (in_array($level, $ga_menu))
+            <li class=" nav-item">
+                <a href="#"><i class="feather icon-box" style="color:rgb(200, 5, 77)"></i><span class="menu-title">General Affair</span></a>
+                <ul class="menu-content">
+                    @if (in_array($level, $dashboard_ga))
+                    <li class="{{ request()->is(['dashboardga', 'dashboardga/*']) ? 'active' : '' }}">
+                        <a href="/dashboardga">
+                            <i class="feather icon-home"></i>
+                            <span class="menu-item" data-i18n="Second Level">Dashboard</span>
+                        </a>
+                    </li>
+                    @endif
+                </ul>
+            </li>
+            @endif
             @if (in_array($level,$maintenance_menu))
             <li class=" nav-item">
                 <a href="#"><i class="feather icon-umbrella"></i><span class="menu-title">Maintenance</span></a>
