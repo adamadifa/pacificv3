@@ -990,6 +990,22 @@
                         </a>
                     </li>
                     @endif
+                    @if (in_array($level, $mutasi_kendaraan))
+                    <li class="{{ request()->is(['mutasikendaraan', 'mutasikendaraan/*']) ? 'active' : '' }}">
+                        <a href="/mutasikendaraan">
+                            <i class="feather icon-truck"></i>
+                            <span class="menu-item" data-i18n="Second Level">Mutasi Kendaraan</span>
+                        </a>
+                    </li>
+                    @endif
+                    @if (in_array($level, $service_kendaraan))
+                    <li class="{{ request()->is(['servicekendaraan', 'servicekendaraan/*']) ? 'active' : '' }}">
+                        <a href="/servicekendaraan">
+                            <i class="fa fa-ambulance"></i>
+                            <span class="menu-item" data-i18n="Second Level">Service Kendaraan</span>
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </li>
             @endif

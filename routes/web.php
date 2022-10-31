@@ -50,6 +50,7 @@ use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\MemoController;
 use App\Http\Controllers\MutasibankController;
 use App\Http\Controllers\MutasigudangcabangController;
+use App\Http\Controllers\MutasikendaraanController;
 use App\Http\Controllers\MutasilaingjController;
 use App\Http\Controllers\OmancabangController;
 use App\Http\Controllers\OmanController;
@@ -83,6 +84,7 @@ use App\Http\Controllers\SaldoawalgudanglogistikController;
 use App\Http\Controllers\SaldoawalkasbesarController;
 use App\Http\Controllers\SaldoawalmutasibarangproduksiController;
 use App\Http\Controllers\SalesmanController;
+use App\Http\Controllers\ServicekendaraanController;
 use App\Http\Controllers\SetcoacabangController;
 use App\Http\Controllers\SetorangiroController;
 use App\Http\Controllers\SetoranpenjualanController;
@@ -246,7 +248,20 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/kendaraan/{id}/update', [KendaraanController::class, 'update']);
     Route::post('/kendaraan/show', [KendaraanController::class, 'show']);
 
+    //Mutasi Kendaraan
 
+    Route::get('/mutasikendaraan', [MutasikendaraanController::class, 'index']);
+    Route::get('/mutasikendaraan/create', [MutasikendaraanController::class, 'create']);
+    Route::post('/mutasikendaraan/store', [MutasikendaraanController::class, 'store']);
+    Route::delete('/mutasikendaraan/{no_mutasi}/delete', [MutasikendaraanController::class, 'delete']);
+
+    //Item Service
+
+    Route::get('/getitemservice', [ServicekendaraanController::class, 'getitemservice']);
+    Route::post('/storeitemservice', [ServicekendaraanController::class, 'storeitemservice']);
+    //Service Kendaraan
+    Route::get('/servicekendaraan', [ServicekendaraanController::class, 'index']);
+    Route::get('/servicekendaraan/create', [ServicekendaraanController::class, 'create']);
     //Cabang
     Route::get('/cabang', [CabangController::class, 'index']);
     Route::get('/cabang/create', [CabangController::class, 'create']);
@@ -1030,7 +1045,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/kendaraan/{id}/delete', [KendaraanController::class, 'delete']);
     Route::get('/kendaraan/{id}/edit', [KendaraanController::class, 'edit']);
     Route::post('/kendaraan/{id}/update', [KendaraanController::class, 'update']);
-    Route::post('/kendaraan/show', [KendaraanController::class, 'show']);
+    Route::get('/kendaraan/{id}/show', [KendaraanController::class, 'show']);
 
     //Ledger
     Route::get('/ledger', [LedgerController::class, 'index']);

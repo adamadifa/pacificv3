@@ -173,11 +173,12 @@ class KendaraanController extends Controller
         }
     }
 
-    public function show(Request $request)
+    public function show($id)
     {
-        $id = Crypt::decrypt($request->id);
+        $id = Crypt::decrypt($id);
         $data = Kendaraan::where('no_polisi', $id)->first();
-        return view('kendaraan.show', compact('data'));
+        $mutasikendaraan = DB::table('kendaraan_mutasi')->where('no_polisi', $id)->orderBy('tgl_mutasi')->get();
+        return view('kendaraan.show', compact('data', 'mutasikendaraan'));
     }
     function rekapkendaraandashboard(Request $request)
     {

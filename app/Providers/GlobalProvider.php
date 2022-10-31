@@ -232,7 +232,7 @@ class GlobalProvider extends ServiceProvider
 
             //----------------------------Permintaaan Pengiriman--------------------------------
             $permintaanpengiriman = ['admin', 'admin gudang cabang dan marketing', 'admin garut', 'kepala admin'];
-            $permintaanpengiriman_tambah = ['admin', 'admin gudang cabang dan marketing', 'admin gudang pusat', 'admin garut'];
+            $permintaanpengiriman_tambah = ['admin', 'admin gudang cabang dan marketing', 'admin gudang pusat', 'admin garut', 'kepala admin'];
             $permintaanpengiriman_hapus = ['admin', 'admin gudang cabang dan marketing', 'admin gudang pusat'];
             $permintaanpengiriman_proses = ['admin', 'kepala gudang', 'admin gudang pusat'];
             $permintaanpengiriman_gj = ['admin', 'kepala gudang', 'admin gudang pusat'];
@@ -757,6 +757,8 @@ class GlobalProvider extends ServiceProvider
             //General Affair
             $ga_menu = ['admin'];
             $dashboard_ga = ['admin'];
+            $mutasi_kendaraan = ['admin'];
+            $service_kendaraan = ['admin'];
 
             //Maintenance
 
@@ -1107,6 +1109,8 @@ class GlobalProvider extends ServiceProvider
                 //GA
                 'ga_menu' => $ga_menu,
                 'dashboard_ga' => $dashboard_ga,
+                'mutasi_kendaraan' => $mutasi_kendaraan,
+                'service_kendaraan' => $service_kendaraan,
 
                 'maintenance_menu' => $maintenance_menu,
                 'maintenance_pembelian' => $maintenance_pembelian,
