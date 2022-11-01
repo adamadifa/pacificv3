@@ -728,9 +728,6 @@ class PenjualanController extends Controller
                 $jmldusstick   = $jmldusstick + $jmldus;
             }
 
-            if ($d->kategori == "STICK") {
-                $jmldusstick   = $jmldusstick + $jmldus;
-            }
 
             if ($d->kategori == "SP") {
                 $jmldussp   = $jmldussp + $jmldus;
