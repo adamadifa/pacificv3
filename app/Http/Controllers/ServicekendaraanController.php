@@ -64,4 +64,26 @@ class ServicekendaraanController extends Controller
             echo 2;
         }
     }
+
+    public function storetemp(Request $request)
+    {
+        $no_invoice = $request->no_invoice;
+        $kode_item = $request->kode_item;
+        $qty = $request->qty;
+        $harga = $request->harga;
+
+        $data = [
+            'no_invoice' => $no_invoice,
+            'kode_item' => $kode_item,
+            'qty' => $qty,
+            'harga' => $harga
+        ];
+
+        $simpan = DB::table('kendaraan_service_temp')->insert($data);
+        if ($simpan) {
+            echo 1;
+        } else {
+            echo 2;
+        }
+    }
 }

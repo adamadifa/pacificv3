@@ -220,7 +220,7 @@ $total += $d->subtotal;
             var potsp = "{{ rupiah($faktur->potsp) }}";
             $.ajax({
                 type: 'POST'
-                , url: '/hitungdiskonpenjualan'
+                , url: '/hitungdiskon'
                 , data: {
                     _token: "{{ csrf_token() }}"
                     , jenistransaksi: jenistransaksi
@@ -272,7 +272,7 @@ $total += $d->subtotal;
             var potsp = "{{ rupiah($faktur->potsp) }}";
             $.ajax({
                 type: 'POST'
-                , url: '/hitungdiskonpenjualan'
+                , url: '/hitungdiskon'
                 , data: {
                     _token: "{{ csrf_token() }}"
                     , jenistransaksi: jenistransaksi

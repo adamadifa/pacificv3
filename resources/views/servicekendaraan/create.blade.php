@@ -32,7 +32,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-12">
-                                        <x-inputtext label="No. Invoice" field="no_invoce" icon="fa fa-barcode" />
+                                        <x-inputtext label="No. Invoice" field="no_invoice" icon="fa fa-barcode" />
                                     </div>
                                 </div>
                                 <div class="row">
@@ -89,7 +89,7 @@
                                         <x-inputtext label="Harga" field="harga" icon="feather icon-file" right />
                                     </div>
                                     <div class="col-lg-2">
-                                        <a href="#" class="btn btn-primary"><i class="fa fa-cart-plus"></i></a>
+                                        <a href="#" class="btn btn-primary" id="simpantemp"><i class="fa fa-cart-plus"></i></a>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -180,6 +180,68 @@
                 backdrop: 'static'
                 , keyboard: false
             });
+        });
+
+        $("#simpantemp").click(function(e) {
+            e.preventDefault();
+            var no_invoice = $("#no_invoice").val();
+            var kode_item = $("#kode_item").val();
+            var qty = $("#qty").val();
+            var harga = $("#harga").val();
+            if (no_invoice == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'No. Invoice Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#no_invoice").focus();
+                });
+            } else if (kode_item == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Item Harus Dipilih !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#kode_item").focus();
+                });
+            } else if (qty == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Qty Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#qty").focus();
+                });
+            } else if (harga == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Harga Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#harga").focus();
+                });
+            } else {
+                $.ajax({
+                    type: 'POST'
+                    , url: '/storetemp'
+                    , data: {
+                        _token: "{{ csrf_token() }}"
+                        , no_invoice: no_invoice
+                        , kode_item: kode_item
+                        , qty: qty
+                        , harga: harga
+                    }
+                    , cache: false
+                    , success: function(respond) {
+
+                    }
+                });
+            }
+
         });
 
         $("#simpannewitem").click(function(e) {
