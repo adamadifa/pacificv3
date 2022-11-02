@@ -22,7 +22,8 @@
         <!-- DataTable starts -->
         @include('layouts.notification')
         <div class="col-md-12 col-sm-12">
-            <form action="/servicekendaraaan/store" method="POST">
+            <form action="/servicekendaraan/store" method="POST" id="frmService">
+                @csrf
                 <div class="row">
                     <div class="col-md-4 col-sm-12">
                         <div class="card">
@@ -37,7 +38,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
-                                        <x-inputtext label="Tanggal Service" field="tgl_servie" icon="feather icon-calendar" datepicker />
+                                        <x-inputtext label="Tanggal Service" field="tgl_service" icon="feather icon-calendar" datepicker />
                                     </div>
                                 </div>
                                 <div class="row">
@@ -53,14 +54,19 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-12">
+                                    <div class="col-9">
                                         <div class="form-group">
-                                            <select name="no_polisi" id="no_polisi" class="form-control select2">
+                                            <select name="kode_bengkel" id="kode_bengkel" class="form-control select2">
                                                 <option value="">Pilih Bengkel</option>
                                                 @foreach ($bengkel as $d)
                                                 <option value="{{ $d->kode_bengkel }}">{{ $d->nama_bengkel }}</option>
                                                 @endforeach
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="form-group">
+                                            <a href="#" class="btn btn-info mr-2" id="addnewbengkel"><i class="feather icon-plus"></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -92,7 +98,7 @@
                                         <a href="#" class="btn btn-primary" id="simpantemp"><i class="fa fa-cart-plus"></i></a>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row mb-3">
                                     <div class="col-12">
                                         <table class="table table-bordered">
                                             <thead>
@@ -103,10 +109,40 @@
                                                     <th>Qty</th>
                                                     <th>Biaya</th>
                                                     <th>Total</th>
+                                                    <th>#</th>
                                                 </tr>
                                             </thead>
-                                            <tbody></tbody>
+                                            <tr id="loading">
+                                                <td colspan="7" style="text-align:center">
+                                                    <div class="spinner-border text-primary" role="status">
+                                                        <span class="sr-only">Loading...</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tbody id="loadtemp">
+
+                                            </tbody>
                                         </table>
+                                    </div>
+                                </div>
+                                <div class="row mb-1">
+                                    <div class="col-12">
+                                        <div class="vs-checkbox-con vs-checkbox-primary">
+                                            <input type="checkbox" class="aggrement" name="aggrement" value="aggrement">
+                                            <span class="vs-checkbox">
+                                                <span class="vs-checkbox--check">
+                                                    <i class="vs-icon feather icon-check"></i>
+                                                </span>
+                                            </span>
+                                            <span class="">Yakin Akan Disimpan ?</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" id="tombolsimpan">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <button class="btn btn-block btn-primary"><i class="feather icon-send mr-1"></i> Simpan</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -157,10 +193,105 @@
     </div>
 </div>
 
+
+<div class="modal fade text-left" id="mdlinputnewbengkel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Tambah Bengkel</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12">
+                        <x-inputtext label="Nama Bengkel" field="nama_bengkel" icon="feather icon-file" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <a href="#" class="btn btn-primary btn-block" id="simpannewbengkel"><i class="feather icon-send mr-1"></i>Simpan</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @push('myscript')
 <script>
     $(function() {
+
+
+        $("#frmService").submit(function() {
+            var no_invoice = $("#no_invoice").val();
+            var tgl_service = $("#tgl_service").val();
+            var no_polisi = $("#no_polisi").val();
+            var kode_bengkel = $("#kode_bengkel").val();
+            if (no_invoice == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'No. Invoice Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#no_invoice").focus();
+                });
+
+                return false;
+            } else if (tgl_service == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Tanggal Service Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#tgl_service").focus();
+                });
+                return false;
+            } else if (no_polisi == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'No. Polisi Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#no_polisi").focus();
+                });
+
+                return false;
+            } else if (kode_bengkel == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Bengkel Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#kode_bengkel").focus();
+                });
+
+                return false;
+            }
+        });
+
+        $('.aggrement').change(function() {
+            if (this.checked) {
+                $("#tombolsimpan").show();
+            } else {
+                $("#tombolsimpan").hide();
+            }
+        });
+
+        function hidetombolsimpan() {
+            $("#tombolsimpan").hide();
+        }
+
+        hidetombolsimpan();
+        $("#harga").maskMoney();
+
         function loaditem() {
             $.ajax({
                 type: 'GET'
@@ -172,11 +303,31 @@
             });
         }
 
+        function loadbengkel() {
+            $.ajax({
+                type: 'GET'
+                , url: '/getbengkel'
+                , cache: false
+                , success: function(respond) {
+                    $("#kode_bengkel").html(respond);
+                }
+            });
+        }
+
+        loadbengkel();
         loaditem();
 
         $('#addnewitem').click(function(e) {
             e.preventDefault();
             $('#mdlinputnewitem').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+        });
+
+        $('#addnewbengkel').click(function(e) {
+            e.preventDefault();
+            $('#mdlinputnewbengkel').modal({
                 backdrop: 'static'
                 , keyboard: false
             });
@@ -227,7 +378,7 @@
             } else {
                 $.ajax({
                     type: 'POST'
-                    , url: '/storetemp'
+                    , url: '/servicekendaraan/storetemp'
                     , data: {
                         _token: "{{ csrf_token() }}"
                         , no_invoice: no_invoice
@@ -237,7 +388,19 @@
                     }
                     , cache: false
                     , success: function(respond) {
-
+                        if (respond == 3) {
+                            swal({
+                                title: 'Oops'
+                                , text: 'Data Item Sudah Ada !'
+                                , icon: 'warning'
+                                , showConfirmButton: false
+                            }).then(function() {
+                                $("#kode_item").focus();
+                            });
+                        }
+                        $("#qty").val("");
+                        $("#harga").val("");
+                        loadtemp();
                     }
                 });
             }
@@ -283,6 +446,72 @@
                     }
                 });
             }
+        });
+
+        $("#simpannewbengkel").click(function(e) {
+            e.preventDefault();
+            var nama_bengkel = $("#nama_bengkel").val();
+            if (nama_bengkel == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Nama Bengkel Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#nama_bengkel").focus();
+                });
+            } else {
+                $.ajax({
+                    type: 'POST'
+                    , url: '/storenewbengkel'
+                    , data: {
+                        _token: "{{ csrf_token() }}"
+                        , nama_bengkel: nama_bengkel
+                    }
+                    , cache: false
+                    , success: function(respond) {
+                        console.log(respond);
+                        loadbengkel();
+                        $("#mdlinputnewbengkel").modal('hide');
+                    }
+                });
+            }
+        });
+
+        function loadtemp() {
+            var no_invoice = $("#no_invoice").val();
+            $("#loading").show();
+            $.ajax({
+                type: 'POST'
+                , url: '/servicekendaraan/showtemp'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , no_invoice: no_invoice
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loadtemp").html(respond);
+                    $("#loading").hide();
+                }
+            });
+        }
+
+        loadtemp();
+
+        $("#no_invoice").keyup(function() {
+            loadtemp();
+        });
+
+        $('#no_invoice').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAA', {
+            'translation': {
+                A: {
+                    pattern: /[A-Za-z0-9]/
+                }
+            }
+        });
+
+        $("input[type=text]").keyup(function() {
+            $(this).val($(this).val().toUpperCase());
         });
     });
 

@@ -259,9 +259,18 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/getitemservice', [ServicekendaraanController::class, 'getitemservice']);
     Route::post('/storeitemservice', [ServicekendaraanController::class, 'storeitemservice']);
+
+    Route::get('/getbengkel', [ServicekendaraanController::class, 'getbengkel']);
+    Route::post('/storenewbengkel', [ServicekendaraanController::class, 'storenewbengkel']);
     //Service Kendaraan
     Route::get('/servicekendaraan', [ServicekendaraanController::class, 'index']);
     Route::get('/servicekendaraan/create', [ServicekendaraanController::class, 'create']);
+    Route::post('/servicekendaraan/storetemp', [ServicekendaraanController::class, 'storetemp']);
+    Route::post('/servicekendaraan/showtemp', [ServicekendaraanController::class, 'showtemp']);
+    Route::post('/servicekendaraan/deletetemp', [ServicekendaraanController::class, 'deletetemp']);
+    Route::post('/servicekendaraan/store', [ServicekendaraanController::class, 'store']);
+    Route::delete('/servicekendaraan/{no_invoice}/delete', [ServicekendaraanController::class, 'delete']);
+    Route::post('/servicekendaraan/show', [ServicekendaraanController::class, 'show']);
     //Cabang
     Route::get('/cabang', [CabangController::class, 'index']);
     Route::get('/cabang/create', [CabangController::class, 'create']);

@@ -53,20 +53,39 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th>No</th>
+                                    <th>No. Invoice</th>
+                                    <th>Tanggal</th>
                                     <th>No. Polisi</th>
-                                    <th>Merk</th>
-                                    <th>Tipe Kendaraan</th>
-                                    <th>Type</th>
-                                    <th>Tahun</th>
-                                    <th>KIR</th>
-                                    <th>Pajak 1 Th</th>
-                                    <th>Pajak 5 Th</th>
-                                    <th>Cabang</th>
+                                    <th>Kendaraan</th>
+                                    <th>Nama Bengkel</th>
+                                    <th>Kode Cabang</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-
+                                @foreach ($service as $d)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $d->no_invoice }}</td>
+                                    <td>{{ DateToIndo2($d->tgl_service) }}</td>
+                                    <td>{{ $d->no_polisi }}</td>
+                                    <td>{{ $d->merk }} {{ $d->tipe_kendaraan }} {{ $d->tipe }}</td>
+                                    <td>{{ $d->nama_bengkel }}</td>
+                                    <td>{{ $d->kode_cabang }}</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a href="#" class="info detail" no_invoice={{ $d->no_invoice }}><i class="feather icon-file"></i></a>
+                                            <form method="POST" name="deleteform" class="deleteform" action="/servicekendaraan/{{ Crypt::encrypt($d->no_invoice) }}/delete">
+                                                @csrf
+                                                @method('DELETE')
+                                                <a href="#" class="delete-confirm ml-1">
+                                                    <i class="feather icon-trash danger"></i>
+                                                </a>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
 
                             </tbody>
                         </table>
@@ -81,17 +100,17 @@
     </div>
 </div>
 <!-- Detail Kendaraan -->
-<div class="modal fade text-left" id="mdldetailkendaraan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+<div class="modal fade text-left" id="mdldetailservice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel18">Detail Kendaraan</h4>
+                <h4 class="modal-title" id="myModalLabel18">Detail Service Kendaraan</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div id="loaddetailkendaraan"></div>
+                <div id="loaddetailservice"></div>
             </div>
         </div>
     </div>
@@ -100,26 +119,26 @@
 @push('myscript')
 <script>
     $(function() {
-        function loaddetailkendaraan(id) {
+        function loaddetailservice(no_invoice) {
             $.ajax({
                 type: 'POST'
-                , url: '/kendaraan/show'
+                , url: '/servicekendaraan/show'
                 , data: {
                     _token: "{{ csrf_token() }}"
-                    , id: id
+                    , no_invoice: no_invoice
                 }
                 , cache: false
                 , success: function(respond) {
-                    $("#loaddetailkendaraan").html(respond);
+                    $("#loaddetailservice").html(respond);
                 }
             });
         }
-        $('.detailkendaraan').click(function(e) {
-            var id = $(this).attr("data-id");
+        $('.detail').click(function(e) {
+            var no_invoice = $(this).attr("no_invoice");
 
             e.preventDefault();
-            loaddetailkendaraan(id);
-            $('#mdldetailkendaraan').modal({
+            loaddetailservice(no_invoice);
+            $('#mdldetailservice').modal({
                 backdrop: 'static'
                 , keyboard: false
             });
