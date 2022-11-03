@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cabang;
 use App\Models\Kendaraan;
 use App\Models\Limitkredit;
 use Illuminate\Http\Request;
@@ -64,7 +65,8 @@ class DashboardController extends Controller
 
         $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB');
         $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
-        $cabang = DB::table('cabang')->get();
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang(Auth::user()->kode_cabang);
         $kode_cabang = Auth::user()->kode_cabang;
         $id_user = Auth::user()->id;
         $level = Auth::user()->level;

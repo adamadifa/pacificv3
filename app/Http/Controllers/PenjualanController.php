@@ -5494,6 +5494,14 @@ class PenjualanController extends Controller
         if ($bulan < 9 && $tahun <= 2022) {
             $query->whereNotIn('karyawan.kode_cabang', $exclude);
         }
+
+        if (Auth::user()->id == 82) {
+            $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB');
+            $query->whereIn('karyawan.kode_cabang', $wilayah_barat);
+        } else if (Auth::user()->id == 97) {
+            $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
+            $query->whereIn('karyawan.kode_cabang', $wilayah_timur);
+        }
         $query->whereBetween('tgltransaksi', [$dari, $sampai]);
         $query->groupByRaw('karyawan.kode_cabang,nama_cabang,totalretur,totalreturpending');
         $rekappenjualancabang = $query->get();
@@ -5601,6 +5609,14 @@ class PenjualanController extends Controller
         $query->whereBetween('tglbayar', [$dari, $sampai]);
         if ($bulan < 9 && $tahun <= 2022) {
             $query->where('karyawan.kode_cabang', '!=', 'TSM');
+        }
+
+        if (Auth::user()->id == 82) {
+            $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB');
+            $query->whereIn('karyawan.kode_cabang', $wilayah_barat);
+        } else if (Auth::user()->id == 97) {
+            $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
+            $query->whereIn('karyawan.kode_cabang', $wilayah_timur);
         }
         $query->groupByRaw('karyawan.kode_cabang,nama_cabang');
         $kasbesar = $query->get();
