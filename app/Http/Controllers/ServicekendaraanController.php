@@ -17,11 +17,16 @@ class ServicekendaraanController extends Controller
         $query = Servicekendaraan::query();
 
         if (isset($request->no_polisi)) {
-            $query->where('no_polisi', '%');
+            $query->where('kendaraan_service.no_polisi', $request->no_polisi);
+        }
+
+        if (!empty($request->dari) && !empty($request->sampai)) {
+            $query->whereBetween('tgl_service', [$request->dari, $request->sampai]);
         }
         $query->select('no_invoice', 'kendaraan_service.no_polisi', 'merk', 'tipe', 'tipe_kendaraan', 'tgl_service', 'nama_bengkel', 'kendaraan_service.kode_cabang');
         $query->join('kendaraan', 'kendaraan_service.no_polisi', '=', 'kendaraan.no_polisi');
         $query->join('bengkel', 'kendaraan_service.kode_bengkel', '=', 'bengkel.kode_bengkel');
+        $query->orderBy('no_invoice', 'desc');
         $service = $query->paginate(15);
         $service->appends($request->all());
 

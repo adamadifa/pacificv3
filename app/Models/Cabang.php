@@ -20,6 +20,7 @@ class Cabang extends Model
         $oki = 27;
         $yulianto = 82;
         $ega = 7;
+        $dadang = 97;
         $listcabang = array('BDG', 'PWK');
         $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB');
         $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
@@ -28,6 +29,8 @@ class Cabang extends Model
             $cabang = DB::table('cabang')->whereIn('kode_cabang', $listcabang)->get();
         } else if ($iduser == $yulianto) {
             $cabang = DB::table('cabang')->whereIn('kode_cabang', $wilayah_barat)->get();
+        } else if ($iduser == $dadang) {
+            $cabang = DB::table('cabang')->whereIn('kode_cabang', $wilayah_timur)->get();
         } else if ($iduser == $ega) {
             $cabang = DB::table('cabang')->whereIn('kode_cabang', $egacabang)->get();
         } else {

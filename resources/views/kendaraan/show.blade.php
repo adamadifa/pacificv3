@@ -110,11 +110,18 @@
                                         <th>No.</th>
                                         <th>No. Invoice</th>
                                         <th>Tanggal</th>
-                                        <th>Detail</th>
+                                        <th>Bengkel</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
+                                    @foreach ($servicekendaraan as $d)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td><a href="#" class="detail" no_invoice="{{ $d->no_invoice }}">{{ $d->no_invoice }}</a></td>
+                                        <td>{{ DateToIndo2($d->tgl_service) }}</td>
+                                        <td>{{ $d->nama_bengkel }}</td>
+                                    </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -155,4 +162,51 @@
         </div>
     </div>
 </div>
+<!-- Detail Kendaraan -->
+<div class="modal fade text-left" id="mdldetailservice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Detail Service Kendaraan</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loaddetailservice"></div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
+@push('myscript')
+<script>
+    $(function() {
+        function loaddetailservice(no_invoice) {
+            $.ajax({
+                type: 'POST'
+                , url: '/servicekendaraan/show'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , no_invoice: no_invoice
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loaddetailservice").html(respond);
+                }
+            });
+        }
+        $('.detail').click(function(e) {
+            var no_invoice = $(this).attr("no_invoice");
+
+            e.preventDefault();
+            loaddetailservice(no_invoice);
+            $('#mdldetailservice').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+        });
+    });
+
+</script>
+@endpush

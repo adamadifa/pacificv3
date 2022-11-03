@@ -178,7 +178,12 @@ class KendaraanController extends Controller
         $id = Crypt::decrypt($id);
         $data = Kendaraan::where('no_polisi', $id)->first();
         $mutasikendaraan = DB::table('kendaraan_mutasi')->where('no_polisi', $id)->orderBy('tgl_mutasi')->get();
-        return view('kendaraan.show', compact('data', 'mutasikendaraan'));
+        $servicekendaraan = DB::table('kendaraan_service')
+            ->join('bengkel', 'kendaraan_service.kode_bengkel', '=', 'bengkel.kode_bengkel')
+            ->where('no_polisi', $id)
+            ->orderBy('tgl_service')
+            ->get();
+        return view('kendaraan.show', compact('data', 'mutasikendaraan', 'servicekendaraan'));
     }
     function rekapkendaraandashboard(Request $request)
     {

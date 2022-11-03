@@ -759,6 +759,10 @@ class GlobalProvider extends ServiceProvider
             $dashboard_ga = ['admin'];
             $mutasi_kendaraan = ['admin'];
             $service_kendaraan = ['admin'];
+            $bad_stock = ['admin'];
+            $laporan_ga = ['admin'];
+            $laporan_servicekendaraan = ['admin'];
+            $rekap_badstokga = ['admin'];
 
             //Maintenance
 
@@ -1111,6 +1115,10 @@ class GlobalProvider extends ServiceProvider
                 'dashboard_ga' => $dashboard_ga,
                 'mutasi_kendaraan' => $mutasi_kendaraan,
                 'service_kendaraan' => $service_kendaraan,
+                'bad_stock' => $bad_stock,
+                'laporan_ga' => $laporan_ga,
+                'laporan_servicekendaraan' => $laporan_servicekendaraan,
+                'rekap_badstokga' => $rekap_badstokga,
 
                 'maintenance_menu' => $maintenance_menu,
                 'maintenance_pembelian' => $maintenance_pembelian,

@@ -1006,6 +1006,22 @@
                         </a>
                     </li>
                     @endif
+                    @if (in_array($level, $bad_stock))
+                    <li class="{{ request()->is(['badstock', 'badstock/*']) ? 'active' : '' }}">
+                        <a href="/badstock">
+                            <i class="feather icon-box"></i>
+                            <span class="menu-item" data-i18n="Second Level">Bad Stock</span>
+                        </a>
+                    </li>
+                    @endif
+                    @if (in_array($level, $laporan_ga))
+                    <li class="{{ request()->is(['laporanga', 'laporanga/*']) ? 'active' : '' }}">
+                        <a href="/laporanga/servicekendaraan">
+                            <i class="feather icon-file"></i>
+                            <span class="menu-item" data-i18n="Second Level">Laporan</span>
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </li>
             @endif

@@ -4,6 +4,7 @@ use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\AngkutanController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BadstokController;
 use App\Http\Controllers\BankController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\BarangpembelianController;
@@ -32,6 +33,7 @@ use App\Http\Controllers\KlaimController;
 use App\Http\Controllers\KontrabonangkutanController;
 use App\Http\Controllers\KontrabonController;
 use App\Http\Controllers\LaporanaccountingController;
+use App\Http\Controllers\LaporangaController;
 use App\Http\Controllers\LaporangudangbahanController;
 use App\Http\Controllers\LaporangudangcabangController;
 use App\Http\Controllers\LaporangudangjadiController;
@@ -271,6 +273,22 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/servicekendaraan/store', [ServicekendaraanController::class, 'store']);
     Route::delete('/servicekendaraan/{no_invoice}/delete', [ServicekendaraanController::class, 'delete']);
     Route::post('/servicekendaraan/show', [ServicekendaraanController::class, 'show']);
+
+    //Bad Stock
+    Route::get('/badstock', [BadstokController::class, 'index']);
+    Route::get('/badstok/create', [BadstokController::class, 'create']);
+    Route::post('/badstok/store', [BadstokController::class, 'store']);
+    Route::post('/badstok/show', [BadstokController::class, 'show']);
+    Route::delete('/badstok/{no_bs}/delete', [BadstokController::class, 'delete']);
+
+    //Laporan GA
+
+    Route::get('/laporanga/servicekendaraan', [LaporangaController::class, 'servicekendaraan']);
+    Route::post('/laporanga/servicekendaraan/cetak', [LaporangaController::class, 'cetakservicekendaraan']);
+
+    Route::get('/laporanga/rekapbadstok', [LaporangaController::class, 'rekapbadstok']);
+    Route::post('/laporanga/rekapbadstok/cetak', [LaporangaController::class, 'cetakrekapbadstok']);
+
     //Cabang
     Route::get('/cabang', [CabangController::class, 'index']);
     Route::get('/cabang/create', [CabangController::class, 'create']);
