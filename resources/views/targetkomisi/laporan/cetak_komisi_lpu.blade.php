@@ -390,7 +390,7 @@
 
                 //Ratio LJT
 
-                $ratioljt = ($d->sisapiutang / $d->realisasi_cashin * 100) * ($kebijakan / 100);
+                $ratioljt = $d->realisasi_cashin != null ? ($d->sisapiutang / $d->realisasi_cashin * 100) * ($kebijakan / 100) : 0;
                 if ($ratioljt > 0) {
                     $ratioljt = $ratioljt;
                 } else {
