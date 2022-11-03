@@ -20,7 +20,7 @@ class Cabang extends Model
         $oki = 27;
         $yulianto = 82;
         $ega = 7;
-        $dadang = 97;
+        $dadang = 0;
         $listcabang = array('BDG', 'PWK');
         $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB');
         $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
