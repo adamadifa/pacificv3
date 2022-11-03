@@ -214,8 +214,10 @@ class GudangController extends Controller
         );
         if (Auth::user()->id == 82) {
             $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB');
-            $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
             $query->whereIn('cabang.kode_cabang', $wilayah_barat);
+        } else if (Auth::user()->id == 97) {
+            $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
+            $query->whereIn('cabang.kode_cabang', $wilayah_timur);
         }
         $query->orderBy('cabang.urutan');
         $rekapdpb = $query->get();
