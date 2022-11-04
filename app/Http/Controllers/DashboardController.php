@@ -54,7 +54,7 @@ class DashboardController extends Controller
             return $this->dashboardpembelian();
         } else if (Auth::user()->level == "kepala gudang" || Auth::user()->level == "admin gudang pusat" || Auth::user()->level == "emf" || Auth::user()->level == "admin produksi") {
             return $this->dashboardgudang();
-        } else if (Auth::user()->level == "admin gudang cabang" || Auth::user()->level == "admin gudang cabang dan marketing") {
+        } else if (Auth::user()->level == "admin gudang cabang" || Auth::user()->level == "admin gudang cabang dan marketing" || "admin persediaan dan kas kecil") {
             return $this->dashboardgudangcabang();
         } else {
             return $this->dashboardadminkaskecil();
