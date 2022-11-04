@@ -48,7 +48,7 @@
         PACIFC ALL CABANG
         @endif
         <br>
-        PERIODE {{ $namabulan[$bulan] }} {{ $tahun }}
+        TAHUN {{ $tahun }}
     </b>
     <br>
     <br>
@@ -58,11 +58,22 @@
             <tr>
                 <th rowspan="2">No.</th>
                 <th rowspan="2">Produk</th>
-                <th colspan="31">Bulan {{ $namabulan[$bulan] }} {{ $tahun }}</th>
+                <th colspan="12">Bulan {{ $tahun }}</th>
                 <th rowspan="2">Total</th>
             </tr>
             <tr>
-                @for ($i = 1; $i <= 31; $i++) <th>{{ $i }}</th> @endfor
+                <th>Jan</th>
+                <th>Feb</th>
+                <th>Mar</th>
+                <th>Apr</th>
+                <th>Mei</th>
+                <th>Jun</th>
+                <th>Jul</th>
+                <th>Agu</th>
+                <th>Sep</th>
+                <th>Okt</th>
+                <th>Nov</th>
+                <th>Des</th>
             </tr>
         </thead>
         <tbody>
@@ -73,9 +84,19 @@
             <tr>
                 <td>{{ $no }}</td>
                 <td>{{ $d->nama_barang }}</td>
-                @for ($i = 1; $i <=31; $i++) @php $tgl="tgl_" .$i; @endphp <td>{{ !empty($d->$tgl) ? $d->$tgl : ''   }}</td>
-                    @endfor
-                    <td style="text-align: right">{{ rupiah($d->total) }}</td>
+                <td style="text-align: right">{{ !empty($d->jan) ? $d->jan : '' }}</td>
+                <td style="text-align: right">{{ !empty($d->feb) ? $d->feb : '' }}</td>
+                <td style="text-align: right">{{ !empty($d->mar) ? $d->mar : '' }}</td>
+                <td style="text-align: right">{{ !empty($d->apr) ? $d->apr : '' }}</td>
+                <td style="text-align: right">{{ !empty($d->mei) ? $d->mei : '' }}</td>
+                <td style="text-align: right">{{ !empty($d->jun) ? $d->jun : '' }}</td>
+                <td style="text-align: right">{{ !empty($d->jul) ? $d->jul : '' }}</td>
+                <td style="text-align: right">{{ !empty($d->agu) ? $d->agu : '' }}</td>
+                <td style="text-align: right">{{ !empty($d->sep) ? $d->sep : '' }}</td>
+                <td style="text-align: right">{{ !empty($d->okt) ? $d->okt : '' }}</td>
+                <td style="text-align: right">{{ !empty($d->nov) ? $d->nov : '' }}</td>
+                <td style="text-align: right">{{ !empty($d->des) ? $d->des : '' }}</td>
+                <td style="text-align: right">{{ rupiah($d->total) }}</td>
             </tr>
             @php
             $no++;

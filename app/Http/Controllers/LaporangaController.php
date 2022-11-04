@@ -70,52 +70,86 @@ class LaporangaController extends Controller
         $tahun = $request->tahun;
         $dari = $tahun . "-" . $bulan . "-01";
         $sampai = date("Y-m-t", strtotime($dari));
+        $jenislaporan = $request->jenislaporan;
+
+
         $query = Detailbadstok::query();
-        $query->selectRaw("
-        badstok_detail.kode_produk,nama_barang,
-        SUM(IF(DAY(tanggal)=1,jumlah,0)) as tgl_1,
-        SUM(IF(DAY(tanggal)=2,jumlah,0)) as tgl_2,
-        SUM(IF(DAY(tanggal)=3,jumlah,0)) as tgl_3,
-        SUM(IF(DAY(tanggal)=4,jumlah,0)) as tgl_4,
-        SUM(IF(DAY(tanggal)=5,jumlah,0)) as tgl_5,
-        SUM(IF(DAY(tanggal)=6,jumlah,0)) as tgl_6,
-        SUM(IF(DAY(tanggal)=7,jumlah,0)) as tgl_7,
-        SUM(IF(DAY(tanggal)=8,jumlah,0)) as tgl_8,
-        SUM(IF(DAY(tanggal)=9,jumlah,0)) as tgl_9,
-        SUM(IF(DAY(tanggal)=10,jumlah,0)) as tgl_10,
-        SUM(IF(DAY(tanggal)=11,jumlah,0)) as tgl_11,
-        SUM(IF(DAY(tanggal)=12,jumlah,0)) as tgl_12,
-        SUM(IF(DAY(tanggal)=13,jumlah,0)) as tgl_13,
-        SUM(IF(DAY(tanggal)=14,jumlah,0)) as tgl_14,
-        SUM(IF(DAY(tanggal)=15,jumlah,0)) as tgl_15,
-        SUM(IF(DAY(tanggal)=16,jumlah,0)) as tgl_16,
-        SUM(IF(DAY(tanggal)=17,jumlah,0)) as tgl_17,
-        SUM(IF(DAY(tanggal)=18,jumlah,0)) as tgl_18,
-        SUM(IF(DAY(tanggal)=19,jumlah,0)) as tgl_19,
-        SUM(IF(DAY(tanggal)=20,jumlah,0)) as tgl_20,
-        SUM(IF(DAY(tanggal)=21,jumlah,0)) as tgl_21,
-        SUM(IF(DAY(tanggal)=22,jumlah,0)) as tgl_22,
-        SUM(IF(DAY(tanggal)=23,jumlah,0)) as tgl_23,
-        SUM(IF(DAY(tanggal)=24,jumlah,0)) as tgl_24,
-        SUM(IF(DAY(tanggal)=25,jumlah,0)) as tgl_25,
-        SUM(IF(DAY(tanggal)=26,jumlah,0)) as tgl_26,
-        SUM(IF(DAY(tanggal)=27,jumlah,0)) as tgl_27,
-        SUM(IF(DAY(tanggal)=28,jumlah,0)) as tgl_28,
-        SUM(IF(DAY(tanggal)=29,jumlah,0)) as tgl_29,
-        SUM(IF(DAY(tanggal)=30,jumlah,0)) as tgl_30,
-        SUM(IF(DAY(tanggal)=31,jumlah,0)) as tgl_31,
-        SUM(jumlah) as total
-        ");
+        if ($jenislaporan == "1") {
+            $query->selectRaw("
+            badstok_detail.kode_produk,nama_barang,
+            SUM(IF(DAY(tanggal)=1,jumlah,0)) as tgl_1,
+            SUM(IF(DAY(tanggal)=2,jumlah,0)) as tgl_2,
+            SUM(IF(DAY(tanggal)=3,jumlah,0)) as tgl_3,
+            SUM(IF(DAY(tanggal)=4,jumlah,0)) as tgl_4,
+            SUM(IF(DAY(tanggal)=5,jumlah,0)) as tgl_5,
+            SUM(IF(DAY(tanggal)=6,jumlah,0)) as tgl_6,
+            SUM(IF(DAY(tanggal)=7,jumlah,0)) as tgl_7,
+            SUM(IF(DAY(tanggal)=8,jumlah,0)) as tgl_8,
+            SUM(IF(DAY(tanggal)=9,jumlah,0)) as tgl_9,
+            SUM(IF(DAY(tanggal)=10,jumlah,0)) as tgl_10,
+            SUM(IF(DAY(tanggal)=11,jumlah,0)) as tgl_11,
+            SUM(IF(DAY(tanggal)=12,jumlah,0)) as tgl_12,
+            SUM(IF(DAY(tanggal)=13,jumlah,0)) as tgl_13,
+            SUM(IF(DAY(tanggal)=14,jumlah,0)) as tgl_14,
+            SUM(IF(DAY(tanggal)=15,jumlah,0)) as tgl_15,
+            SUM(IF(DAY(tanggal)=16,jumlah,0)) as tgl_16,
+            SUM(IF(DAY(tanggal)=17,jumlah,0)) as tgl_17,
+            SUM(IF(DAY(tanggal)=18,jumlah,0)) as tgl_18,
+            SUM(IF(DAY(tanggal)=19,jumlah,0)) as tgl_19,
+            SUM(IF(DAY(tanggal)=20,jumlah,0)) as tgl_20,
+            SUM(IF(DAY(tanggal)=21,jumlah,0)) as tgl_21,
+            SUM(IF(DAY(tanggal)=22,jumlah,0)) as tgl_22,
+            SUM(IF(DAY(tanggal)=23,jumlah,0)) as tgl_23,
+            SUM(IF(DAY(tanggal)=24,jumlah,0)) as tgl_24,
+            SUM(IF(DAY(tanggal)=25,jumlah,0)) as tgl_25,
+            SUM(IF(DAY(tanggal)=26,jumlah,0)) as tgl_26,
+            SUM(IF(DAY(tanggal)=27,jumlah,0)) as tgl_27,
+            SUM(IF(DAY(tanggal)=28,jumlah,0)) as tgl_28,
+            SUM(IF(DAY(tanggal)=29,jumlah,0)) as tgl_29,
+            SUM(IF(DAY(tanggal)=30,jumlah,0)) as tgl_30,
+            SUM(IF(DAY(tanggal)=31,jumlah,0)) as tgl_31,
+            SUM(jumlah) as total
+            ");
+        } else {
+            $query->selectRaw("
+            badstok_detail.kode_produk,nama_barang,
+            SUM(IF(MONTH(tanggal)=1,jumlah,0)) as jan ,
+            SUM(IF(MONTH(tanggal)=2,jumlah,0)) as feb,
+            SUM(IF(MONTH(tanggal)=3,jumlah,0)) as mar,
+            SUM(IF(MONTH(tanggal)=4,jumlah,0)) as apr,
+            SUM(IF(MONTH(tanggal)=5,jumlah,0)) as mei,
+            SUM(IF(MONTH(tanggal)=6,jumlah,0)) as jun,
+            SUM(IF(MONTH(tanggal)=7,jumlah,0)) as jul,
+            SUM(IF(MONTH(tanggal)=8,jumlah,0)) as agu,
+            SUM(IF(MONTH(tanggal)=9,jumlah,0)) as sep,
+            SUM(IF(MONTH(tanggal)=10,jumlah,0)) as okt,
+            SUM(IF(MONTH(tanggal)=11,jumlah,0)) as nov,
+            SUM(IF(MONTH(tanggal)=12,jumlah,0)) as des,
+            SUM(jumlah) as total
+            ");
+        }
 
         $query->join('badstok', 'badstok_detail.no_bs', '=', 'badstok.no_bs');
         $query->join('master_barang', 'badstok_detail.kode_produk', '=', 'master_barang.kode_produk');
-        $query->groupByRaw('badstok_detail.kode_produk,nama_barang,badstok.kode_cabang');
-        $query->whereBetween('tanggal', [$dari, $sampai]);
-        $query->orderBy('badstok.kode_cabang');
+        $query->groupByRaw('badstok_detail.kode_produk,nama_barang');
+        if ($jenislaporan == 1) {
+            $query->whereBetween('tanggal', [$dari, $sampai]);
+        } else {
+            $query->whereRaw('YEAR(tanggal)=' . $tahun);
+        }
+        $query->orderBy('badstok_detail.kode_produk');
+        if (!empty($kode_cabang)) {
+            $query->where('badstok.kode_cabang', $kode_cabang);
+        }
         $badstok = $query->get();
 
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
+        $namabulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
 
-        return view('laporanga.cetak_rekapbadstok', compact('bulan', 'tahun', 'badstok', 'cabang'));
+        if ($jenislaporan == 1) {
+            return view('laporanga.cetak_rekapbadstok', compact('bulan', 'tahun', 'badstok', 'cabang', 'namabulan'));
+        } else {
+            return view('laporanga.cetak_rekapbadstok_pertahun', compact('tahun', 'badstok', 'cabang'));
+        }
     }
 }

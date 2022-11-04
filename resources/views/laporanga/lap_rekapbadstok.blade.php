@@ -44,7 +44,7 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <select name="jenislaporan" id="jenislaporan" class="form-control">
+                                                <select name="jenislaporan" id="jenislaporan" class="form-control" required>
                                                     <option value="">Jenis Laporan</option>
                                                     <option value="1">Rekap Per Bulan</option>
                                                     <option value="2">Rekap Per Tahun</option>
