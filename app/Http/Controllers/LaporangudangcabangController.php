@@ -650,7 +650,7 @@ class LaporangudangcabangController extends Controller
                 )
                 ->get();
         } elseif ($jeniskonsolidasi == "3") {
-            $jk = "PENJUALAN";
+            $jk = "PROMOSI";
             $rekap = DB::table('master_barang')
                 ->selectRaw("master_barang.kode_produk,nama_barang,isipcsdus,satuan,isipack,isipcs,
                 totalpenjualan,totalpersediaan, IFNULL(totalpenjualan,0) - IFNULL(totalpersediaan,0) as selisih")
