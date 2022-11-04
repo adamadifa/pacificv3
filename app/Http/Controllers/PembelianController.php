@@ -1197,7 +1197,8 @@ class PembelianController extends Controller
                 'jenistransaksi' => $jenistransaksi,
                 'tgl_jatuhtempo' => $tgl_jatuhtempo,
                 'ppn' => $ppn,
-                'ref_tunai' => $nokontrabon
+                'ref_tunai' => $nokontrabon,
+                'kategori_transaksi' => $request->kategori_transaksi
             ];
             DB::table('pembelian')->where('nobukti_pembelian', $no_bukti)->update($data);
 
