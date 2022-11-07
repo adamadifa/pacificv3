@@ -43,6 +43,8 @@ class LimitkreditController extends Controller
         } else {
             if (Auth::user()->id == 82) {
                 $query->whereIn('pelanggan.kode_cabang', $wilayah_barat);
+            } else if (Auth::user()->id == 97) {
+                $query->whereIn('pelanggan.kode_cabang', $wilayah_timur);
             }
         }
         $query->select('pengajuan_limitkredit_v3.*', 'nama_pelanggan', 'pelanggan.kode_cabang');
