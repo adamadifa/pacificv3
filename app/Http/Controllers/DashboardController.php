@@ -96,6 +96,8 @@ class DashboardController extends Controller
             $query->where('status', 0);
             if ($id_user == 82) {
                 $query->whereIn('pelanggan.kode_cabang', $wilayah_barat);
+            } else if ($id_user == 97) {
+                $query->whereIn('pelanggan.kode_cabang', $wilayah_timur);
             }
             $jmlpengajuan = $query->count();
 
