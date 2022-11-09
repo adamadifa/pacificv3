@@ -206,14 +206,14 @@ class GlobalProvider extends ServiceProvider
             $kendaraan = [
                 'admin', 'admin penjualan', 'audit', 'kepala penjualan',
                 'kepala admin', 'admin pusat', 'manager accounting', 'spv accounting', 'manager marketing', 'rsm', 'direktur',
-                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'audit', 'admin garut', 'admin pajak 2'
+                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'audit', 'admin garut', 'admin pajak 2', 'general affair'
             ];
-            $kendaraan_tambah = ['admin'];
+            $kendaraan_tambah = ['admin', 'general affair'];
             $kendaraan_edit = [
                 'admin', 'admin penjualan', 'audit', 'kepala penjualan', 'kepala admin', 'admin pusat',
-                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'admin garut'
+                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'admin garut', 'general affair'
             ];
-            $kendaraan_hapus = ['admin'];
+            $kendaraan_hapus = ['admin', 'general affair'];
 
 
             $cabang = ['admin', 'audit'];
