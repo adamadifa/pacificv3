@@ -963,13 +963,13 @@
             </li>
             @endif
 
-            @if (in_array($level, $hrd_menu))
+            @if (in_array($level, $hrd_menu) || in_array($kat_jabatan,$hrd_menu))
             <li class=" nav-item">
                 <a href="#"><i class="fa fa-users" style="color:rgb(200, 5, 77)"></i><span class="menu-title">HRD</span></a>
                 <ul class="menu-content">
-                    @if (in_array($level, $penilaian_karyawan))
+                    @if (in_array($level, $penilaian_karyawan) || in_array($kat_jabatan, $penilaian_karyawan))
                     <li class="{{ request()->is(['penilaiankaryawan', 'penilaiankaryawan/*']) ? 'active' : '' }}">
-                        <a href="/penilaiankaryawan">
+                        <a href="/penilaiankaryawan/10/PST/list">
                             <i class="feather icon-edit"></i>
                             <span class="menu-item" data-i18n="Second Level">Penilaian karyawan</span>
                         </a>
@@ -1007,7 +1007,7 @@
                     </li>
                     @endif
                     @if (in_array($level, $bad_stock))
-                    <li class="{{ request()->is(['badstock', 'badstock/*']) ? 'active' : '' }}">
+                    <li class="{{ request()->is(['badstock', 'badstok/*']) ? 'active' : '' }}">
                         <a href="/badstock">
                             <i class="feather icon-box"></i>
                             <span class="menu-item" data-i18n="Second Level">Bad Stock</span>

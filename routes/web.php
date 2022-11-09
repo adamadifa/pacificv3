@@ -1040,8 +1040,17 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/salesman/show', [SalesmanController::class, 'show']);
 
     //Penilaian Karyawan
-    Route::get('/penilaiankaryawan', [PenilaiankaryawanController::class, 'index']);
+    Route::get('/penilaiankaryawan/{kategori_jabatan}/{kantor}/list', [PenilaiankaryawanController::class, 'index']);
+    Route::get('/penilaiankaryawan/{kode_penilaian}/{kategori_jabatan}/batalkan', [PenilaiankaryawanController::class, 'batalkan']);
+    Route::get('/penilaiankaryawan/{kode_penilaian}/{kategori_jabatan}/approve', [PenilaiankaryawanController::class, 'approve']);
+    Route::get('/penilaiankaryawan/{kode_penilaian}/{kategori_jabatan}/decline', [PenilaiankaryawanController::class, 'decline']);
     Route::post('/penilaiankaryawan/create', [PenilaiankaryawanController::class, 'create']);
+    Route::post('/penilaiankaryawan/store', [PenilaiankaryawanController::class, 'store']);
+    Route::get('/penilaiankaryawan/{kode_penilaian}/edit', [PenilaiankaryawanController::class, 'edit']);
+    Route::get('/penilaiankaryawan/{kode_penilaian}/cetak', [PenilaiankaryawanController::class, 'cetak']);
+    Route::delete('/penilaiankaryawan/{kode_penilaian}/delete', [PenilaiankaryawanController::class, 'delete']);
+    Route::post('/penilaiankaryawan/{kode_penilaian}/update', [PenilaiankaryawanController::class, 'update']);
+
 
     //Harga
     Route::get('/harga', [HargaController::class, 'index']);

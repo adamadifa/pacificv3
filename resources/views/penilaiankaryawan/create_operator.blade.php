@@ -26,7 +26,16 @@
                 <div class="card-header">
                 </div>
                 <div class="card-body">
-                    <form action="/penilaiankaryawan/store">
+                    <form action="/penilaiankaryawan/store" method="POST">
+                        @csrf
+                        <input type="hidden" name="tanggal" value="{{ $tanggal }}">
+                        <input type="hidden" name="periode_kontrak" value="{{ $dari }}/{{ $sampai }}">
+                        <input type="hidden" name="nik" value="{{ $karyawan->nik }}">
+                        <input type="hidden" name="kode_dept" value="{{ $karyawan->kode_dept }}">
+                        <input type="hidden" name="id_jabatan" value="{{ $karyawan->id_jabatan }}">
+                        <input type="hidden" name="id_kategori_jabatan" value="{{ $karyawan->id_kategori_jabatan }}">
+                        <input type="hidden" name="kategori" value="{{ $kategori }}">
+                        <input type="hidden" name="id_kantor" value="{{ $karyawan->id_kantor }}">
                         <table class="table">
                             <tr>
                                 <td>Periode Kontrak</td>
@@ -41,8 +50,8 @@
                                 <td>{{ $karyawan->nama_karyawan }}</td>
                             </tr>
                             <tr>
-                                <td>Departemen</td>
-                                <td></td>
+                                <td>Departemen / Jabatan</td>
+                                <td>{{ $karyawan->kode_dept }} - {{ $karyawan->nama_dept }} / {{ $karyawan->nama_jabatan }}</td>
                             </tr>
                         </table>
 
@@ -54,8 +63,8 @@
                             <thead>
                                 <tr>
                                     <th style="width:5%">No</th>
-                                    <th style="width:85%">Faktor Penilaian</th>
-                                    <th style="width:10%">Bobot Nilai</th>
+                                    <th style="width:75%">Faktor Penilaian</th>
+                                    <th style="width:20%">Bobot Nilai</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -65,25 +74,22 @@
                                     <td class="bg-info">{{ $d->jenis_penilaian }}</td>
                                     <td rowspan="2">
                                         <div class="form-group" style="margin-bottom: 0 !important">
-                                            <select name="skor[]" id="skor" class="form-control skor">
-                                                <option value="1">1</option>
-                                                <option value="2">2</option>
-                                                <option value="3">3</option>
-                                                <option value="4">4</option>
-                                                <option value="5">5</option>
-                                                <option value="6">6</option>
+                                            <select name="skor[]" required id="skor" class="form-control skor">
+                                                <option value="">Pilih Nilai</option>
+                                                <option value="0" class="danger">Tidak Memuaskan</option>
+                                                <option value="1" class="success">Memuaskan</option>
                                             </select>
                                         </div>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>{{ $d->penilaian }}</td>
+                                    <td>
+                                        <input type="hidden" name="id_penilaian[]" value="{{ $d->id }}">
+                                        {{ $d->penilaian }}
+                                    </td>
                                 </tr>
                                 @endforeach
-                                <tr>
-                                    <th colspan="2">TOTAL</th>
-                                    <th style="text-align: right"><span id="total_skor"></span></th>
-                                </tr>
+
                             </tbody>
                         </table>
                         <div class="row">
@@ -111,60 +117,67 @@
                                     </tr>
                                 </table>
                             </div>
-                            <div class="col-6">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>Nilai</th>
-                                            <th>Parameter Waktu Perpanjangan Waktu</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td> {{ "< 45" }} </td>
-                                            <td>Tidak diperpanjang</td>
-                                        </tr>
-                                        <tr>
-                                            <td> {{ "46 - 50" }} </td>
-                                            <td>3 Bulan</td>
-                                        </tr>
-                                        <tr>
-                                            <td> {{ "51 -  55" }} </td>
-                                            <td>6 Bulan</td>
-                                        </tr>
-                                        <tr>
-                                            <td> {{ "56 >" }} </td>
-                                            <td>1 Tahun</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+
                         </div>
                         <b>B. Masa Kontrak Kerja</b>
                         <br>
                         <br>
-                        <div class="row">
+                        <div class="row mb-2">
                             <div class="col-12">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>Tidak Diperpanjang</th>
-                                            <th>3 Bulan</th>
-                                            <th>6 Bulan</th>
-                                            <th>1 Tahun</th>
-                                            <th>Karyawan Tetap</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td id="td" style="text-align: center"></td>
-                                            <td id="tigabulan" style="text-align: center"></td>
-                                            <td id="enambulan" style="text-align: center"></td>
-                                            <td id="satutahun" style="text-align: center"></td>
-                                            <td id="karyawantetap" style="text-align: center"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                                <ul class="list-unstyled mb-0">
+                                    <li class="d-inline-block mr-2">
+                                        <fieldset>
+                                            <div class="vs-checkbox-con vs-checkbox-primary">
+                                                <input type="checkbox" name="masa_kontrak_kerja" class="chb" value="Tidak Diperpanjang">
+                                                <span class="vs-checkbox">
+                                                    <span class="vs-checkbox--check">
+                                                        <i class="vs-icon feather icon-check"></i>
+                                                    </span>
+                                                </span>
+                                                <span class="">Tidak Diperpanjang</span>
+                                            </div>
+                                        </fieldset>
+                                    </li>
+                                    <li class="d-inline-block mr-2">
+                                        <fieldset>
+                                            <div class="vs-checkbox-con vs-checkbox-primary">
+                                                <input type="checkbox" name="masa_kontrak_kerja" class="chb" value="3 Bulan">
+                                                <span class="vs-checkbox">
+                                                    <span class="vs-checkbox--check">
+                                                        <i class="vs-icon feather icon-check"></i>
+                                                    </span>
+                                                </span>
+                                                <span class="">3 Bulan</span>
+                                            </div>
+                                        </fieldset>
+                                    </li>
+                                    <li class="d-inline-block mr-2">
+                                        <fieldset>
+                                            <div class="vs-checkbox-con vs-checkbox-primary">
+                                                <input type="checkbox" name="masa_kontrak_kerja" class="chb" value="6 Bulan">
+                                                <span class="vs-checkbox">
+                                                    <span class="vs-checkbox--check">
+                                                        <i class="vs-icon feather icon-check"></i>
+                                                    </span>
+                                                </span>
+                                                <span class="">6 Bulan</span>
+                                            </div>
+                                        </fieldset>
+                                    </li>
+                                    <li class="d-inline-block mr-2">
+                                        <fieldset>
+                                            <div class="vs-checkbox-con vs-checkbox-primary">
+                                                <input type="checkbox" name="masa_kontrak_kerja" class="chb" value="Karyawan Tetap">
+                                                <span class="vs-checkbox">
+                                                    <span class="vs-checkbox--check">
+                                                        <i class="vs-icon feather icon-check"></i>
+                                                    </span>
+                                                </span>
+                                                <span class="">Karyawan Tetap</span>
+                                            </div>
+                                        </fieldset>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                         <b>C. Riwayat Absensi dan Rekomendasi User</b>
@@ -173,7 +186,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <textarea name="rekomendasi_user" id="" cols="30" rows="10" class="form-control"></textarea>
+                                    <textarea name="rekomendasi" id="" cols="30" rows="10" class="form-control"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -183,7 +196,14 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <textarea name="evaluasi_kinerja" id="" cols="30" rows="10" class="form-control"></textarea>
+                                    <textarea name="evaluasi" id="" cols="30" rows="10" class="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <button class="btn btn-primary btn-block"><i class="feather icon-send"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -233,7 +253,18 @@
         }
         summary();
         $('.skor').change(function(e) {
-            summary();
+            //summary();
+            var val = $(this).val();
+            if (val == 0) {
+                $(this).addClass("danger");
+            } else if (val == 1) {
+                $(this).addClass("success");
+            }
+        });
+
+        $(".chb").change(function() {
+            $(".chb").prop('checked', false);
+            $(this).prop('checked', true);
         });
     });
 

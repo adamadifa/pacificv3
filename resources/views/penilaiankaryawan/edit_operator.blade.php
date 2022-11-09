@@ -26,7 +26,7 @@
                 <div class="card-header">
                 </div>
                 <div class="card-body">
-                    <form action="/penilaiankaryawan/store" method="POST">
+                    <form action="/penilaiankaryawan/{{ Crypt::encrypt($penilaian->kode_penilaian) }}/update" method="POST">
                         @csrf
                         <input type="hidden" name="tanggal" value="{{ $tanggal }}">
                         <input type="hidden" name="periode_kontrak" value="{{ $dari }}/{{ $sampai }}">
@@ -50,7 +50,7 @@
                                 <td>{{ $karyawan->nama_karyawan }}</td>
                             </tr>
                             <tr>
-                                <td>Departemen</td>
+                                <td>Departemen / Jabatan</td>
                                 <td>{{ $karyawan->kode_dept }} - {{ $karyawan->nama_dept }} / {{ $karyawan->nama_jabatan }}</td>
                             </tr>
                         </table>
@@ -58,56 +58,36 @@
                         <b>A. Penilaian</b>
                         <br>
                         <br>
-                        <small>Checklist bobot penilaian dibawah ini (semakin besar angka yang dipilih semakin baik penilaian karyawan tersebut)</small>
-                        <table class="table mt-3">
+
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width:5%">No</th>
+                                    <th style="width:75%">Faktor Penilaian</th>
+                                    <th style="width:20%">Bobot Nilai</th>
+                                </tr>
+                            </thead>
                             <tbody>
-                                @php
-                                $no = 1;
-                                $id_jenis_penilaian = "";
-                                $id_jenis_kompetensi = "";
-                                @endphp
                                 @foreach ($kategori_penilaian as $d)
-                                @if ($id_jenis_penilaian != $d->id_jenis_penilaian)
-                                @php
-                                $no = 1;
-                                @endphp
                                 <tr>
-                                    <th colspan="3" style="text-align: center; background-color:rgba(0, 255, 72, 0.235)">{{ $d->jenis_penilaian }}</th>
-                                </tr>
-                                <tr>
-                                    <th>No.</th>
-                                    <th>Sasaran Kerja</th>
-                                    <th>Nilai</th>
-
-                                </tr>
-                                @endif
-
-                                @if (!empty($d->id_jenis_kompetensi) && $id_jenis_kompetensi != $d->id_jenis_kompetensi)
-                                <tr>
-                                    <td colspan="3" style="text-align: center">{{ $d->id_jenis_kompetensi == 1 ? 'Kompentensi Wajib' : 'Kompetensi' }}</td>
-                                </tr>
-                                @endif
-                                <tr>
-                                    <td>{{ $no }}</td>
-                                    <td>
-                                        <input type="hidden" name="id_penilaian[]" value="{{ $d->id }}">
-                                        {{ $d->penilaian }}
-                                    </td>
-                                    <td>
+                                    <td rowspan="2">{{ $loop->iteration }}</td>
+                                    <td class="bg-info">{{ $d->jenis_penilaian }}</td>
+                                    <td rowspan="2">
                                         <div class="form-group" style="margin-bottom: 0 !important">
-                                            <select name="skor[]" required id="skor" class="form-control skor">
+                                            <select name="skor[]" required id="skor" class="form-control skor {{ $d->nilai== 0 ? 'danger' : 'success' }}">
                                                 <option value="">Pilih Nilai</option>
-                                                <option value="0" class="danger">Tidak Memuaskan</option>
-                                                <option value="1" class="success">Memuaskan</option>
+                                                <option value="0" {{ $d->nilai == 0 ? 'selected' : '' }} class="danger">Tidak Memuaskan</option>
+                                                <option value="1" {{ $d->nilai == 1 ? 'selected' : '' }} class="success">Memuaskan</option>
                                             </select>
                                         </div>
                                     </td>
                                 </tr>
-                                @php
-                                $no++;
-                                $id_jenis_penilaian = $d->id_jenis_penilaian;
-                                $id_jenis_kompetensi = $d->id_jenis_kompetensi;
-                                @endphp
+                                <tr>
+                                    <td>
+                                        <input type="hidden" name="id_penilaian[]" value="{{ $d->id }}">
+                                        {{ $d->penilaian }}
+                                    </td>
+                                </tr>
                                 @endforeach
 
                             </tbody>
@@ -118,88 +98,36 @@
                                     <tr>
                                         <td style="font-weight: bold">SID</td>
                                         <td>
-                                            <input type="number" class="form-control" name="sid">
+                                            <input type="number" class="form-control" name="sid" value="{{ $penilaian->sid }}">
                                         </td>
                                         <td style="font-weight: bold">Izin</td>
                                         <td>
-                                            <input type="number" class="form-control" name="izin">
+                                            <input type="number" class="form-control" name="izin" value="{{ $penilaian->izin }}">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td style="font-weight: bold">Sakit</td>
                                         <td>
-                                            <input type="number" class="form-control" name="sakit">
+                                            <input type="number" class="form-control" name="sakit" value="{{ $penilaian->sakit }}">
                                         </td>
                                         <td style="font-weight: bold">Alfa</td>
                                         <td>
-                                            <input type="number" class="form-control" name="alfa">
+                                            <input type="number" class="form-control" name="alfa" value="{{ $penilaian->alfa }}">
                                         </td>
                                     </tr>
                                 </table>
-                            </div>
-                            <div class="col-6">
-                                {{-- <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>Nilai</th>
-                                            <th>Parameter Waktu Perpanjangan Waktu</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td> {{ "< 45" }} </td>
-                                <td>Tidak diperpanjang</td>
-                                </tr>
-                                <tr>
-                                    <td> {{ "46 - 50" }} </td>
-                                    <td>3 Bulan</td>
-                                </tr>
-                                <tr>
-                                    <td> {{ "51 -  55" }} </td>
-                                    <td>6 Bulan</td>
-                                </tr>
-                                <tr>
-                                    <td> {{ "56 >" }} </td>
-                                    <td>1 Tahun</td>
-                                </tr>
-                                </tbody>
-                                </table> --}}
                             </div>
                         </div>
                         <b>B. Masa Kontrak Kerja</b>
                         <br>
                         <br>
                         <div class="row mb-2">
-                            {{-- <div class="col-12">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>Tidak Diperpanjang</th>
-                                            <th>3 Bulan</th>
-                                            <th>6 Bulan</th>
-                                            <th>1 Tahun</th>
-                                            <th>Karyawan Tetap</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td id="td" style="text-align: center"></td>
-                                            <td id="tigabulan" style="text-align: center"></td>
-                                            <td id="enambulan" style="text-align: center"></td>
-                                            <td id="satutahun" style="text-align: center"></td>
-                                            <td id="karyawantetap" style="text-align: center"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div> --}}
                             <div class="col-12">
-
-
                                 <ul class="list-unstyled mb-0">
                                     <li class="d-inline-block mr-2">
                                         <fieldset>
                                             <div class="vs-checkbox-con vs-checkbox-primary">
-                                                <input type="checkbox" name="masa_kontrak_kerja" class="chb" value="Tidak Diperpanjang">
+                                                <input type="checkbox" name="masa_kontrak_kerja" class="chb" value="Tidak Diperpanjang" {{ $penilaian->masa_kontrak_kerja == "Tidak Diperpanjang" ?  "checked" : "" }}>
                                                 <span class="vs-checkbox">
                                                     <span class="vs-checkbox--check">
                                                         <i class="vs-icon feather icon-check"></i>
@@ -212,7 +140,7 @@
                                     <li class="d-inline-block mr-2">
                                         <fieldset>
                                             <div class="vs-checkbox-con vs-checkbox-primary">
-                                                <input type="checkbox" name="masa_kontrak_kerja" class="chb" value="3 Bulan">
+                                                <input type="checkbox" name="masa_kontrak_kerja" class="chb" value="3 Bulan" {{ $penilaian->masa_kontrak_kerja == "3 Bulan" ? "checked" : "" }}>
                                                 <span class="vs-checkbox">
                                                     <span class="vs-checkbox--check">
                                                         <i class="vs-icon feather icon-check"></i>
@@ -225,7 +153,7 @@
                                     <li class="d-inline-block mr-2">
                                         <fieldset>
                                             <div class="vs-checkbox-con vs-checkbox-primary">
-                                                <input type="checkbox" name="masa_kontrak_kerja" class="chb" value="6 Bulan">
+                                                <input type="checkbox" name="masa_kontrak_kerja" class="chb" value="6 Bulan" {{ $penilaian->masa_kontrak_kerja == "6 Bulan" ? "checked" : "" }}>
                                                 <span class="vs-checkbox">
                                                     <span class="vs-checkbox--check">
                                                         <i class="vs-icon feather icon-check"></i>
@@ -238,7 +166,7 @@
                                     <li class="d-inline-block mr-2">
                                         <fieldset>
                                             <div class="vs-checkbox-con vs-checkbox-primary">
-                                                <input type="checkbox" name="masa_kontrak_kerja" class="chb" value="Karyawan Tetap">
+                                                <input type="checkbox" name="masa_kontrak_kerja" class="chb" value="Karyawan Tetap" {{ $penilaian->masa_kontrak_kerja == "Karyawan Tetap" ? "checked" : "" }}>
                                                 <span class="vs-checkbox">
                                                     <span class="vs-checkbox--check">
                                                         <i class="vs-icon feather icon-check"></i>
@@ -257,7 +185,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <textarea name="rekomendasi" id="" cols="30" rows="10" class="form-control"></textarea>
+                                    <textarea name="rekomendasi" id="" cols="30" rows="10" class="form-control">{{ $penilaian->rekomendasi }}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -267,7 +195,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <textarea name="evaluasi" id="" cols="30" rows="10" class="form-control"></textarea>
+                                    <textarea name="evaluasi" id="" cols="30" rows="10" class="form-control">{{ $penilaian->evaluasi }}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -325,6 +253,8 @@
         summary();
         $('.skor').change(function(e) {
             //summary();
+            $(this).removeClass("danger");
+            $(this).removeClass("success");
             var val = $(this).val();
             if (val == 0) {
                 $(this).addClass("danger");

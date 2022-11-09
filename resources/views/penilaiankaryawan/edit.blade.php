@@ -26,7 +26,7 @@
                 <div class="card-header">
                 </div>
                 <div class="card-body">
-                    <form action="/penilaiankaryawan/store" method="POST">
+                    <form action="/penilaiankaryawan/{{ Crypt::encrypt($penilaian->kode_penilaian) }}/update" method="POST">
                         @csrf
                         <input type="hidden" name="tanggal" value="{{ $tanggal }}">
                         <input type="hidden" name="periode_kontrak" value="{{ $dari }}/{{ $sampai }}">
@@ -58,7 +58,6 @@
                         <b>A. Penilaian</b>
                         <br>
                         <br>
-                        <small>Checklist bobot penilaian dibawah ini (semakin besar angka yang dipilih semakin baik penilaian karyawan tersebut)</small>
                         <table class="table mt-3">
                             <tbody>
                                 @php
@@ -95,10 +94,10 @@
                                     </td>
                                     <td>
                                         <div class="form-group" style="margin-bottom: 0 !important">
-                                            <select name="skor[]" required id="skor" class="form-control skor">
+                                            <select name="skor[]" required id="skor" class="form-control skor {{ $d->nilai== 0 ? 'danger' : 'success' }}">
                                                 <option value="">Pilih Nilai</option>
-                                                <option value="0" class="danger">Tidak Memuaskan</option>
-                                                <option value="1" class="success">Memuaskan</option>
+                                                <option value="0" {{ $d->nilai == 0 ? 'selected' : '' }} class="danger">Tidak Memuaskan</option>
+                                                <option value="1" {{ $d->nilai == 1 ? 'selected' : '' }} class="success">Memuaskan</option>
                                             </select>
                                         </div>
                                     </td>
@@ -118,21 +117,21 @@
                                     <tr>
                                         <td style="font-weight: bold">SID</td>
                                         <td>
-                                            <input type="number" class="form-control" name="sid">
+                                            <input type="number" class="form-control" name="sid" value="{{ $penilaian->sid }}">
                                         </td>
                                         <td style="font-weight: bold">Izin</td>
                                         <td>
-                                            <input type="number" class="form-control" name="izin">
+                                            <input type="number" class="form-control" name="izin" value="{{ $penilaian->izin }}">
                                         </td>
                                     </tr>
                                     <tr>
                                         <td style="font-weight: bold">Sakit</td>
                                         <td>
-                                            <input type="number" class="form-control" name="sakit">
+                                            <input type="number" class="form-control" name="sakit" value="{{ $penilaian->sakit }}">
                                         </td>
                                         <td style="font-weight: bold">Alfa</td>
                                         <td>
-                                            <input type="number" class="form-control" name="alfa">
+                                            <input type="number" class="form-control" name="alfa" value="{{ $penilaian->alfa }}">
                                         </td>
                                     </tr>
                                 </table>
@@ -199,7 +198,7 @@
                                     <li class="d-inline-block mr-2">
                                         <fieldset>
                                             <div class="vs-checkbox-con vs-checkbox-primary">
-                                                <input type="checkbox" name="masa_kontrak_kerja" class="chb" value="Tidak Diperpanjang">
+                                                <input type="checkbox" name="masa_kontrak_kerja" class="chb" value="Tidak Diperpanjang" {{ $penilaian->masa_kontrak_kerja == "Tidak Diperpanjang" ?  "checked" : "" }}>
                                                 <span class="vs-checkbox">
                                                     <span class="vs-checkbox--check">
                                                         <i class="vs-icon feather icon-check"></i>
@@ -212,7 +211,7 @@
                                     <li class="d-inline-block mr-2">
                                         <fieldset>
                                             <div class="vs-checkbox-con vs-checkbox-primary">
-                                                <input type="checkbox" name="masa_kontrak_kerja" class="chb" value="3 Bulan">
+                                                <input type="checkbox" name="masa_kontrak_kerja" class="chb" value="3 Bulan" {{ $penilaian->masa_kontrak_kerja == "3 Bulan" ? "checked" : "" }}>
                                                 <span class="vs-checkbox">
                                                     <span class="vs-checkbox--check">
                                                         <i class="vs-icon feather icon-check"></i>
@@ -225,7 +224,7 @@
                                     <li class="d-inline-block mr-2">
                                         <fieldset>
                                             <div class="vs-checkbox-con vs-checkbox-primary">
-                                                <input type="checkbox" name="masa_kontrak_kerja" class="chb" value="6 Bulan">
+                                                <input type="checkbox" name="masa_kontrak_kerja" class="chb" value="6 Bulan" {{ $penilaian->masa_kontrak_kerja == "6 Bulan" ? "checked" : "" }}>
                                                 <span class="vs-checkbox">
                                                     <span class="vs-checkbox--check">
                                                         <i class="vs-icon feather icon-check"></i>
@@ -238,7 +237,7 @@
                                     <li class="d-inline-block mr-2">
                                         <fieldset>
                                             <div class="vs-checkbox-con vs-checkbox-primary">
-                                                <input type="checkbox" name="masa_kontrak_kerja" class="chb" value="Karyawan Tetap">
+                                                <input type="checkbox" name="masa_kontrak_kerja" class="chb" value="Karyawan Tetap" {{ $penilaian->masa_kontrak_kerja == "Karyawan Tetap" ? "checked" : "" }}>
                                                 <span class="vs-checkbox">
                                                     <span class="vs-checkbox--check">
                                                         <i class="vs-icon feather icon-check"></i>
@@ -257,7 +256,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <textarea name="rekomendasi" id="" cols="30" rows="10" class="form-control"></textarea>
+                                    <textarea name="rekomendasi" id="" cols="30" rows="10" class="form-control">{{ $penilaian->rekomendasi }}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -267,7 +266,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <textarea name="evaluasi" id="" cols="30" rows="10" class="form-control"></textarea>
+                                    <textarea name="evaluasi" id="" cols="30" rows="10" class="form-control">{{ $penilaian->evaluasi }}</textarea>
                                 </div>
                             </div>
                         </div>
@@ -325,6 +324,8 @@
         summary();
         $('.skor').change(function(e) {
             //summary();
+            $(this).removeClass("danger");
+            $(this).removeClass("success");
             var val = $(this).val();
             if (val == 0) {
                 $(this).addClass("danger");
@@ -332,6 +333,7 @@
                 $(this).addClass("success");
             }
         });
+
 
         $(".chb").change(function() {
             $(".chb").prop('checked', false);
