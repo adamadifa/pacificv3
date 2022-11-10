@@ -216,6 +216,96 @@
         <div style="border:1px solid; border-collapse:collapse; height:100px; font-size:12px; padding:8px">
             {{ $penilaian->evaluasi }}
         </div>
+        <br>
+        <br>
+        <table style="width:100%">
+            <tr>
+                <?php
+                    $inisial = ["manager"=>"M","general manager"=>"GM","manager hrd"=>"HRD","direktur"=>"DIRUT"];
+                    for ($i = 0; $i < count($approve); $i++){
+                        $level = strtolower($inisial[$approve[$i]]);
+                        if($i < count($approve) - 1){
+                            $test = $i +1;
+                            $nextlevel = strtolower($inisial[$approve[$i + 1]]);
+                        }else{
+                            $nextlevel = strtolower($inisial[$approve[$i]]);
+                            $test = 0;
+                        }
+
+                        if($i==0 && $karyawan->status==2 && !empty($karyawan->$level) && empty($karyawan->$nextlevel)){
+                            $y = "";
+                            $t = "&#10004";
+                            $cek = 1;
+                        }else if($i==0 && $karyawan->status==2 && !empty($karyawan->$level) && !empty($karyawan->$nextlevel) ){
+                        //echo "<i class='fa fa-check success'></i>";
+                            $y = "&#10004";
+                            $t = "";
+                            $cek = 2;
+                        }else if($karyawan->status == 2 && !empty($karyawan->$level) && $level=="dirut"){
+                        //echo "<i class='fa fa-close danger'></i>";
+                            $y = "";
+                            $t = "&#10004";
+                            $cek = 3;
+                        }else if($karyawan->status == 2 && !empty($karyawan->$level) && empty($karyawan->$nextlevel)){
+                        //echo "<i class='fa fa-close danger'></i>";
+                            $y = "";
+                            $t = "&#10004";
+                            $cek = 4;
+                        }else if($karyawan->status == 2 && !empty($karyawan->$level) && !empty($karyawan->$nextlevel)){
+                        //echo "<i class='fa fa-check success'></i>";
+                            $y = "&#10004";
+                            $t = "";
+                            $cek = 5;
+                        }else if($karyawan->status == NULL && empty($karyawan->$level)){
+                            $y = "";
+                            $t = "";
+                            $cek = 6;
+                        //echo "<i class='fa fa-history warning'></i>";
+                        }else if($karyawan->status == NULL && !empty($karyawan->$level)){
+                            $y = "&#10004";
+                            $t = "";
+                            $cek = 7;
+                        //echo "<i class='fa fa-check success'></i>";
+                        }else if($karyawan->status == 1 && !empty($karyawan->$level)){
+                            $y = "&#10004";
+                            $t = "";
+                            $cek = 8;
+                        //echo "<i class='fa fa-check success'></i>";
+                        }
+
+
+                        // echo $karyawan->$level. " ".$cek." ".$y;
+
+                ?>
+                <td>
+                    <table class="datatable3" style="width: 100%">
+                        <tr>
+                            <td style="height: 120px; vertical-align:top; text-align:center">
+                                <div style="display: flex; justify-content:space-between">
+                                    <div style="width:30px; height:20px; border-style:solid; border-width:1px; padding:10px; text-align:center">
+                                        Y <?php echo $y ?></div>
+                                    <div style="width:30px; height:20px; border-style:solid; border-width:1px; padding:10px; text-align:center">T <?php echo $t ?> </div>
+                                </div>
+                                <br>
+                                {!! !empty($karyawan->$level) ? QrCode::size(80)->generate('sahretech.com') : '' !!}
+                                <br>
+                                @php
+                                $cekapproval = DB::table('users')->where('id',$karyawan->$level)->first();
+                                @endphp
+                                <br>
+                                <b><?php echo $cekapproval->name; ?></b>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="text-align:center; font-weight:bold">
+                                <?php echo ucwords($approve[$i]) ?>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <?php }?>
+            </tr>
+        </table>
     </section>
 </body>
 </html>
