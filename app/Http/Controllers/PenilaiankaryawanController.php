@@ -202,11 +202,12 @@ class PenilaiankaryawanController extends Controller
         $dari = $periode_kontrak[0];
         $sampai = $periode_kontrak[1];
         $nik = $penilaian->nik;
-        $karyawan = DB::table('master_karyawan')
-            ->selectRaw('nik,nama_karyawan,master_karyawan.kode_dept,nama_dept,master_karyawan.id_jabatan,nama_jabatan,hrd_jabatan.id_kategori_jabatan,id_kantor')
-            ->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
-            ->leftjoin('departemen', 'master_karyawan.kode_dept', '=', 'departemen.kode_dept')
-            ->where('nik', $nik)
+        $karyawan = DB::table('hrd_penilaian')
+            ->selectRaw('hrd_penilaian.nik,nama_karyawan,hrd_penilaian.kode_dept,nama_dept,hrd_penilaian.id_jabatan,nama_jabatan,hrd_penilaian.id_kategori_jabatan,hrd_penilaian.id_kantor')
+            ->join('master_karyawan', 'hrd_penilaian.nik', '=', 'master_karyawan.nik')
+            ->join('hrd_jabatan', 'hrd_penilaian.id_jabatan', '=', 'hrd_jabatan.id')
+            ->leftjoin('departemen', 'hrd_penilaian.kode_dept', '=', 'departemen.kode_dept')
+            ->where('hrd_penilaian.nik', $nik)
             ->first();
         $kantor = $karyawan->id_kantor != "PST" ? "PST" : "CBG";
         $id_kategori_jabatan = $karyawan->id_kategori_jabatan;
@@ -318,16 +319,20 @@ class PenilaiankaryawanController extends Controller
         $dari = $periode_kontrak[0];
         $sampai = $periode_kontrak[1];
         $nik = $penilaian->nik;
-        $karyawan = DB::table('master_karyawan')
-            ->selectRaw('nik,nama_karyawan,master_karyawan.kode_dept,nama_dept,master_karyawan.id_jabatan,nama_jabatan,hrd_jabatan.id_kategori_jabatan,id_kantor')
-            ->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
-            ->leftjoin('departemen', 'master_karyawan.kode_dept', '=', 'departemen.kode_dept')
-            ->where('nik', $nik)
+        $karyawan = DB::table('hrd_penilaian')
+            ->selectRaw('hrd_penilaian.nik,nama_karyawan,hrd_penilaian.kode_dept,nama_dept,hrd_penilaian.id_jabatan,nama_jabatan,hrd_penilaian.id_kategori_jabatan,hrd_penilaian.id_kantor,status,ka,kp,rsm,m,gm,hrd,dirut')
+            ->join('master_karyawan', 'hrd_penilaian.nik', '=', 'master_karyawan.nik')
+            ->join('hrd_jabatan', 'hrd_penilaian.id_jabatan', '=', 'hrd_jabatan.id')
+            ->leftjoin('departemen', 'hrd_penilaian.kode_dept', '=', 'departemen.kode_dept')
+            ->where('hrd_penilaian.nik', $nik)
             ->first();
-        $kantor = $karyawan->id_kantor != "PST" ? "PST" : "CBG";
+
+        $kantor = $karyawan->id_kantor == "PST" ? "PST" : "CBG";
         $id_kategori_jabatan = $karyawan->id_kategori_jabatan;
         $kategori_approval = DB::table('hrd_penilaian_approval')->where('kantor', $kantor)->where('id', $id_kategori_jabatan)->first();
         $kategori = $kategori_approval->doc;
+        $approve = unserialize($kategori_approval->approval);
+
         $kategori_penilaian = DB::table('hrd_penilaian_detail')
             ->select('hrd_penilaiankaryawan_item.id', 'penilaian', 'hrd_penilaiankaryawan_item.id_jenis_penilaian', 'jenis_penilaian', 'hrd_penilaiankaryawan_item.id_jenis_kompetensi', 'nilai')
             ->where('kode_penilaian', $kode_penilaian)
@@ -335,9 +340,9 @@ class PenilaiankaryawanController extends Controller
             ->join('hrd_jenispenilaian', 'hrd_penilaiankaryawan_item.id_jenis_penilaian', '=', 'hrd_jenispenilaian.id')
             ->orderBy('hrd_penilaiankaryawan_item.id_jenis_penilaian')->get();
         if ($kategori == 1) {
-            return view('penilaiankaryawan.cetak', compact('tanggal', 'dari', 'sampai', 'karyawan', 'kategori_penilaian', 'kategori', 'penilaian'));
+            return view('penilaiankaryawan.cetak', compact('tanggal', 'dari', 'sampai', 'karyawan', 'kategori_penilaian', 'kategori', 'penilaian', 'approve'));
         } else {
-            return view('penilaiankaryawan.cetak_operator', compact('tanggal', 'dari', 'sampai', 'karyawan', 'kategori_penilaian', 'kategori', 'penilaian'));
+            return view('penilaiankaryawan.cetak_operator', compact('tanggal', 'dari', 'sampai', 'karyawan', 'kategori_penilaian', 'kategori', 'penilaian', 'approve'));
         }
     }
 

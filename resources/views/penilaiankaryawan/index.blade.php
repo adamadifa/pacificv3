@@ -124,6 +124,8 @@
                                             echo "<i class='fa fa-close danger'></i>";
                                             }else if($i==0 && $d->status==2 && !empty($d->$level) && !empty($d->$nextlevel) ){
                                             echo "<i class='fa fa-check success'></i>";
+                                            }else if($d->status == 2 && !empty($d->$level) && $level=="dirut"){
+                                            echo "<i class='fa fa-close danger'></i>";
                                             }else if($d->status == 2 && !empty($d->$level) && empty($d->$nextlevel)){
                                             echo "<i class='fa fa-close danger'></i>";
                                             }else if($d->status == 2 && !empty($d->$level) && !empty($d->$nextlevel)){
@@ -142,11 +144,10 @@
                                         ?>
                                         <td>
                                             <div class="btn-group">
-                                                <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/cetak" class="info"><i class="feather icon-printer"></i></a>
+                                                <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/cetak" class="info mr-1"><i class="feather icon-printer"></i></a>
                                                 @if (array_search(strtolower($kat_jab_user),$approve) == 0)
                                                 @if (empty($d->$field_kategori))
-                                                <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian)}}/edit" class="success mr-1"><i class="feather icon-edit"></i></a>
-
+                                                <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian)}}/edit" class="success"><i class="feather icon-edit"></i></a>
                                                 <form method="POST" name="deleteform" class="deleteform" action="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/delete">
                                                     @csrf
                                                     @method('DELETE')
