@@ -5860,7 +5860,12 @@ class PenjualanController extends Controller
         $kode_cabang = $request->kode_cabang;
         $formatlaporan = $request->formatlaporan;
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
-
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Penjualan Periode $dari-$sampai.xls");
+        }
         if ($formatlaporan == 1) {
             $query = Penjualan::query();
             $query->selectRaw("penjualan.id_karyawan,nama_karyawan, COUNT(no_fak_penj) as ec ");
