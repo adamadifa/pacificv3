@@ -582,7 +582,7 @@ class GlobalProvider extends ServiceProvider
                 'admin', 'kepala penjualan',
                 'kepala admin', 'admin pusat', 'admin gudang cabang', 'admin garut', 'admin persediaan dan kasir',
                 'admin persediaan dan kas kecil', 'supervisor sales',
-                'admin gudang cabang dan marketing', 'direktur', 'manager accounting', 'spv accounting', 'manager marketing', 'rsm', 'general manager', 'audit', 'emf'
+                'admin gudang cabang dan marketing', 'direktur', 'manager accounting', 'spv accounting', 'manager marketing', 'rsm', 'general manager', 'audit', 'emf', 'admin pajak 2'
             ];
 
 
@@ -712,31 +712,31 @@ class GlobalProvider extends ServiceProvider
                 'admin', 'kepala penjualan',
                 'kepala admin', 'admin pusat', 'admin gudang cabang', 'admin garut',
                 'admin persediaan dan kasir', 'admin persediaan dan kas kecil',
-                'supervisor sales', 'admin gudang cabang dan marketing', 'direktur', 'manager accounting', 'spv accounting', 'manager marketing', 'rsm', 'general manager', 'audit', 'emf'
+                'supervisor sales', 'admin gudang cabang dan marketing', 'direktur', 'manager accounting', 'spv accounting', 'manager marketing', 'rsm', 'general manager', 'audit', 'emf', 'admin pajak 2'
             ];
             $laporan_badstok_bj = [
                 'admin', 'kepala penjualan',
                 'kepala admin', 'admin pusat', 'admin gudang cabang', 'admin garut',
                 'admin persediaan dan kasir', 'admin persediaan dan kas kecil',
-                'supervisor sales', 'admin gudang cabang dan marketing', 'direktur', 'manager accounting', 'spv accounting', 'manager marketing', 'rsm', 'general manager', 'audit', 'emf'
+                'supervisor sales', 'admin gudang cabang dan marketing', 'direktur', 'manager accounting', 'spv accounting', 'manager marketing', 'rsm', 'general manager', 'audit', 'emf', 'admin pajak 2'
             ];
             $laporan_rekap_bj = [
                 'admin', 'kepala penjualan',
                 'kepala admin', 'admin pusat', 'admin gudang cabang', 'admin garut', 'admin persediaan dan kasir',
                 'admin persediaan dan kas kecil', 'supervisor sales',
-                'admin gudang cabang dan marketing', 'direktur', 'manager accounting', 'spv accounting', 'manager marketing', 'rsm', 'general manager', 'audit', 'emf'
+                'admin gudang cabang dan marketing', 'direktur', 'manager accounting', 'spv accounting', 'manager marketing', 'rsm', 'general manager', 'audit', 'emf', 'admin pajak 2'
             ];
             $laporan_mutasidpb = [
                 'admin', 'kepala penjualan',
                 'kepala admin', 'admin pusat', 'admin gudang cabang', 'admin garut', 'admin persediaan dan kasir',
                 'admin persediaan dan kas kecil', 'supervisor sales',
-                'admin gudang cabang dan marketing', 'direktur', 'manager accounting', 'spv accounting', 'manager marketing', 'rsm', 'general manager', 'audit', 'emf'
+                'admin gudang cabang dan marketing', 'direktur', 'manager accounting', 'spv accounting', 'manager marketing', 'rsm', 'general manager', 'audit', 'emf', 'admin pajak 2'
             ];
             $laporan_rekonsiliasibj = [
                 'admin', 'kepala penjualan',
                 'kepala admin', 'admin pusat', 'admin gudang cabang', 'admin garut', 'admin persediaan dan kasir',
                 'admin persediaan dan kas kecil', 'supervisor sales',
-                'admin gudang cabang dan marketing', 'direktur', 'manager accounting', 'spv accounting', 'manager marketing', 'rsm', 'general manager', 'audit', 'emf'
+                'admin gudang cabang dan marketing', 'direktur', 'manager accounting', 'spv accounting', 'manager marketing', 'rsm', 'general manager', 'audit', 'emf', 'admin pajak 2'
             ];
 
             //Acounting
