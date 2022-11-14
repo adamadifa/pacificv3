@@ -36,6 +36,7 @@
                         <input type="hidden" name="id_kategori_jabatan" value="{{ $karyawan->id_kategori_jabatan }}">
                         <input type="hidden" name="kategori" value="{{ $kategori }}">
                         <input type="hidden" name="id_kantor" value="{{ $karyawan->id_kantor }}">
+                        <input type="hidden" name="id_perusahaan" value="{{ $karyawan->id_perusahaan }}">
                         <table class="table">
                             <tr>
                                 <td>Periode Kontrak</td>

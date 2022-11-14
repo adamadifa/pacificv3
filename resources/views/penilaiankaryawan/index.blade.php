@@ -24,24 +24,54 @@
         @include('layouts.notification')
         <div class="row">
             <div class="col-md-2 col-sm-12">
-                <div class="card">
-                    <div class="card-content">
-                        <div class="card-body">
-                            <h4 class="card-title">Kategori Jabatan PST</h4>
-                            <p class="card-text">Data Penilaian Karyawan Berdasarkan Kategori Jabatan Kantor Pusat</p>
+                @if (count($kategori_approval) > 0)
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="card-body">
+                                    <h4 class="card-title">Kategori Jabatan MP</h4>
+                                    <p class="card-text">Data Penilaian Karyawan Berdasarkan Kategori Jabatan MP</p>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    @foreach ($kategori_approval as $d)
+                                    <a href="/penilaiankaryawan/{{ $d->id }}/{{ $d->kantor }}/list" style="color:#2c2c2c">
+                                        <li class="list-group-item {{ $kategori_jabatan == $d->id && $perusahaan == $d->kantor ? 'active' : '' }}">
+                                            <span class="badge badge-pill bg-danger float-right">{{ $d->jml }}</span>
+                                            {{ $d->kategori_jabatan }}
+                                        </li>
+                                    </a>
+                                    @endforeach
+                                </ul>
+                            </div>
                         </div>
-                        <ul class="list-group list-group-flush">
-                            @foreach ($kategori_approval as $d)
-                            <a href="/penilaiankaryawan/{{ $d->id }}/{{ $d->kantor }}/list" style="color:#2c2c2c">
-                                <li class="list-group-item {{ $kategori_jabatan == $d->id && $kantor == $d->kantor ? 'active' : '' }}">
-                                    <span class="badge badge-pill bg-danger float-right">{{ $d->jml }}</span>
-                                    {{ $d->kategori_jabatan }}
-                                </li>
-                            </a>
-                            @endforeach
-                        </ul>
                     </div>
                 </div>
+                @endif
+                @if (count($kategori_approval_pcf) > 0)
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="card-body">
+                                    <h4 class="card-title">Kategori Jabatan PCF</h4>
+                                    <p class="card-text">Data Penilaian Karyawan Berdasarkan Kategori Jabatan PCF</p>
+                                </div>
+                                <ul class="list-group list-group-flush">
+                                    @foreach ($kategori_approval_pcf as $d)
+                                    <a href="/penilaiankaryawan/{{ $d->id }}/{{ $d->kantor }}/list" style="color:#2c2c2c">
+                                        <li class="list-group-item {{ $kategori_jabatan == $d->id && $perusahaan == $d->kantor ? 'active' : '' }}">
+                                            <span class="badge badge-pill bg-danger float-right">{{ $d->jml }}</span>
+                                            {{ $d->kategori_jabatan }}
+                                        </li>
+                                    </a>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endif
             </div>
             <div class="col-md-10 col-sm-12">
                 <div class="card">
@@ -78,7 +108,7 @@
                                     </tr>
                                     <tr>
                                         @php
-                                        $inisial = ["manager"=>"M","general manager"=>"GM","manager hrd"=>"HRD","direktur"=>"DIRUT"];
+                                        //$inisial = ["manager"=>"M","general manager"=>"GM","manager hrd"=>"HRD","direktur"=>"DIRUT"];
 
                                         @endphp
                                         @for ($i = 0; $i < count($approve); $i++) <th>{{ $inisial[$approve[$i]] }}</th>
@@ -86,6 +116,7 @@
                                     </tr>
                                 </thead>
                                 <tbody style="font-size: 12px">
+
                                     @foreach ($penilaian as $d)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
@@ -119,23 +150,26 @@
                                         ?>
                                         <td>
                                             <?php
-
                                             if($i==0 && $d->status==2 && !empty($d->$level) && empty($d->$nextlevel)){
-                                            echo "<i class='fa fa-close danger'></i>";
+                                                //Jika Index 0 dan Stataus ==2 dan Level Tidak Kosong dan Level Selanjutnya Kosong Maka X
+                                                echo "<i class='fa fa-close danger'></i>";
                                             }else if($i==0 && $d->status==2 && !empty($d->$level) && !empty($d->$nextlevel) ){
-                                            echo "<i class='fa fa-check success'></i>";
+                                                // Jika Index 0 dan Status == 2 dan LEvel Tidak Kosong dan Level Berikutnya Tidak Kosong Maka V
+                                                echo "<i class='fa fa-check success'></i>";
                                             }else if($d->status == 2 && !empty($d->$level) && $level=="dirut"){
-                                            echo "<i class='fa fa-close danger'></i>";
+                                                //Jika Status == 2 Level Tidak Kosong  dan Level == "DIRUT" maka X
+                                                echo "<i class='fa fa-close danger'></i>";
                                             }else if($d->status == 2 && !empty($d->$level) && empty($d->$nextlevel)){
-                                            echo "<i class='fa fa-close danger'></i>";
+
+                                                echo "<i class='fa fa-close danger'></i>";
                                             }else if($d->status == 2 && !empty($d->$level) && !empty($d->$nextlevel)){
-                                            echo "<i class='fa fa-check success'></i>";
+                                                echo "<i class='fa fa-check success'></i>";
                                             }else if($d->status == NULL && empty($d->$level)){
-                                            echo "<i class='fa fa-history warning'></i>";
+                                                echo "<i class='fa fa-history warning'></i>";
                                             }else if($d->status == NULL && !empty($d->$level)){
-                                            echo "<i class='fa fa-check success'></i>";
+                                                echo "<i class='fa fa-check success'></i>";
                                             }else if($d->status == 1 && !empty($d->$level)){
-                                            echo "<i class='fa fa-check success'></i>";
+                                                echo "<i class='fa fa-check success'></i>";
                                             }
                                             ?>
                                         </td>
@@ -247,7 +281,7 @@
                                 <select name="nik" id="nik" class="form-control select2">
                                     <option value="">Pilih Karyawan</option>
                                     @foreach ($karyawan as $d)
-                                    <option value="{{ $d->nik }}">{{ $d->nik }} {{ $d->nama_karyawan }}</option>
+                                    <option value="{{ $d->nik }}">{{ $d->nik }} {{ $d->nama_karyawan }} ({{ $d->nama_jabatan }})</option>
                                     @endforeach
                                 </select>
                             </div>
