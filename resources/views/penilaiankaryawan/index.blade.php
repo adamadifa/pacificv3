@@ -30,7 +30,7 @@
                         <div class="card">
                             <div class="card-content">
                                 <div class="card-body">
-                                    <h4 class="card-title">Kategori Jabatan MP</h4>
+                                    <h4 class="card-title">Kategori MP</h4>
                                     <p class="card-text">Data Penilaian Karyawan Berdasarkan Kategori Jabatan MP</p>
                                 </div>
                                 <ul class="list-group list-group-flush">
@@ -54,7 +54,7 @@
                         <div class="card">
                             <div class="card-content">
                                 <div class="card-body">
-                                    <h4 class="card-title">Kategori Jabatan PCF</h4>
+                                    <h4 class="card-title">Kategori PCF</h4>
                                     <p class="card-text">Data Penilaian Karyawan Berdasarkan Kategori Jabatan PCF</p>
                                 </div>
                                 <ul class="list-group list-group-flush">
