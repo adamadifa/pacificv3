@@ -969,7 +969,7 @@
                 <ul class="menu-content">
                     @if (in_array($level, $penilaian_karyawan) || in_array($kat_jabatan, $penilaian_karyawan))
                     <li class="{{ request()->is(['penilaiankaryawan', 'penilaiankaryawan/*']) ? 'active' : '' }}">
-                        <a href="/penilaiankaryawan/10/PST/list">
+                        <a href="/penilaiankaryawan/10/MP/list">
                             <i class="feather icon-edit"></i>
                             <span class="menu-item" data-i18n="Second Level">Penilaian karyawan</span>
                         </a>

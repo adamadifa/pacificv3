@@ -221,7 +221,7 @@
         <table style="width:100%">
             <tr>
                 <?php
-                    $inisial = ["manager"=>"M","general manager"=>"GM","manager hrd"=>"HRD","direktur"=>"DIRUT"];
+                    // $inisial = ["manager"=>"M","general manager"=>"GM","manager hrd"=>"HRD","direktur"=>"DIRUT"];
                     for ($i = 0; $i < count($approve); $i++){
                         $level = strtolower($inisial[$approve[$i]]);
                         if($i < count($approve) - 1){
@@ -293,7 +293,7 @@
                                 $cekapproval = DB::table('users')->where('id',$karyawan->$level)->first();
                                 @endphp
                                 <br>
-                                <b><?php echo $cekapproval->name; ?></b>
+                                <b><?php echo $cekapproval != null ? $cekapproval->name : ''; ?></b>
                             </td>
                         </tr>
                         <tr>
