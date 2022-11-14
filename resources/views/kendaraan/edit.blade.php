@@ -34,7 +34,7 @@
                                 <div class="form-body">
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="No. Polisi" field="no_polisi" icon="feather icon-truck" value="{{ $data->no_polisi }}" readonly />
+                                            <x-inputtext label="No. Polisi" field="no_polisi" icon="feather icon-truck" value="{{ $data->no_polisi }}" />
                                         </div>
                                     </div>
                                     <div class="row">

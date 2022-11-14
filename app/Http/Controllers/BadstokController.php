@@ -39,7 +39,7 @@ class BadstokController extends Controller
         $tahun = substr($tgl[0], 2);
         $badstok = DB::table("badstok")
             ->whereRaw('MONTH(tanggal)=' . $bulan)
-            ->whereRaw('YEAR(tanggal)=' . $tahun)
+            ->whereRaw('YEAR(tanggal)=' . $tgl[0])
             ->orderBy("no_bs", "desc")
             ->first();
 
