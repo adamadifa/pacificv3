@@ -24,17 +24,22 @@ class PenilaiankaryawanController extends Controller
         $qkaryawan =  Masterkaryawan::query();
         $qkaryawan->select('nik', 'nama_karyawan', 'nama_jabatan');
         $qkaryawan->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
+        $qkaryawan->join('hrd_kategori_jabatan', 'hrd_jabatan.id_kategori_jabatan', '=', 'hrd_kategori_jabatan.id');
         if (Auth::user()->kode_cabang != "PCF") {
             $qkaryawan->where('id_kantor', Auth::user()->kode_cabang);
         } else {
             if (Auth::user()->level == "rsm") {
                 $qkaryawan->whereIn('id_kantor', $list_wilayah);
                 $qkaryawan->where('id_jabatan', 11);
+            } else if (Auth::user()->kategori_jabatan == 3) {
+                $qkaryawan->whereIn('hrd_jabatan.id_kategori_jabatan', [8, 7]);
             }
         }
         if ($list_dept != NULL) {
             $qkaryawan->whereIn('kode_dept', $list_dept);
         }
+
+        $qkaryawan->where('id_kategori_jabatan', '!=', Auth::user()->kategori_jabatan);
         $karyawan = $qkaryawan->get();
         $kategori_penilaian = DB::table('hrd_kategoripenilaian')->get();
         $query = Penilaiankaryawan::query();
