@@ -139,9 +139,9 @@ class KendaraanController extends Controller
             ]);
 
         if ($simpan) {
-            return Redirect::back()->with(['success' => 'Data Berhasil Di Update']);
+            return redirect('/kendaraan')->with(['success' => 'Data Berhasil Di Update']);
         } else {
-            return Redirect::back()->with(['warning' => 'Data Gagal Di Update']);
+            return redirect('/kendaraan')->with(['warning' => 'Data Gagal Di Update']);
         }
     }
 
