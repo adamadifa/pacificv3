@@ -11,6 +11,13 @@
                  </div>
                  <ul class="nav navbar-nav float-right">
                      <li class="dropdown dropdown-notification nav-item">
+                         <a class="nav-link nav-link-label" href="/penilaiankaryawan/10/MP/list">
+                             <i class="ficon" data-feather="file-text"></i>
+                             <span class="badge badge-pill badge-danger badge-up mr-2">{{ $jmlpenilaiankar }}</span>
+                         </a>
+                     </li>
+
+                     <li class="dropdown dropdown-notification nav-item">
                          <a class="nav-link nav-link-label" href="/ticket">
                              <i class="ficon" data-feather="tool"></i>
                              @if ($level== "manager accounting")

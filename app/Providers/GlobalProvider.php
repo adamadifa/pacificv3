@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Penilaiankaryawan;
 use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
@@ -41,6 +42,48 @@ class GlobalProvider extends ServiceProvider
                 $kat_jabatan = $auth->user()->kategori_jabatan;
                 $getcbg = $auth->user()->kode_cabang;
                 $id_user = $auth->user()->id;
+
+
+                if ($kat_jabatan != null) {
+                    $list_dept = $auth->user()->kode_dept != null ?  unserialize($auth->user()->kode_dept) : NULL;
+                    $list_wilayah = $auth->user()->wilayah != null ? unserialize($auth->user()->wilayah) : NULL;
+                    $approve_jabatan = $auth->user()->approve_jabatan != null ? unserialize($auth->user()->approve_jabatan) : [];
+                    // $dept = $list_dept != null ? "'" . implode("', '", $list_dept) . "'" : '';
+                    // $wilayah = $list_wilayah != null ? "'" . implode("', '", $list_wilayah) . "'" : '';
+
+
+                    // SELECT id_kategori_jabatan,COUNT(kode_penilaian) as jml FROM hrd_penilaian
+                    // WHERE status IS NULL
+                    // AND id_perusahaan = 'MP'
+                    // AND kode_dept IN (" . $dept . ") " . $whereCabang . "
+                    // GROUP BY id_kategori_jabatan
+
+                    $inisial = ["" => "", "kepala admin" => "KA", "kepala penjualan" => "KP", "rsm" => "RSM", "manager" => "M", "general manager" => "GM", "manager hrd" => "HRD", "direktur" => "DIRUT"];
+                    $kategori_jabatan_user = DB::table('hrd_kategori_jabatan')->where('id', $kat_jabatan)->first();
+                    $kat_jab_user =  $kategori_jabatan_user != null ? $kategori_jabatan_user->kategori_jabatan : '';
+                    $field_kategori = strtolower($inisial[strtolower($kat_jab_user)]);
+
+                    $qpenilaian = Penilaiankaryawan::query();
+                    $qpenilaian->selectRaw('COUNT(kode_penilaian) as jml');
+                    $qpenilaian->whereNull('status');
+                    if ($auth->user()->level != "admin" and $kat_jab_user != "DIREKTUR" and $kat_jab_user != "MANAGER HRD") {
+                        $qpenilaian->whereIn('kode_dept', $list_dept);
+                        if ($auth->user()->kode_cabang != "PCF") {
+                            $qpenilaian->where('id_kantor', $getcbg);
+                        } else {
+                            if (Auth::user()->level == "rsm") {
+                                $qpenilaian->whereIn('id_kantor', $list_wilayah);
+                            }
+                        }
+                    }
+
+                    $qpenilaian->whereIn('id_kategori_jabatan', $approve_jabatan);
+                    $qpenilaian->whereNull($field_kategori);
+                    $penilaian = $qpenilaian->first();
+                    $jmlpenilaiankar = $penilaian->jml;
+                } else {
+                    $jmlpenilaiankar = 0;
+                }
                 $memo = DB::table('memo')
                     ->selectRaw("memo.id,tanggal,no_memo,judul_memo,kode_dept,kategori,link,totaldownload,name,memo.id_user,cekread.id_user as status_read")
                     ->leftJoin(
@@ -76,6 +119,9 @@ class GlobalProvider extends ServiceProvider
                 $ticket_pending_approve = DB::table('ticket')->where('status', 0)->count();
                 $ticket_pending_done = DB::table('ticket')->where('status', 1)->count();
 
+
+
+
                 $users = User::select("*")
                     ->whereNotNull('last_seen')
                     ->orderBy('last_seen', 'DESC')
@@ -90,6 +136,7 @@ class GlobalProvider extends ServiceProvider
                 $ticket_pending =  null;
                 $ticket_pending_approve =  null;
                 $ticket_pending_done =  null;
+                $jmlpenilaiankar = null;
                 $users = null;
             }
 
@@ -122,7 +169,7 @@ class GlobalProvider extends ServiceProvider
                 'kepala admin', 'admin pusat', 'manager marketing', 'rsm', 'direktur',
                 'manager pembelian', 'admin pembelian', 'admin penjualan dan kas kecil',
                 'admin penjualan dan kasir', 'audit', 'admin gudang logistik', 'admin gudang bahan',
-                'general affair', 'admin garut', 'admin pajak 2'
+                'general affair', 'manager ga', 'admin garut', 'admin pajak 2'
             ];
 
             $pasar_menu = ['admin', 'admin penjualan', 'audit', 'kepala admin', 'admin penjualan dan kas kecil', 'direktur', 'manager accounting', 'general manager', 'admin garut', 'admin pajak 2'];
@@ -184,11 +231,11 @@ class GlobalProvider extends ServiceProvider
             $barangpembelian = [
                 'admin', 'manager pembelian', 'admin pembelian', 'manager accounting',
                 'spv accounting', 'audit', 'admin gudang logistik', 'admin gudang bahan',
-                'general affair', 'admin pajak 2'
+                'general affair', 'manager ga', 'admin pajak 2'
             ];
-            $barangpembelian_tambah = ['admin', 'manager pembelian', 'admin pembelian', 'admin gudang logistik', 'admin gudang bahan', 'general affair'];
-            $barangpembelian_edit = ['admin', 'manager pembelian', 'admin pembelian', 'admin gudang logistik', 'admin gudang bahan', 'general affair'];
-            $barangpembelian_hapus = ['admin', 'manager pembelian', 'admin pembelian', 'admin gudang logistik', 'admin gudang bahan', 'general affair'];
+            $barangpembelian_tambah = ['admin', 'manager pembelian', 'admin pembelian', 'admin gudang logistik', 'admin gudang bahan', 'general affair', 'manager ga'];
+            $barangpembelian_edit = ['admin', 'manager pembelian', 'admin pembelian', 'admin gudang logistik', 'admin gudang bahan', 'general affair', 'manager ga'];
+            $barangpembelian_hapus = ['admin', 'manager pembelian', 'admin pembelian', 'admin gudang logistik', 'admin gudang bahan', 'general affair', 'manager ga'];
 
             //Harga
             $harga = [
@@ -206,14 +253,14 @@ class GlobalProvider extends ServiceProvider
             $kendaraan = [
                 'admin', 'admin penjualan', 'audit', 'kepala penjualan',
                 'kepala admin', 'admin pusat', 'manager accounting', 'spv accounting', 'manager marketing', 'rsm', 'direktur',
-                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'audit', 'admin garut', 'admin pajak 2', 'general affair'
+                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'audit', 'admin garut', 'admin pajak 2', 'general affair', 'manager ga'
             ];
-            $kendaraan_tambah = ['admin', 'general affair'];
+            $kendaraan_tambah = ['admin', 'general affair', 'manager ga'];
             $kendaraan_edit = [
                 'admin', 'admin penjualan', 'audit', 'kepala penjualan', 'kepala admin', 'admin pusat',
-                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'admin garut', 'general affair'
+                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'admin garut', 'general affair', 'manager ga'
             ];
-            $kendaraan_hapus = ['admin', 'general affair'];
+            $kendaraan_hapus = ['admin', 'general affair', 'manager ga'];
 
 
             $cabang = ['admin', 'audit'];
@@ -517,23 +564,23 @@ class GlobalProvider extends ServiceProvider
 
             $produksi_menu = [
                 'admin', 'direktur', 'manager accounting', 'spv accounting',
-                'admin produksi', 'audit', 'admin produksi 2', 'kepala gudang', 'admin gudang pusat', 'emf', 'admin pdqc'
+                'admin produksi', 'manager produksi', 'audit', 'admin produksi 2', 'kepala gudang', 'admin gudang pusat', 'emf', 'admin pdqc'
             ];
-            $produksi_analytics = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'admin produksi', 'emf', 'admin pdqc'];
-            $mutasi_produk = ['admin', 'admin produksi 2', 'admin produksi'];
-            $bpbj_view = ['admin', 'admin produksi'];
-            $fsthp_view = ['admin', 'admin produksi 2', 'admin produksi'];
-            $mutasi_barang = ['admin', 'admin produksi'];
-            $pemasukan_produksi = ['admin', 'admin produksi'];
-            $pengeluaran_produksi = ['admin', 'admin produksi'];
-            $saldoawal_mutasibarang_produksi = ['admin', 'admin produksi'];
-            $opname_mutasibarang_produksi = ['admin', 'admin produksi'];
-            $laporan_produksi = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'audit', 'admin produksi', 'emf', 'admin pdqc'];
-            $laporan_mutasiproduksi = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'audit', 'admin produksi', 'emf', 'admin pdqc'];
-            $laporan_rekapmutasiproduksi = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'audit', 'admin produksi', 'emf', 'admin pdqc'];
-            $laporan_pemasukanproduksi = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'audit', 'admin produksi', 'emf', 'admin pdqc'];
-            $laporan_pengeluaranproduksi = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'audit', 'admin produksi', 'emf', 'admin pdqc'];
-            $laporan_rekappersediaanbarangproduksi = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'audit', 'admin produksi', 'emf', 'admin pdqc'];
+            $produksi_analytics = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'admin produksi', 'manager produksi', 'emf', 'admin pdqc'];
+            $mutasi_produk = ['admin', 'admin produksi 2', 'admin produksi', 'manager produksi'];
+            $bpbj_view = ['admin', 'admin produksi', 'manager produksi'];
+            $fsthp_view = ['admin', 'admin produksi 2', 'admin produksi', 'manager produksi'];
+            $mutasi_barang = ['admin', 'admin produksi', 'manager produksi'];
+            $pemasukan_produksi = ['admin', 'admin produksi', 'manager produksi'];
+            $pengeluaran_produksi = ['admin', 'admin produksi', 'manager produksi'];
+            $saldoawal_mutasibarang_produksi = ['admin', 'admin produksi', 'manager produksi'];
+            $opname_mutasibarang_produksi = ['admin', 'admin produksi', 'manager produksi'];
+            $laporan_produksi = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'audit', 'admin produksi', 'manager produksi', 'emf', 'admin pdqc'];
+            $laporan_mutasiproduksi = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'audit', 'admin produksi', 'manager produksi', 'emf', 'admin pdqc'];
+            $laporan_rekapmutasiproduksi = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'audit', 'admin produksi', 'manager produksi', 'emf', 'admin pdqc'];
+            $laporan_pemasukanproduksi = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'audit', 'admin produksi', 'manager produksi', 'emf', 'admin pdqc'];
+            $laporan_pengeluaranproduksi = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'audit', 'admin produksi', 'manager produksi', 'emf', 'admin pdqc'];
+            $laporan_rekappersediaanbarangproduksi = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'audit', 'admin produksi', 'manager produksi', 'emf', 'admin pdqc'];
 
             //Gudang
             $gudang_menu = [
@@ -602,7 +649,7 @@ class GlobalProvider extends ServiceProvider
             $opname_gudangbahan = ['admin', 'kepala gudang', 'admin gudang bahan'];
 
             //Gudang Jadi Pusat
-            $permintaan_produksi_view = ['admin', 'kepala gudang', 'admin gudang pusat', 'kepala gudang', 'admin produksi'];
+            $permintaan_produksi_view = ['admin', 'kepala gudang', 'admin gudang pusat', 'kepala gudang', 'admin produksi', 'manager produksi'];
             $mutasi_produk_gj = ['admin', 'kepala gudang', 'admin gudang pusat'];
             $fsthp_gj_view = ['admin', 'kepala gudang', 'admin gudang pusat'];
             $suratjalan_view = ['admin', 'kepala gudang', 'admin gudang pusat'];
@@ -740,20 +787,20 @@ class GlobalProvider extends ServiceProvider
             ];
 
             //Acounting
-            $accounting_menu = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'general affair', 'manager hrd', 'kepala admin', 'kepala penjualan', 'admin pusat'];
+            $accounting_menu = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'general affair', 'manager ga', 'manager hrd', 'kepala admin', 'kepala penjualan', 'admin pusat'];
             $coa_menu = ['admin', 'spv accounting', 'manager accounting'];
             $setcoacabang = ['admin', 'spv accounting', 'manager accounting'];
             $hpp_menu = ['admin', 'manager accounting', 'spv accounting'];
             $hpp_input = ['admin', 'manager accounting', 'spv accounting'];
             $hargaawal_input = ['admin', 'manager accounting', 'spv accounting'];
             $saldoawal_bukubesar_menu = ['admin', 'manager accounting', 'spv accounting'];
-            $jurnalumum_menu = ['admin', 'manager accounting', 'spv accounting', 'general affair', 'manager hrd', 'admin pusat'];
+            $jurnalumum_menu = ['admin', 'manager accounting', 'spv accounting', 'general affair', 'manager ga', 'manager hrd', 'admin pusat'];
             $costratio_menu = ['admin', 'manager accounting', 'spv accounting', 'kepala admin', 'kepala penjualan', 'admin pusat'];
-            $laporan_accounting = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'general affair', 'manager hrd', 'kepala admin', 'kepala penjualan', 'admin pusat'];
+            $laporan_accounting = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'general affair', 'manager ga', 'manager hrd', 'kepala admin', 'kepala penjualan', 'admin pusat'];
             $laporan_lk = ['admin', 'direktur', 'manager accounting', 'spv accounting'];
             $laporan_rekapbj_acc = ['admin', 'direktur', 'manager accounting', 'spv accounting'];
             $laporan_bukubesar = ['admin', 'direktur', 'manager accounting', 'spv accounting'];
-            $laporan_jurnalumum = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'general affair', 'manager hrd', 'admin pusat'];
+            $laporan_jurnalumum = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'general affair', 'manager ga', 'manager hrd', 'admin pusat'];
             $laporan_costratio = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'manager hrd', 'kepala admin', 'kepala penjualan', 'admin pusat'];
 
 
@@ -762,14 +809,14 @@ class GlobalProvider extends ServiceProvider
             $penilaian_karyawan = ['admin', '3', '2', '11', '1', '7', '6', '4'];
 
             //General Affair
-            $ga_menu = ['admin', 'general affair', 'direktur', 'manager accounting', 'emf'];
-            $dashboard_ga = ['admin', 'general affair', 'direktur', 'manager accounting', 'emf'];
-            $mutasi_kendaraan = ['admin', 'general affair', 'direktur', 'manager accounting', 'emf'];
-            $service_kendaraan = ['admin', 'general affair', 'direktur', 'manager accounting', 'emf'];
-            $bad_stock = ['admin', 'general affair', 'direktur', 'manager accounting', 'emf'];
-            $laporan_ga = ['admin', 'general affair', 'direktur', 'manager accounting', 'emf'];
-            $laporan_servicekendaraan = ['admin', 'general affair', 'direktur', 'manager accounting', 'emf'];
-            $rekap_badstokga = ['admin', 'general affair', 'direktur', 'manager accounting', 'emf'];
+            $ga_menu = ['admin', 'general affair', 'manager ga', 'direktur', 'manager accounting', 'emf'];
+            $dashboard_ga = ['admin', 'general affair', 'manager ga', 'direktur', 'manager accounting', 'emf'];
+            $mutasi_kendaraan = ['admin', 'general affair', 'manager ga', 'direktur', 'manager accounting', 'emf'];
+            $service_kendaraan = ['admin', 'general affair', 'manager ga', 'direktur', 'manager accounting', 'emf'];
+            $bad_stock = ['admin', 'general affair', 'manager ga', 'direktur', 'manager accounting', 'emf'];
+            $laporan_ga = ['admin', 'general affair', 'manager ga', 'direktur', 'manager accounting', 'emf'];
+            $laporan_servicekendaraan = ['admin', 'general affair', 'manager ga', 'direktur', 'manager accounting', 'emf'];
+            $rekap_badstokga = ['admin', 'general affair', 'manager ga', 'direktur', 'manager accounting', 'emf'];
 
             //Maintenance
 
@@ -805,6 +852,8 @@ class GlobalProvider extends ServiceProvider
                 'ticket_pending' => $ticket_pending,
                 'ticket_pending_approve' => $ticket_pending_approve,
                 'ticket_pending_done' => $ticket_pending_done,
+
+                'jmlpenilaiankar' => $jmlpenilaiankar,
                 //Dashboard
                 'dashboardadmin' => $dashboardadmin,
                 'dashboardkepalapenjualan' => $dashboardkepalapenjualan,

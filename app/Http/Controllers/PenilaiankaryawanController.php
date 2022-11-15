@@ -32,7 +32,10 @@ class PenilaiankaryawanController extends Controller
                 $qkaryawan->whereIn('id_kantor', $list_wilayah);
                 $qkaryawan->where('id_jabatan', 11);
             } else if (Auth::user()->kategori_jabatan == 3) {
-                $qkaryawan->whereIn('hrd_jabatan.id_kategori_jabatan', [8, 7]);
+                $qkaryawan->whereIn('id_kategori_jabatan', [8, 9, 10, 5]);
+                $qkaryawan->where('id_kantor', 'PST');
+            } else if (Auth::user()->kategori_jabatan == 2) {
+                $qkaryawan->whereIn('id_kategori_jabatan', [3, 4]);
             }
         }
         if ($list_dept != NULL) {
@@ -41,7 +44,7 @@ class PenilaiankaryawanController extends Controller
 
         $qkaryawan->where('id_kategori_jabatan', '!=', Auth::user()->kategori_jabatan);
         $karyawan = $qkaryawan->get();
-        $kategori_penilaian = DB::table('hrd_kategoripenilaian')->get();
+
         $query = Penilaiankaryawan::query();
         $query->select('hrd_penilaian.kode_penilaian', 'tanggal', 'hrd_penilaian.nik', 'nama_karyawan', 'hrd_penilaian.periode_kontrak', 'hrd_penilaian.kode_dept', 'nama_dept', 'hrd_penilaian.id_jabatan', 'nama_jabatan', 'kp', 'ka', 'rsm', 'm', 'gm', 'hrd', 'dirut', 'status');
         $query->join('master_karyawan', 'hrd_penilaian.nik', '=', 'master_karyawan.nik');
@@ -84,90 +87,126 @@ class PenilaiankaryawanController extends Controller
                 $whereCabang = "";
             }
         }
+        // if (Auth::user()->level != "admin" and $kat_jab_user != "DIREKTUR" and $kat_jab_user != "MANAGER HRD") {
+        //     $kategori_approval = DB::table('hrd_penilaian_approval')
+        //         ->select('hrd_penilaian_approval.id', 'kategori_jabatan', 'kantor', 'jml')
+        //         ->join('hrd_kategori_jabatan', 'hrd_penilaian_approval.id', '=', 'hrd_kategori_jabatan.id')
+        //         ->leftJoin(
+        //             DB::raw("(
+        //             SELECT id_kategori_jabatan,COUNT(kode_penilaian) as jml FROM hrd_penilaian
+        //             WHERE status IS NULL
+        //             AND id_perusahaan = 'MP'
+        //             AND kode_dept IN (" . $dept . ") " . $whereCabang . "
+        //             GROUP BY id_kategori_jabatan
+        //         ) cekpengajuan"),
+        //             function ($join) {
+        //                 $join->on('hrd_penilaian_approval.id', '=', 'cekpengajuan.id_kategori_jabatan');
+        //             }
+        //         )
+        //         ->where('hrd_penilaian_approval.kantor', 'MP')
+        //         ->whereRaw($field_kategori . "=1")
+        //         ->orderBy('hrd_penilaian_approval.id', 'desc')
+        //         ->get();
+
+        //     $kategori_approval_pcf = DB::table('hrd_penilaian_approval')
+        //         ->select('hrd_penilaian_approval.id', 'kategori_jabatan', 'kantor', 'jml')
+        //         ->join('hrd_kategori_jabatan', 'hrd_penilaian_approval.id', '=', 'hrd_kategori_jabatan.id')
+        //         ->leftJoin(
+        //             DB::raw("(
+        //             SELECT id_kategori_jabatan,COUNT(kode_penilaian) as jml FROM hrd_penilaian WHERE status IS NULL
+        //             AND id_perusahaan = 'PCF'
+        //             AND kode_dept IN (" . $dept . ") " . $whereCabang . "
+        //             GROUP BY id_kategori_jabatan
+        //         ) cekpengajuan"),
+        //             function ($join) {
+        //                 $join->on('hrd_penilaian_approval.id', '=', 'cekpengajuan.id_kategori_jabatan');
+        //             }
+        //         )
+        //         ->where('hrd_penilaian_approval.kantor', 'PCF')
+        //         ->whereRaw($field_kategori . "=1")
+        //         ->orderBy('hrd_penilaian_approval.id', 'desc')
+        //         ->get();
+        // } else {
+        //     $kategori_approval = DB::table('hrd_penilaian_approval')
+        //         ->select('hrd_penilaian_approval.id', 'kategori_jabatan', 'kantor', 'jml')
+        //         ->join('hrd_kategori_jabatan', 'hrd_penilaian_approval.id', '=', 'hrd_kategori_jabatan.id')
+        //         ->leftJoin(
+        //             DB::raw("(
+        //         SELECT id_kategori_jabatan,COUNT(kode_penilaian) as jml FROM hrd_penilaian
+        //         WHERE status IS NULL
+        //         AND id_perusahaan = 'MP'
+        //         GROUP BY id_kategori_jabatan
+        //     ) cekpengajuan"),
+        //             function ($join) {
+        //                 $join->on('hrd_penilaian_approval.id', '=', 'cekpengajuan.id_kategori_jabatan');
+        //             }
+        //         )
+        //         ->where('hrd_penilaian_approval.kantor', 'MP')
+        //         ->orderBy('hrd_penilaian_approval.id', 'desc')
+        //         ->get();
+
+
+        //     $kategori_approval_pcf = DB::table('hrd_penilaian_approval')
+        //         ->select('hrd_penilaian_approval.id', 'kategori_jabatan', 'kantor', 'jml')
+        //         ->join('hrd_kategori_jabatan', 'hrd_penilaian_approval.id', '=', 'hrd_kategori_jabatan.id')
+        //         ->leftJoin(
+        //             DB::raw("(
+        //             SELECT id_kategori_jabatan,COUNT(kode_penilaian) as jml FROM hrd_penilaian
+        //             WHERE status IS NULL AND id_perusahaan = 'PCF'
+        //             GROUP BY id_kategori_jabatan
+        //         ) cekpengajuan"),
+        //             function ($join) {
+        //                 $join->on('hrd_penilaian_approval.id', '=', 'cekpengajuan.id_kategori_jabatan');
+        //             }
+        //         )
+        //         ->where('hrd_penilaian_approval.kantor', 'PCF')
+        //         ->orderBy('hrd_penilaian_approval.id', 'desc')
+        //         ->get();
+        // }
+
+        $approve_jabatan = Auth::user()->approve_jabatan != null ? unserialize(Auth::user()->approve_jabatan) : [];
         if (Auth::user()->level != "admin" and $kat_jab_user != "DIREKTUR" and $kat_jab_user != "MANAGER HRD") {
-            $kategori_approval = DB::table('hrd_penilaian_approval')
-                ->select('hrd_penilaian_approval.id', 'kategori_jabatan', 'kantor', 'jml')
-                ->join('hrd_kategori_jabatan', 'hrd_penilaian_approval.id', '=', 'hrd_kategori_jabatan.id')
+            $kategori_approval = DB::table('hrd_kategori_jabatan')
+                ->select('hrd_kategori_jabatan.id', 'kategori_jabatan', 'jml', 'hrd_kategori_jabatan.id_perusahaan')
                 ->leftJoin(
                     DB::raw("(
-                    SELECT id_kategori_jabatan,COUNT(kode_penilaian) as jml FROM hrd_penilaian
-                    WHERE status IS NULL
-                    AND id_perusahaan = 'MP'
-                    AND kode_dept IN (" . $dept . ") " . $whereCabang . "
-                    GROUP BY id_kategori_jabatan
-                ) cekpengajuan"),
+                        SELECT id_kategori_jabatan,id_perusahaan,COUNT(kode_penilaian) as jml FROM hrd_penilaian
+                        WHERE status IS NULL
+                        AND $field_kategori IS NULL
+                        AND kode_dept IN (" . $dept . ") " . $whereCabang . "
+                        GROUP BY id_kategori_jabatan,id_perusahaan
+                    ) cekpengajuan"),
                     function ($join) {
-                        $join->on('hrd_penilaian_approval.id', '=', 'cekpengajuan.id_kategori_jabatan');
+                        $join->on('hrd_kategori_jabatan.id', '=', 'cekpengajuan.id_kategori_jabatan');
+                        $join->on('hrd_kategori_jabatan.id_perusahaan', '=', 'cekpengajuan.id_perusahaan');
                     }
                 )
-                ->where('hrd_penilaian_approval.kantor', 'MP')
-                ->whereRaw($field_kategori . "=1")
-                ->orderBy('hrd_penilaian_approval.id', 'desc')
-                ->get();
-
-            $kategori_approval_pcf = DB::table('hrd_penilaian_approval')
-                ->select('hrd_penilaian_approval.id', 'kategori_jabatan', 'kantor', 'jml')
-                ->join('hrd_kategori_jabatan', 'hrd_penilaian_approval.id', '=', 'hrd_kategori_jabatan.id')
-                ->leftJoin(
-                    DB::raw("(
-                    SELECT id_kategori_jabatan,COUNT(kode_penilaian) as jml FROM hrd_penilaian WHERE status IS NULL
-                    AND id_perusahaan = 'PCF'
-                    AND kode_dept IN (" . $dept . ") " . $whereCabang . "
-                    GROUP BY id_kategori_jabatan
-                ) cekpengajuan"),
-                    function ($join) {
-                        $join->on('hrd_penilaian_approval.id', '=', 'cekpengajuan.id_kategori_jabatan');
-                    }
-                )
-                ->where('hrd_penilaian_approval.kantor', 'PCF')
-                ->whereRaw($field_kategori . "=1")
-                ->orderBy('hrd_penilaian_approval.id', 'desc')
-                ->get();
+                ->orderBy('urutan')
+                ->whereIn('id', $approve_jabatan)->get();
         } else {
-            $kategori_approval = DB::table('hrd_penilaian_approval')
-                ->select('hrd_penilaian_approval.id', 'kategori_jabatan', 'kantor', 'jml')
-                ->join('hrd_kategori_jabatan', 'hrd_penilaian_approval.id', '=', 'hrd_kategori_jabatan.id')
+            $kategori_approval = DB::table('hrd_kategori_jabatan')
+                ->select('hrd_kategori_jabatan.id', 'kategori_jabatan', 'jml', 'hrd_kategori_jabatan.id_perusahaan')
                 ->leftJoin(
                     DB::raw("(
-                SELECT id_kategori_jabatan,COUNT(kode_penilaian) as jml FROM hrd_penilaian
-                WHERE status IS NULL
-                AND id_perusahaan = 'MP'
-                GROUP BY id_kategori_jabatan
-            ) cekpengajuan"),
+                        SELECT id_kategori_jabatan,id_perusahaan,COUNT(kode_penilaian) as jml FROM hrd_penilaian
+                        WHERE status IS NULL
+                        AND $field_kategori IS NULL
+                        GROUP BY id_kategori_jabatan,id_perusahaan
+                    ) cekpengajuan"),
                     function ($join) {
-                        $join->on('hrd_penilaian_approval.id', '=', 'cekpengajuan.id_kategori_jabatan');
+                        $join->on('hrd_kategori_jabatan.id', '=', 'cekpengajuan.id_kategori_jabatan');
+                        $join->on('hrd_kategori_jabatan.id_perusahaan', '=', 'cekpengajuan.id_perusahaan');
                     }
                 )
-                ->where('hrd_penilaian_approval.kantor', 'MP')
-                ->orderBy('hrd_penilaian_approval.id', 'desc')
-                ->get();
-
-
-            $kategori_approval_pcf = DB::table('hrd_penilaian_approval')
-                ->select('hrd_penilaian_approval.id', 'kategori_jabatan', 'kantor', 'jml')
-                ->join('hrd_kategori_jabatan', 'hrd_penilaian_approval.id', '=', 'hrd_kategori_jabatan.id')
-                ->leftJoin(
-                    DB::raw("(
-                    SELECT id_kategori_jabatan,COUNT(kode_penilaian) as jml FROM hrd_penilaian
-                    WHERE status IS NULL AND id_perusahaan = 'PCF'
-                    GROUP BY id_kategori_jabatan
-                ) cekpengajuan"),
-                    function ($join) {
-                        $join->on('hrd_penilaian_approval.id', '=', 'cekpengajuan.id_kategori_jabatan');
-                    }
-                )
-                ->where('hrd_penilaian_approval.kantor', 'PCF')
-                ->orderBy('hrd_penilaian_approval.id', 'desc')
-                ->get();
+                ->orderBy('urutan')
+                ->whereIn('id', $approve_jabatan)->get();
         }
-
-
 
         $approval = DB::table('hrd_penilaian_approval')->where('id', $kategori_jabatan)->where('kantor', $perusahaan)->first();
         $approve = unserialize($approval->approval);
         $cekindex = array_search(strtolower($kat_jab_user), $approve);
 
-        return view('penilaiankaryawan.index', compact('karyawan', 'kategori_penilaian', 'penilaian', 'kategori_jabatan', 'perusahaan', 'approve', 'kategori_approval', 'field_kategori', 'kat_jab_user', 'cekindex', 'inisial', 'kategori_approval_pcf'));
+        return view('penilaiankaryawan.index', compact('karyawan', 'penilaian', 'kategori_jabatan', 'perusahaan', 'approve', 'kategori_approval', 'field_kategori', 'kat_jab_user', 'cekindex', 'inisial'));
     }
 
     public function create(Request $request)
@@ -416,7 +455,7 @@ class PenilaiankaryawanController extends Controller
             ->join('master_karyawan', 'hrd_penilaian.nik', '=', 'master_karyawan.nik')
             ->join('hrd_jabatan', 'hrd_penilaian.id_jabatan', '=', 'hrd_jabatan.id')
             ->leftjoin('departemen', 'hrd_penilaian.kode_dept', '=', 'departemen.kode_dept')
-            ->where('hrd_penilaian.nik', $nik)
+            ->where('hrd_penilaian.kode_penilaian', $kode_penilaian)
             ->first();
 
         $kantor = $karyawan->id_perusahaan;

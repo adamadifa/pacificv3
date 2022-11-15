@@ -30,13 +30,12 @@
                         <div class="card">
                             <div class="card-content">
                                 <div class="card-body">
-                                    <h4 class="card-title">Kategori MP</h4>
-                                    <p class="card-text">Data Penilaian Karyawan Berdasarkan Kategori Jabatan MP</p>
+                                    <h4 class="card-title">Kategori</h4>
                                 </div>
                                 <ul class="list-group list-group-flush">
                                     @foreach ($kategori_approval as $d)
-                                    <a href="/penilaiankaryawan/{{ $d->id }}/{{ $d->kantor }}/list" style="color:#2c2c2c">
-                                        <li class="list-group-item {{ $kategori_jabatan == $d->id && $perusahaan == $d->kantor ? 'active' : '' }}">
+                                    <a href="/penilaiankaryawan/{{ $d->id }}/{{ $d->id_perusahaan }}/list" style="color:#2c2c2c">
+                                        <li class="list-group-item {{ $kategori_jabatan == $d->id ? 'active' : '' }}">
                                             <span class="badge badge-pill bg-danger float-right">{{ $d->jml }}</span>
                                             {{ $d->kategori_jabatan }}
                                         </li>
@@ -48,30 +47,7 @@
                     </div>
                 </div>
                 @endif
-                @if (count($kategori_approval_pcf) > 0)
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="card-body">
-                                    <h4 class="card-title">Kategori PCF</h4>
-                                    <p class="card-text">Data Penilaian Karyawan Berdasarkan Kategori Jabatan PCF</p>
-                                </div>
-                                <ul class="list-group list-group-flush">
-                                    @foreach ($kategori_approval_pcf as $d)
-                                    <a href="/penilaiankaryawan/{{ $d->id }}/{{ $d->kantor }}/list" style="color:#2c2c2c">
-                                        <li class="list-group-item {{ $kategori_jabatan == $d->id && $perusahaan == $d->kantor ? 'active' : '' }}">
-                                            <span class="badge badge-pill bg-danger float-right">{{ $d->jml }}</span>
-                                            {{ $d->kategori_jabatan }}
-                                        </li>
-                                    </a>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @endif
+
             </div>
             <div class="col-md-10 col-sm-12">
                 <div class="card">
@@ -260,7 +236,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/penilaiankaryawan/create" method="post">
+                <form action="/penilaiankaryawan/create" method="post" id="frmBuatpenilaian">
                     @csrf
                     <div class="row">
                         <div class="col-12">
@@ -310,6 +286,21 @@
                 backdrop: 'static'
                 , keyboard: false
             });
+        });
+
+        $("#frmBuatpenilaian").submit(function() {
+            var dari = $("#dari").val();
+            var sampai = $("#sampai").val();
+            var tanggal = $("#tanggal").val();
+            if (tanggal == "") {
+                alert('Tanggal Harus Diisi');
+                return false;
+            } else if (dari == "" || sampai == "") {
+                alert('Periode Kontrak Harus Diisi');
+                return false;
+            } else {
+                return true;
+            }
         });
         $('.delete-confirm').click(function(event) {
             var form = $(this).closest("form");

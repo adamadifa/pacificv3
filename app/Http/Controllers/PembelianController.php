@@ -737,13 +737,15 @@ class PembelianController extends Controller
     public function updatebarang(Request $request)
     {
         $nobukti_pembelian = $request->nobukti_pembelian;
+        $kode_barang_old = $request->kode_barang_old;
+        $kode_barang = $request->kode_barang;
         $pembelian = DB::table('pembelian')->where('nobukti_pembelian', $nobukti_pembelian)->first();
         $tgl_pembelian = $pembelian->tgl_pembelian;
         $tanggal   = explode("-", $tgl_pembelian);
         $bulan = $tanggal[1];
         $tahun = $tanggal[0];
         $thn = substr($tahun, 2, 2);
-        $kode_barang = $request->kode_barang;
+
         $keterangan = $request->keterangan;
         $qty = $request->qty;
         $qty = !empty($qty) ? str_replace(".", "", $qty) : 0;
