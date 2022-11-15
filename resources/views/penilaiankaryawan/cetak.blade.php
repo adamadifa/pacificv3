@@ -67,7 +67,11 @@
         <table border=0>
             <tr>
                 <td style="width: 10%">
+                    @if ($penilaian->id_perusahaan=="MP")
                     <img src="{{ asset('app-assets/images/logo/mp.png') }}" width="80" height="80" alt="">
+                    @else
+                    <img src="{{ asset('app-assets/images/logo/pcf.png') }}" width="80" height="80" alt="">
+                    @endif
                 </td>
                 <td style="font-weight: bold; text-align:center; width:55%">
                     <h4>FORMULIR EVALUASI KARYAWAN MASA PERCOBAAN DAN KONTRAK</h4>

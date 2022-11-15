@@ -5,6 +5,18 @@
             <x-inputtext label="Kode Barang" field="kode_barang" icon="feather icon-credit-card" value="{{ $detailpembelian->kode_barang }}" readonly />
         </div>
     </div>
+    {{-- <input type="hidden" name="kode_barang" value="{{ $detailpembelian->kode_barang }}">
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group">
+                <select name="kode_barang_new" id="kode_barang_2" class="form-control">
+                    @foreach ($barang as $d)
+                    <option {{ $d->kode_barang == $detailpembelian->kode_barang ?  'selected' : '' }} value="{{ $d->kode_barang }}">{{ $d->kode_barang }} - {{ $d->nama_barang }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    </div> --}}
     <div class="row">
         <div class="col-12">
             <x-inputtext label="Nama Barang" field="nama_barang" icon="feather icon-box" value="{!! $detailpembelian->nama_barang !!}" readonly />
@@ -296,6 +308,7 @@
 </script>
 <script>
     $(function() {
+        $("#kode_barang_2").selectize();
         $('.aggrement').change(function() {
             if (this.checked) {
                 $("#tombolsimpan").show();

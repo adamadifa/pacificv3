@@ -969,10 +969,39 @@
                 <ul class="menu-content">
                     @if (in_array($level, $penilaian_karyawan) || in_array($kat_jabatan, $penilaian_karyawan))
                     <li class="{{ request()->is(['penilaiankaryawan', 'penilaiankaryawan/*']) ? 'active' : '' }}">
-                        <a href="/penilaiankaryawan/10/MP/list">
+                        @if (Auth::user()->level=="kepala admin")
+                        <a href="/penilaiankaryawan/12/MP/list">
                             <i class="feather icon-edit"></i>
                             <span class="menu-item" data-i18n="Second Level">Penilaian karyawan</span>
                         </a>
+                        @elseif(Auth::user()->level=="kepala penjualan")
+                        <a href="/penilaiankaryawan/14/PCF/list">
+                            <i class="feather icon-edit"></i>
+                            <span class="menu-item" data-i18n="Second Level">Penilaian karyawan</span>
+                        </a>
+                        @elseif(Auth::user()->level=="rsm")
+                        <a href="/penilaiankaryawan/6/PCF/list">
+                            <i class="feather icon-edit"></i>
+                            <span class="menu-item" data-i18n="Second Level">Penilaian karyawan</span>
+                        </a>
+                        @elseif(Auth::user()->level=="manager marketing")
+                        <a href="/penilaiankaryawan/4/PCF/list">
+                            <i class="feather icon-edit"></i>
+                            <span class="menu-item" data-i18n="Second Level">Penilaian karyawan</span>
+                        </a>
+                        @elseif(Auth::user()->level=="manager accounting" && Auth::user()->kategori_jabatan == 3 ||Auth::user()->level=="kepala gudang" && Auth::user()->kategori_jabatan == 3 || Auth::user()->level=="manager ga" && Auth::user()->kategori_jabatan == 3 || Auth::user()->level=="manager produksi" && Auth::user()->kategori_jabatan == 3 || Auth::user()->level=="manager pembelian" && Auth::user()->kategori_jabatan == 3)
+                        <a href="/penilaiankaryawan/5/MP/list">
+                            <i class="feather icon-edit"></i>
+                            <span class="menu-item" data-i18n="Second Level">Penilaian karyawan</span>
+                        </a>
+                        @elseif(Auth::user()->level=="manager accounting" && Auth::user()->kategori_jabatan == 2 || Auth::user()->level=="manager hrd" || Auth::user()->level=="direktur" || Auth::user()->level=="emf"
+                        )
+                        <a href="/penilaiankaryawan/3/MP/list">
+                            <i class="feather icon-edit"></i>
+                            <span class="menu-item" data-i18n="Second Level">Penilaian karyawan</span>
+                        </a>
+                        @endif
+
                     </li>
                     @endif
                 </ul>
