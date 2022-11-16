@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Redirect;
 
 class PenilaiankaryawanController extends Controller
 {
-    public function index($kategori_jabatan, $perusahaan)
+    public function index($kategori_jabatan, $perusahaan, Request $request)
     {
 
         $list_dept = Auth::user()->kode_dept != null ?  unserialize(Auth::user()->kode_dept) : NULL;
@@ -45,37 +45,12 @@ class PenilaiankaryawanController extends Controller
         $qkaryawan->where('id_kategori_jabatan', '!=', Auth::user()->kategori_jabatan);
         $karyawan = $qkaryawan->get();
 
-        $query = Penilaiankaryawan::query();
-        $query->select('hrd_penilaian.kode_penilaian', 'tanggal', 'hrd_penilaian.nik', 'nama_karyawan', 'hrd_penilaian.periode_kontrak', 'hrd_penilaian.kode_dept', 'nama_dept', 'hrd_penilaian.id_jabatan', 'nama_jabatan', 'kp', 'ka', 'rsm', 'm', 'gm', 'hrd', 'dirut', 'status');
-        $query->join('master_karyawan', 'hrd_penilaian.nik', '=', 'master_karyawan.nik');
-        $query->join('departemen', 'hrd_penilaian.kode_dept', '=', 'departemen.kode_dept');
-        $query->join('hrd_jabatan', 'hrd_penilaian.id_jabatan', '=', 'hrd_jabatan.id');
-        $query->where('hrd_penilaian.id_kategori_jabatan', $kategori_jabatan);
-        $query->where('hrd_penilaian.id_perusahaan', $perusahaan);
-
-        if ($list_dept != NULL) {
-            $query->whereIn('hrd_penilaian.kode_dept', $list_dept);
-        }
-
-        if (Auth::user()->kode_cabang != 'PCF') {
-            $query->where('hrd_penilaian.id_kantor', Auth::user()->kode_cabang);
-        } else {
-            if (Auth::user()->level == "rsm") {
-                $query->whereIn('hrd_penilaian.id_kantor', $list_wilayah);
-            }
-        }
 
 
 
-
-        $penilaian = $query->get();
         $kategori_jabatan_user = DB::table('hrd_kategori_jabatan')->where('id', Auth::user()->kategori_jabatan)->first();
         $kat_jab_user =  $kategori_jabatan_user != null ? $kategori_jabatan_user->kategori_jabatan : '';
         $inisial = ["" => "", "kepala admin" => "KA", "kepala penjualan" => "KP", "rsm" => "RSM", "manager" => "M", "general manager" => "GM", "manager hrd" => "HRD", "direktur" => "DIRUT"];
-
-
-
-
         $field_kategori = strtolower($inisial[strtolower($kat_jab_user)]);
 
         if (Auth::user()->kode_cabang != "PCF") {
@@ -205,7 +180,41 @@ class PenilaiankaryawanController extends Controller
         $approval = DB::table('hrd_penilaian_approval')->where('id', $kategori_jabatan)->where('kantor', $perusahaan)->first();
         $approve = unserialize($approval->approval);
         $cekindex = array_search(strtolower($kat_jab_user), $approve);
+        $lastindex = $cekindex != 0 ? $approve[$cekindex - 1] : $approve[$cekindex];
+        $lastfield = strtolower($inisial[$lastindex]);
 
+        $query = Penilaiankaryawan::query();
+        $query->select('hrd_penilaian.kode_penilaian', 'tanggal', 'hrd_penilaian.nik', 'nama_karyawan', 'hrd_penilaian.periode_kontrak', 'hrd_penilaian.kode_dept', 'nama_dept', 'hrd_penilaian.id_jabatan', 'nama_jabatan', 'kp', 'ka', 'rsm', 'm', 'gm', 'hrd', 'dirut', 'status');
+        $query->join('master_karyawan', 'hrd_penilaian.nik', '=', 'master_karyawan.nik');
+        $query->join('departemen', 'hrd_penilaian.kode_dept', '=', 'departemen.kode_dept');
+        $query->join('hrd_jabatan', 'hrd_penilaian.id_jabatan', '=', 'hrd_jabatan.id');
+        $query->where('hrd_penilaian.id_kategori_jabatan', $kategori_jabatan);
+        $query->where('hrd_penilaian.id_perusahaan', $perusahaan);
+        if ($request->filter == 1) {
+            $query->whereNotNull($lastfield);
+            $query->whereNull($field_kategori);
+        } else  if ($request->filter == 2) {
+            $query->whereNotNull($field_kategori);
+        } else  if ($request->filter == 3) {
+            $query->whereNull($lastfield);
+        }
+        if ($list_dept != NULL) {
+            $query->whereIn('hrd_penilaian.kode_dept', $list_dept);
+        }
+
+        if (Auth::user()->kode_cabang != 'PCF') {
+            $query->where('hrd_penilaian.id_kantor', Auth::user()->kode_cabang);
+        } else {
+            if (Auth::user()->level == "rsm") {
+                $query->whereIn('hrd_penilaian.id_kantor', $list_wilayah);
+            }
+        }
+
+        if (!empty($request->nama_karyawan)) {
+            $query->where('nama_karyawan', 'like', '%' . $request->nama_karyawan . '%');
+        }
+        $penilaian = $query->paginate(15);
+        $penilaian->appends($request->all());
         return view('penilaiankaryawan.index', compact('karyawan', 'penilaian', 'kategori_jabatan', 'perusahaan', 'approve', 'kategori_approval', 'field_kategori', 'kat_jab_user', 'cekindex', 'inisial'));
     }
 

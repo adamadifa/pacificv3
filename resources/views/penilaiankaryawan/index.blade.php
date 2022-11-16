@@ -55,12 +55,19 @@
                         <a href="#" class="btn btn-primary" id="buatpenilaian"><i class="fa fa-plus mr-1"></i> Buat Penilaian</a>
                     </div>
                     <div class="card-body">
-                        <form action="/penilaiankaryawan">
+                        <form action="{{ url()->current() }}">
                             <div class="row">
                                 <div class="col-lg-4 col-sm-12">
-                                    <x-inputtext label="Nama Karyawan" field="nama_karyawan" icon="feather icon-user" value="{{ Request('nama') }}" />
+                                    <x-inputtext label="Nama Karyawan" field="nama_karyawan" icon="feather icon-user" value="{{ Request('nama_karyawan') }}" />
                                 </div>
-
+                                <div class="col-lg-3 col-sm-12">
+                                    <select name="filter" id="filter" class="form-control">
+                                        <option value="">Filter</option>
+                                        <option value="1" {{ Request('filter') ==1 ? 'selected' : '' }}>Yang harus Di Setujui</option>
+                                        <option value="2" {{ Request('filter') ==2 ? 'selected' : '' }}>Yang Sudah Di Setujui</option>
+                                        <option value="3" {{ Request('filter') ==3 ? 'selected' : '' }}>Waiting</option>
+                                    </select>
+                                </div>
                                 <div class="col-lg-4 col-sm-12">
                                     <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search mr-2"></i> Search</button>
                                 </div>
