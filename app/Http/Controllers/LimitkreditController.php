@@ -711,11 +711,11 @@ class LimitkreditController extends Controller
                 ->where('no_pengajuan', $no_pengajuan)
                 ->update($datastatus);
 
-            if (in_array($kode_cabang, $wilayah_timur) && $jumlah > 5000000) {
-                DB::table('pengajuan_limitkredit_v3')
-                    ->where('no_pengajuan', $no_pengajuan)
-                    ->update($datastatus2);
-            }
+            // if (in_array($kode_cabang, $wilayah_timur) && $jumlah > 5000000) {
+            //     DB::table('pengajuan_limitkredit_v3')
+            //         ->where('no_pengajuan', $no_pengajuan)
+            //         ->update($datastatus2);
+            // }
 
             //Update Pelanggan
             if ($status == 1) {
