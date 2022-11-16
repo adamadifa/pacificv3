@@ -64,6 +64,7 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        {{ $badstok->links('vendor.pagination.vuexy') }}
                         {{-- {{ $badstok->links('vendor.pagination.vuexy') }} --}}
                     </div>
 
