@@ -100,7 +100,7 @@ class DashboardController extends Controller
                 $query->whereIn('pelanggan.kode_cabang', $wilayah_timur);
             }
             $jmlpengajuan = $query->count();
-
+            //dd($id_user);
             //dd($jmlpengajuan);
         } else if ($level == "manager marketing") {
             $jmlpengajuan = DB::table('pengajuan_limitkredit_v3')
@@ -329,6 +329,8 @@ class DashboardController extends Controller
         }
 
 
+
+
         $qpengajuan = Limitkredit::query();
         $qpengajuan->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
         $qpengajuan->whereIn('no_pengajuan', $no_pengajuan);
@@ -341,6 +343,8 @@ class DashboardController extends Controller
             $qpengajuan->whereNull('kacab');
             $qpengajuan->where('status', 0);
         }
+        $qpengajuan->where('jumlah', '>', 2000000);
+
         $jmlpengajuan = $qpengajuan->count();
 
         $dari = date("Y") . "-" . date("m") . "-01";

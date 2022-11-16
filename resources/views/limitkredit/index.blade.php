@@ -172,6 +172,7 @@
                                 <td>
                                     <span class="badge bg-{{ $bg }}">{{ $rekomendasi }}</span>
                                 </td>
+                                <!-- Kacab -->
                                 <td>
                                     @if ($d->jumlah > 2000000)
                                     @if (empty($d->kacab))
@@ -189,8 +190,9 @@
                                     @endif
                                     @endif
                                 </td>
+                                <!-- RSM -->
                                 <td>
-                                    @if (in_array($d->kode_cabang,$wilayah_barat))
+
                                     @if ($d->jumlah > 5000000)
                                     @if (empty($d->rsm))
                                     <i class="fa fa-history warning"></i>
@@ -206,26 +208,9 @@
                                     <i class="fa fa-close danger"></i>
                                     @endif
                                     @endif
-                                    @endif
+
                                 </td>
                                 <td>
-                                    @if (in_array($d->kode_cabang,$wilayah_timur))
-                                    @if ($d->jumlah > 5000000)
-                                    @if (empty($d->mm))
-                                    <i class="fa fa-history warning"></i>
-                                    @elseif(
-                                    !empty($d->mm) && !empty($d->dirut) && $d->status == 2
-                                    || !empty($d->mm) && empty($d->dirut) && $d->status == 1
-                                    || !empty($d->mm) && empty($d->dirut) && $d->status == 0
-                                    || !empty($d->mm) && !empty($d->dirut) && $d->status == 0
-                                    || !empty($d->mm) && !empty($d->dirut) && $d->status == 1
-                                    )
-                                    <i class="fa fa-check success"></i>
-                                    @else
-                                    <i class="fa fa-close danger"></i>
-                                    @endif
-                                    @endif
-                                    @else
                                     @if ($d->jumlah > 10000000)
                                     @if (empty($d->mm))
                                     <i class="fa fa-history warning"></i>
@@ -239,7 +224,6 @@
                                     <i class="fa fa-check success"></i>
                                     @else
                                     <i class="fa fa-close danger"></i>
-                                    @endif
                                     @endif
                                     @endif
 
