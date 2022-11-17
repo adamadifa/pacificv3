@@ -412,6 +412,14 @@
                                 </a>
                             </li>
                             @endif
+                            @if (in_array($level, $fpb_menu))
+                            <li class="{{ request()->is(['fpb', 'fpb/*']) ? 'active' : '' }}">
+                                <a href="/fpb">
+                                    <i class="feather icon-clipboard"></i>
+                                    <span class="menu-item">FPB</span>
+                                </a>
+                            </li>
+                            @endif
                             @if (in_array($level, $dpb_view))
                             <li class="{{ request()->is(['dpb', 'dpb/*']) ? 'active' : '' }}">
                                 <a href="/dpb">
