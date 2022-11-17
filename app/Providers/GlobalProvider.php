@@ -671,6 +671,8 @@ class GlobalProvider extends ServiceProvider
             $saldoawal_gs_view = ['admin', 'admin gudang', 'kepala admin', 'admin pusat', 'admin gudang cabang', 'admin garut', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'admin gudang cabang dan marketing', 'audit', 'admin pajak 2'];
             $saldoawal_bs_view = ['admin', 'admin gudang', 'kepala admin', 'admin pusat', 'admin gudang cabang', 'admin garut', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'admin gudang cabang dan marketing', 'audit', 'admin pajak 2'];
             $dpb_view = ['admin', 'admin gudang', 'kepala admin', 'admin pusat', 'admin gudang cabang', 'admin garut', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'admin gudang cabang dan marketing', 'audit', 'admin pajak 2'];
+
+            $fpb_menu = ['admin', 'admin gudang', 'kepala admin', 'admin pusat', 'admin gudang cabang', 'admin garut', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'admin gudang cabang dan marketing', 'audit', 'admin pajak 2'];
             $mutasi_barang_cab_view = ['admin', 'admin gudang', 'kepala admin', 'admin pusat', 'admin gudang cabang', 'admin garut', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'admin gudang cabang dan marketing', 'audit', 'admin pajak 2'];
             $suratjalancab_view = ['admin', 'admin gudang', 'kepala admin', 'admin pusat', 'admin gudang cabang', 'admin garut', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'admin gudang cabang dan marketing', 'audit', 'admin pajak 2'];
 
@@ -1105,6 +1107,7 @@ class GlobalProvider extends ServiceProvider
                 'saldoawal_gs_view' => $saldoawal_gs_view,
                 'saldoawal_bs_view' => $saldoawal_bs_view,
                 'dpb_view' => $dpb_view,
+                'fpb_menu' => $fpb_menu,
                 'suratjalancab_view' => $suratjalancab_view,
                 'mutasi_barang_cab_view' => $mutasi_barang_cab_view,
 

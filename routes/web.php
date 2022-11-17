@@ -17,6 +17,7 @@ use App\Http\Controllers\DaftarController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DpbController;
 use App\Http\Controllers\DriverhelperController;
+use App\Http\Controllers\FpbController;
 use App\Http\Controllers\FsthpController;
 use App\Http\Controllers\GiroController;
 use App\Http\Controllers\GudangController;
@@ -566,6 +567,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/dpb/{no_dpb}/update', [DpbController::class, 'update']);
     Route::post('/dpb/showdpbmutasi', [DpbController::class, 'showdpbmutasi']);
 
+
+    //FPB
+    Route::get('/fpb', [FpbController::class, 'index']);
+    Route::get('/fpb/create', [FpbController::class, 'create']);
+    Route::post('/fpb/store', [FpbController::class, 'store']);
     //Surat Jalan Cabang
     Route::get('/suratjalancab', [SuratjalanController::class, 'index']);
     Route::get('/suratjalan/{no_mutasi_gudang}/prosescabang', [SuratjalanController::class, 'prosescabang']);
