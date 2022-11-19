@@ -7,6 +7,7 @@ use App\Models\Detailfpb;
 use App\Models\Fpb;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
@@ -131,7 +132,7 @@ class FpbController extends Controller
 
             // $jmlpengambilan = round($jmlpengambilan, 3);
             if (!empty($jmlpcs)) {
-                $detail_dpb[]   = [
+                $detail_fpb[]   = [
                     'no_fpb' => $no_fpb,
                     'kode_produk' => $kode_produk[$i],
                     'jml_permintaan' => $jmlpcs
@@ -145,7 +146,7 @@ class FpbController extends Controller
             DB::beginTransaction();
             try {
                 DB::table('fpb')->insert($data);
-                $chunks = array_chunk($detail_dpb, 5);
+                $chunks = array_chunk($detail_fpb, 5);
                 foreach ($chunks as $chunk) {
                     Detailfpb::insert($chunk);
                 }
@@ -157,5 +158,43 @@ class FpbController extends Controller
                 return Redirect::back()->with(['warning' => 'Data Gagal Disimpan, Hubungi Tim IT']);
             }
         }
+    }
+
+
+    public function edit($no_fpb)
+    {
+        $no_fpb = Crypt::decrypt($no_fpb);
+        if ($this->cabang == "PCF") {
+            $cabang = DB::table('cabang')->get();
+        } else {
+            $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
+        }
+        $fpb = DB::table('fpb')->where('no_fpb', $no_fpb)->first();
+        $produk = DB::table('master_barang')
+            ->select(
+                'master_barang.kode_produk',
+                'nama_barang',
+                'isipcsdus',
+                'isipack',
+                'isipcs',
+                'satuan',
+                'jml_permintaan',
+            )
+            ->leftJoin(
+                DB::raw("(
+                SELECT
+                    kode_produk,
+                    jml_permintaan
+                FROM
+                    fpb_detail
+                WHERE no_fpb ='$no_fpb'
+            ) detailfpb"),
+                function ($join) {
+                    $join->on('master_barang.kode_produk', '=', 'detailfpb.kode_produk');
+                }
+            )
+            ->where('master_barang.status', 1)
+            ->get();
+        return view('fpb.edit', compact('cabang', 'produk', 'fpb'));
     }
 }

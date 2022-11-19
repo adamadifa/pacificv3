@@ -39,7 +39,7 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-4 col-sm-12">
-                                <x-inputtext label="No. FPB" field="no_fpb" icon="fa fa-barcode" value="{{ Request('no_dpb') }}" />
+                                <x-inputtext label="No. FPB" field="no_fpb" icon="fa fa-barcode" value="{{ Request('no_fpb') }}" />
                             </div>
                             <div class="col-lg-4 col-sm-12">
                                 <div class="form-group  ">
@@ -89,7 +89,33 @@
                                 </tr>
                             </thead>
                             <tbody>
-
+                                @foreach ($fpb as $d)
+                                <tr>
+                                    <td>{{ $d->no_fpb }}</td>
+                                    <td>{{ date("d-m-Y",strtotime($d->tgl_permintaan)) }}</td>
+                                    <td>{{ $d->nama_karyawan }}</td>
+                                    <td>{{ $d->kode_cabang }}</td>
+                                    <td>{{ $d->tujuan }}</td>
+                                    <td>{{ $d->no_kendaraan }}</td>
+                                    <td>{{ $d->nama_driver }}</td>
+                                    <td>{{ $d->nama_helper_1 }} {{ !empty($d->jml_helper) ? '('. ROUND($d->jml_helper,2).')' : '' }}</td>
+                                    <td>{{ $d->nama_helper_2 }} {{ !empty($d->jml_helper_2) ? '('. ROUND($d->jml_helper_2,2).')' : '' }}</td>
+                                    <td>{{ $d->nama_helper_3 }} {{ !empty($d->jml_helper_3) ? '('. ROUND($d->jml_helper_3,2).')' : '' }}</td>
+                                    <td>
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <a class="ml-1 edit" no_fpb="{{ Crypt::encrypt($d->no_fpb) }}" href="#"><i class="feather icon-edit success"></i></a>
+                                            <a class="ml-1 detail" href="#" no_fpb="{{ Crypt::encrypt($d->no_fpb) }}"><i class=" feather icon-file-text info"></i></a>
+                                            <form method="POST" class="deleteform" action="/dpb/{{Crypt::encrypt($d->no_fpb)}}/delete">
+                                                @csrf
+                                                @method('DELETE')
+                                                <a href="#" tanggal="{{ $d->tgl_permintaan }}" class="delete-confirm ml-1">
+                                                    <i class="feather icon-trash danger"></i>
+                                                </a>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
 
                             </tbody>
                         </table>
@@ -136,7 +162,7 @@
     </div>
 </div>
 <div class="modal fade text-left" id="mdledit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel18">Update FPB</h4>
@@ -180,9 +206,9 @@
         });
 
         $(".detail").click(function(e) {
-            var no_dpb = $(this).attr("no_dpb");
+            var no_fpb = $(this).attr("no_fpb");
             e.preventDefault();
-            $("#loaddetail").load("/dpb/" + no_dpb + "/show");
+            $("#loaddetail").load("/dpb/" + no_fpb + "/show");
             $('#mdldetail').modal({
                 backdrop: 'static'
                 , keyboard: false
@@ -201,8 +227,8 @@
 
         $(".edit").click(function(e) {
             e.preventDefault();
-            var no_dpb = $(this).attr("no_dpb");
-            $("#loadedit").load("/dpb/" + no_dpb + "/edit");
+            var no_fpb = $(this).attr("no_fpb");
+            $("#loadedit").load("/fpb/" + no_fpb + "/edit");
             $('#mdledit').modal({
                 backdrop: 'static'
                 , keyboard: false
