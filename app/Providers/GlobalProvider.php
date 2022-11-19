@@ -257,8 +257,7 @@ class GlobalProvider extends ServiceProvider
             ];
             $kendaraan_tambah = ['admin', 'general affair', 'manager ga'];
             $kendaraan_edit = [
-                'admin', 'admin penjualan', 'audit', 'kepala penjualan', 'kepala admin', 'admin pusat',
-                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'admin garut', 'general affair', 'manager ga'
+                'admin', 'manager ga', 'general affair'
             ];
             $kendaraan_hapus = ['admin', 'general affair', 'manager ga'];
 
