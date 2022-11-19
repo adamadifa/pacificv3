@@ -572,6 +572,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/fpb', [FpbController::class, 'index']);
     Route::get('/fpb/create', [FpbController::class, 'create']);
     Route::post('/fpb/store', [FpbController::class, 'store']);
+    Route::get('/fpb/{no_fpb}/edit', [FpbController::class, 'edit']);
     //Surat Jalan Cabang
     Route::get('/suratjalancab', [SuratjalanController::class, 'index']);
     Route::get('/suratjalan/{no_mutasi_gudang}/prosescabang', [SuratjalanController::class, 'prosescabang']);

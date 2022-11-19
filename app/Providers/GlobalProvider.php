@@ -291,12 +291,12 @@ class GlobalProvider extends ServiceProvider
             $permintaanpengiriman_proses = ['admin', 'kepala gudang', 'admin gudang pusat'];
             $permintaanpengiriman_gj = ['admin', 'kepala gudang', 'admin gudang pusat'];
             //----------------------------Target Komisi--------------------------------
-            $komisi = ['admin', 'kepala penjualan', 'kepala admin', 'admin pusat', 'manager marketing', 'rsm', 'general manager', 'direktur', 'manager accounting', 'spv accounting'];
-            $targetkomisi = ['admin', 'kepala penjualan', 'kepala admin', 'admin pusat', 'manager marketing', 'rsm', 'general manager', 'direktur', 'manager accounting', 'spv accounting'];
-            $targetkomisiinput = ['admin', 'kepala penjualan', 'kepala admin', 'admin pusat'];
+            $komisi = ['admin', 'kepala penjualan', 'kepala admin', 'admin pusat', 'manager marketing', 'rsm', 'general manager', 'direktur', 'manager accounting', 'spv accounting', 'admin pajak 2'];
+            $targetkomisi = ['admin', 'kepala penjualan', 'kepala admin', 'admin pusat', 'manager marketing', 'rsm', 'general manager', 'direktur', 'manager accounting', 'spv accounting', 'admin pajak 2'];
+            $targetkomisiinput = ['admin', 'kepala penjualan', 'kepala admin', 'admin pusat', 'admin pajak 2'];
             $generatecashin = ['admin'];
-            $ratiokomisi = ['admin', 'kepala admin', 'admin pusat', 'kepala penjualan'];
-            $laporan_komisi = ['admin', 'direktur', 'kepala admin', 'admin pusat', 'manager marketing', 'rsm', 'general manager', 'manager accounting', 'spv accounting', 'kepala penjualan'];
+            $ratiokomisi = ['admin', 'kepala admin', 'admin pusat', 'kepala penjualan', 'admin pajak 2'];
+            $laporan_komisi = ['admin', 'direktur', 'kepala admin', 'admin pusat', 'manager marketing', 'rsm', 'general manager', 'manager accounting', 'spv accounting', 'kepala penjualan', 'admin pajak 2'];
             //-----------------------------Penjualan-------------------------------------------
             $penjualan_menu = [
                 'admin', 'admin penjualan', 'audit',
@@ -306,7 +306,7 @@ class GlobalProvider extends ServiceProvider
             ];
             $penjualan_keuangan = [
                 'admin', 'admin penjualan', 'audit', 'kepala admin', 'admin pusat', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3',
-                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'audit'
+                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'audit', 'admin pajak 2'
             ];
             $penjualan_input = [
                 'admin', 'admin penjualan', 'audit', 'kepala admin', 'admin pusat',
@@ -412,12 +412,12 @@ class GlobalProvider extends ServiceProvider
                 'kepala penjualan', 'admin persediaan dan kasir', 'admin penjualan dan kasir', 'manager marketing', 'rsm', 'audit', 'admin pajak 2'
             ];
             //Giro
-            $giro_view = ['admin', 'admin penjualan', 'audit', 'kepala admin', 'admin pusat', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'audit'];
+            $giro_view = ['admin', 'admin penjualan', 'audit', 'kepala admin', 'admin pusat', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'audit', 'admin pajak 2'];
             $giro_approved = ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'manager keuangan'];
-            $giro_hapus = ['admin', 'admin penjualan', 'audit', 'kepala admin'];
+            $giro_hapus = ['admin', 'admin penjualan', 'audit', 'kepala admin', 'admin pajak 2'];
 
             //Transfer
-            $transfer_view = ['admin', 'admin penjualan', 'audit', 'kepala admin', 'admin pusat', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'audit'];
+            $transfer_view = ['admin', 'admin penjualan', 'audit', 'kepala admin', 'admin pusat', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'audit', 'admin pajak 2'];
             $transfer_approved =  ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'manager keuangan'];
 
             //Kas Kecil

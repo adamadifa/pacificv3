@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Detailfpb extends Model
 {
     use HasFactory;
-    protected $table = 'detail_fpb';
+    protected $table = 'fpb_detail';
     protected $guarded = [];
 }
