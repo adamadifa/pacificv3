@@ -59,9 +59,6 @@ class KendaraanController extends Controller
         //dd($request);
         $request->validate([
             'no_polisi' => 'required',
-            'tipe_kendaraan' => 'required',
-            'tipe' => 'required',
-            'tahun_pembuatan' => 'required',
             'kode_cabang' => 'required'
         ]);
 
