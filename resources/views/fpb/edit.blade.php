@@ -138,7 +138,15 @@
             </table>
         </div>
     </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group">
+                <button type="submit" name="submit" class="btn btn-primary btn-block"><i class="fa fa-send mr-1"></i>Submit</button>
+            </div>
+        </div>
+    </div>
 </form>
+<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
 <script>
     $(function() {
         var kode_cabang = $("#frmfpb").find("#kode_cabang").val();
@@ -266,6 +274,89 @@
                 }
             });
         }
+
+
+        $("#frmfpb").find("#kode_cabang").change(function() {
+            var kode_cabang = $(this).val();
+            loadsalesmancabang(kode_cabang);
+            loadkendaraan(kode_cabang);
+            loaddriver(kode_cabang);
+            loadhelper1(kode_cabang);
+            loadhelper2(kode_cabang);
+            loadhelper3(kode_cabang);
+        });
+
+
+        $("#frmfpb").submit(function() {
+            var no_fpb = $("#frmfpb").find("#no_fpb").val();
+            var kode_cabang = $("#frmfpb").find("#kode_cabang").val();
+            var id_karyawan = $("#frmfpb").find("#id_karyawan").val();
+            var no_polisi = $("#no_polisi").val();
+            var tgl_permintaan = $("#tgl_permintaan").val();
+            var tujuan = $("#tujuan").val();
+            if (no_fpb == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'No. FPB Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#frmfpb").find("#no_fpb").focus();
+                });
+
+                return false;
+            } else if (kode_cabang == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Cabang Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#frmfpb").find("#kode_cabang").focus();
+                });
+                return false;
+            } else if (id_karyawan == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Salesman Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#frmfpb").find("#id_karyawan").focus();
+                });
+                return false;
+            } else if (no_polisi == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'No. Kendaraan Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#no_polisi").focus();
+                });
+                return false;
+            } else if (tujuan == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Tujuan Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#tujuan").focus();
+                });
+                return false;
+            } else if (tgl_permintaan == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Tanggal Permintaan Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#tgl_permintaan").focus();
+                });
+                return false;
+            }
+        });
     });
 
 </script>

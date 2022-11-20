@@ -197,4 +197,125 @@ class FpbController extends Controller
             ->get();
         return view('fpb.edit', compact('cabang', 'produk', 'fpb'));
     }
+
+
+    public function update($no_fpb, Request $request)
+    {
+        $no_fpb_old = Crypt::decrypt($no_fpb);
+        $no_fpb = $request->no_fpb;
+        $kode_cabang = $request->kode_cabang;
+        $id_karyawan = $request->id_karyawan;
+        $no_polisi = $request->no_polisi;
+        $tujuan = $request->tujuan;
+        $id_driver = $request->id_driver;
+        $id_helper_1 = $request->id_helper_1;
+        $id_helper_2 = $request->id_helper_2;
+        $id_helper_3 = $request->id_helper_3;
+        $tgl_permintaan = $request->tgl_permintaan;
+
+
+        $kode_produk = $request->kode_produk;
+        $jmldus = $request->jmldus;
+        $jmlpack = $request->jmlpack;
+        $jmlpcs = $request->jmlpcs;
+        $isipcsdus = $request->isipcsdus;
+        $isipcs = $request->isipcs;
+
+        $data = [
+            'no_fpb' => $no_fpb,
+            'id_karyawan' => $id_karyawan,
+            'kode_cabang' => $kode_cabang,
+            'tujuan' => $tujuan,
+            'no_kendaraan' => $no_polisi,
+            'tgl_permintaan' => $tgl_permintaan,
+            'id_driver' => $id_driver,
+            'id_helper' => $id_helper_1,
+            'id_helper_2' => $id_helper_2,
+            'id_helper_3' => $id_helper_3
+        ];
+
+
+        for ($i = 0; $i < count($kode_produk); $i++) {
+            $jml_dus = !empty($jmldus[$i]) ? $jmldus[$i] : 0;
+            $jml_pack = !empty($jmlpack[$i]) ? $jmlpack[$i] : 0;
+            $jml_pcs = !empty($jmlpcs[$i]) ? $jmlpcs[$i] : 0;
+
+            $jmlpcs = ($jml_dus * $isipcsdus[$i]) + ($jml_pack * $isipcs[$i]) + $jml_pcs;
+
+            // if (!empty($jmlpcsambil)) {
+            //     $jmlpengambilan = $jmlpcsambil / $isipcsdus[$i];
+            // } else {
+            //     $jmlpengambilan = 0;
+            // }
+
+            // $jmlpengambilan = round($jmlpengambilan, 3);
+            if (!empty($jmlpcs)) {
+                $detail_fpb[]   = [
+                    'no_fpb' => $no_fpb,
+                    'kode_produk' => $kode_produk[$i],
+                    'jml_permintaan' => $jmlpcs
+                ];
+            }
+        }
+
+
+
+
+        DB::beginTransaction();
+        try {
+            DB::table('fpb')->where('no_fpb', $no_fpb_old)->update($data);
+            DB::table('fpb_detail')->where('no_fpb', $no_fpb_old)->delete();
+            $chunks = array_chunk($detail_fpb, 5);
+            foreach ($chunks as $chunk) {
+                Detailfpb::insert($chunk);
+            }
+            DB::commit();
+            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+        } catch (\Exception $e) {
+            //dd($e);
+            DB::rollback();
+            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan, Hubungi Tim IT']);
+        }
+    }
+
+
+    public function show($no_fpb)
+    {
+        $no_fpb = Crypt::decrypt($no_fpb);
+        $fpb = DB::table('fpb')
+            ->select(
+                'fpb.*',
+                'nama_karyawan',
+                'driver.nama_driver_helper as nama_driver',
+                'helper1.nama_driver_helper as nama_helper_1',
+                'helper2.nama_driver_helper as nama_helper_2',
+                'helper3.nama_driver_helper as nama_helper_3'
+            )
+            ->join('karyawan', 'fpb.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->leftJoin('driver_helper as driver', 'fpb.id_driver', '=', 'driver.id_driver_helper')
+            ->leftJoin('driver_helper as helper1', 'fpb.id_helper', '=', 'helper1.id_driver_helper')
+            ->leftJoin('driver_helper as helper2', 'fpb.id_helper_2', '=', 'helper2.id_driver_helper')
+            ->leftJoin('driver_helper as helper3', 'fpb.id_helper_3', '=', 'helper3.id_driver_helper')
+            ->where('no_fpb', $no_fpb)
+            ->first();
+
+        $detail = DB::table('fpb_detail')
+            ->join('master_barang', 'fpb_detail.kode_produk', '=', 'master_barang.kode_produk')
+            ->orderBy('fpb_detail.kode_produk')
+            ->where('no_fpb', $no_fpb)->get();
+
+
+        return view('fpb.show', compact('fpb', 'detail'));
+    }
+
+    public function delete($no_fpb)
+    {
+        $no_fpb  = Crypt::decrypt($no_fpb);
+        $hapus = DB::table('fpb')->where('no_fpb', $no_fpb)->delete();
+        if ($hapus) {
+            return Redirect::back()->with(['success' => 'Data Berhasil Dibatalkan']);
+        } else {
+            return Redirect::back()->with(['warning' => 'Data Gagal Dibatalkan, Hubungi Tim IT']);
+        }
+    }
 }

@@ -573,6 +573,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/fpb/create', [FpbController::class, 'create']);
     Route::post('/fpb/store', [FpbController::class, 'store']);
     Route::get('/fpb/{no_fpb}/edit', [FpbController::class, 'edit']);
+    Route::get('/fpb/{no_fpb}/show', [FpbController::class, 'show']);
+    Route::post('/fpb/{no_fpb}/update', [FpbController::class, 'update']);
+    Route::delete('/fpb/{no_fpb}/delete', [FpbController::class, 'delete']);
     //Surat Jalan Cabang
     Route::get('/suratjalancab', [SuratjalanController::class, 'index']);
     Route::get('/suratjalan/{no_mutasi_gudang}/prosescabang', [SuratjalanController::class, 'prosescabang']);

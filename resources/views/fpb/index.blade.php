@@ -105,7 +105,7 @@
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             <a class="ml-1 edit" no_fpb="{{ Crypt::encrypt($d->no_fpb) }}" href="#"><i class="feather icon-edit success"></i></a>
                                             <a class="ml-1 detail" href="#" no_fpb="{{ Crypt::encrypt($d->no_fpb) }}"><i class=" feather icon-file-text info"></i></a>
-                                            <form method="POST" class="deleteform" action="/dpb/{{Crypt::encrypt($d->no_fpb)}}/delete">
+                                            <form method="POST" class="deleteform" action="/fpb/{{Crypt::encrypt($d->no_fpb)}}/delete">
                                                 @csrf
                                                 @method('DELETE')
                                                 <a href="#" tanggal="{{ $d->tgl_permintaan }}" class="delete-confirm ml-1">
@@ -134,7 +134,7 @@
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel18">Detail DPB</h4>
+                <h4 class="modal-title" id="myModalLabel18">Detail FPB</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -208,7 +208,7 @@
         $(".detail").click(function(e) {
             var no_fpb = $(this).attr("no_fpb");
             e.preventDefault();
-            $("#loaddetail").load("/dpb/" + no_fpb + "/show");
+            $("#loaddetail").load("/fpb/" + no_fpb + "/show");
             $('#mdldetail').modal({
                 backdrop: 'static'
                 , keyboard: false

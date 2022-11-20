@@ -39,6 +39,7 @@
                                 <div class="form-group">
                                     <select name="kode_cabang" id="kode_cabang" class="form-control">
                                         <option value="">Pilih Cabang</option>
+                                        <option value="GDG">Gudang</option>
                                         @foreach ($cabang as $d)
                                         <option value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
                                         @endforeach
