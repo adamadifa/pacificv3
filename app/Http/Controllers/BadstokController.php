@@ -24,7 +24,7 @@ class BadstokController extends Controller
     public function create()
     {
         $cabang = Cabang::orderBy('kode_cabang')->get();
-        $produk = DB::table('master_barang')->orderBy('kode_produk')->where('status', 1)->get();
+        $produk = DB::table('master_barang')->orderBy('kode_produk')->get();
         return view('badstok.create', compact('cabang', 'produk'));
     }
 

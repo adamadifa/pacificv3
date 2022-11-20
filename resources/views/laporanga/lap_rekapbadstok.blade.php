@@ -34,6 +34,7 @@
                                             <div class="form-group  ">
                                                 <select name="kode_cabang" id="kode_cabang" class="form-control">
                                                     <option value="">Semua Cabang</option>
+                                                    <option value="GDG">Gudang</option>
                                                     @foreach ($cabang as $c)
                                                     <option {{ (Request('kode_cabang')==$c->kode_cabang ? 'selected':'')}} value="{{ $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
                                                     @endforeach
