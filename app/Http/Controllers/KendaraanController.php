@@ -239,6 +239,7 @@ class KendaraanController extends Controller
         $no_polisi = $request->no_polisi;
         $kendaraan = Kendaraan::where('kode_cabang', $kode_cabang)->get();
         echo "<option value=''>Pilih Kendaraan</option>";
+        echo "<option value='ZL'>ZL - LAINNYA</option>";
         foreach ($kendaraan as $d) {
             if ($no_polisi == $d->no_polisi) {
                 $selected = 'selected';
