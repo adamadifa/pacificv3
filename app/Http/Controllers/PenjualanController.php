@@ -219,6 +219,12 @@ class PenjualanController extends Controller
         return view('penjualan.create');
     }
 
+
+    public function create_v2()
+    {
+        return view('penjualan.create_v2');
+    }
+
     public function edit($no_fak_penj)
     {
         $no_fak_penj = Crypt::decrypt($no_fak_penj);

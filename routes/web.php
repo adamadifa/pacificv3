@@ -160,6 +160,7 @@ Route::middleware(['auth'])->group(function () {
     //Load Data
     //Salesman
     Route::post('/salesman/getsalescab', [SalesmanController::class, 'getsalescab']);
+    Route::post('/cabang/getcabang', [CabangController::class, 'getcabang']);
     //Pelanggan
     Route::post('/pelanggan/getpelanggansalesman', [PelangganController::class, 'getpelanggansalesman']);
     //Kendaraan
@@ -181,6 +182,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('getautocompleteharga', [HargaController::class, 'getautocompleteharga']);
     Route::post('getautocompletedpb', [DpbController::class, 'getautocompletedpb']);
+    Route::post('getautocompletefpb', [FpbController::class, 'getautocompletefpb']);
     Route::post('getautocompletesj', [SuratjalanController::class, 'getautocompletesj']);
     Route::post('getautocompletehargaretur', [HargaController::class, 'getautocompletehargaretur']);
     Route::post('gethargabarang', [HargaController::class, 'gethargabarang']);
@@ -574,6 +576,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/fpb/store', [FpbController::class, 'store']);
     Route::get('/fpb/{no_fpb}/edit', [FpbController::class, 'edit']);
     Route::get('/fpb/{no_fpb}/show', [FpbController::class, 'show']);
+    Route::post('/fpb/showfpb', [FpbController::class, 'showfpb']);
+    Route::post('/fpb/getdetailfpb', [FpbController::class, 'getdetailfpb']);
     Route::post('/fpb/{no_fpb}/update', [FpbController::class, 'update']);
     Route::delete('/fpb/{no_fpb}/delete', [FpbController::class, 'delete']);
     //Surat Jalan Cabang
@@ -1203,6 +1207,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/penjualan', [PenjualanController::class, 'index']);
     Route::post('/penjualan/getfaktur', [PenjualanController::class, 'getfaktur']);
     Route::get('/penjualan/create', [PenjualanController::class, 'create']);
+    Route::get('/inputpenjualanv2', [PenjualanController::class, 'create_v2']);
     Route::post('/penjualan/storebarangtemp', [PenjualanController::class, 'storebarangtemp']);
     Route::post('/penjualan/deletebarangtemp', [PenjualanController::class, 'deletebarangtemp']);
     Route::post('/penjualan/deletebarang', [PenjualanController::class, 'deletebarang']);

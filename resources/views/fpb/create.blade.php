@@ -75,11 +75,12 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <table class="table table-bordered">
+            <table class="table table-bordered" id="tabelbarang">
                 <thead class="thead-dark">
                     <tr>
                         <th rowspan="2" align="">Kode</th>
                         <th rowspan="2" style="text-align:center">Nama Barang</th>
+                        <th rowspan="2" style="text-align:center">Saldo</th>
                         <th colspan="6" style="text-align:center;">Kuantitas</th>
                     </tr>
                     <tr>
@@ -91,26 +92,60 @@
                         <th style="text-align:center">Satuan</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody style="font-size:12px">
                     @foreach ($produk as $d)
-                    <input type="hidden" name="isipcsdus[]" value="{{ $d->isipcsdus }}">
-                    <input type="hidden" name="isipcs[]" value="{{ $d->isipcs }}">
-                    <input type="hidden" name="kode_produk[]" value="{{ $d->kode_produk }}">
+                    @php
+                    $saldoawal_gs = ($d->saldo_awal_gs + $d->sisamutasi) / $d->isipcsdus;
+                    //$saldoawal_gs = ($d->saldo_awal_gs) / $d->isipcsdus;
+                    $pusat = $d->pusat / $d->isipcsdus;
+                    $transit_in = $d->transit_in / $d->isipcsdus;
+                    $retur = $d->retur / $d->isipcsdus;
+                    $lainlain_in = $d->lainlain_in / $d->isipcsdus;
+                    $repack = $d->repack / $d->isipcsdus;
+                    $penyesuaian_in = $d->penyesuaian_in / $d->isipcsdus;
+                    $penjualan = $d->penjualan / $d->isipcsdus;
+                    $promosi = $d->promosi / $d->isipcsdus;
+                    $reject_pasar = $d->reject_pasar / $d->isipcsdus;
+                    $reject_mobil = $d->reject_mobil / $d->isipcsdus;
+                    $reject_gudang = $d->reject_gudang / $d->isipcsdus;
+                    $transit_out = $d->transit_out / $d->isipcsdus;
+                    $lainlain_out = $d->lainlain_out / $d->isipcsdus;
+                    $penyesuaian_out = $d->penyesuaian_out / $d->isipcsdus;
+
+                    $sisamutasi = ($saldoawal_gs + $pusat + $transit_in + $retur + $lainlain_in + $repack + $penyesuaian_in) - ($penjualan + $promosi + $reject_pasar + $reject_mobil + $reject_gudang + $transit_out + $lainlain_out + $penyesuaian_out);
+
+                    $sm = ($d->saldo_awal_gs + $d->sisamutasi + $d->pusat + $d->transit_in + $d->retur + $d->lainlain_in + $d->repack + $d->penyesuaian_in) - ($d->penjualan + $d->promosi + $d->reject_pasar + $d->reject_mobil + $d->reject_gudang + $d->transit_out + $d->lainlain_out + $d->penyesuaian_out);
+
+                    @endphp
+
                     <tr>
                         <td>{{ $d->kode_produk }}</td>
                         <td>{{ $d->nama_barang }}</td>
+                        <td align="right">
+                            <input type="hidden" class="isipcsdus" name="isipcsdus[]" value="{{ $d->isipcsdus }}">
+                            <input type="hidden" class="isipcs" name="isipcs[]" value="{{ $d->isipcs }}">
+                            <input type="hidden" name="kode_produk[]" value="{{ $d->kode_produk }}">
+                            <input type="hidden" class="sm" value="{{ $sm }}">
+                            <?php
+                                if (!empty($sisamutasi)) {
+                                    echo desimal($sisamutasi);
+                                }
+                                ?>
+                        </td>
                         <td style="width: 12%">
-                            <input type="text" autocomplete="off" class="form-control" name="jmldus[]">
+                            <input type="text" autocomplete="off" class="form-control jmldus" name="jmldus[]">
                         </td>
                         <td>{{ $d->satuan }}</td>
                         <td style="width:12%">
-                            <input type="{{ !empty($d->isipack) ? 'text' : 'hidden' }}" autocomplete="off" class="form-control" name="jmlpack[]">
+                            <input type="{{ !empty($d->isipack) ? 'text' : 'hidden' }}" autocomplete="off" class="form-control jmlpack" name="jmlpack[]">
                         </td>
                         <td>PACK</td>
                         <td style="width: 12%">
-                            <input type="text" autocomplete="off" class="form-control" name="jmlpcs[]">
+                            <input type="text" autocomplete="off" class="form-control jmlpcs" name="jmlpcs[]">
                         </td>
-                        <td>PCS</td>
+                        <td>PCS
+                            <input type="hidden" class="total">
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
@@ -133,6 +168,45 @@
 
         $("#frmFpb").find('#id_karyawan').select2({
             dropdownParent: $('#mdlinput')
+        });
+
+        var $tblrows = $("#tabelbarang tbody tr");
+        $tblrows.each(function(index) {
+            var $tblrow = $(this);
+            $tblrow.find('.jmldus,.jmlpack,.jmlpcs').on('keyup', function() {
+                var jmldus = $tblrow.find(".jmldus").val();
+                var jmlpack = $tblrow.find(".jmlpack").val();
+                var jmlpcs = $tblrow.find(".jmlpcs").val();
+                var isipcsdus = $tblrow.find(".isipcsdus").val();
+                var isipcs = $tblrow.find(".isipcs").val();
+
+                var sm = $tblrow.find(".sm").val();
+
+
+                if (sm == "") {
+                    sm = 0;
+                }
+                if (jmldus == "") {
+                    jmldus = 0;
+                }
+
+                if (jmlpack == "") {
+                    jmlpack = 0;
+                }
+
+                if (jmlpcs == "") {
+                    jmlpcs = 0;
+                }
+                var total = (parseInt(jmldus) * parseInt(isipcsdus)) + (parseInt(jmlpack) * parseInt(isipcs)) + parseInt(jmlpcs);
+
+                if (total > sm) {
+                    alert('Tidak Bisa Melebih Stok Gudang');
+                    $tblrow.find(".jmldus").val("");
+                    $tblrow.find(".jmlpack").val("");
+                    $tblrow.find(".jmlpcs").val("");
+                }
+                $tblrow.find(".total").val(total);
+            });
         });
 
         function loadsalesmancabang(kode_cabang) {
@@ -225,46 +299,49 @@
                 });
 
                 return false;
-            } else if (no_dpb.length > 10) {
+            } else if (tgl_permintaan == "") {
                 swal({
                     title: 'Oops'
-                    , text: 'No. FPB Maksimal 10 Character !'
+                    , text: 'Tgl Permintaan Harus Diisi !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
-                    $("#frmFpb").find("#no_dpb").focus();
+                    $("#frmFpb").find("#tgl_permintaan").focus();
                 });
 
                 return false;
             } else if (kode_cabang == "") {
                 swal({
                     title: 'Oops'
-                    , text: 'Cabang Harus Diisi !'
+                    , text: 'Cabang Harus Dipilih !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
                     $("#frmFpb").find("#kode_cabang").focus();
                 });
+
                 return false;
             } else if (id_karyawan == "") {
                 swal({
                     title: 'Oops'
-                    , text: 'Salesman Harus Diisi !'
+                    , text: 'Salesman Harus Dipilih !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
                     $("#frmFpb").find("#id_karyawan").focus();
                 });
+
                 return false;
             } else if (no_polisi == "") {
                 swal({
                     title: 'Oops'
-                    , text: 'No. Kendaraan Harus Diisi !'
+                    , text: 'No. Polisi Harus Dipilih !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
-                    $("#no_polisi").focus();
+                    $("#frmFpb").find("#no_polisi").focus();
                 });
+
                 return false;
             } else if (tujuan == "") {
                 swal({
@@ -273,18 +350,9 @@
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
-                    $("#tujuan").focus();
+                    $("#frmFpb").find("#tujuan").focus();
                 });
-                return false;
-            } else if (tgl_permintaan == "") {
-                swal({
-                    title: 'Oops'
-                    , text: 'Tanggal Pengambilan Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#tgl_permintaan").focus();
-                });
+
                 return false;
             }
         });

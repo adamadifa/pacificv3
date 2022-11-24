@@ -560,6 +560,12 @@
                                     <span class="menu-item">Input Penjualan</span>
                                 </a>
                             </li>
+                            <li class="{{ request()->is(['inputpenjualanv2']) ? 'active' : '' }}">
+                                <a href="/inputpenjualanv2">
+                                    <i class="feather icon-shopping-cart"></i>
+                                    <span class="menu-item">Input Penjualan V2</span>
+                                </a>
+                            </li>
                             @endif
                             @if (in_array($level, $penjualan_view))
                             <li class="{{ request()->is(['penjualan', 'penjualan/*']) ? 'active' : '' }}">

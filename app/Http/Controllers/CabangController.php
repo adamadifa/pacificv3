@@ -98,4 +98,21 @@ class CabangController extends Controller
             }
         }
     }
+
+
+    public function getcabang(Request $request)
+    {
+        $kode_cabang = $request->kode_cabang;
+        $cabang = Cabang::where('kode_cabang', $kode_cabang)->get();
+        //$type = $request->type;
+        echo "<option value=''>Pilih Cabang</option>";
+        foreach ($cabang as $d) {
+            if ($kode_cabang == $d->kode_cabang) {
+                $selected = 'selected';
+            } else {
+                $selected = '';
+            }
+            echo "<option $selected value='$d->kode_cabang'>$d->nama_cabang</option>";
+        }
+    }
 }
