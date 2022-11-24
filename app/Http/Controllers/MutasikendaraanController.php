@@ -45,7 +45,7 @@ class MutasikendaraanController extends Controller
         $tahun = substr($tgl[0], 2);
         $mutasikendaraan = DB::table("kendaraan_mutasi")
             ->whereRaw('MONTH(tgl_mutasi)=' . $bulan)
-            ->whereRaw('YEAR(tgl_mutasi)=' . $tahun)
+            ->whereRaw('YEAR(tgl_mutasi)=' . $tgl[0])
             ->orderBy("no_mutasi", "desc")
             ->first();
 
