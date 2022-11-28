@@ -430,6 +430,12 @@
                                                     <span class="badge bg-success">{{ $d->status_bayar }} Penyelesaian Piutang Oleh Salesman</span>
                                                     @elseif($d->ket_voucher==4)
                                                     <span class="badge bg-success">{{ $d->status_bayar }} Voucher Pengalihan Piutang Dgng Jd Piutang Kary </span>
+                                                    @elseif($d->ket_voucher==7)
+                                                    <span class="badge bg-success">{{ $d->status_bayar }} Voucher PPN KPBPB </span>
+                                                    @elseif($d->ket_voucher==8)
+                                                    <span class="badge bg-success">{{ $d->status_bayar }} Voucher PPN WAPU </span>
+                                                    @elseif($d->ket_voucher==9)
+                                                    <span class="badge bg-success">{{ $d->status_bayar }} Voucher PPH PASAL 22 </span>
                                                     @else
                                                     <span class="badge bg-success">{{ $d->status_bayar }} Lainnya </span>
                                                     @endif
@@ -685,6 +691,8 @@
                                         <option value="4">Pengalihan Piutang Dgng Jd Piutang Kary</option>
                                         <option value="6">Saus Premium TP 5-1</option>
                                         <option value="7">PPN KPBPB</option>
+                                        <option value="8">PPN WAPU</option>
+                                        <option value="9">PPH PASAL 22</option>
                                         <option value="5">Lainnya</option>
                                     </select>
                                 </div>

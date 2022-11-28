@@ -4851,6 +4851,8 @@ class PenjualanController extends Controller
             pphk,
             vsp,
             kpbpb,
+            wapu,
+            pph22,
             lainnya,
             IFNULL(saldoawalpiutang,0) - IFNULL(piutanglama,0) + IFNULL(piutangpindahanbulanlalu,0) as saldoawalpiutang,
             IFNULL(saldoawalpiutang,0) -  IFNULL(piutanglamanow,0) -  IFNULL(piutanglamaberjalan,0) + IFNULL(piutangpindahan,0) + IFNULL(piutangberjalan,0) + (IFNULL(totalbruto,0) - IFNULL(totalpotongan,0)-IFNULL(totalretur,0) - IFNULL(totalpotistimewa,0) - IFNULL(totalpenyharga,0)) - IFNULL(totalbayarpiutang,0)  as saldoakhirpiutang");
@@ -4950,6 +4952,8 @@ class PenjualanController extends Controller
                         SUM(IF(status_bayar='voucher' AND ket_voucher ='4',bayar,0)) as pphk,
                         SUM(IF(status_bayar='voucher' AND ket_voucher ='6',bayar,0)) as vsp,
                         SUM(IF(status_bayar='voucher' AND ket_voucher ='7',bayar,0)) as kpbpb,
+                        SUM(IF(status_bayar='voucher' AND ket_voucher ='8',bayar,0)) as wapu,
+                        SUM(IF(status_bayar='voucher' AND ket_voucher ='9',bayar,0)) as pph22,
                         SUM(IF(status_bayar='voucher' AND ket_voucher ='5',bayar,0)) as lainnya
                     FROM
                         historibayar

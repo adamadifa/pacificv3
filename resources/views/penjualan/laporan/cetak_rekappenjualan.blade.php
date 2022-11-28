@@ -69,7 +69,7 @@
                 <td rowspan="2" bgcolor="#f5ae15">Penyesuaian Harga</td>
                 <td rowspan="2" bgcolor="#1bbb32">Netto</td>
                 <td rowspan="2" bgcolor="#1bbb32">Penerimaan rupiah</td>
-                <td colspan="7" bgcolor="#1bbb32">Voucher</td>
+                <td colspan="9" bgcolor="#1bbb32">Voucher</td>
                 <td rowspan="2" bgcolor="#1bbb32">Saldo Awal Piutang</td>
                 <td rowspan="2" bgcolor="#1bbb32">Saldo Akhir Piutang</td>
             </tr>
@@ -96,6 +96,8 @@
                 <td style="background-color:#cc2727">PPHK</td>
                 <td style="background-color:#cc2727">SP</td>
                 <td style="background-color:#cc2727">KPBPB</td>
+                <td style="background-color:#cc2727">WAPU</td>
+                <td style="background-color:#cc2727">PPH22</td>
                 <td style="background-color:#cc2727">L</td>
             </tr>
         </thead>
@@ -130,6 +132,8 @@
             $totalpphk = 0;
             $totalvsp = 0;
             $totalkpbpb = 0;
+            $totalwapu= 0;
+            $totalpph22 = 0;
             $totallainnya = 0;
             $totalsapiutang 	= 0;
             $totalslpiutang 	= 0;
@@ -166,6 +170,8 @@
             $grandtotalpphk  = 0;
             $grandtotalvsp = 0;
             $grandtotalkpbpb = 0;
+            $grandtotalwapu = 0;
+            $grandtotalpph22 = 0;
             $grandtotallainnya  = 0;
             foreach ($rekap as $key => $p) {
 
@@ -201,6 +207,8 @@
                 $totalpphk = $totalpphk += $p->pphk;
                 $totalvsp = $totalvsp += $p->vsp;
                 $totalkpbpb = $totalkpbpb += $p->kpbpb;
+                $totalwapu = $totalwapu += $p->wapu;
+                $totalpph22 = $totalpph22 += $p->pph22;
                 $totallainnya = $totallainnya += $p->lainnya;
                 $totalsapiutang 				= $totalsapiutang + $p->saldoawalpiutang;
                 $totalslpiutang 				= $totalslpiutang + $p->saldoakhirpiutang;
@@ -235,6 +243,8 @@
                 $grandtotalpphk = $grandtotalpphk += $p->pphk;
                 $grandtotalvsp = $grandtotalvsp += $p->vsp;
                 $grandtotalkpbpb = $grandtotalkpbpb += $p->kpbpb;
+                $grandtotalwapu = $grandtotalwapu += $p->wapu;
+                $grandtotalpph22 = $grandtotalpph22 += $p->pph22;
                 $grandtotallainnya = $grandtotallainnya += $p->lainnya;
 
 
@@ -302,6 +312,12 @@
                     <?php if (!empty($p->kpbpb)) {echo rupiah($p->kpbpb);} ?>
                 </td>
                 <td style="text-align:right; font-weight:bold">
+                    <?php if (!empty($p->wapu)) {echo rupiah($p->wapu);} ?>
+                </td>
+                <td style="text-align:right; font-weight:bold">
+                    <?php if (!empty($p->pph22)) {echo rupiah($p->pph22);} ?>
+                </td>
+                <td style="text-align:right; font-weight:bold">
                     <?php if (!empty($p->lainnya)) {echo rupiah($p->lainnya);} ?>
                 </td>
                 <td style="text-align:right; font-weight:bold">
@@ -348,6 +364,8 @@
             <td align="right" >' . rupiah($totalpphk) . '</td>
             <td align="right" >' . rupiah($totalvsp) . '</td>
             <td align="right" >' . rupiah($totalkpbpb) . '</td>
+            <td align="right" >' . rupiah($totalwapu) . '</td>
+            <td align="right" >' . rupiah($totalpph22) . '</td>
             <td align="right" >' . rupiah($totallainnya) . '</td>
             <td align="right" >' . rupiah($totalsapiutang) . '</td>
             <td align="right" >' . rupiah($totalslpiutang) . '</td>
@@ -381,6 +399,8 @@
                     $totalpphk = 0;
                     $totalvsp = 0;
                     $totalkpbpb = 0;
+                    $totalwapu= 0;
+                    $totalpph22= 0;
                     $totallainnya = 0;
                     $totalsapiutang			= 0;
                     $totalslpiutang 		= 0;
@@ -423,6 +443,8 @@
             <td align="right" >' . rupiah($grandtotalpphk) . '</td>
             <td align="right" >' . rupiah($grandtotalvsp) . '</td>
             <td align="right" >' . rupiah($grandtotalkpbpb) . '</td>
+            <td align="right" >' . rupiah($grandtotalwapu) . '</td>
+            <td align="right" >' . rupiah($grandtotalpph22) . '</td>
             <td align="right" >' . rupiah($grandtotallainnya) . '</td>
             <td align="right" >' . rupiah($grandtotalsapiutang) . '</td>
             <td align="right" >' . rupiah($grandtotalslpiutang) . '</td>
