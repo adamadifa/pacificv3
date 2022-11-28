@@ -61,6 +61,15 @@
                         <option @if ($hb->ket_voucher==6)
                             selected
                             @endif value="6">Saus Premium TP 5-1</option>
+                        <option @if ($hb->ket_voucher==7)
+                            selected
+                            @endif value="7">PPN KPBPB</option>
+                        <option @if ($hb->ket_voucher==8)
+                            selected
+                            @endif value="8">PPN WAPU</option>
+                        <option @if ($hb->ket_voucher==9)
+                            selected
+                            @endif value="9">PPH PASAL 22</option>
                         <option @if ($hb->ket_voucher==5)
                             selected
                             @endif value="5">Lainnya</option>
