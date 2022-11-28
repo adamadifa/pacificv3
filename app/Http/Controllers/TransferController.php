@@ -71,6 +71,10 @@ class TransferController extends Controller
             }
             $query->whereIn('karyawan.kode_cabang', $cabang);
         }
+
+        if (Auth::user()->level == "salesman") {
+            $query->where('penjualan.id_karyawan', Auth::user()->id_salesman);
+        }
         $transfer = $query->paginate(15);
         $transfer->appends($request->all());
         return view('transfer.index', compact('transfer'));

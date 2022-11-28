@@ -35,6 +35,7 @@
                             <div class="col-lg-2 col-sm-12">
                                 <x-inputtext label="No Faktur" field="no_fak_penj" icon="feather icon-credit-card" value="{{ Request('no_fak_penj') }}" />
                             </div>
+                            @if (Auth::user()->level!="salesman")
                             <div class="col-lg-2 col-sm-12">
                                 <div class="form-group">
                                     <select name="id_karyawan" id="id_karyawan" class="form-control select2">
@@ -45,6 +46,8 @@
                                     </select>
                                 </div>
                             </div>
+                            @endif
+
                             <div class="col-lg-2 col-sm-12">
                                 <x-inputtext label="Kode Pelanggan" field="kode_pelanggan" icon="fa fa-barcode" value="{{ Request('kode_pelanggan') }}" />
                             </div>

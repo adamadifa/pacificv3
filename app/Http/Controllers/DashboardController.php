@@ -56,6 +56,8 @@ class DashboardController extends Controller
             return $this->dashboardgudang();
         } else if (Auth::user()->level == "admin gudang cabang" || Auth::user()->level == "admin gudang cabang dan marketing" || Auth::user()->level == "admin persediaan dan kas kecil" || Auth::user()->level == "admin persediaan dan kasir") {
             return $this->dashboardgudangcabang();
+        } else if (Auth::user()->level == "salesman") {
+            return $this->dashboardsalesman();
         } else {
             return $this->dashboardadminkaskecil();
         }
@@ -396,6 +398,126 @@ class DashboardController extends Controller
     public function dashboardadminkaskecil()
     {
         return view('dashboard.adminkaskecil');
+    }
+
+    public function dashboardsalesman()
+    {
+        $hariini = date("Y-m-d");
+        $tahunini = date("Y");
+        $tahunlalu = $tahunini - 1;
+        $kode_cabang = Auth::user()->kode_cabang;
+        $akhirtanggal = $hariini;
+        $id_karyawan = Auth::user()->id_salesman;
+        $jmlpelanggan = DB::table('pelanggan')->where('id_sales', $id_karyawan)->where('status_pelanggan', 1)->count();
+        $jmlpelangganhariini = DB::table('pelanggan')->where('id_sales', $id_karyawan)->where('status_pelanggan', 1)
+            ->where('time_stamps', $hariini)->count();
+        $penjualanhariini = DB::table('penjualan')
+            ->selectRaw('SUM(total) as totalpenjualan')
+            ->where('tgltransaksi', $hariini)->first();
+        $bayarhariini = DB::table('historibayar')
+            ->selectRaw('SUM(bayar) as totalbayar')
+            ->where('tglbayar', $hariini)->first();
+        $jmltransaksi = DB::table('penjualan')->where('id_karyawan', $id_karyawan)->where('tgltransaksi', $hariini)->count();
+
+        $piutang = DB::table('penjualan')
+            ->selectRaw("salesbarunew,SUM((IFNULL(penjualan.total,0))-(IFNULL(retur.total,0))-IFNULL(jmlbayar,0))  as saldopiutang")
+            ->leftJoin(
+                DB::raw("(
+                    SELECT no_fak_penj,sum( historibayar.bayar ) AS jmlbayar
+                    FROM historibayar
+                    WHERE tglbayar <= '$akhirtanggal'
+                    GROUP BY no_fak_penj
+                ) hblalu"),
+                function ($join) {
+                    $join->on('penjualan.no_fak_penj', '=', 'hblalu.no_fak_penj');
+                }
+            )
+
+            ->leftJoin(
+                DB::raw("(
+                    SELECT retur.no_fak_penj AS no_fak_penj,
+                    SUM(total) AS total
+                    FROM
+                        retur
+                    WHERE tglretur <= '$akhirtanggal'
+                    GROUP BY
+                        retur.no_fak_penj
+                ) retur"),
+                function ($join) {
+                    $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
+                }
+            )
+
+            ->leftJoin(
+                DB::raw("(
+                    SELECT pj.no_fak_penj,
+                    IF(salesbaru IS NULL,pj.id_karyawan,salesbaru) as salesbarunew, karyawan.nama_karyawan as nama_sales,
+                    IF(cabangbaru IS NULL,karyawan.kode_cabang,cabangbaru) as cabangbarunew
+                    FROM penjualan pj
+                    INNER JOIN karyawan ON pj.id_karyawan = karyawan.id_karyawan
+                    LEFT JOIN (
+                    SELECT MAX(id_move) as id_move,no_fak_penj,move_faktur.id_karyawan as salesbaru,karyawan.kode_cabang as cabangbaru
+                    FROM move_faktur
+                    INNER JOIN karyawan ON move_faktur.id_karyawan = karyawan.id_karyawan
+                    WHERE tgl_move <= '$akhirtanggal'
+                    GROUP BY no_fak_penj,move_faktur.id_karyawan,karyawan.kode_cabang
+                    ) move_fak ON (pj.no_fak_penj = move_fak.no_fak_penj)
+                ) pjmove"),
+                function ($join) {
+                    $join->on('penjualan.no_fak_penj', '=', 'pjmove.no_fak_penj');
+                }
+            )
+
+            ->where('cabangbarunew', $kode_cabang)
+            ->where('penjualan.jenistransaksi', '!=', 'tunai')
+            ->where('tgltransaksi', '<=', $akhirtanggal)
+            ->whereRaw('(ifnull(penjualan.total,0) - (ifnull(retur.total,0))) != IFNULL(jmlbayar,0)')
+            ->where('salesbarunew', $id_karyawan)
+            ->groupBy('salesbarunew')
+            ->first();
+
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+
+
+        $penjtahunini = DB::table('bulan')
+            ->selectRaw('id,nama_bulan,IFNULL(totalpenjualan,0) as totalpenjualan, IFNULL(totalpenjualanlast,0) as totalpenjualanlast')
+            ->leftJoin(
+                DB::raw("(
+                SELECT MONTH(tgltransaksi) as bulan, SUM(total) as totalpenjualan
+                FROM penjualan
+                WHERE YEAR(tgltransaksi) = '$tahunini' AND id_karyawan = '$id_karyawan'
+                GROUP BY MONTH(tgltransaksi)
+            ) penjualan"),
+                function ($join) {
+                    $join->on('penjualan.bulan', '=', 'bulan.id');
+                }
+            )
+            ->leftJoin(
+                DB::raw("(
+                SELECT MONTH(tgltransaksi) as bulan, SUM(total) as totalpenjualanlast
+                FROM penjualan
+                WHERE YEAR(tgltransaksi) = '$tahunlalu' AND id_karyawan = '$id_karyawan'
+                GROUP BY MONTH(tgltransaksi)
+            ) penjualanlast"),
+                function ($join) {
+                    $join->on('penjualanlast.bulan', '=', 'bulan.id');
+                }
+            )
+            ->get();
+
+        $bln = [];
+        $totalpenjnow = [];
+        $totalpenjlast = [];
+        foreach ($penjtahunini as $d) {
+            $bln[] = substr($d->nama_bulan, 0, 3);
+            $totalpenjnow[] = $d->totalpenjualan;
+            $totalpenjlast[] = $d->totalpenjualanlast;
+        }
+
+
+
+
+        return view('dashboard.salesman', compact('jmlpelanggan', 'jmlpelangganhariini', 'penjualanhariini', 'bayarhariini', 'jmltransaksi', 'piutang', 'bulan', 'bln', 'totalpenjnow', 'totalpenjlast'));
     }
 
     public function dashboardkasir()

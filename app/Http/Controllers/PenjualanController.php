@@ -12,6 +12,7 @@ use App\Models\Pembayaran;
 use App\Models\Penjualan;
 use App\Models\Retur;
 use App\Models\Salesman;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -147,6 +148,9 @@ class PenjualanController extends Controller
                 $query->whereBetween('tgltransaksi', [$request->dari, $request->sampai]);
             }
 
+            if (Auth::user()->level == "salesman") {
+                $query->where('penjualan.id_karyawan', Auth::user()->id_salesman);
+            }
             // if ($this->cabang != "PCF") {
             //     if ($this->cabang == "GRT") {
             //         $query->where('karyawan.kode_cabang', 'TSM');
@@ -308,6 +312,49 @@ class PenjualanController extends Controller
             }
         } else {
             echo 1;
+        }
+    }
+
+    public function storebarangtempv2(Request $request)
+    {
+        $kode_barang = $request->kode_barang;
+        $harga_dus = $request->hargadus;
+        $harga_pack = $request->hargapack;
+        $harga_pcs = $request->hargapcs;
+        $jumlah = $request->jumlah;
+        $subtotal = $request->subtotal;
+        $id_admin = Auth::user()->id;
+        $promo = !empty($request->promo) ? $request->promo : NULL;
+        $data = [
+            'kode_barang' => $kode_barang,
+            'jumlah' => $jumlah,
+            'harga_dus' => $harga_dus,
+            'harga_pack' => $harga_pack,
+            'harga_pcs' => $harga_pcs,
+            'subtotal' => $subtotal,
+            'id_admin' => $id_admin,
+            'promo' => $promo
+        ];
+
+        if ($promo == NULL) {
+            $cek = DB::table('detailpenjualan_temp')->where('kode_barang', $kode_barang)->where('id_admin', $id_admin)
+                ->whereNull('promo')
+                ->count();
+        } else {
+            $cek = DB::table('detailpenjualan_temp')->where('kode_barang', $kode_barang)->where('id_admin', $id_admin)
+                ->where('promo', 1)
+                ->count();
+        }
+
+        if ($cek > 0) {
+            echo 1;
+        } else {
+            try {
+                DB::table('detailpenjualan_temp')->insert($data);
+                echo 0;
+            } catch (Exception $e) {
+                echo $e;
+            }
         }
     }
 
@@ -1214,11 +1261,11 @@ class PenjualanController extends Controller
                 }
             }
             DB::commit();
-            return redirect('/penjualan/create')->with(['success' => 'Data Penjualan Berhasil di Simpan']);
+            return redirect('/inputpenjualanv2')->with(['success' => 'Data Penjualan Berhasil di Simpan']);
         } catch (\Exception $e) {
             dd($e);
             DB::rollback();
-            return redirect('/penjualan/create')->with(['warning' => 'Data Penjualan Gagal di Simpan']);
+            return redirect('/inputpenjualanv2')->with(['warning' => 'Data Penjualan Gagal di Simpan']);
         }
     }
 
@@ -5905,6 +5952,83 @@ class PenjualanController extends Controller
             $query->groupBy('penjualan.id_karyawan', 'nama_karyawan');
             $ec = $query->get();
             return view('penjualan.laporan.cetak_effectivecall_produk', compact('cabang', 'ec', 'dari', 'sampai'));
+        }
+    }
+
+    public function ceknofaktur(Request $request)
+    {
+        $no_fak_penj = $request->no_fak_penj;
+        $cek = Penjualan::where('no_fak_penj', $no_fak_penj)->count();
+        echo $cek;
+    }
+
+
+    public function showbarangtempv2()
+    {
+        $id_admin = Auth::user()->id;
+        $detailtemp = DB::table('detailpenjualan_temp')
+            ->select('detailpenjualan_temp.*', 'nama_barang', 'isipcsdus', 'isipcs', 'isipack')
+            ->join('barang', 'detailpenjualan_temp.kode_barang', '=', 'barang.kode_barang')
+            ->where('id_admin', $id_admin)
+            ->get();
+
+        return view('penjualan.showbarangtempv2', compact('detailtemp'));
+    }
+
+    public function editbarangtemp(Request $request)
+    {
+        $kode_barang = $request->kode_barang;
+        $promo = $request->promo;
+        $id_admin = Auth::user()->id;
+
+        if (empty($promo)) {
+            $barangtemp = DB::table('detailpenjualan_temp')
+                ->select('detailpenjualan_temp.*', 'nama_barang', 'isipcsdus', 'isipcs', 'isipack', 'barang.harga_dus as harga_dus_old', 'barang.harga_pack as harga_pack_old', 'barang.harga_pcs as harga_pcs_old')
+                ->join('barang', 'detailpenjualan_temp.kode_barang', '=', 'barang.kode_barang')
+                ->where('detailpenjualan_temp.kode_barang', $kode_barang)
+                ->whereNull('promo')->where('id_admin', $id_admin)->first();
+        } else {
+            $barangtemp = DB::table('detailpenjualan_temp')
+                ->select('detailpenjualan_temp.*', 'nama_barang', 'isipcsdus', 'isipcs', 'isipack', 'barang.harga_dus as harga_dus_old', 'barang.harga_pack as harga_pack_old', 'barang.harga_pcs as harga_pcs_old')
+                ->join('barang', 'detailpenjualan_temp.kode_barang', '=', 'barang.kode_barang')
+                ->where('detailpenjualan_temp.kode_barang', $kode_barang)
+                ->where('promo', 1)->where('id_admin', $id_admin)->first();
+        }
+
+        return view('penjualan.editbarangtemp', compact('barangtemp'));
+    }
+
+
+    public function updatebarangtemp(Request $request)
+    {
+        $kode_barang = $request->kode_barang;
+        $harga_dus = $request->hargadus;
+        $harga_pack = $request->hargapack;
+        $harga_pcs = $request->hargapcs;
+        $jumlah = $request->jumlah;
+        $subtotal = $request->subtotal;
+        $id_admin = Auth::user()->id;
+        $promo = !empty($request->promo) ? $request->promo : NULL;
+        $data = [
+            'jumlah' => $jumlah,
+            'harga_dus' => $harga_dus,
+            'harga_pack' => $harga_pack,
+            'harga_pcs' => $harga_pcs,
+            'subtotal' => $subtotal,
+            'id_admin' => $id_admin,
+            'promo' => $promo
+        ];
+
+
+
+        try {
+            DB::table('detailpenjualan_temp')
+                ->where('kode_barang', $kode_barang)
+                ->where('id_admin', $id_admin)
+                ->update($data);
+            echo 0;
+        } catch (Exception $e) {
+            echo $e;
         }
     }
 }

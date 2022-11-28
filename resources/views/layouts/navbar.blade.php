@@ -554,12 +554,12 @@
                     <li><a href="#"><i class="feather icon-circle"></i><span class="menu-item" data-i18n="Second Level">Penjualan</span></a>
                         <ul class="menu-content">
                             @if (in_array($level, $penjualan_input))
-                            <li>
+                            {{-- <li>
                                 <a href="/penjualan/create">
                                     <i class="feather icon-shopping-cart"></i>
                                     <span class="menu-item">Input Penjualan</span>
                                 </a>
-                            </li>
+                            </li> --}}
                             <li class="{{ request()->is(['inputpenjualanv2']) ? 'active' : '' }}">
                                 <a href="/inputpenjualanv2">
                                     <i class="feather icon-shopping-cart"></i>

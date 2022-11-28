@@ -35,6 +35,7 @@ class PelangganController extends Controller
     {
 
 
+
         $query = Pelanggan::query();
         // if ($this->cabang != "PCF") {
         //     if ($this->cabang == "GRT") {
@@ -47,6 +48,10 @@ class PelangganController extends Controller
         if ($this->cabang != "PCF") {
             $query->where('pelanggan.kode_cabang', $this->cabang);
         }
+        if (Auth::user()->level == "salesman") {
+            $query->where('pelanggan.id_sales', Auth::user()->id_salesman);
+        }
+
 
         if (isset($request->submit) || isset($request->export)) {
             if ($request->nama != "") {
@@ -95,6 +100,9 @@ class PelangganController extends Controller
         //         $query2->where('pelanggan.kode_cabang', $this->cabang);
         //     }
         // }
+        if (Auth::user()->level == "salesman") {
+            $query2->where('pelanggan.id_sales', Auth::user()->id_salesman);
+        }
 
         if ($this->cabang != "PCF") {
             $query2->where('pelanggan.kode_cabang', $this->cabang);
@@ -143,6 +151,11 @@ class PelangganController extends Controller
         if ($this->cabang != "PCF") {
             $queryaktif->where('pelanggan.kode_cabang', $this->cabang);
         }
+
+        if (Auth::user()->level == "salesman") {
+            $queryaktif->where('pelanggan.id_sales', Auth::user()->id_salesman);
+        }
+
         if (isset($request->submit)) {
             if ($request->nama != "") {
                 $queryaktif->where('nama_pelanggan', 'like', '%' . $request->nama . '%');
@@ -179,6 +192,9 @@ class PelangganController extends Controller
         //         $querynonaktif->where('pelanggan.kode_cabang', $this->cabang);
         //     }
         // }
+        if (Auth::user()->level == "salesman") {
+            $querynonaktif->where('pelanggan.id_sales', Auth::user()->id_salesman);
+        }
 
         if ($this->cabang != "PCF") {
             $querynonaktif->where('pelanggan.kode_cabang', $this->cabang);
@@ -492,6 +508,9 @@ class PelangganController extends Controller
         //         $query->where('karyawan.kode_cabang', $this->cabang);
         //     }
         // }
+        if (Auth::user()->level == "salesman") {
+            $query->where('pelanggan.id_sales', Auth::user()->id_salesman);
+        }
         if ($this->cabang != "PCF") {
             $query->where('karyawan.kode_cabang', $this->cabang);
         }

@@ -395,14 +395,16 @@
                 type: 'POST'
                 , url: '/penjualan/ceknofaktur'
                 , data: {
-                    no_fak_penj: no_fak_penj
+                    _token: "{{ csrf_token() }}"
+                    , no_fak_penj: no_fak_penj
                 }
                 , cache: false
                 , success: function(respond) {
                     var status = respond;
-                    if (status != 0) {
-                        swal("Oops!", "No Faktur " + nofaktur + " Sudah Digunakan !", "warning");
-                        $("#nofaktur").val("");
+                    console.log(status);
+                    if (status > 0) {
+                        swal("Oops!", "No Faktur " + no_fak_penj + " Sudah Digunakan !", "warning");
+                        $("#no_fak_penj").val("");
                     }
                 }
             });

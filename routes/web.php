@@ -244,6 +244,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/barang/{kode_produk}/update', [BarangController::class, 'update']);
     Route::delete('/barang/{kode_produk}/delete', [BarangController::class, 'delete']);
 
+
     //Kendaraan
     Route::get('/kendaraan', [KendaraanController::class, 'index']);
     Route::get('/kendaraan/create', [KendaraanController::class, 'create']);
@@ -397,7 +398,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/laporankomisidriverhelper/cetak', [TargetkomisiController::class, 'cetakkomisidriverhelper']);
     Route::get('/laporaninsentif', [TargetkomisiController::class, 'laporaninsentif']);
     Route::post('/laporaninsentif/cetak', [TargetkomisiController::class, 'cetaklaporaninsentif']);
-
+    Route::post('/getrealisasitargetsales', [TargetkomisiController::class, 'getrealisasitargetsales']);
     Route::post('/limitkredit/penyesuaian_limit', [LimitkreditController::class, 'penyesuaian_limit']);
     Route::post('/limitkredit/updatelimit', [LimitkreditController::class, 'updatelimit']);
 
@@ -1074,7 +1075,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/harga/{kode_barang}/update', [HargaController::class, 'update']);
     Route::post('/harga/show', [HargaController::class, 'show']);
     Route::delete('/harga/{kode_barang}/delete', [HargaController::class, 'delete']);
-
+    Route::post('/getbarangcabang', [HargaController::class, 'getbarangcabang']);
 
 
 
@@ -1209,9 +1210,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/penjualan/create', [PenjualanController::class, 'create']);
     Route::get('/inputpenjualanv2', [PenjualanController::class, 'create_v2']);
     Route::post('/penjualan/storebarangtemp', [PenjualanController::class, 'storebarangtemp']);
+    Route::post('/penjualan/storebarangtempv2', [PenjualanController::class, 'storebarangtempv2']);
     Route::post('/penjualan/deletebarangtemp', [PenjualanController::class, 'deletebarangtemp']);
     Route::post('/penjualan/deletebarang', [PenjualanController::class, 'deletebarang']);
     Route::get('/penjualan/showbarangtemp', [PenjualanController::class, 'showbarangtemp']);
+    Route::get('/penjualan/showbarangtempv2', [PenjualanController::class, 'showbarangtempv2']);
     Route::post('/penjualan/updatedetailtemp', [PenjualanController::class, 'updatedetailtemp']);
     Route::get('/loadtotalpenjualantemp', [PenjualanController::class, 'loadtotalpenjualantemp']);
     Route::post('/hitungdiskon', [PenjualanController::class, 'hitungdiskon']);
@@ -1232,7 +1235,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/penjualan/update', [PenjualanController::class, 'update']);
     Route::get('/penjualan/{no_fak_penj}/show', [PenjualanController::class, 'show']);
     Route::get('/penjualan/{no_fak_penj}/updatepending', [PenjualanController::class, 'updatepending']);
-
+    Route::post('/penjualan/ceknofaktur', [PenjualanController::class, 'ceknofaktur']);
+    Route::post('/penjualan/editbarangtemp', [PenjualanController::class, 'editbarangtemp']);
+    Route::post('/penjualan/updatebarangtemp', [PenjualanController::class, 'updatebarangtemp']);
     //Pembayaran
     Route::post('/pembayaran/store', [PembayaranController::class, 'store']);
     Route::post('/pembayaran/edit', [PembayaranController::class, 'edit']);
