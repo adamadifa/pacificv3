@@ -130,7 +130,7 @@
             if ($d->status == 0) {
             $status = "Pending";
             $color = "yellow";
-            $textcolor = "white";
+            $textcolor = "black";
             } else if ($d->status == 1) {
             $status = "Diterima";
             $color = "Green";
