@@ -129,8 +129,8 @@
             $totalgiro += $d->jumlah;
             if ($d->status == 0) {
             $status = "Pending";
-            $color = "yellow";
-            $textcolor = "black";
+            $color = "#9c2305";
+            $textcolor = "white";
             } else if ($d->status == 1) {
             $status = "Diterima";
             $color = "Green";
@@ -190,7 +190,7 @@
 
             if ($d->status == 0) {
             $status = "Pending";
-            $color = "yellow";
+            $color = "#9c2305";
             $textcolor = "white";
             } else if ($d->status == 1) {
             $status = "Diterima";
