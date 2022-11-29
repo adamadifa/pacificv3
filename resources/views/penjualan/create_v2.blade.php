@@ -249,27 +249,29 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <table class="table table-bordered">
-                                                <thead class="text-center">
-                                                    <tr>
-                                                        <th rowspan="2">No.</th>
-                                                        <th rowspan="2">Kode</th>
-                                                        <th rowspan="2">Nama Barang</th>
-                                                        <th colspan="6">Quantity</th>
-                                                        <th rowspan="2">Subtotal</th>
-                                                        <th rowspan="2">Aksi</th>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>Dus</th>
-                                                        <th>Harga</th>
-                                                        <th>Pack</th>
-                                                        <th>Harga</th>
-                                                        <th>Pcs</th>
-                                                        <th>Harga</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="loadbarangtemp"></tbody>
-                                            </table>
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered">
+                                                    <thead class="text-center">
+                                                        <tr>
+                                                            <th rowspan="2">No.</th>
+                                                            <th rowspan="2">Kode</th>
+                                                            <th rowspan="2">Nama Barang</th>
+                                                            <th colspan="6">Quantity</th>
+                                                            <th rowspan="2">Subtotal</th>
+                                                            <th rowspan="2">Aksi</th>
+                                                        </tr>
+                                                        <tr>
+                                                            <th>Dus</th>
+                                                            <th>Harga</th>
+                                                            <th>Pack</th>
+                                                            <th>Harga</th>
+                                                            <th>Pcs</th>
+                                                            <th>Harga</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="loadbarangtemp"></tbody>
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row mt-1">
@@ -477,18 +479,20 @@
                 </button>
             </div>
             <div class="modal-body">
-                <table class="table table-hover-animation tabelpelanggan" style="width:100% !important" id="tabelpelanggan">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>Kode Pelanggan</th>
-                            <th>Nama Pelanggan</th>
-                            <th>Pasar</th>
-                            <th>Salesman</th>
-                            <th>Kode Cabang</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-hover-animation tabelpelanggan" style="width:100% !important" id="tabelpelanggan">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Kode Pelanggan</th>
+                                <th>Nama Pelanggan</th>
+                                <th>Pasar</th>
+                                <th>Salesman</th>
+                                <th>Kode Cabang</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

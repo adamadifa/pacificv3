@@ -77,6 +77,7 @@ use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\PermintaanpengirimanController;
 use App\Http\Controllers\PermintaanproduksiController;
 use App\Http\Controllers\ProduksiController;
+use App\Http\Controllers\QrcodeController;
 use App\Http\Controllers\RatiokomisiController;
 use App\Http\Controllers\RepackrejectgudangjadiController;
 use App\Http\Controllers\ReturController;
@@ -1368,4 +1369,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/costratio/store', [CostratioController::class, 'store']);
     Route::delete('/costratio/{kode_cr}/delete', [CostratioController::class, 'delete']);
     Route::get('/costratio/cetak', [CostratioController::class, 'cetak']);
+
+
+    Route::get('/scan', [QrcodeController::class, 'index']);
 });
