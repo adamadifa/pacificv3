@@ -5907,4 +5907,131 @@ class PenjualanController extends Controller
             return view('penjualan.laporan.cetak_effectivecall_produk', compact('cabang', 'ec', 'dari', 'sampai'));
         }
     }
+
+
+    public function analisatransaksi()
+    {
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        return view('penjualan.laporan.frm.lap_analisatransaksi', compact('cabang', 'bulan'));
+    }
+
+    public function cetakanalisatransaksi(Request $request)
+    {
+        $kode_cabang = $request->kode_cabang;
+        $id_karyawan = $request->id_karyawan;
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $dari = $tahun . "-" . $bulan . "-01";
+        $sampai = date("Y-m-t", strtotime($dari));
+
+        $query = Pelanggan::query();
+        $query->selectRaw('pelanggan.kode_pelanggan,nama_pelanggan,
+        tunai_1,
+        tunai_2,
+        tunai_3,
+        tunai_4,
+        kredit_1,
+        kredit_2,
+        kredit_3,
+        kredit_4,
+
+        cash_1,
+        cash_2,
+        cash_3,
+        cash_4,
+
+        transfer_1,
+        transfer_2,
+        transfer_3,
+        transfer_4,
+
+        giro_1,
+        giro_2,
+        giro_3,
+        giro_4,
+        total,
+        totalbayar,
+        qty');
+        $query->leftJoin(
+            DB::raw("(
+                SELECT penjualan.kode_pelanggan,
+                SUM(IF(DAY(tgltransaksi) BETWEEN 1 AND 7 AND jenistransaksi = 'tunai',total,0)) as tunai_1,
+                SUM(IF(DAY(tgltransaksi) BETWEEN 8 AND 14 AND jenistransaksi = 'tunai',total,0)) as tunai_2,
+                SUM(IF(DAY(tgltransaksi) BETWEEN 15 AND 21 AND jenistransaksi = 'tunai',total,0)) as tunai_3,
+                SUM(IF(DAY(tgltransaksi) BETWEEN 22 AND 31 AND jenistransaksi = 'tunai',total,0)) as tunai_4,
+
+                SUM(IF(DAY(tgltransaksi) BETWEEN 1 AND 7 AND jenistransaksi = 'kredit',total,0)) as kredit_1,
+                SUM(IF(DAY(tgltransaksi) BETWEEN 8 AND 14 AND jenistransaksi = 'kredit',total,0)) as kredit_2,
+                SUM(IF(DAY(tgltransaksi) BETWEEN 15 AND 21 AND jenistransaksi = 'kredit',total,0)) as kredit_3,
+                SUM(IF(DAY(tgltransaksi) BETWEEN 22 AND 31 AND jenistransaksi = 'kredit',total,0)) as kredit_4,
+                SUM(total) as total
+                FROM penjualan
+                WHERE tgltransaksi BETWEEN '$dari' AND '$sampai'
+                AND penjualan.id_karyawan = '$id_karyawan'
+                GROUP BY penjualan.kode_pelanggan
+            ) penjualan"),
+            function ($join) {
+                $join->on('penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+                SELECT penjualan.kode_pelanggan,
+                SUM(IF(DAY(tglbayar) BETWEEN 1 AND 7 AND historibayar.jenisbayar = 'tunai' OR DAY(tglbayar) BETWEEN 1 AND 7 AND historibayar.jenisbayar = 'titipan',bayar,0)) as cash_1,
+                SUM(IF(DAY(tglbayar) BETWEEN 8 AND 14 AND historibayar.jenisbayar = 'tunai' OR DAY(tglbayar) BETWEEN 8 AND 14 AND historibayar.jenisbayar = 'titipan',bayar,0)) as cash_2,
+                SUM(IF(DAY(tglbayar) BETWEEN 15 AND 21 AND historibayar.jenisbayar = 'tunai' OR DAY(tglbayar) BETWEEN 15 AND 21 AND historibayar.jenisbayar = 'titipan',bayar,0)) as cash_3,
+                SUM(IF(DAY(tglbayar) BETWEEN 22 AND 31 AND historibayar.jenisbayar = 'tunai' OR DAY(tglbayar) BETWEEN 22 AND 31 AND historibayar.jenisbayar = 'titipan',bayar,0)) as cash_4,
+
+                SUM(IF(DAY(tglbayar) BETWEEN 1 AND 7 AND historibayar.jenisbayar = 'transfer',bayar,0)) as transfer_1,
+                SUM(IF(DAY(tglbayar) BETWEEN 8 AND 14 AND historibayar.jenisbayar = 'transfer',bayar,0)) as transfer_2,
+                SUM(IF(DAY(tglbayar) BETWEEN 15 AND 21 AND historibayar.jenisbayar = 'transfer',bayar,0)) as transfer_3,
+                SUM(IF(DAY(tglbayar) BETWEEN 22 AND 31 AND historibayar.jenisbayar = 'transfer',bayar,0)) as transfer_4,
+
+                SUM(IF(DAY(tglbayar) BETWEEN 1 AND 7 AND historibayar.jenisbayar = 'giro',bayar,0)) as giro_1,
+                SUM(IF(DAY(tglbayar) BETWEEN 8 AND 14 AND historibayar.jenisbayar = 'giro',bayar,0)) as giro_2,
+                SUM(IF(DAY(tglbayar) BETWEEN 15 AND 21 AND historibayar.jenisbayar = 'giro',bayar,0)) as giro_3,
+                SUM(IF(DAY(tglbayar) BETWEEN 22 AND 31 AND historibayar.jenisbayar = 'giro',bayar,0)) as giro_4,
+
+
+                SUM(bayar) as totalbayar
+                FROM historibayar
+                INNER JOIN penjualan ON historibayar.no_fak_penj = penjualan.no_fak_penj
+                WHERE tglbayar BETWEEN '$dari' AND '$sampai'
+                AND historibayar.id_karyawan = '$id_karyawan'
+                GROUP BY penjualan.kode_pelanggan
+            ) pembayaran"),
+            function ($join) {
+                $join->on('pembayaran.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+                SELECT penjualan.kode_pelanggan,SUM(ROUND(jumlah/isipcsdus)) as qty
+                FROM detailpenjualan
+                INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
+                INNER JOIN penjualan ON detailpenjualan.no_fak_penj = penjualan.no_fak_penj
+                WHERE tgltransaksi BETWEEN '$dari' AND '$sampai'
+                AND penjualan.id_karyawan = '$id_karyawan'
+                GROUP BY penjualan.kode_pelanggan
+            ) dp"),
+            function ($join) {
+                $join->on('dp.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+            }
+        );
+
+        $query->whereNotNull('total');
+        $query->where('nama_pelanggan', '!=', 'BATAL');
+        $query->orwhereNotNull('totalbayar');
+        $query->where('nama_pelanggan', '!=', 'BATAL');
+        $query->orderBy('nama_pelanggan');
+        $analisatransaksi = $query->get();
+
+        $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
+        $salesman = Salesman::where('id_karyawan', $id_karyawan)->first();
+        return view('penjualan.laporan.cetak_analisatransaksi', compact('analisatransaksi', 'cabang', 'dari', 'sampai', 'salesman'));
+    }
 }

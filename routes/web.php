@@ -1227,7 +1227,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/penjualan/update', [PenjualanController::class, 'update']);
     Route::get('/penjualan/{no_fak_penj}/show', [PenjualanController::class, 'show']);
     Route::get('/penjualan/{no_fak_penj}/updatepending', [PenjualanController::class, 'updatepending']);
-
+    Route::get('/laporanpenjualan/analisatransaksi', [PenjualanController::class, 'analisatransaksi']);
+    Route::post('/laporanpenjualan/analisatransaksi/cetak', [PenjualanController::class, 'cetakanalisatransaksi']);
     //Pembayaran
     Route::post('/pembayaran/store', [PembayaranController::class, 'store']);
     Route::post('/pembayaran/edit', [PembayaranController::class, 'edit']);
