@@ -103,6 +103,11 @@
                     <i class="feather icon-file mr-1"></i>Effective Call
                 </li>
             </a>
+            <a href="/laporanpenjualan/analisatransaksi" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanpenjualan/analisatransaksi']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Analisa Transaksi
+                </li>
+            </a>
             @endif
         </ul>
     </div>
