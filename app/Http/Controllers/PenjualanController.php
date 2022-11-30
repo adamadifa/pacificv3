@@ -202,9 +202,11 @@ class PenjualanController extends Controller
                 }
                 $salesman = Salesman::whereIn('kode_cabang', $cabang)
                     ->where('nama_karyawan', '!=', '-')
-                    ->orderBy('nama_karyawan')->get();
+                    ->orderBy('nama_karyawan')
+                    ->where('status_aktif_sales', 1)
+                    ->get();
             } else {
-                $salesman = Salesman::orderBy('nama_karyawan')->where('nama_karyawan', '!=', '-')->get();
+                $salesman = Salesman::orderBy('nama_karyawan')->where('nama_karyawan', '!=', '-')->where('status_aktif_sales', 1)->get();
             }
             $cabang = Cabang::orderBy('kode_cabang')->get();
             return view('penjualan.index', compact('penjualan', 'salesman', 'cabang'));
