@@ -542,6 +542,7 @@ class LaporangudangcabangController extends Controller
         $jeniskonsolidasi = $request->jeniskonsolidasi;
         $dari = $request->dari;
         $sampai = $request->sampai;
+        $id_karyawan = $request->id_karyawan;
 
         if ($dari < '2022-09-01') {
             $salesgarut = "'STSM05', 'STSM09', 'STSM11', 'STSM97'";
@@ -553,27 +554,39 @@ class LaporangudangcabangController extends Controller
 
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
 
-        if ($dari < '2022-09-01') {
-            if ($kode_cabang == 'TSM') {
-                $wherenotsalesgarut = "AND penjualan.id_karyawan NOT IN ($salesgarut)";
-            } else {
-                $wherenotsalesgarut = "";
-            }
-
-            if ($kode_cabang == 'GRT') {
-                $wheresalesgarut = "AND penjualan.id_karyawan IN ($salesgarut)";
-            } else {
-                $wheresalesgarut = "";
-            }
-
-
-            if ($kode_cabang == 'GRT') {
-                $kode_cabang = 'TSM';
-            }
-        } else {
+        if (!empty($id_karyawan)) {
+            $wheresalesman = "AND penjualan.id_karyawan = '$id_karyawan'";
+            $wheresalesdpb = "AND dpb.id_karyawan = '$id_karyawan'";
             $wherenotsalesgarut = "";
             $wheresalesgarut = "";
+        } else {
+            if ($dari < '2022-09-01') {
+                if ($kode_cabang == 'TSM') {
+                    $wherenotsalesgarut = "AND penjualan.id_karyawan NOT IN ($salesgarut)";
+                } else {
+                    $wherenotsalesgarut = "";
+                }
+
+                if ($kode_cabang == 'GRT') {
+                    $wheresalesgarut = "AND penjualan.id_karyawan IN ($salesgarut)";
+                } else {
+                    $wheresalesgarut = "";
+                }
+
+
+                if ($kode_cabang == 'GRT') {
+                    $kode_cabang = 'TSM';
+                }
+            } else {
+                $wherenotsalesgarut = "";
+                $wheresalesgarut = "";
+            }
+            $wheresalesdpb = "";
+            $wheresalesman = "";
         }
+
+
+
 
         $kode_cabang_2 = $kode_cabang;
 
@@ -589,8 +602,8 @@ class LaporangudangcabangController extends Controller
                         INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
                         INNER JOIN penjualan ON detailpenjualan.no_fak_penj = penjualan.no_fak_penj
                         INNER JOIN karyawan ON penjualan.id_karyawan = karyawan.id_karyawan
-                        WHERE tgltransaksi BETWEEN '$dari' AND '$sampai' AND karyawan.kode_cabang ='$kode_cabang' AND promo !=1 " . $wherenotsalesgarut . $wheresalesgarut . "
-                        OR tgltransaksi BETWEEN '$dari' AND '$sampai' AND karyawan.kode_cabang ='$kode_cabang' AND promo IS NULL " . $wherenotsalesgarut . $wheresalesgarut . "
+                        WHERE tgltransaksi BETWEEN '$dari' AND '$sampai' AND karyawan.kode_cabang ='$kode_cabang' AND promo !=1 " . $wherenotsalesgarut . $wheresalesgarut . $wheresalesman . "
+                        OR tgltransaksi BETWEEN '$dari' AND '$sampai' AND karyawan.kode_cabang ='$kode_cabang' AND promo IS NULL " . $wherenotsalesgarut . $wheresalesgarut . $wheresalesman . "
                         GROUP BY kode_produk
                     ) detailpenjualan"),
                     function ($join) {
@@ -603,9 +616,10 @@ class LaporangudangcabangController extends Controller
                         FROM detail_mutasi_gudang_cabang
                         INNER JOIN mutasi_gudang_cabang
                         ON detail_mutasi_gudang_cabang.no_mutasi_gudang_cabang = mutasi_gudang_cabang.no_mutasi_gudang_cabang
+                        LEFT JOIN dpb ON mutasi_gudang_cabang.no_dpb = dpb.no_dpb
                         WHERE jenis_mutasi = 'PENJUALAN'
                         AND tgl_mutasi_gudang_cabang BETWEEN '$dari' AND '$sampai'
-                        AND kode_cabang ='$kode_cabang_2'
+                        AND mutasi_gudang_cabang.kode_cabang ='$kode_cabang_2' " . $wheresalesdpb . "
                         GROUP BY kode_produk
                     ) persediaan"),
                     function ($join) {
@@ -626,7 +640,7 @@ class LaporangudangcabangController extends Controller
                         INNER JOIN retur ON detailretur.no_retur_penj = retur.no_retur_penj
                         INNER JOIN penjualan ON retur.no_fak_penj = penjualan.no_fak_penj
                         INNER JOIN karyawan ON penjualan.id_karyawan = karyawan.id_karyawan
-                        WHERE tglretur BETWEEN '$dari' AND '$sampai' AND karyawan.kode_cabang ='$kode_cabang' " . $wherenotsalesgarut . $wheresalesgarut . "
+                        WHERE tglretur BETWEEN '$dari' AND '$sampai' AND karyawan.kode_cabang ='$kode_cabang' " . $wherenotsalesgarut . $wheresalesgarut . $wheresalesman . "
                         GROUP BY kode_produk
                     ) detailpenjualan"),
                     function ($join) {
@@ -639,9 +653,10 @@ class LaporangudangcabangController extends Controller
                         FROM detail_mutasi_gudang_cabang
                         INNER JOIN mutasi_gudang_cabang
                         ON detail_mutasi_gudang_cabang.no_mutasi_gudang_cabang = mutasi_gudang_cabang.no_mutasi_gudang_cabang
+                        LEFT JOIN dpb ON mutasi_gudang_cabang.no_dpb = dpb.no_dpb
                         WHERE jenis_mutasi = 'RETUR'
                         AND tgl_mutasi_gudang_cabang BETWEEN '$dari' AND '$sampai'
-                        AND kode_cabang ='$kode_cabang_2'
+                        AND mutasi_gudang_cabang.kode_cabang ='$kode_cabang_2'" . $wheresalesdpb . "
                         GROUP BY kode_produk
                     ) persediaan"),
                     function ($join) {
@@ -661,7 +676,7 @@ class LaporangudangcabangController extends Controller
                         INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
                         INNER JOIN penjualan ON detailpenjualan.no_fak_penj = penjualan.no_fak_penj
                         INNER JOIN karyawan ON penjualan.id_karyawan = karyawan.id_karyawan
-                        WHERE tgltransaksi BETWEEN '$dari' AND '$sampai' AND karyawan.kode_cabang ='$kode_cabang' AND promo = 1 " . $wherenotsalesgarut . $wheresalesgarut . "
+                        WHERE tgltransaksi BETWEEN '$dari' AND '$sampai' AND karyawan.kode_cabang ='$kode_cabang' AND promo = 1 " . $wherenotsalesgarut . $wheresalesgarut . $wheresalesman . "
                         GROUP BY kode_produk
                     ) detailpenjualan"),
                     function ($join) {
@@ -674,9 +689,10 @@ class LaporangudangcabangController extends Controller
                         FROM detail_mutasi_gudang_cabang
                         INNER JOIN mutasi_gudang_cabang
                         ON detail_mutasi_gudang_cabang.no_mutasi_gudang_cabang = mutasi_gudang_cabang.no_mutasi_gudang_cabang
+                        LEFT JOIN dpb ON mutasi_gudang_cabang.no_dpb = dpb.no_dpb
                         WHERE jenis_mutasi = 'PROMOSI'
                         AND tgl_mutasi_gudang_cabang BETWEEN '$dari' AND '$sampai'
-                        AND kode_cabang ='$kode_cabang_2'
+                        AND mutasi_gudang_cabang.kode_cabang ='$kode_cabang_2'" . $wheresalesdpb . "
                         GROUP BY kode_produk
                     ) persediaan"),
                     function ($join) {
