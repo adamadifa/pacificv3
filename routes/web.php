@@ -1089,7 +1089,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/pelanggan/{kode_pelanggan}/delete', [PelangganController::class, 'delete']);
     Route::get('/pelanggan/{kode_pelanggan}/show', [PelangganController::class, 'show']);
     Route::get('/pelanggan/json', [PelangganController::class, 'json'])->name('pelanggan.json');
-
+    Route::post('/pelanggan/getpelanggan', [PelangganController::class, 'getpelanggan']);
     //Kendaraan
     Route::get('/kendaraan', [KendaraanController::class, 'index']);
     Route::get('/kendaraan/create', [KendaraanController::class, 'create']);

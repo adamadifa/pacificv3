@@ -9,6 +9,7 @@
 </style>
 
 <div class="content-wrapper">
+
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
@@ -24,7 +25,9 @@
             </div>
         </div>
     </div>
-    <div class="content-body">
+    <div class="content-body" id="loadpelanggan">
+
+        <input type="hidden" id="status">
         <div class="row">
             <div class="col-12">
                 <video id="qr-video"></video>
@@ -46,7 +49,9 @@
             </div>
         </div>
     </div>
-
+    <audio id="myAudio">
+        <source src="{{ asset('app-assets/sound/found.mp3') }}" type="audio/mpeg">
+    </audio>
 </div>
 
 
@@ -69,9 +74,26 @@
     const camQrResultTimestamp = document.getElementById('cam-qr-result-timestamp');
     const fileSelector = document.getElementById('file-selector');
     const fileQrResult = document.getElementById('file-qr-result');
+    const statusResult = document.getElementById('status');
+    var x = document.getElementById("myAudio");
 
     function loadpelanggan(kode_pelanggan){
-        alert(kode_pelanggan);
+        var status = $("#status").val();
+
+        $.ajax({
+            type:'POST',
+            url:'/pelanggan/getpelanggan',
+            data:{
+                _token:"{{ csrf_token() }}",
+                kode_pelanggan:kode_pelanggan,
+            },
+            success:function(respond){
+                if(status == 1){
+                    $("#status").val(2);
+                    $("#loadpelanggan").html(respond);
+                }
+            }
+        });
     }
     function setResult(label, result) {
         //console.log(label);
@@ -79,7 +101,10 @@
         label.textContent = result.data;
         // camQrResultTimestamp.textContent = new Date().toString();
         if(result.data != "No QR code found."){
+            $("#status").val(1);
+            x.play();
             loadpelanggan(result.data);
+            scanner.stop();
         }
         label.style.color = 'red';
         // clearTimeout(label.highlightTimeout);
@@ -119,7 +144,7 @@
         }));
     });
 
-    QrScanner.hasCamera().then(hasCamera => camHasCamera.textContent = hasCamera);
+    // QrScanner.hasCamera().then(hasCamera => camHasCamera.textContent = hasCamera);
 
     // for debugging
     window.scanner = scanner;
@@ -148,13 +173,13 @@
         scanner.toggleFlash().then(() => flashState.textContent = scanner.isFlashOn() ? 'on' : 'off');
     });
 
-    document.getElementById('start-button').addEventListener('click', () => {
-        scanner.start();
-    });
+    // document.getElementById('start-button').addEventListener('click', () => {
+    //     scanner.start();
+    // });
 
-    document.getElementById('stop-button').addEventListener('click', () => {
-        scanner.stop();
-    });
+    // document.getElementById('stop-button').addEventListener('click', () => {
+    //     scanner.stop();
+    // });
 
     // ####### File Scanning #######
 

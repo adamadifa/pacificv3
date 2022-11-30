@@ -74,8 +74,10 @@
 
         function toggleZoomScreen() {
             var width = window.screen.width;
-            if (width <= 1366 && width >= 1024) {
+            if (width <= 1366 && width >= 1024 && width != 1280) {
                 document.body.style.zoom = "70%";
+            } else if (width == 1280) {
+                document.body.style.zoom = "85%";
             }
         }
         toggleZoomScreen();
