@@ -56,7 +56,7 @@ class MutasigudangcabangController extends Controller
         $query = Mutasigudangcabang::query();
         $query->select('mutasi_gudang_cabang.*', 'nama_karyawan', 'tujuan', 'no_kendaraan');
         $query->leftjoin('dpb', 'mutasi_gudang_cabang.no_dpb', '=', 'dpb.no_dpb');
-        $query->join('karyawan', 'dpb.id_karyawan', 'karyawan.id_karyawan');
+        $query->leftjoin('karyawan', 'dpb.id_karyawan', 'karyawan.id_karyawan');
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('mutasi_gudang_cabang.tgl_mutasi_gudang_cabang', [$request->dari, $request->sampai]);
         }
