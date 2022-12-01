@@ -494,37 +494,65 @@ class LaporanpembelianController extends Controller
         $query->orderBy('detail_pembelian.kode_akun');
         $pmb = $query->get();
 
-        $query2 = Jurnalkoreksi::query();
-        $query2->selectRaw("jurnal_koreksi.kode_akun,nama_akun,
-        SUM(IF(status_dk='D',(jurnal_koreksi.qty*jurnal_koreksi.harga),0)) as jurnaldebet,
-        SUM(IF(status_dk='K',(jurnal_koreksi.qty*jurnal_koreksi.harga),0)) as jurnalkredit,
-        pmb,
-        pnj");
-        $query2->join('coa', 'jurnal_koreksi.kode_akun', '=', 'coa.kode_akun');
-        $query2->leftJoin(
-            DB::raw("(
-                SELECT pembelian.kode_akun,
-                SUM(IF( STATUS = 'PMB',( detail_pembelian.qty * detail_pembelian.harga ) + penyesuaian, 0 )) AS pmb,
-                SUM(IF( STATUS = 'PNJ',( detail_pembelian.qty * detail_pembelian.harga ) + penyesuaian, 0 )) AS pnj
-                FROM pembelian
-                INNER JOIN detail_pembelian ON pembelian.nobukti_pembelian=detail_pembelian.nobukti_pembelian
-                WHERE tgl_pembelian BETWEEN '$dari' AND '$sampai'
-                GROUP BY kode_akun
-            ) dp"),
-            function ($join) {
-                $join->on('jurnal_koreksi.kode_akun', '=', 'dp.kode_akun');
-            }
-        );
-        $query2->whereBetween('tgl_jurnalkoreksi', [$dari, $sampai]);
-        $query2->groupByRaw(' kode_akun,nama_akun,pnj,pmb');
-        $jurnalkoreksi = $query2->get();
+
+
+
+        // $query2 = Jurnalkoreksi::query();
+        // $query2->selectRaw("jurnal_koreksi.kode_akun,nama_akun,
+        // SUM(IF(status_dk='D',(jurnal_koreksi.qty*jurnal_koreksi.harga),0)) as jurnaldebet,
+        // SUM(IF(status_dk='K',(jurnal_koreksi.qty*jurnal_koreksi.harga),0)) as jurnalkredit,
+        // pmb,
+        // pnj");
+        // $query2->join('coa', 'jurnal_koreksi.kode_akun', '=', 'coa.kode_akun');
+        // $query2->leftJoin(
+        //     DB::raw("(
+        //         SELECT pembelian.kode_akun,
+        //         SUM(IF( STATUS = 'PMB',( detail_pembelian.qty * detail_pembelian.harga ) + penyesuaian, 0 )) AS pmb,
+        //         SUM(IF( STATUS = 'PNJ',( detail_pembelian.qty * detail_pembelian.harga ) + penyesuaian, 0 )) AS pnj
+        //         FROM pembelian
+        //         INNER JOIN detail_pembelian ON pembelian.nobukti_pembelian=detail_pembelian.nobukti_pembelian
+        //         WHERE tgl_pembelian BETWEEN '$dari' AND '$sampai'
+        //         GROUP BY kode_akun
+        //     ) dp"),
+        //     function ($join) {
+        //         $join->on('jurnal_koreksi.kode_akun', '=', 'dp.kode_akun');
+        //     }
+        // );
+        // $query2->whereBetween('tgl_jurnalkoreksi', [$dari, $sampai]);
+        // $query2->groupByRaw(' kode_akun,nama_akun,pnj,pmb');
+        // $jurnalkoreksi = $query2->get();
+
+        $hutang = DB::table('detail_pembelian')
+            ->selectRaw("pembelian.kode_akun,nama_akun,IFNULL(jurnaldebet,0) as jurnaldebet,IFNULL(jurnalkredit,0) as jurnalkredit,
+            SUM(IF( STATUS = 'PMB',( detail_pembelian.qty * detail_pembelian.harga ) + penyesuaian, 0 )) AS pmb,
+            SUM(IF( STATUS = 'PNJ',( detail_pembelian.qty * detail_pembelian.harga ) + penyesuaian, 0 )) AS pnj")
+            ->leftjoin('pembelian', 'detail_pembelian.nobukti_pembelian', '=', 'pembelian.nobukti_pembelian')
+            ->leftjoin('coa', 'pembelian.kode_akun', '=', 'coa.kode_akun')
+            ->leftJoin(
+                DB::raw("(
+                    SELECT kode_akun,
+                    SUM(IF(status_dk='D',(jurnal_koreksi.qty*jurnal_koreksi.harga),0)) as jurnaldebet,
+                    SUM(IF(status_dk='K',(jurnal_koreksi.qty*jurnal_koreksi.harga),0)) as jurnalkredit
+                    FROM jurnal_koreksi
+                    WHERE tgl_jurnalkoreksi BETWEEN '$dari' AND '$sampai'
+                    GROUP BY kode_akun
+                ) jk"),
+                function ($join) {
+                    $join->on('detail_pembelian.kode_akun', '=', 'jk.kode_akun');
+                }
+            )
+            ->whereBetween('tgl_pembelian', [$dari, $sampai])
+            ->groupByRaw('pembelian.kode_akun,nama_akun,jurnaldebet,jurnalkredit')
+            ->get();
+
+
         if (isset($_POST['export'])) {
             // Fungsi header dengan mengirimkan raw data excel
             header("Content-type: application/vnd-ms-excel");
             // Mendefinisikan nama file ekspor "hasil-export.xls"
             header("Content-Disposition: attachment; filename=Rekap Akun $dari-$sampai.xls");
         }
-        return view('pembelian.laporan.cetak_rekapakun', compact('dari', 'sampai', 'pmb', 'jurnalkoreksi'));
+        return view('pembelian.laporan.cetak_rekapakun', compact('dari', 'sampai', 'pmb', 'hutang'));
     }
 
     public function rekapkontrabon()

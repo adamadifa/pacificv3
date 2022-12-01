@@ -83,10 +83,28 @@
             $totaldebets    = 0;
             $no            = 1;
              ?>
+            @php
+            $totalhk = 0;
+            $totalhd = 0;
+            @endphp
+            @foreach ($hutang as $d)
+            @php
+            $hutangkredit = $d->pmb + $d->jurnalkredit;
+            $hutangdebet = $d->pnj + $d->jurnaldebet;
+            $totalhk += $hutangkredit;
+            $totalhd += $hutangdebet;
+            @endphp
+            <tr>
+                <td>{{ $d->kode_akun }}</td>
+                <td>{{ $d->nama_akun }}</td>
+                <td style="text-align: right">{{ rupiah($hutangkredit) }}</td>
+                <td style="text-align: right">{{ rupiah($hutangdebet) }}</td>
+            </tr>
+            @endforeach
             <tr bgcolor="#024a75" style="color:white">
                 <td colspan="2"><b>TOTAL</b></td>
-                <td align="right"><b><?php echo desimal($totaldebet + $totaldebets); ?></b></td>
-                <td align="right"><b><?php echo desimal($totalkredit + $totalkredits); ?></b></td>
+                <td align="right"><b><?php echo desimal($totaldebet + $totalhd); ?></b></td>
+                <td align="right"><b><?php echo desimal($totalkredit + $totalhk); ?></b></td>
             </tr>
         </tbody>
 
