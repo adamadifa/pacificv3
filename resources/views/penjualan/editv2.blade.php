@@ -38,7 +38,8 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="No. Faktur" value="{{ $faktur->no_fak_penj }}" field="no_fak_penj" icon="fa fa-barcode" />
+                                            <input type="hidden" name="no_fak_penj" value="{{ $faktur->no_fak_penj }}" id="no_fak_penj">
+                                            <x-inputtext label="No. Faktur" value="{{ $faktur->no_fak_penj }}" field="no_fak_penj_new" icon="fa fa-barcode" />
                                         </div>
                                     </div>
                                     <div class="row">
@@ -424,13 +425,18 @@
                                                     </div>
                                                     <div class="form-group tunai" style="margin-bottom: 5px">
                                                         <select class="form-control" name="jenisbayartunai" id="jenisbayartunai">
-                                                            <option value="tunai">Cash</option>
-                                                            <option value="transfer">Transfer</option>
+                                                            <option @if ($faktur->jenisbayar=="tunai")
+                                                                selected
+                                                                @endif value="tunai">Cash</option>
+                                                            <option @if ($faktur->jenistransaksi=="transfer")
+                                                                selected
+                                                                @endif value="transfer">Transfer</option>
                                                         </select>
                                                     </div>
                                                     <div class="form-group tunai" style="margin-bottom: 5px">
                                                         <div class="position-relative has-icon-left">
-                                                            <input type="text" id="voucher" class="form-control text-right money" name="voucher" placeholder="Voucher">
+                                                            <input type="hidden" id="voucher_old" value="@if($cekvouchertunai!=null){{ rupiah($cekvouchertunai->bayar) }}@endif" class="form-control text-right money" name="voucher_old" placeholder="Voucher">
+                                                            <input type="text" id="voucher" class="form-control text-right money" name="voucher" placeholder="Voucher" value="@if($cekvouchertunai!=null){{ rupiah($cekvouchertunai->bayar) }}@endif">
                                                             <div class="form-control-position" style="top:5px">
                                                                 <i class="feather icon-tag"></i>
                                                             </div>
@@ -941,6 +947,7 @@
         //Tambah Item
         $("#tambahitem").click(function(e) {
             e.preventDefault();
+            var no_fak_penj = $("#no_fak_penj").val();
             var kode_barang = $("#kode_barang").val();
             var jml_dus = $("#jml_dus").val();
             var jml_pack = $("#jml_pack").val();
@@ -994,9 +1001,10 @@
                 //Simpan Barang Temp
                 $.ajax({
                     type: 'POST'
-                    , url: '/penjualan/storebarangtempv2'
+                    , url: '/penjualan/storebarang'
                     , data: {
                         _token: "{{ csrf_token() }}"
+                        , no_fak_penj: no_fak_penj
                         , kode_barang: kode_barang
                         , hargadus: hargadus
                         , hargapack: hargapack

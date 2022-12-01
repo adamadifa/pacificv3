@@ -52,10 +52,15 @@ $total += $d->subtotal;
 <script>
     $(function() {
         function showtemp() {
+            var no_fak_penj = $("#no_fak_penj").val();
             $.ajax({
-                type: 'GET'
-                , url: '/penjualan/showbarangtempv2'
+                type: 'POST'
+                , url: '/penjualan/showbarangv2'
                 , cache: false
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , no_fak_penj: no_fak_penj
+                }
                 , success: function(respond) {
                     $("#loadbarangtemp").html(respond);
                     hitungdiskon();
@@ -66,6 +71,7 @@ $total += $d->subtotal;
             e.preventDefault();
             var kode_barang = $(this).attr("kode_barang");
             var promo = $(this).attr("promo");
+            var no_fak_penj = $("#no_fak_penj").val();
             event.preventDefault();
             swal({
                     title: `Anda Yakin Data ini Akan Dihapus ?`
@@ -78,9 +84,10 @@ $total += $d->subtotal;
                     if (willDelete) {
                         $.ajax({
                             type: 'POST'
-                            , url: '/penjualan/deletebarangtemp'
+                            , url: '/penjualan/deletebarang'
                             , data: {
                                 _token: "{{ csrf_token() }}"
+                                , no_fak_penj: no_fak_penj
                                 , kode_barang: kode_barang
                                 , promo: promo
                             }
@@ -102,12 +109,14 @@ $total += $d->subtotal;
         $(".edit").click(function(e) {
             var kode_barang = $(this).attr("kode_barang");
             var promo = $(this).attr("promo");
+            var no_fak_penj = $("#no_fak_penj").val();
             e.preventDefault();
             $.ajax({
                 type: 'POST'
-                , url: '/penjualan/editbarangtemp'
+                , url: '/penjualan/editbarang'
                 , data: {
                     _token: "{{ csrf_token() }}"
+                    , no_fak_penj: no_fak_penj
                     , kode_barang: kode_barang
                     , promo: promo
                 }
@@ -144,6 +153,7 @@ $total += $d->subtotal;
         }
 
         function hitungdiskon() {
+            var no_fak_penj = $("#no_fak_penj").val();
             var jenistransaksi = $("#jenistransaksi").val();
             var pelanggan = $("#nama_pelanggan").val();
             var pl = pelanggan.split("|");
@@ -154,9 +164,10 @@ $total += $d->subtotal;
             $("#btnsimpan").html('<i class="fa fa-spinner mr-1"></i><i>Loading...</i>');
             $.ajax({
                 type: 'POST'
-                , url: '/hitungdiskon'
+                , url: '/hitungdiskonpenjualanv2'
                 , data: {
                     _token: "{{ csrf_token() }}"
+                    , no_fak_penj: no_fak_penj
                     , jenistransaksi: jenistransaksi
                 }
                 , cache: false
@@ -183,6 +194,7 @@ $total += $d->subtotal;
                 }
             });
         }
+
 
 
 

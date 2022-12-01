@@ -1241,6 +1241,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/penjualan/{no_fak_penj}/updatepending', [PenjualanController::class, 'updatepending']);
     Route::post('/penjualan/ceknofaktur', [PenjualanController::class, 'ceknofaktur']);
     Route::post('/penjualan/editbarangtemp', [PenjualanController::class, 'editbarangtemp']);
+    Route::post('/penjualan/editbarang', [PenjualanController::class, 'editbarang']);
+    Route::post('/penjualan/updatebarang', [PenjualanController::class, 'updatebarang']);
     Route::post('/penjualan/updatebarangtemp', [PenjualanController::class, 'updatebarangtemp']);
     //Pembayaran
     Route::post('/pembayaran/store', [PembayaranController::class, 'store']);

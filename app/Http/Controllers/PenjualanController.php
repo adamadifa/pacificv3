@@ -395,33 +395,79 @@ class PenjualanController extends Controller
     }
 
 
+
     public function storebarang(Request $request)
     {
         $no_fak_penj = $request->no_fak_penj;
-        $barang = Harga::where('kode_barang', $request->kode_barang)->first();
-        $id_user = Auth::user()->id;
-        $cek = DB::table('detailpenjualan_edit')->where('kode_barang', $request->kode_barang)->where('no_fak_penj', $no_fak_penj)->whereNull('promo')->count();
-        if (empty($cek)) {
-            $simpan = DB::table('detailpenjualan_edit')
-                ->insert([
-                    'no_fak_Penj' => $no_fak_penj,
-                    'kode_barang' => $request->kode_barang,
-                    'jumlah' => 0,
-                    'harga_dus' => $barang->harga_dus,
-                    'harga_pack' => $barang->harga_pack,
-                    'harga_pcs' => $barang->harga_pcs,
-                    'subtotal' => 0,
-                    'id_admin' => $id_user
-                ]);
-            if ($simpan) {
-                echo 0;
-            } else {
-                echo 2;
-            }
+        $kode_barang = $request->kode_barang;
+        $harga_dus = $request->hargadus;
+        $harga_pack = $request->hargapack;
+        $harga_pcs = $request->hargapcs;
+        $jumlah = $request->jumlah;
+        $subtotal = $request->subtotal;
+        $id_admin = Auth::user()->id;
+        $promo = !empty($request->promo) ? $request->promo : NULL;
+        $data = [
+            'no_fak_penj' => $no_fak_penj,
+            'kode_barang' => $kode_barang,
+            'jumlah' => $jumlah,
+            'harga_dus' => $harga_dus,
+            'harga_pack' => $harga_pack,
+            'harga_pcs' => $harga_pcs,
+            'subtotal' => $subtotal,
+            'id_admin' => $id_admin,
+            'promo' => $promo
+        ];
+
+        if ($promo == NULL) {
+            $cek = DB::table('detailpenjualan')->where('kode_barang', $kode_barang)->where('no_fak_penj', $no_fak_penj)
+                ->whereNull('promo')
+                ->count();
         } else {
+            $cek = DB::table('detailpenjualan')->where('kode_barang', $kode_barang)->where('no_fak_penj', $no_fak_penj)
+                ->where('promo', 1)
+                ->count();
+        }
+
+        if ($cek > 0) {
             echo 1;
+        } else {
+            try {
+                DB::table('detailpenjualan')->insert($data);
+                echo 0;
+            } catch (Exception $e) {
+                echo $e;
+            }
         }
     }
+
+    // public function storebarang(Request $request)
+    // {
+    //     $no_fak_penj = $request->no_fak_penj;
+    //     $barang = Harga::where('kode_barang', $request->kode_barang)->first();
+    //     $id_user = Auth::user()->id;
+    //     $cek = DB::table('detailpenjualan_edit')->where('kode_barang', $request->kode_barang)->where('no_fak_penj', $no_fak_penj)->whereNull('promo')->count();
+    //     if (empty($cek)) {
+    //         $simpan = DB::table('detailpenjualan_edit')
+    //             ->insert([
+    //                 'no_fak_Penj' => $no_fak_penj,
+    //                 'kode_barang' => $request->kode_barang,
+    //                 'jumlah' => 0,
+    //                 'harga_dus' => $barang->harga_dus,
+    //                 'harga_pack' => $barang->harga_pack,
+    //                 'harga_pcs' => $barang->harga_pcs,
+    //                 'subtotal' => 0,
+    //                 'id_admin' => $id_user
+    //             ]);
+    //         if ($simpan) {
+    //             echo 0;
+    //         } else {
+    //             echo 2;
+    //         }
+    //     } else {
+    //         echo 1;
+    //     }
+    // }
 
     public function showbarangtemp()
     {
@@ -504,10 +550,10 @@ class PenjualanController extends Controller
 
     public function deletebarang(Request $request)
     {
-        $id_user = Auth::user()->id;
-        $hapus = DB::table('detailpenjualan_edit')
+        $no_fak_penj = $request->no_fak_penj;
+        $hapus = DB::table('detailpenjualan')
             ->where('kode_barang', $request->kode_barang)
-            ->where('id_admin', $id_user)
+            ->where('no_fak_penj', $no_fak_penj)
             ->where('promo', $request->promo)
             ->delete();
         if ($hapus) {
@@ -1613,6 +1659,385 @@ class PenjualanController extends Controller
         }
     }
 
+    // public function update(Request $request)
+    // {
+    //     $no_fak_penj = $request->no_fak_penj;
+    //     $no_fak_penj_new = $request->no_fak_penj_new;
+    //     $tgltransaksi = $request->tgltransaksi;
+    //     $id_karyawan = $request->id_karyawan;
+    //     $kode_pelanggan = $request->kode_pelanggan;
+    //     $nama_pelanggan = $request->nama_pelanggan;
+    //     $limitpel = $request->limitpel;
+    //     $sisapiutang = $request->sisapiutang;
+    //     $jenistransaksi = $request->jenistransaksi;
+    //     $jenisbayar = $request->jenisbayar;
+    //     $subtotal = $request->subtotal;
+    //     $jatuhtempo = $request->jatuhtempo;
+    //     $bruto = $request->bruto;
+    //     $id_admin = Auth::user()->id;
+    //     $potaida        = str_replace(".", "", $request->potaida);
+    //     if (empty($potaida)) {
+    //         $potaida = 0;
+    //     } else {
+    //         $potaida = $potaida;
+    //     }
+    //     $potswan        = str_replace(".", "", $request->potswan);
+    //     if (empty($potswan)) {
+    //         $potswan = 0;
+    //     } else {
+    //         $potswan = $potswan;
+    //     }
+    //     $potstick       = str_replace(".", "", $request->potstick);
+    //     if (empty($potstick)) {
+    //         $potstick = 0;
+    //     } else {
+    //         $potstick = $potstick;
+    //     }
+    //     $potsp       = str_replace(".", "", $request->potsp);
+    //     if (empty($potsp)) {
+    //         $potsp = 0;
+    //     } else {
+    //         $potsp = $potsp;
+    //     }
+    //     $potsb       = str_replace(".", "", $request->potsb);
+    //     if (empty($potsb)) {
+    //         $potsambal = 0;
+    //     } else {
+    //         $potsambal = $potsb;
+    //     }
+
+    //     // Voucher
+    //     $voucher       = str_replace(".", "", $request->voucher);
+    //     if (empty($voucher)) {
+    //         $voucher = 0;
+    //     } else {
+    //         $voucher = $voucher;
+    //     }
+
+    //     // Potongan Istimewa
+    //     $potisaida        = str_replace(".", "", $request->potisaida);
+    //     $potisswan        = str_replace(".", "", $request->potisswan);
+    //     $potisstick       = str_replace(".", "", $request->potisstick);
+    //     if (empty($potisaida)) {
+    //         $potisaida = 0;
+    //     } else {
+    //         $potisaida = $potisaida;
+    //     }
+    //     if (empty($potisswan)) {
+    //         $potisswan = 0;
+    //     } else {
+    //         $potisswan = $potisswan;
+    //     }
+    //     if (empty($potisstick)) {
+    //         $potisstick = 0;
+    //     } else {
+    //         $potisstick = $potisstick;
+    //     }
+
+    //     //Penyesuaian
+    //     $penyaida        = str_replace(".", "", $request->penyaida);
+    //     $penyswan        = str_replace(".", "", $request->penyswan);
+    //     $penystick       = str_replace(".", "", $request->penystick);
+    //     if (empty($penyaida)) {
+    //         $penyaida = 0;
+    //     } else {
+    //         $penyaida = $penyaida;
+    //     }
+    //     if (empty($penyswan)) {
+    //         $penyswan = 0;
+    //     } else {
+    //         $penyswan = $penyswan;
+    //     }
+    //     if (empty($penystick)) {
+    //         $penystick = 0;
+    //     } else {
+    //         $penystick = $penystick;
+    //     }
+
+    //     $potongan = $potaida + $potswan + $potstick + $potsp + $potsambal;
+    //     $potistimewa = $potisaida + $potisswan + $potisstick;
+    //     $penyesuaian = $penyaida + $penyswan + $penystick;
+    //     $titipan = str_replace(".", "", $request->titipan);
+    //     $kode_cabang = $request->kode_cabang;
+    //     $tahunini  = date('y');
+
+    //     //Get No Bukti
+    //     $bayar = DB::table("historibayar")
+    //         ->whereRaw('LEFT(nobukti,6) = "' . $kode_cabang . $tahunini . '-"')
+    //         ->orderBy("nobukti", "desc")
+    //         ->first();
+    //     $lastnobukti = $bayar->nobukti;
+    //     $nobukti  = buatkode($lastnobukti, $kode_cabang . $tahunini . "-", 6);
+
+
+
+    //     $totalpiutang  = $sisapiutang + $subtotal;
+    //     if ($jenistransaksi == "tunai") {
+    //         $total = $subtotal + $voucher;
+    //         $status_lunas = "1";
+    //     } else {
+    //         $status_lunas = "2";
+    //         $total = $subtotal;
+    //     }
+    //     if (empty($jatuhtempo)) {
+    //         $jatuhtempo = date("Y-m-d", strtotime("+14 day", strtotime($tgltransaksi)));
+    //     } else {
+    //         $jatuhtempo = date("Y-m-d", strtotime("+$jatuhtempo day", strtotime($tgltransaksi)));
+    //     }
+
+    //     if (empty($limitpel) and $jenistransaksi == 'kredit' and ($subtotal - $titipan) > 2000000 or !empty($limitpel) and $totalpiutang >= $limitpel and $jenistransaksi == 'kredit') {
+    //         $status = 1; // Pending
+    //     } else {
+    //         $status = "";
+    //     }
+
+    //     if ($kode_cabang == 'TSM') {
+    //         $akun = "1-1468";
+    //     } else if ($kode_cabang == 'BDG') {
+    //         $akun = "1-1402";
+    //     } else if ($kode_cabang == 'BGR') {
+    //         $akun = "1-1403";
+    //     } else if ($kode_cabang == 'PWT') {
+    //         $akun = "1-1404";
+    //     } else if ($kode_cabang == 'TGL') {
+    //         $akun = "1-1405";
+    //     } else if ($kode_cabang == "SKB") {
+    //         $akun = "1-1407";
+    //     } else if ($kode_cabang == "GRT") {
+    //         $akun = "1-1468";
+    //     } else if ($kode_cabang == "SMR") {
+    //         $akun = "1-1488";
+    //     } else if ($kode_cabang == "SBY") {
+    //         $akun = "1-1486";
+    //     } else if ($kode_cabang == "PST") {
+    //         $akun = "1-1489";
+    //     } else if ($kode_cabang == "KLT") {
+    //         $akun = "1-1490";
+    //     }
+
+    //     $tgl_aup    = explode("-", $tgltransaksi);
+    //     $tahun      = substr($tgl_aup[0], 2, 2);
+    //     $bulan      = $tgl_aup[1];
+    //     DB::beginTransaction();
+    //     try {
+    //         DB::table('penjualan')
+    //             ->where('no_fak_penj', $no_fak_penj)
+    //             ->update([
+    //                 'no_fak_penj' => $no_fak_penj_new,
+    //                 'tgltransaksi' => $tgltransaksi,
+    //                 'kode_pelanggan' => $kode_pelanggan,
+    //                 'id_karyawan' => $id_karyawan,
+    //                 'subtotal' => $bruto,
+    //                 'potaida' => $potaida,
+    //                 'potswan' => $potswan,
+    //                 'potstick' => $potstick,
+    //                 'potsp' => $potsp,
+    //                 'potsambal' => $potsambal,
+    //                 'potongan' => $potongan,
+    //                 'potisaida' => $potisaida,
+    //                 'potisswan' => $potisswan,
+    //                 'potisstick' => $potisstick,
+    //                 'potistimewa' => $potistimewa,
+    //                 'penyaida' => $penyaida,
+    //                 'penyswan' => $penyswan,
+    //                 'penystick' => $penystick,
+    //                 'penyharga' => $penyesuaian,
+    //                 'total' => $total,
+    //                 'jenistransaksi' => $jenistransaksi,
+    //                 'jenisbayar' => $jenisbayar,
+    //                 'jatuhtempo' => $jatuhtempo,
+    //                 'id_admin' => $id_admin,
+    //                 'status' => $status,
+    //                 'status_lunas' => $status_lunas
+    //             ]);
+    //         DB::table('detailpenjualan')->where('no_fak_penj', $no_fak_penj)->delete();
+    //         DB::table('buku_besar')
+    //             ->where('nobukti_transaksi', $no_fak_penj)
+    //             ->delete();
+    //         $edit = DB::table('detailpenjualan_edit')->where('no_fak_penj', $no_fak_penj)
+    //             ->select('detailpenjualan_edit.*', 'kode_akun', 'barang.nama_barang')
+    //             ->join('barang', 'detailpenjualan_edit.kode_barang', '=', 'barang.kode_barang')
+    //             ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')
+    //             ->get();
+
+    //         foreach ($edit as $d) {
+    //             DB::table('detailpenjualan')->insert([
+    //                 'no_fak_penj' => $no_fak_penj_new,
+    //                 'kode_barang' => $d->kode_barang,
+    //                 'harga_dus' => $d->harga_dus,
+    //                 'harga_pack' => $d->harga_pack,
+    //                 'harga_pcs' => $d->harga_pcs,
+    //                 'jumlah' => $d->jumlah,
+    //                 'subtotal' => $d->subtotal,
+    //                 'promo' => $d->promo,
+    //                 'id_admin' => $id_admin
+    //             ]);
+
+    //             $bukubesar = DB::table("buku_besar")
+    //                 ->whereRaw('LEFT(no_bukti,6) = "GJ' . $bulan . $tahun . '"')
+    //                 ->orderBy("no_bukti", "desc")
+    //                 ->first();
+    //             if ($bukubesar == null) {
+    //                 $lastno_bukti = "";
+    //             } else {
+    //                 $lastno_bukti = $bukubesar->no_bukti;
+    //             }
+    //             $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 6);
+
+    //             DB::table('buku_besar')
+    //                 ->insert([
+    //                     'no_bukti' => $no_bukti_bukubesar,
+    //                     'tanggal' => $tgltransaksi,
+    //                     'sumber' => 'Penjualan',
+    //                     'keterangan' => "Penjualan " . $d->nama_barang,
+    //                     'kode_akun' => $d->kode_akun,
+    //                     'debet' => $d->subtotal,
+    //                     'kredit' => 0,
+    //                     'nobukti_transaksi' => $no_fak_penj,
+    //                     'no_ref' => $no_fak_penj . $d->kode_barang
+    //                 ]);
+    //         }
+    //         DB::table('detailpenjualan_edit')->where('no_fak_penj', $no_fak_penj)->delete();
+    //         if ($jenistransaksi == "tunai") {
+    //             $hb = DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->get();
+    //             $no_ref[] = "";
+    //             foreach ($hb as $d) {
+    //                 $no_ref[] = $d->nobukti;
+    //             }
+
+    //             DB::table('buku_besar')
+    //                 ->whereIn('no_ref', $no_ref)
+    //                 ->delete();
+
+
+    //             $bukubesar = DB::table("buku_besar")
+    //                 ->whereRaw('LEFT(no_bukti,6) = "GJ' . $bulan . $tahun . '"')
+    //                 ->orderBy("no_bukti", "desc")
+    //                 ->first();
+    //             if ($bukubesar == null) {
+    //                 $lastno_bukti = '';
+    //             } else {
+    //                 $lastno_bukti = $bukubesar->no_bukti;
+    //             }
+    //             $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 6);
+
+
+    //             DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->delete();
+    //             DB::table('historibayar')
+    //                 ->insert([
+    //                     'nobukti' => $nobukti,
+    //                     'no_fak_penj' => $no_fak_penj_new,
+    //                     'tglbayar' => $tgltransaksi,
+    //                     'jenistransaksi' => $jenistransaksi,
+    //                     'jenisbayar' => $jenisbayar,
+    //                     'bayar' => $subtotal,
+    //                     'id_admin' => $id_admin,
+    //                     'id_karyawan' => $id_karyawan
+    //                 ]);
+
+    //             DB::table('buku_besar')
+    //                 ->insert([
+    //                     'no_bukti' => $no_bukti_bukubesar,
+    //                     'tanggal' => $tgltransaksi,
+    //                     'sumber' => 'Kas Besar',
+    //                     'keterangan' => "Pembayaran Piutang Pelanggan " . $nama_pelanggan,
+    //                     'kode_akun' => $akun,
+    //                     'debet' => $subtotal,
+    //                     'kredit' => 0,
+    //                     'nobukti_transaksi' => $nobukti,
+    //                     'no_ref' => $nobukti
+    //                 ]);
+    //             if (!empty($voucher)) {
+    //                 $nobukti = buatkode($nobukti, $kode_cabang . $tahunini . "-", 6);
+    //                 DB::table('historibayar')
+    //                     ->insert([
+    //                         'nobukti' => $nobukti,
+    //                         'no_fak_penj' => $no_fak_penj_new,
+    //                         'tglbayar' => $tgltransaksi,
+    //                         'jenistransaksi' => $jenistransaksi,
+    //                         'jenisbayar' => $jenisbayar,
+    //                         'bayar' => $voucher,
+    //                         'id_admin' => $id_admin,
+    //                         'ket_voucher' => 2,
+    //                         'status_bayar' => 'voucher',
+    //                         'id_karyawan' => $id_karyawan
+    //                     ]);
+    //             }
+    //         } else {
+    //             $hbtunai = DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->where('jenisbayar', 'tunai')->get();
+    //             $hbtitipan = DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->where('jenisbayar', 'titipan')->where('tglbayar', $tgltransaksi)->first();
+
+    //             if ($hbtunai != null) {
+    //                 $no_ref_tunai[] = "";
+    //                 foreach ($hbtunai as $d) {
+    //                     $no_ref_tunai[] = $d->nobukti;
+    //                 }
+
+    //                 DB::table('buku_besar')
+    //                     ->whereIn('no_ref', $no_ref_tunai)
+    //                     ->delete();
+    //             }
+
+    //             if ($hbtitipan != null) {
+    //                 DB::table('buku_besar')
+    //                     ->where('no_ref', $hbtitipan->nobukti)->delete();
+    //             }
+
+
+
+
+
+    //             DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->where('jenisbayar', 'tunai')->delete();
+    //             DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->where('jenisbayar', 'titipan')->where('tglbayar', $tgltransaksi)->delete();
+    //             if (!empty($titipan)) {
+    //                 $bukubesar = DB::table("buku_besar")
+    //                     ->whereRaw('LEFT(no_bukti,6) = "GJ' . $bulan . $tahun . '"')
+    //                     ->orderBy("no_bukti", "desc")
+    //                     ->first();
+    //                 if ($bukubesar == null) {
+    //                     $lastno_bukti = "GJ" . $bulan . $tahun . "0000";
+    //                 } else {
+    //                     $lastno_bukti = $bukubesar->no_bukti;
+    //                 }
+
+    //                 $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 6);
+
+    //                 DB::table('historibayar')
+    //                     ->insert([
+    //                         'nobukti' => $nobukti,
+    //                         'no_fak_penj' => $no_fak_penj_new,
+    //                         'tglbayar' => $tgltransaksi,
+    //                         'jenistransaksi' => $jenistransaksi,
+    //                         'jenisbayar' => $jenisbayar,
+    //                         'bayar' => $titipan,
+    //                         'id_admin' => $id_admin,
+    //                         'id_karyawan' => $id_karyawan
+    //                     ]);
+
+    //                 DB::table('buku_besar')
+    //                     ->insert([
+    //                         'no_bukti' => $no_bukti_bukubesar,
+    //                         'tanggal' => $tgltransaksi,
+    //                         'sumber' => 'Kas Besar',
+    //                         'keterangan' => "Pembayaran Piutang Pelanggan " . $nama_pelanggan,
+    //                         'kode_akun' => $akun,
+    //                         'debet' => $titipan,
+    //                         'kredit' => 0,
+    //                         'nobukti_transaksi' => $nobukti,
+    //                         'no_ref' => $nobukti
+    //                     ]);
+    //             }
+    //         }
+    //         DB::commit();
+    //         return redirect('/penjualan?no_fak_penj=' . $no_fak_penj_new)->with(['success' => 'Data Penjualan Berhasil di Update']);
+    //     } catch (\Exception $e) {
+    //         dd($e);
+    //         DB::rollback();
+    //         return redirect('/penjualan?no_fak_penj=' . $no_fak_penj_new)->with(['warning' => 'Data Penjualan Gagal di Update']);
+    //     }
+    // }
+
+
     public function update(Request $request)
     {
         $no_fak_penj = $request->no_fak_penj;
@@ -1628,7 +2053,8 @@ class PenjualanController extends Controller
         $subtotal = $request->subtotal;
         $jatuhtempo = $request->jatuhtempo;
         $bruto = $request->bruto;
-        $id_admin = Auth::user()->id;
+
+        //Potongan
         $potaida        = str_replace(".", "", $request->potaida);
         if (empty($potaida)) {
             $potaida = 0;
@@ -1715,16 +2141,6 @@ class PenjualanController extends Controller
         $kode_cabang = $request->kode_cabang;
         $tahunini  = date('y');
 
-        //Get No Bukti
-        $bayar = DB::table("historibayar")
-            ->whereRaw('LEFT(nobukti,6) = "' . $kode_cabang . $tahunini . '-"')
-            ->orderBy("nobukti", "desc")
-            ->first();
-        $lastnobukti = $bayar->nobukti;
-        $nobukti  = buatkode($lastnobukti, $kode_cabang . $tahunini . "-", 6);
-
-
-
         $totalpiutang  = $sisapiutang + $subtotal;
         if ($jenistransaksi == "tunai") {
             $total = $subtotal + $voucher;
@@ -1772,8 +2188,11 @@ class PenjualanController extends Controller
         $tgl_aup    = explode("-", $tgltransaksi);
         $tahun      = substr($tgl_aup[0], 2, 2);
         $bulan      = $tgl_aup[1];
-        DB::beginTransaction();
+
+        DB::transaction();
         try {
+            //Update Data Penjualan
+
             DB::table('penjualan')
                 ->where('no_fak_penj', $no_fak_penj)
                 ->update([
@@ -1804,190 +2223,8 @@ class PenjualanController extends Controller
                     'status' => $status,
                     'status_lunas' => $status_lunas
                 ]);
-            DB::table('detailpenjualan')->where('no_fak_penj', $no_fak_penj)->delete();
-            DB::table('buku_besar')
-                ->where('nobukti_transaksi', $no_fak_penj)
-                ->delete();
-            $edit = DB::table('detailpenjualan_edit')->where('no_fak_penj', $no_fak_penj)
-                ->select('detailpenjualan_edit.*', 'kode_akun', 'barang.nama_barang')
-                ->join('barang', 'detailpenjualan_edit.kode_barang', '=', 'barang.kode_barang')
-                ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')
-                ->get();
-
-            foreach ($edit as $d) {
-                DB::table('detailpenjualan')->insert([
-                    'no_fak_penj' => $no_fak_penj_new,
-                    'kode_barang' => $d->kode_barang,
-                    'harga_dus' => $d->harga_dus,
-                    'harga_pack' => $d->harga_pack,
-                    'harga_pcs' => $d->harga_pcs,
-                    'jumlah' => $d->jumlah,
-                    'subtotal' => $d->subtotal,
-                    'promo' => $d->promo,
-                    'id_admin' => $id_admin
-                ]);
-
-                $bukubesar = DB::table("buku_besar")
-                    ->whereRaw('LEFT(no_bukti,6) = "GJ' . $bulan . $tahun . '"')
-                    ->orderBy("no_bukti", "desc")
-                    ->first();
-                if ($bukubesar == null) {
-                    $lastno_bukti = "";
-                } else {
-                    $lastno_bukti = $bukubesar->no_bukti;
-                }
-                $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 6);
-
-                DB::table('buku_besar')
-                    ->insert([
-                        'no_bukti' => $no_bukti_bukubesar,
-                        'tanggal' => $tgltransaksi,
-                        'sumber' => 'Penjualan',
-                        'keterangan' => "Penjualan " . $d->nama_barang,
-                        'kode_akun' => $d->kode_akun,
-                        'debet' => $d->subtotal,
-                        'kredit' => 0,
-                        'nobukti_transaksi' => $no_fak_penj,
-                        'no_ref' => $no_fak_penj . $d->kode_barang
-                    ]);
-            }
-            DB::table('detailpenjualan_edit')->where('no_fak_penj', $no_fak_penj)->delete();
-            if ($jenistransaksi == "tunai") {
-                $hb = DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->get();
-                $no_ref[] = "";
-                foreach ($hb as $d) {
-                    $no_ref[] = $d->nobukti;
-                }
-
-                DB::table('buku_besar')
-                    ->whereIn('no_ref', $no_ref)
-                    ->delete();
-
-
-                $bukubesar = DB::table("buku_besar")
-                    ->whereRaw('LEFT(no_bukti,6) = "GJ' . $bulan . $tahun . '"')
-                    ->orderBy("no_bukti", "desc")
-                    ->first();
-                if ($bukubesar == null) {
-                    $lastno_bukti = '';
-                } else {
-                    $lastno_bukti = $bukubesar->no_bukti;
-                }
-                $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 6);
-
-
-                DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->delete();
-                DB::table('historibayar')
-                    ->insert([
-                        'nobukti' => $nobukti,
-                        'no_fak_penj' => $no_fak_penj_new,
-                        'tglbayar' => $tgltransaksi,
-                        'jenistransaksi' => $jenistransaksi,
-                        'jenisbayar' => $jenisbayar,
-                        'bayar' => $subtotal,
-                        'id_admin' => $id_admin,
-                        'id_karyawan' => $id_karyawan
-                    ]);
-
-                DB::table('buku_besar')
-                    ->insert([
-                        'no_bukti' => $no_bukti_bukubesar,
-                        'tanggal' => $tgltransaksi,
-                        'sumber' => 'Kas Besar',
-                        'keterangan' => "Pembayaran Piutang Pelanggan " . $nama_pelanggan,
-                        'kode_akun' => $akun,
-                        'debet' => $subtotal,
-                        'kredit' => 0,
-                        'nobukti_transaksi' => $nobukti,
-                        'no_ref' => $nobukti
-                    ]);
-                if (!empty($voucher)) {
-                    $nobukti = buatkode($nobukti, $kode_cabang . $tahunini . "-", 6);
-                    DB::table('historibayar')
-                        ->insert([
-                            'nobukti' => $nobukti,
-                            'no_fak_penj' => $no_fak_penj_new,
-                            'tglbayar' => $tgltransaksi,
-                            'jenistransaksi' => $jenistransaksi,
-                            'jenisbayar' => $jenisbayar,
-                            'bayar' => $voucher,
-                            'id_admin' => $id_admin,
-                            'ket_voucher' => 2,
-                            'status_bayar' => 'voucher',
-                            'id_karyawan' => $id_karyawan
-                        ]);
-                }
-            } else {
-                $hbtunai = DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->where('jenisbayar', 'tunai')->get();
-                $hbtitipan = DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->where('jenisbayar', 'titipan')->where('tglbayar', $tgltransaksi)->first();
-
-                if ($hbtunai != null) {
-                    $no_ref_tunai[] = "";
-                    foreach ($hbtunai as $d) {
-                        $no_ref_tunai[] = $d->nobukti;
-                    }
-
-                    DB::table('buku_besar')
-                        ->whereIn('no_ref', $no_ref_tunai)
-                        ->delete();
-                }
-
-                if ($hbtitipan != null) {
-                    DB::table('buku_besar')
-                        ->where('no_ref', $hbtitipan->nobukti)->delete();
-                }
-
-
-
-
-
-                DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->where('jenisbayar', 'tunai')->delete();
-                DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->where('jenisbayar', 'titipan')->where('tglbayar', $tgltransaksi)->delete();
-                if (!empty($titipan)) {
-                    $bukubesar = DB::table("buku_besar")
-                        ->whereRaw('LEFT(no_bukti,6) = "GJ' . $bulan . $tahun . '"')
-                        ->orderBy("no_bukti", "desc")
-                        ->first();
-                    if ($bukubesar == null) {
-                        $lastno_bukti = "GJ" . $bulan . $tahun . "0000";
-                    } else {
-                        $lastno_bukti = $bukubesar->no_bukti;
-                    }
-
-                    $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 6);
-
-                    DB::table('historibayar')
-                        ->insert([
-                            'nobukti' => $nobukti,
-                            'no_fak_penj' => $no_fak_penj_new,
-                            'tglbayar' => $tgltransaksi,
-                            'jenistransaksi' => $jenistransaksi,
-                            'jenisbayar' => $jenisbayar,
-                            'bayar' => $titipan,
-                            'id_admin' => $id_admin,
-                            'id_karyawan' => $id_karyawan
-                        ]);
-
-                    DB::table('buku_besar')
-                        ->insert([
-                            'no_bukti' => $no_bukti_bukubesar,
-                            'tanggal' => $tgltransaksi,
-                            'sumber' => 'Kas Besar',
-                            'keterangan' => "Pembayaran Piutang Pelanggan " . $nama_pelanggan,
-                            'kode_akun' => $akun,
-                            'debet' => $titipan,
-                            'kredit' => 0,
-                            'nobukti_transaksi' => $nobukti,
-                            'no_ref' => $nobukti
-                        ]);
-                }
-            }
-            DB::commit();
-            return redirect('/penjualan?no_fak_penj=' . $no_fak_penj_new)->with(['success' => 'Data Penjualan Berhasil di Update']);
         } catch (\Exception $e) {
-            dd($e);
-            DB::rollback();
-            return redirect('/penjualan?no_fak_penj=' . $no_fak_penj_new)->with(['warning' => 'Data Penjualan Gagal di Update']);
+            //throw $th;
         }
     }
 
@@ -6178,5 +6415,64 @@ class PenjualanController extends Controller
         } catch (Exception $e) {
             echo $e;
         }
+    }
+
+    public function updatebarang(Request $request)
+    {
+        $no_fak_penj = $request->no_fak_penj;
+        $kode_barang = $request->kode_barang;
+        $harga_dus = $request->hargadus;
+        $harga_pack = $request->hargapack;
+        $harga_pcs = $request->hargapcs;
+        $jumlah = $request->jumlah;
+        $subtotal = $request->subtotal;
+        $id_admin = Auth::user()->id;
+        $promo = !empty($request->promo) ? $request->promo : NULL;
+        $data = [
+            'jumlah' => $jumlah,
+            'harga_dus' => $harga_dus,
+            'harga_pack' => $harga_pack,
+            'harga_pcs' => $harga_pcs,
+            'subtotal' => $subtotal,
+            'id_admin' => $id_admin,
+            'promo' => $promo
+        ];
+
+
+
+        try {
+            DB::table('detailpenjualan')
+                ->where('kode_barang', $kode_barang)
+                ->where('no_fak_penj', $no_fak_penj)
+                ->update($data);
+            echo 0;
+        } catch (Exception $e) {
+            echo $e;
+        }
+    }
+
+    public function editbarang(Request $request)
+    {
+        $kode_barang = $request->kode_barang;
+        $promo = $request->promo;
+        $no_fak_penj = $request->no_fak_penj;
+
+        if (empty($promo)) {
+            $barang = DB::table('detailpenjualan')
+                ->select('detailpenjualan.*', 'nama_barang', 'isipcsdus', 'isipcs', 'isipack', 'barang.harga_dus as harga_dus_old', 'barang.harga_pack as harga_pack_old', 'barang.harga_pcs as harga_pcs_old')
+                ->join('barang', 'detailpenjualan.kode_barang', '=', 'barang.kode_barang')
+                ->where('detailpenjualan.kode_barang', $kode_barang)
+                ->whereNull('promo')->where('no_fak_penj', $no_fak_penj)->first();
+        } else {
+            $barang = DB::table('detailpenjualan')
+                ->select('detailpenjualan.*', 'nama_barang', 'isipcsdus', 'isipcs', 'isipack', 'barang.harga_dus as harga_dus_old', 'barang.harga_pack as harga_pack_old', 'barang.harga_pcs as harga_pcs_old')
+                ->join('barang', 'detailpenjualan.kode_barang', '=', 'barang.kode_barang')
+                ->where('detailpenjualan.kode_barang', $kode_barang)
+                ->where('promo', 1)->where('no_fak_penj', $no_fak_penj)->first();
+        }
+
+
+
+        return view('penjualan.editbarang', compact('barang'));
     }
 }
