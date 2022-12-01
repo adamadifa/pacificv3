@@ -229,6 +229,42 @@ class PenjualanController extends Controller
         return view('penjualan.create_v2');
     }
 
+
+    public function editv2($no_fak_penj)
+    {
+        $no_fak_penj = Crypt::decrypt($no_fak_penj);
+        $faktur = DB::table('penjualan')
+            ->select(
+                'penjualan.*',
+                'nama_pelanggan',
+                'alamat_pelanggan',
+                'alamat_toko',
+                'pelanggan.no_hp',
+                'latitude',
+                'longitude',
+                'limitpel',
+                'karyawan.nama_karyawan',
+                'karyawan.kategori_salesman',
+                'karyawan.kode_cabang'
+            )
+            ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+            ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->where('penjualan.no_fak_penj', $no_fak_penj)
+            ->first();
+
+        $cektitipan = DB::table('historibayar')
+            ->where('tglbayar', $faktur->tgltransaksi)
+            ->where('no_fak_penj', $no_fak_penj)
+            ->where('jenisbayar', 'titipan')
+            ->first();
+        $cekvouchertunai = DB::table('historibayar')
+            ->where('tglbayar', $faktur->tgltransaksi)
+            ->where('no_fak_penj', $no_fak_penj)
+            ->where('jenisbayar', 'tunai')
+            ->where('status_bayar', 'voucher')
+            ->first();
+        return view('penjualan.editv2', compact('faktur', 'cektitipan', 'cekvouchertunai'));
+    }
     public function edit($no_fak_penj)
     {
         $no_fak_penj = Crypt::decrypt($no_fak_penj);
@@ -431,6 +467,20 @@ class PenjualanController extends Controller
             ->where('no_fak_penj', $no_fak_penj)
             ->get();
         return view('penjualan.showbarang', compact('barang', 'faktur'));
+    }
+
+
+
+
+    public function showbarangv2(Request $request)
+    {
+        $no_fak_penj = $request->no_fak_penj;
+        $barang = DB::table('detailpenjualan')
+            ->select('detailpenjualan.*', 'nama_barang', 'isipcsdus', 'isipack', 'isipcs')
+            ->join('barang', 'detailpenjualan.kode_barang', '=', 'barang.kode_barang')
+            ->where('no_fak_penj', $no_fak_penj)
+            ->get();
+        return view('penjualan.showbarangv2', compact('barang'));
     }
 
 
@@ -846,6 +896,104 @@ class PenjualanController extends Controller
 
         echo rupiah($totaldiskonswan), "|" . rupiah($totaldiskonaida) . "|" . rupiah($totaldiskonstick) . "|" . rupiah($totaldiskonsp) . "|" . rupiah($totaldiskonsb);
     }
+
+
+
+    public function hitungdiskonpenjualanv2(Request $request)
+    {
+        $no_fak_penj = $request->no_fak_penj;
+        $jenistransaksi = $request->jenistransaksi;
+        $detail = DB::table('detailpenjualan')
+            ->select('detailpenjualan.kode_barang', 'promo', 'isipcsdus', 'kategori', 'jumlah')
+            ->join('barang', 'detailpenjualan.kode_barang', '=', 'barang.kode_barang')
+            ->where('no_fak_penj', $no_fak_penj)
+            ->whereNull('promo')
+            ->get();
+        $jmldusswan = 0;
+        $jmldusaida = 0;
+        $jmldusstick = 0;
+        $jmldussp = 0;
+        $jmldussb = 0;
+        foreach ($detail as $d) {
+            $jmldus      = floor($d->jumlah / $d->isipcsdus);
+            if ($d->kategori == "SWAN") {
+                $jmldusswan   = $jmldusswan + $jmldus;
+            }
+
+            if ($d->kategori == "AIDA") {
+                $jmldusaida   = $jmldusaida + $jmldus;
+            }
+
+            if ($d->kategori == "STICK") {
+                $jmldusstick   = $jmldusstick + $jmldus;
+            }
+
+
+            if ($d->kategori == "SP") {
+                $jmldussp   = $jmldussp + $jmldus;
+            }
+
+            if ($d->kategori == "SAMBAL") {
+                $jmldussb   = $jmldussb + $jmldus;
+            }
+        }
+
+        $diskon = DB::table('diskon')->get();
+        $diskonswan = 0;
+        $diskonaida = 0;
+        $diskonstick = 0;
+        $diskonsp = 0;
+        $diskonsb = 0;
+
+        $diskonswantunai = 0;
+        $diskonaidatunai = 0;
+        $diskonsticktunai = 0;
+        $diskonsptunai = 0;
+        $diskonsbtunai = 0;
+        foreach ($diskon as $p) {
+            if ($p->kategori == "SWAN" and $jmldusswan >= $p->dari and $jmldusswan <= $p->sampai) {
+                $diskonswan = $p->diskon;
+                $diskonswantunai = $p->diskon_tunai;
+            }
+
+            if ($p->kategori == "AIDA" and $jmldusaida >= $p->dari and $jmldusaida <= $p->sampai) {
+                $diskonaida = $p->diskon;
+                $diskonaidatunai = $p->diskon_tunai;
+            }
+
+            if ($p->kategori == "STICK" and $jmldusstick >= $p->dari and $jmldusstick <= $p->sampai) {
+                $diskonstick = $p->diskon;
+                $diskonsticktunai = $p->diskon_tunai;
+            }
+
+            if ($p->kategori == "SP" and $jmldussp >= $p->dari and $jmldussp <= $p->sampai) {
+                $diskonsp = $p->diskon;
+                $diskonsptunai = $p->diskon_tunai;
+            }
+
+            if ($p->kategori == "SC" and $jmldussb >= $p->dari and $jmldussb <= $p->sampai) {
+                $diskonsb = $p->diskon;
+                $diskonsbtunai = $p->diskon_tunai;
+            }
+        }
+
+        if ($jenistransaksi == "tunai") {
+            $totaldiskonswan = ($jmldusswan * $diskonswan) + ($jmldusswan * $diskonswantunai);
+            $totaldiskonaida = ($jmldusaida * $diskonaida) + ($jmldusaida * $diskonaidatunai);
+            $totaldiskonstick = ($jmldusstick * $diskonstick) + ($jmldusstick * $diskonsticktunai);
+            $totaldiskonsp = ($jmldussp * $diskonsp) + ($jmldussp * $diskonsptunai);
+            $totaldiskonsb = ($jmldussb * $diskonsb) + ($jmldussb * $diskonsbtunai);
+        } else {
+            $totaldiskonswan = $jmldusswan * $diskonswan;
+            $totaldiskonaida = $jmldusaida * $diskonaida;
+            $totaldiskonstick = $jmldusstick * $diskonstick;
+            $totaldiskonsp = $jmldussp * $diskonsp;
+            $totaldiskonsb = $jmldussb * $diskonsb;
+        }
+
+        echo rupiah($totaldiskonswan), "|" . rupiah($totaldiskonaida) . "|" . rupiah($totaldiskonstick) . "|" . rupiah($totaldiskonsp) . "|" . rupiah($totaldiskonsb);
+    }
+
 
     public function cekpenjtemp()
     {

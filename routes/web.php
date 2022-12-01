@@ -1227,10 +1227,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/penjualan/cetaksuratjalan/{no_fak_penj}/{type}', [PenjualanController::class, 'cetaksuratjalan']);
     Route::delete('/penjualan/{no_fak_penj}/delete', [PenjualanController::class, 'delete']);
     Route::get('/penjualan/{no_fak_penj}/edit', [PenjualanController::class, 'edit']);
+    Route::get('/penjualan/{no_fak_penj}/editv2', [PenjualanController::class, 'editv2']);
     Route::post('/penjualan/showbarang', [PenjualanController::class, 'showbarang']);
+    Route::post('/penjualan/showbarangv2', [PenjualanController::class, 'showbarangv2']);
     Route::post('/cekpenj', [PenjualanController::class, 'cekpenj']);
     Route::post('/loadtotalpenjualan', [PenjualanController::class, 'loadtotalpenjualan']);
     Route::post('/hitungdiskonpenjualan', [PenjualanController::class, 'hitungdiskonpenjualan']);
+    Route::post('/hitungdiskonpenjualanv2', [PenjualanController::class, 'hitungdiskonpenjualanv2']);
     Route::post('/penjualan/updatedetail', [PenjualanController::class, 'updatedetail']);
     Route::post('/penjualan/storebarang', [PenjualanController::class, 'storebarang']);
     Route::post('/penjualan/update', [PenjualanController::class, 'update']);
