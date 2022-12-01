@@ -97,14 +97,14 @@
             <tr>
                 <td>{{ $d->kode_akun }}</td>
                 <td>{{ $d->nama_akun }}</td>
-                <td style="text-align: right">{{ rupiah($hutangkredit) }}</td>
                 <td style="text-align: right">{{ rupiah($hutangdebet) }}</td>
+                <td style="text-align: right">{{ rupiah($hutangkredit) }}</td>
             </tr>
             @endforeach
             <tr bgcolor="#024a75" style="color:white">
                 <td colspan="2"><b>TOTAL</b></td>
-                <td align="right"><b><?php echo desimal($totaldebet + $totalhd); ?></b></td>
-                <td align="right"><b><?php echo desimal($totalkredit + $totalhk); ?></b></td>
+                <td align="right"><b><?php echo desimal($totaldebet + $toalhk); ?></b></td>
+                <td align="right"><b><?php echo desimal($totalkredit + $totalhd); ?></b></td>
             </tr>
         </tbody>
 
