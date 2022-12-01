@@ -538,7 +538,7 @@ class LaporanpembelianController extends Controller
                     GROUP BY kode_akun
                 ) jk"),
                 function ($join) {
-                    $join->on('detail_pembelian.kode_akun', '=', 'jk.kode_akun');
+                    $join->on('pembelian.kode_akun', '=', 'jk.kode_akun');
                 }
             )
             ->whereBetween('tgl_pembelian', [$dari, $sampai])
