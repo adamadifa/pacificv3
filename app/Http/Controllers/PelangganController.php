@@ -35,6 +35,7 @@ class PelangganController extends Controller
     {
 
 
+
         $query = Pelanggan::query();
         // if ($this->cabang != "PCF") {
         //     if ($this->cabang == "GRT") {
@@ -47,6 +48,10 @@ class PelangganController extends Controller
         if ($this->cabang != "PCF") {
             $query->where('pelanggan.kode_cabang', $this->cabang);
         }
+        if (Auth::user()->level == "salesman") {
+            $query->where('pelanggan.id_sales', Auth::user()->id_salesman);
+        }
+
 
         if (isset($request->submit) || isset($request->export)) {
             if ($request->nama != "") {
@@ -95,6 +100,9 @@ class PelangganController extends Controller
         //         $query2->where('pelanggan.kode_cabang', $this->cabang);
         //     }
         // }
+        if (Auth::user()->level == "salesman") {
+            $query2->where('pelanggan.id_sales', Auth::user()->id_salesman);
+        }
 
         if ($this->cabang != "PCF") {
             $query2->where('pelanggan.kode_cabang', $this->cabang);
@@ -143,6 +151,11 @@ class PelangganController extends Controller
         if ($this->cabang != "PCF") {
             $queryaktif->where('pelanggan.kode_cabang', $this->cabang);
         }
+
+        if (Auth::user()->level == "salesman") {
+            $queryaktif->where('pelanggan.id_sales', Auth::user()->id_salesman);
+        }
+
         if (isset($request->submit)) {
             if ($request->nama != "") {
                 $queryaktif->where('nama_pelanggan', 'like', '%' . $request->nama . '%');
@@ -179,6 +192,9 @@ class PelangganController extends Controller
         //         $querynonaktif->where('pelanggan.kode_cabang', $this->cabang);
         //     }
         // }
+        if (Auth::user()->level == "salesman") {
+            $querynonaktif->where('pelanggan.id_sales', Auth::user()->id_salesman);
+        }
 
         if ($this->cabang != "PCF") {
             $querynonaktif->where('pelanggan.kode_cabang', $this->cabang);
@@ -492,6 +508,9 @@ class PelangganController extends Controller
         //         $query->where('karyawan.kode_cabang', $this->cabang);
         //     }
         // }
+        if (Auth::user()->level == "salesman") {
+            $query->where('pelanggan.id_sales', Auth::user()->id_salesman);
+        }
         if ($this->cabang != "PCF") {
             $query->where('karyawan.kode_cabang', $this->cabang);
         }
@@ -546,5 +565,60 @@ class PelangganController extends Controller
         foreach ($pelanggan as $d) {
             echo "<option value='$d->kode_pelanggan'>$d->kode_pelanggan" . "  " . "$d->nama_pelanggan</option>";
         }
+    }
+
+    public function getpelanggan(Request $request)
+    {
+        $kode_pelanggan = $request->kode_pelanggan;
+        $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)->first();
+        $query = Penjualan::query();
+        $query->select('penjualan.*', 'nama_pelanggan', 'nama_karyawan', 'karyawan.kode_cabang');
+        $query->orderBy('tgltransaksi', 'desc');
+        $query->orderBy('no_fak_penj', 'asc');
+        $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $query->where('penjualan.kode_pelanggan', $kode_pelanggan);
+
+        if (!empty($request->no_fak_penj)) {
+            $query->where('no_fak_penj', $request->no_fak_penj);
+        }
+        if (!empty($request->dari) && !empty($request->sampai)) {
+            $query->whereBetween('tgltransaksi', [$request->dari, $request->sampai]);
+        }
+        $penjualan = $query->paginate(10);
+        $penjualan->appends($request->all());
+
+
+        $limitkredit = DB::table('pengajuan_limitkredit_v3')
+            ->select('no_pengajuan', 'tgl_pengajuan', 'jumlah', 'jumlah_rekomendasi', 'jatuhtempo', 'jatuhtempo_rekomendasi', 'skor', 'status', 'kacab', 'mm', 'gm', 'dirut')
+            ->where('kode_pelanggan', $kode_pelanggan)
+            ->orderBy('tgl_pengajuan', 'asc')
+            ->get();
+
+        $piutang = DB::table('penjualan')
+            ->select('penjualan.kode_pelanggan', DB::raw('SUM(IFNULL( retur.total, 0 )) AS totalretur,
+                          SUM(IFNULL(penjualan.total,0) - IFNULL(retur.total,0) - IFNULL(jmlbayar,0)) AS sisapiutang'))
+            ->leftJoin(
+                DB::raw("(
+                        SELECT retur.no_fak_penj AS no_fak_penj, SUM( total ) AS total FROM retur GROUP BY retur.no_fak_penj
+                    ) retur"),
+                function ($join) {
+                    $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
+                }
+            )
+            ->leftJoin(
+                DB::raw("(
+                        SELECT no_fak_penj, IFNULL(SUM(bayar),0) as jmlbayar
+                        FROM historibayar
+                        GROUP BY no_fak_penj
+                    ) historibayar"),
+                function ($join) {
+                    $join->on('penjualan.no_fak_penj', '=', 'historibayar.no_fak_penj');
+                }
+            )
+            ->where('penjualan.kode_pelanggan', $request->kode_pelanggan)
+            ->groupBy('penjualan.kode_pelanggan')
+            ->first();
+        return view('pelanggan.getpelanggan', compact('pelanggan', 'penjualan', 'limitkredit', 'piutang'));
     }
 }

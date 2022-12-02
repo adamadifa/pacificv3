@@ -1453,4 +1453,56 @@ class TargetkomisiController extends Controller
             return view('targetkomisi.laporan.cetak_insentif', compact('insentif', 'cabang', 'namabulan', 'bulan', 'tahun'));
         }
     }
+
+    public function getrealisasitargetsales(Request $request)
+    {
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $dari = $tahun . "-" . $bulan . "-01";
+        $sampai = date("Y-m-t", strtotime($dari));
+        $id_karyawan = Auth::user()->id_salesman;
+
+        $realisasitarget = DB::table('komisi_target_qty_detail')
+            ->selectRaw('komisi_target_qty_detail.*,nama_barang,realisasi,isipcsdus')
+            ->join('komisi_target', 'komisi_target_qty_detail.kode_target', '=', 'komisi_target.kode_target')
+            ->join('master_barang', 'komisi_target_qty_detail.kode_produk', '=', 'master_barang.kode_produk')
+            ->leftJoin(
+                DB::raw("(
+                SELECT kode_produk,
+                SUM(jumlah) as realisasi
+                FROM detailpenjualan
+                INNER JOIN penjualan ON detailpenjualan.no_fak_penj = penjualan.no_fak_penj
+                INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
+                LEFT JOIN (
+                SELECT pj.no_fak_penj,
+                IF(salesbaru IS NULL,pj.id_karyawan,salesbaru) as salesbarunew, karyawan.nama_karyawan as nama_sales,
+                IF(cabangbaru IS NULL,karyawan.kode_cabang,cabangbaru) as cabangbarunew
+                FROM penjualan pj
+                INNER JOIN karyawan ON pj.id_karyawan = karyawan.id_karyawan
+                    LEFT JOIN (
+                        SELECT MAX(id_move) as id_move,no_fak_penj,move_faktur.id_karyawan as salesbaru,karyawan.kode_cabang as cabangbaru
+                        FROM move_faktur
+                        INNER JOIN karyawan ON move_faktur.id_karyawan = karyawan.id_karyawan
+                        WHERE tgl_move <= '$dari'
+                        GROUP BY no_fak_penj,move_faktur.id_karyawan,karyawan.kode_cabang
+                    ) move_fak ON (pj.no_fak_penj = move_fak.no_fak_penj)
+                ) pjmove ON (penjualan.no_fak_penj = pjmove.no_fak_penj)
+
+
+                WHERE tgltransaksi BETWEEN '$dari' AND '$sampai' AND promo != 1 AND salesbarunew = '$id_karyawan'
+                OR tgltransaksi BETWEEN '$dari' AND '$sampai' AND promo IS NULL AND salesbarunew = '$id_karyawan'
+                GROUP BY kode_produk
+            ) realisasi"),
+                function ($join) {
+                    $join->on('komisi_target_qty_detail.kode_produk', '=', 'realisasi.kode_produk');
+                }
+            )
+            ->where('bulan', $bulan)
+            ->where('tahun', $tahun)
+            ->where('komisi_target_qty_detail.id_karyawan', $id_karyawan)
+            ->where('jumlah_target', '!=', 0)
+            ->get();
+
+        return view('targetkomisi.getrealisasitarget', compact('realisasitarget'));
+    }
 }

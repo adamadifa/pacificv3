@@ -412,6 +412,7 @@
                                 </a>
                             </li>
                             @endif
+                            @if (Auth::user()->kode_cabang == "BDG" || Auth::user()->kode_cabang=="PCF")
                             @if (in_array($level, $fpb_menu))
                             <li class="{{ request()->is(['fpb', 'fpb/*']) ? 'active' : '' }}">
                                 <a href="/fpb">
@@ -420,6 +421,8 @@
                                 </a>
                             </li>
                             @endif
+                            @endif
+
                             @if (in_array($level, $dpb_view))
                             <li class="{{ request()->is(['dpb', 'dpb/*']) ? 'active' : '' }}">
                                 <a href="/dpb">
@@ -554,8 +557,14 @@
                     <li><a href="#"><i class="feather icon-circle"></i><span class="menu-item" data-i18n="Second Level">Penjualan</span></a>
                         <ul class="menu-content">
                             @if (in_array($level, $penjualan_input))
-                            <li>
+                            {{-- <li>
                                 <a href="/penjualan/create">
+                                    <i class="feather icon-shopping-cart"></i>
+                                    <span class="menu-item">Input Penjualan</span>
+                                </a>
+                            </li> --}}
+                            <li class="{{ request()->is(['inputpenjualanv2']) ? 'active' : '' }}">
+                                <a href="/inputpenjualanv2">
                                     <i class="feather icon-shopping-cart"></i>
                                     <span class="menu-item">Input Penjualan</span>
                                 </a>

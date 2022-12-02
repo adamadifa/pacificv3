@@ -35,6 +35,7 @@
                             <div class="col-lg-2 col-sm-12">
                                 <x-inputtext label="No Faktur" field="no_fak_penj" icon="feather icon-credit-card" value="{{ Request('no_fak_penj') }}" />
                             </div>
+                            @if (Auth::user()->level!="salesman")
                             <div class="col-lg-2 col-sm-12">
                                 <div class="form-group">
                                     <select name="id_karyawan" id="id_karyawan" class="form-control select2">
@@ -45,6 +46,8 @@
                                     </select>
                                 </div>
                             </div>
+                            @endif
+
                             <div class="col-lg-2 col-sm-12">
                                 <x-inputtext label="Kode Pelanggan" field="kode_pelanggan" icon="fa fa-barcode" value="{{ Request('kode_pelanggan') }}" />
                             </div>
@@ -121,7 +124,7 @@
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         @if (in_array($level,$penjualan_edit))
-                                        <a class="ml-1" href="/penjualan/{{\Crypt::encrypt($d->no_fak_penj)}}/edit"><i class="feather icon-edit success"></i></a>
+                                        <a class="ml-1" href="/penjualan/{{\Crypt::encrypt($d->no_fak_penj)}}/editv2"><i class="feather icon-edit success"></i></a>
                                         <a class="ml-1 detailpenjualan" href="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/show"><i class=" feather icon-file-text info"></i></a>
                                         @endif
                                         @if (in_array($level,$penjualan_hapus))

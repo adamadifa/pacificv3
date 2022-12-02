@@ -338,4 +338,17 @@ class HargaController extends Controller
         $harga_pcs = $barang->harga_pcs;
         echo rupiah($harga_dus) . "|" . rupiah($harga_pack) . "|" . rupiah($harga_pcs);
     }
+
+    public function getbarangcabang(Request $request)
+    {
+        $kode_cabang = $request->kode_cabang;
+        $kategori_salesman = $request->kategori_salesman;
+        $barang = DB::table('barang')
+            ->select('barang.*')
+            ->where('kode_cabang', $kode_cabang)->where('kategori_harga', $kategori_salesman)
+            ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')->where('status', 1)
+            ->orderBy('barang.kode_produk')
+            ->get();
+        return view('harga.getbarangcabang', compact('barang'));
+    }
 }

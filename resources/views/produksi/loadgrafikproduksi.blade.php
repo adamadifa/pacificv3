@@ -18,7 +18,7 @@
 </div>
 
 <script>
-    var produk = <?php echo json_encode($produk) ?>;
+    var produk = <?php echo json_encode($produk) ?> ;
     Highcharts.chart('grafik', {
 
         title: {
@@ -47,9 +47,9 @@
 
 
 
-        series: produk ,
+        series: produk,
 
-        responsive : {
+        responsive: {
             rules: [{
                 condition: {
                     maxWidth: 600

@@ -91,6 +91,7 @@
                                 </div>
                             </div>
                             @endif
+                            @if (Auth::user()->level != "salesman")
                             <div class="col-lg-3 col-sm-12">
                                 <div class="form-group  ">
                                     <select name="id_karyawan" id="id_karyawan" class="form-control">
@@ -98,6 +99,8 @@
                                     </select>
                                 </div>
                             </div>
+                            @endif
+
                             <div class="col-lg-2 col-sm-12">
                                 <div class="form-group">
                                     <select name="status_pelanggan" id="status_pelanggan" class="form-control">

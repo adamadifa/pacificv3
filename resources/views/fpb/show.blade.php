@@ -48,6 +48,7 @@
                     <th rowspan="2" align="">Kode</th>
                     <th rowspan="2" style="text-align:center">Nama Barang</th>
                     <th colspan="2" style="text-align:center;">Jumlah</th>
+                    <th rowspan="2" align="">Keterangan</th>
                 </tr>
                 <tr>
                     <th style="text-align:center">Permintaan</th>
@@ -60,7 +61,8 @@
                 $isipcsdus = $d->isipcsdus;
                 $isipack = $d->isipack;
                 $isipcs = $d->isipcs;
-                $jmlpermintaan = $d->jml_permintaan / $isipcsdus;
+                $jmlpermintaan = number_format($d->jml_permintaan / $isipcsdus,'3',',','.');
+                $jmlpengambilan = number_format($d->jml_pengambilan, '3', ',', '.');
                 // $jmlpermintaan = $d->jml_permintaan;
                 // $jmlpermintaan_dus = floor($jmlpermintaan / $isipcsdus);
                 // if ($jmlpermintaan != 0) {
@@ -77,12 +79,16 @@
                 // }
 
                 // $jmlpcs_permintaan = $sisapack_permintaan;
+
+
                 @endphp
 
                 <tr>
                     <td>{{ $d->kode_produk }}</td>
                     <td>{{ $d->nama_barang }}</td>
-                    <td align="right">{{ number_format($jmlpermintaan, '3', ',', '.'); }}</td>
+                    <td align="right">{{ !empty($d->jml_permintaan) ? $jmlpermintaan : ''; }}</td>
+                    <td align="right">{{ !empty($d->jml_pengambilan) ? $jmlpengambilan : ''; }}</td>
+                    <td></td>
                 </tr>
                 @endforeach
             </tbody>

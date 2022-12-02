@@ -157,15 +157,19 @@ class SalesmanController extends Controller
     {
         $kode_cabang = $request->kode_cabang;
         $id_karyawan = $request->id_karyawan;
-        $salesman = Salesman::where('kode_cabang', $kode_cabang)->where('status_aktif_sales', 1)->get();
-        $type = $request->type;
+        if (Auth::user()->level == "salesman") {
+            $salesman = Salesman::where('kode_cabang', $kode_cabang)->where('status_aktif_sales', 1)->where('id_karyawan', Auth::user()->id_salesman)->get();
+        } else {
+            $salesman = Salesman::where('kode_cabang', $kode_cabang)->where('status_aktif_sales', 1)->get();
+        }
+        $type = Auth::user()->level == "salesman" ? 1 : $request->type;
         if ($type == 1) {
             echo "<option value=''>Pilih Salesman</option>";
         } else {
             echo "<option value=''>Semua Salesman</option>";
         }
         foreach ($salesman as $d) {
-            if ($id_karyawan == $d->id_karyawan) {
+            if ($id_karyawan == $d->id_karyawan || Auth::user()->id_salesman == $d->id_karyawan) {
                 $selected = 'selected';
             } else {
                 $selected = '';

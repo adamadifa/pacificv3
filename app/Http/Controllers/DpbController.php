@@ -129,6 +129,7 @@ class DpbController extends Controller
     public function store(Request $request)
     {
         $no_dpb = $request->no_dpb;
+        $no_fpb = $request->no_fpb;
         $kode_cabang = $request->kode_cabang;
         $id_karyawan = $request->id_karyawan;
         $no_polisi = $request->no_polisi;
@@ -149,6 +150,7 @@ class DpbController extends Controller
 
         $data = [
             'no_dpb' => $no_dpb,
+            'no_fpb' => $no_fpb,
             'id_karyawan' => $id_karyawan,
             'kode_cabang' => $kode_cabang,
             'tujuan' => $tujuan,
@@ -183,8 +185,11 @@ class DpbController extends Controller
             }
         }
         $cek = DB::table('dpb')->where('no_dpb', $no_dpb)->count();
+        $cekfpb = DB::table('dpb')->where('no_fpb', $no_fpb)->count();
         if ($cek > 0) {
             return Redirect::back()->with(['warning' => 'Data Sudah Ada']);
+        } else if ($cekfpb > 0) {
+            return Redirect::back()->with(['warning' => 'No. FPB Sudah Ada']);
         } else {
             DB::beginTransaction();
             try {

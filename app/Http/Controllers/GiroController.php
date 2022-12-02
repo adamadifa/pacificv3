@@ -62,6 +62,10 @@ class GiroController extends Controller
             }
             $query->whereIn('karyawan.kode_cabang', $cabang);
         }
+
+        if (Auth::user()->level == "salesman") {
+            $query->where('penjualan.id_karyawan', Auth::user()->id_salesman);
+        }
         $giro = $query->paginate(15);
         $giro->appends($request->all());
         return view('giro.index', compact('giro'));
