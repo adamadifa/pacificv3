@@ -233,7 +233,9 @@
                                             $jmlpcs = $sisapack;
                                             $total += $d->subtotal;
                                             @endphp
-                                            <tr>
+                                            <tr @if ($d->promo ==1)
+                                                class="bg-warning"
+                                                @endif>
                                                 <td>{{ $d->kode_produk }}</td>
                                                 <td>{{ $d->nama_barang }}</td>
                                                 <td class="text-center">{{ $jmldus }}</td>
