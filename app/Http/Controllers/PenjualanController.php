@@ -206,11 +206,9 @@ class PenjualanController extends Controller
                 }
                 $salesman = Salesman::whereIn('kode_cabang', $cabang)
                     ->where('nama_karyawan', '!=', '-')
-                    ->orderBy('nama_karyawan')
-                    ->where('status_aktif_sales', 1)
-                    ->get();
+                    ->orderBy('nama_karyawan')->get();
             } else {
-                $salesman = Salesman::orderBy('nama_karyawan')->where('nama_karyawan', '!=', '-')->where('status_aktif_sales', 1)->get();
+                $salesman = Salesman::orderBy('nama_karyawan')->where('nama_karyawan', '!=', '-')->get();
             }
             $cabang = Cabang::orderBy('kode_cabang')->get();
             return view('penjualan.index', compact('penjualan', 'salesman', 'cabang'));
@@ -5525,8 +5523,6 @@ class PenjualanController extends Controller
             pphk,
             vsp,
             kpbpb,
-            wapu,
-            pph22,
             lainnya,
             IFNULL(saldoawalpiutang,0) - IFNULL(piutanglama,0) + IFNULL(piutangpindahanbulanlalu,0) as saldoawalpiutang,
             IFNULL(saldoawalpiutang,0) -  IFNULL(piutanglamanow,0) -  IFNULL(piutanglamaberjalan,0) + IFNULL(piutangpindahan,0) + IFNULL(piutangberjalan,0) + (IFNULL(totalbruto,0) - IFNULL(totalpotongan,0)-IFNULL(totalretur,0) - IFNULL(totalpotistimewa,0) - IFNULL(totalpenyharga,0)) - IFNULL(totalbayarpiutang,0)  as saldoakhirpiutang");
@@ -5626,8 +5622,6 @@ class PenjualanController extends Controller
                         SUM(IF(status_bayar='voucher' AND ket_voucher ='4',bayar,0)) as pphk,
                         SUM(IF(status_bayar='voucher' AND ket_voucher ='6',bayar,0)) as vsp,
                         SUM(IF(status_bayar='voucher' AND ket_voucher ='7',bayar,0)) as kpbpb,
-                        SUM(IF(status_bayar='voucher' AND ket_voucher ='8',bayar,0)) as wapu,
-                        SUM(IF(status_bayar='voucher' AND ket_voucher ='9',bayar,0)) as pph22,
                         SUM(IF(status_bayar='voucher' AND ket_voucher ='5',bayar,0)) as lainnya
                     FROM
                         historibayar
@@ -6578,5 +6572,256 @@ class PenjualanController extends Controller
             $ec = $query->get();
             return view('penjualan.laporan.cetak_effectivecall_produk', compact('cabang', 'ec', 'dari', 'sampai'));
         }
+    }
+
+    public function ceknofaktur(Request $request)
+    {
+        $no_fak_penj = $request->no_fak_penj;
+        $cek = Penjualan::where('no_fak_penj', $no_fak_penj)->count();
+        echo $cek;
+    }
+
+
+    public function showbarangtempv2()
+    {
+        $id_admin = Auth::user()->id;
+        $detailtemp = DB::table('detailpenjualan_temp')
+            ->select('detailpenjualan_temp.*', 'nama_barang', 'isipcsdus', 'isipcs', 'isipack')
+            ->join('barang', 'detailpenjualan_temp.kode_barang', '=', 'barang.kode_barang')
+            ->where('id_admin', $id_admin)
+            ->get();
+
+        return view('penjualan.showbarangtempv2', compact('detailtemp'));
+    }
+
+    public function editbarangtemp(Request $request)
+    {
+        $kode_barang = $request->kode_barang;
+        $promo = $request->promo;
+        $id_admin = Auth::user()->id;
+
+        if (empty($promo)) {
+            $barangtemp = DB::table('detailpenjualan_temp')
+                ->select('detailpenjualan_temp.*', 'nama_barang', 'isipcsdus', 'isipcs', 'isipack', 'barang.harga_dus as harga_dus_old', 'barang.harga_pack as harga_pack_old', 'barang.harga_pcs as harga_pcs_old')
+                ->join('barang', 'detailpenjualan_temp.kode_barang', '=', 'barang.kode_barang')
+                ->where('detailpenjualan_temp.kode_barang', $kode_barang)
+                ->whereNull('promo')->where('id_admin', $id_admin)->first();
+        } else {
+            $barangtemp = DB::table('detailpenjualan_temp')
+                ->select('detailpenjualan_temp.*', 'nama_barang', 'isipcsdus', 'isipcs', 'isipack', 'barang.harga_dus as harga_dus_old', 'barang.harga_pack as harga_pack_old', 'barang.harga_pcs as harga_pcs_old')
+                ->join('barang', 'detailpenjualan_temp.kode_barang', '=', 'barang.kode_barang')
+                ->where('detailpenjualan_temp.kode_barang', $kode_barang)
+                ->where('promo', 1)->where('id_admin', $id_admin)->first();
+        }
+
+        return view('penjualan.editbarangtemp', compact('barangtemp'));
+    }
+
+
+    public function updatebarangtemp(Request $request)
+    {
+        $kode_barang = $request->kode_barang;
+        $harga_dus = $request->hargadus;
+        $harga_pack = $request->hargapack;
+        $harga_pcs = $request->hargapcs;
+        $jumlah = $request->jumlah;
+        $subtotal = $request->subtotal;
+        $id_admin = Auth::user()->id;
+        $promo = !empty($request->promo) ? $request->promo : NULL;
+        $data = [
+            'jumlah' => $jumlah,
+            'harga_dus' => $harga_dus,
+            'harga_pack' => $harga_pack,
+            'harga_pcs' => $harga_pcs,
+            'subtotal' => $subtotal,
+            'id_admin' => $id_admin,
+            'promo' => $promo
+        ];
+
+
+
+        try {
+            DB::table('detailpenjualan_temp')
+                ->where('kode_barang', $kode_barang)
+                ->where('id_admin', $id_admin)
+                ->update($data);
+            echo 0;
+        } catch (Exception $e) {
+            echo $e;
+        }
+    }
+
+    public function updatebarang(Request $request)
+    {
+        $no_fak_penj = $request->no_fak_penj;
+        $kode_barang = $request->kode_barang;
+        $harga_dus = $request->hargadus;
+        $harga_pack = $request->hargapack;
+        $harga_pcs = $request->hargapcs;
+        $jumlah = $request->jumlah;
+        $subtotal = $request->subtotal;
+        $id_admin = Auth::user()->id;
+        $promo = !empty($request->promo) ? $request->promo : NULL;
+        $data = [
+            'jumlah' => $jumlah,
+            'harga_dus' => $harga_dus,
+            'harga_pack' => $harga_pack,
+            'harga_pcs' => $harga_pcs,
+            'subtotal' => $subtotal,
+            'id_admin' => $id_admin,
+            'promo' => $promo
+        ];
+
+        $update =  DB::table('detailpenjualan_edit')
+            ->where('kode_barang', $kode_barang)
+            ->where('no_fak_penj', $no_fak_penj)
+            ->update($data);
+
+        if ($update) {
+            echo 0;
+        }
+    }
+
+    public function editbarang(Request $request)
+    {
+        $kode_barang = $request->kode_barang;
+        $promo = $request->promo;
+        $no_fak_penj = $request->no_fak_penj;
+
+        if (empty($promo)) {
+            $barang = DB::table('detailpenjualan')
+                ->select('detailpenjualan.*', 'nama_barang', 'isipcsdus', 'isipcs', 'isipack', 'barang.harga_dus as harga_dus_old', 'barang.harga_pack as harga_pack_old', 'barang.harga_pcs as harga_pcs_old')
+                ->join('barang', 'detailpenjualan.kode_barang', '=', 'barang.kode_barang')
+                ->where('detailpenjualan.kode_barang', $kode_barang)
+                ->whereNull('promo')->where('no_fak_penj', $no_fak_penj)->first();
+        } else {
+            $barang = DB::table('detailpenjualan')
+                ->select('detailpenjualan.*', 'nama_barang', 'isipcsdus', 'isipcs', 'isipack', 'barang.harga_dus as harga_dus_old', 'barang.harga_pack as harga_pack_old', 'barang.harga_pcs as harga_pcs_old')
+                ->join('barang', 'detailpenjualan.kode_barang', '=', 'barang.kode_barang')
+                ->where('detailpenjualan.kode_barang', $kode_barang)
+                ->where('promo', 1)->where('no_fak_penj', $no_fak_penj)->first();
+        }
+
+
+
+        return view('penjualan.editbarang', compact('barang'));
+    }
+
+    public function analisatransaksi()
+    {
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        return view('penjualan.laporan.frm.lap_analisatransaksi', compact('cabang', 'bulan'));
+    }
+
+    public function cetakanalisatransaksi(Request $request)
+    {
+        $kode_cabang = $request->kode_cabang;
+        $id_karyawan = $request->id_karyawan;
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $dari = $tahun . "-" . $bulan . "-01";
+        $sampai = date("Y-m-t", strtotime($dari));
+
+        $query = Pelanggan::query();
+        $query->selectRaw('pelanggan.kode_pelanggan,nama_pelanggan,
+        tunai_1,
+        tunai_2,
+        tunai_3,
+        tunai_4,
+        kredit_1,
+        kredit_2,
+        kredit_3,
+        kredit_4,
+        cash_1,
+        cash_2,
+        cash_3,
+        cash_4,
+        transfer_1,
+        transfer_2,
+        transfer_3,
+        transfer_4,
+        giro_1,
+        giro_2,
+        giro_3,
+        giro_4,
+        total,
+        totalbayar,
+        qty');
+        $query->leftJoin(
+            DB::raw("(
+                SELECT penjualan.kode_pelanggan,
+                SUM(IF(DAY(tgltransaksi) BETWEEN 1 AND 7 AND jenistransaksi = 'tunai',total,0)) as tunai_1,
+                SUM(IF(DAY(tgltransaksi) BETWEEN 8 AND 14 AND jenistransaksi = 'tunai',total,0)) as tunai_2,
+                SUM(IF(DAY(tgltransaksi) BETWEEN 15 AND 21 AND jenistransaksi = 'tunai',total,0)) as tunai_3,
+                SUM(IF(DAY(tgltransaksi) BETWEEN 22 AND 31 AND jenistransaksi = 'tunai',total,0)) as tunai_4,
+                SUM(IF(DAY(tgltransaksi) BETWEEN 1 AND 7 AND jenistransaksi = 'kredit',total,0)) as kredit_1,
+                SUM(IF(DAY(tgltransaksi) BETWEEN 8 AND 14 AND jenistransaksi = 'kredit',total,0)) as kredit_2,
+                SUM(IF(DAY(tgltransaksi) BETWEEN 15 AND 21 AND jenistransaksi = 'kredit',total,0)) as kredit_3,
+                SUM(IF(DAY(tgltransaksi) BETWEEN 22 AND 31 AND jenistransaksi = 'kredit',total,0)) as kredit_4,
+                SUM(total) as total
+                FROM penjualan
+                WHERE tgltransaksi BETWEEN '$dari' AND '$sampai'
+                AND penjualan.id_karyawan = '$id_karyawan'
+                GROUP BY penjualan.kode_pelanggan
+            ) penjualan"),
+            function ($join) {
+                $join->on('penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+                SELECT penjualan.kode_pelanggan,
+                SUM(IF(DAY(tglbayar) BETWEEN 1 AND 7 AND historibayar.jenisbayar = 'tunai' OR DAY(tglbayar) BETWEEN 1 AND 7 AND historibayar.jenisbayar = 'titipan',bayar,0)) as cash_1,
+                SUM(IF(DAY(tglbayar) BETWEEN 8 AND 14 AND historibayar.jenisbayar = 'tunai' OR DAY(tglbayar) BETWEEN 8 AND 14 AND historibayar.jenisbayar = 'titipan',bayar,0)) as cash_2,
+                SUM(IF(DAY(tglbayar) BETWEEN 15 AND 21 AND historibayar.jenisbayar = 'tunai' OR DAY(tglbayar) BETWEEN 15 AND 21 AND historibayar.jenisbayar = 'titipan',bayar,0)) as cash_3,
+                SUM(IF(DAY(tglbayar) BETWEEN 22 AND 31 AND historibayar.jenisbayar = 'tunai' OR DAY(tglbayar) BETWEEN 22 AND 31 AND historibayar.jenisbayar = 'titipan',bayar,0)) as cash_4,
+                SUM(IF(DAY(tglbayar) BETWEEN 1 AND 7 AND historibayar.jenisbayar = 'transfer',bayar,0)) as transfer_1,
+                SUM(IF(DAY(tglbayar) BETWEEN 8 AND 14 AND historibayar.jenisbayar = 'transfer',bayar,0)) as transfer_2,
+                SUM(IF(DAY(tglbayar) BETWEEN 15 AND 21 AND historibayar.jenisbayar = 'transfer',bayar,0)) as transfer_3,
+                SUM(IF(DAY(tglbayar) BETWEEN 22 AND 31 AND historibayar.jenisbayar = 'transfer',bayar,0)) as transfer_4,
+                SUM(IF(DAY(tglbayar) BETWEEN 1 AND 7 AND historibayar.jenisbayar = 'giro',bayar,0)) as giro_1,
+                SUM(IF(DAY(tglbayar) BETWEEN 8 AND 14 AND historibayar.jenisbayar = 'giro',bayar,0)) as giro_2,
+                SUM(IF(DAY(tglbayar) BETWEEN 15 AND 21 AND historibayar.jenisbayar = 'giro',bayar,0)) as giro_3,
+                SUM(IF(DAY(tglbayar) BETWEEN 22 AND 31 AND historibayar.jenisbayar = 'giro',bayar,0)) as giro_4,
+                SUM(bayar) as totalbayar
+                FROM historibayar
+                INNER JOIN penjualan ON historibayar.no_fak_penj = penjualan.no_fak_penj
+                WHERE tglbayar BETWEEN '$dari' AND '$sampai'
+                AND historibayar.id_karyawan = '$id_karyawan'
+                GROUP BY penjualan.kode_pelanggan
+            ) pembayaran"),
+            function ($join) {
+                $join->on('pembayaran.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+                SELECT penjualan.kode_pelanggan,SUM(ROUND(jumlah/isipcsdus)) as qty
+                FROM detailpenjualan
+                INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
+                INNER JOIN penjualan ON detailpenjualan.no_fak_penj = penjualan.no_fak_penj
+                WHERE tgltransaksi BETWEEN '$dari' AND '$sampai'
+                AND penjualan.id_karyawan = '$id_karyawan'
+                GROUP BY penjualan.kode_pelanggan
+            ) dp"),
+            function ($join) {
+                $join->on('dp.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+            }
+        );
+
+        $query->whereNotNull('total');
+        $query->where('nama_pelanggan', '!=', 'BATAL');
+        $query->orwhereNotNull('totalbayar');
+        $query->where('nama_pelanggan', '!=', 'BATAL');
+        $query->orderBy('nama_pelanggan');
+        $analisatransaksi = $query->get();
+
+        $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
+        $salesman = Salesman::where('id_karyawan', $id_karyawan)->first();
+        return view('penjualan.laporan.cetak_analisatransaksi', compact('analisatransaksi', 'cabang', 'dari', 'sampai', 'salesman'));
     }
 }
