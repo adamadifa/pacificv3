@@ -1859,7 +1859,7 @@ class PenjualanController extends Controller
             ->first();
 
         $detailpenjualan = DB::table('detailpenjualan')
-            ->select('detailpenjualan.*', 'nama_barang')
+            ->select('detailpenjualan.*', 'nama_barang', 'isipcsdus', 'isipcs', 'isipack')
             ->join('barang', 'detailpenjualan.kode_barang', '=', 'barang.kode_barang')
             ->where('no_fak_penj', $no_fak_penj)
             ->get();
