@@ -566,7 +566,7 @@
                             <li class="{{ request()->is(['inputpenjualanv2']) ? 'active' : '' }}">
                                 <a href="/inputpenjualanv2">
                                     <i class="feather icon-shopping-cart"></i>
-                                    <span class="menu-item">Input Penjualan V2</span>
+                                    <span class="menu-item">Input Penjualan</span>
                                 </a>
                             </li>
                             @endif
