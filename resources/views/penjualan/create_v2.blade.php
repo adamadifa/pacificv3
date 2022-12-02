@@ -1253,7 +1253,7 @@
 
 
 
-        $("#potaida,#potswan,#potstick,#potsp,#potsb,#potisaida,#potisswan,#potisstick,#penyswan,#penyaida,#penystick").keyup(function(e) {
+        $("#potaida,#potswan,#potstick,#potsp,#potsb,#potisaida,#potisswan,#potisstick,#penyswan,#penyaida,#penystick,#voucher").keyup(function(e) {
             loadtotal();
         });
     });

@@ -1,36 +1,46 @@
 <div class="row">
     <div class="col-lg-3 col-sm-12">
-        <div class="card">
-            <div class="card-content">
-                @if ($pelanggan->foto != null)
-                <img class="card-img-top img-fluid" style="height: 400px; object-fit:cover" id="foto" src="{{ url(Storage::url('pelanggan/'.$pelanggan->foto)) }}" alt="Card image cap">
-                @else
-                <img class="card-img-top img-fluid" id="foto" src="{{ asset('app-assets/images/slider/04.jpg') }}" alt="Card image cap">
-                @endif
-                <div class="card-body">
-                    <h4 class="card-title">
-                        <span id="pelanggan_text"></span>
-                    </h4>
-                    <b>Kode Pelanggan</b>
-                    <p class="card-text" id="kode_pelanggan">{{ $pelanggan->kode_pelanggan }}</p>
-                    <b>Nama Pelanggan</b>
-                    <p class="card-text" id="nama_pelanggan">{{ $pelanggan->nama_pelanggan }}</p>
-                    <b>Alamat</b>
-                    <p class="card-text" id="alamat_text">{{ $pelanggan->alamat_pelanggan }}</p>
-                    <b>No. HP</b>
-                    <p class="card-text" id="no_hp">{{ $pelanggan->no_hp }}</p>
-                    <b>Koordinat</b>
-                    <p class="card-text" id="koordinat">{{ $pelanggan->latitude }},{{ $pelanggan->longitude }}</p>
-                    <b>Limit Pelanggan</b>
-                    <p class="card-text" id="limitpelanggan">{{ rupiah($pelanggan->limitpel) }}</p>
-                    <b>Piutang Pelanggan</b>
-                    <p class="card-text" id="piutangpelanggan">{{ rupiah($piutang->sisapiutang) }}</p>
-                    <b>Sisa Limit</b>
-                    <p class="card-text" id="sisalimit">{{ rupiah($pelanggan->limitpel - $piutang->sisapiutang) }}</p>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-content">
+                        @if ($pelanggan->foto != null)
+                        <img class="card-img-top img-fluid" style="height: 400px; object-fit:cover" id="foto" src="{{ url(Storage::url('pelanggan/'.$pelanggan->foto)) }}" alt="Card image cap">
+                        @else
+                        <img class="card-img-top img-fluid" id="foto" src="{{ asset('app-assets/images/slider/04.jpg') }}" alt="Card image cap">
+                        @endif
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <span id="pelanggan_text"></span>
+                            </h4>
+                            <b>Kode Pelanggan</b>
+                            <p class="card-text" id="kode_pelanggan">{{ $pelanggan->kode_pelanggan }}</p>
+                            <b>Nama Pelanggan</b>
+                            <p class="card-text" id="nama_pelanggan">{{ $pelanggan->nama_pelanggan }}</p>
+                            <b>Alamat</b>
+                            <p class="card-text" id="alamat_text">{{ $pelanggan->alamat_pelanggan }}</p>
+                            <b>No. HP</b>
+                            <p class="card-text" id="no_hp">{{ $pelanggan->no_hp }}</p>
+                            <b>Koordinat</b>
+                            <p class="card-text" id="koordinat">{{ $pelanggan->latitude }},{{ $pelanggan->longitude }}</p>
+                            <b>Limit Pelanggan</b>
+                            <p class="card-text" id="limitpelanggan">{{ rupiah($pelanggan->limitpel) }}</p>
+                            <b>Piutang Pelanggan</b>
+                            <p class="card-text" id="piutangpelanggan">{{ rupiah($piutang->sisapiutang) }}</p>
+                            <b>Sisa Limit</b>
+                            <p class="card-text" id="sisalimit">{{ rupiah($pelanggan->limitpel - $piutang->sisapiutang) }}</p>
 
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+        <div class="row mb-2">
+            <div class="col-12">
+                <a href="#" class="btn btn-danger btn-block"><i class="feather icon-shopping-cart mr-1"></i><span id="demo"></span></a>
+            </div>
+        </div>
+
     </div>
     <div class="col-lg-9 col-sm-12">
         <div class="card overflow-hidden">
@@ -111,7 +121,7 @@
                                                 <td>
                                                     <div class="btn-group" role="group" aria-label="Basic example">
                                                         <a class="ml-1" href="/penjualan/{{\Crypt::encrypt($d->no_fak_penj)}}/edit"><i class="feather icon-edit success"></i></a>
-                                                        <a class="ml-1 detailpenjualan" href="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/show"><i class=" feather icon-file-text info"></i></a>
+                                                        <a class="ml-1 detailpenjualan" href="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/show"><i class=" fa fa-money info"></i></a>
                                                         <form method="POST" name="deleteform" class="deleteform" action="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/delete">
                                                             @csrf
                                                             @method('DELETE')
@@ -119,16 +129,7 @@
                                                                 <i class="feather icon-trash danger"></i>
                                                             </a>
                                                         </form>
-                                                        <div class="dropdown ml-1">
-                                                            <a class="dropdown-toggle mr-1" type="button" id="dropdownMenuButton300" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                <i class="feather icon-printer primary"></i>
-                                                            </a>
-                                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton300" x-placement="top-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -7px, 0px);">
-                                                                <a class="dropdown-item" target="_blank" href="/penjualan/cetakfaktur/{{ Crypt::encrypt($d->no_fak_penj) }}"><i class="feather icon-printer mr-1"></i>Cetak Faktur</a>
-                                                                <a class="dropdown-item" target="_blank" href="/penjualan/cetaksuratjalan/{{ Crypt::encrypt($d->no_fak_penj) }}/1"><i class="feather icon-printer mr-1"></i>Cetak Surat Jalan 1</a>
-                                                                <a class="dropdown-item" target="_blank" href="/penjualan/cetaksuratjalan/{{ Crypt::encrypt($d->no_fak_penj) }}/2"><i class="feather icon-printer mr-1"></i>Cetak Surat Jalan 2</a>
-                                                            </div>
-                                                        </div>
+
                                                     </div>
 
                                                 </td>
@@ -256,3 +257,9 @@
         </div>
     </div>
 </div>
+@push('myscript')
+<script>
+
+
+</script>
+@endpush

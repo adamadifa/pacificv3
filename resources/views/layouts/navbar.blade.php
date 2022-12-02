@@ -412,6 +412,7 @@
                                 </a>
                             </li>
                             @endif
+                            @if (Auth::user()->kode_cabang == "BDG" || Auth::user()->kode_cabang=="PCF")
                             @if (in_array($level, $fpb_menu))
                             <li class="{{ request()->is(['fpb', 'fpb/*']) ? 'active' : '' }}">
                                 <a href="/fpb">
@@ -420,6 +421,8 @@
                                 </a>
                             </li>
                             @endif
+                            @endif
+
                             @if (in_array($level, $dpb_view))
                             <li class="{{ request()->is(['dpb', 'dpb/*']) ? 'active' : '' }}">
                                 <a href="/dpb">

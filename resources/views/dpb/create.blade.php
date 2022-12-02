@@ -7,6 +7,7 @@
 <form action="/dpb/store" method="post" id="frmDpb">
     @csrf
     <div class="row">
+        @if (Auth::user()->kode_cabang == "BDG")
         <div class="col-4">
             <x-inputtext label="No. DPB" field="no_dpb" icon="feather icon-file" />
         </div>
@@ -14,6 +15,13 @@
             <x-inputtext field="no_fpb" label="Ketikan No. FPB" icon="fa fa-barcode" />
             <input type="hidden" id="no_fpb_val" name="no_fpb_val">
         </div>
+        @else
+        <div class="col-8">
+            <x-inputtext label="No. DPB" field="no_dpb" icon="feather icon-file" />
+        </div>
+        <input type="hidden" id="no_fpb" name="no_fpb">
+        @endif
+
         <div class="col-4">
             <div class="form-group">
                 <select name="kode_cabang" id="kode_cabang" class="form-control">

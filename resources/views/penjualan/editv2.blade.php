@@ -21,7 +21,7 @@
         <!-- Data list view starts -->
         <!-- DataTable starts -->
         @include('layouts.notification')
-        <form action="/penjualan/previewfaktur" method="POST" id="frmPenjualan">
+        <form action="/penjualan/update" method="POST" id="frmPenjualan">
             @csrf
             <input type="hidden" id="cektutuplaporan" name="cektutuplaporan">
             <input type="hidden" id="sisapiutang" name="sisapiutang">
@@ -428,7 +428,7 @@
                                                             <option @if ($faktur->jenisbayar=="tunai")
                                                                 selected
                                                                 @endif value="tunai">Cash</option>
-                                                            <option @if ($faktur->jenistransaksi=="transfer")
+                                                            <option @if ($faktur->jenisbayar=="transfer")
                                                                 selected
                                                                 @endif value="transfer">Transfer</option>
                                                         </select>
@@ -1292,7 +1292,7 @@
 
 
 
-        $("#potaida,#potswan,#potstick,#potsp,#potsb,#potisaida,#potisswan,#potisstick,#penyswan,#penyaida,#penystick").keyup(function(e) {
+        $("#potaida,#potswan,#potstick,#potsp,#potsb,#potisaida,#potisswan,#potisstick,#penyswan,#penyaida,#penystick,#voucher").keyup(function(e) {
             loadtotal();
         });
 

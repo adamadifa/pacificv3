@@ -46,6 +46,10 @@
                     <span id="cam-has-flash" style="visibility: hidden"></span>
                     <button id="flash-toggle" class="btn btn-primary">📸 Flash: <span id="flash-state">off</span></button>
                 </div>
+                <div class="form-group">
+                    <input type="text" id="latitude">
+                    <input type="text" id="longitude">
+                </div>
             </div>
         </div>
     </div>
@@ -62,6 +66,23 @@
 <script src="{{ asset('app-assets/js/external/qr-scanner.legacy.min.js') }}"></script>
 <script type="module">
     //import QrScanner from "../qr-scanner.min.js";
+    var x = document.getElementById("demo");
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        } else {
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
+    function showPosition(position) {
+        const latitude = document.getElementById('latitude').value = position.coords.latitude;
+        const longitude = document.getElementById('longitude').value = position.coords.longitude;
+        var cek = "Latitude: " + position.coords.latitude +
+        "<br>Longitude: " + position.coords.longitude;
+        //alert(cek);
+    }
+    getLocation();
 
     const video = document.getElementById('qr-video');
     const videoContainer = document.getElementById('video-container');
