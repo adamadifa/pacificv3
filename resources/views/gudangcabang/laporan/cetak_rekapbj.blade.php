@@ -95,8 +95,12 @@
                 $penyesuaian_out = $d->penyesuaian_out / $d->isipcsdus;
 
                 $sisamutasi = ($saldoawal_gs + $pusat + $transit_in + $retur + $lainlain_in + $repack + $penyesuaian_in) - ($penjualan + $promosi + $reject_pasar + $reject_mobil + $reject_gudang + $transit_out + $lainlain_out + $penyesuaian_out);
+
+
                 $realsaldoakhir = ($d->saldo_awal_gs + $d->pusat + $d->transit_in + $d->retur + $d->lainlain_in + $d->repack + $d->penyesuaian_in) -
                 ($d->penjualan + $d->promosi + $d->reject_pasar + $d->reject_mobil + $d->reject_gudang + $d->transit_out + $d->lainlain_out + $d->penyesuaian_out);
+
+
                 if($realsaldoakhir < 0){
                     $realsaldoakhir = $realsaldoakhir * -1;
                 }else{

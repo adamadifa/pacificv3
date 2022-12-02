@@ -1,9 +1,27 @@
+<style>
+    ul.ui-autocomplete {
+        z-index: 1100;
+    }
+
+</style>
 <form action="/dpb/store" method="post" id="frmDpb">
     @csrf
     <div class="row">
+        @if (Auth::user()->kode_cabang == "BDG")
         <div class="col-4">
             <x-inputtext label="No. DPB" field="no_dpb" icon="feather icon-file" />
         </div>
+        <div class="col-4">
+            <x-inputtext field="no_fpb" label="Ketikan No. FPB" icon="fa fa-barcode" />
+            <input type="hidden" id="no_fpb_val" name="no_fpb_val">
+        </div>
+        @else
+        <div class="col-8">
+            <x-inputtext label="No. DPB" field="no_dpb" icon="feather icon-file" />
+        </div>
+        <input type="hidden" id="no_fpb" name="no_fpb">
+        @endif
+
         <div class="col-4">
             <div class="form-group">
                 <select name="kode_cabang" id="kode_cabang" class="form-control">
@@ -14,6 +32,16 @@
                 </select>
             </div>
         </div>
+
+    </div>
+    <div class="row">
+        <div class="col-lg-4 col-sm-12">
+            <div class="form-group">
+                <select name="no_polisi" id="no_polisi" class="form-control">
+                    <option value="">Pilih Kendaraan</option>
+                </select>
+            </div>
+        </div>
         <div class="col-lg-4 col-sm-12">
             <div class="form-group  ">
                 <select name="id_karyawan" id="id_karyawan" class="form-control select2">
@@ -21,16 +49,7 @@
                 </select>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-6 col-sm-12">
-            <div class="form-group">
-                <select name="no_polisi" id="no_polisi" class="form-control">
-                    <option value="">Pilih Kendaraan</option>
-                </select>
-            </div>
-        </div>
-        <div class="col-6">
+        <div class="col-4">
             <div class="form-group">
                 <select name="id_driver" id="id_driver" class="form-control select2">
                     <option value="">Pilih Driver</option>
@@ -93,7 +112,7 @@
                         <th style="text-align:center">Satuan</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="loaddetailfpb">
                     @foreach ($produk as $d)
                     <input type="hidden" name="isipcsdus[]" value="{{ $d->isipcsdus }}">
                     <input type="hidden" name="isipcs[]" value="{{ $d->isipcs }}">
@@ -127,11 +146,203 @@
         </div>
     </div>
 </form>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="{{asset('app-assets/vendors/js/forms/select/select2.full.min.js')}}"></script>
 <script src="{{asset('app-assets/js/scripts/forms/select/form-select2.js')}}"></script>
+<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
 
 <script>
     $(function() {
+
+        function getcabang(kode_cabang) {
+            $.ajax({
+                type: 'POST'
+                , url: '/cabang/getcabang'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , kode_cabang: kode_cabang
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#frmDpb").find("#kode_cabang").html(respond);
+                }
+            });
+        }
+
+        function getkendaraan(kode_cabang, no_polisi) {
+            $.ajax({
+                type: 'POST'
+                , url: '/kendaraan/getkendaraancab'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , kode_cabang: kode_cabang
+                    , no_polisi: no_polisi
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#frmDpb").find("#no_polisi").html(respond);
+                }
+            });
+        }
+
+        function getsalesman(kode_cabang, id_karyawan) {
+            $.ajax({
+                type: 'POST'
+                , url: '/salesman/getsalescab'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , kode_cabang: kode_cabang
+                    , id_karyawan: id_karyawan
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#frmDpb").find("#id_karyawan").html(respond);
+                }
+            });
+        }
+
+        function getdriver(kode_cabang, id_driver) {
+            $.ajax({
+                type: 'POST'
+                , url: '/driverhelper/getdriverhelpercab'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , kode_cabang: kode_cabang
+                    , kategori: 'DRIVER'
+                    , id_driver_helper: id_driver
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#frmDpb").find("#id_driver").html(respond);
+                }
+            });
+        }
+
+
+        function gethelper1(kode_cabang, id_helper_1) {
+            $.ajax({
+                type: 'POST'
+                , url: '/driverhelper/getdriverhelpercab'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , kode_cabang: kode_cabang
+                    , kategori: 'HELPER'
+                    , id_driver_helper: id_helper_1
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#frmDpb").find("#id_helper_1").html(respond);
+                }
+            });
+        }
+
+        function gethelper2(kode_cabang, id_helper_2) {
+            $.ajax({
+                type: 'POST'
+                , url: '/driverhelper/getdriverhelpercab'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , kode_cabang: kode_cabang
+                    , kategori: 'HELPER'
+                    , id_driver_helper: id_helper_2
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#frmDpb").find("#id_helper_2").html(respond);
+                }
+            });
+        }
+
+        function gethelper3(kode_cabang, id_helper_3) {
+            $.ajax({
+                type: 'POST'
+                , url: '/driverhelper/getdriverhelpercab'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , kode_cabang: kode_cabang
+                    , kategori: 'HELPER'
+                    , id_driver_helper: id_helper_3
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#frmDpb").find("#id_helper_3").html(respond);
+                }
+            });
+        }
+
+        function loaddetailfpb(no_fpb) {
+            $.ajax({
+                type: 'POST'
+                , url: '/fpb/getdetailfpb'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , no_fpb: no_fpb
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loaddetailfpb").html(respond);
+                }
+            });
+        }
+
+        function loadfpb(no_fpb) {
+            $.ajax({
+                type: 'POST'
+                , url: '/fpb/showfpb'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , no_fpb: no_fpb
+                }
+                , cache: false
+                , success: function(respond) {
+                    console.log(respond);
+                    var data = respond.split("|");
+                    var kode_cabang = data[0];
+                    var no_polisi = data[1];
+                    var id_karyawan = data[2];
+                    var id_driver = data[3];
+                    var id_helper_1 = data[4];
+                    var id_helper_2 = data[5];
+                    var id_helper_3 = data[6];
+                    var tujuan = data[7];
+                    getcabang(kode_cabang);
+                    getkendaraan(kode_cabang, no_polisi);
+                    getsalesman(kode_cabang, id_karyawan);
+                    getdriver(kode_cabang, id_driver);
+                    gethelper1(kode_cabang, id_helper_1);
+                    gethelper2(kode_cabang, id_helper_2);
+                    gethelper3(kode_cabang, id_helper_3);
+                    loaddetailfpb(no_fpb);
+                    $("#tujuan").val(tujuan);
+                }
+            });
+        }
+        $("#frmDpb").find("#no_fpb").autocomplete({
+            source: function(request, response) {
+                // Fetch data
+                $.ajax({
+                    url: "/getautocompletefpb"
+                    , type: 'post'
+                    , dataType: "json"
+                    , data: {
+                        _token: "{{ csrf_token() }}"
+                        , search: request.term
+                    }
+                    , success: function(data) {
+                        response(data);
+                    }
+                });
+            }
+            , select: function(event, ui) {
+                $("#frmDpb").find("#no_fpb").val(ui.item.label);
+                $("#no_fpb_val").val(ui.item.val);
+                var no_fpb = ui.item.val;
+                loadfpb(no_fpb);
+                return false;
+            }
+        });
+
+
         $("#tgl_pengambilan").datepicker({
             dateFormat: 'yy-mm-dd'
         });
@@ -212,8 +423,12 @@
             loadhelper(kode_cabang);
         });
 
+
+
+
         $("#frmDpb").submit(function() {
             var no_dpb = $("#frmDpb").find("#no_dpb").val();
+            var no_fpb = $("#frmDpb").find("#no_fpb").val();
             var kode_cabang = $("#frmDpb").find("#kode_cabang").val();
             var id_karyawan = $("#frmDpb").find("#id_karyawan").val();
             var no_polisi = $("#no_polisi").val();

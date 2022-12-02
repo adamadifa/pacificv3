@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cabang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -96,6 +97,23 @@ class CabangController extends Controller
             if ($errorcode == 23000) {
                 return Redirect::back()->with(['warning' => 'Data Tidak Dapat Dihapus Karena Sudah Memiliki Transaksi']);
             }
+        }
+    }
+
+
+    public function getcabang(Request $request)
+    {
+        $kode_cabang = $request->kode_cabang;
+        $cabang = Cabang::where('kode_cabang', $kode_cabang)->get();
+        //$type = $request->type;
+        echo "<option value=''>Pilih Cabang</option>";
+        foreach ($cabang as $d) {
+            if ($kode_cabang == $d->kode_cabang) {
+                $selected = 'selected';
+            } else {
+                $selected = '';
+            }
+            echo "<option $selected value='$d->kode_cabang'>$d->nama_cabang</option>";
         }
     }
 }

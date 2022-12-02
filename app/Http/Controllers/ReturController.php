@@ -76,6 +76,10 @@ class ReturController extends Controller
             }
             $query->whereIn('karyawan.kode_cabang', $cabang);
         }
+
+        if (Auth::user()->level == "salesman") {
+            $query->where('penjualan.id_karyawan', Auth::user()->id_salesman);
+        }
         $retur = $query->paginate(15);
 
         $retur->appends($request->all());

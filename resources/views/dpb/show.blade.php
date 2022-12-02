@@ -6,6 +6,10 @@
                 <td>{{ $dpb->no_dpb }}</td>
             </tr>
             <tr>
+                <td>No. FPB</td>
+                <td>{{ $dpb->no_fpb }}</td>
+            </tr>
+            <tr>
                 <td>Tanggal</td>
                 <td>{{ DateToIndo2($dpb->tgl_pengambilan) }}</td>
             </tr>
