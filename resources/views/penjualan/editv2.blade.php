@@ -528,6 +528,7 @@
                             <th>Harga / Dus</th>
                             <th>Harga / Pack</th>
                             <th>Harga / Pcs</th>
+                            <th>Kategori</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -859,6 +860,7 @@
                         _token: "{{ csrf_token() }}"
                         , kategori_salesman: kategori_salesman
                         , kode_cabang: kode_cabang
+                        , kode_pelanggan: kode_pelanggan
                     }
                     , cache: false
                     , success: function(respond) {
@@ -896,6 +898,7 @@
                         _token: "{{ csrf_token() }}"
                         , kategori_salesman: kategori_salesman
                         , kode_cabang: kode_cabang
+                        , kode_pelanggan: kode_pelanggan
                     }
                     , cache: false
                     , success: function(respond) {
