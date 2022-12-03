@@ -344,45 +344,43 @@ class HargaController extends Controller
         $kode_cabang = $request->kode_cabang;
         $kategori_salesman = $request->kategori_salesman;
         $kode_pelanggan = $request->kode_pelanggan;
-        $barang = DB::table('barang')
-            ->select('barang.*')
-            ->where('kode_cabang', $kode_cabang)->where('kategori_harga', $kategori_salesman)
-            ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')->where('status', 1)
-            ->orderBy('barang.kode_produk')
-            ->get();
+        // $barang = DB::table('barang')
+        //     ->select('barang.*')
+        //     ->where('kode_cabang', $kode_cabang)->where('kategori_harga', $kategori_salesman)
+        //     ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')->where('status', 1)
+        //     ->orderBy('barang.kode_produk')
+        //     ->get();
 
+        // echo $kode_cabang . $kategori_salesman . $kode_pelanggan;
+        // die;
 
-        // $cekpelanggan = DB::table('barang')->where('kode_pelanggan', $kode_pelanggan)->count();
-        // if ($cekpelanggan > 0) {
-        //     $autocomplate = Harga::orderby('nama_barang', 'asc')->select('kode_produk', 'kode_barang', 'nama_barang', 'harga_dus', 'kategori_harga')
-        //         ->where('kode_cabang', $kode_cabang)
-        //         ->where('kode_pelanggan', $kode_pelanggan)
-        //         ->limit(5)->get();
-        // } else {
-        //     if ($kategori_salesman == "TOCANVASER") {
-        //         $autocomplate = Harga::orderby('nama_barang', 'asc')->select('kode_produk', 'kode_barang', 'nama_barang', 'harga_dus', 'kategori_harga')
-
-        //             ->where('kode_cabang', $kode_cabang)
-        //             ->where('kategori_harga', $kategori_salesman)
-        //             ->orwhere('kode_cabang', $kode_cabang)
-        //             ->where('kategori_harga', 'TO')
-
-
-        //             ->where('kode_cabang', $kode_cabang)
-        //             ->where('kategori_harga', $kategori_salesman)
-        //             ->where('kode_cabang', $kode_cabang)
-        //             ->where('kategori_harga', 'CANVASER')
-        //             ->limit(5)->get();
-        //     } else {
-        //         $autocomplate = Harga::orderby('nama_barang', 'asc')->select('kode_produk', 'kode_barang', 'nama_barang', 'harga_dus', 'kategori_harga')->where('nama_barang', 'like', '%' . $search . '%')
-        //             ->where('kode_cabang', $kode_cabang)
-        //             ->where('kategori_harga', $kategori_salesman)
-        //             ->orWhere('kode_produk', 'like', '%' . $search . '%')
-        //             ->where('kode_cabang', $kode_cabang)
-        //             ->where('kategori_harga', $kategori_salesman)
-        //             ->limit(5)->get();
-        //     }
-        // }
+        $cekpelanggan = DB::table('barang')->where('kode_pelanggan', $kode_pelanggan)->count();
+        if ($cekpelanggan > 0) {
+            $barang = Harga::orderby('nama_barang', 'asc')
+                ->select('barang.*')
+                ->where('kode_cabang', $kode_cabang)
+                ->where('kode_pelanggan', $kode_pelanggan)
+                ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')->where('status', 1)
+                ->get();
+        } else {
+            if ($kategori_salesman == "TOCANVASER") {
+                $barang = Harga::orderby('nama_barang', 'asc')
+                    ->select('barang.*')
+                    ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')->where('status', 1)
+                    ->where('kode_cabang', $kode_cabang)
+                    ->where('kategori_harga', 'TO')
+                    ->orwhere('kode_cabang', $kode_cabang)
+                    ->where('kategori_harga', 'CANVASER')
+                    ->get();
+            } else {
+                $barang = Harga::orderby('nama_barang', 'asc')
+                    ->select('barang.*')
+                    ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')->where('status', 1)
+                    ->where('kode_cabang', $kode_cabang)
+                    ->where('kategori_harga', $kategori_salesman)
+                    ->get();
+            }
+        }
         return view('harga.getbarangcabang', compact('barang'));
     }
 }
