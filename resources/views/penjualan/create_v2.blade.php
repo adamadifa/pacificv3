@@ -960,8 +960,9 @@
             var hargapcs = harga_pcs != "" ? parseInt(harga_pcs.replace(/\./g, '')) : 0;
 
 
+
             var jumlah = (jmldus * parseInt(isipcsdus)) + (jmlpack * (parseInt(isipcs))) + jmlpcs;
-            var subtotal = (jmldus * hargadus) + (jmlpack * harga_pack) + (jmlpcs * hargapcs);
+            var subtotal = (jmldus * hargadus) + (jmlpack * hargapack) + (jmlpcs * hargapcs);
             //alert(totalpcs);
 
             if (kode_barang == "") {
