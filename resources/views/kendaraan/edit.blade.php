@@ -126,9 +126,13 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <select name="status_aktif" id="status_aktif" class="form-control">
-                                                    <option value="1">Aktif</option>
-                                                    <option value="0">Non Aktif</option>
+                                                <select name="status" id="status" class="form-control">
+                                                    <option @if ($data->status==1)
+                                                        selected
+                                                        @endif value="1">Aktif</option>
+                                                    <option @if ($data->status==0)
+                                                        selected
+                                                        @endif value="0">Non Aktif</option>
                                                 </select>
                                             </div>
                                         </div>

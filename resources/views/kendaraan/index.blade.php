@@ -67,6 +67,7 @@
                                     <th>Pajak 1 Th</th>
                                     <th>Pajak 5 Th</th>
                                     <th>Cabang</th>
+                                    <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -83,6 +84,13 @@
                                     <td>{{ $d->jatuhtempo_pajak_satutahun != null ? date("d-m-Y",strtotime($d->jatuhtempo_pajak_satutahun)) : '' }}</td>
                                     <td>{{ $d->jatuhtempo_pajak_limatahun  != null ? date("d-m-Y",strtotime($d->jatuhtempo_pajak_limatahun)) : '' }}</td>
                                     <td>{{ strtoupper($d->kode_cabang) }}</td>
+                                    <td>
+                                        @if ($d->status==1)
+                                        <span class="badge bg-success">Aktif</span>
+                                        @else
+                                        <span class="badge bg-danger">Non Aktif</span>
+                                        @endif
+                                    </td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             @if (in_array($level,$kendaraan_edit))
@@ -101,6 +109,7 @@
                                             @endif
                                         </div>
                                     </td>
+
                                 </tr>
                                 @endforeach
 
