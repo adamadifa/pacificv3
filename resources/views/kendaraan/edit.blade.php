@@ -125,6 +125,16 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
+                                            <div class="form-group">
+                                                <select name="status_aktif" id="status_aktif" class="form-control">
+                                                    <option value="1">Aktif</option>
+                                                    <option value="0">Non Aktif</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
                                             <button type="submit" class="btn btn-primary mr-1 mb-1"><i class="fa fa-send mr-1"></i> Simpan</button>
                                             <a href="/kendaraan" class="btn btn-outline-warning mr-1 mb-1"><i class="fa fa-arrow-left mr-2"></i>Kembali</a>
                                         </div>
