@@ -186,26 +186,26 @@ class DpbController extends Controller
         }
         $cek = DB::table('dpb')->where('no_dpb', $no_dpb)->count();
         $cekfpb = DB::table('dpb')->where('no_fpb', $no_fpb)->count();
-        if ($cek > 0) {
-            return Redirect::back()->with(['warning' => 'Data Sudah Ada']);
-        } else if ($cekfpb > 0) {
-            return Redirect::back()->with(['warning' => 'No. FPB Sudah Ada']);
-        } else {
-            DB::beginTransaction();
-            try {
-                DB::table('dpb')->insert($data);
-                $chunks = array_chunk($detail_dpb, 5);
-                foreach ($chunks as $chunk) {
-                    Detaildpb::insert($chunk);
-                }
-                DB::commit();
-                return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
-            } catch (\Exception $e) {
-                dd($e);
-                DB::rollback();
-                return Redirect::back()->with(['warning' => 'Data Gagal Disimpan, Hubungi Tim IT']);
+        // if ($cek > 0) {
+        //     return Redirect::back()->with(['warning' => 'Data Sudah Ada']);
+        // } else if ($cekfpb > 0) {
+        //     return Redirect::back()->with(['warning' => 'No. FPB Sudah Ada']);
+        // } else {
+        DB::beginTransaction();
+        try {
+            DB::table('dpb')->insert($data);
+            $chunks = array_chunk($detail_dpb, 5);
+            foreach ($chunks as $chunk) {
+                Detaildpb::insert($chunk);
             }
+            DB::commit();
+            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+        } catch (\Exception $e) {
+            dd($e);
+            DB::rollback();
+            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan, Hubungi Tim IT']);
         }
+        // }
     }
 
     public function delete($no_dpb)
