@@ -540,15 +540,25 @@ class DashboardController extends Controller
         $duabulan = date("m") + 2 > 12 ? (date("m") + 2) - 12 : date("m") + 2;
         $tahun3 = $duabulan > 12 ? $tahunini + 1 : $tahunini;
 
-        $qkir_sudahlewat = DB::table('kendaraan')->whereRaw('MONTH(jatuhtempo_kir)<' . $bulanini)
-            ->whereRaw('YEAR(jatuhtempo_kir)<=' . $tahunini);
+        $qkir_sudahlewat = DB::table('kendaraan')
+            ->whereRaw('MONTH(jatuhtempo_kir)<' . $bulanini)
+            ->whereRaw('YEAR(jatuhtempo_kir)<=' . $tahunini)
+            ->where('status', 1);
 
-        $qkir_bulanini = DB::table('kendaraan')->whereRaw('MONTH(jatuhtempo_kir)=' . $bulanini)
-            ->whereRaw('YEAR(jatuhtempo_kir)=' . $tahunini);
-        $qkir_bulandepan = DB::table('kendaraan')->whereRaw('MONTH(jatuhtempo_kir)=' . $bulandepan)
-            ->whereRaw('YEAR(jatuhtempo_kir)=' . $tahun2);
-        $qkir_duabulan = DB::table('kendaraan')->whereRaw('MONTH(jatuhtempo_kir)=' . $duabulan)
-            ->whereRaw('YEAR(jatuhtempo_kir)=' . $tahun3);
+        $qkir_bulanini = DB::table('kendaraan')
+            ->whereRaw('MONTH(jatuhtempo_kir)=' . $bulanini)
+            ->whereRaw('YEAR(jatuhtempo_kir)=' . $tahunini)
+            ->where('status', 1);
+        $qkir_bulandepan = DB::table('kendaraan')
+            ->whereRaw('MONTH(jatuhtempo_kir)=' . $bulandepan)
+            ->whereRaw('YEAR(jatuhtempo_kir)=' . $tahun2)
+            ->where('status', 1);
+        $qkir_duabulan = DB::table('kendaraan')
+            ->whereRaw('MONTH(jatuhtempo_kir)=' . $duabulan)
+            ->whereRaw('YEAR(jatuhtempo_kir)=' . $tahun3)
+            ->where('status', 1);
+
+
         $kir_sudahlewat = $qkir_sudahlewat->get();
         $kir_bulanini = $qkir_bulanini->get();
         $kir_bulandepan = $qkir_bulandepan->get();
@@ -559,14 +569,22 @@ class DashboardController extends Controller
         $jml_kir_duabulan = $qkir_duabulan->count();
 
 
-        $qpajak_satutahun_sudahlewat = DB::table('kendaraan')->whereRaw('MONTH(jatuhtempo_pajak_satutahun)<' . $bulanini)
-            ->whereRaw('YEAR(jatuhtempo_pajak_satutahun)<=' . $tahunini);
-        $qpajak_satutahun_bulanini = DB::table('kendaraan')->whereRaw('MONTH(jatuhtempo_pajak_satutahun)=' . $bulanini)
-            ->whereRaw('YEAR(jatuhtempo_pajak_satutahun)=' . $tahunini);
-        $qpajak_satutahun_bulandepan = DB::table('kendaraan')->whereRaw('MONTH(jatuhtempo_pajak_satutahun)=' . $bulandepan)
-            ->whereRaw('YEAR(jatuhtempo_pajak_satutahun)=' . $tahun2);
-        $qpajak_satutahun_duabulan = DB::table('kendaraan')->whereRaw('MONTH(jatuhtempo_pajak_satutahun)=' . $duabulan)
-            ->whereRaw('YEAR(jatuhtempo_pajak_satutahun)=' . $tahun3);
+        $qpajak_satutahun_sudahlewat = DB::table('kendaraan')
+            ->whereRaw('MONTH(jatuhtempo_pajak_satutahun)<' . $bulanini)
+            ->whereRaw('YEAR(jatuhtempo_pajak_satutahun)<=' . $tahunini)
+            ->where('status', 1);
+        $qpajak_satutahun_bulanini = DB::table('kendaraan')
+            ->whereRaw('MONTH(jatuhtempo_pajak_satutahun)=' . $bulanini)
+            ->whereRaw('YEAR(jatuhtempo_pajak_satutahun)=' . $tahunini)
+            ->where('status', 1);
+        $qpajak_satutahun_bulandepan = DB::table('kendaraan')
+            ->whereRaw('MONTH(jatuhtempo_pajak_satutahun)=' . $bulandepan)
+            ->whereRaw('YEAR(jatuhtempo_pajak_satutahun)=' . $tahun2)
+            ->where('status', 1);
+        $qpajak_satutahun_duabulan = DB::table('kendaraan')
+            ->whereRaw('MONTH(jatuhtempo_pajak_satutahun)=' . $duabulan)
+            ->whereRaw('YEAR(jatuhtempo_pajak_satutahun)=' . $tahun3)
+            ->where('status', 1);
         $pajak_satutahun_sudahlewat = $qpajak_satutahun_sudahlewat->get();
         $pajak_satutahun_bulanini = $qpajak_satutahun_bulanini->get();
         $pajak_satutahun_bulandepan = $qpajak_satutahun_bulandepan->get();
@@ -576,14 +594,22 @@ class DashboardController extends Controller
         $jml_pajak_satutahun_bulandepan = $qpajak_satutahun_bulandepan->count();
         $jml_pajak_satutahun_duabulan = $qpajak_satutahun_duabulan->count();
 
-        $qpajak_limatahun_sudahlewat = DB::table('kendaraan')->whereRaw('MONTH(jatuhtempo_pajak_limatahun)<' . $bulanini)
-            ->whereRaw('YEAR(jatuhtempo_pajak_limatahun)<=' . $tahunini);
-        $qpajak_limatahun_bulanini = DB::table('kendaraan')->whereRaw('MONTH(jatuhtempo_pajak_limatahun)=' . $bulanini)
-            ->whereRaw('YEAR(jatuhtempo_pajak_limatahun)=' . $tahunini);
-        $qpajak_limatahun_bulandepan = DB::table('kendaraan')->whereRaw('MONTH(jatuhtempo_pajak_limatahun)=' . $bulandepan)
-            ->whereRaw('YEAR(jatuhtempo_pajak_limatahun)=' . $tahun2);
-        $qpajak_limatahun_duabulan = DB::table('kendaraan')->whereRaw('MONTH(jatuhtempo_pajak_limatahun)=' . $duabulan)
-            ->whereRaw('YEAR(jatuhtempo_pajak_limatahun)=' . $tahun3);
+        $qpajak_limatahun_sudahlewat = DB::table('kendaraan')
+            ->whereRaw('MONTH(jatuhtempo_pajak_limatahun)<' . $bulanini)
+            ->whereRaw('YEAR(jatuhtempo_pajak_limatahun)<=' . $tahunini)
+            ->where('status', 1);
+        $qpajak_limatahun_bulanini = DB::table('kendaraan')
+            ->whereRaw('MONTH(jatuhtempo_pajak_limatahun)=' . $bulanini)
+            ->whereRaw('YEAR(jatuhtempo_pajak_limatahun)=' . $tahunini)
+            ->where('status', 1);
+        $qpajak_limatahun_bulandepan = DB::table('kendaraan')
+            ->whereRaw('MONTH(jatuhtempo_pajak_limatahun)=' . $bulandepan)
+            ->whereRaw('YEAR(jatuhtempo_pajak_limatahun)=' . $tahun2)
+            ->where('status', 1);
+        $qpajak_limatahun_duabulan = DB::table('kendaraan')
+            ->whereRaw('MONTH(jatuhtempo_pajak_limatahun)=' . $duabulan)
+            ->whereRaw('YEAR(jatuhtempo_pajak_limatahun)=' . $tahun3)
+            ->where('status', 1);
         $pajak_limatahun_sudahlewat = $qpajak_limatahun_sudahlewat->get();
         $pajak_limatahun_bulanini = $qpajak_limatahun_bulanini->get();
         $pajak_limatahun_bulandepan = $qpajak_limatahun_bulandepan->get();
@@ -593,10 +619,11 @@ class DashboardController extends Controller
         $jml_pajak_limatahun_bulandepan = $qpajak_limatahun_bulandepan->count();
         $jml_pajak_limatahun_duabulan = $qpajak_limatahun_duabulan->count();
 
-        $jmlkendaraan = Kendaraan::count();
+        $jmlkendaraan = Kendaraan::where('status', 1)->count();
         $rekapkendaraancabang = DB::table('kendaraan')
             ->selectRaw('kendaraan.kode_cabang,nama_cabang,COUNT(no_polisi) as jmlkendaraan')
             ->join('cabang', 'kendaraan.kode_cabang', '=', 'cabang.kode_cabang')
+            ->where('status', 1)
             ->groupByRaw('kendaraan.kode_cabang,nama_cabang')
             ->get();
         return view('dashboard.ga', compact('kir_bulanini', 'jml_kir_bulanini', 'kir_bulandepan', 'jml_kir_bulandepan', 'kir_duabulan', 'jml_kir_duabulan', 'pajak_satutahun_bulanini', 'jml_pajak_satutahun_bulanini', 'pajak_satutahun_bulandepan', 'jml_pajak_satutahun_bulandepan', 'pajak_satutahun_duabulan', 'jml_pajak_satutahun_duabulan', 'pajak_limatahun_bulanini', 'jml_pajak_limatahun_bulanini', 'pajak_limatahun_bulandepan', 'jml_pajak_limatahun_bulandepan', 'pajak_limatahun_duabulan', 'jml_pajak_limatahun_duabulan', 'jml_kir_sudahlewat', 'kir_sudahlewat', 'pajak_satutahun_sudahlewat', 'jml_pajak_satutahun_sudahlewat', 'pajak_limatahun_sudahlewat', 'jml_pajak_limatahun_sudahlewat', 'jmlkendaraan', 'rekapkendaraancabang'));

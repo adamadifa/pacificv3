@@ -133,6 +133,7 @@ class KendaraanController extends Controller
                 'jatuhtempo_pajak_limatahun' => $request->jatuhtempo_pajak_limatahun,
                 'jenis' => $request->jenis,
                 'kode_cabang' => $request->kode_cabang,
+                'status' => $request->status
             ]);
 
         if ($simpan) {
