@@ -26,7 +26,11 @@
         </div>
     </div>
     <div class="content-body" id="loadpelanggan">
-
+        <div class="text-center" id="loading">
+            <div class="spinner-border text-primary" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
         <input type="hidden" id="status">
         <div class="row">
             <div class="col-12">
@@ -47,8 +51,8 @@
                     <button id="flash-toggle" class="btn btn-primary">📸 Flash: <span id="flash-state">off</span></button>
                 </div>
                 <div class="form-group">
-                    <input type="text" id="latitude">
-                    <input type="text" id="longitude">
+                    <input type="hidden" id="latitude">
+                    <input type="hidden" id="longitude">
                 </div>
             </div>
         </div>
@@ -97,18 +101,23 @@
     const fileQrResult = document.getElementById('file-qr-result');
     const statusResult = document.getElementById('status');
     var x = document.getElementById("myAudio");
-
+    $("#loading").hide();
     function loadpelanggan(kode_pelanggan){
         var status = $("#status").val();
-
+        var latitude = $("#latitude").val();
+        var longitude = $("#longitude").val();
+        $("#loading").show();
         $.ajax({
             type:'POST',
             url:'/pelanggan/getpelanggan',
             data:{
                 _token:"{{ csrf_token() }}",
                 kode_pelanggan:kode_pelanggan,
+                latitude:latitude,
+                longitude:longitude
             },
             success:function(respond){
+                $("#loading").hide();
                 if(status == 1){
                     $("#status").val(2);
                     $("#loadpelanggan").html(respond);

@@ -152,6 +152,7 @@ class GlobalProvider extends ServiceProvider
             $memo_tambah_hapus = ['admin', 'admin medsos', 'manager accounting', 'manager hrd'];
 
 
+            $tracking_salesman = ['admin'];
 
             $dashboardadmin = ['admin', 'manager marketing', 'rsm', 'general manager', 'direktur'];
             $dashboardkepalapenjualan = ['kepala penjualan'];
@@ -1194,7 +1195,8 @@ class GlobalProvider extends ServiceProvider
                 'ticket_approve' => $ticket_approve,
                 'ticket_done' => $ticket_done,
 
-                'users' => $users
+                'users' => $users,
+                'tracking_salesman' => $tracking_salesman
 
             ];
             View::share($shareddata);

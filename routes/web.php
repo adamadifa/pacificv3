@@ -100,6 +100,7 @@ use App\Http\Controllers\SuratjalanController;
 use App\Http\Controllers\TabunganController;
 use App\Http\Controllers\TargetkomisiController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\TrackingController;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\TutuplaporanController;
 use App\Http\Controllers\UserController;
@@ -1379,4 +1380,6 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('/scan', [QrcodeController::class, 'index']);
+    Route::get('/tracking', [TrackingController::class, 'index']);
+    Route::get('/getlocationcheckin', [TrackingController::class, 'getlocationcheckin']);
 });

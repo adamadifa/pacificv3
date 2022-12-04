@@ -27,6 +27,14 @@
                     <span class="menu-title" data-i18n="Dashboard">Dashboard</span>
                 </a>
             </li>
+            @if (in_array($level,$tracking_salesman))
+            <li class=" {{ request()->is(['tracking']) ? 'active' : '' }} nav-item">
+                <a href="/tracking">
+                    <i class="feather icon-map"></i>
+                    <span class="menu-title" data-i18n="Tracking Salesman">Tracking Salesman</span>
+                </a>
+            </li>
+            @endif
             <li class=" {{ request()->is(['memo','memo/*']) ? 'active' : '' }} nav-item">
                 <a href="/memo">
                     <i class="feather icon-book"></i>
