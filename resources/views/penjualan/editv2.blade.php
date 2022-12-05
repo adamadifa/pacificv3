@@ -658,6 +658,8 @@
             cektutuplaporan();
         });
 
+        cektutuplaporan();
+
         //Format No. Faktur Tidak Boleh Pakai Spasi
         $('#no_fak_penj').mask('AAAAAAAAAAA', {
             'translation': {
