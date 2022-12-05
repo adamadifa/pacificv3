@@ -125,7 +125,7 @@
                     <td>{{ $d->kode_jurnal }}</td>
                     <td>{{ $d->keterangan }}</td>
                     <td>{{ $d->peruntukan =="PC" ? $d->kode_cabang : $d->peruntukan }}</td>
-                    <td>{{ $d->kode_akun }}</td>
+                    <td>{{ "'".$d->kode_akun }}</td>
                     <td>{{ $d->nama_akun }}</td>
                     <td align="right">{{ !empty($debet) ? desimal($debet) : '' }}</td>
                     <td align="right">{{ !empty($kredit) ? desimal($kredit) : '' }}</td>
