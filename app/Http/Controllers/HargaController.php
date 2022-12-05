@@ -342,7 +342,11 @@ class HargaController extends Controller
     public function getbarangcabang(Request $request)
     {
         $kode_cabang = $request->kode_cabang;
-        $kategori_salesman = $request->kategori_salesman;
+        if (!empty($request->kategori_salesman)) {
+            $kategori_salesman = $request->kategori_salesman;
+        } else {
+            $kategori_salesman = "NORMAL";
+        }
         $kode_pelanggan = $request->kode_pelanggan;
         // $barang = DB::table('barang')
         //     ->select('barang.*')
@@ -373,22 +377,12 @@ class HargaController extends Controller
                     ->where('kategori_harga', 'CANVASER')
                     ->get();
             } else {
-                if ($kategori_salesman != "") {
-
-                    $barang = Harga::orderby('nama_barang', 'asc')
-                        ->select('barang.*')
-                        ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')->where('status', 1)
-                        ->where('kode_cabang', $kode_cabang)
-                        ->where('kategori_harga', $kategori_salesman)
-                        ->get();
-                } else {
-                    $barang = Harga::orderby('nama_barang', 'asc')
-                        ->select('barang.*')
-                        ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')->where('status', 1)
-                        ->where('kode_cabang', $kode_cabang)
-                        ->where('kategori_harga', 'NORMAL')
-                        ->get();
-                }
+                $barang = Harga::orderby('nama_barang', 'asc')
+                    ->select('barang.*')
+                    ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')->where('status', 1)
+                    ->where('kode_cabang', $kode_cabang)
+                    ->where('kategori_harga', $kategori_salesman)
+                    ->get();
             }
         }
         return view('harga.getbarangcabang', compact('barang'));
