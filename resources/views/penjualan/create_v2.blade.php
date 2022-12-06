@@ -949,6 +949,7 @@
             var harga_pcs = $("#harga_pcs").val();
             var isipcsdus = $("#isipcsdus").val();
             var isipcs = $("#isipcs").val();
+            var nama_pelanggan = $("#nama_pelanggan").val();
             if ($('#promo').is(":checked")) {
                 var promo = $("#promo").val();
             } else {
@@ -980,7 +981,7 @@
                     $("#nama_barang").focus();
                 });
                 return false;
-            } else if (jumlah == "") {
+            } else if (jumlah == "" && !nama_pelanggan.includes('BATAL')) {
                 swal({
                     title: 'Oops'
                     , text: 'Qty Harus Diisi !'
