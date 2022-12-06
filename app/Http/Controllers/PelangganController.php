@@ -603,6 +603,7 @@ class PelangganController extends Controller
             if ($cek == 0) {
                 DB::table('checkin')->insert([
                     'kode_checkin' => $kode_checkin,
+                    'tgl_checkin' => $hariini,
                     'id_karyawan' => Auth::user()->id,
                     'kode_pelanggan' => $kode_pelanggan,
                     'latitude' => $latitude,
