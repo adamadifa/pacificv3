@@ -1,6 +1,14 @@
 @extends('layouts.midone')
 @section('titlepage', 'Detail Faktur')
 @section('content')
+<style>
+    @media only screen and (max-width: 800px) {
+        table {
+            font-size: 12px;
+        }
+    }
+
+</style>
 <div class="content-wrapper">
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
