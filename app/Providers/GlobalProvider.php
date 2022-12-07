@@ -153,6 +153,7 @@ class GlobalProvider extends ServiceProvider
 
 
             $tracking_salesman = ['admin'];
+            $scan = ['admin', 'salesman'];
 
             $dashboardadmin = ['admin', 'manager marketing', 'rsm', 'general manager', 'direktur'];
             $dashboardkepalapenjualan = ['kepala penjualan'];
@@ -1196,7 +1197,8 @@ class GlobalProvider extends ServiceProvider
                 'ticket_done' => $ticket_done,
 
                 'users' => $users,
-                'tracking_salesman' => $tracking_salesman
+                'tracking_salesman' => $tracking_salesman,
+                'scan' => $scan
 
             ];
             View::share($shareddata);

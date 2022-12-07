@@ -27,6 +27,14 @@
                     <span class="menu-title" data-i18n="Dashboard">Dashboard</span>
                 </a>
             </li>
+            @if (in_array($level,$scan))
+            <li class=" {{ request()->is(['scan']) ? 'active' : '' }} nav-item">
+                <a href="/scan">
+                    <i class="feather icon-maximize"></i>
+                    <span class="menu-title">Scan Qr Code</span>
+                </a>
+            </li>
+            @endif
             @if (in_array($level,$tracking_salesman))
             <li class=" {{ request()->is(['tracking']) ? 'active' : '' }} nav-item">
                 <a href="/tracking">

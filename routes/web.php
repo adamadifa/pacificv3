@@ -108,6 +108,7 @@ use App\Http\Controllers\WhatsappController;
 use App\Models\Barangpembelian;
 use App\Models\Logamtokertas;
 use App\Models\Pemasukangudanglogistik;
+use App\Models\Penjualan;
 use App\Models\Saldoawalmutasibarangproduksi;
 use App\Models\Setcoacabang;
 use App\Models\Setoranpenjualan;
@@ -1382,4 +1383,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/scan', [QrcodeController::class, 'index']);
     Route::get('/tracking', [TrackingController::class, 'index']);
     Route::get('/getlocationcheckin', [TrackingController::class, 'getlocationcheckin']);
+
+
+    Route::get('/cetakstruk', [PenjualanController::class, 'cetakstruk']);
 });
