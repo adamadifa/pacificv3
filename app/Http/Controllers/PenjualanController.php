@@ -6859,4 +6859,141 @@ class PenjualanController extends Controller
 
         return view('penjualan.cetakstruk', compact('faktur', 'pelangganmp', 'detail'));
     }
+
+
+    //Salesman
+    public function showforsales($no_fak_penj)
+    {
+        $no_fak_penj = Crypt::decrypt($no_fak_penj);
+        $data = DB::table('penjualan')
+            ->select(
+                'penjualan.*',
+                'nama_pelanggan',
+                'alamat_pelanggan',
+                'alamat_toko',
+                'pelanggan.no_hp',
+                'latitude',
+                'longitude',
+                'limitpel',
+                'foto',
+                'nik',
+                'no_kk',
+                'tgl_lahir',
+                'pasar',
+                'hari',
+                'cara_pembayaran',
+                'status_outlet',
+                'type_outlet',
+                'lama_usaha',
+                'jaminan',
+                'lama_langganan',
+                'omset_toko',
+                'karyawan.nama_karyawan',
+                'karyawan.kategori_salesman',
+                'karyawan.kode_cabang',
+                'nama_cabang',
+                DB::raw('IFNULL(totalpf,0) - IFNULL(totalgb,0) as totalretur'),
+                'jmlbayar'
+            )
+            ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+            ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
+            ->leftJoin(
+                DB::raw("(
+                    SELECT
+                    no_fak_penj,
+                    SUM(subtotal_gb) AS totalgb,
+                    SUM(subtotal_pf) AS totalpf
+                FROM
+                    retur
+                WHERE no_fak_penj = '$no_fak_penj'
+                GROUP BY
+                    no_fak_penj
+                ) retur"),
+                function ($join) {
+                    $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
+                }
+            )
+            ->leftJoin(
+                DB::raw("(
+                SELECT no_fak_penj, IFNULL(SUM(bayar),0) as jmlbayar
+                FROM historibayar
+                WHERE no_fak_penj = '$no_fak_penj'
+                GROUP BY no_fak_penj
+            ) historibayar"),
+                function ($join) {
+                    $join->on('penjualan.no_fak_penj', '=', 'historibayar.no_fak_penj');
+                }
+            )
+            ->where('penjualan.no_fak_penj', $no_fak_penj)
+            ->first();
+
+        $detailpenjualan = DB::table('detailpenjualan')
+            ->select('detailpenjualan.*', 'nama_barang', 'isipcsdus', 'isipcs', 'isipack', 'kode_produk')
+            ->join('barang', 'detailpenjualan.kode_barang', '=', 'barang.kode_barang')
+            ->where('no_fak_penj', $no_fak_penj)
+            ->get();
+
+        $historibayar = DB::table('historibayar')
+            ->join('karyawan', 'historibayar.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->leftJoin('giro', 'historibayar.id_giro', '=', 'giro.id_giro')
+            ->where('historibayar.no_fak_penj', $no_fak_penj)
+            ->orderBy('tglbayar', 'asc')
+            ->get();
+
+        $retur = DB::table('detailretur')
+            ->select('detailretur.*', 'tglretur', 'jenis_retur', 'kode_produk', 'nama_barang', 'isipcsdus', 'isipack', 'isipcs')
+            ->join('retur', 'detailretur.no_retur_penj', '=', 'retur.no_retur_penj')
+            ->join('barang', 'detailretur.kode_barang', '=', 'barang.kode_barang')
+            ->where('retur.no_fak_penj', $no_fak_penj)
+            ->orderBy('retur.no_retur_penj')
+            ->get();
+        $salesman = DB::table('karyawan')->where('kode_cabang', $data->kode_cabang)->where('status_aktif_sales', 1)->get();
+        $girotolak = DB::table('giro')
+            ->select('giro.id_giro', 'no_giro')
+            ->leftJoin(
+                DB::raw("(
+                SELECT id_giro,girotocash FROM historibayar WHERE no_fak_penj ='$no_fak_penj'
+            ) hb"),
+                function ($join) {
+                    $join->on('giro.id_giro', '=', 'hb.id_giro');
+                }
+            )
+            ->where('giro.status', 2)
+            ->where('giro.no_fak_penj', $no_fak_penj)
+            ->get();
+
+        $giro = DB::table('giro')
+            ->select('giro.*', 'nama_karyawan', 'tglbayar')
+            ->leftJoin('karyawan', 'giro.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->leftJoin(
+                DB::raw("(
+                SELECT id_giro,tglbayar
+                FROM historibayar
+                WHERE no_fak_penj = '$no_fak_penj'
+            ) historibayar"),
+                function ($join) {
+                    $join->on('giro.id_giro', '=', 'historibayar.id_giro');
+                }
+            )
+            ->where('giro.no_fak_penj', $no_fak_penj)
+            ->get();
+
+        $transfer = DB::table('transfer')
+            ->select('transfer.*', 'nama_karyawan', 'tglbayar')
+            ->leftJoin('karyawan', 'transfer.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->leftJoin(
+                DB::raw("(
+                SELECT id_transfer,tglbayar
+                FROM historibayar
+                WHERE no_fak_penj = '$no_fak_penj'
+            ) historibayar"),
+                function ($join) {
+                    $join->on('transfer.id_transfer', '=', 'historibayar.id_transfer');
+                }
+            )
+            ->where('transfer.no_fak_penj', $no_fak_penj)
+            ->get();
+        return view('penjualan.showforsales', compact('data', 'detailpenjualan', 'retur', 'historibayar', 'salesman', 'girotolak', 'giro', 'transfer'));
+    }
 }

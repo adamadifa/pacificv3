@@ -140,7 +140,7 @@
                                                             </td>
                                                             <td>
                                                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                                                    <a class="ml-1 detailpenjualan" href="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/show"><i class=" fa fa-file-text info"></i></a>
+                                                                    <a class="ml-1 detailpenjualan" href="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/showforsales"><i class=" fa fa-file-text info"></i></a>
                                                                 </div>
 
                                                             </td>
