@@ -6826,4 +6826,33 @@ class PenjualanController extends Controller
         $salesman = Salesman::where('id_karyawan', $id_karyawan)->first();
         return view('penjualan.laporan.cetak_analisatransaksi', compact('analisatransaksi', 'cabang', 'dari', 'sampai', 'salesman'));
     }
+
+    public function cetakstruk()
+    {
+        $no_fak_penj = "BGRA017956";
+        $pelangganmp = [
+            'TSM-00548',
+            'TSM-00493',
+            'TSM-02234',
+            'TSM-01117',
+            'TSM-00494',
+            'TSM-00466',
+            'PST00007',
+            'PST00008',
+            'PST00002'
+        ];
+        $faktur = DB::table('penjualan')
+            ->select('penjualan.*', 'nama_pelanggan', 'nama_karyawan')
+            ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+            ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->where('no_fak_penj', $no_fak_penj)->first();
+
+        $detail = DB::table('detailpenjualan')
+            ->select('kode_produk', 'nama_barang', 'isipcsdus', 'isipack', 'isipcs', 'jumlah', 'subtotal', 'detailpenjualan.harga_dus', 'detailpenjualan.harga_pack', 'detailpenjualan.harga_pcs')
+            ->join('barang', 'detailpenjualan.kode_barang', '=', 'barang.kode_barang')
+            ->where('no_fak_penj', $no_fak_penj)
+            ->get();
+
+        return view('penjualan.cetakstruk', compact('faktur', 'pelangganmp', 'detail'));
+    }
 }
