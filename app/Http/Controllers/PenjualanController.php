@@ -105,7 +105,7 @@ class PenjualanController extends Controller
             //     }
             // }
 
-            if ($this->cabang != "PCF") {
+            if ($this->cabang != "PCF" and $this->cabang != "PST") {
                 $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
                 $cabang[] = "";
                 foreach ($cbg as $c) {
@@ -164,7 +164,7 @@ class PenjualanController extends Controller
             //     }
             // }
 
-            if ($this->cabang != "PCF") {
+            if ($this->cabang != "PCF" and $this->cabang != "PST") {
                 $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
                 $cabang[] = "";
                 foreach ($cbg as $c) {
@@ -196,7 +196,7 @@ class PenjualanController extends Controller
             //     $salesman = Salesman::orderBy('nama_karyawan')->where('nama_karyawan', '!=', '-')->get();
             // }
 
-            if ($this->cabang != "PCF") {
+            if ($this->cabang != "PCF" and $this->cabang != "PST") {
                 $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)
                     ->orWhere('sub_cabang', $this->cabang)
                     ->get();
