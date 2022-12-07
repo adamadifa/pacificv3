@@ -140,16 +140,7 @@
                                                             </td>
                                                             <td>
                                                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                                                    <a class="ml-1" href="/penjualan/{{\Crypt::encrypt($d->no_fak_penj)}}/edit"><i class="feather icon-edit success"></i></a>
-                                                                    <a class="ml-1 detailpenjualan" href="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/show"><i class=" fa fa-money info"></i></a>
-                                                                    <form method="POST" name="deleteform" class="deleteform" action="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/delete">
-                                                                        @csrf
-                                                                        @method('DELETE')
-                                                                        <a href="#" tanggal="{{ $d->tgltransaksi }}" class="delete-confirm ml-1">
-                                                                            <i class="feather icon-trash danger"></i>
-                                                                        </a>
-                                                                    </form>
-
+                                                                    <a class="ml-1 detailpenjualan" href="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/show"><i class=" fa fa-file-text info"></i></a>
                                                                 </div>
 
                                                             </td>
