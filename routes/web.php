@@ -1240,6 +1240,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/penjualan/storebarang', [PenjualanController::class, 'storebarang']);
     Route::post('/penjualan/update', [PenjualanController::class, 'update']);
     Route::get('/penjualan/{no_fak_penj}/show', [PenjualanController::class, 'show']);
+    Route::get('/penjualan/{no_fak_penj}/showforsales', [PenjualanController::class, 'showforsales']);
     Route::get('/penjualan/{no_fak_penj}/updatepending', [PenjualanController::class, 'updatepending']);
     Route::get('/laporanpenjualan/analisatransaksi', [PenjualanController::class, 'analisatransaksi']);
     Route::post('/laporanpenjualan/analisatransaksi/cetak', [PenjualanController::class, 'cetakanalisatransaksi']);
