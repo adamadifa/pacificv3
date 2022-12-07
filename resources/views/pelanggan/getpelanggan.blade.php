@@ -102,7 +102,7 @@
                                                     <td>{{ $loop->iteration; }}</td>
                                                     <td>{{ $d->no_fak_penj }}</td>
                                                     <td>{{ date("d-m-Y",strtotime($d->tgltransaksi)) }}</td>
-                                                    <td>{{ ucwords(strtolower($d->nama_karyawan)) }}</td>
+
                                                     <td>
                                                         @if ($d->jenistransaksi=="tunai")
                                                         <span class="badge bg-success">Tunai</span>
