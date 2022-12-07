@@ -233,7 +233,7 @@
                                                 class="bg-warning"
                                                 @endif>
 
-                                                <td colspan="8" style="font-weight: bold">{{ $d->nama_barang }}</td>
+                                                <td colspan="8" style="font-weight: bold">{{ $d->kode_produk }} - {{ $d->nama_barang }}</td>
                                             </tr>
                                             @if (!empty($jmldus))
                                             <tr @if ($d->promo ==1)
@@ -321,21 +321,6 @@
                             <div class="tab-content">
                                 <div class="tab-pane active" id="penjualan" aria-labelledby="penjualan-tab" role="tabpanel">
                                     <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Tanggal</th>
-                                                <th>Kode Produk</th>
-                                                <th>Nama Barang</th>
-                                                <th>Jenis Retur</th>
-                                                <th class="text-center">Dus</th>
-                                                <th>Harga/Dus</th>
-                                                <th class="text-center">Pack</th>
-                                                <th>Harga/Pack</th>
-                                                <th class="text-center">Pcs</th>
-                                                <th>Harga/Pcs</th>
-                                                <th>Total</th>
-                                            </tr>
-                                        </thead>
                                         <tbody>
                                             @php
                                             $totalpf = 0;
@@ -369,35 +354,49 @@
 
                                             @endphp
                                             <tr>
-                                                <td>{{ date("d-m-y",strtotime($d->tglretur)) }}</td>
-                                                <td>{{ $d->kode_produk }}</td>
-                                                <td>{{ $d->nama_barang }}</td>
-                                                <td class="text-center">
+                                                <td style="font-weight: bold">Tanggal</td>
+                                                <td colspan="4">{{ date("d-m-y",strtotime($d->tglretur)) }}</td>
+                                                <td style="font-weight: bold">Jenis Retur</td>
+                                                <td colspan="4">
                                                     @if ($d->jenis_retur=="pf")
-                                                    <span class="badge bg-danger">PF</span>
+                                                    <span class="badge bg-danger">Potong Faktur</span>
                                                     @else
-                                                    <span class="badge bg-success">GB</span>
+                                                    <span class="badge bg-success">Ganti Barang</span>
                                                     @endif
                                                 </td>
-                                                <td class="text-center">{{ $jmldus }}</td>
-                                                <td class="text-right">{{ rupiah($d->harga_dus) }}</td>
-                                                <td class="text-center">{{ $jmlpack }}</td>
-                                                <td class="text-right">{{ rupiah($d->harga_pack) }}</td>
-                                                <td class="text-center">{{ $jmlpcs }}</td>
-                                                <td class="text-right">{{ rupiah($d->harga_pcs) }}</td>
-                                                <td class="text-right">{{ rupiah($d->subtotal) }}</td>
                                             </tr>
+                                            <tr>
+                                                <td colspan="10" style="font-weight: bold">{{ $d->kode_produk }} - {{ $d->nama_barang }}</td>
+                                            </tr>
+                                            @if (!empty($jmldus))
+                                            <tr>
+                                                <td colspan="9">{{ $jmldus }} Dus x {{ rupiah($d->harga_dus) }}</td>
+                                                <td style="font-weight: bold; text-align:right">{{ rupiah($jmldus * $d->harga_dus) }}</td>
+                                            </tr>
+                                            @endif
+                                            @if (!empty($jmlpack))
+                                            <tr>
+                                                <td colspan="9">{{ $jmlpack }} Pack x {{ rupiah($d->harga_pack) }}</td>
+                                                <td style="font-weight: bold; text-align:right">{{ rupiah($jmlpack * $d->harga_pack) }}</td>
+                                            </tr>
+                                            @endif
+                                            @if (!empty($jmlpcs))
+                                            <tr>
+                                                <td colspan="9">{{ $jmlpcs }} Pcs x {{ rupiah($d->harga_pcs) }}</td>
+                                                <td style="font-weight: bold; text-align:right">{{ rupiah($jmlpcs * $d->harga_pcs) }}</td>
+                                            </tr>
+                                            @endif
                                             @endforeach
                                             <tr style="font-weight: bold">
-                                                <td colspan="10">Retur Potong Faktur</td>
+                                                <td colspan="9">Retur Potong Faktur</td>
                                                 <td class="text-right">{{ rupiah($totalpf) }}</td>
                                             </tr>
                                             <tr style="font-weight: bold">
-                                                <td colspan="10">Retur Potong Ganti Barang</td>
+                                                <td colspan="9">Retur Potong Ganti Barang</td>
                                                 <td class="text-right">{{ rupiah($totalgb) }}</td>
                                             </tr>
                                             <tr style="font-weight: bold">
-                                                <td colspan="10">Total Retur</td>
+                                                <td colspan="9">Total Retur</td>
                                                 <td class="text-right">{{ rupiah($total-$totalgb) }}</td>
                                             </tr>
                                         </tbody>
