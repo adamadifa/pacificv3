@@ -6829,6 +6829,10 @@ class PenjualanController extends Controller
 
     public function cetakstruk()
     {
+
+        $kode_pelanggan = Crypt::encrypt('TSM-00700');
+        echo $kode_pelanggan;
+        die;
         $no_fak_penj = "BGRA017956";
         $pelangganmp = [
             'TSM-00548',
