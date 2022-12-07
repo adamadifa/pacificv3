@@ -46,6 +46,7 @@
                         </div>
                     </div>
                 </div>
+                @if (Auth::user()->level != "salesman")
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="card">
@@ -174,8 +175,9 @@
                         </div>
                     </div>
                 </div>
+                @endif
             </div>
-            <div class="col-lg-9-col-md-9 col-sm-9">
+            <div class="col-lg-9 col-sm-12">
                 <div class="card overflow-hidden">
                     <div class="card-header">
                         <h4 class="card-title">
@@ -200,16 +202,14 @@
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>
-                                                <th>Kode Barang</th>
                                                 <th>Nama Barang</th>
-                                                <th style="text-align:center">Dus/Ball</th>
-                                                <th>Harga/Dus/Ball</th>
+                                                <th style="text-align:center">Dus</th>
+                                                <th>Harga/Dus</th>
                                                 <th class="text-center">Pack</th>
                                                 <th>Harga/Pack</th>
                                                 <th class="text-center">Pcs</th>
                                                 <th>Harga/Pcs</th>
                                                 <th>Total</th>
-                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -236,7 +236,7 @@
                                             <tr @if ($d->promo ==1)
                                                 class="bg-warning"
                                                 @endif>
-                                                <td>{{ $d->kode_produk }}</td>
+
                                                 <td>{{ $d->nama_barang }}</td>
                                                 <td class="text-center">{{ $jmldus }}</td>
                                                 <td class="text-right">{{ rupiah($d->harga_dus) }}</td>
@@ -248,35 +248,35 @@
                                             </tr>
                                             @endforeach
                                             <tr style="font-weight: bold">
-                                                <td colspan="8">Subtotal</td>
+                                                <td colspan="7">Subtotal</td>
                                                 <td class="text-right">{{ rupiah($total) }}</td>
                                             </tr>
                                             <tr style="font-weight: bold">
-                                                <td colspan="8">Potongan</td>
+                                                <td colspan="7">Potongan</td>
                                                 <td class="text-right">{{ rupiah($data->potongan) }}</td>
                                             </tr>
                                             <tr style="font-weight: bold">
-                                                <td colspan="8">Potongan Istimewa</td>
+                                                <td colspan="7">Potongan Istimewa</td>
                                                 <td class="text-right">{{ rupiah($data->potistimewa) }}</td>
                                             </tr>
                                             <tr style="font-weight: bold">
-                                                <td colspan="8">Penyesuaian</td>
+                                                <td colspan="7">Penyesuaian</td>
                                                 <td class="text-right">{{ rupiah($data->penyharga) }}</td>
                                             </tr>
                                             <tr style="font-weight: bold">
-                                                <td colspan="8">Total</td>
+                                                <td colspan="7">Total</td>
                                                 <td class="text-right">{{ rupiah($data->total) }}</td>
                                             </tr>
                                             <tr style="font-weight: bold">
-                                                <td colspan="8">Retur</td>
+                                                <td colspan="7">Retur</td>
                                                 <td class="text-right">{{ rupiah($data->totalretur) }}</td>
                                             </tr>
                                             <tr style="font-weight: bold">
-                                                <td colspan="8">Jumlah Bayar</td>
+                                                <td colspan="7">Jumlah Bayar</td>
                                                 <td class="text-right">{{ rupiah($data->jmlbayar) }}</td>
                                             </tr>
                                             <tr style="font-weight: bold">
-                                                <td colspan="8">Sisa Bayar</td>
+                                                <td colspan="7">Sisa Bayar</td>
                                                 <td class="text-right">
                                                     @php
                                                     $sisabayar = $data->total - $data->totalretur - $data->jmlbayar;
@@ -285,7 +285,7 @@
                                                 </td>
                                             </tr>
                                             <tr style="font-weight: bold">
-                                                <td colspan="8">Keterangan</td>
+                                                <td colspan="7">Keterangan</td>
                                                 <td class="text-right">
                                                     @if ($sisabayar != 0)
                                                     <span class="badge bg-danger">BELUM LUNAS</span>
