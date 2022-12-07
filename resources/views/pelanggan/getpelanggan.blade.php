@@ -96,7 +96,7 @@
                                                     <th>Aksi</th>
                                                 </tr>
                                             </thead>
-                                            <tbody>
+                                            <tbody style="font-size: 12px">
                                                 @foreach ($penjualan as $d)
                                                 <tr>
                                                     <td>{{ $loop->iteration; }}</td>
