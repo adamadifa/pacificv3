@@ -470,10 +470,7 @@
                                                 <th>Tanggal</th>
                                                 <th>Bank</th>
                                                 <th>Jumlah</th>
-                                                <th>Jatuh Tempo</th>
                                                 <th>Status</th>
-                                                <th>Ket</th>
-                                                <th>Penagih</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
@@ -488,9 +485,7 @@
                                                 </td>
                                                 <td>{{ $d->namabank }}</td>
                                                 <td class="text-right">{{ rupiah($d->jumlah) }}</td>
-                                                <td>
-                                                    {{ date("d-m-Y",strtotime($d->tglcair)) }}
-                                                </td>
+
                                                 <td>
                                                     @if ($d->status==0)
                                                     <span class="badge bg-warning"> <i class="fa fa-history"></i> Pending </span>
@@ -500,8 +495,7 @@
                                                     <span class="badge bg-danger"> <i class="fa fa-close"></i> Ditolak</span>
                                                     @endif
                                                 </td>
-                                                <td>{{ $d->ket }}</td>
-                                                <td>{{ $d->nama_karyawan }}</td>
+
                                                 <td>
                                                     @if ($d->status===0)
                                                     <div class="btn-group" role="group" aria-label="Basic example">
@@ -542,10 +536,7 @@
                                                 <th>Tanggal</th>
                                                 <th>Bank</th>
                                                 <th>Jumlah</th>
-                                                <th>Jatuh Tempo</th>
                                                 <th>Status</th>
-                                                <th>Ket</th>
-                                                <th>Penagih</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
@@ -560,9 +551,6 @@
                                                 <td>{{ $d->namabank }}</td>
                                                 <td class="text-right">{{ rupiah($d->jumlah) }}</td>
                                                 <td>
-                                                    {{ date("d-m-Y",strtotime($d->tglcair)) }}
-                                                </td>
-                                                <td>
                                                     @if ($d->status==0)
                                                     <span class="badge bg-warning"> <i class="fa fa-history"></i> Pending </span>
                                                     @elseif($d->status==1)
@@ -571,8 +559,6 @@
                                                     <span class="badge bg-danger"> <i class="fa fa-close"></i> Ditolak</span>
                                                     @endif
                                                 </td>
-                                                <td>{{ $d->ket }}</td>
-                                                <td>{{ $d->nama_karyawan }}</td>
                                                 <td>
                                                     @if ($d->status===0)
                                                     <div class="btn-group" role="group" aria-label="Basic example">
