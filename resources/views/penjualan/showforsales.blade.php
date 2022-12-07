@@ -421,8 +421,6 @@
                                                 <th>Tanggal</th>
                                                 <th>Jenis Bayar</th>
                                                 <th>Jumlah</th>
-                                                <th>Keterangan</th>
-                                                <th>Penagih</th>
                                                 <th>Aksi</th>
                                             </tr>
                                         </thead>
@@ -433,36 +431,6 @@
                                                 <td>{{ date("d-m-y",strtotime($d->tglbayar)) }}</td>
                                                 <td>{{ ucwords($d->jenisbayar) }}</td>
                                                 <td class="text-right">{{ rupiah($d->bayar) }}</td>
-                                                <td>
-                                                    @if ($d->girotocash==1)
-                                                    <span class="badge bg-success">Penggantian Giro Ke Cash {{ $d->no_giro }}</span>
-                                                    @elseif($d->status_bayar=="voucher")
-                                                    @if ($d->ket_voucher == 1)
-                                                    <span class="badge bg-success">{{ $d->status_bayar }} Penghapusan Piutang</span>
-                                                    @elseif($d->ket_voucher==2)
-                                                    <span class="badge bg-success">{{ $d->status_bayar }} Diskon Program</span>
-                                                    @elseif($d->ket_voucher==3)
-                                                    <span class="badge bg-success">{{ $d->status_bayar }} Penyelesaian Piutang Oleh Salesman</span>
-                                                    @elseif($d->ket_voucher==4)
-                                                    <span class="badge bg-success">{{ $d->status_bayar }} Voucher Pengalihan Piutang Dgng Jd Piutang Kary </span>
-                                                    @elseif($d->ket_voucher==7)
-                                                    <span class="badge bg-success">{{ $d->status_bayar }} Voucher PPN KPBPB </span>
-                                                    @elseif($d->ket_voucher==8)
-                                                    <span class="badge bg-success">{{ $d->status_bayar }} Voucher PPN WAPU </span>
-                                                    @elseif($d->ket_voucher==9)
-                                                    <span class="badge bg-success">{{ $d->status_bayar }} Voucher PPH PASAL 22 </span>
-                                                    @else
-                                                    <span class="badge bg-success">{{ $d->status_bayar }} Lainnya </span>
-                                                    @endif
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if (empty($d->id_karyawan))
-                                                    {{ $data->nama_karyawan }}
-                                                    @else
-                                                    {{ ucwords(strtolower($d->nama_karyawan)) }}
-                                                    @endif
-                                                </td>
                                                 <td>
                                                     @if ($d->jenisbayar=='titipan')
                                                     <div class="btn-group" role="group" aria-label="Basic example">
