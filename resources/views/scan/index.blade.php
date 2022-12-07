@@ -107,23 +107,25 @@
         var latitude = $("#latitude").val();
         var longitude = $("#longitude").val();
         $("#loading").show();
-        $.ajax({
-            type:'POST',
-            url:'/pelanggan/getpelanggan',
-            data:{
-                _token:"{{ csrf_token() }}",
-                kode_pelanggan:kode_pelanggan,
-                latitude:latitude,
-                longitude:longitude
-            },
-            success:function(respond){
-                $("#loading").hide();
-                if(status == 1){
-                    $("#status").val(2);
-                    $("#loadpelanggan").html(respond);
-                }
-            }
-        });
+        window.location.href = "/pelanggan/"+kode_pelanggan+"/getpelanggan?latitude="+latitude+"&longitude="+longitude;
+
+        // $.ajax({
+        //     type:'POST',
+        //     url:'/pelanggan/getpelanggan',
+        //     data:{
+        //         _token:"{{ csrf_token() }}",
+        //         kode_pelanggan:kode_pelanggan,
+        //         latitude:latitude,
+        //         longitude:longitude
+        //     },
+        //     success:function(respond){
+        //         $("#loading").hide();
+        //         if(status == 1){
+        //             $("#status").val(2);
+        //             $("#loadpelanggan").html(respond);
+        //         }
+        //     }
+        // });
     }
     function setResult(label, result) {
         //console.log(label);

@@ -567,9 +567,9 @@ class PelangganController extends Controller
         }
     }
 
-    public function getpelanggan(Request $request)
+    public function getpelanggan($kode_pelanggan, Request $request)
     {
-        $kode_pelanggan = $request->kode_pelanggan;
+        $kode_pelanggan = Crypt::decrypt($kode_pelanggan);
         $latitude = $request->latitude;
         $longitude = $request->longitude;
         $tglskrg = date("d");
@@ -659,7 +659,7 @@ class PelangganController extends Controller
                         $join->on('penjualan.no_fak_penj', '=', 'historibayar.no_fak_penj');
                     }
                 )
-                ->where('penjualan.kode_pelanggan', $request->kode_pelanggan)
+                ->where('penjualan.kode_pelanggan', $kode_pelanggan)
                 ->groupBy('penjualan.kode_pelanggan')
                 ->first();
             return view('pelanggan.getpelanggan', compact('pelanggan', 'penjualan', 'limitkredit', 'piutang'));
