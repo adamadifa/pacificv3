@@ -571,7 +571,6 @@ class PelangganController extends Controller
     {
 
         $kode_pelanggan = Crypt::decrypt($kode_pelanggan);
-        dd($kode_pelanggan);
         $latitude = $request->latitude;
         $longitude = $request->longitude;
         $tglskrg = date("d");
