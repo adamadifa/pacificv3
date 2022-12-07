@@ -83,60 +83,61 @@
                             </form>
                             <div class="row">
                                 <div class="col-12">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>No</th>
-                                                <th>No. Faktur</th>
-                                                <th>Tanggal</th>
-                                                <th>Salesman</th>
-                                                <th>T/K</th>
-                                                <th>Total</th>
-                                                <th>Status</th>
-                                                <th>Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($penjualan as $d)
-                                            <tr>
-                                                <td>{{ $loop->iteration; }}</td>
-                                                <td>{{ $d->no_fak_penj }}</td>
-                                                <td>{{ date("d-m-Y",strtotime($d->tgltransaksi)) }}</td>
-                                                <td>{{ ucwords(strtolower($d->nama_karyawan)) }}</td>
-                                                <td>
-                                                    @if ($d->jenistransaksi=="tunai")
-                                                    <span class="badge bg-success">Tunai</span>
-                                                    @else
-                                                    <span class="badge bg-warning">Kredit</span>
-                                                    @endif
-                                                </td>
-                                                <td class="text-right">{{rupiah($d->total)}}</td>
-                                                <td>
-                                                    @if ($d->status_lunas=="1")
-                                                    <span class="badge bg-success">Lunas</span>
-                                                    @else
-                                                    <span class="badge bg-danger">Belum Lunas</span>
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    <div class="btn-group" role="group" aria-label="Basic example">
-                                                        <a class="ml-1" href="/penjualan/{{\Crypt::encrypt($d->no_fak_penj)}}/edit"><i class="feather icon-edit success"></i></a>
-                                                        <a class="ml-1 detailpenjualan" href="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/show"><i class=" fa fa-money info"></i></a>
-                                                        <form method="POST" name="deleteform" class="deleteform" action="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/delete">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <a href="#" tanggal="{{ $d->tgltransaksi }}" class="delete-confirm ml-1">
-                                                                <i class="feather icon-trash danger"></i>
-                                                            </a>
-                                                        </form>
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>No. Faktur</th>
+                                                    <th>Tanggal</th>
+                                                    <th>T/K</th>
+                                                    <th>Total</th>
+                                                    <th>Status</th>
+                                                    <th>Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($penjualan as $d)
+                                                <tr>
+                                                    <td>{{ $loop->iteration; }}</td>
+                                                    <td>{{ $d->no_fak_penj }}</td>
+                                                    <td>{{ date("d-m-Y",strtotime($d->tgltransaksi)) }}</td>
+                                                    <td>{{ ucwords(strtolower($d->nama_karyawan)) }}</td>
+                                                    <td>
+                                                        @if ($d->jenistransaksi=="tunai")
+                                                        <span class="badge bg-success">Tunai</span>
+                                                        @else
+                                                        <span class="badge bg-warning">Kredit</span>
+                                                        @endif
+                                                    </td>
+                                                    <td class="text-right">{{rupiah($d->total)}}</td>
+                                                    <td>
+                                                        @if ($d->status_lunas=="1")
+                                                        <span class="badge bg-success">Lunas</span>
+                                                        @else
+                                                        <span class="badge bg-danger">Belum Lunas</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                                            <a class="ml-1" href="/penjualan/{{\Crypt::encrypt($d->no_fak_penj)}}/edit"><i class="feather icon-edit success"></i></a>
+                                                            <a class="ml-1 detailpenjualan" href="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/show"><i class=" fa fa-money info"></i></a>
+                                                            <form method="POST" name="deleteform" class="deleteform" action="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/delete">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <a href="#" tanggal="{{ $d->tgltransaksi }}" class="delete-confirm ml-1">
+                                                                    <i class="feather icon-trash danger"></i>
+                                                                </a>
+                                                            </form>
 
-                                                    </div>
+                                                        </div>
 
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
                                     {{ $penjualan->links('vendor.pagination.vuexy') }}
                                 </div>
                             </div>
