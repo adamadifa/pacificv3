@@ -6833,8 +6833,8 @@ class PenjualanController extends Controller
         // $kode_pelanggan = Crypt::encrypt('TSM-00700');
         // echo $kode_pelanggan;
         // die;
-        //$no_fak_penj = "TESTLAGI";
-        $no_fak_penj = $request->no_fak_penj;
+        $no_fak_penj = "TESTLAGI";
+        //$no_fak_penj = $request->no_fak_penj;
         $pelangganmp = [
             'TSM-00548',
             'TSM-00493',
