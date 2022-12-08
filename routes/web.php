@@ -1386,6 +1386,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/getlocationcheckin', [TrackingController::class, 'getlocationcheckin']);
 
 
-    Route::get('/cetakstruk', [PenjualanController::class, 'cetakstruk']);
-    //Route::post('/cetakstruk', [PenjualanController::class, 'cetakstruk']);
+    //Route::get('/cetakstruk', [PenjualanController::class, 'cetakstruk']);
+    Route::post('/cetakstruk', [PenjualanController::class, 'cetakstruk']);
 });
