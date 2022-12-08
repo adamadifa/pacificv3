@@ -10,6 +10,9 @@
         <div class="row">
             <div class="col-12">
                 <div class="form-group">
+                    @if (Auth::user()->level=="salesman")
+                    <input type="hidden" name="id_karyawan" id="id_karyawan_transfer_edit" value="{{ $transfer->id_karyawan }}" />
+                    @else
                     <select name="id_karyawan" id="id_karyawan_transfer_edit" class="form-control">
                         <option value="">Salesman</option>
                         @foreach ($salesman as $d)
@@ -18,6 +21,7 @@
                             @endif value="{{ $d->id_karyawan }}">{{ $d->nama_karyawan }}</option>
                         @endforeach
                     </select>
+                    @endif
                 </div>
             </div>
         </div>
@@ -76,7 +80,7 @@
         $("#tgl_transfer_edit").change(function() {
             cektutuplaporan($(this).val());
         });
-        $("#jumlah_giro_edit").maskMoney();
+        $("#jumlah_transfer_edit").maskMoney();
 
         $("#frmeditTransfer").submit(function(e) {
             //e.preventDefault();

@@ -6827,13 +6827,14 @@ class PenjualanController extends Controller
         return view('penjualan.laporan.cetak_analisatransaksi', compact('analisatransaksi', 'cabang', 'dari', 'sampai', 'salesman'));
     }
 
-    public function cetakstruk()
+    public function cetakstruk(Request $request)
     {
 
-        $kode_pelanggan = Crypt::encrypt('TSM-00700');
-        echo $kode_pelanggan;
-        die;
-        $no_fak_penj = "BGRA017956";
+        // $kode_pelanggan = Crypt::encrypt('TSM-00700');
+        // echo $kode_pelanggan;
+        // die;
+        $no_fak_penj = "TESTLAGI";
+        //$no_fak_penj = $request->no_fak_penj;
         $pelangganmp = [
             'TSM-00548',
             'TSM-00493',

@@ -54,6 +54,17 @@
                         </div>
                     </div>
                 </div>
+                <div class="row mb-2">
+                    <div class="col-2">
+                        <a href="#" class="btn btn-success btn-block"><i class="feather icon-edit"></i></a>
+                    </div>
+                    <div class="col-8">
+                        <a href="#" class="btn btn-info btn-block" id="cetakfaktur"><i class="feather icon-printer mr-1"></i>Cetak Faktur</a>
+                    </div>
+                    <div class="col-2">
+                        <a href="#" class="btn btn-danger btn-block"><i class="feather icon-trash"></i></a>
+                    </div>
+                </div>
                 @if (Auth::user()->level != "salesman")
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
@@ -627,12 +638,16 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
+                                    @if (Auth::user()->level=="salesman")
+                                    <input type="hidden" id="id_karyawan" name="id_karyawan" value="{{ Auth::user()->id_salesman }}">
+                                    @else
                                     <select name="id_karyawan" id="id_karyawan" class="form-control">
                                         <option value="">Salesman Penagih</option>
                                         @foreach ($salesman as $d)
                                         <option value="{{ $d->id_karyawan }}">{{ $d->nama_karyawan }}</option>
                                         @endforeach
                                     </select>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -749,12 +764,16 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
+                                    @if (Auth::user()->level=="salesman")
+                                    <input type="hidden" id="id_karyawan" name="id_karyawan" value="{{ Auth::user()->id_salesman }}">
+                                    @else
                                     <select name="id_karyawan" id="id_karyawan_giro" class="form-control">
                                         <option value="">Salesman</option>
                                         @foreach ($salesman as $d)
                                         <option value="{{ $d->id_karyawan }}">{{ $d->nama_karyawan }}</option>
                                         @endforeach
                                     </select>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -855,12 +874,16 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <select name="id_karyawan" id="id_karyawan_transfer" class="form-control">
+                                    @if (Auth::user()->level=="salesman")
+                                    <input type="hidden" id="id_karyawan" name="id_karyawan" value="{{ Auth::user()->id_salesman }}">
+                                    @else
+                                    <select name="id_karyawan" id="id_karyawan_giro" class="form-control">
                                         <option value="">Salesman</option>
                                         @foreach ($salesman as $d)
                                         <option value="{{ $d->id_karyawan }}">{{ $d->nama_karyawan }}</option>
                                         @endforeach
                                     </select>
+                                    @endif
                                 </div>
                             </div>
                         </div>
@@ -894,6 +917,24 @@
                         </div>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade text-left" id="mdlcetakfaktur" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Cetak Faktur</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div id="loadcetak" style="height: 600px"></div>
+
             </div>
         </div>
     </div>
@@ -1300,6 +1341,27 @@
             } else {
                 return true;
             }
+        });
+
+        $("#cetakfaktur").click(function(e) {
+            e.preventDefault();
+            var no_fak_penj = "{{ $data->no_fak_penj }}";
+            $.ajax({
+                type: 'POST'
+                , url: '/cetakstruk'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , no_fak_penj: no_fak_penj
+                }
+                , cache: false
+                , success: function(respond) {
+                    $('#mdlcetakfaktur').modal({
+                        backdrop: 'static'
+                        , keyboard: false
+                    });
+                    $("#loadcetak").html(respond);
+                }
+            });
         });
     });
 
