@@ -138,7 +138,7 @@ $jumlah_pcs = $sisapack;
 
 
             var jumlah = (jmldus * parseInt(isipcsdus)) + (jmlpack * (parseInt(isipcs))) + jmlpcs;
-            var subtotal = (jmldus * hargadus) + (jmlpack * harga_pack) + (jmlpcs * hargapcs);
+            var subtotal = (jmldus * hargadus) + (jmlpack * hargapack) + (jmlpcs * hargapcs);
 
             if (jumlah == "") {
                 swal({

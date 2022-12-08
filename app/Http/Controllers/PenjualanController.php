@@ -6691,16 +6691,16 @@ class PenjualanController extends Controller
         $no_fak_penj = $request->no_fak_penj;
 
         if (empty($promo)) {
-            $barang = DB::table('detailpenjualan')
-                ->select('detailpenjualan.*', 'nama_barang', 'isipcsdus', 'isipcs', 'isipack', 'barang.harga_dus as harga_dus_old', 'barang.harga_pack as harga_pack_old', 'barang.harga_pcs as harga_pcs_old')
-                ->join('barang', 'detailpenjualan.kode_barang', '=', 'barang.kode_barang')
-                ->where('detailpenjualan.kode_barang', $kode_barang)
+            $barang = DB::table('detailpenjualan_edit')
+                ->select('detailpenjualan_edit.*', 'nama_barang', 'isipcsdus', 'isipcs', 'isipack', 'barang.harga_dus as harga_dus_old', 'barang.harga_pack as harga_pack_old', 'barang.harga_pcs as harga_pcs_old')
+                ->join('barang', 'detailpenjualan_edit.kode_barang', '=', 'barang.kode_barang')
+                ->where('detailpenjualan_edit.kode_barang', $kode_barang)
                 ->whereNull('promo')->where('no_fak_penj', $no_fak_penj)->first();
         } else {
-            $barang = DB::table('detailpenjualan')
-                ->select('detailpenjualan.*', 'nama_barang', 'isipcsdus', 'isipcs', 'isipack', 'barang.harga_dus as harga_dus_old', 'barang.harga_pack as harga_pack_old', 'barang.harga_pcs as harga_pcs_old')
-                ->join('barang', 'detailpenjualan.kode_barang', '=', 'barang.kode_barang')
-                ->where('detailpenjualan.kode_barang', $kode_barang)
+            $barang = DB::table('detailpenjualan_edit')
+                ->select('detailpenjualan_edit.*', 'nama_barang', 'isipcsdus', 'isipcs', 'isipack', 'barang.harga_dus as harga_dus_old', 'barang.harga_pack as harga_pack_old', 'barang.harga_pcs as harga_pcs_old')
+                ->join('barang', 'detailpenjualan_edit.kode_barang', '=', 'barang.kode_barang')
+                ->where('detailpenjualan_edit.kode_barang', $kode_barang)
                 ->where('promo', 1)->where('no_fak_penj', $no_fak_penj)->first();
         }
 
