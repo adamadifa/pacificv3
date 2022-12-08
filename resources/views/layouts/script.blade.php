@@ -62,6 +62,7 @@
 <script>
     $(function() {
         //fix modal force focus
+
         $.fn.modal.Constructor.prototype.enforceFocus = function() {
             var that = this;
             $(document).on('focusin.modal', function(e) {

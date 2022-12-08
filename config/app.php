@@ -176,6 +176,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\GlobalProvider::class,
         //Barryvdh\DomPDF\ServiceProvider::class,
+        Ladumor\LaravelPwa\PWAServiceProvider::class,
 
     ],
 
@@ -230,6 +231,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        'LaravelPwa' => \Ladumor\LaravelPwa\LaravelPwa::class,
         //'PDF' => Barryvdh\DomPDF\Facade::class,
 
 
