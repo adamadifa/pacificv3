@@ -240,8 +240,8 @@
         }
 
         var bln = <?php echo json_encode($bln) ?> ;
-        var totalpenjnow = <?php echo json_encode($totalpenjnow) ?> ;
-        var totalpenjlast = <?php echo json_encode($totalpenjlast) ?> ;
+        var totalpenjnow = <?php echo json_encode($totalpenjnow) ?>;
+        var totalpenjlast = <?php echo json_encode($totalpenjlast) ?>;
 
         // Line Area Chart
         // ----------------------------------

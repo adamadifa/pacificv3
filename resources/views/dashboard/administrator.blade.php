@@ -6,7 +6,7 @@
     </div>
     <div class="content-body">
         <!-- Dashboard Analytics Start -->
-        <a href="/cetakstruk" class="btn btn-primary">Cetak</a>
+
         <section id="dashboard-analytics">
             <div class="row">
                 <div class="col-lg-4 col-md-12 col-sm-12">
