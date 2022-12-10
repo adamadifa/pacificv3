@@ -261,7 +261,13 @@
                         $ket_voucher = "Voucher Penyelesaian Piutang Oleh Salesman";
                     } else if ($v->ket_voucher == "4") {
                         $ket_voucher = "Voucher Pengalihan Piutang Dgng Jd Piutang Kary";
-                    } else {
+                    }else if ($v->ket_voucher == "7") {
+                        $ket_voucher = "PPN KPBPB";
+                    }else if ($v->ket_voucher == "8") {
+                        $ket_voucher = "PPN WAPU";
+                    }else if ($v->ket_voucher == "9") {
+                        $ket_voucher = "PPH PASAL 22";
+                    }  else {
                         $ket_voucher = "Lainnya";
                     }
                 ?>
