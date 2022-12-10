@@ -26,7 +26,7 @@
                     <option value="BANDUNG" data-tarif="1050000">BANDUNG</option>
                     <option value="PURWOKERTO" data-tarif="1225000">PURWOKERTO</option>
                     <option value="BOGOR" data-tarif="1575000">BOGOR</option>
-                    <option value="BANTEN" data-tarif="0">BANTEN</option>
+                    <option value="BANTEN" data-tarif="2500000">BANTEN</option>
                     <option value="SUKABUMI" data-tarif="1575000">SUKABUMI</option>
                     <option value="TEGAL" data-tarif="1700000">TEGAL</option>
                     <option value="PEKALONGAN" data-tarif="1900000">PEKALONGAN</option>
