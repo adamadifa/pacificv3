@@ -5624,6 +5624,8 @@ class PenjualanController extends Controller
                         SUM(IF(status_bayar='voucher' AND ket_voucher ='4',bayar,0)) as pphk,
                         SUM(IF(status_bayar='voucher' AND ket_voucher ='6',bayar,0)) as vsp,
                         SUM(IF(status_bayar='voucher' AND ket_voucher ='7',bayar,0)) as kpbpb,
+                        SUM(IF(status_bayar='voucher' AND ket_voucher ='8',bayar,0)) as wapu,
+                        SUM(IF(status_bayar='voucher' AND ket_voucher ='9',bayar,0)) as pph22,
                         SUM(IF(status_bayar='voucher' AND ket_voucher ='5',bayar,0)) as lainnya
                     FROM
                         historibayar
