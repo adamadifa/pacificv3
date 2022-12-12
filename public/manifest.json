@@ -1,6 +1,6 @@
 {
-    "name": "Laravel Package Tutorial",
-    "short_name": "LPT",
+    "name": "Portal Salesman",
+    "short_name": "PS",
     "start_url": "/",
     "background_color": "#6777ef",
     "description": "Tutorial of Laravel Package",
