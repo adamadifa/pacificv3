@@ -6,9 +6,14 @@
                  <div class="mr-auto float-left bookmark-wrapper d-flex align-items-center">
                      <ul class="nav navbar-nav">
                          <li class="nav-item mobile-menu d-xl-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ficon feather icon-menu"></i></a></li>
+                         @if (Auth::user()->level=="salesman" && !request()->is(['home']))
+                         <li class="nav-item d-xl-none mr-auto"><a class="nav-link hidden-xs" href="{{ url()->previous() }}"><i class="ficon feather icon-arrow-left"></i></a></li>
+                         @endif
+
                      </ul>
 
                  </div>
+                 @if (Auth::user()->level != "salesman")
                  <ul class="nav navbar-nav float-right">
                      <li class="dropdown dropdown-notification nav-item">
                          <a class="nav-link nav-link-label" href="/penilaiankaryawan/10/MP/list">
@@ -61,15 +66,15 @@
                          </ul>
                      </li>
                      {{-- <li class="dropdown dropdown-notification nav-item"><a class="nav-link nav-link-label" href="#" data-toggle="dropdown"><i class="ficon feather icon-bell"></i><span class="badge badge-pill badge-primary badge-up">5</span></a>
-                         <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
-                             <li class="dropdown-menu-header">
-                                 <div class="dropdown-header m-0 p-2">
-                                     <h3 class="white">5 New</h3><span class="notification-title">App Notifications</span>
-                                 </div>
-                             </li>
+                        <ul class="dropdown-menu dropdown-menu-media dropdown-menu-right">
+                            <li class="dropdown-menu-header">
+                                <div class="dropdown-header m-0 p-2">
+                                    <h3 class="white">5 New</h3><span class="notification-title">App Notifications</span>
+                                </div>
+                            </li>
 
-                         </ul>
-                     </li> --}}
+                        </ul>
+                    </li> --}}
                      <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
                              <div class="user-nav d-sm-flex d-none"><span class="user-name text-bold-600">{{ Auth::user()->name }}</span><span class="user-status">
                                      {{ ucwords(Auth::user()->level) }}
@@ -98,7 +103,48 @@
                              </form>
                          </div>
                      </li>
-                 </ul>
+
+                     @else
+                     <ul class="nav navbar-nav float-right">
+                         @if (Cookie::get('kodepelanggan') != null)
+                         <li class="dropdown dropdown-notification nav-item">
+                             <a class="nav-link nav-link-label" href="/pelanggan/getpelanggan">
+                                 <i class="ficon" data-feather="users"></i>
+                             </a>
+                         </li>
+                         @endif
+
+                         <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
+                                 <div class="user-nav d-sm-flex d-none"><span class="user-name text-bold-600">{{ Auth::user()->name }}</span><span class="user-status">
+                                         {{ ucwords(Auth::user()->level) }}
+                                     </span></div><span>
+                                     @if (!empty(Auth::user()->foto))
+                                     @php
+                                     $path = Storage::url('users/'.Auth::user()->foto);
+                                     @endphp
+
+
+                                     <img class="round" src="{{ url($path) }}" alt="avatar" height="40" width="40">
+                                     @else
+                                     <img class="round" src="{{asset('app-assets/images/portrait/small/avatar-s-11.jpg')}}" alt="avatar" height="40" width="40">
+                                     @endif
+                                 </span>
+                             </a>
+                             <div class="dropdown-menu dropdown-menu-right">
+                                 <a class="dropdown-item" href="page-user-profile.html">
+
+                                 </a>
+                                 <div class="dropdown-divider"></div>
+                                 <form action="/postlogout" method="POST">
+                                     @csrf
+                                     <button type="submit" class="dropdown-item"><i class="feather icon-power"></i>
+                                         Logout</button>
+                                 </form>
+                             </div>
+                         </li>
+                     </ul>
+                     @endif
+
              </div>
          </div>
      </div>

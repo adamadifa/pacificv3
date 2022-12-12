@@ -8,7 +8,9 @@ use App\Models\Penjualan;
 use App\Models\Salesman;
 use Facade\FlareClient\Stacktrace\File;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -567,10 +569,15 @@ class PelangganController extends Controller
         }
     }
 
-    public function getpelanggan($kode_pelanggan, Request $request)
+    public function getpelanggan(Request $request)
     {
+        $minutes = 1;
+        Cookie::get('kodepelanggan') == null ? Cookie::queue(Cookie::forever('kodepelanggan', $request->kode_pelanggan)) : '';
+        $getcookie =  Cookie::get('kodepelanggan');
+        //dd($getcookie);
+        $kode_pelanggan = Cookie::get('kodepelanggan') != null ? Crypt::decrypt(Cookie::get('kodepelanggan')) : Crypt::decrypt($request->kode_pelanggan);
 
-        $kode_pelanggan = Crypt::decrypt($kode_pelanggan);
+
         $latitude = $request->latitude;
         $longitude = $request->longitude;
         $tglskrg = date("d");
