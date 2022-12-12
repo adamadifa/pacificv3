@@ -380,7 +380,7 @@ body {
     .col {
         width: 100%;
         position: absolute;
-        padding: 10rem;
+        padding: 8rem;
         background-color: var(--white);
         border-top-left-radius: 2rem;
         border-top-right-radius: 2rem;
