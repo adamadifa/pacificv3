@@ -11,10 +11,10 @@
     <div id="tsparticles"></div>
     <div class="denied__wrapper">
         <h1>404</h1>
-        <h3>LOST IN <span>SPACE</span> App-Name? Hmm, looks like that page doesn't exist.</h3>
+        <h3>LOST IN <span>SPACE</span> Halaman Yang Dituju Tidak Ditemukan !.</h3>
         <img id="astronaut" src="{{ asset('error/astronaut.svg') }}" />
         <img id="planet" src="{{ asset('error/planet.svg') }}" />
-        <a href="#"><button class="denied__link">Go Home</button></a>
+        <a href="/home"><button class="denied__link">Go Home</button></a>
     </div>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/tsparticles@2.3.4/tsparticles.bundle.min.js"></script>

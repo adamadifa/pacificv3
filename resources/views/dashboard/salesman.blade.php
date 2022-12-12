@@ -118,95 +118,95 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    {{-- <div class="row">
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header d-flex align-items-start pb-0">
                                     <div>
                                         <h2 class="text-bold-700 mb-0">{{ rupiah($piutang->saldopiutang) }}</h2>
-                                        <p>Piutang s/d Hari Ini</p>
-                                    </div>
-                                    <div class="avatar bg-rgba-danger p-50 m-0">
-                                        <div class="avatar-content">
-                                            <i class="feather icon-dollar-sign text-danger font-medium-5"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <p>Piutang s/d Hari Ini</p>
+                </div>
+                <div class="avatar bg-rgba-danger p-50 m-0">
+                    <div class="avatar-content">
+                        <i class="feather icon-dollar-sign text-danger font-medium-5"></i>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-5 col-sm-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title">Pencapaian Target</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="row" id="pilihbulan">
-                                <div class="col-12">
-                                    {{-- <label for="" class="form-label mb-1">Omset Bulan</label> --}}
-                                    <div class="form-group" style="margin-bottom: 5px">
-                                        <select class="form-control" id="bulan" name="bulan">
-                                            <option value="">Bulan</option>
-                                            <?php
+    </div>
+</div>
+</div> --}}
+</div>
+</div>
+<div class="row">
+    <div class="col-lg-5 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Pencapaian Target</h4>
+            </div>
+            <div class="card-body">
+                <div class="row" id="pilihbulan">
+                    <div class="col-12">
+                        {{-- <label for="" class="form-label mb-1">Omset Bulan</label> --}}
+                        <div class="form-group" style="margin-bottom: 5px">
+                            <select class="form-control" id="bulan" name="bulan">
+                                <option value="">Bulan</option>
+                                <?php
                                             $bulanini = date("m");
                                             for ($i = 1; $i < count($bulan); $i++) {
                                             ?>
-                                            <option <?php if ($bulanini == $i) {echo "selected";} ?> value="<?php echo $i; ?>"><?php echo $bulan[$i]; ?></option>
-                                            <?php
+                                <option <?php if ($bulanini == $i) {echo "selected";} ?> value="<?php echo $i; ?>"><?php echo $bulan[$i]; ?></option>
+                                <?php
                                             }
                                             ?>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <select class="form-control" id="tahun" name="tahun">
-                                            <?php
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" id="tahun" name="tahun">
+                                <?php
                                             $tahunmulai = 2020;
                                             for ($thn = $tahunmulai; $thn <= date('Y'); $thn++) {
                                             ?>
-                                            <option <?php if (date('Y') == $thn) { echo "Selected";} ?> value="<?php echo $thn; ?>"><?php echo $thn; ?></option>
-                                            <?php
+                                <option <?php if (date('Y') == $thn) { echo "Selected";} ?> value="<?php echo $thn; ?>"><?php echo $thn; ?></option>
+                                <?php
                                             }
                                             ?>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <table class="table">
-                                        <thead>
-                                            <tr>
-                                                <th>Kode</th>
-                                                <th>Nama Barang</th>
-                                                <th>Target</th>
-                                                <th>Realisasi</th>
-                                                <th>%</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="loadrealisasitargetsales"></tbody>
-                                    </table>
-                                </div>
-                            </div>
+                            </select>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-7 col-sm-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <h4 class="card-title">Grafik Penjualan</h4>
-                        </div>
-                        <div class="card-body">
-                            <!-- Line Area Chart -->
-                            <div id="line-area-chart"></div>
-                        </div>
+                <div class="row">
+                    <div class="col-12">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Kode</th>
+                                    <th>Nama Barang</th>
+                                    <th>Target</th>
+                                    <th>Realisasi</th>
+                                    <th>%</th>
+                                </tr>
+                            </thead>
+                            <tbody id="loadrealisasitargetsales"></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
     </div>
+    <div class="col-lg-7 col-sm-12">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Grafik Penjualan</h4>
+            </div>
+            <div class="card-body">
+                <!-- Line Area Chart -->
+                <div id="line-area-chart"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+</div>
 </div>
 @endsection
 @push('myscript')
@@ -240,8 +240,8 @@
         }
 
         var bln = <?php echo json_encode($bln) ?> ;
-        var totalpenjnow = <?php echo json_encode($totalpenjnow) ?>;
-        var totalpenjlast = <?php echo json_encode($totalpenjlast) ?>;
+        var totalpenjnow = <?php echo json_encode($totalpenjnow) ?> ;
+        var totalpenjlast = <?php echo json_encode($totalpenjlast) ?> ;
 
         // Line Area Chart
         // ----------------------------------
