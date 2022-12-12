@@ -107,7 +107,7 @@
         var latitude = $("#latitude").val();
         var longitude = $("#longitude").val();
         $("#loading").show();
-        window.location.href = "/pelanggan/"+kode_pelanggan+"/getpelanggan?latitude="+latitude+"&longitude="+longitude;
+        window.location.href = "/pelanggan/getpelanggan?kode_pelanggan="+kode_pelanggan+"&latitude="+latitude+"&longitude="+longitude;
 
         // $.ajax({
         //     type:'POST',
