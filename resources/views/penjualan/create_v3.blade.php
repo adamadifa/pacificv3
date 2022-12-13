@@ -251,24 +251,6 @@
                                         <div class="col-12">
                                             <div class="table-responsive">
                                                 <table class="table table-bordered">
-                                                    <thead class="text-center">
-                                                        <tr>
-                                                            <th rowspan="2">No.</th>
-                                                            <th rowspan="2">Kode</th>
-                                                            <th rowspan="2">Nama Barang</th>
-                                                            <th colspan="6">Quantity</th>
-                                                            <th rowspan="2">Subtotal</th>
-                                                            <th rowspan="2">Aksi</th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>Dus</th>
-                                                            <th>Harga</th>
-                                                            <th>Pack</th>
-                                                            <th>Harga</th>
-                                                            <th>Pcs</th>
-                                                            <th>Harga</th>
-                                                        </tr>
-                                                    </thead>
                                                     <tbody id="loadbarangtemp"></tbody>
                                                 </table>
                                             </div>

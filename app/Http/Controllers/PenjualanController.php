@@ -6630,8 +6630,11 @@ class PenjualanController extends Controller
             ->join('barang', 'detailpenjualan_temp.kode_barang', '=', 'barang.kode_barang')
             ->where('id_admin', $id_admin)
             ->get();
-
-        return view('penjualan.showbarangtempv2', compact('detailtemp'));
+        if (Auth::user()->level == "salesman") {
+            return view('penjualan.showbarangtempv3', compact('detailtemp'));
+        } else {
+            return view('penjualan.showbarangtempv2', compact('detailtemp'));
+        }
     }
 
     public function editbarangtemp(Request $request)
