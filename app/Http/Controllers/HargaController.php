@@ -385,6 +385,11 @@ class HargaController extends Controller
                     ->get();
             }
         }
-        return view('harga.getbarangcabang', compact('barang'));
+
+        if (Auth::user()->level == "salesman") {
+            return view('harga.getbarangsalesman', compact('barang'));
+        } else {
+            return view('harga.getbarangcabang', compact('barang'));
+        }
     }
 }
