@@ -17,6 +17,9 @@
         </div>
     </div>
     <div class="content-body" id="loadpelanggan">
+        <audio id="myAudio">
+            <source src="{{ asset('app-assets/sound/found.mp3') }}" type="audio/mpeg">
+        </audio>
         <div class="row">
             <div class="col-lg-3 col-sm-12">
                 <div class="row">
@@ -272,3 +275,15 @@
 </div>
 </div>
 @endsection
+@push('myscript')
+<script>
+    $(document).ready(function() {
+        var x = document.getElementById("myAudio");
+        var kode_pelanggan = "{{ Cookie::get('kodepelanggan') }}";
+        if (kode_pelanggan == "") {
+            x.play();
+        }
+    });
+
+</script>
+@endpush
