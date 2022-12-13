@@ -160,7 +160,8 @@ class SalesmanController extends Controller
         if (Auth::user()->level == "salesman") {
             $salesman = Salesman::where('kode_cabang', $kode_cabang)->where('status_aktif_sales', 1)->where('id_karyawan', Auth::user()->id_salesman)->get();
         } else {
-            $salesman = Salesman::where('kode_cabang', $kode_cabang)->where('status_aktif_sales', 1)->get();
+            // $salesman = Salesman::where('kode_cabang', $kode_cabang)->where('status_aktif_sales', 1)->get();
+            $salesman = Salesman::where('kode_cabang', $kode_cabang)->get();
         }
         $type = Auth::user()->level == "salesman" ? 1 : $request->type;
         if ($type == 1) {
