@@ -43,7 +43,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="Tanggal Transaksi" field="tgltransaksi" icon="feather icon-calendar" datepicker />
+                                            <x-inputtext label="Tanggal Transaksi" field="tgltransaksi" icon="feather icon-calendar" readonly value="{{ date('Y-m-d') }}" />
                                         </div>
                                     </div>
                                     <div class="row">
@@ -498,7 +498,7 @@
 
 <!-- Modal Pilih Barang -->
 <div class="modal fade text-left" id="mdlbarang" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document" style="max-width: 960px">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel18">Data Barang</h4>
@@ -511,12 +511,8 @@
                     <thead class="thead-dark">
                         <tr>
                             <th>Kode Barang</th>
-                            <th>Kode Produk</th>
                             <th>Nama Barang</th>
                             <th>Harga / Dus</th>
-                            <th>Harga / Pack</th>
-                            <th>Harga / Pcs</th>
-                            <th>Kategori</th>
                             <th></th>
                         </tr>
                     </thead>
