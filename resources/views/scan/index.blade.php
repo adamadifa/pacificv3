@@ -57,9 +57,7 @@
             </div>
         </div>
     </div>
-    <audio id="myAudio">
-        <source src="{{ asset('app-assets/sound/found.mp3') }}" type="audio/mpeg">
-    </audio>
+
 </div>
 
 
@@ -100,7 +98,7 @@
     const fileSelector = document.getElementById('file-selector');
     const fileQrResult = document.getElementById('file-qr-result');
     const statusResult = document.getElementById('status');
-    var x = document.getElementById("myAudio");
+    // var x = document.getElementById("myAudio");
     $("#loading").hide();
     function loadpelanggan(kode_pelanggan){
         var status = $("#status").val();
@@ -134,7 +132,6 @@
         // camQrResultTimestamp.textContent = new Date().toString();
         if(result.data != "No QR code found."){
             $("#status").val(1);
-            x.play();
             loadpelanggan(result.data);
             scanner.stop();
         }
