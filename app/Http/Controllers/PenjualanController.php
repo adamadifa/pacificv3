@@ -15,6 +15,7 @@ use App\Models\Salesman;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -228,7 +229,40 @@ class PenjualanController extends Controller
 
     public function create_v2()
     {
-        return view('penjualan.create_v2');
+        if (Auth::user()->level == "salesman") {
+            $kodepelanggan = Cookie::get('kodepelanggan');
+            $kode_pelanggan = Crypt::decrypt($kodepelanggan);
+            $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)
+                ->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan')
+                ->first();
+            $piutang = DB::table('penjualan')
+                ->select('penjualan.kode_pelanggan', DB::raw('SUM(IFNULL( retur.total, 0 )) AS totalretur,
+                        SUM(IFNULL(penjualan.total,0) - IFNULL(retur.total,0) - IFNULL(jmlbayar,0)) AS sisapiutang'))
+                ->leftJoin(
+                    DB::raw("(
+                        SELECT retur.no_fak_penj AS no_fak_penj, SUM( total ) AS total FROM retur GROUP BY retur.no_fak_penj
+                    ) retur"),
+                    function ($join) {
+                        $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
+                    }
+                )
+                ->leftJoin(
+                    DB::raw("(
+                        SELECT no_fak_penj, IFNULL(SUM(bayar),0) as jmlbayar
+                        FROM historibayar
+                        GROUP BY no_fak_penj
+                    ) historibayar"),
+                    function ($join) {
+                        $join->on('penjualan.no_fak_penj', '=', 'historibayar.no_fak_penj');
+                    }
+                )
+                ->where('penjualan.kode_pelanggan', $kode_pelanggan)
+                ->groupBy('penjualan.kode_pelanggan')
+                ->first();
+            return view('penjualan.create_v3', compact('pelanggan', 'piutang'));
+        } else {
+            return view('penjualan.create_v2');
+        }
     }
 
 

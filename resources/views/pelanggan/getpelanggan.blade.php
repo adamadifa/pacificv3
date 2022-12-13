@@ -55,8 +55,11 @@
                     </div>
                 </div>
                 <div class="row mb-2">
-                    <div class="col-12">
-                        <a href="#" class="btn btn-danger btn-block"><i class="feather icon-shopping-cart mr-1"></i><span id="demo"></span></a>
+                    <div class="col-6">
+                        <a href="/inputpenjualanv2" class="btn btn-success btn-block"><i class="feather icon-shopping-cart mr-1"></i>Input Penjualan</a>
+                    </div>
+                    <div class="col-6">
+                        <a href="#" class="btn btn-danger btn-block"><i class="feather icon-refresh-cw mr-1"></i>Input Retur</a>
                     </div>
                 </div>
 
@@ -72,9 +75,9 @@
                                 <li class="nav-item">
                                     <a class="nav-link active" id="penjualan-tab" data-toggle="tab" href="#penjualan" aria-controls="penjualan" role="tab" aria-selected="true">Transaksi Penjualan</a>
                                 </li>
-                                <li class="nav-item">
+                                {{-- <li class="nav-item">
                                     <a class="nav-link" id="limitkredit-tab" data-toggle="tab" href="#limitkredit" aria-controls="limitkredit" role="tab" aria-selected="false">Pengajuan Limit Kredit</a>
-                                </li>
+                                </li> --}}
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="penjualan" aria-labelledby="penjualan-tab" role="tabpanel">
@@ -151,7 +154,7 @@
                                     </div>
 
                                 </div>
-                                <div class="tab-pane" id="limitkredit" aria-labelledby="limitkredit-tab" role="tabpanel">
+                                {{-- <div class="tab-pane" id="limitkredit" aria-labelledby="limitkredit-tab" role="tabpanel">
                                     <table class="table table-hover-animation">
                                         <thead>
                                             <tr>
@@ -172,100 +175,100 @@
                                             @foreach ($limitkredit as $d)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $d->no_pengajuan }}</td>
-                                                <td>{{ date("d-m-Y",strtotime($d->tgl_pengajuan)) }}</td>
-                                                <td class="text-right">
-                                                    @if (empty($d->jumlah_rekomendasi))
-                                                    {{ rupiah($d->jumlah) }}
-                                                    @else
-                                                    {{ rupiah($d->jumlah_rekomendasi) }}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if (empty($d->jatuhtempo_rekomendasi))
-                                                    {{ rupiah($d->jatuhtempo) }} Hari
-                                                    @else
-                                                    {{ rupiah($d->jatuhtempo_rekomendasi) }} Hari
-                                                    @endif
-                                                </td>
-                                                <td>{{ desimal($d->skor) }}</td>
-                                                <td>
-                                                    @if ($d->jumlah > 2000000)
-                                                    @if (empty($d->kacab))
-                                                    <span class="badge bg-warning"><i class="fa fa-history"></i></span>
-                                                    @elseif(
-                                                    !empty($d->kacab) && !empty($d->mm) && $d->status==2 ||
-                                                    !empty($d->kacab) && empty($d->mm) && $d->status== 0 ||
-                                                    !empty($d->kacab) && empty($d->mm) && $d->status== 1 ||
-                                                    !empty($d->kacab) && empty($d->mm) && $d->status== 0 ||
-                                                    !empty($d->kacab) && !empty($d->mm) && $d->status== 0 ||
-                                                    !empty($d->kacab) && !empty($d->mm) && $d->status== 1
-                                                    )
-                                                    <span class="badge bg-success"><i class="fa fa-check"></i></span>
-                                                    @else
-                                                    <span class="badge bg-danger"><i class="fa fa-close"></i></span>
-                                                    @endif
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if ($d->jumlah > 5000000)
-                                                    @if (empty($d->mm))
-                                                    <span class="badge bg-warning"><i class="fa fa-history"></i></span>
-                                                    @elseif(
-                                                    !empty($d->mm) && !empty($d->gm) && $d->status == 2
-                                                    || !empty($d->mm) && empty($d->gm) && $d->status == 1
-                                                    || !empty($d->mm) && empty($d->gm) && $d->status == 0
-                                                    || !empty($d->mm) && !empty($d->gm) && $d->status == 0
-                                                    || !empty($d->mm) && !empty($d->gm) && $d->status == 1
-                                                    )
-                                                    <span class="badge bg-success"><i class="fa fa-check"></i></span>
-                                                    @else
-                                                    <span class="badge bg-danger"><i class="fa fa-close"></i></span>
-                                                    @endif
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if ($d->jumlah > 10000000)
-                                                    @if (empty($d->gm))
-                                                    <span class="badge bg-warning"><i class="fa fa-history"></i></span>
-                                                    @elseif(
-                                                    !empty($d->gm) && !empty($d->dirut) && $d->status == 2
-                                                    || !empty($d->gm) && empty($d->dirut) && $d->status == 1
-                                                    || !empty($d->gm) && empty($d->dirut) && $d->status == 0
-                                                    || !empty($d->gm) && !empty($d->dirut) && $d->status == 0
-                                                    || !empty($d->gm) && !empty($d->dirut) && $d->status == 1
-                                                    )
-                                                    <span class="badge bg-success"><i class="fa fa-check"></i></span>
-                                                    @else
-                                                    <span class="badge bg-danger"><i class="fa fa-close"></i></span>
-                                                    @endif
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if ($d->jumlah > 15000000)
-                                                    @if (empty($d->dirut))
-                                                    <span class="badge bg-warning"><i class="fa fa-history"></i></span>
-                                                    @elseif(!empty($d->dirut) && $d->status != 2 )
-                                                    <span class="badge bg-success"><i class="fa fa-check"></i></span>
-                                                    @else
-                                                    <span class="badge bg-danger"><i class="fa fa-close"></i></span>
-                                                    @endif
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    <a href="#"><i class="feather icon-printer info"></i></a>
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
+                                <td>{{ $d->no_pengajuan }}</td>
+                                <td>{{ date("d-m-Y",strtotime($d->tgl_pengajuan)) }}</td>
+                                <td class="text-right">
+                                    @if (empty($d->jumlah_rekomendasi))
+                                    {{ rupiah($d->jumlah) }}
+                                    @else
+                                    {{ rupiah($d->jumlah_rekomendasi) }}
+                                    @endif
+                                </td>
+                                <td>
+                                    @if (empty($d->jatuhtempo_rekomendasi))
+                                    {{ rupiah($d->jatuhtempo) }} Hari
+                                    @else
+                                    {{ rupiah($d->jatuhtempo_rekomendasi) }} Hari
+                                    @endif
+                                </td>
+                                <td>{{ desimal($d->skor) }}</td>
+                                <td>
+                                    @if ($d->jumlah > 2000000)
+                                    @if (empty($d->kacab))
+                                    <span class="badge bg-warning"><i class="fa fa-history"></i></span>
+                                    @elseif(
+                                    !empty($d->kacab) && !empty($d->mm) && $d->status==2 ||
+                                    !empty($d->kacab) && empty($d->mm) && $d->status== 0 ||
+                                    !empty($d->kacab) && empty($d->mm) && $d->status== 1 ||
+                                    !empty($d->kacab) && empty($d->mm) && $d->status== 0 ||
+                                    !empty($d->kacab) && !empty($d->mm) && $d->status== 0 ||
+                                    !empty($d->kacab) && !empty($d->mm) && $d->status== 1
+                                    )
+                                    <span class="badge bg-success"><i class="fa fa-check"></i></span>
+                                    @else
+                                    <span class="badge bg-danger"><i class="fa fa-close"></i></span>
+                                    @endif
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($d->jumlah > 5000000)
+                                    @if (empty($d->mm))
+                                    <span class="badge bg-warning"><i class="fa fa-history"></i></span>
+                                    @elseif(
+                                    !empty($d->mm) && !empty($d->gm) && $d->status == 2
+                                    || !empty($d->mm) && empty($d->gm) && $d->status == 1
+                                    || !empty($d->mm) && empty($d->gm) && $d->status == 0
+                                    || !empty($d->mm) && !empty($d->gm) && $d->status == 0
+                                    || !empty($d->mm) && !empty($d->gm) && $d->status == 1
+                                    )
+                                    <span class="badge bg-success"><i class="fa fa-check"></i></span>
+                                    @else
+                                    <span class="badge bg-danger"><i class="fa fa-close"></i></span>
+                                    @endif
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($d->jumlah > 10000000)
+                                    @if (empty($d->gm))
+                                    <span class="badge bg-warning"><i class="fa fa-history"></i></span>
+                                    @elseif(
+                                    !empty($d->gm) && !empty($d->dirut) && $d->status == 2
+                                    || !empty($d->gm) && empty($d->dirut) && $d->status == 1
+                                    || !empty($d->gm) && empty($d->dirut) && $d->status == 0
+                                    || !empty($d->gm) && !empty($d->dirut) && $d->status == 0
+                                    || !empty($d->gm) && !empty($d->dirut) && $d->status == 1
+                                    )
+                                    <span class="badge bg-success"><i class="fa fa-check"></i></span>
+                                    @else
+                                    <span class="badge bg-danger"><i class="fa fa-close"></i></span>
+                                    @endif
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($d->jumlah > 15000000)
+                                    @if (empty($d->dirut))
+                                    <span class="badge bg-warning"><i class="fa fa-history"></i></span>
+                                    @elseif(!empty($d->dirut) && $d->status != 2 )
+                                    <span class="badge bg-success"><i class="fa fa-check"></i></span>
+                                    @else
+                                    <span class="badge bg-danger"><i class="fa fa-close"></i></span>
+                                    @endif
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="#"><i class="feather icon-printer info"></i></a>
+                                </td>
+                                </tr>
+                                @endforeach
+                                </tbody>
+                                </table>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 @endsection
