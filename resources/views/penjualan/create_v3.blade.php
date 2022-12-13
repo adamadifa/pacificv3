@@ -1037,7 +1037,7 @@
                                 , showConfirmButton: false
                             }).then(function() {
 
-                                $("#jml_dus").focus();
+                                //$("#jml_dus").focus();
 
                             });
                         }
