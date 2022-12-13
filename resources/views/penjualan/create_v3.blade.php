@@ -480,7 +480,7 @@
             </div>
             <div class="modal-body">
                 <div class="table-responsive">
-                    <table class="table table-hover-animation tabelpelanggan" style="width:100% !important" id="tabelpelanggan">
+                    <table class="table table-hover-animation tabelpelanggan" style="width:100% !important" id="tabelpelanggan" style="font-size: 12px !important">
                         <thead class="thead-dark">
                             <tr>
                                 <th>Kode Pelanggan</th>
