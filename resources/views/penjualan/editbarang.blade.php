@@ -195,7 +195,7 @@ $jumlah_pcs = $sisapack;
                                 $("#harga_pack_old").val("");
                                 $("#harga_pcs_old").val("");
 
-                                $("#jml_dus").focus();
+                                //$("#jml_dus").focus();
                                 $("#mdleditbarang").modal("hide");
                                 showtemp();
                             });
