@@ -470,7 +470,7 @@
 
 <!--- Modal Pilih Pelanggan -->
 <div class="modal fade text-left" id="mdlpelanggan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document" style="max-width: 960px">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel18">Data Pelanggan</h4>
@@ -480,7 +480,7 @@
             </div>
             <div class="modal-body">
                 <div class="table-responsive">
-                    <table class="table table-hover-animation tabelpelanggan" style="width:100% !important" id="tabelpelanggan" style="font-size: 12px !important">
+                    <table class="table table-hover-animation tabelpelanggan" style="width:100% !important" id="tabelpelanggan" style="font-size: 11px !important">
                         <thead class="thead-dark">
                             <tr>
                                 <th>Kode Pelanggan</th>
