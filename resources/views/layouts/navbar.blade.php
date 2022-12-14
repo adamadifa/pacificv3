@@ -43,12 +43,15 @@
                 </a>
             </li>
             @endif
+            @if (Auth::user()->level != "salesman")
             <li class=" {{ request()->is(['memo','memo/*']) ? 'active' : '' }} nav-item">
                 <a href="/memo">
                     <i class="feather icon-book"></i>
                     <span class="menu-title" data-i18n="Memo">E-Manual <span class="badge badge-pill bg-danger">{{ $memo_unread }}</span></span>
                 </a>
             </li>
+            @endif
+
             @if (in_array($level, $datamaster_view))
             <li class=" nav-item">
                 <a href="#"><i class="feather icon-grid primary"></i><span class="menu-title">Data Master</span></a>

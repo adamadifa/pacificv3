@@ -1528,7 +1528,11 @@ class PenjualanController extends Controller
                 }
             }
             DB::commit();
-            return redirect('/inputpenjualanv2')->with(['success' => 'Data Penjualan Berhasil di Simpan']);
+            if (Auth::user()->level == "salesman") {
+                return redirect('/penjualan/' . Crypt::encrypt($no_fak_penj) . '/showforsales')->with(['success' => 'Data Penjualan Berhasil di Simpan']);
+            } else {
+                return redirect('/inputpenjualanv2')->with(['success' => 'Data Penjualan Berhasil di Simpan']);
+            }
         } catch (\Exception $e) {
             dd($e);
             DB::rollback();
@@ -1610,7 +1614,11 @@ class PenjualanController extends Controller
             //     ->where('no_fak_penj', $no_fak_penj)
             //     ->delete();
             DB::commit();
-            return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
+            if (Auth::user()->level == 'salesman') {
+                return redirect('/penjualan')->with(['success' => 'Data Berhasil Dihapus']);
+            } else {
+                return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
+            }
         } catch (\Exception $e) {
             dd($e);
             DB::rollback();
@@ -1886,6 +1894,10 @@ class PenjualanController extends Controller
             $akun = "1-1489";
         } else if ($kode_cabang == "KLT") {
             $akun = "1-1490";
+        } else if ($kode_cabang == "PWK") {
+            $akun = "1-1492";
+        } else if ($kode_cabang == "BTN") {
+            $akun = "1-1493";
         }
 
         $tgl_aup    = explode("-", $tgltransaksi);
@@ -2132,7 +2144,11 @@ class PenjualanController extends Controller
                 }
             }
             DB::commit();
-            return redirect('/penjualan?no_fak_penj=' . $no_fak_penj_new)->with(['success' => 'Data Penjualan Berhasil di Update']);
+            if (Auth::user()->level == "salesman") {
+                return redirect('/penjualan/' . Crypt::encrypt($no_fak_penj_new) . '/showforsales')->with(['success' => 'Data Penjualan Berhasil di Update']);
+            } else {
+                return redirect('/penjualan?no_fak_penj=' . $no_fak_penj_new)->with(['success' => 'Data Penjualan Berhasil di Update']);
+            }
         } catch (\Exception $e) {
             dd($e);
             DB::rollback();

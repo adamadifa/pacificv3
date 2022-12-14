@@ -143,13 +143,17 @@
                                     <th class="text-center">No</th>
                                     <th>Kode Pelanggan</th>
                                     <th>Nama Pelanggan</th>
+                                    @if (Auth::user()->level != "salesman")
                                     <th>Jatuh Tempo</th>
+                                    @endif
                                     <th>Pasar</th>
                                     <th>Limit</th>
                                     <th>Foto</th>
+                                    @if (Auth::user()->level != "salesman")
                                     <th>Salesman</th>
                                     <th>Cabang</th>
                                     <th>Tanggal Input</th>
+                                    @endif
                                     <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -160,7 +164,9 @@
                                     <td class="text-center">{{ $loop->iteration + $pelanggan->firstItem() - 1 }}</td>
                                     <td>{{ $d->kode_pelanggan }}</td>
                                     <td>{{ $d->nama_pelanggan }}</td>
+                                    @if (Auth::user()->level != "salesman")
                                     <td>{{ (!empty($d->jatuhtempo) ? $d->jatuhtempo.' Hari' : '' )}} </td>
+                                    @endif
                                     <td>{{ $d->pasar }}</td>
                                     <td class="text-right">{{ (!empty($d->limitpel) ? rupiah($d->limitpel) : '') }}</td>
                                     <td>
@@ -175,9 +181,11 @@
                                         </ul>
                                         @endif
                                     </td>
+                                    @if (Auth::user()->level != "salesman")
                                     <td>{{ $d->nama_karyawan }}</td>
                                     <td>{{ $d->kode_cabang }}</td>
                                     <td>{{ $d->time_stamps }}</td>
+                                    @endif
                                     <td>
                                         @if ($d->status_pelanggan == 1)
                                         <span class="badge bg-success">Aktif</span>
@@ -190,7 +198,12 @@
                                             @if (in_array($level,$pelanggan_edit))
                                             <a class="ml-1" href="/pelanggan/{{\Crypt::encrypt($d->kode_pelanggan)}}/edit"><i class="feather icon-edit success"></i></a>
                                             @endif
+                                            @if (Auth::user()->level != "salesman")
                                             <a class="ml-1 detailpelanggan" href="pelanggan/{{ Crypt::encrypt($d->kode_pelanggan) }}/show"><i class=" feather icon-file-text info"></i></a>
+                                            @else
+                                            <a class="ml-1 detailpelanggan" href="pelanggan/getpelanggan?kode_pelanggan={{ Crypt::encrypt($d->kode_pelanggan) }}"><i class=" feather icon-file-text info"></i></a>
+                                            @endif
+
                                             @if (in_array($level,$pelanggan_hapus))
                                             <form method="POST" name="deleteform" class="deleteform" action="/pelanggan/{{ Crypt::encrypt($d->kode_pelanggan) }}/delete">
                                                 @csrf
@@ -200,8 +213,10 @@
                                                 </a>
                                             </form>
                                             @endif
+                                            @if (Auth::user()->level != "salesman")
                                             @if (in_array($level,$pelanggan_ajuanlimit))
                                             <a class="ml-1" href="/limitkredit/{{\Crypt::encrypt($d->kode_pelanggan)}}/create"><i class="feather icon-external-link primary"></i></a>
+                                            @endif
                                             @endif
                                         </div>
                                     </td>
