@@ -1350,6 +1350,8 @@ class PenjualanController extends Controller
             $akun = "1-1490";
         } else if ($kode_cabang == "PWK") {
             $akun = "1-1492";
+        } else if ($kode_cabang == "BTN") {
+            $akun = "1-1493";
         }
 
         $tgl_aup    = explode("-", $tgltransaksi);
