@@ -56,6 +56,7 @@
                                 <i class='bx bxs-lock-alt'></i>
                                 <input type="password" name="password" id="password" placeholder="Password">
                             </div>
+                            <input type="checkbox" name="remember_me" checked id="remember">
                             <button>
                                 Sign in
                             </button>

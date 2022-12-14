@@ -15,8 +15,9 @@ class AuthController extends Controller
             'email' => 'required',
             'password' => 'required'
         ]);
+        $remember = $request->remember_me;
         //dd(Auth::attempt(['username' => $request->username, 'password' => $request->password]));
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
             //dd(Auth::user()->kode_cabang);
             return redirect()->intended('/home');
