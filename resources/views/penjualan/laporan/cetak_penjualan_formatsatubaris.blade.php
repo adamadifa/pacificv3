@@ -70,7 +70,7 @@
                 <th rowspan="2" style="width: 4%;">Salesman</th>
                 <th rowspan="2" style="width: 3%;">Pasar</th>
                 <th rowspan="2" style="width: 3%;">Hari</th>
-                <th colspan="15" style="background-color: #19c116;">Produk</th>
+                <th colspan="16" style="background-color: #19c116;">Produk</th>
                 <th rowspan="2" style="width: 3%; background-color: #ef6a0b;">Total Bruto</th>
                 <th rowspan="2" style="width: 3%; background-color: #ef6a0b;">Total Retur</th>
                 <th colspan="5" style="background-color: #a71033;">Potongan</th>
