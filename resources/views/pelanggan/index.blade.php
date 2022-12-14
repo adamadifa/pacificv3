@@ -67,167 +67,171 @@
                 </div>
             </div>
         </div>
-        @include('layouts.notification')
-        <div class="col-md-12 col-sm-12">
-            <div class="card">
-                @if(in_array($level,$pelanggan_tambah))
-                <div class="card-header">
-                    <a href="/pelanggan/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
-                </div>
-                @endif
-                <div class="card-body">
-                    <form action="/pelanggan">
-                        <div class="row">
-                            @if (Auth::user()->kode_cabang=="PCF")
-                            <div class="col-lg-2 col-sm-12">
-                                <div class="form-group  ">
-                                    <select name="kode_cabang" id="kode_cabang" class="form-control">
-                                        <option value="">Semua Cabang</option>
-                                        @foreach ($cabang as $c)
-                                        <option {{ (Request('kode_cabang')==$c->kode_cabang ? 'selected':'')}} value="{{
-                                            $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            @endif
-                            @if (Auth::user()->level != "salesman")
-                            <div class="col-lg-3 col-sm-12">
-                                <div class="form-group  ">
-                                    <select name="id_karyawan" id="id_karyawan" class="form-control">
-                                        <option value="">Semua Salesman</option>
-                                    </select>
-                                </div>
-                            </div>
-                            @endif
-
-                            <div class="col-lg-2 col-sm-12">
-                                <div class="form-group">
-                                    <select name="status_pelanggan" id="status_pelanggan" class="form-control">
-                                        <option value="">Status</option>
-                                        <option {{ (Request('status_pelanggan')=='1' ? 'selected' :'')}} value="1">AKTIF
-                                        </option>
-                                        <option {{ (Request('status_pelanggan')=='0' ? 'selected' :'')}} value="0">NON
-                                            AKTIF</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-2 col-sm-12">
-                                <x-inputtext label="Kode Pelanggan" field="kode_pelanggan" icon="feather icon-credit-card" value="{{ Request('kode_pelanggan') }}" />
-                            </div>
-                            <div class="col-lg-3 col-sm-12">
-                                <x-inputtext label="Nama Pelanggan" field="nama" icon="feather icon-user" value="{{ Request('nama') }}" />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-5">
-                                <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker value="{{ Request('dari') }}" />
-                            </div>
-                            <div class="col-lg-5">
-                                <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker value="{{ Request('sampai') }}" />
-                            </div>
-                            <div class="col-lg-2">
-                                <div class="form-group">
-                                    <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search"></i> </button>
-                                    <button type="submit" name="export" value="2" class="btn btn-success"><i class="fa fa-download"></i> </button>
-                                </div>
-                            </div>
-                        </div>
-
-
-                    </form>
-                    <div class="table-responsive">
-                        <table class="table table-hover-animation">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th class="text-center">No</th>
-                                    <th>Kode Pelanggan</th>
-                                    <th>Nama Pelanggan</th>
-                                    @if (Auth::user()->level != "salesman")
-                                    <th>Jatuh Tempo</th>
-                                    @endif
-                                    <th>Pasar</th>
-                                    <th>Limit</th>
-                                    <th>Foto</th>
-                                    @if (Auth::user()->level != "salesman")
-                                    <th>Salesman</th>
-                                    <th>Cabang</th>
-                                    <th>Tanggal Input</th>
-                                    @endif
-                                    <th>Status</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($pelanggan as $d)
-                                <tr>
-                                    <td class="text-center">{{ $loop->iteration + $pelanggan->firstItem() - 1 }}</td>
-                                    <td>{{ $d->kode_pelanggan }}</td>
-                                    <td>{{ $d->nama_pelanggan }}</td>
-                                    @if (Auth::user()->level != "salesman")
-                                    <td>{{ (!empty($d->jatuhtempo) ? $d->jatuhtempo.' Hari' : '' )}} </td>
-                                    @endif
-                                    <td>{{ $d->pasar }}</td>
-                                    <td class="text-right">{{ (!empty($d->limitpel) ? rupiah($d->limitpel) : '') }}</td>
-                                    <td>
-                                        @if (!empty($d->foto))
-                                        @php
-                                        $path = Storage::url('pelanggan/'.$d->foto);
-                                        @endphp
-                                        <ul class="list-unstyled users-list m-0  d-flex align-items-center">
-                                            <li data-toggle="tooltip" data-popup="tooltip-custom" data-placement="bottom" data-original-title="Vinnie Mostowy" class="avatar pull-up">
-                                                <img class="media-object rounded-circle" src="{{ url($path)}}" alt="Avatar" height="30" width="30">
-                                            </li>
-                                        </ul>
-                                        @endif
-                                    </td>
-                                    @if (Auth::user()->level != "salesman")
-                                    <td>{{ $d->nama_karyawan }}</td>
-                                    <td>{{ $d->kode_cabang }}</td>
-                                    <td>{{ $d->time_stamps }}</td>
-                                    @endif
-                                    <td>
-                                        @if ($d->status_pelanggan == 1)
-                                        <span class="badge bg-success">Aktif</span>
-                                        @else
-                                        <span class="badge bg-danger">Non Aktif</span>
-                                        @endif
-                                    </td>
-                                    <td>
-                                        <div class="btn-group" role="group" aria-label="Basic example">
-                                            @if (in_array($level,$pelanggan_edit))
-                                            <a class="ml-1" href="/pelanggan/{{\Crypt::encrypt($d->kode_pelanggan)}}/edit"><i class="feather icon-edit success"></i></a>
-                                            @endif
-                                            @if (Auth::user()->level != "salesman")
-                                            <a class="ml-1 detailpelanggan" href="pelanggan/{{ Crypt::encrypt($d->kode_pelanggan) }}/show"><i class=" feather icon-file-text info"></i></a>
-                                            @else
-                                            <a class="ml-1 detailpelanggan" href="pelanggan/getpelanggan?kode_pelanggan={{ Crypt::encrypt($d->kode_pelanggan) }}"><i class=" feather icon-file-text info"></i></a>
-                                            @endif
-
-                                            @if (in_array($level,$pelanggan_hapus))
-                                            <form method="POST" name="deleteform" class="deleteform" action="/pelanggan/{{ Crypt::encrypt($d->kode_pelanggan) }}/delete">
-                                                @csrf
-                                                @method('DELETE')
-                                                <a href="#" class="delete-confirm ml-1">
-                                                    <i class="feather icon-trash danger"></i>
-                                                </a>
-                                            </form>
-                                            @endif
-                                            @if (Auth::user()->level != "salesman")
-                                            @if (in_array($level,$pelanggan_ajuanlimit))
-                                            <a class="ml-1" href="/limitkredit/{{\Crypt::encrypt($d->kode_pelanggan)}}/create"><i class="feather icon-external-link primary"></i></a>
-                                            @endif
-                                            @endif
-                                        </div>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        {{ $pelanggan->links('vendor.pagination.vuexy') }}
+        <div class="row">
+            @include('layouts.notification')
+            <div class="col-lg-12 col-sm-12">
+                <div class="card">
+                    @if(in_array($level,$pelanggan_tambah))
+                    <div class="card-header">
+                        <a href="/pelanggan/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
                     </div>
+                    @endif
+                    <div class="card-body">
+                        <form action="/pelanggan">
+                            <div class="row">
+                                @if (Auth::user()->kode_cabang=="PCF")
+                                <div class="col-lg-2 col-sm-12">
+                                    <div class="form-group  ">
+                                        <select name="kode_cabang" id="kode_cabang" class="form-control">
+                                            <option value="">Semua Cabang</option>
+                                            @foreach ($cabang as $c)
+                                            <option {{ (Request('kode_cabang')==$c->kode_cabang ? 'selected':'')}} value="{{
+                                            $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                @endif
+                                @if (Auth::user()->level != "salesman")
+                                <div class="col-lg-3 col-sm-12">
+                                    <div class="form-group  ">
+                                        <select name="id_karyawan" id="id_karyawan" class="form-control">
+                                            <option value="">Semua Salesman</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                @endif
 
-                    <!-- DataTable ends -->
+                                <div class="col-lg-2 col-sm-12">
+                                    <div class="form-group">
+                                        <select name="status_pelanggan" id="status_pelanggan" class="form-control">
+                                            <option value="">Status</option>
+                                            <option {{ (Request('status_pelanggan')=='1' ? 'selected' :'')}} value="1">AKTIF
+                                            </option>
+                                            <option {{ (Request('status_pelanggan')=='0' ? 'selected' :'')}} value="0">NON
+                                                AKTIF</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-sm-12">
+                                    <x-inputtext label="Kode Pelanggan" field="kode_pelanggan" icon="feather icon-credit-card" value="{{ Request('kode_pelanggan') }}" />
+                                </div>
+                                <div class="col-lg-3 col-sm-12">
+                                    <x-inputtext label="Nama Pelanggan" field="nama" icon="feather icon-user" value="{{ Request('nama') }}" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker value="{{ Request('dari') }}" />
+                                </div>
+                                <div class="col-lg-5">
+                                    <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker value="{{ Request('sampai') }}" />
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search"></i> </button>
+                                        <button type="submit" name="export" value="2" class="btn btn-success"><i class="fa fa-download"></i> </button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </form>
+                        <div class="table-responsive">
+                            <table class="table table-hover-animation">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th class="text-center">No</th>
+                                        <th>Kode Pelanggan</th>
+                                        <th>Nama Pelanggan</th>
+                                        @if (Auth::user()->level != "salesman")
+                                        <th>Jatuh Tempo</th>
+                                        <th>Pasar</th>
+                                        <th>Limit</th>
+                                        @endif
+
+                                        <th>Foto</th>
+                                        @if (Auth::user()->level != "salesman")
+                                        <th>Salesman</th>
+                                        <th>Cabang</th>
+                                        <th>Tanggal Input</th>
+                                        @endif
+                                        <th>Status</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($pelanggan as $d)
+                                    <tr>
+                                        <td class="text-center">{{ $loop->iteration + $pelanggan->firstItem() - 1 }}</td>
+                                        <td>{{ $d->kode_pelanggan }}</td>
+                                        <td>{{ $d->nama_pelanggan }}</td>
+                                        @if (Auth::user()->level != "salesman")
+                                        <td>{{ (!empty($d->jatuhtempo) ? $d->jatuhtempo.' Hari' : '' )}} </td>
+                                        <td>{{ $d->pasar }}</td>
+                                        <td class="text-right">{{ (!empty($d->limitpel) ? rupiah($d->limitpel) : '') }}</td>
+                                        @endif
+
+                                        <td>
+                                            @if (!empty($d->foto))
+                                            @php
+                                            $path = Storage::url('pelanggan/'.$d->foto);
+                                            @endphp
+                                            <ul class="list-unstyled users-list m-0  d-flex align-items-center">
+                                                <li data-toggle="tooltip" data-popup="tooltip-custom" data-placement="bottom" data-original-title="Vinnie Mostowy" class="avatar pull-up">
+                                                    <img class="media-object rounded-circle" src="{{ url($path)}}" alt="Avatar" height="30" width="30">
+                                                </li>
+                                            </ul>
+                                            @endif
+                                        </td>
+                                        @if (Auth::user()->level != "salesman")
+                                        <td>{{ $d->nama_karyawan }}</td>
+                                        <td>{{ $d->kode_cabang }}</td>
+                                        <td>{{ $d->time_stamps }}</td>
+                                        @endif
+                                        <td>
+                                            @if ($d->status_pelanggan == 1)
+                                            <span class="badge bg-success">Aktif</span>
+                                            @else
+                                            <span class="badge bg-danger">Non Aktif</span>
+                                            @endif
+                                        </td>
+                                        <td>
+                                            <div class="btn-group" role="group" aria-label="Basic example">
+                                                @if (in_array($level,$pelanggan_edit))
+                                                <a class="ml-1" href="/pelanggan/{{\Crypt::encrypt($d->kode_pelanggan)}}/edit"><i class="feather icon-edit success"></i></a>
+                                                @endif
+                                                @if (Auth::user()->level != "salesman")
+                                                <a class="ml-1 detailpelanggan" href="pelanggan/{{ Crypt::encrypt($d->kode_pelanggan) }}/show"><i class=" feather icon-file-text info"></i></a>
+                                                @else
+                                                <a class="ml-1 detailpelanggan" href="pelanggan/getpelanggan?kode_pelanggan={{ Crypt::encrypt($d->kode_pelanggan) }}"><i class=" feather icon-file-text info"></i></a>
+                                                @endif
+
+                                                @if (in_array($level,$pelanggan_hapus))
+                                                <form method="POST" name="deleteform" class="deleteform" action="/pelanggan/{{ Crypt::encrypt($d->kode_pelanggan) }}/delete">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <a href="#" class="delete-confirm ml-1">
+                                                        <i class="feather icon-trash danger"></i>
+                                                    </a>
+                                                </form>
+                                                @endif
+                                                @if (Auth::user()->level != "salesman")
+                                                @if (in_array($level,$pelanggan_ajuanlimit))
+                                                <a class="ml-1" href="/limitkredit/{{\Crypt::encrypt($d->kode_pelanggan)}}/create"><i class="feather icon-external-link primary"></i></a>
+                                                @endif
+                                                @endif
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            {{ $pelanggan->links('vendor.pagination.vuexy') }}
+                        </div>
+
+                        <!-- DataTable ends -->
+                    </div>
                 </div>
             </div>
         </div>
