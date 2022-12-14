@@ -231,7 +231,7 @@ class PenjualanController extends Controller
     {
         if (Auth::user()->level == "salesman") {
             $kodepelanggan = Cookie::get('kodepelanggan');
-            $kode_pelanggan = Crypt::decrypt($kodepelanggan);
+            $kode_pelanggan = $kodepelanggan != null ? Crypt::decrypt($kodepelanggan) : '';
             $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)
                 ->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan')
                 ->first();
@@ -322,7 +322,11 @@ class PenjualanController extends Controller
                 ]);
             }
             DB::commit();
-            return view('penjualan.editv2', compact('faktur', 'cektitipan', 'cekvouchertunai'));
+            if (Auth::user()->level == "salesman") {
+                return view('penjualan.editv3', compact('faktur', 'cektitipan', 'cekvouchertunai'));
+            } else {
+                return view('penjualan.editv2', compact('faktur', 'cektitipan', 'cekvouchertunai'));
+            }
         } catch (\Exception $e) {
             DB::rollback();
             return Redirect::back();
@@ -589,7 +593,11 @@ class PenjualanController extends Controller
             ->join('barang', 'detailpenjualan_edit.kode_barang', '=', 'barang.kode_barang')
             ->where('no_fak_penj', $no_fak_penj)
             ->get();
-        return view('penjualan.showbarangv2', compact('barang'));
+        if (Auth::user()->level == "salesman") {
+            return view('penjualan.showbarangv3', compact('barang'));
+        } else {
+            return view('penjualan.showbarangv2', compact('barang'));
+        }
     }
 
 
@@ -3243,7 +3251,7 @@ class PenjualanController extends Controller
                 penjualan.kode_pelanggan,pelanggan.nama_pelanggan,
                 penjualan.id_karyawan,karyawan.nama_karyawan,
                 pelanggan.pasar,pelanggan.hari,
-                AB,AR,`AS`,BB,CG,CGG,DEP,DK,DS,SP,BBP,SPP,CG5,SC,SP8,
+                AB,AR,`AS`,BB,CG,CGG,DEP,DK,DS,SP,BBP,SPP,CG5,SC,SP8,SP8P,
                 penjualan.subtotal as totalbruto,
                 (ifnull( r.totalpf, 0 ) - ifnull( r.totalgb, 0 ) ) AS totalretur,
                 penjualan.penyharga AS penyharga,
@@ -3276,7 +3284,8 @@ class PenjualanController extends Controller
                     SUM(IF(kode_produk = 'SPP',jumlah,0)) as SPP,
                     SUM(IF(kode_produk = 'CG5',jumlah,0)) as CG5,
                     SUM(IF(kode_produk = 'SC',jumlah,0)) as SC,
-                    SUM(IF(kode_produk = 'SP8',jumlah,0)) as SP8
+                    SUM(IF(kode_produk = 'SP8',jumlah,0)) as SP8,
+                    SUM(IF(kode_produk = 'SP8-P',jumlah,0)) as SP8P
                     FROM detailpenjualan dp
                     INNER JOIN barang b ON dp.kode_barang = b.kode_barang
                     GROUP BY dp.no_fak_penj

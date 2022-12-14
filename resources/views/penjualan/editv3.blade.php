@@ -6,10 +6,10 @@
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Input Penjualan</h2>
+                    <h2 class="content-header-title float-left mb-0">Edit Penjualan</h2>
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/inputpenjualanv2">Input Penjualan</a>
+                            <li class="breadcrumb-item"><a href="/penjualan/editv2">Edit Penjualan</a>
                             </li>
                         </ol>
                     </div>
@@ -21,10 +21,10 @@
         <!-- Data list view starts -->
         <!-- DataTable starts -->
         @include('layouts.notification')
-        <form action="/penjualan/previewfaktur" method="POST" id="frmPenjualan">
+        <form action="/penjualan/update" method="POST" id="frmPenjualan">
             @csrf
-            <input type="hidden" id="sisapiutang" name="sisapiutang">
             <input type="hidden" id="cektutuplaporan" name="cektutuplaporan">
+            <input type="hidden" id="sisapiutang" name="sisapiutang">
             <input type="hidden" id="bruto" name="bruto">
             <input type="hidden" id="subtotal" name="subtotal">
             <div class="row">
@@ -38,28 +38,29 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="No. Faktur" field="no_fak_penj" icon="fa fa-barcode" />
+                                            <input type="hidden" name="no_fak_penj" value="{{ $faktur->no_fak_penj }}" id="no_fak_penj">
+                                            <x-inputtext label="No. Faktur" value="{{ $faktur->no_fak_penj }}" field="no_fak_penj_new" icon="fa fa-barcode" readonly />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="Tanggal Transaksi" field="tgltransaksi" icon="feather icon-calendar" readonly value="{{ date('Y-m-d') }}" />
+                                            <x-inputtext label="Tanggal Transaksi" value="{{ $faktur->tgltransaksi }}" field="tgltransaksi" icon="feather icon-calendar" readonly />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <input type="hidden" name="kode_pelanggan" id="kode_pelanggan" value="{{ $pelanggan != null ?  $pelanggan->kode_pelanggan : '' }}">
-                                            <input type="hidden" id="kode_cabang" class="form-control" name="kode_cabang" value="{{ $pelanggan != null ?  $pelanggan->kode_cabang : ''  }}">
-                                            <input type="hidden" id="jatuhtempo" class="form-control" name="jatuhtempo" value="{{ $pelanggan != null ?  $pelanggan->jatuhtempo : '' }}">
-                                            <input type="hidden" id="limitpel" class="form-control" name="limitpel" value="{{ $pelanggan != null ?  $pelanggan->limitpel : '' }}">
-                                            <x-inputtext label="Pelanggan" field="nama_pelanggan" icon="feather icon-user" value="{{$pelanggan != null ? $pelanggan->kode_pelanggan .'|'. $pelanggan->nama_pelanggan : ''}}" readonly />
+                                            <input type="hidden" name="kode_pelanggan" value="{{ $faktur->kode_pelanggan }}" id="kode_pelanggan">
+                                            <input type="hidden" id="kode_cabang" value="{{ $faktur->kode_cabang }}" class="form-control" name="kode_cabang">
+                                            <input type="hidden" id="jatuhtempo" value="{{ $faktur->jatuhtempo }}" class="form-control" name="jatuhtempo">
+                                            <x-inputtext label="Pelanggan" value="{{ $faktur->nama_pelanggan }}" field="nama_pelanggan" icon="feather icon-user" readonly />
+                                            <input type="hidden" id="limitpel" class="form-control" name="limitpel">
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <input type="hidden" value="{{ $pelanggan != null ? $pelanggan->id_sales : '' }}" name="id_karyawan" id="id_karyawan">
-                                            <input type="hidden" value="{{ $pelanggan != null ? $pelanggan->kategori_salesman : '' }}" name="kategori_salesman" id="kategori_salesman">
-                                            <x-inputtext label="Salesman" field="nama_karyawan" icon="feather icon-users" value="{{ $pelanggan != null ? $pelanggan->id_sales. '|'.$pelanggan->nama_karyawan.'|'.$pelanggan->kategori_salesman : ''}}" readonly />
+                                            <input type="hidden" name="id_karyawan" value="{{ $faktur->id_karyawan }}" id="id_karyawan">
+                                            <input type="hidden" name="kategori_salesman" value="{{ $faktur->kategori_salesman }}" id="kategori_salesman">
+                                            <x-inputtext label="Salesman" value='{{ $faktur->id_karyawan." | ".$faktur->nama_karyawan." | ".$faktur->kategori_salesman }}' field="nama_karyawan" icon="feather icon-users" readonly />
                                         </div>
                                     </div>
                                 </div>
@@ -76,15 +77,15 @@
                                             <span id="pelanggan_text"></span>
                                         </h4>
                                         <b>Alamat</b>
-                                        <p class="card-text" id="alamat_text">{{ $pelanggan != null ? $pelanggan->alamat_pelanggan : '' }}</p>
+                                        <p class="card-text" id="alamat_text">{{ $faktur->alamat_pelanggan }}</p>
                                         <b>No. HP</b>
-                                        <p class="card-text" id="no_hp">{{ $pelanggan != null ? $pelanggan->no_hp : '' }}</p>
+                                        <p class="card-text" id="no_hp">{{ $faktur->no_hp }}</p>
                                         <b>Koordinat</b>
-                                        <p class="card-text" id="koordinat">{{ $pelanggan != null ? $pelanggan->latitude : '' }},{{ $pelanggan != null ? $pelanggan->longitude : '' }}</p>
+                                        <p class="card-text" id="koordinat">{{ $faktur->latitude.",".$faktur->longitude }}</p>
                                         <b>Limit Pelanggan</b>
-                                        <p class="card-text" id="limitpelanggan">{{ rupiah($pelanggan != null ? $pelanggan->limitpel : 0) }}</p>
+                                        <p class="card-text" id="limitpelanggan">{{ rupiah($faktur->limitpel) }}</p>
                                         <b>Piutang Pelanggan</b>
-                                        <p class="card-text" id="piutangpelanggan">{{ rupiah($piutang != null ? $piutang->sisapiutang : 0) }}</p>
+                                        <p class="card-text" id="piutangpelanggan"></p>
                                     </div>
                                 </div>
                             </div>
@@ -251,6 +252,7 @@
                                         <div class="col-12">
                                             <div class="table-responsive">
                                                 <table class="table table-bordered">
+
                                                     <tbody id="loadbarangtemp"></tbody>
                                                 </table>
                                             </div>
@@ -268,7 +270,7 @@
                                                 <div class="col-12">
                                                     <div class="form-group" style="margin-bottom:5px">
                                                         <div class="position-relative has-icon-left">
-                                                            <input type="text" id="potaida" class="form-control text-right money" name="potaida" placeholder="Aida">
+                                                            <input type="text" value="{{ rupiah($faktur->potaida) }}" id="potaida" class="form-control text-right money" name="potaida" placeholder="Aida">
                                                             <div class="form-control-position">
                                                                 <img src="{{asset('app-assets/images/icons/diskonaida.png')}}" width="18px" height="18px" alt="">
                                                             </div>
@@ -276,7 +278,7 @@
                                                     </div>
                                                     <div class="form-group" style="margin-bottom:5px">
                                                         <div class="position-relative has-icon-left">
-                                                            <input type="text" id="potswan" class="form-control text-right money" name="potswan" placeholder="Swan">
+                                                            <input type="text" value="{{ rupiah($faktur->potswan) }}" id="potswan" class="form-control text-right money" name="potswan" placeholder="Swan">
                                                             <div class="form-control-position">
                                                                 <img src="{{asset('app-assets/images/icons/diskonswan.png')}}" width="18px" height="18px" alt="">
                                                             </div>
@@ -284,7 +286,7 @@
                                                     </div>
                                                     <div class="form-group" style="margin-bottom:5px">
                                                         <div class="position-relative has-icon-left">
-                                                            <input type="text" id="potstick" class="form-control text-right money" name="potstick" placeholder="Stick">
+                                                            <input type="text" id="potstick" class="form-control text-right money" name="potstick" value="{{ rupiah($faktur->potstick) }}" placeholder="Stick">
                                                             <div class="form-control-position">
                                                                 <img src="{{asset('app-assets/images/icons/diskonstik.png')}}" width="18px" height="18px" alt="">
                                                             </div>
@@ -292,7 +294,7 @@
                                                     </div>
                                                     <div class="form-group" style="margin-bottom:5px">
                                                         <div class="position-relative has-icon-left">
-                                                            <input type="text" id="potsp" class="form-control text-right money" name="potsp" placeholder="Premium">
+                                                            <input type="text" id="potsp" class="form-control text-right money" name="potsp" value="{{ rupiah($faktur->potsp) }}" placeholder="Premium">
                                                             <div class="form-control-position">
                                                                 <img src="{{asset('app-assets/images/icons/diskonsp.png')}}" width="18px" height="18px" alt="">
                                                             </div>
@@ -300,7 +302,7 @@
                                                     </div>
                                                     <div class="form-group" style="margin-bottom:5px">
                                                         <div class="position-relative has-icon-left">
-                                                            <input type="text" id="potsb" class="form-control text-right money" name="potsb" placeholder="Sambal">
+                                                            <input type="text" value="{{ rupiah($faktur->potsambal) }}" id="potsb" class="form-control text-right money" name="potsb" placeholder="Sambal">
                                                             <div class="form-control-position">
                                                                 <img src="{{asset('app-assets/images/icons/diskonsambal.png')}}" width="18px" height="18px" alt="">
                                                             </div>
@@ -321,7 +323,7 @@
                                                 <div class="col-12">
                                                     <div class="form-group" style="margin-bottom: 5px">
                                                         <div class="position-relative has-icon-left">
-                                                            <input type="text" id="potisaida" class="form-control text-right money" name="potisaida" placeholder="Aida">
+                                                            <input type="text" id="potisaida" class="form-control text-right money" name="potisaida" value="{{ rupiah($faktur->potisaida) }}" placeholder="Aida">
                                                             <div class="form-control-position">
                                                                 <img src="{{asset('app-assets/images/icons/diskonaida.png')}}" width="18px" height="18px" alt="">
                                                             </div>
@@ -329,7 +331,7 @@
                                                     </div>
                                                     <div class="form-group" style="margin-bottom: 5px">
                                                         <div class="position-relative has-icon-left">
-                                                            <input type="text" id="potisswan" class="form-control text-right money" name="potisswan" placeholder="Swan">
+                                                            <input type="text" id="potisswan" class="form-control text-right money" name="potisswan" value="{{ rupiah($faktur->potisswan) }}" placeholder="Swan">
                                                             <div class="form-control-position">
                                                                 <img src="{{asset('app-assets/images/icons/diskonswan.png')}}" width="18px" height="18px" alt="">
                                                             </div>
@@ -337,7 +339,7 @@
                                                     </div>
                                                     <div class="form-group" style="margin-bottom: 5px">
                                                         <div class="position-relative has-icon-left">
-                                                            <input type="text" id="potisstick" class="form-control text-right money" name="potisstick" placeholder="Stick">
+                                                            <input type="text" id="potisstick" class="form-control text-right money" name="potisstick" value="{{ rupiah($faktur->potisstick) }}" placeholder="Stick">
                                                             <div class="form-control-position">
                                                                 <img src="{{asset('app-assets/images/icons/diskonstik.png')}}" width="18px" height="18px" alt="">
                                                             </div>
@@ -358,7 +360,7 @@
                                                 <div class="col-12">
                                                     <div class="form-group" style="margin-bottom: 5px">
                                                         <div class="position-relative has-icon-left">
-                                                            <input type="text" id="penyaida" class="form-control text-right money" name="penyaida" placeholder="Aida">
+                                                            <input type="text" id="penyaida" class="form-control text-right money" name="penyaida" value="{{ rupiah($faktur->penyaida) }}" placeholder="Aida">
                                                             <div class="form-control-position">
                                                                 <img src="{{asset('app-assets/images/icons/diskonaida.png')}}" width="18px" height="18px" alt="">
                                                             </div>
@@ -366,7 +368,7 @@
                                                     </div>
                                                     <div class="form-group" style="margin-bottom: 5px">
                                                         <div class="position-relative has-icon-left">
-                                                            <input type="text" id="penyswan" class="form-control text-right money" name="penyswan" placeholder="Swan">
+                                                            <input type="text" id="penyswan" value="{{ rupiah($faktur->penyswan) }}" class="form-control text-right money" name="penyswan" placeholder="Swan">
                                                             <div class="form-control-position">
                                                                 <img src="{{asset('app-assets/images/icons/diskonswan.png')}}" width="18px" height="18px" alt="">
                                                             </div>
@@ -374,7 +376,7 @@
                                                     </div>
                                                     <div class="form-group" style="margin-bottom: 5px">
                                                         <div class="position-relative has-icon-left">
-                                                            <input type="text" id="penystick" class="form-control text-right money" name="penystick" placeholder="Stick">
+                                                            <input type="text" id="penystick" value="{{ rupiah($faktur->penystick) }}" class="form-control text-right money" name="penystick" placeholder="Stick">
                                                             <div class="form-control-position">
                                                                 <img src="{{asset('app-assets/images/icons/diskonstik.png')}}" width="18px" height="18px" alt="">
                                                             </div>
@@ -395,20 +397,29 @@
                                                     <div class="form-group" style="margin-bottom: 5px">
                                                         <select class="form-control" name="jenistransaksi" id="jenistransaksi">
                                                             <option value="">Jenis Transaksi</option>
-                                                            <option value="tunai">Tunai</option>
-                                                            <option value="kredit">Kredit</option>
+                                                            <option @if ($faktur->jenistransaksi=="tunai")
+                                                                selected
+                                                                @endif value="tunai">Tunai</option>
+                                                            <option @if ($faktur->jenistransaksi=="kredit")
+                                                                selected
+                                                                @endif value="kredit">Kredit</option>
                                                         </select>
                                                         <input type="hidden" id="jenisbayar" name="jenisbayar">
                                                     </div>
                                                     <div class="form-group tunai" style="margin-bottom: 5px">
                                                         <select class="form-control" name="jenisbayartunai" id="jenisbayartunai">
-                                                            <option value="tunai">Cash</option>
-                                                            <option value="transfer">Transfer</option>
+                                                            <option @if ($faktur->jenisbayar=="tunai")
+                                                                selected
+                                                                @endif value="tunai">Cash</option>
+                                                            <option @if ($faktur->jenisbayar=="transfer")
+                                                                selected
+                                                                @endif value="transfer">Transfer</option>
                                                         </select>
                                                     </div>
                                                     <div class="form-group tunai" style="margin-bottom: 5px">
                                                         <div class="position-relative has-icon-left">
-                                                            <input type="text" id="voucher" class="form-control text-right money" name="voucher" placeholder="Voucher">
+                                                            <input type="hidden" id="voucher_old" value="@if($cekvouchertunai!=null){{ rupiah($cekvouchertunai->bayar) }}@endif" class="form-control text-right money" name="voucher_old" placeholder="Voucher">
+                                                            <input type="text" id="voucher" class="form-control text-right money" name="voucher" placeholder="Voucher" value="@if($cekvouchertunai!=null){{ rupiah($cekvouchertunai->bayar) }}@endif">
                                                             <div class="form-control-position" style="top:5px">
                                                                 <i class="feather icon-tag"></i>
                                                             </div>
@@ -426,7 +437,7 @@
                                                     </div>
                                                     <div class="form-group kredit" style="margin-bottom: 5px">
                                                         <div class="position-relative has-icon-left">
-                                                            <input type="text" id="titipan" class="form-control text-right money" name="titipan" placeholder="Titipan">
+                                                            <input type="text" value="@if($cektitipan != null){{ rupiah($cektitipan->bayar) }}@endif" id="titipan" class="form-control text-right money" name="titipan" placeholder="Titipan">
                                                             <div class="form-control-position" style="top:5px">
                                                                 <i class="feather icon-tag"></i>
                                                             </div>
@@ -452,7 +463,7 @@
 
 <!--- Modal Pilih Pelanggan -->
 <div class="modal fade text-left" id="mdlpelanggan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
+    <div class="modal-dialog modal-dialog-centered  modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel18">Data Pelanggan</h4>
@@ -462,7 +473,7 @@
             </div>
             <div class="modal-body">
                 <div class="table-responsive">
-                    <table class="table table-hover-animation tabelpelanggan" style="width:100% !important" id="tabelpelanggan" style="font-size: 11px !important">
+                    <table class="table table-hover-animation tabelpelanggan" style="width:100% !important" id="tabelpelanggan">
                         <thead class="thead-dark">
                             <tr>
                                 <th>Kode Pelanggan</th>
@@ -579,6 +590,8 @@
         }
 
         //Cek Piutang Pelanggan
+        cekpiutang($("#kode_pelanggan").val());
+
         function cekpiutang(kode_pelanggan) {
             $("#piutangpelanggan").text("Loading..");
             $.ajax({
@@ -621,6 +634,8 @@
         $("#tgltransaksi").change(function() {
             cektutuplaporan();
         });
+
+        cektutuplaporan();
 
         //Format No. Faktur Tidak Boleh Pakai Spasi
         $('#no_fak_penj').mask('AAAAAAAAAAA', {
@@ -823,14 +838,13 @@
                     , cache: false
                     , success: function(respond) {
                         $("#loadbarang").html(respond);
-                        $('#mdlbarang').modal({
-                            backdrop: 'static'
-                            , keyboard: false
-                        });
                     }
                 });
             }
-
+            $('#mdlbarang').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
         });
 
 
@@ -862,14 +876,13 @@
                     , cache: false
                     , success: function(respond) {
                         $("#loadbarang").html(respond);
-                        $('#mdlbarang').modal({
-                            backdrop: 'static'
-                            , keyboard: false
-                        });
                     }
                 });
             }
-
+            $('#mdlbarang').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
         });
 
         $("#promo").change(function() {
@@ -910,6 +923,7 @@
         //Tambah Item
         $("#tambahitem").click(function(e) {
             e.preventDefault();
+            var no_fak_penj = $("#no_fak_penj").val();
             var kode_barang = $("#kode_barang").val();
             var jml_dus = $("#jml_dus").val();
             var jml_pack = $("#jml_pack").val();
@@ -919,7 +933,6 @@
             var harga_pcs = $("#harga_pcs").val();
             var isipcsdus = $("#isipcsdus").val();
             var isipcs = $("#isipcs").val();
-            var nama_pelanggan = $("#nama_pelanggan").val();
             if ($('#promo').is(":checked")) {
                 var promo = $("#promo").val();
             } else {
@@ -936,7 +949,6 @@
             var hargapcs = harga_pcs != "" ? parseInt(harga_pcs.replace(/\./g, '')) : 0;
 
 
-
             var jumlah = (jmldus * parseInt(isipcsdus)) + (jmlpack * (parseInt(isipcs))) + jmlpcs;
             var subtotal = (jmldus * hargadus) + (jmlpack * hargapack) + (jmlpcs * hargapcs);
             //alert(totalpcs);
@@ -951,7 +963,7 @@
                     $("#nama_barang").focus();
                 });
                 return false;
-            } else if (jumlah == "" && !nama_pelanggan.includes('BATAL')) {
+            } else if (jumlah == "") {
                 swal({
                     title: 'Oops'
                     , text: 'Qty Harus Diisi !'
@@ -965,9 +977,10 @@
                 //Simpan Barang Temp
                 $.ajax({
                     type: 'POST'
-                    , url: '/penjualan/storebarangtempv2'
+                    , url: '/penjualan/storebarang'
                     , data: {
                         _token: "{{ csrf_token() }}"
+                        , no_fak_penj: no_fak_penj
                         , kode_barang: kode_barang
                         , hargadus: hargadus
                         , hargapack: hargapack
@@ -1051,10 +1064,15 @@
         $(".money").maskMoney();
         //Tampilkan Detail Barang Temporary
         function showtemp() {
+            var no_fak_penj = $("#no_fak_penj").val();
             $.ajax({
-                type: 'GET'
-                , url: '/penjualan/showbarangtempv2'
+                type: 'POST'
+                , url: '/penjualan/showbarangv2'
                 , cache: false
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , no_fak_penj: no_fak_penj
+                }
                 , success: function(respond) {
                     $("#loadbarangtemp").html(respond);
                     hitungdiskon();
@@ -1062,11 +1080,30 @@
             });
         }
 
-        showtemp();
+        function showtempfirst() {
+            var no_fak_penj = $("#no_fak_penj").val();
+            $.ajax({
+                type: 'POST'
+                , url: '/penjualan/showbarangv2'
+                , cache: false
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , no_fak_penj: no_fak_penj
+                }
+                , success: function(respond) {
+                    $("#loadbarangtemp").html(respond);
+                    //hitungdiskon();
+                    loadtotal();
+                }
+            });
+        }
+
+        showtempfirst();
 
         //Hitung Diskon
 
         function hitungdiskon() {
+            var no_fak_penj = $("#no_fak_penj").val();
             var jenistransaksi = $("#jenistransaksi").val();
             var pelanggan = $("#nama_pelanggan").val();
             var pl = pelanggan.split("|");
@@ -1077,9 +1114,10 @@
             $("#btnsimpan").html('<i class="fa fa-spinner mr-1"></i><i>Loading...</i>');
             $.ajax({
                 type: 'POST'
-                , url: '/hitungdiskon'
+                , url: '/hitungdiskonpenjualanv2'
                 , data: {
                     _token: "{{ csrf_token() }}"
+                    , no_fak_penj: no_fak_penj
                     , jenistransaksi: jenistransaksi
                 }
                 , cache: false
@@ -1233,6 +1271,26 @@
         $("#potaida,#potswan,#potstick,#potsp,#potsb,#potisaida,#potisswan,#potisstick,#penyswan,#penyaida,#penystick,#voucher").keyup(function(e) {
             loadtotal();
         });
+
+        function loadtunaikredit() {
+            var jenistransaksi = $("#jenistransaksi").val();
+            var voucher = $("#voucher_old").val();
+            if (jenistransaksi == "tunai") {
+                $("#jenisbayar").val("tunai");
+                $(".tunai").show();
+                $(".kredit").hide();
+                $("#voucher").val(convertToRupiah(voucher));
+            } else if (jenistransaksi == "kredit") {
+                $("#jenisbayar").val("titipan");
+                $(".tunai").hide();
+                $(".kredit").show();
+                //$("#titipan").focus();
+                $("#voucher").val(0);
+            }
+            //hitungdiskon2();
+        }
+
+        loadtunaikredit();
     });
 
 </script>
