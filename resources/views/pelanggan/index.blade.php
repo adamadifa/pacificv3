@@ -137,11 +137,15 @@
 
 
                         </form>
-                        <div class="table-responsive" id="mytable" style="font-size: 11px">
-                            <table class="table table-hover-animation">
+                        <div class="table-responsive" id="mytable">
+                            <table class="table table-hover-animation" @if(Auth::user()->level=="salesman")
+                                style="font-size: 11px"
+                                @endif>
                                 <thead class="thead-dark">
                                     <tr>
+                                        @if (Auth::user()->level != "salesman")
                                         <th class="text-center">No</th>
+                                        @endif
                                         <th>Kode Pelanggan</th>
                                         <th>Nama Pelanggan</th>
                                         @if (Auth::user()->level != "salesman")
@@ -163,7 +167,9 @@
                                 <tbody>
                                     @foreach ($pelanggan as $d)
                                     <tr>
+                                        @if (Auth::user()->level != "salesman")
                                         <td class="text-center">{{ $loop->iteration + $pelanggan->firstItem() - 1 }}</td>
+                                        @endif
                                         <td>{{ $d->kode_pelanggan }}</td>
                                         <td>{{ $d->nama_pelanggan }}</td>
                                         @if (Auth::user()->level != "salesman")
