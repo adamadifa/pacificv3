@@ -56,13 +56,19 @@
                 </div>
                 <div class="row mb-2">
                     <div class="col-2">
-                        <a href="/penjualan/{{ Crypt::encrypt($data->no_fak_penj) }}/editv2" class="btn btn-success btn-block"><i class="feather icon-edit"></i></a>
+                        <a href="/penjualan/{{ Crypt::encrypt($data->no_fak_penj) }}/editv2" class="btn btn-success "><i class="feather icon-edit"></i></a>
                     </div>
                     <div class="col-8">
                         <a href="#" class="btn btn-info btn-block" id="cetakfaktur"><i class="feather icon-printer mr-1"></i>Cetak Faktur</a>
                     </div>
                     <div class="col-2">
-                        <a href="#" class="btn btn-danger btn-block"><i class="feather icon-trash"></i></a>
+                        <form method="POST" class="deleteform" action="/penjualan/{{ Crypt::encrypt($data->no_fak_penj) }}/delete">
+                            @csrf
+                            @method('DELETE')
+                            <a href=" #" tanggal="{{ $data->tgltransaksi }}" class="btn btn-danger  delete-confirm ml-1">
+                                <i class="feather icon-trash"></i>
+                            </a>
+                        </form>
                     </div>
                 </div>
                 @if (Auth::user()->level != "salesman")
