@@ -137,7 +137,7 @@
 
 
                         </form>
-                        <div class="table-responsive" id="mytable">
+                        <div class="table-responsive" id="mytable" style="font-size: 11px">
                             <table class="table table-hover-animation">
                                 <thead class="thead-dark">
                                     <tr>

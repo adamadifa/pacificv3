@@ -43,11 +43,11 @@
         }
     }
 
-    @media (min-width:800px) {
+    /* @media (min-width:800px) {
         #mytable {
             font-size: 11px;
         }
-    }
+    } */
 
     /*
 *
