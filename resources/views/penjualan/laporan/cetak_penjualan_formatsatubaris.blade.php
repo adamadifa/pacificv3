@@ -98,6 +98,7 @@
                 <th style="width: 1%;">CG5</th>
                 <th style="width: 1%;">SC</th>
                 <th style="width: 1%;">SP8</th>
+                <th style="width: 1%;">SP8-P</th>
                 <th style="width: 1%; background-color: #a71033;">AIDA</th>
                 <th style="width: 1%; background-color: #a71033;">SWAN</th>
                 <th style="width: 1%; background-color: #a71033;">STICK</th>
@@ -166,6 +167,11 @@
             if ($b->kode_produk == "SP8") {
             $isipcsdusSP8 = $b->isipcsdus;
             }
+
+            if ($b->kode_produk == "SP8-P") {
+            $isipcsdusSP8P = $b->isipcsdus;
+            }
+
             @endphp
             @endforeach
 
@@ -299,6 +305,12 @@
             } else {
             $SP8 = 0;
             }
+
+            if (!empty($d->SP8P)) {
+            $SP8P = $d->SP8P / $isipcsdusSP8P;
+            } else {
+            $SP8P = 0;
+            }
             $totalAB += $AB;
             $totalAR += $AR;
             $totalAS += $AS;
@@ -314,6 +326,7 @@
             $totalCG5 += $CG5;
             $totalSC += $SC;
             $totalSP8 += $SP8;
+            $totalSP8P += $SP8P;
 
 
             if ($d->status_lunas == 1) {
@@ -350,6 +363,7 @@
                 <td align="center">@php if (!empty($CG5)) { echo desimal($CG5); } @endphp </td>
                 <td align="center">@php if (!empty($SC)) { echo desimal($SC); } @endphp </td>
                 <td align="center">@php if (!empty($SP8)) { echo desimal($SP8); } @endphp </td>
+                <td align="center">@php if (!empty($SP8P)) { echo desimal($SP8P); } @endphp </td>
                 <td align="right"><b>{{ rupiah($d->totalbruto)}}</b></td>
                 <td align="right"><b>@php if (!empty($d->totalretur)) { echo rupiah($d->totalretur);}@endphp</b></td>
                 <td align="right"><b>@php if (!empty($d->potaida)) { echo rupiah($d->potaida);}@endphp</b></td>
@@ -382,6 +396,7 @@
                 <th align="right"><b>{{ desimal($totalCG5)}}</b></th>
                 <th align="right"><b>{{ desimal($totalSC)}}</b></th>
                 <th align="right"><b>{{ desimal($totalSP8)}}</b></th>
+                <th align="right"><b>{{ desimal($totalSP8P)}}</b></th>
                 <th align="right"><b>{{ desimal($totalbruto)}}</b></th>
                 <th align="right"><b>{{ desimal($totalretur)}}</b></th>
                 <th align="right"><b>{{ desimal($totalpotaida)}}</b></th>
