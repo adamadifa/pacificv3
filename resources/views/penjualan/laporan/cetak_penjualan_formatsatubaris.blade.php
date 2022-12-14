@@ -202,6 +202,7 @@
             $totalCG5 = 0;
             $totalSC = 0;
             $totalSP8 = 0;
+            $totalSP8P = 0;
             @endphp
             @foreach ($penjualan as $d)
             @php
