@@ -149,12 +149,12 @@
             $totalswan = $penjualan->totalswan - $retur->totalreturswan;
             $totalaida = $penjualan->totalaida - $retur->totalreturaida;
             $totalpenjualan = $totalswan + $totalaida;
+            $grandtotal = $grandtotal + $potongan->total + $logistik->total + $bahan->total;
 
             $cr_swan_biaya_total = $totalswan != 0 ? ROUND(($grandtotal/$totalswan)*100) : 0;
             $cr_aida_biaya_total = $totalaida != 0 ? ROUND(($grandtotal/$totalaida)*100) : 0;
             $cr_penjualan_biaya_total = $totalpenjualan != 0 ? ROUND(($grandtotal/$totalpenjualan)*100) : 0;
 
-            $grandtotal = $grandtotal + $potongan->total + $logistik->total + $bahan->total;
 
             @endphp
             <tr>
