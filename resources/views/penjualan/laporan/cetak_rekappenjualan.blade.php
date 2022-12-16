@@ -67,6 +67,7 @@
                 <td rowspan="2" bgcolor="#f5ae15">Potongan</td>
                 <td rowspan="2" bgcolor="#f5ae15">Potongan Istimewa</td>
                 <td rowspan="2" bgcolor="#f5ae15">Penyesuaian Harga</td>
+                <td rowspan="2" bgcolor="#f5ae15">PPN 11%</td>
                 <td rowspan="2" bgcolor="#1bbb32">Netto</td>
                 <td rowspan="2" bgcolor="#1bbb32">Penerimaan rupiah</td>
                 <td colspan="9" bgcolor="#1bbb32">Voucher</td>
@@ -124,6 +125,7 @@
             $totalpotongan 		= 0;
             $totalpotistimewa	= 0;
             $totalpenyharga 	= 0;
+            $totalppn 	= 0;
             $totalnetto 			= 0;
             $totalbayar				= 0;
             $totalpenghapusanpiutang = 0;
@@ -158,6 +160,7 @@
             $grandtotalpotongan 		= 0;
             $grandtotalpotistimewa	= 0;
             $grandtotalpenyharga 		= 0;
+            $grandtotalppn 		= 0;
             $grandtotalnetto 				= 0;
             $grndtotalsapiutang 		= 0;
             $grandtotalslpiutang 		= 0;
@@ -198,8 +201,9 @@
                 $totalretur 						= $totalretur + $p->totalretur;
                 $totalpotistimewa 			= $totalpotistimewa + $p->totalpotistimewa;
                 $totalpenyharga 				= $totalpenyharga + $p->totalpenyharga;
-                $netto 									= $p->totalbruto - $p->totalpotongan - $p->totalretur - $p->totalpotistimewa - $p->totalpenyharga;
-                $totalnetto  						= $totalnetto + $p->totalbruto - $p->totalpotongan - $p->totalretur - $p->totalpotistimewa - $p->totalpenyharga;
+                $totalppn 				= $totalppn + $p->totalppn;
+                $netto 									= $p->totalbruto - $p->totalpotongan - $p->totalretur - $p->totalpotistimewa - $p->totalpenyharga + $p->totalppn;
+                $totalnetto  						= $totalnetto + $p->totalbruto - $p->totalpotongan - $p->totalretur - $p->totalpotistimewa - $p->totalpenyharga + $p->totalppn;
                 $totalbayar 						= $totalbayar + $p->totalbayar;
                 $totalpenghapusanpiutang = $totalpenghapusanpiutang += $p->penghapusanpiutang;
                 $totaldiskonprogram = $totaldiskonprogram += $p->diskonprogram;
@@ -233,7 +237,8 @@
                 $grandtotalretur 				= $grandtotalretur + $p->totalretur;
                 $grandtotalpotistimewa 	= $grandtotalpotistimewa + $p->totalpotistimewa;
                 $grandtotalpenyharga 		= $grandtotalpenyharga + $p->totalpenyharga;
-                $grandtotalnetto  			= $grandtotalnetto + $p->totalbruto - $p->totalpotongan - $p->totalretur - $p->totalpotistimewa - $p->totalpenyharga;
+                $grandtotalppn 		= $grandtotalppn + $p->totalppn;
+                $grandtotalnetto  			= $grandtotalnetto + $p->totalbruto - $p->totalpotongan - $p->totalretur - $p->totalpotistimewa - $p->totalpenyharga + $p->totalppn;
                 $grandtotalsapiutang 		= $grandtotalsapiutang + $p->saldoawalpiutang;
                 $grandtotalslpiutang 		= $grandtotalslpiutang + $p->saldoakhirpiutang;
                 $grandtotalbayar 				= $grandtotalbayar + $p->totalbayar;
@@ -288,8 +293,12 @@
                     <?php if (!empty($p->totalpenyharga)) {echo rupiah($p->totalpenyharga);} ?>
                 </td>
                 <td style="text-align:right; font-weight:bold">
+                    <?php if (!empty($p->totalppn)) {echo rupiah($p->totalppn);} ?>
+                </td>
+                <td style="text-align:right; font-weight:bold">
                     <?php if (!empty($netto)) {echo rupiah($netto);} ?>
                 </td>
+
                 <td style="text-align:right; font-weight:bold">
                     <?php if (!empty($p->totalbayar)) {echo rupiah($p->totalbayar);} ?>
                 </td>
@@ -356,6 +365,7 @@
             <td align="right" >' . rupiah($totalpotongan) . '</td>
             <td align="right" >' . rupiah($totalpotistimewa) . '</td>
             <td align="right" >' . rupiah($totalpenyharga) . '</td>
+            <td align="right" >' . rupiah($totalppn) . '</td>
             <td align="right" >' . rupiah($totalnetto) . '</td>
             <td align="right" >' . rupiah($totalbayar) . '</td>
             <td align="right" >' . rupiah($totalpenghapusanpiutang) . '</td>
@@ -391,6 +401,7 @@
                     $totalpotongan 			= 0;
                     $totalpotistimewa 	= 0;
                     $totalpenyharga 		= 0;
+                    $totalppn 		= 0;
                     $totalnetto 				= 0;
                     $totalbayar 				= 0;
                     $totalpenghapusanpiutang = 0;
@@ -435,6 +446,7 @@
             <td align="right" >' . rupiah($grandtotalpotongan) . '</td>
             <td align="right" >' . rupiah($grandtotalpotistimewa) . '</td>
             <td align="right" >' . rupiah($grandtotalpenyharga) . '</td>
+            <td align="right" >' . rupiah($grandtotalppn) . '</td>
             <td align="right" >' . rupiah($grandtotalnetto) . '</td>
             <td align="right" >' . rupiah($grandtotalbayar) . '</td>
             <td align="right" >' . rupiah($grandtotalpenghapusanpiutang) . '</td>

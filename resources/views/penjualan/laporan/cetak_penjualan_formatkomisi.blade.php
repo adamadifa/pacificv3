@@ -78,6 +78,7 @@
                 <th rowspan="2" style="width: 3%; background-color: #ef6a0b;">Total Retur</th>
                 <th colspan="5" style="background-color: #a71033;">Potongan</th>
                 <th rowspan="2" style="width: 3%; background-color: #f353c1;">Pot. Istimewa</th>
+                <th rowspan="2" style="width: 3%; background-color: #4cbade;">PPN 11%</th>
                 <th rowspan="2" style="width: 3%; background-color: #024a75;">Total Netto</th>
                 <th rowspan="2" style="width: 5%; background-color: #024a75;">Tunai / Kredit</th>
                 <th rowspan="2" style="width: 3%; background-color: #024a75;">Total Bayar</th>
@@ -183,6 +184,7 @@
             $totalpotsp = 0;
             $totalpotongan = 0;
             $totalpotis = 0;
+            $totalppn = 0;
             $totalnetto = 0;
 
             $totalAB = 0;
@@ -226,6 +228,7 @@
             $totalpotsp += $d->potsp;
             $totalpotongan += $d->potongan;
             $totalpotis += $d->potistimewa;
+            $totalppn += $d->ppn;
             $totalnetto += $d->totalnetto;
 
             if (!empty($d->AB)) {
@@ -525,6 +528,7 @@
                 <td align="right"><b>@php if (!empty($d->potsp)) { echo rupiah($d->potsp);}@endphp</b></td>
                 <td align="right"><b>@php if (!empty($d->potongan)) { echo rupiah($d->potongan);}@endphp</b></td>
                 <td align="right"><b>@php if (!empty($d->potistimewa)) { echo rupiah($d->potistimewa);}@endphp</b></td>
+                <td align="right"><b>@php if (!empty($d->ppn)) { echo rupiah($d->ppn);}@endphp</b></td>
                 <td align="right"><b>@php if (!empty($d->totalnetto)) { echo rupiah($d->totalnetto);}@endphp</b></td>
                 <td align="right"><b>@php if (!empty($d->jenistransaksi)) { echo ucwords($d->jenistransaksi); }@endphp</b></td>
                 <td align="right"><b>@php if (!empty($d->totalbayar)) { echo rupiah($d->totalbayar);}@endphp</b></td>
@@ -575,6 +579,7 @@
                 <th align="right"><b>{{ desimal($totalpotsp)}}</b></th>
                 <th align="right"><b>{{ desimal($totalpotongan)}}</b></th>
                 <th align="right"><b>{{ desimal($totalpotis)}}</b></th>
+                <th align="right"><b>{{ desimal($totalppn)}}</b></th>
                 <th align="right"><b>{{ desimal($totalnetto)}}</b></th>
                 <th colspan="4"></th>
             </tr>

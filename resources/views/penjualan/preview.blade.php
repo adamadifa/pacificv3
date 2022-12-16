@@ -433,12 +433,26 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td style="font-weight: bold; font-size:12px; vertical-align:top">Total</td>
+                                        <td style="text-align: right; font-size:12px; font-weight:500">
+                                            {{ rupiah($data['totalnonppn']) }}
+                                            <input type="hidden" name="totalnonppn" value="{{ $data['totalnonppn'] }}">
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="font-weight: bold; font-size:12px; vertical-align:top">PPN 11%</td>
+                                        <td style="text-align: right; font-size:12px; font-weight:500">
+                                            {{ rupiah($data['ppn']) }}
+                                            <input type="hidden" name="ppn" value="{{ rupiah($data['ppn']) }}">
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         @php
-                                        $grandtotal = $total - $data['totalpotongan'] - $data['totalpotis'] - $data['totalpeny'] - $data['voucher'];
+                                        $grandtotal = $total - $data['totalpotongan'] - $data['totalpotis'] - $data['totalpeny'] - $data['voucher'] + $data['ppn'];
 
 
                                         @endphp
-                                        <td style="font-weight: bold; font-size:12px; vertical-align:top">Total</td>
+                                        <td style="font-weight: bold; font-size:12px; vertical-align:top">Grand Total</td>
                                         <td style="text-align: right; font-size:12px; font-weight:700; {{ $data['subtotal'] != $grandtotal ? 'background-color:red; color:white' : '' }}">
                                             <a href="#" @if($data['subtotal'] !=$grandtotal) data-toggle="tooltip" title="Total Tidak Sama Dengan Rincian Penjualan - Potongan" @endif style="text-decoration: none; color:inherit">{{ rupiah($data['subtotal']) }}</a>
                                             <input type="hidden" name="subtotal" value="{{ $data['subtotal'] }}">

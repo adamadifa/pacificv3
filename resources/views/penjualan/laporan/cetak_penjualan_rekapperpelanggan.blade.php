@@ -73,6 +73,7 @@
                 <td>Potongan</td>
                 <td>Potongan Istimewa</td>
                 <td>Penyesuaian</td>
+                <td>PPN 11%</td>
                 <td>Penjualan Netto</td>
                 <td>Total Retur</td>
                 <td>Grand Total</td>
@@ -90,6 +91,7 @@
             $grandtotalall = 0;
             $totalrata2=0;
             $rata2 = 0;
+            $totalppn = 0;
             @endphp
             @foreach ($penjualan as $p)
             @php
@@ -101,6 +103,7 @@
             $totalrata2 = $totalrata2 + $rata2;
             $grandtotal = $p->totalpenjualannetto - $p->totalretur;
             $totalretur = $totalretur + $p->totalretur;
+            $totalppn = $totalppn + $p->ppn;
             $grandtotalall = $grandtotalall + $grandtotal;
             $pembagi = substr($sampai,5,2);;
             $rata2 = $grandtotal/$pembagi;
@@ -116,6 +119,7 @@
                 <td align="right">{{ rupiah($p->totalpotongan)}}</td>
                 <td align="right">{{ rupiah($p->totalpotistimewa)}}</td>
                 <td align="right">{{ rupiah($p->totalpenyharga)}}</td>
+                <td align="right">{{ rupiah($p->ppn)}}</td>
                 <td align="right">{{ rupiah($p->totalpenjualannetto)}}</td>
                 <td align="right">{{ rupiah($p->totalretur)}}</td>
                 <td align="right">{{ rupiah($grandtotal)}}</td>
@@ -128,6 +132,7 @@
                 <td align="right">{{ rupiah($totalpotongan)}}</td>
                 <td align="right">{{ rupiah($totalpotistimewa)}}</td>
                 <td align="right">{{ rupiah($totalpenyharga)}}</td>
+                <td align="right">{{ rupiah($totalppn)}}</td>
                 <td align="right">{{ rupiah($totalnetto)}}</td>
                 <td align="right">{{ rupiah($totalretur)}}</td>
                 <td align="right">{{ rupiah($grandtotalall)}}</td>

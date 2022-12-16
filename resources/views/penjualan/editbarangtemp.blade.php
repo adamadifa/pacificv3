@@ -317,7 +317,7 @@ $jumlah_pcs = $sisapack;
 
 
         function loadtotal() {
-            var total = $("#totaltemp").val();
+            var subtotal = $("#totaltemp").val();
             var potswan = $("#potswan").val();
             var potaida = $("#potaida").val();
             var potstick = $("#potstick").val();
@@ -330,6 +330,7 @@ $jumlah_pcs = $sisapack;
             var penyswan = $("#penyswan").val();
             var penystick = $("#penystick").val();
             var voucher = $("#voucher").val();
+            var cekpajak = $("#cekpajak").val();
 
             if (potswan.length === 0) {
                 var potswan = 0;
@@ -406,13 +407,23 @@ $jumlah_pcs = $sisapack;
             var potongan = potswan + potaida + potstick + potsp + potsb;
             var potonganistimewa = potisaida + potisswan + potisstick;
             var penyesuaian = penyaida + penyswan + penystick;
-            var grandtotal = total - potongan - potonganistimewa - penyesuaian - voucher;
+            var total = subtotal - potongan - potonganistimewa - penyesuaian;
+            var grandtotal = total - voucher;
+            if (cekpajak == 1) {
+                var ppn = parseInt(total) * (11 / 100);
+            } else {
+                var ppn = 0;
+            }
+            var totalwithppn = parseInt(grandtotal) + parseInt(ppn);
             var bruto = total;
-            $("#grandtotal").text(convertToRupiah(grandtotal));
-            $("#total").val(convertToRupiah(grandtotal));
-            $("#bruto").val(bruto);
-            $("#subtotal").val(grandtotal);
+            $("#grandtotal").text(convertToRupiah(totalwithppn));
+            $("#totalnonppn").val(convertToRupiah(total));
+            $("#ppn").val(convertToRupiah(ppn));
+            $("#total").val(convertToRupiah(totalwithppn));
+            $("#bruto").val(subtotal);
+            $("#subtotal").val(totalwithppn);
         }
+
     });
 
 </script>

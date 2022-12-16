@@ -81,6 +81,7 @@
                 <td rowspan="2" style="background-color:#10a743">Penyesuaian</td>
                 <td colspan="5" style="background-color:#a71048">Potongan</td>
                 <td rowspan="2" style="background-color:#10a743">Potongan Istimewa</td>
+                <td rowspan="2" style="background-color:#327eab">PPN (11%)</td>
                 <td rowspan="2" style="background-color:#10a743">Penjualan Netto</td>
                 <td rowspan="2" style="background-color:#10a743">TUNAI/KREDIT</td>
                 <td rowspan="2" style="background-color:#10a743">Tanggal Input</td>
@@ -116,6 +117,7 @@
             $totalpotsp = 0;
             $totalpotongan = 0;
             $totalpotist = 0;
+            $totalppn = 0;
             $netto = 0;
             $totaldus2 = 0;
             $totalpack2 = 0;
@@ -195,6 +197,7 @@
             $totalpotsp = $totalpotsp + $p->potsp;
             $totalpotongan = $totalpotongan + $p->potongan;
             $totalpotist = $totalpotist + $p->potistimewa;
+            $totalppn = $totalppn + $p->ppn;
             $netto = $netto + $p->totalpiutang;
 
             //Subtotal
@@ -298,6 +301,11 @@
                 <td align="right" rowspan="{{ $jmlbarang }}">
                     @if (!empty($p->potistimewa))
                     {{ rupiah($p->potistimewa) }}
+                    @endif
+                </td>
+                <td align="right" rowspan="{{ $jmlbarang }}">
+                    @if (!empty($p->ppn))
+                    {{ rupiah($p->ppn) }}
                     @endif
                 </td>
                 <td align="right" rowspan="{{ $jmlbarang }}">
@@ -410,6 +418,7 @@
                 <td align="right"><?php echo number_format($totalpotsp, '0', '', '.'); ?></td>
                 <td align="right"><?php echo number_format($totalpotongan, '0', '', '.'); ?></td>
                 <td align="right"><?php echo number_format($totalpotist, '0', '', '.'); ?></td>
+                <td align="right"><?php echo number_format($totalppn, '0', '', '.'); ?></td>
                 <td align="right"><?php echo number_format($netto, '0', '', '.'); ?></td>
                 <td></td>
                 <td></td>

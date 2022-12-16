@@ -228,9 +228,10 @@
             $totalallpenyharga = $potongan->totpenyharga_tunai + $potongan->totpenyharga_kredit;
             $totalallpotongan = $potongan->totpotongan_tunai + $potongan->totpotongan_kredit;
             $totalallpotistimewa = $potongan->totpotistimewa_tunai + $potongan->totpotistimewa_kredit;
+            $totalallppn = $potongan->ppn_tunai + $potongan->ppn_kredit;
 
-            $totalallt = $totalt - $retur->totalretur_tunai - $potongan->totpenyharga_tunai - $potongan->totpotongan_tunai - $potongan->totpotistimewa_tunai;
-            $totalallk = $totalk - $retur->totalretur_kredit - $potongan->totpenyharga_kredit - $potongan->totpotongan_kredit - $potongan->totpotistimewa_kredit;
+            $totalallt = $totalt - $retur->totalretur_tunai - $potongan->totpenyharga_tunai - $potongan->totpotongan_tunai - $potongan->totpotistimewa_tunai + $potongan->ppn_tunai;
+            $totalallk = $totalk - $retur->totalretur_kredit - $potongan->totpenyharga_kredit - $potongan->totpotongan_kredit - $potongan->totpotistimewa_kredit + $potongan->ppn_kredit;
             @endphp
             <tr bgcolor="#06b947" style="color:white; font-size:12;">
                 <td colspan="2">Penjualan Bruto</td>
@@ -278,6 +279,14 @@
                 <td align="right"><?php echo rupiah($potongan->totpotistimewa_kredit); ?></td>
                 <td colspan="3"></td>
                 <td align="right"><?php echo rupiah($totalallpotistimewa); ?></td>
+            </tr>
+            <tr>
+                <td colspan="5">PPN</td>
+                <td align="right"><?php echo rupiah($potongan->ppn_tunai); ?></td>
+                <td colspan="3"></td>
+                <td align="right"><?php echo rupiah($potongan->ppn_kredit); ?></td>
+                <td colspan="3"></td>
+                <td align="right"><?php echo rupiah($totalallppn); ?></td>
             </tr>
             <tr bgcolor="#06b947" style="color:white; font-size:12;">
                 <td colspan="5">Penjualan Netto</td>

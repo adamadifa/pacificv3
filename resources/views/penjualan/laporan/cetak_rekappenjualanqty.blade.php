@@ -135,77 +135,77 @@
                 $no=1; foreach($rekap as $r){
 
 
-                    if(!empty($r->BDG)){
+                    if($r->BDG > 0){
 
                         $bandung 	= $r->JML_BDG/($r->BDG / $r->isipcsdus);
                     }else{
                         $bandung = 0;
                     }
 
-                    if(!empty($r->BGR)){
+                    if($r->BGR > 0){
 
                         $bogor 		= $r->JML_BGR/($r->BGR / $r->isipcsdus);
                     }else{
                         $bogor = 0;
                     }
 
-                    if(!empty($r->SKB)){
+                    if($r->SKB > 0){
 
                         $sukabumi 	= $r->JML_SKB/($r->SKB / $r->isipcsdus);
                     }else{
                         $sukabumi = 0;
                     }
 
-                    if(!empty($r->PWT)){
+                    if($r->PWT > 0){
 
                         $purwokerto = $r->JML_PWT/($r->PWT / $r->isipcsdus);
                     }else{
                         $purwokerto = 0;
                     }
 
-                    if(!empty($r->TGL)){
+                    if($r->TGL > 0){
 
                         $tegal 		= $r->JML_TGL/($r->TGL / $r->isipcsdus);
                     }else{
                         $tegal = 0;
                     }
 
-                    if(!empty($r->TSM)){
+                    if($r->TSM > 0){
 
                         $tasik 		= $r->JML_TSM/($r->TSM / $r->isipcsdus);
                     }else{
                         $tasik 		= 0;
                     }
 
-                    if(!empty($r->SMR)){
+                    if($r->SMR > 0){
 
                         $semarang 		= $r->JML_SMR/($r->SMR / $r->isipcsdus);
                     }else{
                         $semarang 		= 0;
                     }
 
-                    if(!empty($r->SBY)){
+                    if($r->SBY > 0){
 
                         $surabaya 		= $r->JML_SBY/($r->SBY / $r->isipcsdus);
                     }else{
                         $surabaya 		= 0;
                     }
 
-                    if(!empty($r->KLT)){
+                    if($r->KLT > 0){
 
                         $klaten 		= $r->JML_KLT/($r->KLT / $r->isipcsdus);
                     }else{
                         $klaten 		= 0;
                     }
 
-                    if(!empty($r->PST)){
+                    if($r->PST > 0){
 
                         $pusat 		= $r->JML_PST/($r->PST / $r->isipcsdus);
                     }else{
                         $pusat 		= 0;
                     }
 
-                    if(!empty($r->PWK)){
+                    if($r->PWK > 0){
 
                         $purwakarta 		= $r->JML_PWK/($r->PWK / $r->isipcsdus);
                     }else{

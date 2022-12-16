@@ -27,6 +27,7 @@
             <input type="hidden" id="sisapiutang" name="sisapiutang">
             <input type="hidden" id="bruto" name="bruto">
             <input type="hidden" id="subtotal" name="subtotal">
+            <input type="hidden" id="cekpajak" name="cekpajak" value="{{ $pajak }}">
             <div class="row">
                 <div class="col-lg-3 col-sm-12">
                     <div class="row">
@@ -442,6 +443,33 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    @if ($pajak == 1)
+                                                    <div class="form-group" style="margin-bottom: 5px">
+                                                        <div class="position-relative has-icon-left">
+                                                            <input type="text" id="totalnonppn" class="form-control text-right money" style="font-weight: bold" readonly name="totalnonppn" placeholder="Total">
+                                                            <div class="form-control-position" style="top:5px">
+                                                                <i class="feather icon-shopping-cart"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="input-group" style="margin-bottom: 5px">
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text" id="basic-addon2" style="text-align: right">PPN 11%</span>
+                                                        </div>
+                                                        <input type="text" class="form-control text-right" style="font-weight: bold; padding-right:27px" readonly placeholder="PPN 11%" id="ppn" name="ppn">
+                                                    </div>
+                                                    {{-- <div class="form-group" style="margin-bottom: 5px">
+                                                        <div class="position-relative has-icon-left">
+                                                            <input type="text" id="ppn" class="form-control text-right money" style="font-weight: bold" readonly name="ppn" placeholder="PPN (11%)">
+                                                            <div class="form-control-position" style="top:5px">
+                                                                <i class="feather icon-percent"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div> --}}
+                                                    @else
+                                                    <input type="hidden" name="ppn" value="0">
+                                                    <input type="hidden" name="totalnonppn" id="totalnonppn">
+                                                    @endif
 
 
                                                     <div class="form-group" style="margin-bottom: 5px">
@@ -1180,7 +1208,7 @@
 
 
         function loadtotal() {
-            var total = $("#totaltemp").val();
+            var subtotal = $("#totaltemp").val();
             var potswan = $("#potswan").val();
             var potaida = $("#potaida").val();
             var potstick = $("#potstick").val();
@@ -1193,6 +1221,7 @@
             var penyswan = $("#penyswan").val();
             var penystick = $("#penystick").val();
             var voucher = $("#voucher").val();
+            var cekpajak = $("#cekpajak").val();
 
             if (potswan.length === 0) {
                 var potswan = 0;
@@ -1269,12 +1298,21 @@
             var potongan = potswan + potaida + potstick + potsp + potsb;
             var potonganistimewa = potisaida + potisswan + potisstick;
             var penyesuaian = penyaida + penyswan + penystick;
-            var grandtotal = total - potongan - potonganistimewa - penyesuaian - voucher;
+            var total = subtotal - potongan - potonganistimewa - penyesuaian;
+            var grandtotal = total - voucher;
+            if (cekpajak == 1) {
+                var ppn = parseInt(total) * (11 / 100);
+            } else {
+                var ppn = 0;
+            }
+            var totalwithppn = parseInt(grandtotal) + parseInt(ppn);
             var bruto = total;
-            $("#grandtotal").text(convertToRupiah(grandtotal));
-            $("#total").val(convertToRupiah(grandtotal));
-            $("#bruto").val(bruto);
-            $("#subtotal").val(grandtotal);
+            $("#grandtotal").text(convertToRupiah(totalwithppn));
+            $("#totalnonppn").val(convertToRupiah(total));
+            $("#ppn").val(convertToRupiah(ppn));
+            $("#total").val(convertToRupiah(totalwithppn));
+            $("#bruto").val(subtotal);
+            $("#subtotal").val(totalwithppn);
         }
 
         $(".tunai").hide();
