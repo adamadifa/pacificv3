@@ -1285,6 +1285,12 @@ class PenjualanController extends Controller
             $penystick = $penystick;
         }
 
+        $ppn = str_replace(".", "", $request->ppn); //ok
+        if (empty($ppn)) {
+            $ppn = 0;
+        } else {
+            $ppn = $ppn;
+        }
         $potongan = $potaida + $potswan + $potstick + $potsp + $potsambal;
         $potistimewa = $potisaida + $potisswan + $potisstick;
         $penyesuaian = $penyaida + $penyswan + $penystick;
@@ -1380,6 +1386,7 @@ class PenjualanController extends Controller
                 'penyswan' => $penyswan,
                 'penystick' => $penystick,
                 'penyharga' => $penyesuaian,
+                'ppn' => $ppn,
                 'total' => $total,
                 'jenistransaksi' => $jenistransaksi,
                 'jenisbayar' => $jenisbayar,
@@ -1756,6 +1763,7 @@ class PenjualanController extends Controller
         $jatuhtempo = $request->jatuhtempo;
         $bruto = $request->bruto;
         $id_admin = Auth::user()->id;
+        $ppn = str_replace(".", "", $request->ppn);
         $potaida        = str_replace(".", "", $request->potaida);
         if (empty($potaida)) {
             $potaida = 0;
@@ -1927,6 +1935,7 @@ class PenjualanController extends Controller
                     'penyswan' => $penyswan,
                     'penystick' => $penystick,
                     'penyharga' => $penyesuaian,
+                    'ppn' => $ppn,
                     'total' => $total,
                     'jenistransaksi' => $jenistransaksi,
                     'jenisbayar' => $jenisbayar,
@@ -3102,6 +3111,7 @@ class PenjualanController extends Controller
                 penjualan.potsp as potsp,
                 penjualan.potsambal as potsambal,
                 penjualan.potistimewa AS potistimewa,
+                penjualan.ppn AS ppn,
                 penjualan.penyharga AS penyharga,
                 date_created,
                 date_updated,
@@ -3182,6 +3192,7 @@ class PenjualanController extends Controller
                 penjualan.potsp,
                 penjualan.potsambal,
                 penjualan.potistimewa,
+                penjualan.ppn,
                 penjualan.penyharga,
                 penjualan.jenistransaksi,
                 penjualan.jenisbayar,
@@ -3207,7 +3218,7 @@ class PenjualanController extends Controller
             } else if ($jenislaporan == "rekapperpelanggan") {
                 $query = Penjualan::query();
                 $query->selectRaw('penjualan.kode_pelanggan,nama_pelanggan,pasar,hari,penjualan.id_karyawan,nama_karyawan,SUM(subtotal) as totalpenjualan,
-                sum(potongan) as totalpotongan,sum(potistimewa) as totalpotonganistimewa,sum(penyharga) as totalpenyharga, sum(total) as totalpenjualannetto,
+                sum(potongan) as totalpotongan,sum(potistimewa) as totalpotonganistimewa,sum(penyharga) as totalpenyharga, SUM(ppn) as ppn, sum(total) as totalpenjualannetto,
                 SUM(totretur) as totalretur');
                 $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
                 $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
@@ -3280,7 +3291,8 @@ class PenjualanController extends Controller
                 penjualan.potongan as potongan,
                 penjualan.potistimewa,
                 penjualan.subtotal,
-                (ifnull( penjualan.total, 0 ) - ( ifnull( r.totalpf, 0 ) - ifnull( r.totalgb, 0))) as totalnetto,
+                (ifnull( penjualan.total, 0 ) - ( ifnull( r.totalpf, 0 ) - ifnull( r.totalgb, 0))) as
+                totalnetto, ppn,
                 totalbayar,
                 penjualan.jenistransaksi,
                 penjualan.status_lunas,
@@ -3402,6 +3414,7 @@ class PenjualanController extends Controller
                 penjualan.potongan as potongan,
                 penjualan.potistimewa,
                 penjualan.subtotal,
+                penjualan.ppn,
                 (ifnull( penjualan.total, 0 ) - ( ifnull( r.totalpf, 0 ) - ifnull( r.totalgb, 0))) as totalnetto,
                 totalbayar,
                 penjualan.jenistransaksi,
@@ -3674,7 +3687,9 @@ class PenjualanController extends Controller
         SUM( IF ( jenistransaksi ='tunai', potongan, 0 ) ) AS totpotongan_tunai,
         SUM( IF ( jenistransaksi ='kredit', potongan, 0 ) ) AS totpotongan_kredit,
         SUM( IF ( jenistransaksi ='tunai', potistimewa, 0 ) ) AS totpotistimewa_tunai,
-        SUM( IF ( jenistransaksi ='kredit', potistimewa, 0 ) ) AS totpotistimewa_kredit");
+        SUM( IF ( jenistransaksi ='kredit', potistimewa, 0 ) ) AS totpotistimewa_kredit,
+        SUM( IF ( jenistransaksi ='tunai', ppn, 0 ) ) AS ppn_tunai,
+        SUM( IF ( jenistransaksi ='kredit', ppn, 0 ) ) AS ppn_kredit");
         $querypotongan->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
         if (!empty($request->kode_cabang)) {
             $querypotongan->where('karyawan.kode_cabang', $request->kode_cabang);
@@ -3742,6 +3757,7 @@ class PenjualanController extends Controller
         IFNULL(penjbulanini.penyharga,0) AS penyharga,
         IFNULL(penjbulanini.potongan,0) AS potongan,
         IFNULL(penjbulanini.potistimewa,0) AS potistimewa,
+        IFNULL(penjbulanini.ppn,0) AS ppn,
         (IFNULL(totalpf,0)-IFNULL(totalgb,0)) AS totalretur,
         IFNULL(penjbulanini.total,0) -(IFNULL(totalpf,0)-IFNULL(totalgb,0))  AS piutangbulanini,
         (ifnull(penjualan.total,0) - (ifnull(totalpf_last,0)-ifnull(totalgb_last,0))) AS totalpiutang,
@@ -3752,7 +3768,7 @@ class PenjualanController extends Controller
 
         $query->leftJoin(
             DB::raw("(
-            SELECT no_fak_penj,subtotal,penyharga,potongan,potistimewa,total
+            SELECT no_fak_penj,subtotal,penyharga,potongan,potistimewa,ppn,total
             FROM penjualan
             WHERE tgltransaksi BETWEEN '$dari' AND '$sampai'
             ) penjbulanini"),
@@ -5461,7 +5477,7 @@ class PenjualanController extends Controller
             $rekap = $query->get();
 
             $querypenjualan = Penjualan::query();
-            $querypenjualan->selectRaw("SUM(potongan) as potongan,SUM(potistimewa) as potistimewa, SUM(penyharga) as penyharga");
+            $querypenjualan->selectRaw("SUM(potongan) as potongan,SUM(potistimewa) as potistimewa, SUM(penyharga) as penyharga, SUM(ppn) as ppn");
             $querypenjualan->whereBetween('tgltransaksi', [$dari, $sampai]);
             $querypenjualan->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
             if ($request->kode_cabang != "") {
@@ -5543,6 +5559,7 @@ class PenjualanController extends Controller
             }
             $query->groupByRaw("kode_produk,nama_barang,isipcsdus");
             $rekap = $query->get();
+            //dd($rekap);
             if (isset($_POST['export'])) {
                 $time = date("H:i:s");
                 // Fungsi header dengan mengirimkan raw data excel
@@ -5579,6 +5596,7 @@ class PenjualanController extends Controller
             totalretur,
             totalpotongan, totalpotistimewa,
             totalpenyharga,
+            totalppn,
             totalbayar,
             penghapusanpiutang,
             diskonprogram,
@@ -5590,7 +5608,7 @@ class PenjualanController extends Controller
             pph22,
             lainnya,
             IFNULL(saldoawalpiutang,0) - IFNULL(piutanglama,0) + IFNULL(piutangpindahanbulanlalu,0) as saldoawalpiutang,
-            IFNULL(saldoawalpiutang,0) -  IFNULL(piutanglamanow,0) -  IFNULL(piutanglamaberjalan,0) + IFNULL(piutangpindahan,0) + IFNULL(piutangberjalan,0) + (IFNULL(totalbruto,0) - IFNULL(totalpotongan,0)-IFNULL(totalretur,0) - IFNULL(totalpotistimewa,0) - IFNULL(totalpenyharga,0)) - IFNULL(totalbayarpiutang,0)  as saldoakhirpiutang");
+            IFNULL(saldoawalpiutang,0) -  IFNULL(piutanglamanow,0) -  IFNULL(piutanglamaberjalan,0) + IFNULL(piutangpindahan,0) + IFNULL(piutangberjalan,0) + (IFNULL(totalbruto,0) - IFNULL(totalpotongan,0)-IFNULL(totalretur,0) - IFNULL(totalpotistimewa,0) - IFNULL(totalpenyharga,0) + IFNULL(totalppn,0)) - IFNULL(totalbayarpiutang,0)  as saldoakhirpiutang");
             $query->leftJoin(
                 DB::raw("(
                     SELECT
@@ -5664,6 +5682,7 @@ class PenjualanController extends Controller
                     SUM(potongan) AS totalpotongan,
                     SUM(potistimewa) AS totalpotistimewa,
                     SUM(penyharga) AS totalpenyharga,
+                    SUM(ppn) AS totalppn,
                     SUM(subtotal) AS totalbruto
                     FROM
                         penjualan
@@ -6500,6 +6519,14 @@ class PenjualanController extends Controller
             $penystick = $penystick;
         }
 
+        $ppn = str_replace(".", "", $request->ppn);
+        if (empty($ppn)) {
+            $ppn = 0;
+        } else {
+            $ppn = $ppn;
+        }
+
+        $totalnonppn = str_replace(".", "", $request->totalnonppn);
         $potongan = $potaida + $potswan + $potstick + $potsp + $potsambal;
         $potistimewa = $potisaida + $potisswan + $potisstick;
         $penyesuaian = $penyaida + $penyswan + $penystick;
@@ -6538,6 +6565,8 @@ class PenjualanController extends Controller
             'totalpeny' => $penyswan + $penystick + $penyaida,
             'jatuhtempo' => $jatuhtempo,
             'bruto' => $bruto,
+            'ppn' => $ppn,
+            'totalnonppn' => $totalnonppn,
             'kode_cabang' => $kode_cabang
         ];
 

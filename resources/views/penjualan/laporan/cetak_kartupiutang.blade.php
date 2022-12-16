@@ -85,6 +85,7 @@
                 <th>Penyesuaian Harga</th>
                 <th>Potongan Harga</th>
                 <th>Potongan Istimewa</th>
+                <th>PPN 11%</th>
                 <th>Retur Penjualan</th>
                 <th>Penjualan Netto</th>
                 <th>Pembayaran</th>
@@ -99,6 +100,7 @@
             $totalpeny 				= 0;
             $totalpot 				= 0;
             $totalpotis 			= 0;
+            $totalppn 			= 0;
             $totalretur 			= 0;
             $netto 						= 0;
             $totalpmb 				= 0;
@@ -169,6 +171,7 @@
                     $totalpeny  = $totalpeny + $k->penyharga;
                     $totalpot = $totalpot + $k->potongan;
                     $totalpotis				= $totalpotis + $k->potistimewa;
+                    $totalppn				= $totalppn + $k->ppn;
                     $totalretur 			= $totalretur + $k->totalretur;
                     $netto 						= $netto + $piutangbulanini;
                     $totalpmb 				= $totalpmb + $k->bayarbulanini;
@@ -205,6 +208,7 @@
                 <td style="text-align:right"><?php echo number_format($k->penyharga, '0', '', '.'); ?></td>
                 <td style="text-align:right"><?php echo number_format($k->potongan, '0', '', '.'); ?></td>
                 <td style="text-align:right"><?php echo number_format($k->potistimewa, '0', '', '.'); ?></td>
+                <td style="text-align:right"><?php echo number_format($k->ppn, '0', '', '.'); ?></td>
                 <td style="text-align:right"><?php echo number_format($k->totalretur, '0', '', '.'); ?></td>
                 <td style="text-align:right"><?php echo number_format($piutangbulanini, '0', '', '.'); ?></td>
                 <td style="text-align:right"><?php echo number_format($k->bayarbulanini, '0', '', '.'); ?></td>
@@ -227,6 +231,7 @@
             <td style="text-align:right"><?php echo number_format($totalpeny, '0', '', '.'); ?></td>
             <td style="text-align:right"><?php echo number_format($totalpot, '0', '', '.'); ?></td>
             <td style="text-align:right"><?php echo number_format($totalpotis, '0', '', '.'); ?></td>
+            <td style="text-align:right"><?php echo number_format($totalppn, '0', '', '.'); ?></td>
             <td style="text-align:right"><?php echo number_format($totalretur, '0', '', '.'); ?></td>
             <td style="text-align:right"><?php echo number_format($netto, '0', '', '.'); ?></td>
             <td style="text-align:right"><?php echo number_format($totalpmb, '0', '', '.'); ?></td>

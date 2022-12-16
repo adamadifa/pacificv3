@@ -141,6 +141,7 @@ class GlobalProvider extends ServiceProvider
             }
 
 
+            $pajak = "0";
 
             //Aproval
             $operator_pusat = ['manager', 'gm', 'manager hrd', 'direktur'];
@@ -1198,7 +1199,8 @@ class GlobalProvider extends ServiceProvider
 
                 'users' => $users,
                 'tracking_salesman' => $tracking_salesman,
-                'scan' => $scan
+                'scan' => $scan,
+                'pajak' => $pajak
 
             ];
             View::share($shareddata);

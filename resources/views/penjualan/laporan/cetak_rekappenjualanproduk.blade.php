@@ -114,6 +114,10 @@
                 <td align="right"><b><i><?php echo rupiah($penjualan->penyharga); ?></i></b></td>
             </tr>
             <tr>
+                <td>PPN</td>
+                <td align="right"><b><i><?php echo rupiah($penjualan->ppn); ?></i></b></td>
+            </tr>
+            <tr>
                 <td>RETUR</td>
                 <td align="right"><b><i><?php echo rupiah($retur->totalretur); ?></i></b></td>
             </tr>
@@ -124,7 +128,7 @@
             <tr>
                 <td><b>PENJUALAN BERSIH</b></td>
                 <?php
-                    $totalnetto = $jumlahall - $penjualan->potongan - $penjualan->potistimewa - $penjualan->penyharga - $retur->totalretur;
+                    $totalnetto = $jumlahall - $penjualan->potongan - $penjualan->potistimewa - $penjualan->penyharga + $penjualan->ppn - $retur->totalretur;
                 ?>
                 <td align="right"><b><i><?php echo rupiah($totalnetto); ?></i></b></td>
             </tr>
