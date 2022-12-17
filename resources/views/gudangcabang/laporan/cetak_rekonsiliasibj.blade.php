@@ -123,7 +123,7 @@
                 }
                 $selisih = $t->selisih < 0 ? $t->selisih * -1 : $t->selisih;
                 if ($selisih != 0) {
-                    $cekdus = $tselisih / $t->isipcsdus;
+                    $cekdus = $selisih / $t->isipcsdus;
                     if ($cekdus < 0) {
                         $jmldusall = ceil($selisih / $t->isipcsdus);
                     } else {
