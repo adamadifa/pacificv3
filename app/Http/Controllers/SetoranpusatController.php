@@ -288,6 +288,8 @@ class SetoranpusatController extends Controller
             $akun = "1-1490";
         } else if ($cabang == "PWK") {
             $akun = "1-1492";
+        } else if ($cabang == "BTN") {
+            $akun = "1-1493";
         }
 
         $dataledger = array(
