@@ -121,15 +121,15 @@
                     $jmlpcsk 	= 0;
                     $subtotalk  = 0;
                 }
-
-                if ($t->selisih != 0) {
-                    $cekdus = $t->selisih / $t->isipcsdus;
+                $selisih = $t->selisih < 0 ? $t->selisih * -1 : $t->selisih;
+                if ($selisih != 0) {
+                    $cekdus = $tselisih / $t->isipcsdus;
                     if ($cekdus < 0) {
-                        $jmldusall = ceil($t->selisih / $t->isipcsdus);
+                        $jmldusall = ceil($selisih / $t->isipcsdus);
                     } else {
-                        $jmldusall    = floor($t->selisih / $t->isipcsdus);
+                        $jmldusall    = floor($selisih / $t->isipcsdus);
                     }
-                    $sisadus   	  = $t->selisih % $t->isipcsdus;
+                    $sisadus   	  = $selisih % $t->isipcsdus;
                     if ($t->isipack == 0) {
                         $jmlpackall    = 0;
                         $sisapack      = $sisadus;
@@ -144,7 +144,7 @@
                     if ($t->satuan == 'PCS') {
                         $jmldusall = 0;
                         $jmlpackall = 0;
-                        $jmlpcsall = $t->selisih;
+                        $jmlpcsall = $selisih;
                     }
                 } else {
 
@@ -153,6 +153,8 @@
                     $jmlpcsall 	= 0;
                     $subtotalall  = 0;
                 }
+
+
             ?>
             <tr>
                 <td><?php echo $no; ?></td>
