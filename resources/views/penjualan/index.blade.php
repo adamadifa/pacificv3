@@ -79,7 +79,7 @@
 
                 <table class="table" @if ($level=="salesman" ) style="font-size:10px !important" @endif>
                     <thead class="thead-dark">
-                        <tr>
+                        <tr @if ($level=="salesman" ) style="font-size:10px !important" @endif>
                             <th>No Faktur</th>
                             <th>Tanggal</th>
                             <th>Pelanggan</th>
@@ -106,7 +106,11 @@
                         @endif
                         <tr style="background-color:{{ $color }}">
                             <td>{{$d->no_fak_penj}}</td>
+                            @if ($level != "salesman")
                             <td>{{date("d-m-Y",strtotime($d->tgltransaksi))}}</td>
+                            @else
+                            <td>{{date("d-m-y",strtotime($d->tgltransaksi))}}</td>
+                            @endif
                             <td>{{$d->nama_pelanggan}}</td>
                             @if (Auth::user()->level != "salesman")
                             <td>{{$d->nama_karyawan}}</td>
