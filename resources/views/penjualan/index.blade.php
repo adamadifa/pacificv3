@@ -94,7 +94,6 @@
                             @else
                             <th>Ket</th>
                             @endif
-                            @endif
                             <th>Aksi</th>
                         </tr>
                     </thead>
