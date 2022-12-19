@@ -1389,4 +1389,5 @@ Route::middleware(['auth'])->group(function () {
 
     //Route::get('/cetakstruk', [PenjualanController::class, 'cetakstruk']);
     Route::post('/cetakstruk', [PenjualanController::class, 'cetakstruk']);
+    Route::get('/cetaknota', [PenjualanController::class, 'cetakstruk']);
 });

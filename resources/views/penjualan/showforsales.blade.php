@@ -953,7 +953,7 @@
             </div>
             <div class="modal-body">
 
-                <div id="loadcetak" style="height: 600px"></div>
+                <div id="loadcetak" style="height: 800px"></div>
 
             </div>
         </div>
