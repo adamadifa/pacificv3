@@ -19,97 +19,110 @@
     </div>
     <div class="content-body">
         <input type="hidden" id="cektutuplaporan">
-        <div class="col-md-12 col-sm-12">
-            <div class="card">
-                <div class="card-header">
-                    <a href="/retur/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
-                </div>
-                <div class="card-body">
-                    <form action="/retur">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker value="{{ Request('dari') }}" />
-                            </div>
-                            <div class="col-lg-6">
-                                <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker value="{{ Request('sampai') }}" />
+        <div class="card">
+            <div class="card-header">
+                <a href="/retur/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
+            </div>
+            <div class="card-body">
+                <form action="/retur">
+                    <div class="row">
+                        <div class="col-lg-6 col-sm-6">
+                            <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker value="{{ Request('dari') }}" />
+                        </div>
+                        <div class="col-lg-6 col-sm-6">
+                            <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker value="{{ Request('sampai') }}" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 col-sm-12">
+                            <x-inputtext label="No Faktur" field="no_fak_penj" icon="feather icon-credit-card" value="{{ Request('no_fak_penj') }}" />
+                        </div>
+                        <div class="col-lg-3 col-sm-12">
+                            <x-inputtext label="Nama Pelanggan" field="nama_pelanggan" icon="feather icon-user" value="{{ Request('nama_pelanggan') }}" />
+                        </div>
+                        <div class="col-lg-3 col-sm-9">
+                            <div class="form-group">
+                                <select name="jenis_retur" id="status" class="form-control">
+                                    <option value="">Jenis Retur</option>
+                                    <option {{ (Request('jenis_retur')=='BG' ? 'selected':'')}} value="GB">Ganti Barang</option>
+                                    <option {{ (Request('jenis_retur')=='PF' ? 'selected':'')}} value="PF">Potong Faktur</option>
+                                </select>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-lg-3 col-sm-12">
-                                <x-inputtext label="No Faktur" field="no_fak_penj" icon="feather icon-credit-card" value="{{ Request('no_fak_penj') }}" />
-                            </div>
-                            <div class="col-lg-3 col-sm-12">
-                                <x-inputtext label="Nama Pelanggan" field="nama_pelanggan" icon="feather icon-user" value="{{ Request('nama_pelanggan') }}" />
-                            </div>
-                            <div class="col-lg-3 col-sm-12">
-                                <div class="form-group">
-                                    <select name="jenis_retur" id="status" class="form-control">
-                                        <option value="">Jenis Retur</option>
-                                        <option {{ (Request('jenis_retur')=='BG' ? 'selected':'')}} value="GB">Ganti Barang</option>
-                                        <option {{ (Request('jenis_retur')=='PF' ? 'selected':'')}} value="PF">Potong Faktur</option>
-                                    </select>
-                                </div>
-                            </div>
 
-                            <div class="col-lg-2 col-sm-12">
+                        <div class="col-lg-2 col-sm-3">
+                            <div class="form-group">
                                 <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search"></i> Cari Data </button>
                             </div>
                         </div>
-                    </form>
-                    @include('layouts.notification')
-                    <table class="table table-hover-animation">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>No Retur</th>
-                                <th>No Faktur</th>
-                                <th>Tanggal</th>
-                                <th>Pelanggan</th>
-                                <th>Salesman</th>
-                                <th>Cabang</th>
-                                <th>Jenis Retur</th>
-                                <th>Total</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($retur as $d)
-                            <tr>
-                                <td>{{ $d->no_retur_penj }}</td>
-                                <td>{{ $d->no_fak_penj }}</td>
-                                <td>{{ date("d-m-Y",strtotime($d->tglretur)) }}</td>
-                                <td>{{ $d->nama_pelanggan }}</td>
-                                <td>{{ $d->nama_karyawan }}</td>
-                                <td>{{ $d->kode_cabang }}</td>
-                                <td>
-                                    @if ($d->jenis_retur=="pf")
-                                    <span class="badge bg-danger">PF</span>
-                                    @else
-                                    <span class="badge bg-success">GB</span>
-                                    @endif
-                                </td>
-                                <td class="text-right">{{ rupiah($d->subtotal_pf) }}</td>
-                                <td>
-                                    <div class="btn-group" role="group" aria-label="Basic example">
-                                        <a class="ml-1 detailretur" href="#" no_retur_penj="{{ $d->no_retur_penj }}"><i class=" feather icon-file-text info"></i></a>
-                                        <form method="POST" name="deleteform" class="deleteform" action="/retur/{{ Crypt::encrypt($d->no_retur_penj) }}/delete">
-                                            @csrf
-                                            @method('DELETE')
-                                            <a href="#" tanggal="{{ $d->tglretur }}" class="delete-confirm ml-1">
-                                                <i class="feather icon-trash danger"></i>
-                                            </a>
-                                        </form>
-                                    </div>
+                    </div>
+                </form>
+                @include('layouts.notification')
+                <table class="table table-hover-animation" @if ($level=="salesman" ) style="font-size:10px !important" @endif>
+                    <thead class="thead-dark">
+                        <tr>
+                            @if ($level != "salesman")
+                            <th>No Retur</th>
+                            @endif
+                            <th>No Faktur</th>
+                            <th>Tanggal</th>
+                            <th>Pelanggan</th>
+                            @if ($level != "salesman")
+                            <th>Salesman</th>
+                            <th>Cabang</th>
+                            @endif
+                            <th>Jenis</th>
+                            <th>Total</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($retur as $d)
+                        <tr>
+                            @if ($level != "salesman")
+                            <td>{{ $d->no_retur_penj }}</td>
+                            @endif
+                            <td>{{ $d->no_fak_penj }}</td>
+                            @if ($level != "salesman")
+                            <td>{{ date("d-m-Y",strtotime($d->tglretur)) }}</td>
+                            @else
+                            <td>{{ date("d-m-y",strtotime($d->tglretur)) }}</td>
+                            @endif
+                            <td>{{ $d->nama_pelanggan }}</td>
+                            @if ($level != "salesman")
+                            <td>{{ $d->nama_karyawan }}</td>
+                            <td>{{ $d->kode_cabang }}</td>
+                            @endif
+                            <td>
+                                @if ($d->jenis_retur=="pf")
+                                <span class="badge bg-danger">PF</span>
+                                @else
+                                <span class="badge bg-success">GB</span>
+                                @endif
+                            </td>
+                            <td class="text-right">{{ rupiah($d->subtotal_pf) }}</td>
+                            <td>
+                                <div class="btn-group" role="group" aria-label="Basic example">
+                                    <a class="ml-1 detailretur" href="#" no_retur_penj="{{ $d->no_retur_penj }}"><i class=" feather icon-file-text info"></i></a>
+                                    <form method="POST" name="deleteform" class="deleteform" action="/retur/{{ Crypt::encrypt($d->no_retur_penj) }}/delete">
+                                        @csrf
+                                        @method('DELETE')
+                                        <a href="#" tanggal="{{ $d->tglretur }}" class="delete-confirm ml-1">
+                                            <i class="feather icon-trash danger"></i>
+                                        </a>
+                                    </form>
+                                </div>
 
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    {{ $retur->links('vendor.pagination.vuexy') }}
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                {{ $retur->links('vendor.pagination.vuexy') }}
 
-                </div>
             </div>
         </div>
+
     </div>
 </div>
 <!-- Detail Retur -->
