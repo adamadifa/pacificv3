@@ -6931,8 +6931,7 @@ class PenjualanController extends Controller
         // echo $kode_pelanggan;
         // die;
         //$no_fak_penj = "BGRA017956";
-        //$no_fak_penj = $request->no_fak_penj;
-        $no_fak_penj = 'TESTFAKT';
+        $no_fak_penj = $request->no_fak_penj;
         $pelangganmp = [
             'TSM-00548',
             'TSM-00493',
