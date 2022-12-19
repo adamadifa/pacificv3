@@ -24,10 +24,10 @@
                 <div class="card-body">
                     <form action="/penjualan" id="frmPenjualan">
                         <div class="row">
-                            <div class="col-lg-6">
+                            <div class="col-lg-6 col-sm-6">
                                 <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker value="{{ Request('dari') }}" />
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-6 col-sm-6">
                                 <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker value="{{ Request('sampai') }}" />
                             </div>
                         </div>
@@ -54,7 +54,7 @@
                             <div class="col-lg-3 col-sm-12">
                                 <x-inputtext label="Nama Pelanggan" field="nama_pelanggan" icon="feather icon-user" value="{{ Request('nama_pelanggan') }}" />
                             </div>
-                            <div class="col-lg-2 col-sm-12">
+                            <div class="col-lg-2 col-sm-10">
                                 <div class="form-group">
                                     <select name="status" id="status" class="form-control">
                                         <option value="">Status</option>
@@ -63,15 +63,18 @@
                                 </div>
                             </div>
 
-                            <div class="col-lg-1 col-sm-12">
+                            <div class="col-lg-1 col-sm-2">
                                 <button type="submit" name="submit" value="1" class="btn btn-primary search"><i class="fa fa-search"></i> </button>
                             </div>
                         </div>
+                        @if (Auth::user()->level!="salesman")
                         <div class="row mb-1">
                             <div class="col-12">
                                 <button class="btn btn-info" type="submit" name="print" id="cetaksuratjalan" value="submit"><i class="feather icon-printer mr-1"></i> Cetak Surat Jalan</button>
                             </div>
                         </div>
+                        @endif
+
                     </form>
                     @include('layouts.notification')
 
@@ -81,8 +84,10 @@
                                 <th>No Faktur</th>
                                 <th>Tanggal</th>
                                 <th>Pelanggan</th>
+                                @if (Auth::user()->level != "salesman")
                                 <th>Salesman</th>
                                 <th>Cabang</th>
+                                @endif
                                 <th>T/K</th>
                                 <th>Total</th>
                                 <th>Status</th>
@@ -104,6 +109,7 @@
                                 <td>{{$d->no_fak_penj}}</td>
                                 <td>{{date("d-m-Y",strtotime($d->tgltransaksi))}}</td>
                                 <td>{{$d->nama_pelanggan}}</td>
+                                @if (Auth::user()->level != "salesman")
                                 <td>{{$d->nama_karyawan}}</td>
                                 <td>{{$d->kode_cabang}}</td>
                                 <td>
@@ -113,7 +119,19 @@
                                     <span class="badge bg-warning">Kredit</span>
                                     @endif
                                 </td>
+                                @else
+                                <td>
+                                    @if ($d->jenistransaksi=="tunai")
+                                    <span class="badge bg-success">T</span>
+                                    @else
+                                    <span class="badge bg-warning">K</span>
+                                    @endif
+                                </td>
+                                @endif
+
+
                                 <td class="text-right">{{rupiah($d->total)}}</td>
+                                @if (Auth::user()->level != "salesman")
                                 <td>
                                     @if ($d->status_lunas=="1")
                                     <span class="badge bg-success">Lunas</span>
@@ -121,11 +139,24 @@
                                     <span class="badge bg-danger">Belum Lunas</span>
                                     @endif
                                 </td>
+                                @else
+                                <td>
+                                    @if ($d->status_lunas=="1")
+                                    <span class="badge bg-success">L</span>
+                                    @else
+                                    <span class="badge bg-danger">BL</span>
+                                    @endif
+                                </td>
+                                @endif
                                 <td>
                                     <div class="btn-group" role="group" aria-label="Basic example">
                                         @if (in_array($level,$penjualan_edit))
                                         <a class="ml-1" href="/penjualan/{{\Crypt::encrypt($d->no_fak_penj)}}/editv2"><i class="feather icon-edit success"></i></a>
+                                        @if (Auth::user()->level != "salesman")
                                         <a class="ml-1 detailpenjualan" href="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/show"><i class=" feather icon-file-text info"></i></a>
+                                        @else
+                                        <a class="ml-1 detailpenjualan" href="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/showforsales"><i class=" feather icon-file-text info"></i></a>
+                                        @endif
                                         @endif
                                         @if (in_array($level,$penjualan_hapus))
                                         <form method="POST" name="deleteform" class="deleteform" action="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/delete">
@@ -136,6 +167,7 @@
                                             </a>
                                         </form>
                                         @endif
+                                        @if (Auth::user()->level != "salesman")
                                         @if ($d->status==1)
                                         <a href="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/updatepending" class="ml-1"><i class="fa fa-refresh accent-1"></i></a>
                                         @endif
@@ -149,6 +181,7 @@
                                                 <a class="dropdown-item" target="_blank" href="/penjualan/cetaksuratjalan/{{ Crypt::encrypt($d->no_fak_penj) }}/2"><i class="feather icon-printer mr-1"></i>Cetak Surat Jalan 2</a>
                                             </div>
                                         </div>
+                                        @endif
                                     </div>
 
                                 </td>

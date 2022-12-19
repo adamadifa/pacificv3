@@ -294,8 +294,22 @@
                                                 <td colspan="7">Penyesuaian</td>
                                                 <td class="text-right">{{ rupiah($data->penyharga) }}</td>
                                             </tr>
+
                                             <tr style="font-weight: bold">
                                                 <td colspan="7">Total</td>
+                                                <td class="text-right">
+                                                    @php
+                                                    $totalnonppn = $data->subtotal - $data->potongan - $data->potistimewa - $data->penyharga;
+                                                    @endphp
+                                                    {{ rupiah($totalnonppn)  }}
+                                                </td>
+                                            </tr>
+                                            <tr style="font-weight: bold">
+                                                <td colspan="7">PPN</td>
+                                                <td class="text-right">{{ rupiah($data->ppn) }}</td>
+                                            </tr>
+                                            <tr style="font-weight: bold">
+                                                <td colspan="7">Grand Total</td>
                                                 <td class="text-right">{{ rupiah($data->total) }}</td>
                                             </tr>
                                             <tr style="font-weight: bold">

@@ -676,4 +676,61 @@ class PelangganController extends Controller
             echo $e;
         }
     }
+
+
+    public function showpelanggan(Request $request)
+    {
+        $kode_pelanggan = Crypt::decrypt($request->kode_pelanggan);
+        $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)->first();
+        $query = Penjualan::query();
+        $query->select('penjualan.*', 'nama_pelanggan', 'nama_karyawan', 'karyawan.kode_cabang');
+        $query->orderBy('tgltransaksi', 'desc');
+        $query->orderBy('no_fak_penj', 'asc');
+        $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $query->where('penjualan.kode_pelanggan', $kode_pelanggan);
+
+        if (!empty($request->no_fak_penj)) {
+            $query->where('no_fak_penj', $request->no_fak_penj);
+        }
+        if (!empty($request->dari) && !empty($request->sampai)) {
+            $query->whereBetween('tgltransaksi', [$request->dari, $request->sampai]);
+        }
+        $penjualan = $query->paginate(10);
+        $penjualan->appends($request->all());
+
+
+        $limitkredit = DB::table('pengajuan_limitkredit_v3')
+            ->select('no_pengajuan', 'tgl_pengajuan', 'jumlah', 'jumlah_rekomendasi', 'jatuhtempo', 'jatuhtempo_rekomendasi', 'skor', 'status', 'kacab', 'mm', 'gm', 'dirut')
+            ->where('kode_pelanggan', $kode_pelanggan)
+            ->orderBy('tgl_pengajuan', 'asc')
+            ->get();
+
+        $piutang = DB::table('penjualan')
+            ->select('penjualan.kode_pelanggan', DB::raw('SUM(IFNULL( retur.total, 0 )) AS totalretur,
+                        SUM(IFNULL(penjualan.total,0) - IFNULL(retur.total,0) - IFNULL(jmlbayar,0)) AS sisapiutang'))
+            ->leftJoin(
+                DB::raw("(
+                        SELECT retur.no_fak_penj AS no_fak_penj, SUM( total ) AS total FROM retur GROUP BY retur.no_fak_penj
+                    ) retur"),
+                function ($join) {
+                    $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
+                }
+            )
+            ->leftJoin(
+                DB::raw("(
+                        SELECT no_fak_penj, IFNULL(SUM(bayar),0) as jmlbayar
+                        FROM historibayar
+                        GROUP BY no_fak_penj
+                    ) historibayar"),
+                function ($join) {
+                    $join->on('penjualan.no_fak_penj', '=', 'historibayar.no_fak_penj');
+                }
+            )
+            ->where('penjualan.kode_pelanggan', $kode_pelanggan)
+            ->groupBy('penjualan.kode_pelanggan')
+            ->first();
+
+        return view('pelanggan.getpelanggan', compact('pelanggan', 'penjualan', 'limitkredit', 'piutang'));
+    }
 }

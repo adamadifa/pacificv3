@@ -210,7 +210,7 @@
                                                 @if (Auth::user()->level != "salesman")
                                                 <a class="ml-1 detailpelanggan" href="pelanggan/{{ Crypt::encrypt($d->kode_pelanggan) }}/show"><i class=" feather icon-file-text info"></i></a>
                                                 @else
-                                                <a class="ml-1 detailpelanggan" href="pelanggan/getpelanggan?kode_pelanggan={{ Crypt::encrypt($d->kode_pelanggan) }}"><i class=" feather icon-file-text info"></i></a>
+                                                <a class="ml-1 detailpelanggan" href="pelanggan/showpelanggan?kode_pelanggan={{ Crypt::encrypt($d->kode_pelanggan) }}"><i class=" feather icon-file-text info"></i></a>
                                                 @endif
 
                                                 @if (in_array($level,$pelanggan_hapus))

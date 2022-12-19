@@ -1092,6 +1092,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pelanggan/{kode_pelanggan}/show', [PelangganController::class, 'show']);
     Route::get('/pelanggan/json', [PelangganController::class, 'json'])->name('pelanggan.json');
     Route::get('/pelanggan/getpelanggan', [PelangganController::class, 'getpelanggan']);
+    Route::get('/pelanggan/showpelanggan', [PelangganController::class, 'showpelanggan']);
     //Kendaraan
     Route::get('/kendaraan', [KendaraanController::class, 'index']);
     Route::get('/kendaraan/create', [KendaraanController::class, 'create']);
