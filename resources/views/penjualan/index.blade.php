@@ -89,7 +89,12 @@
                             @endif
                             <th>T/K</th>
                             <th>Total</th>
+                            @if ($level != "salesman")
                             <th>Status</th>
+                            @else
+                            <th>Ket</th>
+                            @endif
+                            @endif
                             <th>Aksi</th>
                         </tr>
                     </thead>
