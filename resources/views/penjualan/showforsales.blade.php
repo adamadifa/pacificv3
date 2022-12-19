@@ -1,6 +1,7 @@
 @extends('layouts.midone')
 @section('titlepage', 'Detail Faktur')
 @section('content')
+<link rel="stylesheet" href="{{ asset('app-assets/signature/signature.css') }}">
 <style>
     @media only screen and (max-width: 800px) {
         table {
@@ -8,7 +9,18 @@
         }
     }
 
+    .kbw-signature {
+        width: 100%;
+        height: 200px;
+    }
+
+    #sign canvas {
+        width: 100% !important;
+        height: auto;
+    }
+
 </style>
+
 <div class="content-wrapper">
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
@@ -54,20 +66,49 @@
                         </div>
                     </div>
                 </div>
-                <div class="row mb-2">
-                    <div class="col-2">
-                        <a href="/penjualan/{{ Crypt::encrypt($data->no_fak_penj) }}/editv2" class="btn btn-success "><i class="feather icon-edit"></i></a>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="card" style="background-color: rgba(255, 0, 0, 0)">
+                            <div class="btn-group">
+                                <a href="/penjualan/{{ Crypt::encrypt($data->no_fak_penj) }}/editv2" class="btn btn-success mr-2"><i class="feather icon-edit"></i></a>
+                                <a href="#" class="btn btn-info btn-block" id="cetakfaktur"><i class="feather icon-printer mr-1"></i>Cetak Faktur</a>
+                                <form method="POST" class="deleteform" action="/penjualan/{{ Crypt::encrypt($data->no_fak_penj) }}/delete">
+                                    @csrf
+                                    @method('DELETE')
+                                    <a href=" #" tanggal="{{ $data->tgltransaksi }}" class="btn btn-danger  delete-confirm ml-1">
+                                        <i class="feather icon-trash"></i>
+                                    </a>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-8">
-                        <a href="#" class="btn btn-info btn-block" id="cetakfaktur"><i class="feather icon-printer mr-1"></i>Cetak Faktur</a>
-                    </div>
-                    <div class="col-2">
-                        <form method="POST" class="deleteform" action="/penjualan/{{ Crypt::encrypt($data->no_fak_penj) }}/delete">
-                            @csrf
-                            @method('DELETE')
-                            <a href=" #" tanggal="{{ $data->tgltransaksi }}" class="btn btn-danger  delete-confirm ml-1">
-                                <i class="feather icon-trash"></i>
-                            </a>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <form action="">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div id="sign"></div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <textarea style="display: none" name="signed" id="signature" cols="30" rows="10"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <div class="btn-group">
+                                            <button id="clear" class="btn btn-danger">Clear</button>
+                                            <button id="save" class="btn btn-success">Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                         </form>
                     </div>
                 </div>
@@ -961,7 +1002,15 @@
 </div>
 @endsection
 
+
 @push('myscript')
+<script>
+    var sign = $("#sign").signature({
+        syncField: '#signature'
+        , syncFormat: 'PNG'
+    })
+
+</script>
 <script>
     $(function() {
 
