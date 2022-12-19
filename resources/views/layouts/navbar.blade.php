@@ -131,7 +131,36 @@
                 </ul>
             </li>
             @endif
-
+            @if ($level == "salesman")
+            <li class="{{ request()->is(['pelanggan', 'pelanggan/*']) ? 'active' : '' }}">
+                <a href="/pelanggan">
+                    <i class="feather icon-users primary"></i>
+                    <span class="menu-item">Pelanggan</span>
+                </a>
+            </li>
+            <li class=" {{ request()->is(['inputpenjualanv2']) ? 'active' : '' }} nav-item">
+                <a href="/inputpenjualanv2">
+                    <i class="feather icon-shopping-cart danger"></i>
+                    <span class="menu-title">Input Penjualan</span>
+                </a>
+            </li>
+            <li class="{{ request()->is(['penjualan', 'penjualan/*']) ? 'active' : '' }}">
+                <a href="/penjualan"><i class="feather icon-shopping-bag success">
+                    </i><span class="menu-item">Data Penjualan</span></a>
+            </li>
+            <li class="{{ request()->is(['retur', 'retur/*']) ? 'active' : '' }}">
+                <a href="/retur">
+                    <i class="feather icon-package warning"></i>
+                    <span class="menu-item">Data Retur</span>
+                </a>
+            </li>
+            <li class="{{ request()->is(['laporanpenjualan','laporanpenjualan/*','laporanretur','laporankasbesarpenjualan','laporankendaraan/*','laporaninsentif','laporankomisi'])? 'active': '' }}">
+                <a href="/laporanpenjualan/penjualan">
+                    <i class="feather icon-file-text info"></i>
+                    <span class="menu-item">Laporan</span>
+                </a>
+            </li>
+            @endif
             @if (in_array($level, $produksi_menu))
             <li class=" nav-item">
                 <a href="#"><i class="fa fa-cubes success"></i><span class="menu-title">Produksi</span></a>

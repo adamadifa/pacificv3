@@ -334,7 +334,11 @@ class ReturController extends Controller
             ->where('no_retur_penj', $request->no_retur_penj)
             ->get();
 
-        return view('retur.show', compact('detail'));
+        if (Auth::user()->level != "salesman") {
+            return view('retur.show', compact('detail'));
+        } else {
+            return view('retur.showforsales', compact('detail'));
+        }
     }
 
     public function delete($no_retur_penj)

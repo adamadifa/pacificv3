@@ -1,7 +1,11 @@
 <div id="print" style="position: absolute; z-index:1; background-color:white">
     <p style="text-align: center">
         ------------------------------------------------------------<br>
+        @if (in_array($faktur->kode_pelanggan,$pelangganmp))
         CV MAKMUR PERMATA<br>
+        @else
+        CV PACIFIC<br>
+        @endif
         Jln. Perintis Kemerdekaan 001/003<br>
         Karsamenak, Kawalu, Kota Tasikmalaya<br>
         ------------------------------------------------------------<br>
@@ -66,7 +70,40 @@
         <span>Potongan</span><span>{{ rupiah($faktur->potongan) }}</span>
     </div>
     <div style="display: flex; justify-content:space-between">
-        <span>Total</span><span>{{ rupiah($faktur->total) }}</span>
+        <span>Total</span><span>
+            @php
+            $totalnonppn = $faktur->subtotal - $faktur->potongan - $faktur->potistimewa - $faktur->penyharga;
+            @endphp
+            {{ rupiah($totalnonppn)  }}
+        </span>
+    </div>
+    <div style="display: flex; justify-content:space-between">
+        <span>RETUR</span><span>{{ rupiah($retur->totalretur) }}</span>
+    </div>
+    <div style="display: flex; justify-content:space-between">
+        <span>PPN</span><span>{{ rupiah($faktur->ppn) }}</span>
+    </div>
+    <div style="display: flex; justify-content:space-between">
+        <span>Total</span><span>{{ rupiah($faktur->total-$retur->totalretur) }}</span>
+    </div>
+    ------------------------------------------------------------<br>
+    <p>Pembayaran</p>
+    @php
+    $totalbayar = 0;
+    @endphp
+    @foreach ($pembayaran as $d)
+    @php
+    $totalbayar += $d->bayar;
+    @endphp
+    <div style="display: flex; justify-content:space-between">
+        <span>{{ date("d-m-y",strtotime($d->tglbayar)) }}</span><span>{{ rupiah($d->bayar) }}</span>
+    </div>
+    @endforeach
+    <div style="display: flex; justify-content:space-between">
+        <span>Total Bayar</span><span>{{ rupiah($totalbayar) }}</span>
+    </div>
+    <div style="display: flex; justify-content:space-between">
+        <span>Sisa Bayar</span><span>{{ rupiah($faktur->total - $retur->totalretur - $totalbayar) }}</span>
     </div>
     <p style="text-align: center">
         Terimakasih<br>
@@ -91,7 +128,11 @@ $len = maxLen($detail);
 $data = "";
 $total = 0;
 $data .= "  -----------------------------------<br>";
+if(in_array($faktur->kode_pelanggan,$pelangganmp)){
 $data .= "          CV MAKMUR PERMATA        <br>";
+}else{
+$data .= "          CV PACIFIC        <br>";
+}
 $data .= "  Jln. Perintis Kemerdekaan 001/003<br>";
 $data .= "  Karsamenak, Kawalu, Kota Tasikmalaya<br>";
 $data .= "  -----------------------------------<br>";
@@ -134,7 +175,21 @@ foreach( $detail as $d ) {
 }
 $data .= "  -----------------------------------<br>";
 $data .= "  ". sprintf("%-$len"."s\t%s\n","Potongan","            ".rupiah($faktur->potongan));
-$data .= "  ". sprintf("%-$len"."s\t%s\n","TOTAL","                    ".rupiah($faktur->total));
+$data .= "  ". sprintf("%-$len"."s\t%s\n","TOTAL","                    ".rupiah($totalnonppn));
+$data .= "  ". sprintf("%-$len"."s\t%s\n","RETUR","                    ".rupiah($retur->totalretur));
+$data .= "  ". sprintf("%-$len"."s\t%s\n","PPN","                    ".rupiah($faktur->ppn));
+$data .= "  ". sprintf("%-$len"."s\t%s\n","GRAND TOTAL","            ".rupiah($faktur->total-$retur->totalretur));
+$data .= "  -----------------------------------<br><br>";
+$data .= "  Pembayaran<br>";
+$totalbayar=0;
+foreach( $pembayaran as $d ) {
+    $totalbayar += $d->bayar;
+$data .= "  ". sprintf("%-$len"."s\t%s\n",date('d-m-y',strtotime($d->tglbayar)),"            ".rupiah($d->bayar));
+}
+$data .= "
+";
+$data .= "  ". sprintf("%-$len"."s\t%s\n","Total Bayar","            ".rupiah($totalbayar));
+$data .= "  ". sprintf("%-$len"."s\t%s\n","Sisa Bayar","            ".rupiah($faktur->total - $retur->totalretur - $totalbayar));
 $data .= "
 
 ";

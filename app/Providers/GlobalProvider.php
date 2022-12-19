@@ -167,7 +167,7 @@ class GlobalProvider extends ServiceProvider
 
             //Data Master
             $datamaster = [
-                'admin', 'admin penjualan', 'salesman', 'audit',
+                'admin', 'admin penjualan', 'audit',
                 'manager accounting', 'spv accounting', 'kepala penjualan',
                 'kepala admin', 'admin pusat', 'manager marketing', 'rsm', 'direktur',
                 'manager pembelian', 'admin pembelian', 'admin penjualan dan kas kecil',
@@ -273,7 +273,7 @@ class GlobalProvider extends ServiceProvider
 
             //Marketing
             $marketing = [
-                'admin', 'admin penjualan', 'salesman', 'audit', 'kepala penjualan',
+                'admin', 'admin penjualan', 'audit', 'kepala penjualan',
                 'kepala admin', 'admin pusat', 'manager accounting', 'spv accounting', 'manager marketing', 'rsm',
                 'general manager', 'direktur', 'admin penjualan dan kas kecil',
                 'admin penjualan dan kasir', 'supervisor sales', 'admin gudang cabang dan marketing',
@@ -358,7 +358,7 @@ class GlobalProvider extends ServiceProvider
             ];
             //--------------------------------Keuangan---------------------------------------------
             $keuangan = [
-                'admin', 'admin penjualan', 'salesman', 'audit', 'kepala admin', 'admin pusat', 'direktur', 'manager accounting', 'spv accounting', 'general manager',
+                'admin', 'admin penjualan', 'audit', 'kepala admin', 'admin pusat', 'direktur', 'manager accounting', 'spv accounting', 'general manager',
                 'manager marketing', 'rsm', 'kepala penjualan', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'admin kas kecil', 'audit', 'kasir', 'audit', 'admin garut', 'manager pembelian', 'admin pembelian',
                 'admin kas', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil',
                 'admin penjualan dan kasir', 'kepala gudang', 'audit', 'admin gudang pusat', 'admin garut', 'admin pajak 2'
