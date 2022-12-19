@@ -77,7 +77,7 @@
                 </form>
                 @include('layouts.notification')
 
-                <table class="table" @if ($level=="salesman" ) style="font-size:12px !important" @endif>
+                <table class="table" @if ($level=="salesman" ) style="font-size:10px !important" @endif>
                     <thead class="thead-dark">
                         <tr>
                             <th>No Faktur</th>
