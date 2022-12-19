@@ -40,7 +40,7 @@
                         <div class="col-lg-3 col-sm-12">
                             <x-inputtext label="Nama Pelanggan" field="nama_pelanggan" icon="feather icon-user" value="{{ Request('nama_pelanggan') }}" />
                         </div>
-                        <div class="col-lg-3 col-sm-9">
+                        <div class="col-lg-3 col-sm-10">
                             <div class="form-group">
                                 <select name="jenis_retur" id="status" class="form-control">
                                     <option value="">Jenis Retur</option>
@@ -50,9 +50,13 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-2 col-sm-3">
+                        <div class="col-lg-2 col-sm-2">
                             <div class="form-group">
+                                @if ($level != "salesman")
                                 <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search"></i> Cari Data </button>
+                                @else
+                                <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                                @endif
                             </div>
                         </div>
                     </div>
