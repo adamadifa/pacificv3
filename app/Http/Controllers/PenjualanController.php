@@ -12,6 +12,7 @@ use App\Models\Pembayaran;
 use App\Models\Penjualan;
 use App\Models\Retur;
 use App\Models\Salesman;
+use COM;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use PDOException;
 use Svg\Tag\Rect;
@@ -7097,5 +7099,45 @@ class PenjualanController extends Controller
             ->where('transfer.no_fak_penj', $no_fak_penj)
             ->get();
         return view('penjualan.showforsales', compact('data', 'detailpenjualan', 'retur', 'historibayar', 'salesman', 'girotolak', 'giro', 'transfer'));
+    }
+
+    public function uploadsignature(Request $request)
+    {
+        $no_fak_penj = $request->no_fak_penj;
+        $format = $no_fak_penj;
+        $folderPath = "public/signature/";
+        $image_parts = explode(";base64,", $request->signed);
+        $image_type_aux = explode("image/", $image_parts[0]);
+        $image_type = $image_type_aux[1];
+        $image_base64 = base64_decode($image_parts[1]);
+        $fileName =  $format . '.png';
+        $file = $folderPath . $fileName;
+        $data = [
+            'signature' => $fileName
+        ];
+        $update = DB::table('penjualan')->where('no_fak_penj', $no_fak_penj)->update($data);
+        if ($update) {
+            if (Storage::exists($file)) {
+                Storage::delete($file);
+            }
+            Storage::put($file, $image_base64);
+            return Redirect::back()->with(['success' => 'Tanda Tanggan Berhasil Disimpan']);
+        }
+    }
+
+    public function deletesignature($no_fak_penj)
+    {
+        $no_fak_penj = Crypt::decrypt($no_fak_penj);
+        $data = [
+            'signature' => NULL
+        ];
+        $folderPath = "public/signature/";
+        $faktur = DB::table('penjualan')->where('no_fak_penj', $no_fak_penj)->first();
+        $file = $folderPath . $faktur->signature;
+        $update = DB::table('penjualan')->where('no_fak_penj', $no_fak_penj)->update($data);
+        if ($update) {
+            Storage::delete($file);
+            return Redirect::back()->with(['success' => 'Tanda Tanggan Berhasil Dihapus']);
+        }
     }
 }
