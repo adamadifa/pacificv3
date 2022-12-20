@@ -85,7 +85,31 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        <form action="">
+                        @php
+                        $path = Storage::url('signature/'.$data->signature);
+                        @endphp
+                        @if (!empty($data->signature))
+                        <div class="row mb-1">
+                            <div class="col-12">
+                                <img class="card-img img-fluid" src="{{ url($path) }}" alt="Card image">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <form method="POST" class="deleteform" action="/penjualan/{{ Crypt::encrypt($data->no_fak_penj) }}/deletesignature">
+                                    @csrf
+                                    @method('DELETE')
+                                    <a href=" #" tanggal="{{ $data->tgltransaksi }}" class="btn btn-danger btn-block  delete-confirm">
+                                        <i class="feather icon-trash"></i> Hapus Tanda Tangan
+                                    </a>
+                                </form>
+                            </div>
+                        </div>
+
+                        @else
+                        <form action="/penjualan/uploadsignature" method="POST">
+                            @csrf
+                            <input type="hidden" value="{{ $data->no_fak_penj }}" name="no_fak_penj">
                             <div class="row">
                                 <div class="col-12">
                                     <div id="sign"></div>
@@ -101,15 +125,15 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <div class="btn-group">
+                                        <div class="btn-group d-flex justify-content-center">
                                             <button id="clear" class="btn btn-danger">Clear</button>
                                             <button id="save" class="btn btn-success">Save</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                         </form>
+                        @endif
                     </div>
                 </div>
                 @if (Auth::user()->level != "salesman")
@@ -1009,6 +1033,12 @@
         syncField: '#signature'
         , syncFormat: 'PNG'
     })
+
+    $("#clear").click(function(e) {
+        e.preventDefault();
+        sign.signature('clear');
+        $("#signature").val();
+    });
 
 </script>
 <script>

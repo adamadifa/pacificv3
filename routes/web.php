@@ -1390,4 +1390,6 @@ Route::middleware(['auth'])->group(function () {
     //Route::get('/cetakstruk', [PenjualanController::class, 'cetakstruk']);
     Route::post('/cetakstruk', [PenjualanController::class, 'cetakstruk']);
     Route::get('/cetaknota', [PenjualanController::class, 'cetakstruk']);
+    Route::post('/penjualan/uploadsignature', [PenjualanController::class, 'uploadsignature']);
+    Route::delete('/penjualan/{no_fak_penj}/deletesignature', [PenjualanController::class, 'deletesignature']);
 });
