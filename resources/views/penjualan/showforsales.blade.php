@@ -94,7 +94,7 @@
                                 <img class="card-img img-fluid" src="{{ url($path) }}" alt="Card image">
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row mb-1">
                             <div class="col-2">
                                 <form method="POST" class="deleteform" action="/penjualan/{{ Crypt::encrypt($data->no_fak_penj) }}/deletesignature">
                                     @csrf
@@ -109,7 +109,7 @@
                             $image = base64_encode($path);
                             @endphp
                             <div class="col-10">
-                                <a href="#" onclick="return sendUrlToPrint('{{ url($path) }}');">Cetak Tanda Tangan</a>
+                                <a href="#" onclick="return sendUrlToPrint('{{ url($path) }}');" class="btn btn-info btn-block"><i class="feather icon-printer mr-1"></i>Cetak Tanda Tangan</a>
                             </div>
                         </div>
 
