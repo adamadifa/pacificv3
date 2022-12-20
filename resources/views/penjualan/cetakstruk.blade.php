@@ -1,4 +1,4 @@
-<div id="print" style="position: absolute; z-index:1;  background-color:white">
+<div id="print" style="position: absolute; z-index:1; background-color:white">
     <p style="text-align: center">
         ------------------------------------------------------------<br>
         @if (in_array($faktur->kode_pelanggan,$pelangganmp))
@@ -113,6 +113,7 @@
         <div class="col-12">
             <button class="btn btn-info btn-block" onclick="BtPrint(document.getElementById('pre_print').innerText)"><i class="feather icon-printer mr-1"></i>Cetak Faktur
             </button>
+            <a href="https://www.google.com/" class="print-file btn btn-green">.pdf</a>
         </div>
     </div>
 </div>
@@ -212,5 +213,21 @@ $data .= "     www.pacific-tasikmalaya.com";
         var textEncoded = encodeURI(prn);
         window.location.href = "intent:" + textEncoded + S + P;
     }
+
+    function sendUrlToPrint(url) {
+        var beforeUrl = 'intent:';
+        var afterUrl = '#Intent;';
+        // Intent call with component
+        afterUrl += 'component=ru.a402d.rawbtprinter.activity.PrintDownloadActivity;'
+        afterUrl += 'package=ru.a402d.rawbtprinter;end;';
+        document.location = beforeUrl + encodeURI(url) + afterUrl;
+        return false;
+    }
+    // jQuery: set onclick hook for css class print-file
+    $(document).ready(function() {
+        $('.print-file').click(function() {
+            return sendUrlToPrint($(this).attr('href'));
+        });
+    });
 
 </script>
