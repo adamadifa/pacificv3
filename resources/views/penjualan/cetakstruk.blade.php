@@ -113,7 +113,7 @@
         <div class="col-12">
             <button class="btn btn-info btn-block" onclick="BtPrint(document.getElementById('pre_print').innerText)"><i class="feather icon-printer mr-1"></i>Cetak Faktur
             </button>
-            <a href="https://www.google.com/" class="print-file btn btn-green">.pdf</a>
+            <a href="#" onclick="return sendUrlToPrint('http(s)://google.com/');">.txt</a>";
         </div>
     </div>
 </div>
