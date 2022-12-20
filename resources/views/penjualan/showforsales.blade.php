@@ -95,14 +95,21 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-12">
+                            <div class="col-2">
                                 <form method="POST" class="deleteform" action="/penjualan/{{ Crypt::encrypt($data->no_fak_penj) }}/deletesignature">
                                     @csrf
                                     @method('DELETE')
                                     <a href=" #" tanggal="{{ $data->tgltransaksi }}" class="btn btn-danger btn-block  delete-confirm">
-                                        <i class="feather icon-trash"></i> Hapus Tanda Tangan
+                                        <i class="feather icon-trash"></i>
                                     </a>
                                 </form>
+                            </div>
+                            @php
+                            $file_path = storage_path('signature/'.$data->signature);
+                            $image = base64_encode($path);
+                            @endphp
+                            <div class="col-10">
+                                <a href="#" onclick="return sendUrlToPrint('{{ url($path) }}');">Cetak Tanda Tangan</a>
                             </div>
                         </div>
 
@@ -1028,6 +1035,18 @@
 
 
 @push('myscript')
+<script>
+    function sendUrlToPrint(url) {
+        var beforeUrl = 'intent:';
+        var afterUrl = '#Intent;';
+        // Intent call with component
+        afterUrl += 'component=ru.a402d.rawbtprinter.activity.PrintDownloadActivity;'
+        afterUrl += 'package=ru.a402d.rawbtprinter;end;';
+        document.location = beforeUrl + encodeURI(url) + afterUrl;
+        return false;
+    }
+
+</script>
 <script>
     var sign = $("#sign").signature({
         syncField: '#signature'

@@ -11,6 +11,7 @@
     <meta name="author" content="PIXINVENT">
     <title>@yield('titlepage')</title>
     @include('layouts.style')
+
 </head>
 <!-- END: Head-->
 

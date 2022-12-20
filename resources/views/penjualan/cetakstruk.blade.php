@@ -1,4 +1,4 @@
-<div id="print" style="position: absolute; z-index:1; background-color:white">
+<div id="print" style="position: absolute; z-index:1;  background-color:white">
     <p style="text-align: center">
         ------------------------------------------------------------<br>
         @if (in_array($faktur->kode_pelanggan,$pelangganmp))
@@ -113,7 +113,6 @@
         <div class="col-12">
             <button class="btn btn-info btn-block" onclick="BtPrint(document.getElementById('pre_print').innerText)"><i class="feather icon-printer mr-1"></i>Cetak Faktur
             </button>
-            <a href="#" onclick="return sendUrlToPrint('http(s)://google.com/');">.txt</a>";
         </div>
     </div>
 </div>
@@ -191,12 +190,11 @@ $data .= "
 ";
 $data .= "  ". sprintf("%-$len"."s\t%s\n","Total Bayar","            ".rupiah($totalbayar));
 $data .= "  ". sprintf("%-$len"."s\t%s\n","Sisa Bayar","            ".rupiah($faktur->total - $retur->totalretur - $totalbayar));
+$data.="<img src='$faktur->signature'>";
 $data .= "
 
 ";
-$path = Storage::url('signature/'.$faktur->signature);
 
-$data .= '<img class="card-img img-fluid" src="'.url($path).'" alt="Card image">';
 $data .="
 ";
 $data .= "            Terimakasih<br>";
@@ -213,21 +211,5 @@ $data .= "     www.pacific-tasikmalaya.com";
         var textEncoded = encodeURI(prn);
         window.location.href = "intent:" + textEncoded + S + P;
     }
-
-    function sendUrlToPrint(url) {
-        var beforeUrl = 'intent:';
-        var afterUrl = '#Intent;';
-        // Intent call with component
-        afterUrl += 'component=ru.a402d.rawbtprinter.activity.PrintDownloadActivity;'
-        afterUrl += 'package=ru.a402d.rawbtprinter;end;';
-        document.location = beforeUrl + encodeURI(url) + afterUrl;
-        return false;
-    }
-    // jQuery: set onclick hook for css class print-file
-    $(document).ready(function() {
-        $('.print-file').click(function() {
-            return sendUrlToPrint($(this).attr('href'));
-        });
-    });
 
 </script>
