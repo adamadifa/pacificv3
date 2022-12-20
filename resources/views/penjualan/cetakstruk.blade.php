@@ -1,4 +1,4 @@
-<div id="print" style="position: absolute; z-index:1; background-color:white">
+<div id="print" style="position: absolute; z-index:1;  background-color:white">
     <p style="text-align: center">
         ------------------------------------------------------------<br>
         @if (in_array($faktur->kode_pelanggan,$pelangganmp))
@@ -192,6 +192,11 @@ $data .= "  ". sprintf("%-$len"."s\t%s\n","Total Bayar","            ".rupiah($t
 $data .= "  ". sprintf("%-$len"."s\t%s\n","Sisa Bayar","            ".rupiah($faktur->total - $retur->totalretur - $totalbayar));
 $data .= "
 
+";
+$path = Storage::url('signature/'.$faktur->signature);
+
+$data .= '<img class="card-img img-fluid" src="'.url($path).'" alt="Card image">';
+$data .="
 ";
 $data .= "            Terimakasih<br>";
 $data .= "     www.pacific-tasikmalaya.com";
