@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Checkin;
+use App\Models\Pelanggan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -12,6 +13,12 @@ class TrackingController extends Controller
     {
         $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         return view('tracking.index', compact('cabang'));
+    }
+
+    public function mappelanggan()
+    {
+        $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
+        return view('tracking.mappelanggan', compact('cabang'));
     }
 
     function getlocationcheckin(Request $request)
@@ -29,6 +36,26 @@ class TrackingController extends Controller
         }
         $checkin = $query->get();
         $jsondata = json_encode($checkin);
+        return $jsondata;
+    }
+
+
+    function getmappelanggan(Request $request)
+    {
+        $hariini = $request->tanggal;
+        $kode_cabang = $request->kode_cabang;
+
+
+        $query = Pelanggan::query();
+        $query->select('kode_pelanggan', 'nama_pelanggan', 'foto', 'alamat_pelanggan', 'latitude', 'longitude');
+        $query->whereNotNull('latitude');
+        $query->whereNotNull('longitude');
+        $query->where('kode_cabang', 'BGR');
+        if (!empty($kode_cabang)) {
+            $query->where('pelanggan.kode_cabang', $kode_cabang);
+        }
+        $pelanggan = $query->get();
+        $jsondata = json_encode($pelanggan);
         return $jsondata;
     }
 }

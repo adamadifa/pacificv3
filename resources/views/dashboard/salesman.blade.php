@@ -137,57 +137,96 @@
 </div> --}}
 </div>
 </div>
+</section>
 <div class="row">
     <div class="col-lg-5 col-sm-12">
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">Pencapaian Target</h4>
-            </div>
-            <div class="card-body">
-                <div class="row" id="pilihbulan">
-                    <div class="col-12">
-                        {{-- <label for="" class="form-label mb-1">Omset Bulan</label> --}}
-                        <div class="form-group" style="margin-bottom: 5px">
-                            <select class="form-control" id="bulan" name="bulan">
-                                <option value="">Bulan</option>
-                                <?php
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Pencapaian Target</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row" id="pilihbulan">
+                            <div class="col-12">
+                                {{-- <label for="" class="form-label mb-1">Omset Bulan</label> --}}
+                                <div class="form-group" style="margin-bottom: 5px">
+                                    <select class="form-control" id="bulan" name="bulan">
+                                        <option value="">Bulan</option>
+                                        <?php
                                             $bulanini = date("m");
                                             for ($i = 1; $i < count($bulan); $i++) {
                                             ?>
-                                <option <?php if ($bulanini == $i) {echo "selected";} ?> value="<?php echo $i; ?>"><?php echo $bulan[$i]; ?></option>
-                                <?php
+                                        <option <?php if ($bulanini == $i) {echo "selected";} ?> value="<?php echo $i; ?>"><?php echo $bulan[$i]; ?></option>
+                                        <?php
                                             }
                                             ?>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <select class="form-control" id="tahun" name="tahun">
-                                <?php
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <select class="form-control" id="tahun" name="tahun">
+                                        <?php
                                             $tahunmulai = 2020;
                                             for ($thn = $tahunmulai; $thn <= date('Y'); $thn++) {
                                             ?>
-                                <option <?php if (date('Y') == $thn) { echo "Selected";} ?> value="<?php echo $thn; ?>"><?php echo $thn; ?></option>
-                                <?php
+                                        <option <?php if (date('Y') == $thn) { echo "Selected";} ?> value="<?php echo $thn; ?>"><?php echo $thn; ?></option>
+                                        <?php
                                             }
                                             ?>
-                            </select>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Kode</th>
+                                            <th>Nama Barang</th>
+                                            <th>Target</th>
+                                            <th>Realisasi</th>
+                                            <th>%</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="loadrealisasitargetsales"></tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-12">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Kode</th>
-                                    <th>Nama Barang</th>
-                                    <th>Target</th>
-                                    <th>Realisasi</th>
-                                    <th>%</th>
-                                </tr>
-                            </thead>
-                            <tbody id="loadrealisasitargetsales"></tbody>
-                        </table>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Kunjungan Hari Ini</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group" style="margin-bottom: 5px">
+                                    <x-inputtext label="Tanggal" field="tanggalkunjungan" icon="feather icon-calendar" datepicker value="{{ date('Y-m-d') }}" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Kode</th>
+                                            <th>Nama Pelanggan</th>
+                                            <th>Check In</th>
+                                            <th>Check Out</th>
+                                            <th>Durasi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="loadkunjungan"></tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -205,7 +244,7 @@
         </div>
     </div>
 </div>
-</section>
+
 </div>
 </div>
 @endsection
@@ -305,8 +344,32 @@
             });
         }
 
-        loadrealisasitargetsales();
 
+        function loadkunjungan() {
+            //var bulan = $("#bulan").val();
+            //var tahun = $("#tahun").val();
+			var tanggalkunjungan = $("#tanggalkunjungan").val();
+            $.ajax({
+                type: 'POST'
+                , url: '/getkunjungan'
+                , data: {
+                    _token: "{{ csrf_token() }}",
+					tanggalkunjungan:tanggalkunjungan
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loadkunjungan").html(respond);
+                }
+            });
+        }
+		
+		loadkunjungan();
+
+        loadrealisasitargetsales();
+		
+		$("#tanggalkunjungan").change(function(e){
+			loadkunjungan();
+		});
         $("#bulan").change(function() {
             loadrealisasitargetsales();
         });

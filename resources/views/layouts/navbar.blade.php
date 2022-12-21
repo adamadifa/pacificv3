@@ -43,6 +43,15 @@
                 </a>
             </li>
             @endif
+
+            @if (in_array($level,$map_pelanggan))
+            <li class=" {{ request()->is(['mappelanggan']) ? 'active' : '' }} nav-item">
+                <a href="/mappelanggan">
+                    <i class="feather icon-map"></i>
+                    <span class="menu-title">Map Pelanggan</span>
+                </a>
+            </li>
+            @endif
             @if (Auth::user()->level != "salesman")
             <li class=" {{ request()->is(['memo','memo/*']) ? 'active' : '' }} nav-item">
                 <a href="/memo">
