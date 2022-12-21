@@ -1384,7 +1384,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/scan', [QrcodeController::class, 'index']);
     Route::get('/tracking', [TrackingController::class, 'index']);
+    Route::get('/mappelanggan', [TrackingController::class, 'mappelanggan']);
     Route::get('/getlocationcheckin', [TrackingController::class, 'getlocationcheckin']);
+    Route::get('/getmappelanggan', [TrackingController::class, 'getmappelanggan']);
 
 
     //Route::get('/cetakstruk', [PenjualanController::class, 'cetakstruk']);
@@ -1392,4 +1394,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cetaknota', [PenjualanController::class, 'cetakstruk']);
     Route::post('/penjualan/uploadsignature', [PenjualanController::class, 'uploadsignature']);
     Route::delete('/penjualan/{no_fak_penj}/deletesignature', [PenjualanController::class, 'deletesignature']);
+
+    Route::post('/getkunjungan', [DashboardController::class, 'getkunjungan']);
 });

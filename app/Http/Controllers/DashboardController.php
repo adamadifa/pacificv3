@@ -628,4 +628,25 @@ class DashboardController extends Controller
             ->get();
         return view('dashboard.ga', compact('kir_bulanini', 'jml_kir_bulanini', 'kir_bulandepan', 'jml_kir_bulandepan', 'kir_duabulan', 'jml_kir_duabulan', 'pajak_satutahun_bulanini', 'jml_pajak_satutahun_bulanini', 'pajak_satutahun_bulandepan', 'jml_pajak_satutahun_bulandepan', 'pajak_satutahun_duabulan', 'jml_pajak_satutahun_duabulan', 'pajak_limatahun_bulanini', 'jml_pajak_limatahun_bulanini', 'pajak_limatahun_bulandepan', 'jml_pajak_limatahun_bulandepan', 'pajak_limatahun_duabulan', 'jml_pajak_limatahun_duabulan', 'jml_kir_sudahlewat', 'kir_sudahlewat', 'pajak_satutahun_sudahlewat', 'jml_pajak_satutahun_sudahlewat', 'pajak_limatahun_sudahlewat', 'jml_pajak_limatahun_sudahlewat', 'jmlkendaraan', 'rekapkendaraancabang'));
     }
+
+    public function getkunjungan(Request $request)
+    {
+        $tanggal = $request->tanggalkunjungan;
+        $kunjungan = DB::table('checkin')
+            ->selectRaw('checkin.kode_pelanggan,nama_pelanggan,checkin_time,no_fak_penj,date_created as checkout_time')
+            ->join('pelanggan', 'checkin.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+            ->leftJoin(
+                DB::raw("(
+            SELECT kode_pelanggan,no_fak_penj,date_created
+            FROM penjualan WHERE tgltransaksi = '$tanggal'
+            ) pj"),
+                function ($join) {
+                    $join->on('checkin.kode_pelanggan', '=', 'pj.kode_pelanggan');
+                }
+            )
+            ->where('tgl_checkin', $tanggal)
+            ->get();
+
+        return view('dashboard.getkunjungan', compact('kunjungan'));
+    }
 }
