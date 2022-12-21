@@ -344,9 +344,30 @@ class LaporankeuanganController extends Controller
         $tglbatas = $tahunlast . "-" . $batasbulan . "-01";
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
         $rekapbg = DB::table('giro')
-            ->selectRaw("tgl_giro,penjualan.id_karyawan,nama_karyawan,giro.no_fak_penj,nama_pelanggan,namabank,no_giro,tglcair as jatuhtempo,jumlah,tglbayar as tgl_pencairan")
+            ->selectRaw("tgl_giro,salesbarunew,nama_karyawan,giro.no_fak_penj,nama_pelanggan,namabank,no_giro,tglcair as jatuhtempo,jumlah,tglbayar as tgl_pencairan")
             ->join('penjualan', 'giro.no_fak_penj', '=', 'penjualan.no_fak_penj')
-            ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->leftJoin(
+                DB::raw("(
+                    SELECT pj.no_fak_penj,
+                    IF(salesbaru IS NULL,pj.id_karyawan,salesbaru) as salesbarunew, karyawan.nama_karyawan as nama_sales,
+                    IF(cabangbaru IS NULL,karyawan.kode_cabang,cabangbaru) as cabangbarunew
+                    FROM penjualan pj
+                    INNER JOIN karyawan ON pj.id_karyawan = karyawan.id_karyawan
+                    LEFT JOIN (
+                        SELECT
+                        id_move,no_fak_penj,
+                        move_faktur.id_karyawan as salesbaru,
+                        karyawan.kode_cabang  as cabangbaru
+                        FROM move_faktur
+                        INNER JOIN karyawan ON move_faktur.id_karyawan = karyawan.id_karyawan
+                        WHERE id_move IN (SELECT max(id_move) FROM move_faktur WHERE tgl_move <= '$dari' GROUP BY no_fak_penj)
+                    ) move_fak ON (pj.no_fak_penj = move_fak.no_fak_penj)
+                ) pjmove"),
+                function ($join) {
+                    $join->on('penjualan.no_fak_penj', '=', 'pjmove.no_fak_penj');
+                }
+            )
+            ->join('karyawan', 'pjmove.salesbarunew', '=', 'karyawan.id_karyawan')
             ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
             ->leftJoin(
                 DB::raw("(SELECT id_giro,tglbayar FROM historibayar WHERE tglbayar BETWEEN '$dari' AND '$sampaibayar' GROUP BY id_giro,tglbayar) hb"),
@@ -355,17 +376,17 @@ class LaporankeuanganController extends Controller
                 }
             )
             ->whereBetween('tgl_giro', [$dari, $sampai])
-            ->where('karyawan.kode_cabang', $kode_cabang)
+            ->where('cabangbarunew', $kode_cabang)
             ->orWhere('omset_bulan', $bulan)
             ->where('omset_tahun', $tahun)
-            ->where('karyawan.kode_cabang', $kode_cabang)
+            ->where('cabangbarunew', $kode_cabang)
             ->orWhereBetween('tgl_giro', [$tglbatas, $sampai])
             ->where('omset_bulan', 0)
-            ->where('karyawan.kode_cabang', $kode_cabang)
+            ->where('cabangbarunew', $kode_cabang)
             ->orWhereBetween('tgl_giro', [$tglbatas, $sampai])
             ->where('omset_bulan', '>', $bulan)
             ->where('omset_tahun', $tahun)
-            ->where('karyawan.kode_cabang', $kode_cabang)
+            ->where('cabangbarunew', $kode_cabang)
             ->orderBy('tgl_giro')
             ->orderBy('no_giro')
             ->get();
