@@ -138,6 +138,7 @@
                         <th rowspan="2">HARGA</th>
                         <th colspan="3">JUMLAH</th>
                         <th rowspan="2">TOTAL</th>
+                        <th rowspan="2">Keterangan</th>
                     </tr>
                     <tr>
                         <th>DUS</th>
@@ -173,6 +174,7 @@
                         <td align="center"><?php echo $jmlpack; ?></td>
                         <td align="center"><?php echo $jmlpcs; ?></td>
                         <td align="right">{{ rupiah($b->subtotal) }}</td>
+                        <td></td>
                     </tr>
                     @endforeach
                     <tr>
