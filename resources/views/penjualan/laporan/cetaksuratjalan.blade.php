@@ -138,7 +138,9 @@
                         <th rowspan="2">HARGA</th>
                         <th colspan="3">JUMLAH</th>
                         <th rowspan="2">TOTAL</th>
+                        @if ($faktur->kode_cabang =="BDG")
                         <th rowspan="2">Keterangan</th>
+                        @endif
                     </tr>
                     <tr>
                         <th>DUS</th>
@@ -174,7 +176,9 @@
                         <td align="center"><?php echo $jmlpack; ?></td>
                         <td align="center"><?php echo $jmlpcs; ?></td>
                         <td align="right">{{ rupiah($b->subtotal) }}</td>
+                        @if ($faktur->kode_cabang =="BDG")
                         <td></td>
+                        @endif
                     </tr>
                     @endforeach
                     <tr>
