@@ -6,7 +6,7 @@
     .webcam-capture video {
         display: inline-block;
         width: 100% !important;
-        height: 400px !important;
+        height: 100% !important;
         margin: auto;
         text-align: center;
         border-radius: 15px;
@@ -149,9 +149,11 @@
             , height: 460
             , image_format: 'jpeg'
             , jpeg_quality: 80
+            , aspectRatio: 16 / 9
             , facingMode: {
                 exact: 'environment'
-            }
+            },
+
         });
 
         Webcam.attach('.webcam-capture');
