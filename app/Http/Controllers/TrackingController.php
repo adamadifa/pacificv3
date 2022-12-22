@@ -50,7 +50,7 @@ class TrackingController extends Controller
         $query->select('kode_pelanggan', 'nama_pelanggan', 'foto', 'alamat_pelanggan', 'latitude', 'longitude');
         $query->whereNotNull('latitude');
         $query->whereNotNull('longitude');
-        $query->where('kode_cabang', 'BGR');
+        $query->where('kode_cabang', 'BDG');
         if (!empty($kode_cabang)) {
             $query->where('pelanggan.kode_cabang', $kode_cabang);
         }
