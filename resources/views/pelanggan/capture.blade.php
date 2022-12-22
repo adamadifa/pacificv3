@@ -151,7 +151,9 @@
             , image_format: 'jpeg'
             , jpeg_quality: 80
             , video: {
-                facingMode: 'environment'
+                facingMode: {
+                    exact: 'environment'
+                }
             }
         });
 
