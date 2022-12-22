@@ -740,4 +740,37 @@ class PelangganController extends Controller
         $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)->first();
         return view('pelanggan.capture', compact('pelanggan'));
     }
+
+    public function storecapture(Request $request)
+    {
+        $kode_pelanggan = Crypt::decrypt($request->kode_pelanggan);
+        $format = $kode_pelanggan;
+        $lokasi = explode(",", $request->latitude);
+        $latitude = $lokasi[0];
+        $longitude = $lokasi[1];
+        $img = $request->image;
+        $folderPath = "public/pelanggan/";
+
+        $image_parts = explode(";base64,", $img);
+        $image_type_aux = explode("image/", $image_parts[0]);
+        $image_type = $image_type_aux[1];
+
+        $image_base64 = base64_decode($image_parts[1]);
+        $fileName =  $format . '.png';
+
+        $file = $folderPath . $fileName;
+        $data = [
+            'foto' => $fileName,
+            'latitude' => $latitude,
+            'longitude' => $longitude
+        ];
+        $update = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)->update($data);
+        if ($update) {
+            if (Storage::exists($file)) {
+                Storage::delete($file);
+            }
+            Storage::put($file, $image_base64);
+            echo 'success|Data Pelanggan Berhasil Di Update';
+        }
+    }
 }
