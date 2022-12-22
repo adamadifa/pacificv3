@@ -77,10 +77,7 @@
     //     , attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     // }).addTo(map);
 
-    L.tileLayer('http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}', {
-        maxZoom: 20
-        , subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-    }).addTo(map);
+    L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png").addTo(map);
 
     L.marker([-7.3665114, 108.2148793]).addTo(map);
 
@@ -109,9 +106,7 @@
 
                     var imagepath = "{{ Storage::url('pelanggan/') }}" + data[index].foto;
 
-                    var marker = L.marker([parseFloat(data[index].latitude), parseFloat(data[index].longitude)], {
-                        icon: salesmanicon
-                    }).bindPopup("<b>" + data[index].kode_pelanggan + " - " + data[index].nama_pelanggan + "</b><br><br>" + "<img width='200px' src='" + imagepath + "'/><br><br>" + "Latitude : " + data[index].latitude + " <br>Longitude : " + data[index].longitude + "<br> Alamat :" + data[index].alamat_pelanggan, {
+                    var marker = L.circleMarker([parseFloat(data[index].latitude), parseFloat(data[index].longitude)]).bindPopup("<b>" + data[index].kode_pelanggan + " - " + data[index].nama_pelanggan + "</b><br><br>" + "<img width='200px' src='" + imagepath + "'/><br><br>" + "Latitude : " + data[index].latitude + " <br>Longitude : " + data[index].longitude + "<br> Alamat :" + data[index].alamat_pelanggan, {
                         maxWidth: 200
                     });
                     layerGroup.addLayer(marker);
