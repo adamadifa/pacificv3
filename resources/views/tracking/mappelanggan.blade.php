@@ -68,7 +68,9 @@
 @endsection
 @push('myscript')
 <script>
-    var map = L.map('map').setView([-7.3665114, 108.2148793], 14);
+    var map = L.map('map', {
+        preferCanvas: true
+    }).setView([-7.3665114, 108.2148793], 14);
     var layerGroup = L.layerGroup();
     // L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
     //     maxZoom: 19
