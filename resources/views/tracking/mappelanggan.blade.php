@@ -106,9 +106,7 @@
 
                     var imagepath = "{{ Storage::url('pelanggan/') }}" + data[index].foto;
 
-                    var marker = L.marker([parseFloat(data[index].latitude), parseFloat(data[index].longitude)], {
-                        icon: salesmanicon
-                    }).bindPopup("<b>" + data[index].kode_pelanggan + " - " + data[index].nama_pelanggan + "</b><br><br>" + "<img width='200px' src='" + imagepath + "'/><br><br>" + "Latitude : " + data[index].latitude + " <br>Longitude : " + data[index].longitude + "<br> Alamat :" + data[index].alamat_pelanggan, {
+                    var marker = L.circleMarker([parseFloat(data[index].latitude), parseFloat(data[index].longitude)]).bindPopup("<b>" + data[index].kode_pelanggan + " - " + data[index].nama_pelanggan + "</b><br><br>" + "<img width='200px' src='" + imagepath + "'/><br><br>" + "Latitude : " + data[index].latitude + " <br>Longitude : " + data[index].longitude + "<br> Alamat :" + data[index].alamat_pelanggan, {
                         maxWidth: 200
                     });
                     layerGroup.addLayer(marker);
