@@ -124,7 +124,12 @@
 
 
 
-
+        Webcam.set({
+            width: 590
+            , height: 460
+            , image_format: 'jpeg'
+            , jpeg_quality: 80
+        , });
 
         var cameras = new Array(); //create empty array to later insert available devices
         navigator.mediaDevices.enumerateDevices() // get the available devices found in the machine
@@ -143,6 +148,7 @@
             , height: 460
             , image_format: 'jpeg'
             , jpeg_quality: 80
+            , sourceId: cameras[0]
             , facingMode: {
                 exact: 'environment'
             },
