@@ -9,7 +9,7 @@
         height: 100% !important;
         margin: auto;
         text-align: center;
-        border-radius: 30px;
+        border-radius: 15px;
         overflow: hidden;
     }
 
