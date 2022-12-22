@@ -9,7 +9,7 @@
         height: 100% !important;
         margin: auto;
         text-align: center;
-        border-radius: 15px;
+        border-radius: 30px;
         overflow: hidden;
     }
 
@@ -121,12 +121,6 @@
         }
 
 
-        Webcam.set({
-            width: 590
-            , height: 460
-            , image_format: 'jpeg'
-            , jpeg_quality: 80
-        , });
 
 
 
@@ -149,7 +143,6 @@
             , height: 460
             , image_format: 'jpeg'
             , jpeg_quality: 80
-            , aspectRatio: 16 / 9
             , facingMode: {
                 exact: 'environment'
             },
@@ -164,13 +157,14 @@
                 image = data_uri;
             });
             var latitude = $("#latitude").text();
-            //alert(latitude);
+            var kode_pelanggan = "{{ Crypt::encrypt($pelanggan->kode_pelanggan) }}";
             $("#takeabsen").hide();
             $.ajax({
                 type: 'POST'
-                , url: '/absensi/store'
+                , url: '/pelanggan/storecapture'
                 , data: {
                     _token: "{{ csrf_token() }}"
+                    , kode_pelanggan: kode_pelanggan
                     , image: image
                     , latitude: latitude
                 }
@@ -179,19 +173,13 @@
                     console.log(respond);
                     var result = respond.split("|");
                     if (result[0] == 'success') {
-                        if (result[2] == "in") {
-                            x.play();
-                        } else {
-                            y.play();
-                        }
-
                         swal({
                             title: 'Berhasil!'
                             , text: result[1]
                             , icon: 'success'
                             , timer: 3500
                         , });
-                        setTimeout("location.href = '/mobile/dashboard';", 3600);
+                        setTimeout("location.href = '/pelanggan/showpelanggan?kode_pelanggan=" + kode_pelanggan + "';", 3600);
                     } else {
                         swal({
                             title: 'Oops!'

@@ -1094,6 +1094,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pelanggan/getpelanggan', [PelangganController::class, 'getpelanggan']);
     Route::get('/pelanggan/showpelanggan', [PelangganController::class, 'showpelanggan']);
     Route::get('/pelanggan/{kode_pelanggan}/capturetoko', [PelangganController::class, 'capturetoko']);
+    Route::post('/pelanggan/storecapture', [PelangganController::class, 'storecapture']);
     //Kendaraan
     Route::get('/kendaraan', [KendaraanController::class, 'index']);
     Route::get('/kendaraan/create', [KendaraanController::class, 'create']);
