@@ -965,11 +965,13 @@ class LaporanaccountingController extends Controller
     public function costratio()
     {
         $cbg = new Cabang();
-        if (Auth::user()->level == "admin pusat") {
+        if (Auth::user()->kode_cabang == "PCF" && Auth::user()->kode_cabang == "PST") {
             $cabang = DB::table('cabang')->get();
         } else {
             $cabang = $cbg->getCabanggudang($this->cabang);
         }
+
+
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('laporanaccounting.laporan.frm.lap_costratio', compact('bulan', 'cabang'));
     }
@@ -1006,6 +1008,7 @@ class LaporanaccountingController extends Controller
             SUM(IF(kode_cabang='TGL',jumlah,0)) as tgl,
             SUM(IF(kode_cabang='TSM',jumlah,0)) as tsm,
             SUM(IF(kode_cabang='PWK',jumlah,0)) as pwk,
+            SUM(IF(kode_cabang='BTN',jumlah,0)) as btn,
             SUM(jumlah) as total");
         }
 
@@ -1034,6 +1037,7 @@ class LaporanaccountingController extends Controller
             SUM(IF(karyawan.kode_cabang='TGL',potongan + potistimewa + penyharga,0)) as tgl,
             SUM(IF(karyawan.kode_cabang='TSM',potongan + potistimewa + penyharga,0)) as tsm,
             SUM(IF(karyawan.kode_cabang='PWK',potongan + potistimewa + penyharga,0)) as pwk,
+            SUM(IF(karyawan.kode_cabang='BTN',potongan + potistimewa + penyharga,0)) as btn,
             SUM(potongan + potistimewa + penyharga) as total
         ");
         }
@@ -1249,6 +1253,20 @@ class LaporanaccountingController extends Controller
 
             ) as smr,
 
+            SUM(IF(unit='Banten',
+            CASE
+                WHEN satuan = 'KG' THEN qty_berat * 1000
+                WHEN satuan = 'Liter' THEN qty_berat * 1000 * IFNULL((SELECT harga FROM harga_minyak WHERE bulan ='$bulan' AND tahun = '$tahun'),0)
+                ELSE qty_unit
+            END
+            *
+            CASE
+                WHEN satuan ='KG' THEN (harga +totalharga + IF(qtypengganti2=0,(qtypengganti2*1000) * 0,( (qtypengganti2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000))))) + IF(qtylainnya2=0,(qtylainnya2*1000) * 0,( (qtylainnya2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000)))))) /  ( (qtyberatsa*1000) + (qtypemb2 * 1000) + (qtylainnya2*1000) + (qtypengganti2*1000))
+            ELSE
+            (harga + totalharga + IF(qtylainnya1=0,qtylainnya1*0,qtylainnya1 * IF(qtylainnya1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  ))) + IF(qtypengganti1=0,qtypengganti1*0,qtypengganti1 * IF(qtypengganti1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  )))) / (qtyunitsa + qtypemb1 + qtylainnya1 + qtypengganti1)
+            END,0)
+
+            ) as btn,
 
             SUM(
             CASE
@@ -1443,6 +1461,15 @@ class LaporanaccountingController extends Controller
             ELSE
             (sa.totalsa + gm.totalpemasukan) / (sa.qtysaldoawal + gm.qtypemasukan)
             END ,0)) as pwk,
+
+            SUM(IF(kode_cabang='BTN',qty *
+            CASE
+                WHEN sa.hargasaldoawal IS NULL THEN gm.hargapemasukan
+                WHEN gm.hargapemasukan IS NULL THEN sa.hargasaldoawal
+                ELSE
+                (sa.totalsa + gm.totalpemasukan) / (sa.qtysaldoawal + gm.qtypemasukan)
+                END ,0)) as btn,
+
 
 
             SUM(IF(kode_cabang IS NOT NULL,qty *

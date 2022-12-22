@@ -171,7 +171,7 @@
                                         <td class="text-center">{{ $loop->iteration + $pelanggan->firstItem() - 1 }}</td>
                                         @endif
                                         <td>{{ $d->kode_pelanggan }}</td>
-                                        <td>{{ $d->nama_pelanggan }}</td>
+                                        <td class="detail" @if($level=="salesman" ) data-href="/pelanggan/showpelanggan?kode_pelanggan={{ Crypt::encrypt($d->kode_pelanggan) }} @endif">{{ $d->nama_pelanggan }}</td>
                                         @if (Auth::user()->level != "salesman")
                                         <td>{{ (!empty($d->jatuhtempo) ? $d->jatuhtempo.' Hari' : '' )}} </td>
                                         <td>{{ $d->pasar }}</td>
@@ -210,9 +210,8 @@
                                                 @if (Auth::user()->level != "salesman")
                                                 <a class="ml-1 detailpelanggan" href="pelanggan/{{ Crypt::encrypt($d->kode_pelanggan) }}/show"><i class=" feather icon-file-text info"></i></a>
                                                 @else
-                                                <a class="ml-1 detailpelanggan" href="pelanggan/showpelanggan?kode_pelanggan={{ Crypt::encrypt($d->kode_pelanggan) }}"><i class=" feather icon-file-text info"></i></a>
+                                                <a class="ml-1" href="/pelanggan/{{ Crypt::encrypt($d->kode_pelanggan) }}/capturetoko"><i class="feather icon-camera info"></i></a>
                                                 @endif
-
                                                 @if (in_array($level,$pelanggan_hapus))
                                                 <form method="POST" name="deleteform" class="deleteform" action="/pelanggan/{{ Crypt::encrypt($d->kode_pelanggan) }}/delete">
                                                     @csrf
@@ -302,6 +301,11 @@
                         form.submit();
                     }
                 });
+        });
+
+        $(".detail").click(function(e) {
+            e.preventDefault();
+            window.location = $(this).data("href");
         });
     });
 

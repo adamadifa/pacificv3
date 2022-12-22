@@ -733,4 +733,10 @@ class PelangganController extends Controller
 
         return view('pelanggan.getpelanggan', compact('pelanggan', 'penjualan', 'limitkredit', 'piutang'));
     }
+
+    public function capturetoko($kode_pelanggan)
+    {
+        $kode_pelanggan = Crypt::decrypt($kode_pelanggan);
+        return view('pelanggan.capture');
+    }
 }
