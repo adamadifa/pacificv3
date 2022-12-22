@@ -6,7 +6,7 @@
     .webcam-capture video {
         display: inline-block;
         width: 100% !important;
-        height: auto !important;
+        height: 400px !important;
         margin: auto;
         text-align: center;
         border-radius: 15px;
@@ -24,13 +24,7 @@
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Capture Pelanggan</h2>
-                    <div class="breadcrumb-wrapper col-12">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Capture Pelanggan</a>
-                            </li>
-                        </ol>
-                    </div>
+                    <h2 class="content-header-title float-left mb-0">{{ $pelanggan->kode_pelanggan }} | {{ $pelanggan->nama_pelanggan }}</h2>
                 </div>
             </div>
         </div>
@@ -42,6 +36,11 @@
                 <input type="hidden" id="lokasi">
                 <div class="webcam-capture">
                 </div>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col">
+                <a href="#" class="btn btn-info shadow-sm w-100 text-white" id="takeabsen"><i class="feather icon-camera mr-1"></i>Capture</a>
             </div>
         </div>
         <div class="row">
