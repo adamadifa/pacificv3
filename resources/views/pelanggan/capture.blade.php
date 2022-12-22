@@ -148,6 +148,7 @@
             , height: 460
             , image_format: 'jpeg'
             , jpeg_quality: 80
+            , sourceId: cameras[0]
             , facingMode: {
                 exact: 'environment'
             },
