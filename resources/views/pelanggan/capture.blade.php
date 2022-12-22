@@ -150,10 +150,8 @@
             , height: 460
             , image_format: 'jpeg'
             , jpeg_quality: 80
-            , video: {
-                facingMode: {
-                    exact: 'environment'
-                }
+            , facingMode: {
+                exact: 'environment'
             }
         });
 
