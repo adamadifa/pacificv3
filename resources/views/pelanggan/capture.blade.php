@@ -183,7 +183,7 @@
                             title: 'Berhasil!'
                             , text: result[1]
                             , icon: 'success'
-                            , timer: 3500
+                            , timer: 1000
                         , });
                         setTimeout("location.href = '/pelanggan/showpelanggan?kode_pelanggan=" + kode_pelanggan + "';", 3600);
                     } else {
@@ -191,7 +191,7 @@
                             title: 'Oops!'
                             , text: text
                             , icon: 'error'
-                            , timer: 3500
+                            , timer: 1000
                         , });
                     }
                 }
