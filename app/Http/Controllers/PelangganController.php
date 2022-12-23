@@ -598,13 +598,16 @@ class PelangganController extends Controller
         DB::beginTransaction();
         try {
             $ceklat = DB::table('checkin')->where('kode_pelanggan', $kode_pelanggan)->count();
-            if ($ceklat == 0) {
+
+            $cekpelanggan = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)->first();
+            if (empty($cekpelanggan->status_location)) {
                 DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)->update([
                     'latitude' => $latitude,
                     'longitude' => $longitude
 
                 ]);
             }
+
             $cek = DB::table('checkin')->where('id_karyawan', Auth::user()->id)->where('kode_pelanggan', $kode_pelanggan)
                 ->where('tgl_checkin', $hariini)
                 ->count();
@@ -762,7 +765,8 @@ class PelangganController extends Controller
         $data = [
             'foto' => $fileName,
             'latitude' => $latitude,
-            'longitude' => $longitude
+            'longitude' => $longitude,
+            'status_location' => 1
         ];
         $update = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)->update($data);
         if ($update) {
