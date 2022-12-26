@@ -283,18 +283,18 @@
                 $join->on('giro.id_giro', '=', 'hb.id_giro');
                 }
                 )
-                ->whereRaw('IFNULL(hb.id_karyawan,giro.id_karyawan)',$d->id_karyawan)
+                ->whereRaw('IFNULL(hb.id_karyawan,giro.id_karyawan)='.$d->id_karyawan)
                 ->whereRaw('MONTH(tgl_giro) ='.$bulanlast)
                 ->whereRaw('YEAR(tgl_giro) ='.$tahunlast)
                 ->where('omset_bulan',$bulanskrg)
                 ->where('omset_tahun',$tahunskrg)
 
-                ->orWhereRaw('IFNULL(hb.id_karyawan,giro.id_karyawan)',$d->id_karyawan)
+                ->orwhereRaw('IFNULL(hb.id_karyawan,giro.id_karyawan)='.$d->id_karyawan)
                 ->whereRaw('MONTH(tgl_giro) ='.$blnlast1)
                 ->whereRaw('YEAR(tgl_giro) ='.$thnlast1)
                 ->whereRaw('MONTH(tglbayar) ='.$bulanskrg)
                 ->whereRaw('YEAR(tglbayar) ='.$tahunskrg)
-                ->groupByRaw('hb.id_karyawan,giro.id_karyawan')
+                ->groupByRaw('IFNULL(hb.id_karyawan,giro.id_karyawan)')
                 ->first();
                 if($gmlast != null){
                 $gm_last = $gmlast->jumlah;
