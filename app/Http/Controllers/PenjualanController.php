@@ -6950,10 +6950,8 @@ class PenjualanController extends Controller
     {
         $kode_cabang = $request->kode_cabang;
         $id_karyawan = $request->id_karyawan;
-        $bulan = $request->bulan;
-        $tahun = $request->tahun;
-        $dari = $tahun . "-" . $bulan . "-01";
-        $sampai = date("Y-m-t", strtotime($dari));
+        $dari = $request->dari;
+        $sampai = $request->sampai;
         $query = Penjualan::query();
         $query->selectRaw('penjualan.no_fak_penj,tgltransaksi,penjualan.kode_pelanggan,nama_pelanggan,nama_karyawan,penjualan.total, totalretur,totalbayar');
         $query->leftJoin(

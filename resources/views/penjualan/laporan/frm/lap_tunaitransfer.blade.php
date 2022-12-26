@@ -55,38 +55,12 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row" id="pilihbulan">
-                                        <div class="col-12">
-                                            {{-- <label for="" class="form-label mb-1">Omset Bulan</label> --}}
-                                            <div class="form-group">
-                                                <select class="form-control" id="bulan" name="bulan">
-                                                    <option value="">Bulan</option>
-                                                    <?php
-                                                    $bulanini = date("m");
-                                                    for ($i = 1; $i < count($bulan); $i++) {
-                                                    ?>
-                                                    <option <?php if ($bulanini == $i) {echo "selected";} ?> value="<?php echo $i; ?>"><?php echo $bulan[$i]; ?></option>
-                                                    <?php
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
+                                    <div class="row" id="pilihperiode">
+                                        <div class="col-6">
+                                            <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker />
                                         </div>
-                                    </div>
-                                    <div class="row" id="pilihtahun">
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <select class="form-control" id="tahun" name="tahun">
-                                                    <?php
-                                                    $tahunmulai = 2020;
-                                                    for ($thn = $tahunmulai; $thn <= date('Y'); $thn++) {
-                                                    ?>
-                                                    <option <?php if (date('Y') == $thn) { echo "Selected";} ?> value="<?php echo $thn; ?>"><?php echo $thn; ?></option>
-                                                    <?php
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
+                                        <div class="col-6">
+                                            <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker />
                                         </div>
                                     </div>
                                     <div class="row">
@@ -129,6 +103,13 @@
             var cabang = $("#cabang").val();
             var kode_cabang = $("#kode_cabang").val();
             var id_karyawan = $("#id_karyawan").val();
+            var dari = $("#dari").val();
+            var sampai = $("#sampai").val();
+
+            var start = new Date(dari);
+            var end = new Date(sampai);
+
+            var datestart = new Date('2018-09-01');
             if (cabang != "PCF" && kode_cabang == "" && cabang != "PST" && kode_cabang == "") {
                 swal({
                     title: 'Oops'
@@ -147,6 +128,36 @@
                     , showConfirmButton: false
                 }).then(function() {
                     $("#kode_cabang").focus();
+                });
+                return false;
+            } else if (dari == "" && sampai == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Periode Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#dari").focus();
+                });
+                return false;
+            } else if (start.getTime() > end.getTime()) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Periode tidak Valid !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#dari").focus();
+                });
+                return false;
+            } else if (start.getTime() < datestart.getTime()) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Periode tidak Valid !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#dari").focus();
                 });
                 return false;
             }
