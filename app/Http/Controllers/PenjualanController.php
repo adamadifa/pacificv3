@@ -6824,6 +6824,17 @@ class PenjualanController extends Controller
         return view('penjualan.laporan.frm.lap_analisatransaksi', compact('cabang', 'bulan'));
     }
 
+
+
+    public function tunaitransfer()
+    {
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        return view('penjualan.laporan.frm.lap_tunaitransfer', compact('cabang', 'bulan'));
+    }
+
+
     public function cetakanalisatransaksi(Request $request)
     {
         $kode_cabang = $request->kode_cabang;
@@ -6932,6 +6943,51 @@ class PenjualanController extends Controller
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
         $salesman = Salesman::where('id_karyawan', $id_karyawan)->first();
         return view('penjualan.laporan.cetak_analisatransaksi', compact('analisatransaksi', 'cabang', 'dari', 'sampai', 'salesman'));
+    }
+
+
+    public function cetaktunaitransfer(Request $request)
+    {
+        $kode_cabang = $request->kode_cabang;
+        $id_karyawan = $request->id_karyawan;
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $dari = $tahun . "-" . $bulan . "-01";
+        $sampai = date("Y-m-t", strtotime($dari));
+        $query = Penjualan::query();
+        $query->selectRaw('penjualan.no_fak_penj,tgltransaksi,penjualan.kode_pelanggan,nama_pelanggan,nama_karyawan,penjualan.total, totalretur,totalbayar');
+        $query->leftJoin(
+            DB::raw("(
+            SELECT no_fak_penj, SUM(total) as totalretur
+            FROM retur
+            GROUP BY no_fak_penj
+        ) retur"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
+            }
+        );
+        $query->leftJoin(
+            DB::raw("(
+            SELECT no_fak_penj, SUM(bayar) as totalbayar
+            FROM historibayar
+            WHERE tglbayar BETWEEN '$dari' AND '$sampai'
+            GROUP BY no_fak_penj
+        ) hb"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'hb.no_fak_penj');
+            }
+        );
+        $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $query->whereBetween('tgltransaksi', [$dari, $sampai]);
+        $query->where('jenistransaksi', 'tunai');
+        $query->where('jenisbayar', 'transfer');
+        $tunaitransfer = $query->get();
+
+
+        $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
+        $salesman = Salesman::where('id_karyawan', $id_karyawan)->first();
+        return view('penjualan.laporan.cetak_tunaitransfer', compact('tunaitransfer', 'cabang', 'dari', 'sampai', 'salesman'));
     }
 
     public function cetakstruk(Request $request)
