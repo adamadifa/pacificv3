@@ -501,7 +501,7 @@ class LimitkreditController extends Controller
         } catch (\Exception $e) {
             //dd($e);
             DB::rollback();
-            return redirect('/limitkredit')->with(['warning' => 'Data Pengajuan Limit Kredit Gagal di Simpan Hubungi Tim IT']);
+            return redirect('/limitkredit')->with(['warning' => $e]);
         }
     }
 
