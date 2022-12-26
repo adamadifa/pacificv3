@@ -673,7 +673,12 @@ class PelangganController extends Controller
                 ->where('penjualan.kode_pelanggan', $kode_pelanggan)
                 ->groupBy('penjualan.kode_pelanggan')
                 ->first();
-            return view('pelanggan.getpelanggan', compact('pelanggan', 'penjualan', 'limitkredit', 'piutang'));
+
+            $salesmancheckin = DB::table('checkin')
+                ->where('tgl_checkin', $hariini)
+                ->where('id_karyawan', Auth::user()->id)
+                ->count();
+            return view('pelanggan.getpelanggan', compact('pelanggan', 'penjualan', 'limitkredit', 'piutang', 'salesmancheckin'));
         } catch (\Exception $e) {
             DB::rollBack();
             echo $e;
@@ -733,8 +738,14 @@ class PelangganController extends Controller
             ->where('penjualan.kode_pelanggan', $kode_pelanggan)
             ->groupBy('penjualan.kode_pelanggan')
             ->first();
+        $hariini = date("Y-m-d");
+        $salesmancheckin = DB::table('checkin')
+            ->where('tgl_checkin', $hariini)
+            ->where('id_karyawan', Auth::user()->id)
+            ->where('kode_pelanggan', $kode_pelanggan)
+            ->count();
 
-        return view('pelanggan.getpelanggan', compact('pelanggan', 'penjualan', 'limitkredit', 'piutang'));
+        return view('pelanggan.getpelanggan', compact('pelanggan', 'penjualan', 'limitkredit', 'piutang', 'salesmancheckin'));
     }
 
     public function capturetoko($kode_pelanggan)
@@ -776,5 +787,99 @@ class PelangganController extends Controller
             Storage::put($file, $image_base64);
             echo 'success|Data Pelanggan Berhasil Di Update';
         }
+    }
+
+    public function checkinstore(Request $request)
+    {
+        Cookie::queue(Cookie::forever('kodepelanggan', Crypt::encrypt($request->kode_pelanggan)));
+        $getcookie =  Cookie::get('kodepelanggan');
+        $id_karyawan = Auth::user()->id;
+        $lokasi = $request->lokasi;
+        $lok = explode(",", $lokasi);
+        $latitude = $lok[0];
+        $longitude = $lok[1];
+        $kode_pelanggan = $request->kode_pelanggan;
+        $hariini = date("Y-m-d");
+        $tglskrg = date("d");
+        $bulanskrg = date("m");
+        $tahunskrg = date("y");
+        $hariini = date("Y-m-d");
+        $format = $tahunskrg . $bulanskrg . $tglskrg;
+        $checkin = DB::table("checkin")
+            ->where('tgl_checkin', $hariini)
+            ->orderBy("kode_checkin", "desc")
+            ->first();
+        if ($checkin == null) {
+            $lastkode = '';
+        } else {
+            $lastkode = $checkin->kode_checkin;
+        }
+        $kode_checkin  = buatkode($lastkode, $format, 4);
+
+        $check = DB::table('checkin')->where('tgl_checkin', $hariini)->where('id_karyawan', $id_karyawan)->where('kode_pelanggan', $kode_pelanggan)->count();
+        $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)->first();
+        $status_location = $pelanggan->status_location;
+        $latitude_pelanggan = $status_location == 1 ? $pelanggan->latitude : $latitude;
+        $longitude_pelanggan = $status_location == 1 ? $pelanggan->longitude : $longitude;
+
+        $jarak = $this->distance($latitude_pelanggan, $longitude_pelanggan, $latitude, $longitude);
+        $radius =  ROUND($jarak["meters"]);
+        DB::beginTransaction();
+        try {
+
+            if ($radius > 200) {
+                echo 'Jarak Anda dengan toko Saat Ini adalah ' . $radius . "Meter Minimal Jarak Untuk Checkin Adalah Maksimal 200 Meter";
+            } else {
+                if ($status_location == NULL) {
+                    DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)->update([
+                        'latitude' => $latitude,
+                        'longitude' => $longitude,
+                        'status_location' => 1
+                    ]);
+                }
+
+                if ($check == 0) {
+                    $data = [
+                        'kode_checkin' => $kode_checkin,
+                        'tgl_checkin' => $hariini,
+                        'id_karyawan' => $id_karyawan,
+                        'kode_pelanggan' => $kode_pelanggan,
+                        'latitude' => $latitude,
+                        'longitude' => $longitude,
+                        'jarak' => $radius
+                    ];
+
+                    $simpan = DB::table('checkin')->insert($data);
+                    DB::commit();
+                    echo 'success|Terimakasih Telah Melakukan Checkin';
+                } else {
+                    echo 'success|Terimakasih Telah Melakukan Checkin';
+                }
+            }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            echo $e;
+        }
+    }
+
+    public function deletecookie(Request $request)
+    {
+        $kode_pelanggan = $request->kode_pelanggan;
+        Cookie::queue(Cookie::forget('kodepelanggan'));
+        return redirect('/pelanggan/showpelanggan?kode_pelanggan=' . $kode_pelanggan);
+    }
+
+    function distance($lat1, $lon1, $lat2, $lon2)
+    {
+        $theta = $lon1 - $lon2;
+        $miles = (sin(deg2rad($lat1)) * sin(deg2rad($lat2))) + (cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta)));
+        $miles = acos($miles);
+        $miles = rad2deg($miles);
+        $miles = $miles * 60 * 1.1515;
+        $feet = $miles * 5280;
+        $yards = $feet / 3;
+        $kilometers = $miles * 1.609344;
+        $meters = $kilometers * 1000;
+        return compact('meters');
     }
 }
