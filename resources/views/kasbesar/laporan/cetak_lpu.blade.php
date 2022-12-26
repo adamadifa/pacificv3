@@ -294,7 +294,7 @@
                 ->whereRaw('YEAR(tgl_giro) ='.$thnlast1)
                 ->whereRaw('MONTH(tglbayar) ='.$bulanskrg)
                 ->whereRaw('YEAR(tglbayar) ='.$tahunskrg)
-                ->groupBy('IFNULL(hb.id_karyawan,giro.id_karyawan)')
+                ->groupByRaw('IFNULL(hb.id_karyawan,giro.id_karyawan)')
                 ->first();
                 if($gmlast != null){
                 $gm_last = $gmlast->jumlah;
