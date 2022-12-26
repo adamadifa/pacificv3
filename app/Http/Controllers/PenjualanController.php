@@ -5614,7 +5614,8 @@ class PenjualanController extends Controller
             pph22,
             lainnya,
             IFNULL(saldoawalpiutang,0) - IFNULL(piutanglama,0) + IFNULL(piutangpindahanbulanlalu,0) as saldoawalpiutang,
-            IFNULL(totalbayarpiutang,0) as
+            IFNULL(saldoawalpiutang,0) -  IFNULL(piutanglamanow,0) + IFNULL(piutangpindahan,0) - IFNULL(piutanglamaberjalan,0) +
+(IFNULL(totalbruto,0) - IFNULL(totalpotongan,0)-IFNULL(totalretur,0) - IFNULL(totalpotistimewa,0) - IFNULL(totalpenyharga,0) + IFNULL(totalppn,0))-IFNULL(totalbayarpiutang,0) as
             saldoakhirpiutang");
             $query->leftJoin(
                 DB::raw("(
