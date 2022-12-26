@@ -278,7 +278,7 @@
                 $gmlast = DB::table('giro')
                 ->selectRaw("IFNULL(hb.id_karyawan,giro.id_karyawan) as id_karyawan, SUM(jumlah) as jumlah")
                 ->leftJoin(
-                DB::raw("(SELECT id_giro,id_karyawan,tglbayar FROM historibayar GROUP BY id_giro,tglbayar) hb"),
+                DB::raw("(SELECT id_giro,id_karyawan,tglbayar FROM historibayar GROUP BY id_giro,id_karyawan,tglbayar) hb"),
                 function ($join) {
                 $join->on('giro.id_giro', '=', 'hb.id_giro');
                 }
