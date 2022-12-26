@@ -143,7 +143,7 @@
             @if ($level == "salesman")
             <li class="{{ request()->is(['pelanggan', 'pelanggan/*']) ? 'active' : '' }}">
                 <a href="/pelanggan">
-                    <i class="feather icon-users primary"></i>
+                    <i class="feather icon-users info"></i>
                     <span class="menu-item">Pelanggan</span>
                 </a>
             </li>

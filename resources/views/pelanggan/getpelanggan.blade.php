@@ -58,12 +58,29 @@
                     </div>
                 </div>
                 <div class="row mb-2">
+                    @if ($salesmancheckin == 0)
+                    <div class="col-12" id="checkinsection">
+                        <span id="latitude" class="d-none"></span>
+                        <input type="hidden" id="lokasi">
+                        <a href="#" id="checkin" class="btn btn-success btn-block"><i class="feather icon-lock mr-1"></i>Checkin</a>
+                    </div>
+                    @else
+
+                    @if (Crypt::decrypt(Cookie::get('kodepelanggan')) == $pelanggan->kode_pelanggan)
                     <div class="col-6">
                         <a href="/inputpenjualanv2" class="btn btn-success btn-block"><i class="feather icon-shopping-cart mr-1"></i>Input Penjualan</a>
                     </div>
                     <div class="col-6">
                         <a href="#" class="btn btn-danger btn-block"><i class="feather icon-refresh-cw mr-1"></i>Input Retur</a>
                     </div>
+                    @else
+                    <div class="col-12" id="checkinsection">
+                        <span id="latitude" class="d-none"></span>
+                        <input type="hidden" id="lokasi">
+                        <a href="#" id="checkin" class="btn btn-success btn-block"><i class="feather icon-lock mr-1"></i>Checkin</a>
+                    </div>
+                    @endif
+                    @endif
                 </div>
 
             </div>
@@ -280,9 +297,101 @@
     $(document).ready(function() {
         var x = document.getElementById("myAudio");
         var kode_pelanggan = "{{ Cookie::get('kodepelanggan') }}";
+        var result = document.getElementById("latitude");
+        var lokasi = document.getElementById("lokasi");
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+
+        } else {
+            swal({
+                title: 'Oops!'
+                , text: 'Maaf, browser Anda tidak mendukung geolokasi HTML5.'
+                , icon: 'error'
+                , timer: 3000
+            , });
+        }
+
+        function successCallback(position) {
+            result.innerHTML = "" + position.coords.latitude + "," + position.coords.longitude + "";
+            lokasi.value = "" + position.coords.latitude + "," + position.coords.longitude + "";
+        }
+
+
+        // Define callback function for failed attempt
+        function errorCallback(error) {
+            if (error.code == 1) {
+                swal({
+                    title: 'Oops!'
+                    , text: 'Anda telah memutuskan untuk tidak membagikan posisi Anda, tetapi tidak apa-apa. Kami tidak akan meminta Anda lagi.'
+                    , icon: 'error'
+                    , timer: 3000
+                , });
+            } else if (error.code == 2) {
+                swal({
+                    title: 'Oops!'
+                    , text: 'Jaringan tidak aktif atau layanan penentuan posisi tidak dapat dijangkau.'
+                    , icon: 'error'
+                    , timer: 3000
+                , });
+            } else if (error.code == 3) {
+                swal({
+                    title: 'Oops!'
+                    , text: 'Waktu percobaan habis sebelum bisa mendapatkan data lokasi.'
+                    , icon: 'error'
+                    , timer: 3000
+                , });
+            } else {
+                swal({
+                    title: 'Oops!'
+                    , text: 'Waktu percobaan habis sebelum bisa mendapatkan data lokasi.'
+                    , icon: 'error'
+                    , timer: 3000
+                , });
+            }
+        }
         if (kode_pelanggan == "") {
             x.play();
         }
+        $("#transactionsection").hide();
+
+        $("#checkin").click(function() {
+            var lokasi = $("#lokasi").val();
+            var kode_pelanggan = "{{ $pelanggan->kode_pelanggan }}";
+            $("#checkinsection").hide();
+            $.ajax({
+                type: 'POST'
+                , url: '/pelanggan/checkinstore'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , kode_pelanggan: kode_pelanggan
+                    , lokasi: lokasi
+                }
+                , cache: false
+                , success: function(respond) {
+                    console.log(respond);
+                    var result = respond.split("|");
+                    if (result[0] == 'success') {
+                        swal({
+                            title: 'Berhasil!'
+                            , text: result[1]
+                            , icon: 'success'
+                            , timer: 2000
+                        , }).then(() => {
+                            /* Read more about isConfirmed, isDenied below */
+                            location.reload();
+                        });
+                        //$("#transactionsection").show();
+                    } else {
+                        swal({
+                            title: 'Oops!'
+                            , text: respond
+                            , icon: 'error'
+
+                        , });
+                    }
+                }
+            });
+        });
     });
 
 </script>

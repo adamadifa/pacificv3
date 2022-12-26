@@ -1093,8 +1093,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pelanggan/json', [PelangganController::class, 'json'])->name('pelanggan.json');
     Route::get('/pelanggan/getpelanggan', [PelangganController::class, 'getpelanggan']);
     Route::get('/pelanggan/showpelanggan', [PelangganController::class, 'showpelanggan']);
+    Route::get('/pelanggan/deletecookie', [PelangganController::class, 'deletecookie']);
     Route::get('/pelanggan/{kode_pelanggan}/capturetoko', [PelangganController::class, 'capturetoko']);
     Route::post('/pelanggan/storecapture', [PelangganController::class, 'storecapture']);
+    Route::post('/pelanggan/checkinstore', [PelangganController::class, 'checkinstore']);
     //Kendaraan
     Route::get('/kendaraan', [KendaraanController::class, 'index']);
     Route::get('/kendaraan/create', [KendaraanController::class, 'create']);
