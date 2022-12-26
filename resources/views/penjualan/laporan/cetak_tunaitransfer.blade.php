@@ -85,8 +85,8 @@
             $total += $d->total;
             $totalretur += $d->totalretur;
             $totalbayar += $d->totalbayar;
-            $totalnetto = $d->total - $d->totalretur;
-            $totalsisabayar = $d->total - $d->totalretur - $d->totalbayar;
+            $totalnetto += $d->total - $d->totalretur;
+            $totalsisabayar += $d->total - $d->totalretur - $d->totalbayar;
             @endphp
             <tr>
                 <td>{{ $loop->iteration }}</td>
