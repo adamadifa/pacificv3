@@ -108,6 +108,11 @@
                     <i class="feather icon-file mr-1"></i>Analisa Transaksi
                 </li>
             </a>
+            <a href="/laporanpenjualan/tunaitransfer" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanpenjualan/tunaitransfer']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Tunai Transfer
+                </li>
+            </a>
             @endif
         </ul>
     </div>
