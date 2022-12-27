@@ -271,6 +271,12 @@ class PenjualanController extends Controller
     public function editv2($no_fak_penj)
     {
         $no_fak_penj = Crypt::decrypt($no_fak_penj);
+        $cek = DB::table('historibayar')->where('no_fak_penj', $no_fak_penj)->count();
+        if ($cek > 0) {
+            return Redirect::back()->with(['warning' => 'Data Tidak Bisa Di Edit, Karena Sudah Ada Pembayaran Untuk Transaksi Ini']);
+        }
+
+
         $faktur = DB::table('penjualan')
             ->select(
                 'penjualan.*',
