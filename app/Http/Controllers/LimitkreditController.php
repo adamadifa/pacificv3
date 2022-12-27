@@ -28,7 +28,7 @@ class LimitkreditController extends Controller
     }
     public function index(Request $request)
     {
-        $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB');
+        $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB', 'BTN');
         $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
         $ega = array('TSM', 'GRT');
         $pelanggan = '"' . $request->nama_pelanggan . '"';
@@ -225,7 +225,7 @@ class LimitkreditController extends Controller
 
         $cbg = new Cabang();
         $cabang = $cbg->getCabanggudang($this->cabang);
-        $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB');
+        $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB', 'BTN');
         $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
         return view('limitkredit.index', compact('limitkredit', 'cabang', 'wilayah_barat', 'wilayah_timur'));
     }
@@ -613,7 +613,7 @@ class LimitkreditController extends Controller
         $id_admin = Auth::user()->id;
         $level = Auth::user()->level;
         $time = date("Y-m-d H:i");
-        $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB');
+        $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB', 'BTN');
         $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
         if (empty($jumlah_rekomendasi) && empty($jatuhtempo_rekomendasi)) {
             if (!empty($jatuhtempo)) {

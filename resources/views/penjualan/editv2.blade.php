@@ -413,7 +413,8 @@
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="form-group" style="margin-bottom: 5px">
-                                                        <select class="form-control" name="jenistransaksi" id="jenistransaksi">
+                                                        <input type="hidden" name="jenistransaksi" id="jenistransaksi" value="{{ $faktur->jenistransaksi }}">
+                                                        <select class="form-control" name="jenistransaksi_view" id="jenistransaksi_view" disabled>
                                                             <option value="">Jenis Transaksi</option>
                                                             <option @if ($faktur->jenistransaksi=="tunai")
                                                                 selected
@@ -422,10 +423,11 @@
                                                                 selected
                                                                 @endif value="kredit">Kredit</option>
                                                         </select>
-                                                        <input type="hidden" id="jenisbayar" name="jenisbayar">
                                                     </div>
+                                                    <input type="hidden" id="jenisbayar" name="jenisbayar">
                                                     <div class="form-group tunai" style="margin-bottom: 5px">
-                                                        <select class="form-control" name="jenisbayartunai" id="jenisbayartunai">
+                                                        <input type="hidden" name="jenisbayartunai" id="jenisbayartunai" value="{{ $faktur->jenisbayar }}">
+                                                        <select class="form-control" name="jenisbayartunai_view" id="jenisbayartunai_view" disabled>
                                                             <option @if ($faktur->jenisbayar=="tunai")
                                                                 selected
                                                                 @endif value="tunai">Cash</option>
