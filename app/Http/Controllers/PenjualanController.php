@@ -271,6 +271,12 @@ class PenjualanController extends Controller
     public function editv2($no_fak_penj)
     {
         $no_fak_penj = Crypt::decrypt($no_fak_penj);
+        // $cek = DB::table('historibayar')->where('no_fak_penj', $no_fak_penj)->count();
+        // if ($cek > 0) {
+        //     return Redirect::back()->with(['warning' => 'Data Tidak Bisa Di Edit, Karena Sudah Ada Pembayaran Untuk Transaksi Ini']);
+        // }
+
+
         $faktur = DB::table('penjualan')
             ->select(
                 'penjualan.*',
@@ -2060,19 +2066,6 @@ class PenjualanController extends Controller
                         ]);
                 }
             } else if ($jenistransaksi == "tunai" && $jenisbayar == "transfer") {
-                $hb = DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->get();
-                $no_ref[] = "";
-                foreach ($hb as $d) {
-                    $no_ref[] = $d->nobukti;
-                }
-
-                DB::table('buku_besar')
-                    ->whereIn('no_ref', $no_ref)
-                    ->delete();
-
-
-                DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->delete();
-
                 if (!empty($voucher)) {
                     $nobukti = buatkode($nobukti, $kode_cabang . $tahunini . "-", 6);
                     DB::table('historibayar')
