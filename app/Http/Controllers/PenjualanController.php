@@ -6257,7 +6257,7 @@ class PenjualanController extends Controller
         }
 
         if (Auth::user()->id == 82) {
-            $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB');
+            $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB', 'BTN');
             $query->whereIn('karyawan.kode_cabang', $wilayah_barat);
         } else if (Auth::user()->id == 97) {
             $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
@@ -6373,7 +6373,7 @@ class PenjualanController extends Controller
         }
 
         if (Auth::user()->id == 82) {
-            $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB');
+            $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB', 'BTN');
             $query->whereIn('karyawan.kode_cabang', $wilayah_barat);
         } else if (Auth::user()->id == 97) {
             $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
