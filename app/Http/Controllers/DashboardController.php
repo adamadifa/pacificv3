@@ -65,7 +65,7 @@ class DashboardController extends Controller
     public function dashboardadmin()
     {
 
-        $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB');
+        $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB', 'BTN');
         $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
         $cbg = new Cabang();
         $cabang = $cbg->getCabang(Auth::user()->kode_cabang);
