@@ -6973,6 +6973,9 @@ class PenjualanController extends Controller
         $query->whereBetween('tgltransaksi', [$dari, $sampai]);
         $query->where('jenistransaksi', 'tunai');
         $query->where('jenisbayar', 'transfer');
+        if (!empty($kode_cabang)) {
+            $query->where('karyawan.kode_cabang', $kode_cabang);
+        }
         $tunaitransfer = $query->get();
 
 
