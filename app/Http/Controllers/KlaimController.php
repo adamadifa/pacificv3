@@ -349,6 +349,7 @@ class KlaimController extends Controller
             'KLT' => '1-1118',
             'GRT' => '1-1119',
             'PWK' => '1-1120',
+            'BTN' => '1-1121'
         ];
 
         $akunpsttsm = [
