@@ -557,22 +557,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <table class="table table-hover-animation" style="width:100% !important">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>Kode Barang</th>
-                            <th>Kode Produk</th>
-                            <th>Nama Barang</th>
-                            <th>Harga / Dus</th>
-                            <th>Harga / Pack</th>
-                            <th>Harga / Pcs</th>
-                            <th>Kategori</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="loadbarang"></tbody>
-                </table>
+            <div class="modal-body" id="loadbarang">
             </div>
         </div>
     </div>
