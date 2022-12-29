@@ -91,6 +91,11 @@ class ReturController extends Controller
         return view('retur.create');
     }
 
+    public function createv2()
+    {
+        return view('retur.createv2');
+    }
+
     public function showbarangtemp(Request $request)
     {
         $kode_pelanggan = $request->kode_pelanggan;

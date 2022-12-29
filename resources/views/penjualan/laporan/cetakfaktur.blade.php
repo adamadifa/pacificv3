@@ -163,6 +163,18 @@
                     <td colspan="3" align="center">Penyesuaian</td>
                     <td align="right">{{ rupiah($faktur->penyharga) }}</td>
                 </tr>
+                <?php if (!empty($faktur->ppn)) { ?>
+                <tr>
+                    <td colspan="4"></td>
+                    <td colspan="3" align="center">DPP</td>
+                    <td align="right">{{ rupiah($faktur->subtotal - $faktur->potongan - $faktur->penyharga - $faktur->potistimewa) }}</td>
+                </tr>
+                <tr>
+                    <td colspan="4"></td>
+                    <td colspan="3" align="center">PPN</td>
+                    <td align="right">{{ rupiah($faktur->ppn) }}</td>
+                </tr>
+                <?php } ?>
                 <tr>
                     <td colspan="4"></td>
                     <td colspan="3" align="center">Retur</td>
@@ -299,7 +311,18 @@
                     <td colspan="3" align="center">Diskon</td>
                     <td align="right">{{ rupiah($faktur->potongan) }}</td>
                 </tr>
-
+                <?php if (!empty($faktur->ppn)) { ?>
+                <tr>
+                    <td colspan="4"></td>
+                    <td colspan="3" align="center">DPP</td>
+                    <td align="right">{{ rupiah($faktur->subtotal - $faktur->potongan - $faktur->penyharga - $faktur->potistimewa) }}</td>
+                </tr>
+                <tr>
+                    <td colspan="4"></td>
+                    <td colspan="3" align="center">PPN</td>
+                    <td align="right">{{ rupiah($faktur->ppn) }}</td>
+                </tr>
+                <?php } ?>
                 <tr>
                     <td colspan="4"></td>
                     <td colspan="3" align="center">Total </td>

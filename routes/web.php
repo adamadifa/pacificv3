@@ -1217,6 +1217,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/penjualan/getfaktur', [PenjualanController::class, 'getfaktur']);
     Route::get('/penjualan/create', [PenjualanController::class, 'create']);
     Route::get('/inputpenjualanv2', [PenjualanController::class, 'create_v2']);
+    Route::get('/inputpenjualanppn', [PenjualanController::class, 'create_v2']);
     Route::post('/penjualan/storebarangtemp', [PenjualanController::class, 'storebarangtemp']);
     Route::post('/penjualan/storebarangtempv2', [PenjualanController::class, 'storebarangtempv2']);
     Route::post('/penjualan/deletebarangtemp', [PenjualanController::class, 'deletebarangtemp']);
@@ -1280,6 +1281,7 @@ Route::middleware(['auth'])->group(function () {
     //Retur
     Route::get('/retur', [ReturController::class, 'index']);
     Route::get('/retur/create', [ReturController::class, 'create']);
+    Route::get('/retur/createv2', [ReturController::class, 'createv2']);
     Route::post('/retur/store', [ReturController::class, 'store']);
     Route::post('/retur/showbarangtemp', [ReturController::class, 'showbarangtemp']);
     Route::post('/retur/storebarangtemp', [ReturController::class, 'storebarangtemp']);

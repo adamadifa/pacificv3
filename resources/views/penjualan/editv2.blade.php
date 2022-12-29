@@ -20,6 +20,15 @@
     <div class="content-body">
         <!-- Data list view starts -->
         <!-- DataTable starts -->
+        @if (!empty($faktur->ppn))
+        @php
+        $pajak =1;
+        @endphp
+        @else
+        @php
+        $pajak = 0;
+        @endphp
+        @endif
         @include('layouts.notification')
         <form action="/penjualan/update" method="POST" id="frmPenjualan">
             @csrf
