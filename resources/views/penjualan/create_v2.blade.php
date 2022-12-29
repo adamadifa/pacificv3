@@ -27,7 +27,12 @@
             <input type="hidden" id="cektutuplaporan" name="cektutuplaporan">
             <input type="hidden" id="bruto" name="bruto">
             <input type="hidden" id="subtotal" name="subtotal">
+
+            @if (request()->is(['inputpenjualanppn']))
+            <input type="hidden" id="cekpajak" name="cekpajak" value="1">
+            @else
             <input type="hidden" id="cekpajak" name="cekpajak" value="{{ $pajak }}">
+            @endif
             <div class="row">
                 <div class="col-lg-3 col-sm-12">
                     <div class="row">
@@ -537,22 +542,8 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <table class="table table-hover-animation" style="width:100% !important">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>Kode Barang</th>
-                            <th>Kode Produk</th>
-                            <th>Nama Barang</th>
-                            <th>Harga / Dus</th>
-                            <th>Harga / Pack</th>
-                            <th>Harga / Pcs</th>
-                            <th>Kategori</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="loadbarang"></tbody>
-                </table>
+            <div class="modal-body" id="loadbarang">
+
             </div>
         </div>
     </div>

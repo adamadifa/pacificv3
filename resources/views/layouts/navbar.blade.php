@@ -153,6 +153,7 @@
                     <span class="menu-title">Input Penjualan</span>
                 </a>
             </li>
+
             <li class="{{ request()->is(['penjualan', 'penjualan/*']) ? 'active' : '' }}">
                 <a href="/penjualan"><i class="feather icon-shopping-bag success">
                     </i><span class="menu-item">Data Penjualan</span></a>
@@ -624,6 +625,12 @@
                                 <a href="/inputpenjualanv2">
                                     <i class="feather icon-shopping-cart"></i>
                                     <span class="menu-item">Input Penjualan</span>
+                                </a>
+                            </li>
+                            <li class="{{ request()->is(['inputpenjualanppn']) ? 'active' : '' }}">
+                                <a href="/inputpenjualanppn">
+                                    <i class="feather icon-shopping-cart"></i>
+                                    <span class="menu-item danger">Penjualan (PPN)</span>
                                 </a>
                             </li>
                             @endif

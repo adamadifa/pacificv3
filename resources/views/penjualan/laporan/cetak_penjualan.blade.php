@@ -76,12 +76,14 @@
                 <td rowspan="2">Nama Barang</td>
                 <td colspan="7" align="center">QTY</td>
                 <td rowspan="2">Total</td>
-                <td rowspan="2" style="background-color:#10a743">Retur</td>
+
 
                 <td rowspan="2" style="background-color:#10a743">Penyesuaian</td>
                 <td colspan="5" style="background-color:#a71048">Potongan</td>
                 <td rowspan="2" style="background-color:#10a743">Potongan Istimewa</td>
+                <td rowspan="2" style="background-color:#10a743">DPP</td>
                 <td rowspan="2" style="background-color:#327eab">PPN (11%)</td>
+                <td rowspan="2" style="background-color:#10a743">Retur</td>
                 <td rowspan="2" style="background-color:#10a743">Penjualan Netto</td>
                 <td rowspan="2" style="background-color:#10a743">TUNAI/KREDIT</td>
                 <td rowspan="2" style="background-color:#10a743">Tanggal Input</td>
@@ -118,6 +120,7 @@
             $totalpotongan = 0;
             $totalpotist = 0;
             $totalppn = 0;
+            $totaldpp = 0;
             $netto = 0;
             $totaldus2 = 0;
             $totalpack2 = 0;
@@ -198,6 +201,8 @@
             $totalpotongan = $totalpotongan + $p->potongan;
             $totalpotist = $totalpotist + $p->potistimewa;
             $totalppn = $totalppn + $p->ppn;
+            $dpp = $p->subtotal - $p->potongan - $p->penyharga - $p->potistimewa;
+            $totaldpp = $totaldpp + $dpp;
             $netto = $netto + $p->totalpiutang;
 
             //Subtotal
@@ -263,11 +268,7 @@
                     {{ rupiah($subtotal_1) }}
                 </td>
                 <td align="right" rowspan="{{ $jmlbarang }}">{{ rupiah($p->subtotal) }}</td>
-                <td align="right" rowspan="{{ $jmlbarang }}">
-                    @if (!empty($p->totalretur))
-                    {{ rupiah($p->totalretur) }}
-                    @endif
-                </td>
+
                 <td align="right" rowspan="{{ $jmlbarang }}">
                     @if (!empty($p->penyharga))
                     {{ rupiah($p->penyharga) }}
@@ -304,8 +305,16 @@
                     @endif
                 </td>
                 <td align="right" rowspan="{{ $jmlbarang }}">
+                    {{ rupiah($dpp) }}
+                </td>
+                <td align="right" rowspan="{{ $jmlbarang }}">
                     @if (!empty($p->ppn))
                     {{ rupiah($p->ppn) }}
+                    @endif
+                </td>
+                <td align="right" rowspan="{{ $jmlbarang }}">
+                    @if (!empty($p->totalretur))
+                    {{ rupiah($p->totalretur) }}
                     @endif
                 </td>
                 <td align="right" rowspan="{{ $jmlbarang }}">
@@ -409,7 +418,7 @@
                 <td></td>
                 <td align="right"><?php echo number_format($total, '0', '', '.'); ?></td>
                 <td align="right"><?php echo number_format($total, '0', '', '.'); ?></td>
-                <td align="right"><?php echo number_format($totalretur, '0', '', '.'); ?></td>
+
 
                 <td align="right"><?php echo number_format($totalpenyharga, '0', '', '.'); ?></td>
                 <td align="right"><?php echo number_format($totalpotaida, '0', '', '.'); ?></td>
@@ -418,7 +427,9 @@
                 <td align="right"><?php echo number_format($totalpotsp, '0', '', '.'); ?></td>
                 <td align="right"><?php echo number_format($totalpotongan, '0', '', '.'); ?></td>
                 <td align="right"><?php echo number_format($totalpotist, '0', '', '.'); ?></td>
+                <td align="right"><?php echo number_format($totaldpp, '0', '', '.'); ?></td>
                 <td align="right"><?php echo number_format($totalppn, '0', '', '.'); ?></td>
+                <td align="right"><?php echo number_format($totalretur, '0', '', '.'); ?></td>
                 <td align="right"><?php echo number_format($netto, '0', '', '.'); ?></td>
                 <td></td>
                 <td></td>

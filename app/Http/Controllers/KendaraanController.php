@@ -234,11 +234,13 @@ class KendaraanController extends Controller
     public function getkendaraancab(Request $request)
     {
         $kode_cabang = $request->kode_cabang;
-        if ($kode_cabang == "GRT") {
-            $kode_cabang = "TSM";
-        }
+
         $no_polisi = $request->no_polisi;
-        $kendaraan = Kendaraan::where('kode_cabang', $kode_cabang)->get();
+        if ($kode_cabang == "GRT") {
+            $kendaraan = Kendaraan::whereIn('kode_cabang', ['TSM', 'GRT'])->get();
+        } else {
+            $kendaraan = Kendaraan::where('kode_cabang', $kode_cabang)->get();
+        }
         echo "<option value=''>Pilih Kendaraan</option>";
         echo "<option value='ZL'>ZL - LAINNYA</option>";
         foreach ($kendaraan as $d) {

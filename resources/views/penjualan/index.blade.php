@@ -158,7 +158,10 @@
                             <td>
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     @if (in_array($level,$penjualan_edit))
+
                                     <a class="ml-1" href="/penjualan/{{\Crypt::encrypt($d->no_fak_penj)}}/editv2"><i class="feather icon-edit success"></i></a>
+
+
                                     @if (Auth::user()->level != "salesman")
                                     <a class="ml-1 detailpenjualan" href="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/show"><i class=" feather icon-file-text info"></i></a>
                                     @else
