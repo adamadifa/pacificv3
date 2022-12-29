@@ -163,7 +163,7 @@ class GlobalProvider extends ServiceProvider
 
 
             $tracking_salesman = ['admin'];
-            $map_pelanggan = ['admin'];
+            $map_pelanggan = ['admin', 'manager marketing', 'manager accounting', 'kepala admin', 'kepala penjualan'];
             $scan = ['admin', 'salesman'];
 
             $dashboardadmin = ['admin', 'manager marketing', 'rsm', 'general manager', 'direktur'];
