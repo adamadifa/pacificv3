@@ -50,6 +50,21 @@
                                         </div>
                                     </div>
                                     <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <select name="filter" id="filter" class="form-control">
+                                                    <option value="">Filter</option>
+                                                    <option value="Pembelian">Pembelian</option>
+                                                    <option value="Retur Pengganti">Retur Pengganti</option>
+                                                    <option value="Lainnya">Lainnya</option>
+
+
+
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
                                         <div class="col-lg-8 col-sm-12">
                                             <div class="form-group">
                                                 <button type="submit" name="submit" class="btn btn-primary btn-block"><i class="feather icon-printer"></i> Cetak</button>

@@ -22,7 +22,7 @@ class LaporangudangbahanController extends Controller
         $dari = $request->dari;
         $sampai = $request->sampai;
         $kode_barang = $request->kode_barang;
-
+        $filter = $request->filter;
         $query = Detailpemasukangudangbahan::query();
         $query->select('detail_pemasukan_gb.*', 'tgl_pemasukan', 'nama_barang');
         $query->join('pemasukan_gb', 'detail_pemasukan_gb.nobukti_pemasukan', '=', 'pemasukan_gb.nobukti_pemasukan');
@@ -31,7 +31,9 @@ class LaporangudangbahanController extends Controller
         if (!empty($kode_barang)) {
             $query->where('detail_pemasukan_gb.kode_barang', $kode_barang);
         }
-
+        if (!empty($filter)) {
+            $query->where('pemasukan_gb.departemen', $filter);
+        }
         //$query->orderBy('nama_barang');
         $query->orderBy('tgl_pemasukan');
         $query->orderBy('detail_pemasukan_gb.kode_barang');
