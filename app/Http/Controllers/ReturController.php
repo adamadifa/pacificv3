@@ -7,6 +7,7 @@ use App\Models\Harga;
 use App\Models\Retur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -93,7 +94,12 @@ class ReturController extends Controller
 
     public function createv2()
     {
-        return view('retur.createv2');
+        $kodepelanggan = Cookie::get('kodepelanggan');
+        $kode_pelanggan = $kodepelanggan != null ? Crypt::decrypt($kodepelanggan) : '';
+        $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)
+            ->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan')
+            ->first();
+        return view('retur.createv2', compact('pelanggan'));
     }
 
     public function showbarangtemp(Request $request)
