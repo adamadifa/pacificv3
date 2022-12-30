@@ -55,11 +55,11 @@
                                 @else
                                 <select name="kategori_harga" id="" class="form-control">
                                     <option value="">Kategori Harga</option>
-                                    <option {{ (Request('kategori_harga')=='NORMAL' ? 'selected':'')}} value="NORMAL">HARGA LAMA</option>
-                                    <option {{ (Request('kategori_harga')=='TO' ? 'selected':'')}} value="TO">TO</option>
                                     <option {{ (Request('kategori_harga')=='CANVASER' ? 'selected':'')}} value="CANVASER">CANVASER</option>
+                                    <option {{ (Request('kategori_harga')=='TO' ? 'selected':'')}} value="TO">TO</option>
+                                    {{-- <option {{ (Request('kategori_harga')=='NORMAL' ? 'selected':'')}} value="NORMAL">HARGA LAMA</option>
                                     <option {{ (Request('kategori_harga')=='RETAIL' ? 'selected':'')}} value="RETAIL">RETAIL</option>
-                                    <option {{ (Request('kategori_harga')=='MOTORIS' ? 'selected':'')}} value="MOTORIS">MOTORIS</option>
+                                    <option {{ (Request('kategori_harga')=='MOTORIS' ? 'selected':'')}} value="MOTORIS">MOTORIS</option> --}}
                                 </select>
                                 @endif
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Barang;
 use App\Models\Cabang;
 use App\Models\Harga;
+use App\Models\Harganew;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -29,11 +30,43 @@ class HargaController extends Controller
         View::share('cabang', $this->cabang);
     }
 
+    // function index(Request $request)
+    // {
+    //     $query = Harga::query();
+    //     if ($this->cabang != "PCF") {
+    //         $query->where('barang.kode_cabang', $this->cabang);
+    //     }
+    //     if (isset($request->submit)) {
+    //         if (!empty($request->kode_cabang)) {
+    //             $query->where('kode_cabang', $request->kode_cabang);
+    //         }
+
+    //         if (!empty($request->kategori_harga)) {
+    //             $query->where('kategori_harga', $request->kategori_harga);
+    //         }
+
+    //         if (!empty($request->mitradistribusi)) {
+    //             $query->where('kode_pelanggan', $request->mitradistribusi);
+    //         }
+    //     }
+    //     $query->where('barang.status_harga', 1);
+    //     $harga = $query->paginate(15);
+    //     $harga->appends($request->all());
+    //     $cabang = Cabang::all();
+    //     $md = DB::table('barang')
+    //         ->select('barang.kode_pelanggan', 'nama_pelanggan')
+    //         ->join('pelanggan', 'barang.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+    //         ->groupByRaw('barang.kode_pelanggan,nama_pelanggan')
+    //         ->get();
+    //     return view('harga.index', compact('harga', 'cabang', 'md'));
+    // }
+
+
     function index(Request $request)
     {
-        $query = Harga::query();
+        $query = Harganew::query();
         if ($this->cabang != "PCF") {
-            $query->where('barang.kode_cabang', $this->cabang);
+            $query->where('barang_new.kode_cabang', $this->cabang);
         }
         if (isset($request->submit)) {
             if (!empty($request->kode_cabang)) {
@@ -48,14 +81,14 @@ class HargaController extends Controller
                 $query->where('kode_pelanggan', $request->mitradistribusi);
             }
         }
-        $query->where('barang.status_harga', 1);
+        $query->where('barang_new.status_harga', 1);
         $harga = $query->paginate(15);
         $harga->appends($request->all());
         $cabang = Cabang::all();
-        $md = DB::table('barang')
-            ->select('barang.kode_pelanggan', 'nama_pelanggan')
-            ->join('pelanggan', 'barang.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
-            ->groupByRaw('barang.kode_pelanggan,nama_pelanggan')
+        $md = DB::table('barang_new')
+            ->select('barang_new.kode_pelanggan', 'nama_pelanggan')
+            ->join('pelanggan', 'barang_new.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+            ->groupByRaw('barang_new.kode_pelanggan,nama_pelanggan')
             ->get();
         return view('harga.index', compact('harga', 'cabang', 'md'));
     }
