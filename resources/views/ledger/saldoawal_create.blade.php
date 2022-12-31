@@ -46,7 +46,11 @@
                     <option value="<?php echo $thn; ?>"><?php echo $thn; ?></option>
                     <?php
                     }
-                    ?>
+                    if($hariini == "12-31"){
+                                            $t = date('Y') + 1;
+                                        ?>
+                    <option value="{{ $t }}">{{ $t }}</option>
+                    <?php } ?>
                 </select>
             </div>
         </div>
