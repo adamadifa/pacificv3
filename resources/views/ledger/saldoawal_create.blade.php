@@ -41,6 +41,7 @@
                     <option value="">Tahun</option>
                     <?php
                     $tahunmulai = 2020;
+                    $hariini = date("m-d");
                     for ($thn = $tahunmulai; $thn <= date('Y'); $thn++) {
                     ?>
                     <option value="<?php echo $thn; ?>"><?php echo $thn; ?></option>
