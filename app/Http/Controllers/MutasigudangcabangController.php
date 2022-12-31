@@ -997,11 +997,11 @@ class MutasigudangcabangController extends Controller
                 OR tgl_mutasi_gudang_cabang BETWEEN '$tanggal' AND CURDATE()
                     AND kode_cabang = '$cabang'
                 AND `jenis_mutasi` = 'HUTANG KIRIM'
-                GROUP BY detail_mutasi_gudang_cabang.kode_produk
                 OR tgl_mutasi_gudang_cabang BETWEEN '$tanggal' AND CURDATE()
                     AND kode_cabang = '$cabang'
                 AND `jenis_mutasi` = 'PL HUTANG KIRIM'
                 GROUP BY detail_mutasi_gudang_cabang.kode_produk
+
                 ) mutasi"),
                 function ($join) {
                     $join->on('master_barang.kode_produk', '=', 'mutasi.kode_produk');
