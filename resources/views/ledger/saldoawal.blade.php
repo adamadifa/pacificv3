@@ -56,12 +56,17 @@
                                     <select class="form-control" id="tahun" name="tahun">
                                         <?php
                                         $tahunmulai = 2020;
+                                        $hariini = date("m-d");
                                         for ($thn = $tahunmulai; $thn <= date('Y'); $thn++) {
                                         ?>
                                         <option {{ Request('tahun') == $thn ? 'selected' : '' }} value="<?php echo $thn; ?>"><?php echo $thn; ?></option>
                                         <?php
                                         }
+                                        if($hariini == "12-31"){
+                                            $t = date('Y') + 1;
                                         ?>
+                                        <option value="{{ $t }}">{{ $t }}</option>
+                                        <?php } ?>
                                     </select>
                                 </div>
                             </div>
