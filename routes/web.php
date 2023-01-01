@@ -1079,6 +1079,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/harga/show', [HargaController::class, 'show']);
     Route::delete('/harga/{kode_barang}/delete', [HargaController::class, 'delete']);
     Route::post('/getbarangcabang', [HargaController::class, 'getbarangcabang']);
+    Route::post('/getbarangcabangretur', [HargaController::class, 'getbarangcabangretur']);
 
 
 
@@ -1284,7 +1285,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/retur/createv2', [ReturController::class, 'createv2']);
     Route::post('/retur/store', [ReturController::class, 'store']);
     Route::post('/retur/showbarangtemp', [ReturController::class, 'showbarangtemp']);
+    Route::post('/retur/showbarangtempv2', [ReturController::class, 'showbarangtempv2']);
     Route::post('/retur/storebarangtemp', [ReturController::class, 'storebarangtemp']);
+    Route::post('/retur/storebarangtempv2', [ReturController::class, 'storebarangtempv2']);
     Route::post('/cekreturtemp', [ReturController::class, 'cekreturtemp']);
     Route::post('/retur/updatedetailtemp', [ReturController::class, 'updatedetailtemp']);
     Route::post('/retur/show', [ReturController::class, 'show']);

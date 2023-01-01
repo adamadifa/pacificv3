@@ -827,8 +827,8 @@ class PelangganController extends Controller
         DB::beginTransaction();
         try {
 
-            if ($radius > 200) {
-                echo 'Jarak Anda dengan toko Saat Ini adalah ' . $radius . "Meter Minimal Jarak Untuk Checkin Adalah Maksimal 200 Meter";
+            if ($radius > 20) {
+                echo 'Jarak Anda dengan toko Saat Ini adalah ' . $radius . "Meter Minimal Jarak Untuk Checkin Adalah Maksimal 20 Meter";
             } else {
                 if ($status_location == NULL) {
                     DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)->update([

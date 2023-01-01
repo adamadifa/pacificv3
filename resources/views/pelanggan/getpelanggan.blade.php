@@ -71,7 +71,7 @@
                         <a href="/inputpenjualanv2" class="btn btn-success btn-block"><i class="feather icon-shopping-cart mr-1"></i>Input Penjualan</a>
                     </div>
                     <div class="col-6">
-                        <a href="#" class="btn btn-danger btn-block"><i class="feather icon-refresh-cw mr-1"></i>Input Retur</a>
+                        <a href="/retur/createv2" class="btn btn-danger btn-block"><i class="feather icon-refresh-cw mr-1"></i>Input Retur</a>
                     </div>
                     @else
                     <div class="col-12" id="checkinsection">
@@ -387,7 +387,10 @@
                             , text: respond
                             , icon: 'error'
 
-                        , });
+                        , }).then(() => {
+                            /* Read more about isConfirmed, isDenied below */
+                            location.reload();
+                        });
                     }
                 }
             });

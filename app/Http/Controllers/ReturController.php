@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cabang;
 use App\Models\Harga;
 use App\Models\Retur;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cookie;
@@ -113,6 +114,22 @@ class ReturController extends Controller
         return view('retur.showbarangtemp', compact('barang'));
     }
 
+    public function showbarangtempv2(Request $request)
+    {
+        $kode_pelanggan = $request->kode_pelanggan;
+        $detailtemp = DB::table('detailretur_temp')
+            ->select('detailretur_temp.*', 'nama_barang', 'isipcsdus', 'isipack', 'isipcs')
+            ->join('barang', 'detailretur_temp.kode_barang', '=', 'barang.kode_barang')
+            ->where('detailretur_temp.kode_pelanggan', $kode_pelanggan)
+            ->get();
+
+        if (Auth::user()->level == "salesman") {
+            return view('retur.showbarangtempv3', compact('detailtemp'));
+        } else {
+            return view('retur.showbarangtempv2', compact('detailtemp'));
+        }
+    }
+
     public function storebarangtemp(Request $request)
     {
         $id_user = Auth::user()->id;
@@ -138,6 +155,43 @@ class ReturController extends Controller
             }
         } else {
             echo 1;
+        }
+    }
+
+
+
+    public function storebarangtempv2(Request $request)
+    {
+        $kode_barang = $request->kode_barang;
+        $harga_dus = $request->hargadus;
+        $harga_pack = $request->hargapack;
+        $harga_pcs = $request->hargapcs;
+        $jumlah = $request->jumlah;
+        $subtotal = $request->subtotal;
+        $id_admin = Auth::user()->id;
+        $kode_pelanggan = $request->kode_pelanggan;
+        $data = [
+            'kode_barang' => $kode_barang,
+            'jumlah' => $jumlah,
+            'harga_dus' => $harga_dus,
+            'harga_pack' => $harga_pack,
+            'harga_pcs' => $harga_pcs,
+            'subtotal' => $subtotal,
+            'id_admin' => $id_admin,
+            'kode_pelanggan' => $kode_pelanggan
+        ];
+
+
+        $cek = DB::table('detailretur_temp')->where('kode_barang', $kode_barang)->where('id_admin', $id_admin)->where('kode_pelanggan', $kode_pelanggan)->count();
+        if ($cek > 0) {
+            echo 1;
+        } else {
+            try {
+                DB::table('detailretur_temp')->insert($data);
+                echo 0;
+            } catch (Exception $e) {
+                echo $e;
+            }
         }
     }
 

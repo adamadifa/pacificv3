@@ -147,12 +147,12 @@
                     <span class="menu-item">Pelanggan</span>
                 </a>
             </li>
-            <li class=" {{ request()->is(['inputpenjualanv2']) ? 'active' : '' }} nav-item">
-                <a href="/inputpenjualanv2">
-                    <i class="feather icon-shopping-cart danger"></i>
-                    <span class="menu-title">Input Penjualan</span>
-                </a>
-            </li>
+            {{-- <li class=" {{ request()->is(['inputpenjualanv2']) ? 'active' : '' }} nav-item">
+            <a href="/inputpenjualanv2">
+                <i class="feather icon-shopping-cart danger"></i>
+                <span class="menu-title">Input Penjualan</span>
+            </a>
+            </li> --}}
 
             <li class="{{ request()->is(['penjualan', 'penjualan/*']) ? 'active' : '' }}">
                 <a href="/penjualan"><i class="feather icon-shopping-bag success">
