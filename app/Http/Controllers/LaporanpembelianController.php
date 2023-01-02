@@ -577,7 +577,7 @@ class LaporanpembelianController extends Controller
             // Mendefinisikan nama file ekspor "hasil-export.xls"
             header("Content-Disposition: attachment; filename=Rekap Akun $dari-$sampai.xls");
         }
-        return view('pembelian.laporan.cetak_rekapakun', compact('dari', 'sampai', 'pmb', 'hutang'));
+        return view('pembelian.laporan.cetak_rekapakun', compact('dari', 'sampai', 'pmb', 'hutang', 'jurnalkoreksi'));
     }
 
     public function rekapkontrabon()
