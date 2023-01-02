@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Rekap Akun {{ date("d-m-y") }}</title>
+    <title>Rekap Akun Pembelian {{ date("d-m-y") }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -36,7 +36,7 @@
 </head>
 <body>
     <b style="font-size:14px;">
-        REKAP AKUN<br>
+        REKAP AKUN PEMBELIAN<br>
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
         <br>
         <br>
@@ -101,10 +101,26 @@
                 <td style="text-align: right">{{ rupiah($hutangkredit) }}</td>
             </tr>
             @endforeach
+            @php
+            $totaljurnaldebet = 0;
+            $totaljurnalkredit = 0;
+            @endphp
+            @foreach ($jurnalkoreksi as $d)
+            @php
+            $totaljurnaldebet += $d->jurnaldebet;
+            $totaljurnalkredit += $d->jurnalkredit;
+            @endphp
+            <tr>
+                <td>{{ $d->kode_akun }}</td>
+                <td>{{ $d->nama_akun }}</td>
+                <td style="text-align: right">{{ rupiah($d->jurnaldebet) }}</td>
+                <td style="text-align: right">{{ rupiah($d->jurnalkredit) }}</td>
+            </tr>
+            @endforeach
             <tr bgcolor="#024a75" style="color:white">
                 <td colspan="2"><b>TOTAL</b></td>
-                <td align="right"><b><?php echo desimal($totaldebet + $totalhd); ?></b></td>
-                <td align="right"><b><?php echo desimal($totalkredit + $totalhk); ?></b></td>
+                <td align="right"><b><?php echo desimal($totaldebet + $totalhd + $totaljurnaldebet); ?></b></td>
+                <td align="right"><b><?php echo desimal($totalkredit + $totalhk + $totaljurnalkredit); ?></b></td>
             </tr>
         </tbody>
 
