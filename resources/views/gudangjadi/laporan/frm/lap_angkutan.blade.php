@@ -51,6 +51,7 @@
                                                     <option value="MITRA KOMANDO">ANGKUTAN MITRA KOMANDO</option>
                                                     <option value="ARP MANDIRI">ANGKUTAN ARP MANDIRI</option>
                                                     <option value="CAHAYA BIRU">ANGKUTAN CAHAYA BIRU</option>
+                                                    <option value="LAHANG JAYA ABADI">LAHANG JAYA ABADI</option>
                                                 </select>
                                             </div>
                                         </div>
