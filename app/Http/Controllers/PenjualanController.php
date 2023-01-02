@@ -694,7 +694,7 @@ class PenjualanController extends Controller
             } else {
                 $promo = NULL;
                 if (isset($request->check)) {
-                    if ($request->check = "true") {
+                    if ($request->check == "true") {
                         $wherepromo = NULL;
                     } else {
                         $wherepromo = 1;
@@ -780,7 +780,7 @@ class PenjualanController extends Controller
             } else {
                 $promo = NULL;
                 if (isset($request->check)) {
-                    if ($request->check = "true") {
+                    if ($request->check == "true") {
                         $wherepromo = NULL;
                     } else {
                         $wherepromo = 1;
