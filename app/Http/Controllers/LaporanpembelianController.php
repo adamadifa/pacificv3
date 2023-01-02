@@ -569,7 +569,7 @@ class LaporanpembelianController extends Controller
             ->groupByRaw('jurnal_koreksi.kode_akun,nama_akun')
             ->get();
 
-        dd($jurnalkoreksi);
+
 
         if (isset($_POST['export'])) {
             // Fungsi header dengan mengirimkan raw data excel
