@@ -547,6 +547,27 @@ class LaporanpembelianController extends Controller
             ->get();
 
 
+        $akunpembelian = DB::table('detail_pembelian')
+            ->select('detail_pembelian.kode_akun')
+            ->join('pembelian', 'detail_pembelian.kode_akun', '=', 'pembelian.kode_akun')
+            ->whereBetween('tgl_pembelian', [$dari, $sampai])
+            ->get();
+
+        $akun_pmb = [];
+        foreach ($akunpembelian as $d) {
+            $akun_pmb[] = $d->kode_akun;
+        }
+        $jurnalkoreksi = DB::table('jurnal_koreksi')
+            ->selectRaw("jurnal_koreksi.kode_akun,nama_akun,
+            SUM(IF(status_dk='K',qty*harga,0)) as jurnalkredit,
+            SUM(IF(status_dk='D',qty*harga,0)) as jurnaldebet")
+            ->join('coa', 'jurnal_koreksi.kode_akun', 'coa.kode_akun')
+            ->whereNotIn('jurnal_koreksi.kode_akun', $akun_pmb)
+            ->whereNotIn('jurnal_koreksi.kode_akun', ['2-1200', '2-1300'])
+            ->get();
+
+        dd($jurnalkoreksi);
+
         if (isset($_POST['export'])) {
             // Fungsi header dengan mengirimkan raw data excel
             header("Content-type: application/vnd-ms-excel");
