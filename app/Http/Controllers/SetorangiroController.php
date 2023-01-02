@@ -127,7 +127,7 @@ class SetorangiroController extends Controller
             ->whereRaw('LEFT(kode_setoranpusat,4)="SB' . $tahunini . '"')
             ->orderBy('kode_setoranpusat', 'desc')
             ->first();
-        $last_kode_setoranpusat = $setoranpusat->kode_setoranpusat;
+        $last_kode_setoranpusat = $setoranpusat != null ? $setoranpusat->kode_setoranpusat : '';
         $kode_setoranpusat   = buatkode($last_kode_setoranpusat, 'SB' . $tahunini, 5);
 
         $data = array(
