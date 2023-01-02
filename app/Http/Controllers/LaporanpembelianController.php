@@ -565,6 +565,7 @@ class LaporanpembelianController extends Controller
             ->join('coa', 'jurnal_koreksi.kode_akun', 'coa.kode_akun')
             ->whereNotIn('jurnal_koreksi.kode_akun', $akun_pmb)
             ->whereNotIn('jurnal_koreksi.kode_akun', ['2-1200', '2-1300'])
+            ->whereBetween('tgl_jurnalkoreksi', [$dari, $sampai])
             ->groupByRaw('jurnal_koreksi.kode_akun,nama_akun')
             ->get();
 
