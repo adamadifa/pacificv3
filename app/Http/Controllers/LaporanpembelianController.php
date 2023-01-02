@@ -551,6 +551,7 @@ class LaporanpembelianController extends Controller
             ->select('detail_pembelian.kode_akun')
             ->join('pembelian', 'detail_pembelian.kode_akun', '=', 'pembelian.kode_akun')
             ->whereBetween('tgl_pembelian', [$dari, $sampai])
+            ->groupBy('detailpembelian.kode_akun')
             ->get();
 
         $akun_pmb = [];
