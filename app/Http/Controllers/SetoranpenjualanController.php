@@ -385,7 +385,7 @@ class SetoranpenjualanController extends Controller
             ->whereRaw('LEFT(kode_setoran,4)="SP' . $tahunini . '"')
             ->orderBy('kode_setoran', 'desc')
             ->first();
-        $lastkode_setoran = $setoranpenjualan->kode_setoran;
+        $lastkode_setoran = $setoranpenjualan != null ? $setoranpenjualan->kode_setoran : '';
         $kode_setoran = buatkode($lastkode_setoran, 'SP' . $tahunini, 5);
         $data = array(
             'kode_setoran'    => $kode_setoran,
