@@ -68,7 +68,7 @@ class PembayaranController extends Controller
             ->orderBy("nobukti", "desc")
             ->first();
 
-        $lastnobukti = $historibayar->nobukti;
+        $lastnobukti = $historibayar != null ? $historibayar->nobukti : '';
 
         $nobukti  = buatkode($lastnobukti, $kode_cabang . $tahunini . "-", 6);
 
