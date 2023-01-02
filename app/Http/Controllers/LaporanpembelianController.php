@@ -523,7 +523,7 @@ class LaporanpembelianController extends Controller
         // $jurnalkoreksi = $query2->get();
 
         $hutang = DB::table('detail_pembelian')
-            ->selectRaw("pembelian.kode_akun,nama_akund,IFNULL(jurnaldebet,0) as jurnaldebet,
+            ->selectRaw("pembelian.kode_akun,nama_akun,IFNULL(jurnaldebet,0) as jurnaldebet,
             IFNULL(jurnalkredit,0) as jurnalkredit,
             SUM(IF( STATUS = 'PMB',( detail_pembelian.qty * detail_pembelian.harga ) + penyesuaian, 0 )) AS pmb,
             SUM(IF( STATUS = 'PNJ',( detail_pembelian.qty * detail_pembelian.harga ) + penyesuaian, 0 )) AS pnj")
