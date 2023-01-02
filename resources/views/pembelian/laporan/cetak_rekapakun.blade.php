@@ -89,7 +89,7 @@
             @endphp
             @foreach ($hutang as $d)
             @php
-            $hutangkredit = $d->pmb - $d->pnj + $d->junralkredit;
+            $hutangkredit = $d->pmb - $d->pnj + $d->jurnalkredit;
             $hutangdebet = $d->jurnaldebet;
             $totalhk += $hutangkredit;
             $totalhd += $hutangdebet;
