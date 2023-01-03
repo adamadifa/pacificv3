@@ -81,7 +81,11 @@
             var isipcsdus = $(this).attr("isipcsdus");
             var isipcs = $(this).attr("isipcs");
             var nama_pelanggan = $("#nama_pelanggan").val();
-
+            if ($('#promo').is(":checked")) {
+                var harga_dus = 0;
+                var harga_pack = 0;
+                var harga_pcs = 0;
+            }
             $("#kode_barang").val(kode_barang);
             $("#nama_barang").val(nama_barang);
             $("#harga_dus").val(harga_dus);

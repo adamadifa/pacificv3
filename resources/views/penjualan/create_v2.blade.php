@@ -28,11 +28,12 @@
             <input type="hidden" id="bruto" name="bruto">
             <input type="hidden" id="subtotal" name="subtotal">
 
-            @if (request()->is(['inputpenjualanppn']))
+            {{-- @if (request()->is(['inputpenjualanppn']))
             <input type="hidden" id="cekpajak" name="cekpajak" value="1">
             @else
             <input type="hidden" id="cekpajak" name="cekpajak" value="{{ $pajak }}">
-            @endif
+            @endif --}}
+            <input type="hidden" id="cekpajak" name="cekpajak" value="{{ $pajak }}">
             <div class="row">
                 <div class="col-lg-3 col-sm-12">
                     <div class="row">
