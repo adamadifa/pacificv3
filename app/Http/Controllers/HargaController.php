@@ -482,13 +482,13 @@ class HargaController extends Controller
                 ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')->where('status', 1)
                 ->get();
 
-            $barangnew = DB::table('barang_new')
-                ->select('barang_new.*')
-                ->where('kode_cabang', $kode_cabang)
-                ->where('kode_pelanggan', $kode_pelanggan)
-                ->join('master_barang', 'barang_new.kode_produk', '=', 'master_barang.kode_produk')->where('barang_new.status_harga', 1)
-                ->orderBy('barang_new.kode_produk', 'asc')
-                ->get();
+            // $barangnew = DB::table('barang_new')
+            //     ->select('barang_new.*')
+            //     ->where('kode_cabang', $kode_cabang)
+            //     ->where('kode_pelanggan', $kode_pelanggan)
+            //     ->join('master_barang', 'barang_new.kode_produk', '=', 'master_barang.kode_produk')->where('barang_new.status_harga', 1)
+            //     ->orderBy('barang_new.kode_produk', 'asc')
+            //     ->get();
         } else {
             if ($kategori_salesman == "TOCANVASER") {
                 $barang = Harga::orderby('nama_barang', 'asc')
@@ -499,15 +499,15 @@ class HargaController extends Controller
                     ->orwhere('kode_cabang', $kode_cabang)
                     ->where('kategori_harga', 'CANVASER')
                     ->get();
-                $barangnew = DB::table('barang_new')
-                    ->select('barang_new.*')
-                    ->join('master_barang', 'barang_new.kode_produk', '=', 'master_barang.kode_produk')->where('barang_new.status_harga', 1)
-                    ->where('kode_cabang', $kode_cabang)
-                    ->where('kategori_harga', 'TO')
-                    ->orwhere('kode_cabang', $kode_cabang)
-                    ->where('kategori_harga', 'CANVASER')
-                    ->orderby('barang_new.kode_produk', 'asc')
-                    ->get();
+                // $barangnew = DB::table('barang_new')
+                //     ->select('barang_new.*')
+                //     ->join('master_barang', 'barang_new.kode_produk', '=', 'master_barang.kode_produk')->where('barang_new.status_harga', 1)
+                //     ->where('kode_cabang', $kode_cabang)
+                //     ->where('kategori_harga', 'TO')
+                //     ->orwhere('kode_cabang', $kode_cabang)
+                //     ->where('kategori_harga', 'CANVASER')
+                //     ->orderby('barang_new.kode_produk', 'asc')
+                //     ->get();
             } else {
                 $barang = Harga::orderby('nama_barang', 'asc')
                     ->select('barang.*')
@@ -516,20 +516,20 @@ class HargaController extends Controller
                     ->where('kategori_harga', $kategori_salesman)
                     ->get();
 
-                $barangnew = DB::table('barang_new')
-                    ->select('barang_new.*')
-                    ->join('master_barang', 'barang_new.kode_produk', '=', 'master_barang.kode_produk')->where('barang_new.status_harga', 1)
-                    ->where('kode_cabang', $kode_cabang)
-                    ->where('kategori_harga', $kategori_salesman)
-                    ->orderBy('barang_new.kode_produk', 'asc')
-                    ->get();
+                // $barangnew = DB::table('barang_new')
+                //     ->select('barang_new.*')
+                //     ->join('master_barang', 'barang_new.kode_produk', '=', 'master_barang.kode_produk')->where('barang_new.status_harga', 1)
+                //     ->where('kode_cabang', $kode_cabang)
+                //     ->where('kategori_harga', $kategori_salesman)
+                //     ->orderBy('barang_new.kode_produk', 'asc')
+                //     ->get();
             }
         }
 
         if (Auth::user()->level == "salesman") {
             return view('harga.getbarangsalesmanretur', compact('barang'));
         } else {
-            return view('harga.getbarangcabangretur', compact('barang', 'barangnew'));
+            return view('harga.getbarangcabangretur', compact('barang'));
         }
     }
 }
