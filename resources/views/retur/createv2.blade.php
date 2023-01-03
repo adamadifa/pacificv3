@@ -42,7 +42,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="Tanggal Retur" field="tglretur" icon="feather icon-calendar" readonly value="{{ date('Y-m-d') }}" />
+                                            <x-inputtext label="Tanggal Retur" field="tglretur" icon="feather icon-calendar" readonly datepicker" />
                                         </div>
                                     </div>
                                     <div class="row">
