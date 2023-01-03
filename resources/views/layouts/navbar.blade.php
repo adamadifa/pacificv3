@@ -621,18 +621,23 @@
                                     <span class="menu-item">Input Penjualan</span>
                                 </a>
                             </li> --}}
-                            <li class="{{ request()->is(['inputpenjualanv2']) ? 'active' : '' }}">
-                                <a href="/inputpenjualanv2">
-                                    <i class="feather icon-shopping-cart"></i>
-                                    <span class="menu-item">Input Penjualan</span>
-                                </a>
-                            </li>
+                            @if (in_array(Auth::user()->kode_cabang,$cabangpkp))
                             <li class="{{ request()->is(['inputpenjualanppn']) ? 'active' : '' }}">
                                 <a href="/inputpenjualanppn">
                                     <i class="feather icon-shopping-cart"></i>
                                     <span class="menu-item danger">Penjualan (PPN)</span>
                                 </a>
                             </li>
+                            @else
+                            <li class="{{ request()->is(['inputpenjualanv2']) ? 'active' : '' }}">
+                                <a href="/inputpenjualanv2">
+                                    <i class="feather icon-shopping-cart"></i>
+                                    <span class="menu-item">Input Penjualan</span>
+                                </a>
+                            </li>
+                            @endif
+
+
                             @endif
                             @if (in_array($level, $penjualan_view))
                             <li class="{{ request()->is(['penjualan', 'penjualan/*']) ? 'active' : '' }}">

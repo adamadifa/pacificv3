@@ -140,7 +140,7 @@ class GlobalProvider extends ServiceProvider
                 $users = null;
             }
 
-            // $cabangpkp = ['TSM', 'BDG', 'PWT', 'BGR'];
+            $cabangpkp = ['TSM', 'BDG', 'PWT', 'BGR'];
             // if (in_array($getcbg, $cabangpkp)) {
             //     $pajak = 1;
             // } else {
@@ -1211,7 +1211,8 @@ class GlobalProvider extends ServiceProvider
                 'tracking_salesman' => $tracking_salesman,
                 'map_pelanggan' => $map_pelanggan,
                 'scan' => $scan,
-                'pajak' => $pajak
+                'pajak' => $pajak,
+                'cabangpkp' => $cabangpkp
 
             ];
             View::share($shareddata);
