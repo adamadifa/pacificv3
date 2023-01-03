@@ -80,6 +80,7 @@
             var harga_pcs = $(this).attr("harga_pcs");
             var isipcsdus = $(this).attr("isipcsdus");
             var isipcs = $(this).attr("isipcs");
+            var nama_pelanggan = $("#nama_pelanggan").val();
             $("#kode_barang").val(kode_barang);
             $("#nama_barang").val(nama_barang);
             $("#harga_dus").val(harga_dus);
@@ -96,8 +97,13 @@
                 $("#harga_pack").prop("readonly", true);
                 $("#jml_pack").prop("readonly", true);
             } else {
-                $("#harga_pack").prop("readonly", false);
-                $("#jml_pack").prop("readonly", false);
+                if (nama_pelanggan.includes('KPBN')) {
+                    $("#harga_pack").prop("readonly", false);
+                    $("#jml_pack").prop("readonly", false);
+                } else {
+                    $("#harga_pack").prop("readonly", true);
+                    $("#jml_pack").prop("readonly", false);
+                }
             }
             $("#mdlbarang").modal("hide");
         });
