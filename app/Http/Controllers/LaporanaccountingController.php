@@ -949,7 +949,7 @@ class LaporanaccountingController extends Controller
         $query->join('coa', 'jurnal_umum.kode_akun', '=', 'coa.kode_akun');
         $query->whereBetween('tanggal', [$dari, $sampai]);
         if (Auth::user()->level == "general affair") {
-            $query->where('kode_dept', 'GA');
+            $query->where('kode_dept', 'GAF');
         }
         $query->orderBy('tanggal');
         $query->orderBy('kode_jurnal');
