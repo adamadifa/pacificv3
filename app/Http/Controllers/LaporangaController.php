@@ -53,6 +53,12 @@ class LaporangaController extends Controller
 
         $kendaraan = Kendaraan::where('no_polisi', $no_polisi)->first();
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Penjualan Periode $dari-$sampai.xls");
+        }
         return view('laporanga.cetak_servicekendaraan', compact('service', 'kendaraan', 'cabang', 'dari', 'sampai'));
     }
 
@@ -145,7 +151,12 @@ class LaporangaController extends Controller
 
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
         $namabulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
-
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Penjualan Periode $dari-$sampai.xls");
+        }
         if ($jenislaporan == 1) {
             return view('laporanga.cetak_rekapbadstok', compact('bulan', 'tahun', 'badstok', 'cabang', 'namabulan'));
         } else {
