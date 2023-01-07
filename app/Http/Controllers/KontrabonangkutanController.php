@@ -222,8 +222,9 @@ class KontrabonangkutanController extends Controller
         $nobukti_bukubesar_bank_hutang = buatkode($nobukti_bukubesar_hutang, 'GJ' . $bulan . $tahun, 6);
 
 
-        $kontrabon = DB::table('detail_kontrabon_angkutan')
-            ->selectRaw("SUM(IF(MONTH(tgl_mutasi_gudang)='$bulan' AND YEAR(tgl_mutasi_gudang)='$thn',(tarif+bs+tepung),0)) as jmlangkutan,
+        $kontrabon = DB::table('detail_kontrabon_angkutand')
+            ->selectRaw("
+            SUM(IF(MONTH(tgl_mutasi_gudang)='$bulan' AND YEAR(tgl_mutasi_gudang)='$thn',(tarif+bs+tepung),0)) as jmlangkutan,
             SUM(IF(MONTH(tgl_mutasi_gudang)!='$bulan' AND YEAR(tgl_mutasi_gudang)>='$thn',(tarif+bs+tepung),0)) as jmlhutang")
             ->join('angkutan', 'detail_kontrabon_angkutan.no_surat_jalan', '=', 'angkutan.no_surat_jalan')
             ->join('mutasi_gudang_jadi', 'angkutan.no_surat_jalan', '=', 'mutasi_gudang_jadi.no_dok')
