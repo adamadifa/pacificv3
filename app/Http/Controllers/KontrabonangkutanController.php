@@ -288,6 +288,8 @@ class KontrabonangkutanController extends Controller
                 DB::table('buku_besar')->insert($databukubesar);
                 DB::table('buku_besar')->insert($databukubesarbank);
                 DB::table('ledger_bank')->insert($data);
+
+                echo "1";
             }
 
             if (!empty($jmlhutang)) {
@@ -335,6 +337,8 @@ class KontrabonangkutanController extends Controller
                 DB::table('buku_besar')->insert($databukubesar);
                 DB::table('buku_besar')->insert($databukubesarbank);
                 DB::table('ledger_bank')->insert($data);
+
+                echo "2";
             }
 
             $dataangkutan = [
@@ -343,6 +347,7 @@ class KontrabonangkutanController extends Controller
 
             DB::table('angkutan')->whereIn('no_surat_jalan', $no_surat_jalan)->update($dataangkutan);
             DB::table('kontrabon_angkutan')->where('no_kontrabon', $no_kontrabon)->update(['status' => 1]);
+            die;
             DB::commit();
             //die;
             return Redirect::back()->with(['success' => 'Data Kontrabon Berhasil di Simpan']);
