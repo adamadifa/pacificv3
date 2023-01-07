@@ -229,6 +229,8 @@ class KontrabonangkutanController extends Controller
             ->join('mutasi_gudang_jadi', 'angkutan.no_surat_jalan', '=', 'mutasi_gudang_jadi.no_dok')
             ->where('no_kontrabon', $no_kontrabon)
             ->first();
+
+        dd($kontrabon);
         $detail = DB::table('detail_kontrabon_angkutan')->where('no_kontrabon', $no_kontrabon)->get();
         foreach ($detail as $d) {
             $no_surat_jalan[] = $d->no_surat_jalan;
