@@ -359,7 +359,7 @@ class KontrabonangkutanController extends Controller
         $detail = DB::table('detail_kontrabon_angkutan')->where('no_kontrabon', $no_kontrabon)->get();
         $ledger = DB::table('ledger_bank')->where('no_ref', $no_kontrabon)->first();
         $nobukti_bukubesar = $ledger->nobukti_bukubesar;
-        $nobukti_bukubesar_bank = $ledger->nobukti_bukubesar_2;
+        $nobukti_bukubesar_bank = $ledger != null ? $ledger->nobukti_bukubesar_2 : '';
         foreach ($detail as $d) {
             $no_surat_jalan[] = $d->no_surat_jalan;
         }
