@@ -222,16 +222,15 @@ class KontrabonangkutanController extends Controller
         $nobukti_bukubesar_bank_hutang = buatkode($nobukti_bukubesar_hutang, 'GJ' . $bulan . $tahun, 6);
 
 
-        $kontrabon = DB::table('detail_kontrabon_angkutand')
+        $kontrabon = DB::table('detail_kontrabon_angkutan')
             ->selectRaw("
             SUM(IF(MONTH(tgl_mutasi_gudang)='$bulan' AND YEAR(tgl_mutasi_gudang)='$thn',(tarif+bs+tepung),0)) as jmlangkutan,
-            SUM(IF(MONTH(tgl_mutasi_gudang)!='$bulan' AND YEAR(tgl_mutasi_gudang)>='$thn',(tarif+bs+tepung),0)) as jmlhutang")
+            SUM(IF(MONTH(tgl_mutasi_gudang)!='$bulan' AND YEAR(tgl_mutasi_gudang)<='$thn',(tarif+bs+tepung),0)) as jmlhutang")
             ->join('angkutan', 'detail_kontrabon_angkutan.no_surat_jalan', '=', 'angkutan.no_surat_jalan')
             ->join('mutasi_gudang_jadi', 'angkutan.no_surat_jalan', '=', 'mutasi_gudang_jadi.no_dok')
             ->where('no_kontrabon', $no_kontrabon)
             ->first();
 
-        dd($kontrabon);
         $detail = DB::table('detail_kontrabon_angkutan')->where('no_kontrabon', $no_kontrabon)->get();
         foreach ($detail as $d) {
             $no_surat_jalan[] = $d->no_surat_jalan;
@@ -350,7 +349,7 @@ class KontrabonangkutanController extends Controller
 
             DB::table('angkutan')->whereIn('no_surat_jalan', $no_surat_jalan)->update($dataangkutan);
             DB::table('kontrabon_angkutan')->where('no_kontrabon', $no_kontrabon)->update(['status' => 1]);
-            die;
+            //die;
             DB::commit();
             //die;
             return Redirect::back()->with(['success' => 'Data Kontrabon Berhasil di Simpan']);
