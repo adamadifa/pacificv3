@@ -1551,6 +1551,10 @@ class LaporanaccountingController extends Controller
 
             SUM(IF(karyawan.kode_cabang ='PWK',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanPWK,
             SUM(IF(karyawan.kode_cabang ='PWK',brutoaida-potaida - potisaida-penyaida,0)) as netaidaPWK,
+
+            SUM(IF(karyawan.kode_cabang ='BTN',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanBTN,
+            SUM(IF(karyawan.kode_cabang ='BTN',brutoaida-potaida - potisaida-penyaida,0)) as netaidaBTN,
+
             SUM(brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0)) as totalswan,
             SUM(brutoaida-potaida - potisaida-penyaida) as totalaida
             ");
