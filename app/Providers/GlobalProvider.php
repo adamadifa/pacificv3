@@ -141,16 +141,16 @@ class GlobalProvider extends ServiceProvider
             }
 
             $cabangpkp = ['TSM', 'BDG', 'PWT', 'BGR'];
-            if (in_array($getcbg, $cabangpkp)) {
-                $pajak = 1;
-            } else {
-                $pajak = 0;
-            }
-            // if (request()->is('inputpenjualanppn')) {
-            //     $pajak = "1";
+            // if (in_array($getcbg, $cabangpkp)) {
+            //     $pajak = 1;
             // } else {
-            //     $pajak = "0";
+            //     $pajak = 0;
             // }
+            if (request()->is('inputpenjualanppn')) {
+                $pajak = "1";
+            } else {
+                $pajak = "0";
+            }
 
             //Aproval
             $operator_pusat = ['manager', 'gm', 'manager hrd', 'direktur'];

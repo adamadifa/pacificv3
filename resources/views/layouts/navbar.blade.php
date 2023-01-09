@@ -636,7 +636,14 @@
                                 </a>
                             </li>
                             @endif
-
+                            @if ($level== "admin pusat")
+                            <li class="{{ request()->is(['inputpenjualanppn']) ? 'active' : '' }}">
+                                <a href="/inputpenjualanppn">
+                                    <i class="feather icon-shopping-cart"></i>
+                                    <span class="menu-item danger">Penjualan (PPN)</span>
+                                </a>
+                            </li>
+                            @endif
 
                             @endif
                             @if (in_array($level, $penjualan_view))
