@@ -722,7 +722,15 @@
             var limitpel = $(this).attr("limitpel");
             var limitpelanggan = $(this).attr("limitpelanggan");
             var jatuhtempo = $(this).attr("jatuhtempo");
-
+            if (nama_pelanggan.includes('KPBN')) {
+                $("#harga_dus").prop('readonly', false);
+                $("#harga_pack").prop('readonly', false);
+                $("#harga_pcs").prop('readonly', false);
+            } else {
+                $("#harga_dus").prop('readonly', true);
+                $("#harga_pack").prop('readonly', true);
+                $("#harga_pcs").prop('readonly', true);
+            }
             var foto = "{{ url(Storage::url('pelanggan/')) }}/" + image;
             var nofoto = "{{ asset('app-assets/images/slider/04.jpg') }}";
             $("#kode_pelanggan").val(kode_pelanggan);
@@ -925,13 +933,17 @@
                     $("#harga_pcs").prop('readonly', true);
                 }
             } else {
-                $("#harga_dus").val(harga_dus);
-                $("#harga_pack").val(harga_pack);
-                $("#harga_pcs").val(harga_pcs);
-
-                $("#harga_dus").prop('readonly', false);
-                $("#harga_pack").prop('readonly', false);
-                $("#harga_pcs").prop('readonly', false);
+                $("#harga_dus").val(0);
+                $("#harga_pack").val(0);
+                $("#harga_pcs").val(0);
+                $("#jml_dus").val("");
+                $("#jml_pack").val("");
+                $("#jml_pcs").val("");
+                $("#nama_barang").val("");
+                $("#kode_barang").val("");
+                $("#harga_dus").prop('readonly', true);
+                $("#harga_pack").prop('readonly', true);
+                $("#harga_pcs").prop('readonly', true);
             }
         });
         //Tambah Item
