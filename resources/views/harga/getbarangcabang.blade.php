@@ -86,6 +86,17 @@
                 var harga_pack = 0;
                 var harga_pcs = 0;
             }
+
+            var nama_pelanggan = $("#nama_pelanggan").val();
+            if (nama_pelanggan.includes('KPBN')) {
+                $("#harga_dus").prop('readonly', false);
+                $("#harga_pack").prop('readonly', false);
+                $("#harga_pcs").prop('readonly', false);
+            } else {
+                $("#harga_dus").prop('readonly', true);
+                $("#harga_pack").prop('readonly', true);
+                $("#harga_pcs").prop('readonly', true);
+            }
             $("#kode_barang").val(kode_barang);
             $("#nama_barang").val(nama_barang);
             $("#harga_dus").val(harga_dus);

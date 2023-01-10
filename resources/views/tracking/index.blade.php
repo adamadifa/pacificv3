@@ -97,8 +97,8 @@
             $.getJSON('/getlocationcheckin?tanggal=' + tanggal + '&kode_cabang=' + kode_cabang, function(data) {
                 $.each(data, function(index) {
                     var salesmanicon = L.icon({
-                        iconUrl: 'app-assets/marker/adam.png'
-                        , iconSize: [60, 75], // size of the icon
+                        iconUrl: 'app-assets/marker/salesman.png'
+                        , iconSize: [75, 75], // size of the icon
                         shadowSize: [50, 64], // size of the shadow
                         iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
                         shadowAnchor: [4, 62], // the same for the shadow

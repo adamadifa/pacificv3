@@ -685,7 +685,7 @@
         cektutuplaporan();
 
         //Format No. Faktur Tidak Boleh Pakai Spasi
-        $('#no_fak_penj').mask('AAAAAAAAAAA', {
+        $('#no_fak_penj').mask('AAAAAAAAAAAAA', {
             'translation': {
                 A: {
                     pattern: /[A-Za-z0-9]/
@@ -803,8 +803,22 @@
             var nama_pelanggan = pl[1];
             var jenistransaksi = $("#jenistransaksi").val();
             var cektemp = $("#cektemp").val();
+            var subtotal = $("#totaltemp").val();
+            var totalnonppn = $("#totalnonppn").val();
+            var total = parseInt(totalnonppn.replace(/\./g, ''));
+            var cekpajak = $("#cekpajak").val();
             if (cektutuplaporan > 0) {
                 swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
+                return false;
+            } else if (cekpajak == 1 && parseInt(subtotal) != parseInt(total)) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Total Tidak Sama, Silahkan Coba Untuk Refresh Terlebih Dahulu !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#no_fak_penj").focus();
+                });
                 return false;
             } else if (no_fak_penj == "") {
                 swal({
@@ -964,13 +978,17 @@
                     $("#harga_pcs").prop('readonly', true);
                 }
             } else {
-                $("#harga_dus").val(harga_dus);
-                $("#harga_pack").val(harga_pack);
-                $("#harga_pcs").val(harga_pcs);
-
-                $("#harga_dus").prop('readonly', false);
-                $("#harga_pack").prop('readonly', false);
-                $("#harga_pcs").prop('readonly', false);
+                $("#harga_dus").val(0);
+                $("#harga_pack").val(0);
+                $("#harga_pcs").val(0);
+                $("#jml_dus").val("");
+                $("#jml_pack").val("");
+                $("#jml_pcs").val("");
+                $("#nama_barang").val("");
+                $("#kode_barang").val("");
+                $("#harga_dus").prop('readonly', true);
+                $("#harga_pack").prop('readonly', true);
+                $("#harga_pcs").prop('readonly', true);
             }
         });
         //Tambah Item

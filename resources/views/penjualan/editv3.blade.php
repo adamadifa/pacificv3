@@ -271,7 +271,7 @@
                                                 <div class="col-12">
                                                     <div class="form-group" style="margin-bottom:5px">
                                                         <div class="position-relative has-icon-left">
-                                                            <input type="text" value="{{ rupiah($faktur->potaida) }}" id="potaida" class="form-control text-right money" name="potaida" placeholder="Aida">
+                                                            <input type="text" value="{{ rupiah($faktur->potaida) }}" id="potaida" class="form-control text-right money" name="potaida" placeholder="Aida" readonly>
                                                             <div class="form-control-position">
                                                                 <img src="{{asset('app-assets/images/icons/diskonaida.png')}}" width="18px" height="18px" alt="">
                                                             </div>
@@ -279,7 +279,7 @@
                                                     </div>
                                                     <div class="form-group" style="margin-bottom:5px">
                                                         <div class="position-relative has-icon-left">
-                                                            <input type="text" value="{{ rupiah($faktur->potswan) }}" id="potswan" class="form-control text-right money" name="potswan" placeholder="Swan">
+                                                            <input type="text" value="{{ rupiah($faktur->potswan) }}" id="potswan" class="form-control text-right money" name="potswan" placeholder="Swan" readonly>
                                                             <div class="form-control-position">
                                                                 <img src="{{asset('app-assets/images/icons/diskonswan.png')}}" width="18px" height="18px" alt="">
                                                             </div>
@@ -287,7 +287,7 @@
                                                     </div>
                                                     <div class="form-group" style="margin-bottom:5px">
                                                         <div class="position-relative has-icon-left">
-                                                            <input type="text" id="potstick" class="form-control text-right money" name="potstick" value="{{ rupiah($faktur->potstick) }}" placeholder="Stick">
+                                                            <input type="text" id="potstick" class="form-control text-right money" name="potstick" value="{{ rupiah($faktur->potstick) }}" placeholder="Stick" readonly>
                                                             <div class="form-control-position">
                                                                 <img src="{{asset('app-assets/images/icons/diskonstik.png')}}" width="18px" height="18px" alt="">
                                                             </div>
@@ -295,7 +295,7 @@
                                                     </div>
                                                     <div class="form-group" style="margin-bottom:5px">
                                                         <div class="position-relative has-icon-left">
-                                                            <input type="text" id="potsp" class="form-control text-right money" name="potsp" value="{{ rupiah($faktur->potsp) }}" placeholder="Premium">
+                                                            <input type="text" id="potsp" class="form-control text-right money" name="potsp" value="{{ rupiah($faktur->potsp) }}" placeholder="Premium" readonly>
                                                             <div class="form-control-position">
                                                                 <img src="{{asset('app-assets/images/icons/diskonsp.png')}}" width="18px" height="18px" alt="">
                                                             </div>
@@ -303,7 +303,7 @@
                                                     </div>
                                                     <div class="form-group" style="margin-bottom:5px">
                                                         <div class="position-relative has-icon-left">
-                                                            <input type="text" value="{{ rupiah($faktur->potsambal) }}" id="potsb" class="form-control text-right money" name="potsb" placeholder="Sambal">
+                                                            <input type="text" value="{{ rupiah($faktur->potsambal) }}" id="potsb" class="form-control text-right money" name="potsb" placeholder="Sambal" readonly>
                                                             <div class="form-control-position">
                                                                 <img src="{{asset('app-assets/images/icons/diskonsambal.png')}}" width="18px" height="18px" alt="">
                                                             </div>
@@ -665,7 +665,7 @@
         cektutuplaporan();
 
         //Format No. Faktur Tidak Boleh Pakai Spasi
-        $('#no_fak_penj').mask('AAAAAAAAAAA', {
+        $('#no_fak_penj').mask('AAAAAAAAAAAAA', {
             'translation': {
                 A: {
                     pattern: /[A-Za-z0-9]/
@@ -938,13 +938,17 @@
                     $("#harga_pcs").prop('readonly', true);
                 }
             } else {
-                $("#harga_dus").val(harga_dus);
-                $("#harga_pack").val(harga_pack);
-                $("#harga_pcs").val(harga_pcs);
-
-                $("#harga_dus").prop('readonly', false);
-                $("#harga_pack").prop('readonly', false);
-                $("#harga_pcs").prop('readonly', false);
+                $("#harga_dus").val(0);
+                $("#harga_pack").val(0);
+                $("#harga_pcs").val(0);
+                $("#jml_dus").val("");
+                $("#jml_pack").val("");
+                $("#jml_pcs").val("");
+                $("#nama_barang").val("");
+                $("#kode_barang").val("");
+                $("#harga_dus").prop('readonly', true);
+                $("#harga_pack").prop('readonly', true);
+                $("#harga_pcs").prop('readonly', true);
             }
         });
         //Tambah Item

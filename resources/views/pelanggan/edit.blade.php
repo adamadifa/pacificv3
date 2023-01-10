@@ -6,7 +6,7 @@
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Edit Pelanggan</h2>
+                    <h2 calass="content-header-title float-left mb-0">Edit Pelanggan</h2>
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/pelanggan">Pelanggan</a></li>
@@ -72,13 +72,20 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <div class="form-group">
-                                                <select name="pasar" id="pasar" class="form-control select2">
+                                            <div class="form-group @error('pasar') error @enderror">
+                                                <select name=" pasar" id="pasar" class="form-control select2">
                                                     <option value="">Pilih Wilayah / Rute</option>
                                                     @foreach ($pasar as $d)
                                                     <option {{ $data->pasar == $d->nama_pasar  ? 'selected' : ''}} value="{{ $d->nama_pasar }}">{{ $d->nama_pasar }}</option>
                                                     @endforeach
                                                 </select>
+                                                @error('pasar')
+                                                <div class="help-block">
+                                                    <ul role="alert">
+                                                        <li>{{ $message }}</li>
+                                                    </ul>
+                                                </div>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
