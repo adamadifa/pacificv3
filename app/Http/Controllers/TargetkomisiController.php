@@ -674,7 +674,11 @@ class TargetkomisiController extends Controller
             ->where('kategori', 'GUDANG')
             ->get();
         //dd($helper);
-        if ($bulan >= 5 && $tahun >= 2022) {
+
+        $tglsetkomisi = "2022-05-01";
+        $tglsetkomisi2 = "2022-09-01";
+        $tglkomisi = $tahun . "-" . $bulan . "-01";
+        if ($tglkomisi >= $tglsetkomisi) {
             $query = Salesman::query();
             $query->selectRaw('
             karyawan.id_karyawan,nama_karyawan,kategori_salesman,
@@ -880,7 +884,7 @@ class TargetkomisiController extends Controller
                 );
             }
 
-            if ($bulan >= 9 && $tahun >= 2022) {
+            if ($tglkomisi >= $tglsetkomisi2) {
                 $query->leftJoin(
                     DB::raw("(
                     SELECT salesbarunew,
