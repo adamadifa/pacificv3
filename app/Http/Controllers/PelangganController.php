@@ -611,7 +611,7 @@ class PelangganController extends Controller
             $cek = DB::table('checkin')->where('id_karyawan', Auth::user()->id)->where('kode_pelanggan', $kode_pelanggan)
                 ->where('tgl_checkin', $hariini)
                 ->count();
-            if ($cek == 0) {
+            if ($cek == 0 && empty($getcookie)) {
                 DB::table('checkin')->insert([
                     'kode_checkin' => $kode_checkin,
                     'tgl_checkin' => $hariini,
@@ -620,6 +620,9 @@ class PelangganController extends Controller
                     'latitude' => $latitude,
                     'longitude' => $longitude,
                 ]);
+            } else if ($cek == 0 && !empty($getcookie)) {
+                Cookie::queue(Cookie::forget('kodepelanggan'));
+                return redirect('/pelanggan');
             }
 
             DB::commit();
@@ -791,8 +794,8 @@ class PelangganController extends Controller
 
     public function checkinstore(Request $request)
     {
-        Cookie::queue(Cookie::forever('kodepelanggan', Crypt::encrypt($request->kode_pelanggan)));
-        $getcookie =  Cookie::get('kodepelanggan');
+
+        //$getcookie =  Cookie::get('kodepelanggan');
         $id_karyawan = Auth::user()->id;
         $lokasi = $request->lokasi;
         $lok = explode(",", $lokasi);
@@ -855,6 +858,7 @@ class PelangganController extends Controller
                 } else {
                     echo 'success|Terimakasih Telah Melakukan Checkin';
                 }
+                Cookie::queue(Cookie::forever('kodepelanggan', Crypt::encrypt($request->kode_pelanggan)));
             }
         } catch (\Exception $e) {
             DB::rollBack();
