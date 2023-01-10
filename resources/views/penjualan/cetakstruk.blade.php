@@ -1,6 +1,7 @@
 <div id="print" style="position: absolute; z-index:1;  background-color:white">
     <p style="text-align: center">
         ------------------------------------------------------------<br>
+        LEMBAR UNTUK PELANGGAN<br>
         @if (in_array($faktur->kode_pelanggan,$pelangganmp))
         CV MAKMUR PERMATA<br>
         @else
@@ -14,7 +15,7 @@
         <span>{{ $faktur->no_fak_penj }}</span><span>{{ $faktur->nama_karyawan }}</span>
     </p>
     <p>
-        {{ date("d-m-Y",strtotime($faktur->tgltransaksi)) }}<br>
+        {{ date("d-m-Y",strtotime($faktur->date_created)) }}<br>
         {{ $faktur->kode_pelanggan }} - {{ $faktur->nama_pelanggan }}<br>
         ------------------------------------------------------------
     </p>
@@ -129,15 +130,16 @@ $data = "";
 $total = 0;
 $data .= "  -----------------------------------<br>";
 if(in_array($faktur->kode_pelanggan,$pelangganmp)){
+$data .= "       LEMBAR UNTUK PELANGGAN        <br>";
 $data .= "          CV MAKMUR PERMATA        <br>";
 }else{
-$data .= "          CV PACIFIC        <br>";
+$data .= "             CV PACIFIC        <br>";
 }
 $data .= "  Jln. Perintis Kemerdekaan 001/003<br>";
 $data .= "  Karsamenak, Kawalu, Kota Tasikmalaya<br>";
 $data .= "  -----------------------------------<br>";
 $data .= "  ". sprintf("%-$len"."s\t%s\n",$faktur->no_fak_penj,"              ".$faktur->nama_karyawan);
-$data .=    "  ". date("d-m-Y",strtotime($faktur->tgltransaksi))."<br>";
+$data .=    "  ". date("d-m-Y",strtotime($faktur->date_created))."<br>";
 $data .=    "  ". $faktur->kode_pelanggan." - ".$faktur->nama_pelanggan."<br>";
 $data .= "  -----------------------------------<br>";
 foreach( $detail as $d ) {

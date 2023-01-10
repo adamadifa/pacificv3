@@ -1199,7 +1199,27 @@ class PenjualanController extends Controller
 
     public function store(Request $request)
     {
-        $no_fak_penj = $request->no_fak_penj; //ok
+
+        $ceklevel = Auth::user()->level;
+        if ($ceklevel == "salesman") {
+            $kodecab = Auth::user()->kode_cabang;
+            $tgltrans = explode("-", $request->tgltransaksi);
+            $bulantrans = $tgltrans[1];
+            $tahuntrans = $tgltrans[0];
+            $cekpenjualan = DB::table('penjualan')
+                ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+                ->where('karyawan.kode_cabang', $kodecab)
+                ->whereRaw('MONTH(tgltransaksi)="' . $bulantrans . '"')
+                ->whereRaw('YEAR(tgltransaksi)="' . $tahuntrans . '"')
+                ->whereRaw('MID(no_fak_penj,4,2)="PR"')
+                ->first();
+            $lastnofakpenj = $cekpenjualan != null ? $cekpenjualan->no_fak_penj : '';
+            $no_fak_penj = buatkode($lastnofakpenj, $kodecab . "PR" . $bulantrans . substr($tahuntrans, 2, 2), 4);
+        } else {
+            $no_fak_penj = $request->no_fak_penj; //ok
+        }
+
+        //dd($no_fak_penj);
         $tgltransaksi = $request->tgltransaksi; //ok
         $id_karyawan = $request->id_karyawan; //ok
         $kode_pelanggan = $request->kode_pelanggan; //ok
@@ -1868,7 +1888,7 @@ class PenjualanController extends Controller
             ->whereRaw('LEFT(nobukti,6) = "' . $kode_cabang . $tahunini . '-"')
             ->orderBy("nobukti", "desc")
             ->first();
-        $lastnobukti = $bayar->nobukti;
+        $lastnobukti = $bayar != null ? $bayar->nobukti : '';
         $nobukti  = buatkode($lastnobukti, $kode_cabang . $tahunini . "-", 6);
 
 
@@ -1924,6 +1944,13 @@ class PenjualanController extends Controller
         $tgl_aup    = explode("-", $tgltransaksi);
         $tahun      = substr($tgl_aup[0], 2, 2);
         $bulan      = $tgl_aup[1];
+        // $cek = DB::table('penjualan')->where('tgltransaksi', '2023-01-11')->get();
+        // if ($cek->isEmpty()) {
+        //     echo "Test";
+        // } else {
+        //     echo "tost";
+        // }
+        // dd($cek);
         DB::beginTransaction();
         try {
             DB::table('penjualan')
@@ -1957,16 +1984,21 @@ class PenjualanController extends Controller
                     'status' => $status,
                     'status_lunas' => $status_lunas
                 ]);
-            DB::table('detailpenjualan')->where('no_fak_penj', $no_fak_penj)->delete();
-            DB::table('buku_besar')
-                ->where('nobukti_transaksi', $no_fak_penj)
-                ->delete();
+
             $edit = DB::table('detailpenjualan_edit')->where('no_fak_penj', $no_fak_penj)
                 ->select('detailpenjualan_edit.*', 'kode_akun', 'barang.nama_barang')
                 ->join('barang', 'detailpenjualan_edit.kode_barang', '=', 'barang.kode_barang')
                 ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')
                 ->get();
-
+            if ($edit->isEmpty()) {
+                DB::rollBack();
+                return Redirect::back()->with(['warning' => 'Data Error']);
+            } else {
+                DB::table('detailpenjualan')->where('no_fak_penj', $no_fak_penj)->delete();
+                DB::table('buku_besar')
+                    ->where('nobukti_transaksi', $no_fak_penj)
+                    ->delete();
+            }
             foreach ($edit as $d) {
                 DB::table('detailpenjualan')->insert([
                     'no_fak_penj' => $no_fak_penj_new,

@@ -668,7 +668,7 @@
         });
 
         //Format No. Faktur Tidak Boleh Pakai Spasi
-        $('#no_fak_penj').mask('AAAAAAAAAAA', {
+        $('#no_fak_penj').mask('AAAAAAAAAAAAA', {
             'translation': {
                 A: {
                     pattern: /[A-Za-z0-9]/

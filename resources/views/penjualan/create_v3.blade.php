@@ -1,6 +1,12 @@
 @extends('layouts.midone')
 @section('titlepage','Input Penjualan V2')
 @section('content')
+<style>
+    #no_fak_penj {
+        text-transform: uppercase
+    }
+
+</style>
 <div class="content-wrapper">
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
@@ -269,7 +275,7 @@
                                                 <div class="col-12">
                                                     <div class="form-group" style="margin-bottom:5px">
                                                         <div class="position-relative has-icon-left">
-                                                            <input type="text" id="potaida" class="form-control text-right money" name="potaida" placeholder="Aida">
+                                                            <input type="text" id="potaida" class="form-control text-right money" name="potaida" placeholder="Aida" readonly>
                                                             <div class="form-control-position">
                                                                 <img src="{{asset('app-assets/images/icons/diskonaida.png')}}" width="18px" height="18px" alt="">
                                                             </div>
@@ -277,7 +283,7 @@
                                                     </div>
                                                     <div class="form-group" style="margin-bottom:5px">
                                                         <div class="position-relative has-icon-left">
-                                                            <input type="text" id="potswan" class="form-control text-right money" name="potswan" placeholder="Swan">
+                                                            <input type="text" id="potswan" class="form-control text-right money" name="potswan" placeholder="Swan" readonly>
                                                             <div class="form-control-position">
                                                                 <img src="{{asset('app-assets/images/icons/diskonswan.png')}}" width="18px" height="18px" alt="">
                                                             </div>
@@ -285,7 +291,7 @@
                                                     </div>
                                                     <div class="form-group" style="margin-bottom:5px">
                                                         <div class="position-relative has-icon-left">
-                                                            <input type="text" id="potstick" class="form-control text-right money" name="potstick" placeholder="Stick">
+                                                            <input type="text" id="potstick" class="form-control text-right money" name="potstick" placeholder="Stick" readonly>
                                                             <div class="form-control-position">
                                                                 <img src="{{asset('app-assets/images/icons/diskonstik.png')}}" width="18px" height="18px" alt="">
                                                             </div>
@@ -293,7 +299,7 @@
                                                     </div>
                                                     <div class="form-group" style="margin-bottom:5px">
                                                         <div class="position-relative has-icon-left">
-                                                            <input type="text" id="potsp" class="form-control text-right money" name="potsp" placeholder="Premium">
+                                                            <input type="text" id="potsp" class="form-control text-right money" name="potsp" placeholder="Premium" readonly>
                                                             <div class="form-control-position">
                                                                 <img src="{{asset('app-assets/images/icons/diskonsp.png')}}" width="18px" height="18px" alt="">
                                                             </div>
@@ -301,7 +307,7 @@
                                                     </div>
                                                     <div class="form-group" style="margin-bottom:5px">
                                                         <div class="position-relative has-icon-left">
-                                                            <input type="text" id="potsb" class="form-control text-right money" name="potsb" placeholder="Sambal">
+                                                            <input type="text" id="potsb" class="form-control text-right money" name="potsb" placeholder="Sambal" readonly>
                                                             <div class="form-control-position">
                                                                 <img src="{{asset('app-assets/images/icons/diskonsambal.png')}}" width="18px" height="18px" alt="">
                                                             </div>
@@ -650,7 +656,7 @@
         });
 
         //Format No. Faktur Tidak Boleh Pakai Spasi
-        $('#no_fak_penj').mask('AAAAAAAAAAA', {
+        $('#no_fak_penj').mask('AAAAAAAAAAAAA', {
             'translation': {
                 A: {
                     pattern: /[A-Za-z0-9]/
