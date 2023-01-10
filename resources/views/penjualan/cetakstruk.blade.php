@@ -15,7 +15,7 @@
         <span>{{ $faktur->no_fak_penj }}</span><span>{{ $faktur->nama_karyawan }}</span>
     </p>
     <p>
-        {{ date("d-m-Y",strtotime($faktur->date_created)) }}<br>
+        {{ date("d-m-Y H:i:s",strtotime($faktur->date_created)) }}<br>
         {{ $faktur->kode_pelanggan }} - {{ $faktur->nama_pelanggan }}<br>
         ------------------------------------------------------------
     </p>
@@ -139,7 +139,7 @@ $data .= "  Jln. Perintis Kemerdekaan 001/003<br>";
 $data .= "  Karsamenak, Kawalu, Kota Tasikmalaya<br>";
 $data .= "  -----------------------------------<br>";
 $data .= "  ". sprintf("%-$len"."s\t%s\n",$faktur->no_fak_penj,"              ".$faktur->nama_karyawan);
-$data .=    "  ". date("d-m-Y",strtotime($faktur->date_created))."<br>";
+$data .=    "  ". date("d-m-Y H:i:s",strtotime($faktur->date_created))."<br>";
 $data .=    "  ". $faktur->kode_pelanggan." - ".$faktur->nama_pelanggan."<br>";
 $data .= "  -----------------------------------<br>";
 foreach( $detail as $d ) {
