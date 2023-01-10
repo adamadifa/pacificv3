@@ -1546,7 +1546,12 @@ class PenjualanController extends Controller
             if (Auth::user()->level == "salesman") {
                 return redirect('/penjualan/' . Crypt::encrypt($no_fak_penj) . '/showforsales')->with(['success' => 'Data Penjualan Berhasil di Simpan']);
             } else {
-                return redirect('/inputpenjualanv2')->with(['success' => 'Data Penjualan Berhasil di Simpan']);
+                $cabangpkp = ['TSM', 'BDG', 'PWT', 'BGR'];
+                if (in_array(Auth::user()->kode_cabang, $cabangpkp)) {
+                    return redirect('/inputpenjualanppn')->with(['success' => 'Data Penjualan Berhasil di Simpan']);
+                } else {
+                    return redirect('/inputpenjualanv2inputpenjualanv2')->with(['success' => 'Data Penjualan Berhasil di Simpan']);
+                }
             }
         } catch (\Exception $e) {
             dd($e);

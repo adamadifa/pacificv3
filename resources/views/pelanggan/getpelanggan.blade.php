@@ -65,7 +65,7 @@
                         <a href="#" id="checkin" class="btn btn-success btn-block"><i class="feather icon-lock mr-1"></i>Checkin</a>
                     </div>
                     @else
-
+                    @if (!empty(Cookie::get('kodepelanggan')))
                     @if (Crypt::decrypt(Cookie::get('kodepelanggan')) == $pelanggan->kode_pelanggan)
                     <div class="col-6">
                         <a href="/inputpenjualanv2" class="btn btn-success btn-block"><i class="feather icon-shopping-cart mr-1"></i>Input Penjualan</a>
@@ -80,7 +80,15 @@
                         <a href="#" id="checkin" class="btn btn-success btn-block"><i class="feather icon-lock mr-1"></i>Checkin</a>
                     </div>
                     @endif
+                    @else
+                    <div class="col-12" id="checkinsection">
+                        <span id="latitude" class="d-none"></span>
+                        <input type="hidden" id="lokasi">
+                        <a href="#" id="checkin" class="btn btn-success btn-block"><i class="feather icon-lock mr-1"></i>Checkin</a>
+                    </div>
                     @endif
+                    @endif
+
                 </div>
 
             </div>

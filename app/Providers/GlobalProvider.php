@@ -141,15 +141,19 @@ class GlobalProvider extends ServiceProvider
             }
 
             $cabangpkp = ['TSM', 'BDG', 'PWT', 'BGR'];
-            // if (in_array($getcbg, $cabangpkp)) {
-            //     $pajak = 1;
-            // } else {
-            //     $pajak = 0;
-            // }
-            if (request()->is('inputpenjualanppn')) {
-                $pajak = "1";
+
+            if ($level == "salesman") {
+                if (in_array($getcbg, $cabangpkp)) {
+                    $pajak = 1;
+                } else {
+                    $pajak = 0;
+                }
             } else {
-                $pajak = "0";
+                if (request()->is('inputpenjualanppn')) {
+                    $pajak = "1";
+                } else {
+                    $pajak = "0";
+                }
             }
 
             //Aproval
