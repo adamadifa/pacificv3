@@ -502,13 +502,13 @@
             loadtemp();
         });
 
-        $('#no_invoice').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAA', {
-            'translation': {
-                A: {
-                    pattern: /[A-Za-z0-9]/
-                }
-            }
-        });
+        // $('#no_invoice').mask('AAAAAAAAAAAAAAAAAAAAAAAAAAA', {
+        //     'translation': {
+        //         A: {
+        //             pattern: /[A-Za-z0-9]/
+        //         }
+        //     }
+        // });
 
         $("input[type=text]").keyup(function() {
             $(this).val($(this).val().toUpperCase());
