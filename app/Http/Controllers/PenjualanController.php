@@ -1550,7 +1550,7 @@ class PenjualanController extends Controller
                 if (in_array(Auth::user()->kode_cabang, $cabangpkp)) {
                     return redirect('/inputpenjualanppn')->with(['success' => 'Data Penjualan Berhasil di Simpan']);
                 } else {
-                    return redirect('/inputpenjualanv2inputpenjualanv2')->with(['success' => 'Data Penjualan Berhasil di Simpan']);
+                    return redirect('/inputpenjualanv2')->with(['success' => 'Data Penjualan Berhasil di Simpan']);
                 }
             }
         } catch (\Exception $e) {
