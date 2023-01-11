@@ -810,16 +810,6 @@
             if (cektutuplaporan > 0) {
                 swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
                 return false;
-            } else if (cekpajak == 1 && parseInt(subtotal) != parseInt(total)) {
-                swal({
-                    title: 'Oops'
-                    , text: 'Total Tidak Sama, Silahkan Coba Untuk Refresh Terlebih Dahulu !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#no_fak_penj").focus();
-                });
-                return false;
             } else if (no_fak_penj == "") {
                 swal({
                     title: 'Oops'

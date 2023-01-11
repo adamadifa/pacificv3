@@ -129,8 +129,9 @@ $len = maxLen($detail);
 $data = "";
 $total = 0;
 $data .= "  -----------------------------------<br>";
-if(in_array($faktur->kode_pelanggan,$pelangganmp)){
 $data .= "       LEMBAR UNTUK PELANGGAN        <br>";
+if(in_array($faktur->kode_pelanggan,$pelangganmp)){
+
 $data .= "          CV MAKMUR PERMATA        <br>";
 }else{
 $data .= "             CV PACIFIC        <br>";
