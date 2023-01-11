@@ -803,7 +803,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <button class="btn btn-primary btn-block"><i class="feather icon-send"></i> Simpan</button>
+                                    <button class="btn btn-primary btn-block" id="btnsimpanbayar"><i class="feather icon-send"></i> Simpan</button>
                                 </div>
                             </div>
                         </div>
@@ -892,7 +892,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <button class="btn btn-primary btn-block"><i class="feather icon-send"></i> Simpan</button>
+                                    <button class="btn btn-primary btn-block" id="btnsimpangiro"><i class="feather icon-send"></i> Simpan</button>
                                 </div>
                             </div>
                         </div>
@@ -1003,7 +1003,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
-                                    <button class="btn btn-primary btn-block"><i class="feather icon-send"></i> Simpan</button>
+                                    <button class="btn btn-primary btn-block" id="btnsimpantransfer"><i class="feather icon-send"></i> Simpan</button>
                                 </div>
                             </div>
                         </div>
@@ -1249,6 +1249,7 @@
         });
         $("#frmBayar").submit(function(e) {
             //e.preventDefault();
+            $("#btnsimpanbayar").prop('disabled', true);
             var tglbayar = $("#tglbayar").val();
             var bayar = $("#bayar").val();
             var id_karyawan = $("#id_karyawan").val();
@@ -1311,6 +1312,7 @@
         });
         $("#frmGiro").submit(function(e) {
             //e.preventDefault();
+            $("#btnsimpangiro").prop('disabled', true);
             var tgl_giro = $("#tgl_giro").val();
             var id_karyawan = $("#id_karyawan_giro").val();
             var no_giro = $("#no_giro").val();
@@ -1394,6 +1396,7 @@
         });
         $("#frmTransfer").submit(function(e) {
             //e.preventDefault();
+            $("#btnsimpantransfer").prop('disabled', true);
             var tgl_transfer = $("#tgl_transfer").val();
             var id_karyawan = $("#id_karyawan_transfer").val();
             var namabank = $("#namabank_transfer").val();

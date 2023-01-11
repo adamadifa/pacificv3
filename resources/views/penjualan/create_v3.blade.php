@@ -767,6 +767,7 @@
         //Ketika Form Di Submit
 
         $("form").submit(function(e) {
+            $("#btnsimpan").prop('disabled', true);
             var no_fak_penj = $("#no_fak_penj").val();
             var tgltransaksi = $("#tgltransaksi").val();
             var kode_pelanggan = $("#kode_pelanggan").val();
