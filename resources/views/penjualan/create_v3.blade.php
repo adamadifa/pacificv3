@@ -789,6 +789,7 @@
                 }).then(function() {
                     $("#no_fak_penj").focus();
                 });
+                $("#btnsimpan").prop('disabled', false);
                 return false;
             } else if (tgltransaksi == "") {
                 swal({
@@ -799,6 +800,7 @@
                 }).then(function() {
                     $("#tgltransaksi").focus();
                 });
+                $("#btnsimpan").prop('disabled', false);
                 return false;
             } else if (kode_pelanggan == "") {
                 swal({
@@ -809,6 +811,7 @@
                 }).then(function() {
                     $("#nama_pelanggan").focus();
                 });
+                $("#btnsimpan").prop('disabled', false);
                 return false;
             } else if (nama_pelanggan != " BATAL" && cektemp == 0) {
                 swal({
@@ -819,6 +822,7 @@
                 }).then(function() {
                     $("#kode_barang").focus();
                 });
+                $("#btnsimpan").prop('disabled', false);
                 return false;
             } else if (jenistransaksi == "") {
                 swal({
@@ -829,6 +833,7 @@
                 }).then(function() {
                     $("#jenistransaksi").focus();
                 });
+                $("#btnsimpan").prop('disabled', false);
                 return false;
             } else {
                 return true;

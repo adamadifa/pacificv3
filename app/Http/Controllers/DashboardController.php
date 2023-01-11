@@ -414,6 +414,9 @@ class DashboardController extends Controller
         $penjualanhariini = DB::table('penjualan')
             ->selectRaw('SUM(total) as totalpenjualan')
             ->where('tgltransaksi', $hariini)->first();
+
+
+
         $bayarhariini = DB::table('historibayar')
             ->selectRaw('SUM(bayar) as totalbayar')
             ->where('tglbayar', $hariini)->first();

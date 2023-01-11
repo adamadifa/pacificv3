@@ -636,7 +636,7 @@
                                 </a>
                             </li>
                             @endif
-                            @if ($level== "admin pusat")
+                            @if ($level== "admin pusat" || Auth::user()->kode_cabang=="PST")
                             <li class="{{ request()->is(['inputpenjualanppn']) ? 'active' : '' }}">
                                 <a href="/inputpenjualanppn">
                                     <i class="feather icon-shopping-cart"></i>

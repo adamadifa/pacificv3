@@ -1260,6 +1260,7 @@
             //alert(sisabayar);
             if (cektutuplaporan > 0) {
                 swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
+                $("#btnsimpanbayar").prop('disabled', false);
                 return false;
             } else if (tglbayar == "") {
                 swal({
@@ -1280,6 +1281,7 @@
                 }).then(function() {
                     $("#bayar").focus();
                 });
+                $("#btnsimpanbayar").prop('disabled', false);
                 return false;
             } else if (id_karyawan == "") {
                 swal({
@@ -1290,6 +1292,7 @@
                 }).then(function() {
                     $("#id_karyawan").focus();
                 });
+                $("#btnsimpanbayar").prop('disabled', false);
                 return false;
             } else if ($(".girotocash").is(':checked') && id_giro == "") {
                 swal({
@@ -1300,6 +1303,7 @@
                 }).then(function() {
                     $("#id_giro").focus();
                 });
+                $("#btnsimpanbayar").prop('disabled', false);
                 return false;
             } else {
                 return true;
@@ -1325,6 +1329,7 @@
             //alert(sisabayar);
             if (cektutuplaporan > 0) {
                 swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
+                $("#btnsimpangiro").prop('disabled', false);
                 return false;
             } else if (tgl_giro == "") {
                 swal({
@@ -1335,6 +1340,7 @@
                 }).then(function() {
                     $("#tgl_giro").focus();
                 });
+                $("#btnsimpangiro").prop('disabled', false);
                 return false;
             } else if (id_karyawan == "") {
                 swal({
@@ -1345,6 +1351,7 @@
                 }).then(function() {
                     $("#id_karyawan_giro").focus();
                 });
+                $("#btnsimpangiro").prop('disabled', false);
                 return false;
             } else if (no_giro == "") {
                 swal({
@@ -1355,6 +1362,7 @@
                 }).then(function() {
                     $("#no_giro").focus();
                 });
+                $("#btnsimpangiro").prop('disabled', false);
                 return false;
             } else if (namabank == "") {
                 swal({
@@ -1365,6 +1373,7 @@
                 }).then(function() {
                     $("#namabank_giro").focus();
                 });
+                $("#btnsimpangiro").prop('disabled', false);
                 return false;
             } else if (tglcair == "") {
                 swal({
@@ -1375,6 +1384,7 @@
                 }).then(function() {
                     $("#tglcair").focus();
                 });
+                $("#btnsimpangiro").prop('disabled', false);
                 return false;
             } else if (jumlah == "" || jumlah === 0) {
                 swal({
@@ -1385,6 +1395,7 @@
                 }).then(function() {
                     $("#jumlah_giro").focus();
                 });
+                $("#btnsimpangiro").prop('disabled', false);
                 return false;
             } else {
                 return true;
@@ -1408,6 +1419,7 @@
             //alert(sisabayar);
             if (cektutuplaporan > 0) {
                 swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
+                $("#btnsimpantransfer").prop('disabled', false);
                 return false;
             } else if (tgl_transfer == "") {
                 swal({
@@ -1418,6 +1430,7 @@
                 }).then(function() {
                     $("#tgl_transfer").focus();
                 });
+                $("#btnsimpantransfer").prop('disabled', false);
                 return false;
             } else if (id_karyawan == "") {
                 swal({
@@ -1428,6 +1441,7 @@
                 }).then(function() {
                     $("#id_karyawan_transfer").focus();
                 });
+                $("#btnsimpantransfer").prop('disabled', false);
                 return false;
             } else if (namabank == "") {
                 swal({
@@ -1438,6 +1452,7 @@
                 }).then(function() {
                     $("#namabank_transfer").focus();
                 });
+                $("#btnsimpantransfer").prop('disabled', false);
                 return false;
             } else if (tglcair == "") {
                 swal({
@@ -1448,6 +1463,7 @@
                 }).then(function() {
                     $("#tglcair_transfer").focus();
                 });
+                $("#btnsimpantransfer").prop('disabled', false);
                 return false;
             } else if (jumlah == "" || jumlah === 0) {
                 swal({
@@ -1458,6 +1474,7 @@
                 }).then(function() {
                     $("#jumlah_transfer").focus();
                 });
+                $("#btnsimpantransfer").prop('disabled', false);
                 return false;
             } else {
                 return true;
