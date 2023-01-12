@@ -333,6 +333,8 @@ class PelangganController extends Controller
             'lama_langganan' => $request->lama_langganan,
             'jaminan' => $request->jaminan,
             'omset_toko' => $request->omset_toko,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
             'foto' => $foto
         ]);
 
