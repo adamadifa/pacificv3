@@ -72,13 +72,20 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <div class="form-group">
-                                                <select name="pasar" id="pasar" class="form-control select2">
-                                                    <option value="">Pilih Wilayah / Rute</option>
-                                                    @foreach ($pasar as $d)
-                                                    <option value="{{ $d->nama_pasar }}">{{ $d->nama_pasar }}</option>
-                                                    @endforeach
+                                            <div class="form-group @error('pasar') error @enderror"">
+                                                <select name=" pasar" id="pasar" class="form-control select2">
+                                                <option value="">Pilih Wilayah / Rute</option>
+                                                @foreach ($pasar as $d)
+                                                <option value="{{ $d->nama_pasar }}">{{ $d->nama_pasar }}</option>
+                                                @endforeach
                                                 </select>
+                                                @error('pasar')
+                                                <div class="help-block">
+                                                    <ul role="alert">
+                                                        <li>{{ $message }}</li>
+                                                    </ul>
+                                                </div>
+                                                @enderror
                                             </div>
                                         </div>
                                     </div>
