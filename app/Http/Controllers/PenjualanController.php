@@ -1990,15 +1990,18 @@ class PenjualanController extends Controller
                 ->join('barang', 'detailpenjualan_edit.kode_barang', '=', 'barang.kode_barang')
                 ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')
                 ->get();
+
             if ($edit->isEmpty()) {
                 DB::rollBack();
                 return Redirect::back()->with(['warning' => 'Data Error']);
             } else {
-                DB::table('detailpenjualan')->where('no_fak_penj', $no_fak_penj)->delete();
+                DB::table('detailpenjualan')->where('no_fak_penj', $no_fak_penj_new)->delete();
                 DB::table('buku_besar')
                     ->where('nobukti_transaksi', $no_fak_penj)
                     ->delete();
             }
+
+
             foreach ($edit as $d) {
                 DB::table('detailpenjualan')->insert([
                     'no_fak_penj' => $no_fak_penj_new,
