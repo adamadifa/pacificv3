@@ -594,7 +594,7 @@
                 }
 
                 $rewardcashinkp = $totalcashin * (0.05 / 100);
-                $ratioljtkp = ($totalsisapiutang / $totalcashin) * 100;
+                $ratioljtkp = !empty($totalcashin) ? ($totalsisapiutang / $totalcashin) * 100 : 0;
 
 
                 if ($ratioljtkp > 0) {
