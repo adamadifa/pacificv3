@@ -139,7 +139,7 @@ $data .= "             CV PACIFIC        <br>";
 $data .= "  Jln. Perintis Kemerdekaan 001/003<br>";
 $data .= "  Karsamenak, Kawalu, Kota Tasikmalaya<br>";
 $data .= "  -----------------------------------<br>";
-$data .= "  ". sprintf("%-$len"."s\t%s\n",$faktur->no_fak_penj,"              ".$faktur->nama_karyawan);
+$data .= "  ". sprintf("%-$len"."s\t%s\n",$faktur->no_fak_penj,"      ".$faktur->nama_karyawan);
 $data .=    "  ". date("d-m-Y H:i:s",strtotime($faktur->date_created))."<br>";
 $data .=    "  ". $faktur->kode_pelanggan." - ".$faktur->nama_pelanggan."<br>";
 $data .= "  -----------------------------------<br>";
@@ -177,22 +177,22 @@ foreach( $detail as $d ) {
     }
 }
 $data .= "  -----------------------------------<br>";
-$data .= "  ". sprintf("%-$len"."s\t%s\n","Potongan","            ".rupiah($faktur->potongan));
-$data .= "  ". sprintf("%-$len"."s\t%s\n","TOTAL","                    ".rupiah($totalnonppn));
-$data .= "  ". sprintf("%-$len"."s\t%s\n","RETUR","                    ".rupiah($retur->totalretur));
-$data .= "  ". sprintf("%-$len"."s\t%s\n","PPN","                    ".rupiah($faktur->ppn));
-$data .= "  ". sprintf("%-$len"."s\t%s\n","GRAND TOTAL","            ".rupiah($faktur->total-$retur->totalretur));
+$data .= "  ". sprintf("%-$len"."s\t%s\n","Potongan","                ".rupiah($faktur->potongan));
+$data .= "  ". sprintf("%-$len"."s\t%s\n","TOTAL","                ".rupiah($totalnonppn));
+$data .= "  ". sprintf("%-$len"."s\t%s\n","RETUR","                ".rupiah($retur->totalretur));
+$data .= "  ". sprintf("%-$len"."s\t%s\n","PPN","                ".rupiah($faktur->ppn));
+$data .= "  ". sprintf("%-$len"."s\t%s\n","GRAND TOTAL","    ".rupiah($faktur->total-$retur->totalretur));
 $data .= "  -----------------------------------<br><br>";
 $data .= "  Pembayaran<br>";
 $totalbayar=0;
 foreach( $pembayaran as $d ) {
     $totalbayar += $d->bayar;
-$data .= "  ". sprintf("%-$len"."s\t%s\n",date('d-m-y',strtotime($d->tglbayar)),"            ".rupiah($d->bayar));
+$data .= "  ". sprintf("%-$len"."s\t%s\n",date('d-m-y',strtotime($d->tglbayar)),"                ".rupiah($d->bayar));
 }
 $data .= "
 ";
-$data .= "  ". sprintf("%-$len"."s\t%s\n","Total Bayar","            ".rupiah($totalbayar));
-$data .= "  ". sprintf("%-$len"."s\t%s\n","Sisa Tagihan","            ".rupiah($faktur->total - $retur->totalretur - $totalbayar));
+$data .= "  ". sprintf("%-$len"."s\t%s\n","Total Bayar","    ".rupiah($totalbayar));
+$data .= "  ". sprintf("%-$len"."s\t%s\n","Sisa Tagihan","    ".rupiah($faktur->total - $retur->totalretur - $totalbayar));
 $data.="<img src='$faktur->signature'>";
 $data .= "
 
@@ -200,8 +200,8 @@ $data .= "
 
 $data .="
 ";
-$data .= "                  Terimakasih<br>";
-$data .= "                 www.pedasalami.com";
+$data .= "                Terimakasih<br>";
+$data .= "               www.pedasalami.com";
  echo "<pre id='pre_print' style='position: absolute; z-index:0'>$data</pre>"; ?>
 
 

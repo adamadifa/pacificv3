@@ -7059,7 +7059,13 @@ class PenjualanController extends Controller
         $retur = DB::table('retur')
             ->selectRaw('SUM(total) as totalretur')
             ->where('no_fak_penj', $no_fak_penj)->first();
-        return view('penjualan.cetakstruk', compact('faktur', 'pelangganmp', 'detail', 'pembayaran', 'retur'));
+
+        if (Auth::user()->id == 170) {
+            return view('penjualan.cetakstruk2', compact('faktur', 'pelangganmp', 'detail', 'pembayaran', 'retur'));
+        } else {
+
+            return view('penjualan.cetakstruk', compact('faktur', 'pelangganmp', 'detail', 'pembayaran', 'retur'));
+        }
     }
 
 
