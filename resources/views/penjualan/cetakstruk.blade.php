@@ -191,8 +191,8 @@ $data .= "  ". sprintf("%-$len"."s\t%s\n",date('d-m-y',strtotime($d->tglbayar)),
 }
 $data .= "
 ";
-$data .= "  ". sprintf("%-$len"."s\t%s\n","Total Bayar","        ".rupiah($totalbayar));
-$data .= "  ". sprintf("%-$len"."s\t%s\n","Sisa Tagihan","        ".rupiah($faktur->total - $retur->totalretur - $totalbayar));
+$data .= "  ". sprintf("%-$len"."s\t%s\n","Total Bayar","    ".rupiah($totalbayar));
+$data .= "  ". sprintf("%-$len"."s\t%s\n","Sisa Tagihan","    ".rupiah($faktur->total - $retur->totalretur - $totalbayar));
 $data.="<img src='$faktur->signature'>";
 $data .= "
 
@@ -200,8 +200,8 @@ $data .= "
 
 $data .="
 ";
-$data .= "                      Terimakasih<br>";
-$data .= "                     www.pedasalami.com";
+$data .= "                Terimakasih<br>";
+$data .= "               www.pedasalami.com";
  echo "<pre id='pre_print' style='position: absolute; z-index:0'>$data</pre>"; ?>
 
 
