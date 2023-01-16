@@ -829,10 +829,10 @@ class PelangganController extends Controller
         $status_location = $pelanggan->status_location;
         $latitude_pelanggan = $status_location == 1 ? $pelanggan->latitude : $latitude;
         $longitude_pelanggan = $status_location == 1 ? $pelanggan->longitude : $longitude;
-        echo $latitude . "," . $longitude;
-        echo "<br>";
-        echo $latitude_pelanggan . "," . $longitude_pelanggan;
-        die;
+        // echo $latitude . "," . $longitude;
+        // echo "<br>";
+        // echo $latitude_pelanggan . "," . $longitude_pelanggan;
+        // die;
         $jarak = $this->distance($latitude_pelanggan, $longitude_pelanggan, $latitude, $longitude);
         $radius =  ROUND($jarak["meters"]);
         DB::beginTransaction();

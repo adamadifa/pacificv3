@@ -3022,7 +3022,7 @@ body[data-col="1-column"] .header-navbar.floating-nav {
 
 .nav.nav-tabs.nav-justified .nav-item a.nav-link.active {
     border: none;
-    background-color: #fff;
+    /* background-color: #fff; */
 }
 
 .nav.nav-tabs.nav-justified .nav-item a.nav-link:hover {
