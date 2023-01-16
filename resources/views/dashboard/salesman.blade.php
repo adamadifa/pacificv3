@@ -1,6 +1,12 @@
 @extends('layouts.midone')
 @section('titlepage', 'Dashboard')
 @section('content')
+<style>
+    .card {
+        margin-bottom: 1rem !important;
+    }
+
+</style>
 <div class="content-wrapper">
     <div class="content-header row">
     </div>
@@ -28,224 +34,157 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-2 col-sm-12 col-md-12">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header d-flex align-items-start pb-0">
-                                    <div>
-                                        <h2 class="text-bold-700 mb-0">{{ rupiah($jmlpelanggan) }}</h2>
-                                        <p>Pelanggan Aktif</p>
-                                    </div>
-                                    <div class="avatar bg-rgba-info p-50 m-0">
-                                        <div class="avatar-content">
-                                            <i class="feather icon-users text-info font-medium-5"></i>
-                                        </div>
+        </section>
+        <section id="statistic">
+            <div class="row">
+                <div class="col-6">
+                    <div class="card text-center">
+                        <div class="card-content">
+                            <div class="card-body">
+                                <div class="avatar bg-rgba-info p-50 m-0 mb-1">
+                                    <div class="avatar-content">
+                                        <i class="feather icon-users text-info font-medium-5"></i>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header d-flex align-items-start pb-0">
-                                    <div>
-                                        <h2 class="text-bold-700 mb-0">{{ $jmlpelangganhariini }}</h2>
-                                        <p>Pelanggan Baru</p>
-                                    </div>
-                                    <div class="avatar bg-rgba-success p-50 m-0">
-                                        <div class="avatar-content">
-                                            <i class="feather icon-users text-success font-medium-5"></i>
-                                        </div>
-                                    </div>
-                                </div>
+                                <h2 class="text-bold-700">{{ rupiah($jmlpelanggan) }}</h2>
+                                <p class="mb-0 line-ellipsis">Pelanggan Aktif</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-sm-12 col-md-12">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header d-flex align-items-start pb-0">
-                                    <div>
-                                        <h2 class="text-bold-700 mb-0">{{ rupiah($penjualanhariini->totalpenjualan) }}</h2>
-                                        <p>Penjualan Hari ini</p>
-                                    </div>
-                                    <div class="avatar bg-rgba-success p-50 m-0">
-                                        <div class="avatar-content">
-                                            <i class="feather icon-shopping-bag text-success font-medium-5"></i>
-                                        </div>
+                <div class="col-6">
+                    <div class="card text-center">
+                        <div class="card-content">
+                            <div class="card-body">
+                                <div class="avatar bg-rgba-success p-50 m-0 mb-1">
+                                    <div class="avatar-content">
+                                        <i class="feather icon-users text-success font-medium-5"></i>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header d-flex align-items-start pb-0">
-                                    <div>
-                                        <h2 class="text-bold-700 mb-0">{{ rupiah($bayarhariini->totalbayar) }}</h2>
-                                        <p>Pembayaran Hari Ini</p>
-                                    </div>
-                                    <div class="avatar bg-rgba-primary p-50 m-0">
-                                        <div class="avatar-content">
-                                            <i class="feather icon-dollar-sign text-primary font-medium-5"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-12 col-md-12">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header d-flex align-items-start pb-0">
-                                    <div>
-                                        <h2 class="text-bold-700 mb-0">{{ rupiah($jmltransaksi) }}</h2>
-                                        <p>Transaksi Hari ini</p>
-                                    </div>
-                                    <div class="avatar bg-rgba-warning p-50 m-0">
-                                        <div class="avatar-content">
-                                            <i class="feather icon-shopping-bag text-warning font-medium-5"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {{-- <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-header d-flex align-items-start pb-0">
-                                    <div>
-                                        <h2 class="text-bold-700 mb-0">{{ rupiah($piutang->saldopiutang) }}</h2>
-                    <p>Piutang s/d Hari Ini</p>
-                </div>
-                <div class="avatar bg-rgba-danger p-50 m-0">
-                    <div class="avatar-content">
-                        <i class="feather icon-dollar-sign text-danger font-medium-5"></i>
-                    </div>
-                </div>
-            </div>
-    </div>
-</div>
-</div> --}}
-</div>
-</div>
-</section>
-<div class="row">
-    <div class="col-lg-5 col-sm-12">
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Pencapaian Target</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="row" id="pilihbulan">
-                            <div class="col-12">
-                                {{-- <label for="" class="form-label mb-1">Omset Bulan</label> --}}
-                                <div class="form-group" style="margin-bottom: 5px">
-                                    <select class="form-control" id="bulan" name="bulan">
-                                        <option value="">Bulan</option>
-                                        <?php
-                                            $bulanini = date("m");
-                                            for ($i = 1; $i < count($bulan); $i++) {
-                                            ?>
-                                        <option <?php if ($bulanini == $i) {echo "selected";} ?> value="<?php echo $i; ?>"><?php echo $bulan[$i]; ?></option>
-                                        <?php
-                                            }
-                                            ?>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <select class="form-control" id="tahun" name="tahun">
-                                        <?php
-                                            $tahunmulai = 2020;
-                                            for ($thn = $tahunmulai; $thn <= date('Y'); $thn++) {
-                                            ?>
-                                        <option <?php if (date('Y') == $thn) { echo "Selected";} ?> value="<?php echo $thn; ?>"><?php echo $thn; ?></option>
-                                        <?php
-                                            }
-                                            ?>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Kode</th>
-                                            <th>Nama Barang</th>
-                                            <th>Target</th>
-                                            <th>Realisasi</th>
-                                            <th>%</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="loadrealisasitargetsales"></tbody>
-                                </table>
+                                <h2 class="text-bold-700">{{ rupiah($jmlpelangganhariini) }}</h2>
+                                <p class="mb-0 line-ellipsis">Pelanggan Baru</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Kunjungan Hari Ini</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="form-group" style="margin-bottom: 5px">
-                                    <x-inputtext label="Tanggal" field="tanggalkunjungan" icon="feather icon-calendar" datepicker value="{{ date('Y-m-d') }}" />
-                                </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex align-items-start pb-0">
+                            <div>
+                                <h2 class="text-bold-700 mb-0">{{ rupiah($penjualanhariini->totalpenjualan) }}</h2>
+                                <p>Penjualan Hari ini</p>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Kode</th>
-                                            <th>Nama Pelanggan</th>
-                                            <th>Check In</th>
-                                            <th>Check Out</th>
-                                            <th>Durasi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="loadkunjungan"></tbody>
-                                </table>
+                            <div class="avatar bg-rgba-success p-50 m-0">
+                                <div class="avatar-content">
+                                    <i class="feather icon-shopping-bag text-success font-medium-5"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="col-lg-7 col-sm-12">
-        <div class="card">
-            <div class="card-header">
-                <h4 class="card-title">Grafik Penjualan</h4>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex align-items-start pb-0">
+                            <div>
+                                <h2 class="text-bold-700 mb-0">{{ rupiah($bayarhariini->totalbayar) }}</h2>
+                                <p>Pembayaran Hari Ini</p>
+                            </div>
+                            <div class="avatar bg-rgba-primary p-50 m-0">
+                                <div class="avatar-content">
+                                    <i class="feather icon-dollar-sign text-primary font-medium-5"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <!-- Line Area Chart -->
-                <div id="line-area-chart"></div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header d-flex align-items-start pb-0">
+                            <div>
+                                <h2 class="text-bold-700 mb-0">{{ rupiah($jmltransaksi) }}</h2>
+                                <p>Transaksi Hari ini</p>
+                            </div>
+                            <div class="avatar bg-rgba-warning p-50 m-0">
+                                <div class="avatar-content">
+                                    <i class="feather icon-shopping-bag text-warning font-medium-5"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
+        </section>
+        <section id="target">
+            <div class="row">
 
-</div>
+                <div class="col-12">
+                    <ul class="nav nav-tabs nav-justified" id="myTab2" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab-justified" data-toggle="tab" href="#home-just" role="tab" aria-controls="home-just" aria-selected="true">Realisasi Target</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab-justified" data-toggle="tab" href="#profile-just" role="tab" aria-controls="profile-just" aria-selected="true">Histori Kunjungan</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content pt-1">
+                        <div class="tab-pane active" id="home-just" role="tabpanel" aria-labelledby="home-tab-justified">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group" style="margin-bottom: 5px">
+                                        <select class="form-control" id="bulan" name="bulan">
+                                            <option value="">Bulan</option>
+                                            <?php
+                                                $bulanini = date("m");
+                                                for ($i = 1; $i < count($bulan); $i++) {
+                                                ?>
+                                            <option <?php if ($bulanini == $i) {echo "selected";} ?> value="<?php echo $i; ?>"><?php echo $bulan[$i]; ?></option>
+                                            <?php
+                                                }
+                                                ?>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <select class="form-control" id="tahun" name="tahun">
+                                            <?php
+                                                $tahunmulai = 2020;
+                                                for ($thn = $tahunmulai; $thn <= date('Y'); $thn++) {
+                                                ?>
+                                            <option <?php if (date('Y') == $thn) { echo "Selected";} ?> value="<?php echo $thn; ?>"><?php echo $thn; ?></option>
+                                            <?php
+                                                }
+                                                ?>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" id="loadrealisasitargetsales">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="profile-just" role="tabpanel" aria-labelledby="profile-tab-justified">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group" style="margin-bottom: 5px">
+                                        <x-inputtext label="Tanggal" field="tanggalkunjungan" icon="feather icon-calendar" datepicker value="{{ date('Y-m-d') }}" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" id="loadkunjungan"></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+        </section>
+    </div>
 </div>
 @endsection
 @push('myscript')
@@ -263,68 +202,68 @@
             }
             return x1 + x2;
         }
-        var $primary = '#7367F0'
-            , $success = '#28C76F'
-            , $danger = '#EA5455'
-            , $warning = '#FF9F43'
-            , $info = '#00cfe8'
-            , $label_color_light = '#dae1e7';
+        // var $primary = '#7367F0'
+        //     , $success = '#28C76F'
+        //     , $danger = '#EA5455'
+        //     , $warning = '#FF9F43'
+        //     , $info = '#00cfe8'
+        //     , $label_color_light = '#dae1e7';
 
-        var themeColors = [$primary, $success, $danger, $warning, $info];
+        // var themeColors = [$primary, $success, $danger, $warning, $info];
 
-        // RTL Support
-        var yaxis_opposite = false;
-        if ($('html').data('textdirection') == 'rtl') {
-            yaxis_opposite = true;
-        }
+        // // RTL Support
+        // var yaxis_opposite = false;
+        // if ($('html').data('textdirection') == 'rtl') {
+        //     yaxis_opposite = true;
+        // }
 
-        var bln = <?php echo json_encode($bln) ?> ;
-        var totalpenjnow = <?php echo json_encode($totalpenjnow) ?> ;
-        var totalpenjlast = <?php echo json_encode($totalpenjlast) ?> ;
+        // var bln = < ? php echo json_encode($bln) ? > ;
+        // var totalpenjnow = < ? php echo json_encode($totalpenjnow) ? > ;
+        // var totalpenjlast = < ? php echo json_encode($totalpenjlast) ? > ;
 
-        // Line Area Chart
-        // ----------------------------------
-        var lineAreaOptions = {
-            chart: {
-                height: 350
-                , type: 'area'
-            , }
-            , colors: themeColors
-            , dataLabels: {
-                enabled: false
-            }
-            , stroke: {
-                curve: 'smooth'
-            }
-            , series: [{
-                name: '2022'
-                , data: totalpenjnow
-            }, {
-                name: '2022'
-                , data: totalpenjlast
-            }]
-            , legend: {
-                offsetY: -10
-            }
-            , xaxis: {
-                categories: bln
-            }
-            , yaxis: {
-                labels: {
-                    formatter: function(value) {
-                        var val = addCommas(value);
-                        return val
-                    }
-                }
-                , opposite: yaxis_opposite
-            }
+        // // Line Area Chart
+        // // ----------------------------------
+        // var lineAreaOptions = {
+        //     chart: {
+        //         height: 350
+        //         , type: 'area'
+        //     , }
+        //     , colors: themeColors
+        //     , dataLabels: {
+        //         enabled: false
+        //     }
+        //     , stroke: {
+        //         curve: 'smooth'
+        //     }
+        //     , series: [{
+        //         name: '2022'
+        //         , data: totalpenjnow
+        //     }, {
+        //         name: '2022'
+        //         , data: totalpenjlast
+        //     }]
+        //     , legend: {
+        //         offsetY: -10
+        //     }
+        //     , xaxis: {
+        //         categories: bln
+        //     }
+        //     , yaxis: {
+        //         labels: {
+        //             formatter: function(value) {
+        //                 var val = addCommas(value);
+        //                 return val
+        //             }
+        //         }
+        //         , opposite: yaxis_opposite
+        //     }
 
-        }
-        var lineAreaChart = new ApexCharts(
-            document.querySelector("#line-area-chart")
-            , lineAreaOptions
-        );
-        lineAreaChart.render();
+        // }
+        // var lineAreaChart = new ApexCharts(
+        //     document.querySelector("#line-area-chart")
+        //     , lineAreaOptions
+        // );
+        // lineAreaChart.render();
 
         function loadrealisasitargetsales() {
             var bulan = $("#bulan").val();
@@ -348,13 +287,13 @@
         function loadkunjungan() {
             //var bulan = $("#bulan").val();
             //var tahun = $("#tahun").val();
-			var tanggalkunjungan = $("#tanggalkunjungan").val();
+            var tanggalkunjungan = $("#tanggalkunjungan").val();
             $.ajax({
                 type: 'POST'
                 , url: '/getkunjungan'
                 , data: {
-                    _token: "{{ csrf_token() }}",
-					tanggalkunjungan:tanggalkunjungan
+                    _token: "{{ csrf_token() }}"
+                    , tanggalkunjungan: tanggalkunjungan
                 }
                 , cache: false
                 , success: function(respond) {
@@ -362,15 +301,15 @@
                 }
             });
         }
-		
-		loadkunjungan();
+
+        loadkunjungan();
 
         loadrealisasitargetsales();
-		
-		$("#tanggalkunjungan").change(function(e){
-			loadkunjungan();
-		});
-        $("#bulan").change(function() {
+
+        $("#tanggalkunjungan").change(function(e) {
+            loadkunjungan();
+        });
+        $("#bulan, #tahun").change(function() {
             loadrealisasitargetsales();
         });
     });
