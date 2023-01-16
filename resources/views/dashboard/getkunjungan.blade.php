@@ -11,7 +11,7 @@ $j = $jam <= 9 ? '0' .$jam : $jam; $m=$minutes<=9 ? '0' .$minutes : $minutes; @e
     <td>{{ $d->kode_pelanggan }}</td>
     <td>{{ $d->nama_pelanggan }}</td>
     <td>{{ date("H:i",strtotime($d->checkin_time)) }}</td>
-    <td>{{ date("H:i",strtotime($d->checkout_time)) }}</td>
-    <td>{{ $j.':'.$m}}</td>
+    <td>{{ !empty($d->checkout_time) ? date("H:i",strtotime($d->checkout_time)) : 0 }}</td>
+    <td>{{ !empty($d->checkout_time) ? $j.':'.$m : 0}}</td>
     </tr>
     @endforeach
