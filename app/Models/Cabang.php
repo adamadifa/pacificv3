@@ -31,8 +31,6 @@ class Cabang extends Model
             $cabang = DB::table('cabang')->whereIn('kode_cabang', $wilayah_barat)->get();
         } else if ($iduser == $dadang) {
             $cabang = DB::table('cabang')->whereIn('kode_cabang', $wilayah_timur)->get();
-        } else if ($iduser == $ega) {
-            $cabang = DB::table('cabang')->whereIn('kode_cabang', $egacabang)->get();
         } else {
             // if ($cbg != "PCF" && $cbg != "PST") {
             //     if ($cbg == "GRT") {
@@ -85,8 +83,6 @@ class Cabang extends Model
             $cabang = DB::table('cabang')->whereIn('kode_cabang', $wilayah_barat)->get();
         } else if ($iduser == $dadang) {
             $cabang = DB::table('cabang')->whereIn('kode_cabang', $wilayah_timur)->get();
-        } else if ($iduser == $ega) {
-            $cabang = DB::table('cabang')->whereIn('kode_cabang', $egacabang)->get();
         } else {
             if ($cbg == "PCF") {
                 $cabang = DB::table('cabang')->get();
