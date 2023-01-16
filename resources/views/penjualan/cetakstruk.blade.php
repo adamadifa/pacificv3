@@ -187,7 +187,7 @@ $data .= "  Pembayaran<br>";
 $totalbayar=0;
 foreach( $pembayaran as $d ) {
     $totalbayar += $d->bayar;
-$data .= "  ". sprintf("%-$len"."s\t%s\n",date('d-m-y',strtotime($d->tglbayar)),"            ".rupiah($d->bayar));
+$data .= "  ". sprintf("%-$len"."s\t%s\n",date('d-m-y',strtotime($d->tglbayar)),"                ".rupiah($d->bayar));
 }
 $data .= "
 ";
