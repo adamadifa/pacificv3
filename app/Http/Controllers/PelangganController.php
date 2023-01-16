@@ -803,6 +803,9 @@ class PelangganController extends Controller
         $lok = explode(",", $lokasi);
         $latitude = $lok[0];
         $longitude = $lok[1];
+
+        echo $latitude . "," . $longitude;
+        die;
         $kode_pelanggan = $request->kode_pelanggan;
         $hariini = date("Y-m-d");
         $tglskrg = date("d");
