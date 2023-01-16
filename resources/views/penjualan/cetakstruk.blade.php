@@ -178,10 +178,10 @@ foreach( $detail as $d ) {
 }
 $data .= "  -----------------------------------<br>";
 $data .= "  ". sprintf("%-$len"."s\t%s\n","Potongan","                ".rupiah($faktur->potongan));
-$data .= "  ". sprintf("%-$len"."s\t%s\n","TOTAL","                   ".rupiah($totalnonppn));
-$data .= "  ". sprintf("%-$len"."s\t%s\n","RETUR","                   ".rupiah($retur->totalretur));
-$data .= "  ". sprintf("%-$len"."s\t%s\n","PPN","                  ".rupiah($faktur->ppn));
-$data .= "  ". sprintf("%-$len"."s\t%s\n","GRAND TOTAL","          ".rupiah($faktur->total-$retur->totalretur));
+$data .= "  ". sprintf("%-$len"."s\t%s\n","TOTAL","                 ".rupiah($totalnonppn));
+$data .= "  ". sprintf("%-$len"."s\t%s\n","RETUR","                 ".rupiah($retur->totalretur));
+$data .= "  ". sprintf("%-$len"."s\t%s\n","PPN","                ".rupiah($faktur->ppn));
+$data .= "  ". sprintf("%-$len"."s\t%s\n","GRAND TOTAL","      ".rupiah($faktur->total-$retur->totalretur));
 $data .= "  -----------------------------------<br><br>";
 $data .= "  Pembayaran<br>";
 $totalbayar=0;
