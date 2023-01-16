@@ -804,8 +804,8 @@ class PelangganController extends Controller
         $latitude = $lok[0];
         $longitude = $lok[1];
 
-        echo $latitude . "," . $longitude;
-        die;
+        // echo $latitude . "," . $longitude;
+        // die;
         $kode_pelanggan = $request->kode_pelanggan;
         $hariini = date("Y-m-d");
         $tglskrg = date("d");
@@ -829,7 +829,7 @@ class PelangganController extends Controller
         $status_location = $pelanggan->status_location;
         $latitude_pelanggan = $status_location == 1 ? $pelanggan->latitude : $latitude;
         $longitude_pelanggan = $status_location == 1 ? $pelanggan->longitude : $longitude;
-
+        dd($pelanggan);
         $jarak = $this->distance($latitude_pelanggan, $longitude_pelanggan, $latitude, $longitude);
         $radius =  ROUND($jarak["meters"]);
         DB::beginTransaction();
