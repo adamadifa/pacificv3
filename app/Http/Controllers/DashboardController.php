@@ -650,7 +650,7 @@ class DashboardController extends Controller
                     $join->on('checkin.kode_pelanggan', '=', 'pj.kode_pelanggan');
                 }
             )
-            ->where('checkin.id_karyawan', $id_karyawan)
+            ->where('checkin.id_karyawand', $id_karyawan)
             ->where('tgl_checkin', $tanggal)
             ->get();
 
