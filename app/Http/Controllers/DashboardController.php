@@ -413,12 +413,14 @@ class DashboardController extends Controller
             ->where('time_stamps', $hariini)->count();
         $penjualanhariini = DB::table('penjualan')
             ->selectRaw('SUM(total) as totalpenjualan')
+            ->where('id_karyawan', $id_karyawan)
             ->where('tgltransaksi', $hariini)->first();
 
 
 
         $bayarhariini = DB::table('historibayar')
             ->selectRaw('SUM(bayar) as totalbayar')
+            ->where('id_karyawan', $id_karyawan)
             ->where('tglbayar', $hariini)->first();
         $jmltransaksi = DB::table('penjualan')->where('id_karyawan', $id_karyawan)->where('tgltransaksi', $hariini)->count();
 
@@ -634,6 +636,7 @@ class DashboardController extends Controller
 
     public function getkunjungan(Request $request)
     {
+        $id_karyawan = Auth::user()->id_salesman;
         $tanggal = $request->tanggalkunjungan;
         $kunjungan = DB::table('checkin')
             ->selectRaw('checkin.kode_pelanggan,nama_pelanggan,checkin_time,no_fak_penj,date_created as checkout_time')
@@ -647,6 +650,7 @@ class DashboardController extends Controller
                     $join->on('checkin.kode_pelanggan', '=', 'pj.kode_pelanggan');
                 }
             )
+            ->where('id_karyawan', $id_karyawan)
             ->where('tgl_checkin', $tanggal)
             ->get();
 
