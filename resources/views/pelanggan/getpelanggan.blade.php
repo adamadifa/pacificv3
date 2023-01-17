@@ -144,7 +144,11 @@
                     </div>
                 </a>
                 @endforeach
-                {{ $penjualan->links('vendor.pagination.vuexy') }}
+                <div class="row">
+                    <div class="col-12">
+                        {{ $penjualan->links('vendor.pagination.vuexy') }}
+                    </div>
+                </div>
             </div>
             @endif
         </div>

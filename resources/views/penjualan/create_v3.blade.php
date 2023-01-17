@@ -6,6 +6,20 @@
         text-transform: uppercase
     }
 
+    @media only screen and (max-width: 600px) {
+        #grandtotal {
+            font-size: 3rem !important;
+        }
+
+        #iconchart {
+            font-size: 2rem !important;
+        }
+
+        #bgiconcart {
+            padding: 1rem !important;
+        }
+    }
+
 </style>
 <div class="content-wrapper">
     <div class="content-header row">
@@ -39,7 +53,7 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="Auto" readonly field="no_fak_penj" icon="fa fa-barcode" />
+                                            <x-inputtext label="Auto" field="no_fak_penj" icon="fa fa-barcode" />
                                         </div>
                                     </div>
                                     <div class="row">
@@ -67,7 +81,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row d-none">
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-content">
@@ -97,14 +111,13 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header d-flex align-items-start pb-0">
-                                    <div class="avatar bg-rgba-info m-2" style="padding:3rem ">
+                                    <div class="avatar bg-rgba-info m-2" style="padding:3rem" id="bgiconcart">
                                         <div class="avatar-content">
-                                            <i class="feather icon-shopping-cart text-info" style="font-size: 4rem"></i>
+                                            <i class="feather icon-shopping-cart text-info" id="iconchart" style="font-size: 4rem"></i>
                                         </div>
                                     </div>
                                     <div>
                                         <h2 class="text-bold-700" style="font-size: 6rem; padding:2rem" id="grandtotal">0,00</h2>
-
                                     </div>
                                 </div>
                             </div>
@@ -228,7 +241,7 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-2 col-sm-12">
-                                            <div class="row">
+                                            <div class="row mb-1">
                                                 <div class="col-12">
                                                     <div class="vs-checkbox-con vs-checkbox-primary">
                                                         <input type="checkbox" class="promo" id="promo" name="promo" value="1">
@@ -311,16 +324,18 @@
                                             </div>
 
                                         </div>
+
+                                        {{-- Potongan Istimewa --}}
                                         <div class="col-lg-3 col-sm-12">
-                                            <div class="row">
+                                            {{-- <div class="row">
+                                <div class="col-12">
+                                    <span class="font-size:1rem;"><b><i class="feather icon-tag mr-1"></i>Potongan Istimewa</b></span>
+                                </div>
+                            </div>
+                            <hr> --}}
+                                            <div class="row d-none">
                                                 <div class="col-12">
-                                                    <span class="font-size:1rem;"><b><i class="feather icon-tag mr-1"></i>Potongan Istimewa</b></span>
-                                                </div>
-                                            </div>
-                                            <hr>
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <div class="form-group" style="margin-bottom: 5px">
+                                                    <div class="form-group" style="margin-bottom: 5px;">
                                                         <div class="position-relative has-icon-left">
                                                             <input type="text" id="potisaida" class="form-control text-right money" name="potisaida" placeholder="Aida">
                                                             <div class="form-control-position">
@@ -328,7 +343,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group" style="margin-bottom: 5px">
+                                                    <div class="form-group" style="margin-bottom: 5px;">
                                                         <div class="position-relative has-icon-left">
                                                             <input type="text" id="potisswan" class="form-control text-right money" name="potisswan" placeholder="Swan">
                                                             <div class="form-control-position">
@@ -336,7 +351,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="form-group" style="margin-bottom: 5px">
+                                                    <div class="form-group" style="margin-bottom: 5px;">
                                                         <div class="position-relative has-icon-left">
                                                             <input type="text" id="potisstick" class="form-control text-right money" name="potisstick" placeholder="Stick">
                                                             <div class="form-control-position">
@@ -348,7 +363,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-lg-3 col-sm-12">
+                                        <div class="col-lg-3 col-sm-12 d-none">
                                             <div class="row">
                                                 <div class="col-12">
                                                     <span class="font-size:1rem;"><b><i class="feather icon-tag mr-1"></i>Penyesuaian</b></span>

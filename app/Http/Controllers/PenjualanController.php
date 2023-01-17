@@ -216,7 +216,11 @@ class PenjualanController extends Controller
                 $salesman = Salesman::orderBy('nama_karyawan')->where('nama_karyawan', '!=', '-')->where('status_aktif_sales', 1)->get();
             }
             $cabang = Cabang::orderBy('kode_cabang')->get();
-            return view('penjualan.index', compact('penjualan', 'salesman', 'cabang'));
+            if (Auth::user()->level == "salesman") {
+                return view('penjualan.indexsalesman', compact('penjualan', 'salesman', 'cabang'));
+            } else {
+                return view('penjualan.index', compact('penjualan', 'salesman', 'cabang'));
+            }
         }
     }
 
@@ -1218,7 +1222,7 @@ class PenjualanController extends Controller
         } else {
             $no_fak_penj = $request->no_fak_penj; //ok
         }
-        $no_fak_penj = $request->no_fak_penj; //ok
+        //$no_fak_penj = $request->no_fak_penj; //ok
         //dd($no_fak_penj);
         $tgltransaksi = $request->tgltransaksi; //ok
         $id_karyawan = $request->id_karyawan; //ok

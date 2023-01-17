@@ -7,7 +7,7 @@ $diff = $akhir - $awal;
 $jam = floor($diff / (60 * 60));
 $menit = $diff - $jam * (60 * 60) ;
 $minutes = floor($menit/60);
-$j = $jam <= 9 ? '0' .$jam : $jam; $m=$minutes<=9 ? '0' .$minutes : $minutes; @endphp < class="row">
+$j = $jam <= 9 ? '0' .$jam : $jam; $m=$minutes<=9 ? '0' .$minutes : $minutes; @endphp <div class="row">
     <div class="col-12">
         <div class="card border-primary">
             <div class="card-content">
@@ -38,7 +38,7 @@ $j = $jam <= 9 ? '0' .$jam : $jam; $m=$minutes<=9 ? '0' .$minutes : $minutes; @e
             </div>
         </div>
     </div>
-
+    </div>
 
     {{-- <tr>
     <td>{{ $d->kode_pelanggan }}</td>

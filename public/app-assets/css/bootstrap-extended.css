@@ -1357,7 +1357,7 @@ html [type="button"],
 .dropdown-toggle::after {
     border: none !important;
     font-family: "feather";
-    content: "\e842" !important;
+    /* content: "\e842" !important; */
     position: relative;
     top: 1px;
     right: 0px;
@@ -1407,7 +1407,7 @@ html [type="button"],
 }
 
 .dropup .dropdown-toggle::after {
-    content: "\e845" !important;
+    /* content: "\e845" !important; */
     vertical-align: 0.05rem;
 }
 
