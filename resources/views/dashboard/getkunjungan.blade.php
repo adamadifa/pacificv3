@@ -7,16 +7,16 @@ $diff = $akhir - $awal;
 $jam = floor($diff / (60 * 60));
 $menit = $diff - $jam * (60 * 60) ;
 $minutes = floor($menit/60);
-$j = $jam <= 9 ? '0' .$jam : $jam; $m=$minutes<=9 ? '0' .$minutes : $minutes; @endphp <div class="row">
+$j = $jam <= 9 ? '0' .$jam : $jam; $m=$minutes<=9 ? '0' .$minutes : $minutes; @endphp < class="row">
     <div class="col-12">
         <div class="card border-primary">
             <div class="card-content">
                 <div class="card-body" style="padding:8px 10px 8px 8px !important">
                     <p class="card-text d-flex justify-content-between">
                         <span class="d-flex justify-content-between">
-                            @if (!empty($data->foto))
+                            @if (!empty($d->foto))
                             @php
-                            $path = Storage::url('pelanggan/'.$data->foto);
+                            $path = Storage::url('pelanggan/'.$d->foto);
                             @endphp
                             <img src="{{ url($path) }}" class="rounded mr-75" alt="profile image" height="40" width="40">
                             @else
@@ -38,7 +38,7 @@ $j = $jam <= 9 ? '0' .$jam : $jam; $m=$minutes<=9 ? '0' .$minutes : $minutes; @e
             </div>
         </div>
     </div>
-    </div>
+
 
     {{-- <tr>
     <td>{{ $d->kode_pelanggan }}</td>

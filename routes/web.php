@@ -1085,6 +1085,7 @@ Route::middleware(['auth'])->group(function () {
 
     //Pelanggan
     Route::get('/pelanggan', [PelangganController::class, 'index']);
+    Route::get('/pelanggansalesman', [PelangganController::class, 'pelanggansalesman']);
     Route::get('/pelanggan/create', [PelangganController::class, 'create']);
     Route::post('/pelanggan/store', [PelangganController::class, 'store']);
     Route::get('/pelanggan/{kode_pelanggan}/edit', [PelangganController::class, 'edit']);
