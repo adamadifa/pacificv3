@@ -141,8 +141,8 @@
             </li>
             @endif
             @if ($level == "salesman")
-            <li class="{{ request()->is(['pelanggan', 'pelanggan/*']) ? 'active' : '' }}">
-                <a href="/pelanggan">
+            <li class="{{ request()->is(['pelanggansalesman', 'pelanggansalesman/*']) ? 'active' : '' }}">
+                <a href="/pelanggansalesman">
                     <i class="feather icon-users info"></i>
                     <span class="menu-item">Pelanggan</span>
                 </a>

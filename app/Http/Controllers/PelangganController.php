@@ -248,6 +248,18 @@ class PelangganController extends Controller
         }
     }
 
+    public function pelanggansalesman(Request $request)
+    {
+        $pelanggan = DB::table('pelanggan')
+            ->where('kode_cabang', Auth::user()->kode_cabang)
+            ->where('status_pelanggan', 1)
+            ->where('nama_pelanggan', 'like', '%' . $request->nama_pelanggan . '%')
+            ->limit(10)
+            ->orderBy('nama_pelanggan')
+            ->get();
+        return view('pelanggan.indexsalesman', compact('pelanggan'));
+    }
+
     public function create()
     {
         $cabang = Cabang::all();
@@ -654,36 +666,36 @@ class PelangganController extends Controller
                 ->orderBy('tgl_pengajuan', 'asc')
                 ->get();
 
-            $piutang = DB::table('penjualan')
-                ->select('penjualan.kode_pelanggan', DB::raw('SUM(IFNULL( retur.total, 0 )) AS totalretur,
-                        SUM(IFNULL(penjualan.total,0) - IFNULL(retur.total,0) - IFNULL(jmlbayar,0)) AS sisapiutang'))
-                ->leftJoin(
-                    DB::raw("(
-                        SELECT retur.no_fak_penj AS no_fak_penj, SUM( total ) AS total FROM retur GROUP BY retur.no_fak_penj
-                    ) retur"),
-                    function ($join) {
-                        $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
-                    }
-                )
-                ->leftJoin(
-                    DB::raw("(
-                        SELECT no_fak_penj, IFNULL(SUM(bayar),0) as jmlbayar
-                        FROM historibayar
-                        GROUP BY no_fak_penj
-                    ) historibayar"),
-                    function ($join) {
-                        $join->on('penjualan.no_fak_penj', '=', 'historibayar.no_fak_penj');
-                    }
-                )
-                ->where('penjualan.kode_pelanggan', $kode_pelanggan)
-                ->groupBy('penjualan.kode_pelanggan')
-                ->first();
+            // $piutang = DB::table('penjualan')
+            //     ->select('penjualan.kode_pelanggan', DB::raw('SUM(IFNULL( retur.total, 0 )) AS totalretur,
+            //             SUM(IFNULL(penjualan.total,0) - IFNULL(retur.total,0) - IFNULL(jmlbayar,0)) AS sisapiutang'))
+            //     ->leftJoin(
+            //         DB::raw("(
+            //             SELECT retur.no_fak_penj AS no_fak_penj, SUM( total ) AS total FROM retur GROUP BY retur.no_fak_penj
+            //         ) retur"),
+            //         function ($join) {
+            //             $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
+            //         }
+            //     )
+            //     ->leftJoin(
+            //         DB::raw("(
+            //             SELECT no_fak_penj, IFNULL(SUM(bayar),0) as jmlbayar
+            //             FROM historibayar
+            //             GROUP BY no_fak_penj
+            //         ) historibayar"),
+            //         function ($join) {
+            //             $join->on('penjualan.no_fak_penj', '=', 'historibayar.no_fak_penj');
+            //         }
+            //     )
+            //     ->where('penjualan.kode_pelanggan', $kode_pelanggan)
+            //     ->groupBy('penjualan.kode_pelanggan')
+            //     ->first();
 
             $salesmancheckin = DB::table('checkin')
                 ->where('tgl_checkin', $hariini)
                 ->where('id_karyawan', Auth::user()->id)
                 ->count();
-            return view('pelanggan.getpelanggan', compact('pelanggan', 'penjualan', 'limitkredit', 'piutang', 'salesmancheckin'));
+            return view('pelanggan.getpelanggan', compact('pelanggan', 'penjualan', 'limitkredit',  'salesmancheckin'));
         } catch (\Exception $e) {
             DB::rollBack();
             echo $e;
@@ -719,30 +731,30 @@ class PelangganController extends Controller
             ->orderBy('tgl_pengajuan', 'asc')
             ->get();
 
-        $piutang = DB::table('penjualan')
-            ->select('penjualan.kode_pelanggan', DB::raw('SUM(IFNULL( retur.total, 0 )) AS totalretur,
-                        SUM(IFNULL(penjualan.total,0) - IFNULL(retur.total,0) - IFNULL(jmlbayar,0)) AS sisapiutang'))
-            ->leftJoin(
-                DB::raw("(
-                        SELECT retur.no_fak_penj AS no_fak_penj, SUM( total ) AS total FROM retur GROUP BY retur.no_fak_penj
-                    ) retur"),
-                function ($join) {
-                    $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
-                }
-            )
-            ->leftJoin(
-                DB::raw("(
-                        SELECT no_fak_penj, IFNULL(SUM(bayar),0) as jmlbayar
-                        FROM historibayar
-                        GROUP BY no_fak_penj
-                    ) historibayar"),
-                function ($join) {
-                    $join->on('penjualan.no_fak_penj', '=', 'historibayar.no_fak_penj');
-                }
-            )
-            ->where('penjualan.kode_pelanggan', $kode_pelanggan)
-            ->groupBy('penjualan.kode_pelanggan')
-            ->first();
+        // $piutang = DB::table('penjualan')
+        //     ->select('penjualan.kode_pelanggan', DB::raw('SUM(IFNULL( retur.total, 0 )) AS totalretur,
+        //                 SUM(IFNULL(penjualan.total,0) - IFNULL(retur.total,0) - IFNULL(jmlbayar,0)) AS sisapiutang'))
+        //     ->leftJoin(
+        //         DB::raw("(
+        //                 SELECT retur.no_fak_penj AS no_fak_penj, SUM( total ) AS total FROM retur GROUP BY retur.no_fak_penj
+        //             ) retur"),
+        //         function ($join) {
+        //             $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
+        //         }
+        //     )
+        //     ->leftJoin(
+        //         DB::raw("(
+        //                 SELECT no_fak_penj, IFNULL(SUM(bayar),0) as jmlbayar
+        //                 FROM historibayar
+        //                 GROUP BY no_fak_penj
+        //             ) historibayar"),
+        //         function ($join) {
+        //             $join->on('penjualan.no_fak_penj', '=', 'historibayar.no_fak_penj');
+        //         }
+        //     )
+        //     ->where('penjualan.kode_pelanggan', $kode_pelanggan)
+        //     ->groupBy('penjualan.kode_pelanggan')
+        //     ->first();
         $hariini = date("Y-m-d");
         $salesmancheckin = DB::table('checkin')
             ->where('tgl_checkin', $hariini)
@@ -750,7 +762,7 @@ class PelangganController extends Controller
             ->where('kode_pelanggan', $kode_pelanggan)
             ->count();
 
-        return view('pelanggan.getpelanggan', compact('pelanggan', 'penjualan', 'limitkredit', 'piutang', 'salesmancheckin'));
+        return view('pelanggan.getpelanggan', compact('pelanggan', 'penjualan', 'limitkredit', 'salesmancheckin'));
     }
 
     public function capturetoko($kode_pelanggan)
