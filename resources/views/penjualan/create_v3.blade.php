@@ -39,7 +39,7 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="No. Faktur" field="no_fak_penj" icon="fa fa-barcode" />
+                                            <x-inputtext label="Auto" readonly field="no_fak_penj" icon="fa fa-barcode" />
                                         </div>
                                     </div>
                                     <div class="row">
@@ -773,17 +773,6 @@
             var cektemp = $("#cektemp").val();
             if (cektutuplaporan > 0) {
                 swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
-                return false;
-            } else if (no_fak_penj == "") {
-                swal({
-                    title: 'Oops'
-                    , text: 'No Faktur Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#no_fak_penj").focus();
-                });
-                $("#btnsimpan").prop('disabled', false);
                 return false;
             } else if (tgltransaksi == "") {
                 swal({
