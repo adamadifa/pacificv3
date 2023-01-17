@@ -656,7 +656,7 @@ class PelangganController extends Controller
             if (!empty($request->dari) && !empty($request->sampai)) {
                 $query->whereBetween('tgltransaksi', [$request->dari, $request->sampai]);
             }
-            $penjualan = $query->paginate(10);
+            $penjualan = $query->paginate(5);
             $penjualan->appends($request->all());
 
 
@@ -721,7 +721,7 @@ class PelangganController extends Controller
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('tgltransaksi', [$request->dari, $request->sampai]);
         }
-        $penjualan = $query->paginate(10);
+        $penjualan = $query->paginate(5);
         $penjualan->appends($request->all());
 
 

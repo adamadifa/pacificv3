@@ -144,6 +144,7 @@
                     </div>
                 </a>
                 @endforeach
+                {{ $penjualan->links('vendor.pagination.vuexy') }}
             </div>
             @endif
         </div>
