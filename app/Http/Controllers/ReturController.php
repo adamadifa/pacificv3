@@ -85,7 +85,12 @@ class ReturController extends Controller
         $retur = $query->paginate(15);
 
         $retur->appends($request->all());
-        return view('retur.index', compact('retur'));
+
+        if (Auth::user()->level == "salesman") {
+            return view('retur.indexsalesman', compact('retur'));
+        } else {
+            return view('retur.index', compact('retur'));
+        }
     }
 
     public function create()

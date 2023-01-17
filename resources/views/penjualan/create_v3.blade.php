@@ -8,15 +8,15 @@
 
     @media only screen and (max-width: 600px) {
         #grandtotal {
-            font-size: 3rem !important;
-        }
-
-        #iconchart {
             font-size: 2rem !important;
         }
 
+        #iconchart {
+            font-size: 1.5rem !important;
+        }
+
         #bgiconcart {
-            padding: 1rem !important;
+            padding: 0.5rem !important;
         }
     }
 
