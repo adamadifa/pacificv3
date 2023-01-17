@@ -20,19 +20,18 @@
     }
 
 </style>
+<style>
+    .card {
+        margin-bottom: 1rem !important;
+    }
 
+</style>
 <div class="content-wrapper">
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Detail Faktur</h2>
-                    <div class="breadcrumb-wrapper col-12">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/penjualan">Penjualan</a></li>
-                            <li class="breadcrumb-item"><a href="#">Detail Faktur</a></li>
-                        </ol>
-                    </div>
+                    <h4 class="content-header-title float-left mb-0">Detail Faktur</h4>
                 </div>
             </div>
         </div>
@@ -50,7 +49,7 @@
                                 @php
                                 $path = Storage::url('pelanggan/'.$data->foto);
                                 @endphp
-                                <img class="card-img img-fluid" src="{{ url($path) }}" alt="Card image">
+                                <img class="card-img img-fluid" style="height: 200px; object-fit:cover" src="{{ url($path) }}" alt="Card image">
                                 @else
                                 <img class="card-img img-fluid" src="{{ asset('app-assets/images/slider/04.jpg') }}" alt="Card image">
                                 @endif
@@ -66,21 +65,22 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div class="card" style="background-color: rgba(255, 0, 0, 0)">
-                            <div class="btn-group">
-                                <a href="/penjualan/{{ Crypt::encrypt($data->no_fak_penj) }}/editv2" class="btn btn-success mr-2"><i class="feather icon-edit"></i></a>
-                                <a href="#" class="btn btn-info btn-block" id="cetakfaktur"><i class="feather icon-printer mr-1"></i>Cetak Faktur</a>
-                                <form method="POST" class="deleteform" action="/penjualan/{{ Crypt::encrypt($data->no_fak_penj) }}/delete">
-                                    @csrf
-                                    @method('DELETE')
-                                    <a href=" #" tanggal="{{ $data->tgltransaksi }}" class="btn btn-danger  delete-confirm ml-1">
-                                        <i class="feather icon-trash"></i>
-                                    </a>
-                                </form>
-                            </div>
-                        </div>
+                <div class="row mb-1">
+                    <div class="col d-flex justify-content-arround">
+                        <a href="/penjualan/{{ Crypt::encrypt($data->no_fak_penj) }}/editv2" class="btn  btn-success mr-1">
+                            <i class="feather icon-edit"></i>
+                        </a>
+                        <a href="#" class="btn btn-info btn-block" id="cetakfaktur">
+                            <i class="feather icon-printer mr-1"></i>
+                            Cetak Faktur
+                        </a>
+                        <form method="POST" class="deleteform" action="/penjualan/{{ Crypt::encrypt($data->no_fak_penj) }}/delete">
+                            @csrf
+                            @method('DELETE')
+                            <a href=" #" tanggal="{{ $data->tgltransaksi }}" class="btn btn-danger  delete-confirm ml-1">
+                                <i class="feather icon-trash"></i>
+                            </a>
+                        </form>
                     </div>
                 </div>
                 <div class="row">
@@ -114,7 +114,7 @@
                         </div>
 
                         @else
-                        <form action="/penjualan/uploadsignature" method="POST">
+                        <form action="/penjualan/uploadsignature" id="frmSignature" method="POST">
                             @csrf
                             <input type="hidden" value="{{ $data->no_fak_penj }}" name="no_fak_penj">
                             <div class="row">
@@ -416,180 +416,105 @@
                                     </table>
                                 </div>
                             </div>
-                            <ul class="nav nav-tabs" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" id="retur-tab" data-toggle="tab" href="#retur" aria-controls="retur" role="tab" aria-selected="true">Data Retur</a>
-                                </li>
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="penjualan" aria-labelledby="penjualan-tab" role="tabpanel">
-                                    <table class="table table-bordered">
-                                        <tbody>
-                                            @php
-                                            $totalpf = 0;
-                                            $totalgb = 0;
-                                            $total = 0;
-                                            @endphp
-                                            @foreach ($retur as $d)
-                                            @php
-                                            $jmldus = floor($d->jumlah / $d->isipcsdus);
-                                            $sisadus = $d->jumlah % $d->isipcsdus;
-
-                                            if ($d->isipack == 0) {
-                                            $jmlpack = 0;
-                                            $sisapack = $sisadus;
-                                            } else {
-
-                                            $jmlpack = floor($sisadus / $d->isipcs);
-                                            $sisapack = $sisadus % $d->isipcs;
-                                            }
-
-                                            $jmlpcs = $sisapack;
-                                            if($d->jenis_retur=="pf"){
-                                            $totalpf += $d->subtotal;
-                                            }
-
-                                            if($d->jenis_retur=="gb"){
-                                            $totalgb += $d->subtotal;
-                                            }
-
-                                            $total += $d->subtotal;
-
-                                            @endphp
-                                            <tr>
-                                                <td style="font-weight: bold">Tanggal</td>
-                                                <td colspan="4">{{ date("d-m-y",strtotime($d->tglretur)) }}</td>
-                                                <td style="font-weight: bold">Jenis Retur</td>
-                                                <td colspan="4">
-                                                    @if ($d->jenis_retur=="pf")
-                                                    <span class="badge bg-danger">Potong Faktur</span>
-                                                    @else
-                                                    <span class="badge bg-success">Ganti Barang</span>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="10" style="font-weight: bold">{{ $d->kode_produk }} - {{ $d->nama_barang }}</td>
-                                            </tr>
-                                            @if (!empty($jmldus))
-                                            <tr>
-                                                <td colspan="9">{{ $jmldus }} Dus x {{ rupiah($d->harga_dus) }}</td>
-                                                <td style="font-weight: bold; text-align:right">{{ rupiah($jmldus * $d->harga_dus) }}</td>
-                                            </tr>
-                                            @endif
-                                            @if (!empty($jmlpack))
-                                            <tr>
-                                                <td colspan="9">{{ $jmlpack }} Pack x {{ rupiah($d->harga_pack) }}</td>
-                                                <td style="font-weight: bold; text-align:right">{{ rupiah($jmlpack * $d->harga_pack) }}</td>
-                                            </tr>
-                                            @endif
-                                            @if (!empty($jmlpcs))
-                                            <tr>
-                                                <td colspan="9">{{ $jmlpcs }} Pcs x {{ rupiah($d->harga_pcs) }}</td>
-                                                <td style="font-weight: bold; text-align:right">{{ rupiah($jmlpcs * $d->harga_pcs) }}</td>
-                                            </tr>
-                                            @endif
-                                            @endforeach
-                                            <tr style="font-weight: bold">
-                                                <td colspan="9">Retur Potong Faktur</td>
-                                                <td class="text-right">{{ rupiah($totalpf) }}</td>
-                                            </tr>
-                                            <tr style="font-weight: bold">
-                                                <td colspan="9">Retur Potong Ganti Barang</td>
-                                                <td class="text-right">{{ rupiah($totalgb) }}</td>
-                                            </tr>
-                                            <tr style="font-weight: bold">
-                                                <td colspan="9">Total Retur</td>
-                                                <td class="text-right">{{ rupiah($total-$totalgb) }}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="bayar-tab" data-toggle="tab" href="#bayar" aria-controls="bayar" role="tab" aria-selected="true">Histori Pembayaran</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="penjualan" aria-labelledby="penjualan-tab" role="tabpanel">
+                                @if ($data->status_lunas != 1)
+                                <a href="#" id="inputpembayaran" class="btn btn-md btn-primary mb-2" class="href">
+                                    <i class="feather icon-plus mr-1"></i>
+                                    Input Pembayaran
+                                </a>
+                                @endif
                             </div>
-                            <ul class="nav nav-tabs" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" id="bayar-tab" data-toggle="tab" href="#bayar" aria-controls="bayar" role="tab" aria-selected="true">Histori Pembayaran</a>
-                                </li>
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="penjualan" aria-labelledby="penjualan-tab" role="tabpanel">
-                                    @if ($data->status_lunas != 1)
-                                    <a href="#" id="inputpembayaran" class="btn btn-primary mb-2" class="href"><i class="feather icon-plus"></i></a>
-                                    @endif
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        @foreach ($historibayar as $d)
 
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>No. Bukti</th>
-                                                <th>Tanggal</th>
-                                                <th>Jenis Bayar</th>
-                                                <th>Jumlah</th>
-                                                <th>Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($historibayar as $d)
-                                            <tr>
-                                                <td>{{ $d->nobukti }}</td>
-                                                <td>{{ date("d-m-y",strtotime($d->tglbayar)) }}</td>
-                                                <td>{{ ucwords($d->jenisbayar) }}</td>
-                                                <td class="text-right">{{ rupiah($d->bayar) }}</td>
-                                                <td>
-                                                    @if ($d->jenisbayar=='titipan')
-                                                    <div class="btn-group" role="group" aria-label="Basic example">
-                                                        <a class="ml-1 editbayar" href="#" nobukti="{{ $d->nobukti; }}" kode_cabang="{{ $data->kode_cabang }}" no_fak_penj="{{ $data->no_fak_penj }}" sisabayar="{{ $sisabayar - $d->bayar }}"><i class="feather icon-edit success"></i></a>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card border-success">
+                                    <div class="card-content">
+                                        <div class="card-body" style="padding:8px 10px 8px 8px !important">
+                                            <div class="card-text d-flex justify-content-between">
+                                                <div class="ml-1">
+                                                    <b>{{ $d->nobukti }}</b> <br> {{ DateToIndo2($d->tglbayar) }}
+                                                </div>
+                                                <div>
+                                                    <span style="font-weight: bold">{{rupiah($d->bayar)}}</span>
+                                                    <br>
+                                                    <span class="badge bg-info">{{ $d->jenisbayar }}</span>
+                                                </div>
+                                                <div class="btn-group dropup float-left">
+                                                    <i class="feather icon-more-vertical dropdown-toggle mr-2 mt-1 primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                                                    <div class="dropdown-menu" x-placement="top-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -7px, 0px);">
 
+                                                        <a class="ml-1 editbayar dropdown-item" href="#" nobukti="{{ $d->nobukti; }}" kode_cabang="{{ $data->kode_cabang }}" no_fak_penj="{{ $data->no_fak_penj }}" sisabayar="{{ $sisabayar - $d->bayar }}">
+                                                            <i class="feather icon-edit success mr-1"></i>
+                                                            Edit
+                                                        </a>
                                                         <form method="POST" class="deleteform" action="/pembayaran/{{ Crypt::encrypt($d->nobukti) }}/delete">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <a href=" #" tanggal="{{ $d->tglbayar }}" class="delete-confirm ml-1">
-                                                                <i class="feather icon-trash danger"></i>
+                                                            <a href="#" tanggal="{{ $d->tglbayar }}" class=" dropdown-item delete-confirm ml-1">
+                                                                <i class="feather icon-trash danger mr-1"></i> Hapus
                                                             </a>
                                                         </form>
 
                                                     </div>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <ul class="nav nav-tabs" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" id="giro-tab" data-toggle="tab" href="#giro" aria-controls="giro" role="tab" aria-selected="true">Histori Pembayaran Giro</a>
-                                </li>
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="giro" aria-labelledby="giro-tab" role="tabpanel">
-                                    @if ($data->status_lunas != 1 && $data->jenisbayar != "transfer" )
-                                    <a href="#" id="inputgiro" class="btn btn-primary mb-2" class="href"><i class="feather icon-plus"></i></a>
-                                    @endif
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>No. Giro</th>
-                                                <th>Tanggal</th>
-                                                <th>Bank</th>
-                                                <th>Jumlah</th>
-                                                <th>Status</th>
-                                                <th>Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($giro as $d)
-                                            <tr>
-                                                <td>{{ $d->no_giro }}</td>
-                                                <td>
-                                                    @if (!empty($d->tgl_giro))
-                                                    {{ date("d-m-Y",strtotime($d->tgl_giro)) }}
-                                                    @endif
-                                                </td>
-                                                <td>{{ $d->namabank }}</td>
-                                                <td class="text-right">{{ rupiah($d->jumlah) }}</td>
-
-                                                <td>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="giro-tab" data-toggle="tab" href="#giro" aria-controls="giro" role="tab" aria-selected="true">Histori Pembayaran Giro</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="giro" aria-labelledby="giro-tab" role="tabpanel">
+                                @if ($data->status_lunas != 1 && $data->jenisbayar != "transfer" )
+                                <a href="#" id="inputgiro" class="btn btn-md btn-primary mb-2" class="href"><i class="feather icon-plus mr-1"></i> Input Giro</a>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        @foreach ($giro as $d)
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card border-success">
+                                    <div class="card-content">
+                                        <div class="card-body" style="padding:8px 10px 8px 8px !important">
+                                            <div class="card-text d-flex justify-content-between">
+                                                <div class="ml-1">
+                                                    <b>{{ $d->no_giro }}</b> - <span class="badge bg-info">{{ $d->namabank }}</span> <br> {{ !empty($d->tgl_giro) ? DateToIndo2($d->tgl_giro) : '' }}
+                                                </div>
+                                                <div>
+                                                    <span style="font-weight: bold">{{rupiah($d->jumlah)}}</span>
+                                                    <br>
                                                     @if ($d->status==0)
                                                     <span class="badge bg-warning"> <i class="fa fa-history"></i> Pending </span>
                                                     @elseif($d->status==1)
@@ -597,63 +522,70 @@
                                                     @elseif($d->status==2)
                                                     <span class="badge bg-danger"> <i class="fa fa-close"></i> Ditolak</span>
                                                     @endif
-                                                </td>
+                                                </div>
+                                                @if ($d->status===0)
+                                                <div class="btn-group dropup float-left">
+                                                    <i class="feather icon-more-vertical dropdown-toggle mr-2 mt-1 primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                                                    <div class="dropdown-menu" x-placement="top-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -7px, 0px);">
 
-                                                <td>
-                                                    @if ($d->status===0)
-                                                    <div class="btn-group" role="group" aria-label="Basic example">
-                                                        <a class="ml-1 editgiro" href="#" id_giro="{{ $d->id_giro; }}" kode_cabang="{{ $data->kode_cabang }}" sisabayar="{{ $sisabayar - $d->jumlah }}"><i class="feather icon-edit success"></i></a>
+                                                        <a class="ml-1 editgiro dropdown-item" href="#" id_giro="{{ $d->id_giro; }}" kode_cabang="{{ $data->kode_cabang }}" sisabayar="{{ $sisabayar - $d->jumlah }}"><i class="feather icon-edit success mr-1"></i>Edit</a>
                                                         {{-- @if (in_array($level,$harga_hapus)) --}}
                                                         <form method="POST" class="deleteform" action="/pembayaran/{{ Crypt::encrypt($d->id_giro) }}/deletegiro">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <a href=" #" tanggal="{{ $d->tgl_giro }}" class="delete-confirm ml-1">
-                                                                <i class="feather icon-trash danger"></i>
+                                                            <a href=" #" tanggal="{{ $d->tgl_giro }}" class="delete-confirm dropdown-item ml-1">
+                                                                <i class="feather icon-trash danger mr-1"></i> Hapus
                                                             </a>
                                                         </form>
-                                                        {{-- @endif --}}
+
                                                     </div>
-                                                    @else
+                                                </div>
+                                                @else
+                                                <div>
                                                     <span class="badge bg-success">Keuangan</span>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                                </div>
+                                                @endif
+                                            </div>
+
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <ul class="nav nav-tabs" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" id="transfer-tab" data-toggle="tab" href="#transfer" aria-controls="transfer" role="tab" aria-selected="true">Histori Pembayaran Transfer</a>
-                                </li>
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane active" id="transfer" aria-labelledby="transfer-tab" role="tabpanel">
-                                    @if ($data->status_lunas != 1)
-                                    <a href="#" id="inputtransfer" class="btn btn-primary mb-2" class="href"><i class="feather icon-plus"></i></a>
-                                    @endif
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Tanggal</th>
-                                                <th>Bank</th>
-                                                <th>Jumlah</th>
-                                                <th>Status</th>
-                                                <th>Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($transfer as $d)
-                                            <tr>
-                                                <td>
-                                                    @if (!empty($d->tgl_transfer))
-                                                    {{ date("d-m-Y",strtotime($d->tgl_transfer)) }}
-                                                    @endif
-                                                </td>
-                                                <td>{{ $d->namabank }}</td>
-                                                <td class="text-right">{{ rupiah($d->jumlah) }}</td>
-                                                <td>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="giro-tab" data-toggle="tab" href="#giro" aria-controls="giro" role="tab" aria-selected="true">Histori Pembayaran Transfer</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="giro" aria-labelledby="giro-tab" role="tabpanel">
+                                @if ($data->status_lunas != 1)
+                                <a href="#" id="inputtransfer" class="btn btn-primary mb-2" class="href"><i class="feather icon-plus mr-1"></i>Input Transfer</a>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        @foreach ($transfer as $d)
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card border-success">
+                                    <div class="card-content">
+                                        <div class="card-body" style="padding:8px 10px 8px 8px !important">
+                                            <div class="card-text d-flex justify-content-between">
+                                                <div class="ml-1">
+                                                    <b>{{ $d->namabank }}</b><br> {{ !empty($d->tgl_transfer) ? DateToIndo2($d->tgl_transfer) : '' }}
+                                                </div>
+                                                <div>
+                                                    <span style="font-weight: bold">{{rupiah($d->jumlah)}}</span>
+                                                    <br>
                                                     @if ($d->status==0)
                                                     <span class="badge bg-warning"> <i class="fa fa-history"></i> Pending </span>
                                                     @elseif($d->status==1)
@@ -661,33 +593,37 @@
                                                     @elseif($d->status==2)
                                                     <span class="badge bg-danger"> <i class="fa fa-close"></i> Ditolak</span>
                                                     @endif
-                                                </td>
-                                                <td>
-                                                    @if ($d->status===0)
-                                                    <div class="btn-group" role="group" aria-label="Basic example">
-                                                        <a class="ml-1 edittransfer" href="#" id_transfer="{{ $d->id_transfer; }}" kode_cabang="{{ $data->kode_cabang }}" sisabayar="{{ $sisabayar - $d->jumlah }}"><i class="feather icon-edit success"></i></a>
+                                                </div>
+                                                @if ($d->status===0)
+                                                <div class="btn-group dropup float-left">
+                                                    <i class="feather icon-more-vertical dropdown-toggle mr-2 mt-1 primary" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></i>
+                                                    <div class="dropdown-menu" x-placement="top-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, -7px, 0px);">
+
+                                                        <a class="ml-1 edittransfer dropdown-item" href="#" id_transfer="{{ $d->id_transfer; }}" kode_cabang="{{ $data->kode_cabang }}" sisabayar="{{ $sisabayar - $d->jumlah }}"><i class="feather icon-edit success mr-1"></i>Edit</a>
 
                                                         <form method="POST" class="deleteform" action="/pembayaran/{{ Crypt::encrypt($d->id_transfer) }}/deletetransfer">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <a href=" #" tanggal="{{ $d->tgl_transfer }}" class="delete-confirm ml-1">
-                                                                <i class="feather icon-trash danger"></i>
+                                                            <a href=" #" tanggal="{{ $d->tgl_transfer }}" class="delete-confirm ml-1 dropdown-item">
+                                                                <i class="feather icon-trash danger mr-1"></i> Hapus
                                                             </a>
                                                         </form>
 
                                                     </div>
-                                                    @else
+                                                </div>
+                                                @else
+                                                <div>
                                                     <span class="badge bg-success">Keuangan</span>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
+                                                </div>
+                                                @endif
+                                            </div>
 
-                                    </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
@@ -714,7 +650,7 @@
                     <div class="form-body">
                         <div class="row">
                             <div class="col-12">
-                                <x-inputtext label="Tanggal Bayar" field="tglbayar" icon="feather icon-calendar" datepicker />
+                                <x-inputtext label="Tanggal Bayar" value="{{ date('Y-m-d') }}" field="tglbayar" icon="feather icon-calendar" datepicker />
                             </div>
                         </div>
                         <div class="row">
@@ -850,7 +786,7 @@
                     <div class="form-body">
                         <div class="row">
                             <div class="col-12">
-                                <x-inputtext label="Tanggal Pencatatan Giro" field="tgl_giro" icon="feather icon-calendar" datepicker />
+                                <x-inputtext label="Tanggal Pencatatan Giro" value="{{ date('Y-m-d') }}" field="tgl_giro" icon="feather icon-calendar" datepicker />
                             </div>
                         </div>
                         <div class="row">
@@ -960,7 +896,7 @@
                     <div class="form-body">
                         <div class="row">
                             <div class="col-12">
-                                <x-inputtext label="Tanggal Pencatatan Transfer" field="tgl_transfer" icon="feather icon-calendar" datepicker />
+                                <x-inputtext label="Tanggal Pencatatan Transfer" value="{{ date('Y-m-d') }}" field="tgl_transfer" icon="feather icon-calendar" datepicker />
                             </div>
                         </div>
                         <div class="row">
@@ -987,7 +923,7 @@
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <x-inputtext label="Jatuh Tempo" field="tglcair_transfer" icon="feather icon-calendar" datepicker />
+                                <x-inputtext label="Jatuh Tempo" field="tglcair_transfer" readonly icon="feather icon-calendar" readonly />
                             </div>
                         </div>
                         <div class="row">
@@ -1062,7 +998,14 @@
 </script>
 <script>
     $(function() {
+        $("#tgl_transfer").change(function() {
+            $("#tglcair_transfer").val($(this).val());
+        });
 
+        function loadjt() {
+            $("#tglcair_transfer").val($("#tgl_transfer").val());
+        }
+        loadjt();
         $('.delete-confirm').click(function(event) {
             event.preventDefault();
             var form = $(this).closest("form");
@@ -1500,6 +1443,19 @@
                     $("#loadcetak").html(respond);
                 }
             });
+        });
+
+        $("#frmSignature").submit(function() {
+            var signature = $("#signature").val();
+            if (signature == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Tanda Tangan Masih Kosong  !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                });
+                return false;
+            }
         });
     });
 
