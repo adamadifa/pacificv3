@@ -68,7 +68,7 @@
                                         <p class="card-text d-flex justify-content-between">
                                             <span class="d-flex justify-content-between">
                                                 <span>
-                                                    <b>{{ $d->no_fak_penj }}</b> <br> {{ DateToIndo2($d->tgltransaksi) }}
+                                                    <b>{{ $d->no_fak_penj }} -{{ $d->nama_pelanggan }}</b> <br> {{ DateToIndo2($d->tgltransaksi) }}
                                                 </span>
                                             </span>
                                             <span style="text-align: right">
