@@ -22,12 +22,13 @@
             <div class="col-12">
                 <div class="app-fixed-search">
                     <form action="/pelanggansalesman" method="GET">
-                        <fieldset class="form-group position-relative has-icon-left m-0">
+                        <fieldset class="form-group position-relative has-icon-left m-0 mb-1">
                             <input type="text" class="form-control" name="nama_pelanggan" value="{{ Request('nama_pelanggan') }}" id="nama_pelanggan" placeholder="Cari Nama Pelanggan" autocomplete="off">
                             <div class="form-control-position">
                                 <i class="feather icon-search"></i>
                             </div>
                         </fieldset>
+                        <button class="btn btn-primary btn-block"><i class="feather icon-search"></i> Cari</button>
                     </form>
                 </div>
             </div>
