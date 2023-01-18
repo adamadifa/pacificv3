@@ -7248,4 +7248,79 @@ class PenjualanController extends Controller
             return Redirect::back()->with(['success' => 'Tanda Tanggan Berhasil Dihapus']);
         }
     }
+
+
+    public function inputbarangtemp(Request $request)
+    {
+        $kode_cabang = $request->kode_cabang;
+        if (!empty($request->kategori_salesman)) {
+            $kategori_salesman = $request->kategori_salesman;
+        } else {
+            $kategori_salesman = "NORMAL";
+        }
+        $kode_pelanggan = $request->kode_pelanggan;
+        // $barang = DB::table('barang')
+        //     ->select('barang.*')
+        //     ->where('kode_cabang', $kode_cabang)->where('kategori_harga', $kategori_salesman)
+        //     ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')->where('status', 1)
+        //     ->orderBy('barang.kode_produk')
+        //     ->get();
+
+        // echo $kode_cabang . $kategori_salesman . $kode_pelanggan;
+        // die;
+
+        $cekpelanggan = DB::table('barang')->where('kode_pelanggan', $kode_pelanggan)->count();
+        if ($cekpelanggan > 0) {
+            $barang = Harga::orderby('nama_barang', 'asc')
+                ->select('barang.*')
+                ->where('kode_cabang', $kode_cabang)
+                ->where('kode_pelanggan', $kode_pelanggan)
+                ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')->where('status', 1)
+                ->get();
+
+            // $barangnew = DB::table('barang_new')
+            //     ->select('barang_new.*')
+            //     ->where('kode_cabang', $kode_cabang)
+            //     ->where('kode_pelanggan', $kode_pelanggan)
+            //     ->join('master_barang', 'barang_new.kode_produk', '=', 'master_barang.kode_produk')->where('barang_new.status_harga', 1)
+            //     ->orderBy('barang_new.kode_produk', 'asc')
+            //     ->get();
+        } else {
+            if ($kategori_salesman == "TOCANVASER") {
+                $barang = Harga::orderby('nama_barang', 'asc')
+                    ->select('barang.*')
+                    ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')->where('status', 1)
+                    ->where('kode_cabang', $kode_cabang)
+                    ->where('kategori_harga', 'TO')
+                    ->orwhere('kode_cabang', $kode_cabang)
+                    ->where('kategori_harga', 'CANVASER')
+                    ->get();
+                // $barangnew = DB::table('barang_new')
+                //     ->select('barang_new.*')
+                //     ->join('master_barang', 'barang_new.kode_produk', '=', 'master_barang.kode_produk')->where('barang_new.status_harga', 1)
+                //     ->where('kode_cabang', $kode_cabang)
+                //     ->where('kategori_harga', 'TO')
+                //     ->orwhere('kode_cabang', $kode_cabang)
+                //     ->where('kategori_harga', 'CANVASER')
+                //     ->orderby('barang_new.kode_produk', 'asc')
+                //     ->get();
+            } else {
+                $barang = Harga::orderby('nama_barang', 'asc')
+                    ->select('barang.*')
+                    ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')->where('status', 1)
+                    ->where('kode_cabang', $kode_cabang)
+                    ->where('kategori_harga', $kategori_salesman)
+                    ->get();
+
+                // $barangnew = DB::table('barang_new')
+                //     ->select('barang_new.*')
+                //     ->join('master_barang', 'barang_new.kode_produk', '=', 'master_barang.kode_produk')->where('barang_new.status_harga', 1)
+                //     ->where('kode_cabang', $kode_cabang)
+                //     ->where('kategori_harga', $kategori_salesman)
+                //     ->orderBy('barang_new.kode_produk', 'asc')
+                //     ->get();
+            }
+        }
+        return view('penjualan.inputbarangtemp', compact('barang'));
+    }
 }
