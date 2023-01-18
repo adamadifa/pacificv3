@@ -75,6 +75,8 @@
 </form>
 <script>
     $(function() {
+        $("#frmeditbarangtemp").find("#harga_dus, #harga_pack, #harga_pcs, #jml_dus, #jml_pack, #jml_pcs").maskMoney();
+
         function showtemp() {
             $.ajax({
                 type: 'GET'
