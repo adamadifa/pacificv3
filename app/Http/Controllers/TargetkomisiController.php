@@ -834,7 +834,7 @@ class TargetkomisiController extends Controller
                     FROM
                         giro
                         INNER JOIN penjualan ON giro.no_fak_penj = penjualan.no_fak_penj
-                        LEFT JOIN ( SELECT id_giro,id_karyawan, tglbayar FROM historibayar GROUP BY id_giro, tglbayar ) AS hb ON giro.id_giro = hb.id_giro
+                        LEFT JOIN ( SELECT id_giro,id_karyawan, tglbayar FROM historibayar GROUP BY id_giro, tglbayar,id_karyawan ) AS hb ON giro.id_giro = hb.id_giro
                     WHERE
                         tgl_giro >= '$dari'
                         AND tgl_giro <= '$sampai' AND tglbayar IS NULL AND omset_bulan = '0' AND omset_tahun = ''
