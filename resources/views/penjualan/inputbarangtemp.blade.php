@@ -265,7 +265,7 @@
         }
         $("#tambahitem").click(function(e) {
             $("#tambahitem").prop("disabled", true);
-            $("#tambahitem").text("Mohon Tunggu..");
+
             e.preventDefault();
             var kode_barang = $("#kode_barang_pilih").val();
             var jml_dus = $("#jml_dus").val();
