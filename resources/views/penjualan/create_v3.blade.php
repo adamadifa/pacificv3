@@ -127,7 +127,7 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <div class="row">
+                                    {{-- <div class="row d-none">
                                         <div class="col-lg-4 col-sm-12">
                                             <div class="form-group" style="margin-bottom:5px !important">
                                                 <div class=" form-label-group position-relative has-icon-left" style="margin-bottom:5px !important">
@@ -255,10 +255,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row">
+                                    </div> --}}
+                                    <div class="row mb-2">
                                         <div class="col-12">
-                                            <a href="#" id="tambahitem" class="btn btn-info btn-block"><i class="feather icon-plus ml-1"></i> Tambah item</a>
+                                            <a href="#" id="addproduct" class="btn btn-info btn-block"><i class="feather icon-plus ml-1"></i> Tambah item</a>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -564,11 +564,68 @@
     </div>
 </div>
 
+<div class="modal fade text-left" id="mdlinputbarang" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Tambah Produk</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="loadinputbarang">
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @push('myscript')
 <script>
     $(function() {
+
+        //Add Product
+        $("#addproduct").click(function(e) {
+            e.preventDefault();
+            var kode_pelanggan = $("#kode_pelanggan").val();
+            var kategori_salesman = $("#kategori_salesman").val();
+            var kode_cabang = $("#kode_cabang").val();
+            if (kode_pelanggan == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Pelanggan Harus Dipilih !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#nama_pelanggan").focus();
+                });
+                return false;
+            } else {
+                $.ajax({
+                    type: 'POST'
+                    , url: '/penjualan/inputbarangtemp'
+                    , data: {
+                        _token: "{{ csrf_token() }}"
+                        , kode_pelanggan: kode_pelanggan
+                        , kategori_salesman: kategori_salesman
+                        , kode_cabang: kode_cabang
+                    }
+                    , cache: false
+                    , success: function(respond) {
+                        $("#loadinputbarang").html(respond);
+                        $('#mdlinputbarang').modal({
+                            backdrop: 'static'
+                            , keyboard: false
+                        });
+                    }
+                });
+
+            }
+
+        });
+
+
         $("#no_fak_penj").on('change', function(e) {
             if (e.keyCode == 32) return false;
             var no_fak_penj = $("#no_fak_penj").val();
