@@ -307,7 +307,7 @@ $total += $d->subtotal;
                 var ppn = 0;
             }
             var totalwithppn = parseInt(grandtotal) + parseInt(ppn);
-            alert(total);
+            //alert(total);
             var bruto = total;
             $("#grandtotal").text(convertToRupiah(totalwithppn));
             $("#totalnonppn").val(convertToRupiah(total));
