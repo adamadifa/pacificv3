@@ -131,10 +131,30 @@
 
 
         //Hitung Total
-
+        function convertToRupiah(number) {
+            if (number) {
+                var rupiah = "";
+                var numberrev = number
+                    .toString()
+                    .split("")
+                    .reverse()
+                    .join("");
+                for (var i = 0; i < numberrev.length; i++)
+                    if (i % 3 == 0) rupiah += numberrev.substr(i, 3) + ".";
+                return (
+                    rupiah
+                    .split("", rupiah.length - 1)
+                    .reverse()
+                    .join("")
+                );
+            } else {
+                return number;
+            }
+        }
 
         function loadtotal() {
             var subtotal = $("#totaltemp").val();
+
             var potswan = $("#potswan").val();
             var potaida = $("#potaida").val();
             var potstick = $("#potstick").val();
@@ -232,6 +252,7 @@
                 var ppn = 0;
             }
             var totalwithppn = parseInt(grandtotal) + parseInt(ppn);
+            // alert(total);
             var bruto = total;
             $("#grandtotal").text(convertToRupiah(totalwithppn));
             $("#totalnonppn").val(convertToRupiah(total));
@@ -241,6 +262,8 @@
             $("#subtotal").val(totalwithppn);
         }
         $("#tambahitem").click(function(e) {
+            $("#tambahitem").prop("disabled", true);
+            $("#tambahitem").text("Mohon Tunggu..");
             e.preventDefault();
             var kode_barang = $("#kode_barang_pilih").val();
             var jml_dus = $("#jml_dus").val();
@@ -318,6 +341,7 @@
                                 , showConfirmButton: false
                             }).then(function() {
                                 showtemp();
+                                $("#tambahitem").prop("disabled", false);
                                 $("#mdlinputbarang").modal("hide");
                                 $("#kode_barang").val("");
                                 $("#nama_barang").val("");
