@@ -119,6 +119,8 @@ class PenjualanController extends Controller
             $penjualan = $query->get();
             return view('penjualan.laporan.cetaksuratjalantanggal', compact('penjualan', 'pelangganmp'));
         } else {
+            $dari = !empty($request->dari) ? $request->dari : date("Y-m-d");
+            $sampai = !empty($request->sampai) ? $request->sampai : date("Y-m-d");
             $pelanggan = '"' . $request->nama_pelanggan . '"';
             $query = Penjualan::query();
             $query->select('penjualan.*', 'nama_pelanggan', 'nama_karyawan', 'karyawan.kode_cabang');
@@ -147,8 +149,16 @@ class PenjualanController extends Controller
                 $query->where('status', $request->status);
             }
 
-            if (!empty($request->dari) && !empty($request->sampai)) {
-                $query->whereBetween('tgltransaksi', [$request->dari, $request->sampai]);
+            if (Auth::user()->level != "salesman") {
+                if (!empty($request->dari) && !empty($request->sampai)) {
+                    $query->whereBetween('tgltransaksi', [$request->dari, $request->sampai]);
+                }
+            } else {
+                if (!empty($request->dari) && !empty($request->sampai)) {
+                    $query->whereBetween('tgltransaksi', [$request->dari, $request->sampai]);
+                } else {
+                    $query->whereBetween('tgltransaksi', [$dari, $sampai]);
+                }
             }
 
             if (Auth::user()->level == "salesman") {
