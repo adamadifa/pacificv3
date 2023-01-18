@@ -809,7 +809,7 @@ class TargetkomisiController extends Controller
 
                     LEFT JOIN (
                         SELECT
-                        IFNULL(hb.id_giro,giro.id_karyawan,giro.id_karyawan) as id_karyawan
+                        IFNULL(hb.id_giro,giro.id_karyawan,giro.id_karyawan) as id_karyawan,
                         SUM( jumlah ) AS jml_gmlast
                         FROM
                         giro
@@ -829,7 +829,7 @@ class TargetkomisiController extends Controller
                     ) gmlast ON (karyawan.id_karyawan = gmlast.id_karyawan)
                     LEFT JOIN (
                     SELECT
-                        giro.id_karyawan,
+                        IFNULL(hb.id_giro,giro.id_karyawan,giro.id_karyawan) as id_karyawan,
                         SUM( jumlah ) AS jml_gmnow
                     FROM
                         giro
