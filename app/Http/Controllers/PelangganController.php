@@ -850,36 +850,62 @@ class PelangganController extends Controller
         DB::beginTransaction();
         try {
 
-            if ($radius > 20) {
-                echo 'Jarak Anda dengan toko Saat Ini adalah ' . $radius . "Meter Minimal Jarak Untuk Checkin Adalah Maksimal 20 Meter";
-            } else {
-                if ($status_location == NULL) {
-                    DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)->update([
-                        'latitude' => $latitude,
-                        'longitude' => $longitude,
-                        'status_location' => 1
-                    ]);
-                }
+            // if ($radius > 20) {
+            //     echo 'Jarak Anda dengan toko Saat Ini adalah ' . $radius . "Meter Minimal Jarak Untuk Checkin Adalah Maksimal 20 Meter";
+            // } else {
+            //     if ($status_location == NULL) {
+            //         DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)->update([
+            //             'latitude' => $latitude,
+            //             'longitude' => $longitude,
+            //             'status_location' => 1
+            //         ]);
+            //     }
 
-                if ($check == 0) {
-                    $data = [
-                        'kode_checkin' => $kode_checkin,
-                        'tgl_checkin' => $hariini,
-                        'id_karyawan' => $id_karyawan,
-                        'kode_pelanggan' => $kode_pelanggan,
-                        'latitude' => $latitude,
-                        'longitude' => $longitude,
-                        'jarak' => $radius
-                    ];
+            //     if ($check == 0) {
+            //         $data = [
+            //             'kode_checkin' => $kode_checkin,
+            //             'tgl_checkin' => $hariini,
+            //             'id_karyawan' => $id_karyawan,
+            //             'kode_pelanggan' => $kode_pelanggan,
+            //             'latitude' => $latitude,
+            //             'longitude' => $longitude,
+            //             'jarak' => $radius
+            //         ];
 
-                    $simpan = DB::table('checkin')->insert($data);
-                    DB::commit();
-                    echo 'success|Terimakasih Telah Melakukan Checkin';
-                } else {
-                    echo 'success|Terimakasih Telah Melakukan Checkin';
-                }
-                Cookie::queue(Cookie::forever('kodepelanggan', Crypt::encrypt($request->kode_pelanggan)));
+            //         $simpan = DB::table('checkin')->insert($data);
+            //         DB::commit();
+            //         echo 'success|Terimakasih Telah Melakukan Checkin';
+            //     } else {
+            //         echo 'success|Terimakasih Telah Melakukan Checkin';
+            //     }
+            //     Cookie::queue(Cookie::forever('kodepelanggan', Crypt::encrypt($request->kode_pelanggan)));
+            // }
+            if ($status_location == NULL) {
+                DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)->update([
+                    'latitude' => $latitude,
+                    'longitude' => $longitude,
+                    'status_location' => 1
+                ]);
             }
+
+            if ($check == 0) {
+                $data = [
+                    'kode_checkin' => $kode_checkin,
+                    'tgl_checkin' => $hariini,
+                    'id_karyawan' => $id_karyawan,
+                    'kode_pelanggan' => $kode_pelanggan,
+                    'latitude' => $latitude,
+                    'longitude' => $longitude,
+                    'jarak' => $radius
+                ];
+
+                $simpan = DB::table('checkin')->insert($data);
+                DB::commit();
+                echo 'success|Terimakasih Telah Melakukan Checkin';
+            } else {
+                echo 'success|Terimakasih Telah Melakukan Checkin';
+            }
+            Cookie::queue(Cookie::forever('kodepelanggan', Crypt::encrypt($request->kode_pelanggan)));
         } catch (\Exception $e) {
             DB::rollBack();
             echo $e;
