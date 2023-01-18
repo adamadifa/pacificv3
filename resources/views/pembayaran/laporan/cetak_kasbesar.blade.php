@@ -84,6 +84,7 @@
                 <th rowspan="2">Keterangan</th>
                 <th rowspan="2">Tanggal Input</th>
                 <th rowspan="2">Tanggal Update</th>
+                <th rowspan="2">Penginput</th>
             </tr>
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
                 <th>Materai</th>
@@ -204,6 +205,7 @@
                 </td>
                 <td><?php echo $k->date_created; ?></td>
                 <td><?php echo $k->date_updated; ?></td>
+                <td><?php echo $k->name; ?></td>
             </tr>
             </tr>
             <?php

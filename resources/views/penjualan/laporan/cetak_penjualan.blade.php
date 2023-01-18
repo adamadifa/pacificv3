@@ -88,6 +88,7 @@
                 <td rowspan="2" style="background-color:#10a743">TUNAI/KREDIT</td>
                 <td rowspan="2" style="background-color:#10a743">Tanggal Input</td>
                 <td rowspan="2" style="background-color:#10a743">Tanggal Update</td>
+                <td rowspan="2" style="background-color:#10a743">Penginput</td>
             </tr>
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
                 <td>DUS</td>
@@ -325,6 +326,7 @@
                 <td align="right" rowspan="{{ $jmlbarang }}">{{ strtoupper($p->jenistransaksi) }}</td>
                 <td align="right" rowspan="{{ $jmlbarang }}">{{ date("d-m-y H:i:s",strtotime($p->date_created)) }}</td>
                 <td align="right" rowspan="{{ $jmlbarang }}">{{ date("d-m-y H:i:s",strtotime($p->date_updated)) }}</td>
+                <td>{{ $p->name }}</td>
                 @php
 
                 if ($jmlbarang > 1) {
