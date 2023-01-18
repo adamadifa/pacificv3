@@ -34,10 +34,10 @@
                 <form action="/penjualan" id="frmPenjualan">
                     <div class="row">
                         <div class="col-lg-6 col-sm-6">
-                            <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker value="{{ Request('dari') }}" />
+                            <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker value="{{ !empty(Request('dari')) ? Request('dari') : date('Y-m-d') }}" />
                         </div>
                         <div class="col-lg-6 col-sm-6">
-                            <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker value="{{ Request('sampai') }}" />
+                            <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker value="{{ !empty(Request('sampai')) ? Request('sampai') : date('Y-m-d') }}" />
                         </div>
                     </div>
                     <div class="row">
