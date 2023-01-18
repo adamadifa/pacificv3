@@ -3152,6 +3152,7 @@ class PenjualanController extends Controller
                 penjualan.potistimewa AS potistimewa,
                 penjualan.ppn AS ppn,
                 penjualan.penyharga AS penyharga,
+                users.name,
                 date_created,
                 date_updated,
                 ifnull( penjualan.total, 0 ) AS total,
@@ -3167,6 +3168,7 @@ class PenjualanController extends Controller
                 penjualan.status');
                 $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
                 $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+                $query->leftJoin('users', 'penjualan.id_admin', '=', 'users.id');
                 $query->leftJoin(
                     DB::raw("(
                 SELECT
@@ -3233,6 +3235,7 @@ class PenjualanController extends Controller
                 penjualan.potistimewa,
                 penjualan.ppn,
                 penjualan.penyharga,
+                users.name,
                 penjualan.jenistransaksi,
                 penjualan.jenisbayar,
                 penjualan.id_karyawan,

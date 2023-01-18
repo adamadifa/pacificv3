@@ -699,6 +699,7 @@ class PembayaranController extends Controller
                 historibayar.id_karyawan,
                 penjualan.kode_pelanggan,
                 nama_pelanggan,
+                users.name,
                 ket_voucher,
                 (
                     SELECT IFNULL(penjualan.total, 0) - (ifnull(r.totalpf, 0) - ifnull(r.totalgb, 0)) AS totalpiutang
@@ -720,6 +721,7 @@ class PembayaranController extends Controller
                 AND h.tglbayar <= historibayar.tglbayar AND h.tglbayar >= penjualan.tgltransaksi) as totalbayar');
                 $query->leftJoin('giro', 'historibayar.id_giro', '=', 'giro.id_giro');
                 $query->leftJoin('transfer', 'historibayar.id_transfer', '=', 'transfer.id_transfer');
+                $query->leftJoin('users', 'historibayar.id_admin', '=', 'users.id');
                 $query->join('penjualan', 'historibayar.no_fak_penj', '=', 'penjualan.no_fak_penj');
                 $query->join('v_movefaktur', 'historibayar.no_fak_penj', '=', 'v_movefaktur.no_fak_penj');
                 $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
