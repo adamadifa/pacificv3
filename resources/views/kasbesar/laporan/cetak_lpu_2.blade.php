@@ -270,17 +270,18 @@
                 $join->on('giro.id_giro', '=', 'hb.id_giro');
                 }
                 )
-                ->where('giro.id_karyawan',$d->id_karyawan)
+                ->whereRaw('IFNULL(hb.id_karyawan,giro.id_karyawan)="'.$d->id_karyawan.'"')
                 ->whereRaw('MONTH(tgl_giro) ='.$bulanlast)
                 ->whereRaw('YEAR(tgl_giro) ='.$tahunlast)
                 ->where('omset_bulan',$bulanskrg)
                 ->where('omset_tahun',$tahunskrg)
-                ->orWhere('giro.id_karyawan',$d->id_karyawan)
+
+                ->orwhereRaw('IFNULL(hb.id_karyawan,giro.id_karyawan)="'.$d->id_karyawan.'"')
                 ->whereRaw('MONTH(tgl_giro) ='.$blnlast1)
                 ->whereRaw('YEAR(tgl_giro) ='.$thnlast1)
                 ->whereRaw('MONTH(tglbayar) ='.$bulanskrg)
                 ->whereRaw('YEAR(tglbayar) ='.$tahunskrg)
-                ->groupByRaw('giro.id_karyawan,hb.id_karyawan')
+                ->groupByRaw('IFNULL(hb.id_karyawan,giro.id_karyawan)')
                 ->first();
                 if($gmlast != null){
                 $gm_last = $gmlast->jumlah;
@@ -558,9 +559,9 @@
                 }
 
                 $gmlast = DB::table('giro')
-                ->selectRaw("IFNULL(hb.id_karyawan,giro.id_karyawan) as id_karyawan, SUM(jumlah) as jumlah")
+                ->selectRaw("giro.id_karyawan, SUM(jumlah) as jumlah")
                 ->leftJoin(
-                DB::raw("(SELECT id_giro,id_karyawan,tglbayar FROM historibayar GROUP BY id_giro,id_karyawan,tglbayar) hb"),
+                DB::raw("(SELECT id_giro,tglbayar FROM historibayar GROUP BY id_giro,tglbayar) hb"),
                 function ($join) {
                 $join->on('giro.id_giro', '=', 'hb.id_giro');
                 }
@@ -575,7 +576,7 @@
                 ->whereRaw('YEAR(tgl_giro) ='.$thnlast1)
                 ->whereRaw('MONTH(tglbayar) ='.$bulanskrg)
                 ->whereRaw('YEAR(tglbayar) ='.$tahunskrg)
-                ->groupByRaw('giro.id_karyawan,hb.id_karyawan')
+                ->groupBy('giro.id_karyawan')
                 ->first();
                 if($gmlast != null){
                 $gm_last = $gmlast->jumlah;
@@ -690,9 +691,9 @@
                 }
 
                 $gmlast = DB::table('giro')
-                ->selectRaw("IFNULL(hb.id_karyawan,giro.id_karyawan) as id_karyawan, SUM(jumlah) as jumlah")
+                ->selectRaw("giro.id_karyawan, SUM(jumlah) as jumlah")
                 ->leftJoin(
-                DB::raw("(SELECT id_giro,id_karyawan,tglbayar FROM historibayar GROUP BY id_giro,id_karyawan,tglbayar) hb"),
+                DB::raw("(SELECT id_giro,tglbayar FROM historibayar GROUP BY id_giro,tglbayar) hb"),
                 function ($join) {
                 $join->on('giro.id_giro', '=', 'hb.id_giro');
                 }
@@ -707,7 +708,7 @@
                 ->whereRaw('YEAR(tgl_giro) ='.$thnlast1)
                 ->whereRaw('MONTH(tglbayar) ='.$bulanskrg)
                 ->whereRaw('YEAR(tglbayar) ='.$tahunskrg)
-                ->groupByRaw('giro.id_karyawan,hb.id_karyawan')
+                ->groupBy('giro.id_karyawan')
                 ->first();
                 if($gmlast != null){
                 $gm_last = $gmlast->jumlah;
