@@ -121,7 +121,7 @@
     $persentaseljt = 70;
     } else if ($bln == 1 and $tahun == "2022") {
     $persentaseljt = 75;
-    } else if ($bln >= 2 and $tahun == "2022") {
+    } else if ($bln >= 2 and $tahun >= "2022") {
     $persentaseljt = 80;
     } else if ($bln <= 8 and $tahun == "2021") {
     $persentaseljt = 50;
