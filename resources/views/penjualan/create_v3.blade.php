@@ -864,7 +864,7 @@
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
-                    $("#nama_pelanggan").focus();
+                    $("#no_fak_penj").focus();
                 });
                 $("#btnsimpan").prop('disabled', false);
                 return false;
