@@ -18,6 +18,11 @@
         </div>
     </div>
     <div class="content-body">
+        <div class="row mb-2">
+            <div class="col-12">
+                <a href="/pelanggan/create" class="btn btn-success btn-block"><i class="fa fa-plus mr-1"></i> Register New Outlet</a>
+            </div>
+        </div>
         <div class="row">
             <div class="col-12">
                 <div class="app-fixed-search">
