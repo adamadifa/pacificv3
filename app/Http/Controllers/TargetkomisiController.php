@@ -809,7 +809,7 @@ class TargetkomisiController extends Controller
 
                     LEFT JOIN (
                         SELECT
-                        giro.id_karyawan,
+                        IFNULL(hb.id_giro,giro.id_karyawan,giro.id_karyawan) as id_karyawan
                         SUM( jumlah ) AS jml_gmlast
                         FROM
                         giro
