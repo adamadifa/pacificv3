@@ -857,6 +857,17 @@
                 });
                 $("#btnsimpan").prop('disabled', false);
                 return false;
+            } else if (no_fak_penj == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'No. Faktur Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#nama_pelanggan").focus();
+                });
+                $("#btnsimpan").prop('disabled', false);
+                return false;
             } else if (kode_pelanggan == "") {
                 swal({
                     title: 'Oops'
