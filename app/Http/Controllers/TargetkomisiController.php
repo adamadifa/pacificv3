@@ -809,12 +809,12 @@ class TargetkomisiController extends Controller
 
                     LEFT JOIN (
                         SELECT
-                        IFNULL(hb.id_giro,giro.id_karyawan,giro.id_karyawan) as id_karyawan,
+                        IFNULL(hb.id_karyawan,giro.id_karyawan) as id_karyawan,
                         SUM( jumlah ) AS jml_gmlast
                         FROM
                         giro
                         INNER JOIN penjualan ON giro.no_fak_penj = penjualan.no_fak_penj
-                        LEFT JOIN ( SELECT id_giro FROM historibayar GROUP BY id_giro ) AS hb ON giro.id_giro = hb.id_giro
+                        LEFT JOIN ( SELECT id_giro,id_karyawan FROM historibayar GROUP BY id_giro,id_karyawan ) AS hb ON giro.id_giro = hb.id_giro
                         WHERE
                         MONTH ( tgl_giro ) = '$bulanlast'
                         AND YEAR ( tgl_giro ) = '$tahunlast'
@@ -829,12 +829,12 @@ class TargetkomisiController extends Controller
                     ) gmlast ON (karyawan.id_karyawan = gmlast.id_karyawan)
                     LEFT JOIN (
                     SELECT
-                        IFNULL(hb.id_giro,giro.id_karyawan,giro.id_karyawan) as id_karyawan,
+                        IFNULL(hb.id_karyawan,giro.id_karyawan) as id_karyawan,
                         SUM( jumlah ) AS jml_gmnow
                     FROM
                         giro
                         INNER JOIN penjualan ON giro.no_fak_penj = penjualan.no_fak_penj
-                        LEFT JOIN ( SELECT id_giro, tglbayar FROM historibayar GROUP BY id_giro, tglbayar ) AS hb ON giro.id_giro = hb.id_giro
+                        LEFT JOIN ( SELECT id_giro,id_karyawan, tglbayar FROM historibayar GROUP BY id_giro, tglbayar ) AS hb ON giro.id_giro = hb.id_giro
                     WHERE
                         tgl_giro >= '$dari'
                         AND tgl_giro <= '$sampai' AND tglbayar IS NULL AND omset_bulan = '0' AND omset_tahun = ''
