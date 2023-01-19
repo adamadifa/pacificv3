@@ -81,8 +81,8 @@
     </div>
     <br>
     <table class="datatable3" style="width:100%" border="1">
-        <thead bgcolor="#024a75" style="color:white; font-size:12;">
-            <tr bgcolor="#024a75" style="color:white; font-size:12;">
+        <thead>
+            <tr>
                 <td>No</td>
                 <td>Tanggal</td>
                 <td>No Faktur</td>
@@ -183,7 +183,7 @@
                         $bgcolor = "";
                     }
             ?>
-            <tr bgcolor="<?php echo $bgcolor; ?>">
+            <tr>
                 <td><?php echo $no; ?></td>
                 <td><?php echo DateToIndo2($k->tgltransaksi); ?></td>
 
@@ -212,7 +212,7 @@
             }
             ?>
         </tbody>
-        <tr bgcolor="#024a75" style="color:white; font-size:12;">
+        <tr>
             <td colspan="6">TOTAL</td>
             <td style="text-align:right"><?php echo number_format($totalsaldoakkhir, '0', '', '.'); ?></td>
             <td></td>
