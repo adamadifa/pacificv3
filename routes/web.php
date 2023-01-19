@@ -1226,6 +1226,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/penjualan/deletebarang', [PenjualanController::class, 'deletebarang']);
     Route::get('/penjualan/showbarangtemp', [PenjualanController::class, 'showbarangtemp']);
     Route::get('/penjualan/showbarangtempv2', [PenjualanController::class, 'showbarangtempv2']);
+    Route::post('/resetpenjualantemp', [PenjualanController::class, 'resetpenjualantemp']);
     Route::post('/penjualan/updatedetailtemp', [PenjualanController::class, 'updatedetailtemp']);
     Route::get('/loadtotalpenjualantemp', [PenjualanController::class, 'loadtotalpenjualantemp']);
     Route::post('/hitungdiskon', [PenjualanController::class, 'hitungdiskon']);

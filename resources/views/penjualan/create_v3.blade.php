@@ -258,7 +258,14 @@
                                     </div> --}}
                                     <div class="row mb-2">
                                         <div class="col-12">
-                                            <a href="#" id="addproduct" class="btn btn-info btn-block"><i class="feather icon-plus ml-1"></i> Tambah item</a>
+                                            <div class="btn-group btn-block">
+                                                <a href="#" id="addproduct" class="btn btn-info">
+                                                    <i class="feather icon-plus ml-1"></i> Tambah item Produk
+                                                </a>
+                                                <a href="#" id="resetproduct" class="btn btn-danger">
+                                                    <i class="feather icon-refresh-ccw"></i>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -584,7 +591,22 @@
 @push('myscript')
 <script>
     $(function() {
+        //Reset Product
 
+        $("#resetproduct").click(function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST'
+                , url: '/resetpenjualantemp'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                }
+                , cache: false
+                , success: function(respond) {
+                    showtemp();
+                }
+            });
+        });
         //Add Product
         $("#addproduct").click(function(e) {
             e.preventDefault();
@@ -832,6 +854,18 @@
 
         //Ketika Form Di Submit
 
+        //Cek TO CANVASER
+        function cektocanvaser() {
+            var kategori_saleman = $("#kategori_salesman").val();
+            if (kategori_saleman == "TO") {
+                $("#no_fak_penj").prop("readonly", true);
+                $("#no_fak_penj").prop("placeholder", "Auto");
+            } else {
+                $("#no_fak_penj").prop("readonly", false);
+            }
+        }
+
+        cektocanvaser();
         $("form").submit(function(e) {
             $("#btnsimpan").prop('disabled', true);
             var no_fak_penj = $("#no_fak_penj").val();
@@ -843,6 +877,8 @@
             var nama_pelanggan = pl[1];
             var jenistransaksi = $("#jenistransaksi").val();
             var cektemp = $("#cektemp").val();
+            var kategori_salesman = $("#kategori_salesman").val();
+            alert(kategori_salesman);
             if (cektutuplaporan > 0) {
                 swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
                 return false;
@@ -857,7 +893,7 @@
                 });
                 $("#btnsimpan").prop('disabled', false);
                 return false;
-            } else if (no_fak_penj == "") {
+            } else if (no_fak_penj == "" && kategori_saleman == "CANVASER") {
                 swal({
                     title: 'Oops'
                     , text: 'No. Faktur Harus Diisi !'
