@@ -878,7 +878,7 @@
             var jenistransaksi = $("#jenistransaksi").val();
             var cektemp = $("#cektemp").val();
             var kategori_salesman = $("#kategori_salesman").val();
-            alert(kategori_salesman);
+            //alert(kategori_salesman);
             if (cektutuplaporan > 0) {
                 swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
                 return false;
