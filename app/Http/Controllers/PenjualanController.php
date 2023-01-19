@@ -1214,25 +1214,26 @@ class PenjualanController extends Controller
     public function store(Request $request)
     {
 
-        // $ceklevel = Auth::user()->level;
-        // if ($ceklevel == "salesman") {
-        //     $kodecab = Auth::user()->kode_cabang;
-        //     $tgltrans = explode("-", $request->tgltransaksi);
-        //     $bulantrans = $tgltrans[1];
-        //     $tahuntrans = $tgltrans[0];
-        //     $cekpenjualan = DB::table('penjualan')
-        //         ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
-        //         ->where('karyawan.kode_cabang', $kodecab)
-        //         ->whereRaw('MONTH(tgltransaksi)="' . $bulantrans . '"')
-        //         ->whereRaw('YEAR(tgltransaksi)="' . $tahuntrans . '"')
-        //         ->whereRaw('MID(no_fak_penj,4,2)="PR"')
-        //         ->first();
-        //     $lastnofakpenj = $cekpenjualan != null ? $cekpenjualan->no_fak_penj : '';
-        //     $no_fak_penj = buatkode($lastnofakpenj, $kodecab . "PR" . $bulantrans . substr($tahuntrans, 2, 2), 4);
-        // } else {
-        //     $no_fak_penj = $request->no_fak_penj; //ok
-        // }
-        $no_fak_penj = $request->no_fak_penj; //ok
+        $ceklevel = Auth::user()->level;
+        $kategori_salesman = $request->kategori_salesman;
+        if ($ceklevel == "salesman" && $kategori_salesman == "TO") {
+            $kodecab = Auth::user()->kode_cabang;
+            $tgltrans = explode("-", $request->tgltransaksi);
+            $bulantrans = $tgltrans[1];
+            $tahuntrans = $tgltrans[0];
+            $cekpenjualan = DB::table('penjualan')
+                ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+                ->where('karyawan.kode_cabang', $kodecab)
+                ->whereRaw('MONTH(tgltransaksi)="' . $bulantrans . '"')
+                ->whereRaw('YEAR(tgltransaksi)="' . $tahuntrans . '"')
+                ->whereRaw('MID(no_fak_penj,4,2)="PR"')
+                ->first();
+            $lastnofakpenj = $cekpenjualan != null ? $cekpenjualan->no_fak_penj : '';
+            $no_fak_penj = buatkode($lastnofakpenj, $kodecab . "PR" . $bulantrans . substr($tahuntrans, 2, 2), 4);
+        } else {
+            $no_fak_penj = $request->no_fak_penj; //ok
+        }
+        //$no_fak_penj = $request->no_fak_penj; //ok
         //dd($no_fak_penj);
         $tgltransaksi = $request->tgltransaksi; //ok
         $id_karyawan = $request->id_karyawan; //ok
@@ -7335,5 +7336,15 @@ class PenjualanController extends Controller
             }
         }
         return view('penjualan.inputbarangtemp', compact('barang'));
+    }
+
+    public function resetpenjualantemp(Request $request)
+    {
+        $resettemp = DB::table('detailpenjualan_temp')->where('id_admin', Auth::user()->id)->delete();
+        if ($resettemp) {
+            echo 1;
+        } else {
+            echo 0;
+        }
     }
 }
