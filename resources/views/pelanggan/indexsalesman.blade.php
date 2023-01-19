@@ -61,7 +61,13 @@
 
                                                 <span>
                                                     {{ $d->kode_pelanggan }} <br> {{ $d->nama_pelanggan }}
+                                                    <br>
+
                                                 </span>
+                                            </span>
+                                            <span>
+                                                <span>{{ $d->nama_karyawan }}</span><br>
+                                                <span class="badge bg-info">{{ ucwords(strtolower($d->pasar)) }}</span>
                                             </span>
 
 

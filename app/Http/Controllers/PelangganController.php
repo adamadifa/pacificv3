@@ -250,8 +250,12 @@ class PelangganController extends Controller
 
     public function pelanggansalesman(Request $request)
     {
+        $id_karyawan = Auth::user()->id_salesman;
+
         $pelanggan = DB::table('pelanggan')
-            ->where('kode_cabang', Auth::user()->kode_cabang)
+            ->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan')
+            ->where('pelanggan.kode_cabang', Auth::user()->kode_cabang)
+            ->where('id_sales', $id_karyawan)
             ->where('status_pelanggan', 1)
             ->where('nama_pelanggan', 'like', '%' . $request->nama_pelanggan . '%')
             ->limit(10)
