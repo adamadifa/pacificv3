@@ -1227,6 +1227,7 @@ class PenjualanController extends Controller
                 ->whereRaw('MONTH(tgltransaksi)="' . $bulantrans . '"')
                 ->whereRaw('YEAR(tgltransaksi)="' . $tahuntrans . '"')
                 ->whereRaw('MID(no_fak_penj,4,2)="PR"')
+                ->orderBy('no_fak_penj', 'desc')
                 ->first();
             $lastnofakpenj = $cekpenjualan != null ? $cekpenjualan->no_fak_penj : '';
             $no_fak_penj = buatkode($lastnofakpenj, $kodecab . "PR" . $bulantrans . substr($tahuntrans, 2, 2), 4);
