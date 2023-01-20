@@ -2325,6 +2325,7 @@ body[data-col="1-column"] .header-navbar.floating-nav {
         width: calc(100vw - (100vw - 100%) - 3.5rem) !important;
         margin-left: 1.2rem;
         margin-right: 1.2rem;
+        position: fixed;
     }
 
     .content.app-content .content-area-wrapper {
