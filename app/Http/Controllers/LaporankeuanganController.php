@@ -445,8 +445,8 @@ class LaporankeuanganController extends Controller
 
 
         $cekbeforeBulan = DB::table('setoran_pusat')->where('omset_bulan', $bulan)->where('omset_tahun', $tahun)
-            ->whereRaw('MONTH(tgl_setoranpusatd) = ' . $blnbefore)
-            ->whereRaw('YEAR(tgl_setoranpusat) = ' . $blnbefore)
+            ->whereRaw('MONTH(tgl_setoranpusat) = ' . $blnbefore)
+            ->whereRaw('YEAR(tgl_setoranpusat) = ' . $thnbefore)
             ->where('kode_cabang', $kode_cabang)
             ->first();
         if ($cekbeforeBulan ==  null) {
