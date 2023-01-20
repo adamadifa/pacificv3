@@ -178,4 +178,19 @@
         overscroll-behavior-y: contain;
     }
 
+    #wrapper {
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    * {
+        box-sizing: border-box
+    }
+
+    html,
+    body {
+        margin: 0px;
+        padding: 0px;
+    }
+
 </style>
