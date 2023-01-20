@@ -138,6 +138,7 @@
                 SUM(girototransfer) as lhpgirototransfer')
                 ->where('tgl_lhp',$dari)
                 ->where('tgl_lhp','<=',$tgl_akhirsetoran)
+                ->where('tgl_lhp','>',$daripenerimaan)
                 ->where('kode_cabang',$kode_cabang)
                 ->groupBy('tgl_lhp')
                 ->first();

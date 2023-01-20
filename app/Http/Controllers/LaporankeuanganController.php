@@ -413,7 +413,9 @@ class LaporankeuanganController extends Controller
         $kode_cabang = $request->kode_cabang;
         $bulan = $request->bulan;
         $tahun = $request->tahun;
-        $dari = $tahun . "-" . $bulan . "-01";
+        $dari  = $tahun . "-" . $bulan . "-01";
+        $darilast  = $tahun . "-" . $bulan - 1 . "-01";
+        $sampailast = date("Y-m-t", strtotime($darilast));
         $daripenerimaan = $dari;
         $tgl_akhirsetoran = date("Y-m-t", strtotime($dari));
         if ($bulan == 12) {
@@ -445,18 +447,23 @@ class LaporankeuanganController extends Controller
         }
 
 
-        // $cekbeforeBulan = DB::table('setoran_pusat')->where('omset_bulan', $bulan)->where('omset_tahun', $tahun)
-        //     ->whereRaw('MONTH(tgl_setoranpusat) = ' . $blnbefore)
-        //     ->whereRaw('YEAR(tgl_setoranpusat) = ' . $thnbefore)
-        //     ->where('kode_cabang', $kode_cabang)
-        //     ->orderBy('tgl_setoranpusat', 'asc')
-        //     ->first();
-        // if ($cekbeforeBulan ==  null) {
-        //     $dari = $dari;
-        // } else {
-        //     $dari = $cekbeforeBulan->tgl_setoranpusat;
-        // }
+        $cekbeforeBulan = DB::table('setoran_pusat')->where('omset_bulan', $bulan)->where('omset_tahun', $tahun)
+            ->whereRaw('MONTH(tgl_setoranpusat) = ' . $blnbefore)
+            ->whereRaw('YEAR(tgl_setoranpusat) = ' . $thnbefore)
+            ->where('kode_cabang', $kode_cabang)
+            ->orderBy('tgl_setoranpusat', 'asc')
+            ->first();
+        if ($cekbeforeBulan ==  null) {
+            $dari = $dari;
+        } else {
+            $dari = $cekbeforeBulan->tgl_setoranpusat;
+        }
 
+        if ($daripenerimaan > $dari) {
+            $daripenerimaan = $dari;
+        } else {
+            $daripenerimaan = $sampailast;
+        }
         // dd($cekbeforeBulan);
         $saldokasbesar = DB::table('saldoawal_kasbesar')
             ->select('uang_logam', 'uang_kertas', 'giro', 'transfer')
