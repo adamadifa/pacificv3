@@ -60,6 +60,10 @@
     $(window).on("load", function() {
         $(".loader-wrapper").fadeOut("slow");
     });
+    $(window).on('resize', function() {
+        /* main container min height */
+        $('main').css('min-height', $(window).height())
+    });
 
 </script>
 
