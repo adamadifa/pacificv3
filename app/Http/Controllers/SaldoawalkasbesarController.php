@@ -110,7 +110,7 @@ class SaldoawalkasbesarController extends Controller
             ->orderBy('tgl_setoranpusat', 'asc')
             ->first();
 
-        dd($cekbeforeBulan);
+        //dd($cekbeforeBulan);
         if ($ceknextbulan == null) {
             $sampai = date("Y-m-t", strtotime($dari));
         } else {
