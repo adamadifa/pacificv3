@@ -180,9 +180,4 @@
         -webkit-overflow-scrolling: touch;
     }
 
-    html,
-    body {
-        overflow: hidden
-    }
-
 </style>
