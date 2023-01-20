@@ -107,10 +107,10 @@ class SaldoawalkasbesarController extends Controller
             ->whereRaw('MONTH(tgl_setoranpusat) = ' . $blnbefore)
             ->whereRaw('YEAR(tgl_setoranpusat) = ' . $thnbefore)
             ->where('kode_cabang', $kode_cabang)
-            ->orderBy('tgl_setoranpusat', 'asc')
+            ->orderBy('tgl_setoranpusatd', 'asc')
             ->first();
 
-
+        dd($cekbeforeBulan);
         if ($ceknextbulan == null) {
             $sampai = date("Y-m-t", strtotime($dari));
         } else {
