@@ -84,6 +84,14 @@ class SaldoawalkasbesarController extends Controller
             $nexthn = $tahun;
         }
 
+        if ($bln == 1) {
+            $blnbefore = 12;
+            $thnbefore = $tahun - 1;
+        } else {
+            $blnbefore = $bulan - 1;
+            $thnbefore = $tahun;
+        }
+
 
         $dari = $thn . "-" . $bln . "-" . "01";
         $ceksaldo = DB::table('saldoawal_kasbesar')->where('bulan', $bln)->where('tahun', $thn)->where('kode_cabang', $kode_cabang)->count();
@@ -95,10 +103,24 @@ class SaldoawalkasbesarController extends Controller
             ->where('kode_cabang', $kode_cabang)
             ->first();
 
+        $cekbeforeBulan = DB::table('setoran_pusat')->where('omset_bulan', $bulan)->where('omset_tahun', $tahun)
+            ->whereRaw('MONTH(tgl_setoranpusat) = ' . $blnbefore)
+            ->whereRaw('YEAR(tgl_setoranpusat) = ' . $thnbefore)
+            ->where('kode_cabang', $kode_cabang)
+            ->orderBy('tgl_setoranpusat', 'asc')
+            ->first();
+
+
         if ($ceknextbulan == null) {
             $sampai = date("Y-m-t", strtotime($dari));
         } else {
             $sampai = $ceknextbulan->tgl_diterimapusat;
+        }
+
+        if ($cekbeforeBulan ==  null) {
+            $dari = $dari;
+        } else {
+            $dari = $cekbeforeBulan->tgl_setoranpusat;
         }
         if (empty($ceksaldo) && !empty($cekall) || !empty($ceksaldoSkrg)) {
             echo 1;
