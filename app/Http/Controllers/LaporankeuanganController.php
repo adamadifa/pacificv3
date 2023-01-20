@@ -448,6 +448,7 @@ class LaporankeuanganController extends Controller
             ->whereRaw('MONTH(tgl_setoranpusat) = ' . $blnbefore)
             ->whereRaw('YEAR(tgl_setoranpusat) = ' . $thnbefore)
             ->where('kode_cabang', $kode_cabang)
+            ->orderBy('tgl_setoranpusat', 'asc')
             ->first();
         if ($cekbeforeBulan ==  null) {
             $dari = $dari;
