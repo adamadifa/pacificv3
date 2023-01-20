@@ -459,11 +459,12 @@ class LaporankeuanganController extends Controller
             $dari = $cekbeforeBulan->tgl_setoranpusat;
         }
 
-        if ($daripenerimaan > $dari) {
-            $daripenerimaan = $dari;
-        } else {
-            $daripenerimaan = $sampailast;
-        }
+        // if ($daripenerimaan > $dari) {
+
+        // } else {
+        //     $daripenerimaan = $sampailast;
+        // }
+        $daripenerimaan = $sampailast;
         // dd($cekbeforeBulan);
         $saldokasbesar = DB::table('saldoawal_kasbesar')
             ->select('uang_logam', 'uang_kertas', 'giro', 'transfer')
