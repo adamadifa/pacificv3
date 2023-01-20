@@ -103,11 +103,11 @@ class SaldoawalkasbesarController extends Controller
             ->where('kode_cabang', $kode_cabang)
             ->first();
 
-        $cekbeforeBulan = DB::table('setoran_pusat')->where('omset_bulan', $bulan)->where('omset_tahun', $tahun)
+        $cekbeforeBulan = DB::table('setoran_pusat')->where('omset_bulan', $bln)->where('omset_tahun', $thn)
             ->whereRaw('MONTH(tgl_setoranpusat) = ' . $blnbefore)
             ->whereRaw('YEAR(tgl_setoranpusat) = ' . $thnbefore)
             ->where('kode_cabang', $kode_cabang)
-            ->orderBy('tgl_setoranpusatd', 'asc')
+            ->orderBy('tgl_setoranpusat', 'asc')
             ->first();
 
         //dd($cekbeforeBulan);
