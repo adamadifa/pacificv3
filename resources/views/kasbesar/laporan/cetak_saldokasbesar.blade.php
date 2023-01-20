@@ -162,6 +162,7 @@
                 ->where('status',1)
                 ->where('omset_bulan',$bulan)
                 ->where('omset_tahun',$tahun)
+
                 ->groupBy('tgl_setoranpusat')
                 ->first();
 

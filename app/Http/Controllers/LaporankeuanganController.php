@@ -456,7 +456,7 @@ class LaporankeuanganController extends Controller
             $dari = $cekbeforeBulan->tgl_setoranpusat;
         }
 
-        dd($cekbeforeBulan);
+        // dd($cekbeforeBulan);
         $saldokasbesar = DB::table('saldoawal_kasbesar')
             ->select('uang_logam', 'uang_kertas', 'giro', 'transfer')
             ->where('bulan', $bulan)
