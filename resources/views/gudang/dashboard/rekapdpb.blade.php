@@ -60,6 +60,10 @@ $isipcs_sp8 = $p->isipcsdus;
 if ($p->kode_produk == "SP8-P") {
 $isipcs_sp8p = $p->isipcsdus;
 }
+
+if ($p->kode_produk == "SP500") {
+$isipcs_sp500 = $p->isipcsdus;
+}
 @endphp
 @endforeach
 <div class="table-responsive">
@@ -84,6 +88,7 @@ $isipcs_sp8p = $p->isipcsdus;
                 <th>SC</th>
                 <th>SP8</th>
                 <th>SP8-P</th>
+                <th>SP500</th>
             </tr>
         </thead>
         <tbody class="font-medium-2">
@@ -104,6 +109,7 @@ $isipcs_sp8p = $p->isipcsdus;
             $gSC = 0;
             $gSP8 = 0;
             $gSP8P = 0;
+            $gSP500 = 0;
             @endphp
             @foreach ($rekapgudang as $g)
             @php
@@ -169,6 +175,10 @@ $isipcs_sp8p = $p->isipcsdus;
 
             if ($g->kode_produk == "SP8-P") {
             $gSP8P = $gSP8P + $g->saldoakhir;
+            }
+
+            if ($g->kode_produk == "SP500") {
+            $gSP500 = $gSP500 + $g->saldoakhir;
             }
             @endphp
             @endforeach
@@ -274,6 +284,12 @@ $isipcs_sp8p = $p->isipcsdus;
             } else {
                 $colorgSP8P = "bg-success";
             }
+
+            if ($gSP500 <= 0) {
+                $colorgSP500 = "bg-danger";
+            } else {
+                $colorgSP500 = "bg-success";
+            }
            ?>
             <tr>
                 <td>Gudang Pusat</td>
@@ -289,7 +305,8 @@ $isipcs_sp8p = $p->isipcsdus;
                 {{-- <td><span class="badge <?php echo $colorgSPP; ?>"><?php echo number_format(floor($gSPP), '0', ',', '.'); ?></span></td> --}}
                 <td><span class="badge <?php echo $colorgSC; ?>"><?php echo number_format(floor($gSC), '0', ',', '.'); ?></span></td>
                 <td><span class="badge <?php echo $colorgSP8; ?>"><?php echo number_format(floor($gSP8), '0', ',', '.'); ?></span></td>
-                <td><span class="badge <?php echo $colorgSP8; ?>"><?php echo number_format(floor($gSP8P), '0', ',', '.'); ?></span></td>
+                <td><span class="badge <?php echo $colorgSP8P; ?>"><?php echo number_format(floor($gSP8P), '0', ',', '.'); ?></span></td>
+                <td><span class="badge <?php echo $colorgSP500; ?>"><?php echo number_format(floor($gSP500), '0', ',', '.'); ?></span></td>
             </tr>
             @foreach ($rekapdpb as $d)
             <?php
@@ -304,6 +321,8 @@ $isipcs_sp8p = $p->isipcsdus;
                 $ssc  = $d['mg_sc'] + (ROUND($d['saldo_sc'] / 24, 2)) + (ROUND($d['mutasi_sc'] / 24, 2)) - $d['sc_ambil'] + $d['sc_kembali'];
                 $ssp8  = $d['mg_sp8'] + (ROUND($d['saldo_sp8'] / 480, 2)) + (ROUND($d['mutasi_sp8'] / 480, 2)) - $d['sp8_ambil'] + $d['sp8_kembali'];
                 $ssp8p  = $d['mg_sp8p'] + (ROUND($d['saldo_sp8p'] / 600, 2)) + (ROUND($d['mutasi_sp8p'] / 600, 2)) - $d['sp8p_ambil'] + $d['sp8p_kembali'];
+
+                $ssp500  = $d['mg_sp500'] + (ROUND($d['saldo_sp500'] / 600, 2)) + (ROUND($d['mutasi_sp500'] / 600, 2)) - $d['sp500_ambil'] + $d['sp500_kembali'];
 
                 if ($sab <= 0) {
                 $colorab = "bg-danger";
@@ -373,6 +392,12 @@ $isipcs_sp8p = $p->isipcsdus;
                 $colorsp8p = "bg-success";
                 }
 
+                if ($ssp500 <= 0) {
+                $colorsp500 = "bg-danger";
+                } else {
+                $colorsp500 = "bg-success";
+                }
+
                 if ($sab < 0) {
                 $sab = 0;
                 }
@@ -416,6 +441,10 @@ $isipcs_sp8p = $p->isipcsdus;
                 if ($ssp8p < 0) {
                 $ssp8p = 0;
                 }
+
+                if ($ssp500 < 0) {
+                $ssp500 = 0;
+                }
             ?>
             <tr>
                 <td><?php echo ucwords($d['nama_cabang']); ?></td>
@@ -430,6 +459,7 @@ $isipcs_sp8p = $p->isipcsdus;
                 <td><span class="badge <?php echo $colorssc; ?>"><?php echo number_format(floor($ssc), '0', ',', '.'); ?></span></td>
                 <td><span class="badge <?php echo $colorsp8; ?>"><?php echo number_format(floor($ssp8), '0', ',', '.'); ?></span></td>
                 <td><span class="badge <?php echo $colorsp8p; ?>"><?php echo number_format(floor($ssp8p), '0', ',', '.'); ?></span></td>
+                <td><span class="badge <?php echo $colorsp500; ?>"><?php echo number_format(floor($ssp500), '0', ',', '.'); ?></span></td>
             </tr>
             @endforeach
     </table>
