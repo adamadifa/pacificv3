@@ -180,4 +180,8 @@
         -webkit-overflow-scrolling: touch;
     }
 
+    html {
+        height: 100%;
+    }
+
 </style>
