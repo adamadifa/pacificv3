@@ -86,10 +86,10 @@ class SaldoawalkasbesarController extends Controller
 
         if ($bln == 1) {
             $blnbefore = 12;
-            $thnbefore = $tahun - 1;
+            $thnbefore = $thn - 1;
         } else {
-            $blnbefore = $bulan - 1;
-            $thnbefore = $tahun;
+            $blnbefore = $bln - 1;
+            $thnbefore = $thn;
         }
 
 
