@@ -640,7 +640,7 @@ class PelangganController extends Controller
                 ]);
             } else if ($cek == 0 && !empty($getcookie)) {
                 Cookie::queue(Cookie::forget('kodepelanggan'));
-                return redirect('/pelanggan');
+                return redirect('/pelanggansalesman');
             }
 
             DB::commit();
