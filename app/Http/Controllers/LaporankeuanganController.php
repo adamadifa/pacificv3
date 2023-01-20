@@ -428,7 +428,7 @@ class LaporankeuanganController extends Controller
             $thnbefore = $tahun - 1;
         } else {
             $blnbefore = $bulan - 1;
-            $thnbefore = $tahun - 1;
+            $thnbefore = $tahun;
         }
 
         $ceknextBulan = DB::table('setoran_pusat')->where('omset_bulan', $bulan)->where('omset_tahun', $tahun)
