@@ -107,7 +107,7 @@ class SaldoawalkasbesarController extends Controller
             ->whereRaw('MONTH(tgl_setoranpusat) = ' . $blnbefore)
             ->whereRaw('YEAR(tgl_setoranpusat) = ' . $thnbefore)
             ->where('kode_cabang', $kode_cabang)
-            ->orderBy('tgl_setoranpusat', 'asc')
+            ->orderBy('tgl_setoranpusatd', 'asc')
             ->first();
 
         //dd($cekbeforeBulan);
@@ -116,6 +116,7 @@ class SaldoawalkasbesarController extends Controller
         } else {
             $sampai = $ceknextbulan->tgl_diterimapusat;
         }
+
 
         if ($cekbeforeBulan ==  null) {
             $dari = $dari;
