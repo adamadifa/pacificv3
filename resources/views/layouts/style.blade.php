@@ -100,7 +100,7 @@
         background: #f1f7ff;
     }
 
-    .loader-wrapper {
+    /* .loader-wrapper {
         width: 100%;
         height: 100vh;
         position: absolute;
@@ -172,7 +172,7 @@
         100% {
             height: 0%;
         }
-    }
+    } */
 
     body {
         overscroll-behavior-y: contain;
