@@ -423,6 +423,14 @@ class LaporankeuanganController extends Controller
             $thn = $tahun;
         }
 
+        if ($bulan == 1) {
+            $blnbefore = 12;
+            $thnbefore = $tahun - 1;
+        } else {
+            $blnbefore = $bulan - 1;
+            $thnbefore = $tahun - 1;
+        }
+
         $ceknextBulan = DB::table('setoran_pusat')->where('omset_bulan', $bulan)->where('omset_tahun', $tahun)
             ->whereRaw('MONTH(tgl_diterimapusat) = ' . $bln)
             ->whereRaw('YEAR(tgl_diterimapusat) = ' . $thn)
@@ -435,6 +443,19 @@ class LaporankeuanganController extends Controller
             $sampai = $ceknextBulan->tgl_diterimapusat;
         }
 
+
+        $cekbeforeBulan = DB::table('setoran_pusat')->where('omset_bulan', $bulan)->where('omset_tahun', $tahun)
+            ->whereRaw('MONTH(tgl_setoranpusat) = ' . $blnbefore)
+            ->whereRaw('YEAR(tgl_setoranpusat) = ' . $blnbefore)
+            ->where('kode_cabang', $kode_cabang)
+            ->first();
+        if ($cekbeforeBulan ==  null) {
+            $dari = $dari;
+        } else {
+            $dari = $cekbeforeBulan->tgl_setoranpusat;
+        }
+
+        dd($cekbeforeBulan);
         $saldokasbesar = DB::table('saldoawal_kasbesar')
             ->select('uang_logam', 'uang_kertas', 'giro', 'transfer')
             ->where('bulan', $bulan)
