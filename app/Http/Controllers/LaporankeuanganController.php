@@ -445,17 +445,17 @@ class LaporankeuanganController extends Controller
         }
 
 
-        $cekbeforeBulan = DB::table('setoran_pusat')->where('omset_bulan', $bulan)->where('omset_tahun', $tahun)
-            ->whereRaw('MONTH(tgl_setoranpusat) = ' . $blnbefore)
-            ->whereRaw('YEAR(tgl_setoranpusat) = ' . $thnbefore)
-            ->where('kode_cabang', $kode_cabang)
-            ->orderBy('tgl_setoranpusat', 'asc')
-            ->first();
-        if ($cekbeforeBulan ==  null) {
-            $dari = $dari;
-        } else {
-            $dari = $cekbeforeBulan->tgl_setoranpusat;
-        }
+        // $cekbeforeBulan = DB::table('setoran_pusat')->where('omset_bulan', $bulan)->where('omset_tahun', $tahun)
+        //     ->whereRaw('MONTH(tgl_setoranpusat) = ' . $blnbefore)
+        //     ->whereRaw('YEAR(tgl_setoranpusat) = ' . $thnbefore)
+        //     ->where('kode_cabang', $kode_cabang)
+        //     ->orderBy('tgl_setoranpusat', 'asc')
+        //     ->first();
+        // if ($cekbeforeBulan ==  null) {
+        //     $dari = $dari;
+        // } else {
+        //     $dari = $cekbeforeBulan->tgl_setoranpusat;
+        // }
 
         // dd($cekbeforeBulan);
         $saldokasbesar = DB::table('saldoawal_kasbesar')

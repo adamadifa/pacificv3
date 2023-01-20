@@ -137,7 +137,6 @@
                 SUM(girotocash) as lhpgirotocash,
                 SUM(girototransfer) as lhpgirototransfer')
                 ->where('tgl_lhp',$dari)
-                ->where('tgl_lhp','>',$daripenerimaan)
                 ->where('tgl_lhp','<=',$tgl_akhirsetoran)
                 ->where('kode_cabang',$kode_cabang)
                 ->groupBy('tgl_lhp')
@@ -163,7 +162,6 @@
                 ->where('status',1)
                 ->where('omset_bulan',$bulan)
                 ->where('omset_tahun',$tahun)
-
                 ->groupBy('tgl_setoranpusat')
                 ->first();
 
