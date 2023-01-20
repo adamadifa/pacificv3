@@ -414,6 +414,7 @@ class LaporankeuanganController extends Controller
         $bulan = $request->bulan;
         $tahun = $request->tahun;
         $dari = $tahun . "-" . $bulan . "-01";
+        $daripenerimaan = $dari;
         $tgl_akhirsetoran = date("Y-m-t", strtotime($dari));
         if ($bulan == 12) {
             $bln = 1;
@@ -471,7 +472,7 @@ class LaporankeuanganController extends Controller
             // Mendefinisikan nama file ekspor "hasil-export.xls"
             header("Content-Disposition: attachment; filename=Saldo Kas Besar Cabang $cabang->nama_cabang Periode Bulan $namabulan[$bulan] $tahun.xls");
         }
-        return view('kasbesar.laporan.cetak_saldokasbesar', compact('dari', 'sampai', 'saldokasbesar', 'tgl_akhirsetoran', 'cabang', 'namabulan', 'bulan', 'tahun', 'kode_cabang'));
+        return view('kasbesar.laporan.cetak_saldokasbesar', compact('dari', 'sampai', 'saldokasbesar', 'tgl_akhirsetoran', 'cabang', 'namabulan', 'bulan', 'tahun', 'kode_cabang', 'daripenerimaan'));
     }
 
     public function lpu()
