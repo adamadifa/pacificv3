@@ -174,4 +174,8 @@
         }
     }
 
+    body {
+        overscroll-behavior-y: contain;
+    }
+
 </style>
