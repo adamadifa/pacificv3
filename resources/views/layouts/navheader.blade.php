@@ -7,7 +7,7 @@
                      <ul class="nav navbar-nav">
                          <li class="nav-item mobile-menu d-xl-none mr-auto"><a class="nav-link nav-menu-main menu-toggle hidden-xs" href="#"><i class="ficon feather icon-menu"></i></a></li>
                          @if (Auth::user()->level=="salesman" && !request()->is(['home']))
-                         <li class="nav-item d-xl-none mr-auto"><a class="nav-link hidden-xs" href="{{ url()->previous() }}"><i class="ficon feather icon-arrow-left"></i></a></li>
+                         <li class="nav-item d-xl-none mr-auto"><a class="nav-link hidden-xs" href="{{ url()->current() }}"><i class="ficon feather icon-refresh-cw"></i></a></li>
                          @endif
 
                      </ul>
@@ -108,8 +108,8 @@
                      <ul class="nav navbar-nav float-right">
                          @if (Cookie::get('kodepelanggan') != null)
                          <li class="dropdown dropdown-notification nav-item">
-                             <a class="nav-link nav-link-label" href="/pelanggan/getpelanggan">
-                                 <i class="ficon" data-feather="users"></i>
+                             <a class="btn btn-sm btn-primary mt-1" href="/pelanggan/getpelanggan">
+                                 <i class="ficon" data-feather="users" style="font-size: 12px"></i> Dashboard Pelanggan
                              </a>
                          </li>
                          @endif
