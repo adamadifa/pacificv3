@@ -27,7 +27,7 @@ $tema = "";
 
 
 @endphp
-<body id="wrapper" class="vertical-layout vertical-menu-modern 2-columns {{ $tema }}  navbar-floating footer-static" data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
+<body class="vertical-layout vertical-menu-modern 2-columns {{ $tema }}  navbar-floating footer-static" data-open="click" data-menu="vertical-menu-modern" data-col="2-columns">
 
     <div class="loader-wrapper">
         <span class="loader"><span class="loader-inner"></span></span>
