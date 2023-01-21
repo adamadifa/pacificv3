@@ -2,7 +2,7 @@
     "name": "Portal Salesman",
     "short_name": "PS",
     "start_url": "/",
-    "display": "fullscreen",
+    "display": "standalone",
     "background_color": "#6777ef",
     "theme_color": "#6777ef",
     "orientation": "portrait-primary",
