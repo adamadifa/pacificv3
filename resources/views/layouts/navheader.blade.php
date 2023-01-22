@@ -109,7 +109,7 @@
                          @if (Cookie::get('kodepelanggan') != null)
                          <li class="dropdown dropdown-notification nav-item">
                              <a class="btn btn-sm btn-primary mt-1" href="/pelanggan/getpelanggan">
-                                 <i class="ficon" data-feather="users" style="font-size: 12px"></i> Dashboard Pelanggan
+                                 <i class="ficon" data-feather="users" style="font-size: 12px"></i> Pelanggan
                              </a>
                          </li>
                          @endif
