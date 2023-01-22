@@ -78,10 +78,15 @@
         $("#frmeditbarangtemp").find("#harga_dus, #harga_pack, #harga_pcs, #jml_dus, #jml_pack, #jml_pcs").maskMoney();
 
         function showtemp() {
+            var no_fak_penj = $("#no_fak_penj").val();
             $.ajax({
-                type: 'GET'
-                , url: '/penjualan/showbarangtempv2'
+                type: 'POST'
+                , url: '/penjualan/showbarangv2'
                 , cache: false
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , no_fak_penj: no_fak_penj
+                }
                 , success: function(respond) {
                     $("#loadbarangtemp").html(respond);
                     hitungdiskon();
@@ -89,7 +94,9 @@
             });
         }
 
+
         function hitungdiskon() {
+            var no_fak_penj = $("#no_fak_penj").val();
             var jenistransaksi = $("#jenistransaksi").val();
             var pelanggan = $("#nama_pelanggan").val();
             var pl = pelanggan.split("|");
@@ -100,9 +107,10 @@
             $("#btnsimpan").html('<i class="fa fa-spinner mr-1"></i><i>Loading...</i>');
             $.ajax({
                 type: 'POST'
-                , url: '/hitungdiskon'
+                , url: '/hitungdiskonpenjualanv2'
                 , data: {
                     _token: "{{ csrf_token() }}"
+                    , no_fak_penj: no_fak_penj
                     , jenistransaksi: jenistransaksi
                 }
                 , cache: false
@@ -132,6 +140,7 @@
 
 
 
+
         //Hitung Total
         function convertToRupiah(number) {
             if (number) {
@@ -156,7 +165,6 @@
 
         function loadtotal() {
             var subtotal = $("#totaltemp").val();
-
             var potswan = $("#potswan").val();
             var potaida = $("#potaida").val();
             var potstick = $("#potstick").val();
@@ -254,7 +262,6 @@
                 var ppn = 0;
             }
             var totalwithppn = parseInt(grandtotal) + parseInt(ppn);
-            // alert(total);
             var bruto = total;
             $("#grandtotal").text(convertToRupiah(totalwithppn));
             $("#totalnonppn").val(convertToRupiah(total));
@@ -263,10 +270,11 @@
             $("#bruto").val(subtotal);
             $("#subtotal").val(totalwithppn);
         }
-        $("#tambahitem").click(function(e) {
-            $("#tambahitem").prop("disabled", true);
 
+        $("#tambahitem").click(function(e) {
             e.preventDefault();
+            $("#tambahitem").prop("disabled", true);
+            var no_fak_penj = $("#no_fak_penj").val();
             var kode_barang = $("#kode_barang_pilih").val();
             var jml_dus = $("#jml_dus").val();
             var jml_pack = $("#jml_pack").val();
@@ -276,7 +284,6 @@
             var harga_pcs = $("#harga_pcs").val();
             var isipcsdus = $("#isipcsdus").val();
             var isipcs = $("#isipcs").val();
-            var nama_pelanggan = $("#nama_pelanggan").val();
             if ($('#promo').is(":checked")) {
                 var promo = $("#promo").val();
             } else {
@@ -293,7 +300,6 @@
             var hargapcs = harga_pcs != "" ? parseInt(harga_pcs.replace(/\./g, '')) : 0;
 
 
-
             var jumlah = (jmldus * parseInt(isipcsdus)) + (jmlpack * (parseInt(isipcs))) + jmlpcs;
             var subtotal = (jmldus * hargadus) + (jmlpack * hargapack) + (jmlpcs * hargapcs);
             //alert(totalpcs);
@@ -308,7 +314,7 @@
                     $("#nama_barang").focus();
                 });
                 return false;
-            } else if (jumlah == "" && !nama_pelanggan.includes('BATAL')) {
+            } else if (jumlah == "") {
                 swal({
                     title: 'Oops'
                     , text: 'Qty Harus Diisi !'
@@ -322,9 +328,10 @@
                 //Simpan Barang Temp
                 $.ajax({
                     type: 'POST'
-                    , url: '/penjualan/storebarangtempv2'
+                    , url: '/penjualan/storebarang'
                     , data: {
                         _token: "{{ csrf_token() }}"
+                        , no_fak_penj: no_fak_penj
                         , kode_barang: kode_barang
                         , hargadus: hargadus
                         , hargapack: hargapack
@@ -342,10 +349,12 @@
                                 , icon: 'success'
                                 , showConfirmButton: false
                             }).then(function() {
+                                $('#mdlinputbarang').modal({
+                                    backdrop: 'static'
+                                    , keyboard: false
+                                });
                                 showtemp();
-                                $("#tambahitem").prop("disabled", false);
-                                $("#mdlinputbarang").modal("hide");
-                                $("#kode_barang").val("");
+                                $("#kode_barang_pilih").val("");
                                 $("#nama_barang").val("");
                                 $("#jml_dus").val("");
                                 $("#jml_pack").val("");
@@ -404,6 +413,7 @@
                 });
             }
         });
+
         $("#kode_barang_pilih").change(function(e) {
             e.preventDefault();
             var kode_barang = $('option:selected', this).attr("kode_barang");

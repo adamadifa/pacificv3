@@ -1,10 +1,3 @@
-<style>
-    .form-group {
-        margin-bottom: 5px !important;
-    }
-
-</style>
-
 @php
 $isipcsdus = $barang->isipcsdus;
 $isipack = $barang->isipack;

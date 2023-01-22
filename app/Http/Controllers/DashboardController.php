@@ -639,7 +639,7 @@ class DashboardController extends Controller
         $id_karyawan = Auth::user()->id;
         $tanggal = $request->tanggalkunjungan;
         $kunjungan = DB::table('checkin')
-            ->selectRaw('checkin.kode_pelanggan,nama_pelanggan,checkin_time,no_fak_penj,date_created as checkout_time,foto')
+            ->selectRaw('checkin.kode_pelanggan,nama_pelanggan,alamat_pelanggan,checkin_time,no_fak_penj,date_created as checkout_time,foto')
             ->join('pelanggan', 'checkin.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
             ->leftJoin(
                 DB::raw("(
@@ -652,6 +652,7 @@ class DashboardController extends Controller
             )
             ->where('checkin.id_karyawan', $id_karyawan)
             ->where('tgl_checkin', $tanggal)
+            ->orderBy('checkin_time', 'asc')
             ->get();
 
         return view('dashboard.getkunjungan', compact('kunjungan'));
