@@ -80,7 +80,7 @@
             location.reload(true);
         });
         //fix modal force focus
-        $(window).scrollTo(0, 1);
+
         $.fn.modal.Constructor.prototype.enforceFocus = function() {
             var that = this;
             $(document).on('focusin.modal', function(e) {
