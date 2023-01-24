@@ -1,6 +1,35 @@
 @extends('layouts.midone')
 @section('titlepage','Input Retur')
 @section('content')
+<style>
+    #no_fak_penj {
+        text-transform: uppercase
+    }
+
+    @media only screen and (max-width: 600px) {
+        #grandtotal {
+            font-size: 2rem !important;
+        }
+
+        #iconchart {
+            font-size: 1.5rem !important;
+        }
+
+        #bgiconcart {
+            padding: 0.5rem !important;
+        }
+
+        .form-label-group {
+            position: relative;
+            margin-bottom: 0.5rem !important;
+        }
+    }
+
+    .form-group {
+        margin-bottom: 5px !important;
+    }
+
+</style>
 <div class="content-wrapper">
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
@@ -37,12 +66,12 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="No. Retur" field="no_retur_penj" icon="fa fa-barcode" />
+                                            <x-inputtext label="Auto" readonly field="no_retur_penj" icon="fa fa-barcode" />
                                         </div>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="Tanggal Retur" field="tglretur" icon="feather icon-calendar" readonly datepicker />
+                                            <x-inputtext label="Tanggal Retur" value="{{ date('Y-m-d') }}" field="tglretur" icon="feather icon-calendar" readonly datepicker />
                                         </div>
                                     </div>
                                     <div class="row">
@@ -65,7 +94,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row d-none">
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-content">
@@ -94,14 +123,13 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-header d-flex align-items-start pb-0">
-                                    <div class="avatar bg-rgba-info m-2" style="padding:3rem ">
+                                    <div class="avatar bg-rgba-info m-2" style="padding:3rem" id="bgiconcart">
                                         <div class="avatar-content">
-                                            <i class="feather icon-shopping-cart text-info" style="font-size: 4rem"></i>
+                                            <i class="feather icon-shopping-cart text-info" id="iconchart" style="font-size: 4rem"></i>
                                         </div>
                                     </div>
                                     <div>
                                         <h2 class="text-bold-700" style="font-size: 6rem; padding:2rem" id="grandtotal">0,00</h2>
-
                                     </div>
                                 </div>
                             </div>
@@ -111,7 +139,7 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <div class="row">
+                                    {{-- <div class="row">
                                         <div class="col-lg-6 col-sm-12">
                                             <div class="form-group" style="margin-bottom:5px !important">
                                                 <div class=" form-label-group position-relative has-icon-left" style="margin-bottom:5px !important">
@@ -224,10 +252,10 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> --}}
                                     <div class="row">
                                         <div class="col-12">
-                                            <a href="#" id="tambahitem" class="btn btn-info btn-block"><i class="feather icon-plus ml-1"></i> Tambah item</a>
+                                            <a href="#" id="addproduct" class="btn btn-info btn-block"><i class="feather icon-plus ml-1"></i> Tambah item</a>
                                         </div>
                                     </div>
                                     <div class="row mt-1">
@@ -340,6 +368,20 @@
                 </button>
             </div>
             <div class="modal-body" id="loadbarang">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade text-left" id="mdlinputbarang" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Tambah Produk</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="loadinputbarang">
             </div>
         </div>
     </div>
@@ -865,6 +907,45 @@
         $("#harga_dus, #harga_pack, #harga_pcs, #jml_dus, #jml_pack, #jml_pcs").maskMoney();
         $(".money").maskMoney();
 
+
+        $("#addproduct").click(function(e) {
+            e.preventDefault();
+            var kode_pelanggan = $("#kode_pelanggan").val();
+            var kategori_salesman = $("#kategori_salesman").val();
+            var kode_cabang = $("#kode_cabang").val();
+            if (kode_pelanggan == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Pelanggan Harus Dipilih !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#nama_pelanggan").focus();
+                });
+                return false;
+            } else {
+                $.ajax({
+                    type: 'POST'
+                    , url: '/retur/inputbarangtemp'
+                    , data: {
+                        _token: "{{ csrf_token() }}"
+                        , kode_pelanggan: kode_pelanggan
+                        , kategori_salesman: kategori_salesman
+                        , kode_cabang: kode_cabang
+                    }
+                    , cache: false
+                    , success: function(respond) {
+                        $("#loadinputbarang").html(respond);
+                        $('#mdlinputbarang').modal({
+                            backdrop: 'static'
+                            , keyboard: false
+                        });
+                    }
+                });
+
+            }
+
+        });
 
     });
 

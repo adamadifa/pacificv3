@@ -26,6 +26,25 @@ class AuthController extends Controller
         }
     }
 
+    public function postloginsap(Request $request)
+    {
+
+        //dd($request->all());
+        $credentials = $request->validate([
+            'email' => 'required',
+            'password' => 'required'
+        ]);
+        // $remember = $request->remember_me;
+        //dd(Auth::attempt(['username' => $request->username, 'password' => $request->password]));
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            //dd(Auth::user()->kode_cabang);
+            return redirect('/homesap');
+        } else {
+            return Redirect::back()->with(['warning' => 'Username / Password Salah']);
+        }
+    }
+
     public function postlogout(Request $request)
     {
         Auth::logout();

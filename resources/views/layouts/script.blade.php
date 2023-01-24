@@ -75,6 +75,10 @@
 
 <script>
     $(function() {
+        $("#refresh").click(function(e) {
+            e.preventDefault();
+            location.reload(true);
+        });
         //fix modal force focus
         $(window).scrollTo(0, 1);
         $.fn.modal.Constructor.prototype.enforceFocus = function() {
