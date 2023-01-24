@@ -63,6 +63,17 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-lg-12 col-sm-12">
+                                            <div class="form-group">
+                                                <select name="jenislaporan" id="jenislaporan" class="form-control">
+                                                    <option value="">Jenis Laporan</option>
+                                                    <option value="detail">Detail</option>
+                                                    <option value="rekap">Rekap</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="row" id="pilihperiode">
                                         <div class="col-6">
                                             <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker />

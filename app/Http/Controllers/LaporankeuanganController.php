@@ -62,7 +62,9 @@ class LaporankeuanganController extends Controller
         if (!empty($dari_kode_akun) && !empty($sampai_kode_akun)) {
             $queryrekap->whereBetween('kaskecil_detail.kode_akun', [$dari_kode_akun, $sampai_kode_akun]);
         }
-        $queryrekap->where('kaskecil_detail.kode_cabang', $kode_cabang);
+        if (!empty($kode_cabang)) {
+            $queryrekap->where('kaskecil_detail.kode_cabang', $kode_cabang);
+        }
         $queryrekap->orderBy('kode_akun');
         $queryrekap->groupByRaw('kaskecil_detail.kode_akun,nama_akun');
         $rekap = $queryrekap->get();
@@ -82,7 +84,12 @@ class LaporankeuanganController extends Controller
             // Mendefinisikan nama file ekspor "hasil-export.xls"
             header("Content-Disposition: attachment; filename=Kas Kecil Periode $dari-$sampai.xls");
         }
-        return view('kaskecil.laporan.cetak_kaskecil', compact('kaskecil', 'cabang', 'saldoawal', 'dari', 'sampai', 'dari_kode_akun', 'sampai_kode_akun', 'rekap'));
+
+        if ($request->jenislaporan == "detail") {
+            return view('kaskecil.laporan.cetak_kaskecil', compact('kaskecil', 'cabang', 'saldoawal', 'dari', 'sampai', 'dari_kode_akun', 'sampai_kode_akun', 'rekap'));
+        } else {
+            return view('kaskecil.laporan.cetak_rekapkaskecil', compact('kaskecil', 'cabang', 'saldoawal', 'dari', 'sampai', 'dari_kode_akun', 'sampai_kode_akun', 'rekap'));
+        }
     }
 
 
