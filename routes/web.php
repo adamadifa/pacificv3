@@ -112,6 +112,7 @@ use App\Models\Penjualan;
 use App\Models\Saldoawalmutasibarangproduksi;
 use App\Models\Setcoacabang;
 use App\Models\Setoranpenjualan;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
@@ -126,9 +127,13 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 |
 */
 
-Route::get('/agent', function () {
+Route::get('/agent1', function () {
     return request()->userAgent();
 });
+
+
+
+
 Route::middleware(['guest'])->group(function () {
     // Route::get('/paneladmin', function () {
     //     return view('Auth.login');
@@ -137,15 +142,21 @@ Route::middleware(['guest'])->group(function () {
     Route::get('/', function () {
         return view('Auth.login');
     })->name('login');
+
+    Route::get('/loginsap', function () {
+        return view('sap.auth.login');
+    })->name('loginsap');
 });
 
 
 
 Route::post('/postlogin', [AuthController::class, 'postlogin']);
-Route::post('/postlogout', [AuthController::class, 'postlogout']);
+Route::post('/postloginsap', [AuthController::class, 'postloginsap']);
+
 Route::get('/cekdpbwa', [WhatsappController::class, 'cekdpb']);
 Route::get('/cekpenjualanwa', [WhatsappController::class, 'cekpenjualan']);
 Route::middleware(['auth'])->group(function () {
+    Route::post('/postlogout', [AuthController::class, 'postlogout']);
     Route::get('/home', [DashboardController::class, 'home']);
     Route::get('/user', [UserController::class, 'index']);
     Route::get('/user/{id}/activated', [UserController::class, 'activated']);
@@ -1259,6 +1270,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/penjualan/editbarangtemp', [PenjualanController::class, 'editbarangtemp']);
     Route::post('/penjualan/inputbarangtemp', [PenjualanController::class, 'inputbarangtemp']);
     Route::post('/penjualan/inputbarang', [PenjualanController::class, 'inputbarang']);
+
     Route::post('/penjualan/editbarang', [PenjualanController::class, 'editbarang']);
     Route::post('/penjualan/updatebarang', [PenjualanController::class, 'updatebarang']);
     Route::post('/penjualan/updatebarangtemp', [PenjualanController::class, 'updatebarangtemp']);
@@ -1299,7 +1311,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/retur/deletebarangtemp', [ReturController::class, 'deletebarangtemp']);
     Route::post('/loadtotalreturtemp', [ReturController::class, 'loadtotalreturtemp']);
     Route::post('/retur/getfakturpelanggan', [ReturController::class, 'getfakturpelanggan']);
-
+    Route::post('/retur/inputbarangtemp', [ReturController::class, 'inputbarangtemp']);
     //LPC
     Route::get('lpc/create', [LpcController::class, 'create']);
     Route::post('lpc/store', [LpcController::class, 'store']);
@@ -1411,4 +1423,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/penjualan/{no_fak_penj}/deletesignature', [PenjualanController::class, 'deletesignature']);
 
     Route::post('/getkunjungan', [DashboardController::class, 'getkunjungan']);
+
+    //SAP
+    Route::get('/homesap', [DashboardController::class, 'homesap']);
 });

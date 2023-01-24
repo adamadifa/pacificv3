@@ -657,4 +657,9 @@ class DashboardController extends Controller
 
         return view('dashboard.getkunjungan', compact('kunjungan'));
     }
+
+    public function homesap()
+    {
+        return view('sap.home');
+    }
 }
