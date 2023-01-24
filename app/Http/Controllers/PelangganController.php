@@ -259,7 +259,7 @@ class PelangganController extends Controller
             ->where('status_pelanggan', 1)
             ->where('nama_pelanggan', 'like', '%' . $request->nama_pelanggan . '%')
             ->limit(10)
-            ->orderBy('nama_pelanggan')
+            ->orderBy('nama_pelanggan', 'desc')
             ->get();
         return view('pelanggan.indexsalesman', compact('pelanggan'));
     }
