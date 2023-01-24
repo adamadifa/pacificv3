@@ -40,6 +40,7 @@
         </div>
         <div class="row mt-1">
             <div class="col-12">
+                @include('layouts.notification')
                 @foreach ($pelanggan as $d)
                 <a href="/pelanggan/showpelanggan?kode_pelanggan={{ Crypt::encrypt($d->kode_pelanggan) }}" style="color:rgb(107, 99, 99)">
                     <div class="row">

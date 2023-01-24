@@ -355,9 +355,17 @@ class PelangganController extends Controller
         ]);
 
         if ($simpan) {
-            return redirect('/pelanggan')->with(['success' => 'Data Berhasil Disimpan']);
+            if (Auth::user()->level != "salesman") {
+                return redirect('/pelanggan')->with(['success' => 'Data Berhasil Disimpan']);
+            } else {
+                return redirect('/pelanggansalesman')->with(['success' => 'Data Berhasil Disimpan']);
+            }
         } else {
-            return redirect('/pelanggan')->with(['warning' => 'Data Gagal Disimpan']);
+            if (Auth::user()->level != "salesman") {
+                return redirect('/pelanggan')->with(['warning' => 'Data Gagal Disimpan']);
+            } else {
+                return redirect('/pelanggansalesman')->with(['warning' => 'Data Gagal Disimpan']);
+            }
         }
     }
 

@@ -6,13 +6,8 @@
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Tambah Pelanggan</h2>
-                    <div class="breadcrumb-wrapper col-12">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/pelanggan">Pelanggan</a></li>
-                            <li class="breadcrumb-item"><a href="#">Tambah Pelanggan</a></li>
-                        </ol>
-                    </div>
+                    <h4 class="content-header-title float-left mb-0">Tambah Pelanggan</h4>
+
                 </div>
             </div>
         </div>
@@ -181,7 +176,7 @@
                                     <input type="hidden" name="jatuhtempo" id="jatuhtempo">
                                     @endif
 
-
+                                    @if ($level!= "salesman")
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group  @error('status_pelanggan') error @enderror">
@@ -200,6 +195,10 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @else
+                                    <input type="hidden" value="1" name="status_pelanggan">
+                                    @endif
+
 
                                 </div>
                             </div>
@@ -350,7 +349,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row {{ $level=='salesman' ? 'd-none' : '' }}">
                                     <div class="col-lg-6 col-sm-12">
                                         <x-inputtext label="Latitude" field="latitude" icon="feather icon-map-pin" />
                                     </div>
@@ -363,7 +362,7 @@
                                         <x-inputtext label="Omset Toko" field="omset_toko" icon="feather icon-file" right />
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row {{ $level=='salesman' ? 'd-none' : '' }}">
                                     <div class="col-12">
                                         <div class="form-group  @error('foto') error @enderror">
                                             <div class="custom-file">
@@ -381,7 +380,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-12">
+                                    <div class="col-12 d-flex">
                                         <button type="submit" class="btn btn-primary mr-1 mb-1"><i class="fa fa-send mr-1"></i> Simpan</button>
                                         <a href="{{ url()->previous() }}" class="btn btn-outline-warning mr-1 mb-1"><i class="fa fa-arrow-left mr-2"></i>Kembali</a>
                                     </div>
