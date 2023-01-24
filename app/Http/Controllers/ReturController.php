@@ -105,7 +105,12 @@ class ReturController extends Controller
         $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)
             ->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan')
             ->first();
-        return view('retur.createv2', compact('pelanggan'));
+        if (Auth::user()->level == "saslesman") {
+
+            return view('retur.createv2', compact('pelanggan'));
+        } else {
+            return view('retur.createv3', compact('pelanggan'));
+        }
     }
 
     public function showbarangtemp(Request $request)
