@@ -208,23 +208,29 @@ class PengeluarangudanglogistikController extends Controller
         $kode_cabang = $request->kode_cabang;
 
 
-        $cek = DB::table('detail_pengeluaran')->where('kode_barang', $kode_barang)->where('nobukti_pengeluaran', $nobukti_pengeluaran)->count();
-        if ($cek > 0) {
-            echo 1;
+        // $cek = DB::table('detail_pengeluaran')->where('kode_barang', $kode_barang)->where('nobukti_pengeluaran', $nobukti_pengeluaran)->count();
+        // if ($cek > 0) {
+        //     echo 1;
+        // } else {
+
+        // }
+
+        $detailpengeluaran = DB::table('detail_pengeluaran')->where('nobukti_pengeluaran', $nobukti_pengeluaran)->orderBy('no_urut', 'desc')->first();
+        $no_urut = $detailpengeluaran != null ? $detailpengeluaran->no_urut + 1 : 1;
+
+        $data = [
+            'nobukti_pengeluaran' => $nobukti_pengeluaran,
+            'kode_barang' => $kode_barang,
+            'keterangan' => $keterangan,
+            'qty' => $qty,
+            'kode_cabang' => $kode_cabang,
+            'no_urut' => $no_urut
+        ];
+        $simpan = DB::table('detail_pengeluaran')->insert($data);
+        if ($simpan) {
+            echo 0;
         } else {
-            $data = [
-                'nobukti_pengeluaran' => $nobukti_pengeluaran,
-                'kode_barang' => $kode_barang,
-                'keterangan' => $keterangan,
-                'qty' => $qty,
-                'kode_cabang' => $kode_cabang,
-            ];
-            $simpan = DB::table('detail_pengeluaran')->insert($data);
-            if ($simpan) {
-                echo 0;
-            } else {
-                echo 2;
-            }
+            echo 2;
         }
     }
 

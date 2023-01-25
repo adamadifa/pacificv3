@@ -280,7 +280,10 @@
             var keterangan = $("#keterangan").val();
             var qty = $("#qty").val();
             var kode_cabang = $("#kode_cabang").val();
-            if (kode_barang == "") {
+            var cektutuplaporan = $("#cektutuplaporan").val();
+            if (cektutuplaporan > 0) {
+                swal("Oops", "Laporan Periode Ini Sudah Di Tutup !", "warning");
+            } else if (kode_barang == "") {
                 swal({
                     title: 'Oops'
                     , text: 'Barang Harus Diisi Dulu !'
@@ -322,9 +325,7 @@
                     }
                     , cache: false
                     , success: function(respond) {
-                        if (respond == 1) {
-                            swal("Oops", "Data Sudah Ada", "warning");
-                        } else if (respond == 2) {
+                        if (respond == 2) {
                             swal("Oops", "Data Gagal Disimpan", "warning");
                         } else {
                             swal("Berhasil", "Data Berhasil Disimpan", "success");

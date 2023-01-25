@@ -660,6 +660,14 @@ class DashboardController extends Controller
 
     public function homesap()
     {
-        return view('sap.home');
+        $hariini = date("Y-m-d");
+        $bulanini = date('m');
+        $tahunini = date('Y');
+        $penjualan = DB::table('penjualan')
+            ->selectRaw('SUM(total) as totalpenjualan')
+            ->whereRaw('MONTH(tgltransaksi)="' . $bulanini . '"')
+            ->whereRaw('YEAR(tgltransaksi)="' . $tahunini . '"')
+            ->first();
+        return view('sap.home', compact('penjualan'));
     }
 }
