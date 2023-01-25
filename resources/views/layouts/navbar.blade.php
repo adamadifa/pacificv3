@@ -137,6 +137,14 @@
                         </a>
                     </li>
                     @endif
+                    @if (in_array($level, $karyawan_view))
+                    <li class="{{ request()->is(['karyawan', 'karyawan/*']) ? 'active' : '' }}">
+                        <a href="/karyawan">
+                            <i class="feather icon-users"></i>
+                            <span class="menu-item">Data Karyawan</span>
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </li>
             @endif

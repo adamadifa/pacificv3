@@ -232,6 +232,12 @@ class GlobalProvider extends ServiceProvider
                 'admin penjualan dan kasir', 'admin garut'
             ];
 
+            //Master Karyawan
+            $karyawan_view = ['admin', 'manager hrd'];
+            $karyawan_tambah = ['admin', 'manager hrd'];
+            $karyawan_edit = ['admin', 'manager hrd'];
+            $karyawan_hapus = ['admin', 'manager hrd'];
+
             //Supplier
             $supplier_menu = ['admin', 'manager pembelian', 'admin pembelian', 'manager accounting', 'spv accounting', 'audit', 'admin pajak 2'];
             $supplier_tambah = ['admin', 'manager pembelian', 'admin pembelian'];
@@ -900,6 +906,11 @@ class GlobalProvider extends ServiceProvider
                 'salesman_edit' => $salesman_edit,
                 'salesman_hapus' => $salesman_hapus,
 
+                //Karyawan
+                'karyawan_view' => $karyawan_view,
+                'karyawan_tambah' => $karyawan_tambah,
+                'karyawan_edit' => $karyawan_edit,
+                'karyawan_hapus' => $karyawan_hapus,
 
                 'supplier_view' => $supplier_menu,
                 'supplier_tambah' => $supplier_tambah,

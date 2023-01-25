@@ -28,6 +28,7 @@ use App\Http\Controllers\HppController;
 use App\Http\Controllers\JenissimpananController;
 use App\Http\Controllers\JurnalkoreksiController;
 use App\Http\Controllers\JurnalumumController;
+use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\KaskecilController;
 use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\KlaimController;
@@ -1423,6 +1424,9 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/penjualan/{no_fak_penj}/deletesignature', [PenjualanController::class, 'deletesignature']);
 
     Route::post('/getkunjungan', [DashboardController::class, 'getkunjungan']);
+
+    //Karyawan
+    Route::get('/karyawan', [KaryawanController::class, 'index']);
 
     //SAP
     Route::get('/homesap', [DashboardController::class, 'homesap']);
