@@ -89,6 +89,7 @@ use App\Http\Controllers\SaldoawalgudanglogistikController;
 use App\Http\Controllers\SaldoawalkasbesarController;
 use App\Http\Controllers\SaldoawalmutasibarangproduksiController;
 use App\Http\Controllers\SalesmanController;
+use App\Http\Controllers\SapController;
 use App\Http\Controllers\ServicekendaraanController;
 use App\Http\Controllers\SetcoacabangController;
 use App\Http\Controllers\SetorangiroController;
@@ -1430,4 +1431,5 @@ Route::middleware(['auth'])->group(function () {
 
     //SAP
     Route::get('/homesap', [DashboardController::class, 'homesap']);
+    Route::get('/salesperformance', [SapController::class, 'salesperfomance']);
 });

@@ -663,11 +663,62 @@ class DashboardController extends Controller
         $hariini = date("Y-m-d");
         $bulanini = date('m');
         $tahunini = date('Y');
+
+        $level = Auth::user()->level;
+        $no_pengajuan[] = "";
+        $pengajuanterakhir = DB::table('pengajuan_limitkredit_v3')
+            ->select(DB::raw('MAX(no_pengajuan) as no_pengajuan'))
+            ->groupBy('kode_pelanggan')
+            ->get();
+        foreach ($pengajuanterakhir as $d) {
+            $no_pengajuan[] = $d->no_pengajuan;
+        }
         $penjualan = DB::table('penjualan')
             ->selectRaw('SUM(total) as totalpenjualan')
             ->whereRaw('MONTH(tgltransaksi)="' . $bulanini . '"')
             ->whereRaw('YEAR(tgltransaksi)="' . $tahunini . '"')
             ->first();
-        return view('sap.home', compact('penjualan'));
+        $penjualancabang = DB::table('penjualan')
+            ->selectRaw('nama_cabang,SUM(total) as totalpenjualan,COUNT(no_fak_penj) as jmlorder')
+            ->whereRaw('MONTH(tgltransaksi)="' . $bulanini . '"')
+            ->whereRaw('YEAR(tgltransaksi)="' . $tahunini . '"')
+            ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
+            ->orderBy('nama_cabang')
+            ->groupBy('karyawan.kode_cabang')
+            ->get();
+
+        if ($level == "direktur") {
+            $jmlpengajuan = DB::table('pengajuan_limitkredit_v3')
+                ->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+                ->whereIn('no_pengajuan', $no_pengajuan)
+                ->whereNotNull('mm')
+                ->whereNull('dirut')
+                ->where('status', 0)
+                ->count();
+        } else if ($level == "manager marketing") {
+            $jmlpengajuan = DB::table('pengajuan_limitkredit_v3')
+                ->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+                ->whereIn('no_pengajuan', $no_pengajuan)
+                ->whereNotNull('rsm')
+                ->whereNull('mm')
+                ->where('status', 0)
+                ->count();
+        } else if ($level == "general manager") {
+            $jmlpengajuan = DB::table('pengajuan_limitkredit_v3')
+                ->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+                ->whereIn('no_pengajuan', $no_pengajuan)
+                ->whereNotNull('mm')
+                ->whereNull('gm')
+                ->where('status', 0)
+                ->count();
+        } else if ($level == "admin") {
+            $jmlpengajuan = DB::table('pengajuan_limitkredit_v3')
+                ->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+                ->whereIn('no_pengajuan', $no_pengajuan)
+                ->where('status', 0)
+                ->count();
+        }
+        return view('sap.home', compact('penjualan', 'penjualancabang', 'jmlpengajuan'));
     }
 }

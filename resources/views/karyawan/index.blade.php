@@ -1,5 +1,5 @@
 @extends('layouts.midone')
-@section('titlepage','Data Supplier')
+@section('titlepage','Data Karyawan')
 @section('content')
 <div class="content-wrapper">
     <div class="content-header row">
@@ -41,7 +41,7 @@
                         </div>
                     </form>
                     <div class="table-responsive">
-                        <table class="table table-hover-animation">
+                        <table class="table table-hover-animation table-striped">
                             <thead class="thead-dark">
                                 <tr>
                                     <th>No</th>
@@ -52,7 +52,7 @@
                                     <th>Departemen</th>
                                     <th>Jabatan</th>
                                     <th>MP/PCF</th>
-                                    <th>Cabang</th>
+                                    <th>Kantor</th>
                                     <th>Klasifikasi</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -64,6 +64,29 @@
                                     <td class="text-center">{{ $loop->iteration + $karyawan->firstItem()-1 }}</td>
                                     <td>{{ $d->nik }}</td>
                                     <td>{{ $d->nama_karyawan }}</td>
+                                    <td>{{ $d->jenis_kelamin == 1 ? 'L' : 'P' }}</td>
+                                    <td>{{ date("d-m-Y",strtotime($d->tgl_masuk)) }}</td>
+                                    <td>{{ $d->nama_dept }}</td>
+                                    <td>{{ $d->nama_jabatan }}</td>
+                                    <td>{{ $d->id_perusahaan }}</td>
+                                    <td>{{ $d->id_kantor }}</td>
+                                    <td>{{ $d->klasifikasi }}</td>
+                                    <td>
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            @if (in_array($level,$karyawan_edit))
+                                            <a class="ml-1 edit" nik="{{ $d->kode_supplier }}" href="#"><i class="feather icon-edit success"></i></a>
+                                            @endif
+                                            @if (in_array($level,$karyawan_hapus))
+                                            <form method="POST" class="deleteform" action="/supplier/{{Crypt::encrypt($d->nik)}}/delete">
+                                                @csrf
+                                                @method('DELETE')
+                                                <a href="#" class="delete-confirm ml-1">
+                                                    <i class="feather icon-trash danger"></i>
+                                                </a>
+                                            </form>
+                                            @endif
+                                        </div>
+                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>

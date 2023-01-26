@@ -10911,9 +10911,9 @@ fieldset:disabled .btn {
     --bs-gutter-x: var(--fimobile-padding);
     --fimobile-input-rounded: 10px;
     /* radial gradient colors */
-    --fimobile-theme-color-grad-1: #57bdff;
-    --fimobile-theme-color-grad-2: #4f77fb;
-    --fimobile-theme-color-grad-3: #6528cf;
+    --fimobile-theme-color-grad-1: #b11036;
+    --fimobile-theme-color-grad-2: #9e022e;
+    --fimobile-theme-color-grad-3: #9e022e;
     /* color schemes */
     --fimobile-theme-color: #b11036;
     --fimobile-theme-color-2: #001c77;

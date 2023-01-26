@@ -63,9 +63,9 @@ $(document).ready(function () {
 
 
     /** center button click toggle **/
-    $('.centerbutton .nav-link').on('click', function () {
-        $(this).toggleClass('active')
-    })
+    // $('.centerbutton .nav-link').on('click', function () {
+    //     $(this).toggleClass('active')
+    // })
 
 });
 
@@ -82,7 +82,7 @@ $(window).on('load', function () {
         imgpath.hide();
     })
 
-    
+
     /* url path on menu */
     var path = window.location.href; // because the 'href' property of the DOM element is the absolute path
     $(' .main-menu ul a').each(function () {
@@ -94,7 +94,7 @@ $(window).on('load', function () {
 
     /* main container min height */
     $('main').css('min-height', $(window).height());
-	
+
     if ($('.header.position-fixed').length > 0) {
         $('main').css('padding-top', $('.header').outerHeight() + 10);
     }
@@ -102,7 +102,7 @@ $(window).on('load', function () {
         $('main').css('padding-bottom', $('.footer').outerHeight() + 10);
     }
 
-    
+
 });
 
 
