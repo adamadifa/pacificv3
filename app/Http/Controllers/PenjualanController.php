@@ -7051,7 +7051,7 @@ class PenjualanController extends Controller
         // $kode_pelanggan = Crypt::encrypt('TSM-00700');
         // echo $kode_pelanggan;
         // die;
-        //$no_fak_penj = "TESTFAKT";
+        //$no_fak_penj = "BDGPR01230003 ";
         $no_fak_penj = $request->no_fak_penj;
         $pelangganmp = [
             'TSM-00548',
@@ -7065,7 +7065,7 @@ class PenjualanController extends Controller
             'PST00002'
         ];
         $faktur = DB::table('penjualan')
-            ->select('penjualan.*', 'nama_pelanggan', 'nama_karyawan')
+            ->select('penjualan.*', 'nama_pelanggan', 'nama_karyawan', 'alamat_pelanggan', 'jenistransaksi')
             ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
             ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
             ->where('no_fak_penj', $no_fak_penj)->first();

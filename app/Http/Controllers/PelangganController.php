@@ -250,18 +250,18 @@ class PelangganController extends Controller
 
     public function pelanggansalesman(Request $request)
     {
-        $id_karyawan = Auth::user()->id_salesman;
+        // $id_karyawan = Auth::user()->id_salesman;
 
-        $pelanggan = DB::table('pelanggan')
-            ->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan')
-            ->where('pelanggan.kode_cabang', Auth::user()->kode_cabang)
-            ->where('id_sales', $id_karyawan)
-            ->where('status_pelanggan', 1)
-            ->where('nama_pelanggan', 'like', '%' . $request->nama_pelanggan . '%')
-            ->limit(10)
-            ->orderBy('nama_pelanggan', 'desc')
-            ->get();
-        return view('pelanggan.indexsalesman', compact('pelanggan'));
+        // $pelanggan = DB::table('pelanggan')
+        //     ->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan')
+        //     ->where('pelanggan.kode_cabang', Auth::user()->kode_cabang)
+        //     ->where('id_sales', $id_karyawan)
+        //     ->where('status_pelanggan', 1)
+        //     ->where('nama_pelanggan', 'like', '%' . $request->nama_pelanggan . '%')
+        //     ->limit(10)
+        //     ->orderBy('nama_pelanggan', 'desc')
+        //     ->get();
+        return view('pelanggan.indexsalesman');
     }
 
     public function create()

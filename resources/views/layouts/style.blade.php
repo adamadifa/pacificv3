@@ -181,3 +181,5 @@
     }
 
 </style>
+
+@stack('mystyle')
