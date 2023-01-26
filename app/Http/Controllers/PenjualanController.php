@@ -1807,7 +1807,7 @@ class PenjualanController extends Controller
         $limitpel = $request->limitpel;
         $sisapiutang = $request->sisapiutang;
         $jenistransaksi = $request->jenistransaksi;
-        $jenisbayar = $request->jenisbayartunai == "transfer" ? $request->jenisbayartunai : $request->jenisbayar;
+        $jenisbayar = $request->jenisbayartunai == "transfer" && $jenistransaksi == "tunai" ? $request->jenisbayartunai : $request->jenisbayar;
         $subtotal = $request->subtotal;
         $jatuhtempo = $request->jatuhtempo;
         $bruto = $request->bruto;
@@ -2059,6 +2059,13 @@ class PenjualanController extends Controller
             }
             DB::table('detailpenjualan_edit')->where('no_fak_penj', $no_fak_penj)->delete();
             if ($jenistransaksi == "tunai" && $jenisbayar == "tunai") {
+                $cektransfer = DB::table('transfer')->where('no_fak_penj', $no_fak_penj_new)->where('status', 1)->count();
+                $cekgiro = DB::table('giro')->where('no_fak_penj', $no_fak_penj_new)->where('status', 1)->count();
+
+                if ($cektransfer > 0 || $cekgiro > 0) {
+                    DB::rollBack();
+                    return Redirect::back()->with(['warning' => 'Tidak Bisa di Ubah Karena Ada Transaksi Giro / Transfer Yang Sudah di Aksi Oleh Keuangan, Silahkan Hubungi Bagian Keuangna']);
+                }
                 $hb = DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->get();
                 $no_ref[] = "";
                 foreach ($hb as $d) {
@@ -2083,6 +2090,8 @@ class PenjualanController extends Controller
 
 
                 DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->delete();
+                DB::table('giro')->where('no_fak_penj', $no_fak_penj_new)->delete();
+                DB::table('transfer')->where('no_fak_penj', $no_fak_penj_new)->delete();
                 DB::table('historibayar')
                     ->insert([
                         'nobukti' => $nobukti,
@@ -2124,6 +2133,35 @@ class PenjualanController extends Controller
                         ]);
                 }
             } else if ($jenistransaksi == "tunai" && $jenisbayar == "transfer") {
+                $cektransfer = DB::table('transfer')->where('no_fak_penj', $no_fak_penj_new)->where('status', 1)->count();
+                $cekgiro = DB::table('giro')->where('no_fak_penj', $no_fak_penj_new)->where('status', 1)->count();
+
+                if ($cektransfer > 0 || $cekgiro > 0) {
+                    DB::rollBack();
+                    return Redirect::back()->with(['warning' => 'Tidak Bisa di Ubah Karena Ada Transaksi Giro / Transfer Yang Sudah di Aksi Oleh Keuangan, Silahkan Hubungi Bagian Keuangna']);
+                }
+                $hbtunai = DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->where('jenisbayar', 'tunai')->get();
+                $hbtitipan = DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->where('jenisbayar', 'titipan')->where('tglbayar', $tgltransaksi)->first();
+
+                if ($hbtunai != null) {
+                    $no_ref_tunai[] = "";
+                    foreach ($hbtunai as $d) {
+                        $no_ref_tunai[] = $d->nobukti;
+                    }
+
+                    DB::table('buku_besar')
+                        ->whereIn('no_ref', $no_ref_tunai)
+                        ->delete();
+                }
+
+                if ($hbtitipan != null) {
+                    DB::table('buku_besar')
+                        ->where('no_ref', $hbtitipan->nobukti)->delete();
+                }
+                DB::table('giro')->where('no_fak_penj', $no_fak_penj_new)->delete();
+                DB::table('transfer')->where('no_fak_penj', $no_fak_penj_new)->delete();
+                DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->delete();
+
                 if (!empty($voucher)) {
                     $nobukti = buatkode($nobukti, $kode_cabang . $tahunini . "-", 6);
                     DB::table('historibayar')
@@ -2141,6 +2179,13 @@ class PenjualanController extends Controller
                         ]);
                 }
             } else {
+                $cektransfer = DB::table('transfer')->where('no_fak_penj', $no_fak_penj_new)->where('status', 1)->count();
+                $cekgiro = DB::table('giro')->where('no_fak_penj', $no_fak_penj_new)->where('status', 1)->count();
+
+                if ($cektransfer > 0 || $cekgiro > 0) {
+                    DB::rollBack();
+                    return Redirect::back()->with(['warning' => 'Tidak Bisa di Ubah Karena Ada Transaksi Giro / Transfer Yang Sudah di Aksi Oleh Keuangan, Silahkan Hubungi Bagian Keuangna']);
+                }
                 $hbtunai = DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->where('jenisbayar', 'tunai')->get();
                 $hbtitipan = DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->where('jenisbayar', 'titipan')->where('tglbayar', $tgltransaksi)->first();
 
@@ -2163,7 +2208,8 @@ class PenjualanController extends Controller
 
 
 
-
+                DB::table('giro')->where('no_fak_penj', $no_fak_penj_new)->delete();
+                DB::table('transfer')->where('no_fak_penj', $no_fak_penj_new)->delete();
                 DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->where('jenisbayar', 'tunai')->delete();
                 DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->where('jenisbayar', 'titipan')->where('tglbayar', $tgltransaksi)->delete();
                 if (!empty($titipan)) {
