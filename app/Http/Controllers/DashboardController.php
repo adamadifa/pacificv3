@@ -685,7 +685,7 @@ class DashboardController extends Controller
             ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
             ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
             ->orderBy('nama_cabang')
-            ->groupBy('karyawan.kode_cabang')
+            ->groupByRaw('karyawan.kode_cabang,nama_cabang')
             ->get();
 
         if ($level == "direktur") {
