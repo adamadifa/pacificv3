@@ -50,7 +50,7 @@ class TrackingController extends Controller
     {
         $hariini = $request->tanggal;
         $kode_cabang = $request->kode_cabang;
-
+        $id_salesman = $request->id_salesman;
 
         $query = Pelanggan::query();
         $query->select('kode_pelanggan', 'nama_pelanggan', 'foto', 'alamat_pelanggan', 'latitude', 'longitude', 'colormarker');
@@ -63,6 +63,10 @@ class TrackingController extends Controller
         // $query->where('kode_cabang', 'BDG');
         if (!empty($kode_cabang)) {
             $query->where('pelanggan.kode_cabang', $kode_cabang);
+        }
+
+        if (!empty($id_salesman)) {
+            $query->where('pelanggan.id_karyawan', $id_salesman);
         }
         $pelanggan = $query->get();
         $jsondata = json_encode($pelanggan);

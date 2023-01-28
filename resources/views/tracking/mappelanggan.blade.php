@@ -29,9 +29,6 @@
     <div class="content-body">
         <form action="">
             <div class="row">
-                <div class="col-lg-3">
-                    <x-inputtext label="Tanggal" field="tanggal" icon="feather icon-calendar" value="{{ date('Y-m-d') }}" datepicker />
-                </div>
                 <div class="col-3">
                     <div class="form-group">
                         <select name="kode_cabang" id="kode_cabang" class="form-control">
@@ -82,18 +79,14 @@
     L.marker([-7.3665114, 108.2148793]).addTo(map);
 
     $(document).ready(function() {
-        var tgl = $("#tanggal").val();
-        var cbg = $("#kode_cabang").val();
-
-
-        function show(tanggal, kode_cabang) {
+        function show(kode_cabang, id_salesman) {
             if (map.hasLayer(layerGroup)) {
                 console.log('already have one, clear it');
                 layerGroup.clearLayers();
             } else {
                 console.log('never have it before');
             }
-            $.getJSON('/getmappelanggan?tanggal=' + tanggal + '&kode_cabang=' + kode_cabang, function(data) {
+            $.getJSON('/getmappelanggan?kode_cabang=' + kode_cabang + '&id_salesman=' + id_salesman, function(data) {
                 $.each(data, function(index) {
                     var salesmanicon = L.icon({
                         iconUrl: 'app-assets/marker/customer-pin.png'
@@ -122,10 +115,36 @@
 
         $("#kode_cabang").change(function() {
             var kode_cabang = $(this).val();
-            show(tgl, kode_cabang);
+            var id_salesman = $("#id_karyawan").val();
+            loadsalesmancabang(kode_cabang);
+            show(kode_cabang, id_salesman);
         });
 
-        show(tgl, cbg);
+        $("#id_karyawan").change(function() {
+            var id_salesman = $(this).val();
+            var kode_cabang = $("#kode_cabang").val();
+            show(kode_cabang, id_salesman);
+        });
+
+
+
+
+        show("", "");
+
+        function loadsalesmancabang(kode_cabang) {
+            $.ajax({
+                type: 'POST'
+                , url: '/salesman/getsalescab'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , kode_cabang: kode_cabang
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#id_karyawan").html(respond);
+                }
+            });
+        }
     });
 
 </script>
