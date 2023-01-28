@@ -127,6 +127,8 @@
 
         $("#kode_cabang").change(function() {
             var kode_cabang = $(this).val();
+            var tgl = $("#tanggal").val();
+            var id_karyawan = $("#id_karyawan").val();
             loadsalesmancabang(kode_cabang);
             show(tgl, kode_cabang, "");
         });
@@ -135,6 +137,7 @@
         $("#id_karyawan").change(function() {
             var kode_cabang = $("#kode_cabang").val();
             var id_salesman = $(this).val();
+            var tgl = $("#tanggal").val();
             show(tgl, kode_cabang, id_salesman);
         });
 
@@ -152,6 +155,13 @@
                 }
             });
         }
+
+        $("#tanggal").change(function() {
+            var kode_cabang = $("#kode_cabang").val();
+            var id_salesman = $("#id_karyawan").val();
+            var tgl = $(this).val();
+            show(tgl, kode_cabang, id_salesman);
+        });
         show(tgl, cbg, "");
     });
 
