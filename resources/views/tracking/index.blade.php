@@ -75,10 +75,10 @@
     //     , attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     // }).addTo(map);
 
-    L.tileLayer('http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}', {
-        maxZoom: 20
-        , subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
+
 
     L.marker([-7.3665114, 108.2148793]).addTo(map);
 
@@ -87,17 +87,18 @@
         var cbg = $("#kode_cabang").val();
 
 
-        function show(tanggal, kode_cabang) {
+        function show(tanggal, kode_cabang, id_salesman) {
             if (map.hasLayer(layerGroup)) {
                 console.log('already have one, clear it');
                 layerGroup.clearLayers();
             } else {
                 console.log('never have it before');
             }
-            $.getJSON('/getlocationcheckin?tanggal=' + tanggal + '&kode_cabang=' + kode_cabang, function(data) {
+
+            $.getJSON('/getlocationcheckin?tanggal=' + tanggal + '&kode_cabang=' + kode_cabang + '&id_salesman=' + id_salesman, function(data) {
                 $.each(data, function(index) {
                     var salesmanicon = L.icon({
-                        iconUrl: 'app-assets/marker/salesman.png'
+                        iconUrl: 'app-assets/marker/' + data[index].marker
                         , iconSize: [75, 75], // size of the icon
                         shadowSize: [50, 64], // size of the shadow
                         iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
@@ -109,22 +110,49 @@
 
                     var marker = L.marker([parseFloat(data[index].latitude), parseFloat(data[index].longitude)], {
                         icon: salesmanicon
-                    }).bindPopup("<b>" + data[index].kode_pelanggan + " - " + data[index].nama_pelanggan + "</b><br><br>" + "<img width='200px' src='" + imagepath + "'/><br><br>" + "Latitude : " + data[index].latitude + " <br>Longitude : " + data[index].longitude + "<br> Alamat :" + data[index].alamat_pelanggan, {
+                    }).bindPopup("<b>" + data[index].kode_pelanggan + " - " + data[index].nama_pelanggan + "</b><br><br>" + "<img width='200px' height='200px' src='" + imagepath + "'/><br><br>" + "Latitude : " + data[index].latitude + " <br>Longitude : " + data[index].longitude + "<br> Alamat :" + data[index].alamat_pelanggan + "<br> Checkin Time :" + data[index].checkin_time, {
                         maxWidth: 200
                     });
+
+
                     layerGroup.addLayer(marker);
                     map.addLayer(layerGroup);
                 });
             });
+
+
+
         }
 
 
         $("#kode_cabang").change(function() {
             var kode_cabang = $(this).val();
-            show(tgl, kode_cabang);
+            loadsalesmancabang(kode_cabang);
+            show(tgl, kode_cabang, "");
         });
 
-        show(tgl, cbg);
+
+        $("#id_karyawan").change(function() {
+            var kode_cabang = $("#kode_cabang").val();
+            var id_salesman = $(this).val();
+            show(tgl, kode_cabang, id_salesman);
+        });
+
+        function loadsalesmancabang(kode_cabang) {
+            $.ajax({
+                type: 'POST'
+                , url: '/salesman/getsalescab'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , kode_cabang: kode_cabang
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#id_karyawan").html(respond);
+                }
+            });
+        }
+        show(tgl, cbg, "");
     });
 
 </script>

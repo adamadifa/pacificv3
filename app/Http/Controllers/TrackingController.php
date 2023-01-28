@@ -25,14 +25,20 @@ class TrackingController extends Controller
     {
         $hariini = $request->tanggal;
         $kode_cabang = $request->kode_cabang;
-
+        $id_salesman = $request->id_salesman;
 
         $query = Checkin::query();
-        $query->select('checkin.*', 'nama_pelanggan', 'foto', 'alamat_pelanggan');
+        $query->select('checkin.*', 'nama_pelanggan', 'pelanggan.foto', 'alamat_pelanggan', 'marker');
         $query->join('pelanggan', 'checkin.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        $query->join('users', 'checkin.id_karyawan', '=', 'users.id');
+        $query->leftjoin('karyawan', 'users.id_salesman', '=', 'karyawan.id_karyawan');
         $query->where('tgl_checkin', $hariini);
         if (!empty($kode_cabang)) {
             $query->where('pelanggan.kode_cabang', $kode_cabang);
+        }
+
+        if (!empty($id_salesman)) {
+            $query->where('karyawan.id_karyawan', $id_salesman);
         }
         $checkin = $query->get();
         $jsondata = json_encode($checkin);
