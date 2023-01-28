@@ -48,7 +48,6 @@ class TrackingController extends Controller
 
     function getmappelanggan(Request $request)
     {
-        $hariini = $request->tanggal;
         $kode_cabang = $request->kode_cabang;
         $id_salesman = $request->id_salesman;
 
@@ -66,7 +65,7 @@ class TrackingController extends Controller
         }
 
         if (!empty($id_salesman)) {
-            $query->where('pelanggan.id_karyawan', $id_salesman);
+            $query->where('pelanggan.id_sales', $id_salesman);
         }
         $pelanggan = $query->get();
         $jsondata = json_encode($pelanggan);
