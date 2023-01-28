@@ -53,7 +53,8 @@ class TrackingController extends Controller
 
 
         $query = Pelanggan::query();
-        $query->select('kode_pelanggan', 'nama_pelanggan', 'foto', 'alamat_pelanggan', 'latitude', 'longitude');
+        $query->select('kode_pelanggan', 'nama_pelanggan', 'foto', 'alamat_pelanggan', 'latitude', 'longitude', 'colormarker');
+        $query->join('cabang', 'pelanggan.kode_cabang', '=', 'cabang.kode_cabang');
         $query->whereNotNull('latitude');
         $query->whereNotNull('longitude');
         $query->where('latitude', '!=', 0);
