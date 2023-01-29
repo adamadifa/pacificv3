@@ -9,7 +9,7 @@
     textarea,
     select {
         background: none;
-        color: #c6c6c6;
+        color: #5b5757;
         font-size: 18px;
         padding: 10px 10px 10px 15px;
         display: block;
@@ -99,7 +99,7 @@
     <div class="col-12">
         <div class="inputWithIcon">
             <i class="bi bi-calendar"></i>
-            <input type="text" id="example" required="required" autocomplete="off" />
+            <input type="text" id="tanggal" required="required" autocomplete="off" />
             <label>Tanggal</label>
         </div>
     </div>
@@ -107,19 +107,56 @@
 <div class="row">
     <div class="col-12">
         <div class="group">
-            <select name="" class="select_join" id="">
+            <select name="kode_cabang" class="select_join" id="kode_cabang">
                 <option value="">Pilih Cabang</option>
+                @foreach ($cabang as $d)
+                <option value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
+                @endforeach
             </select>
         </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col" id="getsalesperfomance">
+
     </div>
 </div>
 @endsection
 @push('myscript')
 <script>
     const myDatePicker = MCDatepicker.create({
-        el: '#example'
+        el: '#tanggal'
         , dateFormat: 'YYYY-MM-DD'
+
     , });
 
+    myDatePicker.onSelect(function(date, formatDate) {
+        var tanggal = formatDate;
+        var kode_cabang = $("#kode_cabang").val();
+        showperfomance(tanggal, kode_cabang);
+    });
+
+    $("#kode_cabang").change(function() {
+        var tanggal = $("#tanggal").val();
+        var kode_cabang = $("#kode_cabang").val();
+        showperfomance(tanggal, kode_cabang);
+    });
+
+    function showperfomance(tanggal, kode_cabang) {
+        $.ajax({
+            type: 'POST'
+            , url: '/getsalesperfomance'
+            , data: {
+                _token: "{{ csrf_token() }}"
+                , tanggal: tanggal
+            }
+            , cache: false
+            , success: function(respond) {
+                $("#getsalesperfomance").html(respond);
+            }
+        });
+    }
+
 </script>
+
 @endpush

@@ -1432,4 +1432,5 @@ Route::middleware(['auth'])->group(function () {
     //SAP
     Route::get('/homesap', [DashboardController::class, 'homesap']);
     Route::get('/salesperformance', [SapController::class, 'salesperfomance']);
+    Route::post('/getsalesperfomance', [SapController::class, 'getsalesperfomance']);
 });
