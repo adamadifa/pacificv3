@@ -73,7 +73,7 @@
                 </tr>
                 <tr>
                     <td style="height: 40px"></td>
-                    <td></td>
+                    <td style="vertical-align: bottom">{{ DateToIndo2(date('Y-m-d')) }}</td>
                     <td></td>
                 </tr>
             </table>
