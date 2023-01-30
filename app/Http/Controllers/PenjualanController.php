@@ -2009,7 +2009,7 @@ class PenjualanController extends Controller
                 ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')
                 ->get();
 
-            if ($edit->isEmpty()) {
+            if ($edit->isEmpty() && $nama_pelanggan != 'BATAL') {
                 DB::rollBack();
                 return Redirect::back()->with(['warning' => 'Data Error']);
             } else {
