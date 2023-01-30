@@ -325,6 +325,7 @@ class ReturController extends Controller
                         ->where('tglbayar', $cekfaktur->tgltransaksi)
                         ->first();
 
+                    dd($historibayar);
                     if ($historibayar != null) {
                         DB::table('historibayar')
                             ->where('no_fak_penj', $no_fak_penj)
