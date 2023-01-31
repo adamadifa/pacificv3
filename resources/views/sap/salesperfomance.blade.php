@@ -99,7 +99,7 @@
     <div class="col-12">
         <div class="inputWithIcon">
             <i class="bi bi-calendar"></i>
-            <input type="text" id="tanggal" required="required" autocomplete="off" />
+            <input type="text" id="tanggal" required="required" autocomplete="off" onfocus="blur()" />
             <label>Tanggal</label>
         </div>
     </div>
@@ -124,20 +124,47 @@
 @endsection
 @push('myscript')
 <script>
-    const myDatePicker = MCDatepicker.create({
-        el: '#tanggal'
-        , dateFormat: 'YYYY-MM-DD'
+    // const myDatePicker = MCDatepicker.create({
+    //     el: '#tanggal'
+    //     , dateFormat: 'YYYY-MM-DD'
 
-    , });
+    // , });
 
-    myDatePicker.onSelect(function(date, formatDate) {
-        var tanggal = formatDate;
+    // myDatePicker.onSelect(function(date, formatDate) {
+    //     var tanggal = formatDate;
+    //     var kode_cabang = $("#kode_cabang").val();
+    //     showperfomance(tanggal, kode_cabang);
+    // });
+
+    $("#tanggal").daterangepicker({
+        opens: 'left'
+        , isMobile: true
+        , autoApply: true
+        , locale: {
+            format: 'DD/MM/YYYY'
+        }
+    });
+
+    // $('.drp-calendar.right').hide();
+    // $('.drp-calendar.left').addClass('single');
+
+    // $('.calendar-table').on('DOMSubtreeModified', function() {
+    //     var el = $(".prev.available").parent().children().last();
+    //     if (el.hasClass('next available')) {
+    //         return;
+    //     }
+    //     el.addClass('next available');
+    //     el.append('<span></span>');
+    // });
+
+    $("#kode_cabang").change(function() {
+        var tanggal = $("#tanggal").val();
         var kode_cabang = $("#kode_cabang").val();
         showperfomance(tanggal, kode_cabang);
     });
 
-    $("#kode_cabang").change(function() {
-        var tanggal = $("#tanggal").val();
+    $("#tanggal").change(function() {
+        var tanggal = $(this).val();
         var kode_cabang = $("#kode_cabang").val();
         showperfomance(tanggal, kode_cabang);
     });
@@ -149,6 +176,7 @@
             , data: {
                 _token: "{{ csrf_token() }}"
                 , tanggal: tanggal
+                , kode_cabang: kode_cabang
             }
             , cache: false
             , success: function(respond) {

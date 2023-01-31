@@ -29,10 +29,10 @@
                 </div>
                 @endif
                 <div class="card-body">
-                    <form action="/supplier">
+                    <form action="/karyawan">
                         <div class="row">
                             <div class="col-lg-9 col-sm-12">
-                                <x-inputtext label="Nama Supplier" field="nama_karyawan" icon="feather icon-users" value="{{ Request('nama_karyawan') }}" />
+                                <x-inputtext label="Nama Karyawan" field="nama_karyawan" icon="feather icon-users" value="{{ Request('nama_karyawan') }}" />
                             </div>
 
                             <div class="col-lg-3 col-sm-12">
@@ -41,7 +41,7 @@
                         </div>
                     </form>
                     <div class="table-responsive">
-                        <table class="table table-hover-animation table-striped">
+                        <table class="table table-hover-animation">
                             <thead class="thead-dark">
                                 <tr>
                                     <th>No</th>
@@ -102,17 +102,17 @@
     </div>
 </div>
 <!-- Input Supplier -->
-<div class="modal fade text-left" id="mdlinputsupplier" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+<div class="modal fade text-left" id="mdlinputkaryawan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel18">Tambah Supplier</h4>
+                <h4 class="modal-title" id="myModalLabel18">Tambah Karyawan</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div id="loadinputsupplier"></div>
+                <div id="loadinputkaryawan"></div>
             </div>
         </div>
     </div>
@@ -135,3 +135,19 @@
     </div>
 </div>
 @endsection
+@push('myscript')
+<script>
+    $(function() {
+
+        $('#tambahkaryawan').click(function(e) {
+            e.preventDefault();
+            $('#mdlinputkaryawan').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+            $("#loadinputkaryawan").load('/karyawan/create');
+        });
+    });
+
+</script>
+@endpush

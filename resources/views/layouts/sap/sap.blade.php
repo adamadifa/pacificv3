@@ -29,7 +29,7 @@
     <!-- swiper carousel css -->
     <link rel="stylesheet" href="{{ asset('sap/assets/vendor/swiperjs-6.6.2/swiper-bundle.min.css')}}">
     <link rel="stylesheet" href="{{ asset('sap/dist/mc-calendar.min.css') }}" />
-
+    <link rel="stylesheet" type="text/css" href="{{ asset('sap/assets/vendor/daterangepicker/daterangepicker.css') }}" />
     <!-- style css for this template -->
     <link href="{{ asset('sap/assets/css/style.css')}}" rel="stylesheet" id="style">
 </head>
@@ -149,6 +149,8 @@
     <script src="{{ asset('sap/assets/js/jquery-3.3.1.min.js') }}"></script>
     <script src="{{ asset('sap/assets/js/popper.min.js') }}"></script>
     <script src="{{ asset('sap/assets/vendor/bootstrap-5/js/bootstrap.bundle.min.js') }}"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 
     <!-- cookie js -->
     <script src="{{ asset('sap/assets/js/jquery.cookie.js') }}"></script>

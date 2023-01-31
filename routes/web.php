@@ -1428,6 +1428,7 @@ Route::middleware(['auth'])->group(function () {
 
     //Karyawan
     Route::get('/karyawan', [KaryawanController::class, 'index']);
+    Route::get('/karyawan/create', [KaryawanController::class, 'create']);
 
     //SAP
     Route::get('/homesap', [DashboardController::class, 'homesap']);

@@ -32,7 +32,12 @@ class SapController extends Controller
     public function getsalesperfomance(Request $request)
     {
         $kode_cabang = $request->kode_cabang;
-        $tanggal = $request->tanggal;
+        $tanggal = explode("-", $request->tanggal);
+        $tgl1 = explode("/", $tanggal[0]);
+        $tgl2 = explode("/", $tanggal[1]);
+        $dari = str_replace(' ', '', implode("-", array($tgl1[2], $tgl1[1], $tgl1[0])));
+        $sampai = str_replace(' ', '', implode("-", array($tgl2[2], $tgl2[1], $tgl2[0])));
+
 
         // $checkin = DB::table('checkin')
         //     ->join('users', 'checkin.id_karyawan', '=', 'users.id')
@@ -41,7 +46,22 @@ class SapController extends Controller
         //     ->where('karyawan.kode_cabang', $kode_cabang)
         //     ->get();
 
-        $karyawan = DB::table('karyawan')->where('kode_cabang', $kode_cabang)->get();
+        $karyawan = DB::table('karyawan')->where('kode_cabang', $kode_cabang)
+            ->selectRaw('karyawan.id_karyawan,nama_karyawan,totalpenjualan,totalorder')
+            ->leftJoin(
+                DB::raw("(
+                SELECT id_karyawan, SUM(total) as totalpenjualan,COUNT(no_fak_penj) as totalorder
+                FROM penjualan
+            WHERE tgltransaksi BETWEEN '$dari' AND '$sampai'
+            GROUP BY penjualan.id_karyawan
+            ) pj"),
+                function ($join) {
+                    $join->on('karyawan.id_karyawan', '=', 'pj.id_karyawan');
+                }
+            )
+            ->where('status_aktif_sales', 1)
+            ->where('nama_karyawan', '!=', '-')
+            ->get();
         return view('sap.getsalesperfomance', compact('karyawan'));
     }
 }
