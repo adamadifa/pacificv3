@@ -846,6 +846,7 @@ class PenjualanController extends Controller
 
     public function hitungdiskon(Request $request)
     {
+        $tgltransaksi = $request->tgltransaksi;
         $jenistransaksi = $request->jenistransaksi;
         $id_user = Auth::user()->id;
         $detail = DB::table('detailpenjualan_temp')
@@ -884,7 +885,11 @@ class PenjualanController extends Controller
             }
         }
 
-        $diskon = DB::table('diskon')->get();
+        if ($tgltransaksi >= "2023-02-01") {
+            $diskon = DB::table('diskonfebruari')->get();
+        } else {
+            $diskon = DB::table('diskon')->get();
+        }
         $diskonswan = 0;
         $diskonaida = 0;
         $diskonstick = 0;

@@ -665,6 +665,7 @@
         //Cek Tanggal Tutup Laporan
         $("#tgltransaksi").change(function() {
             cektutuplaporan();
+            hitungdiskon();
         });
 
         //Format No. Faktur Tidak Boleh Pakai Spasi
@@ -1131,6 +1132,7 @@
         //Hitung Diskon
 
         function hitungdiskon() {
+            var tgltransaksi = $("#tgltransaksi").val();
             var jenistransaksi = $("#jenistransaksi").val();
             var pelanggan = $("#nama_pelanggan").val();
             var pl = pelanggan.split("|");
@@ -1145,6 +1147,7 @@
                 , data: {
                     _token: "{{ csrf_token() }}"
                     , jenistransaksi: jenistransaksi
+                    , tgltransaksi: tgltransaksi
                 }
                 , cache: false
                 , success: function(respond) {

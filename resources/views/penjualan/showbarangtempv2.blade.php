@@ -144,6 +144,7 @@ $total += $d->subtotal;
         }
 
         function hitungdiskon() {
+            var tgltransaksi = $("#tgltransaksi").val();
             var jenistransaksi = $("#jenistransaksi").val();
             var pelanggan = $("#nama_pelanggan").val();
             var pl = pelanggan.split("|");
@@ -158,6 +159,7 @@ $total += $d->subtotal;
                 , data: {
                     _token: "{{ csrf_token() }}"
                     , jenistransaksi: jenistransaksi
+                    , tgltransaksi: tgltransaksi
                 }
                 , cache: false
                 , success: function(respond) {
@@ -183,6 +185,7 @@ $total += $d->subtotal;
                 }
             });
         }
+
 
 
 
