@@ -860,6 +860,8 @@ class PenjualanController extends Controller
         $jmldusstick = 0;
         $jmldussp = 0;
         $jmldussb = 0;
+
+
         foreach ($detail as $d) {
             $jmldus      = floor($d->jumlah / $d->isipcsdus);
             if ($d->kategori == "SWAN") {
@@ -880,16 +882,20 @@ class PenjualanController extends Controller
                 $jmldussp   = $jmldussp + $jmldus;
             }
 
-            if ($d->kategori == "SAMBAL") {
+            if ($d->kategori == "SC") {
                 $jmldussb   = $jmldussb + $jmldus;
             }
         }
 
-        if ($tgltransaksi >= "2023-02-01") {
-            $diskon = DB::table('diskonfebruari')->get();
-        } else {
-            $diskon = DB::table('diskon')->get();
-        }
+
+
+        // if ($tgltransaksi >= "2023-02-01") {
+        //     $diskon = DB::table('diskonfebruari')->get();
+        // } else {
+
+        // }
+
+        $diskon = DB::table('diskon')->get();
         $diskonswan = 0;
         $diskonaida = 0;
         $diskonstick = 0;
@@ -901,6 +907,7 @@ class PenjualanController extends Controller
         $diskonsticktunai = 0;
         $diskonsptunai = 0;
         $diskonsbtunai = 0;
+        //dd($diskon);
         foreach ($diskon as $p) {
             if ($p->kategori == "SWAN" and $jmldusswan >= $p->dari and $jmldusswan <= $p->sampai) {
                 $diskonswan = $p->diskon;
@@ -928,6 +935,7 @@ class PenjualanController extends Controller
             }
         }
 
+        //dd($diskonsb);
         if ($jenistransaksi == "tunai") {
             $totaldiskonswan = ($jmldusswan * $diskonswan) + ($jmldusswan * $diskonswantunai);
             $totaldiskonaida = ($jmldusaida * $diskonaida) + ($jmldusaida * $diskonaidatunai);
@@ -1077,7 +1085,7 @@ class PenjualanController extends Controller
                 $jmldussp   = $jmldussp + $jmldus;
             }
 
-            if ($d->kategori == "SAMBAL") {
+            if ($d->kategori == "SC") {
                 $jmldussb   = $jmldussb + $jmldus;
             }
         }
