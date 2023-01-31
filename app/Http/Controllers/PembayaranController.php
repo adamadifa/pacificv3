@@ -723,7 +723,28 @@ class PembayaranController extends Controller
                 $query->leftJoin('transfer', 'historibayar.id_transfer', '=', 'transfer.id_transfer');
                 $query->leftJoin('users', 'historibayar.id_admin', '=', 'users.id');
                 $query->join('penjualan', 'historibayar.no_fak_penj', '=', 'penjualan.no_fak_penj');
-                $query->join('v_movefaktur', 'historibayar.no_fak_penj', '=', 'v_movefaktur.no_fak_penj');
+                // $query->join('v_movefaktur', 'historibayar.no_fak_penj', '=', 'v_movefaktur.no_fak_penj');
+                $query->leftJoin(
+                    DB::raw("(
+                        SELECT pj.no_fak_penj,
+                    IF(salesbaru IS NULL,pj.id_karyawan,salesbaru) as salesbarunew, karyawan.nama_karyawan as nama_sales,
+                    IF(cabangbaru IS NULL,karyawan.kode_cabang,cabangbaru) as cabangbarunew
+                    FROM penjualan pj
+                    INNER JOIN karyawan ON pj.id_karyawan = karyawan.id_karyawan
+                    LEFT JOIN (
+                        SELECT
+                        id_move,no_fak_penj,
+                        move_faktur.id_karyawan as salesbaru,
+                        karyawan.kode_cabang  as cabangbaru
+                        FROM move_faktur
+                        INNER JOIN karyawan ON move_faktur.id_karyawan = karyawan.id_karyawan
+                        WHERE id_move IN (SELECT max(id_move) FROM move_faktur WHERE tgl_move <= '$dari' GROUP BY no_fak_penj)
+                    ) move_fak ON (pj.no_fak_penj = move_fak.no_fak_penj)
+                    ) v_movefaktur"),
+                    function ($join) {
+                        $join->on('historibayar.no_fak_penj', '=', 'v_movefaktur.no_fak_penj');
+                    }
+                );
                 $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
                 $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
                 $query->join('karyawan as k', 'historibayar.id_karyawan', '=', 'k.id_karyawan');
