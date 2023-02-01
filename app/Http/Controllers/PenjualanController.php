@@ -5857,11 +5857,13 @@ class PenjualanController extends Controller
                             FROM penjualan pj
                             INNER JOIN karyawan ON pj.id_karyawan = karyawan.id_karyawan
                             LEFT JOIN (
-                                SELECT MAX(id_move) as id_move,no_fak_penj,move_faktur.id_karyawan as salesbaru,karyawan.kode_cabang as cabangbaru
+                                SELECT
+                                id_move,no_fak_penj,
+                                move_faktur.id_karyawan as salesbaru,
+                                karyawan.kode_cabang  as cabangbaru
                                 FROM move_faktur
                                 INNER JOIN karyawan ON move_faktur.id_karyawan = karyawan.id_karyawan
-                                WHERE tgl_move <= '$dari'
-                                GROUP BY no_fak_penj,move_faktur.id_karyawan,karyawan.kode_cabang
+                                WHERE id_move IN (SELECT max(id_move) FROM move_faktur WHERE tgl_move <= '$dari' GROUP BY no_fak_penj)
                             ) move_fak ON (pj.no_fak_penj = move_fak.no_fak_penj)
                         ) pjmove ON (historibayar.no_fak_penj = pjmove.no_fak_penj)
                         WHERE tglbayar BETWEEN '$dari' AND '$sampai'
