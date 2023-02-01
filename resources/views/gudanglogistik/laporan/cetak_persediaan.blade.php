@@ -126,7 +126,7 @@
             //     $hargamasuk = 0;
             // }
 
-            $hargamasuk = $d->hargapemasukan;
+            $hargamasuk = $d->qtypemasukan;
 
             $jmlhpengeluaran  = $hargakeluar * $d->qtypengeluaran;
             $jmlstokakhir     = $stokakhir * $hargakeluar;
