@@ -163,7 +163,7 @@
                     <?php if (!empty($d->qtypemasukan) and $d->qtypemasukan != "0") {echo desimal($d->qtypemasukan);}?>
                 </td>
                 <?php if ($kategori == "K001") { ?>
-                <td width="90px" align="right"></td> <?php if (!empty($hargamasuk) and $hargamasuk != "0") {echo desimal($hargamasuk);}?></td>
+                <td width="90px" align="right"> <?php if (!empty($hargamasuk) and $hargamasuk != "0") {echo desimal($hargamasuk);}?></td>
                 <td width="120px" align="right"><?php if (!empty($d->totalpemasukan + $d->penyesuaian) and $d->totalpemasukan + $d->penyesuaian != "0") {echo desimal($d->totalpemasukan + $d->penyesuaian);}?>
                 </td>
                 <?php } ?>
