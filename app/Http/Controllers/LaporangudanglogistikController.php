@@ -156,15 +156,15 @@ class LaporangudanglogistikController extends Controller
         kategori_barang_pembelian.kode_kategori,
         kategori_barang_pembelian.kategori,
         master_barang_pembelian.satuan,
-        sa.qtysaldoawal,
-        sa.totalsa,
-        sa.hargasaldoawal,
-        gm.totalpemasukan,
-        gm.penyesuaian,
-        gm.qtypemasukan,
-        gm.hargapemasukan,
-        op.qtyopname,
-        gk.qtypengeluaran");
+        IFNULL(sa.qtysaldoawal,0) as qtysaldoawal ,
+        IFNULL(sa.totalsa,0) as totalsa ,
+        IFNULL(sa.hargasaldoawal,0) as hargasaldoawal ,
+        IFNULL(gm.totalpemasukan,0) as totalpemasukan ,
+        IFNULL(gm.penyesuaian,0) as penyesuaian ,
+        IFNULL(gm.qtypemasukan,0) as qtypemasukan ,
+        IFNULL(gm.hargapemasukan,0) as hargapemasukan ,
+        IFNULL(op.qtyopname,0) as qtyopname ,
+        IFNULL(gk.qtypengeluaran,0) as qtypengeluaran ");
         $query->join('kategori_barang_pembelian', 'master_barang_pembelian.kode_kategori', '=', 'kategori_barang_pembelian.kode_kategori');
         $query->leftJoin(
             DB::raw("(
@@ -192,7 +192,7 @@ class LaporangudanglogistikController extends Controller
         );
         $query->leftJoin(
             DB::raw("(
-                SELECT detail_pemasukan.kode_barangd,SUM( penyesuaian ) AS penyesuaian,SUM( qty ) AS qtypemasukan,SUM( harga ) AS hargapemasukan,SUM(detail_pemasukan.harga * qty) AS totalpemasukan FROM
+                SELECT detail_pemasukan.kode_barang,SUM( penyesuaian ) AS penyesuaian,SUM( qty ) AS qtypemasukan,SUM( harga ) AS hargapemasukan,SUM(detail_pemasukan.harga * qty) AS totalpemasukan FROM
                 detail_pemasukan
                 INNER JOIN pemasukan ON detail_pemasukan.nobukti_pemasukan = pemasukan.nobukti_pemasukan
                 WHERE MONTH(tgl_pemasukan) = '$bulan' AND YEAR(tgl_pemasukan) = '$tahun'
