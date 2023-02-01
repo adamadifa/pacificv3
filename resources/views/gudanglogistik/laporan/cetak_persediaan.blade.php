@@ -121,7 +121,7 @@
             if ($d->hargapemasukan == "" and $d->hargapemasukan == "0") {
                 $hargamasuk = $d->hargapemasukan + $d->penyesuaian;
             } else if ($d->hargapemasukan != "") {
-                $hargamasuk = ($d->totalpemasukan * 1) / $d->qtypemasukan + ($d->penyesuaian * 1);
+                $hargamasuk =1;
             } else {
                 $hargamasuk = 0;
             }
