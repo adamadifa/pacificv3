@@ -36,7 +36,7 @@ class LedgerController extends Controller
             $tahun = "";
         }
 
-        $lastsaldoawal = DB::table('saldoawal_ledgerd')
+        $lastsaldoawal = DB::table('saldoawal_ledger')
             ->where('bulan', '<=', $bulan)
             ->where('tahun', '<=', $tahun)
             ->where('kode_bank', $request->ledger)
@@ -58,7 +58,6 @@ class LedgerController extends Controller
                 ->first();
 
             $saldoawal = $sa + $mutasi->sisamutasi;
-            dd($lastsaldoawal);
         } else {
             $saldoawal = 0;
         }
