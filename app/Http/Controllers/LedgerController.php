@@ -36,7 +36,7 @@ class LedgerController extends Controller
             $tahun = "";
         }
 
-        $lastsaldoawal = DB::table('saldoawal_ledger')
+        $lastsaldoawal = DB::table('saldoawal_ledgerd')
             ->where('bulan', '<=', $bulan)
             ->where('tahun', '<=', $tahun)
             ->where('kode_bank', $request->ledger)
