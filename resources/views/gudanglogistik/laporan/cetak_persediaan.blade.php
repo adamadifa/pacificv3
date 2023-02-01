@@ -118,15 +118,13 @@
                 $hargakeluar      = (($d->totalsa * 1) + ($d->totalpemasukan * 1) + ($d->penyesuaian * 1)) / $qtyrata;
             }
 
-            // if ($d->hargapemasukan == "" and $d->hargapemasukan == "0") {
-            //     $hargamasuk = $d->hargapemasukan + $d->penyesuaian;
-            // } else if ($d->hargapemasukan != "") {
-            //     $hargamasuk =1;
-            // } else {
-            //     $hargamasuk = 0;
-            // }
-
-            $hargamasuk = $d->hargapemasukan;
+            if ($d->hargapemasukan == "" and $d->hargapemasukan == "0") {
+                $hargamasuk = $d->hargapemasukan + $d->penyesuaian;
+            } else if ($d->hargapemasukan != "") {
+                $hargamasuk = ($d->totalpemasukan * 1) / $d->qtypemasukan + ($d->penyesuaian * 1);
+            } else {
+                $hargamasuk = 0;
+            }
 
             $jmlhpengeluaran  = $hargakeluar * $d->qtypengeluaran;
             $jmlstokakhir     = $stokakhir * $hargakeluar;
@@ -165,7 +163,7 @@
                     <?php if (!empty($d->qtypemasukan) and $d->qtypemasukan != "0") {echo desimal($d->qtypemasukan);}?>
                 </td>
                 <?php if ($kategori == "K001") { ?>
-                <td width="90px" align="right"></td> <?php if (!empty($hargamasuk) and $hargamasuk != "0") {echo desimal($hargamasuk);}?>></td>
+                <td width="90px" align="right"></td> <?php if (!empty($hargamasuk) and $hargamasuk != "0") {echo desimal($hargamasuk);}?></td>
                 <td width="120px" align="right"><?php if (!empty($d->totalpemasukan + $d->penyesuaian) and $d->totalpemasukan + $d->penyesuaian != "0") {echo desimal($d->totalpemasukan + $d->penyesuaian);}?>
                 </td>
                 <?php } ?>
