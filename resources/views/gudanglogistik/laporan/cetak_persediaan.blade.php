@@ -118,13 +118,15 @@
                 $hargakeluar      = (($d->totalsa * 1) + ($d->totalpemasukan * 1) + ($d->penyesuaian * 1)) / $qtyrata;
             }
 
-            if ($d->hargapemasukan == "" and $d->hargapemasukan == "0") {
-                $hargamasuk = $d->hargapemasukan + $d->penyesuaian;
-            } else if ($d->hargapemasukan != "") {
-                $hargamasuk =1;
-            } else {
-                $hargamasuk = 0;
-            }
+            // if ($d->hargapemasukan == "" and $d->hargapemasukan == "0") {
+            //     $hargamasuk = $d->hargapemasukan + $d->penyesuaian;
+            // } else if ($d->hargapemasukan != "") {
+            //     $hargamasuk =1;
+            // } else {
+            //     $hargamasuk = 0;
+            // }
+
+            $hargamasuk = $d->hargapemasukan;
 
             $jmlhpengeluaran  = $hargakeluar * $d->qtypengeluaran;
             $jmlstokakhir     = $stokakhir * $hargakeluar;
