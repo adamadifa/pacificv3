@@ -322,7 +322,7 @@ $isipcs_sp500 = $p->isipcsdus;
                 $ssp8  = $d['mg_sp8'] + (ROUND($d['saldo_sp8'] / 480, 2)) + (ROUND($d['mutasi_sp8'] / 480, 2)) - $d['sp8_ambil'] + $d['sp8_kembali'];
                 $ssp8p  = $d['mg_sp8p'] + (ROUND($d['saldo_sp8p'] / 600, 2)) + (ROUND($d['mutasi_sp8p'] / 600, 2)) - $d['sp8p_ambil'] + $d['sp8p_kembali'];
 
-                $ssp500  = $d['mg_sp500'] + (ROUND($d['saldo_sp500'] / 600, 2)) + (ROUND($d['mutasi_sp500'] / 600, 2)) - $d['sp500_ambil'] + $d['sp500_kembali'];
+                $ssp500  = $d['mg_sp500'] + (ROUND($d['saldo_sp500'] / 12, 2)) + (ROUND($d['mutasi_sp500'] / 12, 2)) - $d['sp500_ambil'] + $d['sp500_kembali'];
 
                 if ($sab <= 0) {
                 $colorab = "bg-danger";
