@@ -58,7 +58,7 @@ class LedgerController extends Controller
                 ->first();
 
             $saldoawal = $sa + $mutasi->sisamutasi;
-            // dd($mutasi->sisamutasi);
+            dd($mutasi->sisamutasi);
         } else {
             $saldoawal = 0;
         }
