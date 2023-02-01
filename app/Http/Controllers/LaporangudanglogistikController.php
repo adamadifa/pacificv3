@@ -156,15 +156,15 @@ class LaporangudanglogistikController extends Controller
         kategori_barang_pembelian.kode_kategori,
         kategori_barang_pembelian.kategori,
         master_barang_pembelian.satuan,
-        IFNULL(sa.qtysaldoawal,0) as qtysaldoawal ,
-        IFNULL(sa.totalsa,0) as totalsa ,
-        IFNULL(sa.hargasaldoawal,0) as hargasaldoawal ,
-        IFNULL(gm.totalpemasukan,0) as totalpemasukan ,
-        IFNULL(gm.penyesuaian,0) as penyesuaian ,
-        IFNULL(gm.qtypemasukan,0) as qtypemasukan ,
-        IFNULL(gm.hargapemasukan,0) as hargapemasukan ,
-        IFNULL(op.qtyopname,0) as qtyopname ,
-        IFNULL(gk.qtypengeluaran,0) as qtypengeluaran ");
+        sa.qtysaldoawal,
+        sa.totalsa,
+        sa.hargasaldoawal,
+        gm.totalpemasukan,
+        gm.penyesuaian,
+        gm.qtypemasukan,
+        gm.hargapemasukan,
+        op.qtyopname,
+        gk.qtypengeluaran");
         $query->join('kategori_barang_pembelian', 'master_barang_pembelian.kode_kategori', '=', 'kategori_barang_pembelian.kode_kategori');
         $query->leftJoin(
             DB::raw("(
