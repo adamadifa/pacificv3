@@ -149,7 +149,6 @@ class LaporangudanglogistikController extends Controller
         $kode_kategori = $request->kode_kategori;
         $bulan = $request->bulan;
         $tahun = $request->tahun;
-
         $query  = Barangpembelian::query();
         $query->selectRaw("master_barang_pembelian.kode_barang,
         master_barang_pembelian.nama_barang,

@@ -38,7 +38,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col mycontent-left text-center">
-                        <h3>20</h3>
+                        <h3>{{ rupiah($d->totalcust) }}</h3>
                         <span style="font-size: 0.8rem">Customer</span>
                     </div>
                     <div class="col mycontent-left text-center">
@@ -46,7 +46,7 @@
                         <span style="font-size: 0.8rem">Order</span>
                     </div>
                     <div class="col mycontent-left text-center">
-                        <h3>20</h3>
+                        <h3>{{ rupiah($d->totalkunjungan) }}</h3>
                         <span style="font-size: 0.8rem">Call</span>
                     </div>
                     <div class="col text-center">

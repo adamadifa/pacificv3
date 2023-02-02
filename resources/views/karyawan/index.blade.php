@@ -32,7 +32,7 @@
                     <form action="/karyawan">
                         <div class="row">
                             <div class="col-lg-9 col-sm-12">
-                                <x-inputtext label="Nama Karyawan" field="nama_karyawan" icon="feather icon-users" value="{{ Request('nama_karyawan') }}" />
+                                <x-inputtext label="Nama Karyawan" field="nama_karyawan_search" icon="feather icon-users" value="{{ Request('nama_karyawan') }}" />
                             </div>
 
                             <div class="col-lg-3 col-sm-12">

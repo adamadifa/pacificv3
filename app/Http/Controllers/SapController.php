@@ -47,16 +47,28 @@ class SapController extends Controller
         //     ->get();
 
         $karyawan = DB::table('karyawan')->where('kode_cabang', $kode_cabang)
-            ->selectRaw('karyawan.id_karyawan,nama_karyawan,totalpenjualan,totalorder')
+            ->selectRaw('karyawan.id_karyawan,nama_karyawan,totalpenjualan,totalorder,totalkunjungan,totalcust')
             ->leftJoin(
                 DB::raw("(
                 SELECT id_karyawan, SUM(total) as totalpenjualan,COUNT(no_fak_penj) as totalorder
                 FROM penjualan
-            WHERE tgltransaksi BETWEEN '$dari' AND '$sampai'
-            GROUP BY penjualan.id_karyawan
-            ) pj"),
+                WHERE tgltransaksi BETWEEN '$dari' AND '$sampai'
+                GROUP BY penjualan.id_karyawan
+                ) pj"),
                 function ($join) {
                     $join->on('karyawan.id_karyawan', '=', 'pj.id_karyawan');
+                }
+            )
+            ->leftJoin(
+                DB::raw("(
+                SELECT id_salesman, COUNT(kode_checkin) as totalkunjungan, COUNT(DISTINCT(kode_pelanggan)) as totalcust
+                FROM checkin
+                INNER JOIN users ON checkin.id_karyawan = users.id
+                WHERE tgl_checkin BETWEEN '$dari' AND '$sampai'
+                GROUP BY id_salesman
+                ) check_in"),
+                function ($join) {
+                    $join->on('karyawan.id_karyawan', '=', 'check_in.id_salesman');
                 }
             )
             ->where('status_aktif_sales', 1)
