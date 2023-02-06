@@ -323,7 +323,7 @@
             }
 
             if (!empty($d->SP500)) {
-            $SP500 = $d->SP500 / $isipcsdusSP500;
+            $SP500 = $d->SP500;
             } else {
             $SP500 = 0;
             }
@@ -381,7 +381,7 @@
                 <td align="center">@php if (!empty($SC)) { echo desimal($SC); } @endphp </td>
                 <td align="center">@php if (!empty($SP8)) { echo desimal($SP8); } @endphp </td>
                 <td align="center">@php if (!empty($SP8P)) { echo desimal($SP8P); } @endphp </td>
-                <td align="center">@php if (!empty($isipcsdusSP500)) { echo desimal($isipcsdusSP500); } @endphp </td>
+                <td align="center">@php if (!empty($SP500)) { echo desimal($SP500); } @endphp </td>
                 <td align="right"><b>{{ rupiah($d->totalbruto)}}</b></td>
                 <td align="right"><b>@php if (!empty($d->totalretur)) { echo rupiah($d->totalretur);}@endphp</b></td>
                 <td align="right"><b>@php if (!empty($d->potaida)) { echo rupiah($d->potaida);}@endphp</b></td>
