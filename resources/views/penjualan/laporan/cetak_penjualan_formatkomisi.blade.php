@@ -446,6 +446,13 @@
             $returSP8 = 0;
             }
 
+            if (!empty($d->SP500)) {
+            $SP500 = $d->SP500 / $isipcsdusSP500;
+
+            } else {
+            $SP500 = 0;
+
+            }
             if (!empty($d->retur_SP500)) {
 
             $returSP500 = $d->retur_SP500 / $isipcsdusSP500;
