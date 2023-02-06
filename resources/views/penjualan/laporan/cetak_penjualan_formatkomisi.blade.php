@@ -73,7 +73,7 @@
                 <th rowspan="2" style="width: 4%;">Salesman</th>
                 <th rowspan="2" style="width: 3%;">Pasar</th>
                 <th rowspan="2" style="width: 3%;">Hari</th>
-                <th colspan="15" style="background-color: #19c116;">Produk</th>
+                <th colspan="16" style="background-color: #19c116;">Produk</th>
                 <th rowspan="2" style="width: 3%; background-color: #ef6a0b;">Total Bruto</th>
                 <th rowspan="2" style="width: 3%; background-color: #ef6a0b;">Total Retur</th>
                 <th colspan="5" style="background-color: #a71033;">Potongan</th>
@@ -102,6 +102,7 @@
                 <th style="width: 1%;">CG5</th>
                 <th style="width: 1%;">SC</th>
                 <th style="width: 1%;">SP8</th>
+                <th style="width: 1%;">SP500</th>
                 <th style="width: 1%; background-color: #a71033;">AIDA</th>
                 <th style="width: 1%; background-color: #a71033;">SWAN</th>
                 <th style="width: 1%; background-color: #a71033;">STICK</th>
@@ -171,6 +172,10 @@
             if ($b->kode_produk == "SP8") {
             $isipcsdusSP8 = $b->isipcsdus;
             }
+
+            if ($b->kode_produk == "SP500") {
+            $isipcsdusSP500 = $b->isipcsdus;
+            }
             @endphp
             @endforeach
 
@@ -217,6 +222,8 @@
             $totalreturSC = 0;
             $totalSP8 = 0;
             $totalreturSP8 = 0;
+            $totalSP500 = 0;
+            $totalreturSP500 = 0;
             @endphp
             @foreach ($penjualan as $d)
             @php
@@ -438,6 +445,14 @@
 
             $returSP8 = 0;
             }
+
+            if (!empty($d->retur_SP500)) {
+
+            $returSP500 = $d->retur_SP500 / $isipcsdusSP500;
+            } else {
+
+            $returSP500 = 0;
+            }
             $totalAB += $AB;
             $totalAR += $AR;
             $totalAS += $AS;
@@ -453,6 +468,7 @@
             $totalCG5 += $CG5;
             $totalSC += $SC;
             $totalSP8 += $SP8;
+            $totalSP500 += $SP500;
 
             $totalreturAB += $returAB;
             $totalreturAR += $returAR;
@@ -469,6 +485,7 @@
             $totalreturCG5 += $returCG5;
             $totalreturSC += $returSC;
             $totalreturSP8 += $returSP8;
+            $totalreturSP500 += $returSP500;
 
 
             if ($d->status_lunas == 1) {
@@ -519,6 +536,7 @@
                 <td align="center">@php if (!empty($SC)) { echo desimal($SC); } @endphp </td>
 
                 <td align="center">@php if (!empty($SP8)) { echo desimal($SP8); } @endphp </td>
+                <td align="center">@php if (!empty($SP500)) { echo desimal($SP500); } @endphp </td>
 
                 <td align="right"><b>{{ rupiah($d->totalbruto)}}</b></td>
                 <td align="right"><b>@php if (!empty($d->totalretur)) { echo rupiah($d->totalretur);}@endphp</b></td>
@@ -570,6 +588,7 @@
                 <th align="right"><b>{{ desimal($totalSC)}}</b></th>
 
                 <th align="right"><b>{{ desimal($totalSP8)}}</b></th>
+                <th align="right"><b>{{ desimal($totalSP500)}}</b></th>
 
                 <th align="right"><b>{{ desimal($totalbruto)}}</b></th>
                 <th align="right"><b>{{ desimal($totalretur)}}</b></th>
@@ -595,7 +614,7 @@
             <tr>
                 <th style="background-color: #35ce35;">BB & DP</th>
                 <th style="background-color: #ffcb00;">SP8</th>
-                <th style="background-color: #058cbe;">SP</th>
+                <th style="background-color: #058cbe;">SP & SP500</th>
                 <th style="background-color: #ce3ae4;">AR</th>
                 <th style="background-color: #ff9b0d;">AB,AS,CG5</th>
             </tr>
@@ -607,8 +626,8 @@
                 $returBBDP = $totalreturBB + $totalreturDEP;
                 $SP8 = $totalSP8;
                 $returSP8 = $totalreturSP8;
-                $SP = $totalSP;
-                $returSP = $totalreturSP;
+                $SP = $totalSP + $totalSP500;
+                $returSP = $totalreturSP + $totalreturSP500;
                 $AR = $totalAR;
                 $returAR = $totalreturAR;
                 $ABAS = $totalAB + $totalAS;
