@@ -31,7 +31,7 @@
     </a>
     <div class="col-12 text-center" style="padding:20px">
         <div class="avatar avatar-80 alert-danger text-danger rounded-circle">
-            <img src="http://127.0.0.1:8000/app-assets/marker/marker.png" class="avatar avatar-80 rounded-circle" alt="">
+            <img src="{{ asset('app-assets/marker/marker.png') }}" class="avatar avatar-80 rounded-circle" alt="">
         </div>
         <div class="datasalesman mt-2">
             <h3>{{ $salesman->nama_karyawan }}</h3>

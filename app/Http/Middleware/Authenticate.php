@@ -14,8 +14,14 @@ class Authenticate extends Middleware
      */
     protected function redirectTo($request)
     {
+
+
         if (!$request->expectsJson()) {
-            return route('login');
+            if (request()->is(['homesap', 'salesperformance', 'getsalesperfomance'])) {
+                return route('loginsap');
+            } else {
+                return route('login');
+            }
         }
     }
 }
