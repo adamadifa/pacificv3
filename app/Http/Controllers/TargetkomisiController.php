@@ -253,7 +253,8 @@ class TargetkomisiController extends Controller
             SUM(IF(kode_produk ='DS',jumlah_target,0)) as 'DS',
             SUM(IF(kode_produk ='SP',jumlah_target,0)) as 'SP',
             SUM(IF(kode_produk ='SC',jumlah_target,0)) as 'SC',
-            SUM(IF(kode_produk ='SP8',jumlah_target,0)) as 'SP8'")
+            SUM(IF(kode_produk ='SP8',jumlah_target,0)) as 'SP8',
+            SUM(IF(kode_produk ='SP500',jumlah_target,0)) as 'SP500'")
             ->join('komisi_target', 'komisi_target_qty_detail.kode_target', '=', 'komisi_target.kode_target')
             ->join('karyawan', 'komisi_target_qty_detail.id_karyawan', '=', 'karyawan.id_karyawan')
             ->leftJoin('komisi_target_cashin_detail', function ($join) {

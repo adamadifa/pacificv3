@@ -3,7 +3,7 @@
         <tr>
             <th rowspan="2">ID Sales</th>
             <th rowspan="2">Nama Sales</th>
-            <th colspan="9">Target Quantity</th>
+            <th colspan="10">Target Quantity</th>
             <th rowspan="2">Cash IN</th>
         </tr>
         <tr>
@@ -16,6 +16,7 @@
             <th>SP</th>
             <th>SC</th>
             <th>SP8</th>
+            <th>SP500</th>
         </tr>
     </thead>
     <tbody>
@@ -29,6 +30,7 @@
     $totalsp = 0;
     $totalsc = 0;
     $totalsp8 = 0;
+    $totalsp500 = 0;
     $totalcashin = 0;
 
     $grandtotalab = 0;
@@ -40,6 +42,7 @@
     $grandtotalsp = 0;
     $grandtotalsc = 0;
     $grandtotalsp8 = 0;
+    $grandtotalsp500 = 0;
     $grandtotalcashin = 0;
     foreach ($target as $key => $d) {
       $kode_cabang = @$target[$key + 1]->kode_cabang;
@@ -52,6 +55,7 @@
       $totalsp += $d->SP;
       $totalsc += $d->SC;
       $totalsp8 += $d->SP8;
+      $totalsp500 += $d->SP500;
       $totalcashin += $d->jumlah_target_cashin;
 
       $grandtotalab += $d->AB;
@@ -63,6 +67,7 @@
       $grandtotalsp += $d->SP;
       $grandtotalsc += $d->SC;
       $grandtotalsp8 += $d->SP8;
+      $grandtotalsp500 += $d->SP500;
       $grandtotalcashin += $d->jumlah_target_cashin;
     ?>
         <tr>
@@ -81,6 +86,7 @@
             <td align="right"><a href="#" class="koreksitarget" kodetarget="<?php echo $kodetarget; ?>" kodeproduk="SP" id_karyawan="<?php echo $d->id_karyawan; ?>"><?php echo number_format($d->SP, '0', '', '.'); ?></a></td>
             <td align="right"><a href="#" class="koreksitarget" kodetarget="<?php echo $kodetarget; ?>" kodeproduk="SC" id_karyawan="<?php echo $d->id_karyawan; ?>"><?php echo number_format($d->SC, '0', '', '.'); ?></a></td>
             <td align="right"><a href="#" class="koreksitarget" kodetarget="<?php echo $kodetarget; ?>" kodeproduk="SP8" id_karyawan="<?php echo $d->id_karyawan; ?>"><?php echo number_format($d->SP8, '0', '', '.'); ?></a></td>
+            <td align="right"><a href="#" class="koreksitarget" kodetarget="<?php echo $kodetarget; ?>" kodeproduk="SP500" id_karyawan="<?php echo $d->id_karyawan; ?>"><?php echo number_format($d->SP500, '0', '', '.'); ?></a></td>
             <?php } else { ?>
             <td align="right"><?php echo number_format($d->AB, '0', '', '.'); ?></td>
             <td align="right"><?php echo number_format($d->AR, '0', '', '.'); ?></td>
@@ -91,6 +97,7 @@
             <td align="right"><?php echo number_format($d->SP, '0', '', '.'); ?></td>
             <td align="right"><?php echo number_format($d->SC, '0', '', '.'); ?></td>
             <td align="right"><?php echo number_format($d->SP8, '0', '', '.'); ?></td>
+            <td align="right"><?php echo number_format($d->SP500, '0', '', '.'); ?></td>
             <?php } ?>
             <td align="right"><?php echo number_format($d->jumlah_target_cashin, '0', '', '.'); ?></td>
         </tr>
@@ -109,6 +116,7 @@
             <th style="text-align:right"><?php echo number_format($totalsp, '0', '', '.'); ?></th>
             <th style="text-align:right"><?php echo number_format($totalsc, '0', '', '.'); ?></th>
             <th style="text-align:right"><?php echo number_format($totalsp8, '0', '', '.'); ?></th>
+            <th style="text-align:right"><?php echo number_format($totalsp500, '0', '', '.'); ?></th>
             <th style="text-align:right"><?php echo number_format($totalcashin, '0', '', '.'); ?></th>
         </tr>
         <?php
@@ -121,6 +129,7 @@
         $totalsp = 0;
         $totalsc = 0;
         $totalsp8 = 0;
+        $totalsp500 = 0;
         $totalcashin = 0;
       }
     }
@@ -136,6 +145,7 @@
             <th style="text-align:right; color:white"><?php echo number_format($grandtotalsp, '0', '', '.'); ?></th>
             <th style="text-align:right; color:white"><?php echo number_format($grandtotalsc, '0', '', '.'); ?></th>
             <th style="text-align:right; color:white"><?php echo number_format($grandtotalsp8, '0', '', '.'); ?></th>
+            <th style="text-align:right; color:white"><?php echo number_format($grandtotalsp500, '0', '', '.'); ?></th>
             <th style="text-align:right; color:white"><?php echo number_format($grandtotalcashin, '0', '', '.'); ?></th>
         </tr>
     </tbody>
