@@ -15,36 +15,36 @@
     }
 
 </style>
-<form action="/karyawan/store" method="post" id="frmSupplier">
+<form action="/karyawan/{{ Crypt::encrypt($karyawan->nik) }}/update" method="post" id="frmSupplier">
     @csrf
     <div class="row" sty>
         <div class="col-12">
-            <x-inputtext label="NIK" field="nik" icon="feather icon-credit-card" />
+            <x-inputtext label="NIK" field="nik" icon="feather icon-credit-card" value="{{ $karyawan->nik }}" readonly />
 
         </div>
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext label="No. KTP" field="no_ktp" icon="feather icon-credit-card" />
+            <x-inputtext label="No. KTP" field="no_ktp" icon="feather icon-credit-card" value="{{ $karyawan->no_ktp }}" />
         </div>
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext label="Nama Karyawan" field="nama_karyawan" icon="feather icon-user" />
+            <x-inputtext label="Nama Karyawan" field="nama_karyawan" icon="feather icon-user" value="{{ $karyawan->nama_karyawan }}" />
         </div>
     </div>
     <div class="row">
         <div class="col-5">
-            <x-inputtext label="Tempat Lahir" field="tempat_lahir" icon="feather icon-map-pin" />
+            <x-inputtext label="Tempat Lahir" field="tempat_lahir" icon="feather icon-map-pin" value="{{ $karyawan->tempat_lahir }}" />
         </div>
         <div class="col-7">
-            <x-inputtext label="Tanggal Lahir" field="tgl_lahir" icon="feather icon-calendar" datepicker />
+            <x-inputtext label="Tanggal Lahir" field="tgl_lahir" icon="feather icon-calendar" value="{{ $karyawan->tgl_lahir }}" datepicker />
         </div>
     </div>
     <div class="row">
         <div class="col-12">
             <div class="form-group">
-                <textarea name="alamat" id="alamat" cols="30" rows="5" class="form-control" placeholder="Alamat"></textarea>
+                <textarea name="alamat" id="alamat" cols="30" rows="5" class="form-control" placeholder="Alamat">{{ $karyawan->alamat }}</textarea>
                 <small class="danger"></small>
             </div>
         </div>
@@ -54,8 +54,8 @@
             <div class="form-group">
                 <select name="jenis_kelamin" id="jenis_kelamin" class="form-control">
                     <option value="">Jenis Kelamin</option>
-                    <option value="1">Laki Laki</option>
-                    <option value="2">Perempuan</option>
+                    <option value="1" {{ $karyawan->jenis_kelamin == "1" ? 'selected' : '' }}>Laki Laki</option>
+                    <option value="2" {{ $karyawan->jenis_kelamin == "2" ? 'selected' : '' }}>Perempuan</option>
                 </select>
                 <small class="danger"></small>
             </div>
@@ -63,7 +63,7 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext label="No. HP" field="no_hp" icon="feather icon-phone" />
+            <x-inputtext label="No. HP" field="no_hp" icon="feather icon-phone" value="{{ $karyawan->no_hp }}" />
         </div>
     </div>
     <div class="row">
@@ -71,11 +71,11 @@
             <div class="form-group">
                 <select name="status_kawin" id="status_kawin" class="form-control">
                     <option value="">Status Perkawinan</option>
-                    <option value="1">Belum Menikah</option>
-                    <option value="2">Menikah</option>
-                    <option value="3">Cerai Hidup</option>
-                    <option value="4">Duda</option>
-                    <option value="5">Janda</option>
+                    <option value="1" {{ $karyawan->status_kawin == 1 ? 'selected' : '' }}>Belum Menikah</option>
+                    <option value="2" {{ $karyawan->status_kawin == 2 ? 'selected' : '' }}>Menikah</option>
+                    <option value="3" {{ $karyawan->status_kawin == 3 ? 'selected' : '' }}>Cerai Hidup</option>
+                    <option value="4" {{ $karyawan->status_kawin == 4 ? 'selected' : '' }}>Duda</option>
+                    <option value="5" {{ $karyawan->status_kawin == 5 ? 'selected' : '' }}>Janda</option>
                 </select>
                 <small class="danger"></small>
             </div>
@@ -86,17 +86,17 @@
             <div class="form-group">
                 <select name="pendidikan_terakhir" id="pendidikan_terakhir" class="form-control">
                     <option value="">Pendidikan Terakhir</option>
-                    <option value="SD">SD</option>
-                    <option value="SMP">SMP</option>
-                    <option value="SMA">SMA</option>
-                    <option value="SMK">SMK</option>
-                    <option value="D1">D1</option>
-                    <option value="D2">D2</option>
-                    <option value="D3">D3</option>
-                    <option value="D4">D4</option>
-                    <option value="S1">S1</option>
-                    <option value="S2">S2</option>
-                    <option value="S3">S3</option>
+                    <option value="SD" {{ $karyawan->pendidikan_terakhir == "SD" ? 'selected' : '' }}>SD</option>
+                    <option value="SMP" {{ $karyawan->pendidikan_terakhir == "SMP" ? 'selected' : '' }}>SMP</option>
+                    <option value="SMA" {{ $karyawan->pendidikan_terakhir == "SMA" ? 'selected' : '' }}>SMA</option>
+                    <option value="SMK" {{ $karyawan->pendidikan_terakhir == "SMK" ? 'selected' : '' }}>SMK</option>
+                    <option value="D1" {{ $karyawan->pendidikan_terakhir == "D1" ? 'selected' : '' }}>D1</option>
+                    <option value="D2" {{ $karyawan->pendidikan_terakhir == "D2" ? 'selected' : '' }}>D2</option>
+                    <option value="D3" {{ $karyawan->pendidikan_terakhir == "D3" ? 'selected' : '' }}>D3</option>
+                    <option value="D4" {{ $karyawan->pendidikan_terakhir == "D4" ? 'selected' : '' }}>D4</option>
+                    <option value="S1" {{ $karyawan->pendidikan_terakhir == "S1" ? 'selected' : '' }}>S1</option>
+                    <option value="S2" {{ $karyawan->pendidikan_terakhir == "S2" ? 'selected' : '' }}>S2</option>
+                    <option value="S3" {{ $karyawan->pendidikan_terakhir == "S3" ? 'selected' : '' }}>S3</option>
                 </select>
                 <small class="danger"></small>
             </div>
@@ -107,8 +107,8 @@
             <div class="form-group">
                 <select name="id_perusahaan" id="id_perusahaan" class="form-control">
                     <option value="">Perusahaan</option>
-                    <option value="MP">MAKMUR PERMATA</option>
-                    <option value="PCF">PACIFIC</option>
+                    <option value="MP" {{ $karyawan->id_perusahaan == "MP" ? 'selected' : '' }}>MAKMUR PERMATA</option>
+                    <option value="PCF" {{ $karyawan->id_perusahaan == "PCF" ? 'selected' : '' }}>PACIFIC</option>
                 </select>
                 <small class="danger"></small>
             </div>
@@ -120,7 +120,7 @@
                 <select name="id_kantor" id="id_kantor" class="form-control">
                     <option value="">Kantor Cabang / Pusat</option>
                     @foreach ($cabang as $d)
-                    <option value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
+                    <option {{ $karyawan->id_kantor == $d->kode_cabang ? 'selected' : '' }} value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
                     @endforeach
                 </select>
                 <small class="danger"></small>
@@ -133,7 +133,7 @@
                 <select name="kode_dept" id="kode_dept" class="form-control">
                     <option value="">Departemen</option>
                     @foreach ($departemen as $d)
-                    <option value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
+                    <option {{ $karyawan->kode_dept == $d->kode_dept ? 'selected' : '' }} value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
                     @endforeach
                 </select>
                 <small class="danger"></small>
@@ -146,7 +146,7 @@
                 <select name="id_jabatan" id="id_jabatan" class="form-control">
                     <option value="">Jabatan</option>
                     @foreach ($jabatan as $d)
-                    <option value="{{ $d->id }}">{{ $d->nama_jabatan }}</option>
+                    <option {{ $karyawan->id_jabatan == $d->id ? 'selected' : '' }} value="{{ $d->id }}">{{ $d->nama_jabatan }}</option>
                     @endforeach
                 </select>
                 <small class="danger"></small>
@@ -159,7 +159,7 @@
                 <select name="grup" id="grup" class="form-control">
                     <option value="">Grup</option>
                     @foreach ($group as $d)
-                    <option value="{{ $d->id }}">{{ $d->nama_group }}</option>
+                    <option {{ $karyawan->grup == $d->id ? 'selected' : '' }} value="{{ $d->id }}">{{ $d->nama_group }}</option>
                     @endforeach
                 </select>
                 <small class="danger"></small>
@@ -171,9 +171,9 @@
             <div class="form-group">
                 <select name="klasifikasi" id="klasifikasi" class="form-control">
                     <option value="">Klasifikasi</option>
-                    <option value="TKL">TKL</option>
-                    <option value="ADMINISTRASI">ADMINISTRASI</option>
-                    <option value="PENJUALAN">PENJUALAN</option>
+                    <option value="TKL" {{ $karyawan->klasifikasi == "TKL" ? 'selected' : '' }}>TKL</option>
+                    <option value="ADMINISTRASI" {{ $karyawan->klasifikasi == "ADMINISTRASI" ? 'selected' : '' }}>ADMINISTRASI</option>
+                    <option value="PENJUALAN" {{ $karyawan->klasifikasi == "PENJUALAN" ? 'selected' : '' }}>PENJUALAN</option>
 
                 </select>
                 <small class="danger"></small>
@@ -182,7 +182,7 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext label="Tanggal Masuk" field="tgl_masuk" icon="feather icon-calendar" datepicker />
+            <x-inputtext label="Tanggal Masuk" value="{{ $karyawan->tgl_masuk }}" field="tgl_masuk" icon="feather icon-calendar" datepicker />
         </div>
     </div>
     <div class="row">

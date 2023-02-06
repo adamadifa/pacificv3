@@ -310,6 +310,22 @@
                 <?php }?>
             </tr>
         </table>
+        <br>
+        <b style="font-size:14px">F. Riwayat Kontrak Karyawan</b>
+        <br>
+        <br>
+        <table class="datatable3" style="width:100%">
+            <tr>
+                <td style="height:200px; width:50%; vertical-align:top">
+                    @foreach ($histori_kontrak as $d)
+                    <b>Kontrak Ke {{ $loop->iteration }} </b> : {{ DateToIndo2($d->dari) }} s/d {{ DateToIndo2($d->sampai) }} <br><br>
+                    @endforeach
+                </td>
+                <td style="height:200px; width:50%; vertical-align:top">
+                    <b>Pemutihan Tahun :</b>
+                </td>
+            </tr>
+        </table>
     </section>
 </body>
 </html>

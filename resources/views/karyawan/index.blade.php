@@ -32,7 +32,7 @@
                     <form action="/karyawan">
                         <div class="row">
                             <div class="col-lg-9 col-sm-12">
-                                <x-inputtext label="Nama Karyawan" field="nama_karyawan_search" icon="feather icon-users" value="{{ Request('nama_karyawan') }}" />
+                                <x-inputtext label="Nama Karyawan" field="nama_karyawan_search" icon="feather icon-users" value="{{ Request('nama_karyawan_search') }}" />
                             </div>
 
                             <div class="col-lg-3 col-sm-12">
@@ -74,8 +74,9 @@
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             @if (in_array($level,$karyawan_edit))
-                                            <a class="ml-1 edit" nik="{{ $d->kode_supplier }}" href="#"><i class="feather icon-edit success"></i></a>
+                                            <a class="ml-1 edit" nik="{{ Crypt::encrypt($d->nik) }}" href="#"><i class="feather icon-edit success"></i></a>
                                             @endif
+                                            <a href="/karyawan/{{ Crypt::encrypt($d->nik) }}/show" class="ml-1"><i class="feather icon-file-text info"></i></a>
                                             @if (in_array($level,$karyawan_hapus))
                                             <form method="POST" class="deleteform" action="/supplier/{{Crypt::encrypt($d->nik)}}/delete">
                                                 @csrf
@@ -101,7 +102,7 @@
         <!-- Data list view end -->
     </div>
 </div>
-<!-- Input Supplier -->
+<!-- Input Karyawan -->
 <div class="modal fade text-left" id="mdlinputkaryawan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -117,23 +118,23 @@
         </div>
     </div>
 </div>
-
-<!-- Edit Supplier -->
-<div class="modal fade text-left" id="mdleditsupplier" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+<!-- Input Supplier -->
+<div class="modal fade text-left" id="mdleditkaryawan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel18">Edit Supplier</h4>
+                <h4 class="modal-title" id="myModalLabel18">Edit Karyawan</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div id="loadeditsupplier"></div>
+                <div id="loadeditkaryawan"></div>
             </div>
         </div>
     </div>
 </div>
+
 @endsection
 @push('myscript')
 <script>
@@ -146,6 +147,16 @@
                 , keyboard: false
             });
             $("#loadinputkaryawan").load('/karyawan/create');
+        });
+
+        $('.edit').click(function(e) {
+            var nik = $(this).attr("nik");
+            e.preventDefault();
+            $('#mdleditkaryawan').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+            $("#loadeditkaryawan").load('/karyawan/' + nik + '/edit');
         });
     });
 

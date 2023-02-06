@@ -1429,9 +1429,15 @@ Route::middleware(['auth'])->group(function () {
     //Karyawan
     Route::get('/karyawan', [KaryawanController::class, 'index']);
     Route::get('/karyawan/create', [KaryawanController::class, 'create']);
+    Route::post('/karyawan/store', [KaryawanController::class, 'store']);
+    Route::get('/karyawan/{nik}/edit', [KaryawanController::class, 'edit']);
+    Route::post('/karyawan/{nik}/update', [KaryawanController::class, 'update']);
+    Route::get('/karyawan/{nik}/show', [KaryawanController::class, 'show']);
 
     //SAP
     Route::get('/homesap', [DashboardController::class, 'homesap']);
     Route::get('/salesperformance', [SapController::class, 'salesperfomance']);
     Route::post('/getsalesperfomance', [SapController::class, 'getsalesperfomance']);
+    Route::get('/sap/salesperfomance/detail', [SapController::class, 'salesperfomancedetail']);
+    Route::post('/sap/getpenjualansalesman', [SapController::class, 'getpenjualansalesman']);
 });

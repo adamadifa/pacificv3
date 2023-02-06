@@ -101,6 +101,8 @@
     $totalqty = ($harganet->qty_AB / $isipcs_ab) + ($harganet->qty_AR / $isipcs_ar) + ($harganet->qty_AS / $isipcs_as) + ($harganet->qty_BB / $isipcs_bb) + ($harganet->qty_BBP / $isipcs_bbp)
     + ($harganet->qty_CG / $isipcs_cg) + ($harganet->qty_CGG / $isipcs_cgg) + ($harganet->qty_CG5 / $isipcs_cg5) + ($harganet->qty_DEP / $isipcs_dep) + ($harganet->qty_DS / $isipcs_ds) + ($harganet->qty_SP / $isipcs_sp)
     + ($harganet->qty_SPP / $isipcs_sp) + ($harganet->qty_SC / $isipcs_sp) + ($harganet->qty_SP8 / $isipcs_sp);
+
+
     $ratiopeny = ($totalqty != 0) ? $penyharga / $totalqty : 0;
     //dd($harganet->qty_CG)
     @endphp
@@ -215,16 +217,22 @@
         <tr style="font-size:14px; background-color: black; color:white">
             <td>HARGA NET TANPA RETUR</td>
 
-            <td align="right"><?php if($harganet->qty_AB!=0){echo number_format(($harganet->bruto_AB - (($harganet->qty_AB / $isipcs_ab) / $ratiopeny) - $harganet->diskon_AB) / ($harganet->qty_AB / $isipcs_ab), '0', '', '.'); }?></td>
+            <td align="right">
+                <?php if($harganet->qty_AB!=0){
+                    echo number_format(($harganet->bruto_AB - (($harganet->qty_AB / $isipcs_ab) / $ratiopeny) - $harganet->diskon_AB) / ($harganet->qty_AB / $isipcs_ab), '0', '', '.'); }?>
+            </td>
             <td align="right"><?php if($harganet->qty_AR!=0){echo number_format(($harganet->bruto_AR - (($harganet->qty_AR / $isipcs_ar) / $ratiopeny) - $harganet->diskon_AR) / ($harganet->qty_AR / $isipcs_ab), '0', '', '.'); }?></td>
-            <td align="right"><?php if($harganet->qty_AS!=0){echo number_format(($harganet->bruto_AS - (($harganet->qty_AS / $isipcs_as) / $ratiopeny) - $harganet->diskon_AS) / ($harganet->qty_AS / $isipcs_ab), '0', '', '.'); }?></td>
-            <td align="right"><?php if($harganet->qty_BB!=0){echo number_format(($harganet->bruto_BB - (($harganet->qty_BB / $isipcs_bb) / $ratiopeny) - $harganet->diskon_BB) / ($harganet->qty_BB / $isipcs_ab), '0', '', '.'); }?></td>
-            <td align="right"><?php if($harganet->qty_BBP!=0){echo number_format(($harganet->bruto_BBP - (($harganet->qty_BBP / $isipcs_bbp) / $ratiopeny) - $harganet->diskon_BBP) / ($harganet->qty_BBP / $isipcs_ab), '0', '', '.'); }?></td>
-            <td align="right"><?php if($harganet->qty_CG!=0){echo number_format(($harganet->bruto_CG - (($harganet->qty_CG / $isipcs_cg) / $ratiopeny) - $harganet->diskon_CG) / ($harganet->qty_CG / $isipcs_ab), '0', '', '.'); }?></td>
-            <td align="right"><?php if($harganet->qty_CGG!=0){echo number_format(($harganet->bruto_CGG - (($harganet->qty_CGG / $isipcs_cgg) / $ratiopeny) - $harganet->diskon_CGG) / ($harganet->qty_CGG / $isipcs_ab), '0', '', '.'); }?></td>
-            <td align="right"><?php if($harganet->qty_CG5!=0){echo number_format(($harganet->bruto_CG5 - (($harganet->qty_CG5 / $isipcs_cg5) / $ratiopeny) - $harganet->diskon_CG5) / ($harganet->qty_CG5 / $isipcs_ab), '0', '', '.'); }?></td>
-            <td align="right"><?php if($harganet->qty_DEP!=0){echo number_format(($harganet->bruto_DEP - (($harganet->qty_DEP / $isipcs_dep) / $ratiopeny) - $harganet->diskon_DEP) / ($harganet->qty_DEP / $isipcs_ab), '0', '', '.'); }?></td>
-            <td align="right"><?php if($harganet->qty_DS!=0){echo number_format(($harganet->bruto_DS - (($harganet->qty_DS / $isipcs_ds) / $ratiopeny) - $harganet->diskon_DS) / ($harganet->qty_DS / $isipcs_ab), '0', '', '.'); }?></td>
+            <td align="right"><?php if($harganet->qty_AS!=0){echo number_format(($harganet->bruto_AS - (($harganet->qty_AS / $isipcs_as) / $ratiopeny) - $harganet->diskon_AS) / ($harganet->qty_AS / $isipcs_as), '0', '', '.'); }?></td>
+            <td align="right">
+                <?php if($harganet->qty_BB!=0){echo number_format(($harganet->bruto_BB - (($harganet->qty_BB / $isipcs_bb) / $ratiopeny) - $harganet->diskon_BB) / ($harganet->qty_BB / $isipcs_bb), '0', '', '.'); }?>
+            </td>
+
+            <td align="right"><?php if($harganet->qty_BBP!=0){echo number_format(($harganet->bruto_BBP - (($harganet->qty_BBP / $isipcs_bbp) / $ratiopeny) - $harganet->diskon_BBP) / ($harganet->qty_BBP / $isipcs_bbp), '0', '', '.'); }?></td>
+            <td align="right"><?php if($harganet->qty_CG!=0){echo number_format(($harganet->bruto_CG - (($harganet->qty_CG / $isipcs_cg) / $ratiopeny) - $harganet->diskon_CG) / ($harganet->qty_CG / $isipcs_cg), '0', '', '.'); }?></td>
+            <td align="right"><?php if($harganet->qty_CGG!=0){echo number_format(($harganet->bruto_CGG - (($harganet->qty_CGG / $isipcs_cgg) / $ratiopeny) - $harganet->diskon_CGG) / ($harganet->qty_CGG / $isipcs_cgg), '0', '', '.'); }?></td>
+            <td align="right"><?php if($harganet->qty_CG5!=0){echo number_format(($harganet->bruto_CG5 - (($harganet->qty_CG5 / $isipcs_cg5) / $ratiopeny) - $harganet->diskon_CG5) / ($harganet->qty_CG5 / $isipcs_cg5), '0', '', '.'); }?></td>
+            <td align="right"><?php if($harganet->qty_DEP!=0){echo number_format(($harganet->bruto_DEP - (($harganet->qty_DEP / $isipcs_dep) / $ratiopeny) - $harganet->diskon_DEP) / ($harganet->qty_DEP / $isipcs_dep), '0', '', '.'); }?></td>
+            <td align="right"><?php if($harganet->qty_DS!=0){echo number_format(($harganet->bruto_DS - (($harganet->qty_DS / $isipcs_ds) / $ratiopeny) - $harganet->diskon_DS) / ($harganet->qty_DS / $isipcs_ds), '0', '', '.'); }?></td>
             <td align="right"><?php if($harganet->qty_SP!=0){echo number_format(($harganet->bruto_SP - (($harganet->qty_SP / $isipcs_ab) / $ratiopeny) - $harganet->diskon_SP) / ($harganet->qty_SP / $isipcs_sp), '0', '', '.'); }?></td>
             <td align="right"><?php if($harganet->qty_SC!=0){echo number_format(($harganet->bruto_SC - (($harganet->qty_SC / $isipcs_ab) / $ratiopeny) - $harganet->diskon_SC) / ($harganet->qty_SC / $isipcs_sc), '0', '', '.'); }?></td>
             <td align="right"><?php if($harganet->qty_SP8!=0){echo number_format(($harganet->bruto_SP8 - (($harganet->qty_SP8 / $isipcs_ab) / $ratiopeny) - $harganet->diskon_SP8) / ($harganet->qty_SP8 / $isipcs_sp8), '0', '', '.'); }?></td>
