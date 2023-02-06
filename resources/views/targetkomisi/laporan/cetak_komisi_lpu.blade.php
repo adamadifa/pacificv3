@@ -120,7 +120,7 @@
                 <th rowspan="3">NAMA KARYAWAN</th>
                 <th colspan="3" style="background-color: #35ce35;">TARGET & REALISASI BB & DEP</th>
                 <th colspan="3" style="background-color: #ffcb00;">TARGET & REALISASI SP8 </th>
-                <th colspan="3" style="background-color: #058cbe;">TARGET & REALISASI SP </th>
+                <th colspan="3" style="background-color: #058cbe;">TARGET & REALISASI SP & SP500 </th>
                 <th colspan="3" style="background-color: #ce3ae4;">TARGET & REALISASI AR </th>
                 <th colspan="3" style="background-color: #ff9b0d;">TARGET & REALISASI AS,AB</th>
                 <th colspan="3" style="background-color: #ff9b0d;">TARGET & REALISASI SC</th>
@@ -217,6 +217,10 @@
                 }
                 if ($b->kode_produk == "SP8") {
                 $isipcsdusSP8 = $b->isipcsdus;
+                }
+
+                if ($b->kode_produk == "SP500") {
+                $isipcsdusSP500 = $b->isipcsdus;
                 }
             }
             $totaltargetBBDP = 0;

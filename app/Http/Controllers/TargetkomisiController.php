@@ -905,7 +905,8 @@ class TargetkomisiController extends Controller
                     SUM(IF(kode_produk = 'SPP' AND promo !='1' OR kode_produk = 'SPP' AND promo IS NULL,jumlah,0)) as SPP,
                     SUM(IF(kode_produk = 'CG5' AND promo !='1' OR kode_produk = 'CG5' AND promo IS NULL,jumlah,0)) as CG5,
                     SUM(IF(kode_produk = 'SP8' AND promo !='1' OR kode_produk = 'SP8' AND promo IS NULL,jumlah,0)) as SP8,
-                    SUM(IF(kode_produk = 'SC' AND promo !='1' OR kode_produk = 'SC' AND promo IS NULL,jumlah,0)) as SC
+                    SUM(IF(kode_produk = 'SC' AND promo !='1' OR kode_produk = 'SC' AND promo IS NULL,jumlah,0)) as SC,
+                    SUM(IF(kode_produk = 'SP500' AND promo !='1' OR kode_produk = 'SP500' AND promo IS NULL,jumlah,0)) as SP500
                     FROM detailpenjualan
                     INNER JOIN penjualan ON detailpenjualan.no_fak_penj = penjualan.no_fak_penj
                     INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
@@ -959,7 +960,8 @@ class TargetkomisiController extends Controller
                     SUM(IF(kode_produk = 'SPP' AND promo !='1' OR kode_produk = 'SPP' AND promo IS NULL,jumlah,0)) as SPP,
                     SUM(IF(kode_produk = 'CG5' AND promo !='1' OR kode_produk = 'CG5' AND promo IS NULL,jumlah,0)) as CG5,
                     SUM(IF(kode_produk = 'SP8' AND promo !='1' OR kode_produk = 'SP8' AND promo IS NULL,jumlah,0)) as SP8,
-                    SUM(IF(kode_produk = 'SC' AND promo !='1' OR kode_produk = 'SC' AND promo IS NULL,jumlah,0)) as SC
+                    SUM(IF(kode_produk = 'SC' AND promo !='1' OR kode_produk = 'SC' AND promo IS NULL,jumlah,0)) as SC,
+                    SUM(IF(kode_produk = 'SP500' AND promo !='1' OR kode_produk = 'SP500' AND promo IS NULL,jumlah,0)) as SP500
                     FROM detailpenjualan
                     INNER JOIN penjualan ON detailpenjualan.no_fak_penj = penjualan.no_fak_penj
                     INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
@@ -995,7 +997,8 @@ class TargetkomisiController extends Controller
                     SUM(IF(kode_produk = 'SPP',jumlah,0)) as retur_SPP,
                     SUM(IF(kode_produk = 'CG5',jumlah,0)) as retur_CG5,
                     SUM(IF(kode_produk = 'SP8',jumlah,0)) as retur_SP8,
-                    SUM(IF(kode_produk = 'SC',jumlah,0)) as retur_SC
+                    SUM(IF(kode_produk = 'SC',jumlah,0)) as retur_SC,
+                    SUM(IF(kode_produk = 'SP500',jumlah,0)) as retur_SP500
                     FROM detailretur
                     INNER JOIN retur ON detailretur.no_retur_penj = retur.no_retur_penj
                     INNER JOIN penjualan ON retur.no_fak_penj = penjualan.no_fak_penj
