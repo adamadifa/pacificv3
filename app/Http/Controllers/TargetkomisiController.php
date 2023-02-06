@@ -117,7 +117,8 @@ class TargetkomisiController extends Controller
                 SUM(IF(kode_produk='SP',jumlah_target,0)) as sp,
                 SUM(IF(kode_produk='CG5',jumlah_target,0)) as cg5,
                 SUM(IF(kode_produk='SC',jumlah_target,0)) as sc,
-                SUM(IF(kode_produk='SP8',jumlah_target,0)) as sp8
+                SUM(IF(kode_produk='SP8',jumlah_target,0)) as sp8,
+                SUM(IF(kode_produk='SP500',jumlah_target,0)) as sp500
                 FROM komisi_target_qty_detail
                 WHERE kode_target = '$request->kode_target'
                 GROUP BY id_karyawan

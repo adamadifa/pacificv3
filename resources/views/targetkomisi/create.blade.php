@@ -37,6 +37,7 @@
                     <th>CG5</th>
                     <th>SC</th>
                     <th>SP8</th>
+                    <th>SP500</th>
                 </tr>
             </thead>
             <tbody id="loadlisttarget">

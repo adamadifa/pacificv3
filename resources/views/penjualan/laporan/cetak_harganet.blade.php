@@ -221,7 +221,7 @@
                 <?php if($harganet->qty_AB!=0){
                     echo number_format(($harganet->bruto_AB - (($harganet->qty_AB / $isipcs_ab) / $ratiopeny) - $harganet->diskon_AB) / ($harganet->qty_AB / $isipcs_ab), '0', '', '.'); }?>
             </td>
-            <td align="right"><?php if($harganet->qty_AR!=0){echo number_format(($harganet->bruto_AR - (($harganet->qty_AR / $isipcs_ar) / $ratiopeny) - $harganet->diskon_AR) / ($harganet->qty_AR / $isipcs_ab), '0', '', '.'); }?></td>
+            <td align="right"><?php if($harganet->qty_AR!=0){echo number_format(($harganet->bruto_AR - (($harganet->qty_AR / $isipcs_ar) / $ratiopeny) - $harganet->diskon_AR) / ($harganet->qty_AR / $isipcs_ar), '0', '', '.'); }?></td>
             <td align="right"><?php if($harganet->qty_AS!=0){echo number_format(($harganet->bruto_AS - (($harganet->qty_AS / $isipcs_as) / $ratiopeny) - $harganet->diskon_AS) / ($harganet->qty_AS / $isipcs_as), '0', '', '.'); }?></td>
             <td align="right">
                 <?php if($harganet->qty_BB!=0){echo number_format(($harganet->bruto_BB - (($harganet->qty_BB / $isipcs_bb) / $ratiopeny) - $harganet->diskon_BB) / ($harganet->qty_BB / $isipcs_bb), '0', '', '.'); }?>

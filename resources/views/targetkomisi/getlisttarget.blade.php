@@ -134,6 +134,18 @@
         <input type="number" style="background-color:{{$bgcolor}}" class="form-control text-center settargetproduksales" value="{{$d->sp8}}" idkaryawan="{{$d->id_karyawan}}" kodeproduk="SP8">
     </td>
 
+    <td style="width:7%">
+        @php
+        if ($d->sp500 > 0) {
+        $bgcolor = "#d1ff7a";
+        } else {
+        $bgcolor = "";
+        }
+        @endphp
+
+        <input type="number" style="background-color:{{$bgcolor}}" class="form-control text-center settargetproduksales" value="{{$d->sp500}}" idkaryawan="{{$d->id_karyawan}}" kodeproduk="SP500">
+    </td>
+
 </tr>
 @endforeach
 
