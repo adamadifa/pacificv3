@@ -70,7 +70,7 @@
                 <th rowspan="2" style="width: 4%;">Salesman</th>
                 <th rowspan="2" style="width: 3%;">Pasar</th>
                 <th rowspan="2" style="width: 3%;">Hari</th>
-                <th colspan="16" style="background-color: #19c116;">Produk</th>
+                <th colspan="17" style="background-color: #19c116;">Produk</th>
                 <th rowspan="2" style="width: 3%; background-color: #ef6a0b;">Total Bruto</th>
                 <th rowspan="2" style="width: 3%; background-color: #ef6a0b;">Total Retur</th>
                 <th colspan="5" style="background-color: #a71033;">Potongan</th>
@@ -100,6 +100,7 @@
                 <th style="width: 1%;">SC</th>
                 <th style="width: 1%;">SP8</th>
                 <th style="width: 1%;">SP8-P</th>
+                <th style="width: 1%;">SP500</th>
                 <th style="width: 1%; background-color: #a71033;">AIDA</th>
                 <th style="width: 1%; background-color: #a71033;">SWAN</th>
                 <th style="width: 1%; background-color: #a71033;">STICK</th>
@@ -173,6 +174,10 @@
             $isipcsdusSP8P = $b->isipcsdus;
             }
 
+            if ($b->kode_produk == "SP500") {
+            $isipcsdusSP500 = $b->isipcsdus;
+            }
+
             @endphp
             @endforeach
 
@@ -205,6 +210,7 @@
             $totalSC = 0;
             $totalSP8 = 0;
             $totalSP8P = 0;
+            $totalSP500 = 0;
             @endphp
             @foreach ($penjualan as $d)
             @php
@@ -315,6 +321,12 @@
             } else {
             $SP8P = 0;
             }
+
+            if (!empty($d->SP500)) {
+            $SP500 = $d->SP500 / $isipcsdusSP500;
+            } else {
+            $SP500 = 0;
+            }
             $totalAB += $AB;
             $totalAR += $AR;
             $totalAS += $AS;
@@ -331,6 +343,7 @@
             $totalSC += $SC;
             $totalSP8 += $SP8;
             $totalSP8P += $SP8P;
+            $totalSP500 += $SP500;
 
 
             if ($d->status_lunas == 1) {
@@ -368,6 +381,7 @@
                 <td align="center">@php if (!empty($SC)) { echo desimal($SC); } @endphp </td>
                 <td align="center">@php if (!empty($SP8)) { echo desimal($SP8); } @endphp </td>
                 <td align="center">@php if (!empty($SP8P)) { echo desimal($SP8P); } @endphp </td>
+                <td align="center">@php if (!empty($SP500)) { echo desimal($SP500); } @endphp </td>
                 <td align="right"><b>{{ rupiah($d->totalbruto)}}</b></td>
                 <td align="right"><b>@php if (!empty($d->totalretur)) { echo rupiah($d->totalretur);}@endphp</b></td>
                 <td align="right"><b>@php if (!empty($d->potaida)) { echo rupiah($d->potaida);}@endphp</b></td>
@@ -402,6 +416,7 @@
                 <th align="right"><b>{{ desimal($totalSC)}}</b></th>
                 <th align="right"><b>{{ desimal($totalSP8)}}</b></th>
                 <th align="right"><b>{{ desimal($totalSP8P)}}</b></th>
+                <th align="right"><b>{{ desimal($totalSP500)}}</b></th>
                 <th align="right"><b>{{ desimal($totalbruto)}}</b></th>
                 <th align="right"><b>{{ desimal($totalretur)}}</b></th>
                 <th align="right"><b>{{ desimal($totalpotaida)}}</b></th>
