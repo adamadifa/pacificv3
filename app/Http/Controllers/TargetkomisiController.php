@@ -102,7 +102,7 @@ class TargetkomisiController extends Controller
     public function getlisttarget(Request $request)
     {
         $listtarget = DB::table('karyawan')
-            ->selectRaw('karyawan.id_karyawan,nama_karyawan,ab,ar,ase,bb,cg,cgg,dep,ds,sp,cg5,sc,sp8')
+            ->selectRaw('karyawan.id_karyawan,nama_karyawan,ab,ar,ase,bb,cg,cgg,dep,ds,sp,cg5,sc,sp8,sp500')
             ->leftJoin(
                 DB::raw("(
                 SELECT id_karyawan,

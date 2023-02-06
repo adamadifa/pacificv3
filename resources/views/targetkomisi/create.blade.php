@@ -22,7 +22,7 @@
                 <tr>
                     <th rowspan="2" style="vertical-align:center !important">ID Sales</th>
                     <th rowspan="2">Nama Sales</th>
-                    <th colspan="12">Target Quantity</th>
+                    <th colspan="13">Target Quantity</th>
                 </tr>
                 <tr>
                     <th>AB</th>
