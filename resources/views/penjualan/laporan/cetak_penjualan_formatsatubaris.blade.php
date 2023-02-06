@@ -323,7 +323,7 @@
             }
 
             if (!empty($d->SP500)) {
-            $SP500 = $d->SP500;
+            $SP500 = $d->SP500 / $isipcsdusSP500;
             } else {
             $SP500 = 0;
             }
