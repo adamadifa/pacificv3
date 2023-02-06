@@ -3431,7 +3431,7 @@ class PenjualanController extends Controller
                     SUM(IF(kode_produk = 'SC',jumlah,0)) as SC,
                     SUM(IF(kode_produk = 'SP8',jumlah,0)) as SP8,
                     SUM(IF(kode_produk = 'SP8-P',jumlah,0)) as SP8P,
-                    SUM(IF(kode_produk = 'SP8500',jumlah,0)) as SP500
+                    SUM(IF(kode_produk = 'SP500',jumlah,0)) as SP500
                     FROM detailpenjualan dp
                     INNER JOIN barang b ON dp.kode_barang = b.kode_barang
                     GROUP BY dp.no_fak_penj
