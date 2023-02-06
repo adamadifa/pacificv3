@@ -303,9 +303,11 @@
 
                 //SP
                 $SP = $d->SP / $isipcsdusSP;
+                $SP500 = $d->SP500 / $isipcsdusSP500;
                 $returSP = $d->retur_SP / $isipcsdusSP;
+                $returSP500 = $d->retur_SP500 / $isipcsdusSP500;
                 //$realisasi_SP = $SP-$returSP;
-                $realisasi_SP = $SP;
+                $realisasi_SP = $SP + $SP500;
                 if (empty($d->target_SP)) {
                     $ratioSP = 0;
                 } else {

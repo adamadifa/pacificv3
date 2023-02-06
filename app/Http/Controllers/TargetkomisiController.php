@@ -697,6 +697,8 @@ class TargetkomisiController extends Controller
             target_SP,
             SP,
             retur_SP,
+            SP500,
+            retur_SP500,
             target_SC,
             SC,
             retur_SC,
