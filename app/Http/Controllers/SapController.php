@@ -128,4 +128,70 @@ class SapController extends Controller
             ->get();
         return view('sap.getpenjualansalesman', compact('penjualan', 'detailpenjualan'));
     }
+
+    public function getcashinsalesman(Request $request)
+    {
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $id_karyawan = $request->id_karyawan;
+        $historibayar = DB::table('historibayar')
+            ->selectRaw('SUM(bayar) as totalbayar,SUM(IF(jenisbayar="tunai",bayar,0)) as totalbayartunai,
+            SUM(IF(jenisbayar="titipan",bayar,0)) as totalbayartitipan,
+            SUM(IF(status_bayar="voucher",bayar,0)) as totalvoucher')
+            ->whereBetween('tglbayar', [$dari, $sampai])
+            ->where('id_karyawan', $id_karyawan)
+            ->whereNull('historibayar.id_giro')
+            ->whereNull('historibayar.id_transfer')
+            ->whereNull('historibayar.girotocash')
+            ->orwhereBetween('tglbayar', [$dari, $sampai])
+            ->where('id_karyawan', $id_karyawan)
+            ->whereNull('historibayar.id_giro')
+            ->whereNull('historibayar.id_transfer')
+            ->where('historibayar.girotocash', 1)
+            ->orwhereBetween('tglbayar', [$dari, $sampai])
+            ->where('id_karyawan', $id_karyawan)
+            ->whereNotNull('historibayar.id_giro')
+            ->whereNull('historibayar.id_transfer')
+            ->where('historibayar.girotocash', 1)
+            ->first();
+
+        $giro = DB::table('giro')
+            ->selectRaw('SUM(jumlah) as totalgiro')
+            ->whereBetween('tgl_giro', [$dari, $sampai])
+            ->where('giro.id_karyawan', $id_karyawan)
+            ->first();
+        $transfer = DB::table('transfer')
+            ->selectRaw('SUM(jumlah) as totaltransfer')
+            ->whereBetween('tgl_transfer', [$dari, $sampai])
+            ->where('transfer.id_karyawan', $id_karyawan)
+            ->first();
+        return view('sap.getcashinsalesman', compact('historibayar', 'giro', 'transfer'));
+    }
+
+    public function getkunjungansalesman(Request $request)
+    {
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $id_karyawan = $request->id_karyawan;
+
+        $kunjungan = DB::table('checkin')
+            ->selectRaw('checkin.kode_pelanggan,nama_pelanggan,alamat_pelanggan,checkin_time,no_fak_penj,date_created as checkout_time,pelanggan.foto')
+            ->join('pelanggan', 'checkin.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+            ->join('users', 'checkin.id_karyawan', '=', 'users.id')
+            ->leftJoin(
+                DB::raw("(
+            SELECT kode_pelanggan,no_fak_penj,date_created
+            FROM penjualan WHERE tgltransaksi BETWEEN '$dari' AND '$sampai'
+            ) pj"),
+                function ($join) {
+                    $join->on('checkin.kode_pelanggan', '=', 'pj.kode_pelanggan');
+                }
+            )
+            ->where('id_salesman', $id_karyawan)
+            ->whereBetween('tgl_checkin', [$dari, $sampai])
+            ->orderBy('checkin_time', 'asc')
+            ->get();
+
+        return view('sap.getkunjungansalesman', compact('kunjungan'));
+    }
 }

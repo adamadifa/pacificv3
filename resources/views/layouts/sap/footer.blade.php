@@ -1,14 +1,14 @@
 <footer class="footer">
     <div class="container">
         <ul class="nav nav-pills nav-justified">
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link active" href="index.html">
                     <span>
                         <i class="nav-icon bi bi-house"></i>
                         <span class="nav-text">Home</span>
                     </span>
                 </a>
-            </li>
+            </li> --}}
             <li class="nav-item">
                 <a class="nav-link" href="stats.html">
                     <span>
@@ -18,11 +18,13 @@
                 </a>
             </li>
             <li class="nav-item centerbutton">
-                <div class="nav-link">
+
+                <a class="nav-link" href="/homesap">
                     <span class="theme-radial-gradient">
                         <i class="bi bi-house size-32"></i>
                     </span>
-                </div>
+                </a>
+
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="rewards.html">
@@ -32,14 +34,14 @@
                     </span>
                 </a>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link" href="wallet.html">
                     <span>
                         <i class="nav-icon bi bi-wallet2"></i>
                         <span class="nav-text">Wallet</span>
                     </span>
                 </a>
-            </li>
+            </li> --}}
         </ul>
     </div>
 </footer>

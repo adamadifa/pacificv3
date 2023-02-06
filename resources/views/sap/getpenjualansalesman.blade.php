@@ -19,7 +19,7 @@
     }
 
 </style>
-<div class="row">
+<div class="row mt-3">
     <div class="col-12 text-center">
         <h1 style="color:#b11036; font-size:3rem !important">{{rupiah($penjualan->totalpenjualan)}}</h1>
 
@@ -28,10 +28,9 @@
 <div class="row mb-3">
     <div class="col-12 px-0">
         <!-- swiper users connections -->
-        <div class="swiper-container connectionwiper swiper-container-initialized swiper-container-horizontal swiper-container-pointer-events swiper-container-ios">
-            <div class="swiper-wrapper" id="swiper-wrapper-8e11048de6e4c4984" aria-live="polite" style="transform: translate3d(0px, 0px, 0px); transition-duration: 0ms;">
-                <div class="swiper-slide swiper-slide-active" role="group" aria-label="1 / 2">
-
+        <div class="swiper-container connectionwiper">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
                     <a href="#" class="card text-center">
                         <div class="card">
                             <div class="card-body">
@@ -61,7 +60,7 @@
                     </a>
 
                 </div>
-                <div class="swiper-slide swiper-slide-next" role="group" aria-label="2 / 2">
+                <div class="swiper-slide">
 
                     <a href="#" class="card text-center">
                         <div class="card">
@@ -92,7 +91,7 @@
                     </a>
 
                 </div>
-                <div class="swiper-slide swiper-slide-next" role="group" aria-label="2 / 2">
+                <div class="swiper-slide">
                     <a href="#" class="card text-center">
                         <div class="card">
                             <div class="card-body">
@@ -119,7 +118,7 @@
                     </a>
 
                 </div>
-                <div class="swiper-slide swiper-slide-next" role="group" aria-label="2 / 2">
+                <div class="swiper-slide">
                     <a href="#" class="card text-center">
                         <div class="card">
                             <div class="card-body">
@@ -146,7 +145,7 @@
                     </a>
 
                 </div>
-                <div class="swiper-slide swiper-slide-next" role="group" aria-label="2 / 2">
+                <div class="swiper-slide">
                     <a href="#" class="card text-center">
                         <div class="card">
                             <div class="card-body">
@@ -173,7 +172,7 @@
                     </a>
 
                 </div>
-                <div class="swiper-slide swiper-slide-next" role="group" aria-label="2 / 2">
+                <div class="swiper-slide">
                     <a href="#" class="card text-center">
                         <div class="card">
                             <div class="card-body">
@@ -201,8 +200,6 @@
 
                 </div>
             </div>
-            <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
-            <span class="swiper-notification" aria-live="assertive" aria-atomic="true"></span>
         </div>
     </div>
 </div>

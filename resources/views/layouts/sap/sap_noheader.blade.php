@@ -32,6 +32,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('sap/assets/vendor/daterangepicker/daterangepicker.css') }}" />
     <!-- style css for this template -->
     <link href="{{ asset('sap/assets/css/style.css')}}" rel="stylesheet" id="style">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+
 </head>
 
 <body class="body-scroll" data-page="index">
@@ -105,28 +107,6 @@
     <!-- Begin page -->
     <main class="h-100">
 
-        <!-- Header -->
-        <header class="header position-fixed">
-            <div class="row">
-                <div class="col-auto">
-                    <a href="javascript:void(0)" target="_self" class="btn btn-light btn-44 menu-btn">
-                        <i class="bi bi-list"></i>
-                    </a>
-                </div>
-                <div class="col align-self-center text-center">
-                    <div class="logo-small">
-                        <img src="assets/img/logo.png" alt="">
-                        <h5>SFA</h5>
-                    </div>
-                </div>
-                <div class="col-auto">
-                    <a href="notifications.html" target="_self" class="btn btn-light btn-44">
-                        <i class="bi bi-bell"></i>
-                        <span class="count-indicator"></span>
-                    </a>
-                </div>
-            </div>
-        </header>
         <!-- Header ends -->
 
         <!-- main page content -->
@@ -173,6 +153,7 @@
     <script src="{{ asset('sap/dist/mc-calendar.min.js') }}"></script>
     <!-- page level custom script -->
     <script src="{{ asset('sap/assets/js/app.js') }}"></script>
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
     @stack('myscript')
 </body>
 

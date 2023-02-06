@@ -45,6 +45,24 @@ class TrackingController extends Controller
         return $jsondata;
     }
 
+    function getlocationcheckinsalesman(Request $request)
+    {
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $id_salesman = $request->id_salesman;
+
+        $query = Checkin::query();
+        $query->select('checkin.*', 'nama_pelanggan', 'pelanggan.foto', 'alamat_pelanggan', 'marker');
+        $query->join('pelanggan', 'checkin.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        $query->join('users', 'checkin.id_karyawan', '=', 'users.id');
+        $query->leftjoin('karyawan', 'users.id_salesman', '=', 'karyawan.id_karyawan');
+        $query->whereBetween('tgl_checkin', [$dari, $sampai]);
+        $query->where('karyawan.id_karyawan', $id_salesman);
+        $checkin = $query->get();
+        $jsondata = json_encode($checkin);
+        return $jsondata;
+    }
+
 
     function getmappelanggan(Request $request)
     {

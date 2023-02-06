@@ -1415,6 +1415,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/tracking', [TrackingController::class, 'index']);
     Route::get('/mappelanggan', [TrackingController::class, 'mappelanggan']);
     Route::get('/getlocationcheckin', [TrackingController::class, 'getlocationcheckin']);
+    Route::get('/getlocationcheckinsalesman', [TrackingController::class, 'getlocationcheckinsalesman']);
     Route::get('/getmappelanggan', [TrackingController::class, 'getmappelanggan']);
 
 
@@ -1440,4 +1441,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/getsalesperfomance', [SapController::class, 'getsalesperfomance']);
     Route::get('/sap/salesperfomance/detail', [SapController::class, 'salesperfomancedetail']);
     Route::post('/sap/getpenjualansalesman', [SapController::class, 'getpenjualansalesman']);
+    Route::post('/sap/getcashinsalesman', [SapController::class, 'getcashinsalesman']);
+    Route::post('/sap/getkunjungansalesman', [SapController::class, 'getkunjungansalesman']);
 });

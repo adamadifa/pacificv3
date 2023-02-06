@@ -1,4 +1,4 @@
-@extends('layouts.sap.sap')
+@extends('layouts.sap.sap_noheader')
 @section('content')
 <style>
     .menu>a {
@@ -17,8 +17,18 @@
         box-shadow: 2px 2px 3px rgba(88, 88, 88, 0.8);
     }
 
+    .backbutton {
+        color: white !important;
+        position: absolute;
+        top: 10px;
+        font-size: 1.5rem
+    }
+
 </style>
-<div class="row text-white" style="background-color:#b11036" id="main-profile">
+<div class="row text-white" style="background-color:#b11036;" id="main-profile">
+    <a href="/salesperformance" class="backbutton">
+        <i class="bi bi-arrow-left"></i>
+    </a>
     <div class="col-12 text-center" style="padding:20px">
         <div class="avatar avatar-80 alert-danger text-danger rounded-circle">
             <img src="http://127.0.0.1:8000/app-assets/marker/marker.png" class="avatar avatar-80 rounded-circle" alt="">
@@ -34,10 +44,11 @@
         <a href="#" id="kunjungan">Kunjungan</a>
     </div>
 </div>
-<div class="mt-3" id="loaddata">
+<div class="" id="loaddata">
 </div>
 @endsection
 @push('myscript')
+
 <script>
     $(function() {
         var id_karyawan = "{{ Request('id_karyawan') }}";
@@ -56,6 +67,44 @@
                 }
                 , success: function(respond) {
                     $("#loaddata").html(respond);
+                    var swiper2 = new Swiper(".connectionwiper", {
+                        slidesPerView: "auto"
+                        , spaceBetween: 0
+                        , pagination: false
+                    });
+                }
+            , });
+
+        }
+
+        function getcashinsalesman() {
+            $.ajax({
+                type: 'POST'
+                , url: '/sap/getcashinsalesman'
+                , data: {
+                    _token: '{{ csrf_token() }}'
+                    , id_karyawan: id_karyawan
+                    , dari: dari
+                    , sampai: sampai
+                }
+                , success: function(respond) {
+                    $("#loaddata").html(respond);
+                }
+            , });
+        }
+
+        function getkunjungansalesman() {
+            $.ajax({
+                type: 'POST'
+                , url: '/sap/getkunjungansalesman'
+                , data: {
+                    _token: '{{ csrf_token() }}'
+                    , id_karyawan: id_karyawan
+                    , dari: dari
+                    , sampai: sampai
+                }
+                , success: function(respond) {
+                    $("#loaddata").html(respond);
                 }
             , });
         }
@@ -65,17 +114,20 @@
         $("#cashin").click(function(e) {
             $("a").removeClass("active");
             $(this).addClass("active");
+            getcashinsalesman();
         });
 
         $("#penjualan").click(function(e) {
             $("a").removeClass("active");
             $(this).addClass("active");
+            getpenjualansalesman();
 
         });
 
         $("#kunjungan").click(function(e) {
             $("a").removeClass("active");
             $(this).addClass("active");
+            getkunjungansalesman();
         });
 
 
