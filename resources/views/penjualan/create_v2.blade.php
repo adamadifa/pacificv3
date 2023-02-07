@@ -27,6 +27,7 @@
             <input type="hidden" id="cektutuplaporan" name="cektutuplaporan">
             <input type="hidden" id="bruto" name="bruto">
             <input type="hidden" id="subtotal" name="subtotal">
+            <input type="hidden" id="cektemp" name="cektemp" value="0">
 
             {{-- @if (request()->is(['inputpenjualanppn']))
             <input type="hidden" id="cekpajak" name="cekpajak" value="1">
@@ -785,7 +786,15 @@
         });
 
         //Ketika Form Di Submit
-
+        function cektemp() {
+            $.ajax({
+                type: 'GET'
+                , url: '/cekpenjtemp'
+                , success: function(respond) {
+                    $("#cektemp").val(respond);
+                }
+            });
+        }
         $("form").submit(function(e) {
             var no_fak_penj = $("#no_fak_penj").val();
             var tgltransaksi = $("#tgltransaksi").val();
@@ -1285,6 +1294,7 @@
             $("#total").val(convertToRupiah(totalwithppn));
             $("#bruto").val(subtotal);
             $("#subtotal").val(totalwithppn);
+            cektemp();
         }
 
         $(".tunai").hide();

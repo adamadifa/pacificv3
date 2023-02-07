@@ -41,6 +41,7 @@
             <input type="hidden" id="cektutuplaporan" name="cektutuplaporan">
             <input type="hidden" id="bruto" name="bruto">
             <input type="hidden" id="subtotal" name="subtotal">
+            <input type="hidden" id="cektemp" name="cektemp" value="0">
             <input type="hidden" id="cekpajak" name="cekpajak" value="{{ $pajak }}">
             <div class="row">
                 <div class="col-lg-3 col-sm-12">
@@ -592,7 +593,15 @@
 <script>
     $(function() {
         //Reset Product
-
+        function cektemp() {
+            $.ajax({
+                type: 'GET'
+                , url: '/cekpenjtemp'
+                , success: function(respond) {
+                    $("#cektemp").val(respond);
+                }
+            });
+        }
         $("#resetproduct").click(function(e) {
             e.preventDefault();
             $.ajax({
@@ -878,9 +887,20 @@
             var jenistransaksi = $("#jenistransaksi").val();
             var cektemp = $("#cektemp").val();
             var kategori_salesman = $("#kategori_salesman").val();
-            //alert(kategori_salesman);
+            // alert(nama_pelanggan);
             if (cektutuplaporan > 0) {
                 swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
+                return false;
+            } else if (no_fak_penj == "" && kategori_salesman == "CANVASER") {
+                swal({
+                    title: 'Oops'
+                    , text: 'No. Faktur Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#jenistransaksi").focus();
+                });
+                $("#btnsimpan").prop('disabled', false);
                 return false;
             } else if (tgltransaksi == "") {
                 swal({
@@ -890,39 +910,6 @@
                     , showConfirmButton: false
                 }).then(function() {
                     $("#tgltransaksi").focus();
-                });
-                $("#btnsimpan").prop('disabled', false);
-                return false;
-            } else if (no_fak_penj == "" && kategori_saleman == "CANVASER") {
-                swal({
-                    title: 'Oops'
-                    , text: 'No. Faktur Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#no_fak_penj").focus();
-                });
-                $("#btnsimpan").prop('disabled', false);
-                return false;
-            } else if (kode_pelanggan == "") {
-                swal({
-                    title: 'Oops'
-                    , text: 'Pelanggan Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#nama_pelanggan").focus();
-                });
-                $("#btnsimpan").prop('disabled', false);
-                return false;
-            } else if (nama_pelanggan != " BATAL" && cektemp == 0) {
-                swal({
-                    title: 'Oops'
-                    , text: 'Data Penjualan Masih Kosong !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#kode_barang").focus();
                 });
                 $("#btnsimpan").prop('disabled', false);
                 return false;
@@ -937,9 +924,43 @@
                 });
                 $("#btnsimpan").prop('disabled', false);
                 return false;
-            } else {
-                return true;
+            } else if (nama_pelanggan != "BATAL" && cektemp == 0) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Data Masih Kosong !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#jenistransaksi").focus();
+                });
+                $("#btnsimpan").prop('disabled', false);
+                return false;
+            } else if (kode_pelanggan == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Pelanggan Harus DIpilih !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#nama_pelanggan").focus();
+                });
+                $("#btnsimpan").prop('disabled', false);
+                return false;
+            } else if (kode_pelanggan == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Pelanggan Harus DIpilih !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#nama_pelanggan").focus();
+                });
+                $("#btnsimpan").prop('disabled', false);
+                return false;
             }
+
+
+            //return false;
         });
 
 
@@ -1371,6 +1392,7 @@
             $("#total").val(convertToRupiah(totalwithppn));
             $("#bruto").val(subtotal);
             $("#subtotal").val(totalwithppn);
+            cektemp();
         }
 
         $(".tunai").hide();

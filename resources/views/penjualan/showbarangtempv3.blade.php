@@ -205,7 +205,15 @@ $total += $d->subtotal;
 
 
         //Hitung Total
-
+        function cektemp() {
+            $.ajax({
+                type: 'GET'
+                , url: '/cekpenjtemp'
+                , success: function(respond) {
+                    $("#cektemp").val(respond);
+                }
+            });
+        }
 
         function loadtotal() {
             var subtotal = $("#totaltemp").val();
@@ -315,6 +323,7 @@ $total += $d->subtotal;
             $("#total").val(convertToRupiah(totalwithppn));
             $("#bruto").val(subtotal);
             $("#subtotal").val(totalwithppn);
+            cektemp();
         }
 
     });

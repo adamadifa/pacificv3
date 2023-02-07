@@ -75,6 +75,15 @@
 </form>
 <script>
     $(function() {
+        // function cektemp() {
+        //     $.ajax({
+        //         type: 'GET'
+        //         , url: '/cekpenjtemp'
+        //         , success: function(respond) {
+        //             $("#cektemp").val(respond);
+        //         }
+        //     });
+        // }
         $("#frmeditbarangtemp").find("#harga_dus, #harga_pack, #harga_pcs, #jml_dus, #jml_pack, #jml_pcs").maskMoney();
 
         function showtemp() {
@@ -269,6 +278,7 @@
             $("#total").val(convertToRupiah(totalwithppn));
             $("#bruto").val(subtotal);
             $("#subtotal").val(totalwithppn);
+            //cektemp();
         }
 
         $("#tambahitem").click(function(e) {
