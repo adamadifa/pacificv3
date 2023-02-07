@@ -31,7 +31,7 @@ class LimitkreditController extends Controller
         $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB', 'BTN');
         $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
         $ega = array('TSM', 'GRT');
-        $pelanggan = '"' . $request->nama_pelanggan . '"';
+        $pelanggan = $request->nama_pelanggan;
         $query = Limitkredit::query();
         if ($this->cabang != "PCF") {
 
@@ -56,7 +56,7 @@ class LimitkreditController extends Controller
         //     $query->WhereRaw("MATCH(nama_pelanggan) AGAINST('" . $pelanggan .  "')");
         // }
         if (!empty($request->nama_pelanggan)) {
-            $query->WhereRaw("MATCH(nama_pelanggan) AGAINST('" . $pelanggan .  "')");
+            $query->where('nama_pelanggan', 'like', '%' . $pelanggan . '%');
         }
 
         if (!empty($request->kode_cabang)) {
