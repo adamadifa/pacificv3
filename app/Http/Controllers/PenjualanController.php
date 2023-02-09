@@ -6362,7 +6362,10 @@ class PenjualanController extends Controller
 			ifnull(SUM(IF(penjualan.`status`=1,penjualan.potongan,0)),0) as totalpotonganpending,
 
 			ifnull( SUM( penjualan.potistimewa ), 0 ) AS totalpotistimewa,
-			ifnull(SUM(IF(penjualan.`status`=1,penjualan.potistimewa,0)),0) as totalpotistimewapending
+			ifnull(SUM(IF(penjualan.`status`=1,penjualan.potistimewa,0)),0) as totalpotistimewapending,
+
+            ifnull( SUM( penjualan.ppn ), 0 ) AS totalppn,
+			ifnull(SUM(IF(penjualan.`status`=1,penjualan.ppn,0)),0) as totalppnpending
             ");
         $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
         $query->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang');

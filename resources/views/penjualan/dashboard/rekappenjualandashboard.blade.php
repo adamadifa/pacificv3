@@ -10,7 +10,9 @@
             <th>PENYESUAIAN</th>
             <th>POTONGAN</th>
             <th>POTONGAN ISTIMEWA</th>
-            <th>TOTAL NETTO</th>
+            <th>DPP</th>
+            <th>PPN</th>
+            <th>NETTO</th>
             <th>PENDING</th>
             <th>REGULER</th>
         </tr>
@@ -22,6 +24,7 @@
     $totalpenyharga   = 0;
     $totalpotongan    = 0;
     $totalpotistimewa  = 0;
+    $totalppn = 0;
     $grandnetto       = 0;
     $grandnettopending = 0;
     $grandnettoreguler = 0;
@@ -32,11 +35,15 @@
         $totalpenyharga= $totalpenyharga + $r->totalpenyharga;
         $totalpotongan = $totalpotongan + $r->totalpotongan;
         $totalpotistimewa= $totalpotistimewa + $r->totalpotistimewa;
+        $totalppn = $totalppn + $r->totalppn;
 
         $totalnetto = $r->totalbruto - $r->totalretur - $r->totalpenyharga - $r->totalpotongan - $r->totalpotistimewa;
-        $totalnettopending  = $r->totalbrutopending - $r->totalreturpending - $r->totalpenyhargapending - $r->totalpotonganpending - $r->totalpotistimewapending;
+        $totalwithppn = $totalnetto + $r->totalppn;
 
-        $grandnetto  = $grandnetto + $totalnetto;
+
+        $totalnettopending  = $r->totalbrutopending - $r->totalreturpending - $r->totalpenyhargapending - $r->totalpotonganpending - $r->totalpotistimewapending + $totalppnpending;
+
+        $grandnetto  = $grandnetto + $totalwithppn;
         $grandnettopending  = $grandnettopending + $totalnettopending;
 
     ?>
@@ -48,6 +55,8 @@
         <td style="text-align:right; font-weight:"><?php echo rupiah($r->totalpotongan); ?></td>
         <td style="text-align:right; font-weight:"><?php echo rupiah($r->totalpotistimewa); ?></td>
         <td style="text-align:right; font-weight:bold"><?php echo rupiah($totalnetto); ?></td>
+        <td style="text-align:right; font-weight:"><?php echo rupiah($r->totalppn); ?></td>
+        <td style="text-align:right; font-weight:"><?php echo rupiah($totalwithppn); ?></td>
         <td style="text-align:right; font-weight:bold">
             <form action="/laporanpenjualan/cetak" method="post" class="frmpending" target="_blank">
                 @csrf
@@ -59,7 +68,7 @@
                 <a href="#" class="warning showpending">{{ rupiah($totalnettopending) }}</a>
             </form>
         </td>
-        <td style="text-align:right; font-weight:bold"><?php echo rupiah($totalnetto - $totalnettopending); ?></td>
+        <td style="text-align:right; font-weight:bold"><?php echo rupiah($totalwithppn - $totalnettopending); ?></td>
     </tr>
 
     <?php }
