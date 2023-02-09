@@ -1,7 +1,7 @@
 <table class="table table-striped card-table table-bordered" style="font-size:12px !important">
     <thead class="thead-dark">
         <tr>
-            <th colspan="9">REKAP PENJUALAN</th>
+            <th colspan="11">REKAP PENJUALAN</th>
         </tr>
         <tr class="text-right">
             <th class="text-left">CABANG</th>
@@ -26,6 +26,7 @@
     $totalpotistimewa  = 0;
     $totalppn = 0;
     $grandnetto       = 0;
+    $grandwithppn = 0;
     $grandnettopending = 0;
     $grandnettoreguler = 0;
 
@@ -43,7 +44,8 @@
 
         $totalnettopending  = $r->totalbrutopending - $r->totalreturpending - $r->totalpenyhargapending - $r->totalpotonganpending - $r->totalpotistimewapending + $r->totalppnpending;
 
-        $grandnetto  = $grandnetto + $totalwithppn;
+        $grandnetto  = $grandnetto + $totalnetto;
+        $grandwithppn  = $grandwithppn + $totalwithppn;
         $grandnettopending  = $grandnettopending + $totalnettopending;
 
     ?>
@@ -152,8 +154,10 @@
             <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalpotongan); ?></th>
             <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalpotistimewa); ?></th>
             <th style="text-align:right; font-weight:bold"><?php echo rupiah($grandnetto); ?></th>
+            <th style="text-align:right; font-weight:bold"><?php echo rupiah($totalppn); ?></th>
+            <th style="text-align:right; font-weight:bold"><?php echo rupiah($grandwithppn); ?></th>
             <th style="text-align:right; font-weight:bold"><?php echo rupiah($grandnettopending); ?></th>
-            <th style="text-align:right; font-weight:bold"><?php echo rupiah(($grandnetto) - ($grandnettopending)); ?></th>
+            <th style="text-align:right; font-weight:bold"><?php echo rupiah(($grandwithppn) - ($grandnettopending)); ?></th>
         </tr>
     </tfoot>
     <?php } ?>
