@@ -1,5 +1,6 @@
 <form action="/pembayaran/{{ $giro->id_giro }}/updategiro" id="frmeditGiro" method="POST">
     @csrf
+    <input type="hidden" id="sisabayaredit" value="{{ $sisabayar }}">
     <div class="form-body">
         <div class="row">
             <div class="col-12">
@@ -91,6 +92,9 @@
             var jumlah = $("#jumlah_giro_edit").val();
             var jmlbayar = parseInt(jumlah.replace(/\./g, ''));
             var cektutuplaporan = $("#cektutuplaporan").val();
+            var sisabayar = parseInt($("#sisabayaredit").val());
+            // alert(sisabayar);
+            // return false;
             //alert(sisabayar);
             if (cektutuplaporan > 0) {
                 swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
@@ -149,6 +153,16 @@
                 swal({
                     title: 'Oops'
                     , text: 'Jumlah  Harus Diisi  !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#jumlah_giro_edit").focus();
+                });
+                return false;
+            } else if (jmlbayar > parseInt(sisabayar)) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Jumlah Bayar Melebihi Sisa Bayar  !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {

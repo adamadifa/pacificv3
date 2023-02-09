@@ -191,6 +191,10 @@
                                             <a class="dropdown-item" target="_blank" href="/penjualan/cetaksuratjalan/{{ Crypt::encrypt($d->no_fak_penj) }}/2"><i class="feather icon-printer mr-1"></i>Cetak Surat Jalan 2</a>
                                         </div>
                                     </div>
+                                    @if($d->nama_pelanggan != "BATAL")
+                                    <a href="#" class="danger ubahfakturbatal" no_fak_penj="{{ $d->no_fak_penj }}"><i class="feather icon-clipboard"></i></a>
+                                    @endif
+
                                     @endif
                                 </div>
 
@@ -206,50 +210,54 @@
 
     </div>
 </div>
-{{-- <div class="modal fade text-left" id="mdlprint" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+<div class="modal fade text-left" id="mdlfakturbatal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel18">Cetak Surat Jalan</h4>
+                <h4 class="modal-title" id="myModalLabel18">Ubah ke Faktur Batal</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form action="">
-                    <div class="row">
-                        <div class="col-12">
-                            <x-inputtext label="Tanggal" field="tanggal" datepicker icon="feather icon-calendar" />
+                <form action="/penjualan/setfakturbatal" method="POST">
+                    @csrf
+                    <input type="hidden" id="no_fak_batal" name="no_fak_batal">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <small class="danger">Dengan mengubah ke Faktur Batal, Maka Data Penjualan pada Faktur ini akan direset dan di UBah ke Faktur Batal !</small>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="form-group">
-                                <select name="kode_cabang" id="kode_cabang" class="form-control">
-                                    <option value="">Cabang</option>
-                                    @foreach ($cabang as $d)
-                                    <option value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
-@endforeach
-</select>
-</div>
-</div>
-</div>
-<div class="row">
-    <div class="col-12">
-        <div class="form-group">
-            <button class="btn btn-primary btn-block"><i class="feather icon-printer"></i>Cetak</button>
+
+                    <div class="col-12">
+                        <div class="form-group">
+                            <textarea name="keterangan" placeholder="Keterangan" id="keteranan" cols="30" rows="10" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block"><i class="feather icon-refresh-ccw mr-1"></i> Ubah Ke Faktur Batal</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 </div>
-</form>
-</div>
-</div>
-</div>
-</div> --}}
 @endsection
+
 @push('myscript')
 <script>
     $(function() {
+        $(".ubahfakturbatal").click(function(e) {
+            var no_fak_penj = $(this).attr("no_fak_penj");
+            $("#no_fak_batal").val(no_fak_penj);
+            e.preventDefault();
+            $('#mdlfakturbatal').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+        });
         $('#cetaksuratjalan').click(function(e) {
             //e.preventDefault(); //prevents the default submit action
             $(this).closest('form').attr('target', '_blank').submit();

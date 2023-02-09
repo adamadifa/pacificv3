@@ -1,5 +1,6 @@
 <form action="/pembayaran/{{ $hb->nobukti }}/update" id="frmBayaredit" method="POST">
     @csrf
+    <input type="hidden" id="sisabayaredit" value="{{ $sisabayar + $hb->bayar }}">
     <div class="form-body">
         <div class="row">
             <div class="col-12">
@@ -189,8 +190,9 @@
             var bayar = $("#bayar_edit").val();
             var id_karyawan = $("#id_karyawan_edit").val();
             var id_giro = $("#id_giro_edit").val();
-            var sisabayar = "{{ $sisabayar }}";
             var jmlbayar = parseInt(bayar.replace(/\./g, ''));
+            var sisabayar = parseInt($("#sisabayaredit").val());
+
             var cektutuplaporan = $("#cektutuplaporan").val();
             //alert(sisabayar);
             if (cektutuplaporan > 0) {
@@ -234,6 +236,16 @@
                     , showConfirmButton: false
                 }).then(function() {
                     $("#id_giro_edit").focus();
+                });
+                return false;
+            } else if (jmlbayar > parseInt(sisabayar)) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Jumlah Bayar Melebihi Sisa Bayar  !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#bayar_edit").focus();
                 });
                 return false;
             } else {

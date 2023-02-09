@@ -1,5 +1,6 @@
 <form action="/pembayaran/{{ $transfer->id_transfer }}/updatetransfer" id="frmeditTransfer" method="POST">
     @csrf
+    <input type="hidden" id="sisabayaredit" value="{{ $sisabayar }}">
     <input type="hidden" name="kode_pelanggan_edit" value="{{ $kode_pelanggan }}">
     <div class="form-body">
         <div class="row">
@@ -92,6 +93,7 @@
             var jumlah = $("#jumlah_transfer_edit").val();
             var jmlbayar = parseInt(jumlah.replace(/\./g, ''));
             var cektutuplaporan = $("#cektutuplaporan").val();
+            var sisabayar = parseInt($("#sisabayaredit").val());
             //alert(sisabayar);
             if (cektutuplaporan > 0) {
                 swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
@@ -140,6 +142,16 @@
                 swal({
                     title: 'Oops'
                     , text: 'Jumlah  Harus Diisi  !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#jumlah_transfer_edit").focus();
+                });
+                return false;
+            } else if (jmlbayar > parseInt(sisabayar)) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Jumlah Bayar Melebihi Sisa Bayar  !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {

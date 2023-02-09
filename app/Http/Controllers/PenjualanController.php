@@ -2674,6 +2674,7 @@ class PenjualanController extends Controller
                 'karyawan.kategori_salesman',
                 'karyawan.kode_cabang',
                 'nama_cabang',
+                'penjualan.keterangan',
                 DB::raw('IFNULL(totalpf,0) - IFNULL(totalgb,0) as totalretur'),
                 'jmlbayar'
             )
@@ -7496,5 +7497,59 @@ class PenjualanController extends Controller
         } else {
             echo 0;
         }
+    }
+
+    public function setfakturbatal(Request $request)
+    {
+        $no_fak_penj = $request->no_fak_batal;
+        $keterangan = $request->keterangan;
+        $pelangganbatal = DB::table('pelanggan')->where('nama_pelanggan', 'BATAL')->first();
+        $cekpenjualan = DB::table('penjualan')->where('no_fak_penj', $no_fak_penj)->first();
+        $kode_pelanggan = $pelangganbatal->kode_pelanggan;
+        $id_karyawan = $pelangganbatal->id_sales;
+        $tgltransaksi = $cekpenjualan->tgltransaksi;
+        $data = [
+            'no_fak_penj' => $no_fak_penj,
+            'tgltransaksi' => $tgltransaksi,
+            'kode_pelanggan' => $kode_pelanggan,
+            'id_karyawan' => $id_karyawan,
+            'subtotal' => 0,
+            'potaida' => 0,
+            'potswan' => 0,
+            'potstick' => 0,
+            'potsp' => 0,
+            'potongan' => 0,
+            'potisaida' => 0,
+            'potisswan' => 0,
+            'potisstick' => 0,
+            'potsambal' => 0,
+            'potistimewa' => 0,
+            'penyaida' => 0,
+            'penyswan' => 0,
+            'penystick' => 0,
+            'penyharga' => 0,
+            'ppn' => 0,
+            'total' => 0,
+            'jenistransaksi' => 'tunai',
+            'jenisbayar' => 'tunai',
+            'jatuhtempo' => $tgltransaksi,
+            'id_admin' => Auth::user()->id,
+            'status' => 2,
+            'status_lunas' => 1,
+            'keterangan' => $keterangan
+        ];
+        DB::beginTransaction();
+        try {
+            DB::table('penjualan')->where('no_fak_penj', $no_fak_penj)->delete();
+            DB::table('penjualan')->insert($data);
+            DB::commit();
+            return Redirect::back()->with(['success' => 'Faktur Berhasil di Ubah ke Faktur Batal']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return Redirect::back()->with(['warning' => $e]);
+        }
+        //UpdateDataPenjualan
+
+
     }
 }

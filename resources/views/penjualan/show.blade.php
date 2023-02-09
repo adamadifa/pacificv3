@@ -178,6 +178,10 @@
                                         <span class="badge badge-pill bg-primary float-right">{{ rupiah($data->limitpel) }} </span>
                                         Limit Pelanggan
                                     </li>
+                                    <li class="list-group-item">
+                                        <span class="badge badge-pill bg-primary float-right">{{ $data->keterangan}} </span>
+                                        Keterangan
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -478,7 +482,7 @@
                                                 <td>
                                                     @if ($d->jenisbayar=='titipan' || $d->status_bayar =='voucher')
                                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                                        <a class="ml-1 editbayar" href="#" nobukti="{{ $d->nobukti; }}" kode_cabang="{{ $data->kode_cabang }}" no_fak_penj="{{ $data->no_fak_penj }}" sisabayar="{{ $sisabayar - $d->bayar }}"><i class="feather icon-edit success"></i></a>
+                                                        <a class="ml-1 editbayar" href="#" nobukti="{{ $d->nobukti; }}" kode_cabang="{{ $data->kode_cabang }}" no_fak_penj="{{ $data->no_fak_penj }}" sisabayar="{{ $sisabayar }}"><i class="feather icon-edit success"></i></a>
 
                                                         <form method="POST" class="deleteform" action="/pembayaran/{{ Crypt::encrypt($d->nobukti) }}/delete">
                                                             @csrf
@@ -549,7 +553,7 @@
                                                 <td>
                                                     @if ($d->status===0)
                                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                                        <a class="ml-1 editgiro" href="#" id_giro="{{ $d->id_giro; }}" kode_cabang="{{ $data->kode_cabang }}" sisabayar="{{ $sisabayar - $d->jumlah }}"><i class="feather icon-edit success"></i></a>
+                                                        <a class="ml-1 editgiro" href="#" id_giro="{{ $d->id_giro; }}" kode_cabang="{{ $data->kode_cabang }}" sisabayar="{{ $sisabayar }}"><i class="feather icon-edit success"></i></a>
                                                         {{-- @if (in_array($level,$harga_hapus)) --}}
                                                         <form method="POST" class="deleteform" action="/pembayaran/{{ Crypt::encrypt($d->id_giro) }}/deletegiro">
                                                             @csrf
@@ -620,7 +624,7 @@
                                                 <td>
                                                     @if ($d->status===0)
                                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                                        <a class="ml-1 edittransfer" href="#" id_transfer="{{ $d->id_transfer; }}" kode_cabang="{{ $data->kode_cabang }}" sisabayar="{{ $sisabayar - $d->jumlah }}"><i class="feather icon-edit success"></i></a>
+                                                        <a class="ml-1 edittransfer" href="#" id_transfer="{{ $d->id_transfer; }}" kode_cabang="{{ $data->kode_cabang }}" sisabayar="{{ $sisabayar}}"><i class="feather icon-edit success"></i></a>
 
                                                         <form method="POST" class="deleteform" action="/pembayaran/{{ Crypt::encrypt($d->id_transfer) }}/deletetransfer">
                                                             @csrf
@@ -1020,6 +1024,7 @@
             var kode_cabang = $(this).attr('kode_cabang');
             var no_fak_penj = $(this).attr('no_fak_penj');
             var sisabayar = $(this).attr('sisabayar');
+            // alert(sisabayar);
             $.ajax({
                 type: 'POST'
                 , url: '/pembayaran/edit'
@@ -1155,6 +1160,8 @@
             var sisabayar = "{{ $sisabayar }}";
             var cektutuplaporan = $("#cektutuplaporan").val();
             var jmlbayar = parseInt(bayar.replace(/\./g, ''));
+            var sisabayar = "{{ $sisabayar }}";
+
             //alert(sisabayar);
             if (cektutuplaporan > 0) {
                 swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
@@ -1199,6 +1206,16 @@
                     $("#id_giro").focus();
                 });
                 return false;
+            } else if (jmlbayar > parseInt(sisabayar)) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Jumlah Bayar Melebihi Sisa Bayar  !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#bayar").focus();
+                });
+                return false;
             } else {
                 return true;
             }
@@ -1219,6 +1236,7 @@
             var jumlah = $("#jumlah_giro").val();
             var jmlbayar = parseInt(jumlah.replace(/\./g, ''));
             var cektutuplaporan = $("#cektutuplaporan").val();
+            var sisabayar = "{{ $sisabayar }}";
             //alert(sisabayar);
             if (cektutuplaporan > 0) {
                 swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
@@ -1283,6 +1301,16 @@
                     $("#jumlah_giro").focus();
                 });
                 return false;
+            } else if (jmlbayar > parseInt(sisabayar)) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Jumlah Bayar Melebihi Sisa Bayar  !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#jumlah_giro").focus();
+                });
+                return false;
             } else {
                 return true;
             }
@@ -1301,6 +1329,7 @@
             var jumlah = $("#jumlah_transfer").val();
             var jmlbayar = parseInt(jumlah.replace(/\./g, ''));
             var cektutuplaporan = $("#cektutuplaporan").val();
+            var sisabayar = "{{ $sisabayar }}";
             //alert(sisabayar);
             if (cektutuplaporan > 0) {
                 swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
@@ -1349,6 +1378,16 @@
                 swal({
                     title: 'Oops'
                     , text: 'Jumlah  Harus Diisi  !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#jumlah_transfer").focus();
+                });
+                return false;
+            } else if (jmlbayar > parseInt(sisabayar)) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Jumlah Bayar Melebihi Sisa Bayar  !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
