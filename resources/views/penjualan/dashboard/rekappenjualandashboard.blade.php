@@ -1,4 +1,4 @@
-<table class="table table-striped card-table table-bordered">
+<table class="table table-striped card-table table-bordered" style="font-size:12px !important">
     <thead class="thead-dark">
         <tr>
             <th colspan="9">REKAP PENJUALAN</th>
