@@ -52,7 +52,16 @@ class PelangganController extends Controller
         }
         if (Auth::user()->level == "salesman") {
             $query->where('pelanggan.id_sales', Auth::user()->id_salesman);
+        } else {
+            if (Auth::user()->id == 82) {
+                $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB', 'BTN');
+                $query->whereIn('pelanggan.kode_cabang', $wilayah_barat);
+            } else if (Auth::user()->id == 97) {
+                $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
+                $query->whereIn('pelanggan.kode_cabang', $wilayah_timur);
+            }
         }
+
 
 
         if (isset($request->submit) || isset($request->export)) {
@@ -108,6 +117,15 @@ class PelangganController extends Controller
 
         if ($this->cabang != "PCF") {
             $query2->where('pelanggan.kode_cabang', $this->cabang);
+        } else {
+
+            if (Auth::user()->id == 82) {
+                $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB', 'BTN');
+                $query2->whereIn('pelanggan.kode_cabang', $wilayah_barat);
+            } else if (Auth::user()->id == 97) {
+                $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
+                $query2->whereIn('pelanggan.kode_cabang', $wilayah_timur);
+            }
         }
         if (isset($request->submit)) {
             if ($request->nama != "") {
@@ -156,7 +174,16 @@ class PelangganController extends Controller
 
         if (Auth::user()->level == "salesman") {
             $queryaktif->where('pelanggan.id_sales', Auth::user()->id_salesman);
+        } else {
+            if (Auth::user()->id == 82) {
+                $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB', 'BTN');
+                $queryaktif->whereIn('pelanggan.kode_cabang', $wilayah_barat);
+            } else if (Auth::user()->id == 97) {
+                $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
+                $queryaktif->whereIn('pelanggan.kode_cabang', $wilayah_timur);
+            }
         }
+
 
         if (isset($request->submit)) {
             if ($request->nama != "") {
@@ -186,6 +213,7 @@ class PelangganController extends Controller
         $queryaktif->where('pelanggan.status_pelanggan', 1);
 
 
+
         $querynonaktif = Pelanggan::query();
         // if ($this->cabang != "PCF") {
         //     if ($this->cabang == "GRT") {
@@ -200,7 +228,17 @@ class PelangganController extends Controller
 
         if ($this->cabang != "PCF") {
             $querynonaktif->where('pelanggan.kode_cabang', $this->cabang);
+        } else {
+
+            if (Auth::user()->id == 82) {
+                $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB', 'BTN');
+                $querynonaktif->whereIn('pelanggan.kode_cabang', $wilayah_barat);
+            } else if (Auth::user()->id == 97) {
+                $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
+                $querynonaktif->whereIn('pelanggan.kode_cabang', $wilayah_timur);
+            }
         }
+
         if (isset($request->submit)) {
             if ($request->nama != "") {
                 $querynonaktif->where('nama_pelanggan', 'like', '%' . $request->nama . '%');
@@ -231,7 +269,8 @@ class PelangganController extends Controller
         $jmlpelanggan = $query2->count();
         $jmlaktif = $queryaktif->count();
         $jmlnonaktif = $querynonaktif->count();
-        $cabang = Cabang::all();
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
         if (isset($request->export)) {
             header("Content-type: application/vnd-ms-excel");
             // Mendefinisikan nama file ekspor "hasil-export.xls"
