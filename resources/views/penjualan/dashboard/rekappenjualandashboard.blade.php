@@ -41,7 +41,7 @@
         $totalwithppn = $totalnetto + $r->totalppn;
 
 
-        $totalnettopending  = $r->totalbrutopending - $r->totalreturpending - $r->totalpenyhargapending - $r->totalpotonganpending - $r->totalpotistimewapending + $totalppnpending;
+        $totalnettopending  = $r->totalbrutopending - $r->totalreturpending - $r->totalpenyhargapending - $r->totalpotonganpending - $r->totalpotistimewapending + $r->totalppnpending;
 
         $grandnetto  = $grandnetto + $totalwithppn;
         $grandnettopending  = $grandnettopending + $totalnettopending;
