@@ -73,6 +73,13 @@
                                             <x-inputtext label="Salesman" value='{{ $faktur->id_karyawan." | ".$faktur->nama_karyawan." | ".$faktur->kategori_salesman }}' field="nama_karyawan" icon="feather icon-users" readonly />
                                         </div>
                                     </div>
+                                    <div class="row" id="ket">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <textarea name="keterangan" placeholder="Keterangan" id="keterangan" cols="30" rows="10" class="form-control">{{ $faktur->keterangan }}</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -1262,6 +1262,7 @@ class PenjualanController extends Controller
         $bruto = $request->bruto; //ok
         $nama_pelanggan = $request->nama_pelanggan; //nama_pelanggan
         $id_admin = Auth::user()->id;
+        $keterangan = $request->keterangan;
         //Potongan
         $potaida        = str_replace(".", "", $request->potaida);
         if (empty($potaida)) {
@@ -1450,7 +1451,8 @@ class PenjualanController extends Controller
                 'jatuhtempo' => $jatuhtempo,
                 'id_admin' => $id_admin,
                 'status' => $status,
-                'status_lunas' => $status_lunas
+                'status_lunas' => $status_lunas,
+                'keterangan' => $keterangan
             ]);
 
             $tmp = DB::table('detailpenjualan_temp')->where('id_admin', $id_admin)
@@ -1825,6 +1827,7 @@ class PenjualanController extends Controller
         $jatuhtempo = $request->jatuhtempo;
         $bruto = $request->bruto;
         $id_admin = Auth::user()->id;
+        $keterangan = $request->keterangan;
         $ppn = !empty($request->ppn) ? str_replace(".", "", $request->ppn) : 0;
 
         $potaida        = str_replace(".", "", $request->potaida);
@@ -2011,7 +2014,7 @@ class PenjualanController extends Controller
                     'jenistransaksi' => $jenistransaksi,
                     'jenisbayar' => $jenisbayar,
                     'jatuhtempo' => $jatuhtempo,
-                    'id_admin' => $id_admin,
+                    'keterangan' => $keterangan,
                     'status' => $status,
                     'status_lunas' => $status_lunas
                 ]);
@@ -6575,6 +6578,7 @@ class PenjualanController extends Controller
         $bruto = $request->bruto;
         $nama_pelanggan = $request->nama_pelanggan;
         $id_admin = Auth::user()->id;
+        $keterangan = $request->keterangan;
         //Potongan
         $potaida        = str_replace(".", "", $request->potaida);
         if (empty($potaida)) {
@@ -6703,7 +6707,8 @@ class PenjualanController extends Controller
             'bruto' => $bruto,
             'ppn' => $ppn,
             'totalnonppn' => $totalnonppn,
-            'kode_cabang' => $kode_cabang
+            'kode_cabang' => $kode_cabang,
+            'keterangan' => $keterangan
         ];
 
         $barang = DB::table('detailpenjualan_temp')

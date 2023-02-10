@@ -155,6 +155,7 @@
                     <input type="hidden" name="jatuhtempo" value="{{ $data['jatuhtempo'] }}">
                     <input type="hidden" name="bruto" value="{{ $data['bruto'] }}">
                     <input type="hidden" name="kode_cabang" value="{{ $data['kode_cabang'] }}">
+                    <input type="hidden" name="keterangan" value="{{ $data['keterangan'] }}">
                     @csrf
                     <table style="width: 100%">
                         <tr>
@@ -473,7 +474,9 @@
                     </table>
 
                     <br>
-
+                    <p>
+                        <b>Keterangan :</b> {{ $data['keterangan'] }}
+                    </p>
                     <table class="datatable3" style="width: 40%">
                         <tr>
                             <th colspan="3">List Faktur Belum Lunas</th>

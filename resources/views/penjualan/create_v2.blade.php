@@ -70,6 +70,15 @@
                                             <x-inputtext label="Salesman" field="nama_karyawan" icon="feather icon-users" readonly />
                                         </div>
                                     </div>
+                                    <div class="row" id="ket">
+
+                                        <div class="col-12">
+                                            <small class="danger">Pelanggan Memiliki Faktur Belum Lunas, Keterangan ini Wajib Diisi !</small>
+                                            <div class="form-group mt-2">
+                                                <textarea name="keterangan" placeholder="Keterangan" id="keterangan" cols="30" rows="10" class="form-control"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -78,7 +87,7 @@
                         <div class="col-12">
                             <div class="card">
                                 <div class="card-content">
-                                    <img class="card-img-top img-fluid" id="foto" src="{{ asset('app-assets/images/slider/04.jpg') }}" alt="Card image cap">
+                                    <img class="card-img-top img-fluid" style="height:300px" id="foto" src="{{ asset('app-assets/images/slider/04.jpg') }}" alt="Card image cap">
                                     <div class="card-body">
                                         <h4 class="card-title">
                                             <span id="pelanggan_text"></span>
@@ -625,6 +634,8 @@
         }
 
         //Cek Piutang Pelanggan
+        $("#ket").hide();
+
         function cekpiutang(kode_pelanggan) {
             $("#piutangpelanggan").text("Loading..");
             $.ajax({
@@ -637,6 +648,11 @@
                 , cache: false
                 , success: function(respond) {
                     console.log(respond);
+                    if (respond > 0) {
+                        $("#ket").show();
+                    } else {
+                        $("#ket").hide();
+                    }
                     $("#sisapiutang").val(respond);
                     $("#piutangpelanggan").text(convertToRupiah(respond));
 
@@ -805,6 +821,9 @@
             var nama_pelanggan = pl[1];
             var jenistransaksi = $("#jenistransaksi").val();
             var cektemp = $("#cektemp").val();
+            var sisapiutang = $("#sisapiutang").val();
+            var keterangan = $("#keterangan").val();
+
             if (cektutuplaporan > 0) {
                 swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
                 return false;
@@ -856,6 +875,16 @@
                     , showConfirmButton: false
                 }).then(function() {
                     $("#jenistransaksi").focus();
+                });
+                return false;
+            } else if (jenistransaksi == "kredit" && keterangan == "" && sisapiutang > 0) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Keterangan Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#keterangan").focus();
                 });
                 return false;
             } else {
