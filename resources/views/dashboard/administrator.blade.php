@@ -282,7 +282,7 @@
 <!-- Rekap Penjualan -->
 <!-- Rekap Penjualan -->
 <div class="modal fade text-left" id="mdlrekappenjualan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" style="max-width: 1200px" role="document">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 1300px" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel18">Rekap Penjualan</h4>
