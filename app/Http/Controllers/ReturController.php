@@ -395,11 +395,11 @@ class ReturController extends Controller
 
             DB::table('detailretur_temp')->where('kode_pelanggan', $kode_pelanggan)->delete();
             DB::commit();
-            return redirect('/retur')->with(['success' => 'Data Penjualan Berhasil di Simpan']);
+            return redirect('/retur')->with(['success' => 'Data Retur Berhasil di Simpan']);
         } catch (\Exception $e) {
             dd($e);
             DB::rollback();
-            return redirect('/retur')->with(['warning' => 'Data Penjualan Gagal di Simpan']);
+            return redirect('/retur')->with(['warning' => 'Data Retur Gagal di Simpan']);
         }
     }
     public function show(Request $request)

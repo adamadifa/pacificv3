@@ -525,6 +525,7 @@
 
 
         $("form").submit(function(e) {
+            $("#btnsimpan").prop('disabled', true);
             var no_retur_penj = $("#no_retur_penj").val();
             var no_fak_penj = $("#no_fak_penj").val();
             var tglretur = $("#tglretur").val();
