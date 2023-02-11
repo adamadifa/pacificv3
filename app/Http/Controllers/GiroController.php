@@ -27,9 +27,10 @@ class GiroController extends Controller
     {
         $pelanggan = '"' . $request->nama_pelanggan . '"';
         $query = Giro::query();
-        $query->select('giro.no_giro', 'tgl_giro', 'nama_pelanggan', 'karyawan.kode_cabang', 'namabank', DB::raw('SUM(giro.jumlah) as jumlah'), 'tglcair', 'giro.status', 'ket', 'tglbayar', 'ledger_bank.no_bukti');
+        $query->select('giro.no_giro', 'tgl_giro', 'nama_pelanggan', 'karyawan.kode_cabang', 'namabank', DB::raw('SUM(giro.jumlah) as jumlah'), 'tglcair', 'giro.status', 'ket', 'tglbayar', 'ledger_bank.no_bukti', 'nama_bank');
         $query->leftJoin('historibayar', 'giro.id_giro', '=', 'historibayar.id_giro');
         $query->leftJoin('ledger_bank', 'giro.no_giro', '=', 'ledger_bank.no_ref');
+        $query->leftJoin('master_bank', 'ledger_bank.bank', '=', 'master_bank.kode_bank');
         $query->join('penjualan', 'giro.no_fak_penj', '=', 'penjualan.no_fak_penj');
         $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
         $query->join('karyawan', 'giro.id_karyawan', '=', 'karyawan.id_karyawan');

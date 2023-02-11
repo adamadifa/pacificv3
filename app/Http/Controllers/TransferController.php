@@ -38,11 +38,13 @@ class TransferController extends Controller
             'transfer.status',
             'ket',
             'tglbayar',
-            'ledger_bank.no_bukti'
+            'ledger_bank.no_bukti',
+            'nama_bank'
         );
 
         $query->leftJoin('historibayar', 'transfer.id_transfer', '=', 'historibayar.id_transfer');
         $query->leftJoin('ledger_bank', 'transfer.kode_transfer', '=', 'ledger_bank.no_ref');
+        $query->leftJoin('master_bank', 'ledger_bank.bank', '=', 'master_bank.kode_bank');
         $query->join('penjualan', 'transfer.no_fak_penj', '=', 'penjualan.no_fak_penj');
         $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
         $query->join('karyawan', 'transfer.id_karyawan', '=', 'karyawan.id_karyawan');

@@ -128,7 +128,6 @@ class LimitkreditController extends Controller
                 $query->whereNull('mm');
                 $query->where('pengajuan_limitkredit_v3.status', 0);
                 $query->where('jumlah', '>', 10000000);
-                $query->orWhereIn('pelanggan.kode_cabang', $wilayah_timur);
                 $query->whereNotNull('rsm');
             } else if ($request->status == "disetujui") {
                 $query->whereNotNull('mm');
@@ -227,7 +226,11 @@ class LimitkreditController extends Controller
         $cabang = $cbg->getCabanggudang($this->cabang);
         $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB', 'BTN');
         $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
-        return view('limitkredit.index', compact('limitkredit', 'cabang', 'wilayah_barat', 'wilayah_timur'));
+        if (request()->is('sap/limitkredit')) {
+            return view('sap.limitkredit', compact('limitkredit', 'cabang', 'wilayah_barat', 'wilayah_timur'));
+        } else {
+            return view('limitkredit.index', compact('limitkredit', 'cabang', 'wilayah_barat', 'wilayah_timur'));
+        }
     }
 
     public function create($kode_pelanggan)

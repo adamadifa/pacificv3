@@ -41,6 +41,7 @@
     <div class="menu d-flex justify-content-between mb-2">
         <a href="#" class="active" id="penjualan">Penjualan</a>
         <a href="#" id="cashin">Cashin</a>
+        <a href="#" id="target">Target</a>
         <a href="#" id="kunjungan">Kunjungan</a>
     </div>
 </div>
@@ -109,6 +110,21 @@
             , });
         }
 
+        function gettargetsalesman() {
+            $.ajax({
+                type: 'POST'
+                , url: '/sap/gettargetsalesman'
+                , data: {
+                    _token: '{{ csrf_token() }}'
+                    , id_karyawan: id_karyawan
+                    , dari: dari
+                    , sampai: sampai
+                }
+                , success: function(respond) {
+                    $("#loaddata").html(respond);
+                }
+            , });
+        }
         getpenjualansalesman();
 
         $("#cashin").click(function(e) {
@@ -128,6 +144,12 @@
             $("a").removeClass("active");
             $(this).addClass("active");
             getkunjungansalesman();
+        });
+
+        $("#target").click(function(e) {
+            $("a").removeClass("active");
+            $(this).addClass("active");
+            gettargetsalesman();
         });
 
 

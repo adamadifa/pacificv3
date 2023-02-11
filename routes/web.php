@@ -1445,4 +1445,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/sap/getpenjualansalesman', [SapController::class, 'getpenjualansalesman']);
     Route::post('/sap/getcashinsalesman', [SapController::class, 'getcashinsalesman']);
     Route::post('/sap/getkunjungansalesman', [SapController::class, 'getkunjungansalesman']);
+    Route::post('/sap/gettargetsalesman', [SapController::class, 'gettargetsalesman']);
+    Route::post('/sap/getrealisasitargetsales', [SapController::class, 'getrealisasitargetsales']);
+    Route::get('/sap/limitkredit', [LimitkreditController::class, 'index']);
 });

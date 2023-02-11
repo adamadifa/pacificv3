@@ -290,8 +290,8 @@
 
                                         @if ($level=="manager marketing" && !empty($d->rsm) && empty($d->mm) && empty($d->dirut) && $d->status==0
                                         || $level =="manager marketing" && !empty($d->rsm) && !empty($d->mm) && empty($d->dirut) && $d->status==2
-                                        || $level =="manager marketing" && !empty($d->rsm) && !empty($d->rsm) && empty($d->dirut) && $d->status==0
-                                        || $level =="manager marketing" && !empty($d->rsm) && !empty($d->rsm) && empty($d->dirut) && $d->status!=2)
+                                        || $level =="manager marketing" && !empty($d->rsm) && !empty($d->mm) && empty($d->dirut) && $d->status==0
+                                        || $level =="manager marketing" && !empty($d->rsm) && !empty($d->mm) && empty($d->dirut) && $d->status!=2)
 
 
                                         <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/approve"><i class=" fa fa-check success"></i></a>
@@ -299,7 +299,10 @@
                                         @endif
 
                                         <!-- Direktur -->
-                                        @if($level == "direktur" )
+                                        @if ($level=="direktur" && !empty($d->mm) && empty($d->dirut) && $d->status==0
+                                        || $level =="direktur" && !empty($d->mm) && !empty($d->dirut) && $d->status==2
+                                        || $level =="direktur" && !empty($d->mm) && !empty($d->dirut) && $d->status==0
+                                        || $level =="direktur" && !empty($d->mm) && !empty($d->dirut) && $d->status!=2)
                                         <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/approve"><i class=" fa fa-check success"></i></a>
                                         <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/decline"><i class=" fa fa-close danger"></i></a>
                                         @endif

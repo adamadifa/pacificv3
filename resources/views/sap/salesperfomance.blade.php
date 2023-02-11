@@ -1,6 +1,6 @@
 @extends('layouts.sap.sap')
 @section('content')
-<style>
+{{-- <style>
     .main_div {
         padding: 30px;
     }
@@ -94,7 +94,7 @@
         font-size: 14px !important;
     }
 
-</style>
+</style> --}}
 <div class="row mb-2">
     <div class="col-12">
         <div class="inputWithIcon">

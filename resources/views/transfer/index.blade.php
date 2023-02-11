@@ -58,6 +58,7 @@
                                 <th>Tgl Pencatatan</th>
                                 <th>Pelanggan</th>
                                 <th>Bank</th>
+                                <th>Penerima</th>
                                 <th>Jumlah</th>
                                 <th>Jatuh Tempo</th>
                                 <th>Cabang</th>
@@ -72,6 +73,7 @@
                                 <td>{{ date("d-m-Y",strtotime($d->tgl_transfer)) }}</td>
                                 <td>{{ ucwords(strtolower($d->nama_pelanggan)) }}</td>
                                 <td>{{ strtoupper($d->namabank) }}</td>
+                                <td>{{ strtoupper($d->nama_bank) }}</td>
                                 <td class="text-right" style="font-weight: bold">{{ rupiah($d->jumlah) }}</td>
                                 <td>{{ date("d-m-Y",strtotime($d->tglcair)) }}</td>
                                 <td>{{ $d->kode_cabang }}</td>

@@ -14225,7 +14225,7 @@ a.card {
 }
 
 .logo-small img {
-    width: 32px;
+    width: 64px;
     margin: 0;
     border-radius: calc(var(--fimobile-rounded) - 10px);
     box-shadow: 0 3px 5px rgba(0, 0, 0, 0.15);

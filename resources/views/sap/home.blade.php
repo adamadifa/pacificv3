@@ -22,12 +22,14 @@
                     <div class="col-auto">
                         <figure class="avatar avatar-44 rounded-10">
 
-                            @if (!empty(Auth::user()->foto))
+                            @if (Auth::user()->foto != null)
                             @php
                             $path = Storage::url('users/'.Auth::user()->foto);
                             @endphp
                             @else
-                            $path = {{ asset('app-assets/images/avatar.png') }}
+                            @php
+                            $path = asset('app-assets/images/avatar.png');
+                            @endphp
                             @endif
                             <img src="{{ url($path) }}" alt="">
                         </figure>
@@ -105,14 +107,13 @@
 <div class="row">
 
     <div class="col-6 col-md-3">
-        <a href="sendmoney3.html" class="card text-center">
+        <a href="/sap/limitkredit" class="card text-center">
             <div class="card-body">
                 <i class="bi bi-bag-dash text-color-theme" style="font-size: 2rem;"></i>
                 <span class="count-indicator_2">{{ $jmlpengajuan }}</span>
                 <p class="text-color-theme size-12 small" style="margin-top: 10px">Menunggu Persetujuan</p>
             </div>
         </a>
-
     </div>
     <div class="col-6 col-md-3">
         <a href="/salesperformance" class="card text-center">
