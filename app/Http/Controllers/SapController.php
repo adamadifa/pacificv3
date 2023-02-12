@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cabang;
+use App\Models\Pelanggan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\View;
 
@@ -252,5 +254,94 @@ class SapController extends Controller
             ->get();
 
         return view('sap.getrealisasitargetsales', compact('realisasitarget'));
+    }
+
+    public function showlimitkredit($no_pengajuan)
+    {
+        $no_pengajuan = Crypt::decrypt($no_pengajuan);
+        $limitkredit = DB::table('pengajuan_limitkredit_v3')
+            ->select(
+                'pengajuan_limitkredit_v3.*',
+                'nama_pelanggan',
+                'alamat_pelanggan',
+                'alamat_toko',
+                'latitude',
+                'longitude',
+                'pelanggan.no_hp',
+                'status_outlet',
+                'cara_pembayaran',
+                'histori_transaksi',
+                'lama_topup',
+                'lama_usaha',
+                'kepemilikan',
+                'omset_toko',
+                'lama_langganan',
+                'type_outlet',
+                'nama_karyawan',
+                'karyawan.kode_cabang'
+            )
+            ->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+            ->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan')
+            ->where('no_pengajuan', $no_pengajuan)
+            ->orderBy('tgl_pengajuan', 'asc')
+            ->first();
+
+        $komentar = DB::table('pengajuan_limitkredit_analisa_v3')->where('no_pengajuan', $no_pengajuan)->get();
+        return view('sap.showlimitkredit', compact('limitkredit', 'komentar'));
+    }
+
+    public function pelanggan(Request $request)
+    {
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
+        $query = Pelanggan::query();
+        if ($this->cabang != "PCF") {
+            $query->where('pelanggan.kode_cabang', $this->cabang);
+        }
+        if (Auth::user()->level == "salesman") {
+            $query->where('pelanggan.id_sales', Auth::user()->id_salesman);
+        } else {
+            if (Auth::user()->id == 82) {
+                $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB', 'BTN');
+                $query->whereIn('pelanggan.kode_cabang', $wilayah_barat);
+            } else if (Auth::user()->id == 97) {
+                $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
+                $query->whereIn('pelanggan.kode_cabang', $wilayah_timur);
+            }
+        }
+
+
+
+        if ($request->nama != "") {
+            $query->where('nama_pelanggan', 'like', '%' . $request->nama . '%');
+        }
+
+
+        if ($request->kode_cabang != "") {
+            $query->where('pelanggan.kode_cabang', $request->kode_cabang);
+        }
+
+        if ($request->id_karyawan != "") {
+            $query->where('pelanggan.id_sales', $request->id_karyawan);
+        }
+
+        if ($request->status_pelanggan != "") {
+            $query->where('pelanggan.status_pelanggan', $request->status_pelanggan);
+        }
+
+        if ($request->dari != "" && $request->sampai != "") {
+            $query->whereBetween('pelanggan.time_stamps', [$request->dari, $request->sampai]);
+        }
+
+        if (!empty($request->kode_pelanggan)) {
+            $query->where('pelanggan.kode_pelanggan', $request->kode_pelanggan);
+        }
+        $query->select('pelanggan.*', 'nama_karyawan');
+        $query->orderBy('status_pelanggan', 'desc');
+        $query->orderBy('nama_pelanggan', 'asc');
+        $query->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
+        $pelanggan = $query->paginate(15);
+        $pelanggan->appends($request->all());
+        return view('sap.pelanggan', compact('cabang', 'pelanggan'));
     }
 }

@@ -107,7 +107,7 @@
 <div class="row">
 
     <div class="col-6 col-md-3">
-        <a href="/sap/limitkredit" class="card text-center">
+        <a href="/sap/limitkredit?status=pending" class="card text-center">
             <div class="card-body">
                 <i class="bi bi-bag-dash text-color-theme" style="font-size: 2rem;"></i>
                 <span class="count-indicator_2">{{ $jmlpengajuan }}</span>
@@ -116,6 +116,17 @@
         </a>
     </div>
     <div class="col-6 col-md-3">
+        <a href="/sap/pelanggan" class="card text-center">
+            <div class="card-body">
+                <i class="bi bi-people text-color-theme" style="font-size: 2rem;"></i>
+                <p class="text-color-theme size-12 small" style="margin-top: 10px">Pelanggan</p>
+            </div>
+        </a>
+    </div>
+
+</div>
+<div class="row mt-2">
+    <div class="col-12 col-md-12">
         <a href="/salesperformance" class="card text-center">
             <div class="card-body">
                 <i class="bi bi-bar-chart-line text-color-theme" style="font-size: 2rem;"></i>
