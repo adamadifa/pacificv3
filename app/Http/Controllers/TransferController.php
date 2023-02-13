@@ -32,7 +32,7 @@ class TransferController extends Controller
             'tgl_transfer',
             'nama_pelanggan',
             'karyawan.kode_cabang',
-            'nama_bank',
+            'namabank',
             DB::raw('SUM(transfer.jumlah) as jumlah'),
             'tglcair',
             'transfer.status',
@@ -49,7 +49,7 @@ class TransferController extends Controller
         $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
         $query->join('karyawan', 'transfer.id_karyawan', '=', 'karyawan.id_karyawan');
         $query->orderBy('tglcair', 'desc');
-        $query->groupBy('transfer.kode_transfer', 'tgl_transfer', 'nama_pelanggan', 'karyawan.kode_cabang', 'nama_bank', 'tglcair', 'transfer.status', 'ket', 'ledger_bank.no_bukti', 'tglbayar');
+        $query->groupBy('transfer.kode_transfer', 'tgl_transfer', 'nama_pelanggan', 'karyawan.kode_cabang', 'namabank', 'tglcair', 'transfer.status', 'ket', 'ledger_bank.no_bukti', 'tglbayar', 'nama_bank');
         if (empty($request->no_giro) && empty($request->nama_pelanggan) && empty($request->dari) && empty($request->sampai) && $request->status === null) {
             $query->WhereRaw("MATCH(nama_pelanggan) AGAINST('" . $pelanggan .  "')");
         }
