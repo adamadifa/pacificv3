@@ -32,7 +32,7 @@ class TransferController extends Controller
             'tgl_transfer',
             'nama_pelanggan',
             'karyawan.kode_cabang',
-            'namabank',
+            'nama_bank',
             DB::raw('SUM(transfer.jumlah) as jumlah'),
             'tglcair',
             'transfer.status',
