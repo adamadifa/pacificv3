@@ -78,9 +78,5 @@
 
     </div>
 </div>
-<div class="row">
-    <div class="col-12">
-        {{ $pelanggan->links('vendor.pagination.vuexy') }}
-    </div>
-</div>
+
 @endsection
