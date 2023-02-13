@@ -7713,7 +7713,7 @@ class PenjualanController extends Controller
             ->where('historibayar.id_karyawan', $id_karyawan)
             ->whereNotIn('historibayar.no_fak_penj', $no_fak_penj)
             ->orderBy('historibayar.no_fak_penj')
-            ->groupByRaw('historibayar.no_fak_penj')
+            ->groupByRaw('historibayar.no_fak_penj,nama_pelanggan,totalgiro,totaltransfer')
             ->get();
 
         $no_fak_penj_hb = [];
@@ -7730,7 +7730,7 @@ class PenjualanController extends Controller
             ->whereNotIn('giro.no_fak_penj', $no_fak_penj)
             ->whereNotIn('giro.no_fak_penj', $no_fak_penj_hb)
             ->orderBy('giro.no_fak_penj')
-            ->groupByRaw('giro.no_fak_penj')
+            ->groupByRaw('giro.no_fak_penj,nama_pelanggan')
             ->get();
 
         $transfer = DB::table('transfer')
@@ -7742,7 +7742,7 @@ class PenjualanController extends Controller
             ->whereNotIn('transfer.no_fak_penj', $no_fak_penj)
             ->whereNotIn('transfer.no_fak_penj', $no_fak_penj_hb)
             ->orderBy('transfer.no_fak_penj')
-            ->groupByRaw('transfer.no_fak_penj')
+            ->groupByRaw('transfer.no_fak_penj,nama_pelanggan')
             ->get();
 
         $karyawan = DB::table('karyawan')->where('id_karyawan', $id_karyawan)->first();
