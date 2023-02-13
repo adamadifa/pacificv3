@@ -7664,7 +7664,7 @@ class PenjualanController extends Controller
         $query->where('karyawan.kode_cabang', $request->kode_cabang);
         $query->where('penjualan.id_karyawan', $request->id_karyawan);
         $query->orderBy('penjualan.no_fak_penj');
-        $query->groupByRaw('penjualan.no_fak_penj,nama_pelanggan,AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500');
+        $query->groupByRaw('penjualan.no_fak_penj,nama_pelanggan,AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500,totalbayar,totalgiro,totaltransfer');
         $penjualan = $query->get();
 
         $no_fak_penj = [];
