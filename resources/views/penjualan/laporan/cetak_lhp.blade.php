@@ -30,6 +30,20 @@
         font-size: 10px;
     }
 
+
+    .datatable2 {
+        border: 1px solid #2f2f2f;
+        border-collapse: collapse;
+
+    }
+
+    .datatable2 td {
+        /* border: 1px solid #000000; */
+        padding: 6px;
+        font-size: 9px;
+    }
+
+
     body {
         background: rgb(204, 204, 204);
         font-family: 'Poppins';
@@ -111,6 +125,10 @@
                 $totalSP500 = 0;
                 $totaltunai = 0;
                 $totalkredit = 0;
+                $totaltagihan1 = 0;
+                $totaltagihan2 = 0;
+                $totaltagihan3 = 0;
+                $totaltagihan4 =0;
                 @endphp
                 @foreach ($penjualan as $d)
                 @php
@@ -126,6 +144,7 @@
                 $totalSP500 += $d->SP500;
                 $totaltunai += $d->totaltunai;
                 $totalkredit += $d->totalkredit;
+                $totaltagihan1 += ($d->totalbayar + $d->totalgiro + $d->totaltransfer);
                 @endphp
                 <tr>
                     <td>{{ ucwords(strtolower($d->nama_pelanggan)) }}</td>
@@ -172,6 +191,9 @@
                 </tr>
                 @endforeach
                 @foreach ($historibayar as $d)
+                @php
+                $totaltagihan2 += ($d->totalbayar + $d->totalgiro + $d->totaltransfer);
+                @endphp
                 <tr>
                     <td>{{ ucwords(strtolower($d->nama_pelanggan)) }}</td>
                     <td>{{ $d->no_fak_penj }}</td>
@@ -249,9 +271,120 @@
                     <th>{{ desimal($totalSP500) }}</th>
                     <th>{{ desimal($totaltunai) }}</th>
                     <th>{{ desimal($totalkredit) }}</th>
+                    <th>{{ rupiah($totaltagihan1 + $totaltagihan2) }}</th>
                 </tr>
                 <tr>
                     <th colspan="2">BS</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </table>
+            <br>
+            <table style="width:100%" class="datatable2">
+                <tr>
+                    <td style="width: 50%">
+                        <table style="width:100%">
+                            <tr>
+                                <td style="width:25%">Uang Kertas</td>
+                                <td>Rp.........................................................................................................</td>
+                            </tr>
+                            <tr>
+                                <td style="width:20%">Uang Logam</td>
+                                <td>Rp.........................................................................................................</td>
+                            </tr>
+                            <tr>
+                                <td style="width:20%">Cek/BG</td>
+                                <td><u>Rp.........................................................................................................</u></td>
+                            </tr>
+
+                            <tr>
+                                <td style="width:20%">Jumlah</td>
+                                <td>Rp.........................................................................................................</td>
+                            </tr>
+                            <tr>
+                                <td style="width:20%">Setor</td>
+                                <td>Rp.........................................................................................................</td>
+                            </tr>
+                            <tr>
+                                <td style="width:20%">Selisih</td>
+                                <td>Rp.........................................................................................................</td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td valign="top">
+                        <table style="width:100%">
+                            <tr>
+                                <td style="width:40%">Penjualan Tunai</td>
+                                <td>Rp.....................................................</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%">Penjualan Botol / Peti</td>
+                                <td>Rp.....................................................</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%">Tagihan</td>
+                                <td><u>Rp.....................................................</u></td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%">Dikurangi</td>
+                                <td>Rp.....................................................</td>
+                            </tr>
+                            <tr>
+                                <td style="width:40%">Retur / BS</td>
+                                <td>Rp.....................................................</td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            <br>
+            <table class="datatable2" style="width:100%">
+                <tr>
+                    <td style="text-align:center">Dibuat Oleh</td>
+                    <td style="text-align:center" colspan="2">Mengetahui</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center">
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+
+                        <u>({{ $karyawan->nama_karyawan }})</u>
+                        <br>
+                        Salesman
+                    </td>
+                    <td style="text-align: center">
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+
+                        <u>(------------------)</u>
+                        <br>
+                        Salesman SPV
+                    </td>
+                    <td style="text-align: center">
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+
+                        <u>(------------------)</u>
+                        <br>
+                        Kepala Penjualan
+                    </td>
                 </tr>
             </table>
         </article>

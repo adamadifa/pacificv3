@@ -339,12 +339,12 @@ class DashboardController extends Controller
         $qpengajuan->where('pelanggan.kode_cabang', $kode_cabang);
         $qpengajuan->whereNull('kacab');
         $qpengajuan->where('status', 0);
-        if (Auth::user()->id == 7) {
-            $qpengajuan->orwhere('pelanggan.kode_cabang', 'GRT');
-            $qpengajuan->whereIn('no_pengajuan', $no_pengajuan);
-            $qpengajuan->whereNull('kacab');
-            $qpengajuan->where('status', 0);
-        }
+        // if (Auth::user()->id == 7) {
+        //     $qpengajuan->orwhere('pelanggan.kode_cabang', 'GRT');
+        //     $qpengajuan->whereIn('no_pengajuan', $no_pengajuan);
+        //     $qpengajuan->whereNull('kacab');
+        //     $qpengajuan->where('status', 0);
+        // }
         $qpengajuan->where('jumlah', '>', 2000000);
 
         $jmlpengajuan = $qpengajuan->count();
@@ -663,9 +663,12 @@ class DashboardController extends Controller
         $hariini = date("Y-m-d");
         $bulanini = date('m');
         $tahunini = date('Y');
-
+        $id_user = Auth::user()->id;
         $level = Auth::user()->level;
+        $kode_cabang = Auth::user()->kode_cabang;
         $no_pengajuan[] = "";
+        $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB', 'BTN');
+        $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
         $pengajuanterakhir = DB::table('pengajuan_limitkredit_v3')
             ->select(DB::raw('MAX(no_pengajuan) as no_pengajuan'))
             ->groupBy('kode_pelanggan')
@@ -673,20 +676,89 @@ class DashboardController extends Controller
         foreach ($pengajuanterakhir as $d) {
             $no_pengajuan[] = $d->no_pengajuan;
         }
-        $penjualan = DB::table('penjualan')
-            ->selectRaw('SUM(total) as totalpenjualan')
-            ->whereRaw('MONTH(tgltransaksi)="' . $bulanini . '"')
-            ->whereRaw('YEAR(tgltransaksi)="' . $tahunini . '"')
-            ->first();
-        $penjualancabang = DB::table('penjualan')
-            ->selectRaw('nama_cabang,SUM(total) as totalpenjualan,COUNT(no_fak_penj) as jmlorder')
-            ->whereRaw('MONTH(tgltransaksi)="' . $bulanini . '"')
-            ->whereRaw('YEAR(tgltransaksi)="' . $tahunini . '"')
-            ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
-            ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
-            ->orderBy('nama_cabang')
-            ->groupByRaw('karyawan.kode_cabang,nama_cabang')
-            ->get();
+
+        if ($kode_cabang != "PCF") {
+            $penjualan = DB::table('penjualan')
+                ->selectRaw('SUM(total) as totalpenjualan')
+                ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+                ->whereRaw('MONTH(tgltransaksi)="' . $bulanini . '"')
+                ->whereRaw('YEAR(tgltransaksi)="' . $tahunini . '"')
+                ->where('karyawan.kode_cabang', $kode_cabang)
+                ->first();
+        } else {
+            if ($id_user == 82) {
+                $penjualan = DB::table('penjualan')
+                    ->selectRaw('SUM(total) as totalpenjualan')
+                    ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+                    ->whereRaw('MONTH(tgltransaksi)="' . $bulanini . '"')
+                    ->whereRaw('YEAR(tgltransaksi)="' . $tahunini . '"')
+                    ->whereIn('karyawan.kode_cabang', $wilayah_barat)
+                    ->first();
+            } else if ($id_user == 97) {
+                $penjualan = DB::table('penjualan')
+                    ->selectRaw('SUM(total) as totalpenjualan')
+                    ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+                    ->whereRaw('MONTH(tgltransaksi)="' . $bulanini . '"')
+                    ->whereRaw('YEAR(tgltransaksi)="' . $tahunini . '"')
+                    ->whereIn('karyawan.kode_cabang', $wilayah_timur)
+                    ->first();
+            } else {
+                $penjualan = DB::table('penjualan')
+                    ->selectRaw('SUM(total) as totalpenjualan')
+                    ->whereRaw('MONTH(tgltransaksi)="' . $bulanini . '"')
+                    ->whereRaw('YEAR(tgltransaksi)="' . $tahunini . '"')
+                    ->first();
+            }
+        }
+
+        if ($kode_cabang != "PCF") {
+            $penjualancabang = DB::table('penjualan')
+                ->selectRaw('nama_cabang,SUM(total) as totalpenjualan,COUNT(no_fak_penj) as jmlorder')
+                ->whereRaw('MONTH(tgltransaksi)="' . $bulanini . '"')
+                ->whereRaw('YEAR(tgltransaksi)="' . $tahunini . '"')
+                ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+                ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
+                ->where('karyawan.kode_cabang', $kode_cabang)
+                ->orderBy('nama_cabang')
+                ->groupByRaw('karyawan.kode_cabang,nama_cabang')
+                ->get();
+        } else {
+
+            if ($id_user == 82) {
+                $penjualancabang = DB::table('penjualan')
+                    ->selectRaw('nama_cabang,SUM(total) as totalpenjualan,COUNT(no_fak_penj) as jmlorder')
+                    ->whereRaw('MONTH(tgltransaksi)="' . $bulanini . '"')
+                    ->whereRaw('YEAR(tgltransaksi)="' . $tahunini . '"')
+                    ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+                    ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
+                    ->whereIn('karyawan.kode_cabang', $wilayah_barat)
+                    ->orderBy('nama_cabang')
+                    ->groupByRaw('karyawan.kode_cabang,nama_cabang')
+                    ->get();
+            } else if ($id_user == 97) {
+                $penjualancabang = DB::table('penjualan')
+                    ->selectRaw('nama_cabang,SUM(total) as totalpenjualan,COUNT(no_fak_penj) as jmlorder')
+                    ->whereRaw('MONTH(tgltransaksi)="' . $bulanini . '"')
+                    ->whereRaw('YEAR(tgltransaksi)="' . $tahunini . '"')
+                    ->whereIn('karyawan.kode_cabang', $wilayah_timur)
+                    ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+                    ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
+                    ->orderBy('nama_cabang')
+                    ->groupByRaw('karyawan.kode_cabang,nama_cabang')
+                    ->get();
+            } else {
+                $penjualancabang = DB::table('penjualan')
+                    ->selectRaw('nama_cabang,SUM(total) as totalpenjualan,COUNT(no_fak_penj) as jmlorder')
+                    ->whereRaw('MONTH(tgltransaksi)="' . $bulanini . '"')
+                    ->whereRaw('YEAR(tgltransaksi)="' . $tahunini . '"')
+                    ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+                    ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
+                    ->orderBy('nama_cabang')
+                    ->groupByRaw('karyawan.kode_cabang,nama_cabang')
+                    ->get();
+            }
+        }
+
 
         if ($level == "direktur") {
             $jmlpengajuan = DB::table('pengajuan_limitkredit_v3')
@@ -696,6 +768,21 @@ class DashboardController extends Controller
                 ->whereNull('dirut')
                 ->where('status', 0)
                 ->count();
+        } else if ($level == "rsm") {
+            $query = Limitkredit::query();
+            $query->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+            $query->whereIn('no_pengajuan', $no_pengajuan);
+            $query->whereNotNull('kacab');
+            $query->whereNull('rsm');
+            $query->where('status', 0);
+            if ($id_user == 82) {
+                $query->whereIn('pelanggan.kode_cabang', $wilayah_barat);
+            } else if ($id_user == 97) {
+                $query->whereIn('pelanggan.kode_cabang', $wilayah_timur);
+            }
+            $jmlpengajuan = $query->count();
+            //dd($id_user);
+            //dd($jmlpengajuan);
         } else if ($level == "manager marketing") {
             $jmlpengajuan = DB::table('pengajuan_limitkredit_v3')
                 ->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
@@ -712,6 +799,22 @@ class DashboardController extends Controller
                 ->whereNull('gm')
                 ->where('status', 0)
                 ->count();
+        } else if ($level == "kepala penjualan") {
+            $qpengajuan = Limitkredit::query();
+            $qpengajuan->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+            $qpengajuan->whereIn('no_pengajuan', $no_pengajuan);
+            $qpengajuan->where('pelanggan.kode_cabang', $kode_cabang);
+            $qpengajuan->whereNull('kacab');
+            $qpengajuan->where('status', 0);
+            // if (Auth::user()->id == 7) {
+            //     $qpengajuan->orwhere('pelanggan.kode_cabang', 'GRT');
+            //     $qpengajuan->whereIn('no_pengajuan', $no_pengajuan);
+            //     $qpengajuan->whereNull('kacab');
+            //     $qpengajuan->where('status', 0);
+            // }
+            $qpengajuan->where('jumlah', '>', 2000000);
+
+            $jmlpengajuan = $qpengajuan->count();
         } else if ($level == "admin") {
             $jmlpengajuan = DB::table('pengajuan_limitkredit_v3')
                 ->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
@@ -719,6 +822,7 @@ class DashboardController extends Controller
                 ->where('status', 0)
                 ->count();
         }
+
         return view('sap.home', compact('penjualan', 'penjualancabang', 'jmlpengajuan'));
     }
 }

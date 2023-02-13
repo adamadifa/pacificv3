@@ -7571,32 +7571,46 @@ class PenjualanController extends Controller
         $kode_cabang = $request->kode_cabang;
         $id_karyawan = $request->id_karyawan;
         $tanggal = $request->tanggal;
-        $query = Detailpenjualan::query();
+        $query = Penjualan::query();
         $query->selectRaw("penjualan.no_fak_penj,nama_pelanggan,
-        SUM( IF ( kode_produk = 'AB', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS AB,
-        SUM( IF ( kode_produk = 'AR', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS AR,
-        SUM( IF ( kode_produk = 'AS', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS ASE,
-        SUM( IF ( kode_produk = 'BB', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS BB,
-        SUM( IF ( kode_produk = 'CG', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS CG,
-        SUM( IF ( kode_produk = 'CGG', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS CGG,
-        SUM( IF ( kode_produk = 'DB', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS DB,
-        SUM( IF ( kode_produk = 'DEP', detailpenjualan.jumlah/isipcsdus,NULL ) ) AS DEP,
-        SUM( IF ( kode_produk = 'DK', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS DK,
-        SUM( IF ( kode_produk = 'DS', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS DS,
-        SUM( IF ( kode_produk = 'SP', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SP,
-        SUM( IF ( kode_produk = 'BBP', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS BBP,
-        SUM( IF ( kode_produk = 'SPP', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SPP,
-        SUM( IF ( kode_produk = 'CG5', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS CG5,
-        SUM( IF ( kode_produk = 'SC', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SC,
-        SUM( IF ( kode_produk = 'SP8', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SP8,
-        SUM( IF ( kode_produk = 'SP8-P', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SP8P,
-        SUM( IF ( kode_produk = 'SP', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SP,
-        SUM( IF ( kode_produk = 'SP500', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SP500,
+        AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500,
         SUM(IF(penjualan.jenistransaksi='tunai',total,0)) as totaltunai,
         SUM(IF(penjualan.jenistransaksi='kredit',total,0)) as totalkredit,
         totalbayar,totalgiro,totaltransfer");
-        $query->join('barang', 'detailpenjualan.kode_barang', '=', 'barang.kode_barang');
-        $query->join('penjualan', 'detailpenjualan.no_fak_penj', '=', 'penjualan.no_fak_penj');
+        $query->leftJoin(
+            DB::raw("(
+            SELECT
+                detailpenjualan.no_fak_penj,
+                SUM( IF ( kode_produk = 'AB', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS AB,
+                SUM( IF ( kode_produk = 'AR', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS AR,
+                SUM( IF ( kode_produk = 'AS', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS ASE,
+                SUM( IF ( kode_produk = 'BB', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS BB,
+                SUM( IF ( kode_produk = 'CG', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS CG,
+                SUM( IF ( kode_produk = 'CGG', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS CGG,
+                SUM( IF ( kode_produk = 'DB', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS DB,
+                SUM( IF ( kode_produk = 'DEP', detailpenjualan.jumlah/isipcsdus,NULL ) ) AS DEP,
+                SUM( IF ( kode_produk = 'DK', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS DK,
+                SUM( IF ( kode_produk = 'DS', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS DS,
+                SUM( IF ( kode_produk = 'BBP', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS BBP,
+                SUM( IF ( kode_produk = 'SPP', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SPP,
+                SUM( IF ( kode_produk = 'CG5', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS CG5,
+                SUM( IF ( kode_produk = 'SC', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SC,
+                SUM( IF ( kode_produk = 'SP8', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SP8,
+                SUM( IF ( kode_produk = 'SP8-P', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SP8P,
+                SUM( IF ( kode_produk = 'SP', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SP,
+                SUM( IF ( kode_produk = 'SP500', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SP500
+            FROM
+                detailpenjualan
+            INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
+            INNER JOIN penjualan ON detailpenjualan.no_fak_penj = penjualan.no_fak_penj
+            WHERE tgltransaksi = '$tanggal'
+            GROUP BY
+                detailpenjualan.no_fak_penj
+            ) dp"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'dp.no_fak_penj');
+            }
+        );
         $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
         $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
         $query->leftJoin(
@@ -7650,7 +7664,7 @@ class PenjualanController extends Controller
         $query->where('karyawan.kode_cabang', $request->kode_cabang);
         $query->where('penjualan.id_karyawan', $request->id_karyawan);
         $query->orderBy('penjualan.no_fak_penj');
-        $query->groupByRaw('penjualan.no_fak_penj,nama_pelanggan');
+        $query->groupByRaw('penjualan.no_fak_penj,nama_pelanggan,AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500');
         $penjualan = $query->get();
 
         $no_fak_penj = [];
@@ -7730,6 +7744,8 @@ class PenjualanController extends Controller
             ->orderBy('transfer.no_fak_penj')
             ->groupByRaw('transfer.no_fak_penj')
             ->get();
-        return view('penjualan.laporan.cetak_lhp', compact('tanggal', 'penjualan', 'historibayar', 'giro', 'transfer'));
+
+        $karyawan = DB::table('karyawan')->where('id_karyawan', $id_karyawan)->first();
+        return view('penjualan.laporan.cetak_lhp', compact('tanggal', 'penjualan', 'historibayar', 'giro', 'transfer', 'karyawan'));
     }
 }

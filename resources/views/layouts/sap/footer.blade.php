@@ -10,10 +10,10 @@
                 </a>
             </li> --}}
             <li class="nav-item">
-                <a class="nav-link" href="stats.html">
+                <a class="nav-link" href="/sap/limitkredit?status=pending">
                     <span>
-                        <i class="nav-icon bi bi-laptop"></i>
-                        <span class="nav-text">Statistics</span>
+                        <i class="nav-icon bi bi-bag-dash"></i>
+                        <span class="nav-text">Limit Kredit</span>
                     </span>
                 </a>
             </li>
@@ -27,10 +27,10 @@
 
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="rewards.html">
+                <a class="nav-link" href="/salesperfomance">
                     <span>
-                        <i class="nav-icon bi bi-gift"></i>
-                        <span class="nav-text">Rewards</span>
+                        <i class="nav-icon bi bi-bar-chart-line"></i>
+                        <span class="nav-text">Sales Perfomance</span>
                     </span>
                 </a>
             </li>

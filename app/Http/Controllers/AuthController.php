@@ -55,4 +55,15 @@ class AuthController extends Controller
 
         return redirect('/');
     }
+
+    public function logoutsap(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('/loginsap');
+    }
 }

@@ -159,6 +159,7 @@ Route::get('/cekdpbwa', [WhatsappController::class, 'cekdpb']);
 Route::get('/cekpenjualanwa', [WhatsappController::class, 'cekpenjualan']);
 Route::middleware(['auth'])->group(function () {
     Route::post('/postlogout', [AuthController::class, 'postlogout']);
+    Route::post('/logoutsap', [AuthController::class, 'logoutsap']);
     Route::get('/home', [DashboardController::class, 'home']);
     Route::get('/user', [UserController::class, 'index']);
     Route::get('/user/{id}/activated', [UserController::class, 'activated']);

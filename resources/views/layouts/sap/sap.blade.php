@@ -157,33 +157,30 @@
                             <div class="row">
                                 <div class="col-auto">
                                     <figure class="avatar avatar-44 rounded-15">
-                                        <img src="assets/img/user1.jpg" alt="">
+                                        @if (Auth::user()->foto != null)
+                                        @php
+                                        $path = Storage::url('users/'.Auth::user()->foto);
+                                        @endphp
+                                        @else
+                                        @php
+                                        $path = asset('app-assets/images/avatar.png');
+                                        @endphp
+                                        @endif
+                                        <img src="{{ url($path) }}" alt="">
                                     </figure>
                                 </div>
                                 <div class="col px-0 align-self-center">
-                                    <p class="mb-1">Maxartkiller</p>
-                                    <p class="text-muted size-12">New York City, US</p>
+                                    <p class="mb-1">{{ Auth::user()->name }}</p>
+                                    <p class="text-muted size-12">{{ Auth::user()->level }}</p>
                                 </div>
                                 <div class="col-auto">
-                                    <button class="btn btn-44 btn-light">
-                                        <i class="bi bi-box-arrow-right"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card bg-opac text-white border-0">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <h1 class="display-4">100.00</h1>
-                                    </div>
-                                    <div class="col-auto">
-                                        <p class="text-muted">Wallet Balance</p>
-                                    </div>
-                                    <div class="col text-end">
-                                        <p class="text-muted"><a href="addmoney.html">+ Top up</a>
-                                        </p>
-                                    </div>
+                                    <form action="/logoutsap" method="POST">
+                                        @csrf
+                                        <button class="btn btn-44 btn-light" type="submit">
+                                            <i class="bi bi-box-arrow-right"></i>
+                                        </button>
+                                    </form>
+
                                 </div>
                             </div>
                         </div>
