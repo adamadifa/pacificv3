@@ -386,6 +386,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/laporanpenjualan/effectivecall/cetak', [PenjualanController::class, 'cetakeffectivecall']);
     Route::post('/effectivecall/detailsalesman', [PenjualanController::class, 'detailsalesmanecen']);
 
+    Route::get('/laporanpenjualan/lhp', [PenjualanController::class, 'lhp']);
+    Route::post('/laporanpenjualan/lhp/cetak', [PenjualanController::class, 'cetaklhp']);
+
     //LPC
     Route::get('/lpc', [LpcController::class, 'index']);
     Route::post('/lpc/show', [LpcController::class, 'show']);

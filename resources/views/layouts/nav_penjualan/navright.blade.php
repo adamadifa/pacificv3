@@ -113,6 +113,11 @@
                     <i class="feather icon-file mr-1"></i>Tunai Transfer
                 </li>
             </a>
+            <a href="/laporanpenjualan/lhp" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanpenjualan/lhp']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>LHP
+                </li>
+            </a>
             @endif
         </ul>
     </div>
