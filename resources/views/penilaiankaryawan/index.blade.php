@@ -143,7 +143,6 @@
                                                 //Jika Status == 2 Level Tidak Kosong  dan Level == "DIRUT" maka X
                                                 echo "<i class='fa fa-close danger'></i>";
                                             }else if($d->status == 2 && !empty($d->$level) && empty($d->$nextlevel)){
-
                                                 echo "<i class='fa fa-close danger'></i>";
                                             }else if($d->status == 2 && !empty($d->$level) && !empty($d->$nextlevel)){
                                                 echo "<i class='fa fa-check success'></i>";
@@ -160,6 +159,7 @@
                                         }
                                         ?>
                                         <td>
+
                                             <div class="btn-group">
                                                 <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/cetak" class="info mr-1"><i class="feather icon-printer"></i></a>
                                                 @if (array_search(strtolower($kat_jab_user),$approve) == 0)
@@ -188,12 +188,9 @@
                                                 ?>
                                                 <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/{{ Crypt::encrypt($field_kategori) }}/batalkan" class="warning ml-1">Batalkan</a>
                                                 <?php } ?>
-
                                                 @else
                                                 <?php
-
                                                 $lastindex = $cekindex - 1;
-
                                                 if($cekindex == 0){
                                                 ?>
                                                 <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/{{ Crypt::encrypt($field_kategori) }}/approve" class="success ml-1"><i class="fa fa-check"></i></a>
