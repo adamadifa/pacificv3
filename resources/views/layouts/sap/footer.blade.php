@@ -27,7 +27,7 @@
 
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/salesperfomance">
+                <a class="nav-link" href="/salesperformance">
                     <span>
                         <i class="nav-icon bi bi-bar-chart-line"></i>
                         <span class="nav-text">Sales Perfomance</span>

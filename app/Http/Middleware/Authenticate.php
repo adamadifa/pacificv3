@@ -17,7 +17,7 @@ class Authenticate extends Middleware
 
 
         if (!$request->expectsJson()) {
-            if (request()->is(['homesap', 'salesperformance', 'getsalesperfomance'])) {
+            if (request()->is(['homesap', 'salesperformance', 'getsalesperfomance', 'sap/*'])) {
                 return route('loginsap');
             } else {
                 return route('login');
