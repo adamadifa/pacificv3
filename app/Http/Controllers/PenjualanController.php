@@ -156,8 +156,6 @@ class PenjualanController extends Controller
             } else {
                 if (!empty($request->dari) && !empty($request->sampai)) {
                     $query->whereBetween('tgltransaksi', [$request->dari, $request->sampai]);
-                } else {
-                    $query->whereBetween('tgltransaksi', [$dari, $sampai]);
                 }
             }
 
