@@ -71,6 +71,7 @@
                 <td>Pasar / Daerah</td>
                 <td>Saldo Piutang</td>
                 <td style="width:5%">Jumlah</td>
+                <td style="width:5%">Keterangan</td>
             </tr>
         </thead>
         <tbody>
@@ -106,6 +107,7 @@
                 <td><?php echo $lb->pasar; ?></td>
                 <td align="right"><?php echo rupiah($lb->sisabayar); ?></td>
                 <td></td>
+                <td>{{ $lb->keterangan }}</td>
             </tr>
 
             <?php

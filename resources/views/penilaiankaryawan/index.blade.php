@@ -162,9 +162,14 @@
 
                                             <div class="btn-group">
                                                 <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/cetak" class="info mr-1"><i class="feather icon-printer"></i></a>
-                                                @if (array_search(strtolower($kat_jab_user),$approve) == 0)
+                                                @if (array_search(strtolower($kat_jab_user),$approve) == 0 || Auth::user()->level=="manager hrd")
                                                 @if (empty($d->$field_kategori))
                                                 <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian)}}/edit" class="success"><i class="feather icon-edit"></i></a>
+                                                @endif
+                                                @endif
+
+                                                @if (array_search(strtolower($kat_jab_user),$approve) == 0)
+                                                @if (empty($d->$field_kategori))
                                                 <form method="POST" name="deleteform" class="deleteform" action="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/delete">
                                                     @csrf
                                                     @method('DELETE')
@@ -174,7 +179,6 @@
                                                 </form>
                                                 @endif
                                                 @endif
-
                                                 @if (!empty($d->$field_kategori))
                                                 <?php
                                                 if($cekindex < count($approve) -1) {

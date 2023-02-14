@@ -4471,7 +4471,7 @@ class PenjualanController extends Controller
         $cabang = DB::table('cabang')->where('kode_cabang', $request->kode_cabang)->first();
         $salesman = DB::table('karyawan')->where('id_karyawan', $request->id_karyawan)->first();
         $query = Penjualan::query();
-        $query->selectRaw('penjualan.no_fak_penj,tgltransaksi,penjualan.kode_pelanggan,nama_pelanggan,pasar,penjualan.total as totalpenjualan,
+        $query->selectRaw('penjualan.no_fak_penj,tgltransaksi,penjualan.kode_pelanggan,nama_pelanggan,pasar,penjualan.total as totalpenjualan,keterangan,
         ( ifnull( penjualan.total, 0 ) - IFNULL( retur.total, 0 ) - ifnull( jmlbayar, 0 ) ) AS sisabayar, 1 AS jmlfaktur');
         $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
         $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');

@@ -342,7 +342,7 @@ class PenilaiankaryawanController extends Controller
         $sampai = $periode_kontrak[1];
         $nik = $penilaian->nik;
         $karyawan = DB::table('hrd_penilaian')
-            ->selectRaw('hrd_penilaian.nik,nama_karyawan,hrd_penilaian.kode_dept,nama_dept,hrd_penilaian.id_jabatan,nama_jabatan,hrd_penilaian.id_kategori_jabatan,hrd_penilaian.id_kantor,hrd_penilaian.id_perusahaan')
+            ->selectRaw('hrd_penilaian.nik,nama_karyawan,hrd_penilaian.kode_dept,nama_dept,hrd_penilaian.id_jabatan,nama_jabatan,hrd_penilaian.id_kategori_jabatan,hrd_penilaian.id_kantor,hrd_penilaian.id_perusahaan,pemutihan')
             ->join('master_karyawan', 'hrd_penilaian.nik', '=', 'master_karyawan.nik')
             ->join('hrd_jabatan', 'hrd_penilaian.id_jabatan', '=', 'hrd_jabatan.id')
             ->leftjoin('departemen', 'hrd_penilaian.kode_dept', '=', 'departemen.kode_dept')
@@ -399,6 +399,8 @@ class PenilaiankaryawanController extends Controller
         $masa_kontrak_kerja = $request->masa_kontrak_kerja;
         $rekomendasi = $request->rekomendasi;
         $evaluasi = $request->evaluasi;
+        $pemutihan = $request->pemutihan != null ? $request->pemutihan : 0;
+
         $data = [
             'tanggal' => $tanggal,
             'nik' => $nik,
@@ -414,7 +416,8 @@ class PenilaiankaryawanController extends Controller
             'alfa' => $alfa,
             'masa_kontrak_kerja' => $masa_kontrak_kerja,
             'rekomendasi' => $rekomendasi,
-            'evaluasi' => $evaluasi
+            'evaluasi' => $evaluasi,
+            'pemutihan' => $pemutihan
         ];
 
 
@@ -435,6 +438,20 @@ class PenilaiankaryawanController extends Controller
         try {
             DB::table('hrd_penilaian_detail')->where('kode_penilaian', $kode_penilaian)->delete();
             DB::table('hrd_penilaian')->where('kode_penilaian', $kode_penilaian)->update($data);
+            $cek = DB::table('hrd_historieditpemutihan')->where('id_user', Auth::user()->id)->where('kode_penilaian', $kode_penilaian)->count();
+            if ($cek > 0) {
+                DB::table('hrd_historieditpemutihan')->where('id_user', Auth::user()->id)->where('kode_penilaian', $kode_penilaian)
+                    ->update([
+                        'pemutihan' => $pemutihan
+                    ]);
+            } else {
+                DB::table('hrd_historieditpemutihan')->insert([
+                    'kode_penilaian' => $kode_penilaian,
+                    'id_user' => Auth::user()->id,
+                    'level' => Auth::user()->level,
+                    'pemutihan' => $pemutihan
+                ]);
+            }
             $chunks = array_chunk($detail_nilai, 5);
             foreach ($chunks as $chunk) {
                 Detailpenilaiankaryawan::insert($chunk);
