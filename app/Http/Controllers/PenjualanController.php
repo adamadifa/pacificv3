@@ -4470,6 +4470,60 @@ class PenjualanController extends Controller
         $tanggal = $request->tanggal;
         $cabang = DB::table('cabang')->where('kode_cabang', $request->kode_cabang)->first();
         $salesman = DB::table('karyawan')->where('id_karyawan', $request->id_karyawan)->first();
+
+
+        $query2 = Penjualan::query();
+        $query2->selectRaw('penjualan.kode_pelanggan');
+        $query2->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $query2->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        $query2->leftJoin(
+            DB::raw("(
+                SELECT no_fak_penj,sum( historibayar.bayar ) AS jmlbayar
+				FROM historibayar
+				WHERE tglbayar <= '$tanggal'
+				GROUP BY no_fak_penj
+            ) hblalu"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'hblalu.no_fak_penj');
+            }
+        );
+        $query2->leftJoin(
+            DB::raw("(
+                SELECT retur.no_fak_penj AS no_fak_penj,
+				SUM(total) AS total
+				FROM
+					retur
+				WHERE tglretur <= '$tanggal'
+				GROUP BY
+					retur.no_fak_penj
+            ) retur"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
+            }
+        );
+        $query2->where('penjualan.jenistransaksi', '!=', 'tunai');
+        $query2->where('tgltransaksi', '<=', $tanggal);
+
+        if (!empty($request->kode_cabang)) {
+            $query2->where('karyawan.kode_cabang', $request->kode_cabang);
+        }
+
+        if (!empty($request->id_karyawan)) {
+            $query2->where('penjualan.id_karyawan', $request->id_karyawan);
+        }
+
+        $query2->whereRaw('(ifnull(penjualan.total,0) - (ifnull(retur.total,0))) != IFNULL(jmlbayar,0)');
+        $query2->groupBy('penjualan.kode_pelanggan');
+        $query2->havingRaw('COUNT(penjualan.kode_pelanggan) > 1');
+        $query2->orderBy('penjualan.kode_pelanggan', 'asc');
+        $cekpelanggan = $query2->get();
+
+        $kode_pelanggan = [];
+        foreach ($cekpelanggan as $d) {
+            $kode_pelanggan[] = $d->kode_pelanggan;
+        }
+
+
         $query = Penjualan::query();
         $query->selectRaw('penjualan.no_fak_penj,tgltransaksi,penjualan.kode_pelanggan,nama_pelanggan,pasar,penjualan.total as totalpenjualan,keterangan,
         ( ifnull( penjualan.total, 0 ) - IFNULL( retur.total, 0 ) - ifnull( jmlbayar, 0 ) ) AS sisabayar, 1 AS jmlfaktur');
@@ -4502,6 +4556,7 @@ class PenjualanController extends Controller
         );
         $query->where('penjualan.jenistransaksi', '!=', 'tunai');
         $query->where('tgltransaksi', '<=', $tanggal);
+
         if (!empty($request->kode_cabang)) {
             $query->where('karyawan.kode_cabang', $request->kode_cabang);
         }
@@ -4511,6 +4566,7 @@ class PenjualanController extends Controller
         }
 
         $query->whereRaw('(ifnull(penjualan.total,0) - (ifnull(retur.total,0))) != IFNULL(jmlbayar,0)');
+        $query->whereIn('penjualan.kode_pelanggan', $kode_pelanggan);
         $query->orderBy('penjualan.kode_pelanggan', 'asc');
         $lebihsatufaktur = $query->get();
         if (isset($_POST['export'])) {
