@@ -125,12 +125,7 @@
                 <td align="right">{{ rupiah($d->total) }}</td>
             </tr>
             @endforeach
-            <tr>
-                <td></td>
-                <td></td>
-                <td>Potongan Penjualan</td>
-                <td style="text-align: right">{{ rupiah($potongan->total) }}</td>
-            </tr>
+
             <tr>
                 <td></td>
                 <td></td>
@@ -148,8 +143,9 @@
             @php
             $totalswan = $penjualan->totalswan - $retur->totalreturswan;
             $totalaida = $penjualan->totalaida - $retur->totalreturaida;
-            $totalpenjualan = $totalswan + $totalaida;
-            $grandtotal = $grandtotal + $potongan->total + $logistik->total + $bahan->total;
+            $totalppn = $ppn->total;
+            $totalpenjualan = $totalswan + $totalaida + $totalppn ;
+            $grandtotal = $grandtotal + $logistik->total + $bahan->total;
 
             $cr_swan_biaya_total = $totalswan != 0 ? ROUND(($grandtotal/$totalswan)*100) : 0;
             $cr_aida_biaya_total = $totalaida != 0 ? ROUND(($grandtotal/$totalaida)*100) : 0;
@@ -177,6 +173,14 @@
             <tr>
                 <th style="background-color:rgb(93, 0, 0); color:white">COST RATIO</th>
                 <th style="background-color:rgb(93, 0, 0); color:white;">{{ $cr_aida_biaya_total }}%</th>
+            </tr>
+            <tr>
+                <th style="background-color:rgb(0, 52, 93); color:white" colspan="3">PPN</th>
+                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalppn) }}</th>
+            </tr>
+            <tr>
+                <th style="background-color:rgb(0, 52, 93); color:white" colspan="3">TOTAL PENJUALAN + PPN</th>
+                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalpenjualan) }}</th>
             </tr>
             <tr>
                 <th style="background-color:rgb(210, 59, 4); color:white" colspan="3">PIUTANG > 1 BULAN</th>

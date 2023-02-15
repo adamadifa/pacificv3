@@ -1022,33 +1022,60 @@ class LaporanaccountingController extends Controller
         $query->get();
         $biaya = $query->get();
 
-        $qpotongan = Penjualan::query();
-        if (!empty($request->kode_cabang)) {
-            $qpotongan->selectRaw("SUM(potongan + potistimewa + penyharga) as total");
-            $qpotongan->where('karyawan.kode_cabang', $request->kode_cabang);
-        } else {
-            $qpotongan->selectRaw("
-            SUM(IF(karyawan.kode_cabang='BDG',potongan + potistimewa + penyharga,0)) as bdg,
-            SUM(IF(karyawan.kode_cabang='BGR',potongan + potistimewa + penyharga,0)) as bgr,
-            SUM(IF(karyawan.kode_cabang='GRT',potongan + potistimewa + penyharga,0)) as grt,
-            SUM(IF(karyawan.kode_cabang='KLT',potongan + potistimewa + penyharga,0)) as klt,
-            SUM(IF(karyawan.kode_cabang='PST',potongan + potistimewa + penyharga,0)) as pst,
-            SUM(IF(karyawan.kode_cabang='PWT',potongan + potistimewa + penyharga,0)) as pwt,
-            SUM(IF(karyawan.kode_cabang='SBY',potongan + potistimewa + penyharga,0)) as sby,
-            SUM(IF(karyawan.kode_cabang='SKB',potongan + potistimewa + penyharga,0)) as skb,
-            SUM(IF(karyawan.kode_cabang='SMR',potongan + potistimewa + penyharga,0)) as smr,
-            SUM(IF(karyawan.kode_cabang='TGL',potongan + potistimewa + penyharga,0)) as tgl,
-            SUM(IF(karyawan.kode_cabang='TSM',potongan + potistimewa + penyharga,0)) as tsm,
-            SUM(IF(karyawan.kode_cabang='PWK',potongan + potistimewa + penyharga,0)) as pwk,
-            SUM(IF(karyawan.kode_cabang='BTN',potongan + potistimewa + penyharga,0)) as btn,
-            SUM(potongan + potistimewa + penyharga) as total
-        ");
-        }
-        $qpotongan->leftJoin('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
-        $qpotongan->whereBetween('tgltransaksi', [$dari, $sampai]);
-        $potongan = $qpotongan->first();
+        // $qpotongan = Penjualan::query();
+        // if (!empty($request->kode_cabang)) {
+        //     $qpotongan->selectRaw("SUM(potongan + potistimewa + penyharga) as total");
+        //     $qpotongan->where('karyawan.kode_cabang', $request->kode_cabang);
+        // } else {
+        //     $qpotongan->selectRaw("
+        //     SUM(IF(karyawan.kode_cabang='BDG',potongan + potistimewa + penyharga,0)) as bdg,
+        //     SUM(IF(karyawan.kode_cabang='BGR',potongan + potistimewa + penyharga,0)) as bgr,
+        //     SUM(IF(karyawan.kode_cabang='GRT',potongan + potistimewa + penyharga,0)) as grt,
+        //     SUM(IF(karyawan.kode_cabang='KLT',potongan + potistimewa + penyharga,0)) as klt,
+        //     SUM(IF(karyawan.kode_cabang='PST',potongan + potistimewa + penyharga,0)) as pst,
+        //     SUM(IF(karyawan.kode_cabang='PWT',potongan + potistimewa + penyharga,0)) as pwt,
+        //     SUM(IF(karyawan.kode_cabang='SBY',potongan + potistimewa + penyharga,0)) as sby,
+        //     SUM(IF(karyawan.kode_cabang='SKB',potongan + potistimewa + penyharga,0)) as skb,
+        //     SUM(IF(karyawan.kode_cabang='SMR',potongan + potistimewa + penyharga,0)) as smr,
+        //     SUM(IF(karyawan.kode_cabang='TGL',potongan + potistimewa + penyharga,0)) as tgl,
+        //     SUM(IF(karyawan.kode_cabang='TSM',potongan + potistimewa + penyharga,0)) as tsm,
+        //     SUM(IF(karyawan.kode_cabang='PWK',potongan + potistimewa + penyharga,0)) as pwk,
+        //     SUM(IF(karyawan.kode_cabang='BTN',potongan + potistimewa + penyharga,0)) as btn,
+        //     SUM(potongan + potistimewa + penyharga) as total
+        // ");
+        // }
+        // $qpotongan->leftJoin('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        // $qpotongan->whereBetween('tgltransaksi', [$dari, $sampai]);
+        // $potongan = $qpotongan->first();
 
         //dd($potongan);
+
+        $qppn = Penjualan::query();
+        if (!empty($request->kode_cabang)) {
+            $qppn->selectRaw("SUM(ppn) as total");
+            $qppn->where('karyawan.kode_cabang', $request->kode_cabang);
+        } else {
+            $qppn->selectRaw("
+            SUM(IF(karyawan.kode_cabang='BDG',ppn,0)) as bdg,
+            SUM(IF(karyawan.kode_cabang='BGR',ppn,0)) as bgr,
+            SUM(IF(karyawan.kode_cabang='GRT',ppn,0)) as grt,
+            SUM(IF(karyawan.kode_cabang='KLT',ppn,0)) as klt,
+            SUM(IF(karyawan.kode_cabang='PST',ppn,0)) as pst,
+            SUM(IF(karyawan.kode_cabang='PWT',ppn,0)) as pwt,
+            SUM(IF(karyawan.kode_cabang='SBY',ppn,0)) as sby,
+            SUM(IF(karyawan.kode_cabang='SKB',ppn,0)) as skb,
+            SUM(IF(karyawan.kode_cabang='SMR',ppn,0)) as smr,
+            SUM(IF(karyawan.kode_cabang='TGL',ppn,0)) as tgl,
+            SUM(IF(karyawan.kode_cabang='TSM',ppn,0)) as tsm,
+            SUM(IF(karyawan.kode_cabang='PWK',ppn,0)) as pwk,
+            SUM(IF(karyawan.kode_cabang='BTN',ppn,0)) as btn,
+            SUM(ppn) as total
+        ");
+        }
+        $qppn->leftJoin('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $qppn->whereBetween('tgltransaksi', [$dari, $sampai]);
+        $ppn = $qppn->first();
+
 
         $qbahan = Detailpengeluarangudangbahan::query();
         if (!empty($kode_cabang)) {
@@ -1719,9 +1746,9 @@ class LaporanaccountingController extends Controller
         }
         if (!empty($request->kode_cabang)) {
             $cabang = Cabang::where('kode_cabang', $request->kode_cabang)->first();
-            return view('laporanaccounting.laporan.cetak_costratio_cabang', compact('dari', 'sampai', 'biaya', 'penjualan', 'retur', 'piutang', 'cabang', 'potongan', 'logistik', 'bahan'));
+            return view('laporanaccounting.laporan.cetak_costratio_cabang', compact('dari', 'sampai', 'biaya', 'penjualan', 'retur', 'piutang', 'cabang', 'ppn', 'logistik', 'bahan'));
         } else {
-            return view('laporanaccounting.laporan.cetak_costratio', compact('dari', 'sampai', 'biaya', 'penjualan', 'retur', 'piutang', 'potongan', 'logistik', 'bahan'));
+            return view('laporanaccounting.laporan.cetak_costratio', compact('dari', 'sampai', 'biaya', 'penjualan', 'retur', 'piutang', 'logistik', 'bahan', 'ppn'));
         }
     }
 
