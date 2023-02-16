@@ -269,7 +269,7 @@
 
                     @if (!empty($faktur->signature))
                     @php
-                    $path = Storage::url('signature/'.$data->signature);
+                    $path = Storage::url('signature/'.$faktur->signature);
                     @endphp
                     <img src="{{ url($path) }}" alt="">
                     @endif
@@ -299,7 +299,7 @@
                 <td rowspan="3">
                     @if (!empty($faktur->signature))
                     @php
-                    $path = Storage::url('signature/'.$data->signature);
+                    $path = Storage::url('signature/'.$faktur->signature);
                     @endphp
                     <img src="{{ url($path) }}" alt="">
                     @endif
