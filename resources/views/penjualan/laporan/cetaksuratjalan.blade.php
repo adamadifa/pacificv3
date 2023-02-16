@@ -271,7 +271,7 @@
                     @php
                     $path = Storage::url('signature/'.$faktur->signature);
                     @endphp
-                    <img src="{{ url($path) }}" alt="">
+                    <img src="{{ url($path) }}" alt="" style="width:100px; height:100px">
                     @endif
                 </td>
                 <td></td>
@@ -301,7 +301,7 @@
                     @php
                     $path = Storage::url('signature/'.$faktur->signature);
                     @endphp
-                    <img src="{{ url($path) }}" alt="">
+                    <img src="{{ url($path) }}" alt="" style="width:100px; height:100px">
                     @endif
                 </td>
                 <td rowspan="3"></td>
