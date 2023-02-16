@@ -60,7 +60,11 @@
                 @endphp
                 <div class="row">
                     <div class="col-12">
-                        <img src="{{ url($path) }}" alt="">
+                        <div class="card">
+                            <div class="card-body">
+                                <img src="{{ url($path) }}" alt="">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 @endif
