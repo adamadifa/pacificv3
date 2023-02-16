@@ -38,7 +38,7 @@
                                 @php
                                 $path = Storage::url('pelanggan/'.$data->foto);
                                 @endphp
-                                <img class="card-img img-fluid" src="{{ url($path) }}" alt="Card image">
+                                <img class="card-img img-fluid" src="{{ url($path) }}" alt="Card image" style="height:300px">
                                 @else
                                 <img class="card-img img-fluid" src="{{ asset('app-assets/images/slider/04.jpg') }}" alt="Card image">
                                 @endif
