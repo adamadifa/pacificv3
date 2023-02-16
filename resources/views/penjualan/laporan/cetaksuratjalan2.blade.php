@@ -195,7 +195,14 @@
             <tr style="font-weight:bold;">
                 <td rowspan="3"></td>
                 <td rowspan="3"></td>
-                <td rowspan="3"></td>
+                <td rowspan="3" style="width:20%; text-align:center">
+                    @if (!empty($faktur->signature))
+                    @php
+                    $path = Storage::url('signature/'.$faktur->signature);
+                    @endphp
+                    <img src="{{ url($path) }}" alt="" style="width:200px; height:100px">
+                    @endif
+                </td>
                 <td rowspan="3"></td>
 
             </tr>
