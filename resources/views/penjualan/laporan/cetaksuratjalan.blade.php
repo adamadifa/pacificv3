@@ -266,6 +266,7 @@
                 <td style="height: 40px"></td>
                 <td></td>
                 <td>
+                    {{ $faktur->signature; }}
                     @if (!empty($faktur->signature))
                     @php
                     $path = Storage::url('signature/'.$data->signature);
