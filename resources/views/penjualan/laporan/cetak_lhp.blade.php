@@ -305,7 +305,11 @@
                             </tr>
                             <tr>
                                 <td style="width:20%">Cek/BG</td>
-                                <td><u>Rp.........................................................................................................</u></td>
+                                <td>Rp. {{ rupiah($allgiro->totalgiro) }}</td>
+                            </tr>
+                            <tr>
+                                <td style="width:20%">Transfer</td>
+                                <td>Rp. {{ rupiah($alltransfer->totaltransfer) }}</td>
                             </tr>
 
                             <tr>

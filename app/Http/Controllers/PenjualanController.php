@@ -7799,7 +7799,27 @@ class PenjualanController extends Controller
             ->groupByRaw('transfer.no_fak_penj,nama_pelanggan')
             ->get();
 
+
+        $allgiro = DB::table('giro')
+            ->selectRaw('SUM(jumlah) as totalgiro')
+            ->join('penjualan', 'giro.no_fak_penj', '=', 'penjualan.no_fak_penj')
+            ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+            ->where('tgl_giro', $tanggal)
+            ->where('giro.id_karyawan', $id_karyawan)
+            ->orderBy('giro.no_fak_penj')
+            ->first();
+
+
+        $alltransfer = DB::table('transfer')
+            ->selectRaw('SUM(jumlah) as totaltransfer')
+            ->join('penjualan', 'transfer.no_fak_penj', '=', 'penjualan.no_fak_penj')
+            ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+            ->where('tgl_transfer', $tanggal)
+            ->where('transfer.id_karyawan', $id_karyawan)
+            ->orderBy('transfer.no_fak_penj')
+            ->groupByRaw('transfer.no_fak_penj,nama_pelanggan')
+            ->first();
         $karyawan = DB::table('karyawan')->where('id_karyawan', $id_karyawan)->first();
-        return view('penjualan.laporan.cetak_lhp', compact('tanggal', 'penjualan', 'historibayar', 'giro', 'transfer', 'karyawan'));
+        return view('penjualan.laporan.cetak_lhp', compact('tanggal', 'penjualan', 'historibayar', 'giro', 'transfer', 'karyawan', 'allgiro', 'alltransfer'));
     }
 }
