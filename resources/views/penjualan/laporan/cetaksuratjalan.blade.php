@@ -265,7 +265,14 @@
             <tr style="font-weight:bold;">
                 <td style="height: 40px"></td>
                 <td></td>
-                <td></td>
+                <td>
+                    @if (!empty($data->signature))
+                    @php
+                    $path = Storage::url('signature/'.$data->signature);
+                    @endphp
+                    <img class="card-img" src="{{ url($path) }}" alt="">
+                    @endif
+                </td>
                 <td></td>
             </tr>
             <tr style="font-weight:bold; text-align:center">
