@@ -62,7 +62,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body">
-                                <img src="{{ url($path) }}" alt="">
+                                <img class="card-img" src="{{ url($path) }}" alt="">
                             </div>
                         </div>
                     </div>
