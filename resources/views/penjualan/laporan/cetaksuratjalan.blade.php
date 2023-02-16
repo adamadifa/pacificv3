@@ -244,7 +244,7 @@
             <tr style="font-weight:bold; text-align:center">
                 <td>Dibuat</td>
                 <td>Diserahkan</td>
-                <td>Diterima</td>
+                <td>Diterimas</td>
                 <td>Mengetahui</td>
                 <td rowspan="3">
 
