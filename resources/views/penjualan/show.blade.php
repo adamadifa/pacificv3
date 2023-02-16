@@ -56,7 +56,7 @@
                 </div>
                 @if (!empty($data->signature))
                 @php
-                $path = Storage::url('pelanggan/'.$data->signature);
+                $path = Storage::url('signature/'.$data->signature);
                 @endphp
                 <div class="row">
                     <div class="col-12">
