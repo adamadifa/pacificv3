@@ -266,11 +266,11 @@
                 <td style="height: 40px"></td>
                 <td></td>
                 <td>
-                    @if (!empty($data->signature))
+                    @if (!empty($faktur->signature))
                     @php
                     $path = Storage::url('signature/'.$data->signature);
                     @endphp
-                    <img class="card-img" src="{{ url($path) }}" alt="">
+                    <img src="{{ url($path) }}" alt="">
                     @endif
                 </td>
                 <td></td>
