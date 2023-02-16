@@ -54,6 +54,16 @@
                         </div>
                     </div>
                 </div>
+                @if (!empty($data->signature))
+                @php
+                $path = Storage::url('pelanggan/'.$data->signature);
+                @endphp
+                <div class="row">
+                    <div class="col-12">
+                        <img src="{{ url($path) }}" alt="">
+                    </div>
+                </div>
+                @endif
                 @if (Auth::user()->level != "salesman")
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
