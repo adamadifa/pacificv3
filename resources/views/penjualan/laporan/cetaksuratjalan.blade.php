@@ -244,7 +244,7 @@
             <tr style="font-weight:bold; text-align:center">
                 <td>Dibuat</td>
                 <td>Diserahkan</td>
-                <td>Diterimas</td>
+                <td>Diterima</td>
                 <td>Mengetahui</td>
                 <td rowspan="3">
 
@@ -266,7 +266,7 @@
                 <td style="height: 40px"></td>
                 <td></td>
                 <td>
-                    {{ $faktur->signature; }}
+
                     @if (!empty($faktur->signature))
                     @php
                     $path = Storage::url('signature/'.$data->signature);
@@ -296,7 +296,14 @@
             </tr>
             <tr style="font-weight:bold;">
                 <td rowspan="3"></td>
-                <td rowspan="3"></td>
+                <td rowspan="3">
+                    @if (!empty($faktur->signature))
+                    @php
+                    $path = Storage::url('signature/'.$data->signature);
+                    @endphp
+                    <img src="{{ url($path) }}" alt="">
+                    @endif
+                </td>
                 <td rowspan="3"></td>
                 <td rowspan="3"></td>
 
