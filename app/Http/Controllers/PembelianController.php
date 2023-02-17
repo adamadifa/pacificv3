@@ -353,7 +353,7 @@ class PembelianController extends Controller
         $tahun = $tanggal[0];
         $thn = substr($tahun, 2, 2);
         $tgl = $tanggal[2] . $tanggal[1] . $tanggal[0];
-        $rand = rand(10, 100);
+        $rand = rand(10, 99);
         $nokontrabon = $jenistransaksi == "tunai" ?  "T" . $tgl . $rand : '';
 
 
