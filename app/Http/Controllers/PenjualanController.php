@@ -7562,8 +7562,11 @@ class PenjualanController extends Controller
     {
         $no_fak_penj = $request->no_fak_batal;
         $keterangan = $request->keterangan;
-        $pelangganbatal = DB::table('pelanggan')->where('nama_pelanggan', 'BATAL')->first();
-        $cekpenjualan = DB::table('penjualan')->where('no_fak_penj', $no_fak_penj)->first();
+        $cekpenjualan = DB::table('penjualan')->where('no_fak_penj', $no_fak_penj)
+            ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->first();
+        $kode_cabang = $cekpenjualan->kode_cabang;
+        $pelangganbatal = DB::table('pelanggan')->where('nama_pelanggan', 'BATAL')->where('kode_cabang', $kode_cabang)->first();
         $kode_pelanggan = $pelangganbatal->kode_pelanggan;
         $id_karyawan = $pelangganbatal->id_sales;
         $tgltransaksi = $cekpenjualan->tgltransaksi;
