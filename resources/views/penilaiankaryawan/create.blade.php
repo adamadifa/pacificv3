@@ -327,9 +327,12 @@
         $('.skor').change(function(e) {
             //summary();
             var val = $(this).val();
+            // alert(val);
             if (val == 0) {
+                $(this).removeClass("success");
                 $(this).addClass("danger");
             } else if (val == 1) {
+                $(this).removeClass("danger");
                 $(this).addClass("success");
             }
         });

@@ -1105,6 +1105,15 @@
 
                     </li>
                     @endif
+                    @if (in_array($level,$kesepakatanbersama))
+                    <li class="{{ request()->is(['kesepakatanbersama', 'kesepakatanbersama/*']) ? 'active' : '' }}">
+                        <a href="/kesepakatanbersama">
+                            <i class="feather icon-file-text"></i>
+                            <span class="menu-item" data-i18n="Second Level">Kesepakatan Bersama</span>
+                        </a>
+                    </li>
+                    @endif
+
                 </ul>
             </li>
             @endif

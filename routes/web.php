@@ -31,6 +31,7 @@ use App\Http\Controllers\JurnalumumController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\KaskecilController;
 use App\Http\Controllers\KendaraanController;
+use App\Http\Controllers\KesepakatanbersamaController;
 use App\Http\Controllers\KlaimController;
 use App\Http\Controllers\KontrabonangkutanController;
 use App\Http\Controllers\KontrabonController;
@@ -1454,4 +1455,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/sap/limitkredit', [LimitkreditController::class, 'index']);
     Route::get('/sap/limitkredit/{no_pengajuan}/show', [SapController::class, 'showlimitkredit']);
     Route::get('/sap/pelanggan', [SapController::class, 'pelanggan']);
+
+
+    //Kesepakatan Bersama
+    Route::get('/kesepakatanbersama', [KesepakatanbersamaController::class, 'index']);
+    Route::post('/kesepakatanbersama/store', [KesepakatanbersamaController::class, 'store']);
+    Route::post('/kesepakatanbersama/edit', [KesepakatanbersamaController::class, 'edit']);
+    Route::post('/kesepakatanbersama/potongan', [KesepakatanbersamaController::class, 'potongan']);
+    Route::post('/kesepakatanbersama/storepotongan', [KesepakatanbersamaController::class, 'storepotongan']);
+    Route::post('/kesepakatanbersama/getpotongan', [KesepakatanbersamaController::class, 'getpotongan']);
+    Route::post('/kesepakatanbersama/deletepotongan', [KesepakatanbersamaController::class, 'deletepotongan']);
+    Route::post('/kesepakatanbersama/{no_kb}/update', [KesepakatanbersamaController::class, 'update']);
+    Route::get('/kesepakatanbersama/{no_kb}/cetak', [KesepakatanbersamaController::class, 'cetak']);
+    Route::delete('/kesepakatanbersama/{no_kb}/delete', [KesepakatanbersamaController::class, 'delete']);
 });

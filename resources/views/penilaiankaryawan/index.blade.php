@@ -1,7 +1,37 @@
 @extends('layouts.midone')
 @section('titlepage','Penilaian Karyawan')
 @section('content')
+<style>
+    .kategorimenu {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #504d91;
+        border-radius: 10px;
+    }
 
+    .kategorimenu>li {
+        float: left;
+    }
+
+    .kategorimenu>li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    .kategorimenu>li a:hover:not(.active) {
+        background-color: #111;
+    }
+
+    .active {
+        background-color: #04AA6D;
+    }
+
+</style>
 <div class="content-wrapper">
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
@@ -22,34 +52,24 @@
         <!-- Data list view starts -->
         <!-- DataTable starts -->
         @include('layouts.notification')
-        <div class="row">
-            <div class="col-md-2 col-sm-12">
-                @if (count($kategori_approval) > 0)
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="card-body">
-                                    <h4 class="card-title">Kategori</h4>
-                                </div>
-                                <ul class="list-group list-group-flush">
-                                    @foreach ($kategori_approval as $d)
-                                    <a href="/penilaiankaryawan/{{ $d->id }}/{{ $d->id_perusahaan }}/list" style="color:#2c2c2c">
-                                        <li class="list-group-item {{ $kategori_jabatan == $d->id ? 'active' : '' }}">
-                                            <span class="badge badge-pill bg-danger float-right">{{ $d->jml }}</span>
-                                            {{ $d->kategori_jabatan }}
-                                        </li>
-                                    </a>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @endif
+        @if (count($kategori_approval) > 0)
+        <div class="row mb-2">
+            <div class="col-12">
 
+                <ul class="kategorimenu">
+                    @foreach ($kategori_approval as $d)
+                    <li>
+                        <a href="/penilaiankaryawan/{{ $d->id }}/{{ $d->id_perusahaan }}/list" class="{{ $kategori_jabatan == $d->id ? 'active' : '' }}"> {{ $d->kategori_jabatan }}
+                            <span class="badge bg-danger badge-pill" style="margin-left:2px;">{{ $d->jml }}</span>
+                        </a>
+                    </li>
+                    @endforeach
+                </ul>
             </div>
-            <div class="col-md-10 col-sm-12">
+        </div>
+        @endif
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
                 <div class="card">
                     <div class="card-header">
                         <a href="#" class="btn btn-primary" id="buatpenilaian"><i class="fa fa-plus mr-1"></i> Buat Penilaian</a>
@@ -87,6 +107,7 @@
                                         <th rowspan="2">Departemen</th>
                                         <th rowspan="2">Jabatan</th>
                                         <th colspan="{{ count($approve) }}">Approval</th>
+                                        <th rowspan="2">Pemutihan</th>
                                         <th rowspan="2">Aksi</th>
                                     </tr>
                                     <tr>
@@ -158,11 +179,25 @@
                                         <?php
                                         }
                                         ?>
+                                        <td align="center">
+                                            @if ($d->pemutihan==1)
+                                            @if (!empty($d->dirut))
+                                            @if (!empty($d->no_kb))
+                                            <a href="/kesepakatanbersama/{{ Crypt::encrypt($d->no_kb) }}/cetak" target="_blank"><i class="feather icon-printer primary"></i></a>
+                                            @else
+                                            <a href="#" class="buatkb" nik="{{ $d->nik }}" kode_penilaian="{{ $d->kode_penilaian }}">Buat KB</a>
+                                            @endif
+
+                                            @else
+                                            <i class="fa fa-check success"></i>
+                                            @endif
+                                            @endif
+                                        </td>
                                         <td>
 
                                             <div class="btn-group">
                                                 <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/cetak" class="info mr-1"><i class="feather icon-printer"></i></a>
-                                                @if (array_search(strtolower($kat_jab_user),$approve) == 0 || Auth::user()->level=="manager hrd")
+                                                @if (array_search(strtolower($kat_jab_user),$approve) == 0 || Auth::user()->level=="manager hrd" || Auth::user()->level=="direktur")
                                                 @if (empty($d->$field_kategori))
                                                 <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian)}}/edit" class="success"><i class="feather icon-edit"></i></a>
                                                 @endif
@@ -188,11 +223,14 @@
                                                     $nextindex=$cekindex;
                                                     $ceklevel =  strtolower($inisial[$approve[$nextindex]]);
                                                 }
-                                                if (empty($d->$ceklevel) || $ceklevel=="dirut") {
+
+
+                                                if (empty($d->$ceklevel) || $field_kategori=="dirut") {
                                                 ?>
                                                 <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/{{ Crypt::encrypt($field_kategori) }}/batalkan" class="warning ml-1">Batalkan</a>
                                                 <?php } ?>
                                                 @else
+
                                                 <?php
                                                 $lastindex = $cekindex - 1;
                                                 if($cekindex == 0){
@@ -208,10 +246,13 @@
                                                 <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/{{ Crypt::encrypt($field_kategori) }}/decline" class="danger ml-1"><i class="fa fa-close"></i></a>
                                                 <?php
                                                     }else{
-                                                        echo "<span class='badge bg-warning'>Waiting..</span>";
+                                                        echo "<span class='badge bg-warning ml-1'>Waiting</span>";
                                                     }
                                                 }
                                                 ?>
+                                                @endif
+                                                @if (Auth::user()->level =="manager hrd" && !empty($d->dirut) && empty($d->pemutihan))
+                                                <a href="#" class="danger">Buat Kontrak</a>
                                                 @endif
 
                                             </div>
@@ -284,6 +325,50 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade text-left" id="mdlbuatkb" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Buat Kesepakatan Bersama</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/kesepakatanbersama/store" method="post" id="frmKesepakatanBersama">
+                    @csrf
+                    <input type="hidden" name="kode_penilaian" id="kode_penilaian_kb">
+                    <input type="hidden" name="nik" id="nik_kb">
+                    <div class="row">
+
+                        <div class="col-12">
+                            <x-inputtext label="Tanggal Kesepaatan Bersama" field="tanggal" icon="feather icon-calendar" datepicker />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <select name="tahun" id="tahun_kb" class="form-control">
+                                    <option value="">Tahun Pemutihan</option>
+                                    @for($thn = 2019; $thn<=date('Y'); $thn++) <option value="{{ $thn }}">{{ $thn }}</option>
+                                        @endfor
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-block" type="submit"><i class="feather icon-send mr-1"></i> Buat Kesepakatan Bersama</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @push('myscript')
 <script>
@@ -295,6 +380,45 @@
                 , keyboard: false
             });
         });
+
+        $("#frmKesepakatanBersama").submit(function(e) {
+            var tanggal = $("#frmKesepakatanBersama").find("#tanggal").val();
+            var tahun = $("#tahun_kb").val();
+            if (tanggal == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Tanggal Harus Diisi!'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#frmKesepakatanBersama").find("#tanggal").focus();
+                });
+                return false;
+            } else if (tahun == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Tahun Pemutihan Harus Diisi!'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#tahun_kb").focus();
+                });
+                return false;
+            }
+        });
+        $('.buatkb').click(function(e) {
+            var nik = $(this).attr("nik");
+            var kode_penilaian = $(this).attr("kode_penilaian");
+            $("#nik_kb").val(nik);
+            $("#kode_penilaian_kb").val(kode_penilaian);
+            e.preventDefault();
+            $('#mdlbuatkb').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+        });
+
+
 
         $("#frmBuatpenilaian").submit(function() {
             var dari = $("#dari").val();
