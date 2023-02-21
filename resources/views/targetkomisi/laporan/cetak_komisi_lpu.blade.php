@@ -500,7 +500,11 @@
                 <td align="center" style="background-color: #e43a90;"><?php echo round($ratioljt, 2); ?></td>
                 <td align="right" style="background-color: #e43a90;"><?php echo desimal($rewardljt); ?></td>
                 <td align="right" style="background-color: #ff570d;"><?php echo desimal($totalreward); ?></td>
-                <td></td>
+                <td>
+                    @if (in_array($level,$inputpotongankomisi))
+                    <a href="#" class="inputpotongan" style="color:red">Input Potongan</a>
+                    @endif
+                </td>
                 <td></td>
             </tr>
             <?php
@@ -729,5 +733,15 @@
             </td>
         </tr>
     </table>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <script>
+        $(function() {
+            $(".inputpotongan").click(function(e) {
+                e.preventDefault();
+                location.reload();
+            });
+        });
+
+    </script>
 </body>
 </html>
