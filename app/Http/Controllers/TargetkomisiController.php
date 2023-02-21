@@ -688,7 +688,7 @@ class TargetkomisiController extends Controller
         }
         $tglsetkomisi = "2022-05-01";
         $tglsetkomisi2 = "2022-09-01";
-        $tglsetkomisiljt = "2023-01-01";
+        $tglsetkomisiljt = "2023-02-01";
 
         if ($tglkomisi >= $tglsetkomisi) {
             $query = Salesman::query();
