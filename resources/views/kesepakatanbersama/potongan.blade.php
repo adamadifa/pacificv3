@@ -101,6 +101,7 @@
                                 , icon: 'success'
                                 , showConfirmButton: false
                             }).then(function() {
+                                loadpotongan();
                                 $("#keterangan").focus();
                                 $("#keterangan").val("");
                                 $("#jumlah").val("");

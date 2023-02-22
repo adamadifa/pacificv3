@@ -33,7 +33,8 @@ class KesepakatanbersamaController extends Controller
         $tahun = substr($tgl[0], 2, 2);
         $format = $bulan . $tahun;
         $kb = DB::table("hrd_kesepakatanbersama")
-            ->where('tgl_kb', $tanggal)
+            ->whereRaw('MONTH(tgl_kb)="' . $bulan . '"')
+            ->whereRaw('YEAR(tgl_kb)="' . $tgl[0] . '"')
             ->orderBy("no_kb", "desc")
             ->first();
         $lastno_kb = $kb != null ? $kb->no_kb : '';
@@ -56,6 +57,7 @@ class KesepakatanbersamaController extends Controller
             DB::commit();
             return Redirect::back();
         } catch (\Exception $e) {
+            dd($e);
             return Redirect::back();
         }
     }
