@@ -258,6 +258,7 @@
             $penerimaan_pcs = $m->penerimaanpusat + $m->transit_in + $m->retur + $jmllainlain_in_pcs + $m->repack + $jmlpeny_in_pcs;
             $pengeluaran_pcs = $jmlpeny_out_pcs + $m->penjualan + $m->promosi + $m->reject_pasar + $m->reject_gudang + $m->transit_out + $jmllainlain_out_pcs;
             $realsaldoakhir = $realsaldoakhir + $penerimaan_pcs - $pengeluaran_pcs;
+            $cek = $realsaldoakhir;
             $realsaldoakhir = $realsaldoakhir < 0 ? $realsaldoakhir * -1 : $realsaldoakhir; if ($m->inout_good == 'IN') {
                 $color_sa = "#28a745";
                 } else {
@@ -330,7 +331,7 @@
                     <td align="right" style="background-color:{{ $color_sa }}">{{ desimal($saldoakhir) }}</td>
                     <td align="right" style="background-color:{{ $color_sa }}">{{ rupiah($jmldus) }}</td>
                     <td align="right" style="background-color:{{ $color_sa }}">{{ rupiah($jmlpack) }}</td>
-                    <td align="right" style="background-color:{{ $color_sa }}">{{ rupiah($realsaldoakhir) }}</td>
+                    <td align="right" style="background-color:{{ $color_sa }}">{{ rupiah($cek) }}</td>
                     <td>{{ date("d-m-y H:i:s",strtotime($m->date_created)) }}</td>
                     <td>{{ !empty($m->date_updated) ? date("d-m-y H:i:s",strtotime($m->date_updated)) : '' }}</td>
                 </tr>
