@@ -968,7 +968,7 @@ class MutasigudangcabangController extends Controller
                 DB::raw("(
                 SELECT
                     kode_produk,
-                    SUM( IF ( inout_good = 'IN', jumlah, 0 ) ) - SUM( IF ( inout_good = 'OUT', jumlah, 0 ) ) AS sisamutasi
+                    SUM( IF ( inout_good = 'IN', jumlah, 0 ) )  AS sisamutasi
                 FROM
                     detail_mutasi_gudang_cabang
                     INNER JOIN mutasi_gudang_cabang ON detail_mutasi_gudang_cabang.no_mutasi_gudang_cabang = mutasi_gudang_cabang.no_mutasi_gudang_cabang
