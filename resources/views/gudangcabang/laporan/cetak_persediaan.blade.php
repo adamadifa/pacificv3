@@ -259,15 +259,17 @@
             $pengeluaran_pcs = $jmlpeny_out_pcs + $m->penjualan + $m->promosi + $m->reject_pasar + $m->reject_gudang + $m->transit_out + $jmllainlain_out_pcs;
             $realsaldoakhir = $realsaldoakhir + $penerimaan_pcs - $pengeluaran_pcs;
             $cek = $realsaldoakhir;
-            $realsaldoakhir = $realsaldoakhir < 0 ? $realsaldoakhir * -1 : $realsaldoakhir; if ($m->inout_good == 'IN') {
+
+
+            $saldoakhirfix = $realsaldoakhir < 0 ? $realsaldoakhir * -1 : $realsaldoakhir; if ($m->inout_good == 'IN') {
                 $color_sa = "#28a745";
                 } else {
                 $color_sa = "#c7473a";
                 }
 
 
-                if ($realsaldoakhir !=0) { $jmldus=floor($realsaldoakhir / $m->isipcsdus);
-                $sisadus = $realsaldoakhir % $m->isipcsdus;
+                if ($saldoakhirfix !=0) { $jmldus=floor($saldoakhirfix / $m->isipcsdus);
+                $sisadus = $saldoakhirfix % $m->isipcsdus;
                 if ($m->isipack == 0) {
                 $jmlpack = 0;
                 $sisapack = $sisadus;
@@ -280,7 +282,7 @@
 
                 $jmldus = 0;
                 $jmlpack = 0;
-                $jmlpcs = $realsaldoakhir;
+                $jmlpcs = $saldoakhirfix;
                 }
                 } else {
                 $jmldus = 0;
