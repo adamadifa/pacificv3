@@ -331,7 +331,7 @@
                     <td align="right" style="background-color:{{ $color_sa }}">{{ desimal($saldoakhir) }}</td>
                     <td align="right" style="background-color:{{ $color_sa }}">{{ rupiah($jmldus) }}</td>
                     <td align="right" style="background-color:{{ $color_sa }}">{{ rupiah($jmlpack) }}</td>
-                    <td align="right" style="background-color:{{ $color_sa }}">{{ $cek ."|".$penerimaan_pcs }}</td>
+                    <td align="right" style="background-color:{{ $color_sa }}">{{ $cek ."|".$penerimaan_pcs."|".$pengeluaran_pcs }}</td>
                     <td>{{ date("d-m-y H:i:s",strtotime($m->date_created)) }}</td>
                     <td>{{ !empty($m->date_updated) ? date("d-m-y H:i:s",strtotime($m->date_updated)) : '' }}</td>
                 </tr>
