@@ -395,7 +395,7 @@
                 <td align="right"><b>@php if (!empty($d->jenistransaksi)) { echo ucwords($d->jenistransaksi); }@endphp</b></td>
                 <td align="right"><b>@php if (!empty($d->totalbayar)) { echo rupiah($d->totalbayar);}@endphp</b></td>
                 <td align="center"><b>@php if (!empty($d->lastpayment)) { echo date("d-m-y",strtotime($d->lastpayment));}@endphp</b></td>
-                <td align="center" style="color: {{ $colortext}};"><b>{{ $ket}}</b></td>
+                <td align="center" style="color: {{ $colortext}};"><b>{{ $ket}} </b></td>
             </tr>
             @endforeach
             <tr style="background-color: #024a75; color:white">

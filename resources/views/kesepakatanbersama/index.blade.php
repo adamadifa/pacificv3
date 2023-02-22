@@ -50,7 +50,7 @@
                                     <td>{{ $d->tahun }}</td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
-                                            <a class="ml-1" href="/kesepakatanbersama/{{ $d->no_kb }}/cetak" target="_blank"><i class="feather icon-printer primary"></i></a>
+                                            <a class="ml-1" href="/kesepakatanbersama/{{ Crypt::encrypt($d->no_kb) }}/cetak" target="_blank"><i class="feather icon-printer primary"></i></a>
                                             <a class="ml-1 edit" no_kb="{{ $d->no_kb }}" href="#"><i class="feather icon-edit success"></i></a>
                                             <a class="ml-1 potongan" no_kb="{{ $d->no_kb }}" href="#"><i class="feather icon-tag danger"></i></a>
                                             <form method="POST" class="deleteform" action="/kesepakatanbersama/{{Crypt::encrypt($d->no_kb)}}/delete">

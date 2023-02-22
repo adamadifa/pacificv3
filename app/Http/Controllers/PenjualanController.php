@@ -3516,7 +3516,7 @@ class PenjualanController extends Controller
             } else if ($jenislaporan == "komisi") {
                 $query = Penjualan::query();
                 $query->selectRaw('penjualan.no_fak_penj,
-                tgltransaksi,
+                tgltransaksi,date_updated,
                 penjualan.kode_pelanggan,pelanggan.nama_pelanggan,
                 penjualan.id_karyawan,karyawan.nama_karyawan,
                 pelanggan.pasar,pelanggan.hari,
@@ -3670,6 +3670,7 @@ class PenjualanController extends Controller
                 $query->orderBy('tgltransaksi', 'asc');
                 $query->orderBy('penjualan.no_fak_penj', 'asc');
                 $penjualan = $query->get();
+
 
                 $barang = Barang::all();
 
