@@ -263,16 +263,16 @@
                                         @endif
                                         <!-- Kepala Cabang -->
                                         @if($level == "kepala penjualan" && empty($d->kacab) && $d->status==0
-                                        || $level == "kepala cabang" && empty($d->kacab) && $d->status==0
+                                        || $level == "kepala admin" && empty($d->kacab) && $d->status==0
 
                                         || $level == "kepala penjualan" && !empty($d->kacab) && empty($d->mm) && $d->status==2
-                                        || $level == "kepala cabang" && !empty($d->kacab) && empty($d->mm) && $d->status==2
+                                        || $level == "kepala admin" && !empty($d->kacab) && empty($d->mm) && $d->status==2
 
                                         || $level == "kepala penjualan" && !empty($d->kacab) && empty($d->mm) && $d->status==1
-                                        || $level == "kepala cabang" && !empty($d->kacab) && empty($d->mm) && $d->status==1
+                                        || $level == "kepala admin" && !empty($d->kacab) && empty($d->mm) && $d->status==1
 
                                         || $level == "kepala penjualan" && !empty($d->kacab) && empty($d->mm) && $d->status==0
-                                        || $level == "kepala cabang" && !empty($d->kacab) && empty($d->mm) && $d->status==0)
+                                        || $level == "kepala admin" && !empty($d->kacab) && empty($d->mm) && $d->status==0)
 
                                         <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/approve"><i class=" fa fa-check success"></i></a>
                                         <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/decline"><i class=" fa fa-close danger"></i></a>
