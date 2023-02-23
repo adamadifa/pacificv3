@@ -192,7 +192,7 @@ class KendaraanController extends Controller
         if (!empty($cabang)) {
             $query->where('kendaraan.kode_cabang', $cabang);
         }
-        $query->select('kendaraan.no_polisi', 'model', 'jml_berangkat', 'jmlpenjualan');
+        $query->select('kendaraan.no_polisi', 'tipe_kendaraan as model', 'jml_berangkat', 'jmlpenjualan');
         $query->leftJoin(
             DB::raw("(
                 SELECT no_kendaraan,COUNT(no_kendaraan) as jml_berangkat
