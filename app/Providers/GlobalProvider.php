@@ -190,8 +190,8 @@ class GlobalProvider extends ServiceProvider
             ];
 
             $pasar_menu = ['admin', 'admin penjualan', 'manager accounting', 'admin kas dan penjualan', 'audit', 'kepala admin', 'admin penjualan dan kas kecil', 'direktur', 'manager accounting', 'general manager', 'admin garut', 'admin pajak 2', 'admin pusat'];
-            $pasar_tambah = ['admin', 'admin penjualan', 'manager accounting', 'admin kas dan penjualan', 'salesman', 'audit', 'kepala admin', 'admin penjualan dan kas kecil', 'admin garut'];
-            $pasar_hapus = ['admin', 'admin penjualan', 'manager accounting', 'admin kas dan penjualan', 'salesman', 'audit', 'kepala admin', 'admin penjualan dan kas kecil', 'admin garut'];
+            $pasar_tambah = ['admin', 'admin penjualan', 'manager accounting', 'admin kas dan penjualan', 'salesman', 'audit', 'kepala admin', 'admin penjualan dan kas kecil', 'admin garut', 'admin pusat'];
+            $pasar_hapus = ['admin', 'admin penjualan', 'manager accounting', 'admin kas dan penjualan', 'salesman', 'audit', 'kepala admin', 'admin penjualan dan kas kecil', 'admin garut', 'admin pusat'];
             //Pelanggan
             $pelanggan = [
                 'admin', 'admin penjualan', 'manager accounting', 'admin kas dan penjualan', 'salesman', 'audit', 'manager accounting', 'spv accounting', 'kepala penjualan', 'kepala admin', 'admin pusat', 'manager marketing', 'rsm', 'direktur', 'admin penjualan dan kas kecil',
