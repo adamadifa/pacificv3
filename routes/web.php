@@ -422,7 +422,15 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/getrealisasitargetsales', [TargetkomisiController::class, 'getrealisasitargetsales']);
     Route::post('/limitkredit/penyesuaian_limit', [LimitkreditController::class, 'penyesuaian_limit']);
     Route::post('/limitkredit/updatelimit', [LimitkreditController::class, 'updatelimit']);
-
+    Route::post('/inputpotongankomisi', [TargetkomisiController::class, 'inputpotongankomisi']);
+    Route::post('/inputkomisiakhir', [TargetkomisiController::class, 'inputkomisiakhir']);
+    Route::post('/storepotongankomisi', [TargetkomisiController::class, 'storepotongankomisi']);
+    Route::post('/storekomisiakhir', [TargetkomisiController::class, 'storekomisiakhir']);
+    Route::post('/cekapprovekomisi', [TargetkomisiController::class, 'cekapprovekomisi']);
+    Route::post('/cekbatal', [TargetkomisiController::class, 'cekbatal']);
+    Route::post('/approvekomisi', [TargetkomisiController::class, 'approvekomisi']);
+    Route::post('/getqrcode', [TargetkomisiController::class, 'getqrcode']);
+    Route::post('/cancelkomisi', [TargetkomisiController::class, 'cancelkomisi']);
     //Kas Kecil
     Route::get('/kaskecil', [KaskecilController::class, 'index']);
     Route::get('/kaskecil/create', [KaskecilController::class, 'create']);

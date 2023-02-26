@@ -320,6 +320,7 @@ class GlobalProvider extends ServiceProvider
             $ratiokomisi = ['admin', 'kepala admin', 'admin pusat', 'kepala penjualan', 'admin pajak 2'];
             $laporan_komisi = ['admin', 'direktur', 'kepala admin', 'admin pusat', 'manager marketing', 'rsm', 'general manager', 'manager accounting', 'spv accounting', 'kepala penjualan', 'admin pajak 2'];
             $inputpotongankomisi = ['manager marketing', 'manager accounting', 'direktur', 'admin'];
+
             //-----------------------------Penjualan-------------------------------------------
             $penjualan_menu = [
                 'admin', 'admin penjualan', 'manager accounting', 'admin kas dan penjualan', 'salesman', 'audit',

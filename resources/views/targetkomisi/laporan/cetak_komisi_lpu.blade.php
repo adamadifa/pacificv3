@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Cetak Laporan Analisa Umur Piutang (AUP) {{ date("d-m-y") }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -87,6 +89,7 @@
         }
 
     </style>
+
 </head>
 
 <body>
@@ -112,7 +115,7 @@
     $kebijakan = 100;
 
     @endphp
-    <table class="datatable3" style="width:120%">
+    <table class="datatable3" style="width:150%">
         <thead>
             <tr>
                 <th rowspan="3">NO</th>
@@ -129,6 +132,7 @@
                 <th rowspan="2" colspan="3" style="background-color: #e43a90;">LJT > 14 Hari</th>
                 <th rowspan="3" style="background-color: #ff570d;">TOTAL REWARD</th>
                 <th rowspan="3" style="background-color: #ffffff;">POTONGAN</th>
+                <th rowspan="3" style="background-color: #ffffff;">TOTAL KOMISI</th>
                 <th rowspan="3" style="background-color: #ffffff;">KOMISI AKHIR</th>
 
             </tr>
@@ -500,12 +504,26 @@
                 <td align="center" style="background-color: #e43a90;"><?php echo round($ratioljt, 2); ?></td>
                 <td align="right" style="background-color: #e43a90;"><?php echo desimal($rewardljt); ?></td>
                 <td align="right" style="background-color: #ff570d;"><?php echo desimal($totalreward); ?></td>
-                <td>
+                <td style="text-align: right">
                     @if (in_array($level,$inputpotongankomisi))
-                    <a href="#" class="inputpotongan" style="color:red">Input Potongan</a>
+                    <a href="#" class="inputpotongan" id_karyawan="{{ $d->id_karyawan }}" nama_karyawan="{{ $d->nama_karyawan }}" style="color:red">
+                        {{ $d->potongankomisi != null ? desimal($d->potongankomisi) : 'Input Potongan' }}
+                    </a>
                     @endif
                 </td>
-                <td></td>
+                <td style="text-align: right">
+                    @php
+                    $totalkomisi = $totalreward - $d->potongankomisi;
+                    @endphp
+                    {{ desimal($totalkomisi) }}
+                </td>
+                <td style="text-align: right">
+                    @if (in_array($level,$inputpotongankomisi))
+                    <a href="#" class="inputkomisiakhir" id_karyawan="{{ $d->id_karyawan }}" nama_karyawan="{{ $d->nama_karyawan }}" style="color:red">
+                        {{ $d->komisifix != null ? desimal($d->komisifix) : desimal($totalkomisi) }}
+                    </a>
+                    @endif
+                </td>
             </tr>
             <?php
                 $no++;
@@ -675,8 +693,26 @@
                 <td align="right" style="background-color: #35ce35;"><?php echo ROUND($ratioljtkp, 2); ?></td>
                 <td align="right" style="background-color: #35ce35;"><?php echo desimal($rewardljtkp); ?></td>
                 <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalrewardkp); ?></td>
-                <td></td>
-                <td></td>
+                <td style="text-align: right">
+                    @if (in_array($level,$inputpotongankomisi))
+                    <a href="#" class="inputpotongan" id_karyawan="KP{{ $cbg->kode_cabang }}" nama_karyawan="KEPALA PENJUALAN" style="color:red">
+                        {{ $potongankp != null && $potongankp->jumlah != null ? desimal($potongankp->jumlah) : 'Input Potongan' }}
+                    </a>
+                    @endif
+                </td>
+                <td style="text-align: right">
+                    @php
+                    $totalkomisikp = $totalrewardkp - $potongankp->jumlah;
+                    @endphp
+                    {{ desimal($totalkomisikp) }}
+                </td>
+                <td style="text-align: right">
+                    @if (in_array($level,$inputpotongankomisi))
+                    <a href="#" class="inputkomisiakhir" id_karyawan="KP{{ $cbg->kode_cabang }}" nama_karyawan="KEPALA PENJUALAN" style="color:red">
+                        {{$komisiakhir !=null && $komisiakhir->jumlah != null ? desimal($komisiakhir->jumlah) : desimal($totalkomisikp) }}
+                    </a>
+                    @endif
+                </td>
             </tr>
             <?php
             $grandtotalreward = $grandtotalrewardsales + $totalrewardkp;
@@ -697,48 +733,450 @@
         <tr>
             <td align="center">
                 Tasikmalaya, <?php echo DateToIndo2(date("Y-m-d")); ?>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
+                @if (in_array($level,$inputpotongankomisi))
+                <div id="loadqrcodemm" style="margin-bottom:5px; margin-top:10px"></div>
+                @endif
+
+                @if ($level=="manager marketing")
+                <a href="#" id="approvemm" class="btn btn-primary">Approve</a>
+                <a href="#" id="batalkanmm" class="btn btn-danger">Batalkan</a>
+                @endif
                 <br>
                 <b>Herdy Budiawan</b><br>
                 GM Marketing
             </td>
             <td align="center">
                 Diperiksa Oleh
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
+                @if (in_array($level,$inputpotongankomisi))
+                <div id="loadqrcodegm" style="margin-bottom:5px; margin-top:10px">
+                </div>
+                @endif
+                @if ($level == "manager accounting")
+                <a href="#" id="approvegm" class="btn btn-primary">Approve</a>
+                <a href="#" id="batalkangm" class="btn btn-danger">Batalkan</a>
+                @endif
+
                 <br>
                 <b>Ridwan Nugraha</b><br>
                 GM Administration
             </td>
             <td align="center">
                 Disetujui Oleh,
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
-                <br>
+                @if (in_array($level,$inputpotongankomisi))
+                <div id="loadqrcodedirut" style="margin-bottom:5px; margin-top:10px">
+                </div>
+                @endif
+                @if ($level == "direktur")
+                <a href="#" id="approvedirut" class="btn btn-primary">Approve</a>
+                <a href="#" id="batalkandirut" class="btn btn-danger">Batalkan</a>
+                @endif
                 <br>
                 <b>Jemmy Feldiana</b><br>
                 Direktur
             </td>
         </tr>
     </table>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Input Potongan</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="loadinputpotongan">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="mdlkomisiakhir" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Input Komisi Akhir</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="loadkomisiakhir">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
     <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
     <script>
         $(function() {
+
+            function loadqrcode(level) {
+                var bulan = "{{ $bulan }}";
+                var tahun = "{{ $tahun }}";
+                var kode_cabang = "{{ $cbg->kode_cabang }}";
+                var level = level;
+                $.ajax({
+                    type: 'POST'
+                    , url: '/getqrcode'
+                    , data: {
+                        _token: "{{ csrf_token() }}"
+                        , bulan: bulan
+                        , tahun: tahun
+                        , kode_cabang: kode_cabang
+                        , level: level
+                    }
+                    , cache: false
+                    , success: function(respond) {
+                        if (level == "mm") {
+                            $("#loadqrcodemm").html(respond);
+                        }
+
+                        if (level == "gm") {
+                            $("#loadqrcodegm").html(respond);
+                        }
+
+                        if (level == "dirut") {
+                            $("#loadqrcodedirut").html(respond);
+                        }
+                    }
+                });
+
+            }
+
+            function loadapprove(level) {
+                var bulan = "{{ $bulan }}";
+                var tahun = "{{ $tahun }}";
+                var kode_cabang = "{{ $cbg->kode_cabang }}";
+                var level = level;
+                $.ajax({
+                    type: 'POST'
+                    , url: '/cekapprovekomisi'
+                    , data: {
+                        _token: "{{ csrf_token() }}"
+                        , bulan: bulan
+                        , tahun: tahun
+                        , kode_cabang: kode_cabang
+                        , level: level
+                    }
+                    , cache: false
+                    , success: function(respond) {
+                        if (level == "mm") {
+                            if (respond == 0) {
+                                $("#approvemm").show();
+                            } else {
+                                $("#approvemm").hide();
+
+                            }
+                        } else if (level == "gm") {
+                            if (respond == 0) {
+                                $("#approvegm").hide();
+                            } else {
+                                $("#approvegm").show();
+
+                            }
+                        } else if (level == "dirut") {
+                            if (respond == 0) {
+                                $("#approvedirut").hide();
+                            } else {
+                                $("#approvedirut").show();
+
+                            }
+                        }
+
+
+                    }
+                });
+
+            }
+
+
+            function loadbatal(level) {
+                var bulan = "{{ $bulan }}";
+                var tahun = "{{ $tahun }}";
+                var kode_cabang = "{{ $cbg->kode_cabang }}";
+                var level = level;
+                $.ajax({
+                    type: 'POST'
+                    , url: '/cekbatal'
+                    , data: {
+                        _token: "{{ csrf_token() }}"
+                        , bulan: bulan
+                        , tahun: tahun
+                        , kode_cabang: kode_cabang
+                        , level: level
+                    }
+                    , cache: false
+                    , success: function(respond) {
+                        if (level == "mm") {
+                            if (respond == 1) {
+                                $("#batalkanmm").show();
+                            } else {
+                                $("#batalkanmm").hide();
+
+                            }
+                        } else if (level == "gm") {
+                            if (respond == 1) {
+                                $("#batalkangm").show();
+                            } else {
+                                $("#batalkangm").hide();
+
+                            }
+                        } else if (level == "dirut") {
+                            if (respond == 1) {
+                                $("#batalkandirut").show();
+                            } else {
+                                $("#batalkandirut").hide();
+
+                            }
+                        }
+
+
+                    }
+                });
+
+            }
+
+            loadapprove("mm");
+            loadqrcode("mm");
+            loadbatal("mm");
+
+            loadapprove("gm");
+            loadqrcode("gm");
+            loadbatal("gm");
+
+
+            loadapprove("dirut");
+            loadqrcode("dirut");
+            loadbatal("dirut");
+
+            $("#approvemm").click(function(e) {
+                e.preventDefault();
+                var bulan = "{{ $bulan }}";
+                var tahun = "{{ $tahun }}";
+                var kode_cabang = "{{ $cbg->kode_cabang }}";
+                var level = 'mm';
+                $.ajax({
+                    type: 'POST'
+                    , url: '/approvekomisi'
+                    , data: {
+                        _token: "{{ csrf_token() }}"
+                        , bulan: bulan
+                        , tahun: tahun
+                        , kode_cabang: kode_cabang
+                        , level: level
+                    }
+                    , cache: false
+                    , success: function(respond) {
+                        if (respond == 0) {
+                            alert('Berhasil di Approve');
+                        } else {
+                            alert('Gagal di Approve');
+                        }
+
+                        loadapprove("mm");
+                        loadqrcode("mm");
+                        loadbatal("mm");
+                    }
+                });
+            });
+
+            $("#approvegm").click(function(e) {
+                e.preventDefault();
+                var bulan = "{{ $bulan }}";
+                var tahun = "{{ $tahun }}";
+                var kode_cabang = "{{ $cbg->kode_cabang }}";
+                var level = 'gm';
+                $.ajax({
+                    type: 'POST'
+                    , url: '/approvekomisi'
+                    , data: {
+                        _token: "{{ csrf_token() }}"
+                        , bulan: bulan
+                        , tahun: tahun
+                        , kode_cabang: kode_cabang
+                        , level: level
+                    }
+                    , cache: false
+                    , success: function(respond) {
+                        if (respond == 0) {
+                            alert('Berhasil di Approve');
+                        } else {
+                            alert('Gagal di Approve');
+                        }
+
+                        loadapprove("gm");
+                        loadqrcode("gm");
+                        loadbatal("gm");
+                    }
+                });
+            });
+
+            $("#approvedirut").click(function(e) {
+                e.preventDefault();
+                var bulan = "{{ $bulan }}";
+                var tahun = "{{ $tahun }}";
+                var kode_cabang = "{{ $cbg->kode_cabang }}";
+                var level = 'dirut';
+                $.ajax({
+                    type: 'POST'
+                    , url: '/approvekomisi'
+                    , data: {
+                        _token: "{{ csrf_token() }}"
+                        , bulan: bulan
+                        , tahun: tahun
+                        , kode_cabang: kode_cabang
+                        , level: level
+                    }
+                    , cache: false
+                    , success: function(respond) {
+                        if (respond == 0) {
+                            alert('Berhasil di Approve');
+                        } else {
+                            alert('Gagal di Approve');
+                        }
+
+                        loadapprove("dirut");
+                        loadqrcode("dirut");
+                        loadbatal("dirut");
+                    }
+                });
+            });
             $(".inputpotongan").click(function(e) {
                 e.preventDefault();
-                location.reload();
+                var id_karyawan = $(this).attr("id_karyawan");
+                var bulan = "{{ $bulan }}";
+                var tahun = "{{ $tahun }}";
+                $.ajax({
+                    type: 'POST'
+                    , url: '/inputpotongankomisi'
+                    , cache: false
+                    , data: {
+                        _token: "{{ csrf_token() }}"
+                        , id_karyawan: id_karyawan
+                        , bulan: bulan
+                        , tahun: tahun
+                    }
+                    , success: function(respond) {
+                        $("#loadinputpotongan").html(respond);
+                        $("#exampleModal").modal("show");
+                    }
+                });
+
+            });
+
+            $(".inputkomisiakhir").click(function(e) {
+                e.preventDefault();
+                var id_karyawan = $(this).attr("id_karyawan");
+                var bulan = "{{ $bulan }}";
+                var tahun = "{{ $tahun }}";
+                $.ajax({
+                    type: 'POST'
+                    , url: '/inputkomisiakhir'
+                    , cache: false
+                    , data: {
+                        _token: "{{ csrf_token() }}"
+                        , id_karyawan: id_karyawan
+                        , bulan: bulan
+                        , tahun: tahun
+                    }
+                    , success: function(respond) {
+                        $("#loadkomisiakhir").html(respond);
+                        $("#mdlkomisiakhir").modal("show");
+                    }
+                });
+
+            });
+
+
+            $("#batalkanmm").click(function(e) {
+                e.preventDefault();
+                var bulan = "{{ $bulan }}";
+                var tahun = "{{ $tahun }}";
+                var kode_cabang = "{{ $cbg->kode_cabang }}";
+                var level = 'mm';
+                $.ajax({
+                    type: 'POST'
+                    , url: '/cancelkomisi'
+                    , data: {
+                        _token: "{{ csrf_token() }}"
+                        , bulan: bulan
+                        , tahun: tahun
+                        , kode_cabang: kode_cabang
+                        , level: level
+                    }
+                    , cache: false
+                    , success: function(respond) {
+                        if (respond == 0) {
+                            alert('Berhasil di Batalkan');
+                        } else {
+                            alert('Gagal di Batalkan');
+                        }
+
+                        loadapprove("mm");
+                        loadqrcode("mm");
+                        loadbatal("mm");
+                    }
+                });
+            });
+
+
+            $("#batalkangm").click(function(e) {
+                e.preventDefault();
+                var bulan = "{{ $bulan }}";
+                var tahun = "{{ $tahun }}";
+                var kode_cabang = "{{ $cbg->kode_cabang }}";
+                var level = 'gm';
+                $.ajax({
+                    type: 'POST'
+                    , url: '/cancelkomisi'
+                    , data: {
+                        _token: "{{ csrf_token() }}"
+                        , bulan: bulan
+                        , tahun: tahun
+                        , kode_cabang: kode_cabang
+                        , level: level
+                    }
+                    , cache: false
+                    , success: function(respond) {
+                        if (respond == 0) {
+                            alert('Berhasil di Batalkan');
+                        } else {
+                            alert('Gagal di Batalkan');
+                        }
+
+                        loadapprove("gm");
+                        loadqrcode("gm");
+                        loadbatal("gm");
+                    }
+                });
+            });
+            $("#batalkandirut").click(function(e) {
+                e.preventDefault();
+                var bulan = "{{ $bulan }}";
+                var tahun = "{{ $tahun }}";
+                var kode_cabang = "{{ $cbg->kode_cabang }}";
+                var level = 'dirut';
+                $.ajax({
+                    type: 'POST'
+                    , url: '/cancelkomisi'
+                    , data: {
+                        _token: "{{ csrf_token() }}"
+                        , bulan: bulan
+                        , tahun: tahun
+                        , kode_cabang: kode_cabang
+                        , level: level
+                    }
+                    , cache: false
+                    , success: function(respond) {
+                        if (respond == 0) {
+                            alert('Berhasil di Batalkan');
+                        } else {
+                            alert('Gagal di Batalkan');
+                        }
+
+                        loadapprove("dirut");
+                        loadqrcode("dirut");
+                        loadbatal("dirut");
+                    }
+                });
             });
         });
 

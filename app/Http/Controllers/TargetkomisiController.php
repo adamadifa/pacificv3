@@ -1110,7 +1110,9 @@ class TargetkomisiController extends Controller
             retur_CG5,
             realisasi_cashin,
             sisapiutangsaldo + sisapiutang as sisapiutang,
-            cashin_jt
+            cashin_jt,
+            potongankomisi,
+            komisifix
             ');
             $query->join(
                 DB::raw("(
@@ -1509,6 +1511,30 @@ class TargetkomisiController extends Controller
                 }
             );
 
+
+
+            $query->leftJoin(
+                DB::raw("(
+                    SELECT id_karyawan,jumlah as potongankomisi
+                    FROM komisi_potongan
+                    WHERE bulan = '$bulan' AND tahun='$tahun'
+                ) potongankomisi"),
+                function ($join) {
+                    $join->on('karyawan.id_karyawan', '=', 'potongankomisi.id_karyawan');
+                }
+            );
+
+            $query->leftJoin(
+                DB::raw("(
+                    SELECT id_karyawan,jumlah as komisifix
+                    FROM komisi_akhir
+                    WHERE bulan = '$bulan' AND tahun='$tahun'
+                ) komisiakhir"),
+                function ($join) {
+                    $join->on('karyawan.id_karyawan', '=', 'komisiakhir.id_karyawan');
+                }
+            );
+
             if (Auth::user()->id == 27) {
                 $query->whereIn('kode_cabang', ['BDG', 'PWK']);
             } else {
@@ -1518,6 +1544,15 @@ class TargetkomisiController extends Controller
             $komisi = $query->get();
         }
         $nmbulan  = $namabulan[$bulan];
+
+        $kodekp = 'KP' . $cabang;
+        $potongankp = DB::table('komisi_potongan')->where('id_karyawan', $kodekp)
+            ->where('bulan', $bulan)->where('tahun', $tahun)
+            ->first();
+
+        $komisiakhir = DB::table('komisi_akhir')->where('id_karyawan', $kodekp)
+            ->where('bulan', $bulan)->where('tahun', $tahun)
+            ->first();
         if (isset($_POST['export'])) {
             $time = date("H:i:s");
             // Fungsi header dengan mengirimkan raw data excel
@@ -1535,7 +1570,7 @@ class TargetkomisiController extends Controller
         } elseif ($bulan < 7 && $tahun <= 2022) {
             return view('targetkomisi.laporan.cetak_komisi_juni', compact('komisi', 'cbg', 'nmbulan', 'tahun', 'produk', 'driver', 'helper', 'gudang', 'tunaikredit', 'bulan', 'cabang'));
         } else {
-            return view('targetkomisi.laporan.cetak_komisi_lpu', compact('komisi', 'cbg', 'nmbulan', 'tahun', 'produk', 'driver', 'helper', 'gudang', 'tunaikredit', 'bulan', 'cabang'));
+            return view('targetkomisi.laporan.cetak_komisi_lpu', compact('komisi', 'cbg', 'nmbulan', 'tahun', 'produk', 'driver', 'helper', 'gudang', 'tunaikredit', 'bulan', 'cabang', 'potongankp', 'komisiakhir'));
         }
     }
 
@@ -2011,5 +2046,256 @@ class TargetkomisiController extends Controller
             ->get();
 
         return view('targetkomisi.getrealisasitarget', compact('realisasitarget'));
+    }
+
+    public function inputpotongankomisi(Request $request)
+    {
+        $id_karyawan = $request->id_karyawan;
+        $karyawan = DB::table('karyawan')->where('id_karyawan', $id_karyawan)->first();
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $cek = DB::table('komisi_potongan')->where('id_karyawan', $id_karyawan)->where('bulan', $bulan)->where('tahun', $tahun)->first();
+        return view('targetkomisi.inputpotongankomisi', compact('id_karyawan', 'karyawan', 'bulan', 'tahun', 'cek'));
+    }
+
+
+    public function inputkomisiakhir(Request $request)
+    {
+        $id_karyawan = $request->id_karyawan;
+        $id_karyawan = $request->id_karyawan;
+        $karyawan = DB::table('karyawan')->where('id_karyawan', $id_karyawan)->first();
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $cek = DB::table('komisi_akhir')->where('id_karyawan', $id_karyawan)->where('bulan', $bulan)->where('tahun', $tahun)->first();
+        return view('targetkomisi.inputkomisiakhir', compact('id_karyawan', 'karyawan', 'bulan', 'tahun', 'cek'));
+    }
+
+    public function storepotongankomisi(Request $request)
+    {
+        $id_karyawan = $request->id_karyawan;
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $potongan = $request->potongan;
+        $keterangan = $request->keterangan;
+        $cek = DB::table('komisi_potongan')->where('id_karyawan', $id_karyawan)->where('bulan', $bulan)->where('tahun', $tahun)->count();
+        if ($cek > 0) {
+            $update = DB::table('komisi_potongan')->where('id_karyawan', $id_karyawan)
+                ->where('bulan', $bulan)
+                ->where('tahun', $tahun)
+                ->update([
+                    'jumlah' => $potongan,
+                    'keterangan' => $keterangan
+                ]);
+            if ($update) {
+                echo 0;
+            } else {
+                echo 1;
+            }
+        } else {
+            $simpan = DB::table('komisi_potongan')->insert([
+                'id_karyawan' => $id_karyawan,
+                'bulan' => $bulan,
+                'tahun' => $tahun,
+                'jumlah' => $potongan,
+                'keterangan' => $keterangan
+            ]);
+            if ($simpan) {
+                echo 0;
+            } else {
+                echo 1;
+            }
+        }
+    }
+
+
+    public function storekomisiakhir(Request $request)
+    {
+        $id_karyawan = $request->id_karyawan;
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $komisiakhir = $request->komisiakhir;
+        $keterangan = $request->keterangan;
+        $cek = DB::table('komisi_akhir')->where('id_karyawan', $id_karyawan)->where('bulan', $bulan)->where('tahun', $tahun)->count();
+        if ($cek > 0) {
+            $update = DB::table('komisi_akhir')->where('id_karyawan', $id_karyawan)
+                ->where('bulan', $bulan)
+                ->where('tahun', $tahun)
+                ->update([
+                    'jumlah' => $komisiakhir,
+                    'keterangan' => $keterangan
+                ]);
+            if ($update) {
+                echo 0;
+            } else {
+                echo 1;
+            }
+        } else {
+            $simpan = DB::table('komisi_akhir')->insert([
+                'id_karyawan' => $id_karyawan,
+                'bulan' => $bulan,
+                'tahun' => $tahun,
+                'jumlah' => $komisiakhir,
+                'keterangan' => $keterangan
+            ]);
+            if ($simpan) {
+                echo 0;
+            } else {
+                echo 1;
+            }
+        }
+    }
+
+    public function cekapprovekomisi(Request $request)
+    {
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $kode_cabang = $request->kode_cabang;
+        $level = $request->level;
+
+        if ($level == "mm") {
+            $cek = DB::table('komisi_approve')
+                ->where('kode_cabang', $kode_cabang)
+                ->where('bulan', $bulan)
+                ->whereNotNull($level)
+                ->where('tahun', $tahun)->count();
+        } else if ($level == "gm") {
+            $cek = DB::table('komisi_approve')
+                ->where('kode_cabang', $kode_cabang)
+                ->where('bulan', $bulan)
+                ->whereNotNull('mm')
+                ->whereNull('gm')
+                ->where('tahun', $tahun)->count();
+        } else if ($level == "dirut") {
+            $cek = DB::table('komisi_approve')
+                ->where('kode_cabang', $kode_cabang)
+                ->where('bulan', $bulan)
+                ->whereNotNull('gm')
+                ->whereNull('dirut')
+                ->where('tahun', $tahun)->count();
+        }
+
+
+        echo $cek;
+    }
+
+    public function approvekomisi(Request $request)
+    {
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $kode_cabang = $request->kode_cabang;
+        $level = $request->level;
+
+
+        $cek = DB::table('komisi_approve')
+            ->where('kode_cabang', $kode_cabang)
+            ->where('bulan', $bulan)
+            ->where('tahun', $tahun)->count();
+
+        if (empty($cek)) {
+            $data = [
+                'kode_cabang' => $kode_cabang,
+                'bulan' => $bulan,
+                'tahun' => $tahun,
+                $level => 1
+            ];
+
+            $simpan = DB::table('komisi_approve')->insert($data);
+        } else {
+            $data = [
+                $level => 1
+            ];
+
+            $simpan = DB::table('komisi_approve')
+                ->where('kode_cabang', $kode_cabang)
+                ->where('bulan', $bulan)
+                ->where('tahun', $tahun)
+                ->update($data);
+        }
+
+        if ($simpan) {
+            echo 0;
+        } else {
+            echo 1;
+        }
+    }
+
+
+    public function getqrcode(Request $request)
+    {
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $kode_cabang = $request->kode_cabang;
+        $lvl = $request->level;
+
+        $cek = DB::table('komisi_approve')
+            ->where('kode_cabang', $kode_cabang)
+            ->where('bulan', $bulan)
+            ->whereNotNull($lvl)
+            ->where('tahun', $tahun)->first();
+
+        if ($cek != null) {
+            return view('targetkomisi.getqrcode', compact('cek', 'lvl', 'bulan', 'tahun', 'kode_cabang'));
+        } else {
+            echo "<span class='badge bg-warning'>Waiting</span>";
+        }
+    }
+
+
+    public function cancelkomisi(Request $request)
+    {
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $kode_cabang = $request->kode_cabang;
+        $level = $request->level;
+
+
+        $data = [
+            $level => null
+        ];
+
+        $update = DB::table('komisi_approve')
+            ->where('kode_cabang', $kode_cabang)
+            ->where('bulan', $bulan)
+            ->where('tahun', $tahun)
+            ->update($data);
+
+        if ($update) {
+            echo 0;
+        } else {
+            echo 1;
+        }
+    }
+
+
+    public function cekbatal(Request $request)
+    {
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $kode_cabang = $request->kode_cabang;
+        $level = $request->level;
+
+        if ($level == "mm") {
+            $cek = DB::table('komisi_approve')
+                ->where('kode_cabang', $kode_cabang)
+                ->where('bulan', $bulan)
+                ->whereNotNull('mm')
+                ->whereNull('gm')
+                ->where('tahun', $tahun)->count();
+        } else if ($level == "gm") {
+            $cek = DB::table('komisi_approve')
+                ->where('kode_cabang', $kode_cabang)
+                ->where('bulan', $bulan)
+                ->whereNotNull('gm')
+                ->whereNull('dirut')
+                ->where('tahun', $tahun)->count();
+        } else if ($level == "dirut") {
+            $cek = DB::table('komisi_approve')
+                ->where('kode_cabang', $kode_cabang)
+                ->where('bulan', $bulan)
+                ->whereNotNull('dirut')
+                ->where('tahun', $tahun)->count();
+        }
+
+        echo $cek;
     }
 }
