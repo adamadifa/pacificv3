@@ -15,6 +15,10 @@
         <th>Bengkel</th>
         <td>{{ $service->nama_bengkel }}</td>
     </tr>
+    <tr>
+        <th>Keterangan</th>
+        <td>{{ $service->keterangan }}</td>
+    </tr>
 </table>
 <table class="table table-bordered">
     <thead>

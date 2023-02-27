@@ -70,6 +70,11 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <textarea name="keterangan" id="keterangan" cols="10" rows="5" placeholder="Keterangan" class="form-control"></textarea>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

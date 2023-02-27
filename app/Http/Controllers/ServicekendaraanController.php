@@ -164,6 +164,7 @@ class ServicekendaraanController extends Controller
         $tgl_service = $request->tgl_service;
         $no_polisi = $request->no_polisi;
         $kode_bengkel = $request->kode_bengkel;
+        $keterangan = $request->keterangan;
         $kendaraan = DB::table('kendaraan')->where('no_polisi', $no_polisi)->first();
         $kode_cabang = $kendaraan->kode_cabang;
         $temp = DB::table('kendaraan_service_detail_temp')->where('no_invoice', $no_invoice);
@@ -175,7 +176,8 @@ class ServicekendaraanController extends Controller
             'tgl_service' => $tgl_service,
             'no_polisi' => $no_polisi,
             'kode_bengkel' => $kode_bengkel,
-            'kode_cabang' => $kode_cabang
+            'kode_cabang' => $kode_cabang,
+            'keterangan' => $keterangan
         ];
 
         if ($cektemp == 0) {

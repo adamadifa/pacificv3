@@ -18,8 +18,9 @@ class MutasikendaraanController extends Controller
         if (isset($request->no_polisi)) {
             $query->where('no_polisi', $request->no_polisi);
         }
-        $query->selectRaw('no_mutasi,kendaraan_mutasi.no_polisi,merk,tipe_kendaraan,tipe,kode_cabang_old,kode_cabang_new,tgl_mutasi');
+        $query->selectRaw('no_mutasi,kendaraan_mutasi.no_polisi,merk,tipe_kendaraan,tipe,kode_cabang_old,kode_cabang_new,tgl_mutasi,keterangan');
         $query->join('kendaraan', 'kendaraan_mutasi.no_polisi', '=', 'kendaraan.no_polisi');
+        $query->orderBy('tgl_mutasi', 'desc');
         $mutasikendaraan = $query->paginate(15);
         $mutasikendaraan->appends($request->all());
         $kendaraan = DB::table('kendaraan')->orderBy('no_polisi')->get();
@@ -43,6 +44,7 @@ class MutasikendaraanController extends Controller
         $tgl = explode("-", $tgl_mutasi);
         $bulan = $tgl[1];
         $tahun = substr($tgl[0], 2);
+        $keterangan = $request->keterangan;
         $mutasikendaraan = DB::table("kendaraan_mutasi")
             ->whereRaw('MONTH(tgl_mutasi)=' . $bulan)
             ->whereRaw('YEAR(tgl_mutasi)=' . $tgl[0])
@@ -57,7 +59,8 @@ class MutasikendaraanController extends Controller
             'tgl_mutasi' => $tgl_mutasi,
             'no_polisi' => $no_polisi,
             'kode_cabang_old' => $kode_cabang_old,
-            'kode_cabang_new' => $kode_cabang
+            'kode_cabang_new' => $kode_cabang,
+            'keterangan' => $keterangan
         ];
         if ($kode_cabang == $kode_cabang_old) {
             return Redirect::back()->with(['warning' => 'Kode Cabang Sebelumnya Tidak Boleh Sama']);

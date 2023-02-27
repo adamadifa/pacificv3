@@ -21,7 +21,7 @@
         <!-- Data list view starts -->
         <!-- DataTable starts -->
         @include('layouts.notification')
-        <div class="col-md-6 col-sm-12">
+        <div class="col-md-8 col-sm-12">
             <div class="card">
                 <div class="card-header">
                     <a href="/mutasikendaraan/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
@@ -52,6 +52,7 @@
                                     <th>Tgl Mutasi</th>
                                     <th>Asal Cabang</th>
                                     <th>Pindah Ke Cabang</th>
+                                    <th>Keterangan</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -64,6 +65,7 @@
                                     <td>{{ DateToIndo2($d->tgl_mutasi) }}</td>
                                     <td>{{ $d->kode_cabang_old }}</td>
                                     <td>{{ $d->kode_cabang_new }}</td>
+                                    <td>{{ $d->keterangan }}</td>
                                     <td>
                                         <form method="POST" name="deleteform" class="deleteform" action="/mutasikendaraan/{{ Crypt::encrypt($d->no_mutasi) }}/delete">
                                             @csrf

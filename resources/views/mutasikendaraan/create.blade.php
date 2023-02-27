@@ -63,6 +63,11 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
+                                            <x-inputtext label="Keterangan" field="keterangan" icon="feather icon-file-text" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
                                             <button type="submit" class="btn btn-primary mr-1 mb-1"><i class="fa fa-send mr-1"></i> Simpan</button>
                                             <a href="{{ url()->previous() }}" class="btn btn-outline-warning mr-1 mb-1"><i class="fa fa-arrow-left mr-2"></i>Kembali</a>
                                         </div>
