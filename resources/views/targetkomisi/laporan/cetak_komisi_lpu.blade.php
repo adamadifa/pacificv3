@@ -509,6 +509,8 @@
                     <a href="#" class="inputpotongan" id_karyawan="{{ $d->id_karyawan }}" nama_karyawan="{{ $d->nama_karyawan }}" style="color:red">
                         {{ $d->potongankomisi != null ? desimal($d->potongankomisi) : 'Input Potongan' }}
                     </a>
+                    @else
+                    &#128274;
                     @endif
                 </td>
                 <td style="text-align: right">
@@ -522,6 +524,8 @@
                     <a href="#" class="inputkomisiakhir" id_karyawan="{{ $d->id_karyawan }}" nama_karyawan="{{ $d->nama_karyawan }}" style="color:red">
                         {{ $d->komisifix != null ? desimal($d->komisifix) : desimal($totalkomisi) }}
                     </a>
+                    @else
+                    &#128274;
                     @endif
                 </td>
             </tr>
@@ -698,20 +702,26 @@
                     <a href="#" class="inputpotongan" id_karyawan="KP{{ $cbg->kode_cabang }}" nama_karyawan="KEPALA PENJUALAN" style="color:red">
                         {{ $potongankp != null && $potongankp->jumlah != null ? desimal($potongankp->jumlah) : 'Input Potongan' }}
                     </a>
+                    @else
+                    &#128274;
                     @endif
                 </td>
                 <td style="text-align: right">
+
                     @php
-                    $ptongankp = $potongankp != null ? $potongankp->jumlah : 0;
+                    $potongankp = $potongankp != null ? $potongankp->jumlah : 0;
                     $totalkomisikp = $totalrewardkp - $potongankp;
                     @endphp
                     {{ desimal($totalkomisikp) }}
                 </td>
+
                 <td style="text-align: right">
                     @if (in_array($level,$inputpotongankomisi))
                     <a href="#" class="inputkomisiakhir" id_karyawan="KP{{ $cbg->kode_cabang }}" nama_karyawan="KEPALA PENJUALAN" style="color:red">
                         {{$komisiakhir !=null && $komisiakhir->jumlah != null ? desimal($komisiakhir->jumlah) : desimal($totalkomisikp) }}
                     </a>
+                    @else
+                    &#128274;
                     @endif
                 </td>
             </tr>

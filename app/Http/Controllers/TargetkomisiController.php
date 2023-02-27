@@ -892,11 +892,13 @@ class TargetkomisiController extends Controller
             $end = $ceknextBulan->tgl_diterimapusat;
         }
 
+
         $produk = Barang::orderBy('kode_produk')->get();
         $namabulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         $cbg = DB::table('cabang')->where('kode_cabang', $cabang)->first();
 
-        if ($tglkomisi < '2023-01-01') {
+
+        if ($tglkomisi < '2023-02-01') {
 
 
             $driver = DB::table('driver_helper')
@@ -1072,10 +1074,12 @@ class TargetkomisiController extends Controller
             $gudang = null;
             $tunaikredit = null;
         }
+
         $tglsetkomisi = "2022-05-01";
         $tglsetkomisi2 = "2022-09-01";
-        $tglsetkomisiljt = "2023-02-01";
-
+        $tglsetkomisiljt = "2023-2-01";
+        // //dd($tglkomisi);
+        // dd($tglkomisi >= $tglsetkomisiljt);
         if ($tglkomisi >= $tglsetkomisi) {
             $query = Salesman::query();
             $query->selectRaw('
@@ -1147,6 +1151,7 @@ class TargetkomisiController extends Controller
                     $join->on('karyawan.id_karyawan', '=', 'hbjt.id_karyawan');
                 }
             );
+
             if ($tglkomisi >= $tglsetkomisiljt) {
                 $query->leftJoin(
                     DB::raw("(
