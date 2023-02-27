@@ -702,7 +702,8 @@
                 </td>
                 <td style="text-align: right">
                     @php
-                    $totalkomisikp = $totalrewardkp - $potongankp->jumlah;
+                    $ptongankp = $potongankp != null ? $potongankp->jumlah : 0;
+                    $totalkomisikp = $totalrewardkp - $potongankp;
                     @endphp
                     {{ desimal($totalkomisikp) }}
                 </td>

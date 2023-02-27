@@ -2298,4 +2298,31 @@ class TargetkomisiController extends Controller
 
         echo $cek;
     }
+
+    public function komisiapprove()
+    {
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        return view('targetkomisi.komisiapprove', compact('bulan'));
+    }
+
+    public function getapprovekomisi(Request $request)
+    {
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $approvekomisi =  DB::table('cabang')
+            ->select('cabang.kode_cabang', 'nama_cabang', 'mm', 'gm', 'dirut', 'bulan', 'tahun')
+            ->leftJoin(
+                DB::raw("(
+               SELECT kode_cabang,mm,gm,dirut,bulan,tahun
+               FROM komisi_approve
+               WHERE bulan = '$bulan' AND tahun = '$tahun'
+            ) approve"),
+                function ($join) {
+                    $join->on('cabang.kode_cabang', '=', 'approve.kode_cabang');
+                }
+            )
+            ->get();
+
+        return view('targetkomisi.getapprovekomisi', compact('approvekomisi', 'bulan', 'tahun'));
+    }
 }

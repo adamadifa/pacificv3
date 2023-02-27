@@ -431,6 +431,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/approvekomisi', [TargetkomisiController::class, 'approvekomisi']);
     Route::post('/getqrcode', [TargetkomisiController::class, 'getqrcode']);
     Route::post('/cancelkomisi', [TargetkomisiController::class, 'cancelkomisi']);
+    Route::get('/komisiapprove', [TargetkomisiController::class, 'komisiapprove']);
+    Route::post('/getapprovekomisi', [TargetkomisiController::class, 'getapprovekomisi']);
     //Kas Kecil
     Route::get('/kaskecil', [KaskecilController::class, 'index']);
     Route::get('/kaskecil/create', [KaskecilController::class, 'create']);
