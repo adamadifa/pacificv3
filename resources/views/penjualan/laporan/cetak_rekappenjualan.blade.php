@@ -427,6 +427,7 @@
                     $totallainnya = 0;
                     $totalsapiutang			= 0;
                     $totalslpiutang 		= 0;
+                    $totaldpp =0;
                 }
                 $rek  = $p->kode_cabang;
                 $no++;
