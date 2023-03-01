@@ -549,15 +549,18 @@ class LaporanpembelianController extends Controller
 
         $akunpembelian = DB::table('detail_pembelian')
             ->select('detail_pembelian.kode_akun')
-            ->join('pembelian', 'detail_pembelian.kode_akun', '=', 'pembelian.kode_akun')
+            ->join('pembelian', 'detail_pembelian.nobukti_pembelian', '=', 'pembelian.nobukti_pembelian')
             ->whereBetween('tgl_pembelian', [$dari, $sampai])
             ->groupBy('detail_pembelian.kode_akun')
             ->get();
 
+        dd($akunpembelian);
         $akun_pmb = [];
         foreach ($akunpembelian as $d) {
             $akun_pmb[] = $d->kode_akun;
         }
+
+        dd($akun_pmb);
         $jurnalkoreksi = DB::table('jurnal_koreksi')
             ->selectRaw("jurnal_koreksi.kode_akun,nama_akun,
             SUM(IF(status_dk='K',qty*harga,0)) as jurnalkredit,
