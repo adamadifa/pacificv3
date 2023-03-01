@@ -554,13 +554,13 @@ class LaporanpembelianController extends Controller
             ->groupBy('detail_pembelian.kode_akun')
             ->get();
 
-        dd($akunpembelian);
+        //dd($akunpembelian);
         $akun_pmb = [];
         foreach ($akunpembelian as $d) {
             $akun_pmb[] = $d->kode_akun;
         }
 
-        dd($akun_pmb);
+        //dd($akun_pmb);
         $jurnalkoreksi = DB::table('jurnal_koreksi')
             ->selectRaw("jurnal_koreksi.kode_akun,nama_akun,
             SUM(IF(status_dk='K',qty*harga,0)) as jurnalkredit,
