@@ -61,7 +61,7 @@
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
                 <td rowspan="2" class="fixed-side" scope="col" style=" background-color:#024a75;color:white;">No</td>
                 <td rowspan="2" class="fixed-side" scope="col" style=" background-color:#024a75;color:white;">Nama Sales</td>
-                <td colspan="16" align="center">PRODUK</td>
+                <td colspan="17" align="center">PRODUK</td>
                 <td rowspan="2" bgcolor="#f5ae15">Penjualan Bruto</td>
 
                 <td rowspan="2" bgcolor="#f5ae15">Potongan</td>
@@ -93,6 +93,7 @@
                 <td>SAMBAL CABE 200</td>
                 <td>SAUS STICK PREMIUM</td>
                 <td>SAUS PREMIUM 8 PCS</td>
+                <td>SAUS PREMIUM 500</td>
                 <td style="background-color:#cc2727">PP</td>
                 <td style="background-color:#cc2727">DP</td>
                 <td style="background-color:#cc2727">PPS</td>
@@ -123,6 +124,7 @@
             $totalSP8 					= 0;
             $totalSP8P 					= 0;
             $totalSC 					= 0;
+            $totalSP500					= 0;
             $subtotalbruto 		= 0;
             $totalpotongan 		= 0;
             $totalpotistimewa	= 0;
@@ -159,6 +161,7 @@
             $grandtotalSP8 					= 0;
             $grandtotalSP8P 					= 0;
             $grandtotalSC 					= 0;
+            $grandtotalSP500 					= 0;
             $grandsubtotalbruto 		= 0;
             $grandtotalpotongan 		= 0;
             $grandtotalpotistimewa	= 0;
@@ -200,6 +203,7 @@
                 $totalSC 								= $totalSC + $p->SC;
                 $totalSP8 								= $totalSP8 + $p->SP8;
                 $totalSP8P 								= $totalSP8P + $p->SP8P;
+                $totalSP500 								= $totalSP500 + $p->SP500;
                 $subtotalbruto					= $subtotalbruto + $p->totalbruto;
                 $totalpotongan  				= $totalpotongan + $p->totalpotongan;
                 $totalretur 						= $totalretur + $p->totalretur;
@@ -238,6 +242,7 @@
                 $grandtotalSC 					= $grandtotalSC + $p->SC;
                 $grandtotalSP8 					= $grandtotalSP8 + $p->SP8;
                 $grandtotalSP8P 					= $grandtotalSP8P + $p->SP8P;
+                $grandtotalSP500 					= $grandtotalSP500 + $p->SP500;
                 $grandsubtotalbruto			= $grandsubtotalbruto + $p->totalbruto;
                 $grandtotalpotongan  		= $grandtotalpotongan + $p->totalpotongan;
                 $grandtotalretur 				= $grandtotalretur + $p->totalretur;
@@ -283,6 +288,7 @@
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SC)) {echo rupiah($p->SC);} ?></td>
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP8)) {echo rupiah($p->SP8);} ?></td>
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP8P)) {echo rupiah($p->SP8P);} ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP500)) {echo rupiah($p->SP500);} ?></td>
                 <td style="text-align:right; font-weight:bold">
                     <?php if (!empty($p->totalbruto)) {echo rupiah ($p->totalbruto);} ?>
                 </td>
@@ -370,6 +376,7 @@
             <td align="right" >' . rupiah($totalSC) . '</td>
             <td align="right" >' . rupiah($totalSP8) . '</td>
             <td align="right" >' . rupiah($totalSP8P) . '</td>
+            <td align="right" >' . rupiah($totalSP500) . '</td>
             <td align="right" >' . rupiah($subtotalbruto) . '</td>
 
             <td align="right" >' . rupiah($totalpotongan) . '</td>
@@ -408,6 +415,7 @@
                     $totalSC 						= 0;
                     $totalSP8 						= 0;
                     $totalSP8P 						= 0;
+                    $totalSP500 						= 0;
                     $subtotalbruto 			= 0;
                     $totalretur 				= 0;
                     $totalpotongan 			= 0;
@@ -454,6 +462,7 @@
             <td align="right" >' . rupiah($grandtotalSC) . '</td>
             <td align="right" >' . rupiah($grandtotalSP8) . '</td>
             <td align="right" >' . rupiah($grandtotalSP8P) . '</td>
+            <td align="right" >' . rupiah($grandtotalSP500) . '</td>
             <td align="right" >' . rupiah($grandsubtotalbruto) . '</td>
 
             <td align="right" >' . rupiah($grandtotalpotongan) . '</td>

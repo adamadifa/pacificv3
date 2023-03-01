@@ -5773,6 +5773,7 @@ class PenjualanController extends Controller
             SP,
             SP8,
             SP8P,
+            SP500,
             totalbruto,
             totalretur,
             totalpotongan, totalpotistimewa,
@@ -5811,7 +5812,8 @@ class PenjualanController extends Controller
                     SUM( IF ( kode_produk = 'SC', detailpenjualan.subtotal, NULL ) ) AS SC,
                     SUM( IF ( kode_produk = 'SP8', detailpenjualan.subtotal, NULL ) ) AS SP8,
                     SUM( IF ( kode_produk = 'SP', detailpenjualan.subtotal, NULL ) ) AS SP,
-                    SUM( IF ( kode_produk = 'SP8-P', detailpenjualan.subtotal, NULL ) ) AS SP8P
+                    SUM( IF ( kode_produk = 'SP8-P', detailpenjualan.subtotal, NULL ) ) AS SP8P,
+                    SUM( IF ( kode_produk = 'SP500', detailpenjualan.subtotal, NULL ) ) AS SP500
                     FROM
                         detailpenjualan
                         INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
