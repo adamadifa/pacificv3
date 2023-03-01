@@ -92,7 +92,7 @@
     <br>
     <div id="table-scroll" class="table-scroll">
         <div class="table-wrap">
-            <table class="datatable3" style="width:180%" margin-bottom: 30px" border="1">
+            <table class="datatable3" style="width:200%" margin-bottom: 30px" border="1">
                 <thead bgcolor="#024a75" style="color:white; font-size:18px">
                     <tr>
                         <th rowspan="3" class="fixed-side" scope="col" style="background-color:#024a75 ;">NO</th>
