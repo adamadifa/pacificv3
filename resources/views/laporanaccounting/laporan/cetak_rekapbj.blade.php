@@ -96,7 +96,7 @@
                 <thead bgcolor="#024a75" style="color:white; font-size:18px">
                     <tr>
                         <th rowspan="3" class="fixed-side" scope="col" style="background-color:#024a75 ;">NO</th>
-                        <th rowspan="3" class="fixed-side" scope="col" style="background-color:#024a75 ;">PRODUK</th>
+                        <th rowspan="3" class="fixed-side" scope="col" style="background-color:#024a75; width:20% ;">PRODUK</th>
                         <th colspan="45" bgcolor="#024a75">CABANG</th>
                     </tr>
                     <tr style="background-color: #03b058;">
