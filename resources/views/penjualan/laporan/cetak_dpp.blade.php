@@ -89,6 +89,7 @@
                 <th>CG5</th>
                 <th>SC</th>
                 <th>SP8</th>
+                <th>SP500</th>
             </tr>
         </thead>
         <tbody>
@@ -109,6 +110,7 @@
             $total_cg5 = 0;
             $total_sc = 0;
             $total_sp8 = 0;
+            $total_sp500 = 0;
             foreach ($dpp as $d) {
                 $total_bb = $total_bb + $d->BB;
                 $total_ab = $total_ab + $d->AB;
@@ -126,6 +128,7 @@
                 $total_cg5 = $total_cg5 + $d->CG5;
                 $total_sc = $total_sc + $d->SC;
                 $total_sp8 = $total_sp8 + $d->SP8;
+                $total_sp500 = $total_sp500 + $d->SP500;
             ?>
             <tr style="font-size:12;">
                 <td><?php echo DateToIndo2($d->tgltransaksi); ?></td>
@@ -181,6 +184,9 @@
                 <td align="right"><?php if ($d->SP8 != 0) {
                                             echo desimal($d->SP8);
                                         } ?></td>
+                <td align="right"><?php if ($d->SP500 != 0) {
+                                            echo desimal($d->SP500);
+                                        } ?></td>
             </tr>
             <?php } ?>
         </tbody>
@@ -234,6 +240,9 @@
                     } ?></td>
                 <td><?php if ($total_sp8 != 0) {
                         echo desimal($total_sp8);
+                    } ?></td>
+                <td><?php if ($total_sp500 != 0) {
+                        echo desimal($total_sp500);
                     } ?></td>
             </tr>
 
