@@ -247,8 +247,8 @@
 										echo desimal($totalSP8);
 									} ?></td>
                 <td align="right"><?php if (!empty($totalSP500)) {
-										echo desimal($totalSP500);
-									} ?></td>
+                                    echo desimal($totalSP500);
+                                } ?></td>
 
             </tr>
         </tfoot>
