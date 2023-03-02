@@ -670,8 +670,8 @@
                 <td align="right"><?php if($qtyopname != 0){ echo desimal($qtyopname); } ?></td>
                 <td align="right"><?php if($qtyopname != 0){ echo desimal($hargaopname); } ?></td>
                 <td align="right"><?php if($qtyopname != 0){ echo desimal($jumlahopname); } ?></td>
-                <td align="right"><?php if($qtysaldoakhir-$qtyopname != 0){ echo desimal($qtysaldoakhir-$qtyopname); } ?></td>
-                <td align="right"><?php if($jumlahsaldoakhir-$jumlahopname != 0){ echo desimal($jumlahsaldoakhir-$jumlahopname); } ?></td>
+                <td align="right"><?php if($qtyopname-$qtysaldoakhir != 0){ echo desimal($qtyopname-$qtysaldoakhir); } ?></td>
+                <td align="right"><?php if($jumlahopname-$jumlahsaldoakhir != 0){ echo desimal($jumlahopname-$jumlahsaldoakhir); } ?></td>
             </tr>
 
             <?php if ($jenis_barang != $d->jenis_barang && $d->satuan == "KG") { ?>
