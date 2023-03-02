@@ -68,7 +68,7 @@
                 <td rowspan="2">Kode Pel.</td>
                 <td rowspan="2">Nama Pelanggan</td>
                 <td rowspan="2">Pasar</td>
-                <td colspan="16">Produk</td>
+                <td colspan="17">Produk</td>
             </tr>
             <tr>
                 <td>AB</td>
@@ -87,6 +87,7 @@
                 <td>CG5</td>
                 <td>SC</td>
                 <td>SP8</td>
+                <td>SP500</td>
             </tr>
         </thead>
         <tbody>
@@ -108,6 +109,7 @@
 			$totalCG5 	= 0;
 			$totalSC 	= 0;
 			$totalSP8 	= 0;
+			$totalSP500 	= 0;
 
 			foreach ($rekappelanggan as $p) {
 
@@ -127,6 +129,7 @@
 				$totalCG5 	= $totalCG5 + $p->CG5;
 				$totalSC 	= $totalSC + $p->SC;
 				$totalSP8 	= $totalSP8 + $p->SP8;
+				$totalSP500 = $totalSP500 + $p->SP500;
 
 			?>
             <tr>
@@ -181,6 +184,9 @@
 																	} ?></td>
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP8)) {
 																		echo desimal($p->SP8);
+																	} ?></td>
+                td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP500)) {
+																		echo desimal($p->SP500);
 																	} ?></td>
 
             </tr>
@@ -239,6 +245,9 @@
 									} ?></td>
                 <td align="right"><?php if (!empty($totalSP8)) {
 										echo desimal($totalSP8);
+									} ?></td>
+                <td align="right"><?php if (!empty($totalSP500)) {
+										echo desimal($totalSP500);
 									} ?></td>
 
             </tr>
