@@ -185,7 +185,7 @@
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP8)) {
 																		echo desimal($p->SP8);
 																	} ?></td>
-                td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP500)) {
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP500)) {
 																		echo desimal($p->SP500);
 																	} ?></td>
 
