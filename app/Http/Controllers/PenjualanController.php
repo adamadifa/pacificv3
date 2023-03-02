@@ -5399,19 +5399,20 @@ class PenjualanController extends Controller
         $sampai = date("Y-m-t", strtotime($dari));
         $harganet = DB::table('penjualan')
             ->selectRaw("SUM(bruto_AB) as bruto_AB,
-		SUM(bruto_AR) as bruto_AR,
-		SUM(bruto_AS) as bruto_AS,
-		SUM(bruto_BB) as bruto_BB,
-		SUM(bruto_BBP) as bruto_BBP,
-		SUM(bruto_CG) as bruto_CG,
-		SUM(bruto_CGG) as bruto_CGG,
-		SUM(bruto_CG5) as bruto_CG5,
-		SUM(bruto_DEP) as bruto_DEP,
-		SUM(bruto_DS) as bruto_DS,
-		SUM(bruto_SP) as bruto_SP,
-		SUM(bruto_SPP) as bruto_SPP,
-		SUM(bruto_SC) as bruto_SC,
-		SUM(bruto_SP8) as bruto_SP8,
+            SUM(bruto_AR) as bruto_AR,
+            SUM(bruto_AS) as bruto_AS,
+            SUM(bruto_BB) as bruto_BB,
+            SUM(bruto_BBP) as bruto_BBP,
+            SUM(bruto_CG) as bruto_CG,
+            SUM(bruto_CGG) as bruto_CGG,
+            SUM(bruto_CG5) as bruto_CG5,
+            SUM(bruto_DEP) as bruto_DEP,
+            SUM(bruto_DS) as bruto_DS,
+            SUM(bruto_SP) as bruto_SP,
+            SUM(bruto_SPP) as bruto_SPP,
+            SUM(bruto_SC) as bruto_SC,
+            SUM(bruto_SP8) as bruto_SP8,
+            SUM(bruto_SP500) as bruto_SP500,
 
 		SUM(qty_AB) as qty_AB,
 		SUM(qty_AR) as qty_AR,
@@ -5427,6 +5428,7 @@ class PenjualanController extends Controller
 		SUM(qty_SPP) as qty_SPP,
 		SUM(qty_SC) as qty_SC,
 		SUM(qty_SP8) as qty_SP8,
+		SUM(qty_SP500) as qty_SP500,
 
 
 		SUM(qtydus_AB) as qtydus_AB,
@@ -5443,15 +5445,16 @@ class PenjualanController extends Controller
 		SUM(qtydus_SPP) as qtydus_SPP,
 		SUM(qtydus_SC) as qtydus_SC,
 		SUM(qtydus_SP8) as qtydus_SP8,
+		SUM(qtydus_SP500) as qtydus_SP500,
 
 		SUM(potaida) as  potonganAIDA,
 		SUM(IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0)) as potonganSWAN,
 
 		SUM(IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0)) as qtyAIDA,
-		SUM(IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0) + IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0)) as qtySWAN,
+		SUM(IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0) + IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) as qtySWAN,
 
 		SUM(IFNULL(IFNULL(potaida,0) / (IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0)),0)) as diskonaida,
-		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0) + IFNULL(qtydus_SPP,0)+ IFNULL(qtydus_SC,0)+ IFNULL(qtydus_SP8,0)),0)) as diskonswan,
+		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0) + IFNULL(qtydus_SPP,0)+ IFNULL(qtydus_SC,0)+ IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)),0)) as diskonswan,
 
 		SUM(IFNULL((IFNULL(potaida,0) / (IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0))) * qtydus_AB,0)) as diskon_AB,
 		SUM(IFNULL((IFNULL(potaida,0) / (IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0))) * qtydus_AR,0)) as diskon_AR,
@@ -5459,14 +5462,34 @@ class PenjualanController extends Controller
 		SUM(IFNULL((IFNULL(potaida,0) / (IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0))) * qtydus_CG,0)) as diskon_CG,
 		SUM(IFNULL((IFNULL(potaida,0) / (IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0))) * qtydus_CGG,0)) as diskon_CGG,
 		SUM(IFNULL((IFNULL(potaida,0) / (IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0))) * qtydus_CG5,0)) as diskon_CG5,
-		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0) + IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0)) * qtydus_BB,0)) as diskon_BB,
-		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0)) * qtydus_BBP,0)) as diskon_BBP,
-		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0)) * qtydus_DEP,0)) as diskon_DEP,
-		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0)) * qtydus_DS,0)) as diskon_DS,
-		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0)) * qtydus_SP,0)) as diskon_SP,
-		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0)) * qtydus_SPP,0)) as diskon_SPP,
-		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0)) * qtydus_SC,0)) as diskon_SC,
-		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0)) * qtydus_SP8,0)) as diskon_SP8,
+
+
+        SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0) ) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0) + IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) * qtydus_BB,0)) as diskon_BB,
+
+
+		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) * qtydus_BBP,0)) as diskon_BBP,
+
+
+		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) * qtydus_DEP,0)) as diskon_DEP,
+
+
+		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) * qtydus_DS,0)) as diskon_DS,
+
+
+		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) * qtydus_SP,0)) as diskon_SP,
+
+
+		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) * qtydus_SPP,0)) as diskon_SPP,
+
+
+		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) * qtydus_SC,0)) as diskon_SC,
+
+
+		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + + IFNULL(qtydus_SP500,0)) * qtydus_SP8,0)) as diskon_SP8,
+
+        SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + + IFNULL(qtydus_SP500,0)) * qtydus_SP500,0)) as diskon_SP500,
+
+
 
 		SUM(penyharga) as penyharga,
 
@@ -5483,7 +5506,9 @@ class PenjualanController extends Controller
 		SUM(IFNULL(retur_SP,0)) as retur_SP,
 		SUM(IFNULL(retur_SPP,0)) as retur_SPP,
 		SUM(IFNULL(retur_SC,0)) as retur_SC,
-		SUM(IFNULL(retur_SP8,0)) as retur_SP8")
+		SUM(IFNULL(retur_SP8,0)) as retur_SP8,
+		SUM(IFNULL(retur_SP500,0)) as retur_SP500
+        ")
             ->leftJoin(
                 DB::raw("(
                 SELECT
@@ -5502,6 +5527,7 @@ class PenjualanController extends Controller
 		SUM(IF(b.kode_produk = 'SPP',dp.subtotal,0)) as bruto_SPP,
 		SUM(IF(b.kode_produk = 'SC',dp.subtotal,0)) as bruto_SC,
 		SUM(IF(b.kode_produk = 'SP8',dp.subtotal,0)) as bruto_SP8,
+		SUM(IF(b.kode_produk = 'SP500',dp.subtotal,0)) as bruto_SP500,
 
 		SUM(IF(b.kode_produk = 'AB' AND promo !=1 OR b.kode_produk = 'AB' AND promo IS NULL,dp.jumlah,0)) as   qty_AB,
 		SUM(IF(b.kode_produk = 'AR' AND promo !=1 OR b.kode_produk = 'AR' AND promo IS NULL,dp.jumlah,0)) as   qty_AR,
@@ -5517,6 +5543,7 @@ class PenjualanController extends Controller
 		SUM(IF(b.kode_produk = 'SPP' AND promo !=1 OR b.kode_produk = 'SPP' AND promo IS NULL,dp.jumlah,0)) as   qty_SPP,
 		SUM(IF(b.kode_produk = 'SC' AND promo !=1 OR b.kode_produk = 'SC' AND promo IS NULL,dp.jumlah,0)) as   qty_SC,
 		SUM(IF(b.kode_produk = 'SP8' AND promo !=1 OR b.kode_produk = 'SP8' AND promo IS NULL,dp.jumlah,0)) as   qty_SP8,
+		SUM(IF(b.kode_produk = 'SP500' AND promo !=1 OR b.kode_produk = 'SP500' AND promo IS NULL,dp.jumlah,0)) as   qty_SP500,
 
 		SUM(IF(b.kode_produk = 'AB' AND promo !=1 OR b.kode_produk = 'AB' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_AB,
 		SUM(IF(b.kode_produk = 'AR' AND promo !=1 OR b.kode_produk = 'AR' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_AR,
@@ -5531,7 +5558,8 @@ class PenjualanController extends Controller
 		SUM(IF(b.kode_produk = 'SP' AND promo !=1 OR b.kode_produk = 'SP' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_SP,
 		SUM(IF(b.kode_produk = 'SPP' AND promo !=1 OR b.kode_produk = 'SPP' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_SPP,
 		SUM(IF(b.kode_produk = 'SC' AND promo !=1 OR b.kode_produk = 'SC' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_SC,
-		SUM(IF(b.kode_produk = 'SP8' AND promo !=1 OR b.kode_produk = 'SP8' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_SP8
+		SUM(IF(b.kode_produk = 'SP8' AND promo !=1 OR b.kode_produk = 'SP8' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_SP8,
+        SUM(IF(b.kode_produk = 'SP500' AND promo !=1 OR b.kode_produk = 'SP500' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_SP500
 		FROM detailpenjualan dp
 		INNER JOIN barang b ON dp.kode_barang = b.kode_barang
 		INNER JOIN master_barang mb ON b.kode_produk = mb.kode_produk
@@ -5558,7 +5586,8 @@ class PenjualanController extends Controller
                 SUM(IF(b.kode_produk = 'SP',subtotal,0)) as   retur_SP,
                 SUM(IF(b.kode_produk = 'SPP',subtotal,0)) as   retur_SPP,
                 SUM(IF(b.kode_produk = 'SC',subtotal,0)) as   retur_SC,
-                SUM(IF(b.kode_produk = 'SP8',subtotal,0)) as   retur_SP8
+                SUM(IF(b.kode_produk = 'SP8',subtotal,0)) as   retur_SP8,
+                SUM(IF(b.kode_produk = 'SP500',subtotal,0)) as   retur_SP500
                 FROM detailretur
                 INNER JOIN retur ON detailretur.no_retur_penj = retur.no_retur_penj
                 INNER JOIN barang b ON detailretur.kode_barang = b.kode_barang
@@ -5590,6 +5619,7 @@ class PenjualanController extends Controller
 		SUM(IF(barang.kode_produk = 'SPP',subtotal,0)) as   retur_SPP,
 		SUM(IF(barang.kode_produk = 'SC',subtotal,0)) as   retur_SC,
 		SUM(IF(barang.kode_produk = 'SP8',subtotal,0)) as   retur_SP8,
+		SUM(IF(barang.kode_produk = 'SP500',subtotal,0)) as   retur_SP500,
 
 		SUM(IF(barang.kode_produk = 'AB' AND jenis_retur='GB',subtotal,0)) as   returpeny_AB,
 		SUM(IF(barang.kode_produk = 'AR' AND jenis_retur='GB',subtotal,0)) as   returpeny_AR,
@@ -5605,7 +5635,9 @@ class PenjualanController extends Controller
 		SUM(IF(barang.kode_produk = 'DK' AND jenis_retur='GB',subtotal,0)) as   returpeny_DK,
 		SUM(IF(barang.kode_produk = 'SPP' AND jenis_retur='GB',subtotal,0)) as   returpeny_SPP,
 		SUM(IF(barang.kode_produk = 'SC' AND jenis_retur='GB',subtotal,0)) as   returpeny_SC,
-		SUM(IF(barang.kode_produk = 'SP8' AND jenis_retur='GB',subtotal,0)) as   returpeny_SP8")
+		SUM(IF(barang.kode_produk = 'SP8' AND jenis_retur='GB',subtotal,0)) as   returpeny_SP8,
+		SUM(IF(barang.kode_produk = 'SP500' AND jenis_retur='GB',subtotal,0)) as   returpeny_SP500
+        ")
             ->join('retur', 'detailretur.no_retur_penj', '=', 'retur.no_retur_penj')
             ->join('barang', 'detailretur.kode_barang', '=', 'barang.kode_barang')
             ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')
