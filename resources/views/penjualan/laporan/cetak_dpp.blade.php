@@ -70,7 +70,7 @@
                 <th rowspan="2">NAMA PELANGGAN</th>
                 <th rowspan="2">PASAR/DAERAH</th>
                 <th rowspan="2">SALESMAN</th>
-                <th colspan="16">PRODUK</th>
+                <th colspan="17">PRODUK</th>
             </tr>
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
                 <th>BB</th>
