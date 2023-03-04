@@ -2659,6 +2659,8 @@ class TargetkomisiController extends Controller
             }
         );
 
+        $query->where('nama_karyawan', '!=', '');
+        $query->orderByRaw('kode_cabang,karyawan.id_karyawan');
         $komisi = $query->get();
         $namabulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         $nmbulan  = $namabulan[$bulan];
