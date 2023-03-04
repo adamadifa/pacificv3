@@ -2660,6 +2660,6 @@ class TargetkomisiController extends Controller
         );
 
         $komisi = $query->get();
-        dd($komisi);
+        return view('targetkomisi.laporan.cetak_rekap', compact('komisi', 'nmbulan', 'tahun', 'bulan'));
     }
 }
