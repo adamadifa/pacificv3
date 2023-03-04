@@ -134,6 +134,11 @@
                     <i class="feather icon-file mr-1"></i>Komisi
                 </li>
             </a>
+            <a href="/rekapkomisi" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['rekapkomisi']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Rekap Komisi
+                </li>
+            </a>
             <a href="/laporankomisidriverhelper" style="color:#626262">
                 <li class="list-group-item {{ request()->is(['laporankomisidriverhelper']) ? 'active' : '' }}">
                     <i class="feather icon-file mr-1"></i>Komisi Driver, Helper & Gudang

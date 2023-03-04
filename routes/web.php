@@ -414,6 +414,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/targetkomisi/{kode_target}/{kode_cabang}/approvetarget', [TargetkomisiController::class, 'approvetarget']);
     Route::get('/targetkomisi/{kode_target}/{kode_cabang}/canceltarget', [TargetkomisiController::class, 'canceltarget']);
     Route::get('/laporankomisi', [TargetkomisiController::class, 'laporankomisi']);
+    Route::get('/rekapkomisi', [TargetkomisiController::class, 'rekapkomisi']);
     Route::post('/laporankomisi/cetak', [TargetkomisiController::class, 'cetaklaporankomisi']);
     Route::get('/laporankomisidriverhelper', [TargetkomisiController::class, 'laporankomisidriverhelper']);
     Route::post('/laporankomisidriverhelper/cetak', [TargetkomisiController::class, 'cetakkomisidriverhelper']);
