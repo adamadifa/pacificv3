@@ -2660,6 +2660,8 @@ class TargetkomisiController extends Controller
         );
 
         $komisi = $query->get();
+        $namabulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        $nmbulan  = $namabulan[$bulan];
         return view('targetkomisi.laporan.cetak_rekap', compact('komisi', 'nmbulan', 'tahun', 'bulan'));
     }
 }
