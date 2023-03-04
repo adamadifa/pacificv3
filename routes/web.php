@@ -416,6 +416,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/laporankomisi', [TargetkomisiController::class, 'laporankomisi']);
     Route::get('/rekapkomisi', [TargetkomisiController::class, 'rekapkomisi']);
     Route::post('/laporankomisi/cetak', [TargetkomisiController::class, 'cetaklaporankomisi']);
+    Route::post('/rekapkomisi/cetak', [TargetkomisiController::class, 'cetakrekapkomisi']);
     Route::get('/laporankomisidriverhelper', [TargetkomisiController::class, 'laporankomisidriverhelper']);
     Route::post('/laporankomisidriverhelper/cetak', [TargetkomisiController::class, 'cetakkomisidriverhelper']);
     Route::get('/laporaninsentif', [TargetkomisiController::class, 'laporaninsentif']);
