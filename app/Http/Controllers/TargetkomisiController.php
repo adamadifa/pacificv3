@@ -456,7 +456,7 @@ class TargetkomisiController extends Controller
     public function rekapkomisi()
     {
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
-        return view('targetkomisi.laporan.frm.lap_rekapkomisi', compact('cabang', 'bulan'));
+        return view('targetkomisi.laporan.frm.lap_rekapkomisi', compact('bulan'));
     }
 
 
