@@ -97,5 +97,24 @@
         {{ $nmbulan }} {{ $tahun }}
     </b>
     <br>
+    <br>
+    <table class="datatable3" style="width:150%">
+        <thead>
+            <tr>
+                <th>NO</th>
+                <th>ID KARYAWAN</th>
+                <th>NAMA KARYAWAN</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($komisi as $d)
+            <tr>
+
+                <td>{{ $loop->iteration }}</td>
+                <td>{{ $d->id_karyawan }}</td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 </body>
 </html>
