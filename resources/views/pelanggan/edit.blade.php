@@ -66,10 +66,25 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-12">
+                                        <div class="col-10">
                                             <x-inputtext label="No. HP" field="no_hp" icon="feather icon-phone" value="{{ $data->no_hp }}" />
                                         </div>
+                                        <div class="col-2">
+                                            <div class="vs-checkbox-con vs-checkbox-primary">
+
+                                                <input type="checkbox" class="na_nohp" @if ($data->no_hp == 'NA')
+                                                checked
+                                                @endif name="na_nohp" value="1">
+                                                <span class="vs-checkbox">
+                                                    <span class="vs-checkbox--check">
+                                                        <i class="vs-icon feather icon-check"></i>
+                                                    </span>
+                                                </span>
+                                                <span class="">NA</span>
+                                            </div>
+                                        </div>
                                     </div>
+
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group @error('pasar') error @enderror">
@@ -553,6 +568,17 @@
 
         $("#kode_cabang").change(function() {
             loadsalesmancabang();
+        });
+
+        $('.na_nohp').change(function() {
+            if (this.checked) {
+                $("#no_hp").val("NA");
+                $("#no_hp").attr("readonly", true);
+            } else {
+                $("#no_hp").val("");
+                $("#no_hp").attr("readonly", false);
+            }
+
         });
     });
 

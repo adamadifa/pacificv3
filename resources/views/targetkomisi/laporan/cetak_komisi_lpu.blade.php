@@ -732,7 +732,7 @@
                 <td colspan="27" style="font-size:24px; font-weight:bold" align="center">TOTAL</td>
                 <td></td>
                 <td></td>
-                <td style="font-size:24px; font-weight:bold" align="right"><?php echo rupiah($grandtotalreward); ?>
+                <td style="font-size:24px; font-weight:bold" align="right"><?php echo desimal($grandtotalreward); ?>
                 </td>
             </tr>
         </tbody>
