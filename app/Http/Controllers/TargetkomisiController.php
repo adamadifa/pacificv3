@@ -2389,20 +2389,37 @@ class TargetkomisiController extends Controller
         $query->selectRaw('
             karyawan.id_karyawan,
             nama_karyawan,
+            karyawan.kode_cabang,
+            kategori_salesman,
 
-            IFNULL(IF(IF(target_BB_DP = 0,0,(IFNULL(BB,0) + IFNULL(DEP,0)) / target_BB_DP ) > 1,40,IF(target_BB_DP = 0,0,(IFNULL(BB,0) + IFNULL(DEP,0)) / target_BB_DP ) * 40),0) +
+            target_BB_DP,
+            BB + DEP as BBDP,
+            IF(IF(target_BB_DP = 0,0,(IFNULL(BB,0) + IFNULL(DEP,0)) / target_BB_DP ) > 1,40,IF(target_BB_DP = 0,0,(IFNULL(BB,0) + IFNULL(DEP,0)) / target_BB_DP ) * 40) as poinBBDP,
 
-            IFNULL(IF(IF(target_DS = 0,0,(IFNULL(SP8,0)) / target_DS ) > 1,10,IF(target_DS = 0,0,(IFNULL(SP8,0)) / target_DS ) * 10),0) +
 
-            IFNULL(IF(IF(target_SP = 0,0,(IFNULL(SP,0) + IFNULL(SP500,0)) / target_SP ) > 1,15,IF(target_SP = 0,0,(IFNULL(SP,0) + IFNULL(SP500,0)) / target_SP ) * 15),0)+
+            target_DS,
+            SP8,
+            IF(IF(target_DS = 0,0,(IFNULL(SP8,0)) / target_DS ) > 1,10,IF(target_DS = 0,0,(IFNULL(SP8,0)) / target_DS ) * 10) as poinSP8,
 
-            IFNULL(IF(IF(target_AR = 0,0,(IFNULL(AR,0)) / target_AR ) > 1,12.5,IF(target_AR = 0,0,(IFNULL(AR,0)) / target_AR ) * 12.5),0)+
+            target_SP,
+            SP + SP500 as SPSP500,
+            IF(IF(target_SP = 0,0,(IFNULL(SP,0) + IFNULL(SP500,0)) / target_SP ) > 1,15,IF(target_SP = 0,0,(IFNULL(SP,0) + IFNULL(SP500,0)) / target_SP ) * 15) as poinSPSP500,
 
-            IFNULL(IF(IF(target_AB_AS_CG5 = 0,0,(IFNULL(`AS`,0) + IFNULL(AB,0)) / target_AB_AS_CG5 ) > 1,10,IF(target_AB_AS_CG5 = 0,0,(IFNULL(`AS`,0) + IFNULL(AB,0)) / target_AB_AS_CG5 ) * 10),0) +
+            target_AR,
+            AR,
+            IF(IF(target_AR = 0,0,(IFNULL(AR,0)) / target_AR ) > 1,12.5,IF(target_AR = 0,0,(IFNULL(AR,0)) / target_AR ) * 12.5) as poinAR,
 
-            IFNULL(IF(IF(target_SC = 0,0,(IFNULL(SC,0)) / target_SC ) > 1,12.5,IF(target_SC = 0,0,(IFNULL(SC,0)) / target_SC ) * 12.5),0) as totalpoin,
+            target_AB_AS_CG5,
+            `AS` + AB as ASAB,
+            IF(IF(target_AB_AS_CG5 = 0,0,(IFNULL(`AS`,0) + IFNULL(AB,0)) / target_AB_AS_CG5 ) > 1,10,IF(target_AB_AS_CG5 = 0,0,(IFNULL(`AS`,0) + IFNULL(AB,0)) / target_AB_AS_CG5 ) * 10) as poinASAB,
+
+            target_SC,
+            SC,
+            IF(IF(target_SC = 0,0,(IFNULL(SC,0)) / target_SC ) > 1,12.5,IF(target_SC = 0,0,(IFNULL(SC,0)) / target_SC ) * 12.5) as poinSC,
             realisasi_cashin,
-            sisapiutangsaldo + sisapiutang as sisapiutang
+            sisapiutangsaldo + sisapiutang as sisapiutang,
+            potongankomisi,
+            komisifix
         ');
         $query->join(
             DB::raw("(
@@ -2658,12 +2675,46 @@ class TargetkomisiController extends Controller
                 $join->on('karyawan.id_karyawan', '=', 'realisasi.salesbarunew');
             }
         );
+        $query->leftJoin(
+            DB::raw("(
+                SELECT id_karyawan,jumlah as potongankomisi
+                FROM komisi_potongan
+                WHERE bulan = '$bulan' AND tahun='$tahun'
+            ) potongankomisi"),
+            function ($join) {
+                $join->on('karyawan.id_karyawan', '=', 'potongankomisi.id_karyawan');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+                SELECT id_karyawan,jumlah as komisifix
+                FROM komisi_akhir
+                WHERE bulan = '$bulan' AND tahun='$tahun'
+            ) komisiakhir"),
+            function ($join) {
+                $join->on('karyawan.id_karyawan', '=', 'komisiakhir.id_karyawan');
+            }
+        );
 
         $query->where('nama_karyawan', '!=', '');
         $query->orderByRaw('kode_cabang,karyawan.id_karyawan');
         $komisi = $query->get();
         $namabulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         $nmbulan  = $namabulan[$bulan];
-        return view('targetkomisi.laporan.cetak_rekap', compact('komisi', 'nmbulan', 'tahun', 'bulan'));
+        $cabang = Cabang::orderBy('kode_cabang')->get();
+
+        $potongankomisikp = DB::table('komisi_potongan')
+            ->where('bulan', $bulan)
+            ->where('tahun', $tahun)
+            ->whereRaw('LEFT(id_karyawan,2)="KP"')
+            ->get();
+
+        $komisiakhirkp = DB::table('komisi_akhir')
+            ->where('bulan', $bulan)
+            ->where('tahun', $tahun)
+            ->whereRaw('LEFT(id_karyawan,2)="KP"')
+            ->get();
+        return view('targetkomisi.laporan.cetak_rekap', compact('komisi', 'nmbulan', 'tahun', 'bulan', 'cabang', 'potongankomisikp', 'komisiakhirkp'));
     }
 }
