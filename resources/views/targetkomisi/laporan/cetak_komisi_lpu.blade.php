@@ -115,7 +115,7 @@
     $kebijakan = 100;
 
     @endphp
-    <table class="datatable3" style="width:150%">
+    <table class="datatable3" style="width:170%">
         <thead>
             <tr>
                 <th rowspan="3">NO</th>
@@ -134,6 +134,7 @@
                 <th rowspan="3" style="background-color: #ffffff;">POTONGAN</th>
                 <th rowspan="3" style="background-color: #ffffff;">TOTAL KOMISI</th>
                 <th rowspan="3" style="background-color: #ffffff;">KOMISI AKHIR</th>
+                <th rowspan="3" style="background-color: #ffffff;">KETERANGAN</th>
 
             </tr>
             <tr style="text-align: center;">
@@ -526,6 +527,15 @@
                     </a>
                     @else
                     &#128274;
+                    @endif
+                </td>
+                <td>
+                    @if (!empty($d->potongankomisi))
+                    Potongan : {{ $d->ket_potongan }}
+                    @endif
+
+                    @if (!empty($d->ket_komisifix))
+                    Disesuaikan Karena : {{ $d->ket_komisifix }}
                     @endif
                 </td>
             </tr>

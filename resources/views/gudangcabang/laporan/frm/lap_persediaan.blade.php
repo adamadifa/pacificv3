@@ -53,6 +53,18 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <select name="gudang" id="gudang" class="form-control">
+                                                    <option value="">Pilih Gudang</option>
+                                                    <option value="ALL">ALL</option>
+                                                    <option value="GDG">GUDANG</option>
+                                                    <option value="MKT">MARKETING</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="row" id="pilihperiode">
                                         <div class="col-6">
                                             <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker />
@@ -61,6 +73,7 @@
                                             <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker />
                                         </div>
                                     </div>
+
                                     <div class="row">
                                         <div class="col-lg-8 col-sm-12">
                                             <div class="form-group">
@@ -99,6 +112,7 @@
             var kode_produk = $("#kode_produk").val();
             var start = new Date(dari);
             var end = new Date(sampai);
+            var gudang = $("#gudang").val();
             if (kode_cabang == "") {
                 swal({
                     title: 'Oops'
@@ -117,6 +131,16 @@
                     , showConfirmButton: false
                 }).then(function() {
                     $("#kode_produk").focus();
+                });
+                return false;
+            } else if (gudang == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Gudadng Harus Dipilih !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#gudang").focus();
                 });
                 return false;
             } else if (dari == "" || sampai == "") {

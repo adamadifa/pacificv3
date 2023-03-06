@@ -38,129 +38,132 @@ class LaporangudangcabangController extends Controller
         $kode_produk = $request->kode_produk;
         $dari = $request->dari;
         $sampai = $request->sampai;
+        $gudang = $request->gudang;
         $tanggal = explode("-", $dari);
         $bulan      = $tanggal[1];
         $tahun      = $tanggal[0];
         $mulai = $tahun . "-" . $bulan . "-01";
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
         $produk = Barang::where('kode_produk', $kode_produk)->first();
-        $query = Detailmutasicabang::query();
-        $query->selectRaw('detail_mutasi_gudang_cabang.no_mutasi_gudang_cabang,
-        tgl_mutasi_gudang_cabang,
-        mutasi_gudang_cabang.no_dpb,
-        nama_karyawan,tujuan,
-        no_suratjalan,tgl_kirim,
-        isipcsdus,
-        isipack,
-        isipcs,
-        satuan,
-        inout_good,
-        promo,
-        mutasi_gudang_cabang.jenis_mutasi,
-        no_dok,
-        SUM(IF(mutasi_gudang_cabang.jenis_mutasi="SURAT JALAN",detail_mutasi_gudang_cabang.jumlah,0)) as penerimaanpusat,
-        SUM(IF(mutasi_gudang_cabang.jenis_mutasi="TRANSIT IN",detail_mutasi_gudang_cabang.jumlah,0)) as transit_in,
-        SUM(IF(mutasi_gudang_cabang.jenis_mutasi="RETUR",detail_mutasi_gudang_cabang.jumlah,0)) as retur,
-        SUM(IF(mutasi_gudang_cabang.jenis_mutasi="HUTANG KIRIM",detail_mutasi_gudang_cabang.jumlah,0)) as hutangkirim,
-        SUM(IF(mutasi_gudang_cabang.jenis_mutasi="PL TTR",detail_mutasi_gudang_cabang.jumlah,0)) as plttr,
-        SUM(IF(mutasi_gudang_cabang.jenis_mutasi="PENYESUAIAN BAD",detail_mutasi_gudang_cabang.jumlah,0)) as penyesuaian_bad,
-        SUM(IF(mutasi_gudang_cabang.jenis_mutasi="REPACK",detail_mutasi_gudang_cabang.jumlah,0)) as repack,
-        SUM(IF(mutasi_gudang_cabang.jenis_mutasi="PENYESUAIAN",detail_mutasi_gudang_cabang.jumlah,0)) as penyesuaian,
-        SUM(IF(mutasi_gudang_cabang.jenis_mutasi="PENJUALAN",detail_mutasi_gudang_cabang.jumlah,0)) as penjualan,
-        SUM(IF(mutasi_gudang_cabang.jenis_mutasi="PROMOSI",detail_mutasi_gudang_cabang.jumlah,0)) as promosi,
-        SUM(IF(mutasi_gudang_cabang.jenis_mutasi="REJECT PASAR",detail_mutasi_gudang_cabang.jumlah,0)) as reject_pasar,
-        SUM(IF(mutasi_gudang_cabang.jenis_mutasi="REJECT MOBIL",detail_mutasi_gudang_cabang.jumlah,0)) as reject_mobil,
-        SUM(IF(mutasi_gudang_cabang.jenis_mutasi="REJECT GUDANG",detail_mutasi_gudang_cabang.jumlah,0)) as reject_gudang,
-        SUM(IF(mutasi_gudang_cabang.jenis_mutasi="TRANSIT OUT",detail_mutasi_gudang_cabang.jumlah,0)) as transit_out,
-        SUM(IF(mutasi_gudang_cabang.jenis_mutasi="GANTI BARANG",detail_mutasi_gudang_cabang.jumlah,0)) as ganti_barang,
-        SUM(IF(mutasi_gudang_cabang.jenis_mutasi="PL HUTANG KIRIM",detail_mutasi_gudang_cabang.jumlah,0)) as plhutangkirim,
-        SUM(IF(mutasi_gudang_cabang.jenis_mutasi="TTR",detail_mutasi_gudang_cabang.jumlah,0)) as ttr,
-        date_created,date_updated');
-        $query->join('mutasi_gudang_cabang', 'detail_mutasi_gudang_cabang.no_mutasi_gudang_cabang', '=', 'mutasi_gudang_cabang.no_mutasi_gudang_cabang');
-        $query->join('master_barang', 'detail_mutasi_gudang_cabang.kode_produk', '=', 'master_barang.kode_produk');
-        $query->leftJoin('mutasi_gudang_jadi', 'mutasi_gudang_cabang.no_mutasi_gudang_cabang', '=', 'mutasi_gudang_jadi.no_mutasi_gudang');
-        $query->leftJoin('dpb', 'mutasi_gudang_cabang.no_dpb', '=', 'dpb.no_dpb');
-        $query->leftJoin('karyawan', 'dpb.id_karyawan', '=', 'karyawan.id_karyawan');
-        $query->where('mutasi_gudang_cabang.jenis_mutasi', '!=', 'KIRIM PUSAT');
-        $query->whereBetween('tgl_mutasi_gudang_cabang', [$dari, $sampai]);
-        $query->where('detail_mutasi_gudang_cabang.kode_produk', $kode_produk);
-        $query->where('mutasi_gudang_cabang.kode_cabang', $kode_cabang);
-        $query->whereNotNull('inout_good');
-        if ($dari < "2022-03-01") {
-            $query->orWhere('mutasi_gudang_cabang.jenis_mutasi', 'PENYESUAIAN BAD');
-            $query->whereBetween('tgl_mutasi_gudang_cabang', [$dari, $sampai]);
-            $query->where('detail_mutasi_gudang_cabang.kode_produk', $kode_produk);
-            $query->where('mutasi_gudang_cabang.kode_cabang', $kode_cabang);
-            $query->whereNotNull('inout_good');
-        } else {
-            $query->where('mutasi_gudang_cabang.jenis_mutasi', '!=', 'PENYESUAIAN BAD');
-        }
-        $query->orderBy('tgl_mutasi_gudang_cabang');
-        $query->orderBy('order');
-        $query->orderBy('no_dpb');
-        $query->groupByRaw('
-        detail_mutasi_gudang_cabang.no_mutasi_gudang_cabang,
-        tgl_mutasi_gudang_cabang,
-        mutasi_gudang_cabang.no_dpb,
-        nama_karyawan,tujuan,
-        no_suratjalan,tgl_kirim,
-        isipcsdus,
-        isipack,
-        isipcs,
-        satuan,
-        inout_good,
-        promo,
-        mutasi_gudang_cabang.jenis_mutasi,
-        no_dok,date_created,date_updated');
-        $mutasi = $query->get();
-
-        $ceksaldo = DB::table('saldoawal_bj_detail')
-            ->selectRaw("saldoawal_bj_detail.kode_produk,jumlah,isipcsdus,isipack,isipcs")
-            ->join('saldoawal_bj', 'saldoawal_bj_detail.kode_saldoawal', '=', 'saldoawal_bj.kode_saldoawal')
-            ->join('master_barang', 'saldoawal_bj_detail.kode_produk', '=', 'master_barang.kode_produk')
-            ->where('bulan', $bulan)
-            ->where('tahun', $tahun)
-            ->where('kode_cabang', $kode_cabang)
-            ->where('saldoawal_bj.status', 'GS')
-            ->where('saldoawal_bj_detail.kode_produk', $kode_produk)
-            ->first();
-        $mtsa = DB::table('detail_mutasi_gudang_cabang')
-            ->selectRaw("SUM(IF( `inout_good` = 'IN', jumlah, 0)) AS jml_in,
-            SUM(IF( `inout_good` = 'OUT', jumlah, 0)) AS jml_out,
-            SUM(IF( `inout_good` = 'IN', jumlah, 0)) -SUM(IF( `inout_good` = 'OUT', jumlah, 0)) as jumlah,
-            isipcsdus")
-            ->join('mutasi_gudang_cabang', 'detail_mutasi_gudang_cabang.no_mutasi_gudang_cabang', '=', 'mutasi_gudang_cabang.no_mutasi_gudang_cabang')
-            ->join('master_barang', 'detail_mutasi_gudang_cabang.kode_produk', '=', 'master_barang.kode_produk')
-            ->where('tgl_mutasi_gudang_cabang', '>=', $mulai)
-            ->where('tgl_mutasi_gudang_cabang', '<', $dari)
-            ->where('detail_mutasi_gudang_cabang.kode_produk', $kode_produk)
-            ->where('kode_cabang', $kode_cabang)
-            ->where('jenis_mutasi', '!=', 'KIRIM PUSAT')
-            ->groupBy('isipcsdus')
-            ->first();
-
-        if (!empty($mtsa->jumlah)) {
-            $jmlmtsa    = $mtsa->jumlah / $mtsa->isipcsdus;
-            $realjmlmtsa = $mtsa->jumlah;
-        } else {
-            $jmlmtsa    = 0;
-            $realjmlmtsa = 0;
-        }
-
-        if (!empty($ceksaldo->jumlah)) {
-            $saldoawal    = ($ceksaldo->jumlah / $ceksaldo->isipcsdus) + $jmlmtsa;
-            $realsaldoawal = $ceksaldo->jumlah + $realjmlmtsa;
-        } else {
-            $saldoawal    = 0  + $jmlmtsa;
-            $realsaldoawal = 0  + $realjmlmtsa;
-        }
         if (isset($_POST['export'])) {
             // Fungsi header dengan mengirimkan raw data excel
             header("Content-type: application/vnd-ms-excel");
             // Mendefinisikan nama file ekspor "hasil-export.xls"
             header("Content-Disposition: attachment; filename=Laporan Persediaan $dari-$sampai.xls");
         }
-        return view('gudangcabang.laporan.cetak_persediaan', compact('dari', 'sampai', 'produk', 'cabang', 'mutasi', 'saldoawal', 'realsaldoawal'));
+        if ($gudang == "ALL") {
+            $query = Detailmutasicabang::query();
+            $query->selectRaw('detail_mutasi_gudang_cabang.no_mutasi_gudang_cabang,
+            tgl_mutasi_gudang_cabang,
+            mutasi_gudang_cabang.no_dpb,
+            nama_karyawan,tujuan,
+            no_suratjalan,tgl_kirim,
+            isipcsdus,
+            isipack,
+            isipcs,
+            satuan,
+            inout_good,
+            promo,
+            mutasi_gudang_cabang.jenis_mutasi,
+            no_dok,
+            SUM(IF(mutasi_gudang_cabang.jenis_mutasi="SURAT JALAN",detail_mutasi_gudang_cabang.jumlah,0)) as penerimaanpusat,
+            SUM(IF(mutasi_gudang_cabang.jenis_mutasi="TRANSIT IN",detail_mutasi_gudang_cabang.jumlah,0)) as transit_in,
+            SUM(IF(mutasi_gudang_cabang.jenis_mutasi="RETUR",detail_mutasi_gudang_cabang.jumlah,0)) as retur,
+            SUM(IF(mutasi_gudang_cabang.jenis_mutasi="HUTANG KIRIM",detail_mutasi_gudang_cabang.jumlah,0)) as hutangkirim,
+            SUM(IF(mutasi_gudang_cabang.jenis_mutasi="PL TTR",detail_mutasi_gudang_cabang.jumlah,0)) as plttr,
+            SUM(IF(mutasi_gudang_cabang.jenis_mutasi="PENYESUAIAN BAD",detail_mutasi_gudang_cabang.jumlah,0)) as penyesuaian_bad,
+            SUM(IF(mutasi_gudang_cabang.jenis_mutasi="REPACK",detail_mutasi_gudang_cabang.jumlah,0)) as repack,
+            SUM(IF(mutasi_gudang_cabang.jenis_mutasi="PENYESUAIAN",detail_mutasi_gudang_cabang.jumlah,0)) as penyesuaian,
+            SUM(IF(mutasi_gudang_cabang.jenis_mutasi="PENJUALAN",detail_mutasi_gudang_cabang.jumlah,0)) as penjualan,
+            SUM(IF(mutasi_gudang_cabang.jenis_mutasi="PROMOSI",detail_mutasi_gudang_cabang.jumlah,0)) as promosi,
+            SUM(IF(mutasi_gudang_cabang.jenis_mutasi="REJECT PASAR",detail_mutasi_gudang_cabang.jumlah,0)) as reject_pasar,
+            SUM(IF(mutasi_gudang_cabang.jenis_mutasi="REJECT MOBIL",detail_mutasi_gudang_cabang.jumlah,0)) as reject_mobil,
+            SUM(IF(mutasi_gudang_cabang.jenis_mutasi="REJECT GUDANG",detail_mutasi_gudang_cabang.jumlah,0)) as reject_gudang,
+            SUM(IF(mutasi_gudang_cabang.jenis_mutasi="TRANSIT OUT",detail_mutasi_gudang_cabang.jumlah,0)) as transit_out,
+            SUM(IF(mutasi_gudang_cabang.jenis_mutasi="GANTI BARANG",detail_mutasi_gudang_cabang.jumlah,0)) as ganti_barang,
+            SUM(IF(mutasi_gudang_cabang.jenis_mutasi="PL HUTANG KIRIM",detail_mutasi_gudang_cabang.jumlah,0)) as plhutangkirim,
+            SUM(IF(mutasi_gudang_cabang.jenis_mutasi="TTR",detail_mutasi_gudang_cabang.jumlah,0)) as ttr,
+            date_created,date_updated');
+            $query->join('mutasi_gudang_cabang', 'detail_mutasi_gudang_cabang.no_mutasi_gudang_cabang', '=', 'mutasi_gudang_cabang.no_mutasi_gudang_cabang');
+            $query->join('master_barang', 'detail_mutasi_gudang_cabang.kode_produk', '=', 'master_barang.kode_produk');
+            $query->leftJoin('mutasi_gudang_jadi', 'mutasi_gudang_cabang.no_mutasi_gudang_cabang', '=', 'mutasi_gudang_jadi.no_mutasi_gudang');
+            $query->leftJoin('dpb', 'mutasi_gudang_cabang.no_dpb', '=', 'dpb.no_dpb');
+            $query->leftJoin('karyawan', 'dpb.id_karyawan', '=', 'karyawan.id_karyawan');
+            $query->where('mutasi_gudang_cabang.jenis_mutasi', '!=', 'KIRIM PUSAT');
+            $query->whereBetween('tgl_mutasi_gudang_cabang', [$dari, $sampai]);
+            $query->where('detail_mutasi_gudang_cabang.kode_produk', $kode_produk);
+            $query->where('mutasi_gudang_cabang.kode_cabang', $kode_cabang);
+            $query->whereNotNull('inout_good');
+            if ($dari < "2022-03-01") {
+                $query->orWhere('mutasi_gudang_cabang.jenis_mutasi', 'PENYESUAIAN BAD');
+                $query->whereBetween('tgl_mutasi_gudang_cabang', [$dari, $sampai]);
+                $query->where('detail_mutasi_gudang_cabang.kode_produk', $kode_produk);
+                $query->where('mutasi_gudang_cabang.kode_cabang', $kode_cabang);
+                $query->whereNotNull('inout_good');
+            } else {
+                $query->where('mutasi_gudang_cabang.jenis_mutasi', '!=', 'PENYESUAIAN BAD');
+            }
+            $query->orderBy('tgl_mutasi_gudang_cabang');
+            $query->orderBy('order');
+            $query->orderBy('no_dpb');
+            $query->groupByRaw('
+            detail_mutasi_gudang_cabang.no_mutasi_gudang_cabang,
+            tgl_mutasi_gudang_cabang,
+            mutasi_gudang_cabang.no_dpb,
+            nama_karyawan,tujuan,
+            no_suratjalan,tgl_kirim,
+            isipcsdus,
+            isipack,
+            isipcs,
+            satuan,
+            inout_good,
+            promo,
+            mutasi_gudang_cabang.jenis_mutasi,
+            no_dok,date_created,date_updated');
+            $mutasi = $query->get();
+
+            $ceksaldo = DB::table('saldoawal_bj_detail')
+                ->selectRaw("saldoawal_bj_detail.kode_produk,jumlah,isipcsdus,isipack,isipcs")
+                ->join('saldoawal_bj', 'saldoawal_bj_detail.kode_saldoawal', '=', 'saldoawal_bj.kode_saldoawal')
+                ->join('master_barang', 'saldoawal_bj_detail.kode_produk', '=', 'master_barang.kode_produk')
+                ->where('bulan', $bulan)
+                ->where('tahun', $tahun)
+                ->where('kode_cabang', $kode_cabang)
+                ->where('saldoawal_bj.status', 'GS')
+                ->where('saldoawal_bj_detail.kode_produk', $kode_produk)
+                ->first();
+            $mtsa = DB::table('detail_mutasi_gudang_cabang')
+                ->selectRaw("SUM(IF( `inout_good` = 'IN', jumlah, 0)) AS jml_in,
+                SUM(IF( `inout_good` = 'OUT', jumlah, 0)) AS jml_out,
+                SUM(IF( `inout_good` = 'IN', jumlah, 0)) -SUM(IF( `inout_good` = 'OUT', jumlah, 0)) as jumlah,
+                isipcsdus")
+                ->join('mutasi_gudang_cabang', 'detail_mutasi_gudang_cabang.no_mutasi_gudang_cabang', '=', 'mutasi_gudang_cabang.no_mutasi_gudang_cabang')
+                ->join('master_barang', 'detail_mutasi_gudang_cabang.kode_produk', '=', 'master_barang.kode_produk')
+                ->where('tgl_mutasi_gudang_cabang', '>=', $mulai)
+                ->where('tgl_mutasi_gudang_cabang', '<', $dari)
+                ->where('detail_mutasi_gudang_cabang.kode_produk', $kode_produk)
+                ->where('kode_cabang', $kode_cabang)
+                ->where('jenis_mutasi', '!=', 'KIRIM PUSAT')
+                ->groupBy('isipcsdus')
+                ->first();
+
+            if (!empty($mtsa->jumlah)) {
+                $jmlmtsa    = $mtsa->jumlah / $mtsa->isipcsdus;
+                $realjmlmtsa = $mtsa->jumlah;
+            } else {
+                $jmlmtsa    = 0;
+                $realjmlmtsa = 0;
+            }
+
+            if (!empty($ceksaldo->jumlah)) {
+                $saldoawal    = ($ceksaldo->jumlah / $ceksaldo->isipcsdus) + $jmlmtsa;
+                $realsaldoawal = $ceksaldo->jumlah + $realjmlmtsa;
+            } else {
+                $saldoawal    = 0  + $jmlmtsa;
+                $realsaldoawal = 0  + $realjmlmtsa;
+            }
+            return view('gudangcabang.laporan.cetak_persediaan', compact('dari', 'sampai', 'produk', 'cabang', 'mutasi', 'saldoawal', 'realsaldoawal'));
+        }
     }
 
     public function badstok()

@@ -1122,7 +1122,9 @@ class TargetkomisiController extends Controller
             IFNULL(sisapiutangsaldo,0) + IFNULL(sisapiutang,0) as sisapiutang,
             cashin_jt,
             potongankomisi,
-            komisifix
+            komisifix,
+            ket_potongan,
+            ket_komisifix
             ');
             $query->join(
                 DB::raw("(
@@ -1526,7 +1528,7 @@ class TargetkomisiController extends Controller
 
             $query->leftJoin(
                 DB::raw("(
-                    SELECT id_karyawan,jumlah as potongankomisi
+                    SELECT id_karyawan,jumlah as potongankomisi,keterangan as ket_potongan
                     FROM komisi_potongan
                     WHERE bulan = '$bulan' AND tahun='$tahun'
                 ) potongankomisi"),
@@ -1537,7 +1539,7 @@ class TargetkomisiController extends Controller
 
             $query->leftJoin(
                 DB::raw("(
-                    SELECT id_karyawan,jumlah as komisifix
+                    SELECT id_karyawan,jumlah as komisifix, keterangan as ket_komisifix
                     FROM komisi_akhir
                     WHERE bulan = '$bulan' AND tahun='$tahun'
                 ) komisiakhir"),
