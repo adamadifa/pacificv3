@@ -1119,7 +1119,7 @@ class TargetkomisiController extends Controller
             CG5,
             retur_CG5,
             realisasi_cashin,
-            sisapiutangsaldo + sisapiutang as sisapiutang,
+            IFNULL(sisapiutangsaldo,0) + IFNULL(sisapiutang,0) as sisapiutang,
             cashin_jt,
             potongankomisi,
             komisifix
