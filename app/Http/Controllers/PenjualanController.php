@@ -3735,7 +3735,80 @@ class PenjualanController extends Controller
         return view('penjualan.laporan.frm.lap_tunaikredit', compact('cabang'));
     }
 
+    public function laporanroutingsalesman()
+    {
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
+        return view('penjualan.laporan.frm.lap_routingsalesman', compact('cabang'));
+    }
 
+    public function cetakroutingsalesman(Request $request)
+    {
+        $kode_cabang = $request->kode_cabang;
+        $id_karyawan = $request->id_karyawan;
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $qpenjualan = Penjualan::query();
+        $qpenjualan->selectRaw('tgltransaksi,penjualan.kode_pelanggan,nama_pelanggan,jenistransaksi,hari,SUM(total) as totalpenjualan,totalbayar');
+        $qpenjualan->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        $qpenjualan->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $qpenjualan->leftJoin(
+            DB::raw("(
+            SELECT no_fak_penj,SUM(bayar) as totalbayar
+            FROM historibayar
+            WHERE tglbayar BETWEEN '$dari' AND '$sampai'
+            GROUP BY no_fak_penj
+            ) hb"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'hb.no_fak_penj');
+            }
+        );
+        $qpenjualan->whereBetween('tgltransaksi', [$dari, $sampai]);
+        $qpenjualan->where('nama_pelanggan', '!=', 'BATAL');
+        if (!empty($kode_cabang)) {
+            $qpenjualan->where('karyawan.kode_cabang', $kode_cabang);
+        }
+
+        if (!empty($id_karyawan)) {
+            $qpenjualan->where('penjualan.id_karyawan', $id_karyawan);
+        }
+        $qpenjualan->groupByRaw('tgltransaksi,penjualan.kode_pelanggan,nama_pelanggan,hari,totalbayar,jenistransaksi');
+        $qpenjualan->orderByRaw('tgltransaksi,nama_pelanggan');
+        $penjualan = $qpenjualan->get();
+
+
+        $qhb = Pembayaran::query();
+        $qhb->selectRaw('tglbayar,penjualan.kode_pelanggan,nama_pelanggan,penjualan.jenistransaksi,hari,SUM(bayar) as totalbayar');
+        $qhb->join('penjualan', 'historibayar.no_fak_penj', '=', 'penjualan.no_fak_penj');
+        $qhb->leftJoin(
+            DB::raw("(
+            SELECT no_fak_penj
+            FROM penjualan
+            WHERE tgltransaksi BETWEEN '$dari' AND '$sampai'
+            ) pj"),
+            function ($join) {
+                $join->on('historibayar.no_fak_penj', '=', 'pj.no_fak_penj');
+            }
+        );
+        $qhb->join('pelanggan', 'penjualan.kode_pelanggan', 'pelanggan.kode_pelanggan');
+        $qhb->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $qhb->whereBetween('tglbayar', [$dari, $sampai]);
+        $qhb->whereNull('pj.no_fak_penj');
+        if (!empty($kode_cabang)) {
+            $qhb->where('karyawan.kode_cabang', $kode_cabang);
+        }
+
+        if (!empty($id_karyawan)) {
+            $qhb->where('penjualan.id_karyawan', $id_karyawan);
+        }
+        $qhb->groupByRaw('tglbayar,penjualan.kode_pelanggan,nama_pelanggan,penjualan.jenistransaksi,hari');
+        $qhb->orderByRaw('tglbayar,nama_pelanggan');
+        $historibayar = $qhb->get();
+
+        $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
+        $salesman = Salesman::where('id_karyawan', $id_karyawan)->first();
+        return view('penjualan.laporan.cetak_routingsalesman', compact('cabang', 'salesman', 'dari', 'sampai', 'penjualan', 'historibayar'));
+    }
     public function cetaklaporantunaikredit(Request $request)
     {
         $dari = $request->dari;
@@ -3829,6 +3902,7 @@ class PenjualanController extends Controller
             // Mendefinisikan nama file ekspor "hasil-export.xls"
             header("Content-Disposition: attachment; filename=Tunai Kredit Periode $dari-$sampai-$time.xls");
         }
+
         return view('penjualan.laporan.cetak_tunaikredit', compact('tunaikredit', 'salesman', 'cabang', 'dari', 'sampai', 'retur', 'potongan'));
     }
 
