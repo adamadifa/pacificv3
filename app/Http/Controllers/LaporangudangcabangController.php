@@ -163,6 +163,19 @@ class LaporangudangcabangController extends Controller
                 $realsaldoawal = 0  + $realjmlmtsa;
             }
             return view('gudangcabang.laporan.cetak_persediaan', compact('dari', 'sampai', 'produk', 'cabang', 'mutasi', 'saldoawal', 'realsaldoawal'));
+        } else if ($gudang == "GDG") {
+            $ceksaldo = DB::table('saldoawal_bj_detail')
+                ->selectRaw("saldoawal_bj_detail.kode_produk,jumlah,isipcsdus,isipack,isipcs")
+                ->join('saldoawal_bj', 'saldoawal_bj_detail.kode_saldoawal', '=', 'saldoawal_bj.kode_saldoawal')
+                ->join('master_barang', 'saldoawal_bj_detail.kode_produk', '=', 'master_barang.kode_produk')
+                ->where('bulan', $bulan)
+                ->where('tahun', $tahun)
+                ->where('kode_cabang', $kode_cabang)
+                ->where('saldoawal_bj.status', 'GS')
+                ->where('saldoawal_bj_detail.kode_produk', $kode_produk)
+                ->first();
+
+            return view('gudangcabang.laporan.cetak_persediaan', compact('dari', 'sampai', 'produk', 'cabang', 'mutasi', 'saldoawal', 'realsaldoawal'));
         }
     }
 

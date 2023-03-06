@@ -340,6 +340,9 @@ Route::middleware(['auth'])->group(function () {
     //Laporan Tunai Kredit
     Route::get('/laporanpenjualan/tunaikredit', [PenjualanController::class, 'laporantunaikredit']);
     Route::post('/laporanpenjualan/tunaikredit/cetak', [PenjualanController::class, 'cetaklaporantunaikredit']);
+    //Laporan Routing Salesman
+    Route::get('/laporanpenjualan/routingsalesman', [PenjualanController::class, 'laporanroutingsalesman']);
+    Route::post('/laporanpenjualan/routingsalesman/cetak', [PenjualanController::class, 'cetakroutingsalesman']);
     //Laporan Kartu Piutang
     Route::get('/laporanpenjualan/kartupiutang', [PenjualanController::class, 'laporankartupiutang']);
     Route::post('/laporanpenjualan/kartupiutang/cetak', [PenjualanController::class, 'cetaklaporankartupiutang']);
