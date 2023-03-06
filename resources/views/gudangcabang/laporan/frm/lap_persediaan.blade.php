@@ -58,7 +58,7 @@
                                             <div class="form-group">
                                                 <select name="gudang" id="gudang" class="form-control">
                                                     <option value="">Pilih Gudang</option>
-                                                    <option value="ALL">ALL</option>
+                                                    <option value="ALL" selected>ALL</option>
                                                     <option value="GDG">GUDANG</option>
                                                     <option value="MKT">MARKETING</option>
                                                 </select>
