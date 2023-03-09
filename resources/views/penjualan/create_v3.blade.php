@@ -592,18 +592,31 @@
 @push('myscript')
 <script>
     $(function() {
+
+        function nonaktifbutton() {
+            $("#btnsimpan").prop('disabled', true);
+            $("#btnsimpan").html('<i class="fa fa-spinner mr-1"></i><i>Loading...</i>');
+        }
+
+        function aktifbutton() {
+            $("#btnsimpan").prop('disabled', false);
+            $("#btnsimpan").html('<i class="feather icon-send mr-1"></i> Simpan');
+        }
         //Reset Product
         function cektemp() {
+            nonaktifbutton();
             $.ajax({
                 type: 'GET'
                 , url: '/cekpenjtemp'
                 , success: function(respond) {
+                    aktifbutton();
                     $("#cektemp").val(respond);
                 }
             });
         }
         $("#resetproduct").click(function(e) {
             e.preventDefault();
+            nonaktifbutton();
             $.ajax({
                 type: 'POST'
                 , url: '/resetpenjualantemp'
@@ -612,6 +625,7 @@
                 }
                 , cache: false
                 , success: function(respond) {
+                    aktifbutton();
                     showtemp();
                 }
             });
@@ -633,6 +647,7 @@
                 });
                 return false;
             } else {
+                nonaktifbutton();
                 $.ajax({
                     type: 'POST'
                     , url: '/penjualan/inputbarangtemp'
@@ -644,6 +659,7 @@
                     }
                     , cache: false
                     , success: function(respond) {
+                        aktifbutton();
                         $("#loadinputbarang").html(respond);
                         $('#mdlinputbarang').modal({
                             backdrop: 'static'
@@ -660,6 +676,7 @@
         $("#no_fak_penj").on('change', function(e) {
             if (e.keyCode == 32) return false;
             var no_fak_penj = $("#no_fak_penj").val();
+
             $.ajax({
                 type: 'POST'
                 , url: '/penjualan/ceknofaktur'
@@ -710,6 +727,7 @@
 
         //Cek Piutang Pelanggan
         function cekpiutang(kode_pelanggan) {
+            nonaktifbutton();
             $("#piutangpelanggan").text("Loading..");
             $.ajax({
                 type: 'POST'
@@ -720,6 +738,7 @@
                 }
                 , cache: false
                 , success: function(respond) {
+                    aktifbutton();
                     console.log(respond);
                     $("#sisapiutang").val(respond);
                     $("#piutangpelanggan").text(convertToRupiah(respond));
@@ -731,6 +750,7 @@
         //Cek Tutup Laporan
         function cektutuplaporan() {
             var tgltransaksi = $("#tgltransaksi").val();
+            nonaktifbutton();
             $.ajax({
                 type: "POST"
                 , url: "/cektutuplaporan"
@@ -741,6 +761,7 @@
                 }
                 , cache: false
                 , success: function(respond) {
+                    aktifbutton();
                     console.log(respond);
                     $("#cektutuplaporan").val(respond);
                 }
@@ -1137,6 +1158,7 @@
                 return false;
             } else {
                 //Simpan Barang Temp
+                nonaktifbutton();
                 $.ajax({
                     type: 'POST'
                     , url: '/penjualan/storebarangtempv2'
@@ -1152,6 +1174,7 @@
                     }
                     , cache: false
                     , success: function(respond) {
+                        aktifbutton();
                         if (respond == 0) {
                             swal({
                                 title: 'Success'
@@ -1225,11 +1248,13 @@
         $(".money").maskMoney();
         //Tampilkan Detail Barang Temporary
         function showtemp() {
+            nonaktifbutton();
             $.ajax({
                 type: 'GET'
                 , url: '/penjualan/showbarangtempv2'
                 , cache: false
                 , success: function(respond) {
+                    aktifbutton();
                     $("#loadbarangtemp").html(respond);
                     hitungdiskon();
                 }
