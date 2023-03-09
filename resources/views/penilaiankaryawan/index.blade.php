@@ -252,7 +252,7 @@
                                                 ?>
                                                 @endif
                                                 @if (Auth::user()->level =="manager hrd" && !empty($d->dirut) && empty($d->pemutihan))
-                                                <a href="#" class="danger">Buat Kontrak</a>
+                                                <a href="#" nik="{{ $d->nik }}" kode_penilaian="{{ $d->kode_penilaian }}" class="danger buatkontrak">Buat Kontrak</a>
                                                 @endif
 
                                             </div>
@@ -369,6 +369,23 @@
         </div>
     </div>
 </div>
+
+{{-- Buat Kontrak --}}
+<div class="modal fade text-left" id="mdlbuatkontrak" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Buat Kontrak</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="loadbuatkontrak">
+
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @push('myscript')
 <script>
@@ -416,6 +433,28 @@
                 backdrop: 'static'
                 , keyboard: false
             });
+        });
+
+        $('.buatkontrak').click(function(e) {
+            var kode_penilaian = $(this).attr("kode_penilaian");
+            e.preventDefault();
+            $.ajax({
+                type: 'POST'
+                , url: '/kontrak/createfrompenilaian'
+                , data: {
+                    _token: '{{ csrf_token() }}'
+                    , kode_penilaian: kode_penilaian
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loadbuatkontrak").html(respond);
+                    $('#mdlbuatkontrak').modal({
+                        backdrop: 'static'
+                        , keyboard: false
+                    });
+                }
+            });
+
         });
 
 

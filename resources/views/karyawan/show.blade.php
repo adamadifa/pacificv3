@@ -152,7 +152,7 @@
                                     </table>
                                 </div>
                                 <div class="tab-pane" id="kontrak" aria-labelledby="kontrak-tab" role="tabpanel">
-                                    @livewire('kontrak.create',['nik' => $karyawan->nik])
+                                    {{-- @livewire('kontrak.create',['nik' => $karyawan->nik]) --}}
                                 </div>
                                 <div class="tab-pane" id="dropdown31" role="tabpanel" aria-labelledby="dropdown31-tab" aria-expanded="false">
 

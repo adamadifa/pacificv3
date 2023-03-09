@@ -35,6 +35,7 @@ use App\Http\Controllers\KesepakatanbersamaController;
 use App\Http\Controllers\KlaimController;
 use App\Http\Controllers\KontrabonangkutanController;
 use App\Http\Controllers\KontrabonController;
+use App\Http\Controllers\KontrakController;
 use App\Http\Controllers\LaporanaccountingController;
 use App\Http\Controllers\LaporangaController;
 use App\Http\Controllers\LaporangudangbahanController;
@@ -78,6 +79,7 @@ use App\Http\Controllers\PenilaiankaryawanController;
 use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\PermintaanpengirimanController;
 use App\Http\Controllers\PermintaanproduksiController;
+use App\Http\Controllers\PinjamanController;
 use App\Http\Controllers\ProduksiController;
 use App\Http\Controllers\QrcodeController;
 use App\Http\Controllers\RatiokomisiController;
@@ -112,6 +114,7 @@ use App\Models\Barangpembelian;
 use App\Models\Logamtokertas;
 use App\Models\Pemasukangudanglogistik;
 use App\Models\Penjualan;
+use App\Models\Pinjaman;
 use App\Models\Saldoawalmutasibarangproduksi;
 use App\Models\Setcoacabang;
 use App\Models\Setoranpenjualan;
@@ -1483,4 +1486,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/kesepakatanbersama/{no_kb}/update', [KesepakatanbersamaController::class, 'update']);
     Route::get('/kesepakatanbersama/{no_kb}/cetak', [KesepakatanbersamaController::class, 'cetak']);
     Route::delete('/kesepakatanbersama/{no_kb}/delete', [KesepakatanbersamaController::class, 'delete']);
+
+    //Kontrak
+
+    Route::post('/kontrak/createfrompenilaian', [KontrakController::class, 'createformpenilaian']);
+    Route::post('/kontrak/storefrompenilaian', [KontrakController::class, 'storefrompenilaian']);
+
+    //Pinjaman
+
+    Route::get('/pinjaman/{nik}/create', [PinjamanController::class, 'create']);
 });

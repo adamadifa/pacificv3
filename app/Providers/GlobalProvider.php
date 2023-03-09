@@ -233,7 +233,8 @@ class GlobalProvider extends ServiceProvider
             ];
 
             //Master Karyawan
-            $karyawan_view = ['admin', 'manager hrd'];
+            $karyawan_view = ['admin', 'manager hrd', 'manager accounting'];
+            $karyawan_pinjaman = ['admin', 'manager accounting'];
             $karyawan_tambah = ['admin', 'manager hrd'];
             $karyawan_edit = ['admin', 'manager hrd'];
             $karyawan_hapus = ['admin', 'manager hrd'];
@@ -911,6 +912,7 @@ class GlobalProvider extends ServiceProvider
 
                 //Karyawan
                 'karyawan_view' => $karyawan_view,
+                'karyawan_pinjaman' => $karyawan_pinjaman,
                 'karyawan_tambah' => $karyawan_tambah,
                 'karyawan_edit' => $karyawan_edit,
                 'karyawan_hapus' => $karyawan_hapus,

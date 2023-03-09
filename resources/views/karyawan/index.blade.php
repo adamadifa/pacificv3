@@ -54,6 +54,7 @@
                                     <th>MP/PCF</th>
                                     <th>Kantor</th>
                                     <th>Klasifikasi</th>
+                                    <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -72,6 +73,13 @@
                                     <td>{{ $d->id_kantor }}</td>
                                     <td>{{ $d->klasifikasi }}</td>
                                     <td>
+                                        @if ($d->status_karyawan=='T')
+                                        <span class="badge bg-green">T</span>
+                                        @elseif($d->status_karyawan=="K")
+                                        <span class="badge bg-warning">K</span>
+                                        @endif
+                                    </td>
+                                    <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             @if (in_array($level,$karyawan_edit))
                                             <a class="ml-1 edit" nik="{{ Crypt::encrypt($d->nik) }}" href="#"><i class="feather icon-edit success"></i></a>
@@ -85,6 +93,9 @@
                                                     <i class="feather icon-trash danger"></i>
                                                 </a>
                                             </form>
+                                            @endif
+                                            @if (in_array($level,$karyawan_pinjaman))
+                                            <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukanpinjaman"><i class="feather icon-external-link primary ml-1"></i></a>
                                             @endif
                                         </div>
                                     </td>
@@ -118,7 +129,7 @@
         </div>
     </div>
 </div>
-<!-- Input Supplier -->
+
 <div class="modal fade text-left" id="mdleditkaryawan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -135,6 +146,22 @@
     </div>
 </div>
 
+
+<div class="modal fade text-left" id="mdlajukanpinjaman" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Ajukan Pinjaman</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loadajukanpinjaman"></div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @push('myscript')
 <script>
@@ -157,6 +184,17 @@
                 , keyboard: false
             });
             $("#loadeditkaryawan").load('/karyawan/' + nik + '/edit');
+        });
+
+
+        $('.ajukanpinjaman').click(function(e) {
+            var nik = $(this).attr("nik");
+            e.preventDefault();
+            $('#mdlajukanpinjaman').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+            $("#loadajukanpinjaman").load('/pinjaman/' + nik + '/create');
         });
     });
 
