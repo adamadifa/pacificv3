@@ -208,12 +208,12 @@ $total += $d->subtotal;
         //Hitung Total
 
         function cektemp() {
-            aktifbutton();
+            nonaktifbutton();
             $.ajax({
                 type: 'GET'
                 , url: '/cekpenjtemp'
                 , success: function(respond) {
-                    nonaktifbutton();
+                    aktifbutton();
                     $("#cektemp").val(respond);
                 }
             });
