@@ -1154,11 +1154,15 @@
         $(".money").maskMoney();
         //Tampilkan Detail Barang Temporary
         function showtemp() {
+            $("#btnsimpan").prop('disabled', true);
+            $("#btnsimpan").html('<i class="fa fa-spinner mr-1"></i><i>Loading...</i>');
             $.ajax({
                 type: 'GET'
                 , url: '/penjualan/showbarangtempv2'
                 , cache: false
                 , success: function(respond) {
+                    $("#btnsimpan").prop('disabled', false);
+                    $("#btnsimpan").html('<i class="feather icon-send mr-1"></i> Simpan');
                     $("#loadbarangtemp").html(respond);
                     hitungdiskon();
                 }
