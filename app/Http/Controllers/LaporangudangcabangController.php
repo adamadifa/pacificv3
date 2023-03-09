@@ -164,6 +164,52 @@ class LaporangudangcabangController extends Controller
             }
             return view('gudangcabang.laporan.cetak_persediaan', compact('dari', 'sampai', 'produk', 'cabang', 'mutasi', 'saldoawal', 'realsaldoawal'));
         } else if ($gudang == "GDG") {
+            $query = Detailmutasicabang::query();
+            $query->selectRaw('detail_mutasi_gudang_cabang.no_mutasi_gudang_cabang,
+            tgl_mutasi_gudang_cabang,
+            mutasi_gudang_cabang.no_dpb,
+            nama_karyawan,tujuan,
+            no_suratjalan,tgl_kirim,
+            isipcsdus,
+            isipack,
+            isipcs,
+            satuan,
+            inout_good,
+            promo,
+            mutasi_gudang_cabang.jenis_mutasi,
+            no_dok,
+            SUM(IF(mutasi_gudang_cabang.jenis_mutasi="SURAT JALAN",detail_mutasi_gudang_cabang.jumlah,0)) as penerimaanpusat,
+            SUM(IF(mutasi_gudang_cabang.jenis_mutasi="TRANSIT IN",detail_mutasi_gudang_cabang.jumlah,0)) as transit_in,
+            SUM(IF(mutasi_gudang_cabang.jenis_mutasi="TRANSIT OUT",detail_mutasi_gudang_cabang.jumlah,0)) as transit_out,
+            date_created,date_updated');
+            $query->join('mutasi_gudang_cabang', 'detail_mutasi_gudang_cabang.no_mutasi_gudang_cabang', '=', 'mutasi_gudang_cabang.no_mutasi_gudang_cabang');
+            $query->join('master_barang', 'detail_mutasi_gudang_cabang.kode_produk', '=', 'master_barang.kode_produk');
+            $query->leftJoin('mutasi_gudang_jadi', 'mutasi_gudang_cabang.no_mutasi_gudang_cabang', '=', 'mutasi_gudang_jadi.no_mutasi_gudang');
+            $query->leftJoin('dpb', 'mutasi_gudang_cabang.no_dpb', '=', 'dpb.no_dpb');
+            $query->leftJoin('karyawan', 'dpb.id_karyawan', '=', 'karyawan.id_karyawan');
+            $query->where('mutasi_gudang_cabang.jenis_mutasi', '!=', 'KIRIM PUSAT');
+            $query->whereBetween('tgl_mutasi_gudang_cabang', [$dari, $sampai]);
+            $query->where('detail_mutasi_gudang_cabang.kode_produk', $kode_produk);
+            $query->where('mutasi_gudang_cabang.kode_cabang', $kode_cabang);
+            $query->whereIn('mutasi_gudang_cabang.jenis_mutasi', ['SURAT JALAN', 'TRANSIT IN', 'TRANSIT OUT']);
+            $query->orderBy('order');
+            $query->groupByRaw('
+            detail_mutasi_gudang_cabang.no_mutasi_gudang_cabang,
+            tgl_mutasi_gudang_cabang,
+            mutasi_gudang_cabang.no_dpb,
+            nama_karyawan,tujuan,
+            no_suratjalan,tgl_kirim,
+            isipcsdus,
+            isipack,
+            isipcs,
+            satuan,
+            inout_good,
+            promo,
+            mutasi_gudang_cabang.jenis_mutasi,
+            no_dok,date_created,date_updated');
+            $mutasi = $query->get();
+
+
             $ceksaldo = DB::table('saldoawal_bj_detail')
                 ->selectRaw("saldoawal_bj_detail.kode_produk,jumlah,isipcsdus,isipack,isipcs")
                 ->join('saldoawal_bj', 'saldoawal_bj_detail.kode_saldoawal', '=', 'saldoawal_bj.kode_saldoawal')
@@ -175,7 +221,7 @@ class LaporangudangcabangController extends Controller
                 ->where('saldoawal_bj_detail.kode_produk', $kode_produk)
                 ->first();
 
-            return view('gudangcabang.laporan.cetak_persediaan', compact('dari', 'sampai', 'produk', 'cabang', 'mutasi', 'saldoawal', 'realsaldoawal'));
+            return view('gudangcabang.laporan.cetak_persediaangudang', compact('dari', 'sampai', 'cabang', 'produk', 'mutasi'));
         }
     }
 

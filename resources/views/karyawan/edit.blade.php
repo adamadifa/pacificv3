@@ -188,6 +188,18 @@
     <div class="row">
         <div class="col-12">
             <div class="form-group">
+                <select name="status_karyawan" id="status_karyawan" class="form-control">
+                    <option value="">Status Karyawan</option>
+                    <option value="K">Kontrak</option>
+                    <option value="T">Tetap</option>
+                </select>
+                <small class="danger"></small>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group">
                 <button class="btn btn-primary btn-block" type="submit"><i class="feather icon-send mr-1"></i>Simpan</button>
             </div>
         </div>
@@ -214,6 +226,7 @@
         const grupEl = document.querySelector('#grup');
         const tglmasukEl = document.querySelector('#tgl_masuk');
         const klasifikasiEl = document.querySelector('#klasifikasi');
+        const statuskaryawanEl = document.querySelector('#status_karyawan');
         const form = document.querySelector('#frmSupplier');
         const checkNik = () => {
             let valid = false;
@@ -427,6 +440,18 @@
             return valid;
         };
 
+        const checkStatuskaryawan = () => {
+            let valid = false;
+            const statuskaryawan = statuskaryawanEl.value.trim();
+            if (!isRequired(statuskaryawan)) {
+                showError(statuskaryawanEl, 'Klasifikasi Tidak Boleh Kosong.');
+            } else {
+                showSuccess(statuskaryawanEl);
+                valid = true;
+            }
+            return valid;
+        };
+
         const isRequired = value => value === '' ? false : true;
         const isBetween = (length, min, max) => length < min || length > max ? false : true;
         const isAngka = (angka) => {
@@ -493,9 +518,10 @@
                 , isGrupValid = checkGrup()
                 , isIdJabatan = checkJabatan()
                 , isTglmasukValid = checkTglmasuk()
-                , isKlasifikasiValid = checkKlasifikasi();
+                , isKlasifikasiValid = checkKlasifikasi()
+                , isStatuskaryawanValid = checkStatuskaryawan();
 
-            let isFormValid = isNikValid && isNoKtpValid && isNamakaryawanValid && isTempatlahirValid && isTgllahirValid && isAlamatValid && isJeniskelaminValid && isNohpValid && isStatuskawinValid && isPendidikanterakhirValid && isIdperusahaanValid && isIdkantorValid && isKodedeptValid && isGrupValid && isIdJabatan && isTglmasukValid && isKlasifikasiValid;
+            let isFormValid = isNikValid && isNoKtpValid && isNamakaryawanValid && isTempatlahirValid && isTgllahirValid && isAlamatValid && isJeniskelaminValid && isNohpValid && isStatuskawinValid && isPendidikanterakhirValid && isIdperusahaanValid && isIdkantorValid && isKodedeptValid && isGrupValid && isIdJabatan && isTglmasukValid && isKlasifikasiValid && isStatuskaryawanValid;
 
             // submit to the server if the form is valid
             if (isFormValid) {
@@ -571,6 +597,9 @@
                     break;
                 case 'klasifikasi':
                     checkKlasifikasi();
+                    break;
+                case 'status_karyawan':
+                    checkStatuskaryawan();
                     break;
             }
         }));

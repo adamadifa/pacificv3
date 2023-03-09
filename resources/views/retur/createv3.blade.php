@@ -319,6 +319,7 @@
                                 <th>Kode Pelanggan</th>
                                 <th>Nama Pelanggan</th>
                                 <th>Pasar</th>
+                                <th>Salesman</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -346,6 +347,7 @@
                                 <th>Kode Pelanggan</th>
                                 <th>Nama Pelanggan</th>
                                 <th>Pasar</th>
+                                <th>Salesman</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -623,6 +625,9 @@
                 }, {
                     data: 'pasar'
                     , name: 'pasar'
+                }, {
+                    data: 'nama_karyawan'
+                    , name: 'nama_karyawan'
                 }
                 , {
                     data: 'action'
