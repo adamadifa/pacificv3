@@ -803,11 +803,16 @@
 
         //Ketika Form Di Submit
         function cektemp() {
+            $("#btnsimpan").prop('disabled', true);
+            $("#btnsimpan").html('<i class="fa fa-spinner mr-1"></i><i>Loading...</i>');
             $.ajax({
                 type: 'GET'
                 , url: '/cekpenjtemp'
                 , success: function(respond) {
+                    $("#btnsimpan").prop('disabled', false);
+                    $("#btnsimpan").html('<i class="feather icon-send mr-1"></i> Simpan');
                     $("#cektemp").val(respond);
+
                 }
             });
         }
