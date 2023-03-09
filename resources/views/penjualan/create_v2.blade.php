@@ -1071,6 +1071,8 @@
                 return false;
             } else {
                 //Simpan Barang Temp
+                $("#btnsimpan").prop('disabled', true);
+                $("#btnsimpan").html('<i class="fa fa-spinner mr-1"></i><i>Loading...</i>');
                 $.ajax({
                     type: 'POST'
                     , url: '/penjualan/storebarangtempv2'
@@ -1086,6 +1088,8 @@
                     }
                     , cache: false
                     , success: function(respond) {
+                        $("#btnsimpan").prop('disabled', false);
+                        $("#btnsimpan").html('<i class="feather icon-send mr-1"></i> Simpan');
                         if (respond == 0) {
                             swal({
                                 title: 'Success'
