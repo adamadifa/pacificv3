@@ -897,7 +897,15 @@
             }
         });
 
+        function nonaktifbutton() {
+            $("#btnsimpan").prop('disabled', true);
+            $("#btnsimpan").html('<i class="fa fa-spinner mr-1"></i><i>Loading...</i>');
+        }
 
+        function aktifbutton() {
+            $("#btnsimpan").prop('disabled', false);
+            $("#btnsimpan").html('<i class="feather icon-send mr-1"></i> Simpan');
+        }
         //Pilih Pelanggan Saat Diklik
         $('#nama_barang').click(function(e) {
             e.preventDefault();
@@ -915,6 +923,7 @@
                 });
                 return false;
             } else {
+                nonaktifbutton();
                 $.ajax({
                     type: 'POST'
                     , url: '/getbarangcabang'
@@ -926,6 +935,7 @@
                     }
                     , cache: false
                     , success: function(respond) {
+                        aktifbutton();
                         $("#loadbarang").html(respond);
                         $('#mdlbarang').modal({
                             backdrop: 'static'
