@@ -100,12 +100,13 @@ $total += $d->subtotal;
                             }
                             , cache: false
                             , success: function(respond) {
-                                aktifbutton();
+
                                 swal(
                                     'Deleted!'
                                     , 'Data Berhasil Dihapus'
                                     , 'success'
-                                )
+                                );
+                                aktifbutton();
                                 showtemp();
                             }
                         });
