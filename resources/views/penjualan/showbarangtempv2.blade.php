@@ -51,12 +51,25 @@ $total += $d->subtotal;
 
 <script>
     $(function() {
+
+        function nonaktifbutton() {
+            $("#btnsimpan").prop('disabled', true);
+            $("#btnsimpan").html('<i class="fa fa-spinner mr-1"></i><i>Loading...</i>');
+        }
+
+        function aktifbutton() {
+            $("#btnsimpan").prop('disabled', false);
+            $("#btnsimpan").html('<i class="feather icon-send mr-1"></i> Simpan');
+        }
+
         function showtemp() {
+            nonaktifbutton();
             $.ajax({
                 type: 'GET'
                 , url: '/penjualan/showbarangtempv2'
                 , cache: false
                 , success: function(respond) {
+                    aktifbutton();
                     $("#loadbarangtemp").html(respond);
                     hitungdiskon();
                 }
@@ -76,6 +89,7 @@ $total += $d->subtotal;
                 , })
                 .then((willDelete) => {
                     if (willDelete) {
+                        nonaktifbutton();
                         $.ajax({
                             type: 'POST'
                             , url: '/penjualan/deletebarangtemp'
@@ -86,6 +100,7 @@ $total += $d->subtotal;
                             }
                             , cache: false
                             , success: function(respond) {
+                                aktifbutton();
                                 swal(
                                     'Deleted!'
                                     , 'Data Berhasil Dihapus'
@@ -192,10 +207,12 @@ $total += $d->subtotal;
         //Hitung Total
 
         function cektemp() {
+            aktifbutton();
             $.ajax({
                 type: 'GET'
                 , url: '/cekpenjtemp'
                 , success: function(respond) {
+                    nonaktifbutton();
                     $("#cektemp").val(respond);
                 }
             });
