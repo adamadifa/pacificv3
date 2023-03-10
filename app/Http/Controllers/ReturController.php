@@ -105,7 +105,7 @@ class ReturController extends Controller
         $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)
             ->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan')
             ->first();
-        if (Auth::user()->level == "saslesman") {
+        if (Auth::user()->level == "salesman") {
 
             return view('retur.createv2', compact('pelanggan'));
         } else {
