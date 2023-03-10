@@ -3748,66 +3748,122 @@ class PenjualanController extends Controller
         $id_karyawan = $request->id_karyawan;
         $dari = $request->dari;
         $sampai = $request->sampai;
-        $qpenjualan = Penjualan::query();
-        $qpenjualan->selectRaw('tgltransaksi,penjualan.kode_pelanggan,nama_pelanggan,jenistransaksi,hari,SUM(total) as totalpenjualan,totalbayar');
-        $qpenjualan->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
-        $qpenjualan->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
-        $qpenjualan->leftJoin(
-            DB::raw("(
-            SELECT no_fak_penj,SUM(bayar) as totalbayar
-            FROM historibayar
-            WHERE tglbayar BETWEEN '$dari' AND '$sampai'
-            GROUP BY no_fak_penj
-            ) hb"),
-            function ($join) {
-                $join->on('penjualan.no_fak_penj', '=', 'hb.no_fak_penj');
-            }
-        );
-        $qpenjualan->whereBetween('tgltransaksi', [$dari, $sampai]);
-        $qpenjualan->where('nama_pelanggan', '!=', 'BATAL');
-        if (!empty($kode_cabang)) {
-            $qpenjualan->where('karyawan.kode_cabang', $kode_cabang);
-        }
-
-        if (!empty($id_karyawan)) {
-            $qpenjualan->where('penjualan.id_karyawan', $id_karyawan);
-        }
-        $qpenjualan->groupByRaw('tgltransaksi,penjualan.kode_pelanggan,nama_pelanggan,hari,totalbayar,jenistransaksi');
-        $qpenjualan->orderByRaw('tgltransaksi,nama_pelanggan');
-        $penjualan = $qpenjualan->get();
-
-
-        $qhb = Pembayaran::query();
-        $qhb->selectRaw('tglbayar,penjualan.kode_pelanggan,nama_pelanggan,penjualan.jenistransaksi,hari,SUM(bayar) as totalbayar');
-        $qhb->join('penjualan', 'historibayar.no_fak_penj', '=', 'penjualan.no_fak_penj');
-        $qhb->leftJoin(
-            DB::raw("(
-            SELECT no_fak_penj
-            FROM penjualan
-            WHERE tgltransaksi BETWEEN '$dari' AND '$sampai'
-            ) pj"),
-            function ($join) {
-                $join->on('historibayar.no_fak_penj', '=', 'pj.no_fak_penj');
-            }
-        );
-        $qhb->join('pelanggan', 'penjualan.kode_pelanggan', 'pelanggan.kode_pelanggan');
-        $qhb->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
-        $qhb->whereBetween('tglbayar', [$dari, $sampai]);
-        $qhb->whereNull('pj.no_fak_penj');
-        if (!empty($kode_cabang)) {
-            $qhb->where('karyawan.kode_cabang', $kode_cabang);
-        }
-
-        if (!empty($id_karyawan)) {
-            $qhb->where('penjualan.id_karyawan', $id_karyawan);
-        }
-        $qhb->groupByRaw('tglbayar,penjualan.kode_pelanggan,nama_pelanggan,penjualan.jenistransaksi,hari');
-        $qhb->orderByRaw('tglbayar,nama_pelanggan');
-        $historibayar = $qhb->get();
-
+        $jenislaporan = $request->jenis_laporan;
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
         $salesman = Salesman::where('id_karyawan', $id_karyawan)->first();
-        return view('penjualan.laporan.cetak_routingsalesman', compact('cabang', 'salesman', 'dari', 'sampai', 'penjualan', 'historibayar'));
+        if ($jenislaporan == "detail") {
+            $qpenjualan = Penjualan::query();
+            $qpenjualan->selectRaw('tgltransaksi,penjualan.kode_pelanggan,nama_pelanggan,hari');
+            $qpenjualan->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+            $qpenjualan->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+            $qpenjualan->whereBetween('tgltransaksi', [$dari, $sampai]);
+            $qpenjualan->where('nama_pelanggan', '!=', 'BATAL');
+            if (!empty($kode_cabang)) {
+                $qpenjualan->where('karyawan.kode_cabang', $kode_cabang);
+            }
+
+            if (!empty($id_karyawan)) {
+                $qpenjualan->where('penjualan.id_karyawan', $id_karyawan);
+            }
+            $qpenjualan->groupByRaw('tgltransaksi,penjualan.kode_pelanggan,nama_pelanggan,hari');
+            $qpenjualan->orderByRaw('tgltransaksi,nama_pelanggan');
+            $penjualan = $qpenjualan->get();
+
+
+            $qhb = Pembayaran::query();
+            $qhb->selectRaw('tglbayar,penjualan.kode_pelanggan,nama_pelanggan,hari');
+            $qhb->join('penjualan', 'historibayar.no_fak_penj', '=', 'penjualan.no_fak_penj');
+            $qhb->leftJoin(
+                DB::raw("(
+                SELECT no_fak_penj
+                FROM penjualan
+                WHERE tgltransaksi BETWEEN '$dari' AND '$sampai'
+                ) pj"),
+                function ($join) {
+                    $join->on('historibayar.no_fak_penj', '=', 'pj.no_fak_penj');
+                }
+            );
+            $qhb->join('pelanggan', 'penjualan.kode_pelanggan', 'pelanggan.kode_pelanggan');
+            $qhb->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+            $qhb->whereBetween('tglbayar', [$dari, $sampai]);
+            $qhb->whereNull('pj.no_fak_penj');
+            if (!empty($kode_cabang)) {
+                $qhb->where('karyawan.kode_cabang', $kode_cabang);
+            }
+
+            if (!empty($id_karyawan)) {
+                $qhb->where('penjualan.id_karyawan', $id_karyawan);
+            }
+            $qhb->groupByRaw('tglbayar,penjualan.kode_pelanggan,nama_pelanggan,hari');
+            $qhb->orderByRaw('tglbayar,nama_pelanggan');
+            $historibayar = $qhb->get();
+            return view('penjualan.laporan.cetak_routingsalesman', compact('cabang', 'salesman', 'dari', 'sampai', 'penjualan', 'historibayar'));
+        } else {
+            $query = Salesman::query();
+            $query->selectRaw('karyawan.id_karyawan,nama_karyawan,IFNULL(jmlkunjungan,0) + IFNULL(jmlkunjungan2,0) as totalkunjungan,IFNULL(jmlsesuaijadwal,0) + IFNULL(jmlsesuaijadwal2,0) as totalsesuaijadwal');
+            $query->leftJoin(
+                DB::raw("(
+                    SELECT
+                        penjualan.id_karyawan,
+                        COUNT(DISTINCT penjualan.kode_pelanggan,tgltransaksi) as jmlkunjungan,
+                        COUNT(DISTINCT CASE WHEN DAYNAME(tgltransaksi)='Monday' AND pelanggan.hari='Senin' OR
+                        DAYNAME(tgltransaksi)='Tuesday' AND pelanggan.hari='Selasa' OR
+                        DAYNAME(tgltransaksi)='Wednesday' AND pelanggan.hari='Rabu' OR
+                        DAYNAME(tgltransaksi)='Thursday' AND pelanggan.hari='Kamis' OR
+                        DAYNAME(tgltransaksi)='Friday' AND pelanggan.hari='Jumat' OR
+                        DAYNAME(tgltransaksi)='Saturday' AND pelanggan.hari='Sabtu' OR
+                        DAYNAME(tgltransaksi)='Sunday' AND pelanggan.hari='Minggu'  THEN  penjualan.kode_pelanggan END) jmlsesuaijadwal
+                    FROM
+                    `penjualan`
+                    INNER JOIN `pelanggan` ON `penjualan`.`kode_pelanggan` = `pelanggan`.`kode_pelanggan`
+                    INNER JOIN `karyawan` ON `penjualan`.`id_karyawan` = `karyawan`.`id_karyawan`
+                    WHERE `tgltransaksi` BETWEEN '$dari' AND '$sampai' AND `nama_pelanggan` != 'BATAL'
+                    GROUP BY
+                        penjualan.id_karyawan
+                ) kunjungan"),
+                function ($join) {
+                    $join->on('karyawan.id_karyawan', '=', 'kunjungan.id_karyawan');
+                }
+            );
+
+            $query->leftJoin(
+                DB::raw("(
+                    SELECT
+                        penjualan.id_karyawan,
+                        COUNT(DISTINCT penjualan.kode_pelanggan,tgltransaksi) as jmlkunjungan2,
+                        COUNT(DISTINCT CASE WHEN DAYNAME(tgltransaksi)='Monday' AND pelanggan.hari='Senin' OR
+                        DAYNAME(tgltransaksi)='Tuesday' AND pelanggan.hari='Selasa' OR
+                        DAYNAME(tgltransaksi)='Wednesday' AND pelanggan.hari='Rabu' OR
+                        DAYNAME(tgltransaksi)='Thursday' AND pelanggan.hari='Kamis' OR
+                        DAYNAME(tgltransaksi)='Friday' AND pelanggan.hari='Jumat' OR
+                        DAYNAME(tgltransaksi)='Saturday' AND pelanggan.hari='Sabtu' OR
+                        DAYNAME(tgltransaksi)='Sunday' AND pelanggan.hari='Minggu'  THEN  penjualan.kode_pelanggan END) jmlsesuaijadwal2
+                    FROM
+                        `historibayar`
+                        INNER JOIN `penjualan` ON `historibayar`.`no_fak_penj` = `penjualan`.`no_fak_penj`
+                        LEFT JOIN ( SELECT no_fak_penj FROM penjualan WHERE tgltransaksi BETWEEN '$dari' AND '$sampai' ) pj ON `historibayar`.`no_fak_penj` = `pj`.`no_fak_penj`
+                        INNER JOIN `pelanggan` ON `penjualan`.`kode_pelanggan` = `pelanggan`.`kode_pelanggan`
+                        INNER JOIN `karyawan` ON `penjualan`.`id_karyawan` = `karyawan`.`id_karyawan`
+                    WHERE`tglbayar` BETWEEN '$dari'AND '$sampai'AND `pj`.`no_fak_penj` IS NULL
+                    GROUP BY
+                        penjualan.id_karyawan
+                ) kunjungan2"),
+                function ($join) {
+                    $join->on('karyawan.id_karyawan', '=', 'kunjungan2.id_karyawan');
+                }
+            );
+
+            $query->where('status_aktif_sales', 1);
+            if (!empty($kode_cabang)) {
+                $query->where('karyawan.kode_cabang', $kode_cabang);
+            }
+
+            if (!empty($id_karyawan)) {
+                $query->where('karyawan.id_karyawan', $id_karyawan);
+            }
+            $rekap = $query->get();
+            return view('penjualan.laporan.cetak_rekaproutingsalesman', compact('rekap', 'dari', 'sampai', 'cabang', 'salesman'));
+        }
     }
     public function cetaklaporantunaikredit(Request $request)
     {

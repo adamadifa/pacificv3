@@ -233,11 +233,11 @@ class GlobalProvider extends ServiceProvider
             ];
 
             //Master Karyawan
-            $karyawan_view = ['admin', 'manager hrd', 'manager accounting'];
-            $karyawan_pinjaman = ['admin', 'manager accounting'];
-            $karyawan_tambah = ['admin', 'manager hrd'];
-            $karyawan_edit = ['admin', 'manager hrd'];
-            $karyawan_hapus = ['admin', 'manager hrd'];
+            $karyawan_view = ['admin'];
+            $karyawan_pinjaman = ['admin'];
+            $karyawan_tambah = ['admin'];
+            $karyawan_edit = ['admin'];
+            $karyawan_hapus = ['admin'];
 
             //Supplier
             $supplier_menu = ['admin', 'manager pembelian', 'admin pembelian', 'manager accounting', 'spv accounting', 'audit', 'admin pajak 2'];
