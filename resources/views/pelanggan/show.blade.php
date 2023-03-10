@@ -69,7 +69,7 @@
                                     </li>
                                     <li class="list-group-item">
                                         <span class="badge badge-pill bg-primary float-right">{{ $data->no_hp }}</span>
-                                        No. HP
+                                        No. TEST
                                     </li>
                                     <li class="list-group-item">
                                         <span class="badge badge-pill bg-primary float-right">{{ $data->pasar }}</span>
