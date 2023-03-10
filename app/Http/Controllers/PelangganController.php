@@ -554,6 +554,7 @@ class PelangganController extends Controller
             ->orderBy('tgl_pengajuan', 'asc')
             ->get();
         $data = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)
+            ->select('pelanggan.*', 'nama_karyawan', 'nama_cabang')
             ->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan')
             ->join('cabang', 'pelanggan.kode_cabang', '=', 'cabang.kode_cabang')
             ->first();
