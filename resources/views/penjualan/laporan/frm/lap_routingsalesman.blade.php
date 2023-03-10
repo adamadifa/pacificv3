@@ -55,6 +55,17 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <select name="jenis_laporan" id="jenis_laporan" class="form-control">
+                                                    <option value="">Jenis Laporan</option>
+                                                    <option value="detail">Detail</option>
+                                                    <option value="rekap">Rekap</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="row" id="pilihperiode">
                                         <div class="col-6">
                                             <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker />
@@ -99,6 +110,20 @@
 <script>
     $(function() {
 
+
+        function loadlaporan() {
+            var jenis_laporan = $("#jenis_laporan").val();
+            if (jenis_laporan == "rekap") {
+                $("#pilihsalesman").hide();
+                $("#id_karyawan").val("");
+            } else {
+                $("#pilihsalesman").show();
+            }
+        }
+
+        $("#jenis_laporan").change(function(e) {
+            loadlaporan();
+        });
         $("#frmPenjualan").submit(function() {
             var cabang = $("#cabang").val();
             var kode_cabang = $("#kode_cabang").val();
@@ -107,7 +132,7 @@
 
             var start = new Date(dari);
             var end = new Date(sampai);
-
+            var jenis_laporan = $("#jenis_laporan").val();
             var datestart = new Date('2018-09-01');
             if (cabang != "PCF" && kode_cabang == "" && cabang != "PST" && kode_cabang == "") {
                 swal({
@@ -118,6 +143,17 @@
                 }).then(function() {
                     $("#kode_cabang").focus();
                 });
+                return false;
+            } else if (jenis_laporan == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Jenis Laporan Harus Dipilih !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#jenis_laporan").focus();
+                });
+
                 return false;
             } else if (dari == "" && sampai == "") {
                 swal({
