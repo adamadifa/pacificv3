@@ -13,14 +13,18 @@
     }
 
 </style>
-<form method="POST" action="/pinjaman/store">
+
+<form method="POST" action="/pinjaman/store" id="frmPinjaman">
     @csrf
     <div class="row" id="step1">
         <div class="col-12">
             <table class="table table-bordered">
                 <tr>
                     <th>NIK</th>
-                    <td>{{ $karyawan->nik }}</td>
+                    <td>
+                        <input type="hidden" name="nik" id="nik" value="{{ $karyawan->nik }}">
+                        {{ $karyawan->nik }}
+                    </td>
                 </tr>
                 <tr>
                     <th>Nama Karyawan</th>
@@ -55,19 +59,26 @@
                 </tr>
                 <tr>
                     <th>Status</th>
-                    <td>{{ $karyawan->status_karyawan=="T" ? "Karyawan Tetap" : "Karyawan Kontrak" }}</td>
+                    <td>
+                        <input type="hidden" name="status_karyawan" id="status_karyawan" value="{{ $karyawan->status_karyawan }}">
+                        {{ $karyawan->status_karyawan=="T" ? "Karyawan Tetap" : "Karyawan Kontrak" }}
+                    </td>
                 </tr>
                 @if ($karyawan->status_karyawan == "K")
                 <tr>
                     <th>Akhir Kontrak</th>
                     <td>
+                        <input type="hidden" name="akhir_kontrak" id="akhir_kontrak" value="{{ $kontrak->sampai }}">
                         {{ $kontrak != null ? DateToIndo2($kontrak->sampai) : "" }}
                     </td>
                 </tr>
                 @endif
                 <tr>
                     <th>Gaji Pokok + Tunjangan</th>
-                    <td style="text-align: right">{{ rupiah($gaji->gajitunjangan) }}</td>
+                    <td style="text-align: right">
+                        <input type="hidden" name="gapok_tunjangan" id="gapok_tunjangan" value="{{ $gaji->gajitunjangan }}">
+                        {{ rupiah($gaji->gajitunjangan) }}
+                    </td>
                 </tr>
                 <tr>
                     <th>Tenor Maksimal</th>
@@ -83,6 +94,7 @@
                             }
                         ?>
                         {{ $tenormax }} Bulan
+                        <input type="hidden" name="tenor_max" id="tenor_max" value="{{ $tenormax }}">
                     </td>
                 </tr>
                 <tr>
@@ -92,6 +104,7 @@
                         $angsuranmax = ((40/100) * $gaji->gajitunjangan );
                         @endphp
                         {{ rupiah($angsuranmax) }}
+                        <input type="hidden" name="angsuran_max" id="angsuran_max" value="{{ $angsuranmax }}">
                     </td>
                 </tr>
                 <tr>
@@ -127,11 +140,15 @@
                         ?>
 
                         {{ rupiah($totaljmk) }}
+                        <input type="hidden" name="jmk" id="jmk" value="{{ $totaljmk }}">
                     </td>
                 </tr>
                 <tr>
                     <th>JMK Sudah Dibayar</th>
-                    <td style="text-align: right">{{ rupiah($jmk!=null ? $jmk->jml_jmk : 0) }}</td>
+                    <td style="text-align: right">
+                        {{ rupiah($jmk!=null ? $jmk->jml_jmk : 0) }}
+                        <input type="hidden" name="jmk_sudahbayar" id="jmk_sudahbayar" value="{{ $jmk!=null ? $jmk->jml_jmk : 0 }}">
+                    </td>
                 </tr>
                 <tr>
                     <th style="width:40%">Plafon Maksimal</th>
@@ -142,6 +159,7 @@
                         $plafonmax = $totaljmk - $jmksudahdibayar;
                         @endphp
                         {{ rupiah($plafonmax) }}
+                        <input type="hidden" name="plafon_max" id="plafon_max" value="{{ $plafonmax }}">
                     </td>
                 </tr>
 
@@ -189,7 +207,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
-                        <a href="#" id="generatepinjaman" class="btn btn-primary btn-block"><i class="feather icon-gear mr-1"></i>Generate</a>
+                        <button href="#" class="btn btn-primary btn-block"><i class="feather icon-send mr-1"></i>Submit</button>
                     </div>
                 </div>
             </div>
@@ -203,8 +221,8 @@
 <script>
     $(function() {
 
-        $("#generatepinjaman").click(function(e) {
-            e.preventDefault();
+        $("#frmPinjaman").submit(function(e) {
+            // e.preventDefault();
             hitungpinjaman();
             var jmlpinjaman = $("#jml_pinjaman").val();
             var jmlangsuran = $("#jml_angsuran").val();
@@ -219,6 +237,7 @@
                 }).then(function() {
                     $("#tgl_pinjaman").focus();
                 });
+                return false;
             } else if (jmlpinjaman == "") {
                 swal({
                     title: 'Oops'
@@ -228,6 +247,8 @@
                 }).then(function() {
                     $("#jml_pinjaman").focus();
                 });
+
+                return false;
             } else if (angsuran == "") {
                 swal({
                     title: 'Oops'
@@ -237,6 +258,8 @@
                 }).then(function() {
                     $("#angsuran").focus();
                 });
+
+                return false;
             }
 
         });
@@ -319,6 +342,10 @@
             } else {
 
                 var angsuranperbulan = parseInt(angsuran) != 0 ? parseInt(jmlpinjaman) / parseInt(angsuran) : 0;
+                var cekangsuran = Number.isInteger(angsuranperbulan);
+                if (!cekangsuran) {
+                    angsuranperbulan = Math.floor(angsuranperbulan / 1000) * 1000;
+                }
                 $("#jml_angsuran").val(convertToRupiah(angsuranperbulan));
             }
 

@@ -627,7 +627,7 @@
                     , name: 'pasar'
                 }, {
                     data: 'nama_karyawan'
-                    , name: 'nama_karyawan'
+                    , name: 'karyawan.nama_karyawan'
                 }
                 , {
                     data: 'action'
