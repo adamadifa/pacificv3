@@ -25,7 +25,14 @@
             <div class="card-body">
                 <form action="/pinjaman">
                     <div class="row">
-
+                        <div class="col-lg-6 col-sm-12">
+                            <x-inputtext label="Dari" field="dari" value="{{ Request('dari') }}" icon="feather icon-calendar" datepicker />
+                        </div>
+                        <div class="col-lg-6 col-sm-12">
+                            <x-inputtext label="Sampai" field="sampai" value="{{ Request('sampai') }}" icon="feather icon-calendar" datepicker />
+                        </div>
+                    </div>
+                    <div class="row">
                         <div class="col-lg-3 col-sm-12">
                             <div class="form-group  ">
                                 <select name="kode_cabang" id="" class="form-control">
@@ -45,14 +52,18 @@
                                 <select name="kode_dept" id="kode_dept" class="form-control">
                                     <option value="">Departemen</option>
                                     @foreach ($departemen as $d)
-                                    <option value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
+                                    <option {{ Request('kode_dept') == $d->kode_dept ? 'selected' : ''  }} value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
+                        <div class="col-lg-3 col-sm-12">
+                            <div class="form-group">
+                                <x-inputtext label="Nama Karyawan" value="{{ Request('nama_karyawan') }}" field="nama_karyawan" icon="feather icon-user" />
+                            </div>
+                        </div>
 
-
-                        <div class="col-lg-4 col-sm-12">
+                        <div class="col-lg-3 col-sm-12">
                             <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search mr-2"></i> Search</button>
                         </div>
                     </div>
@@ -64,22 +75,53 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th>No</th>
-                                <th>Kode Barang</th>
-                                <th>Nama Barang</th>
-                                <th>Kategori</th>
-                                <th>Satuan</th>
-                                <th>Harga/Dus</th>
-                                <th>Harga/Pack</th>
-                                <th>Harga/Pcs</th>
-                                <th>Retur/Dus</th>
-                                <th>Retur/Pack</th>
-                                <th>Retur/Pcs</th>
-                                <th>Kategori Harga</th>
+                                <th>No. Pinjaman</th>
+                                <th>Tanggal</th>
+                                <th>Nik</th>
+                                <th>Nama Karyawan</th>
+                                <th>Jabatan</th>
+                                <th>Departemen</th>
+                                <th>Jumlah</th>
+                                <th>Bayar</th>
+                                <th>Sisa Tagihan</th>
+                                <th>Keterangan</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-
+                            @foreach ($pinjaman as $d)
+                            <tr>
+                                <td>{{ $loop->iteration + $pinjaman->firstItem() -1 }}</td>
+                                <td>{{ $d->no_pinjaman }}</td>
+                                <td>{{ DateToIndo2($d->tgl_pinjaman) }}</td>
+                                <td>{{ $d->nik }}</td>
+                                <td>{{ $d->nama_karyawan }}</td>
+                                <td>{{ $d->nama_jabatan }}</td>
+                                <td>{{ $d->nama_dept }}</td>
+                                <td class="text-right">{{ rupiah($d->jumlah_pinjaman)  }}</td>
+                                <td>
+                                    @php
+                                    $bayar = 0;
+                                    @endphp
+                                    {{ $bayar }}
+                                </td>
+                                <td></td>
+                                <td>{!! $d->jumlah_pinjaman - $bayar == 0 ? '<span class="badge bg-success">Lunas</span>' : '<span class="badge bg-danger">Belum Lunas</span>' !!}</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a class="ml-1 edit" no_pinjaman="{{ $d->no_pinjaman }}" href="#"><i class="feather icon-edit success"></i></a>
+                                        <a class="ml-1 show" no_pinjaman="{{ $d->no_pinjaman }}" href="#"><i class="feather icon-file-text info"></i></a>
+                                        <form method="POST" class="deleteform" action="/pinjaman/{{Crypt::encrypt($d->no_pinjaman)}}/delete">
+                                            @csrf
+                                            @method('DELETE')
+                                            <a href="#" class="delete-confirm ml-1">
+                                                <i class="feather icon-trash danger"></i>
+                                            </a>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
 
                         </tbody>
                     </table>
@@ -93,18 +135,33 @@
     </div>
 </div>
 
-<!-- Detail Barang -->
-<div class="modal fade text-left" id="mdldetailbarang" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+<div class="modal fade text-left" id="mdlajukanpinjaman" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel18">Detail Barang</h4>
+                <h4 class="modal-title" id="myModalLabel18">Ajukan Pinjaman</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div id="loaddetailbarang"></div>
+                <div id="loadajukanpinjaman"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade text-left" id="mdlshowpinjaman" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Data Pinjaman</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="showpinjaman"></div>
             </div>
         </div>
     </div>
@@ -114,25 +171,52 @@
 <script>
     $(function() {
 
-        function loaddetailbarang(kode_barang) {
+        function loadpinjaman(no_pinjaman) {
             $.ajax({
                 type: 'POST'
-                , url: '/harga/show'
+                , url: '/pinjaman/edit'
                 , data: {
                     _token: "{{ csrf_token() }}"
-                    , kode_barang: kode_barang
+                    , no_pinjaman: no_pinjaman
                 }
                 , cache: false
                 , success: function(respond) {
-                    $("#loaddetailbarang").html(respond);
+                    $("#loadajukanpinjaman").html(respond);
                 }
             });
         }
-        $('.detailbarang').click(function(e) {
-            var kode_barang = $(this).attr("kodebarang");
+
+        function showpinjaman(no_pinjaman) {
+            $.ajax({
+                type: 'POST'
+                , url: '/pinjaman/show'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , no_pinjaman: no_pinjaman
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#showpinjaman").html(respond);
+                }
+            });
+        }
+
+        $('.edit').click(function(e) {
+            var no_pinjaman = $(this).attr("no_pinjaman");
             e.preventDefault();
-            loaddetailbarang(kode_barang);
-            $('#mdldetailbarang').modal({
+            loadpinjaman(no_pinjaman);
+            $('#mdlajukanpinjaman').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+        });
+
+
+        $('.show').click(function(e) {
+            var no_pinjaman = $(this).attr("no_pinjaman");
+            e.preventDefault();
+            showpinjaman(no_pinjaman);
+            $('#mdlshowpinjaman').modal({
                 backdrop: 'static'
                 , keyboard: false
             });

@@ -9,7 +9,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\View;
+use PDO;
 
 class PinjamanController extends Controller
 {
@@ -29,8 +32,25 @@ class PinjamanController extends Controller
     public function index(Request $request)
     {
         $query = Pinjaman::query();
-        $query->select('pinjaman.*', 'nama_karyawan');
+        $query->select('pinjaman.*', 'nama_karyawan', 'nama_jabatan', 'nama_dept');
         $query->join('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik');
+        $query->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
+        $query->join('departemen', 'master_karyawan.kode_dept', '=', 'departemen.kode_dept');
+        if (!empty($request->dari) && !empty($request->sampai)) {
+            $query->whereBetween('tgl_pinjaman', [$request->dari, $request->sampai]);
+        }
+
+        if (!empty($request->kode_cabang)) {
+            $query->where('master_karyawan.id_kantor', $request->kode_cabang);
+        }
+
+        if (!empty($request->kode_dept)) {
+            $query->where('master_karyawan.kode_dept', $request->kode_dept);
+        }
+
+        if (!empty($request->nama_karyawan)) {
+            $query->where('nama_karyawan', 'like', '%' . $request->nama_karyawan . '%');
+        }
         $query->orderBy('no_pinjaman', 'desc');
         $pinjaman = $query->paginate(15);
         $pinjaman->appends($request->all());
@@ -125,6 +145,83 @@ class PinjamanController extends Controller
             DB::table('pinjaman')->insert($data);
             for ($i = 1; $i <= $angsuran; $i++) {
                 if ($bln > 12) {
+                    $blncicilan = $bln - 12;
+                    $tahun = $tgl_cicilan[0] + 1;
+                } else {
+                    $blncicilan = $bln;
+                    $tahun = $tgl_cicilan[0];
+                }
+
+                if ($i == $angsuran) {
+                    $cicilan = $cicilan_terakhir;
+                } else {
+                    $cicilan = $jumlah_angsuran;
+                }
+
+                DB::table('pinjaman_rencanabayar')
+                    ->insert([
+                        'no_pinjaman' => $no_pinjaman,
+                        'cicilan_ke' => $i,
+                        'bulan' => $blncicilan,
+                        'tahun' => $tahun,
+                        'jumlah' => $cicilan
+                    ]);
+
+                $bln++;
+            }
+            DB::commit();
+            return redirect('/pinjaman')->with(['success' => 'Data Berhasil Disimpan']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);
+            dd($e);
+        }
+    }
+
+
+    public function edit(Request $request)
+    {
+        $no_pinjaman = $request->no_pinjaman;
+        $pinjaman = DB::table('pinjaman')
+            ->join('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik')
+            ->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
+            ->join('departemen', 'master_karyawan.kode_dept', '=', 'departemen.kode_dept')
+            ->join('cabang', 'master_karyawan.id_kantor', '=', 'cabang.kode_cabang')
+            ->where('no_pinjaman', $no_pinjaman)->first();
+
+
+        $hariini = date("Y-m-d");
+
+        return view('pinjaman.edit', compact('pinjaman'));
+    }
+
+    public function update($no_pinjaman, Request $request)
+    {
+        $no_pinjaman = Crypt::decrypt($no_pinjaman);
+        $tgl_pinjaman = $request->tgl_pinjaman;
+        $jumlah_pinjaman = str_replace(".", "", $request->jml_pinjaman);
+        $angsuran = $request->angsuran;
+        $jumlah_angsuran = str_replace(".", "", $request->jml_angsuran);
+        $mulai_cicilan = $request->mulai_cicilan;
+
+        $cicilan_terakhir = $jumlah_angsuran + ($jumlah_pinjaman - ($jumlah_angsuran * $angsuran));
+
+        $data = [
+            'tgl_pinjaman' => $tgl_pinjaman,
+            'jumlah_pinjaman' => $jumlah_pinjaman,
+            'angsuran' => $angsuran,
+            'jumlah_angsuran' => $jumlah_angsuran,
+            'mulai_cicilan' => $mulai_cicilan
+        ];
+        $tgl_cicilan = explode("-", $mulai_cicilan);
+        $bln = $tgl_cicilan[1];
+        DB::beginTransaction();
+        try {
+            DB::table('pinjaman')
+                ->where('no_pinjaman', $no_pinjaman)->update($data);
+            DB::table('pinjaman_rencanabayar')->where('no_pinjaman', $no_pinjaman)->delete();
+            for ($i = 1; $i <= $angsuran; $i++) {
+                if ($bln > 12) {
                     $bln = 1;
                     $tahun = $tgl_cicilan[0] + 1;
                 } else {
@@ -150,9 +247,48 @@ class PinjamanController extends Controller
                 $bln++;
             }
             DB::commit();
-            echo "Berhasil";
+            return Redirect::back()->with(['success' => 'Data Berhasil Di Update']);
         } catch (\Exception $e) {
-            dd($e);
+            DB::rollBack();
+            return Redirect::back()->with(['warning' => 'Data Gagal Di Update']);
+            //dd($e);
         }
+    }
+
+    public function delete($no_pinjaman)
+    {
+        $no_pinjaman = Crypt::decrypt($no_pinjaman);
+        DB::beginTransaction();
+        try {
+            DB::table('pinjaman')->where('no_pinjaman', $no_pinjaman)->delete();
+            DB::commit();
+            return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
+        }
+    }
+
+    public function show(Request $request)
+    {
+        $no_pinjaman = $request->no_pinjaman;
+        $pinjaman = DB::table('pinjaman')
+            ->join('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik')
+            ->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
+            ->join('departemen', 'master_karyawan.kode_dept', '=', 'departemen.kode_dept')
+            ->join('cabang', 'master_karyawan.id_kantor', '=', 'cabang.kode_cabang')
+            ->where('no_pinjaman', $no_pinjaman)->first();
+
+
+        $hariini = date("Y-m-d");
+
+        return view('pinjaman.show', compact('pinjaman'));
+    }
+
+    public function getrencanabayar(Request $request)
+    {
+        $no_pinjaman = $request->no_pinjaman;
+        $rencana = DB::table('pinjaman_rencanabayar')->where('no_pinjaman', $no_pinjaman)->get();
+        return view('pinjaman.getrencanabayar', compact('rencana'));
     }
 }
