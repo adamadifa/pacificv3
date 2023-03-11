@@ -81,8 +81,8 @@
             $totaltidaksesuai = $d->totalkunjungan - $d->totalsesuaijadwal;
             $grandtotalkunjungantidaksesuai += $totaltidaksesuai;
 
-            $persentasekunjungansesuai = !empty($grandtotalkunjungan) ? $grandtotalkunjungansesuai / $grandtotalkunjungan : 0;
-            $persentasekunjungantidaksesuai = !empty($grandtotalkunjungan) ? $grandtotalkunjungantidaksesuai / $grandtotalkunjungan : 0;
+            $persentasekunjungansesuai = !empty($grandtotalkunjungan) ? $grandtotalkunjungansesuai / $grandtotalkunjungan * 100 : 0;
+            $persentasekunjungantidaksesuai = !empty($grandtotalkunjungan) ? $grandtotalkunjungantidaksesuai / $grandtotalkunjungan * 100 : 0;
             @endphp
             <tr>
                 <td>{{ $loop->iteration }}</td>

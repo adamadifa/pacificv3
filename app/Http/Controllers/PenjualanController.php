@@ -3751,6 +3751,13 @@ class PenjualanController extends Controller
         $jenislaporan = $request->jenis_laporan;
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
         $salesman = Salesman::where('id_karyawan', $id_karyawan)->first();
+        if (isset($_POST['export'])) {
+            $time = date("H:i:s");
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Routing Salesman Periode $dari-$sampai-$time.xls");
+        }
         if ($jenislaporan == "detail") {
             $qpenjualan = Penjualan::query();
             $qpenjualan->selectRaw('tgltransaksi,penjualan.kode_pelanggan,nama_pelanggan,hari');
