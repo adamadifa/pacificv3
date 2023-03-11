@@ -98,8 +98,8 @@
             <tr>
                 <th colspan="3">TOTAL</th>
                 <th style="text-align: center">{{ $grandtotalkunjungan }}</th>
-                <th style="text-align: center">{{ $grandtotalkunjungansesuai }} ({{ $persentasekunjungansesuai }}%)</th>
-                <th style="text-align: center">{{ $grandtotalkunjungantidaksesuai }} ({{ $persentasekunjungantidaksesuai }}%)</th>
+                <th style="text-align: center">{{ $grandtotalkunjungansesuai }} ({{ ROUND($persentasekunjungansesuai) }}%)</th>
+                <th style="text-align: center">{{ $grandtotalkunjungantidaksesuai }} ({{ ROUND($persentasekunjungantidaksesuai) }}%)</th>
             </tr>
         </tbody>
     </table>
