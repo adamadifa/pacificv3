@@ -951,6 +951,15 @@
                         </a>
                     </li>
                     @endif
+
+                    @if (in_array($level, $pinjaman_view))
+                    <li class="{{ request()->is(['pinjaman', 'pinjaman/*']) ? 'active' : '' }}">
+                        <a href="/pinjaman">
+                            <i class="feather icon-book"></i>
+                            <span class="menu-item" data-i18n="Second Level">Pinjaman</span>
+                        </a>
+                    </li>
+                    @endif
                     @if (in_array($level, $laporankeuangan_view))
                     <li class="{{ request()->is(['laporankeuangan', 'laporankeuangan/*']) ? 'active' : '' }}">
                         @if ($level == "kasir" || $level == "admin persediaan dan kasir" || $level == "admin penjualan dan kasir")

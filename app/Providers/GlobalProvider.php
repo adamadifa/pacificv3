@@ -466,6 +466,7 @@ class GlobalProvider extends ServiceProvider
             //Mutasi Bank
             $mutasibank_view = ['admin', 'kepala admin', 'admin pusat', 'admin kas kecil', 'audit', 'admin kas', 'manager accounting', 'admin kas dan penjualan', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil', 'admin pajak 2'];
 
+            $pinjaman_view = ['admin'];
             //Ledger
             $ledger_menu  = ['admin', 'staff keuangan', 'spv accounting'];
             $ledger_view = ['admin', 'staff keuangan', 'spv accounting'];
@@ -1015,6 +1016,9 @@ class GlobalProvider extends ServiceProvider
 
                 //Mutasi Bank
                 'mutasibank_view' => $mutasibank_view,
+
+                //Pinjaman
+                'pinjaman_view' => $pinjaman_view,
 
 
                 //ledger
