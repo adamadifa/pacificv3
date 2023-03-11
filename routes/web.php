@@ -1497,4 +1497,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pinjaman/', [PinjamanController::class, 'index']);
     Route::get('/pinjaman/{nik}/create', [PinjamanController::class, 'create']);
     Route::post('pinjaman/store', [PinjamanController::class, 'store']);
+    Route::post('pinjaman/edit', [PinjamanController::class, 'edit']);
+    Route::post('pinjaman/{no_pinjaman}/update', [PinjamanController::class, 'update']);
+    Route::delete('pinjaman/{no_pinjaman}/delete', [PinjamanController::class, 'delete']);
+    Route::post('/pinjaman/show', [PinjamanController::class, 'show']);
+    Route::post('/pinjaman/getrencanabayar', [PinjamanController::class, 'getrencanabayar']);
 });

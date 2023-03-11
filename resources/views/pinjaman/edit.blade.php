@@ -14,7 +14,7 @@
 
 </style>
 
-<form method="POST" action="/pinjaman/store" id="frmPinjaman">
+<form method="POST" action="/pinjaman/{{ Crypt::encrypt($pinjaman->no_pinjaman) }}/update" id="frmPinjaman">
     @csrf
     <div class="row" id="step1">
         <div class="col-12">
@@ -22,36 +22,36 @@
                 <tr>
                     <th>NIK</th>
                     <td>
-                        <input type="hidden" name="nik" id="nik" value="{{ $karyawan->nik }}">
-                        {{ $karyawan->nik }}
+                        <input type="hidden" name="nik" id="nik" value="{{ $pinjaman->nik }}">
+                        {{ $pinjaman->nik }}
                     </td>
                 </tr>
                 <tr>
                     <th>Nama Karyawan</th>
-                    <td>{{ $karyawan->nama_karyawan }}</td>
+                    <td>{{ $pinjaman->nama_karyawan }}</td>
                 </tr>
                 <tr>
                     <th>Departmen</th>
-                    <td>{{ $karyawan->nama_dept }}</td>
+                    <td>{{ $pinjaman->nama_dept }}</td>
                 </tr>
                 <tr>
                     <th>Jabatan</th>
-                    <td>{{ $karyawan->nama_jabatan }}</td>
+                    <td>{{ $pinjaman->nama_jabatan }}</td>
                 </tr>
                 <tr>
                     <th>Perusahaan</th>
-                    <td>{{ $karyawan->id_perusahaan=="MP" ? "Makmur Permata" : "CV.Pacific Tasikmalaya" }}</td>
+                    <td>{{ $pinjaman->id_perusahaan=="MP" ? "Makmur Permata" : "CV.Pacific Tasikmalaya" }}</td>
                 </tr>
                 <tr>
                     <th>Kantor</th>
-                    <td>{{ $karyawan->nama_cabang }}</td>
+                    <td>{{ $pinjaman->nama_cabang }}</td>
                 </tr>
                 <tr>
                     <th>Masa Kerja</th>
                     <td>
                         @php
-                        $awal = date_create($karyawan->tgl_masuk);
-                        $akhir = date_create(date('Y-m-d')); // waktu sekarang
+                        $awal = date_create($pinjaman->tgl_masuk);
+                        $akhir = date_create(date($pinjaman->tgl_pinjaman)); // waktu sekarang
                         $diff = date_diff( $awal, $akhir );
                         echo $diff->y . ' tahun, '.$diff->m.' bulan, '.$diff->d.' Hari'
                         @endphp
@@ -60,38 +60,31 @@
                 <tr>
                     <th>Status</th>
                     <td>
-                        <input type="hidden" name="status_karyawan" id="status_karyawan" value="{{ $karyawan->status_karyawan }}">
-                        {{ $karyawan->status_karyawan=="T" ? "Karyawan Tetap" : "Karyawan Kontrak" }}
+                        <input type="hidden" name="status_karyawan" id="status_karyawan" value="{{ $pinjaman->status_karyawan }}">
+                        {{ $pinjaman->status_karyawan=="T" ? "Karyawan Tetap" : "Karyawan Kontrak" }}
                     </td>
                 </tr>
-                @if ($karyawan->status_karyawan == "K")
+                @if ($pinjaman->status_karyawan == "K")
                 <tr>
                     <th>Akhir Kontrak</th>
                     <td>
-                        <input type="hidden" name="akhir_kontrak" id="akhir_kontrak" value="{{ $kontrak->sampai }}">
-                        {{ $kontrak != null ? DateToIndo2($kontrak->sampai) : "" }}
+                        <input type="hidden" name="akhir_kontrak" id="akhir_kontrak" value="{{ $pinjaman->akhir_kontrak }}">
+                        {{ $pinjaman->akhir_kontrak != null ? DateToIndo2($pinjaman->akhir_kontrak) : "" }}
                     </td>
                 </tr>
                 @endif
                 <tr>
                     <th>Gaji Pokok + Tunjangan</th>
                     <td style="text-align: right">
-                        <input type="hidden" name="gapok_tunjangan" id="gapok_tunjangan" value="{{ $gaji->gajitunjangan }}">
-                        {{ rupiah($gaji->gajitunjangan) }}
+                        <input type="hidden" name="gapok_tunjangan" id="gapok_tunjangan" value="{{ $pinjaman->gapok_tunjangan }}">
+                        {{ rupiah($pinjaman->gapok_tunjangan) }}
                     </td>
                 </tr>
                 <tr>
                     <th>Tenor Maksimal</th>
                     <td>
                         <?php
-                            if($karyawan->status_karyawan == "T"){
-                                $tenormax = 20;
-                            }else{
-                                $tglpinjaman = date_create(date('Y-m-d')); // waktu sekarang
-                                $akhirkontrak = date_create($kontrak!= null ? $kontrak->sampai : date('Y-m-d'));
-                                $sisakontrak = date_diff( $tglpinjaman, $akhirkontrak );
-                               $tenormax = $sisakontrak->m;
-                            }
+                            $tenormax = $pinjaman->tenor_max;
                         ?>
                         {{ $tenormax }} Bulan
                         <input type="hidden" name="tenor_max" id="tenor_max" value="{{ $tenormax }}">
@@ -101,7 +94,7 @@
                     <th style="width:40%">Angsuran Maksimal (40% dari Gaji Pokok + Tunjangan)</th>
                     <td style="text-align:right">
                         @php
-                        $angsuranmax = ((40/100) * $gaji->gajitunjangan );
+                        $angsuranmax = $pinjaman->angsuran_max;
                         @endphp
                         {{ rupiah($angsuranmax) }}
                         <input type="hidden" name="angsuran_max" id="angsuran_max" value="{{ $angsuranmax }}">
@@ -111,32 +104,7 @@
                     <th>JMK</th>
                     <td style="text-align: right">
                         <?php
-                            $masakerja = $diff->y;
-                            if($masakerja >= 3 && $masakerja < 6){
-                                $jmlkali=2;
-                            }else if($masakerja >= 6 && $masakerja < 9 ){
-                                $jmlkali =3;
-                            }else if($masakerja >= 9 && $masakerja < 12 ){
-                                $jmlkali =4;
-                            }else if($masakerja >= 12 && $masakerja < 15 ){
-                                $jmlkali =5;
-                            }else if($masakerja >= 15 && $masakerja < 18 ){
-                                $jmlkali =6;
-                            }else if($masakerja >= 18 && $masakerja < 21 ){
-                                $jmlkali =7;
-                            }else if($masakerja >= 21 && $masakerja < 24 ){
-                                $jmlkali =8;
-                            }else if($masakerja >= 24 ){
-                                $jmlkali =10;
-                            }else{
-                                $jmlkali = 0.5;
-                            }
-
-                            if($masakerja <= 2){
-                                $totaljmk = $jmlkali * $gaji->gaji_pokok;
-                            }else{
-                                $totaljmk = $gaji->gajitunjangan * $jmlkali;
-                            }
+                            $totaljmk = $pinjaman->jmk;
                         ?>
 
                         {{ rupiah($totaljmk) }}
@@ -146,8 +114,8 @@
                 <tr>
                     <th>JMK Sudah Dibayar</th>
                     <td style="text-align: right">
-                        {{ rupiah($jmk!=null ? $jmk->jml_jmk : 0) }}
-                        <input type="hidden" name="jmk_sudahbayar" id="jmk_sudahbayar" value="{{ $jmk!=null ? $jmk->jml_jmk : 0 }}">
+                        {{ rupiah($pinjaman->jmk_sudahbayar!=null ? $pinjaman->jmk_sudahbayar : 0) }}
+                        <input type="hidden" name="jmk_sudahbayar" id="jmk_sudahbayar" value="{{ $pinjaman->jmk_sudahbayar!=null ? $pinjaman->jmk_sudahbayar : 0 }}">
                     </td>
                 </tr>
                 <tr>
@@ -155,7 +123,7 @@
                     <td style="text-align:right">
                         @php
                         // $plafonmax = ((40/100) * $gaji->gajitunjangan )* 20;
-                        $jmksudahdibayar = $jmk!=null ? $jmk->jml_jmk : 0;
+                        $jmksudahdibayar = $pinjaman->jmk_sudahbayar !=null ? $pinjaman->jmk_sudahbayar : 0;
                         $plafonmax = $totaljmk - $jmksudahdibayar;
                         @endphp
                         {{ rupiah($plafonmax) }}
@@ -169,7 +137,7 @@
                     <label for="" class="form-label">Tanggal Pinjaman</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Tanggal Pinjaman" value="" field="tgl_pinjaman" icon="feather icon-calendar" datepicker />
+                    <x-inputtext label="Tanggal Pinjaman" value="{{ $pinjaman->tgl_pinjaman }}" field="tgl_pinjaman" icon="feather icon-calendar" datepicker />
                 </div>
             </div>
             <div class="row">
@@ -177,7 +145,7 @@
                     <label for="" class="form-label">Jumlah Pinjaman</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Jumlah Pinjaman" value="" field="jml_pinjaman" icon="feather icon-file" right />
+                    <x-inputtext label="Jumlah Pinjaman" value="{{ rupiah($pinjaman->jumlah_pinjaman) }}" field="jml_pinjaman" icon="feather icon-file" right />
                 </div>
             </div>
             <div class="row">
@@ -185,7 +153,7 @@
                     <label for="" class="form-label">Angsuran</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Angsuran" value="{{ $tenormax }}" field="angsuran" icon="feather icon-file" right />
+                    <x-inputtext label="Angsuran" value="{{ $pinjaman->angsuran }}" field="angsuran" icon="feather icon-file" right />
                 </div>
             </div>
             <div class="row">
@@ -193,7 +161,7 @@
                     <label for="" class="form-label">Jumlah Angsuran / Bulan</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Jumlah Angsuran" value="" field="jml_angsuran" icon="feather icon-file" right readonly />
+                    <x-inputtext label="Jumlah Angsuran" value="{{ rupiah($pinjaman->jumlah_angsuran) }}" field="jml_angsuran" icon="feather icon-file" right readonly />
                 </div>
             </div>
             <div class="row">
@@ -201,7 +169,7 @@
                     <label for="" class="form-label">Mulai Cicilan</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Mulai Cicilan" value="" field="mulai_cicilan" icon="feather icon-calendar" readonly />
+                    <x-inputtext label="Mulai Cicilan" value="{{ $pinjaman->mulai_cicilan }}" field="mulai_cicilan" icon="feather icon-calendar" readonly />
                 </div>
             </div>
             <div class="row">
@@ -228,6 +196,7 @@
             var jmlangsuran = $("#jml_angsuran").val();
             var tgl_pinjaman = $("#tgl_pinjaman").val();
             var angsuran = $("#angsuran").val();
+
             if (tgl_pinjaman == "") {
                 swal({
                     title: 'Oops'
@@ -261,6 +230,7 @@
 
                 return false;
             }
+
 
         });
         $("#jml_pinjaman,#jml_angsuran").maskMoney();
