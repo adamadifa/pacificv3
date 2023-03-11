@@ -2,13 +2,46 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cabang;
 use App\Models\Karyawan;
+use App\Models\Pinjaman;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 
 class PinjamanController extends Controller
 {
+
+    protected $cabang;
+    public function __construct()
+    {
+        // Fetch the Site Settings object
+        $this->middleware(function ($request, $next) {
+            $this->cabang = Auth::user()->kode_cabang;
+            return $next($request);
+        });
+
+
+        View::share('cabang', $this->cabang);
+    }
+    public function index(Request $request)
+    {
+        $query = Pinjaman::query();
+        $query->select('pinjaman.*', 'nama_karyawan');
+        $query->join('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik');
+        $query->orderBy('no_pinjaman', 'desc');
+        $pinjaman = $query->paginate(15);
+        $pinjaman->appends($request->all());
+
+
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
+
+        $departemen = DB::table('departemen')->where('status_pengajuan', 0)->get();
+        return view('pinjaman.index', compact('pinjaman', 'cabang', 'departemen'));
+    }
     public function create($nik)
     {
         $nik = Crypt::decrypt($nik);
@@ -66,6 +99,7 @@ class PinjamanController extends Controller
             ->first();
         $last_nopinjaman = $pinjaman != null ? $pinjaman->no_pinjaman : '';
         $no_pinjaman  = buatkode($last_nopinjaman, "PJK" . $tahun, 3);
+        $cicilan_terakhir = $jumlah_angsuran + ($jumlah_pinjaman - ($jumlah_angsuran * $angsuran));
 
         $data = [
             'no_pinjaman' => $no_pinjaman,
@@ -84,10 +118,37 @@ class PinjamanController extends Controller
             'jumlah_angsuran' => $jumlah_angsuran,
             'mulai_cicilan' => $mulai_cicilan
         ];
-
+        $tgl_cicilan = explode("-", $mulai_cicilan);
+        $bln = $tgl_cicilan[1];
         DB::beginTransaction();
         try {
             DB::table('pinjaman')->insert($data);
+            for ($i = 1; $i <= $angsuran; $i++) {
+                if ($bln > 12) {
+                    $bln = 1;
+                    $tahun = $tgl_cicilan[0] + 1;
+                } else {
+                    $bln = $bln;
+                    $tahun = $tgl_cicilan[0];
+                }
+
+                if ($i == $angsuran) {
+                    $cicilan = $cicilan_terakhir;
+                } else {
+                    $cicilan = $jumlah_angsuran;
+                }
+
+                DB::table('pinjaman_rencanabayar')
+                    ->insert([
+                        'no_pinjaman' => $no_pinjaman,
+                        'cicilan_ke' => $i,
+                        'bulan' => $bln,
+                        'tahun' => $tahun,
+                        'jumlah' => $cicilan
+                    ]);
+
+                $bln++;
+            }
             DB::commit();
             echo "Berhasil";
         } catch (\Exception $e) {

@@ -1494,6 +1494,7 @@ Route::middleware(['auth'])->group(function () {
 
     //Pinjaman
 
+    Route::get('/pinjaman/', [PinjamanController::class, 'index']);
     Route::get('/pinjaman/{nik}/create', [PinjamanController::class, 'create']);
     Route::post('pinjaman/store', [PinjamanController::class, 'store']);
 });

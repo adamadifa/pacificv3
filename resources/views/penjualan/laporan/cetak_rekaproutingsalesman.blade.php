@@ -69,7 +69,21 @@
             </tr>
         </thead>
         <tbody>
+            @php
+            $grandtotalkunjungan = 0;
+            $grandtotalkunjungansesuai = 0;
+            $grandtotalkunjungantidaksesuai = 0;
+            @endphp
             @foreach ($rekap as $d)
+            @php
+            $grandtotalkunjungan += $d->totalkunjungan;
+            $grandtotalkunjungansesuai += $d->totalsesuaijadwal;
+            $totaltidaksesuai = $d->totalkunjungan - $d->totalsesuaijadwal;
+            $grandtotalkunjungantidaksesuai += $totaltidaksesuai;
+
+            $persentasekunjungansesuai = !empty($grandtotalkunjungan) ? $grandtotalkunjungansesuai / $grandtotalkunjungan : 0;
+            $persentasekunjungantidaksesuai = !empty($grandtotalkunjungan) ? $grandtotalkunjungantidaksesuai / $grandtotalkunjungan : 0;
+            @endphp
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $d->id_karyawan }}</td>
@@ -77,13 +91,16 @@
                 <td style="text-align: center">{{ $d->totalkunjungan }}</td>
                 <td style="text-align: center">{{ $d->totalsesuaijadwal }} ({{ !empty($d->totalkunjungan) ? ROUND($d->totalsesuaijadwal/$d->totalkunjungan * 100) : 0 }} % )</td>
                 <td style="text-align: center">
-                    @php
-                    $totaltidaksesuai = $d->totalkunjungan - $d->totalsesuaijadwal;
-                    @endphp
                     {{ $totaltidaksesuai }} ({{ !empty($d->totalkunjungan) ? ROUND($totaltidaksesuai/$d->totalkunjungan * 100) : 0 }} % )
                 </td>
             </tr>
             @endforeach
+            <tr>
+                <th colspan="3">TOTAL</th>
+                <th style="text-align: center">{{ $grandtotalkunjungan }}</th>
+                <th style="text-align: center">{{ $grandtotalkunjungansesuai }} ({{ $persentasekunjungansesuai }}%)</th>
+                <th style="text-align: center">{{ $grandtotalkunjungantidaksesuai }} ({{ $persentasekunjungantidaksesuai }}%)</th>
+            </tr>
         </tbody>
     </table>
 
