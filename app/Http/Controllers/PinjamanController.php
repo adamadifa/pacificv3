@@ -32,10 +32,18 @@ class PinjamanController extends Controller
     public function index(Request $request)
     {
         $query = Pinjaman::query();
-        $query->select('pinjaman.*', 'nama_karyawan', 'nama_jabatan', 'nama_dept');
+        $query->select('pinjaman.*', 'nama_karyawan', 'nama_jabatan', 'nama_dept', 'totalpembayaran');
         $query->join('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik');
         $query->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
         $query->join('departemen', 'master_karyawan.kode_dept', '=', 'departemen.kode_dept');
+        $query->leftJoin(
+            DB::raw("(
+            SELECT no_pinjaman,SUM(jumlah) as totalpembayaran FROM pinjaman_historibayar GROUP BY no_pinjaman
+        ) hb"),
+            function ($join) {
+                $join->on('pinjaman.no_pinjaman', '=', 'hb.no_pinjaman');
+            }
+        );
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('tgl_pinjaman', [$request->dari, $request->sampai]);
         }
@@ -136,7 +144,8 @@ class PinjamanController extends Controller
             'jumlah_pinjaman' => $jumlah_pinjaman,
             'angsuran' => $angsuran,
             'jumlah_angsuran' => $jumlah_angsuran,
-            'mulai_cicilan' => $mulai_cicilan
+            'mulai_cicilan' => $mulai_cicilan,
+            'id_user' => Auth::user()->id
         ];
         $tgl_cicilan = explode("-", $mulai_cicilan);
         $bln = $tgl_cicilan[1];
@@ -277,7 +286,7 @@ class PinjamanController extends Controller
             ->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
             ->join('departemen', 'master_karyawan.kode_dept', '=', 'departemen.kode_dept')
             ->join('cabang', 'master_karyawan.id_kantor', '=', 'cabang.kode_cabang')
-            ->where('no_pinjaman', $no_pinjaman)->first();
+            ->where('pinjaman.no_pinjaman', $no_pinjaman)->first();
 
 
         $hariini = date("Y-m-d");
@@ -290,5 +299,16 @@ class PinjamanController extends Controller
         $no_pinjaman = $request->no_pinjaman;
         $rencana = DB::table('pinjaman_rencanabayar')->where('no_pinjaman', $no_pinjaman)->get();
         return view('pinjaman.getrencanabayar', compact('rencana'));
+    }
+
+    public function gethistoribayar(Request $request)
+    {
+        $no_pinjaman = $request->no_pinjaman;
+        $histori = DB::table('pinjaman_historibayar')
+            ->join('users', 'pinjaman_historibayar.id_user', '=', 'users.id')
+            ->where('no_pinjaman', $no_pinjaman)
+            ->orderBy('tgl_bayar', 'desc')
+            ->get();
+        return view('pinjaman.gethistoribayar', compact('histori', 'no_pinjaman'));
     }
 }

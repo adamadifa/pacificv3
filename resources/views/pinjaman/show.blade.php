@@ -1,5 +1,23 @@
 <div class="row">
-    <div class="col-6">
+    <div class="col-3">
+        <div class="row">
+            <div class="col-12">
+                @if($pinjaman->foto == null)
+                @if($pinjaman->jenis_kelamin == "1")
+                <img src="{{ asset('app-assets/images/male.jpg') }}" class="card-img" style="height: 350px !important">
+                @else
+                <img src="{{ asset('app-assets/images/female.jpg') }}" class="card-img" style="height: 350px !important">
+                @endif
+                @else
+                @php
+                $path = Storage::url('karyawan/'.$karyawan->foto);
+                @endphp
+                <img src="{{ url($path) }}" class="card-img" style="height: 350px !important">
+                @endif
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
         <div class="row">
             <div class="col-12">
                 <table class="table table-bordered">
@@ -45,23 +63,9 @@
                 </table>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <a href="#" class="btn btn-primary mb-1">Input Bayar</a>
-                <table class="table table-bordered">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>No. Bukti</th>
-                            <th>Tanggal</th>
-                            <th>Jumlah</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                </table>
-            </div>
-        </div>
+
     </div>
-    <div class="col-6">
+    <div class="col-5">
         <div class="row">
             <div class="col-12">
                 <table class="table table-bordered">
@@ -91,15 +95,48 @@
                     </tr>
                     <tr>
                         <th>Jumlah Pinjaman</th>
-                        <td style="text-align: right; font-weight:bold">{{ rupiah($pinjaman->jumlah_pinjaman) }}</td>
+                        <td style="text-align: right; font-weight:bold" id="jmlpinjaman">{{ rupiah($pinjaman->jumlah_pinjaman) }}</td>
                     </tr>
                     <tr>
                         <th>Angsuran</th>
                         <td>{{ $pinjaman->angsuran }} Bulan</td>
                     </tr>
+                    <tr>
+                        <th>Jumlah Bayar</th>
+                        <td id="jmlbayar" style="text-align: right"></td>
+                    </tr>
+                    <tr>
+                        <th>Sisa Tagihan</th>
+                        <td id="sisatagihan" style="text-align: right"></td>
+                    </tr>
                 </table>
             </div>
         </div>
+
+    </div>
+</div>
+<div class="row mt-2">
+    <div class="col-7">
+        <div class="row">
+            <div class="col-12">
+                <a href="#" class="btn btn-primary mb-1" id="inputbayar" no_pinjaman="{{ $pinjaman->no_pinjaman }}">Input Bayar</a>
+                <table class="table table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>No. Bukti</th>
+                            <th>Tanggal</th>
+                            <th>Jumlah</th>
+                            <th>Keterangan</th>
+                            <th>Petugas</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="loadhistoribayar"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-5">
         <div class="row">
             <div class="col-12">
                 <table class="table table-bordered">
@@ -108,6 +145,8 @@
                             <th>Cicilan Ke</th>
                             <th>Tanggal</th>
                             <th>Jumlah</th>
+                            <th>Realisasi</th>
+                            <th>Sisa Tagihan</th>
                         </tr>
                     </thead>
                     <tbody id="loadrencanabayar"></tbody>
@@ -116,8 +155,33 @@
         </div>
     </div>
 </div>
+
+
 <script>
     $(function() {
+
+        function convertToRupiah(number) {
+            if (number) {
+                var rupiah = "";
+                var numberrev = number
+                    .toString()
+                    .split("")
+                    .reverse()
+                    .join("");
+                for (var i = 0; i < numberrev.length; i++)
+                    if (i % 3 == 0) rupiah += numberrev.substr(i, 3) + ".";
+                return (
+                    rupiah
+                    .split("", rupiah.length - 1)
+                    .reverse()
+                    .join("")
+                );
+            } else {
+                return number;
+            }
+        }
+
+
         function loadrencanabayar() {
             var no_pinjaman = "{{ $pinjaman->no_pinjaman }}";
             $.ajax({
@@ -134,7 +198,62 @@
             });
         }
 
+        function loadhistoribayar() {
+            var no_pinjaman = "{{ $pinjaman->no_pinjaman }}";
+            $.ajax({
+                type: 'POST'
+                , url: '/pinjaman/gethistoribayar'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , no_pinjaman: no_pinjaman
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loadhistoribayar").html(respond);
+                    loadsisatagihan();
+                }
+            });
+        }
+
+        function loadsisatagihan() {
+            var jml_pinjaman = $("#jmlpinjaman").text();
+            var totalbayar = $("#totalbayar").text();
+
+            var jp = parseInt(jml_pinjaman.replace(/\./g, ''));
+            var tb = parseInt(totalbayar.replace(/\./g, ''));
+
+            var sisa = jp - tb;
+            $("#jmlbayar").text(convertToRupiah(tb));
+            $("#sisatagihan").text(convertToRupiah(sisa));
+
+        }
+
         loadrencanabayar();
+        loadhistoribayar();
+
+
+        $("#inputbayar").click(function(e) {
+            e.preventDefault();
+            var no_pinjaman = $(this).attr("no_pinjaman");
+            $('#mdlinputbayarpinjaman').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+            $.ajax({
+                type: 'POST'
+                , url: '/pembayaranpinjaman/create'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , no_pinjaman: no_pinjaman
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loadinputbayarpinjaman").html(respond);
+                }
+            });
+        });
+
+
     });
 
 </script>

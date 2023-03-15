@@ -42,7 +42,11 @@
                                 @else
                                 <img src="{{ asset('app-assets/images/female.jpg') }}" class="card-img" style="height: 350px !important">
                                 @endif
-
+                                @else
+                                @php
+                                $path = Storage::url('karyawan/'.$karyawan->foto);
+                                @endphp
+                                <img src="{{ url($path) }}" class="card-img" style="height: 350px !important">
                                 @endif
 
                             </div>
@@ -53,7 +57,6 @@
             </div>
             <div class="col-lg-10 col-sm-12">
                 <div class="card">
-
                     <div class="card-content">
                         <div class="card-body">
                             <ul class="nav nav-tabs" role="tablist">

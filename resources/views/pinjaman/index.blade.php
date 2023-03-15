@@ -1,6 +1,23 @@
 @extends('layouts.midone')
 @section('titlepage','Pinjaman Karyawan')
 @section('content')
+<style>
+    .form-group {
+        margin-bottom: 5px !important;
+    }
+
+    .form-label-group {
+        margin-bottom: 5px !important;
+    }
+
+    .col-4,
+    .col-5,
+    .col-6,
+    .col-3 {
+        padding-right: 1px !important;
+    }
+
+</style>
 <div class="content-wrapper">
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
@@ -99,14 +116,14 @@
                                 <td>{{ $d->nama_jabatan }}</td>
                                 <td>{{ $d->nama_dept }}</td>
                                 <td class="text-right">{{ rupiah($d->jumlah_pinjaman)  }}</td>
-                                <td>
+                                <td class="text-right">{{ rupiah($d->totalpembayaran) }}</td>
+                                <td class="text-right">
                                     @php
-                                    $bayar = 0;
+                                    $sisatagihan = $d->jumlah_pinjaman - $d->totalpembayaran;
                                     @endphp
-                                    {{ $bayar }}
+                                    {{ rupiah($sisatagihan) }}
                                 </td>
-                                <td></td>
-                                <td>{!! $d->jumlah_pinjaman - $bayar == 0 ? '<span class="badge bg-success">Lunas</span>' : '<span class="badge bg-danger">Belum Lunas</span>' !!}</td>
+                                <td>{!! $d->jumlah_pinjaman - $d->totalpembayaran == 0 ? '<span class="badge bg-success">Lunas</span>' : '<span class="badge bg-danger">Belum Lunas</span>' !!}</td>
                                 <td>
                                     <div class="btn-group">
                                         <a class="ml-1 edit" no_pinjaman="{{ $d->no_pinjaman }}" href="#"><i class="feather icon-edit success"></i></a>
@@ -152,7 +169,7 @@
 </div>
 
 <div class="modal fade text-left" id="mdlshowpinjaman" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="max-width:1200px">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel18">Data Pinjaman</h4>
@@ -162,6 +179,21 @@
             </div>
             <div class="modal-body">
                 <div id="showpinjaman"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade text-left" style="z-index: 1052 !important" id="mdlinputbayarpinjaman" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Input Bayar Pinjaman</h4>
+                <button type="button" class="close tutupmdlinputbayarpinjaman" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loadinputbayarpinjaman"></div>
             </div>
         </div>
     </div>
@@ -237,6 +269,10 @@
                         form.submit();
                     }
                 });
+        });
+
+        $(".tutupmdlinputbayarpinjaman").click(function(e) {
+            $("#mdlinputbayarpinjaman").modal("toggle");
         });
     });
 
