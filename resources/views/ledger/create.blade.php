@@ -26,7 +26,7 @@
     <div class="row">
         <div class="col-12">
             <div class="form-group">
-                <select name="kode_akun" id="kode_akun" class="form-control select2">
+                <select name="kode_akun" id="kode_akun" class="form-control">
                     <option value="">Pilih Akun</option>
                     @foreach ($coa as $d)
                     <option value="{{ $d->kode_akun }}">{{ $d->kode_akun }} {{ $d->nama_akun }}</option>
