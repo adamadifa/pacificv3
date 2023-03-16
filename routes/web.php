@@ -70,6 +70,7 @@ use App\Http\Controllers\PemasukangudanglogistikController;
 use App\Http\Controllers\PemasukanmaintenanceController;
 use App\Http\Controllers\PemasukanproduksiController;
 use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\PembayaranpinjamanController;
 use App\Http\Controllers\PembelianController;
 use App\Http\Controllers\PengeluarangudangbahanController;
 use App\Http\Controllers\PengeluarangudanglogistikController;
@@ -1502,4 +1503,15 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('pinjaman/{no_pinjaman}/delete', [PinjamanController::class, 'delete']);
     Route::post('/pinjaman/show', [PinjamanController::class, 'show']);
     Route::post('/pinjaman/getrencanabayar', [PinjamanController::class, 'getrencanabayar']);
+    Route::post('/pinjaman/gethistoribayar', [PinjamanController::class, 'gethistoribayar']);
+
+    //Pembayaran Pinjaman
+
+    Route::get('/pembayaranpinjaman', [PembayaranpinjamanController::class, 'index']);
+    Route::post('pembayaranpinjaman/create', [PembayaranpinjamanController::class, 'create']);
+    Route::post('pembayaranpinjaman/store', [PembayaranpinjamanController::class, 'store']);
+    Route::post('pembayaranpinjaman/delete', [PembayaranpinjamanController::class, 'delete']);
+    Route::post('pembayaranpinjaman/generatebayarpinjaman', [PembayaranpinjamanController::class, 'generatebayarpinjaman']);
+    Route::delete('pembayaranpinjaman/{kode_potongan}/deletegenerate', [PembayaranpinjamanController::class, 'deletegenerate']);
+    Route::post('/pembayaranpinjaman/show', [PembayaranpinjamanController::class, 'show']);
 });

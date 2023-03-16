@@ -68,9 +68,7 @@
                                     <th>Uploaded By</th>
                                     <th>File</th>
                                     <th>Read</th>
-                                    @if (in_array($level,$memo_tambah_hapus))
                                     <th>Aksi</th>
-                                    @endif
                                 </tr>
                             </thead>
                             <tbody>
@@ -100,7 +98,7 @@
                                     <td>
                                         <?php
                                         if (empty($d->status_read)) {
-                                            echo "<span class='badge bg-danger'>Belum Dibaca</span>";
+                                            echo "<i class='feather icon-history danger'></i>";
                                         } else {
                                             echo "<span class='badge bg-success'>Sudah Dibaca</span>";
                                         }
