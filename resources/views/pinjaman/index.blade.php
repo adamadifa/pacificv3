@@ -17,6 +17,18 @@
         padding-right: 1px !important;
     }
 
+    .modal:nth-of-type(even) {
+        z-index: 2000 !important;
+    }
+
+    .modal-backdrop.show:nth-of-type(even) {
+        z-index: 1051 !important;
+    }
+
+    .modal {
+        overflow-y: auto;
+    }
+
 </style>
 <div class="content-wrapper">
     <div class="content-header row">

@@ -1408,6 +1408,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/memo/downloadcount', [MemoController::class, 'downloadcount']);
     Route::delete('/memo/{id}/delete', [MemoController::class, 'delete']);
     Route::get('/memo/{kode_dept}/show', [MemoController::class, 'show']);
+    Route::post('/memo/uploadsosialisasi/create', [MemoController::class, 'uploadsosialisasi']);
 
     Route::get('/tutuplaporan', [TutuplaporanController::class, 'index']);
     Route::get('/tutuplaporan/create', [TutuplaporanController::class, 'create']);

@@ -183,17 +183,7 @@
     }
 
 
-    .modal:nth-of-type(even) {
-        z-index: 2000 !important;
-    }
 
-    .modal-backdrop.show:nth-of-type(even) {
-        z-index: 1051 !important;
-    }
-
-    .modal {
-        overflow-y: auto;
-    }
 
     .select2-dropdown {
         z-index: 9000 !important;
