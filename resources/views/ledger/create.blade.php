@@ -26,7 +26,7 @@
     <div class="row">
         <div class="col-12">
             <div class="form-group">
-                <select name="kode_akun" id="kode_akun" class="form-control">
+                <select name="kode_akun" id="kode_akun" class="form-control select2">
                     <option value="">Pilih Akun</option>
                     @foreach ($coa as $d)
                     <option value="{{ $d->kode_akun }}">{{ $d->kode_akun }} {{ $d->nama_akun }}</option>
@@ -156,12 +156,12 @@
         </div>
     </div>
 </form>
-<script src="{{asset('app-assets/vendors/js/forms/select/select2.full.min.js')}}"></script>
+
 <script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
-<script src="{{asset('app-assets/js/scripts/forms/select/form-select2.js')}}"></script>
+<script src="{{ asset('app-assets/js/external/selectize.js') }}"></script>
 <script>
     $(function() {
-
+        $("#kode_akun").selectize();
         $('.aggrement').change(function() {
             if (this.checked) {
                 $("#tombolsimpan").show();
