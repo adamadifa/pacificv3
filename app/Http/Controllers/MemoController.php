@@ -119,4 +119,10 @@ class MemoController extends Controller
             return redirect('/memo')->with(['warning' => 'Data Gagal Disimpan']);
         }
     }
+
+    public function uploadsosialisasi(Request $request)
+    {
+        $id_memo = $request->id_memo;
+        return view('memo.uploadsosialisasi', compact('id_memo'));
+    }
 }

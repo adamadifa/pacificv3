@@ -98,22 +98,27 @@
                                     <td>
                                         <?php
                                         if (empty($d->status_read)) {
-                                            echo "<i class='feather icon-history danger'></i>";
+                                            echo "<i class='feather icon-clock danger'></i>";
                                         } else {
-                                            echo "<span class='badge bg-success'>Sudah Dibaca</span>";
+                                            echo "<i class='feather icon-check-circle success'></i>";
                                         }
                                         ?>
                                     </td>
                                     <td>
-                                        @if (in_array($level,$memo_tambah_hapus))
-                                        <form method="POST" class="deleteform" action="/memo/{{Crypt::encrypt($d->id)}}/delete">
-                                            @csrf
-                                            @method('DELETE')
-                                            <a href="#" class="delete-confirm ml-1">
-                                                <i class="feather icon-trash danger"></i>
-                                            </a>
-                                        </form>
-                                        @endif
+                                        <div class="btn-group">
+                                            @if (in_array($level,$memo_tambah_hapus))
+                                            <form method="POST" class="deleteform" action="/memo/{{Crypt::encrypt($d->id)}}/delete">
+                                                @csrf
+                                                @method('DELETE')
+                                                <a href="#" class="delete-confirm ml-1">
+                                                    <i class="feather icon-trash danger"></i>
+                                                </a>
+                                            </form>
+                                            @endif
+
+                                            <a href="#" class="uploadsosialisasi" id_memo="{{ $d->id }}"> <i class="feather icon-upload info ml-1"></i></a>
+                                        </div>
+
                                     </td>
                                 </tr>
                                 @php
@@ -131,10 +136,51 @@
         <!-- Data list view end -->
     </div>
 </div>
+
+<!-- Input Uraian Analisa -->
+<div class="modal fade text-left" id="mdluploadsosialisasi" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Upload Daftar Hadir Sosialisasi</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loadinputuploadsosialisasi"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 @push('myscript')
 <script>
     $(function() {
+
+        $('.uploadsosialisasi').click(function(e) {
+            e.preventDefault();
+            var id_memo = $(this).attr('id_memo');
+            $.ajax({
+                type: 'POST'
+                , url: '/memo/uploadsosialisasi/create'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , id_memo: id_memo
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loadinputuploadsosialisasi").html(respond);
+                    $('#mdluploadsosialisasi').modal({
+                        backdrop: 'static'
+                        , keyboard: false
+                    });
+                }
+            });
+
+        });
+
         $('.delete-confirm').click(function(event) {
             var form = $(this).closest("form");
             var name = $(this).data("name");
