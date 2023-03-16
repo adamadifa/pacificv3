@@ -118,7 +118,7 @@ class SapController extends Controller
                     FROM detailpenjualan
                     INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
                     INNER JOIN penjualan ON detailpenjualan.no_fak_penj = penjualan.no_fak_penj
-                    WHERE tgltransaksi BETWEEN '$dari' AND '$sampai' AND penjualan.id_karyawan = 'SBDG01'
+                    WHERE tgltransaksi BETWEEN '$dari' AND '$sampai' AND penjualan.id_karyawan = '$id_karyawan'
                     GROUP BY kode_produk
                     ) dp"),
                 function ($join) {
