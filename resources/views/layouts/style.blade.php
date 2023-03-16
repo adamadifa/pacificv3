@@ -195,6 +195,10 @@
         overflow-y: auto;
     }
 
+    .select2-dropdown {
+        z-index: 9000 !important;
+    }
+
 </style>
 
 @stack('mystyle')
