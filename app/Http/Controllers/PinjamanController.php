@@ -93,11 +93,40 @@ class PinjamanController extends Controller
         $hariini = date("Y-m-d");
         $sp = DB::table('hrd_sp')->where('nik', $nik)->where('sampai', '>', $hariini)->first();
 
+
+
+        $query = Pinjaman::query();
+        $query->select('pinjaman.*', 'nama_karyawan', 'nama_jabatan', 'nama_dept', 'totalpembayaran');
+        $query->join('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik');
+        $query->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
+        $query->join('departemen', 'master_karyawan.kode_dept', '=', 'departemen.kode_dept');
+        $query->leftJoin(
+            DB::raw("(
+            SELECT no_pinjaman,SUM(jumlah) as totalpembayaran FROM pinjaman_historibayar GROUP BY no_pinjaman
+        ) hb"),
+            function ($join) {
+                $join->on('pinjaman.no_pinjaman', '=', 'hb.no_pinjaman');
+            }
+        );
+        $query->where('pinjaman.nik', $nik);
+        $query->whereRaw('jumlah_pinjaman - totalpembayaran != 0');
+        $cekpinjaman = $query->first();
+
         $kontrak = DB::table('hrd_kontrak')->where('nik', $nik)->orderBy('dari', 'desc')->first();
         if ($sp != null) {
             return view('pinjaman.notifsp', compact('sp'));
         } else {
-            return view('pinjaman.create', compact('karyawan', 'gaji', 'jmk', 'kontrak'));
+            if ($cekpinjaman != null) {
+                $jumlah_pinjaman = $cekpinjaman->jumlah_pinjaman;
+                $minpembayar = (75 / 100) * $jumlah_pinjaman;
+                if ($cekpinjaman->totalpembayaran >= $minpembayar) {
+                    return view('pinjaman.create', compact('karyawan', 'gaji', 'jmk', 'kontrak'));
+                } else {
+                    return view('pinjaman.notiftopup', compact('cekpinjaman'));
+                }
+            } else {
+                return view('pinjaman.create', compact('karyawan', 'gaji', 'jmk', 'kontrak'));
+            }
         }
     }
 

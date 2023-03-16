@@ -60,90 +60,91 @@
                             </div>
 
                             <div class="col-lg-2 col-sm-12">
-                                <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search"></i> Cari Data </button>
+                                <button type="submit" name="submit" value="1" class="btn btn-primary w-100"><i class="fa fa-search"></i> Cari Data </button>
                             </div>
                         </div>
                     </form>
                     @include('layouts.notification')
-                    <table class="table table-hover-animation ">
-                        <thead class="thead-dark">
-                            <tr>
+                    <div class="table-responsive mt-2">
+                        <table class="table table-hover-animation ">
+                            <thead class="thead-dark">
+                                <tr>
 
-                                <th>No.Pengajuan</th>
-                                <th>Tanggal</th>
-                                <th>Pelanggan</th>
-                                <th>Jumlah</th>
-                                <th>Jatuhtempo</th>
-                                @if (in_array($level,$penyesuaian_limit))
-                                <th>% Peny</th>
-                                @endif
-                                <th>Skor</th>
-                                <th>Ket</th>
-                                <th>KP</th>
-                                <th>RSM</th>
-                                <th>GM</th>
-                                <th>DIRUT</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($limitkredit as $d)
-                            <tr>
+                                    <th>No.Pengajuan</th>
+                                    <th>Tanggal</th>
+                                    <th>Pelanggan</th>
+                                    <th>Jumlah</th>
+                                    <th>Jatuhtempo</th>
+                                    @if (in_array($level,$penyesuaian_limit))
+                                    <th>% Peny</th>
+                                    @endif
+                                    <th>Skor</th>
+                                    <th>Ket</th>
+                                    <th>KP</th>
+                                    <th>RSM</th>
+                                    <th>GM</th>
+                                    <th>DIRUT</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($limitkredit as $d)
+                                <tr>
 
-                                <td>{{ $d->no_pengajuan }}</td>
-                                <td>{{ date("d-m-Y",strtotime($d->tgl_pengajuan)) }}</td>
-                                <td>{{ ucwords(strtolower($d->nama_pelanggan)) }}</td>
-                                <td class="text-right">
-                                    @if (!empty($d->jumlah_rekomendasi))
-                                    <s>{{ rupiah($d->jumlah) }}</s> / {{ rupiah($d->jumlah_rekomendasi) }}
-                                    @else
-                                    {{ rupiah($d->jumlah) }}
-                                    @endif
-                                </td>
-                                <td>
-                                    @if (!empty($d->jatuhtempo_rekomendasi))
-                                    <s>{{ $d->jatuhtempo }}</s> / {{ $d->jatuhtempo_rekomendasi }} Hari
-                                    @else
-                                    {{ $d->jatuhtempo }} Hari
-                                    @endif
-                                </td>
-                                @if (in_array($level,$penyesuaian_limit))
-                                <td>
-                                    @if ($d->status!=2)
-                                    @if (empty($d->jumlah_rekomendasi) || $d->jumlah_rekomendasi===0)
-                                    <a href="#" class="penyesuaian_limit" no_pengajuan="{{ $d->no_pengajuan }}"><i class="feather icon-maximize-2 info"></i></a>
-                                    @else
+                                    <td>{{ $d->no_pengajuan }}</td>
+                                    <td>{{ date("d-m-Y",strtotime($d->tgl_pengajuan)) }}</td>
+                                    <td>{{ ucwords(strtolower($d->nama_pelanggan)) }}</td>
+                                    <td class="text-right">
+                                        @if (!empty($d->jumlah_rekomendasi))
+                                        <s>{{ rupiah($d->jumlah) }}</s> / {{ rupiah($d->jumlah_rekomendasi) }}
+                                        @else
+                                        {{ rupiah($d->jumlah) }}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if (!empty($d->jatuhtempo_rekomendasi))
+                                        <s>{{ $d->jatuhtempo }}</s> / {{ $d->jatuhtempo_rekomendasi }} Hari
+                                        @else
+                                        {{ $d->jatuhtempo }} Hari
+                                        @endif
+                                    </td>
+                                    @if (in_array($level,$penyesuaian_limit))
+                                    <td>
+                                        @if ($d->status!=2)
+                                        @if (empty($d->jumlah_rekomendasi) || $d->jumlah_rekomendasi===0)
+                                        <a href="#" class="penyesuaian_limit" no_pengajuan="{{ $d->no_pengajuan }}"><i class="feather icon-maximize-2 info"></i></a>
+                                        @else
 
-                                    @if ($d->jumlah_rekomendasi > $d->jumlah)
-                                    @php
-                                    $selisih = $d->jumlah_rekomendasi - $d->jumlah;
-                                    @endphp
-                                    @php
-                                    $persentase = ($selisih / $d->jumlah) * 100;
-                                    @endphp
-                                    @if($d->cek_ajuan==1)
-                                    <a href="#" class="#" no_pengajuan="{{ $d->no_pengajuan }}"><i class="feather icon-arrow-up-right success"></i> <span class="success">{{ round($persentase,2) }} %</span></a>
-                                    @else
-                                    <a href="#" class="penyesuaian_limit" no_pengajuan="{{ $d->no_pengajuan }}"><i class="feather icon-arrow-up-right success"></i> <span class="success">{{ round($persentase,2) }} %</span></a>
-                                    @endif
-                                    @else
-                                    @php
-                                    $selisih = $d->jumlah - $d->jumlah_rekomendasi;
-                                    $persentase = ($selisih/ $d->jumlah ) *100;
-                                    @endphp
-                                    @if($d->cek_ajuan==1)
-                                    <a href="#" class="#" no_pengajuan="{{ $d->no_pengajuan }}"><i class="feather icon-arrow-down-left danger"></i> <span class="danger">{{ round($persentase,2) }} %</span></a>
-                                    @else
-                                    <a href="#" class="penyesuaian_limit" no_pengajuan="{{ $d->no_pengajuan }}"><i class="feather icon-arrow-down-left danger"></i> <span class="danger">{{ round($persentase,2) }} %</span></a>
-                                    @endif
+                                        @if ($d->jumlah_rekomendasi > $d->jumlah)
+                                        @php
+                                        $selisih = $d->jumlah_rekomendasi - $d->jumlah;
+                                        @endphp
+                                        @php
+                                        $persentase = ($selisih / $d->jumlah) * 100;
+                                        @endphp
+                                        @if($d->cek_ajuan==1)
+                                        <a href="#" class="#" no_pengajuan="{{ $d->no_pengajuan }}"><i class="feather icon-arrow-up-right success"></i> <span class="success">{{ round($persentase,2) }} %</span></a>
+                                        @else
+                                        <a href="#" class="penyesuaian_limit" no_pengajuan="{{ $d->no_pengajuan }}"><i class="feather icon-arrow-up-right success"></i> <span class="success">{{ round($persentase,2) }} %</span></a>
+                                        @endif
+                                        @else
+                                        @php
+                                        $selisih = $d->jumlah - $d->jumlah_rekomendasi;
+                                        $persentase = ($selisih/ $d->jumlah ) *100;
+                                        @endphp
+                                        @if($d->cek_ajuan==1)
+                                        <a href="#" class="#" no_pengajuan="{{ $d->no_pengajuan }}"><i class="feather icon-arrow-down-left danger"></i> <span class="danger">{{ round($persentase,2) }} %</span></a>
+                                        @else
+                                        <a href="#" class="penyesuaian_limit" no_pengajuan="{{ $d->no_pengajuan }}"><i class="feather icon-arrow-down-left danger"></i> <span class="danger">{{ round($persentase,2) }} %</span></a>
+                                        @endif
 
+                                        @endif
+                                        @endif
+                                        @endif
+                                    </td>
                                     @endif
-                                    @endif
-                                    @endif
-                                </td>
-                                @endif
-                                <td>
-                                    <?php
+                                    <td>
+                                        <?php
                                     $scoreakhir =  $d['skor'];
                                     if ($scoreakhir <= 2) {
                                         $rekomendasi = "TL";
@@ -165,156 +166,157 @@
                                     }
                                     //echo $scoreakhir;
                                     ?>
-                                    <span class="badge bg-<?php echo $bg; ?>">
-                                        <?php echo $scoreakhir; ?>
-                                    </span>
-                                </td>
-                                <td>
-                                    <span class="badge bg-{{ $bg }}">{{ $rekomendasi }}</span>
-                                </td>
-                                <!-- Kacab -->
-                                <td>
-                                    @if ($d->jumlah > 2000000)
-                                    @if (empty($d->kacab))
-                                    <i class="fa fa-history warning"></i>
-                                    @elseif(
-                                    !empty($d->kacab) && !empty($d->rsm) && $d->status==2 ||
-                                    !empty($d->kacab) && empty($d->rsm) && $d->status== 0 ||
-                                    !empty($d->kacab) && empty($d->rsm) && $d->status== 1 ||
-                                    !empty($d->kacab) && !empty($d->rsm) && $d->status== 0 ||
-                                    !empty($d->kacab) && !empty($d->rsm) && $d->status== 1
-                                    )
-                                    <i class="fa fa-check success"></i>
-                                    @else
-                                    <i class="fa fa-close danger"></i>
-                                    @endif
-                                    @endif
-                                </td>
-                                <!-- RSM -->
-                                <td>
-
-                                    @if ($d->jumlah > 5000000)
-                                    @if (empty($d->rsm))
-                                    <i class="fa fa-history warning"></i>
-                                    @elseif(
-                                    !empty($d->rsm) && !empty($d->mm) && $d->status == 2
-                                    || !empty($d->rsm) && empty($d->mm) && $d->status == 1
-                                    || !empty($d->rsm) && empty($d->mm) && $d->status == 0
-                                    || !empty($d->rsm) && !empty($d->mm) && $d->status == 0
-                                    || !empty($d->rsm) && !empty($d->mm) && $d->status == 1
-                                    )
-                                    <i class="fa fa-check success"></i>
-                                    @else
-                                    <i class="fa fa-close danger"></i>
-                                    @endif
-                                    @endif
-
-                                </td>
-                                <td>
-                                    @if ($d->jumlah > 10000000)
-                                    @if (empty($d->mm))
-                                    <i class="fa fa-history warning"></i>
-                                    @elseif(
-                                    !empty($d->mm) && !empty($d->dirut) && $d->status == 2
-                                    || !empty($d->mm) && empty($d->dirut) && $d->status == 1
-                                    || !empty($d->mm) && empty($d->dirut) && $d->status == 0
-                                    || !empty($d->mm) && !empty($d->dirut) && $d->status == 0
-                                    || !empty($d->mm) && !empty($d->dirut) && $d->status == 1
-                                    )
-                                    <i class="fa fa-check success"></i>
-                                    @else
-                                    <i class="fa fa-close danger"></i>
-                                    @endif
-                                    @endif
-
-                                </td>
-                                <td>
-                                    @if ($d->jumlah > 15000000)
-                                    @if (empty($d->dirut))
-                                    <i class="fa fa-history warning"></i>
-                                    @elseif(!empty($d->dirut) && $d->status != 2 )
-                                    <i class="fa fa-check success"></i>
-                                    @else
-                                    <i class="fa fa-close danger"></i>
-                                    @endif
-                                    @endif
-                                </td>
-                                <td>
-                                    <div class="btn-group" role="group" aria-label="Basic example">
-                                        <a href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/cetak" target="_blank"><i class="feather icon-printer info"></i></a>
-                                        @if ($d->cek_ajuan != 1)
-
-                                        {{-- <a class="ml-1" href="#"><i class=" feather icon-edit success"></i></a> --}}
-                                        @if(in_array($level,$limitkredit_hapus))
+                                        <span class="badge bg-<?php echo $bg; ?>">
+                                            <?php echo $scoreakhir; ?>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-{{ $bg }}">{{ $rekomendasi }}</span>
+                                    </td>
+                                    <!-- Kacab -->
+                                    <td>
+                                        @if ($d->jumlah > 2000000)
                                         @if (empty($d->kacab))
-                                        <form method="POST" name="deleteform" class="deleteform" action="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/{{ Crypt::encrypt($d->kode_pelanggan) }}/delete">
-                                            @csrf
-                                            @method('DELETE')
-                                            <a href="#" class="delete-confirm ml-1">
-                                                <i class="feather icon-trash danger"></i>
-                                            </a>
-                                        </form>
+                                        <i class="fa fa-history warning"></i>
+                                        @elseif(
+                                        !empty($d->kacab) && !empty($d->rsm) && $d->status==2 ||
+                                        !empty($d->kacab) && empty($d->rsm) && $d->status== 0 ||
+                                        !empty($d->kacab) && empty($d->rsm) && $d->status== 1 ||
+                                        !empty($d->kacab) && !empty($d->rsm) && $d->status== 0 ||
+                                        !empty($d->kacab) && !empty($d->rsm) && $d->status== 1
+                                        )
+                                        <i class="fa fa-check success"></i>
+                                        @else
+                                        <i class="fa fa-close danger"></i>
                                         @endif
                                         @endif
-                                        @if(in_array($level,$limitkredit_analisa))
-                                        @if($d->status==0)
-                                        <a class="ml-1 uraiananalisa" no_pengajuan="{{ $d->no_pengajuan }}" href="#"><i class=" feather icon-message-circle primary"></i></a>
+                                    </td>
+                                    <!-- RSM -->
+                                    <td>
+
+                                        @if ($d->jumlah > 5000000)
+                                        @if (empty($d->rsm))
+                                        <i class="fa fa-history warning"></i>
+                                        @elseif(
+                                        !empty($d->rsm) && !empty($d->mm) && $d->status == 2
+                                        || !empty($d->rsm) && empty($d->mm) && $d->status == 1
+                                        || !empty($d->rsm) && empty($d->mm) && $d->status == 0
+                                        || !empty($d->rsm) && !empty($d->mm) && $d->status == 0
+                                        || !empty($d->rsm) && !empty($d->mm) && $d->status == 1
+                                        )
+                                        <i class="fa fa-check success"></i>
+                                        @else
+                                        <i class="fa fa-close danger"></i>
                                         @endif
                                         @endif
-                                        <!-- Kepala Cabang -->
-                                        @if($level == "kepala penjualan" && empty($d->kacab) && $d->status==0
-                                        || $level == "kepala admin" && empty($d->kacab) && $d->status==0
 
-                                        || $level == "kepala penjualan" && !empty($d->kacab) && empty($d->mm) && $d->status==2
-                                        || $level == "kepala admin" && !empty($d->kacab) && empty($d->mm) && $d->status==2
-
-                                        || $level == "kepala penjualan" && !empty($d->kacab) && empty($d->mm) && $d->status==1
-                                        || $level == "kepala admin" && !empty($d->kacab) && empty($d->mm) && $d->status==1
-
-                                        || $level == "kepala penjualan" && !empty($d->kacab) && empty($d->mm) && $d->status==0
-                                        || $level == "kepala admin" && !empty($d->kacab) && empty($d->mm) && $d->status==0)
-
-                                        <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/approve"><i class=" fa fa-check success"></i></a>
-                                        <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/decline"><i class=" fa fa-close danger"></i></a>
+                                    </td>
+                                    <td>
+                                        @if ($d->jumlah > 10000000)
+                                        @if (empty($d->mm))
+                                        <i class="fa fa-history warning"></i>
+                                        @elseif(
+                                        !empty($d->mm) && !empty($d->dirut) && $d->status == 2
+                                        || !empty($d->mm) && empty($d->dirut) && $d->status == 1
+                                        || !empty($d->mm) && empty($d->dirut) && $d->status == 0
+                                        || !empty($d->mm) && !empty($d->dirut) && $d->status == 0
+                                        || !empty($d->mm) && !empty($d->dirut) && $d->status == 1
+                                        )
+                                        <i class="fa fa-check success"></i>
+                                        @else
+                                        <i class="fa fa-close danger"></i>
+                                        @endif
                                         @endif
 
-                                        <!-- RSM -->
-                                        @if($level=="rsm" && !empty($d->kacab) && empty($d->rsm) && empty($d->mm) && $d->status==0
-                                        || $level == "rsm" && !empty($d->kacab) && !empty($d->rsm) && empty($d->mm) && $d->status==2
-                                        || $level == "rsm" && !empty($d->kacab) && !empty($d->rsm) && empty($d->mm) && $d->status==0)
-                                        <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/approve"><i class=" fa fa-check success"></i></a>
-                                        <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/decline"><i class=" fa fa-close danger"></i></a>
+                                    </td>
+                                    <td>
+                                        @if ($d->jumlah > 15000000)
+                                        @if (empty($d->dirut))
+                                        <i class="fa fa-history warning"></i>
+                                        @elseif(!empty($d->dirut) && $d->status != 2 )
+                                        <i class="fa fa-check success"></i>
+                                        @else
+                                        <i class="fa fa-close danger"></i>
                                         @endif
-
-                                        <!-- General Manager -->
-
-                                        @if ($level=="manager marketing" && !empty($d->rsm) && empty($d->mm) && empty($d->dirut) && $d->status==0
-                                        || $level =="manager marketing" && !empty($d->rsm) && !empty($d->mm) && empty($d->dirut) && $d->status==2
-                                        || $level =="manager marketing" && !empty($d->rsm) && !empty($d->mm) && empty($d->dirut) && $d->status==0
-                                        || $level =="manager marketing" && !empty($d->rsm) && !empty($d->mm) && empty($d->dirut) && $d->status!=2)
-
-
-                                        <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/approve"><i class=" fa fa-check success"></i></a>
-                                        <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/decline"><i class=" fa fa-close danger"></i></a>
                                         @endif
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <a href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/cetak" target="_blank"><i class="feather icon-printer info"></i></a>
+                                            @if ($d->cek_ajuan != 1)
 
-                                        <!-- Direktur -->
-                                        @if ($level=="direktur" && !empty($d->mm) && empty($d->dirut) && $d->status==0
-                                        || $level =="direktur" && !empty($d->mm) && !empty($d->dirut) && $d->status==2
-                                        || $level =="direktur" && !empty($d->mm) && !empty($d->dirut) && $d->status==0
-                                        || $level =="direktur" && !empty($d->mm) && !empty($d->dirut) && $d->status!=2)
-                                        <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/approve"><i class=" fa fa-check success"></i></a>
-                                        <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/decline"><i class=" fa fa-close danger"></i></a>
-                                        @endif
+                                            {{-- <a class="ml-1" href="#"><i class=" feather icon-edit success"></i></a> --}}
+                                            @if(in_array($level,$limitkredit_hapus))
+                                            @if (empty($d->kacab))
+                                            <form method="POST" name="deleteform" class="deleteform" action="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/{{ Crypt::encrypt($d->kode_pelanggan) }}/delete">
+                                                @csrf
+                                                @method('DELETE')
+                                                <a href="#" class="delete-confirm ml-1">
+                                                    <i class="feather icon-trash danger"></i>
+                                                </a>
+                                            </form>
+                                            @endif
+                                            @endif
+                                            @if(in_array($level,$limitkredit_analisa))
+                                            @if($d->status==0)
+                                            <a class="ml-1 uraiananalisa" no_pengajuan="{{ $d->no_pengajuan }}" href="#"><i class=" feather icon-message-circle primary"></i></a>
+                                            @endif
+                                            @endif
+                                            <!-- Kepala Cabang -->
+                                            @if($level == "kepala penjualan" && empty($d->kacab) && $d->status==0
+                                            || $level == "kepala admin" && empty($d->kacab) && $d->status==0
 
-                                        @endif
-                                    </div>
+                                            || $level == "kepala penjualan" && !empty($d->kacab) && empty($d->mm) && $d->status==2
+                                            || $level == "kepala admin" && !empty($d->kacab) && empty($d->mm) && $d->status==2
 
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                            || $level == "kepala penjualan" && !empty($d->kacab) && empty($d->mm) && $d->status==1
+                                            || $level == "kepala admin" && !empty($d->kacab) && empty($d->mm) && $d->status==1
+
+                                            || $level == "kepala penjualan" && !empty($d->kacab) && empty($d->mm) && $d->status==0
+                                            || $level == "kepala admin" && !empty($d->kacab) && empty($d->mm) && $d->status==0)
+
+                                            <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/approve"><i class=" fa fa-check success"></i></a>
+                                            <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/decline"><i class=" fa fa-close danger"></i></a>
+                                            @endif
+
+                                            <!-- RSM -->
+                                            @if($level=="rsm" && !empty($d->kacab) && empty($d->rsm) && empty($d->mm) && $d->status==0
+                                            || $level == "rsm" && !empty($d->kacab) && !empty($d->rsm) && empty($d->mm) && $d->status==2
+                                            || $level == "rsm" && !empty($d->kacab) && !empty($d->rsm) && empty($d->mm) && $d->status==0)
+                                            <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/approve"><i class=" fa fa-check success"></i></a>
+                                            <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/decline"><i class=" fa fa-close danger"></i></a>
+                                            @endif
+
+                                            <!-- General Manager -->
+
+                                            @if ($level=="manager marketing" && !empty($d->rsm) && empty($d->mm) && empty($d->dirut) && $d->status==0
+                                            || $level =="manager marketing" && !empty($d->rsm) && !empty($d->mm) && empty($d->dirut) && $d->status==2
+                                            || $level =="manager marketing" && !empty($d->rsm) && !empty($d->mm) && empty($d->dirut) && $d->status==0
+                                            || $level =="manager marketing" && !empty($d->rsm) && !empty($d->mm) && empty($d->dirut) && $d->status!=2)
+
+
+                                            <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/approve"><i class=" fa fa-check success"></i></a>
+                                            <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/decline"><i class=" fa fa-close danger"></i></a>
+                                            @endif
+
+                                            <!-- Direktur -->
+                                            @if ($level=="direktur" && !empty($d->mm) && empty($d->dirut) && $d->status==0
+                                            || $level =="direktur" && !empty($d->mm) && !empty($d->dirut) && $d->status==2
+                                            || $level =="direktur" && !empty($d->mm) && !empty($d->dirut) && $d->status==0
+                                            || $level =="direktur" && !empty($d->mm) && !empty($d->dirut) && $d->status!=2)
+                                            <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/approve"><i class=" fa fa-check success"></i></a>
+                                            <a class="ml-1" href="/limitkredit/{{ Crypt::encrypt($d->no_pengajuan) }}/decline"><i class=" fa fa-close danger"></i></a>
+                                            @endif
+
+                                            @endif
+                                        </div>
+
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                     {{ $limitkredit->links('vendor.pagination.vuexy') }}
 
                 </div>
