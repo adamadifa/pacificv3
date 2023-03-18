@@ -20,8 +20,9 @@ class MemoController extends Controller
     public function show($kode_dept, Request $request)
     {
         $id_user = Auth::user()->id;
+        $kode_cabang = Auth::user()->kode_cabang;
         $query = Memo::query();
-        $query->selectRaw("memo.id,tanggal,no_memo,judul_memo,kode_dept,kategori,link,totaldownload,name,memo.id_user,cekread.id_user as status_read");
+        $query->selectRaw("memo.id,tanggal,no_memo,judul_memo,kode_dept,kategori,link,totaldownload,name,memo.id_user,cekread.id_user as status_read,id_memo,id_sosialisasi");
         $query->leftJoin(
             DB::raw("(
                 SELECT id,COUNT(id_user) as totaldownload FROM memo_download GROUP BY id
@@ -46,6 +47,19 @@ class MemoController extends Controller
                 $join->on('memo.id_user', '=', 'user.id');
             }
         );
+
+
+        $query->leftJoin(
+            DB::raw("(
+                SELECT id_memo,id_sosialisasi
+                FROM memo_uploadsosialisasi
+                WHERE kode_cabang = '$kode_cabang'
+            ) sosialisasi"),
+            function ($join) {
+                $join->on('memo.id', '=', 'sosialisasi.id_memo');
+            }
+        );
+
         $query->where('kode_dept', $kode_dept);
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('tanggal', [$request->dari, $request->sampai]);
@@ -124,5 +138,62 @@ class MemoController extends Controller
     {
         $id_memo = $request->id_memo;
         return view('memo.uploadsosialisasi', compact('id_memo'));
+    }
+
+
+    public function storeuploadsosialisasi(Request $request)
+
+    {
+        $id_memo = $request->id_memo;
+        $link = $request->link;
+        $id_user = Auth::user()->id;
+        $kode_cabang = Auth::user()->kode_cabang;
+
+        $data = [
+            'id_memo' => $id_memo,
+            'link' => $link,
+            'kode_cabang' => $kode_cabang,
+            'id_user' => $id_user
+        ];
+
+        try {
+            DB::table('memo_uploadsosialisasi')->insert($data);
+            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);
+        }
+    }
+
+    public function edituploadsosialisasi(Request $request)
+    {
+        $id_sosialisasi = $request->id_sosialisasi;
+        $sosialisasi = DB::table('memo_uploadsosialisasi')->where('id_sosialisasi', $id_sosialisasi)->first();
+        return view('memo.edituploadsosialisasi', compact('sosialisasi'));
+    }
+
+    public function updateuploadsosialisasi(Request $request)
+    {
+        $id_sosialisasi = $request->id_sosialisasi;
+        $link = $request->link;
+        $data = [
+            'link' => $link
+        ];
+
+        try {
+            DB::table('memo_uploadsosialisasi')->where('id_sosialisasi', $id_sosialisasi)->update($data);
+            return Redirect::back()->with(['success' => 'Data Berhasil Update']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Data Gagal Update']);
+        }
+    }
+
+
+    public function detailuploadsosialisasi(Request $request)
+    {
+        $id_memo = $request->id_memo;
+        $sosialisasi = DB::table('memo_uploadsosialisasi')
+            ->leftJoin('users', 'memo_uploadsosialisasi.id_user', '=', 'users.id')
+            ->where('id_memo', $id_memo)->get();
+        return view('memo.detailuploadsosialisasi', compact('sosialisasi'));
     }
 }

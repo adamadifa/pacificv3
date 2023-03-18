@@ -971,6 +971,34 @@
                         </ul>
                     </li>
                     @endif
+
+                    @if (in_array($level, $kasbon_view))
+                    <li>
+                        <a href="#">
+                            <i class="feather icon-circle"></i>
+                            <span class="menu-item" data-i18n="Second Level">Kasbon</span>
+                        </a>
+                        <ul class="menu-content">
+                            @if (in_array($level, $kasbon_view))
+                            <li class="{{ request()->is(['kasbon', 'kasbon/*']) ? 'active' : '' }}">
+                                <a href="/kasbon">
+                                    <i class="feather icon-book"></i>
+                                    <span class="menu-item" data-i18n="Second Level">Kasbon</span>
+                                </a>
+                            </li>
+                            @endif
+                            @if (in_array($level, $pembayarankasbon_view))
+                            <li class="{{ request()->is(['pembayarankasbon', 'pembayarankasbon/*']) ? 'active' : '' }}">
+                                <a href="/pembayarankasbon">
+                                    <i class="feather icon-book"></i>
+                                    <span class="menu-item" data-i18n="Second Level">Pembayaran</span>
+                                </a>
+                            </li>
+                            @endif
+
+                        </ul>
+                    </li>
+                    @endif
                     @if (in_array($level, $mutasibank_view))
                     <li class="{{ request()->is(['mutasibank', 'mutasibank/*']) ? 'active' : '' }}">
                         <a href="/mutasibank">

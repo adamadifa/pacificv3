@@ -29,6 +29,7 @@ use App\Http\Controllers\JenissimpananController;
 use App\Http\Controllers\JurnalkoreksiController;
 use App\Http\Controllers\JurnalumumController;
 use App\Http\Controllers\KaryawanController;
+use App\Http\Controllers\KasbonController;
 use App\Http\Controllers\KaskecilController;
 use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\KesepakatanbersamaController;
@@ -1409,6 +1410,10 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/memo/{id}/delete', [MemoController::class, 'delete']);
     Route::get('/memo/{kode_dept}/show', [MemoController::class, 'show']);
     Route::post('/memo/uploadsosialisasi/create', [MemoController::class, 'uploadsosialisasi']);
+    Route::post('/memo/uploadsosialisasi/edit', [MemoController::class, 'edituploadsosialisasi']);
+    Route::post('/memo/uploadsosialisasi/store', [MemoController::class, 'storeuploadsosialisasi']);
+    Route::post('/memo/uploadsosialisasi/update', [MemoController::class, 'updateuploadsosialisasi']);
+    Route::post('/memo/uploadsosialisasi/detail', [MemoController::class, 'detailuploadsosialisasi']);
 
     Route::get('/tutuplaporan', [TutuplaporanController::class, 'index']);
     Route::get('/tutuplaporan/create', [TutuplaporanController::class, 'create']);
@@ -1515,4 +1520,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('pembayaranpinjaman/generatebayarpinjaman', [PembayaranpinjamanController::class, 'generatebayarpinjaman']);
     Route::delete('pembayaranpinjaman/{kode_potongan}/deletegenerate', [PembayaranpinjamanController::class, 'deletegenerate']);
     Route::post('/pembayaranpinjaman/show', [PembayaranpinjamanController::class, 'show']);
+
+
+    //Kasbon
+    Route::get('/kasbon/', [KasbonController::class, 'index']);
+    Route::get('/kasbon/{nik}/create', [KasbonController::class, 'create']);
+    Route::post('kasbon/store', [KasbonController::class, 'store']);
+    Route::delete('kasbon/{no_kasbon}/delete', [KasbonController::class, 'delete']);
+    Route::post('kasbon/edit', [KasbonController::class, 'edit']);
 });
