@@ -14,11 +14,7 @@
         <h3>LOST IN <span>SPACE</span> Halaman Yang Dituju Tidak Ditemukan !.</h3>
         <img id="astronaut" src="{{ asset('error/astronaut.svg') }}" />
         <img id="planet" src="{{ asset('error/planet.svg') }}" />
-        @if (request()->is(['homesap', 'salesperformance', 'getsalesperfomance','sap/*']))
         <a href="/homesap"><button class="denied__link">Go Home</button></a>
-        @else
-        <a href="/home"><button class="denied__link">Go Home</button></a>
-        @endif
 
     </div>
 
