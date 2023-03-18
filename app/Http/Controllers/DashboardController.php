@@ -815,13 +815,14 @@ class DashboardController extends Controller
             $qpengajuan->where('jumlah', '>', 2000000);
 
             $jmlpengajuan = $qpengajuan->count();
-        } else if ($level == "admin" && $level == "manager accounting") {
+        } else if ($level == "admin" || $level == "manager accounting") {
             $jmlpengajuan = DB::table('pengajuan_limitkredit_v3')
                 ->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
                 ->whereIn('no_pengajuan', $no_pengajuan)
                 ->where('status', 0)
                 ->count();
         }
+
 
         return view('sap.home', compact('penjualan', 'penjualancabang', 'jmlpengajuan'));
     }
