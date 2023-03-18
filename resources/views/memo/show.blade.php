@@ -115,8 +115,15 @@
                                                 </a>
                                             </form>
                                             @endif
-
+                                            @if (empty($d->id_memo))
+                                            @if (Auth::user()->kode_cabang != 'PCF')
                                             <a href="#" class="uploadsosialisasi" id_memo="{{ $d->id }}"> <i class="feather icon-upload info ml-1"></i></a>
+                                            @else
+                                            <a href="#" class="detailsosialisasi" id_memo="{{ $d->id }}"><i class="feather icon-book-open ml-1"></i></a>
+                                            @endif
+                                            @else
+                                            <a href=" #" class="showsosialisasi" id_sosialisasi="{{ $d->id_sosialisasi }}"><i class="feather icon-link success ml-1"></i></a>
+                                            @endif
                                         </div>
 
                                     </td>
@@ -154,6 +161,38 @@
     </div>
 </div>
 
+<div class="modal fade text-left" id="mdledituploadsosialisasi" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Update Daftar Hadir Sosialisasi</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loadedituploadsosialisasi"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade text-left" id="mdldetailsosialisasi" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18"> Daftar Hadir Sosialisasi</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loaddetailsosialisasi"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 @push('myscript')
 <script>
@@ -181,6 +220,50 @@
 
         });
 
+        $('.showsosialisasi').click(function(e) {
+            e.preventDefault();
+            var id_sosialisasi = $(this).attr('id_sosialisasi');
+            $.ajax({
+                type: 'POST'
+                , url: '/memo/uploadsosialisasi/edit'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , id_sosialisasi: id_sosialisasi
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loadedituploadsosialisasi").html(respond);
+                    $('#mdledituploadsosialisasi').modal({
+                        backdrop: 'static'
+                        , keyboard: false
+                    });
+                }
+            });
+
+        });
+
+
+        $('.detailsosialisasi').click(function(e) {
+            e.preventDefault();
+            var id_memo = $(this).attr('id_memo');
+            $.ajax({
+                type: 'POST'
+                , url: '/memo/uploadsosialisasi/detail'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , id_memo: id_memo
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loaddetailsosialisasi").html(respond);
+                    $('#mdldetailsosialisasi').modal({
+                        backdrop: 'static'
+                        , keyboard: false
+                    });
+                }
+            });
+
+        });
         $('.delete-confirm').click(function(event) {
             var form = $(this).closest("form");
             var name = $(this).data("name");

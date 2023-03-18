@@ -113,7 +113,7 @@
                                                     @if (in_array($level,$karyawan_pinjaman))
                                                     <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukanpinjaman"><i class="feather icon-external-link primary ml-1"></i></a>
 
-                                                    <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukankontrabon"><i class="feather icon-external-link warning ml-1"></i></a>
+                                                    <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukankasbon"><i class="feather icon-external-link warning ml-1"></i></a>
                                                     @endif
                                                 </div>
                                             </td>
@@ -183,6 +183,23 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal fade text-left" id="mdlajukankasbon" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Ajukan Kasbon</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loadajukankasbon"></div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @push('myscript')
 <script>
@@ -216,6 +233,16 @@
                 , keyboard: false
             });
             $("#loadajukanpinjaman").load('/pinjaman/' + nik + '/create');
+        });
+
+        $('.ajukankasbon').click(function(e) {
+            var nik = $(this).attr("nik");
+            e.preventDefault();
+            $('#mdlajukankasbon').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+            $("#loadajukankasbon").load('/kasbon/' + nik + '/create');
         });
     });
 

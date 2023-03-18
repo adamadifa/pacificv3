@@ -35,10 +35,10 @@
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Pinjaman Karyawan</h2>
+                    <h2 class="content-header-title float-left mb-0">Kasbon Karyawan</h2>
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/pinjaman">Pinjaman Karyawan</a>
+                            <li class="breadcrumb-item"><a href="/kasbon">Kasbon Karyawan</a>
                             </li>
                         </ol>
                     </div>
@@ -52,7 +52,7 @@
         @include('layouts.notification')
         <div class="card">
             <div class="card-body">
-                <form action="/pinjaman">
+                <form action="/kasbon">
                     <div class="row">
                         <div class="col-lg-6 col-sm-12">
                             <x-inputtext label="Dari" field="dari" value="{{ Request('dari') }}" icon="feather icon-calendar" datepicker />
@@ -104,7 +104,7 @@
                         <thead class="thead-dark">
                             <tr>
                                 <th>No</th>
-                                <th>No. Pinjaman</th>
+                                <th>No. Kasbon</th>
                                 <th>Tanggal</th>
                                 <th>Nik</th>
                                 <th>Nama Karyawan</th>
@@ -113,44 +113,48 @@
                                 <th>Jumlah</th>
                                 <th>Bayar</th>
                                 <th>Sisa Tagihan</th>
+                                <th>Jatuh Tempo</th>
+                                <th>Tgl Bayar</th>
                                 <th>Keterangan</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($pinjaman as $d)
+                            @foreach ($kasbon as $d)
                             <tr>
-                                <td>{{ $loop->iteration + $pinjaman->firstItem() -1 }}</td>
-                                <td>{{ $d->no_pinjaman }}</td>
-                                <td>{{ DateToIndo2($d->tgl_pinjaman) }}</td>
+                                <td>{{ $loop->iteration + $kasbon->firstItem() -1 }}</td>
+                                <td>{{ $d->no_kasbon }}</td>
+                                <td>{{ DateToIndo2($d->tgl_kasbon) }}</td>
                                 <td>{{ $d->nik }}</td>
                                 <td>{{ $d->nama_karyawan }}</td>
                                 <td>{{ $d->nama_jabatan }}</td>
                                 <td>{{ $d->nama_dept }}</td>
-                                <td class="text-right">{{ rupiah($d->jumlah_pinjaman)  }}</td>
+                                <td class="text-right">{{ rupiah($d->jumlah_kasbon)  }}</td>
                                 <td class="text-right">{{ rupiah($d->totalpembayaran) }}</td>
                                 <td class="text-right">
                                     @php
-                                    $sisatagihan = $d->jumlah_pinjaman - $d->totalpembayaran;
+                                    $sisatagihan = $d->jumlah_kasbon - $d->totalpembayaran;
                                     @endphp
                                     {{ rupiah($sisatagihan) }}
                                 </td>
-                                <td>{!! $d->jumlah_pinjaman - $d->totalpembayaran == 0 ? '<span class="badge bg-success">Lunas</span>' : '<span class="badge bg-danger">Belum Lunas</span>' !!}</td>
+                                <td>
+                                    {{ date('d-m-Y',strtotime($d->jatuh_tempo)) }}
+                                </td>
+                                <td>
+                                    {{ !empty($d->tgl_bayar) ? date('d-m-Y',strtotime($d->tgl_bayar)) : ''  }}
+                                </td>
+                                <td>{!! $d->jumlah_kasbon - $d->totalpembayaran == 0 ? '<span class="badge bg-success">Lunas</span>' : '<span class="badge bg-danger">Belum Lunas</span>' !!}</td>
+                                </td>
                                 <td>
                                     <div class="btn-group">
-
-                                        <a class="ml-1 show" no_pinjaman="{{ $d->no_pinjaman }}" href="#"><i class="feather icon-file-text info"></i></a>
-                                        @if (empty($d->totalpembayaran))
-                                        <a class="ml-1 edit" no_pinjaman="{{ $d->no_pinjaman }}" href="#"><i class="feather icon-edit success"></i></a>
-                                        <form method="POST" class="deleteform" action="/pinjaman/{{Crypt::encrypt($d->no_pinjaman)}}/delete">
+                                        <a class="ml-1 edit" no_kasbon="{{ $d->no_kasbon }}" href="#"><i class="feather icon-edit success"></i></a>
+                                        <form method="POST" class="deleteform" action="/kasbon/{{Crypt::encrypt($d->no_kasbon)}}/delete">
                                             @csrf
                                             @method('DELETE')
                                             <a href="#" class="delete-confirm ml-1">
                                                 <i class="feather icon-trash danger"></i>
                                             </a>
                                         </form>
-                                        @endif
-
                                     </div>
                                 </td>
                             </tr>
@@ -158,7 +162,7 @@
 
                         </tbody>
                     </table>
-                    {{ $pinjaman->links('vendor.pagination.vuexy') }}
+                    {{ $kasbon->links('vendor.pagination.vuexy') }}
                 </div>
 
                 <!-- DataTable ends -->
@@ -168,108 +172,57 @@
     </div>
 </div>
 
-<div class="modal fade text-left" id="mdlajukanpinjaman" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+<div class="modal fade text-left" id="mdlajukankasbon" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel18">Ajukan Pinjaman</h4>
+                <h4 class="modal-title" id="myModalLabel18">Ajukan Kasbon</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div id="loadajukanpinjaman"></div>
+                <div id="loadajukankasbon"></div>
             </div>
         </div>
     </div>
 </div>
 
 
-<div class="modal fade text-left" id="mdlshowpinjaman" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="max-width:1200px">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel18">Data Pinjaman</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div id="showpinjaman"></div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade text-left" style="z-index: 1052 !important" id="mdlinputbayarpinjaman" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel18">Input Bayar Pinjaman</h4>
-                <button type="button" class="close tutupmdlinputbayarpinjaman" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div id="loadinputbayarpinjaman"></div>
-            </div>
-        </div>
-    </div>
-</div>
+
+
 @endsection
 @push('myscript')
 <script>
     $(function() {
 
-        function loadpinjaman(no_pinjaman) {
+        function loadkasbon(no_kasbon) {
             $.ajax({
                 type: 'POST'
-                , url: '/pinjaman/edit'
+                , url: '/kasbon/edit'
                 , data: {
                     _token: "{{ csrf_token() }}"
-                    , no_pinjaman: no_pinjaman
+                    , no_kasbon: no_kasbon
                 }
                 , cache: false
                 , success: function(respond) {
-                    $("#loadajukanpinjaman").html(respond);
+                    $("#loadajukankasbon").html(respond);
                 }
             });
         }
 
-        function showpinjaman(no_pinjaman) {
-            $.ajax({
-                type: 'POST'
-                , url: '/pinjaman/show'
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , no_pinjaman: no_pinjaman
-                }
-                , cache: false
-                , success: function(respond) {
-                    $("#showpinjaman").html(respond);
-                }
-            });
-        }
 
         $('.edit').click(function(e) {
-            var no_pinjaman = $(this).attr("no_pinjaman");
+            var no_kasbon = $(this).attr("no_kasbon");
             e.preventDefault();
-            loadpinjaman(no_pinjaman);
-            $('#mdlajukanpinjaman').modal({
+            loadkasbon(no_kasbon);
+            $('#mdlajukankasbon').modal({
                 backdrop: 'static'
                 , keyboard: false
             });
         });
 
 
-        $('.show').click(function(e) {
-            var no_pinjaman = $(this).attr("no_pinjaman");
-            e.preventDefault();
-            showpinjaman(no_pinjaman);
-            $('#mdlshowpinjaman').modal({
-                backdrop: 'static'
-                , keyboard: false
-            });
-        });
         $('.delete-confirm').click(function(event) {
             var form = $(this).closest("form");
             var name = $(this).data("name");
@@ -288,9 +241,6 @@
                 });
         });
 
-        $(".tutupmdlinputbayarpinjaman").click(function(e) {
-            $("#mdlinputbayarpinjaman").modal("toggle");
-        });
     });
 
 </script>

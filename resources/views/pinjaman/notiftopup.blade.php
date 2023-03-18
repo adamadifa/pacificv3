@@ -4,8 +4,8 @@
         <br>
         <table class="table">
             <tr>
-                <th>No. Pinjamna</th>
-                <td>{{ $cekpinjaman->no_pinjamna }}</td>
+                <th>No. Pinjaman</th>
+                <td>{{ $cekpinjaman->no_pinjaman }}</td>
             </tr>
             <tr>
                 <th>Tanggal</th>
