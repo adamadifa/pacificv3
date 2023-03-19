@@ -100,6 +100,12 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
+                                            <label for="" class="form-label mb-1">Kapasitas</label>
+                                            <x-inputtext label="Kapasitas" field="kapasitas" icon="feather icon-calendar" value="{{ $data->kapasitas }}" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
                                             <div class="form-group  @error('kode_cabang') error @enderror">
                                                 <select name="kode_cabang" id="kode_cabang" class="form-control">
                                                     <option value="">Cabang</option>
@@ -123,6 +129,7 @@
                                             </div>
                                         </div>
                                     </div>
+
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group">

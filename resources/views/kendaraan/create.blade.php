@@ -99,6 +99,11 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
+                                            <x-inputtext label="Kapasitas" field="kapasitas" icon="feather icon-file" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
                                             <div class="form-group  @error('kode_cabang') error @enderror">
                                                 <select name="kode_cabang" id="kode_cabang" class="form-control">
                                                     <option value="">Cabang</option>
