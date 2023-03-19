@@ -166,9 +166,29 @@
                             <td style="background-color: #0b6ea9; color:white">JUMLAH KEBERANGKATAN</td>
                             <td align="right"><?php echo $totalpengambilan; ?> x </td>
                         </tr>
+
+                        <tr style="font-size:14">
+                            <td style="background-color: #0b6ea9; color:white">KAPASITAS</td>
+                            <td align="right">{{ rupiah($kendaraan->kapasitas) }}</td>
+                        </tr>
                         <tr style="font-size:14">
                             <td style="background-color: #0b6ea9; color:white">RATA RATA</td>
-                            <td align="right"><?php if(!empty($totalpengambilan)){ echo desimal($grandtotalbarangkeluar / $totalpengambilan);} ?></td>
+                            <td align="right">
+                                <?php
+                                    if(!empty($totalpengambilan)){
+                                        $rataratapengambilan =  $grandtotalbarangkeluar / $totalpengambilan;
+                                        echo desimal($rataratapengambilan);
+                                    }else{
+                                        $rataratapengabmilan = 0;
+                                    }
+                                    if(!empty($kendaraan->kapasitas)){
+                                        $persentase = $rataratapengambilan / $kendaraan->kapasitas * 100;
+                                        echo "(".desimal($persentase)."%)";
+                                    }else{
+                                        $persentase = 0;
+                                    }
+                                ?>
+                            </td>
                         </tr>
                     </thead>
                 </table>
@@ -188,8 +208,27 @@
                             <td align="right"><?php echo $totalpengambilan; ?> x</td>
                         </tr>
                         <tr style="font-size:14">
+                            <td style="background-color: #a94211; color:white">KAPASITAS</td>
+                            <td align="right">{{ rupiah($kendaraan->kapasitas) }}</td>
+                        </tr>
+                        <tr style="font-size:14">
                             <td style="background-color: #a94211; color:white">RATA RATA</td>
-                            <td align="right"><?php if(!empty($totalpengambilan)) { echo desimal($totalpenjualan / $totalpengambilan);} ?></td>
+                            <td align="right">
+                                <?php
+                                if(!empty($totalpengambilan)){
+                                    $rataratapenjualan =  $totalpenjualan / $totalpengambilan;
+                                    echo desimal($rataratapenjualan);
+                                }else{
+                                    $rataratapenjualan = 0;
+                                }
+                                if(!empty($kendaraan->kapasitas)){
+                                    $persentase = $rataratapenjualan / $kendaraan->kapasitas * 100;
+                                    echo "(".desimal($persentase)."%)";
+                                }else{
+                                    $persentase = 0;
+                                }
+                            ?>
+                            </td>
                         </tr>
                     </thead>
                 </table>

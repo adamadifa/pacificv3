@@ -67,6 +67,7 @@
                                     <th>Pajak 1 Th</th>
                                     <th>Pajak 5 Th</th>
                                     <th>Cabang</th>
+                                    <th>Kapasitas</th>
                                     <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -84,6 +85,7 @@
                                     <td>{{ $d->jatuhtempo_pajak_satutahun != null ? date("d-m-Y",strtotime($d->jatuhtempo_pajak_satutahun)) : '' }}</td>
                                     <td>{{ $d->jatuhtempo_pajak_limatahun  != null ? date("d-m-Y",strtotime($d->jatuhtempo_pajak_limatahun)) : '' }}</td>
                                     <td>{{ strtoupper($d->kode_cabang) }}</td>
+                                    <td>{{ rupiah($d->kapasitas) }}</td>
                                     <td>
                                         @if ($d->status==1)
                                         <span class="badge bg-success">Aktif</span>

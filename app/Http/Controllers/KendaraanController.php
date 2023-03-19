@@ -78,7 +78,10 @@ class KendaraanController extends Controller
                 'jatuhtempo_pajak_satutahun' => $request->jatuhtempo_pajak_satutahun,
                 'jatuhtempo_pajak_limatahun' => $request->jatuhtempo_pajak_limatahun,
                 'jenis' => $request->jenis,
-                'kode_cabang' => $request->kode_cabang
+                'kode_cabang' => $request->kode_cabang,
+                'kapasitas' => $request->kapasitas,
+                'status' => 1,
+
             ]);
 
         if ($simpan) {
@@ -133,7 +136,8 @@ class KendaraanController extends Controller
                 'jatuhtempo_pajak_limatahun' => $request->jatuhtempo_pajak_limatahun,
                 'jenis' => $request->jenis,
                 'kode_cabang' => $request->kode_cabang,
-                'status' => $request->status
+                'status' => $request->status,
+                'kapasitas' => $request->kapasitas
             ]);
 
         if ($simpan) {
