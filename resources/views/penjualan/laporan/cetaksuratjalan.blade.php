@@ -265,7 +265,14 @@
             <tr style="font-weight:bold;">
                 <td style="height: 40px"></td>
                 <td></td>
-                <td>test</td>
+                <td>
+                    @if (!empty($faktur->signature))
+                    @php
+                    $path = Storage::url('signature/'.$faktur->signature);
+                    @endphp
+                    <img src="{{ url($path) }}" alt="" style="width:100px; height:100px">
+                    @endif
+                </td>
                 <td></td>
             </tr>
             <tr style="font-weight:bold; text-align:center">
@@ -289,6 +296,9 @@
             <tr style="font-weight:bold;">
                 <td rowspan="3"></td>
                 <td rowspan="3" style="width:20%; text-align:center">
+
+                </td>
+                <td rowspan="3">
                     @if (!empty($faktur->signature))
                     @php
                     $path = Storage::url('signature/'.$faktur->signature);
@@ -296,7 +306,6 @@
                     <img src="{{ url($path) }}" alt="" style="width:200px; height:100px">
                     @endif
                 </td>
-                <td rowspan="3"></td>
                 <td rowspan="3"></td>
 
             </tr>
