@@ -298,7 +298,7 @@
                 <td rowspan="3" style="width:20%; text-align:center">
 
                 </td>
-                <td rowspan="3">
+                <td rowspan="3" style="width:20%; text-align:center">
                     @if (!empty($faktur->signature))
                     @php
                     $path = Storage::url('signature/'.$faktur->signature);
