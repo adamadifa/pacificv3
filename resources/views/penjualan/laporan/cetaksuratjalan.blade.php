@@ -266,7 +266,8 @@
                 <td style="height: 40px"></td>
                 <td></td>
                 <td>
-
+                </td>
+                <td>
                     @if (!empty($faktur->signature))
                     @php
                     $path = Storage::url('signature/'.$faktur->signature);
@@ -274,7 +275,6 @@
                     <img src="{{ url($path) }}" alt="" style="width:100px; height:100px">
                     @endif
                 </td>
-                <td></td>
             </tr>
             <tr style="font-weight:bold; text-align:center">
                 <td>Penjualan</td>
