@@ -528,7 +528,7 @@
                 <td></td>
                 <td align="center">
                     @php
-                    $transvsregister = $d->jmltrans / $d->jmlpelanggan* 100;
+                    $transvsregister = $d->jmlpelanggan != null ? $d->jmltrans / $d->jmlpelanggan* 100 : 0;
                     @endphp
                     {{ desimal($transvsregister) }}%
                 </td>
