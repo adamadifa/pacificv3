@@ -85,7 +85,7 @@
                                     <td>{{ $d->jatuhtempo_pajak_satutahun != null ? date("d-m-Y",strtotime($d->jatuhtempo_pajak_satutahun)) : '' }}</td>
                                     <td>{{ $d->jatuhtempo_pajak_limatahun  != null ? date("d-m-Y",strtotime($d->jatuhtempo_pajak_limatahun)) : '' }}</td>
                                     <td>{{ strtoupper($d->kode_cabang) }}</td>
-                                    <td>{{ rupiah($d->kapasitas) }}</td>
+                                    <td><a href="#" class="kapasitas" no_polisi="{{ $d->no_polisi }}">{{ rupiah($d->kapasitas) }}</a></td>
                                     <td>
                                         @if ($d->status==1)
                                         <span class="badge bg-success">Aktif</span>
@@ -143,6 +143,40 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal fade text-left" id="mdlkapasitas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Kapasitas Kendaraan</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/kendaraan/updatekapasitas" method="POST" id="frmKapasitas">
+                    @csrf
+                    <input type="hidden" id="no_polisi_kapasitas" name="no_polisi">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="jmlkapasitas" id="jmlkapasitas" placeholder="Jumlah Kapasitas">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <button class="btn btn-primary w-100"><i class="feather icon-send mr-1"></i>Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @push('myscript')
 <script>
@@ -170,6 +204,32 @@
                 backdrop: 'static'
                 , keyboard: false
             });
+        });
+
+        $('.kapasitas').click(function(e) {
+            var no_polisi = $(this).attr("no_polisi");
+            $("#no_polisi_kapasitas").val(no_polisi);
+            e.preventDefault();
+            $('#mdlkapasitas').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+        });
+
+        $("#frmKapasitas").submit(function(e) {
+            var jmlkapasitas = $("#jmlkapasitas").val();
+            if (jmlkapasitas == "" || jmlkapasitas == 0) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Jumlah Kapasitas Tidak Boleh Kosong !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#jmlkapasitas").focus();
+                });
+
+                return false;
+            }
         });
         $('.delete-confirm').click(function(event) {
             var form = $(this).closest("form");

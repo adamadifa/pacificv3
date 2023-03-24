@@ -313,4 +313,21 @@ class KendaraanController extends Controller
 
         return view('kendaraan.laporan.cetak_rekapkendaraan', compact('historikendaraan', 'rekapkendaraan', 'dari', 'sampai', 'cabang', 'kendaraan'));
     }
+
+    public function updatekapasitas(Request $request)
+    {
+        $no_polisi = $request->no_polisi;
+        $kapasitas = $request->jmlkapasitas;
+
+        $data =  [
+            'kapasitas' => $kapasitas
+        ];
+
+        try {
+            DB::table('kendaraan')->where('no_polisi', $no_polisi)->update($data);
+            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);
+        }
+    }
 }

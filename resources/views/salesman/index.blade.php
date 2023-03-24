@@ -65,6 +65,7 @@
                                     <th>Cabang</th>
                                     <th>Status</th>
                                     <th>Kategori</th>
+                                    <th>Komisi</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -84,6 +85,13 @@
                                         @endif
                                     </td>
                                     <td>{{ $d->kategori_salesman }}</td>
+                                    <td>
+                                        @if ($d->status_komisi == 1)
+                                        <span class="badge bg-success">Aktif</span>
+                                        @else
+                                        <span class="badge bg-danger">Non Aktif</span>
+                                        @endif
+                                    </td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             @if (in_array($level,$salesman_edit))
