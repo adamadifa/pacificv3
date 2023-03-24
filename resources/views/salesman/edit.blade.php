@@ -147,6 +147,32 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
+                                            <div class="form-group  @error('status_komisi') error @enderror">
+                                                <select name="status_komisi" id="" class="form-control">
+                                                    <option value="">Status Komisi</option>
+                                                    <option @isset($data->status_komisi) @if (old('status_komisi'))
+                                                        {{ old('status_komisi') == '1' ? 'selected' : '' }} @else
+                                                        {{ $data->status_komisi == '1' ? 'selected' : '' }} @endif @else
+                                                        {{ old('status_komisi') == '1' ? 'selected' : '' }}
+                                                        @endisset value="1">AKTIF</option>
+                                                    <option @isset($data->status_komisi) @if (old('status_komisi'))
+                                                        {{ old('status_komisi') == '0' ? 'selected' : '' }} @else
+                                                        {{ $data->status_komisi == '0' ? 'selected' : '' }} @endif @else
+                                                        {{ old('status_komisi') == '0' ? 'selected' : '' }}
+                                                        @endisset value="0">NON AKTIF</option>
+                                                </select>
+                                                @error('status_komisi')
+                                                <div class="help-block">
+                                                    <ul role="alert">
+                                                        <li>{{ $message }}</li>
+                                                    </ul>
+                                                </div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
                                             <button type="submit" class="btn btn-primary mr-1 mb-1"><i class="fa fa-send mr-1"></i> Simpan</button>
                                             <a href="/salesman" class="btn btn-outline-warning mr-1 mb-1"><i class="fa fa-arrow-left mr-2"></i>Kembali</a>
                                         </div>

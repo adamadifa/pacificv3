@@ -117,6 +117,24 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
+                                            <div class="form-group  @error('status_komisi') error @enderror">
+                                                <select name="status_komisi" id="" class="form-control">
+                                                    <option value="">Status Komisi</option>
+                                                    <option @if (old('status_komisi')=='1' ) selected @endif value="1">AKTIF</option>
+                                                    <option @if (old('status_komisi')=='0' ) selected @endif value="0">NON AKTIF</option>
+                                                </select>
+                                                @error('status_komisi')
+                                                <div class="help-block">
+                                                    <ul role="alert">
+                                                        <li>{{ $message }}</li>
+                                                    </ul>
+                                                </div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
                                             <button type="submit" class="btn btn-primary mr-1 mb-1"><i class="fa fa-send mr-1"></i> Simpan</button>
                                             <a href="{{ url()->previous() }}" class="btn btn-outline-warning mr-1 mb-1"><i class="fa fa-arrow-left mr-2"></i>Kembali</a>
                                         </div>

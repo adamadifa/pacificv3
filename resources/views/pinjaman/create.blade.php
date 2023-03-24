@@ -80,6 +80,7 @@
                         {{ rupiah($gaji->gajitunjangan) }}
                     </td>
                 </tr>
+
                 <tr>
                     <th>Tenor Maksimal</th>
                     <td>
@@ -105,6 +106,13 @@
                         @endphp
                         {{ rupiah($angsuranmax) }}
                         <input type="hidden" name="angsuran_max" id="angsuran_max" value="{{ $angsuranmax }}">
+                    </td>
+                </tr>
+                <tr>
+                    <th>Plafon</th>
+                    <td style="text-align: right">
+                        <input type="hidden" name="plafon" id="plafon" value="{{ $angsuranmax * $tenormax }}">
+                        {{ rupiah($angsuranmax * $tenormax) }}
                     </td>
                 </tr>
                 <tr>

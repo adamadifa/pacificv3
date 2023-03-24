@@ -276,6 +276,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/kendaraan/{id}/edit', [KendaraanController::class, 'edit']);
     Route::post('/kendaraan/{id}/update', [KendaraanController::class, 'update']);
     Route::post('/kendaraan/show', [KendaraanController::class, 'show']);
+    Route::post('/kendaraan/updatekapasitas', [KendaraanController::class, 'updatekapasitas']);
 
     //Mutasi Kendaraan
 
