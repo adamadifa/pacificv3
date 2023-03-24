@@ -620,36 +620,7 @@ class LaporangudangcabangController extends Controller
 
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
 
-        if (!empty($id_karyawan)) {
-            $wheresalesman = "AND penjualan.id_karyawan = '$id_karyawan'";
-            $wheresalesdpb = "AND dpb.id_karyawan = '$id_karyawan'";
-            $wherenotsalesgarut = "";
-            $wheresalesgarut = "";
-        } else {
-            if ($dari < '2022-09-01') {
-                if ($kode_cabang == 'TSM') {
-                    $wherenotsalesgarut = "AND penjualan.id_karyawan NOT IN ($salesgarut)";
-                } else {
-                    $wherenotsalesgarut = "";
-                }
 
-                if ($kode_cabang == 'GRT') {
-                    $wheresalesgarut = "AND penjualan.id_karyawan IN ($salesgarut)";
-                } else {
-                    $wheresalesgarut = "";
-                }
-
-
-                if ($kode_cabang == 'GRT') {
-                    $kode_cabang = 'TSM';
-                }
-            } else {
-                $wherenotsalesgarut = "";
-                $wheresalesgarut = "";
-            }
-            $wheresalesdpb = "";
-            $wheresalesman = "";
-        }
 
 
 
@@ -657,6 +628,36 @@ class LaporangudangcabangController extends Controller
         $kode_cabang_2 = $kode_cabang;
 
         if ($jeniskonsolidasi == 1) {
+            if (!empty($id_karyawan)) {
+                $wheresalesman = "AND penjualan.id_karyawan = '$id_karyawan'";
+                $wheresalesdpb = "AND dpb.id_karyawan = '$id_karyawan'";
+                $wherenotsalesgarut = "";
+                $wheresalesgarut = "";
+            } else {
+                if ($dari < '2022-09-01') {
+                    if ($kode_cabang == 'TSM') {
+                        $wherenotsalesgarut = "AND penjualan.id_karyawan NOT IN ($salesgarut)";
+                    } else {
+                        $wherenotsalesgarut = "";
+                    }
+
+                    if ($kode_cabang == 'GRT') {
+                        $wheresalesgarut = "AND penjualan.id_karyawan IN ($salesgarut)";
+                    } else {
+                        $wheresalesgarut = "";
+                    }
+
+
+                    if ($kode_cabang == 'GRT') {
+                        $kode_cabang = 'TSM';
+                    }
+                } else {
+                    $wherenotsalesgarut = "";
+                    $wheresalesgarut = "";
+                }
+                $wheresalesdpb = "";
+                $wheresalesman = "";
+            }
             $jk = "PENJUALAN";
             $rekap = DB::table('master_barang')
                 ->selectRaw("master_barang.kode_produk,nama_barang,isipcsdus,satuan,isipack,isipcs,
@@ -694,6 +695,36 @@ class LaporangudangcabangController extends Controller
                 )
                 ->get();
         } elseif ($jeniskonsolidasi == 2) {
+            if (!empty($id_karyawan)) {
+                $wheresalesman = "AND pelanggan.id_sales = '$id_karyawan'";
+                $wheresalesdpb = "AND dpb.id_karyawan = '$id_karyawan'";
+                $wherenotsalesgarut = "";
+                $wheresalesgarut = "";
+            } else {
+                if ($dari < '2022-09-01') {
+                    if ($kode_cabang == 'TSM') {
+                        $wherenotsalesgarut = "AND pelanggan.id_sales NOT IN ($salesgarut)";
+                    } else {
+                        $wherenotsalesgarut = "";
+                    }
+
+                    if ($kode_cabang == 'GRT') {
+                        $wheresalesgarut = "AND pelanggan.id_sales IN ($salesgarut)";
+                    } else {
+                        $wheresalesgarut = "";
+                    }
+
+
+                    if ($kode_cabang == 'GRT') {
+                        $kode_cabang = 'TSM';
+                    }
+                } else {
+                    $wherenotsalesgarut = "";
+                    $wheresalesgarut = "";
+                }
+                $wheresalesdpb = "";
+                $wheresalesman = "";
+            }
             $jk = "RETUR";
             $rekap = DB::table('master_barang')
                 ->selectRaw("master_barang.kode_produk,nama_barang,isipcsdus,satuan,isipack,isipcs,
@@ -705,8 +736,26 @@ class LaporangudangcabangController extends Controller
                         INNER JOIN barang ON detailretur.kode_barang = barang.kode_barang
                         INNER JOIN retur ON detailretur.no_retur_penj = retur.no_retur_penj
                         INNER JOIN penjualan ON retur.no_fak_penj = penjualan.no_fak_penj
-                        INNER JOIN karyawan ON penjualan.id_karyawan = karyawan.id_karyawan
-                        WHERE tglretur BETWEEN '$dari' AND '$sampai' AND karyawan.kode_cabang ='$kode_cabang' " . $wherenotsalesgarut . $wheresalesgarut . $wheresalesman . "
+                        INNER JOIN pelanggan ON penjualan.kode_pelanggan = pelanggan.kode_pelanggan
+                        LEFT JOIN (
+                            SELECT pj.no_fak_penj,
+                                IF(salesbaru IS NULL,pj.id_karyawan,salesbaru) as salesbarunew, karyawan.nama_karyawan as nama_sales,
+                                IF(cabangbaru IS NULL,karyawan.kode_cabang,cabangbaru) as cabangbarunew
+                            FROM penjualan pj
+                            INNER JOIN karyawan ON pj.id_karyawan = karyawan.id_karyawan
+                            LEFT JOIN (
+                                SELECT
+                                    id_move,no_fak_penj,
+                                    move_faktur.id_karyawan as salesbaru,
+                                    karyawan.kode_cabang  as cabangbaru
+                                FROM move_faktur
+                                INNER JOIN karyawan ON move_faktur.id_karyawan = karyawan.id_karyawan
+                                WHERE id_move IN (SELECT max(id_move) FROM move_faktur WHERE tgl_move <= '$dari' GROUP BY no_fak_penj)
+                            ) move_fak ON (pj.no_fak_penj = move_fak.no_fak_penj)
+                        ) pjmove ON (penjualan.no_fak_penj = pjmove.no_fak_penj)
+
+
+                        WHERE tglretur BETWEEN '$dari' AND '$sampai' AND cabangbarunew ='$kode_cabang' " . $wherenotsalesgarut . $wheresalesgarut . $wheresalesman . "
                         GROUP BY kode_produk
                     ) detailpenjualan"),
                     function ($join) {
@@ -729,8 +778,39 @@ class LaporangudangcabangController extends Controller
                         $join->on('master_barang.kode_produk', '=', 'persediaan.kode_produk');
                     }
                 )
+                ->orderBy('master_barang.kode_produk')
                 ->get();
         } elseif ($jeniskonsolidasi == "3") {
+            if (!empty($id_karyawan)) {
+                $wheresalesman = "AND penjualan.id_karyawan = '$id_karyawan'";
+                $wheresalesdpb = "AND dpb.id_karyawan = '$id_karyawan'";
+                $wherenotsalesgarut = "";
+                $wheresalesgarut = "";
+            } else {
+                if ($dari < '2022-09-01') {
+                    if ($kode_cabang == 'TSM') {
+                        $wherenotsalesgarut = "AND penjualan.id_karyawan NOT IN ($salesgarut)";
+                    } else {
+                        $wherenotsalesgarut = "";
+                    }
+
+                    if ($kode_cabang == 'GRT') {
+                        $wheresalesgarut = "AND penjualan.id_karyawan IN ($salesgarut)";
+                    } else {
+                        $wheresalesgarut = "";
+                    }
+
+
+                    if ($kode_cabang == 'GRT') {
+                        $kode_cabang = 'TSM';
+                    }
+                } else {
+                    $wherenotsalesgarut = "";
+                    $wheresalesgarut = "";
+                }
+                $wheresalesdpb = "";
+                $wheresalesman = "";
+            }
             $jk = "PROMOSI";
             $rekap = DB::table('master_barang')
                 ->selectRaw("master_barang.kode_produk,nama_barang,isipcsdus,satuan,isipack,isipcs,
