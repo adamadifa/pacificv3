@@ -115,7 +115,7 @@
     $kebijakan = 100;
 
     @endphp
-    <table class="datatable3" style="width:170%">
+    <table class="datatable3" style="width:180%">
         <thead>
             <tr>
                 <th rowspan="3">NO</th>
@@ -128,6 +128,8 @@
                 <th colspan="3" style="background-color: #ff9b0d;">TARGET & REALISASI AS,AB</th>
                 <th colspan="3" style="background-color: #ff9b0d;">TARGET & REALISASI SC</th>
                 <th rowspan="2" colspan="2" style="background-color: #ff570d;">TOTAL POIN</th>
+                <th rowspan="3" style="background-color: #ff570d;">EFFECTIVE <br>CALL</th>
+                <th rowspan="3" style="background-color: #ff570d;">TRANSAKSI VS <br>REGISTER</th>
                 <th rowspan="2" colspan="3" style="background-color: #9e9895;">CASH IN</th>
                 <th rowspan="2" colspan="3" style="background-color: #e43a90;">LJT > 14 Hari</th>
                 <th rowspan="3" style="background-color: #ff570d;">TOTAL REWARD</th>
@@ -523,6 +525,13 @@
                 <td align="right" style="background-color: #ff9b0d;"><?php echo desimal($hasilpoinSC); ?></td>
                 <td align="right" style="background-color: #ff570d;"><?php echo round($totalpoin,2); ?></td>
                 <td align="right" style="background-color: #ff570d;"><?php echo desimal($rewardpoin); ?></td>
+                <td></td>
+                <td align="center">
+                    @php
+                    $transvsregister = $d->jmltrans / $d->jmlpelanggan* 100;
+                    @endphp
+                    {{ desimal($transvsregister) }}%
+                </td>
                 <td align="right" style="background-color: #9e9895;"><?php echo desimal($d->realisasi_cashin); ?></td>
                 <td align="center" style="background-color: #9e9895;"><?php echo $ratiocashin; ?>%</td>
 
@@ -729,6 +738,8 @@
                 <td align="right" style="background-color: #0ca0c9;"><?php echo desimal($totalhasilpoinSC); ?></td>
                 <td align="right" style="background-color: #0ca0c9;"><?php echo desimal($totalallpoin ); ?></td>
                 <td align="right" style="background-color: #0ca0c9;"><?php echo desimal($rewardpoinspv = $totalrewardpoin/$komisi_aktif); ?></td>
+                <td></td>
+                <td></td>
                 <td align="right" style="background-color: #0ca0c9;"><?php echo desimal($totalcashin); ?></td>
                 <td align="center" style="background-color: #0ca0c9;"></td>
                 <td align="right" style="background-color: #0ca0c9;"><?php echo desimal($rewardcashinspv= $totalrewardcashin/$komisi_aktif); ?></td>
@@ -738,8 +749,8 @@
                 <td align="right" style="background-color: #0ca0c9;"><?php echo desimal($totalrewardspv = $rewardpoinspv + $rewardcashinspv + $rewardljtspv); ?></td>
                 <td style="text-align: right">
                     @if (in_array($level,$inputpotongankomisi))
-                    <a href="#" class="inputpotongan" id_karyawan="KP{{ $cbg->kode_cabang }}" nama_karyawan="KEPALA PENJUALAN" style="color:red">
-                        {{ $potongankp != null && $potongankp->jumlah != null ? desimal($potongankp->jumlah) : 'Input Potongan' }}
+                    <a href="#" class="inputpotongan" id_karyawan="SPV{{ $cbg->kode_cabang }}" nama_karyawan="SUPERVISOR" style="color:red">
+                        {{ $potonganspv != null && $potonganspv->jumlah != null ? desimal($potonganspv->jumlah) : 'Input Potongan' }}
                     </a>
                     @else
                     &#128274;
@@ -748,23 +759,23 @@
                 <td style="text-align: right">
 
                     @php
-                    $potongankp = $potongankp != null ? $potongankp->jumlah : 0;
-                    $totalkomisikp = $totalrewardkp - $potongankp;
+                    $potonganspv = $potonganspv != null ? $potonganspv->jumlah : 0;
+                    $totalkomisispv = $totalrewardspv - $potonganspv;
                     @endphp
-                    {{ desimal($totalkomisikp) }}
+                    {{ desimal($totalkomisispv) }}
                 </td>
 
                 <td style="text-align: right">
                     @if (in_array($level,$inputpotongankomisi))
-                    <a href="#" class="inputkomisiakhir" id_karyawan="KP{{ $cbg->kode_cabang }}" nama_karyawan="KEPALA PENJUALAN" style="color:red">
-                        {{$komisiakhir !=null && $komisiakhir->jumlah != null ? desimal($komisiakhir->jumlah) : desimal($totalkomisikp) }}
+                    <a href="#" class="inputkomisiakhir" id_karyawan="SPV{{ $cbg->kode_cabang }}" nama_karyawan="SUPERVISOR" style="color:red">
+                        {{$komisiakhirspv !=null && $komisiakhirspv->jumlah != null ? desimal($komisiakhirspv->jumlah) : desimal($totalkomisispv) }}
                     </a>
                     @else
                     &#128274;
                     @endif
                 </td>
             </tr>
-            <?php } ?>
+            <?php }else{$totalrewardspv=0;} ?>
             <tr>
                 <td><?php echo $no; ?></td>
                 <td colspan="2">KEPALA PENJUALAN</td>
@@ -788,6 +799,8 @@
                 <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalhasilpoinSC); ?></td>
                 <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalallpoin ); ?></td>
                 <td align="right" style="background-color: #35ce35;"><?php echo desimal($rewardallpoin); ?></td>
+                <td></td>
+                <td></td>
                 <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalcashin); ?></td>
                 <td align="center" style="background-color: #35ce35;">0.05%</td>
                 <td align="right" style="background-color: #35ce35;"><?php echo desimal($rewardcashinkp); ?></td>
@@ -827,7 +840,7 @@
             $grandtotalreward = $grandtotalrewardsales + $totalrewardkp + $totalrewardspv;
             ?>
             <tr>
-                <td colspan="27" style="font-size:24px; font-weight:bold" align="center">TOTAL</td>
+                <td colspan="29" style="font-size:24px; font-weight:bold" align="center">TOTAL</td>
                 <td></td>
                 <td></td>
                 <td style="font-size:24px; font-weight:bold" align="right"><?php echo desimal($grandtotalreward); ?>

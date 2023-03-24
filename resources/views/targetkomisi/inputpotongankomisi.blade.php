@@ -3,11 +3,33 @@
         <table class="table table-bordered">
             <tr>
                 <th>ID Salesman</th>
-                <td>{{$karyawan != null ? $karyawan->id_karyawan : $id_karyawan }}</td>
+                <td>
+                    @if ($karyawan!=null)
+                    @php
+                    $id_karyawan = $karyawan->id_karyawan;
+                    @endphp
+                    @else
+                    @php
+                    $id_karyawan = $id_karyawan
+                    @endphp
+                    @endif
+                    {{ $id_karyawan }}
+                </td>
             </tr>
             <tr>
                 <td>Nama Salesman</td>
-                <td>{{$karyawan != null ? $karyawan->nama_karyawan : 'KEPALA PENJUALAN' }}</td>
+                <td>
+                    @if ($karyawan!=null)
+                    @php
+                    $nama_karyawan = $karyawan->nama_karyawan;
+                    @endphp
+                    @else
+                    @php
+                    $nama_karyawan = $kode == "SP" ? "SUPERVISOR" : "KEPALA PENJUALAN";
+                    @endphp
+                    @endif
+                    {{ $nama_karyawan }}
+                </td>
             </tr>
         </table>
     </div>

@@ -926,8 +926,34 @@ class TargetkomisiController extends Controller
             potongankomisi,
             komisifix,
             ket_potongan,
-            ket_komisifix
+            ket_komisifix,
+            jmlpelanggan,
+            jmltrans
         ');
+
+        $query->leftJoin(
+            DB::raw("(
+                SELECT id_sales, COUNT(kode_pelanggan) as jmlpelanggan
+                FROM pelanggan
+                WHERE status_pelanggan = '1' AND DATE(time_stamps) <= '$sampai'
+                GROUP BY id_sales
+            ) pelangganaktif"),
+            function ($join) {
+                $join->on('karyawan.id_karyawan', '=', 'pelangganaktif.id_sales');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+                SELECT id_karyawan, COUNT(DISTINCT(kode_pelanggan)) as jmltrans
+                FROM penjualan
+                WHERE tgltransaksi BETWEEN '$dari' AND '$sampai'
+                GROUP BY id_karyawan
+            ) pelanggantrans"),
+            function ($join) {
+                $join->on('karyawan.id_karyawan', '=', 'pelanggantrans.id_karyawan');
+            }
+        );
         $query->join(
             DB::raw("(
                 SELECT  id_karyawan,
@@ -1277,6 +1303,8 @@ class TargetkomisiController extends Controller
         $nmbulan  = $namabulan[$bulan];
 
         $kodekp = 'KP' . $cabang;
+        $kodespv = 'SPV' . $cabang;
+
         $potongankp = DB::table('komisi_potongan')->where('id_karyawan', $kodekp)
             ->where('bulan', $bulan)->where('tahun', $tahun)
             ->first();
@@ -1284,6 +1312,22 @@ class TargetkomisiController extends Controller
         $komisiakhir = DB::table('komisi_akhir')->where('id_karyawan', $kodekp)
             ->where('bulan', $bulan)->where('tahun', $tahun)
             ->first();
+
+
+        $supervisorcabang = ['BDG', 'TSM'];
+        if (in_array($cabang, $supervisorcabang)) {
+            $potonganspv = DB::table('komisi_potongan')->where('id_karyawan', $kodespv)
+                ->where('bulan', $bulan)->where('tahun', $tahun)
+                ->first();
+
+            $komisiakhirspv = DB::table('komisi_akhir')->where('id_karyawan', $kodespv)
+                ->where('bulan', $bulan)->where('tahun', $tahun)
+                ->first();
+        } else {
+            $potonganspv = null;
+            $komisiakhirspv = null;
+        }
+
         if (isset($_POST['export'])) {
             $time = date("H:i:s");
             // Fungsi header dengan mengirimkan raw data excel
@@ -1292,8 +1336,8 @@ class TargetkomisiController extends Controller
             header("Content-Disposition: attachment; filename=Laporan Komisi $time.xls");
         }
 
-        $supervisorcabang = ['BDG', 'TSM'];
-        return view('targetkomisi.laporan.cetak_komisi_maret2023', compact('komisi', 'cbg', 'nmbulan', 'tahun', 'produk', 'bulan', 'cabang', 'potongankp', 'komisiakhir', 'supervisorcabang'));
+
+        return view('targetkomisi.laporan.cetak_komisi_maret2023', compact('komisi', 'cbg', 'nmbulan', 'tahun', 'produk', 'bulan', 'cabang', 'potongankp', 'komisiakhir', 'supervisorcabang', 'potonganspv', 'komisiakhirspv'));
     }
 
     public function cetaklaporankomisi(Request $request)
@@ -2517,17 +2561,17 @@ class TargetkomisiController extends Controller
     public function inputpotongankomisi(Request $request)
     {
         $id_karyawan = $request->id_karyawan;
+        $kode = substr($id_karyawan, 0, 2);
         $karyawan = DB::table('karyawan')->where('id_karyawan', $id_karyawan)->first();
         $bulan = $request->bulan;
         $tahun = $request->tahun;
         $cek = DB::table('komisi_potongan')->where('id_karyawan', $id_karyawan)->where('bulan', $bulan)->where('tahun', $tahun)->first();
-        return view('targetkomisi.inputpotongankomisi', compact('id_karyawan', 'karyawan', 'bulan', 'tahun', 'cek'));
+        return view('targetkomisi.inputpotongankomisi', compact('id_karyawan', 'karyawan', 'bulan', 'tahun', 'cek', 'kode', 'id_karyawan'));
     }
 
 
     public function inputkomisiakhir(Request $request)
     {
-        $id_karyawan = $request->id_karyawan;
         $id_karyawan = $request->id_karyawan;
         $karyawan = DB::table('karyawan')->where('id_karyawan', $id_karyawan)->first();
         $bulan = $request->bulan;
@@ -3170,6 +3214,8 @@ class TargetkomisiController extends Controller
             ->where('tahun', $tahun)
             ->whereRaw('LEFT(id_karyawan,2)="KP"')
             ->get();
+
+
         return view('targetkomisi.laporan.cetak_rekap', compact('komisi', 'nmbulan', 'tahun', 'bulan', 'cabang', 'potongankomisikp', 'komisiakhirkp'));
     }
 }
