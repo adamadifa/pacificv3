@@ -71,6 +71,7 @@ use App\Http\Controllers\PemasukangudanglogistikController;
 use App\Http\Controllers\PemasukanmaintenanceController;
 use App\Http\Controllers\PemasukanproduksiController;
 use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\PembayarankasbonController;
 use App\Http\Controllers\PembayaranpinjamanController;
 use App\Http\Controllers\PembelianController;
 use App\Http\Controllers\PengeluarangudangbahanController;
@@ -1529,4 +1530,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('kasbon/store', [KasbonController::class, 'store']);
     Route::delete('kasbon/{no_kasbon}/delete', [KasbonController::class, 'delete']);
     Route::post('kasbon/edit', [KasbonController::class, 'edit']);
+
+    //Pembayaran Kasbon
+    Route::get('/pembayarankasbon', [PembayarankasbonController::class, 'index']);
+    Route::post('pembayarankasbon/generatebayarpinjaman', [PembayarankasbonController::class, 'generatebayarpinjaman']);
 });
