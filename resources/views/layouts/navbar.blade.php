@@ -1112,7 +1112,7 @@
                             <i class="feather icon-file"></i>
                             <span class="menu-item" data-i18n="Second Level">Laporan</span>
                         </a>
-                        @elseif ($level =="kepala admin" || $level=="kepala penjualan")
+                        @elseif ($level =="kepala admin" || $level=="kepala penjualan" || $level=="rsm" || $level=="manager marketing")
                         <a href="/laporanaccounting/costratio">
                             <i class="feather icon-file"></i>
                             <span class="menu-item" data-i18n="Second Level">Laporan</span>

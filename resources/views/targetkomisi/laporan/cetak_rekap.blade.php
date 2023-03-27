@@ -111,6 +111,21 @@
     ${"ka$d->id_karyawan"} = $d->jumlah;
     @endphp
     @endforeach
+
+
+    @foreach ($potongankomisispv as $d)
+    @php
+    ${"potongan$d->id_karyawan"} = $d->jumlah;
+    @endphp
+    @endforeach
+
+    @foreach ($komisiakhirspv as $d)
+    @php
+    ${"ka$d->id_karyawan"} = $d->jumlah;
+    @endphp
+    @endforeach
+
+
     <b style="font-size:14px;">
         REKAP KOMISI <br>
         {{ $nmbulan }} {{ $tahun }}
@@ -161,63 +176,88 @@
                     $totalkomisiakhirsales = 0;
 
                     $kebijakan = 100;
+                    $status_komisi = 0;
+                    $totalrewardpoin=0;
+                    $totalrewardcashin =0;
+                    $totalrewardljt = 0;
                     @endphp
                     @foreach ($komisi as $key => $d)
                     <?php
-            $kode_cabang = @$komisi[$key + 1]->kode_cabang;
-            $totalpoin = $d->poinBBDP + $d->poinSP8 + $d->poinSPSP500 + $d->poinAR + $d->poinASAB + $d->poinSC;
-
-            $subtotaltargetBBDP += $d->target_BB_DP;
-            $subtotaltargetDS += $d->target_DS;
-            $subtotaltargetSP += $d->target_SP;
-            $subtotaltargetAR += $d->target_AR;
-            $subtotaltargetASAB += $d->target_AB_AS_CG5;
-            $subtotaltargetSC += $d->target_SC;
 
 
-            $subtotalrealisasiBBDP += $d->BBDP;
-            $subtotalrealisasiDS += $d->SP8;
-            $subtotalrealisasiSP += $d->SPSP500;
-            $subtotalrealisasiAR += $d->AR;
-            $subtotalrealisasiASAB += $d->ASAB;
-            $subtotalrealisasiSC += $d->SC;
+                    if($d->status_komisi==1){
+                        $status_komisi += 1;
+                    }
+                    $kode_cabang = @$komisi[$key + 1]->kode_cabang;
 
-            $subtotalrealisasicashin += $d->realisasi_cashin;
-            $subtotalsisapiutang += $d->sisapiutang;
+                    $totalpoin = $d->poinBBDP + $d->poinSP8 + $d->poinSPSP500 + $d->poinAR + $d->poinASAB + $d->poinSC;
 
-            if (round($totalpoin,2) < 75) {
-                $rewardpoin = 0;
-            } else if (round($totalpoin,2) >= 75 and round($totalpoin,2) <= 75) {
-                $rewardpoin = 750000;
-            } else if (round($totalpoin,2) > 75 and round($totalpoin,2) <= 80) {
-                $rewardpoin = 1500000;
-            } else if (round($totalpoin,2) > 80 and round($totalpoin,2) <= 85) {
-                $rewardpoin = 2250000;
-            } else if (round($totalpoin,2) > 85 and round($totalpoin,2) <= 90) {
-                $rewardpoin = 3000000;
-            } else if (round($totalpoin,2) > 90 and round($totalpoin,2) <= 95) {
-                $rewardpoin = 3750000;
-            } else if (round($totalpoin,2) > 95 and round($totalpoin,2) <= 100) {
-                $rewardpoin = 4500000;
-            } else {
-                $rewardpoin = 0;
-            }
+                    $subtotaltargetBBDP += $d->target_BB_DP;
+                    $subtotaltargetDS += $d->target_DS;
+                    $subtotaltargetSP += $d->target_SP;
+                    $subtotaltargetAR += $d->target_AR;
+                    $subtotaltargetASAB += $d->target_AB_AS_CG5;
+                    $subtotaltargetSC += $d->target_SC;
 
-            if($d->kode_cabang == "BGR"){
-                if ($d->kategori_salesman == "RETAIL") {
-                    $ratiocashin = 0.30;
+
+                    $subtotalrealisasiBBDP += $d->BBDP;
+                    $subtotalrealisasiDS += $d->SP8;
+                    $subtotalrealisasiSP += $d->SPSP500;
+                    $subtotalrealisasiAR += $d->AR;
+                    $subtotalrealisasiASAB += $d->ASAB;
+                    $subtotalrealisasiSC += $d->SC;
+
+                    $subtotalrealisasicashin += $d->realisasi_cashin;
+                    $subtotalsisapiutang += $d->sisapiutang;
+
+            if($d->status_komisi == 1){
+                if (round($totalpoin,2) < 75) {
+                    $rewardpoin = 0;
+                } else if (round($totalpoin,2) >= 75 and round($totalpoin,2) <= 75) {
+                    $rewardpoin = 750000;
+                } else if (round($totalpoin,2) > 75 and round($totalpoin,2) <= 80) {
+                    $rewardpoin = 1500000;
+                } else if (round($totalpoin,2) > 80 and round($totalpoin,2) <= 85) {
+                    $rewardpoin = 2250000;
+                } else if (round($totalpoin,2) > 85 and round($totalpoin,2) <= 90) {
+                    $rewardpoin = 3000000;
+                } else if (round($totalpoin,2) > 90 and round($totalpoin,2) <= 95) {
+                    $rewardpoin = 3750000;
+                } else if (round($totalpoin,2) > 95 and round($totalpoin,2) <= 100) {
+                    $rewardpoin = 4500000;
                 } else {
-                    $ratiocashin = 0.10;
+                    $rewardpoin = 0;
                 }
             }else{
-                if ($d->kategori_salesman == "CANVASER" || $d->kategori_salesman == "RETAIL") {
-                    $ratiocashin = 0.30;
-                } else {
-                    $ratiocashin = 0.10;
-                }
+                $rewardpoin = 0;
             }
 
-            $rewardcashin = $d->realisasi_cashin * ($ratiocashin / 100);
+            // if($d->kode_cabang == "BGR"){
+            //     if ($d->kategori_salesman == "RETAIL") {
+            //         $ratiocashin = 0.30;
+            //     } else {
+            //         $ratiocashin = 0.10;
+            //     }
+            // }else{
+            //     if ($d->kategori_salesman == "CANVASER" || $d->kategori_salesman == "RETAIL") {
+            //         $ratiocashin = 0.30;
+            //     } else {
+            //         $ratiocashin = 0.10;
+            //     }
+            // }
+
+            if($d->realisasi_cashin < 250000000){
+                $ratiocashin = 0.30;
+            }else{
+                $ratiocashin = 0.10;
+            }
+
+
+            if($d->status_komisi == 1){
+                $rewardcashin = $d->realisasi_cashin * ($ratiocashin / 100);
+            }else{
+                $rewardcashin = 0;
+            }
 
 
             $ratioljt = !empty($d->realisasi_cashin)  ? ($d->sisapiutang / $d->realisasi_cashin * 100) * ($kebijakan / 100) : 0;
@@ -226,32 +266,37 @@
             } else {
                 $ratioljt = 0;
             }
-
-            if ($ratioljt >= 0 and $ratioljt <= 0.50) {
-                $rewardljt = 1250000;
-            } else  if ($ratioljt > 0.50 and $ratioljt <= 1) {
-                $rewardljt = 1125000;
-            } else  if ($ratioljt > 1 and $ratioljt <= 1.50) {
-                $rewardljt = 1000000;
-            } else  if ($ratioljt > 1.50 and $ratioljt <= 2) {
-                $rewardljt = 875000;
-            } else  if ($ratioljt > 2 and $ratioljt <= 2.50) {
-                $rewardljt = 750000;
-            } else  if ($ratioljt > 2.50 and $ratioljt <= 3) {
-                $rewardljt = 625000;
-            } else  if ($ratioljt > 3 and $ratioljt <= 3.50) {
-                $rewardljt = 500000;
-            } else  if ($ratioljt > 3.50 and $ratioljt <= 4) {
-                $rewardljt = 375000;
-            } else  if ($ratioljt > 4 and $ratioljt <= 4.50) {
-                $rewardljt = 250000;
-            } else  if ($ratioljt > 4.50 and $ratioljt <= 5) {
-                $rewardljt = 125000;
-            } else {
-                $rewardljt = 0;
+            if($d->status_komisi == 1){
+                if ($ratioljt >= 0 and $ratioljt <= 0.50) {
+                    $rewardljt = 1250000;
+                } else  if ($ratioljt > 0.50 and $ratioljt <= 1) {
+                    $rewardljt = 1125000;
+                } else  if ($ratioljt > 1 and $ratioljt <= 1.50) {
+                    $rewardljt = 1000000;
+                } else  if ($ratioljt > 1.50 and $ratioljt <= 2) {
+                    $rewardljt = 875000;
+                } else  if ($ratioljt > 2 and $ratioljt <= 2.50) {
+                    $rewardljt = 750000;
+                } else  if ($ratioljt > 2.50 and $ratioljt <= 3) {
+                    $rewardljt = 625000;
+                } else  if ($ratioljt > 3 and $ratioljt <= 3.50) {
+                    $rewardljt = 500000;
+                } else  if ($ratioljt > 3.50 and $ratioljt <= 4) {
+                    $rewardljt = 375000;
+                } else  if ($ratioljt > 4 and $ratioljt <= 4.50) {
+                    $rewardljt = 250000;
+                } else  if ($ratioljt > 4.50 and $ratioljt <= 5) {
+                    $rewardljt = 125000;
+                } else {
+                    $rewardljt = 0;
+                }
+            }else{
+                $rewardljt=0;
             }
 
-
+            $totalrewardpoin += $rewardpoin;
+            $totalrewardcashin += $rewardcashin;
+            $totalrewardljt += $rewardljt;
             $totalreward = $rewardpoin + $rewardcashin + $rewardljt;
             $komisiakhirsales = !empty($d->komisifix) ?  $d->komisifix : $totalreward - $d->potongankomisi;
             $totalrewardsales += $totalreward;
@@ -267,6 +312,28 @@
                     </tr>
                     <?php
                 if($kode_cabang != $d->kode_cabang){
+                    if(in_array($d->kode_cabang,$supervisorcabang)){
+                        $rewardpoinspv = $totalrewardpoin /$status_komisi;
+                        $rewardcashinspv = $totalrewardcashin / $status_komisi;
+                        $rewardljtspv = $totalrewardljt / $status_komisi;
+                        $totalrewardspv = $rewardpoinspv + $rewardcashinspv + $rewardljtspv;
+
+
+                        $kaSPV = isset(${"kaSPV$d->kode_cabang"}) ? ${"kaSPV$d->kode_cabang"} : 0;
+                        $potonganSPV = isset(${"potonganSPV$d->kode_cabang"}) ? ${"potonganSPV$d->kode_cabang"} : 0;
+                        $komisiakhir_SPV = !empty($kaSPV) ? $kaSPV : $totalrewardspv - $potonganSPV;
+                    ?>
+                    <tr style="background-color:rgb(0, 82, 145); color:white">
+                        <td colspan="3">SPV {{ $d->kode_cabang }}</td>
+                        <td style="text-align: right">{{ desimal($totalrewardspv) }}</td>
+                        <td style="text-align: right">{{ desimal($komisiakhir_SPV) }}</td>
+
+                    </tr>
+                    <?php
+                    }else{
+                        $totalrewardspv = 0;
+                        $komisiakhir_SPV = 0;
+                    }
                     $ratioBBDP_KP = !empty($subtotaltargetBBDP) ?  $subtotalrealisasiBBDP / $subtotaltargetBBDP : 0;
                     $poinBBDP_KP = $ratioBBDP_KP > 1 ? $poinBBDP  : $ratioBBDP_KP * $poinBBDP;
 
@@ -337,8 +404,8 @@
                     $potonganKP = isset(${"potonganKP$d->kode_cabang"}) ? ${"potonganKP$d->kode_cabang"} : 0;
                     $komisiakhir_KP = !empty($kaKP) ? $kaKP : $totalreward_KP - $potonganKP;
 
-                    $totalrewardcabang = $totalrewardsales + $totalreward_KP ;
-                    $totalkacabang = $totalkomisiakhirsales + $komisiakhir_KP;
+                    $totalrewardcabang = $totalrewardsales + $totalrewardspv + $totalreward_KP ;
+                    $totalkacabang = $totalkomisiakhirsales + + $komisiakhir_SPV + $komisiakhir_KP;
                     ${"total$d->kode_cabang"} = $totalrewardcabang;
                     ${"totalcashin$d->kode_cabang"} = $subtotalrealisasicashin;
                     ${"totalka$d->kode_cabang"} = $totalkacabang;
@@ -375,6 +442,10 @@
 
                 $totalrewardsales = 0;
                 $totalkomisiakhirsales = 0;
+
+                $totalrewardpoin = 0;
+                $totalrewardcashin = 0;
+                $totalrewardljt = 0;
             } ?>
                     @endforeach
                 </tbody>
@@ -395,15 +466,18 @@
                 <tbody>
                     @foreach ($cabang as $d)
                     @php
-                    $ratio = ROUND((${"total$d->kode_cabang"} / ${"totalcashin$d->kode_cabang"}) * 100,2);
-                    $ratioakhir = ROUND((${"totalka$d->kode_cabang"} / ${"totalcashin$d->kode_cabang"}) * 100,2);
+                    $totalcabang = isset(${"total$d->kode_cabang"}) ? ${"total$d->kode_cabang"} : 0;
+                    $totalcashin = isset( ${"totalcashin$d->kode_cabang"}) ? ${"totalcashin$d->kode_cabang"} : 0;
+                    $totalka = isset(${"totalka$d->kode_cabang"}) ? ${"totalka$d->kode_cabang"} : 0;
+                    $ratio = $totalcashin!=0 ? ROUND(($totalcabang / $totalcashin) * 100,2) : 0;
+                    $ratioakhir = $totalcashin != 0 ? ROUND(($totalka / $totalcashin ) * 100,2) : 0;
                     @endphp
                     <tr>
                         <td>{{ $d->nama_cabang }}</td>
-                        <td style="text-align:right">{{ desimal(${"totalcashin$d->kode_cabang"}) }}</td>
-                        <td style="text-align:right">{{ desimal(${"total$d->kode_cabang"}) }}</td>
+                        <td style="text-align:right">{{ desimal($totalcashin) }}</td>
+                        <td style="text-align:right">{{ desimal($totalcabang) }}</td>
                         <td style="text-align: center">{{ $ratio }}%</td>
-                        <td style="text-align:right">{{ desimal(${"totalka$d->kode_cabang"}) }}</td>
+                        <td style="text-align:right">{{ desimal($totalka) }}</td>
                         <td style="text-align: center">{{ $ratioakhir }}%</td>
                     </tr>
                     @endforeach

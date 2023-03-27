@@ -389,24 +389,26 @@
 
 
                 $totalpoin = $hasilpoinBBDP + $hasilpoinDS + $hasilpoinAR + $hasilpoinSP + $hasilpoinAB_AS_CG5 + $hasilpoinSC;
-                if($cbg->kode_cabang == "BGR"){
-                    if ($d->kategori_salesman == "RETAIL") {
-                        $ratiocashin = 0.30;
-                    } else {
-                        $ratiocashin = 0.10;
-                    }
-                }else{
-                    // if ($d->kategori_salesman == "CANVASER" || $d->kategori_salesman == "RETAIL") {
-                    //     $ratiocashin = 0.30;
-                    // } else {
-                    //     $ratiocashin = 0.10;
-                    // }
+                // if($cbg->kode_cabang == "BGR"){
+                //     if ($d->kategori_salesman == "RETAIL") {
+                //         $ratiocashin = 0.30;
+                //     } else {
+                //         $ratiocashin = 0.10;
+                //     }
+                // }else{
+                //     // if ($d->kategori_salesman == "CANVASER" || $d->kategori_salesman == "RETAIL") {
+                //     //     $ratiocashin = 0.30;
+                //     // } else {
+                //     //     $ratiocashin = 0.10;
+                //     // }
 
-                    if($d->realisasi_cashin < 250000000){
-                        $ratiocashin = 0.30;
-                    }else{
-                        $ratiocashin = 0.10;
-                    }
+
+                // }
+
+                if($d->realisasi_cashin < 250000000){
+                    $ratiocashin = 0.30;
+                }else{
+                    $ratiocashin = 0.10;
                 }
 
                 if($d->status_komisi == 1){

@@ -1292,7 +1292,7 @@ class TargetkomisiController extends Controller
             }
         );
 
-        if (Auth::user()->id == 27) {
+        if (Auth::user()->id == 27 || $cabang == "BDG" && Auth::user()->kode_cabang == "PCF") {
             $query->whereIn('kode_cabang', ['BDG', 'PWK']);
         } else {
             $query->where('kode_cabang', $cabang);
@@ -1358,7 +1358,7 @@ class TargetkomisiController extends Controller
         }
 
 
-        if ($dari >= '2023-3-01') {
+        if ($dari >= '2023-2-01') {
             return $this->cetakkomisimaret2023($cabang, $bulan, $tahun, $aturankomisi, $dari, $hariini, $sampai);
         }
         $lastmonth = date('Y-m-d', strtotime(date($dari) . '- 1 month'));
@@ -2888,9 +2888,9 @@ class TargetkomisiController extends Controller
         $query->selectRaw('
             karyawan.id_karyawan,
             nama_karyawan,
-            karyawan.kode_cabang,
+            sub_cabang as kode_cabang,
             kategori_salesman,
-
+            status_komisi,
             target_BB_DP,
             BB + DEP as BBDP,
             IF(IF(target_BB_DP = 0,0,(IFNULL(BB,0) + IFNULL(DEP,0)) / target_BB_DP ) > 1,40,IF(target_BB_DP = 0,0,(IFNULL(BB,0) + IFNULL(DEP,0)) / target_BB_DP ) * 40) as poinBBDP,
@@ -2920,6 +2920,7 @@ class TargetkomisiController extends Controller
             potongankomisi,
             komisifix
         ');
+        $query->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang');
         $query->join(
             DB::raw("(
                     SELECT  id_karyawan,
@@ -3197,8 +3198,11 @@ class TargetkomisiController extends Controller
         );
 
         $query->where('nama_karyawan', '!=', '');
-        $query->orderByRaw('kode_cabang,karyawan.id_karyawan');
+        $query->orderByRaw('sub_cabang,karyawan.id_karyawan');
         $komisi = $query->get();
+
+
+
         $namabulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         $nmbulan  = $namabulan[$bulan];
         $cabang = Cabang::orderBy('kode_cabang')->get();
@@ -3215,7 +3219,22 @@ class TargetkomisiController extends Controller
             ->whereRaw('LEFT(id_karyawan,2)="KP"')
             ->get();
 
+        $supervisorcabang = ['BDG', 'TSM'];
 
-        return view('targetkomisi.laporan.cetak_rekap', compact('komisi', 'nmbulan', 'tahun', 'bulan', 'cabang', 'potongankomisikp', 'komisiakhirkp'));
+        $potongankomisispv = DB::table('komisi_potongan')
+            ->where('bulan', $bulan)
+            ->where('tahun', $tahun)
+            ->whereRaw('LEFT(id_karyawan,2)="SP"')
+            ->get();
+
+        $komisiakhirspv = DB::table('komisi_akhir')
+            ->where('bulan', $bulan)
+            ->where('tahun', $tahun)
+            ->whereRaw('LEFT(id_karyawan,2)="SP"')
+            ->get();
+
+
+
+        return view('targetkomisi.laporan.cetak_rekap', compact('komisi', 'nmbulan', 'tahun', 'bulan', 'cabang', 'potongankomisikp', 'komisiakhirkp', 'supervisorcabang', 'potongankomisispv', 'komisiakhirspv'));
     }
 }
