@@ -7906,7 +7906,7 @@ class PenjualanController extends Controller
 
 
         $historibayar = DB::table('historibayar')
-            ->selectRaw('historibayar.no_fak_penj,nama_pelanggan,SUM(bayar) as totalbayar,IFNULL(totalgiro,0) as totalgiro,IFNULL(totaltransfer,0) as totaltransfer')
+            ->selectRaw('historibayar.no_fak_penj,nama_pelanggan,IFNULL(SUM(bayar),0) as totalbayar,IFNULL(totalgiro,0) as totalgiro,IFNULL(totaltransfer,0) as totaltransfer')
             ->join('penjualan', 'historibayar.no_fak_penj', '=', 'penjualan.no_fak_penj')
             ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
             ->leftJoin(
