@@ -271,7 +271,7 @@
                     <th>{{ desimal($totalSP500) }}</th>
                     <th>{{ desimal($totaltunai) }}</th>
                     <th>{{ desimal($totalkredit) }}</th>
-                    <th>{{ rupiah($totaltagihan1 + $totaltagihan2) }}</th>
+                    <th>{{ rupiah($totaltagihan2) }}</th>
                 </tr>
                 <tr>
                     <th colspan="2">BS</th>
