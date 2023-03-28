@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kasbonpotongangaji;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
@@ -99,6 +100,35 @@ class PembayarankasbonController extends Controller
             dd($e);
             DB::rollBack();
             return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);
+        }
+    }
+
+
+    public function show(Request $request)
+    {
+        $kode_potongan = $request->kode_potongan;
+        $historibayar = DB::table('kasbon_historibayar')
+            ->select('kasbon_historibayar.no_kasbon', 'kasbon.nik', 'nama_karyawan', 'jumlah')
+            ->join('kasbon', 'kasbon_historibayar.no_kasbon', '=', 'kasbon.no_kasbon')
+            ->join('master_karyawan', 'kasbon.nik', '=', 'master_karyawan.nik')
+            ->where('kode_potongan', $kode_potongan)
+            ->orderBy('no_kasbon')
+            ->get();
+
+        return view('pembayarankasbon.show', compact('historibayar'));
+    }
+
+    public function deletegenerate($kode_potongan)
+    {
+        $kode_potongan = Crypt::decrypt($kode_potongan);
+        DB::beginTransaction();
+        try {
+            DB::table('kasbon_potongangaji')->where('kode_potongan', $kode_potongan)->delete();
+            DB::commit();
+            return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
         }
     }
 }

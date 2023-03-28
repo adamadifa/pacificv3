@@ -7851,7 +7851,7 @@ class PenjualanController extends Controller
                 SUM(bayar) AS totalbayar
             FROM
                 historibayar
-            WHERE tglbayar = '$tanggal'
+            WHERE tglbayar = '$tanggal' AND jenisbayar != 'tunai'
             GROUP BY
                 no_fak_penj
             ) hb"),
