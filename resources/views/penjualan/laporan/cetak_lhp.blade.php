@@ -216,6 +216,9 @@
                 </tr>
                 @endforeach
                 @foreach ($giro as $d)
+                @php
+                $totalgiro += $d->totalgiro;
+                @endphp
                 <tr>
                     <td>{{ ucwords(strtolower($d->nama_pelanggan)) }}</td>
                     <td>{{ $d->no_fak_penj }}</td>
@@ -238,6 +241,9 @@
                 @endforeach
 
                 @foreach ($transfer as $d)
+                @php
+                $totaltransfer += $d->totaltransfer;
+                @endphp
                 <tr>
                     <td>{{ ucwords(strtolower($d->nama_pelanggan)) }}</td>
                     <td>{{ $d->no_fak_penj }}</td>
@@ -254,7 +260,7 @@
                     <td></td>
                     <td></td>
                     <td style="text-align:right">
-
+                        <?php if (!empty($d->totaltransfer)) { echo rupiah($d->totaltransfer);} ?>
                     </td>
                 </tr>
                 @endforeach
@@ -272,7 +278,7 @@
                     <th>{{ desimal($totalSP500) }}</th>
                     <th>{{ desimal($totaltunai) }}</th>
                     <th>{{ desimal($totalkredit) }}</th>
-                    <th>{{ rupiah($totaltagihan1 + $totaltagihan2) }}</th>
+                    <th>{{ rupiah($totaltagihan1 + $totaltagihan2 + $totaltransfer + $totalgiro) }}</th>
                 </tr>
                 <tr>
                     <th colspan="2">BS</th>
