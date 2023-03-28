@@ -127,8 +127,8 @@
                 $totalkredit = 0;
                 $totaltagihan1 = 0;
                 $totaltagihan2 = 0;
-                $totaltagihan3 = 0;
-                $totaltagihan4 =0;
+                $totaltransfer = 0;
+                $totalgiro =0;
                 @endphp
                 @foreach ($penjualan as $d)
                 @php
