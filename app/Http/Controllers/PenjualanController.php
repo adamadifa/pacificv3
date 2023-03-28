@@ -7941,6 +7941,8 @@ class PenjualanController extends Controller
                 }
             )
             ->where('tglbayar', $tanggal)
+            ->whereNull('id_transfer')
+            ->whereNull('id_giro')
             ->where('historibayar.id_karyawan', $id_karyawan)
             ->whereNotIn('historibayar.no_fak_penj', $no_fak_penj)
             ->orderBy('historibayar.no_fak_penj')
