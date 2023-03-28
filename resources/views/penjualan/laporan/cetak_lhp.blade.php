@@ -192,7 +192,8 @@
                 @endforeach
                 @foreach ($historibayar as $d)
                 @php
-                $tagihan2 += ($d->totalbayar + $d->totalgiro + $d->totaltransfer);
+                $tagihan2 = ($d->totalbayar + $d->totalgiro + $d->totaltransfer);
+                $totaltagihan2 +=$tagihan2;
                 @endphp
                 <tr>
                     <td>{{ ucwords(strtolower($d->nama_pelanggan)) }}</td>
@@ -253,7 +254,7 @@
                     <td></td>
                     <td></td>
                     <td style="text-align:right">
-                        <?php if (!empty($d->totaltransfer)) { echo rupiah($d->totaltransfer);} ?>
+
                     </td>
                 </tr>
                 @endforeach
