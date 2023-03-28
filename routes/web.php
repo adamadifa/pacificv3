@@ -1534,4 +1534,6 @@ Route::middleware(['auth'])->group(function () {
     //Pembayaran Kasbon
     Route::get('/pembayarankasbon', [PembayarankasbonController::class, 'index']);
     Route::post('pembayarankasbon/generatebayarpinjaman', [PembayarankasbonController::class, 'generatebayarpinjaman']);
+    Route::post('/pembayarankasbon/show', [PembayarankasbonController::class, 'show']);
+    Route::delete('pembayarankasbon/{kode_potongan}/deletegenerate', [PembayarankasbonController::class, 'deletegenerate']);
 });
