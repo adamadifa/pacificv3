@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
@@ -90,5 +91,21 @@ class KontrakController extends Controller
             dd($e);
             return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);
         }
+    }
+
+
+    public function cetak($no_kontrak)
+    {
+        $no_kontrak = Crypt::decrypt($no_kontrak);
+        $kontrak = DB::table('hrd_kontrak')
+            ->select('hrd_kontrak.*', 'nama_karyawan', 'tempat_lahir', 'tgl_lahir', 'alamat', 'no_ktp', 'hrd_mastergaji.*')
+            ->join('master_karyawan', 'hrd_kontrak.nik', '=', 'master_karyawan.nik')
+            ->leftJoin('hrd_mastergaji', 'hrd_kontrak.no_kontrak', '=', 'hrd_mastergaji.no_kontrak')
+            ->where('hrd_kontrak.no_kontrak', $no_kontrak)
+            ->first();
+        $approve = DB::table('hrd_approvekb')
+            ->where('tgl_berlaku', '<=', $kontrak->dari)
+            ->orderBy('tgl_berlaku', 'desc')->first();
+        return view('kontrak.cetak', compact('kontrak', 'approve'));
     }
 }

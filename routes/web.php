@@ -1500,6 +1500,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/kontrak/createfrompenilaian', [KontrakController::class, 'createformpenilaian']);
     Route::post('/kontrak/storefrompenilaian', [KontrakController::class, 'storefrompenilaian']);
+    Route::get('/kontrak/{no_kontrak}/cetak', [KontrakController::class, 'cetak']);
 
     //Pinjaman
 
