@@ -54,7 +54,7 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="No. Faktur" field="no_fak_penj" icon="fa fa-barcode" />
+                                            <x-inputtext label="No. Faktur" field="no_fak_penj" value="{{ $no_fak_penj_auto }}" icon="fa fa-barcode" />
                                         </div>
                                     </div>
                                     <div class="row">

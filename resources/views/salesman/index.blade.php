@@ -66,6 +66,7 @@
                                     <th>Status</th>
                                     <th>Kategori</th>
                                     <th>Komisi</th>
+                                    <th>No. Faktur Awal</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -92,6 +93,7 @@
                                         <span class="badge bg-danger">Non Aktif</span>
                                         @endif
                                     </td>
+                                    <td>{{ $d->no_fak_awal }}</td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             @if (in_array($level,$salesman_edit))

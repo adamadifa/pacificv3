@@ -146,7 +146,11 @@ class PenjualanController extends Controller
             }
 
             if (!empty($request->status)) {
-                $query->where('status', $request->status);
+                if ($request->status == 1) {
+                    $query->where('status', $request->status);
+                } else if ($request->status == 2) {
+                    $query->whereRaw('MID(no_fak_penj,4,2)="PR"');
+                }
             }
 
             if (Auth::user()->level != "salesman") {
@@ -249,6 +253,24 @@ class PenjualanController extends Controller
             $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)
                 ->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan')
                 ->first();
+            $salesman = Salesman::where('id_karyawan', $pelanggan->id_sales)->first();
+            $no_fak_awal = $salesman->no_fak_awal;
+
+            $cekpenjualan = DB::table('penjualan')
+                ->where('id_karyawan', $pelanggan->id_sales)
+                ->where('no_fak_auto', 1)->orderBy('no_fak_penj', 'desc')->first();
+            $lastnofak = $cekpenjualan != null ? $cekpenjualan->no_fak_penj : $no_fak_awal;
+            $kode_cabang = $salesman->kode_cabang;
+            $kode_faktur = substr($salesman->no_fak_awal, 3, 1);
+            $nomor_awal = substr($salesman->no_fak_awal, 4);
+            $jmlchar = strlen($nomor_awal);
+            if ($cekpenjualan != null) {
+                $no_fak_penj_auto  =  buatkode($lastnofak, $kode_cabang . $kode_faktur, $jmlchar);
+            } else {
+                $no_fak_penj_auto = $no_fak_awal;
+            }
+
+
             $piutang = DB::table('penjualan')
                 ->select('penjualan.kode_pelanggan', DB::raw('SUM(IFNULL( retur.total, 0 )) AS totalretur,
                         SUM(IFNULL(penjualan.total,0) - IFNULL(retur.total,0) - IFNULL(jmlbayar,0)) AS sisapiutang'))
@@ -273,7 +295,7 @@ class PenjualanController extends Controller
                 ->where('penjualan.kode_pelanggan', $kode_pelanggan)
                 ->groupBy('penjualan.kode_pelanggan')
                 ->first();
-            return view('penjualan.create_v3', compact('pelanggan', 'piutang'));
+            return view('penjualan.create_v3', compact('pelanggan', 'piutang', 'no_fak_penj_auto'));
         } else {
             return view('penjualan.create_v2');
         }
@@ -1261,6 +1283,7 @@ class PenjualanController extends Controller
         $nama_pelanggan = $request->nama_pelanggan; //nama_pelanggan
         $id_admin = Auth::user()->id;
         $keterangan = $request->keterangan;
+        $no_fak_auto = $ceklevel == "salesman" ? 1 : null;
         //Potongan
         $potaida        = str_replace(".", "", $request->potaida);
         if (empty($potaida)) {
@@ -1450,7 +1473,8 @@ class PenjualanController extends Controller
                 'id_admin' => $id_admin,
                 'status' => $status,
                 'status_lunas' => $status_lunas,
-                'keterangan' => $keterangan
+                'keterangan' => $keterangan,
+                'no_fak_auto' => $no_fak_auto
             ]);
 
             $tmp = DB::table('detailpenjualan_temp')->where('id_admin', $id_admin)

@@ -20,7 +20,10 @@ class KesepakatanbersamaController extends Controller
         $query->join('master_karyawan', 'hrd_penilaian.nik', '=', 'master_karyawan.nik');
         $query->orderBy('hrd_kesepakatanbersama.no_kb', 'desc');
         $kb = $query->get();
-        return view('kesepakatanbersama.index', compact('kb'));
+
+        $kantor = DB::table('cabang')->orderBy('kode_cabang')->get();
+        $departemen = DB::table('departemen')->where('status_pengajuan', 0)->get();
+        return view('kesepakatanbersama.index', compact('kb', 'departemen', 'kantor'));
     }
     public function store(Request $request)
     {

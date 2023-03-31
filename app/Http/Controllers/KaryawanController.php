@@ -21,9 +21,29 @@ class KaryawanController extends Controller
         if (!empty($nama_karyawan)) {
             $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');
         }
+
+        if (!empty($request->kode_dept_search)) {
+            $query->where('master_karyawan.kode_dept', $request->kode_dept_search);
+        }
+
+        if (!empty($request->id_perusahaan_search)) {
+            $query->where('master_karyawan.id_perusahaan', $request->id_perusahaan_search);
+        }
+
+        if (!empty($request->id_kantor_search)) {
+            $query->where('master_karyawan.id_kantor', $request->id_kantor_search);
+        }
+
+        if (!empty($request->grup_search)) {
+            $query->where('master_karyawan.grup', $request->grup_search);
+        }
         $query->orderBy('nama_karyawan');
         $karyawan = $query->paginate(15);
-        return view('karyawan.index', compact('karyawan'));
+
+        $kantor = DB::table('cabang')->orderBy('kode_cabang')->get();
+        $departemen = DB::table('departemen')->where('status_pengajuan', 0)->get();
+        $group = DB::table('hrd_group')->orderBy('nama_group')->get();
+        return view('karyawan.index', compact('karyawan', 'departemen', 'kantor', 'group'));
     }
 
     public function create()

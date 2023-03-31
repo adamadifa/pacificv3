@@ -24,6 +24,36 @@
         <div class="col-md-12 col-sm-12">
             <div class="card">
                 <div class="card-body">
+                    <form action="/karyawan">
+                        <div class="row">
+                            <div class="col-lg-4 col-sm-12">
+                                <x-inputtext label="Nama Karyawan" field="nama_karyawan_search" icon="feather icon-users" value="{{ Request('nama_karyawan_search') }}" />
+                            </div>
+                            <div class="col-lg-3 col-sm-12">
+                                <div class="form-group">
+                                    <select name="kode_dept_search" id="kode_dept_search" class="form-control">
+                                        <option value="">Departemen</option>
+                                        @foreach ($departemen as $d)
+                                        <option {{ Request('kode_dept_search')==$d->kode_dept ? 'selected' : '' }} value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-sm-12">
+                                <div class="form-group">
+                                    <select name="id_kantor_search" id="id_kantor_search" class="form-control">
+                                        <option value="">Kantor</option>
+                                        @foreach ($kantor as $d)
+                                        <option {{ Request('id_kantor_search')==$d->kode_cabang ? 'selected' : '' }} value="{{ $d->kode_cabang }}">{{ $d->kode_cabang }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-sm-12">
+                                <button type="submit" class="btn btn-primary"><i class="fa fa-search mr-1"></i> Cari</button>
+                            </div>
+                        </div>
+                    </form>
                     <div class="table-responsive">
                         <table class="table table-hover-animation">
                             <thead class="thead-dark">
