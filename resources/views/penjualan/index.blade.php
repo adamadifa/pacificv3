@@ -58,6 +58,7 @@
                                 <select name="status" id="status" class="form-control">
                                     <option value="">Status</option>
                                     <option {{ (Request('status')=='1' ? 'selected':'')}} value="1">PENDING</option>
+                                    <option {{ (Request('status')=='2' ? 'selected':'')}} value="2">PRE ORDER</option>
                                 </select>
                             </div>
                         </div>
@@ -102,6 +103,10 @@
                         @if ($d->status==1)
                         @php
                         $color = "#f7d97763";
+                        @endphp
+                        @elseif(substr($d->no_fak_penj,3,2)=="PR")
+                        @php
+                        $color="#0084d1";
                         @endphp
                         @else
                         @php

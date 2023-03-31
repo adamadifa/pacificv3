@@ -172,6 +172,17 @@
                                         </div>
                                     </div>
                                     <div class="row">
+                                        <div class="col-2">
+                                            <x-inputtext label="" field="no_fak_cabang" value="{{ $data->kode_cabang }}" readonly icon="feather icon-file" />
+                                        </div>
+                                        <div class="col-2">
+                                            <x-inputtext label="Kode" field="kode_faktur" value="{{ substr($data->no_fak_awal,3,1) }}" icon="feather icon-file" />
+                                        </div>
+                                        <div class="col-8">
+                                            <x-inputtext label="Nomor Awal" field="nomor_awal" value="{{ substr($data->no_fak_awal,4) }}" icon="feather icon-file" />
+                                        </div>
+                                    </div>
+                                    <div class=" row">
                                         <div class="col-12">
                                             <button type="submit" class="btn btn-primary mr-1 mb-1"><i class="fa fa-send mr-1"></i> Simpan</button>
                                             <a href="/salesman" class="btn btn-outline-warning mr-1 mb-1"><i class="fa fa-arrow-left mr-2"></i>Kembali</a>

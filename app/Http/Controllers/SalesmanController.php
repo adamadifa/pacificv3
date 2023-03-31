@@ -119,7 +119,8 @@ class SalesmanController extends Controller
                 'kode_cabang' => $request->kode_cabang,
                 'kategori_salesman' => $request->kategori_salesman,
                 'status_aktif_sales' => $request->status_aktif_sales,
-                'status_komisi' => $request->status_komisi
+                'status_komisi' => $request->status_komisi,
+                'no_fak_awal' => $request->kode_cabang . $request->kode_faktur . $request->nomor_awal
             ]);
 
         if ($simpan) {
