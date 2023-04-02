@@ -13,41 +13,29 @@
     }
 
 </style>
-<form action="/kontrak/storefrompenilaian" method="POST" id="frmKontrak">
+<form action="/kontrak/{{ Crypt::encrypt($kontrak->no_kontrak) }}/update" method="POST" id="frmKontrak">
     @csrf
+
     <div class="row">
         <div class="col-12">
-            <table class="table table-bordered">
-                <tr>
-                    <th>Kode Penilaian</th>
-                    <td>{{ $penilaian->kode_penilaian }}</td>
-                </tr>
-                <tr>
-                    <th>NIK</th>
-                    <td>{{ $penilaian->nik }}</td>
-                </tr>
-                <tr>
-                    <th>Nama Karyawan</th>
-                    <td>{{ $penilaian->nik }}</td>
-                </tr>
-                <tr>
-                    <th>Jabatan Saat Ini</th>
-                    <td>{{ $penilaian->nama_jabatan }}</td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <input type="hidden" name="kode_penilaian" value="{{ $penilaian->kode_penilaian }}">
-            <input type="hidden" name="nik" value="{{ $penilaian->nik }}">
-            <input type="hidden" name="masa_kontrak_kerja" value="{{ $penilaian->masa_kontrak_kerja }}">
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <select name="nik" id="nik" class="form-control" disabled>
+                            <option value="">Pilih Karyawan</option>
+                            @foreach ($karyawan as $d)
+                            <option {{ $kontrak->nik == $d->nik ? 'selected' : '' }} value="{{ $d->nik }}">{{ $d->nama_karyawan }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-6">
-                    <x-inputtext field="kontrak_dari" label="Dari" icon="feather icon-calendar" datepicker />
+                    <x-inputtext field="kontrak_dari" value="{{ $kontrak->dari }}" label="Dari" icon="feather icon-calendar" datepicker />
                 </div>
                 <div class="col-6">
-                    <x-inputtext field="kontrak_sampai" label="Sampai" icon="feather icon-calendar" datepicker />
+                    <x-inputtext field="kontrak_sampai" value="{{ $kontrak->sampai }}" label="Sampai" icon="feather icon-calendar" datepicker />
                 </div>
             </div>
             <div class="row">
@@ -56,7 +44,7 @@
                         <select name="id_jabatan" id="kontrak_id_jabatan" class="form-control">
                             <option value="">Jabatan Baru</option>
                             @foreach ($jabatan as $d)
-                            <option {{ $penilaian->id_jabatan==$d->id ? 'selected' : '' }} value="{{ $d->id }}">{{ $d->nama_jabatan }}</option>
+                            <option {{ $kontrak->id_jabatan == $d->id ? 'selected' : '' }} value="{{ $d->id }}">{{ $d->nama_jabatan }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -67,8 +55,20 @@
                     <div class="form-group">
                         <select name="id_perusahaan" id="kontrak_id_perusahaan" class="form-control">
                             <option value="">Perusahaan</option>
-                            <option value="MP" {{ $penilaian->id_perusahaan =="MP" ? "selected" :"" }}>MAKMUR PERMATA</option>
-                            <option value="PCF" {{ $penilaian->id_perusahaan =="PCF" ? "selected" :"" }}>PACIFIC</option>
+                            <option {{ $kontrak->id_perusahaan == "MP" ? "selected" : "" }} value="MP">MAKMUR PERMATA</option>
+                            <option {{ $kontrak->id_perusahaan == "PCF" ? "selected" : "" }} value="PCF">PACIFIC</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <select name="id_kantor" id="kontrak_id_kantor" class="form-control">
+                            <option value="">Kantor</option>
+                            @foreach ($kantor as $d)
+                            <option {{ $kontrak->id_kantor == $d->kode_cabang ? "selected" : "" }} value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -132,7 +132,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
-                        <button class="btn btn-primary btn-block" type="submit"><i class="feather icon-send mr-1"></i>Buat Kontrak</button>
+                        <button class="btn btn-primary btn-block" type="submit"><i class="feather icon-send mr-1"></i>Update Kontrak</button>
                     </div>
                 </div>
             </div>
@@ -142,22 +142,37 @@
 <script src="{{asset('app-assets/vendors/js/forms/select/select2.full.min.js')}}"></script>
 <script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
 <script src="{{asset('app-assets/js/scripts/forms/select/form-select2.js')}}"></script>
+<script src="{{ asset('app-assets/js/external/selectize.js') }}"></script>
 <script>
     $(function() {
+        $("#nik").selectize();
+        $("#kontrak_id_jabatan").selectize();
         $("#gaji_pokok,#t_jabatan,#t_masakerja,#t_tanggungjawab,#t_istri,#t_makan,#t_skill").maskMoney();
         $("#frmKontrak").submit(function(e) {
             //e.preventDefault();
+            var nik = $("#nik").val();
             var dari = $("#kontrak_dari").val();
             var sampai = $("#kontrak_sampai").val();
             var id_jabatan = $("#kontrak_id_jabatan").val();
+            var id_perusahaan = $("#kontrak_id_perusahaan").val();
+            var id_kantor = $("#kontrak_id_kantor").val();
             var gaji_pokok = $("#gaji_pokok").val();
             var t_jabatan = $("#t_jabatan").val();
             var t_masakerja = $("#t_masakerja").val();
             var t_tanggungjawab = $("#t_tanggungjawab").val();
             var t_makan = $("#t_makan").val();
             var t_skill = $("#t_skill").val();
-
-            if (dari == "" || sampai == "") {
+            if (nik == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Nik Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#nik").focus();
+                });
+                return false;
+            } else if (dari == "" || sampai == "") {
                 swal({
                     title: 'Oops'
                     , text: 'Periode Kontrak Harus Diisi !'
@@ -177,6 +192,26 @@
                     $("#kontrak_id_jabatan").focus();
                 });
                 return false;
+            } else if (id_perusahaan == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Perusahaan Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#kontrak_id_perusahaan").focus();
+                });
+                return false;
+            } else if (id_kantor == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Kantor Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#kontrak_id_kantor").focus();
+                });
+                return false;
             } else if (gaji_pokok == "") {
                 swal({
                     title: 'Oops'
@@ -188,43 +223,7 @@
                 });
                 return false;
             }
-            // else if (t_jabatan == "") {
-            //     swal({
-            //         title: 'Oops'
-            //         , text: 'Tunjangan Jabatan Harus Diisi !'
-            //         , icon: 'warning'
-            //         , showConfirmButton: false
-            //     }).then(function() {
-            //         $("#t_jabatan").focus();
-            //     });
-            // } else if (t_tanggungjawab == "") {
-            //     swal({
-            //         title: 'Oops'
-            //         , text: 'Tunjangan Tanggung Jawab Harus Diisi !'
-            //         , icon: 'warning'
-            //         , showConfirmButton: false
-            //     }).then(function() {
-            //         $("#t_tanggungjawab").focus();
-            //     });
-            // } else if (t_makan == "") {
-            //     swal({
-            //         title: 'Oops'
-            //         , text: 'Tunjangan Makan Harus Diisi !'
-            //         , icon: 'warning'
-            //         , showConfirmButton: false
-            //     }).then(function() {
-            //         $("#t_makan").focus();
-            //     });
-            // } else if (t_skill == "") {
-            //     swal({
-            //         title: 'Oops'
-            //         , text: 'Tunjangan Skill Harus Diisi !'
-            //         , icon: 'warning'
-            //         , showConfirmButton: false
-            //     }).then(function() {
-            //         $("#t_skill").focus();
-            //     });
-            // }
+
         });
     });
 

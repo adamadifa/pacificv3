@@ -39,7 +39,7 @@ class KaryawanController extends Controller
         }
         $query->orderBy('nama_karyawan');
         $karyawan = $query->paginate(15);
-
+        $karyawan->appends($request->all());
         $kantor = DB::table('cabang')->orderBy('kode_cabang')->get();
         $departemen = DB::table('departemen')->where('status_pengajuan', 0)->get();
         $group = DB::table('hrd_group')->orderBy('nama_group')->get();
@@ -175,6 +175,13 @@ class KaryawanController extends Controller
             ->leftJoin('cabang', 'master_karyawan.id_kantor', '=', 'cabang.kode_cabang')
             ->leftJoin('hrd_group', 'master_karyawan.grup', '=', 'hrd_group.id')
             ->where('nik', $nik)->first();
-        return view('karyawan.show', compact('karyawan'));
+
+        $kontrak = DB::table('hrd_kontrak')
+            ->select('hrd_kontrak.*', 'nama_karyawan', 'nama_jabatan')
+            ->join('hrd_jabatan', 'hrd_kontrak.id_jabatan', '=', 'hrd_jabatan.id')
+            ->join('master_karyawan', 'hrd_kontrak.nik', '=', 'master_karyawan.nik')
+            ->orderBy('hrd_kontrak.no_kontrak', 'desc')
+            ->where('hrd_kontrak.nik', $nik)->orderBy('dari')->get();
+        return view('karyawan.show', compact('karyawan', 'kontrak'));
     }
 }

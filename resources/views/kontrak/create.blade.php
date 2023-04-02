@@ -13,35 +13,23 @@
     }
 
 </style>
-<form action="/kontrak/storefrompenilaian" method="POST" id="frmKontrak">
+<form action="/kontrak/store" method="POST" id="frmKontrak">
     @csrf
+
     <div class="row">
         <div class="col-12">
-            <table class="table table-bordered">
-                <tr>
-                    <th>Kode Penilaian</th>
-                    <td>{{ $penilaian->kode_penilaian }}</td>
-                </tr>
-                <tr>
-                    <th>NIK</th>
-                    <td>{{ $penilaian->nik }}</td>
-                </tr>
-                <tr>
-                    <th>Nama Karyawan</th>
-                    <td>{{ $penilaian->nik }}</td>
-                </tr>
-                <tr>
-                    <th>Jabatan Saat Ini</th>
-                    <td>{{ $penilaian->nama_jabatan }}</td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-12">
-            <input type="hidden" name="kode_penilaian" value="{{ $penilaian->kode_penilaian }}">
-            <input type="hidden" name="nik" value="{{ $penilaian->nik }}">
-            <input type="hidden" name="masa_kontrak_kerja" value="{{ $penilaian->masa_kontrak_kerja }}">
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <select name="nik" id="nik" class="form-control">
+                            <option value="">Pilih Karyawan</option>
+                            @foreach ($karyawan as $d)
+                            <option value="{{ $d->nik }}">{{ $d->nama_karyawan }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-6">
                     <x-inputtext field="kontrak_dari" label="Dari" icon="feather icon-calendar" datepicker />
@@ -56,7 +44,7 @@
                         <select name="id_jabatan" id="kontrak_id_jabatan" class="form-control">
                             <option value="">Jabatan Baru</option>
                             @foreach ($jabatan as $d)
-                            <option {{ $penilaian->id_jabatan==$d->id ? 'selected' : '' }} value="{{ $d->id }}">{{ $d->nama_jabatan }}</option>
+                            <option value="{{ $d->id }}">{{ $d->nama_jabatan }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -67,8 +55,20 @@
                     <div class="form-group">
                         <select name="id_perusahaan" id="kontrak_id_perusahaan" class="form-control">
                             <option value="">Perusahaan</option>
-                            <option value="MP" {{ $penilaian->id_perusahaan =="MP" ? "selected" :"" }}>MAKMUR PERMATA</option>
-                            <option value="PCF" {{ $penilaian->id_perusahaan =="PCF" ? "selected" :"" }}>PACIFIC</option>
+                            <option value="MP">MAKMUR PERMATA</option>
+                            <option value="PCF">PACIFIC</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <select name="id_kantor" id="kontrak_id_kantor" class="form-control">
+                            <option value="">Kantor</option>
+                            @foreach ($kantor as $d)
+                            <option value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -78,7 +78,7 @@
                     <label for="" class="form-label">Gaji Pokok</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Gaji Pokok" value="{{ rupiah($gaji->gaji_pokok) }}" field="gaji_pokok" icon="feather icon-file" right />
+                    <x-inputtext label="Gaji Pokok" field="gaji_pokok" icon="feather icon-file" right />
                 </div>
             </div>
             <div class="row">
@@ -86,7 +86,7 @@
                     <label for="" class="form-label">Tunjangan Jabatan</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Tunjangan Jabatan" value="{{ rupiah($gaji->t_jabatan) }}" field="t_jabatan" icon="feather icon-file" right />
+                    <x-inputtext label="Tunjangan Jabatan" field="t_jabatan" icon="feather icon-file" right />
                 </div>
             </div>
             <div class="row">
@@ -94,7 +94,7 @@
                     <label for="" class="form-label">Tunjangan Masa Kerja</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Tunjangan Masa Kerja" value="{{ rupiah($gaji->t_masakerja) }}" field="t_masakerja" icon="feather icon-file" right />
+                    <x-inputtext label="Tunjangan Masa Kerja" field="t_masakerja" icon="feather icon-file" right />
                 </div>
             </div>
             <div class="row">
@@ -102,7 +102,7 @@
                     <label for="" class="form-label">T. Tanggung Jawab</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Tunjangan Tanggung Jawab" value="{{ rupiah($gaji->t_tanggungjawab) }}" field="t_tanggungjawab" icon="feather icon-file" right />
+                    <x-inputtext label="Tunjangan Tanggung Jawab" field="t_tanggungjawab" icon="feather icon-file" right />
                 </div>
             </div>
             <div class="row">
@@ -110,7 +110,7 @@
                     <label for="" class="form-label">Tunjangan Makan</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Tunjangan Makan" value="{{ rupiah($gaji->t_makan) }}" field="t_makan" icon="feather icon-file" right />
+                    <x-inputtext label="Tunjangan Makan" field="t_makan" icon="feather icon-file" right />
                 </div>
             </div>
             <div class="row">
@@ -118,7 +118,7 @@
                     <label for="" class="form-label">Tunjangan Istri</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Tunjangan Istri" value="{{ rupiah($gaji->t_istri) }}" field="t_istri" icon="feather icon-file" right />
+                    <x-inputtext label="Tunjangan Istri" field="t_istri" icon="feather icon-file" right />
                 </div>
             </div>
             <div class="row">
@@ -126,7 +126,7 @@
                     <label for="" class="form-label">Tunj. Skill Khusus</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Tunjangan Skill Khusus" value="{{ rupiah($gaji->t_skill) }}" field="t_skill" icon="feather icon-file" right />
+                    <x-inputtext label="Tunjangan Skill Khusus" field="t_skill" icon="feather icon-file" right />
                 </div>
             </div>
             <div class="row">
@@ -142,22 +142,37 @@
 <script src="{{asset('app-assets/vendors/js/forms/select/select2.full.min.js')}}"></script>
 <script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
 <script src="{{asset('app-assets/js/scripts/forms/select/form-select2.js')}}"></script>
+<script src="{{ asset('app-assets/js/external/selectize.js') }}"></script>
 <script>
     $(function() {
+        $("#nik").selectize();
+        $("#kontrak_id_jabatan").selectize();
         $("#gaji_pokok,#t_jabatan,#t_masakerja,#t_tanggungjawab,#t_istri,#t_makan,#t_skill").maskMoney();
         $("#frmKontrak").submit(function(e) {
             //e.preventDefault();
+            var nik = $("#nik").val();
             var dari = $("#kontrak_dari").val();
             var sampai = $("#kontrak_sampai").val();
             var id_jabatan = $("#kontrak_id_jabatan").val();
+            var id_perusahaan = $("#kontrak_id_perusahaan").val();
+            var id_kantor = $("#kontrak_id_kantor").val();
             var gaji_pokok = $("#gaji_pokok").val();
             var t_jabatan = $("#t_jabatan").val();
             var t_masakerja = $("#t_masakerja").val();
             var t_tanggungjawab = $("#t_tanggungjawab").val();
             var t_makan = $("#t_makan").val();
             var t_skill = $("#t_skill").val();
-
-            if (dari == "" || sampai == "") {
+            if (nik == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Nik Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#nik").focus();
+                });
+                return false;
+            } else if (dari == "" || sampai == "") {
                 swal({
                     title: 'Oops'
                     , text: 'Periode Kontrak Harus Diisi !'
@@ -177,6 +192,26 @@
                     $("#kontrak_id_jabatan").focus();
                 });
                 return false;
+            } else if (id_perusahaan == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Perusahaan Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#kontrak_id_perusahaan").focus();
+                });
+                return false;
+            } else if (id_kantor == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Kantor Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#kontrak_id_kantor").focus();
+                });
+                return false;
             } else if (gaji_pokok == "") {
                 swal({
                     title: 'Oops'
@@ -188,43 +223,7 @@
                 });
                 return false;
             }
-            // else if (t_jabatan == "") {
-            //     swal({
-            //         title: 'Oops'
-            //         , text: 'Tunjangan Jabatan Harus Diisi !'
-            //         , icon: 'warning'
-            //         , showConfirmButton: false
-            //     }).then(function() {
-            //         $("#t_jabatan").focus();
-            //     });
-            // } else if (t_tanggungjawab == "") {
-            //     swal({
-            //         title: 'Oops'
-            //         , text: 'Tunjangan Tanggung Jawab Harus Diisi !'
-            //         , icon: 'warning'
-            //         , showConfirmButton: false
-            //     }).then(function() {
-            //         $("#t_tanggungjawab").focus();
-            //     });
-            // } else if (t_makan == "") {
-            //     swal({
-            //         title: 'Oops'
-            //         , text: 'Tunjangan Makan Harus Diisi !'
-            //         , icon: 'warning'
-            //         , showConfirmButton: false
-            //     }).then(function() {
-            //         $("#t_makan").focus();
-            //     });
-            // } else if (t_skill == "") {
-            //     swal({
-            //         title: 'Oops'
-            //         , text: 'Tunjangan Skill Harus Diisi !'
-            //         , icon: 'warning'
-            //         , showConfirmButton: false
-            //     }).then(function() {
-            //         $("#t_skill").focus();
-            //     });
-            // }
+
         });
     });
 

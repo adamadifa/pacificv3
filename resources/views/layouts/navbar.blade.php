@@ -1179,6 +1179,14 @@
                         </a>
                     </li>
                     @endif
+                    @if (in_array($level,$kontrak_menu))
+                    <li class="{{ request()->is(['kontrak', 'kontrak/*']) ? 'active' : '' }}">
+                        <a href="/kontrak">
+                            <i class="feather icon-book-open"></i>
+                            <span class="menu-item" data-i18n="Second Level">Kontrak</span>
+                        </a>
+                    </li>
+                    @endif
 
                 </ul>
             </li>

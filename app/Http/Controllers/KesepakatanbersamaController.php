@@ -11,16 +11,28 @@ use Illuminate\Support\Facades\Redirect;
 class KesepakatanbersamaController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
         $query = Kesepakatanbersama::query();
-        $query->select('no_kb', 'tgl_kb', 'hrd_penilaian.nik', 'nama_karyawan', 'nama_jabatan', 'tahun');
+        $query->select('no_kb', 'tgl_kb', 'hrd_penilaian.nik', 'nama_karyawan', 'nama_jabatan', 'tahun', 'hrd_kesepakatanbersama.kode_penilaian');
         $query->join('hrd_penilaian', 'hrd_kesepakatanbersama.kode_penilaian', '=', 'hrd_penilaian.kode_penilaian');
         $query->join('hrd_jabatan', 'hrd_penilaian.id_jabatan', '=', 'hrd_jabatan.id');
         $query->join('master_karyawan', 'hrd_penilaian.nik', '=', 'master_karyawan.nik');
         $query->orderBy('hrd_kesepakatanbersama.no_kb', 'desc');
-        $kb = $query->get();
+        if (!empty($request->nama_karyawan_search)) {
+            $query->where('nama_karyawan', 'like', '%' . $request->nama_karyawan_search . '%');
+        }
 
+        if (!empty($request->kode_dept_search)) {
+            $query->where('hrd_penilaian.kode_dept', $request->kode_dept_search);
+        }
+
+
+        if (!empty($request->id_kantor_search)) {
+            $query->where('hrd_penilaian.id_kantor', $request->id_kantor_search);
+        }
+        $kb = $query->paginate(20);
+        $kb->appends($request->all());
         $kantor = DB::table('cabang')->orderBy('kode_cabang')->get();
         $departemen = DB::table('departemen')->where('status_pengajuan', 0)->get();
         return view('kesepakatanbersama.index', compact('kb', 'departemen', 'kantor'));

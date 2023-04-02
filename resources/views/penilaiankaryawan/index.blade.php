@@ -227,7 +227,9 @@
 
                                                 if (empty($d->$ceklevel) || $field_kategori=="dirut") {
                                                 ?>
+                                                @if (empty($d->no_kontrak))
                                                 <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/{{ Crypt::encrypt($field_kategori) }}/batalkan" class="warning ml-1">Batalkan</a>
+                                                @endif
                                                 <?php } ?>
                                                 @else
 
@@ -251,7 +253,7 @@
                                                 }
                                                 ?>
                                                 @endif
-                                                @if (Auth::user()->level =="manager hrd" && !empty($d->dirut) && empty($d->pemutihan))
+                                                @if (Auth::user()->level =="manager hrd" && !empty($d->dirut) && empty($d->pemutihan) || Auth::user()->level =="direktur" && !empty($d->dirut) && empty($d->pemutihan))
                                                 @if (empty($d->no_kontrak))
                                                 <a href="#" nik="{{ $d->nik }}" kode_penilaian="{{ $d->kode_penilaian }}" class="danger buatkontrak">Buat Kontrak</a>
                                                 @else

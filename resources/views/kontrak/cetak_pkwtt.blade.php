@@ -2,7 +2,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Cetak Kontrak PKWT</title>
+    <title>Cetak Kontrak PKWTT</title>
 
     <!-- Normalize or reset CSS with your favorite library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
@@ -118,7 +118,7 @@
         <h3 style="text-align: center">
             <u>PERJANJIAN KERJA</u>
             <br>
-            WAKTU TERTENTU
+            WAKTU TIDAK TERTENTU
         </h3>
         <p>
             Yang bertanda tangan dibawah ini :
@@ -174,58 +174,28 @@
                 </tr>
             </table>
             Bertindak atas nama diri sendiri selanjutnya disebut <b>pihak kedua.</b><br>
-            Pihak kesatu dan pihak kedua telah mengadakan kesepakatan Perjanjian Kerja Waktu Tertentu dengan ketentuan sebagai berikut:
+            Pihak kesatu dan pihak kedua telah mengadakan kesepakatan Perjanjian Kerja Waktu Tidak Tertentu dengan ketentuan sebagai berikut:
 
         </p>
         <p>
             <h4 style="text-align: center">
                 PASAL 1<br>
-                MASA BERLAKU
+                UMUM
 
             </h4>
 
-            @php
-            $date1 = date_create($kontrak->dari);
-            $date2 = date_create($kontrak->sampai);
 
-            $interval = date_diff($date1, $date2);
-
-
-
-            @endphp
             <ol>
                 <li>
-                    Perjanjian kerja ini berlaku
-                    {{-- {{ !empty($interval->y) ? $interval->y. "(".terbilang($interval->y).") Tahun" : "" }}
-                    {{ !empty($interval->m) && empty($interval->y) ? $interval->m.  "(".terbilang($interval->m).") Bulan" : "" }}
-                    {{ !empty($interval->d) && empty($interval->m) ? $interval->d. " Hari" : "" }} --}}
+                    Pihak kesatu setuju menerima pihak kedua sebagai <b>Karyawan Tetap</b> {{ $kontrak->id_perusahaan=="MP" ? "CV Makmur Permata" : "CV. Pacific" }}
+                </li>
+                <li>
+                    Pihak kedua ditempatkan sebagai <b>{{ $kontrak->nama_jabatan }} {{ $kontrak->id_kantor == "PST" ? "KANTOR PUSAT TASIKMALAYA" : "CABANG ".strtoupper($kontrak->nama_cabang) }}</b> dan bersedia ditempatkan diluar departemen tersebut bila Perusahaan memerlukan
+                </li>
+                <li>
                     @php
-                    $start = date_create($kontrak->dari);
-                    $end = date_create($kontrak->sampai);
-
-                    echo diffInMonths($start, $end). " bulan";
+                    $totalgaji = $kontrak->gaji_pokok + $kontrak->t_jabatan + $kontrak->t_masakerja + $kontrak->t_tanggungjawab + $kontrak->t_makan + $kontrak->t_istri + $kontrak->t_skill;
                     @endphp
-                    , terhitung dari tanggal {{ DateToIndo2($kontrak->dari) }} sampai dengan tanggal {{ DateToIndo2($kontrak->sampai) }}
-                </li>
-                <li>
-                    Perjanjian ini dapat diperpanjang untuk waktu yang disepakati dan untuk perpanjangan perjanjian kerja waktu tertentu ini pihak kesatu akan memberitahukan terlebih dahulu kepada pihak kedua dalam waktu 1 (satu) minggu sebelum perjanjian kerja waktu tertentu ini berakhir.
-                </li>
-            </ol>
-        </p>
-
-        <p>
-            <h4 style="text-align: center">
-                PASAL 2<br>
-                STATUS DAN PENDAPATAN
-            </h4>
-            @php
-            $totalgaji = $kontrak->gaji_pokok + $kontrak->t_jabatan + $kontrak->t_masakerja + $kontrak->t_tanggungjawab + $kontrak->t_makan + $kontrak->t_istri + $kontrak->t_skill;
-            @endphp
-            <ol>
-                <li>
-                    Pihak Kedua menerima pekerjaan yang diberikan pihak CV Makmur Permata dengan jabatan sebagai Operator Produksi yang berlokasi di PUSAT serta bersedia ditempatkan diluar lokasi dan departemen tersebut bila Perusahaan memerlukan.
-                </li>
-                <li>
                     Pihak kedua setuju menerima upah sebesar Rp {{ rupiah($totalgaji) }} ,- dengan rincian sebagai berikut :
                     <table>
                         <tr>
@@ -273,63 +243,26 @@
                     </table>
                 </li>
             </ol>
-
         </p>
+
+
         <p>
             <h4 style="text-align: center">
-                PASAL 3<br>
-                JANGKA WAKTU DAN WAKTU KERJA
+                PASAL 2<br>
+                WAKTU KERJA
             </h4>
             <ol>
                 <li>
                     Jam kerja adalah 8 jam sehari (termasuk istirahat 1 jam) atau 40 Jam seminggu Senin s/d Jumat 07.00 – 15.00 WIB dan Sabtu Jam 07.00 – 12.00 WIB. Atau sesuai jadwal kerja yang disepakati bersama.
                 </li>
                 <li>
-                    Untuk lokasi cabang, hari dan jam kerja akan dilaksanakan dengan ketentuan yang telah disepakati oleh masing-masing cabang.
-                </li>
-            </ol>
-        </p>
-
-    </section>
-    <section class="sheet padding-10mm">
-        <p>
-            <h4 style="text-align: center">
-                PASAL 4<br>
-                PEMUTUSAN HUBUNGAN KERJA
-            </h4>
-            <ol>
-                <li>
-                    Perjanjian kerja ini dapat terputus dan berakhir sebelum masa berlakunya, apabila :
-                    <ol type="a">
-                        <li>Hasil Evaluasi Pekerja dinilai tidak mampu dan tidak cakap melaksanakan tugasnya</li>
-                        <li>
-                            Pekerja tidak hadir selama 5 (lima) hari secara berurutan dalam 1 (satu) bulan, tanpa izin atau tanpa alasan yang bisa dipertanggungjawabkan.
-                        </li>
-                        <li>
-                            Pekerja mengajukan pengunduran diri.
-                        </li>
-                    </ol>
-                </li>
-                <li>
-                    Dalam hal pekerja diberhentikan karena kesalahan pekerja atau pengunduran diri maka Pekerja hanya akan menerima pendapatan atau upah sampai saat tanggal pemutusan perjanjian kerja tersebut.
-                </li>
-                <li>
-                    Dalam hal pihak kesatu atau pihak kedua melakukan pemutusan perjanjian kerja sebagaimana dimaksud diatas maka pihak kedua tidak berhak menuntut ganti rugi.
-                </li>
-                <li>
-                    Apabila pihak kedua habis kontrak dan tidak diperpanjang, maka pihak kesatu tidak wajib memberikan alasan tentang tidak diperpanjangnya.
-                </li>
-                <li>
-                    Untuk hal-hal yang belum tercantum dalam syarat-syarat kerja ini berlaku ketentuan-ketentuan umum pada PKB.
-                </li>
-                <li>
-                    Apabila dikemudian hari terdapat kekeliruan pada surat perjanjian kerja bersama ini maka akan ditinjau kembali dan diperbaiki sebagaimana mestinya.
+                    Untuk cabang, hari dan jam kerja akan dilaksanakan dengan ketentuan yang telah disepakati oleh masing-masing cabang.
                 </li>
             </ol>
         </p>
         <p>
             <h4 style="text-align: center">
-                PASAL 5<br>
+                PASAL 3<br>
                 TATA TERTIB DAN DISIPLIN KERJA
             </h4>
             <ol>
@@ -340,6 +273,13 @@
                 <li>
                     Pelanggaran tata tertib PKB (Perjanjian Kerja Bersama) oleh pihak kedua dapat diberikan peringatan baik lisan maupun tulisan dan bila terpaksa berlaku scorsing sampai pemutusan hubungan kerja dengan landasan hukum yang dipergunakan oleh pihak kesatu adalah PKB (Perjanjian Kerja Bersama) dan peraturan ketenagakerjaan yang berlaku.
                 </li>
+
+            </ol>
+        </p>
+    </section>
+    <section class="sheet padding-10mm">
+        <p>
+            <ol start="3">
                 <li>
                     Izin tidak masuk kerja terlebih dahulu meminta izin tertulis kepada pimpinan.
                 </li>
@@ -348,9 +288,10 @@
                 </li>
             </ol>
         </p>
+
         <p>
             <h4 style="text-align: center">
-                PASAL 6<br>
+                PASAL 4<br>
                 KETENTUAN SANKSI
             </h4>
             <ol>
@@ -362,7 +303,7 @@
         </p>
         <p>
             <h4 style="text-align: center">
-                PASAL 7<br>
+                PASAL 5<br>
                 JAMINAN SOSIAL
             </h4>
             <ol>
@@ -372,9 +313,29 @@
 
             </ol>
         </p>
+        <p>
+            <h4 style="text-align: center">
+                PASAL 6<br>
+                MASA KERJA
+            </h4>
+            <ol>
+                <li>Perjanjian Kerja Waktu Tidak Tertentu ini mulai berlaku pada saat ditandatangani oleh kedua belah pihak.</li>
+                <li>Perjanjian Kerja Waktu Tidak Tertentu ini akan berakhir apabila :
+                    <ol type="a">
+                        <li>Diputuskan oleh pihak kedua.</li>
+                        <li>Diputuskan oleh pihak kesatu berdasarkan peraturan ketenagakerjaan yang berlaku.</li>
+                        <li>Meninggal dunia.</li>
+
+                    </ol>
+                </li>
+
+                <li>Untuk hal-hal yang belum tercantum dalam syarat-syarat kerja ini berlaku ketentuan-ketentuan umum pada PKB (Perjanjian Kerja Bersama).</li>
+                <li>Apabila dikemudian hari terdapat kekeliruan pada surat perjanjian kerja bersama ini maka akan ditinjau kembali dan diperbaiki sebagaimana mestinya.</li>
+            </ol>
+        </p>
         <p style="text-align: center">
             <h4 style="text-align: center">
-                PASAL 8<br>
+                PASAL 7<br>
                 PENUTUP
             </h4>
             Demikian perjanjian kerja bersama waktu tertentu ini dibuat dan ditandatangani oleh kedua belah pihak dalam keadaan sehat walafiat, sadar, mengerti tanpa ada paksaan dari siapapun atau pihak manapun.
