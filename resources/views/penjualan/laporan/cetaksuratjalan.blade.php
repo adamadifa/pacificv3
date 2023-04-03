@@ -266,12 +266,15 @@
                 <td style="height: 40px"></td>
                 <td></td>
                 <td>
+                    @if (Auth::user()->kode_cabang != "SKB")
                     @if (!empty($faktur->signature))
                     @php
                     $path = Storage::url('signature/'.$faktur->signature);
                     @endphp
                     <img src="{{ url($path) }}" alt="" style="width:100px; height:100px">
                     @endif
+                    @endif
+
                 </td>
                 <td></td>
             </tr>
@@ -299,11 +302,13 @@
 
                 </td>
                 <td rowspan="3" style="width:20%; text-align:center">
+                    @if (Auth::user()->kode_cabang != "SKB")
                     @if (!empty($faktur->signature))
                     @php
                     $path = Storage::url('signature/'.$faktur->signature);
                     @endphp
-                    <img src="{{ url($path) }}" alt="" style="width:200px; height:100px">
+                    <img src="{{ url($path) }}" alt="" style="width:100px; height:100px">
+                    @endif
                     @endif
                 </td>
                 <td rowspan="3"></td>

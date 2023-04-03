@@ -186,7 +186,7 @@ class GlobalProvider extends ServiceProvider
                 'kepala admin', 'admin pusat', 'manager marketing', 'rsm', 'direktur',
                 'manager pembelian', 'admin pembelian', 'admin penjualan dan kas kecil',
                 'admin penjualan dan kasir', 'audit', 'admin gudang logistik', 'admin gudang bahan',
-                'general affair', 'manager ga', 'admin garut', 'admin pajak 2', 'manager hrd'
+                'general affair', 'manager ga', 'admin garut', 'admin pajak 2', 'manager hrd', 'kepala gudang', 'manager produksi', 'emf'
             ];
 
             $pasar_menu = ['admin', 'admin penjualan', 'manager accounting', 'admin kas dan penjualan', 'audit', 'kepala admin', 'admin penjualan dan kas kecil', 'direktur', 'manager accounting', 'general manager', 'admin garut', 'admin pajak 2', 'admin pusat'];
@@ -233,8 +233,8 @@ class GlobalProvider extends ServiceProvider
             ];
 
             //Master Karyawan
-            $karyawan_view = ['admin', 'manager hrd', 'kepala admin'];
-            $karyawan_pinjaman = ['admin'];
+            $karyawan_view = ['admin', 'manager hrd', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'manager accounting', 'manager ga', 'emf'];
+            $karyawan_pinjaman = ['admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'manager accounting', 'manager ga', 'emf'];
             $karyawan_tambah = ['admin'];
             $karyawan_edit = ['admin'];
             $karyawan_hapus = ['admin'];

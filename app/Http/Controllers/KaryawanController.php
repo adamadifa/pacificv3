@@ -41,6 +41,36 @@ class KaryawanController extends Controller
             $query->where('master_karyawan.grup', $request->grup_search);
         }
 
+        if ($level == "kepala admin") {
+            $query->where('id_kantor', $cabang);
+            $query->where('id_perusahaan', "MP");
+        }
+
+        if ($level == "kepala penjualan") {
+            $query->where('id_kantor', $cabang);
+            $query->where('id_perusahaan', "PCF");
+        }
+
+        if ($level == "manager pembelian") {
+            $query->where('master_karyawan.kode_dept', 'PMB');
+        }
+
+        if ($level == "kepala gudang") {
+            $query->where('master_karyawan.kode_dept', 'GDG');
+        }
+
+        if ($level == "manager produksi") {
+            $query->where('master_karyawan.kode_dept', 'PRD');
+        }
+
+        if ($level == "manager ga") {
+            $query->where('master_karyawan.kode_dept', 'GAF');
+        }
+
+        if ($level == "emf") {
+            $query->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GA', 'GDG', 'PDQ']);
+        }
+
 
         $query->orderBy('nama_karyawan');
         $karyawan = $query->paginate(15);
