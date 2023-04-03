@@ -238,6 +238,8 @@
                                 $jmlkali =8;
                             }else if($masakerja >= 24 ){
                                 $jmlkali =10;
+                            }else{
+                                $jmlkali=0;
                             }
 
                             $totalupah = $kb->gaji_pokok + $kb->t_tanggungjawab + $kb->t_makan + $kb->t_skill + $kb->t_jabatan;

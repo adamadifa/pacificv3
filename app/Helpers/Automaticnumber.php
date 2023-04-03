@@ -88,3 +88,13 @@ function terbilang($nilai)
     }
     return $hasil;
 }
+
+
+function diffInMonths(\DateTime $date1, \DateTime $date2)
+{
+    $diff = $date1->diff($date2);
+
+    $months = $diff->y * 12 + $diff->m + $diff->d / 30;
+
+    return (int) round($months);
+}

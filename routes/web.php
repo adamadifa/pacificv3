@@ -1497,9 +1497,17 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/kesepakatanbersama/{no_kb}/delete', [KesepakatanbersamaController::class, 'delete']);
 
     //Kontrak
-
+    Route::get('/kontrak', [KontrakController::class, 'index']);
+    Route::post('/kontrak/create', [KontrakController::class, 'create']);
+    Route::post('/kontrak/edit', [KontrakController::class, 'edit']);
+    Route::post('/kontrak/store', [KontrakController::class, 'store']);
+    Route::post('/kontrak/{no_kontrak}/update', [KontrakController::class, 'update']);
     Route::post('/kontrak/createfrompenilaian', [KontrakController::class, 'createformpenilaian']);
     Route::post('/kontrak/storefrompenilaian', [KontrakController::class, 'storefrompenilaian']);
+    Route::get('/kontrak/{no_kontrak}/cetak', [KontrakController::class, 'cetak']);
+    Route::delete('/kontrak/{no_kontrak}/delete', [KontrakController::class, 'delete']);
+
+    Route::post('/kontrak/createfromkb', [KontrakController::class, 'createfromkb']);
 
     //Pinjaman
 

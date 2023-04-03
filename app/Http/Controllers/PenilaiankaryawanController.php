@@ -184,11 +184,12 @@ class PenilaiankaryawanController extends Controller
         $lastfield = strtolower($inisial[$lastindex]);
 
         $query = Penilaiankaryawan::query();
-        $query->select('hrd_penilaian.kode_penilaian', 'tanggal', 'hrd_penilaian.nik', 'nama_karyawan', 'hrd_penilaian.periode_kontrak', 'hrd_penilaian.kode_dept', 'nama_dept', 'hrd_penilaian.id_jabatan', 'nama_jabatan', 'kp', 'ka', 'rsm', 'm', 'gm', 'hrd', 'dirut', 'status', 'pemutihan', 'no_kb');
+        $query->select('hrd_penilaian.kode_penilaian', 'tanggal', 'hrd_penilaian.nik', 'nama_karyawan', 'hrd_penilaian.periode_kontrak', 'hrd_penilaian.kode_dept', 'nama_dept', 'hrd_penilaian.id_jabatan', 'nama_jabatan', 'kp', 'ka', 'rsm', 'm', 'gm', 'hrd', 'dirut', 'status', 'pemutihan', 'no_kb', 'no_kontrak');
         $query->join('master_karyawan', 'hrd_penilaian.nik', '=', 'master_karyawan.nik');
         $query->join('departemen', 'hrd_penilaian.kode_dept', '=', 'departemen.kode_dept');
         $query->join('hrd_jabatan', 'hrd_penilaian.id_jabatan', '=', 'hrd_jabatan.id');
         $query->leftjoin('hrd_kesepakatanbersama', 'hrd_penilaian.kode_penilaian', '=', 'hrd_kesepakatanbersama.kode_penilaian');
+        $query->leftjoin('hrd_kontrak', 'hrd_penilaian.kode_penilaian', '=', 'hrd_kontrak.kode_penilaian');
         $query->where('hrd_penilaian.id_kategori_jabatan', $kategori_jabatan);
         $query->where('hrd_penilaian.id_perusahaan', $perusahaan);
         if ($request->filter == 1) {

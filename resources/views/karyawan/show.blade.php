@@ -93,7 +93,7 @@
                                         </tr>
                                         <tr>
                                             <th>Tempat / Tanggal Lahir</th>
-                                            <td>{{ $karyawan->tempat_lahir }} / {{ !empty($d->tgl_lahir) ? DateToIndo2($karyawan->tgl_lahir) : '' }}</td>
+                                            <td>{{ $karyawan->tempat_lahir }} / {{ !empty($karyawan->tgl_lahir) ? DateToIndo2($karyawan->tgl_lahir) : '' }}</td>
                                         </tr>
                                         <tr>
                                             <th>Jenis Kelamin</th>
@@ -155,7 +155,49 @@
                                     </table>
                                 </div>
                                 <div class="tab-pane" id="kontrak" aria-labelledby="kontrak-tab" role="tabpanel">
-                                    {{-- @livewire('kontrak.create',['nik' => $karyawan->nik]) --}}
+                                    <div class="table-responsive">
+                                        <table class="table table-hover-animation">
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th>No.</th>
+                                                    <th>No. Kontrak</th>
+                                                    <th>Tanggal</th>
+                                                    <th>NIK</th>
+                                                    <th>Nama Karyawan</th>
+                                                    <th>Jabatan</th>
+                                                    <th>Kantor</th>
+                                                    <th>Perusahaan</th>
+                                                    <th>Periode</th>
+                                                    <th>Ket</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($kontrak as $d)
+                                                <tr>
+                                                    <td>{{ $loop->iteration }}</td>
+                                                    <td>{{ $d->no_kontrak }}</td>
+                                                    <td>{{ DateToIndo2($d->dari) }}</td>
+                                                    <td>{{ $d->nik }}</td>
+                                                    <td>{{ $d->nama_karyawan }}</td>
+                                                    <td>{{ $d->nama_jabatan }}</td>
+                                                    <td>{{ $d->id_kantor }}</td>
+                                                    <td>{{ $d->id_perusahaan }}</td>
+                                                    <td>{{ date("d-m-Y",strtotime($d->dari)) }} s/d {{ date("d-m-Y",strtotime($d->sampai)) }}</td>
+                                                    <td>
+                                                        @php
+                                                        $start = date_create($d->dari);
+                                                        $end = date_create($d->sampai);
+                                                        @endphp
+                                                        {{ diffInMonths($start, $end). " bulan"; }}
+                                                    </td>
+
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+
+                                    </div>
                                 </div>
                                 <div class="tab-pane" id="dropdown31" role="tabpanel" aria-labelledby="dropdown31-tab" aria-expanded="false">
 
