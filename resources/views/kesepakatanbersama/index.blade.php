@@ -92,6 +92,9 @@
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             <a class="ml-1" href="/kesepakatanbersama/{{ Crypt::encrypt($d->no_kb) }}/cetak" target="_blank"><i class="feather icon-printer primary"></i></a>
+                                            @if (!empty($d->no_kontrak))
+                                            <a class="ml-1" href="/kontrak/{{ Crypt::encrypt($d->no_kontrak) }}/cetak" target="_blank"><i class="feather icon-printer success"></i></a>
+                                            @endif
                                             <a class="ml-1 edit" no_kb="{{ $d->no_kb }}" href="#"><i class="feather icon-edit success"></i></a>
                                             <a class="ml-1 potongan" no_kb="{{ $d->no_kb }}" href="#"><i class="feather icon-tag danger"></i></a>
                                             <form method="POST" class="deleteform" action="/kesepakatanbersama/{{Crypt::encrypt($d->no_kb)}}/delete">
@@ -102,7 +105,10 @@
                                                 </a>
                                             </form>
                                             @if ($jmlhari >= 30)
+                                            @if (empty($d->no_kontrak))
                                             <a href="#" nik="{{ $d->nik }}" kode_penilaian="{{ $d->kode_penilaian }}" class="danger buatkontrak ml-1">Buat Kontrak</a>
+                                            @endif
+
                                             @endif
 
                                         </div>

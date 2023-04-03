@@ -41,6 +41,18 @@
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
+                        <select name="kode_dept" id="kontrak_kode_dept" class="form-control">
+                            <option value="">Departemen</option>
+                            @foreach ($departemen as $d)
+                            <option {{ $kontrak->kode_dept == $d->kode_dept ? 'selected' : '' }} value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
                         <select name="id_jabatan" id="kontrak_id_jabatan" class="form-control">
                             <option value="">Jabatan Baru</option>
                             @foreach ($jabatan as $d)

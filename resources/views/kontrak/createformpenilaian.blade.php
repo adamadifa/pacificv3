@@ -53,6 +53,18 @@
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
+                        <select name="kode_dept" id="kontrak_kode_dept" class="form-control">
+                            <option value="">Departemen</option>
+                            @foreach ($departemen as $d)
+                            <option {{ $penilaian->kode_dept==$d->kode_dept ? 'selected' : '' }} value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
                         <select name="id_jabatan" id="kontrak_id_jabatan" class="form-control">
                             <option value="">Jabatan Baru</option>
                             @foreach ($jabatan as $d)
@@ -69,6 +81,18 @@
                             <option value="">Perusahaan</option>
                             <option value="MP" {{ $penilaian->id_perusahaan =="MP" ? "selected" :"" }}>MAKMUR PERMATA</option>
                             <option value="PCF" {{ $penilaian->id_perusahaan =="PCF" ? "selected" :"" }}>PACIFIC</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
+                        <select name="id_kantor" id="kontrak_id_kantor" class="form-control">
+                            <option value="">Kantor</option>
+                            @foreach ($kantor as $d)
+                            <option {{ $penilaian->id_kantor==$d->kode_cabang ? 'selected' : '' }} value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
+                            @endforeach
                         </select>
                     </div>
                 </div>
@@ -142,14 +166,19 @@
 <script src="{{asset('app-assets/vendors/js/forms/select/select2.full.min.js')}}"></script>
 <script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
 <script src="{{asset('app-assets/js/scripts/forms/select/form-select2.js')}}"></script>
+<script src="{{ asset('app-assets/js/external/selectize.js') }}"></script>
 <script>
     $(function() {
+        $("#kontrak_id_jabatan").selectize();
         $("#gaji_pokok,#t_jabatan,#t_masakerja,#t_tanggungjawab,#t_istri,#t_makan,#t_skill").maskMoney();
         $("#frmKontrak").submit(function(e) {
             //e.preventDefault();
             var dari = $("#kontrak_dari").val();
             var sampai = $("#kontrak_sampai").val();
             var id_jabatan = $("#kontrak_id_jabatan").val();
+            var kode_dept = $("#kontrak_kode_dept").val();
+            var id_perusahaan = $("#kontrak_id_perusahaan").val();
+            var id_kantor = $("#kontrak_id_kantor").val();
             var gaji_pokok = $("#gaji_pokok").val();
             var t_jabatan = $("#t_jabatan").val();
             var t_masakerja = $("#t_masakerja").val();
@@ -167,6 +196,16 @@
                     $("#kontrak_dari").focus();
                 });
                 return false;
+            } else if (kode_dept == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Departemen Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#kontrak_kode_dept").focus();
+                });
+                return false;
             } else if (id_jabatan == "") {
                 swal({
                     title: 'Oops'
@@ -175,6 +214,26 @@
                     , showConfirmButton: false
                 }).then(function() {
                     $("#kontrak_id_jabatan").focus();
+                });
+                return false;
+            } else if (id_perusahaan == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Perusahaan Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#kontrak_id_perusahaan").focus();
+                });
+                return false;
+            } else if (id_kantor == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Kantor Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#kontrak_id_kantor").focus();
                 });
                 return false;
             } else if (gaji_pokok == "") {

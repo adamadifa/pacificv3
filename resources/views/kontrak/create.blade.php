@@ -41,6 +41,18 @@
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
+                        <select name="kode_dept" id="kontrak_kode_dept" class="form-control">
+                            <option value="">Departemen</option>
+                            @foreach ($departemen as $d)
+                            <option value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="form-group">
                         <select name="id_jabatan" id="kontrak_id_jabatan" class="form-control">
                             <option value="">Jabatan Baru</option>
                             @foreach ($jabatan as $d)
@@ -73,6 +85,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-4">
                     <label for="" class="form-label">Gaji Pokok</label>
@@ -156,6 +169,7 @@
             var id_jabatan = $("#kontrak_id_jabatan").val();
             var id_perusahaan = $("#kontrak_id_perusahaan").val();
             var id_kantor = $("#kontrak_id_kantor").val();
+            var kode_dept = $("#kontrak_kode_dept").val();
             var gaji_pokok = $("#gaji_pokok").val();
             var t_jabatan = $("#t_jabatan").val();
             var t_masakerja = $("#t_masakerja").val();
@@ -180,6 +194,16 @@
                     , showConfirmButton: false
                 }).then(function() {
                     $("#kontrak_dari").focus();
+                });
+                return false;
+            } else if (kode_dept == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Departemen Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#kontrak_kode_dept").focus();
                 });
                 return false;
             } else if (id_jabatan == "") {

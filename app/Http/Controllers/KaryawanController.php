@@ -178,9 +178,9 @@ class KaryawanController extends Controller
 
         $kontrak = DB::table('hrd_kontrak')
             ->select('hrd_kontrak.*', 'nama_karyawan', 'nama_jabatan')
-            ->join('hrd_jabatan', 'hrd_kontrak.id_jabatan', '=', 'hrd_jabatan.id')
-            ->join('master_karyawan', 'hrd_kontrak.nik', '=', 'master_karyawan.nik')
-            ->orderBy('hrd_kontrak.no_kontrak', 'desc')
+            ->leftjoin('hrd_jabatan', 'hrd_kontrak.id_jabatan', '=', 'hrd_jabatan.id')
+            ->leftjoin('master_karyawan', 'hrd_kontrak.nik', '=', 'master_karyawan.nik')
+            ->orderBy('hrd_kontrak.dari', 'asc')
             ->where('hrd_kontrak.nik', $nik)->orderBy('dari')->get();
         return view('karyawan.show', compact('karyawan', 'kontrak'));
     }

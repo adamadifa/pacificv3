@@ -43,7 +43,9 @@ class KontrakController extends Controller
         $jabatan = DB::table('hrd_jabatan')->orderBy('nama_jabatan')->get();
         $kantor = DB::table('cabang')->orderBy('kode_cabang')->get();
         $karyawan = DB::table('master_karyawan')->orderBy('nama_karyawan')->get();
-        return view('kontrak.create', compact('kantor', 'jabatan', 'karyawan'));
+        $departemen = DB::table('departemen')->where('status_pengajuan', 0)->get();
+
+        return view('kontrak.create', compact('kantor', 'jabatan', 'karyawan', 'departemen', 'kantor'));
     }
 
     public function edit(Request $request)
@@ -51,24 +53,28 @@ class KontrakController extends Controller
         $no_kontrak = $request->no_kontrak;
         $jabatan = DB::table('hrd_jabatan')->orderBy('nama_jabatan')->get();
         $kantor = DB::table('cabang')->orderBy('kode_cabang')->get();
+        $departemen = DB::table('departemen')->where('status_pengajuan', 0)->get();
+
         $karyawan = DB::table('master_karyawan')->orderBy('nama_karyawan')->get();
         $kontrak = DB::table('hrd_kontrak')->where('no_kontrak', $no_kontrak)->first();
         $gaji = DB::table('hrd_mastergaji')->where('no_kontrak', $no_kontrak)->first();
-        return view('kontrak.edit', compact('kantor', 'jabatan', 'karyawan', 'kontrak', 'gaji'));
+        return view('kontrak.edit', compact('kantor', 'jabatan', 'karyawan', 'kontrak', 'gaji', 'departemen'));
     }
 
     public function createformpenilaian(Request $request)
     {
         $kode_penilaian = $request->kode_penilaian;
         $penilaian = DB::table('hrd_penilaian')
-            ->select('kode_penilaian', 'hrd_penilaian.nik', 'nama_karyawan', 'hrd_penilaian.id_jabatan', 'nama_jabatan', 'hrd_penilaian.id_perusahaan', 'hrd_penilaian.masa_kontrak_kerja')
+            ->select('kode_penilaian', 'hrd_penilaian.nik', 'nama_karyawan', 'hrd_penilaian.id_jabatan', 'nama_jabatan', 'hrd_penilaian.id_perusahaan', 'hrd_penilaian.masa_kontrak_kerja', 'hrd_penilaian.kode_dept', 'hrd_penilaian.id_kantor')
             ->join('master_karyawan', 'hrd_penilaian.nik', '=', 'master_karyawan.nik')
             ->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
             ->where('kode_penilaian', $kode_penilaian)
             ->first();
         $jabatan = DB::table('hrd_jabatan')->orderBy('nama_jabatan')->get();
         $gaji = DB::table('hrd_mastergaji')->where('nik', $penilaian->nik)->orderBy('tgl_berlaku', 'desc')->first();
-        return view('kontrak.createformpenilaian', compact('penilaian', 'jabatan', 'gaji'));
+        $departemen = DB::table('departemen')->where('status_pengajuan', 0)->get();
+        $kantor = DB::table('cabang')->orderBy('kode_cabang')->get();
+        return view('kontrak.createformpenilaian', compact('penilaian', 'jabatan', 'gaji', 'departemen', 'kantor'));
     }
 
     public function store(Request $request)
@@ -80,13 +86,14 @@ class KontrakController extends Controller
         $id_jabatan = $request->id_jabatan;
         $id_perusahaan = $request->id_perusahaan;
         $id_kantor = $request->id_kantor;
-        $gaji_pokok = str_replace(".", "", $request->gaji_pokok);
-        $t_jabatan = str_replace(".", "", $request->t_jabatan);
-        $t_masakerja = str_replace(".", "", $request->t_masakerja);
-        $t_tanggungjawab = str_replace(".", "", $request->t_tanggungjawab);
-        $t_makan = str_replace(".", "", $request->t_makan);
-        $t_istri = str_replace(".", "", $request->t_istri);
-        $t_skill = str_replace(".", "", $request->t_skill);
+        $kode_dept = $request->kode_dept;
+        $gaji_pokok = isset($request->gaji_pokok) ? str_replace(".", "", $request->gaji_pokok) : 0;
+        $t_jabatan = isset($request->t_jabatan) ? str_replace(".", "", $request->t_jabatan) : 0;
+        $t_masakerja = isset($request->t_masakerja) ? str_replace(".", "", $request->t_masakerja) : 0;
+        $t_tanggungjawab = isset($request->t_tanggungjawab) ? str_replace(".", "", $request->t_tanggungjawab) : 0;
+        $t_makan = isset($request->t_makan) ? str_replace(".", "", $request->t_makan) : 0;
+        $t_istri = isset($request->t_istri) ? str_replace(".", "", $request->t_istri) : 0;
+        $t_skill = isset($request->t_skill) ?  str_replace(".", "", $request->t_skill) : 0;
 
         $tanggal = $request->kontrak_dari;
         $tgl = explode("-", $tanggal);
@@ -118,7 +125,8 @@ class KontrakController extends Controller
                 'sampai' => $sampai,
                 'id_jabatan' => $id_jabatan,
                 'id_perusahaan' => $id_perusahaan,
-                'id_kantor' => $id_kantor
+                'id_kantor' => $id_kantor,
+                'kode_dept' => $kode_dept
             ]);
 
             DB::table('hrd_mastergaji')->insert([
@@ -155,6 +163,7 @@ class KontrakController extends Controller
         $sampai = $request->kontrak_sampai;
         $id_jabatan = $request->id_jabatan;
         $id_perusahaan = $request->id_perusahaan;
+        $kode_dept = $request->kode_dept;
         $id_kantor = $request->id_kantor;
         $gaji_pokok = str_replace(".", "", $request->gaji_pokok);
         $t_jabatan = str_replace(".", "", $request->t_jabatan);
@@ -178,7 +187,8 @@ class KontrakController extends Controller
                     'sampai' => $sampai,
                     'id_jabatan' => $id_jabatan,
                     'id_perusahaan' => $id_perusahaan,
-                    'id_kantor' => $id_kantor
+                    'id_kantor' => $id_kantor,
+                    'kode_dept' => $kode_dept
                 ]);
 
             DB::table('hrd_mastergaji')
@@ -210,7 +220,9 @@ class KontrakController extends Controller
         $dari = $request->kontrak_dari;
         $sampai = $request->kontrak_sampai;
         $id_jabatan = $request->id_jabatan;
+        $kode_dept = $request->kode_dept;
         $id_perusahaan = $request->id_perusahaan;
+        $id_kantor = $request->id_kantor;
 
         $gaji_pokok = isset($request->gaji_pokok) ?  str_replace(".", "", $request->gaji_pokok) : 0;
         $t_jabatan = isset($request->t_jabatan) ?  str_replace(".", "", $request->t_jabatan) : 0;
@@ -250,6 +262,8 @@ class KontrakController extends Controller
                 'sampai' => $sampai,
                 'id_jabatan' => $id_jabatan,
                 'id_perusahaan' => $id_perusahaan,
+                'id_kantor' => $id_kantor,
+                'kode_dept' => $kode_dept,
                 'kode_penilaian' => $kode_penilaian
             ]);
 
@@ -305,14 +319,16 @@ class KontrakController extends Controller
     {
         $kode_penilaian = $request->kode_penilaian;
         $penilaian = DB::table('hrd_penilaian')
-            ->select('kode_penilaian', 'hrd_penilaian.nik', 'nama_karyawan', 'hrd_penilaian.id_jabatan', 'nama_jabatan', 'hrd_penilaian.id_perusahaan', 'hrd_penilaian.masa_kontrak_kerja')
+            ->select('kode_penilaian', 'hrd_penilaian.nik', 'nama_karyawan', 'hrd_penilaian.id_jabatan', 'nama_jabatan', 'hrd_penilaian.id_perusahaan', 'hrd_penilaian.masa_kontrak_kerja', 'hrd_penilaian.kode_dept', 'hrd_penilaian.id_kantor')
             ->join('master_karyawan', 'hrd_penilaian.nik', '=', 'master_karyawan.nik')
             ->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
             ->where('kode_penilaian', $kode_penilaian)
             ->first();
         $jabatan = DB::table('hrd_jabatan')->orderBy('nama_jabatan')->get();
+        $departemen = DB::table('departemen')->where('status_pengajuan', 0)->get();
+        $kantor = DB::table('cabang')->orderBy('kode_cabang')->get();
         $gaji = DB::table('hrd_mastergaji')->where('nik', $penilaian->nik)->orderBy('tgl_berlaku', 'desc')->first();
-        return view('kontrak.createformpenilaian', compact('penilaian', 'jabatan', 'gaji'));
+        return view('kontrak.createformpenilaian', compact('penilaian', 'jabatan', 'gaji', 'departemen', 'kantor'));
     }
 
     public function delete($no_kontrak)
