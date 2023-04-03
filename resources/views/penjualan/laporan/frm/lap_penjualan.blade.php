@@ -83,7 +83,7 @@
                                                     <option value="standar">Standar</option>
                                                     <option value="rekapperpelanggan">Rekap Per Pelanggan</option>
                                                     <option value="formatsatubaris">Format Satu Baris</option>
-                                                    @if (Auth::user()->kode_cabang=="BGR")
+                                                    @if (Auth::user()->kode_cabang=="BGR" || Auth::user()->kode_cabang=="PCF")
                                                     <option value="formatsatubarislastsalesman">Format Satu Baris (Salesman Terakhir)</option>
                                                     @endif
                                                     <option value="komisi">Format Komisi</option>
