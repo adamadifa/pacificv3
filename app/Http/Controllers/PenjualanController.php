@@ -3622,7 +3622,7 @@ class PenjualanController extends Controller
                 );
 
                 $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
-                $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+                $query->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
                 $query->whereBetween('tgltransaksi', [$dari, $sampai]);
                 if ($request->kode_cabang != "") {
                     $query->where('karyawan.kode_cabang', $request->kode_cabang);
