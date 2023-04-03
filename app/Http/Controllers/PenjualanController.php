@@ -3628,7 +3628,7 @@ class PenjualanController extends Controller
                     $query->where('karyawan.kode_cabang', $request->kode_cabang);
                 }
                 if ($request->id_karyawan != "") {
-                    $query->where('pelanggan.id_karyawan', $request->id_karyawan);
+                    $query->where('pelanggan.id_sales', $request->id_karyawan);
                 }
 
                 if ($request->kode_pelanggan != "") {
