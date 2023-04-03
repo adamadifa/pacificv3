@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cabang;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -13,6 +14,8 @@ class KaryawanController extends Controller
 {
     public function index(Request $request)
     {
+        $level = Auth::user()->level;
+        $cabang = Auth::user()->kode_cabang;
         $nama_karyawan = $request->nama_karyawan_search;
         $query = Karyawan::query();
         $query->select('nik', 'nama_karyawan', 'tgl_masuk', 'nama_dept', 'jenis_kelamin', 'nama_jabatan', 'id_perusahaan', 'id_kantor', 'klasifikasi', 'status_karyawan');
@@ -37,6 +40,8 @@ class KaryawanController extends Controller
         if (!empty($request->grup_search)) {
             $query->where('master_karyawan.grup', $request->grup_search);
         }
+
+
         $query->orderBy('nama_karyawan');
         $karyawan = $query->paginate(15);
         $karyawan->appends($request->all());

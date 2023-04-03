@@ -83,6 +83,7 @@
                                                     <option value="standar">Standar</option>
                                                     <option value="rekapperpelanggan">Rekap Per Pelanggan</option>
                                                     <option value="formatsatubaris">Format Satu Baris</option>
+                                                    <option value="formatsatubarislastsalesman">Format Satu Baris (Salesman Terakhir)</option>
                                                     <option value="komisi">Format Komisi</option>
                                                 </select>
                                             </div>
