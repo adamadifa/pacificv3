@@ -58,6 +58,8 @@ class DashboardController extends Controller
             return $this->dashboardgudangcabang();
         } else if (Auth::user()->level == "salesman") {
             return $this->dashboardsalesman();
+        } else if (Auth::user()->level == "manager hrd") {
+            return $this->dashboardhrd();
         } else {
             return $this->dashboardadminkaskecil();
         }
@@ -398,6 +400,27 @@ class DashboardController extends Controller
     public function dashboardadminkaskecil()
     {
         return view('dashboard.adminkaskecil');
+    }
+
+    public function dashboardhrd()
+    {
+        $karyawan = DB::table('master_karyawan')
+            ->selectRaw('COUNT(nik) as jmlkaryawan,
+            SUM(IF(status_karyawan="T",1,0)) as jmlkaryawantetap,
+            SUM(IF(status_karyawan="K",1,0)) as jmlkaryawankontrak,
+            SUM(IF(status_karyawan="O",1,0)) as jmlkaryawanos')
+            ->first();
+
+        $hariini = date("Y-m-d");
+        $qkontrak_lewat = DB::table('hrd_kontrak')
+            ->selectRaw('hrd_kontrak.nik, nama_karyawan, nama_jabatan, hrd_kontrak.kode_dept, sampai, hrd_kontrak.id_perusahaan, hrd_kontrak.id_kantor')
+            ->join('master_karyawan', 'hrd_kontrak.nik', '=', 'master_karyawan.nik')
+            ->leftjoin('hrd_jabatan', 'hrd_kontrak.id_jabatan', '=', 'hrd_jabatan.id')
+            ->where('sampai', '<', $hariini);
+        $kontrak_lewat = $qkontrak_lewat->get();
+
+
+        return view('dashboard.hrd', compact('karyawan', 'kontrak_lewat'));
     }
 
     public function dashboardsalesman()

@@ -72,6 +72,10 @@ class KaryawanController extends Controller
         }
 
 
+        if ($level == "manager marketing") {
+            $query->where('master_karyawan.kode_dept', 'MKT');
+        }
+
         $query->orderBy('nama_karyawan');
         $karyawan = $query->paginate(15);
         $karyawan->appends($request->all());

@@ -1146,8 +1146,7 @@ class TargetkomisiController extends Controller
                     AND omset_bulan > '$bulan'
                     AND omset_tahun >= '$tahun'
                 GROUP BY
-                    giro.id_karyawan,
-                    hb.id_karyawan
+                IFNULL( hb.id_karyawan, giro.id_karyawan )
                 ) gmnow ON (karyawan.id_karyawan = gmnow.id_karyawan)
 
                 LEFT JOIN (
