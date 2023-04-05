@@ -162,13 +162,13 @@
                                                     <th>No.</th>
                                                     <th>No. Kontrak</th>
                                                     <th>Tanggal</th>
-                                                    <th>NIK</th>
-                                                    <th>Nama Karyawan</th>
                                                     <th>Jabatan</th>
                                                     <th>Kantor</th>
                                                     <th>Perusahaan</th>
                                                     <th>Periode</th>
                                                     <th>Ket</th>
+                                                    <th>Status</th>
+                                                    <th></th>
 
                                                 </tr>
                                             </thead>
@@ -178,8 +178,6 @@
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $d->no_kontrak }}</td>
                                                     <td>{{ DateToIndo2($d->dari) }}</td>
-                                                    <td>{{ $d->nik }}</td>
-                                                    <td>{{ $d->nama_karyawan }}</td>
                                                     <td>{{ $d->nama_jabatan }}</td>
                                                     <td>{{ $d->id_kantor }}</td>
                                                     <td>{{ $d->id_perusahaan }}</td>
@@ -190,6 +188,18 @@
                                                         $end = date_create($d->sampai);
                                                         @endphp
                                                         {{ diffInMonths($start, $end). " bulan"; }}
+                                                    </td>
+                                                    <td>
+                                                        @if ($d->status==1)
+                                                        <i class="fa fa-circle success"></i>
+                                                        @else
+                                                        <i class="fa fa-circle danger"></i>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if (!empty($d->id_jabatan))
+                                                        <a class="ml-1" href="/kontrak/{{ Crypt::encrypt($d->no_kontrak) }}/cetak" target="_blank"><i class="feather icon-printer primary"></i></a>
+                                                        @endif
                                                     </td>
 
                                                 </tr>

@@ -408,19 +408,88 @@ class DashboardController extends Controller
             ->selectRaw('COUNT(nik) as jmlkaryawan,
             SUM(IF(status_karyawan="T",1,0)) as jmlkaryawantetap,
             SUM(IF(status_karyawan="K",1,0)) as jmlkaryawankontrak,
-            SUM(IF(status_karyawan="O",1,0)) as jmlkaryawanos')
+            SUM(IF(status_karyawan="O",1,0)) as jmlkaryawanos,
+            SUM(IF(jenis_kelamin="1",1,0)) as jml_lakilaki,
+            SUM(IF(jenis_kelamin="2",1,0)) as jml_perempuan,
+            SUM(IF(id_perusahaan="MP",1,0)) as jml_mp,
+            SUM(IF(id_perusahaan="PCF",1,0)) as jml_pcf')
             ->first();
 
+        $rekapdepartemen = DB::table('master_karyawan')
+            ->selectRaw('master_karyawan.kode_dept,nama_dept,COUNT(nik) as jmlkaryawan')
+            ->join('departemen', 'master_karyawan.kode_dept', '=', 'departemen.kode_dept')
+            ->groupByRaw('master_karyawan.kode_dept,nama_dept')
+            ->get();
+
+        $rekapkantor = DB::table('master_karyawan')
+            ->selectRaw('master_karyawan.id_kantor,nama_cabang,COUNT(nik) as jmlkaryawan')
+            ->join('cabang', 'master_karyawan.id_kantor', '=', 'cabang.kode_cabang')
+            ->groupByRaw('master_karyawan.id_kantor,nama_cabang')
+            ->get();
+
         $hariini = date("Y-m-d");
+        $bulanini = date("m");
+        $tahunini = date("Y");
+        $bulandepan = date("m") + 1 > 12 ? (date("m") + 1) - 12 : date("m") + 1;
+        $tahun2 = $bulandepan > 12 ? $tahunini + 1 : $tahunini;
+        $duabulan = date("m") + 2 > 12 ? (date("m") + 2) - 12 : date("m") + 2;
+        $tahun3 = $duabulan > 12 ? $tahunini + 1 : $tahunini;
         $qkontrak_lewat = DB::table('hrd_kontrak')
-            ->selectRaw('hrd_kontrak.nik, nama_karyawan, nama_jabatan, hrd_kontrak.kode_dept, sampai, hrd_kontrak.id_perusahaan, hrd_kontrak.id_kantor')
+            ->selectRaw('hrd_kontrak.nik, nama_karyawan, IFNULL(jb.nama_jabatan,jb2.nama_jabatan) as nama_jabatan, IFNULL(hrd_kontrak.kode_dept,master_karyawan.kode_dept) as kode_dept, sampai, IFNULL(hrd_kontrak.id_perusahaan,master_karyawan.id_perusahaan) as id_perusahaan, IFNULL(hrd_kontrak.id_kantor,master_karyawan.id_kantor) as id_kantor')
             ->join('master_karyawan', 'hrd_kontrak.nik', '=', 'master_karyawan.nik')
-            ->leftjoin('hrd_jabatan', 'hrd_kontrak.id_jabatan', '=', 'hrd_jabatan.id')
-            ->where('sampai', '<', $hariini);
+            ->leftjoin('hrd_jabatan as jb', 'hrd_kontrak.id_jabatan', '=', 'jb.id')
+            ->leftjoin('hrd_jabatan as jb2', 'master_karyawan.id_jabatan', '=', 'jb2.id')
+            ->where('sampai', '<', $hariini)
+            ->where('status', 1)
+            ->orderBy('sampai');
+
+        $qkontrak_bulanini = DB::table('hrd_kontrak')
+            ->selectRaw('hrd_kontrak.nik, nama_karyawan, IFNULL(jb.nama_jabatan,jb2.nama_jabatan) as nama_jabatan, IFNULL(hrd_kontrak.kode_dept,master_karyawan.kode_dept) as kode_dept, sampai, IFNULL(hrd_kontrak.id_perusahaan,master_karyawan.id_perusahaan) as id_perusahaan, IFNULL(hrd_kontrak.id_kantor,master_karyawan.id_kantor) as id_kantor')
+            ->join('master_karyawan', 'hrd_kontrak.nik', '=', 'master_karyawan.nik')
+            ->leftjoin('hrd_jabatan as jb', 'hrd_kontrak.id_jabatan', '=', 'jb.id')
+            ->leftjoin('hrd_jabatan as jb2', 'master_karyawan.id_jabatan', '=', 'jb2.id')
+            ->whereRaw('MONTH(sampai)=' . $bulanini)
+            ->whereRaw('YEAR(sampai)=' . $tahunini)
+            ->where('status', 1)
+            ->orderBy('sampai');
+
+
+        $qkontrak_bulandepan = DB::table('hrd_kontrak')
+            ->selectRaw('hrd_kontrak.nik, nama_karyawan, IFNULL(jb.nama_jabatan,jb2.nama_jabatan) as nama_jabatan, IFNULL(hrd_kontrak.kode_dept,master_karyawan.kode_dept) as kode_dept, sampai, IFNULL(hrd_kontrak.id_perusahaan,master_karyawan.id_perusahaan) as id_perusahaan, IFNULL(hrd_kontrak.id_kantor,master_karyawan.id_kantor) as id_kantor')
+            ->join('master_karyawan', 'hrd_kontrak.nik', '=', 'master_karyawan.nik')
+            ->leftjoin('hrd_jabatan as jb', 'hrd_kontrak.id_jabatan', '=', 'jb.id')
+            ->leftjoin('hrd_jabatan as jb2', 'master_karyawan.id_jabatan', '=', 'jb2.id')
+            ->whereRaw('MONTH(sampai)=' . $bulandepan)
+            ->whereRaw('YEAR(sampai)=' . $tahun2)
+            ->where('status', 1)
+            ->orderBy('sampai');
+
+
+        $qkontrak_duabulan = DB::table('hrd_kontrak')
+            ->selectRaw('hrd_kontrak.nik, nama_karyawan, IFNULL(jb.nama_jabatan,jb2.nama_jabatan) as nama_jabatan, IFNULL(hrd_kontrak.kode_dept,master_karyawan.kode_dept) as kode_dept, sampai, IFNULL(hrd_kontrak.id_perusahaan,master_karyawan.id_perusahaan) as id_perusahaan, IFNULL(hrd_kontrak.id_kantor,master_karyawan.id_kantor) as id_kantor')
+            ->join('master_karyawan', 'hrd_kontrak.nik', '=', 'master_karyawan.nik')
+            ->leftjoin('hrd_jabatan as jb', 'hrd_kontrak.id_jabatan', '=', 'jb.id')
+            ->leftjoin('hrd_jabatan as jb2', 'master_karyawan.id_jabatan', '=', 'jb2.id')
+            ->whereRaw('MONTH(sampai)=' . $duabulan)
+            ->whereRaw('YEAR(sampai)=' . $tahun3)
+            ->where('status', 1)
+            ->orderBy('sampai');
+
+
         $kontrak_lewat = $qkontrak_lewat->get();
+        $jml_kontrak_lewat = $qkontrak_lewat->count();
+
+        $kontrak_bulanini = $qkontrak_bulanini->get();
+        $jml_kontrak_bulanini = $qkontrak_bulanini->count();
+
+        $kontrak_bulandepan = $qkontrak_bulandepan->get();
+        $jml_kontrak_bulandepan = $qkontrak_bulandepan->count();
+
+        $kontrak_duabulan = $qkontrak_duabulan->get();
+        $jml_kontrak_duabulan = $qkontrak_duabulan->count();
 
 
-        return view('dashboard.hrd', compact('karyawan', 'kontrak_lewat'));
+        return view('dashboard.hrd', compact('karyawan', 'kontrak_lewat', 'jml_kontrak_lewat', 'kontrak_bulanini', 'jml_kontrak_bulanini', 'hariini', 'kontrak_bulandepan', 'jml_kontrak_bulandepan', 'kontrak_duabulan', 'jml_kontrak_duabulan', 'rekapdepartemen', 'rekapkantor'));
     }
 
     public function dashboardsalesman()
