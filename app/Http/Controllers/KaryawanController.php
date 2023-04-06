@@ -18,7 +18,7 @@ class KaryawanController extends Controller
         $cabang = Auth::user()->kode_cabang;
         $nama_karyawan = $request->nama_karyawan_search;
         $query = Karyawan::query();
-        $query->select('nik', 'nama_karyawan', 'tgl_masuk', 'nama_dept', 'jenis_kelamin', 'nama_jabatan', 'id_perusahaan', 'id_kantor', 'klasifikasi', 'status_karyawan');
+        $query->select('nik', 'nama_karyawan', 'tgl_masuk', 'master_karyawan.kode_dept', 'nama_dept', 'jenis_kelamin', 'nama_jabatan', 'id_perusahaan', 'id_kantor', 'klasifikasi', 'status_karyawan');
         $query->join('departemen', 'master_karyawan.kode_dept', '=', 'departemen.kode_dept');
         $query->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
         if (!empty($nama_karyawan)) {
@@ -68,12 +68,18 @@ class KaryawanController extends Controller
         }
 
         if ($level == "emf") {
-            $query->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GA', 'GDG', 'PDQ']);
+            $query->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GAF', 'GDG', 'PDQ']);
         }
 
 
         if ($level == "manager marketing") {
             $query->where('master_karyawan.kode_dept', 'MKT');
+        }
+
+        if ($level == "rsm") {
+            $list_wilayah = Auth::user()->wilayah != null ? unserialize(Auth::user()->wilayah) : NULL;
+            $wilayah = $list_wilayah != null ? "'" . implode("', '", $list_wilayah) . "'" : '';
+            $query->whereIn('master_karyawan.id_kantor', $list_wilayah);
         }
 
         $query->orderBy('nama_karyawan');

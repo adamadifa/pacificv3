@@ -113,8 +113,17 @@ class PinjamanController extends Controller
         $cekpinjaman = $query->first();
 
         $kontrak = DB::table('hrd_kontrak')->where('nik', $nik)->orderBy('dari', 'desc')->first();
+
+        $start = date_create($karyawan->tgl_masuk);
+        $end = date_create($hariini);
+
+        $cekmasakerja =  diffInMonths($start, $end);
+
+
         if ($sp != null) {
             return view('pinjaman.notifsp', compact('sp'));
+        } else if ($karyawan->status_karyawan == "K" && $cekmasakerja < 15) {
+            return view('pinjaman.notifmasakerjakurang', compact('cekmasakerja'));
         } else {
             if ($cekpinjaman != null) {
                 $jumlah_pinjaman = $cekpinjaman->jumlah_pinjaman;

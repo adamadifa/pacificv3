@@ -51,7 +51,10 @@
                             <form action="/karyawan">
 
                                 <div class="row">
-                                    @if (Auth::user()->kode_cabang=="PCF")
+                                    @php
+                                    $level_search = ["admin","manager hrd","manager accounting","direktur"];
+                                    @endphp
+                                    @if (Auth::user()->kode_cabang=="PCF" && in_array($level,$level_search))
                                     <div class="col-lg-2 col-sm-12">
                                         <x-inputtext label="Nama Karyawan" field="nama_karyawan_search" icon="feather icon-users" value="{{ Request('nama_karyawan_search') }}" />
                                     </div>
@@ -162,9 +165,85 @@
                                                     </form>
                                                     @endif
                                                     @if (in_array($level,$karyawan_pinjaman))
+                                                    @if ($level == "kepala admin")
+                                                    @if ($d->nama_jabatan!="KEPALA ADMIN")
                                                     <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukanpinjaman"><i class="feather icon-external-link primary ml-1"></i></a>
 
                                                     <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukankasbon"><i class="feather icon-external-link warning ml-1"></i></a>
+                                                    @endif
+                                                    @endif
+
+                                                    @if ($level == "kepala penjualan")
+                                                    @if ($d->nama_jabatan!="KEPALA PENJUALAN")
+                                                    <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukanpinjaman"><i class="feather icon-external-link primary ml-1"></i></a>
+
+                                                    <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukankasbon"><i class="feather icon-external-link warning ml-1"></i></a>
+                                                    @endif
+                                                    @endif
+
+                                                    @if ($level == "manager pembelian" || $level=="manager produksi" || $level=="manager ga")
+                                                    @if ($d->nama_jabatan!="MANAGER")
+                                                    @if ($d->status_karyawan != "O")
+                                                    <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukanpinjaman"><i class="feather icon-external-link primary ml-1"></i></a>
+                                                    @endif
+
+
+                                                    <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukankasbon"><i class="feather icon-external-link warning ml-1"></i></a>
+                                                    @endif
+                                                    @endif
+
+
+                                                    @if ($level == "kepala gudang")
+                                                    @if ($d->nama_jabatan!="ASST. MANAGER")
+                                                    <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukanpinjaman"><i class="feather icon-external-link primary ml-1"></i></a>
+
+                                                    <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukankasbon"><i class="feather icon-external-link warning ml-1"></i></a>
+                                                    @endif
+                                                    @endif
+                                                    @php
+                                                    $level_emf = ["ASST. MANAGER","MANAGER"];
+                                                    @endphp
+                                                    @if ($level == "emf")
+                                                    @if (in_array($d->nama_jabatan,$level_emf))
+                                                    <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukanpinjaman"><i class="feather icon-external-link primary ml-1"></i></a>
+
+                                                    <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukankasbon"><i class="feather icon-external-link warning ml-1"></i></a>
+                                                    @endif
+                                                    @endif
+
+
+                                                    @if ($level == "manager marketing")
+                                                    @if ($d->nama_jabatan == "REGIONAL SALES MANAGER")
+                                                    <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukanpinjaman"><i class="feather icon-external-link primary ml-1"></i></a>
+
+                                                    <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukankasbon"><i class="feather icon-external-link warning ml-1"></i></a>
+                                                    @endif
+                                                    @endif
+
+
+                                                    @if (Auth::user()->id=="57")
+                                                    @if ($d->kode_dept == "AKT" || $d->kode_dept=="KEU")
+                                                    @if ($d->id_kantor=="PST" || $d->nama_jabatan=="KEPALA ADMIN")
+                                                    @if ($d->nama_jabatan != "MANAGER")
+                                                    <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukanpinjaman"><i class="feather icon-external-link primary ml-1"></i></a>
+
+                                                    <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukankasbon"><i class="feather icon-external-link warning ml-1"></i></a>
+                                                    @endif
+
+                                                    @endif
+
+                                                    @endif
+                                                    @endif
+
+
+                                                    @if (Auth::user()->id=="20")
+                                                    @if ($d->kode_dept =="KEU" && $d->nama_jabatan=="MANAGER")
+                                                    <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukanpinjaman"><i class="feather icon-external-link primary ml-1"></i></a>
+
+                                                    <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukankasbon"><i class="feather icon-external-link warning ml-1"></i></a>
+                                                    @endif
+                                                    @endif
+
                                                     @endif
                                                 </div>
                                             </td>
