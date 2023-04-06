@@ -480,12 +480,10 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg-6 col-sm-12">
-                                        <x-inputtext label="Latitude" field="latitude" icon="feather icon-map-pin" value="{{ $data->latitude }}" />
+                                    <div class="col-lg-12 col-sm-12">
+                                        <x-inputtext label="Lokasi" field="lokasi" icon="feather icon-map-pin" value="{{ $data->latitude }},{{ $data->longitude }}" />
                                     </div>
-                                    <div class="col-lg-6 col-sm-12">
-                                        <x-inputtext label="Longitude" field="longitude" icon="feather icon-map-pin" value="{{ $data->longitude }}" />
-                                    </div>
+
                                 </div>
                                 <div class="row">
                                     <div class="col-12">

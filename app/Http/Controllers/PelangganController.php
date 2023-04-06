@@ -364,6 +364,10 @@ class PelangganController extends Controller
         //     $request->file('foto', $image),
         // );
 
+        $lokasi = $request->lokasi;
+        $lok = explode(",", $lokasi);
+        $latitude = $lok[0];
+        $longitude = $lok[1];
         $simpan = DB::table('pelanggan')->insert([
             'kode_pelanggan' => $kodepelanggan,
             'nik' => $request->nik,
@@ -388,8 +392,8 @@ class PelangganController extends Controller
             'lama_langganan' => $request->lama_langganan,
             'jaminan' => $request->jaminan,
             'omset_toko' => $request->omset_toko,
-            'latitude' => $request->latitude,
-            'longitude' => $request->longitude,
+            'latitude' => $latitude,
+            'longitude' => $longitude,
             'foto' => $foto
         ]);
 
@@ -480,7 +484,10 @@ class PelangganController extends Controller
         } else {
             $foto = $file;
         }
-
+        $lokasi = $request->lokasi;
+        $lok = explode(",", $lokasi);
+        $latitude = $lok[0];
+        $longitude = $lok[1];
         $simpan = DB::table('pelanggan')
             ->where('kode_pelanggan', $kode_pelanggan)
             ->update([
@@ -505,8 +512,8 @@ class PelangganController extends Controller
                 'cara_pembayaran' => $request->cara_pembayaran,
                 'lama_langganan' => $request->lama_langganan,
                 'jaminan' => $request->jaminan,
-                'latitude' => $request->latitude,
-                'longitude' => $request->longitude,
+                'latitude' => $latitude,
+                'longitude' => $longitude,
                 'foto' => $foto,
                 'omset_toko' => str_replace(".", "", $request->omset_toko)
             ]);

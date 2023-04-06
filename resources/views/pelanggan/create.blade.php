@@ -362,12 +362,10 @@
                                     </div>
                                 </div>
                                 <div class="row {{ $level=='salesman' ? 'd-none' : '' }}">
-                                    <div class="col-lg-6 col-sm-12">
-                                        <x-inputtext label="Latitude" field="latitude" icon="feather icon-map-pin" />
+                                    <div class="col-lg-12 col-sm-12">
+                                        <x-inputtext label="Lokasi" field="lokasi" icon="feather icon-map-pin" />
                                     </div>
-                                    <div class="col-lg-6 col-sm-12">
-                                        <x-inputtext label="Longitude" field="longitude" icon="feather icon-map-pin" />
-                                    </div>
+
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
