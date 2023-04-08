@@ -469,7 +469,7 @@ class GlobalProvider extends ServiceProvider
             //Mutasi Bank
             $mutasibank_view = ['admin', 'kepala admin', 'admin pusat', 'admin kas kecil', 'audit', 'admin kas', 'manager accounting', 'admin kas dan penjualan', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil', 'admin pajak 2', 'admin penjualan kasir dan kas kecil'];
 
-            $pinjaman_view = ['admin'];
+            $pinjaman_view = ['admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'manager accounting', 'manager ga', 'emf', 'manager marketing', 'rsm'];
             $pembayaranpinjaman_view = ['admin'];
 
             $kasbon_view = ['admin'];

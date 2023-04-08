@@ -59,6 +59,12 @@ class PinjamanController extends Controller
         if (!empty($request->nama_karyawan)) {
             $query->where('nama_karyawan', 'like', '%' . $request->nama_karyawan . '%');
         }
+
+        if ($request->status === "1" || $request->status === 0) {
+            $query->where('pinjaman.status', $request->status);
+        }
+
+
         $query->orderBy('no_pinjaman', 'desc');
         $pinjaman = $query->paginate(15);
         $pinjaman->appends($request->all());
@@ -348,5 +354,66 @@ class PinjamanController extends Controller
             ->orderBy('tgl_bayar', 'desc')
             ->get();
         return view('pinjaman.gethistoribayar', compact('histori', 'no_pinjaman'));
+    }
+
+    public function approve($no_pinjaman)
+    {
+        $no_pinjaman = Crypt::decrypt($no_pinjaman);
+        $pinjaman = DB::table('pinjaman')
+            ->join('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik')
+            ->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
+            ->join('departemen', 'master_karyawan.kode_dept', '=', 'departemen.kode_dept')
+            ->join('cabang', 'master_karyawan.id_kantor', '=', 'cabang.kode_cabang')
+            ->where('no_pinjaman', $no_pinjaman)->first();
+        try {
+            DB::table('pinjaman')->where('no_pinjaman', $no_pinjaman)->update([
+                'status' => 1
+            ]);
+            $data = [
+                'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
+                'sender' => '6289670444321',
+                'number' => '082218770017',
+                'message' => '*' . $pinjaman->nama_karyawan . '*, Ajuan Pinjaman dengan Nomor Pinjaman *' . $pinjaman->no_pinjaman . '* dengan total pinjaman *' . rupiah($pinjaman->jumlah_pinjaman) . '* sudah di proses oleh bagian keuangan, silahkan tunggu 1 x 24 jam untuk proses pencairan dana ke rekening.'
+            ];
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'https://wa.pedasalami.com/send-message',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => json_encode($data),
+                CURLOPT_HTTPHEADER => array(
+                    'Content-Type: application/json'
+                ),
+            ));
+
+            $response = curl_exec($curl);
+
+            curl_close($curl);
+            echo $response;
+
+            return Redirect::back()->with(['success' => 'Data Berhasil Di Update']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Data Gagal Di Update']);
+        }
+    }
+
+    public function decline($no_pinjaman)
+    {
+        $no_pinjaman = Crypt::decrypt($no_pinjaman);
+        try {
+            DB::table('pinjaman')->where('no_pinjaman', $no_pinjaman)->update([
+                'status' => 0
+            ]);
+
+            return Redirect::back()->with(['success' => 'Data Berhasil Di Update']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Data Gagal Di Update']);
+        }
     }
 }

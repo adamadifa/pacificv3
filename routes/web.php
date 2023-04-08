@@ -1517,6 +1517,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('pinjaman/edit', [PinjamanController::class, 'edit']);
     Route::post('pinjaman/{no_pinjaman}/update', [PinjamanController::class, 'update']);
     Route::delete('pinjaman/{no_pinjaman}/delete', [PinjamanController::class, 'delete']);
+    Route::get('pinjaman/{no_pinjaman}/approve', [PinjamanController::class, 'approve']);
+    Route::get('pinjaman/{no_pinjaman}/decline', [PinjamanController::class, 'decline']);
     Route::post('/pinjaman/show', [PinjamanController::class, 'show']);
     Route::post('/pinjaman/getrencanabayar', [PinjamanController::class, 'getrencanabayar']);
     Route::post('/pinjaman/gethistoribayar', [PinjamanController::class, 'gethistoribayar']);

@@ -91,9 +91,17 @@
                                 <x-inputtext label="Nama Karyawan" value="{{ Request('nama_karyawan') }}" field="nama_karyawan" icon="feather icon-user" />
                             </div>
                         </div>
-
-                        <div class="col-lg-3 col-sm-12">
-                            <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search mr-2"></i> Search</button>
+                        <div class="col-lg-2 col-sm-12">
+                            <div class="form-group">
+                                <select name="status" id="status" class="form-control">
+                                    <option value="">Semua</option>
+                                    <option value="0" {{ Request('status')== 0 ? 'selected' : '' }}>Belum di Proses</option>
+                                    <option value="1" {{ Request('status')== 1 ? 'selected' : '' }}>Sudah di Proses</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-1 col-sm-12">
+                            <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search"></i></button>
                         </div>
                     </div>
 
@@ -113,7 +121,8 @@
                                 <th>Jumlah</th>
                                 <th>Bayar</th>
                                 <th>Sisa Tagihan</th>
-                                <th>Keterangan</th>
+                                <th>Ket</th>
+                                <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -135,10 +144,23 @@
                                     @endphp
                                     {{ rupiah($sisatagihan) }}
                                 </td>
-                                <td>{!! $d->jumlah_pinjaman - $d->totalpembayaran == 0 ? '<span class="badge bg-success">Lunas</span>' : '<span class="badge bg-danger">Belum Lunas</span>' !!}</td>
+                                <td>{!! $d->jumlah_pinjaman - $d->totalpembayaran == 0 ? '<span class="badge bg-success">L</span>' : '<span class="badge bg-danger">BL</span>' !!}</td>
+                                <td>
+                                    @if ($d->status==0)
+                                    <span class="badge bg-warning"><i class="fa fa-history"></i></span>
+                                    @else
+                                    <span class="badge bg-success"><i class="fa fa-check"></i></span>
+                                    @endif
+                                </td>
                                 <td>
                                     <div class="btn-group">
-
+                                        @if ($d->status==0 )
+                                        <a href="/pinjaman/{{ Crypt::encrypt($d->no_pinjaman) }}/approve"><i class=" feather icon-check success"></i></a>
+                                        @else
+                                        @if (empty($d->totalpembayaran))
+                                        <a href="/pinjaman/{{ Crypt::encrypt($d->no_pinjaman) }}/decline"><i class="fa fa-close danger"></i></a>
+                                        @endif
+                                        @endif
                                         <a class="ml-1 show" no_pinjaman="{{ $d->no_pinjaman }}" href="#"><i class="feather icon-file-text info"></i></a>
                                         @if (empty($d->totalpembayaran))
                                         <a class="ml-1 edit" no_pinjaman="{{ $d->no_pinjaman }}" href="#"><i class="feather icon-edit success"></i></a>

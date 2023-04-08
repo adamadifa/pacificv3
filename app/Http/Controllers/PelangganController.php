@@ -364,10 +364,16 @@ class PelangganController extends Controller
         //     $request->file('foto', $image),
         // );
 
-        $lokasi = $request->lokasi;
-        $lok = explode(",", $lokasi);
-        $latitude = $lok[0];
-        $longitude = $lok[1];
+        if (isset($request->lokasi)) {
+            $lokasi = $request->lokasi;
+            $lok = explode(",", $lokasi);
+            $latitude = $lok[0];
+            $longitude = $lok[1];
+        } else {
+            $latitude = "";
+            $longitude = "";
+        }
+
         $simpan = DB::table('pelanggan')->insert([
             'kode_pelanggan' => $kodepelanggan,
             'nik' => $request->nik,
@@ -484,10 +490,15 @@ class PelangganController extends Controller
         } else {
             $foto = $file;
         }
-        $lokasi = $request->lokasi;
-        $lok = explode(",", $lokasi);
-        $latitude = $lok[0];
-        $longitude = $lok[1];
+        if (isset($request->lokasi)) {
+            $lokasi = $request->lokasi;
+            $lok = explode(",", $lokasi);
+            $latitude = $lok[0];
+            $longitude = $lok[1];
+        } else {
+            $latitude = "";
+            $longitude = "";
+        }
         $simpan = DB::table('pelanggan')
             ->where('kode_pelanggan', $kode_pelanggan)
             ->update([
