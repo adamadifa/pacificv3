@@ -111,6 +111,9 @@
                 <tr>
                     <th>Plafon</th>
                     <td style="text-align: right">
+                        @php
+                        $plafon = $angsuranmax * $tenormax;
+                        @endphp
                         <input type="hidden" name="plafon" id="plafon" value="{{ $angsuranmax * $tenormax }}">
                         {{ rupiah($angsuranmax * $tenormax) }}
                     </td>
@@ -164,10 +167,8 @@
                         @php
                         // $plafonmax = ((40/100) * $gaji->gajitunjangan )* 20;
                         $jmksudahdibayar = $jmk!=null ? $jmk->jml_jmk : 0;
-                        $plafonmax = $totaljmk - $jmksudahdibayar;
-                        @endphp
-                        {{ rupiah($plafonmax) }}
-                        <input type="hidden" name="plafon_max" id="plafon_max" value="{{ $plafonmax }}">
+                        $plafonjmk = $totaljmk - $jmksudahdibayar;
+                        $plafonmax = $plafonjmk < $plafon ? $plafonjmk : $plafon; @endphp {{ rupiah($plafonmax) }} <input type="hidden" name="plafon_max" id="plafon_max" value="{{ $plafonmax }}">
                     </td>
                 </tr>
 

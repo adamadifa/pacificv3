@@ -30,6 +30,22 @@
             <div class="col-lg-3 col-sm-12">
                 <div class="row">
                     <div class="col-12">
+                        <div class="d-flex justify-content-between">
+                            <div class="btn-group">
+                                <a href="/pelanggan/{{\Crypt::encrypt($pelanggan->kode_pelanggan)}}/edit" class="btn btn-success  text-right mb-2" style="padding: 15px !important"><i class="feather icon-edit"></i></a>
+                                <a href="/pelanggan/{{ Crypt::encrypt($pelanggan->kode_pelanggan) }}/capturetoko" class="btn btn-primary  text-right mb-2" style="padding: 15px !important"><i class="feather icon-camera"></i></a>
+                            </div>
+                            <div>
+                                @if ($salesmancheckin != 0)
+                                <a href="/pelanggan/{{ Crypt::encrypt($pelanggan->kode_pelanggan) }}/checkout" class="btn btn-danger  text-right mb-2" style="padding: 15px !important"><i class="feather icon-log-out mr-1"></i>Check Out</a>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-12">
                         <div class="card">
                             <div class="card-content">
                                 @if ($pelanggan->foto != null)
@@ -38,7 +54,8 @@
                                 <img class="card-img-top img-fluid" id="foto" src="{{ asset('app-assets/images/slider/04.jpg') }}" alt="Card image cap">
                                 @endif
                                 <div class="card-img-overlay overflow-hidden overlay-primary overlay-lighten-1">
-                                    <h4 class="card-title text-white">{{ $pelanggan->kode_pelanggan }} - {{ strtoupper($pelanggan->nama_pelanggan) }}</h4>
+
+                                    <h4 class="card-title text-white">{{ $pelanggan->kode_pelanggan }} <br> {{ strtoupper($pelanggan->nama_pelanggan) }}</h4>
                                     <p class="card-text text-white">
                                         Alamat : {{ $pelanggan->alamat_pelanggan }}<br>
                                         No. HP : {{ $pelanggan->no_hp }} <br>
@@ -89,8 +106,8 @@
                 <div class="col-12" id="checkinsection">
 
                     <a href="#" id="checkin" class="btn btn-success btn-block"><i class="feather icon-lock mr-1"></i>Checkin</a>
-                    <a class="btn btn-primary btn-block" href="/pelanggan/{{ Crypt::encrypt($pelanggan->kode_pelanggan) }}/capturetoko"><i class="feather icon-camera"></i> Capture Toko</a>
-                    <a class="btn btn-info btn-block" href="/pelanggan/{{\Crypt::encrypt($pelanggan->kode_pelanggan)}}/edit"><i class="feather icon-edit"></i> Edit Pelanggan</a>
+                    {{-- <a class="btn btn-primary btn-block" href="/pelanggan/{{ Crypt::encrypt($pelanggan->kode_pelanggan) }}/capturetoko"><i class="feather icon-camera"></i> Capture Toko</a>
+                    <a class="btn btn-info btn-block" href="/pelanggan/{{\Crypt::encrypt($pelanggan->kode_pelanggan)}}/edit"><i class="feather icon-edit"></i> Edit Pelanggan</a> --}}
                 </div>
 
                 @else

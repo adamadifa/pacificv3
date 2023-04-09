@@ -190,7 +190,7 @@
                                                         {{ diffInMonths($start, $end). " bulan"; }}
                                                     </td>
                                                     <td>
-                                                        @if ($d->status==1)
+                                                        @if ($d->status_kontrak==1)
                                                         <i class="fa fa-circle success"></i>
                                                         @else
                                                         <i class="fa fa-circle danger"></i>

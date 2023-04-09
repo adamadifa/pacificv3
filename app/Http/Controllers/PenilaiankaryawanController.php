@@ -41,7 +41,7 @@ class PenilaiankaryawanController extends Controller
         if ($list_dept != NULL) {
             $qkaryawan->whereIn('kode_dept', $list_dept);
         }
-
+        $qkaryawan->where('status_karyawan', 'K');
         $qkaryawan->where('id_kategori_jabatan', '!=', Auth::user()->kategori_jabatan);
         $karyawan = $qkaryawan->get();
 
@@ -184,7 +184,7 @@ class PenilaiankaryawanController extends Controller
         $lastfield = strtolower($inisial[$lastindex]);
 
         $query = Penilaiankaryawan::query();
-        $query->select('hrd_penilaian.kode_penilaian', 'tanggal', 'hrd_penilaian.nik', 'nama_karyawan', 'hrd_penilaian.periode_kontrak', 'hrd_penilaian.kode_dept', 'nama_dept', 'hrd_penilaian.id_jabatan', 'nama_jabatan', 'kp', 'ka', 'rsm', 'm', 'gm', 'hrd', 'dirut', 'status', 'pemutihan', 'no_kb', 'no_kontrak');
+        $query->select('hrd_penilaian.kode_penilaian', 'tanggal', 'hrd_penilaian.nik', 'nama_karyawan', 'hrd_penilaian.periode_kontrak', 'hrd_penilaian.kode_dept', 'nama_dept', 'hrd_penilaian.id_jabatan', 'nama_jabatan', 'kp', 'ka', 'rsm', 'm', 'gm', 'hrd', 'dirut', 'status', 'pemutihan', 'no_kb', 'hrd_kontrak.no_kontrak');
         $query->join('master_karyawan', 'hrd_penilaian.nik', '=', 'master_karyawan.nik');
         $query->join('departemen', 'hrd_penilaian.kode_dept', '=', 'departemen.kode_dept');
         $query->join('hrd_jabatan', 'hrd_penilaian.id_jabatan', '=', 'hrd_jabatan.id');
@@ -217,6 +217,8 @@ class PenilaiankaryawanController extends Controller
         }
         $penilaian = $query->paginate(15);
         $penilaian->appends($request->all());
+
+
         return view('penilaiankaryawan.index', compact('karyawan', 'penilaian', 'kategori_jabatan', 'perusahaan', 'approve', 'kategori_approval', 'field_kategori', 'kat_jab_user', 'cekindex', 'inisial'));
     }
 
@@ -225,6 +227,7 @@ class PenilaiankaryawanController extends Controller
         $tanggal = $request->tanggal;
         $dari = $request->dari;
         $sampai = $request->sampai;
+        $no_kontrak = $request->no_kontrak;
         $nik = $request->nik;
         $karyawan = DB::table('master_karyawan')
             ->selectRaw('nik,nama_karyawan,master_karyawan.kode_dept,nama_dept,master_karyawan.id_jabatan,nama_jabatan,hrd_jabatan.id_kategori_jabatan,id_kantor,id_perusahaan')
@@ -241,7 +244,7 @@ class PenilaiankaryawanController extends Controller
             ->join('hrd_jenispenilaian', 'hrd_penilaiankaryawan_item.id_jenis_penilaian', '=', 'hrd_jenispenilaian.id')
             ->orderBy('hrd_penilaiankaryawan_item.id_jenis_penilaian')->get();
         if ($kategori == 1) {
-            return view('penilaiankaryawan.create', compact('tanggal', 'dari', 'sampai', 'karyawan', 'kategori_penilaian', 'kategori'));
+            return view('penilaiankaryawan.create', compact('tanggal', 'dari', 'sampai', 'karyawan', 'kategori_penilaian', 'kategori', 'no_kontrak'));
         } else {
             return view('penilaiankaryawan.create_operator', compact('tanggal', 'dari', 'sampai', 'karyawan', 'kategori_penilaian', 'kategori'));
         }
@@ -272,6 +275,7 @@ class PenilaiankaryawanController extends Controller
         $tgl = explode("-", $tanggal);
         $bulan = $tgl[1];
         $tahun = substr($tgl[0], 2);
+        $no_kontrak = $request->no_kontrak;
         $penilaian = DB::table("hrd_penilaian")
             ->whereRaw('MONTH(tanggal)=' . $bulan)
             ->whereRaw('YEAR(tanggal)=' . $tgl[0])
@@ -300,6 +304,7 @@ class PenilaiankaryawanController extends Controller
             'masa_kontrak_kerja' => $masa_kontrak_kerja,
             'rekomendasi' => $rekomendasi,
             'evaluasi' => $evaluasi,
+            'no_kontrak' => $no_kontrak
         ];
 
 

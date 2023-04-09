@@ -14,7 +14,7 @@ class KesepakatanbersamaController extends Controller
     public function index(Request $request)
     {
         $query = Kesepakatanbersama::query();
-        $query->select('no_kb', 'tgl_kb', 'hrd_penilaian.nik', 'nama_karyawan', 'nama_jabatan', 'tahun', 'hrd_kesepakatanbersama.kode_penilaian', 'hrd_kontrak.no_kontrak');
+        $query->select('no_kb', 'tgl_kb', 'hrd_penilaian.nik', 'nama_karyawan', 'nama_jabatan', 'hrd_kesepakatanbersama.kode_penilaian', 'hrd_kontrak.no_kontrak');
         $query->join('hrd_penilaian', 'hrd_kesepakatanbersama.kode_penilaian', '=', 'hrd_penilaian.kode_penilaian');
         $query->join('hrd_jabatan', 'hrd_penilaian.id_jabatan', '=', 'hrd_jabatan.id');
         $query->join('master_karyawan', 'hrd_penilaian.nik', '=', 'master_karyawan.nik');
@@ -42,7 +42,7 @@ class KesepakatanbersamaController extends Controller
     {
         $nik = $request->nik;
         $kode_penilaian = $request->kode_penilaian;
-        $tahunkb = $request->tahun;
+        //$tahunkb = $request->tahun;
         $tanggal = $request->tanggal;
         $tgl = explode("-", $tanggal);
         $bulan = $tgl[1];
@@ -57,7 +57,7 @@ class KesepakatanbersamaController extends Controller
         $no_kb  = buatkode($lastno_kb, "KB" . $format, 3);
 
         $gaji = DB::table('hrd_mastergaji')->where('tgl_berlaku', '<=', $tanggal)->where('nik', $nik)->first();
-
+        $kontrak = DB::table('hrd_kontrak')->where('status_kontrak', 1)->where('nik', $nik)->first();
         DB::beginTransaction();
         try {
             $data = [
@@ -65,7 +65,7 @@ class KesepakatanbersamaController extends Controller
                 'tgl_kb' => $tanggal,
                 'nik' => $nik,
                 'kode_penilaian' => $kode_penilaian,
-                'tahun' => $tahunkb,
+                'no_kontrak' => $kontrak->no_kontrak,
                 'kode_gaji' => $gaji->kode_gaji
             ];
 
@@ -82,7 +82,7 @@ class KesepakatanbersamaController extends Controller
     {
         $no_kb = Crypt::decrypt($no_kb);
         $query = Kesepakatanbersama::query();
-        $query->select('no_kb', 'tgl_kb', 'hrd_penilaian.nik', 'nama_karyawan', 'nama_jabatan', 'tahun', 'tgl_masuk', 'alamat', 'no_ktp', 'hrd_mastergaji.*');
+        $query->select('no_kb', 'tgl_kb', 'hrd_penilaian.nik', 'nama_karyawan', 'nama_jabatan', 'tgl_masuk', 'alamat', 'no_ktp', 'hrd_mastergaji.*', 'hrd_kesepakatanbersama.no_kontrak');
         $query->join('hrd_penilaian', 'hrd_kesepakatanbersama.kode_penilaian', '=', 'hrd_penilaian.kode_penilaian');
         $query->join('hrd_jabatan', 'hrd_penilaian.id_jabatan', '=', 'hrd_jabatan.id');
         $query->join('master_karyawan', 'hrd_penilaian.nik', '=', 'master_karyawan.nik');
@@ -94,7 +94,9 @@ class KesepakatanbersamaController extends Controller
         $approve = DB::table('hrd_approvekb')->where('tgl_berlaku', '<=', $kb->tgl_kb)->orderBy('tgl_berlaku', 'desc')->first();
 
         $potongan = DB::table('hrd_potongankb')->where('no_kb', $no_kb)->get();
-        return view('kesepakatanbersama.cetak', compact('kb', 'approve', 'potongan'));
+
+        $kontrak = DB::table('hrd_kontrak')->where('no_kontrak', $kb->no_kontrak)->first();
+        return view('kesepakatanbersama.cetak', compact('kb', 'approve', 'potongan', 'kontrak'));
     }
 
     public function edit(Request $request)

@@ -69,11 +69,11 @@
         <div class="row">
             <div class="col-12">
                 <table class="table table-bordered">
-                    <tr>
+                    {{-- <tr>
                         <th>Gaji Pokok + Tunjangan</th>
                         <td style="text-align: right">{{ rupiah($pinjaman->gapok_tunjangan) }}</td>
-                    </tr>
-                    <tr>
+                    </tr> --}}
+                    {{-- <tr>
                         <th>Tenor Max</th>
                         <td style="text-align: right">{{ rupiah($pinjaman->tenor_max) }} Bulan</td>
                     </tr>
@@ -92,7 +92,7 @@
                     <tr>
                         <th>Plafon Max</th>
                         <td style="text-align: right">{{ rupiah($pinjaman->plafon_max) }}</td>
-                    </tr>
+                    </tr> --}}
                     <tr>
                         <th>Jumlah Pinjaman</th>
                         <td style="text-align: right; font-weight:bold" id="jmlpinjaman">{{ rupiah($pinjaman->jumlah_pinjaman) }}</td>
@@ -119,7 +119,10 @@
     <div class="col-7">
         <div class="row">
             <div class="col-12">
+                @if (in_array($level,$inputbayarpinjaman))
                 <a href="#" class="btn btn-primary mb-1" id="inputbayar" no_pinjaman="{{ $pinjaman->no_pinjaman }}">Input Bayar</a>
+                @endif
+
                 <table class="table table-bordered">
                     <thead class="thead-dark">
                         <tr>

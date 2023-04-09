@@ -61,6 +61,10 @@
                             <x-inputtext label="Sampai" field="sampai" value="{{ Request('sampai') }}" icon="feather icon-calendar" datepicker />
                         </div>
                     </div>
+                    @php
+                    $level_search = ["admin","manager hrd","manager accounting","direktur"];
+                    @endphp
+                    @if (Auth::user()->kode_cabang=="PCF" && in_array($level,$level_search))
                     <div class="row">
                         <div class="col-lg-3 col-sm-12">
                             <div class="form-group  ">
@@ -100,11 +104,33 @@
                                 </select>
                             </div>
                         </div>
+
                         <div class="col-lg-1 col-sm-12">
                             <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search"></i></button>
                         </div>
                     </div>
+                    @else
+                    <div class="row">
+                        <div class="col-lg-8 col-sm-12">
+                            <div class="form-group">
+                                <x-inputtext label="Nama Karyawan" value="{{ Request('nama_karyawan') }}" field="nama_karyawan" icon="feather icon-user" />
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-sm-12">
+                            <div class="form-group">
+                                <select name="status" id="status" class="form-control">
+                                    <option value="">Semua</option>
+                                    <option value="0" {{ Request('status')== 0 ? 'selected' : '' }}>Belum di Proses</option>
+                                    <option value="1" {{ Request('status')== 1 ? 'selected' : '' }}>Sudah di Proses</option>
+                                </select>
+                            </div>
+                        </div>
 
+                        <div class="col-lg-1 col-sm-12">
+                            <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search"></i></button>
+                        </div>
+                    </div>
+                    @endif
                 </form>
 
                 <div class="table-responsive">
@@ -154,6 +180,10 @@
                                 </td>
                                 <td>
                                     <div class="btn-group">
+                                        @php
+                                        $user_approve = [57];
+                                        @endphp
+                                        @if (in_array(Auth::user()->id,$user_approve))
                                         @if ($d->status==0 )
                                         <a href="/pinjaman/{{ Crypt::encrypt($d->no_pinjaman) }}/approve"><i class=" feather icon-check success"></i></a>
                                         @else
@@ -161,6 +191,8 @@
                                         <a href="/pinjaman/{{ Crypt::encrypt($d->no_pinjaman) }}/decline"><i class="fa fa-close danger"></i></a>
                                         @endif
                                         @endif
+                                        @endif
+
                                         <a class="ml-1 show" no_pinjaman="{{ $d->no_pinjaman }}" href="#"><i class="feather icon-file-text info"></i></a>
                                         @if (empty($d->totalpembayaran))
                                         <a class="ml-1 edit" no_pinjaman="{{ $d->no_pinjaman }}" href="#"><i class="feather icon-edit success"></i></a>

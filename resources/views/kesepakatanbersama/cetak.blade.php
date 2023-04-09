@@ -146,6 +146,8 @@
                     $diff = date_diff( $awal, $akhir );
                     echo $diff->y . ' tahun, '.$diff->m.' bulan, '.$diff->d.' Hari'
                     @endphp
+
+
                 </td>
             </tr>
             <tr>
@@ -222,7 +224,7 @@
                         <tr>
                             <?php
                             $masakerja = $diff->y;
-                             if($masakerja >= 3 && $masakerja < 6){
+                            if($masakerja >= 3 && $masakerja < 6){
                                 $jmlkali=2;
                             }else if($masakerja >= 6 && $masakerja < 9 ){
                                 $jmlkali =3;
@@ -239,10 +241,15 @@
                             }else if($masakerja >= 24 ){
                                 $jmlkali =10;
                             }else{
-                                $jmlkali=0;
+                                $jmlkali = 0.5;
                             }
 
-                            $totalupah = $kb->gaji_pokok + $kb->t_tanggungjawab + $kb->t_makan + $kb->t_skill + $kb->t_jabatan;
+                            if($masakerja <= 2){
+                                $totalupah = $kb->gaji_pokok ;
+                            }else{
+                                $$totalupah = $kb->gaji_pokok + $kb->t_tanggungjawab + $kb->t_makan + $kb->t_skill + $kb->t_jabatan;
+                            }
+
                             ?>
 
                             <td style="width: 2px">1.</td>

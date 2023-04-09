@@ -876,6 +876,23 @@ class PelangganController extends Controller
         }
     }
 
+    public function checkoutstore($kode_pelanggan)
+    {
+        $kode_pelanggan = Crypt::decrypt($kode_pelanggan);
+        $hariini = date("Y-m-d");
+        $cek = DB::table('checkin')->where('kode_pelanggan', $kode_pelanggan)->where('tgl_checkin', $hariini)->first();
+        $kode_checkin = $cek->kode_checkin;
+        $checkout_time = date("Y-m-d H:i:s");
+        try {
+            DB::table('checkin')->where('kode_checkin', $kode_checkin)->update([
+                'checkout_time' => $checkout_time
+            ]);
+            Cookie::queue(Cookie::forget('kodepelanggan'));
+            return redirect('/pelanggansalesman');
+        } catch (\Exception $e) {
+            dd($e);
+        }
+    }
     public function checkinstore(Request $request)
     {
 

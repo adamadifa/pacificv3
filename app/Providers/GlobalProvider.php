@@ -238,9 +238,9 @@ class GlobalProvider extends ServiceProvider
 
 
 
-            $karyawan_tambah = ['admin'];
-            $karyawan_edit = ['admin'];
-            $karyawan_hapus = ['admin'];
+            $karyawan_tambah = ['admin', 'manager hrd'];
+            $karyawan_edit = ['admin', 'manage hrd'];
+            $karyawan_hapus = ['admin', 'manage hrd'];
 
             //Supplier
             $supplier_menu = ['admin', 'manager pembelian', 'admin pembelian', 'manager accounting', 'spv accounting', 'audit', 'admin pajak 2'];
@@ -471,8 +471,9 @@ class GlobalProvider extends ServiceProvider
 
             $pinjaman_view = ['admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'manager accounting', 'manager ga', 'emf', 'manager marketing', 'rsm'];
             $pembayaranpinjaman_view = ['admin'];
+            $inputbayarpinjaman = ['admin', 'manager hrd', 'manager accounting'];
 
-            $kasbon_view = ['admin'];
+            $kasbon_view = ['admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'manager accounting', 'manager ga', 'emf', 'manager marketing', 'rsm'];
             $pembayarankasbon_view = ['admin'];
             //Ledger
             $ledger_menu  = ['admin', 'staff keuangan', 'spv accounting'];
@@ -1028,6 +1029,7 @@ class GlobalProvider extends ServiceProvider
                 //Pinjaman
                 'pinjaman_view' => $pinjaman_view,
                 'pembayaranpinjaman_view' => $pembayaranpinjaman_view,
+                'inputbayarpinjaman' => $inputbayarpinjaman,
 
 
                 'kasbon_view' => $kasbon_view,

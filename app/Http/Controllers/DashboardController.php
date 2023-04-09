@@ -440,7 +440,7 @@ class DashboardController extends Controller
             ->leftjoin('hrd_jabatan as jb', 'hrd_kontrak.id_jabatan', '=', 'jb.id')
             ->leftjoin('hrd_jabatan as jb2', 'master_karyawan.id_jabatan', '=', 'jb2.id')
             ->where('sampai', '<', $hariini)
-            ->where('status', 1)
+            ->where('status_kontrak', 1)
             ->orderBy('sampai');
 
         $qkontrak_bulanini = DB::table('hrd_kontrak')
@@ -450,7 +450,7 @@ class DashboardController extends Controller
             ->leftjoin('hrd_jabatan as jb2', 'master_karyawan.id_jabatan', '=', 'jb2.id')
             ->whereRaw('MONTH(sampai)=' . $bulanini)
             ->whereRaw('YEAR(sampai)=' . $tahunini)
-            ->where('status', 1)
+            ->where('status_kontrak', 1)
             ->orderBy('sampai');
 
 
@@ -461,7 +461,7 @@ class DashboardController extends Controller
             ->leftjoin('hrd_jabatan as jb2', 'master_karyawan.id_jabatan', '=', 'jb2.id')
             ->whereRaw('MONTH(sampai)=' . $bulandepan)
             ->whereRaw('YEAR(sampai)=' . $tahun2)
-            ->where('status', 1)
+            ->where('status_kontrak', 1)
             ->orderBy('sampai');
 
 
@@ -472,7 +472,7 @@ class DashboardController extends Controller
             ->leftjoin('hrd_jabatan as jb2', 'master_karyawan.id_jabatan', '=', 'jb2.id')
             ->whereRaw('MONTH(sampai)=' . $duabulan)
             ->whereRaw('YEAR(sampai)=' . $tahun3)
-            ->where('status', 1)
+            ->where('status_kontrak', 1)
             ->orderBy('sampai');
 
 
@@ -731,23 +731,45 @@ class DashboardController extends Controller
         $id_karyawan = Auth::user()->id;
         $tanggal = $request->tanggalkunjungan;
         $kunjungan = DB::table('checkin')
-            ->selectRaw('checkin.kode_pelanggan,nama_pelanggan,alamat_pelanggan,checkin_time,no_fak_penj,date_created as checkout_time,foto')
+            ->selectRaw('checkin.kode_pelanggan,nama_pelanggan,alamat_pelanggan,checkin_time,checkout_time,foto')
             ->join('pelanggan', 'checkin.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
-            ->leftJoin(
-                DB::raw("(
-            SELECT kode_pelanggan,no_fak_penj,date_created
-            FROM penjualan WHERE tgltransaksi = '$tanggal'
-            ) pj"),
-                function ($join) {
-                    $join->on('checkin.kode_pelanggan', '=', 'pj.kode_pelanggan');
-                }
-            )
+
             ->where('checkin.id_karyawan', $id_karyawan)
             ->where('tgl_checkin', $tanggal)
             ->orderBy('checkin_time', 'asc')
             ->get();
 
         return view('dashboard.getkunjungan', compact('kunjungan'));
+    }
+
+
+    public function getdpb(Request $request)
+    {
+        $id_karyawan = Auth::user()->id_salesman;
+
+        $tanggal = $request->tgl_dpb;
+        $dpb = DB::table('detail_dpb')
+            ->selectRaw('detail_dpb.kode_produk,nama_barang,isipcsdus,jml_pengambilan,qtyjual')
+            ->join('master_barang', 'detail_dpb.kode_produk', '=', 'master_barang.kode_produk')
+            ->join('dpb', 'detail_dpb.no_dpb', '=', 'dpb.no_dpb')
+            ->leftJoin(
+                DB::raw("(
+                SELECT barang.kode_produk,SUM(jumlah) as qtyjual
+                FROM detailpenjualan
+                INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
+                INNER JOIN penjualan ON detailpenjualan.no_fak_penj = penjualan.no_fak_penj
+                WHERE tgltransaksi = '$tanggal'
+                GROUP BY barang.kode_produk,isipcsdus
+                ) dp"),
+                function ($join) {
+                    $join->on('detail_dpb.kode_produk', '=', 'dp.kode_produk');
+                }
+            )
+            ->where('dpb.id_karyawan', $id_karyawan)
+            ->where('tgl_pengambilan', $tanggal)
+            ->get();
+
+        return view('dashboard.getdpb', compact('dpb'));
     }
 
     public function homesap()

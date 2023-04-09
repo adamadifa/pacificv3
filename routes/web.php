@@ -1139,6 +1139,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pelanggan/{kode_pelanggan}/capturetoko', [PelangganController::class, 'capturetoko']);
     Route::post('/pelanggan/storecapture', [PelangganController::class, 'storecapture']);
     Route::post('/pelanggan/checkinstore', [PelangganController::class, 'checkinstore']);
+    Route::get('/pelanggan/{kode_pelanggan}/checkout', [PelangganController::class, 'checkoutstore']);
     //Kendaraan
     Route::get('/kendaraan', [KendaraanController::class, 'index']);
     Route::get('/kendaraan/create', [KendaraanController::class, 'create']);
@@ -1460,6 +1461,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/penjualan/{no_fak_penj}/deletesignature', [PenjualanController::class, 'deletesignature']);
 
     Route::post('/getkunjungan', [DashboardController::class, 'getkunjungan']);
+    Route::post('/getdpb', [DashboardController::class, 'getdpb']);
 
     //Karyawan
     Route::get('/karyawan', [KaryawanController::class, 'index']);
@@ -1468,6 +1470,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/karyawan/{nik}/edit', [KaryawanController::class, 'edit']);
     Route::post('/karyawan/{nik}/update', [KaryawanController::class, 'update']);
     Route::get('/karyawan/{nik}/show', [KaryawanController::class, 'show']);
+    Route::post('/karyawan/getkaryawankontrak', [KaryawanController::class, 'getkaryawankontrak']);
 
     //SAP
     Route::get('/homesap', [DashboardController::class, 'homesap']);
@@ -1508,7 +1511,8 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/kontrak/{no_kontrak}/delete', [KontrakController::class, 'delete']);
 
     Route::post('/kontrak/createfromkb', [KontrakController::class, 'createfromkb']);
-
+    Route::post('/kontrak/getkontrakpemutihan', [KontrakController::class, 'getkontrakpemutihan']);
+    Route::post('/kontrak/getkontrakpenilaian', [KontrakController::class, 'getkontrakpenilaian']);
     //Pinjaman
 
     Route::get('/pinjaman/', [PinjamanController::class, 'index']);

@@ -229,4 +229,11 @@ class KaryawanController extends Controller
             ->where('hrd_kontrak.nik', $nik)->orderBy('dari')->get();
         return view('karyawan.show', compact('karyawan', 'kontrak'));
     }
+
+    public function getkaryawankontrak(Request $request)
+    {
+        $nik = $request->nik;
+        $karyawan = DB::table('master_karyawan')->where('nik', $nik)->first();
+        echo $karyawan->id_jabatan . "|" . $karyawan->kode_dept . "|" . $karyawan->id_kantor . "|" . $karyawan->id_perusahaan;
+    }
 }

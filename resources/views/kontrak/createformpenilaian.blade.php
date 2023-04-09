@@ -53,6 +53,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
+                        <input type="hidden" name="old_kode_dept" value="{{ $penilaian->kode_dept }}">
                         <select name="kode_dept" id="kontrak_kode_dept" class="form-control">
                             <option value="">Departemen</option>
                             @foreach ($departemen as $d)
@@ -65,6 +66,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
+                        <input type="hidden" name="old_id_jabatan" value="{{ $penilaian->id_jabatan }}">
                         <select name="id_jabatan" id="kontrak_id_jabatan" class="form-control">
                             <option value="">Jabatan Baru</option>
                             @foreach ($jabatan as $d)
@@ -77,6 +79,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
+                        <input type="hidden" name="old_id_perusahaan" value="{{ $penilaian->id_perusahaan }}">
                         <select name="id_perusahaan" id="kontrak_id_perusahaan" class="form-control">
                             <option value="">Perusahaan</option>
                             <option value="MP" {{ $penilaian->id_perusahaan =="MP" ? "selected" :"" }}>MAKMUR PERMATA</option>
@@ -88,6 +91,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
+                        <input type="hidden" name="old_id_kantor" value="{{ $penilaian->id_kantor }}">
                         <select name="id_kantor" id="kontrak_id_kantor" class="form-control">
                             <option value="">Kantor</option>
                             @foreach ($kantor as $d)

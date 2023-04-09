@@ -42,7 +42,18 @@ class KontrakController extends Controller
     {
         $jabatan = DB::table('hrd_jabatan')->orderBy('nama_jabatan')->get();
         $kantor = DB::table('cabang')->orderBy('kode_cabang')->get();
-        $karyawan = DB::table('master_karyawan')->orderBy('nama_karyawan')->get();
+        $kontrak = DB::table('hrd_kontrak')->get();
+        $nik = [];
+        foreach ($kontrak as $d) {
+            $nik[] = $d->nik;
+        }
+
+
+        $karyawan = DB::table('master_karyawan')
+            ->whereNotIn('nik', $nik)
+            ->where('status_karyawan', '!=', 'T')
+            ->where('status_karyawan', '!=', 'O')
+            ->orderBy('nama_karyawan')->get();
         $departemen = DB::table('departemen')->where('status_pengajuan', 0)->get();
 
         return view('kontrak.create', compact('kantor', 'jabatan', 'karyawan', 'departemen', 'kantor'));
@@ -124,9 +135,13 @@ class KontrakController extends Controller
                 'dari' => $dari,
                 'sampai' => $sampai,
                 'id_jabatan' => $id_jabatan,
+                'old_id_jabatan' => $id_jabatan,
                 'id_perusahaan' => $id_perusahaan,
+                'old_id_perusahaan' => $id_perusahaan,
                 'id_kantor' => $id_kantor,
-                'kode_dept' => $kode_dept
+                'old_id_kantor' => $id_kantor,
+                'kode_dept' => $kode_dept,
+                'old_kode_dept' => $kode_dept
             ]);
 
             DB::table('hrd_mastergaji')->insert([
@@ -203,7 +218,12 @@ class KontrakController extends Controller
                     't_skill' => $t_skill,
                     'tgl_berlaku' => $dari,
                 ]);
-
+            DB::table('master_karyawan')->where('nik', $nik)->update([
+                'id_jabatan' => $id_jabatan,
+                'id_kantor' => $id_kantor,
+                'id_perusahaan' => $id_perusahaan,
+                'kode_dept' => $kode_dept
+            ]);
             DB::commit();
             return Redirect::back()->with(['success' => 'Data Berhasil Di Update']);
         } catch (\Exception $e) {
@@ -220,9 +240,13 @@ class KontrakController extends Controller
         $dari = $request->kontrak_dari;
         $sampai = $request->kontrak_sampai;
         $id_jabatan = $request->id_jabatan;
+        $old_id_jabatan = $request->old_id_jabatan;
         $kode_dept = $request->kode_dept;
+        $old_kode_dept = $request->old_kode_dept;
         $id_perusahaan = $request->id_perusahaan;
+        $old_id_perusahaan = $request->old_id_perusahaan;
         $id_kantor = $request->id_kantor;
+        $old_id_kantor = $request->old_id_kantor;
 
         $gaji_pokok = isset($request->gaji_pokok) ?  str_replace(".", "", $request->gaji_pokok) : 0;
         $t_jabatan = isset($request->t_jabatan) ?  str_replace(".", "", $request->t_jabatan) : 0;
@@ -261,9 +285,13 @@ class KontrakController extends Controller
                 'dari' => $dari,
                 'sampai' => $sampai,
                 'id_jabatan' => $id_jabatan,
+                'old_id_jabatan' => $old_id_jabatan,
                 'id_perusahaan' => $id_perusahaan,
+                'old_id_perusahaan' => $old_id_perusahaan,
                 'id_kantor' => $id_kantor,
+                'old_id_kantor' => $old_id_kantor,
                 'kode_dept' => $kode_dept,
+                'old_kode_dept' => $old_kode_dept,
                 'kode_penilaian' => $kode_penilaian
             ]);
 
@@ -281,6 +309,13 @@ class KontrakController extends Controller
                 'no_kontrak' => $no_kontrak
             ]);
 
+
+            DB::table('master_karyawan')->where('nik', $nik)->update([
+                'id_jabatan' => $id_jabatan,
+                'id_kantor' => $id_kantor,
+                'id_perusahaan' => $id_perusahaan,
+                'kode_dept' => $kode_dept
+            ]);
             DB::commit();
             return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
         } catch (\Exception $e) {
@@ -334,15 +369,48 @@ class KontrakController extends Controller
     public function delete($no_kontrak)
     {
         $no_kontrak = Crypt::decrypt($no_kontrak);
+        $kontrak = DB::table('hrd_kontrak')->where('no_kontrak', $no_kontrak)->first();
+        $nik = $kontrak->nik;
+        $old_id_jabatan = $kontrak->old_id_jabatan;
+        $old_kode_dept = $kontrak->old_kode_dept;
+        $old_id_perusahaan = $kontrak->old_id_perusahaan;
+        $old_id_kantor = $kontrak->old_id_kantor;
         DB::beginTransaction();
         try {
             DB::table('hrd_kontrak')->where('no_kontrak', $no_kontrak)->delete();
             DB::table('hrd_mastergaji')->where('no_kontrak', $no_kontrak)->delete();
+            DB::table('master_karyawan')->where('nik', $nik)->update([
+                'id_jabatan' => $old_id_jabatan,
+                'id_perusahaan' => $old_id_perusahaan,
+                'id_kantor' => $old_id_kantor,
+                'kode_dept' => $old_kode_dept
+            ]);
             DB::commit();
             return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
         } catch (\Exception $e) {
             DB::rollBack();
             return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
+        }
+    }
+
+    public function getkontrakpemutihan(Request $request)
+    {
+        $nik = $request->nik;
+        $kontrak = DB::table('hrd_kontrak')->where('nik', $nik)->where('status_pemutihan', 0)->get();
+        echo "<option value=''>Mulai Kontrak</option>";
+        foreach ($kontrak as $d) {
+            echo "<option value='$d->no_kontrak'>" . $d->no_kontrak . " (" . date('d-m-Y', strtotime($d->dari)) . " s/d " . date('d-m-Y', strtotime($d->sampai)) . ")</option>";
+        }
+    }
+
+    public function getkontrakpenilaian(Request $request)
+    {
+        $nik = $request->nik;
+        $kontrak = DB::table('hrd_kontrak')->where('nik', $nik)->where('status_kontrak', 1)->first();
+        if ($kontrak != null) {
+            echo $kontrak->no_kontrak . "|" . $kontrak->dari . "|" . $kontrak->sampai;
+        } else {
+            echo 0;
         }
     }
 }

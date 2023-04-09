@@ -126,10 +126,13 @@
                 <div class="col-12">
                     <ul class="nav nav-tabs nav-justified" id="myTab2" role="tablist">
                         <li class="nav-item">
-                            <a class="nav-link active" id="home-tab-justified" data-toggle="tab" href="#home-just" role="tab" aria-controls="home-just" aria-selected="true">Realisasi Target</a>
+                            <a class="nav-link active" id="home-tab-justified" data-toggle="tab" href="#home-just" role="tab" aria-controls="home-just" aria-selected="true">Realisasi</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="profile-tab-justified" data-toggle="tab" href="#profile-just" role="tab" aria-controls="profile-just" aria-selected="true">Histori Kunjungan</a>
+                            <a class="nav-link" id="profile-tab-justified" data-toggle="tab" href="#profile-just" role="tab" aria-controls="profile-just" aria-selected="true">Histori</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab-justified" data-toggle="tab" href="#dpb" role="tab" aria-controls="profile-just" aria-selected="true">DPB</a>
                         </li>
                     </ul>
                     <div class="tab-content pt-1">
@@ -178,6 +181,18 @@
                             </div>
                             <div class="row">
                                 <div class="col-12" id="loadkunjungan"></div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="dpb" role="tabpanel" aria-labelledby="dpb-tab-justified">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group" style="margin-bottom: 5px">
+                                        <x-inputtext label="Tanggal" field="tgl_dpb" icon="feather icon-calendar" datepicker value="{{ date('Y-m-d') }}" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12" id="loaddpb"></div>
                             </div>
                         </div>
 
@@ -301,6 +316,26 @@
                 }
             });
         }
+
+        function loaddpb() {
+            //var bulan = $("#bulan").val();
+            //var tahun = $("#tahun").val();
+            var tgl_dpb = $("#tgl_dpb").val();
+            $.ajax({
+                type: 'POST'
+                , url: '/getdpb'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , tgl_dpb: tgl_dpb
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loaddpb").html(respond);
+                }
+            });
+        }
+
+        loaddpb();
 
         loadkunjungan();
 

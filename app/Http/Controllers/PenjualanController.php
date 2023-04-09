@@ -264,11 +264,16 @@ class PenjualanController extends Controller
             $kode_faktur = substr($salesman->no_fak_awal, 3, 1);
             $nomor_awal = substr($salesman->no_fak_awal, 4);
             $jmlchar = strlen($nomor_awal);
-            if ($cekpenjualan != null) {
-                $no_fak_penj_auto  =  buatkode($lastnofak, $kode_cabang . $kode_faktur, $jmlchar);
+            if ($salesman->kategori_salesman != 'TO') {
+                if ($cekpenjualan != null) {
+                    $no_fak_penj_auto  =  buatkode($lastnofak, $kode_cabang . $kode_faktur, $jmlchar);
+                } else {
+                    $no_fak_penj_auto = $no_fak_awal;
+                }
             } else {
-                $no_fak_penj_auto = $no_fak_awal;
+                $no_fak_penj_auto = "Auto";
             }
+
 
 
             $piutang = DB::table('penjualan')
@@ -284,8 +289,10 @@ class PenjualanController extends Controller
                 )
                 ->leftJoin(
                     DB::raw("(
-                        SELECT no_fak_penj, IFNULL(SUM(bayar),0) as jmlbayar
+                        SELECT historibayar.no_fak_penj, IFNULL(SUM(bayar),0) as jmlbayar
                         FROM historibayar
+                        INNER JOIN penjualan ON historibayar.no_fak_penj = penjualan.no_fak_penj
+                        WHERE penjualan.kode_pelanggan = '$kode_pelanggan'
                         GROUP BY no_fak_penj
                     ) historibayar"),
                     function ($join) {

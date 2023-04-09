@@ -64,7 +64,7 @@
                                     <th>NIK</th>
                                     <th>Nama Karyawan</th>
                                     <th>Jabatan</th>
-                                    <th>Pemutihan</th>
+
                                     <th>Jeda</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -87,8 +87,8 @@
                                     <td>{{ $d->nik }}</td>
                                     <td>{{ $d->nama_karyawan }}</td>
                                     <td>{{ $d->nama_jabatan }}</td>
-                                    <td>{{ $d->tahun }}</td>
-                                    <td>{{ $jmlhari." Hari" }}</td>
+
+                                    <td>{{ $jmlhari < 30 ? $jmlhari : 30  }} Hari</td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             <a class="ml-1" href="/kesepakatanbersama/{{ Crypt::encrypt($d->no_kb) }}/cetak" target="_blank"><i class="feather icon-printer primary"></i></a>
@@ -104,12 +104,12 @@
                                                     <i class="feather icon-trash danger"></i>
                                                 </a>
                                             </form>
-                                            @if ($jmlhari >= 30)
+                                            {{-- @if ($jmlhari >= 30) --}}
                                             @if (empty($d->no_kontrak))
                                             <a href="#" nik="{{ $d->nik }}" kode_penilaian="{{ $d->kode_penilaian }}" class="danger buatkontrak ml-1">Buat Kontrak</a>
                                             @endif
 
-                                            @endif
+                                            {{-- @endif --}}
 
                                         </div>
                                     </td>

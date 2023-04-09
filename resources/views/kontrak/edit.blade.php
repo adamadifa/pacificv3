@@ -21,7 +21,8 @@
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
-                        <select name="nik" id="nik" class="form-control" disabled>
+                        <input type="hidden" name="nik" value="{{ $kontrak->nik }}">
+                        <select name="nik_show" id="nik" class="form-control" disabled>
                             <option value="">Pilih Karyawan</option>
                             @foreach ($karyawan as $d)
                             <option {{ $kontrak->nik == $d->nik ? 'selected' : '' }} value="{{ $d->nik }}">{{ $d->nama_karyawan }}</option>

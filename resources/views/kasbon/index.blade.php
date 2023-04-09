@@ -1,5 +1,5 @@
 @extends('layouts.midone')
-@section('titlepage','Pinjaman Karyawan')
+@section('titlepage','Kasbon Karyawan')
 @section('content')
 <style>
     .form-group {
@@ -61,6 +61,10 @@
                             <x-inputtext label="Sampai" field="sampai" value="{{ Request('sampai') }}" icon="feather icon-calendar" datepicker />
                         </div>
                     </div>
+                    @php
+                    $level_search = ["admin","manager hrd","manager accounting","direktur"];
+                    @endphp
+                    @if (Auth::user()->kode_cabang=="PCF" && in_array($level,$level_search))
                     <div class="row">
                         <div class="col-lg-3 col-sm-12">
                             <div class="form-group  ">
@@ -96,6 +100,19 @@
                             <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search mr-2"></i> Search</button>
                         </div>
                     </div>
+                    @else
+                    <div class="row">
+                        <div class="col-lg-9 col-sm-12">
+                            <div class="form-group">
+                                <x-inputtext label="Nama Karyawan" value="{{ Request('nama_karyawan') }}" field="nama_karyawan" icon="feather icon-user" />
+                            </div>
+                        </div>
+
+                        <div class="col-lg-3 col-sm-12">
+                            <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search mr-2"></i> Search</button>
+                        </div>
+                    </div>
+                    @endif
 
                 </form>
 

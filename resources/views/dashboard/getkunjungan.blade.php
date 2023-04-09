@@ -161,13 +161,25 @@
                                 <span class="timeline-title">{{ $d->kode_pelanggan }} {{ $d->nama_pelanggan }}</span>
                                 <br>
                                 <span>{{ $d->alamat_pelanggan }}</span>
+                                <br>
+                                <span class=" danger">
+                                    <i class="feather icon-log-out danger "></i> {{ !empty($d->checkout_time) ? date("H:i",strtotime($d->checkout_time)) : 'Belum Checkout' }}
+                                </span>
+                                <span class="primary">
+                                    @if (!empty($d->checkout_time))
+                                    Durasi ({{ $j }} : {{ $m }})
+                                    @else
+                                    Durasi (00:00)
+                                    @endif
+
+                                </span>
                             </span>
                         </span>
 
                     </div>
                 </div>
 
-                <span class="vertical-timeline-element-date">{{ date("H:i",strtotime($d->checkin_time)) }}</span>
+                <span class="vertical-timeline-element-date">{{ date("H:i",strtotime($d->checkin_time)) }} </span>
             </div>
         </div>
 </div>

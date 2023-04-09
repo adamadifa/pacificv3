@@ -301,14 +301,7 @@
                             <x-inputtext label="Tanggal" field="tanggal" icon="feather icon-calendar" datepicker />
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-6">
-                            <x-inputtext label="Periode Dari" field="dari" icon="feather icon-calendar" datepicker />
-                        </div>
-                        <div class="col-6">
-                            <x-inputtext label="Periode Sampai" field="sampai" icon="feather icon-calendar" datepicker />
-                        </div>
-                    </div>
+
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group">
@@ -321,7 +314,19 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="row">
+                        <div class="col-12">
+                            <x-inputtext label="No. Kontrak" field="no_kontrak" icon="feather icon-credit-card" readonly />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <x-inputtext label="Periode Dari" field="dari" icon="feather icon-calendar" readonly />
+                        </div>
+                        <div class="col-6">
+                            <x-inputtext label="Periode Sampai" field="sampai" icon="feather icon-calendar" readonly />
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group">
@@ -352,18 +357,14 @@
                     <div class="row">
 
                         <div class="col-12">
-                            <x-inputtext label="Tanggal Kesepaatan Bersama" field="tanggal" icon="feather icon-calendar" datepicker />
+                            <x-inputtext label="Tanggal Kesepakatan Bersama" field="tanggal" icon="feather icon-calendar" datepicker />
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row mb-2">
                         <div class="col-12">
-                            <div class="form-group">
-                                <select name="tahun" id="tahun_kb" class="form-control">
-                                    <option value="">Tahun Pemutihan</option>
-                                    @for($thn = 2019; $thn<=date('Y'); $thn++) <option value="{{ $thn }}">{{ $thn }}</option>
-                                        @endfor
-                                </select>
-                            </div>
+                            <select name="no_kontrak" id="no_kontrak_pemutihan" class="form-control">
+
+                            </select>
                         </div>
                     </div>
                     <div class="row">
@@ -399,6 +400,8 @@
 @push('myscript')
 <script>
     $(function() {
+
+
         $('#buatpenilaian').click(function(e) {
             e.preventDefault();
             $('#mdlbuatpenilaian').modal({
@@ -442,7 +445,25 @@
                 backdrop: 'static'
                 , keyboard: false
             });
+
+            loadkontrak(nik);
         });
+
+
+        function loadkontrak(nik) {
+            $.ajax({
+                type: 'POST'
+                , url: '/kontrak/getkontrakpemutihan'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , nik: nik
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#no_kontrak_pemutihan").html(respond);
+                }
+            });
+        }
 
         $('.buatkontrak').click(function(e) {
             var kode_penilaian = $(this).attr("kode_penilaian");
@@ -466,7 +487,39 @@
 
         });
 
+        $("#frmBuatpenilaian").find("#nik").change(function(e) {
+            var nik = $(this).val();
+            $.ajax({
+                type: 'POST'
+                , url: '/kontrak/getkontrakpenilaian'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , nik: nik
+                }
+                , cache: false
+                , success: function(respond) {
+                    if (respond == 0) {
+                        swal({
+                            title: 'Oops'
+                            , text: 'Data Kontrak Tidak Ditemukan, Silahkan Hubungi Tim IT, Atau HRD Dept.!'
+                            , icon: 'warning'
+                            , showConfirmButton: false
+                        }).then(function() {
+                            $("#frmBuatpenilaian").find("#no_kontrak").val("");
+                            $("#frmBuatpenilaian").find("#dari").val("");
+                            $("#frmBuatpenilaian").find("#sampai").val("");
+                        });
+                    } else {
+                        var data = respond.split("|");
+                        $("#frmBuatpenilaian").find("#dari").val(data[1]);
+                        $("#frmBuatpenilaian").find("#sampai").val(data[2]);
+                        $("#frmBuatpenilaian").find("#no_kontrak").val(data[0]);
+                    }
 
+                }
+            });
+
+        });
 
         $("#frmBuatpenilaian").submit(function() {
             var dari = $("#dari").val();

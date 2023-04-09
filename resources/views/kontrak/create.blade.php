@@ -41,6 +41,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
+
                         <select name="kode_dept" id="kontrak_kode_dept" class="form-control">
                             <option value="">Departemen</option>
                             @foreach ($departemen as $d)
@@ -54,7 +55,7 @@
                 <div class="col-12">
                     <div class="form-group">
                         <select name="id_jabatan" id="kontrak_id_jabatan" class="form-control">
-                            <option value="">Jabatan Baru</option>
+                            <option value="">Jabatan </option>
                             @foreach ($jabatan as $d)
                             <option value="{{ $d->id }}">{{ $d->nama_jabatan }}</option>
                             @endforeach
@@ -159,7 +160,7 @@
 <script>
     $(function() {
         $("#nik").selectize();
-        $("#kontrak_id_jabatan").selectize();
+        //$("#kontrak_id_jabatan").selectize();
         $("#gaji_pokok,#t_jabatan,#t_masakerja,#t_tanggungjawab,#t_istri,#t_makan,#t_skill").maskMoney();
         $("#frmKontrak").submit(function(e) {
             //e.preventDefault();
@@ -248,6 +249,26 @@
                 return false;
             }
 
+        });
+
+        $("#frmKontrak").find("#nik").change(function(e) {
+            var nik = $(this).val();
+            $.ajax({
+                type: 'POST'
+                , url: '/karyawan/getkaryawankontrak'
+                , data: {
+                    _token: '{{ csrf_token() }}'
+                    , nik: nik
+                }
+                , cache: false
+                , success: function(respond) {
+                    var data = respond.split("|");
+                    $("#frmKontrak").find("#kontrak_id_jabatan").val(data[0]);
+                    $("#frmKontrak").find("#kontrak_kode_dept").val(data[1]);
+                    $("#frmKontrak").find("#kontrak_id_perusahaan").val(data[3]);
+                    $("#frmKontrak").find("#kontrak_id_kantor").val(data[2]);
+                }
+            });
         });
     });
 
