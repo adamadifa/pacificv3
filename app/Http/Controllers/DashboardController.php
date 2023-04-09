@@ -731,7 +731,7 @@ class DashboardController extends Controller
         $id_karyawan = Auth::user()->id;
         $tanggal = $request->tanggalkunjungan;
         $kunjungan = DB::table('checkin')
-            ->selectRaw('checkin.kode_pelanggan,nama_pelanggan,alamat_pelanggan,checkin_time,checkout_time,foto')
+            ->selectRaw('checkin.kode_pelanggan,nama_pelanggan,alamat_pelanggan,checkin_time,checkout_time,jarak,foto')
             ->join('pelanggan', 'checkin.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
 
             ->where('checkin.id_karyawan', $id_karyawan)

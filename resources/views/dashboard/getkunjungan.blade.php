@@ -173,6 +173,10 @@
                                     @endif
 
                                 </span>
+                                <br>
+                                <span class="info">
+                                    <i class="feather icon-map mr-1"></i>{{ $d->jarak }} meter
+                                </span>
                             </span>
                         </span>
 
