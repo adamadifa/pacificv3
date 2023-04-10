@@ -7540,7 +7540,7 @@ class PenjualanController extends Controller
             ->selectRaw('SUM(total) as totalretur')
             ->where('no_fak_penj', $no_fak_penj)->first();
 
-        if (Auth::user()->id == 107 || Auth::user()->id == 112) {
+        if (Auth::user()->id == 107 || Auth::user()->id == 163) {
             return view('penjualan.cetakstruk2', compact('faktur', 'pelangganmp', 'detail', 'pembayaran', 'retur'));
         } else {
 
