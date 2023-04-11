@@ -758,7 +758,7 @@ class DashboardController extends Controller
                 FROM detailpenjualan
                 INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
                 INNER JOIN penjualan ON detailpenjualan.no_fak_penj = penjualan.no_fak_penj
-                WHERE tgltransaksi = '$tanggal'
+                WHERE tgltransaksi = '$tanggal' AND penjualan.id_karyawan = '$id_karyawan'
                 GROUP BY barang.kode_produk,isipcsdus
                 ) dp"),
                 function ($join) {

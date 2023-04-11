@@ -344,6 +344,10 @@
         $("#tanggalkunjungan").change(function(e) {
             loadkunjungan();
         });
+
+        $("#tgl_dpb").change(function(e) {
+            loaddpb();
+        });
         $("#bulan, #tahun").change(function() {
             loadrealisasitargetsales();
         });
