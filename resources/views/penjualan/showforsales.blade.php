@@ -65,6 +65,16 @@
                         </div>
                     </div>
                 </div>
+                @if ($data->tgltransaksi != date("Y-m-d"))
+                <div class="row mb-1">
+                    <div class="col-12">
+                        <a href="#" class="btn btn-info btn-block" id="cetakfaktur">
+                            <i class="feather icon-printer mr-1"></i>
+                            Cetak Faktur
+                        </a>
+                    </div>
+                </div>
+                @else
                 <div class="row mb-1">
                     <div class="col d-flex justify-content-arround">
                         <a href="/penjualan/{{ Crypt::encrypt($data->no_fak_penj) }}/editv2" class="btn  btn-success mr-1">
@@ -83,6 +93,8 @@
                         </form>
                     </div>
                 </div>
+                @endif
+
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         @php
