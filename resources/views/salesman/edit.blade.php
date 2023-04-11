@@ -108,6 +108,11 @@
                                                         {{ $data->kategori_salesman == 'MOTORIS' ? 'selected' : '' }} @endif @else
                                                         {{ old('kategori_salesman') == 'MOTORIS' ? 'selected' : '' }}
                                                         @endisset value="MOTORIS">MOTORIS</option>
+                                                    <option @isset($data->kategori_salesman) @if (old('kategori_salesman'))
+                                                        {{ old('kategori_salesman') == 'TOCANVASER' ? 'selected' : '' }} @else
+                                                        {{ $data->kategori_salesman == 'TOCANVASER' ? 'selected' : '' }} @endif @else
+                                                        {{ old('kategori_salesman') == 'TOCANVASER' ? 'selected' : '' }}
+                                                        @endisset value="TOCANVASER">TOCANVASER</option>
                                                 </select>
                                                 @error('kategori_salesman')
                                                 <div class="help-block">
