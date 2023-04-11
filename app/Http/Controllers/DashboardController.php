@@ -749,7 +749,7 @@ class DashboardController extends Controller
 
         $tanggal = $request->tgl_dpb;
         $dpb = DB::table('detail_dpb')
-            ->selectRaw('detail_dpb.kode_produk,nama_barang,isipcsdus,jml_pengambilan,qtyjual')
+            ->selectRaw('detail_dpb.kode_produk,nama_barang,isipcsdus,SUM(jml_pengambilan) as jml_pengambilan,qtyjual')
             ->join('master_barang', 'detail_dpb.kode_produk', '=', 'master_barang.kode_produk')
             ->join('dpb', 'detail_dpb.no_dpb', '=', 'dpb.no_dpb')
             ->leftJoin(
@@ -767,6 +767,7 @@ class DashboardController extends Controller
             )
             ->where('dpb.id_karyawan', $id_karyawan)
             ->where('tgl_pengambilan', $tanggal)
+            ->groupByRaw('detail_dpb.kode_produk,nama_barang,isipcsdus,qtyjual')
             ->get();
 
         return view('dashboard.getdpb', compact('dpb'));
