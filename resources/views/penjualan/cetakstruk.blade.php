@@ -4,11 +4,13 @@
         LEMBAR UNTUK PELANGGAN<br>
         @if (in_array($faktur->kode_pelanggan,$pelangganmp))
         CV MAKMUR PERMATA<br>
-        @else
-        CV PACIFIC<br>
-        @endif
         Jln. Perintis Kemerdekaan 001/003<br>
         Karsamenak, Kawalu, Kota Tasikmalaya<br>
+        @else
+        CV PACIFIC CABANG {{ $faktur->nama_cabang }}<br>
+        {{ $faktur->alamat_cabang }}<br>
+        @endif
+
         ------------------------------------------------------------<br>
     </p>
     <p style="display:flex; justify-content: space-between">

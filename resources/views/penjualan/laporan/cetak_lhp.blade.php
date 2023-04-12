@@ -9,6 +9,14 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
+    body.A4 .sheet {
+        height: auto !important;
+    }
+
+    .sheet {
+        overflow: auto !important;
+    }
+
     .datatable3 {
         border: 1px solid #2f2f2f;
         border-collapse: collapse;

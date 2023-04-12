@@ -7524,9 +7524,10 @@ class PenjualanController extends Controller
             'PST00002'
         ];
         $faktur = DB::table('penjualan')
-            ->select('penjualan.*', 'nama_pelanggan', 'nama_karyawan', 'alamat_pelanggan', 'jenistransaksi')
+            ->select('penjualan.*', 'nama_pelanggan', 'nama_karyawan', 'alamat_pelanggan', 'jenistransaksi', 'alamat_cabang', 'nama_cabang')
             ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
             ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
             ->where('no_fak_penj', $no_fak_penj)->first();
 
         $detail = DB::table('detailpenjualan')
