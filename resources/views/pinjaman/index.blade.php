@@ -194,7 +194,7 @@
                                         @endif
 
                                         <a class="ml-1 show" no_pinjaman="{{ $d->no_pinjaman }}" href="#"><i class="feather icon-file-text info"></i></a>
-                                        @if (empty($d->totalpembayaran))
+                                        @if (empty($d->totalpembayaran) && Auth::user()->id == $d->id_user)
                                         <a class="ml-1 edit" no_pinjaman="{{ $d->no_pinjaman }}" href="#"><i class="feather icon-edit success"></i></a>
                                         <form method="POST" class="deleteform" action="/pinjaman/{{Crypt::encrypt($d->no_pinjaman)}}/delete">
                                             @csrf
