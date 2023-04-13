@@ -72,11 +72,42 @@
 <script>
     $(function() {
         $("#mybarang").DataTable({
-            order: [
+            columnDefs: [{
+                    width: 80
+                    , targets: 0
+                }
+                , {
+                    width: 80
+                    , targets: 1
+                }
+                , {
+                    width: 80
+                    , targets: 3
+                }
+                , {
+                    width: 80
+                    , targets: 4
+                }
+                , {
+                    width: 80
+                    , targets: 5
+                }, {
+                    width: 80
+                    , targets: 6
+                }, {
+                    width: 80
+                    , targets: 7
+                }
+            ]
+            , order: [
                 [1, 'asc']
             ]
         , });
-        $(".pilihbarang").click(function(e) {
+
+
+
+        $('#mybarang tbody').on('click', '.pilihbarang', function(e) {
+
             e.preventDefault();
             var kode_barang = $(this).attr("kode_barang");
             var nama_barang = $(this).attr("nama_barang");
