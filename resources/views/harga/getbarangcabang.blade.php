@@ -72,6 +72,7 @@
 <script>
     $(function() {
         $("#mybarang").DataTable({
+
             columnDefs: [{
                     width: 80
                     , targets: 0
