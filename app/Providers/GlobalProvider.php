@@ -166,8 +166,8 @@ class GlobalProvider extends ServiceProvider
             $memo_tambah_hapus = ['admin', 'admin medsos', 'manager accounting', 'manager hrd'];
 
 
-            $tracking_salesman = ['admin', 'manager marketing', 'direktur', 'manager accounting', 'kepala admin', 'kepala penjualan'];
-            $map_pelanggan = ['admin', 'manager marketing', 'manager accounting', 'kepala admin', 'kepala penjualan', 'direktur'];
+            $tracking_salesman = ['admin', 'manager marketing', 'direktur', 'manager accounting', 'kepala admin', 'kepala penjualan', 'rsm'];
+            $map_pelanggan = ['admin', 'manager marketing', 'manager accounting', 'kepala admin', 'kepala penjualan', 'direktur', 'rsm'];
             $scan = ['admin', 'salesman'];
 
             $dashboardadmin = ['admin', 'manager marketing', 'rsm', 'general manager', 'direktur'];

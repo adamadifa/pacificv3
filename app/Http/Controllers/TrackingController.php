@@ -2,22 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cabang;
 use App\Models\Checkin;
 use App\Models\Pelanggan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 
 class TrackingController extends Controller
 {
+    protected $cabang;
+    public function __construct()
+    {
+        // Fetch the Site Settings object
+        $this->middleware(function ($request, $next) {
+            $this->cabang = Auth::user()->kode_cabang;
+            return $next($request);
+        });
+
+
+        View::share('cabang', $this->cabang);
+    }
     public function index()
     {
-        $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
         return view('tracking.index', compact('cabang'));
     }
 
     public function mappelanggan()
     {
-        $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
         return view('tracking.mappelanggan', compact('cabang'));
     }
 
