@@ -3548,6 +3548,123 @@ class PenjualanController extends Controller
                     header("Content-Disposition: attachment; filename=Laporan Penjualan Format Satu Baris $dari-$sampai-$time.xls");
                 }
                 return view('penjualan.laporan.cetak_penjualan_formatsatubaris', compact('penjualan', 'cabang', 'dari', 'sampai', 'salesman', 'pelanggan', 'barang'));
+            } else if ($jenislaporan == "PO") {
+                $query = Penjualan::query();
+                $query->selectRaw('penjualan.no_fak_penj,
+                tgltransaksi,
+                penjualan.kode_pelanggan,pelanggan.nama_pelanggan,
+                penjualan.id_karyawan,karyawan.nama_karyawan,
+                pelanggan.pasar,pelanggan.hari,
+                AB,AR,`AS`,BB,CG,CGG,DEP,DK,DS,SP,BBP,SPP,CG5,SC,SP8,SP8P,SP500,
+                penjualan.subtotal as totalbruto,
+                (ifnull( r.totalpf, 0 ) - ifnull( r.totalgb, 0 ) ) AS totalretur,
+                penjualan.penyharga AS penyharga,
+                penjualan.potaida as potaida,
+                penjualan.potswan as potswan,
+                penjualan.potstick as potstick,
+                penjualan.potsp as potsp,
+                penjualan.potongan as potongan,
+                penjualan.potistimewa,
+                penjualan.subtotal,
+                (ifnull( penjualan.total, 0 ) - ( ifnull( r.totalpf, 0 ) - ifnull( r.totalgb, 0))) as
+                totalnetto, ppn,
+                penjualan.jenistransaksi,
+                penjualan.status_lunas,
+                penjualan.date_created,name');
+                $query->leftJoin(
+                    DB::raw("(
+                    SELECT dp.no_fak_penj,
+                    SUM(IF(kode_produk = 'AB',jumlah,0)) as AB,
+                    SUM(IF(kode_produk = 'AR',jumlah,0)) as AR,
+                    SUM(IF(kode_produk = 'AS',jumlah,0)) as `AS`,
+                    SUM(IF(kode_produk = 'BB',jumlah,0)) as BB,
+                    SUM(IF(kode_produk = 'CG',jumlah,0)) as CG,
+                    SUM(IF(kode_produk = 'CGG',jumlah,0)) as CGG,
+                    SUM(IF(kode_produk = 'DEP',jumlah,0)) as DEP,
+                    SUM(IF(kode_produk = 'DK',jumlah,0)) as DK,
+                    SUM(IF(kode_produk = 'DS',jumlah,0)) as DS,
+                    SUM(IF(kode_produk = 'SP',jumlah,0)) as SP,
+                    SUM(IF(kode_produk = 'BBP',jumlah,0)) as BBP,
+                    SUM(IF(kode_produk = 'SPP',jumlah,0)) as SPP,
+                    SUM(IF(kode_produk = 'CG5',jumlah,0)) as CG5,
+                    SUM(IF(kode_produk = 'SC',jumlah,0)) as SC,
+                    SUM(IF(kode_produk = 'SP8',jumlah,0)) as SP8,
+                    SUM(IF(kode_produk = 'SP8-P',jumlah,0)) as SP8P,
+                    SUM(IF(kode_produk = 'SP500',jumlah,0)) as SP500
+                    FROM detailpenjualan dp
+                    INNER JOIN barang b ON dp.kode_barang = b.kode_barang
+                    GROUP BY dp.no_fak_penj
+                    ) dp"),
+                    function ($join) {
+                        $join->on('penjualan.no_fak_penj', '=', 'dp.no_fak_penj');
+                    }
+                );
+
+
+
+                $query->leftJoin(
+                    DB::raw("(
+                        SELECT
+                        retur.no_fak_penj AS no_fak_penj,
+                        sum(retur.subtotal_gb) AS totalgb,
+                        sum(retur.subtotal_pf) AS totalpf
+                        FROM
+                            retur
+                        WHERE
+                            tglretur
+                        GROUP BY
+                            retur.no_fak_penj
+                    ) r"),
+                    function ($join) {
+                        $join->on('penjualan.no_fak_penj', '=', 'r.no_fak_penj');
+                    }
+                );
+
+                $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+                $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+                $query->join('users', 'penjualan.id_admin', '=', 'users.id');
+                $query->whereRaw('date(date_created) >="' . $dari . '"');
+                $query->whereRaw('date(date_created) <="' . $sampai . '"');
+
+                if ($request->kode_cabang != "") {
+                    $query->where('karyawan.kode_cabang', $request->kode_cabang);
+                }
+                if ($request->id_karyawan != "") {
+                    $query->where('penjualan.id_karyawan', $request->id_karyawan);
+                }
+
+                if ($request->kode_pelanggan != "") {
+                    $query->where('penjualan.kode_pelanggan', $request->kode_pelanggan);
+                }
+
+                if ($request->jenistransaksi != "") {
+                    $query->where('penjualan.jenistransaksi', $request->jenistransaksi);
+                }
+
+                if ($request->status != "") {
+                    if ($request->status == "pending") {
+                        $query->where('penjualan.status', 1);
+                    } else if ($request->status == "disetujui") {
+                        $query->where('penjualan.status', '!=', 1);
+                    }
+                }
+
+                $query->where('level', 'salesman');
+                $query->where('kategori_salesman', 'TO');
+                $query->orderBy('date_created', 'asc');
+                $query->orderBy('penjualan.no_fak_penj', 'asc');
+                $penjualan = $query->get();
+
+                $barang = Barang::all();
+
+                if (isset($_POST['export'])) {
+                    $time = date("H:i:s");
+                    // Fungsi header dengan mengirimkan raw data excel
+                    header("Content-type: application/vnd-ms-excel");
+                    // Mendefinisikan nama file ekspor "hasil-export.xls"
+                    header("Content-Disposition: attachment; filename=Laporan Penjualan Format Satu Baris $dari-$sampai-$time.xls");
+                }
+                return view('penjualan.laporan.cetak_penjualan_po', compact('penjualan', 'cabang', 'dari', 'sampai', 'salesman', 'pelanggan', 'barang'));
             } else if ($jenislaporan == "formatsatubarislastsalesman") {
                 $query = Penjualan::query();
                 $query->selectRaw('penjualan.no_fak_penj,

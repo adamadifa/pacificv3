@@ -86,6 +86,7 @@
                                                     @if (Auth::user()->kode_cabang=="BGR" || Auth::user()->kode_cabang=="PCF")
                                                     <option value="formatsatubarislastsalesman">Format Satu Baris (Salesman Terakhir)</option>
                                                     @endif
+                                                    <option value="PO">PO</option>
                                                     <option value="komisi">Format Komisi</option>
                                                 </select>
                                             </div>

@@ -533,6 +533,7 @@
                                 <th>Pasar</th>
                                 <th>Salesman</th>
                                 <th>Kode Cabang</th>
+                                <th>Status</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -735,6 +736,9 @@
                 }, {
                     data: 'kode_cabang'
                     , name: 'kode_cabang'
+                }, {
+                    data: 'statuspelanggan'
+                    , name: 'statuspelanggan'
                 }
                 , {
                     data: 'action'
@@ -764,40 +768,53 @@
             var limitpel = $(this).attr("limitpel");
             var limitpelanggan = $(this).attr("limitpelanggan");
             var jatuhtempo = $(this).attr("jatuhtempo");
-
-            if (nama_pelanggan.includes('KPBN')) {
-                $("#harga_dus").prop('readonly', false);
-                $("#harga_pack").prop('readonly', false);
-                $("#harga_pcs").prop('readonly', false);
+            var status = $(this).attr("status");
+            if (status == 'NonAktif') {
+                swal({
+                    title: 'Oops'
+                    , text: 'Pelanggan Non Aktif, Silahkan Hubungi Admin Untuk Mengaktifkan Pelanggan !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#pelanggan").focus();
+                });
             } else {
-                $("#harga_dus").prop('readonly', true);
-                $("#harga_pack").prop('readonly', true);
-                $("#harga_pcs").prop('readonly', true);
+                if (nama_pelanggan.includes('KPBN')) {
+                    $("#harga_dus").prop('readonly', false);
+                    $("#harga_pack").prop('readonly', false);
+                    $("#harga_pcs").prop('readonly', false);
+                } else {
+                    $("#harga_dus").prop('readonly', true);
+                    $("#harga_pack").prop('readonly', true);
+                    $("#harga_pcs").prop('readonly', true);
+                }
+                var foto = "{{ url(Storage::url('pelanggan/')) }}/" + image;
+                var nofoto = "{{ asset('app-assets/images/slider/04.jpg') }}";
+                $("#kode_pelanggan").val(kode_pelanggan);
+                $("#pelanggan_text").text(kode_pelanggan + " | " + nama_pelanggan);
+                $("#nama_pelanggan").val(kode_pelanggan + " | " + nama_pelanggan);
+                $("#id_karyawan").val(id_karyawan);
+                $("#nama_karyawan").val(id_karyawan + " | " + nama_karyawan + " | " + kategori_salesman);
+                $("#alamat_text").text(alamat_pelanggan);
+                $("#no_hp").text(no_hp);
+
+                $("#kode_cabang").val(kode_cabang);
+                $("#kategori_salesman").val(kategori_salesman);
+                $("#limitpel").val(limitpel);
+                $("#jatuhtempo").val(jatuhtempo);
+                $("#limitpelanggan").text(limitpelanggan);
+
+                $("#koordinat").text(latitude + " - " + longitude);
+                if (image != "") {
+                    $("#foto").attr("src", foto);
+                } else {
+                    $("#foto").attr("src", nofoto);
+                }
+
+                $("#mdlpelanggan").modal("hide");
             }
-            var foto = "{{ url(Storage::url('pelanggan/')) }}/" + image;
-            var nofoto = "{{ asset('app-assets/images/slider/04.jpg') }}";
-            $("#kode_pelanggan").val(kode_pelanggan);
-            $("#pelanggan_text").text(kode_pelanggan + " | " + nama_pelanggan);
-            $("#nama_pelanggan").val(kode_pelanggan + " | " + nama_pelanggan);
-            $("#id_karyawan").val(id_karyawan);
-            $("#nama_karyawan").val(id_karyawan + " | " + nama_karyawan + " | " + kategori_salesman);
-            $("#alamat_text").text(alamat_pelanggan);
-            $("#no_hp").text(no_hp);
 
-            $("#kode_cabang").val(kode_cabang);
-            $("#kategori_salesman").val(kategori_salesman);
-            $("#limitpel").val(limitpel);
-            $("#jatuhtempo").val(jatuhtempo);
-            $("#limitpelanggan").text(limitpelanggan);
 
-            $("#koordinat").text(latitude + " - " + longitude);
-            if (image != "") {
-                $("#foto").attr("src", foto);
-            } else {
-                $("#foto").attr("src", nofoto);
-            }
-
-            $("#mdlpelanggan").modal("hide");
             //hitungdiskon();
         });
 

@@ -303,10 +303,10 @@
                 });
         });
 
-        $(".detail").click(function(e) {
-            e.preventDefault();
-            window.location = $(this).data("href");
-        });
+        // $(".detail").click(function(e) {
+        //     e.preventDefault();
+        //     window.location = $(this).data("href");
+        // });
     });
 
 </script>

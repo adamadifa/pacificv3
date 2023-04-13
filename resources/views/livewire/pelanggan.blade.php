@@ -24,7 +24,7 @@
         <div class="row">
             <div class="col-12">
 
-                <div class="card border-primary">
+                <div class="card {{ $d->status_pelanggan == 1 ? 'border-primary' : 'bg-gradient-danger' }}">
                     <div class="card-content">
                         <div class="card-body" style="padding:8px 10px 8px 8px !important">
                             <p class="card-text d-flex justify-content-between">

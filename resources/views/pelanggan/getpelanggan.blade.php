@@ -23,6 +23,15 @@
         </div>
     </div>
     <div class="content-body" id="loadpelanggan">
+        @if ($pelanggan->status_pelanggan == 0)
+        <div class="alert alert-danger" role="alert">
+            <h4 class="alert-heading">Peringatan</h4>
+            <p class="mb-0">
+                Pelanggan Tidak Aktif, Silahkan Hubungi Admin Untuk Mengaktifkan Pelanggan Tersebut!
+            </p>
+        </div>
+        @else
+
         <audio id="myAudio">
             <source src="{{ asset('app-assets/sound/found.mp3') }}" type="audio/mpeg">
         </audio>
@@ -193,6 +202,7 @@
                 </div>
             </div>
         </div>
+        @endif
         @endif
     </div>
 </div>
