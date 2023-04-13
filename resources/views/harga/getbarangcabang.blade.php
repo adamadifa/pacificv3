@@ -41,7 +41,7 @@
 </table>
 </div>
 </div> --}}
-<table class="table table-hover-animation" style="width:100% !important">
+<table class="table table-hover-animation" id="mybarang" style="width:100% !important">
     <thead class="thead-dark">
         <tr>
             <th>Kode Barang</th>
@@ -71,6 +71,11 @@
 </table>
 <script>
     $(function() {
+        $("#mybarang").DataTable({
+            order: [
+                [1, 'asc']
+            ]
+        , });
         $(".pilihbarang").click(function(e) {
             e.preventDefault();
             var kode_barang = $(this).attr("kode_barang");
@@ -122,7 +127,6 @@
                 }
 
             }
-
 
             $("#mdlbarang").modal("hide");
         });
