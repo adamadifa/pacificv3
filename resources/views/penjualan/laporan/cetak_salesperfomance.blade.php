@@ -102,7 +102,7 @@
             <table class="datatable3">
                 <tr>
                     <td style="text-align: center; font-weight:bold; font-size:18px">
-                        {{ $jmlkunjungan }}
+                        {{ $jmlkunjungan + $call }}
                     </td>
                     <td style="text-align: center; font-weight:bold; font-size:18px">
                         {{ $ec }}

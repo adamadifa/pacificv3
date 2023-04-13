@@ -4108,16 +4108,18 @@ class PenjualanController extends Controller
             ->where('id_karyawan', $id_karyawan)
             ->count();
 
-        $penjualan = DB::table('penjualan')
+        $pj = DB::table('penjualan')
             ->selectRaw('penjualan.kode_pelanggan,nama_pelanggan')
             ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
 
             ->whereBetween('tgltransaksi', [$dari, $sampai])
             ->where('penjualan.id_karyawan', $id_karyawan)
-            ->whereNotIn('penjualan.kode_pelanggan', $kode_pelanggan)
-            ->get();
+            ->whereNotIn('penjualan.kode_pelanggan', $kode_pelanggan);
+        $penjualan = $pj->get();
+        $call = $pj->count();
 
-        return view('penjualan.laporan.cetak_salesperfomance', compact('sp', 'dari', 'sampai', 'cabang', 'salesman', 'jmlkunjungan', 'ec', 'penjualan'));
+
+        return view('penjualan.laporan.cetak_salesperfomance', compact('sp', 'dari', 'sampai', 'cabang', 'salesman', 'jmlkunjungan', 'ec', 'penjualan', 'call'));
     }
 
     public function cetaklaporantunaikredit(Request $request)
