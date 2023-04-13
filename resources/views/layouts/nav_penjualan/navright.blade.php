@@ -123,6 +123,11 @@
                     <i class="feather icon-file mr-1"></i>Routing Salesman
                 </li>
             </a>
+            <a href="/laporanpenjualan/salesperfomance" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanpenjualan/salesperfomance']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Sales Perfomance
+                </li>
+            </a>
             @endif
         </ul>
     </div>

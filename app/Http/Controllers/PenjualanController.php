@@ -2707,6 +2707,7 @@ class PenjualanController extends Controller
                 'karyawan.kode_cabang',
                 'nama_cabang',
                 'penjualan.keterangan',
+                'marker',
                 DB::raw('IFNULL(totalpf,0) - IFNULL(totalgb,0) as totalretur'),
                 'jmlbayar'
             )
@@ -2809,7 +2810,10 @@ class PenjualanController extends Controller
             )
             ->where('transfer.no_fak_penj', $no_fak_penj)
             ->get();
-        return view('penjualan.show', compact('data', 'detailpenjualan', 'retur', 'historibayar', 'salesman', 'girotolak', 'giro', 'transfer'));
+
+        $checkin = DB::table('checkin')->where('tgl_checkin', $data->tgltransaksi)->where('kode_pelanggan', $data->kode_pelanggan)->first();
+
+        return view('penjualan.show', compact('data', 'detailpenjualan', 'retur', 'historibayar', 'salesman', 'girotolak', 'giro', 'transfer', 'checkin'));
     }
     public function rekapcashin(Request $request)
     {
@@ -4026,6 +4030,96 @@ class PenjualanController extends Controller
             return view('penjualan.laporan.cetak_rekaproutingsalesman', compact('rekap', 'dari', 'sampai', 'cabang', 'salesman'));
         }
     }
+
+    public function laporansalesperfomance()
+    {
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
+        return view('penjualan.laporan.frm.lap_salesperfomance', compact('cabang'));
+    }
+
+    public function cetaksalesperfomance(Request $request)
+    {
+        $kode_cabang = $request->kode_cabang;
+        $id_karyawan = $request->id_karyawan;
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
+        $salesman = Salesman::where('id_karyawan', $id_karyawan)->first();
+        $sp = DB::table('checkin')
+            ->selectRaw('checkin.kode_pelanggan,nama_pelanggan,checkin_time,checkout_time,jarak,no_fak_penj,jarak')
+            ->join('pelanggan', 'checkin.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+            ->join('users', 'checkin.id_karyawan', '=', 'users.id')
+            ->leftJoin(
+                DB::raw("(
+                    SELECT penjualan.kode_pelanggan,tgltransaksi,no_fak_penj
+                    FROM penjualan
+                WHERE tgltransaksi BETWEEN '$dari' AND '$sampai'
+                GROUP BY penjualan.kode_pelanggan,tgltransaksi,no_fak_penj
+                ) penj"),
+                function ($join) {
+                    $join->on('checkin.kode_pelanggan', '=', 'penj.kode_pelanggan');
+                    $join->on('checkin.tgl_checkin', '=', 'penj.tgltransaksi');
+                }
+            )
+            // ->leftJoin(
+            //     DB::raw("(
+            //         SELECT penjualan.kode_pelanggan,tglretur,no_retur_penj
+            //         FROM retur
+            //         INNER JOIN penjualan ON retur.no_fak_penj = penjualan.no_fak_penj
+            //     WHERE tglretur BETWEEN '$dari' AND '$sampai'
+            //     GROUP BY penjualan.kode_pelanggan,tglretur,no_retur_penj
+            //     ) retur"),
+            //     function ($join) {
+            //         $join->on('checkin.kode_pelanggan', '=', 'retur.kode_pelanggan');
+            //         $join->on('checkin.tgl_checkin', '=', 'retur.tglretur');
+            //     }
+            // )
+            // ->leftJoin(
+            //     DB::raw("(
+            //         SELECT penjualan.kode_pelanggan,tglbayar,nobukti
+            //         FROM historibayar
+            //         INNER JOIN penjualan ON historibayar.no_fak_penj = penjualan.no_fak_penj
+            //     WHERE tglbayar BETWEEN '$dari' AND '$sampai'
+            //     GROUP BY penjualan.kode_pelanggan,tglbayar,nobukti
+            //     ) hb"),
+            //     function ($join) {
+            //         $join->on('checkin.kode_pelanggan', '=', 'hb.kode_pelanggan');
+            //         $join->on('checkin.tgl_checkin', '=', 'hb.tglbayar');
+            //     }
+            // )
+            ->where('users.id_salesman', $id_karyawan)
+            ->whereBetween('tgl_checkin', [$dari, $sampai])
+            ->orderBy('checkin_time')
+            ->get();
+        $kode_pelanggan = [];
+        foreach ($sp as $d) {
+            $kode_pelanggan[] = $d->kode_pelanggan;
+        }
+        $jmlkunjungan = DB::table('checkin')
+            ->join('users', 'checkin.id_karyawan', '=', 'users.id')
+            ->whereBetween('tgl_checkin', [$dari, $sampai])
+            ->where('users.id_salesman', $id_karyawan)
+            ->count();
+
+        $ec = DB::table('penjualan')
+            ->selectRaw('DISTINCT(kode_pelanggan)')
+            ->whereBetween('tgltransaksi', [$dari, $sampai])
+            ->where('id_karyawan', $id_karyawan)
+            ->count();
+
+        $penjualan = DB::table('penjualan')
+            ->selectRaw('penjualan.kode_pelanggan,nama_pelanggan')
+            ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+
+            ->whereBetween('tgltransaksi', [$dari, $sampai])
+            ->where('penjualan.id_karyawan', $id_karyawan)
+            ->whereNotIn('penjualan.kode_pelanggan', $kode_pelanggan)
+            ->get();
+
+        return view('penjualan.laporan.cetak_salesperfomance', compact('sp', 'dari', 'sampai', 'cabang', 'salesman', 'jmlkunjungan', 'ec', 'penjualan'));
+    }
+
     public function cetaklaporantunaikredit(Request $request)
     {
         $dari = $request->dari;

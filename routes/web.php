@@ -350,6 +350,10 @@ Route::middleware(['auth'])->group(function () {
     //Laporan Routing Salesman
     Route::get('/laporanpenjualan/routingsalesman', [PenjualanController::class, 'laporanroutingsalesman']);
     Route::post('/laporanpenjualan/routingsalesman/cetak', [PenjualanController::class, 'cetakroutingsalesman']);
+
+    //Laporan Sales Perfomance
+    Route::get('/laporanpenjualan/salesperfomance', [PenjualanController::class, 'laporansalesperfomance']);
+    Route::post('/laporanpenjualan/salesperfomance/cetak', [PenjualanController::class, 'cetaksalesperfomance']);
     //Laporan Kartu Piutang
     Route::get('/laporanpenjualan/kartupiutang', [PenjualanController::class, 'laporankartupiutang']);
     Route::post('/laporanpenjualan/kartupiutang/cetak', [PenjualanController::class, 'cetaklaporankartupiutang']);

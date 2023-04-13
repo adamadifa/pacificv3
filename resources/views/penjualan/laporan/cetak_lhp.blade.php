@@ -99,27 +99,29 @@
                 <tr>
             </table>
             <table class="datatable3" style="margin-top:5px; width:100%">
-                <tr>
-                    <th rowspan="2">PELANGGAN</th>
-                    <th rowspan="2">No. BON</th>
-                    <th colspan="10">NAMA PRODUK</th>
-                    <th colspan="2">PENJUALAN</th>
-                    <th rowspan="2">TAGIHAN</th>
-                </tr>
-                <tr>
-                    <th>AB</th>
-                    <th>AR</th>
-                    <th>AS</th>
-                    <th>BB</th>
-                    <th>DP</th>
-                    <th>SC</th>
-                    <th>SP8P</th>
-                    <th>SP8</th>
-                    <th>SP</th>
-                    <th>SP500</th>
-                    <th>TUNAI</th>
-                    <th>KREDIT</th>
-                </tr>
+                <thead>
+                    <tr>
+                        <th rowspan="2">PELANGGAN</th>
+                        <th rowspan="2">No. BON</th>
+                        <th colspan="10">NAMA PRODUK</th>
+                        <th colspan="2">PENJUALAN</th>
+                        <th rowspan="2">TAGIHAN</th>
+                    </tr>
+                    <tr>
+                        <th>AB</th>
+                        <th>AR</th>
+                        <th>AS</th>
+                        <th>BB</th>
+                        <th>DP</th>
+                        <th>SC</th>
+                        <th>SP8P</th>
+                        <th>SP8</th>
+                        <th>SP</th>
+                        <th>SP500</th>
+                        <th>TUNAI</th>
+                        <th>KREDIT</th>
+                    </tr>
+                </thead>
                 @php
                 $totalAB = 0;
                 $totalAR = 0;

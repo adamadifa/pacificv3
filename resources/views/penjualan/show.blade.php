@@ -9,6 +9,12 @@
     }
 
 </style>
+<style>
+    #map {
+        height: 180px;
+    }
+
+</style>
 <div class="content-wrapper">
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
@@ -38,7 +44,12 @@
                                 @php
                                 $path = Storage::url('pelanggan/'.$data->foto);
                                 @endphp
+                                @if (file_exists(url($path)))
                                 <img class="card-img img-fluid" src="{{ url($path) }}" alt="Card image" style="height:300px">
+                                @else
+                                <img class="card-img img-fluid" src="{{ asset('app-assets/images/slider/04.jpg') }}" alt="Card image">
+                                @endif
+
                                 @else
                                 <img class="card-img img-fluid" src="{{ asset('app-assets/images/slider/04.jpg') }}" alt="Card image">
                                 @endif
@@ -67,7 +78,17 @@
                         </div>
                     </div>
                 </div>
+
                 @endif
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div id="map"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 @if (Auth::user()->level != "salesman")
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
@@ -977,6 +998,37 @@
 @endsection
 
 @push('myscript')
+<script>
+    var latitude = "{{ !empty($data->latitude) ?  $data->latitude : '-7.3665114' }}";
+    var longitude = "{{ !empty($data->longitude) ? $data->longitude : '108.2148793' }}";
+    var latitudecheckin = "{{ $checkin != null ? $checkin->latitude :'-7.3665114' }}";
+    var longitudecheckin = "{{ $checkin != null ? $checkin->longitude : '108.2148793' }}";
+    var markericon = "{{ $data->marker }}";
+
+    var map = L.map('map').setView([latitude, longitude], 18);
+    L.tileLayer('http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}', {
+        maxZoom: 20
+        , subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+    }).addTo(map);
+    var marker = L.marker([latitude, longitude]).addTo(map);
+    var salesmanicon = L.icon({
+        iconUrl: '/app-assets/marker/' + markericon
+        , iconSize: [75, 75], // size of the icon
+        shadowSize: [50, 64], // size of the shadow
+        iconAnchor: [22, 94], // point of the icon which will correspond to marker's location
+        shadowAnchor: [4, 62], // the same for the shadow
+        popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
+    });
+    var marker = L.marker([latitudecheckin, longitudecheckin], {
+        icon: salesmanicon
+    }).addTo(map);
+
+    var polygon = L.polygon([
+        [latitude, longitude]
+        , [latitudecheckin, longitudecheckin]
+    ]).addTo(map);
+
+</script>
 <script>
     $(function() {
 
