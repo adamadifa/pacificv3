@@ -72,7 +72,34 @@
 <script>
     $(function() {
         $("#mybarang").DataTable({
-            order: [
+            columnDefs: [{
+                    width: 80
+                    , targets: 0
+                }
+                , {
+                    width: 80
+                    , targets: 1
+                }
+                , {
+                    width: 80
+                    , targets: 3
+                }
+                , {
+                    width: 80
+                    , targets: 4
+                }
+                , {
+                    width: 80
+                    , targets: 5
+                }, {
+                    width: 80
+                    , targets: 6
+                }, {
+                    width: 80
+                    , targets: 7
+                }
+            ]
+            , order: [
                 [1, 'asc']
             ]
         , });
