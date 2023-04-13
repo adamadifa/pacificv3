@@ -34,11 +34,8 @@
                                         <div class="col-lg-12 col-sm-12">
                                             <div class="form-group  ">
                                                 <select name="kode_cabang" id="kode_cabang" class="form-control">
-                                                    @if (Auth::user()->kode_cabang!="PCF" && Auth::user()->kode_cabang!="PST")
                                                     <option value="">Pilih Cabang</option>
-                                                    @else
-                                                    <option value="">Semua Cabang</option>
-                                                    @endif
+
                                                     @foreach ($cabang as $c)
                                                     <option {{ (Request('kode_cabang')==$c->kode_cabang ? 'selected':'')}} value="{{ $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
                                                     @endforeach
@@ -50,7 +47,7 @@
                                         <div class="col-12">
                                             <div class="form-group  ">
                                                 <select name="id_karyawan" id="id_karyawan" class="form-control">
-                                                    <option value="">Semua Salesman</option>
+                                                    <option value="">Pilih Salesman</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -119,7 +116,7 @@
             var kode_cabang = $("#kode_cabang").val();
             var dari = $("#dari").val();
             var sampai = $("#sampai").val();
-
+            var id_karyawan = $("#id_karyawan").val();
             var start = new Date(dari);
             var end = new Date(sampai);
             var jenis_laporan = $("#jenis_laporan").val();
@@ -133,6 +130,17 @@
                 }).then(function() {
                     $("#kode_cabang").focus();
                 });
+                return false;
+            } else if (id_karyawan == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Salesman Harus Dipilih !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#id_karyawan").focus();
+                });
+
                 return false;
             } else if (jenis_laporan == "") {
                 swal({

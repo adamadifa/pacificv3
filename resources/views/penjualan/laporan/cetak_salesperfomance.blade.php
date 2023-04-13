@@ -164,7 +164,7 @@
                         <td style="text-align: center">{!! $d->checkout_time != null ? $d->checkout_time : '<span style="color:red">Tidak Checkout</span>' !!} </td>
                         <td style="text-align: center">{!! $d->checkout_time != null ? $minutes : '<span style="color:red">-</span>' !!} </td>
                         <td style="text-align: center">{!! $d->no_fak_penj != null ? '&#10003' : '' !!}</td>
-                        <td style="text-align: center">{{ rupiah($d->jarak) }}</td>
+                        <td style="text-align: center">{{ $d->jarak != "NAN" ?  rupiah($d->jarak) : 0 }}</td>
                         {{-- <td style="text-align: center">{!! $d->no_retur_penj != null ? '&#10003' : '' !!}</td>
                         <td style="text-align: center">{!! $d->nobukti != null ? '&#10003' : '' !!}</td> --}}
                     </tr>
