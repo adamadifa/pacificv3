@@ -165,9 +165,9 @@ foreach( $detail as $d ) {
     }
     $jumlah_pcs = $sisapack;
     $total += $d->subtotal;
-    $data .= "  ".$d->nama_barang."<br>";
+    $data .=$d->nama_barang."<br>";
     if(!empty($jumlah_dus)){
-        $data .=sprintf("%-$len"."s\t%s\n", $jumlah_dus." Dus x ".rupiah($d->harga_dus), "    ".rupiah($jumlah_dus * $d->harga_dus));
+        $data .=sprintf("%-$len"."s\t%s\n", $jumlah_dus." Dus x ".rupiah($d->harga_dus), "            ".rupiah($jumlah_dus * $d->harga_dus));
     }
     if(!empty($jumlah_pack)){
         //$data .= "<br>";
