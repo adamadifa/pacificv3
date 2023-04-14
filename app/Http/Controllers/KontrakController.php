@@ -50,7 +50,7 @@ class KontrakController extends Controller
 
 
         $karyawan = DB::table('master_karyawan')
-            ->whereNotIn('nik', $nik)
+
             ->where('status_karyawan', '!=', 'T')
             ->where('status_karyawan', '!=', 'O')
             ->orderBy('nama_karyawan')->get();

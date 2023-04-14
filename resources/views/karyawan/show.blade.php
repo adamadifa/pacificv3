@@ -200,6 +200,7 @@
                                                         @if (!empty($d->id_jabatan))
                                                         <a class="ml-1" href="/kontrak/{{ Crypt::encrypt($d->no_kontrak) }}/cetak" target="_blank"><i class="feather icon-printer primary"></i></a>
                                                         @endif
+                                                        <a class="ml-1 edit" no_kontrak="{{ $d->no_kontrak }}" href="#"><i class="feather icon-edit success"></i></a>
                                                     </td>
 
                                                 </tr>
@@ -229,11 +230,49 @@
         </div>
     </div>
 </div>
+<div class="modal fade text-left" id="mdleditkontrak" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Edit Kontrak</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="loadeditkontrak">
 
+            </div>
+        </div>
+    </div>
+</div>
 
 @endsection
 @push('myscript')
 
-@livewireScripts
+<script>
+    $(function() {
+        $(".edit").click(function(e) {
+            e.preventDefault();
+            var no_kontrak = $(this).attr("no_kontrak");
+            $.ajax({
+                type: 'POST'
+                , url: '/kontrak/edit'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , no_kontrak: no_kontrak
+                }
+                , cache: false
+                , success: function(respond) {
+                    $('#mdleditkontrak').modal({
+                        backdrop: 'static'
+                        , keyboard: false
+                    });
+                    $("#loadeditkontrak").html(respond);
+                }
+            });
+        });
+    });
+
+</script>
 
 @endpush
