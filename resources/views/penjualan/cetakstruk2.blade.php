@@ -131,14 +131,14 @@ $len = maxLen($detail);
 $data = "";
 $total = 0;
 $data .= "------------------------------<br>";
-$data .= "     LEMBAR UNTUK PELANGGAN        <br>";
+$data .= "     LEMBAR UNTUK PELANGGAN <br>";
 if(in_array($faktur->kode_pelanggan,$pelangganmp)){
 $data .= "          CV MAKMUR PERMATA        <br>";
 }else{
 $data .= "           CV PACIFIC        <br>";
 }
-$data .= "Jln. Perintis Kemerdekaan 001/003<br>";
-$data .= "Karsamenak, Kawalu, Kota Tasikmalaya<br>";
+$data .="Jln. Perintis Kemerdekaan 001/003<br>";
+$data .="Karsamenak, Kawalu, Kota Tasikmalaya<br>";
 
  echo "<pre id='pre_print' style='position: absolute; z-index:0'>$data</pre>"; ?>
 
