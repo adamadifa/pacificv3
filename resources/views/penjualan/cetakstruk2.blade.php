@@ -144,6 +144,40 @@ $data .=sprintf("%-$len"."s\t%s\n",$faktur->no_fak_penj."(".$faktur->jenistransa
 $data .=date("d-m-Y H:i:s",strtotime($faktur->date_created))."<br>";
 $data .=$faktur->kode_pelanggan." - ".$faktur->nama_pelanggan."<br>";
 $data .=$faktur->alamat_pelanggan."<br>";
+$data .="------------------------------------------<br>";
+foreach( $detail as $d ) {
+    $isipcsdus = $d->isipcsdus;
+    $isipack = $d->isipack;
+    $isipcs = $d->isipcs;
+    $jumlah = $d->jumlah;
+    $jumlah_dus = floor($jumlah / $isipcsdus);
+    if ($jumlah != 0) {
+    $sisadus = $jumlah % $isipcsdus;
+    } else {
+    $sisadus = 0;
+    }
+    if ($isipack == 0) {
+    $jumlah_pack = 0;
+    $sisapack = $sisadus;
+    } else {
+    $jumlah_pack = floor($sisadus / $isipcs);
+    $sisapack = $sisadus % $isipcs;
+    }
+    $jumlah_pcs = $sisapack;
+    $total += $d->subtotal;
+    $data .= "  ".$d->nama_barang."<br>";
+    if(!empty($jumlah_dus)){
+        $data .=sprintf("%-$len"."s\t%s\n", $jumlah_dus." Dus x ".rupiah($d->harga_dus), "    ".rupiah($jumlah_dus * $d->harga_dus));
+    }
+    if(!empty($jumlah_pack)){
+        //$data .= "<br>";
+        $data .=sprintf("%-$len"."s\t%s\n", $jumlah_pack." Pack x ".rupiah($d->harga_pack), "    ".rupiah($jumlah_pack * $d->harga_pack));
+    }
+    if(!empty($jumlah_pcs)){
+        //$data .= "<br>";
+        $data .=sprintf("%-$len"."s\t%s\n", $jumlah_pcs." Pcs x ".rupiah($d->harga_pcs), "            ".rupiah($jumlah_pcs * $d->harga_pcs));
+    }
+}
  echo "<pre id='pre_print' style='position: absolute; z-index:0'>$data</pre>"; ?>
 
 
