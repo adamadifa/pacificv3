@@ -583,7 +583,7 @@ class PelangganController extends Controller
     {
 
         $query = Pelanggan::query();
-        $query->select('pelanggan.*', 'karyawan.nama_karyawan', 'karyawan.kategori_salesman', 'limitpel', DB::raw('IF(status_pelanggan=1,"Aktif","NonAktif") as statuspelanggan'));
+        $query->select('pelanggan.*', 'karyawan.nama_karyawan', 'karyawan.kategori_salesman', 'limitpel', DB::raw('IF(status_pelanggan=1,"Aktif","NonAktif") as status_pelanggan'));
         $query->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
         $query->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang');
         // $query->where('status_pelanggan', '1');
@@ -624,7 +624,7 @@ class PelangganController extends Controller
                 limitpel = "' . $pelanggan->limitpel  . '"
                 jatuhtempo = "' . $pelanggan->jatuhtempo  . '"
                 limitpelanggan = "' . rupiah($pelanggan->limitpel)  . '"
-                status = "' . $pelanggan->statuspelanggan  . '"
+                status = "' . $pelanggan->status_pelanggan  . '"
 
                 >Pilih</a>';
             })

@@ -737,8 +737,8 @@
                     data: 'kode_cabang'
                     , name: 'kode_cabang'
                 }, {
-                    data: 'statuspelanggan'
-                    , name: 'statuspelanggan'
+                    data: 'status_pelanggan'
+                    , name: 'status_pelanggan'
                 }
                 , {
                     data: 'action'
