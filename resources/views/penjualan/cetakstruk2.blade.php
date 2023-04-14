@@ -130,12 +130,12 @@ function maxLen($input) {
 $len = maxLen($detail);
 $data = "";
 $total = 0;
-$data .="------------------------------------------------<br>";
-$data .="             LEMBAR UNTUK PELANGGAN <br>";
+$data .="------------------------------------------<br>";
+$data .="         LEMBAR UNTUK PELANGGAN <br>";
 if(in_array($faktur->kode_pelanggan,$pelangganmp)){
-$data .="                CV MAKMUR PERMATA        <br>";
+$data .="            CV MAKMUR PERMATA        <br>";
 }else{
-$data .= "                CV PACIFIC        <br>";
+$data .="               CV PACIFIC        <br>";
 }
 $data .="Jl. Perintis Kemerdekaan 001/003<br>";
 $data .="Karsamenak,Kawalu,Tasikmalaya<br>";
