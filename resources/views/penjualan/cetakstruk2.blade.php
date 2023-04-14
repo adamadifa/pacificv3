@@ -140,10 +140,10 @@ $data .="               CV PACIFIC        <br>";
 $data .="   Jl. Perintis Kemerdekaan 001/003<br>";
 $data .="    Karsamenak,Kawalu,Tasikmalaya<br>";
 $data .="------------------------------------------<br>";
-$data .= "  ". sprintf("%-$len"."s\t%s\n",$faktur->no_fak_penj."(".$faktur->no_fak_penj.")","      ".$faktur->nama_karyawan);
-$data .= "  ". date("d-m-Y H:i:s",strtotime($faktur->date_created))."<br>";
-$data .= "  ". $faktur->kode_pelanggan." - ".$faktur->nama_pelanggan."<br>";
-$data .= "  ". $faktur->alamat_pelanggan."<br>";
+$data .=sprintf("%-$len"."s\t%s\n",$faktur->no_fak_penj."(".$faktur->jenistransaksi.")","  ".$faktur->nama_karyawan);
+$data .=date("d-m-Y H:i:s",strtotime($faktur->date_created))."<br>";
+$data .=$faktur->kode_pelanggan." - ".$faktur->nama_pelanggan."<br>";
+$data .=$faktur->alamat_pelanggan."<br>";
  echo "<pre id='pre_print' style='position: absolute; z-index:0'>$data</pre>"; ?>
 
 
