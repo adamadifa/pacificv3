@@ -178,6 +178,12 @@ foreach( $detail as $d ) {
         $data .=sprintf("%-$len"."s\t%s\n", $jumlah_pcs." Pcs x ".rupiah($d->harga_pcs),"           ".rupiah($jumlah_pcs * $d->harga_pcs));
     }
 }
+$data .="------------------------------------------<br>";
+$data .=sprintf("%-$len"."s\t%s\n","Potongan","           ".rupiah($faktur->potongan));
+$data .=sprintf("%-$len"."s\t%s\n","TOTAL","            ".rupiah($totalnonppn));
+$data .=sprintf("%-$len"."s\t%s\n","RETUR","            ".rupiah($retur->totalretur));
+$data .=sprintf("%-$len"."s\t%s\n","PPN","            ".rupiah($faktur->ppn));
+$data .=sprintf("%-$len"."s\t%s\n","GRAND TOTAL","            ".rupiah($faktur->total-$retur->totalretur));
  echo "<pre id='pre_print' style='position: absolute; z-index:0'>$data</pre>"; ?>
 
 
