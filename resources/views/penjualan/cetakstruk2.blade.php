@@ -137,8 +137,8 @@ $data .= "          CV MAKMUR PERMATA        <br>";
 }else{
 $data .= "           CV PACIFIC        <br>";
 }
-$data .="Jln. Perintis Kemerdekaan 001/003<br>";
-$data .="Karsamenak, Kawalu, Kota Tasikmalaya<br>";
+$data .="Jl. Perintis Kemerdekaan 001/003<br>";
+$data .="Karsamenak,Kawalu,Tasikmalaya<br>";
 
  echo "<pre id='pre_print' style='position: absolute; z-index:0'>$data</pre>"; ?>
 
