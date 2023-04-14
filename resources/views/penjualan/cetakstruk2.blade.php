@@ -167,15 +167,15 @@ foreach( $detail as $d ) {
     $total += $d->subtotal;
     $data .=$d->nama_barang."<br>";
     if(!empty($jumlah_dus)){
-        $data .=sprintf("%-$len"."s\t%s\n", $jumlah_dus." Dus x ".rupiah($d->harga_dus),"".rupiah($jumlah_dus * $d->harga_dus));
+        $data .=sprintf("%-$len"."s\t%s\n", $jumlah_dus." Dus x ".rupiah($d->harga_dus),"      ".rupiah($jumlah_dus * $d->harga_dus));
     }
     if(!empty($jumlah_pack)){
         //$data .= "<br>";
-        $data .=sprintf("%-$len"."s\t%s\n", $jumlah_pack." Pack x ".rupiah($d->harga_pack),"".rupiah($jumlah_pack * $d->harga_pack));
+        $data .=sprintf("%-$len"."s\t%s\n", $jumlah_pack." Pack x ".rupiah($d->harga_pack),"      ".rupiah($jumlah_pack * $d->harga_pack));
     }
     if(!empty($jumlah_pcs)){
         //$data .= "<br>";
-        $data .=sprintf("%-$len"."s\t%s\n", $jumlah_pcs." Pcs x ".rupiah($d->harga_pcs),"".rupiah($jumlah_pcs * $d->harga_pcs));
+        $data .=sprintf("%-$len"."s\t%s\n", $jumlah_pcs." Pcs x ".rupiah($d->harga_pcs),"      ".rupiah($jumlah_pcs * $d->harga_pcs));
     }
 }
  echo "<pre id='pre_print' style='position: absolute; z-index:0'>$data</pre>"; ?>
