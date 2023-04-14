@@ -1507,12 +1507,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/kontrak', [KontrakController::class, 'index']);
     Route::post('/kontrak/create', [KontrakController::class, 'create']);
     Route::post('/kontrak/edit', [KontrakController::class, 'edit']);
+    Route::post('/kontrak/editlastkontrak', [KontrakController::class, 'editlastkontrak']);
     Route::post('/kontrak/store', [KontrakController::class, 'store']);
     Route::post('/kontrak/{no_kontrak}/update', [KontrakController::class, 'update']);
+    Route::post('/kontrak/{no_kontrak}/updatelastkontrak', [KontrakController::class, 'updatelastkontrak']);
+    Route::post('/kontrak/{no_kontrak}/storehistorikontrak', [KontrakController::class, 'storehistorikontrak']);
     Route::post('/kontrak/createfrompenilaian', [KontrakController::class, 'createformpenilaian']);
     Route::post('/kontrak/storefrompenilaian', [KontrakController::class, 'storefrompenilaian']);
     Route::get('/kontrak/{no_kontrak}/cetak', [KontrakController::class, 'cetak']);
     Route::delete('/kontrak/{no_kontrak}/delete', [KontrakController::class, 'delete']);
+    Route::delete('/kontrak/{no_kontrak}/deletehistorikontrak', [KontrakController::class, 'deletehistorikontrak']);
 
     Route::post('/kontrak/createfromkb', [KontrakController::class, 'createfromkb']);
     Route::post('/kontrak/getkontrakpemutihan', [KontrakController::class, 'getkontrakpemutihan']);

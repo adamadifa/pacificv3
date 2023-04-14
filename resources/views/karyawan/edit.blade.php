@@ -190,8 +190,8 @@
             <div class="form-group">
                 <select name="status_karyawan" id="status_karyawan" class="form-control">
                     <option value="">Status Karyawan</option>
-                    <option value="K">Kontrak</option>
-                    <option value="T">Tetap</option>
+                    <option value="K" {{ $karyawan->status_karyawan == "K" ? 'selected' : '' }}>Kontrak</option>
+                    <option value="T" {{ $karyawan->status_karyawan == "T" ? 'selected' : '' }}>Tetap</option>
                 </select>
                 <small class="danger"></small>
             </div>
@@ -342,17 +342,17 @@
             return valid;
         };
 
-        const checkPendidikanterakhir = () => {
-            let valid = false;
-            const pendidikan_terakhir = pendidikanterakhirEl.value.trim();
-            if (!isRequired(pendidikan_terakhir)) {
-                showError(pendidikanterakhirEl, 'Pendidikan Terakhir Tidak Boleh Kosong.');
-            } else {
-                showSuccess(pendidikanterakhirEl);
-                valid = true;
-            }
-            return valid;
-        };
+        // const checkPendidikanterakhir = () => {
+        //     let valid = false;
+        //     const pendidikan_terakhir = pendidikanterakhirEl.value.trim();
+        //     if (!isRequired(pendidikan_terakhir)) {
+        //         showError(pendidikanterakhirEl, 'Pendidikan Terakhir Tidak Boleh Kosong.');
+        //     } else {
+        //         showSuccess(pendidikanterakhirEl);
+        //         valid = true;
+        //     }
+        //     return valid;
+        // };
 
         const checkPerusahan = () => {
             let valid = false;
@@ -511,7 +511,7 @@
                 , isJeniskelaminValid = checkJeniskelamin()
                 , isNohpValid = checkNohp()
                 , isStatuskawinValid = checkStatuskawin()
-                , isPendidikanterakhirValid = checkPendidikanterakhir()
+
                 , isIdperusahaanValid = checkPerusahan()
                 , isIdkantorValid = checkKantor()
                 , isKodedeptValid = checkDepartemen()
@@ -521,7 +521,7 @@
                 , isKlasifikasiValid = checkKlasifikasi()
                 , isStatuskaryawanValid = checkStatuskaryawan();
 
-            let isFormValid = isNikValid && isNoKtpValid && isNamakaryawanValid && isTempatlahirValid && isTgllahirValid && isAlamatValid && isJeniskelaminValid && isNohpValid && isStatuskawinValid && isPendidikanterakhirValid && isIdperusahaanValid && isIdkantorValid && isKodedeptValid && isGrupValid && isIdJabatan && isTglmasukValid && isKlasifikasiValid && isStatuskaryawanValid;
+            let isFormValid = isNikValid && isNoKtpValid && isNamakaryawanValid && isTempatlahirValid && isTgllahirValid && isAlamatValid && isJeniskelaminValid && isNohpValid && isStatuskawinValid && isIdperusahaanValid && isIdkantorValid && isKodedeptValid && isGrupValid && isIdJabatan && isTglmasukValid && isKlasifikasiValid && isStatuskaryawanValid;
 
             // submit to the server if the form is valid
             if (isFormValid) {

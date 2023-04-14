@@ -1,5 +1,5 @@
 @extends('layouts.midone')
-@section('titlepage', 'Detail Faktur')
+@section('titlepage', 'Detail Karyawan')
 @section('content')
 <style>
     @media only screen and (max-width: 800px) {
@@ -59,6 +59,7 @@
                 <div class="card">
                     <div class="card-content">
                         <div class="card-body">
+                            @include('layouts.notification')
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item">
                                     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" aria-controls="home" role="tab" aria-selected="true">Data Karyawan</a>
@@ -155,60 +156,82 @@
                                     </table>
                                 </div>
                                 <div class="tab-pane" id="kontrak" aria-labelledby="kontrak-tab" role="tabpanel">
-                                    <div class="table-responsive">
-                                        <table class="table table-hover-animation">
-                                            <thead class="thead-dark">
-                                                <tr>
-                                                    <th>No.</th>
-                                                    <th>No. Kontrak</th>
-                                                    <th>Tanggal</th>
-                                                    <th>Jabatan</th>
-                                                    <th>Kantor</th>
-                                                    <th>Perusahaan</th>
-                                                    <th>Periode</th>
-                                                    <th>Ket</th>
-                                                    <th>Status</th>
-                                                    <th></th>
-
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($kontrak as $d)
-                                                <tr>
-                                                    <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $d->no_kontrak }}</td>
-                                                    <td>{{ DateToIndo2($d->dari) }}</td>
-                                                    <td>{{ $d->nama_jabatan }}</td>
-                                                    <td>{{ $d->id_kantor }}</td>
-                                                    <td>{{ $d->id_perusahaan }}</td>
-                                                    <td>{{ date("d-m-Y",strtotime($d->dari)) }} s/d {{ date("d-m-Y",strtotime($d->sampai)) }}</td>
-                                                    <td>
-                                                        @php
-                                                        $start = date_create($d->dari);
-                                                        $end = date_create($d->sampai);
-                                                        @endphp
-                                                        {{ diffInMonths($start, $end). " bulan"; }}
-                                                    </td>
-                                                    <td>
-                                                        @if ($d->status_kontrak==1)
-                                                        <i class="fa fa-circle success"></i>
-                                                        @else
-                                                        <i class="fa fa-circle danger"></i>
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        @if (!empty($d->id_jabatan))
-                                                        <a class="ml-1" href="/kontrak/{{ Crypt::encrypt($d->no_kontrak) }}/cetak" target="_blank"><i class="feather icon-printer primary"></i></a>
-                                                        @endif
-                                                        <a class="ml-1 edit" no_kontrak="{{ $d->no_kontrak }}" href="#"><i class="feather icon-edit success"></i></a>
-                                                    </td>
-
-                                                </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-
+                                    <div class="row mb-2">
+                                        <div class="col-12">
+                                            <a href="#" class="btn btn-primary" id="tambahhistorikontrak"><i class="feather icon-plus mr-1 mb-1"></i>Tambah Histori Kontrak</a>
+                                        </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover-animation">
+                                                    <thead class="thead-dark">
+                                                        <tr>
+                                                            <th>No.</th>
+                                                            <th>No. Kontrak</th>
+                                                            <th>Tanggal</th>
+                                                            <th>Jabatan</th>
+                                                            <th>Kantor</th>
+                                                            <th>Perusahaan</th>
+                                                            <th>Periode</th>
+                                                            <th>Ket</th>
+                                                            <th>Status</th>
+                                                            <th></th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($kontrak as $d)
+                                                        <tr>
+                                                            <td>{{ $loop->iteration }}</td>
+                                                            <td>{{ $d->no_kontrak }}</td>
+                                                            <td>{{ DateToIndo2($d->dari) }}</td>
+                                                            <td>{{ $d->nama_jabatan }}</td>
+                                                            <td>{{ $d->id_kantor }}</td>
+                                                            <td>{{ $d->id_perusahaan }}</td>
+                                                            <td>{{ date("d-m-Y",strtotime($d->dari)) }} s/d {{ date("d-m-Y",strtotime($d->sampai)) }}</td>
+                                                            <td>
+                                                                @php
+                                                                $start = date_create($d->dari);
+                                                                $end = date_create($d->sampai);
+                                                                @endphp
+                                                                {{ diffInMonths($start, $end). " bulan"; }}
+                                                            </td>
+                                                            <td>
+                                                                @if ($d->status_kontrak==1)
+                                                                <i class="fa fa-circle success"></i>
+                                                                @else
+                                                                <i class="fa fa-circle danger"></i>
+                                                                @endif
+                                                            </td>
+                                                            <td>
+                                                                <div class="btn-group">
+                                                                    @if (!empty($d->id_jabatan))
+                                                                    <a class="ml-1" href="/kontrak/{{ Crypt::encrypt($d->no_kontrak) }}/cetak" target="_blank"><i class="feather icon-printer primary"></i></a>
+                                                                    @endif
+                                                                    @if ($loop->last)
+                                                                    <a class="ml-1 edit" no_kontrak="{{ $d->no_kontrak }}" href="#"><i class="feather icon-edit success"></i></a>
+                                                                    <form method="POST" class="deleteform" action="/kontrak/{{Crypt::encrypt($d->no_kontrak)}}/deletehistorikontrak">
+                                                                        @csrf
+                                                                        @method('DELETE')
+                                                                        <a href="#" class="delete-confirm ml-1">
+                                                                            <i class="feather icon-trash danger"></i>
+                                                                        </a>
+                                                                    </form>
+                                                                    @endif
+                                                                </div>
+
+                                                            </td>
+
+                                                        </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                                 <div class="tab-pane" id="dropdown31" role="tabpanel" aria-labelledby="dropdown31-tab" aria-expanded="false">
 
@@ -245,18 +268,89 @@
         </div>
     </div>
 </div>
+<div class="modal fade text-left" id="mdltambahhistorikontrak" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Tambah Histori Kontrak</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="/kontrak/{{ Crypt::encrypt($karyawan->nik) }}/storehistorikontrak">
+                    @csrf
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-12">
+                                    <table class="table">
+                                        <tr>
+                                            <td>NIK</td>
+                                            <td>{{ $karyawan->nik }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Nama Karyawan</td>
+                                            <td>{{ $karyawan->nama_karyawan }}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6">
+                                    <x-inputtext field="kontrak_dari" label="Dari" icon="feather icon-calendar" datepicker />
+                                </div>
+                                <div class="col-6">
+                                    <x-inputtext field="kontrak_sampai" label="Sampai" icon="feather icon-calendar" datepicker />
+                                </div>
+                            </div>
 
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group">
+                                        <button class="btn btn-primary btn-block" type="submit"><i class="feather icon-send mr-1"></i>Tambah Histori Kontrak</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @push('myscript')
 
 <script>
     $(function() {
+        $('.delete-confirm').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+            event.preventDefault();
+            swal({
+                    title: `Are you sure you want to delete this record?`
+                    , text: "If you delete this, it will be gone forever."
+                    , icon: "warning"
+                    , buttons: true
+                    , dangerMode: true
+                , })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
+        });
+        $("#tambahhistorikontrak").click(function(e) {
+            e.preventDefault();
+            $("#mdltambahhistorikontrak").modal("show");
+        });
         $(".edit").click(function(e) {
             e.preventDefault();
             var no_kontrak = $(this).attr("no_kontrak");
             $.ajax({
                 type: 'POST'
-                , url: '/kontrak/edit'
+                , url: '/kontrak/editlastkontrak'
                 , data: {
                     _token: "{{ csrf_token() }}"
                     , no_kontrak: no_kontrak

@@ -50,7 +50,7 @@ class KontrakController extends Controller
 
 
         $karyawan = DB::table('master_karyawan')
-
+            ->whereNotIn('nik', $nik)
             ->where('status_karyawan', '!=', 'T')
             ->where('status_karyawan', '!=', 'O')
             ->orderBy('nama_karyawan')->get();
@@ -70,6 +70,16 @@ class KontrakController extends Controller
         $kontrak = DB::table('hrd_kontrak')->where('no_kontrak', $no_kontrak)->first();
         $gaji = DB::table('hrd_mastergaji')->where('no_kontrak', $no_kontrak)->first();
         return view('kontrak.edit', compact('kantor', 'jabatan', 'karyawan', 'kontrak', 'gaji', 'departemen'));
+    }
+
+
+    public function editlastkontrak(Request $request)
+    {
+        $no_kontrak = $request->no_kontrak;
+
+        $karyawan = DB::table('master_karyawan')->orderBy('nama_karyawan')->get();
+        $kontrak = DB::table('hrd_kontrak')->where('no_kontrak', $no_kontrak)->first();
+        return view('kontrak.edit_lastkontrak', compact('kontrak', 'karyawan'));
     }
 
     public function createformpenilaian(Request $request)
@@ -224,6 +234,36 @@ class KontrakController extends Controller
                 'id_perusahaan' => $id_perusahaan,
                 'kode_dept' => $kode_dept
             ]);
+            DB::commit();
+            return Redirect::back()->with(['success' => 'Data Berhasil Di Update']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e);
+            return Redirect::back()->with(['warning' => 'Data Gagal Di Update']);
+        }
+    }
+
+
+
+    public function updatelastkontrak($no_kontrak, Request $request)
+    {
+
+        $no_kontrak = Crypt::decrypt($no_kontrak);
+        $dari = $request->kontrak_dari;
+        $sampai = $request->kontrak_sampai;
+
+
+        DB::beginTransaction();
+        try {
+            DB::table('hrd_kontrak')
+                ->where('no_kontrak', $no_kontrak)
+                ->update([
+
+                    'dari' => $dari,
+                    'sampai' => $sampai,
+                ]);
+
+
             DB::commit();
             return Redirect::back()->with(['success' => 'Data Berhasil Di Update']);
         } catch (\Exception $e) {
@@ -393,6 +433,24 @@ class KontrakController extends Controller
         }
     }
 
+
+    public function deletehistorikontrak($no_kontrak)
+    {
+        $no_kontrak = Crypt::decrypt($no_kontrak);
+        $kontrak = DB::table('hrd_kontrak')->where('no_kontrak', $no_kontrak)->first();
+        $nik = $kontrak->nik;
+        DB::beginTransaction();
+        try {
+            DB::table('hrd_kontrak')->where('no_kontrak', $no_kontrak)->delete();
+            $lastkontrak = DB::table('hrd_kontrak')->where('nik', $nik)->orderBy('dari', 'desc')->first();
+            DB::table('hrd_kontrak')->where('no_kontrak', $lastkontrak->no_kontrak)->update(['status_kontrak' => 1]);
+            DB::commit();
+            return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
+        }
+    }
     public function getkontrakpemutihan(Request $request)
     {
         $nik = $request->nik;
@@ -411,6 +469,44 @@ class KontrakController extends Controller
             echo $kontrak->no_kontrak . "|" . $kontrak->dari . "|" . $kontrak->sampai;
         } else {
             echo 0;
+        }
+    }
+
+
+    public function storehistorikontrak($nik, Request $request)
+    {
+        $nik = Crypt::decrypt($nik);
+        $dari = $request->kontrak_dari;
+        $sampai = $request->kontrak_sampai;
+        $lastkontrak = DB::table('hrd_kontrak')->where('nik', $nik)->orderBy('dari', 'desc')->first();
+
+        $kontrak = DB::table("hrd_kontrak")
+            ->whereRaw('LEFT(no_kontrak,3)="K00"')
+            ->orderBy("no_kontrak", "desc")
+            ->first();
+
+
+        $last_nokontrak = $kontrak != null ? $kontrak->no_kontrak : '';
+        $no_kontrak  = buatkode($last_nokontrak, "K", 7);
+
+        DB::beginTransaction();
+        try {
+            DB::table('hrd_kontrak')->insert([
+                'no_kontrak' => $no_kontrak,
+                'nik' => $nik,
+                'dari' => $dari,
+                'sampai' => $sampai,
+                'status_kontrak' => 1
+            ]);
+
+            DB::table('hrd_kontrak')->where('no_kontrak', $lastkontrak->no_kontrak)->update(['status_kontrak' => 0]);
+            DB::commit();
+            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+        } catch (\Exception $e) {
+            //throw $th;
+            DB::rollBack();
+            dd($e);
+            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);
         }
     }
 }
