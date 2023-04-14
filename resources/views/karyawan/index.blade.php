@@ -151,6 +151,7 @@
                                             </td>
                                             <td>
                                                 <div class="btn-group" role="group" aria-label="Basic example">
+
                                                     @if (in_array($level,$karyawan_edit))
                                                     <a class="ml-1 edit" nik="{{ Crypt::encrypt($d->nik) }}" href="#"><i class="feather icon-edit success"></i></a>
                                                     @endif

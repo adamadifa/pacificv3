@@ -239,8 +239,8 @@ class GlobalProvider extends ServiceProvider
 
 
             $karyawan_tambah = ['admin', 'manager hrd'];
-            $karyawan_edit = ['admin', 'manage hrd'];
-            $karyawan_hapus = ['admin', 'manage hrd'];
+            $karyawan_edit = ['admin', 'manager hrd'];
+            $karyawan_hapus = ['admin', 'manager hrd'];
 
             //Supplier
             $supplier_menu = ['admin', 'manager pembelian', 'admin pembelian', 'manager accounting', 'spv accounting', 'audit', 'admin pajak 2'];
