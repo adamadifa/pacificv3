@@ -139,7 +139,7 @@ $data .="    Karsamenak,Kawalu,Tasikmalaya<br>";
 }else{
 $data .="               CV PACIFIC        <br>";
 }
-$data .= $faktur->alamat_cabang;
+$data .= $faktur->alamat_cabang."<br>";
 $data .="------------------------------------------<br>";
 $data .=sprintf("%-$len"."s\t%s\n",$faktur->no_fak_penj."(".$faktur->jenistransaksi.")","");
 $data .= $faktur->nama_karyawan."<br>";
