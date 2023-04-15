@@ -201,7 +201,9 @@ $data .= "
 
 ";
 $data .= "            Terimakasih<br>";
-$data .= "          www.pedasalami.com";
+$data .= "          www.pedasalami.com<br>";
+$data .= "<br>";
+$data .= "            Print Ke - ".$faktur->print;
  echo "<pre id='pre_print' style='position: absolute; z-index:0'>$data</pre>"; ?>
 
 
