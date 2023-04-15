@@ -134,11 +134,12 @@ $data .="------------------------------------------<br>";
 $data .="         LEMBAR UNTUK PELANGGAN <br>";
 if(in_array($faktur->kode_pelanggan,$pelangganmp)){
 $data .="            CV MAKMUR PERMATA        <br>";
+$data .="   Jl. Perintis Kemerdekaan 001/003<br>";
+$data .="    Karsamenak,Kawalu,Tasikmalaya<br>";
 }else{
 $data .="               CV PACIFIC        <br>";
 }
-$data .="   Jl. Perintis Kemerdekaan 001/003<br>";
-$data .="    Karsamenak,Kawalu,Tasikmalaya<br>";
+$data .= $faktur->alamat_cabang;
 $data .="------------------------------------------<br>";
 $data .=sprintf("%-$len"."s\t%s\n",$faktur->no_fak_penj."(".$faktur->jenistransaksi.")","");
 $data .= $faktur->nama_karyawan."<br>";
