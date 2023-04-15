@@ -368,6 +368,58 @@
                 </tr>
             </table>
             <br>
+            <br>
+            <table class="datatable3">
+                <thead>
+                    <tr>
+                        <th rowspan="2">Kode Produk</th>
+                        <th rowspan="2">Nama Barang</th>
+                        <th colspan="3">Qty</th>
+                    </tr>
+                    <tr>
+                        <th>Dus</th>
+                        <th>Pack</th>
+                        <th>Pcs</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($rekapdp as $d)
+                    @php
+                    $jumlah = $d->jumlah / $d->isipcsdus;
+                    $jmldus = floor($d->jumlah / $d->isipcsdus);
+                    if ($d->jumlah != 0) {
+                    $sisadus = $d->jumlah % $d->isipcsdus;
+                    } else {
+                    $sisadus = 0;
+                    }
+                    if ($d->isipack == 0) {
+                    $jmlpack = 0;
+                    $sisapack = $sisadus;
+                    $s = "A";
+                    } else {
+                    $jmlpack = floor($sisadus / $d->isipcs);
+                    $sisapack = $sisadus % $d->isipcs;
+                    $s = "B";
+                    }
+                    $jmlpcs = $sisapack;
+                    @endphp
+                    <tr>
+                        <td>{{ $d->kode_produk }}</td>
+                        <td>{{ $d->nama_barang }}</td>
+                        <td><?php if (!empty($jmldus)) {
+                            echo $jmldus;
+                        } ?></td>
+                        <td><?php if (!empty($jmlpack)) {
+                            echo $jmlpack;
+                        } ?></td>
+                        <td><?php if (!empty($jmlpcs)) {
+                            echo $jmlpcs;
+                        } ?></td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            <br>
             <table style="width:100%" class="datatable2">
                 <tr>
                     <td style="width: 50%">

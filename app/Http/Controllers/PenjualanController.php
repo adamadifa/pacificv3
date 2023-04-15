@@ -8172,7 +8172,7 @@ class PenjualanController extends Controller
         $query = Penjualan::query();
         $query->selectRaw("penjualan.no_fak_penj,nama_pelanggan,
         AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500,
-        SUM(IF(penjualan.jenistransaksi='tunai' AND jenisbayar='tunai',total,0)) as totaltunai,
+        SUM(IF(penjualan.jenistransaksi='tunai',total,0)) as totaltunai,
         SUM(IF(penjualan.jenistransaksi='kredit',total,0)) as totalkredit,
         totalbayar,totalgiro,totaltransfer,totalvoucher");
         $query->leftJoin(
@@ -8252,7 +8252,7 @@ class PenjualanController extends Controller
             FROM
             transfer
             INNER JOIN penjualan ON transfer.no_fak_penj = penjualan.no_fak_penj
-            WHERE tgl_transfer = '$tanggal'
+            WHERE tgl_transfer = '$tanggal' AND jenistransaksi != 'tunai'
             GROUP BY
                 no_fak_penj
             ) transfer"),
@@ -8365,7 +8365,7 @@ class PenjualanController extends Controller
 
 
         $rekapdp = DB::table('detailpenjualan')
-            ->selectRaw('barang.kode_produk,nama_barang,SUM(jumlah) as jumlah')
+            ->selectRaw('barang.kode_produk,nama_barang,SUM(jumlah) as jumlah,isipcsdus,isipack,isipcs')
             ->join('penjualan', 'detailpenjualan.no_fak_penj', '=', 'penjualan.no_fak_penj')
             ->join('barang', 'detailpenjualan.kode_barang', '=', 'barang.kode_barang')
             ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
@@ -8373,7 +8373,7 @@ class PenjualanController extends Controller
             ->where('karyawan.kode_cabang', $request->kode_cabang)
             ->where('penjualan.id_karyawan', $request->id_karyawan)
             ->orderBy('barang.kode_produk')
-            ->groupByRaw('barang.kode_produk,nama_barang')
+            ->groupByRaw('barang.kode_produk,nama_barang,isipcsdus,isipack,isipcs')
             ->get();
 
         $karyawan = DB::table('karyawan')->where('id_karyawan', $id_karyawan)->first();
