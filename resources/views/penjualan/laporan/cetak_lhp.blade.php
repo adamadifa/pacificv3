@@ -9,8 +9,13 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
+    .sheet.padding-5mm {
+        padding: 5mm
+    }
+
     body.A4 .sheet {
         height: auto !important;
+        width: 290mm !important;
     }
 
     .sheet {
@@ -33,7 +38,7 @@
         border: 2px solid #828282;
         font-weight: bold;
         text-align: left;
-        padding: 5px;
+        padding: 2px;
         text-align: center;
         font-size: 10px;
     }
@@ -73,7 +78,7 @@
     <title>Cetak LHP</title>
 </head>
 <body class="A4">
-    <section class="sheet padding-10mm">
+    <section class="sheet padding-5mm">
         <!-- Write HTML just like a web page -->
         <article>
             <table class="datatable3" style="width: 100%">
@@ -105,7 +110,10 @@
                         <th rowspan="2">No. BON</th>
                         <th colspan="10">NAMA PRODUK</th>
                         <th colspan="2">PENJUALAN</th>
-                        <th rowspan="2">TAGIHAN</th>
+                        <th rowspan="2">TITIPAN</th>
+                        <th rowspan="2">TRANSFER</th>
+                        <th rowspan="2">GIRO</th>
+                        <th rowspan="2">VOUCHER</th>
                     </tr>
                     <tr>
                         <th>AB</th>
@@ -139,6 +147,21 @@
                 $totaltagihan2 = 0;
                 $totaltransfer = 0;
                 $totalgiro =0;
+
+                $totaltitipan1 =0;
+                $totaltransfer1 = 0;
+                $totalgiro1 = 0;
+                $totalvoucher1 = 0;
+
+
+                $totaltitipan2 =0;
+                $totaltransfer2 = 0;
+                $totalgiro2 = 0;
+                $totalvoucher2 = 0;
+
+                $totaltransfer3 = 0;
+                $totalgiro3 = 0;
+
                 @endphp
                 @foreach ($penjualan as $d)
                 @php
@@ -155,6 +178,11 @@
                 $totaltunai += $d->totaltunai;
                 $totalkredit += $d->totalkredit;
                 $totaltagihan1 += ($d->totalbayar + $d->totalgiro + $d->totaltransfer);
+
+                $totaltitipan1 += $d->totalbayar;
+                $totaltransfer1 += $d->totaltransfer;
+                $totalgiro1 += $d->totalgiro;
+                $totalvoucher1 += $d->totalvoucher;
                 @endphp
                 <tr>
                     <td>{{ ucwords(strtolower($d->nama_pelanggan)) }}</td>
@@ -196,7 +224,16 @@
                         <?php if (!empty($d->totalkredit)) { echo rupiah($d->totalkredit);} ?>
                     </td>
                     <td style="text-align:right">
-                        <?php if (!empty($d->totalbayar + $d->totalgiro + $d->totaltransfer)) { echo rupiah($d->totalbayar + $d->totalgiro + $d->totaltransfer);} ?>
+                        <?php if (!empty($d->totalbayar)) { echo rupiah($d->totalbayar);} ?>
+                    </td>
+                    <td style="text-align:right">
+                        <?php if (!empty($d->totaltransfer)) { echo rupiah($d->totaltransfer);} ?>
+                    </td>
+                    <td style="text-align:right">
+                        <?php if (!empty($d->totalgiro)) { echo rupiah($d->totalgiro);} ?>
+                    </td>
+                    <td style="text-align:right">
+                        <?php if (!empty($d->totalvoucher)) { echo rupiah($d->totalvoucher);} ?>
                     </td>
                 </tr>
                 @endforeach
@@ -204,6 +241,10 @@
                 @php
                 $tagihan2 = ($d->totalbayar + $d->totalgiro + $d->totaltransfer);
                 $totaltagihan2 +=$tagihan2;
+                $totaltitipan2 += $d->totalbayar;
+                $totaltransfer2 += $d->totaltransfer;
+                $totalgiro2 += $d->totalgiro;
+                $totalvoucher2 += $d->totalvoucher;
                 @endphp
                 <tr>
                     <td>{{ ucwords(strtolower($d->nama_pelanggan)) }}</td>
@@ -221,7 +262,16 @@
                     <td></td>
                     <td></td>
                     <td style="text-align:right">
-                        <?php if (!empty($tagihan2)) { echo rupiah($tagihan2);} ?>
+                        <?php if (!empty($d->totalbayar)) { echo rupiah($d->totalbayar);} ?>
+                    </td>
+                    <td>
+                        <?php if (!empty($d->totaltransfer)) { echo rupiah($d->totaltransfer);} ?>
+                    </td>
+                    <td>
+                        <?php if (!empty($d->totalgiro)) { echo rupiah($d->totalgiro);} ?>
+                    </td>
+                    <td>
+                        <?php if (!empty($d->totalvoucher)) { echo rupiah($d->totalvoucher);} ?>
                     </td>
                 </tr>
                 @endforeach
@@ -244,15 +294,19 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td></td>
+                    <td></td>
                     <td style="text-align:right">
                         <?php if (!empty($d->totalgiro)) { echo rupiah($d->totalgiro);} ?>
                     </td>
+                    <td></td>
                 </tr>
                 @endforeach
 
                 @foreach ($transfer as $d)
                 @php
                 $totaltransfer += $d->totaltransfer;
+                $totaltransfer3 += $d->totaltransfer;
                 @endphp
                 <tr>
                     <td>{{ ucwords(strtolower($d->nama_pelanggan)) }}</td>
@@ -269,9 +323,12 @@
                     <td></td>
                     <td></td>
                     <td></td>
+                    <td></td>
                     <td style="text-align:right">
                         <?php if (!empty($d->totaltransfer)) { echo rupiah($d->totaltransfer);} ?>
                     </td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 @endforeach
                 <tr>
@@ -288,7 +345,10 @@
                     <th>{{ desimal($totalSP500) }}</th>
                     <th>{{ desimal($totaltunai) }}</th>
                     <th>{{ desimal($totalkredit) }}</th>
-                    <th>{{ rupiah($totaltagihan1 + $totaltagihan2 + $totaltransfer + $totalgiro) }}</th>
+                    <th>{{ rupiah($totaltitipan1 + $totaltitipan2) }}</th>
+                    <th>{{ rupiah($totaltransfer1 + $totaltransfer2 + $totaltransfer3) }}</th>
+                    <th>{{ rupiah($totalgiro1 + $totalgiro2 + $totalgiro3) }}</th>
+                    <th>{{ rupiah($totalvoucher1+$totalvoucher2) }}</th>
                 </tr>
                 <tr>
                     <th colspan="2">BS</th>

@@ -8174,7 +8174,7 @@ class PenjualanController extends Controller
         AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500,
         SUM(IF(penjualan.jenistransaksi='tunai',total,0)) as totaltunai,
         SUM(IF(penjualan.jenistransaksi='kredit',total,0)) as totalkredit,
-        totalbayar,totalgiro,totaltransfer");
+        totalbayar,totalgiro,totaltransfer,totalvoucher");
         $query->leftJoin(
             DB::raw("(
             SELECT
@@ -8215,7 +8215,8 @@ class PenjualanController extends Controller
             DB::raw("(
             SELECT
                 no_fak_penj,
-                SUM(bayar) AS totalbayar
+                SUM(IF(status_bayar IS NULL,bayar,0)) AS totalbayar,
+                SUM(IF(status_bayar ='voucher',bayar,0)) AS totalvoucher
             FROM
                 historibayar
             WHERE tglbayar = '$tanggal' AND jenisbayar != 'tunai'
@@ -8246,10 +8247,11 @@ class PenjualanController extends Controller
         $query->leftJoin(
             DB::raw("(
             SELECT
-                no_fak_penj,
+                transfer.no_fak_penj,
                 SUM(jumlah) AS totaltransfer
             FROM
-                transfer
+            transfer
+            INNER JOIN penjualan ON transfer.no_fak_penj = penjualan.no_fak_penj
             WHERE tgl_transfer = '$tanggal'
             GROUP BY
                 no_fak_penj
@@ -8262,7 +8264,7 @@ class PenjualanController extends Controller
         $query->where('karyawan.kode_cabang', $request->kode_cabang);
         $query->where('penjualan.id_karyawan', $request->id_karyawan);
         $query->orderBy('penjualan.no_fak_penj');
-        $query->groupByRaw('penjualan.no_fak_penj,nama_pelanggan,AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500,totalbayar,totalgiro,totaltransfer');
+        $query->groupByRaw('penjualan.no_fak_penj,nama_pelanggan,AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500,totalbayar,totalgiro,totaltransfer,totalvoucher');
         $penjualan = $query->get();
 
         $no_fak_penj = [];
@@ -8273,7 +8275,9 @@ class PenjualanController extends Controller
 
 
         $historibayar = DB::table('historibayar')
-            ->selectRaw('historibayar.no_fak_penj,nama_pelanggan,IFNULL(SUM(bayar),0) as totalbayar,IFNULL(totalgiro,0) as totalgiro,IFNULL(totaltransfer,0) as totaltransfer')
+            ->selectRaw('historibayar.no_fak_penj,nama_pelanggan,
+            SUM(IF(status_bayar IS NULL,bayar,0)) AS totalbayar,
+            SUM(IF(status_bayar ="voucher",bayar,0)) AS totalvoucher,IFNULL(totalgiro,0) as totalgiro,IFNULL(totaltransfer,0) as totaltransfer')
             ->join('penjualan', 'historibayar.no_fak_penj', '=', 'penjualan.no_fak_penj')
             ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
             ->leftJoin(
