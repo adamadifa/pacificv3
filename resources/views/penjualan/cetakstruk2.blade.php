@@ -89,7 +89,7 @@
     <div style="display: flex; justify-content:space-between">
         <span>Total</span><span>{{ rupiah($faktur->total-$retur->totalretur) }}</span>
     </div>
-    ------------------------------------------------------------<br>
+    ------------------------------------------------<br>
     <p>Pembayaran</p>
     @php
     $totalbayar = 0;
@@ -233,7 +233,7 @@ $data .= "            Print Ke - ".$faktur->print + 1;
                 }
                 , cache: false
                 , success: function(respond) {
-
+                    $("#mdlcetakfaktur").modal("hide");
                 }
             });
         });
