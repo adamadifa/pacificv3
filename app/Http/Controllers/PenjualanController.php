@@ -8172,7 +8172,7 @@ class PenjualanController extends Controller
         $query = Penjualan::query();
         $query->selectRaw("penjualan.no_fak_penj,nama_pelanggan,
         AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500,
-        SUM(IF(penjualan.jenistransaksi='tunai',total,0)) as totaltunai,
+        SUM(IF(penjualan.jenistransaksi='tunai' AND jenisbayar='tunai',total,0)) as totaltunai,
         SUM(IF(penjualan.jenistransaksi='kredit',total,0)) as totalkredit,
         totalbayar,totalgiro,totaltransfer,totalvoucher");
         $query->leftJoin(
@@ -8219,7 +8219,7 @@ class PenjualanController extends Controller
                 SUM(IF(status_bayar ='voucher',bayar,0)) AS totalvoucher
             FROM
                 historibayar
-            WHERE tglbayar = '$tanggal' AND jenisbayar != 'tunai'
+            WHERE tglbayar = '$tanggal' AND jenistransaksi != 'tunai'
             GROUP BY
                 no_fak_penj
             ) hb"),
@@ -8362,7 +8362,21 @@ class PenjualanController extends Controller
             ->where('tgl_transfer', $tanggal)
             ->where('transfer.id_karyawan', $id_karyawan)
             ->first();
+
+
+        $rekapdp = DB::table('detailpenjualan')
+            ->selectRaw('barang.kode_produk,nama_barang,SUM(jumlah) as jumlah')
+            ->join('penjualan', 'detailpenjualan.no_fak_penj', '=', 'penjualan.no_fak_penj')
+            ->join('barang', 'detailpenjualan.kode_barang', '=', 'barang.kode_barang')
+            ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->where('tgltransaksi', $tanggal)
+            ->where('karyawan.kode_cabang', $request->kode_cabang)
+            ->where('penjualan.id_karyawan', $request->id_karyawan)
+            ->orderBy('barang.kode_produk')
+            ->groupByRaw('barang.kode_produk,nama_barang')
+            ->get();
+
         $karyawan = DB::table('karyawan')->where('id_karyawan', $id_karyawan)->first();
-        return view('penjualan.laporan.cetak_lhp', compact('tanggal', 'penjualan', 'historibayar', 'giro', 'transfer', 'karyawan', 'allgiro', 'alltransfer'));
+        return view('penjualan.laporan.cetak_lhp', compact('tanggal', 'penjualan', 'historibayar', 'giro', 'transfer', 'karyawan', 'allgiro', 'alltransfer', 'rekapdp'));
     }
 }
