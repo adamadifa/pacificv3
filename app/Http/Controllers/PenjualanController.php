@@ -8379,4 +8379,16 @@ class PenjualanController extends Controller
         $karyawan = DB::table('karyawan')->where('id_karyawan', $id_karyawan)->first();
         return view('penjualan.laporan.cetak_lhp', compact('tanggal', 'penjualan', 'historibayar', 'giro', 'transfer', 'karyawan', 'allgiro', 'alltransfer', 'rekapdp'));
     }
+
+
+    public function updateprint(Request $request)
+    {
+        $no_fak_penj = $request->no_fak_penj;
+        try {
+            DB::table('penjualan')->where('no_fak_penj', $no_fak_penj)->update(['print' => DB::raw('IFNULL(print,0) + 1')]);
+            echo 0;
+        } catch (\Exception $e) {
+            echo 1;
+        }
+    }
 }

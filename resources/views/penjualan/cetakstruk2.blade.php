@@ -114,7 +114,7 @@
     </p>
     <div class="row">
         <div class="col-12">
-            <button class="btn btn-info btn-block" onclick="BtPrint(document.getElementById('pre_print').innerText)"><i class="feather icon-printer mr-1"></i>Cetak Faktur
+            <button class="btn btn-info btn-block" id="printstruk" onclick="BtPrint(document.getElementById('pre_print').innerText)"><i class="feather icon-printer mr-1"></i>Cetak Faktur
             </button>
         </div>
     </div>
@@ -214,5 +214,27 @@ $data .= "          www.pedasalami.com";
         var textEncoded = encodeURI(prn);
         window.location.href = "intent:" + textEncoded + S + P;
     }
+
+</script>
+
+
+<script>
+    $(function() {
+        $("#printstruk").click(function(e) {
+            var no_fak_penj = "{{ $faktur->no_fak_penj }}";
+            $.ajax({
+                type: 'POST'
+                , url: '/penjualan/updateprint'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , no_fak_penj: no_fak_penj
+                }
+                , cache: false
+                , success: function(respond) {
+
+                }
+            });
+        });
+    });
 
 </script>

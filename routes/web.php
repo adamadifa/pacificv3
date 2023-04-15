@@ -1310,6 +1310,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/penjualan/updatebarangtemp', [PenjualanController::class, 'updatebarangtemp']);
 
     Route::post('/penjualan/setfakturbatal', [PenjualanController::class, 'setfakturbatal']);
+    Route::post('/penjualan/updateprint', [PenjualanController::class, 'updateprint']);
     //Pembayaran
     Route::post('/pembayaran/store', [PembayaranController::class, 'store']);
     Route::post('/pembayaran/edit', [PembayaranController::class, 'edit']);
