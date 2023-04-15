@@ -1,6 +1,6 @@
 <div id="print" style="position: absolute; z-index:1;  background-color:white">
     <p style="text-align: center">
-        ------------------------------------------------------------<br>
+        ------------------------------------------------<br>
         LEMBAR UNTUK PELANGGAN<br>
         @if (in_array($faktur->kode_pelanggan,$pelangganmp))
         CV MAKMUR PERMATA<br>
@@ -10,7 +10,7 @@
         CV PACIFIC CABANG {{ strtoupper($faktur->nama_cabang) }}<br>
         {{ $faktur->alamat_cabang }}<br>
         @endif
-        ------------------------------------------------------------<br>
+        ------------------------------------------------<br>
     </p>
     <p style="display:flex; justify-content: space-between">
         <span>{{ $faktur->no_fak_penj }}({{ $faktur->jenistransaksi }})</span><span>{{ $faktur->nama_karyawan }}</span>
@@ -19,7 +19,7 @@
         {{ date("d-m-Y H:i:s",strtotime($faktur->date_created)) }}<br>
         {{ $faktur->kode_pelanggan }} - {{ $faktur->nama_pelanggan }}<br>
         {{ $faktur->alamat_pelanggan }} - {{ $faktur->alamat_pelanggan }}<br>
-        ------------------------------------------------------------
+        ------------------------------------------------
     </p>
     <p>
         @php
@@ -68,7 +68,7 @@
         </div>
         @endforeach
     </p>
-    ------------------------------------------------------------<br>
+    ------------------------------------------------<br>
     <div style="display: flex; justify-content:space-between">
         <span>Potongan</span><span>{{ rupiah($faktur->potongan) }}</span>
     </div>
