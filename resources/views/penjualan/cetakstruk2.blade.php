@@ -203,7 +203,7 @@ $data .= "
 $data .= "            Terimakasih<br>";
 $data .= "          www.pedasalami.com<br>";
 $data .= "<br>";
-$data .= "            Print Ke - ".$faktur->print;
+$data .= "            Print Ke - ".$faktur->print + 1;
  echo "<pre id='pre_print' style='position: absolute; z-index:0'>$data</pre>"; ?>
 
 
