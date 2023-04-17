@@ -199,7 +199,9 @@
                                     @if($d->nama_pelanggan != "BATAL")
                                     <a href="#" class="danger ubahfakturbatal" no_fak_penj="{{ $d->no_fak_penj }}"><i class="feather icon-clipboard"></i></a>
                                     @endif
-
+                                    @if (substr($d->no_fak_penj,3,2)=="PR")
+                                    <a href="#" class="warning ubahfakturpo ml-1" no_fak_penj="{{ $d->no_fak_penj }}"><i class="feather icon-external-link"></i></a>
+                                    @endif
                                     @endif
                                 </div>
 
@@ -249,6 +251,22 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade text-left" id="mdlshowfaktur" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Ubah ke Faktur PO</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="loadfaktur">
+
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('myscript')
@@ -263,6 +281,29 @@
                 , keyboard: false
             });
         });
+
+        $(".ubahfakturpo").click(function(e) {
+            var no_fak_penj = $(this).attr("no_fak_penj");
+            e.preventDefault();
+            $('#mdlshowfaktur').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+            $.ajax({
+                type: 'POST'
+                , url: '/penjualan/ubahfakturpo'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , no_fak_penj: no_fak_penj
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loadfaktur").html(respond);
+                }
+
+            });
+        });
+
         $('#cetaksuratjalan').click(function(e) {
             //e.preventDefault(); //prevents the default submit action
             $(this).closest('form').attr('target', '_blank').submit();

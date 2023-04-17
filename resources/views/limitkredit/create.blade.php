@@ -7,12 +7,15 @@
             <div class="row breadcrumbs-top">
                 <div class="col-12">
                     <h2 class="content-header-title float-left mb-0">Pengajuan Limit</h2>
+                    @if ($level!="salesman")
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/limitkredit">Limit Kredit</a></li>
                             <li class="breadcrumb-item"><a href="#">Pengajuan Limit</a></li>
                         </ol>
                     </div>
+                    @endif
+
                 </div>
             </div>
         </div>
@@ -325,38 +328,41 @@
                                 <div class="divider divider-left">
                                     <div class="divider-text">Jumlah Faktur Belum Lunas</div>
                                 </div>
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>No. Faktur</th>
-                                            <th>Tanggal</th>
-                                            <th>Piutang</th>
-                                            <th>Jml Bayar</th>
-                                            <th>Sisa Bayar</th>
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>No. Faktur</th>
+                                                <th>Tanggal</th>
+                                                <th>Piutang</th>
+                                                <th>Jml Bayar</th>
+                                                <th>Sisa Bayar</th>
 
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @php
-                                        $no = 1;
-                                        @endphp
-                                        @foreach ($listfaktur as $d)
-                                        @php
-                                        $sisabayar = $d->nettopiutang - $d->jmlbayar;
-                                        @endphp
-                                        <tr>
-                                            <td>{{ $d->no_fak_penj }}</td>
-                                            <td>{{ date("d-m-y",strtotime($d->tgltransaksi)) }}</td>
-                                            <td class="text-right">{{ rupiah($d->nettopiutang) }}</td>
-                                            <td class="text-right">{{ rupiah($d->jmlbayar) }}</td>
-                                            <td class="text-right">{{ rupiah($sisabayar) }}</td>
-                                        </tr>
-                                        @php
-                                        $no++;
-                                        @endphp
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @php
+                                            $no = 1;
+                                            @endphp
+                                            @foreach ($listfaktur as $d)
+                                            @php
+                                            $sisabayar = $d->nettopiutang - $d->jmlbayar;
+                                            @endphp
+                                            <tr>
+                                                <td>{{ $d->no_fak_penj }}</td>
+                                                <td>{{ date("d-m-y",strtotime($d->tgltransaksi)) }}</td>
+                                                <td class="text-right">{{ rupiah($d->nettopiutang) }}</td>
+                                                <td class="text-right">{{ rupiah($d->jmlbayar) }}</td>
+                                                <td class="text-right">{{ rupiah($sisabayar) }}</td>
+                                            </tr>
+                                            @php
+                                            $no++;
+                                            @endphp
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+
                                 <input type="hidden" value="<?php echo $no - 1; ?>" id="jml_faktur" name="jml_faktur">
                                 <table class="table">
                                     <tr>
@@ -370,8 +376,8 @@
                                 </table>
                                 <div class="row">
                                     <div class="col-12">
-                                        <button type="submit" class="btn btn-primary mr-1 mb-1"><i class="fa fa-send mr-1"></i> Simpan</button>
-                                        <a href="{{ url()->previous() }}" class="btn btn-outline-warning mr-1 mb-1"><i class="fa fa-arrow-left mr-2"></i>Kembali</a>
+                                        <button type="submit" class="btn btn-primary btn-block"><i class="fa fa-send mr-1"></i> Simpan</button>
+                                        {{-- <a href="{{ url()->previous() }}" class="btn btn-outline-warning mr-1 mb-1"><i class="fa fa-arrow-left mr-2"></i>Kembali</a> --}}
                                     </div>
                                 </div>
 

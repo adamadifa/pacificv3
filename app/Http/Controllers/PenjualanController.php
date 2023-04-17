@@ -8391,4 +8391,116 @@ class PenjualanController extends Controller
             echo 1;
         }
     }
+
+
+    public function ubahfakturpo(Request $request)
+    {
+        $no_fak_penj = $request->no_fak_penj;
+        $penjualan = DB::table('penjualan')
+            ->select(
+                'penjualan.*',
+                'nama_pelanggan',
+                'alamat_pelanggan',
+                'alamat_toko',
+                'pelanggan.no_hp',
+                'latitude',
+                'longitude',
+                'limitpel',
+                'foto',
+                'nik',
+                'no_kk',
+                'tgl_lahir',
+                'pasar',
+                'hari',
+                'cara_pembayaran',
+                'status_outlet',
+                'type_outlet',
+                'lama_usaha',
+                'jaminan',
+                'lama_langganan',
+                'omset_toko',
+                'karyawan.nama_karyawan',
+                'karyawan.kategori_salesman',
+                'karyawan.kode_cabang',
+                'nama_cabang',
+                'penjualan.keterangan',
+                'marker',
+                DB::raw('IFNULL(totalpf,0) - IFNULL(totalgb,0) as totalretur'),
+                'jmlbayar'
+            )
+            ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+            ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
+            ->leftJoin(
+                DB::raw("(
+                    SELECT
+                    no_fak_penj,
+                    SUM(subtotal_gb) AS totalgb,
+                    SUM(subtotal_pf) AS totalpf
+                FROM
+                    retur
+                WHERE no_fak_penj = '$no_fak_penj'
+                GROUP BY
+                    no_fak_penj
+                ) retur"),
+                function ($join) {
+                    $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
+                }
+            )
+            ->leftJoin(
+                DB::raw("(
+                SELECT no_fak_penj, IFNULL(SUM(bayar),0) as jmlbayar
+                FROM historibayar
+                WHERE no_fak_penj = '$no_fak_penj'
+                GROUP BY no_fak_penj
+            ) historibayar"),
+                function ($join) {
+                    $join->on('penjualan.no_fak_penj', '=', 'historibayar.no_fak_penj');
+                }
+            )
+            ->where('penjualan.no_fak_penj', $no_fak_penj)
+            ->first();
+
+        $detailpenjualan = DB::table('detailpenjualan')
+            ->select('detailpenjualan.*', 'nama_barang', 'isipcsdus', 'isipcs', 'isipack', 'kode_produk')
+            ->join('barang', 'detailpenjualan.kode_barang', '=', 'barang.kode_barang')
+            ->where('no_fak_penj', $no_fak_penj)
+            ->get();
+
+        $tahunini = date('Y');
+        $cekpenjualan = DB::table('penjualan')
+            ->where('id_karyawan', $penjualan->id_karyawan)
+            ->whereRaw('MID(no_fak_penj,4,2)!="PR"')
+            ->whereRaw('YEAR(tgltransaksi)="' . $tahunini . '"')
+            ->orderBy('no_fak_penj', 'desc')->first();
+        $lastnofak = $cekpenjualan != null ? $cekpenjualan->no_fak_penj : '';
+
+
+
+        $kode_cabang = $penjualan->kode_cabang;
+        $kode_faktur = substr($cekpenjualan->no_fak_penj, 3, 1);
+        $nomor_awal = substr($cekpenjualan->no_fak_penj, 4);
+        $jmlchar = strlen($nomor_awal);
+        $no_fak_penj_auto  =  buatkode($lastnofak, $kode_cabang . $kode_faktur, $jmlchar);
+        return view('penjualan.ubahfakturpo', compact('penjualan', 'detailpenjualan', 'no_fak_penj_auto'));
+    }
+
+    public function updatepo($no_fak_penj, Request $request)
+    {
+        $no_fak_penj = Crypt::decrypt($no_fak_penj);
+        $no_fak_penj_po = $request->no_fak_penj_po;
+        $tgltransaksi_po = $request->tgltransaksi_po;
+
+        try {
+            DB::table('penjualan')->where('no_fak_penj', $no_fak_penj)
+                ->update([
+                    'no_fak_penj' => $no_fak_penj_po,
+                    'tgltransaksi' => $tgltransaksi_po
+                ]);
+
+            return Redirect::back()->with(['success' => 'Data Berhasil di Update']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Data Gagal di Update']);
+        }
+    }
 }

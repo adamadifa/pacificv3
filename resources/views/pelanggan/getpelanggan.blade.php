@@ -43,6 +43,7 @@
                             <div class="btn-group">
                                 <a href="/pelanggan/{{\Crypt::encrypt($pelanggan->kode_pelanggan)}}/edit" class="btn btn-success  text-right mb-2" style="padding: 15px !important"><i class="feather icon-edit"></i></a>
                                 <a href="/pelanggan/{{ Crypt::encrypt($pelanggan->kode_pelanggan) }}/capturetoko" class="btn btn-primary  text-right mb-2" style="padding: 15px !important"><i class="feather icon-camera"></i></a>
+                                <a href="/limitkredit/{{\Crypt::encrypt($pelanggan->kode_pelanggan)}}/create" class="btn btn-warning  text-right mb-2" style="padding: 15px !important"><i class="feather icon-file-text"></i> Ajukan Limit</a>
                             </div>
                             <div>
                                 @if ($salesmancheckin != 0)
