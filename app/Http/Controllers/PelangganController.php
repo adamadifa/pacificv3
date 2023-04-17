@@ -1021,4 +1021,59 @@ class PelangganController extends Controller
         $meters = $kilometers * 1000;
         return compact('meters');
     }
+
+    public function shownonaktif()
+    {
+        $query = Pelanggan::query();
+
+        $query->selectRaw('pelanggan.kode_pelanggan,nama_pelanggan,lasttransaksi,datediff(CURDATE(), lasttransaksi) as lama');
+        $query->leftJoin(
+            DB::raw("(
+                    SELECT penjualan.kode_pelanggan, MAX(tgltransaksi) as lasttransaksi
+                    FROM penjualan
+                    GROUP BY penjualan.kode_pelanggan
+                ) penjualan"),
+            function ($join) {
+                $join->on('pelanggan.kode_pelanggan', '=', 'penjualan.kode_pelanggan');
+            }
+        );
+        $query->whereRaw('datediff(CURDATE(), lasttransaksi) > 90');
+        $query->where('status_pelanggan', 1);
+        if (Auth::user()->kode_cabang != "PCF") {
+            $query->where('pelanggan.kode_cabang', Auth::user()->kode_cabang);
+        }
+        $pelanggan = $query->get();
+        return view('pelanggan.shownonaktif', compact('pelanggan'));
+    }
+
+    public function updatenonaktif()
+    {
+        //dd('test');
+        $kode_cabang = Auth::user()->kode_cabang;
+        DB::beginTransaction();
+        try {
+            $update = DB::table('pelanggan')
+                ->leftJoin(
+                    DB::raw("(
+                        SELECT penjualan.kode_pelanggan, MAX(tgltransaksi) as lasttransaksi
+                        FROM penjualan
+                        GROUP BY penjualan.kode_pelanggan
+                    ) penjualan"),
+                    function ($join) {
+                        $join->on('pelanggan.kode_pelanggan', '=', 'penjualan.kode_pelanggan');
+                    }
+                )
+                ->whereRaw('datediff(CURDATE(), lasttransaksi) > 90')
+                ->where('status_pelanggan', 1)
+                ->where('pelanggan.kode_cabang', $kode_cabang)
+                ->update([
+                    'status_pelanggan' => 0
+                ]);
+            DB::commit();
+            dd($update);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e);
+        }
+    }
 }

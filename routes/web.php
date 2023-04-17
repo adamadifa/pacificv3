@@ -1144,6 +1144,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/pelanggan/storecapture', [PelangganController::class, 'storecapture']);
     Route::post('/pelanggan/checkinstore', [PelangganController::class, 'checkinstore']);
     Route::get('/pelanggan/{kode_pelanggan}/checkout', [PelangganController::class, 'checkoutstore']);
+    Route::get('/pelanggan/shownonaktif', [PelangganController::class, 'shownonaktif']);
+    Route::get('/pelanggan/updatenonaktif', [PelangganController::class, 'updatenonaktif']);
     //Kendaraan
     Route::get('/kendaraan', [KendaraanController::class, 'index']);
     Route::get('/kendaraan/create', [KendaraanController::class, 'create']);

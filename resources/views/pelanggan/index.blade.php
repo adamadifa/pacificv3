@@ -131,6 +131,7 @@
                                     <div class="form-group">
                                         <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search"></i> </button>
                                         <button type="submit" name="export" value="2" class="btn btn-success"><i class="fa fa-download"></i> </button>
+                                        <a href="#" id="shownonaktif" class="btn btn-danger"><i class="feather icon-slash"></i> </a>
                                     </div>
                                 </div>
                             </div>
@@ -243,12 +244,31 @@
         <!-- Data list view end -->
     </div>
 </div>
-
+<div class="modal fade text-left" id="mdlshownonaktif" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Data Pelanggan Tidak Transaksi > 90 Hari</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loadshownonaktif"></div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @push('myscript')
 <script>
     $(function() {
 
+
+        $("#shownonaktif").click(function(e) {
+            $("#mdlshownonaktif").modal("show");
+            $("#loadshownonaktif").load('/pelanggan/shownonaktif');
+        });
 
         function loadsalesmancabang() {
             var cabang = "{{ Auth::user()->kode_cabang }}";
