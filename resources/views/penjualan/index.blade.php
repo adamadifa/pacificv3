@@ -199,9 +199,9 @@
                                     @if($d->nama_pelanggan != "BATAL")
                                     <a href="#" class="danger ubahfakturbatal" no_fak_penj="{{ $d->no_fak_penj }}"><i class="feather icon-clipboard"></i></a>
                                     @endif
-                                    @if (substr($d->no_fak_penj,3,2)=="PR")
+                                    {{-- @if (substr($d->no_fak_penj,3,2)=="PR")
                                     <a href="#" class="warning ubahfakturpo ml-1" no_fak_penj="{{ $d->no_fak_penj }}"><i class="feather icon-external-link"></i></a>
-                                    @endif
+                                    @endif --}}
                                     @endif
                                 </div>
 
