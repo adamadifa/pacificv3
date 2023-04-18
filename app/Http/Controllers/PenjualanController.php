@@ -256,13 +256,26 @@ class PenjualanController extends Controller
             $salesman = Salesman::where('id_karyawan', $pelanggan->id_sales)->first();
             $no_fak_awal = $salesman->no_fak_awal;
 
+            // $cekpenjualan = DB::table('penjualan')
+            //     ->where('id_karyawan', $pelanggan->id_sales)
+            //     ->where('no_fak_auto', 1)->orderBy('no_fak_penj', 'desc')->first();
+            // $lastnofak = $cekpenjualan != null ? $cekpenjualan->no_fak_penj : $no_fak_awal;
+            // $kode_cabang = $salesman->kode_cabang;
+            // $kode_faktur = substr($salesman->no_fak_awal, 3, 1);
+            // $nomor_awal = substr($salesman->no_fak_awal, 4);
+            // $jmlchar = strlen($nomor_awal);
+            $tahunini = date('Y');
             $cekpenjualan = DB::table('penjualan')
                 ->where('id_karyawan', $pelanggan->id_sales)
-                ->where('no_fak_auto', 1)->orderBy('no_fak_penj', 'desc')->first();
-            $lastnofak = $cekpenjualan != null ? $cekpenjualan->no_fak_penj : $no_fak_awal;
+                ->whereRaw('YEAR(tgltransaksi)="' . $tahunini . '"')
+                ->orderBy('date_created', 'desc')->first();
+            $lastnofak = $cekpenjualan != null ? $cekpenjualan->no_fak_penj : '';
+
+
+
             $kode_cabang = $salesman->kode_cabang;
-            $kode_faktur = substr($salesman->no_fak_awal, 3, 1);
-            $nomor_awal = substr($salesman->no_fak_awal, 4);
+            $kode_faktur = substr($cekpenjualan->no_fak_penj, 3, 1);
+            $nomor_awal = substr($cekpenjualan->no_fak_penj, 4);
             $jmlchar = strlen($nomor_awal);
             if ($salesman->kategori_salesman != 'TO') {
                 if ($cekpenjualan != null) {

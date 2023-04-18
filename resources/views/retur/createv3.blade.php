@@ -320,6 +320,7 @@
                                 <th>Nama Pelanggan</th>
                                 <th>Pasar</th>
                                 <th>Salesman</th>
+                                <th>Status</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -628,6 +629,9 @@
                 }, {
                     data: 'nama_karyawan'
                     , name: 'karyawan.nama_karyawan'
+                }, {
+                    data: 'status_pelanggan'
+                    , name: 'status_pelanggan'
                 }
                 , {
                     data: 'action'
