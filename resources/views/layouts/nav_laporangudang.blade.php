@@ -151,6 +151,13 @@
             <h4 class="card-title">Gudang Cabang</h4>
         </div>
         <ul class="list-group list-group-flush">
+            @if (Auth::user()->id== "35")
+            <a href="/laporanpenjualan/penjualan" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanpenjualan/penjualan']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Penjualan
+                </li>
+            </a>
+            @endif
             @if (in_array($level,$laporan_persediaan_bj))
             <a href="/laporangudangcabang/persediaan" style="color:#626262">
                 <li class="list-group-item {{ request()->is(['laporangudangcabang/persediaan']) ? 'active' : '' }}">
