@@ -595,7 +595,7 @@ class PembayaranController extends Controller
                 //Voucher
 
                 $queryvoucher = Pembayaran::query();
-                $queryvoucher->select('historibayar.no_fak_penj', 'tglbayar', 'penjualan.kode_pelanggan', 'nama_pelanggan', 'penjualan.jenistransaksi', 'bayar', 'girotocash', 'status_bayar');
+                $queryvoucher->select('historibayar.no_fak_penj', 'tglbayar', 'penjualan.kode_pelanggan', 'nama_pelanggan', 'penjualan.jenistransaksi', 'bayar', 'girotocash', 'status_bayar', 'ket_voucher');
 
                 $queryvoucher->join('penjualan', 'historibayar.no_fak_penj', '=', 'penjualan.no_fak_penj');
                 $queryvoucher->join('karyawan', 'historibayar.id_karyawan', '=', 'karyawan.id_karyawan');
