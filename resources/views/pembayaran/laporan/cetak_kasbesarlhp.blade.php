@@ -283,23 +283,7 @@
                 $totalvoucher = 0;
                 foreach ($voucher as $v) {
                     $totalvoucher = $totalvoucher + $v->bayar;
-                    if ($v->ket_voucher == "1") {
-                        $ket_voucher = "Voucher Penghapusan Piutang";
-                    } else if ($v->ket_voucher == "2") {
-                        $ket_voucher = "Voucher Diskon Program";
-                    } else if ($v->ket_voucher == "3") {
-                        $ket_voucher = "Voucher Penyelesaian Piutang Oleh Salesman";
-                    } else if ($v->ket_voucher == "4") {
-                        $ket_voucher = "Voucher Pengalihan Piutang Dgng Jd Piutang Kary";
-                    }else if ($v->ket_voucher == "7") {
-                        $ket_voucher = "PPN KPBPB";
-                    }else if ($v->ket_voucher == "8") {
-                        $ket_voucher = "PPN WAPU";
-                    }else if ($v->ket_voucher == "9") {
-                        $ket_voucher = "PPH PASAL 22";
-                    }  else {
-                        $ket_voucher = "Lainnya";
-                    }
+                    $ket_voucher = "TEST";
                 ?>
                 <tr>
                     <td><?php echo DateToIndo2($v->tglbayar); ?></td>
