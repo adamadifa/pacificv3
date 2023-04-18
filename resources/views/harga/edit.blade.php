@@ -169,6 +169,25 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group  @error('show') error @enderror">
+                                                <select name="show" id="show" class="form-control">
+                                                    <option value="">Status</option>
+                                                    <option @isset($data->show) @if (old('show'))
+                                                        {{ old('show') === '0' ? 'selected' : '' }} @else
+                                                        {{ $data->show === '0' ? 'selected' : '' }} @endif @else
+                                                        {{ old('show') === '0' ? 'selected' : '' }}
+                                                        @endisset value="0">Non Aktif</option>
+                                                    <option @isset($data->show) @if (old('show'))
+                                                        {{ old('show') === '1' ? 'selected' : '' }} @else
+                                                        {{ $data->show === '1' ? 'selected' : '' }} @endif @else
+                                                        {{ old('show') === '1' ? 'selected' : '' }}
+                                                        @endisset value="1">Aktif</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                     @if (Auth::user()->cabang =="PCF")
                                     <div class="row">
                                         <div class="col-12">

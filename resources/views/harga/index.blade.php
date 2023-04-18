@@ -94,7 +94,16 @@
                         <tbody>
 
                             @foreach ($harga as $d)
-                            <tr>
+                            @if ($d->show ==='0')
+                            @php
+                            $color = "rgba(255, 71, 92, 0.474)";
+                            @endphp
+                            @else
+                            @php
+                            $color ="";
+                            @endphp
+                            @endif
+                            <tr style="background-color: {{ $color }}">
                                 <td>{{ $loop->iteration + $harga->firstItem() - 1 }}</td>
                                 <td>{{ $d->kode_barang }}</td>
                                 <td>{{ $d->nama_barang }}</td>

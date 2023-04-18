@@ -174,6 +174,7 @@ class HargaController extends Controller
             'harga_returdus' => 'required',
             'harga_returpack' => 'required',
             'harga_returpcs' => 'required',
+            'status_harga' => 'required'
         ]);
 
         $produk = explode("|", $request->kode_produk);
@@ -193,12 +194,13 @@ class HargaController extends Controller
                 'harga_returdus' => str_replace(".", "", $request->harga_returdus),
                 'harga_returpack' => str_replace(".", "", $request->harga_returpack),
                 'harga_returpcs' => str_replace(".", "", $request->harga_returpcs),
+                'show' => $request->show
             ]);
 
         if ($simpan) {
             return Redirect::back()->with(['success' => 'Data Berhasil Di Update']);
         } else {
-            return Redirect::back()->with(['warning' => 'Data Gagal Di Updat']);
+            return Redirect::back()->with(['warning' => 'Data Gagal Di Update']);
         }
     }
 
@@ -398,7 +400,9 @@ class HargaController extends Controller
                 ->select('barang.*')
                 ->where('kode_cabang', $kode_cabang)
                 ->where('kode_pelanggan', $kode_pelanggan)
-                ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')->where('status', 1)
+                ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')
+                ->where('status', 1)
+                ->where('show', 1)
                 ->get();
 
             // $barangnew = DB::table('barang_new')
@@ -412,11 +416,15 @@ class HargaController extends Controller
             if ($kategori_salesman == "TOCANVASER") {
                 $barang = Harga::orderby('nama_barang', 'asc')
                     ->select('barang.*')
-                    ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')->where('status', 1)
+                    ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')
+                    ->where('status', 1)
+                    ->where('show', 1)
                     ->where('kode_cabang', $kode_cabang)
                     ->where('kategori_harga', 'TO')
                     ->orwhere('kode_cabang', $kode_cabang)
                     ->where('kategori_harga', 'CANVASER')
+                    ->where('status', 1)
+                    ->where('show', 1)
                     ->get();
                 // $barangnew = DB::table('barang_new')
                 //     ->select('barang_new.*')
@@ -431,6 +439,7 @@ class HargaController extends Controller
                 $barang = Harga::orderby('nama_barang', 'asc')
                     ->select('barang.*')
                     ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')->where('status', 1)
+                    ->where('show', 1)
                     ->where('kode_cabang', $kode_cabang)
                     ->where('kategori_harga', $kategori_salesman)
                     ->get();

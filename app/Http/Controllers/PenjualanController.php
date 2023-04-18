@@ -7978,6 +7978,7 @@ class PenjualanController extends Controller
                 ->where('kode_cabang', $kode_cabang)
                 ->where('kode_pelanggan', $kode_pelanggan)
                 ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')->where('status', 1)
+                ->where('show', 1)
                 ->get();
 
             // $barangnew = DB::table('barang_new')
@@ -7991,11 +7992,15 @@ class PenjualanController extends Controller
             if ($kategori_salesman == "TOCANVASER") {
                 $barang = Harga::orderby('nama_barang', 'asc')
                     ->select('barang.*')
-                    ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')->where('status', 1)
+                    ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')
+                    ->where('status', 1)
+                    ->where('show', 1)
                     ->where('kode_cabang', $kode_cabang)
                     ->where('kategori_harga', 'TO')
                     ->orwhere('kode_cabang', $kode_cabang)
                     ->where('kategori_harga', 'CANVASER')
+                    ->where('status', 1)
+                    ->where('show', 1)
                     ->get();
                 // $barangnew = DB::table('barang_new')
                 //     ->select('barang_new.*')
@@ -8010,6 +8015,7 @@ class PenjualanController extends Controller
                 $barang = Harga::orderby('nama_barang', 'asc')
                     ->select('barang.*')
                     ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')->where('status', 1)
+                    ->where('show', 1)
                     ->where('kode_cabang', $kode_cabang)
                     ->where('kategori_harga', $kategori_salesman)
                     ->get();
