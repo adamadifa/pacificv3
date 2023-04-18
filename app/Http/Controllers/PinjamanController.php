@@ -130,7 +130,7 @@ class PinjamanController extends Controller
         $karyawan = $query->first();
 
         $gaji = DB::table('hrd_mastergaji')
-            ->selectRaw('gaji_pokok+t_jabatan+t_masakerja+t_tanggungjawab+t_makan+t_istri+t_skill as gajitunjangan,gaji_pokok')
+            ->selectRaw('IFNULL(gaji_pokok,0)+IFNULL(t_jabatan,0)+IFNULL(t_masakerja,0)+IFNULL(t_tanggungjawab,0)+IFNULL(t_makan,0)+IFNULL(t_istri,0)+IFNULL(t_skill,0) as gajitunjangan,gaji_pokok')
             ->where('nik', $nik)->orderBy('tgl_berlaku', 'desc')->first();
 
         $jmk = DB::table('hrd_bayarjmk')

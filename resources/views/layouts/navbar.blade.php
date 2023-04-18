@@ -145,6 +145,14 @@
                         </a>
                     </li>
                     @endif
+                    @if (in_array($level,$gaji_menu))
+                    <li class="{{ request()->is(['gaji', 'gaji/*']) ? 'active' : '' }}">
+                        <a href="/gaji">
+                            <i class="feather icon-dollar-sign"></i>
+                            <span class="menu-item" data-i18n="Second Level">Gaji</span>
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </li>
             @endif
@@ -1171,6 +1179,7 @@
 
                     </li>
                     @endif
+
                     @if (in_array($level,$kesepakatanbersama))
                     <li class="{{ request()->is(['kesepakatanbersama', 'kesepakatanbersama/*']) ? 'active' : '' }}">
                         <a href="/kesepakatanbersama">

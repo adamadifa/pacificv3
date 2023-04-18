@@ -845,6 +845,7 @@ class GlobalProvider extends ServiceProvider
             $penilaian_karyawan = ['admin', '3', '2', '11', '1', '7', '6', '4'];
             $kesepakatanbersama = ['admin', 'direktur', 'manager hrd'];
             $kontrak_menu = ['admin', 'direktur', 'manager hrd'];
+            $gaji_menu = ['admin', 'direktur'];
 
             //General Affair
             $ga_menu = ['admin', 'general affair', 'manager ga', 'direktur', 'manager accounting', 'emf'];
@@ -1224,6 +1225,7 @@ class GlobalProvider extends ServiceProvider
                 'penilaian_karyawan' => $penilaian_karyawan,
                 'kesepakatanbersama' => $kesepakatanbersama,
                 'kontrak_menu' => $kontrak_menu,
+                'gaji_menu' => $gaji_menu,
 
 
                 //GA
