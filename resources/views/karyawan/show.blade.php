@@ -125,6 +125,8 @@
                                             $status_kawin = "Duda";
                                             }else if($karyawan->status_kawin == 4){
                                             $status_kawin = "Janda";
+                                            }else{
+                                            $status_kawin = "";
                                             }
                                             @endphp
                                             <td>{{ $status_kawin }}</td>
