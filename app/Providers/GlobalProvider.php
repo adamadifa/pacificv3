@@ -242,6 +242,11 @@ class GlobalProvider extends ServiceProvider
             $karyawan_edit = ['admin', 'manager hrd'];
             $karyawan_hapus = ['admin', 'manager hrd'];
 
+
+            $gaji_tambah = ['admin'];
+            $gaji_edit = ['admin'];
+            $gaji_hapus = ['admin'];
+
             //Supplier
             $supplier_menu = ['admin', 'manager pembelian', 'admin pembelian', 'manager accounting', 'spv accounting', 'audit', 'admin pajak 2'];
             $supplier_tambah = ['admin', 'manager pembelian', 'admin pembelian'];
@@ -845,6 +850,7 @@ class GlobalProvider extends ServiceProvider
             $penilaian_karyawan = ['admin', '3', '2', '11', '1', '7', '6', '4'];
             $kesepakatanbersama = ['admin', 'direktur', 'manager hrd'];
             $kontrak_menu = ['admin', 'direktur', 'manager hrd'];
+
             $gaji_menu = ['admin', 'direktur'];
 
             //General Affair
@@ -1225,7 +1231,12 @@ class GlobalProvider extends ServiceProvider
                 'penilaian_karyawan' => $penilaian_karyawan,
                 'kesepakatanbersama' => $kesepakatanbersama,
                 'kontrak_menu' => $kontrak_menu,
+
+
                 'gaji_menu' => $gaji_menu,
+                'gaji_tambah' => $gaji_tambah,
+                'gaji_edit' => $gaji_edit,
+                'gaji_hapus' => $gaji_hapus,
 
 
                 //GA

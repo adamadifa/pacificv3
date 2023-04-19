@@ -19,6 +19,7 @@ use App\Http\Controllers\DpbController;
 use App\Http\Controllers\DriverhelperController;
 use App\Http\Controllers\FpbController;
 use App\Http\Controllers\FsthpController;
+use App\Http\Controllers\GajiController;
 use App\Http\Controllers\GiroController;
 use App\Http\Controllers\GudangController;
 use App\Http\Controllers\HargaawalController;
@@ -1563,4 +1564,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('pembayarankasbon/generatebayarpinjaman', [PembayarankasbonController::class, 'generatebayarpinjaman']);
     Route::post('/pembayarankasbon/show', [PembayarankasbonController::class, 'show']);
     Route::delete('pembayarankasbon/{kode_potongan}/deletegenerate', [PembayarankasbonController::class, 'deletegenerate']);
+
+
+
+    Route::get('/gaji', [GajiController::class, 'index']);
+    Route::get('/gaji/create', [GajiController::class, 'create']);
+    Route::post('/gaji/store', [GajiController::class, 'store']);
+    Route::get('/gaji/{kode_gaji}/edit', [GajiController::class, 'edit']);
+    Route::post('/gaji/{kode_gaji}/update', [GajiController::class, 'update']);
+    Route::delete('/gaji/{kode_gaji}/delete', [GajiController::class, 'delete']);
 });
