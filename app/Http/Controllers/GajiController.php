@@ -10,13 +10,16 @@ use Illuminate\Support\Facades\Redirect;
 
 class GajiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $query = Gaji::query();
         $query->select('hrd_mastergaji.*', 'nama_karyawan', 'nama_jabatan');
         $query->join('master_karyawan', 'hrd_mastergaji.nik', '=', 'master_karyawan.nik');
         $query->leftjoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
         $query->orderBy('kode_gaji', 'desc');
+        if (!empty($request->nama_karyawan_search)) {
+            $query->where('nama_karyawan', 'like', '%' . $request->nama_karyawan_search . '%');
+        }
         $gaji = $query->paginate(15);
         return view('gaji.index', compact('gaji'));
     }

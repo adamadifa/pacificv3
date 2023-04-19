@@ -247,6 +247,10 @@ class GlobalProvider extends ServiceProvider
             $gaji_edit = ['admin'];
             $gaji_hapus = ['admin'];
 
+            $insentif_tambah = ['admin'];
+            $insentif_edit = ['admin'];
+            $insentif_hapus = ['admin'];
+
             //Supplier
             $supplier_menu = ['admin', 'manager pembelian', 'admin pembelian', 'manager accounting', 'spv accounting', 'audit', 'admin pajak 2'];
             $supplier_tambah = ['admin', 'manager pembelian', 'admin pembelian'];
@@ -852,6 +856,7 @@ class GlobalProvider extends ServiceProvider
             $kontrak_menu = ['admin', 'direktur', 'manager hrd'];
 
             $gaji_menu = ['admin', 'direktur'];
+            $insentif_menu = ['admin', 'direktur'];
 
             //General Affair
             $ga_menu = ['admin', 'general affair', 'manager ga', 'direktur', 'manager accounting', 'emf'];
@@ -1238,6 +1243,10 @@ class GlobalProvider extends ServiceProvider
                 'gaji_edit' => $gaji_edit,
                 'gaji_hapus' => $gaji_hapus,
 
+                'insentif_menu' => $insentif_menu,
+                'insentif_tambah' => $insentif_tambah,
+                'insentif_edit' => $insentif_edit,
+                'insentif_hapus' => $insentif_hapus,
 
                 //GA
                 'ga_menu' => $ga_menu,

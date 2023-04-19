@@ -215,11 +215,12 @@ class KaryawanController extends Controller
     {
         $nik = Crypt::decrypt($nik);
         $karyawan = DB::table('master_karyawan')
-            ->join('departemen', 'master_karyawan.kode_dept', '=', 'departemen.kode_dept')
-            ->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
+            ->leftjoin('departemen', 'master_karyawan.kode_dept', '=', 'departemen.kode_dept')
+            ->leftjoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
             ->leftJoin('cabang', 'master_karyawan.id_kantor', '=', 'cabang.kode_cabang')
             ->leftJoin('hrd_group', 'master_karyawan.grup', '=', 'hrd_group.id')
             ->where('nik', $nik)->first();
+
 
         $kontrak = DB::table('hrd_kontrak')
             ->select('hrd_kontrak.*', 'nama_karyawan', 'nama_jabatan')

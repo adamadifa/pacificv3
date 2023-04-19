@@ -26,6 +26,7 @@ use App\Http\Controllers\HargaawalController;
 use App\Http\Controllers\HargaController;
 use App\Http\Controllers\HargaControoler;
 use App\Http\Controllers\HppController;
+use App\Http\Controllers\InsentifController;
 use App\Http\Controllers\JenissimpananController;
 use App\Http\Controllers\JurnalkoreksiController;
 use App\Http\Controllers\JurnalumumController;
@@ -1573,4 +1574,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/gaji/{kode_gaji}/edit', [GajiController::class, 'edit']);
     Route::post('/gaji/{kode_gaji}/update', [GajiController::class, 'update']);
     Route::delete('/gaji/{kode_gaji}/delete', [GajiController::class, 'delete']);
+
+    Route::get('/insentif', [InsentifController::class, 'index']);
+    Route::get('/insentif/create', [InsentifController::class, 'create']);
+    Route::post('/insentif/store', [InsentifController::class, 'store']);
+    Route::get('/insentif/{kode_insentif}/edit', [InsentifController::class, 'edit']);
+    Route::post('/insentif/{kode_insentif}/update', [InsentifController::class, 'update']);
+    Route::delete('/insentif/{kode_insentif}/delete', [InsentifController::class, 'delete']);
 });

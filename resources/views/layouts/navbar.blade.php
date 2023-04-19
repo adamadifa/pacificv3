@@ -153,6 +153,14 @@
                         </a>
                     </li>
                     @endif
+                    @if (in_array($level,$insentif_menu))
+                    <li class="{{ request()->is(['insentif', 'insentif/*']) ? 'active' : '' }}">
+                        <a href="/insentif">
+                            <i class="feather icon-dollar-sign"></i>
+                            <span class="menu-item" data-i18n="Second Level">Insentif</span>
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </li>
             @endif
