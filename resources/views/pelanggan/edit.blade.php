@@ -521,6 +521,9 @@
                                     <div class="col-12">
                                         <button type="submit" class="btn btn-primary mr-1 mb-1"><i class="fa fa-refresh mr-1"></i> Update</button>
                                         <a href="{{ url()->previous() }}" class="btn btn-outline-warning mr-1 mb-1"><i class="fa fa-arrow-left mr-2"></i>Kembali</a>
+                                        @if (in_array($level,$pelanggan_ajuanlimit))
+                                        <a href="/limitkredit/{{\Crypt::encrypt($data->kode_pelanggan)}}/create" class="btn btn-outline-info mr-1 mb-1"><i class="feather icon-external-link mr-2"></i>Ajukan Limit</a>
+                                        @endif
                                     </div>
                                 </div>
 
