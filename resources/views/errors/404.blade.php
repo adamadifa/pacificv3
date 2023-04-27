@@ -19,7 +19,10 @@
         @else
         <a href="/home"><button class="denied__link">Go Home</button></a>
         @endif
-
+        <form action="/postlogout" method="POST">
+            @csrf
+            <button type="submit" class="denied__link"> Logout</button>
+        </form>
     </div>
 
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/tsparticles@2.3.4/tsparticles.bundle.min.js"></script>
