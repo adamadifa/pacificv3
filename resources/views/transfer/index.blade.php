@@ -52,55 +52,57 @@
                         </div>
                     </form>
                     @include('layouts.notification')
-                    <table class="table table-hover-animation">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>Tgl Pencatatan</th>
-                                <th>Pelanggan</th>
-                                <th>Bank</th>
-                                <th>Penerima</th>
-                                <th>Jumlah</th>
-                                <th>Jatuh Tempo</th>
-                                <th>Cabang</th>
-                                <th>Status</th>
-                                <th>Ledger</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($transfer as $d)
-                            <tr>
-                                <td>{{ date("d-m-Y",strtotime($d->tgl_transfer)) }}</td>
-                                <td>{{ ucwords(strtolower($d->nama_pelanggan)) }}</td>
-                                <td>{{ strtoupper($d->namabank) }}</td>
-                                <td>{{ strtoupper($d->nama_bank) }}</td>
-                                <td class="text-right" style="font-weight: bold">{{ rupiah($d->jumlah) }}</td>
-                                <td>{{ date("d-m-Y",strtotime($d->tglcair)) }}</td>
-                                <td>{{ $d->kode_cabang }}</td>
-                                <td>
-                                    @if ($d->status==0)
-                                    <span class="badge bg-warning"><i class="fa fa-history"></i> Pending</span>
-                                    @elseif($d->status==1)
-                                    <span class="badge bg-success">{{ date("d-m-Y",strtotime($d->tglbayar)) }}</span>
-                                    @elseif($d->status==2)
-                                    <span class="badge bg-danger">Ditolak</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    <span class="badge bg-primary">{{ $d->no_bukti }}</span>
-                                </td>
-                                <td>
-                                    <div class="btn-group" role="group" aria-label="Basic example">
-                                        @if (in_array($level,$transfer_approved))
-                                        <a class="ml-1 prosestransfer" href="#" kode_transfer="{{ $d->kode_transfer }}"><i class=" feather icon-external-link success"></i></a>
+                    <div class="table-responsive">
+                        <table class="table table-hover-animation">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>Tgl Pencatatan</th>
+                                    <th>Pelanggan</th>
+                                    <th>Bank</th>
+                                    <th>Penerima</th>
+                                    <th>Jumlah</th>
+                                    <th>Jatuh Tempo</th>
+                                    <th>Cabang</th>
+                                    <th>Status</th>
+                                    <th>Ledger</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($transfer as $d)
+                                <tr>
+                                    <td>{{ date("d-m-Y",strtotime($d->tgl_transfer)) }}</td>
+                                    <td>{{ ucwords(strtolower($d->nama_pelanggan)) }}</td>
+                                    <td>{{ strtoupper($d->namabank) }}</td>
+                                    <td>{{ strtoupper($d->nama_bank) }}</td>
+                                    <td class="text-right" style="font-weight: bold">{{ rupiah($d->jumlah) }}</td>
+                                    <td>{{ date("d-m-Y",strtotime($d->tglcair)) }}</td>
+                                    <td>{{ $d->kode_cabang }}</td>
+                                    <td>
+                                        @if ($d->status==0)
+                                        <span class="badge bg-warning"><i class="fa fa-history"></i> Pending</span>
+                                        @elseif($d->status==1)
+                                        <span class="badge bg-success">{{ date("d-m-Y",strtotime($d->tglbayar)) }}</span>
+                                        @elseif($d->status==2)
+                                        <span class="badge bg-danger">Ditolak</span>
                                         @endif
-                                        <a class="ml-1 detailfaktur" href="#" kode_transfer="{{ $d->kode_transfer }}"><i class=" feather icon-file-text info"></i></a>
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-primary">{{ $d->no_bukti }}</span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            @if (in_array($level,$transfer_approved))
+                                            <a class="ml-1 prosestransfer" href="#" kode_transfer="{{ $d->kode_transfer }}"><i class=" feather icon-external-link success"></i></a>
+                                            @endif
+                                            <a class="ml-1 detailfaktur" href="#" kode_transfer="{{ $d->kode_transfer }}"><i class=" feather icon-file-text info"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                     {{ $transfer->links('vendor.pagination.vuexy') }}
 
                 </div>
