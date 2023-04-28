@@ -55,70 +55,72 @@
                         </div>
                     </form>
                     @include('layouts.notification')
-                    <table class="table table-hover-animation">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th>No Giro</th>
-                                <th>Tgl Pencatatan</th>
-                                <th>Pelanggan</th>
-                                <th>Bank</th>
-                                <th>Penerima</th>
-                                <th>Jumlah</th>
-                                <th>Jatuh Tempo</th>
-                                <th>Cabang</th>
-                                <th>Status</th>
-                                <th>Ledger</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($giro as $d)
-                            <tr>
-                                <td>{{ $d->no_giro }}</td>
-                                <td>{{ date("d-m-Y",strtotime($d->tgl_giro)) }}</td>
-                                <td>{{ ucwords(strtolower($d->nama_pelanggan)) }}</td>
-                                <td>{{ strtoupper($d->namabank) }}</td>
-                                <td>{{ strtoupper($d->nama_bank) }}</td>
-                                <td class="text-right" style="font-weight: bold">{{ rupiah($d->jumlah) }}</td>
-                                <td>{{ date("d-m-Y",strtotime($d->tglcair)) }}</td>
-                                <td>{{ $d->kode_cabang }}</td>
-                                <td>
-                                    @if ($d->status==0)
-                                    <span class="badge bg-warning"><i class="fa fa-history"></i> Pending</span>
-                                    @elseif($d->status==1)
-                                    <span class="badge bg-success">{{ date("d-m-Y",strtotime($d->tglbayar)) }}</span>
-                                    @elseif($d->status==2)
-                                    <span class="badge bg-danger">Ditolak</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    <span class="badge bg-primary">{{ $d->no_bukti }}</span>
-                                </td>
-                                <td>
-                                    <div class="btn-group" role="group" aria-label="Basic example">
-                                        @if (in_array($level,$giro_hapus))
+                    <div class="table-responsive">
+                        <table class="table table-hover-animation">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>No Giro</th>
+                                    <th>Tgl Pencatatan</th>
+                                    <th>Pelanggan</th>
+                                    <th>Bank</th>
+                                    <th>Penerima</th>
+                                    <th>Jumlah</th>
+                                    <th>Jatuh Tempo</th>
+                                    <th>Cabang</th>
+                                    <th>Status</th>
+                                    <th>Ledger</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($giro as $d)
+                                <tr>
+                                    <td>{{ $d->no_giro }}</td>
+                                    <td>{{ date("d-m-Y",strtotime($d->tgl_giro)) }}</td>
+                                    <td>{{ ucwords(strtolower($d->nama_pelanggan)) }}</td>
+                                    <td>{{ strtoupper($d->namabank) }}</td>
+                                    <td>{{ strtoupper($d->nama_bank) }}</td>
+                                    <td class="text-right" style="font-weight: bold">{{ rupiah($d->jumlah) }}</td>
+                                    <td>{{ date("d-m-Y",strtotime($d->tglcair)) }}</td>
+                                    <td>{{ $d->kode_cabang }}</td>
+                                    <td>
                                         @if ($d->status==0)
-                                        <form method="POST" class="deleteform" action="/pembayaran/{{ Crypt::encrypt($d->no_giro) }}/deleteallnogiro">
-                                            @csrf
-                                            @method('DELETE')
-                                            <a href=" #" class="delete-confirm ml-1">
-                                                <i class="feather icon-trash danger"></i>
-                                            </a>
-                                        </form>
+                                        <span class="badge bg-warning"><i class="fa fa-history"></i> Pending</span>
+                                        @elseif($d->status==1)
+                                        <span class="badge bg-success">{{ date("d-m-Y",strtotime($d->tglbayar)) }}</span>
+                                        @elseif($d->status==2)
+                                        <span class="badge bg-danger">Ditolak</span>
                                         @endif
-                                        @endif
-                                        @if (in_array($level,$giro_approved))
-                                        <a class="ml-1 prosesgiro" href="#" no_giro="{{ $d->no_giro }}"><i class=" feather icon-external-link success"></i></a>
-                                        @endif
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-primary">{{ $d->no_bukti }}</span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            @if (in_array($level,$giro_hapus))
+                                            @if ($d->status==0)
+                                            <form method="POST" class="deleteform" action="/pembayaran/{{ Crypt::encrypt($d->no_giro) }}/deleteallnogiro">
+                                                @csrf
+                                                @method('DELETE')
+                                                <a href=" #" class="delete-confirm ml-1">
+                                                    <i class="feather icon-trash danger"></i>
+                                                </a>
+                                            </form>
+                                            @endif
+                                            @endif
+                                            @if (in_array($level,$giro_approved))
+                                            <a class="ml-1 prosesgiro" href="#" no_giro="{{ $d->no_giro }}"><i class=" feather icon-external-link success"></i></a>
+                                            @endif
 
-                                        <a class="ml-1 detailfaktur" href="#" no_giro="{{ $d->no_giro }}"><i class=" feather icon-file-text info"></i></a>
+                                            <a class="ml-1 detailfaktur" href="#" no_giro="{{ $d->no_giro }}"><i class=" feather icon-file-text info"></i></a>
 
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                     {{ $giro->links('vendor.pagination.vuexy') }}
 
                 </div>

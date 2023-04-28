@@ -1204,7 +1204,14 @@
                         </a>
                     </li>
                     @endif
-
+                    @if (in_array($level,$pengajuan_izin_menu))
+                    <li class="{{ request()->is(['pengajuanizin', 'pengajuanizin/*']) ? 'active' : '' }}">
+                        <a href="/pengajuanizin">
+                            <i class="feather icon-file-text"></i>
+                            <span class="menu-item" data-i18n="Second Level">Pengajuan Izin</span>
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </li>
             @endif

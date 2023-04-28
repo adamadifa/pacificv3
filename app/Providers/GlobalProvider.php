@@ -854,6 +854,7 @@ class GlobalProvider extends ServiceProvider
             $penilaian_karyawan = ['admin', '3', '2', '11', '1', '7', '6', '4'];
             $kesepakatanbersama = ['admin', 'direktur', 'manager hrd'];
             $kontrak_menu = ['admin', 'direktur', 'manager hrd'];
+            $pengajuan_izin_menu = ['admin'];
 
             $gaji_menu = ['admin', 'direktur'];
             $insentif_menu = ['admin', 'direktur'];
@@ -1236,6 +1237,7 @@ class GlobalProvider extends ServiceProvider
                 'penilaian_karyawan' => $penilaian_karyawan,
                 'kesepakatanbersama' => $kesepakatanbersama,
                 'kontrak_menu' => $kontrak_menu,
+                'pengajuan_izin_menu' => $pengajuan_izin_menu,
 
 
                 'gaji_menu' => $gaji_menu,

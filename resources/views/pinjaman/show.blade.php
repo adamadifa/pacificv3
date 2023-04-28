@@ -10,7 +10,7 @@
                 @endif
                 @else
                 @php
-                $path = Storage::url('karyawan/'.$karyawan->foto);
+                $path = Storage::url('karyawan/'.$pinjaman->foto);
                 @endphp
                 <img src="{{ url($path) }}" class="card-img" style="height: 350px !important">
                 @endif

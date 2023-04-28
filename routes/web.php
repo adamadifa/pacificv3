@@ -76,6 +76,7 @@ use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PembayarankasbonController;
 use App\Http\Controllers\PembayaranpinjamanController;
 use App\Http\Controllers\PembelianController;
+use App\Http\Controllers\PengajuanizinController;
 use App\Http\Controllers\PengeluarangudangbahanController;
 use App\Http\Controllers\PengeluarangudanglogistikController;
 use App\Http\Controllers\PengeluaranmaintenanceController;
@@ -1581,4 +1582,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/insentif/{kode_insentif}/edit', [InsentifController::class, 'edit']);
     Route::post('/insentif/{kode_insentif}/update', [InsentifController::class, 'update']);
     Route::delete('/insentif/{kode_insentif}/delete', [InsentifController::class, 'delete']);
+
+
+    //Pengajuan Izin
+    Route::get('/pengajuanizin', [PengajuanizinController::class, 'index']);
 });
