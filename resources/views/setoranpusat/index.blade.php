@@ -67,77 +67,79 @@
                     @include('layouts.notification')
                     <a href="/setoranpusat/cetak?dari={{ Request('dari') }}&sampai={{ Request('sampai') }}&kode_cabang={{ Request('kode_cabang') }}&kode_bank={{ Request('kode_bank') }}&excel=false" target="_blank" class="btn btn-primary"><i class="feather icon-printer"></i></a>
                     <a href="/setoranpusat/cetak?dari={{ Request('dari') }}&sampai={{ Request('sampai') }}&kode_cabang={{ Request('kode_cabang') }}&kode_bank={{ Request('kode_bank') }}&excel=true" class="btn btn-success"><i class="feather icon-download"></i></a>
-                    <table class="table table-bordered table-hover-animation mt-2">
-                        <thead class="thead-dark">
-                            <tr>
-                                <th style="width:10%">Tanggal</th>
-                                <th style="width:25%">Setoran</th>
-                                <th style="width: 15%">Bank</th>
-                                <th>Kertas</th>
-                                <th>Logam</th>
-                                <th>Transfer</th>
-                                <th>Giro</th>
-                                <th>Jumlah</th>
-                                <th>Status</th>
-                                <th>Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($setoranpusat as $d)
-                            @php
-                            $totalsetoran = $d->uang_kertas + $d->uang_logam + $d->transfer + $d->giro;
-                            @endphp
-                            <tr>
-                                <td>{{ date("d-m-Y",strtotime($d->tgl_setoranpusat)) }}</td>
-                                <td>{{ ucwords(strtolower($d->keterangan)) }}</td>
-                                <td>{{ $d->nama_bank }}</td>
-                                <td class="text-right">{{ !empty($d->uang_kertas) ? rupiah($d->uang_kertas) : '' }}</td>
-                                <td class="text-right">{{ !empty($d->uang_logam) ? rupiah($d->uang_logam) : '' }}</td>
-                                <td class="text-right">{{ !empty($d->transfer) ? rupiah($d->transfer) : '' }}</td>
-                                <td class="text-right">{{ !empty($d->giro) ? rupiah($d->giro) : '' }}</td>
-                                <td class="text-right">{{ !empty($totalsetoran) ? rupiah($totalsetoran) : '' }}</td>
-                                <td>
-                                    @if ($d->status==1)
-                                    <span class="badge bg-success"><i class="fa fa-check"></i> Diterima {{ date("d-m-Y",strtotime($d->tgl_diterimapusat)) }}</span>
-                                    @elseif($d->status==2)
-                                    <span class="badge bg-danger"><i class="fa fa-close"></i> Ditolak</span>
-                                    @else
-                                    <span class="badge bg-warning"><i class="fa fa-history"></i> Belum Diterima</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    <div class="btn-group" role="group" aria-label="Basic example">
-                                        @if (in_array($level,$setoranpusat_edit))
-                                        @if (empty($d->no_ref))
-                                        <a class="ml-1 edit" status="{{ $d->status }}" kode_setoranpusat="{{ $d->kode_setoranpusat }}" href="#"><i class="feather icon-edit success"></i></a>
-                                        @endif
-                                        @endif
-                                        @if (in_array($level,$setoranpusat_hapus))
-                                        @if ($d->status==0)
-                                        <form method="POST" class="deleteform" action="/setoranpusat/{{Crypt::encrypt($d->kode_setoranpusat)}}/delete">
-                                            @csrf
-                                            @method('DELETE')
-                                            <a href="#" tanggal="{{ $d->tgl_setoranpusat }}" class="delete-confirm ml-1">
-                                                <i class="feather icon-trash danger"></i>
-                                            </a>
-                                        </form>
-                                        @endif
-                                        @endif
-                                        @if (in_array($level,$setoranpusat_terimasetoran))
-                                        @if (empty($d->no_ref))
-                                        @if ($d->status==0)
-                                        <a href="#" kodesetoranpusat="{{ $d->kode_setoranpusat }}" class="success terimasetoran ml-1"><i class="feather icon-external-link"></i></a>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover-animation mt-2">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th style="width:10%">Tanggal</th>
+                                    <th style="width:25%">Setoran</th>
+                                    <th style="width: 15%">Bank</th>
+                                    <th>Kertas</th>
+                                    <th>Logam</th>
+                                    <th>Transfer</th>
+                                    <th>Giro</th>
+                                    <th>Jumlah</th>
+                                    <th>Status</th>
+                                    <th>Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($setoranpusat as $d)
+                                @php
+                                $totalsetoran = $d->uang_kertas + $d->uang_logam + $d->transfer + $d->giro;
+                                @endphp
+                                <tr>
+                                    <td>{{ date("d-m-Y",strtotime($d->tgl_setoranpusat)) }}</td>
+                                    <td>{{ ucwords(strtolower($d->keterangan)) }}</td>
+                                    <td>{{ $d->nama_bank }}</td>
+                                    <td class="text-right">{{ !empty($d->uang_kertas) ? rupiah($d->uang_kertas) : '' }}</td>
+                                    <td class="text-right">{{ !empty($d->uang_logam) ? rupiah($d->uang_logam) : '' }}</td>
+                                    <td class="text-right">{{ !empty($d->transfer) ? rupiah($d->transfer) : '' }}</td>
+                                    <td class="text-right">{{ !empty($d->giro) ? rupiah($d->giro) : '' }}</td>
+                                    <td class="text-right">{{ !empty($totalsetoran) ? rupiah($totalsetoran) : '' }}</td>
+                                    <td>
+                                        @if ($d->status==1)
+                                        <span class="badge bg-success"><i class="fa fa-check"></i> Diterima {{ date("d-m-Y",strtotime($d->tgl_diterimapusat)) }}</span>
+                                        @elseif($d->status==2)
+                                        <span class="badge bg-danger"><i class="fa fa-close"></i> Ditolak</span>
                                         @else
-                                        <a href="/setoranpusat/{{ Crypt::encrypt($d->kode_setoranpusat) }}/batalkansetoran" class="danger batalkansetoran ml-1"><i class="fa fa-close"></i></a>
+                                        <span class="badge bg-warning"><i class="fa fa-history"></i> Belum Diterima</span>
                                         @endif
-                                        @endif
-                                        @endif
-                                    </div>
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            @if (in_array($level,$setoranpusat_edit))
+                                            @if (empty($d->no_ref))
+                                            <a class="ml-1 edit" status="{{ $d->status }}" kode_setoranpusat="{{ $d->kode_setoranpusat }}" href="#"><i class="feather icon-edit success"></i></a>
+                                            @endif
+                                            @endif
+                                            @if (in_array($level,$setoranpusat_hapus))
+                                            @if ($d->status==0)
+                                            <form method="POST" class="deleteform" action="/setoranpusat/{{Crypt::encrypt($d->kode_setoranpusat)}}/delete">
+                                                @csrf
+                                                @method('DELETE')
+                                                <a href="#" tanggal="{{ $d->tgl_setoranpusat }}" class="delete-confirm ml-1">
+                                                    <i class="feather icon-trash danger"></i>
+                                                </a>
+                                            </form>
+                                            @endif
+                                            @endif
+                                            @if (in_array($level,$setoranpusat_terimasetoran))
+                                            @if (empty($d->no_ref))
+                                            @if ($d->status==0)
+                                            <a href="#" kodesetoranpusat="{{ $d->kode_setoranpusat }}" class="success terimasetoran ml-1"><i class="feather icon-external-link"></i></a>
+                                            @else
+                                            <a href="/setoranpusat/{{ Crypt::encrypt($d->kode_setoranpusat) }}/batalkansetoran" class="danger batalkansetoran ml-1"><i class="fa fa-close"></i></a>
+                                            @endif
+                                            @endif
+                                            @endif
+                                        </div>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
