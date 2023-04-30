@@ -1032,7 +1032,7 @@ class TargetkomisiController extends Controller
                     WHERE tglbayar BETWEEN '$dari' AND '$sampai' GROUP BY no_fak_penj
                 ) hb ON ( penjualan.no_fak_penj = hb.no_fak_penj )
 
-            WHERE penjualan.tgltransaksi BETWEEN '$dari' AND '$sampai' AND jenistransaksi = 'kredit' AND datediff( '$sampai', penjualan.tgltransaksi ) > IFNULL(pelanggan.jatuhtempo,14)
+            WHERE penjualan.tgltransaksi BETWEEN '$dari' AND '$sampai' AND jenistransaksi = 'kredit' AND datediff( '$sampai', penjualan.tgltransaksi ) > IFNULL(pelanggan.jatuhtempo+1,15)
             GROUP BY
                 salesbarunew
 
@@ -1087,7 +1087,7 @@ class TargetkomisiController extends Controller
                         WHERE tglbayar BETWEEN '$dari' AND '$sampai' GROUP BY no_fak_penj
                     ) hb ON ( penjualan.no_fak_penj = hb.no_fak_penj )
                 WHERE
-                    datediff( '$sampai', penjualan.tgltransaksi ) > IFNULL(pelanggan.jatuhtempo,14) AND bulan = '$bulan' AND tahun = '$tahun'
+                    datediff( '$sampai', penjualan.tgltransaksi ) > IFNULL(pelanggan.jatuhtempo+1,15) AND bulan = '$bulan' AND tahun = '$tahun'
                 GROUP BY
                     salesbarunew
             ) spf"),
