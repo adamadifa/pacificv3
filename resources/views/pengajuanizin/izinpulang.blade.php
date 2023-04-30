@@ -125,7 +125,7 @@
                                                     <th>Nama Karyawan</th>
                                                     <th>Jabatan</th>
                                                     <th>Dept</th>
-                                                    <th>Jml Hari</th>
+                                                    <th>Jam Pulang</th>
                                                     <th>Ket</th>
                                                     <th>Head Dept</th>
                                                     <th>HRD</th>
@@ -137,12 +137,12 @@
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $d->kode_izin }}</td>
-                                                    <td>{{ date('d-m-Y',strtotime($d->dari)) }} s/d {{ date('d-m-Y',strtotime($d->sampai)) }}</td>
+                                                    <td>{{ date('d-m-Y',strtotime($d->dari)) }}</td>
                                                     <td>{{ $d->nik }}</td>
                                                     <td>{{ $d->nama_karyawan }}</td>
                                                     <td>{{ $d->nama_jabatan }}</td>
                                                     <td>{{ $d->kode_dept }}</td>
-                                                    <td>{{ $d->jmlhari }} Hari</td>
+                                                    <td>{{ $d->jam_pulang }}</td>
                                                     <td>{{ $d->keterangan }}</td>
                                                     <td class="text-center">
                                                         @if (empty($d->head_dept))
@@ -192,7 +192,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/pengajuanizin/approve" method="POST">
+                <form action="/pengajuanizin/approveizinpulang" method="POST">
                     @csrf
                     <input type="hidden" name="kode_izin" id="kode_izin">
                     <div class="row">

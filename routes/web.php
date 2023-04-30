@@ -1586,4 +1586,7 @@ Route::middleware(['auth'])->group(function () {
 
     //Pengajuan Izin
     Route::get('/pengajuanizin', [PengajuanizinController::class, 'index']);
+    Route::get('/pengajuanizin/izinpulang', [PengajuanizinController::class, 'index']);
+    Route::post('/pengajuanizin/approve', [PengajuanizinController::class, 'approve']);
+    Route::post('/pengajuanizin/approveizinpulang', [PengajuanizinController::class, 'approveizinpulang']);
 });

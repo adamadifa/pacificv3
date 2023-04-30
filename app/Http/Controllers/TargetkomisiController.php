@@ -995,6 +995,7 @@ class TargetkomisiController extends Controller
                     salesbarunew,IFNULL(SUM(penjualan.total),0) - SUM(IFNULL( totalretur, 0 )) - SUM(IFNULL( totalbayar, 0 )) AS sisapiutang
                 FROM
                 penjualan
+                INNER JOIN pelanggan oN penjualan.kode_pelanggan = pelanggan.kode_pelanggan
                 LEFT JOIN (
                     SELECT
                         pj.no_fak_penj,IF( salesbaru IS NULL, pj.id_karyawan, salesbaru ) AS salesbarunew,karyawan.nama_karyawan AS nama_sales,
@@ -1031,7 +1032,7 @@ class TargetkomisiController extends Controller
                     WHERE tglbayar BETWEEN '$dari' AND '$sampai' GROUP BY no_fak_penj
                 ) hb ON ( penjualan.no_fak_penj = hb.no_fak_penj )
 
-            WHERE penjualan.tgltransaksi BETWEEN '$dari' AND '$sampai' AND jenistransaksi = 'kredit' AND datediff( '$sampai', penjualan.tgltransaksi ) > 15
+            WHERE penjualan.tgltransaksi BETWEEN '$dari' AND '$sampai' AND jenistransaksi = 'kredit' AND datediff( '$sampai', penjualan.tgltransaksi ) > 15 AND pelanggan.jatuhtempo != 30
             GROUP BY
                 salesbarunew
 

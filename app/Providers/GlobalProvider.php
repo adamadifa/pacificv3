@@ -854,7 +854,7 @@ class GlobalProvider extends ServiceProvider
             $penilaian_karyawan = ['admin', '3', '2', '11', '1', '7', '6', '4'];
             $kesepakatanbersama = ['admin', 'direktur', 'manager hrd'];
             $kontrak_menu = ['admin', 'direktur', 'manager hrd'];
-            $pengajuan_izin_menu = ['admin'];
+            $pengajuan_izin_menu = ['admin', 'manager hrd', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'manager accounting', 'manager ga', 'emf', 'manager marketing', 'rsm'];
 
             $gaji_menu = ['admin', 'direktur'];
             $insentif_menu = ['admin', 'direktur'];
