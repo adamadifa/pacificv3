@@ -1031,7 +1031,7 @@ class TargetkomisiController extends Controller
                     WHERE tglbayar BETWEEN '$dari' AND '$sampai' GROUP BY no_fak_penj
                 ) hb ON ( penjualan.no_fak_penj = hb.no_fak_penj )
 
-            WHERE penjualan.tgltransaksi BETWEEN '$dari' AND '$sampai' AND jenistransaksi = 'kredit' AND datediff( '$sampai', penjualan.tgltransaksi ) > 15
+            WHERE penjualan.tgltransaksi BETWEEN '$dari' AND '$sampai' AND jenistransaksi = 'kredit' AND datediff( '$sampai', penjualan.tgltransaksi ) > 30
             GROUP BY
                 salesbarunew
 
