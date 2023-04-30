@@ -131,7 +131,7 @@
                 <th rowspan="3" style="background-color: #ff570d;">EFFECTIVE <br>CALL</th>
                 <th rowspan="3" style="background-color: #ff570d;">TRANSAKSI VS <br>REGISTER</th>
                 <th rowspan="2" colspan="3" style="background-color: #9e9895;">CASH IN</th>
-                <th rowspan="2" colspan="3" style="background-color: #e43a90;">LJT > 14 Hari</th>
+                <th rowspan="2" colspan="3" style="background-color: #e43a90;">LJT</th>
                 <th rowspan="3" style="background-color: #ff570d;">TOTAL REWARD</th>
                 <th rowspan="3" style="background-color: #ffffff;">POTONGAN</th>
                 <th rowspan="3" style="background-color: #ffffff;">TOTAL KOMISI</th>
