@@ -125,7 +125,8 @@
                                                     <th>Nama Karyawan</th>
                                                     <th>Jabatan</th>
                                                     <th>Dept</th>
-                                                    <th>Jam Pulang</th>
+                                                    <th>Jam Keluar</th>
+                                                    <th>Jam Masuk</th>
                                                     <th>Ket</th>
                                                     <th>Head Dept</th>
                                                     <th>HRD</th>
@@ -142,7 +143,14 @@
                                                     <td>{{ $d->nama_karyawan }}</td>
                                                     <td>{{ $d->nama_jabatan }}</td>
                                                     <td>{{ $d->kode_dept }}</td>
-                                                    <td>{{ $d->jam_pulang }}</td>
+                                                    <td>{{ $d->jam_keluar }}</td>
+                                                    <td>
+                                                        @if (empty($d->jam_masuk))
+                                                        <a href="#"><i class="fa fa-history text-warning"></i></a>
+                                                        @else
+                                                        {{ $d->jam_masuk }}
+                                                        @endif
+                                                    </td>
                                                     <td>{{ $d->keterangan }}</td>
                                                     <td class="text-center">
                                                         @if (empty($d->head_dept))
@@ -192,7 +200,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/pengajuanizin/approveizinpulang" method="POST">
+                <form action="/pengajuanizin/approveizinkeluar" method="POST">
                     @csrf
                     <input type="hidden" name="kode_izin" id="kode_izin">
                     <div class="row">

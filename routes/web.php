@@ -1587,6 +1587,10 @@ Route::middleware(['auth'])->group(function () {
     //Pengajuan Izin
     Route::get('/pengajuanizin', [PengajuanizinController::class, 'index']);
     Route::get('/pengajuanizin/izinpulang', [PengajuanizinController::class, 'index']);
+    Route::get('/pengajuanizin/izinkeluar', [PengajuanizinController::class, 'index']);
+    Route::get('/pengajuanizin/sakit', [PengajuanizinController::class, 'index']);
+    Route::get('/pengajuanizin/cuti', [PengajuanizinController::class, 'index']);
     Route::post('/pengajuanizin/approve', [PengajuanizinController::class, 'approve']);
     Route::post('/pengajuanizin/approveizinpulang', [PengajuanizinController::class, 'approveizinpulang']);
+    Route::post('/pengajuanizin/approveizinkeluar', [PengajuanizinController::class, 'approveizinkeluar']);
 });

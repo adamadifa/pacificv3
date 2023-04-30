@@ -163,7 +163,7 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <a href="#" id="approveizin" kode_izin="{{ $d->kode_izin }}">
+                                                        <a href="#" class="approveizin" kode_izin="{{ $d->kode_izin }}">
                                                             <i class="feather icon-external-link text-primary"></i>
                                                         </a>
                                                     </td>
@@ -220,7 +220,7 @@
 @push('myscript')
 <script>
     $(function() {
-        $("#approveizin").click(function(e) {
+        $(".approveizin").click(function(e) {
             $("#mdlapprove").modal("show");
             var kode_izin = $(this).attr('kode_izin');
             $("#kode_izin").val(kode_izin);
