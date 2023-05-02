@@ -373,4 +373,12 @@ class PengajuanizinController extends Controller
             }
         }
     }
+
+
+    public function create()
+    {
+        $karyawan = DB::table('master_karyawan')->orderBy('nama_karyawan')->get();
+        $mastercuti = DB::table('hrd_mastercuti')->get();
+        return view('pengajuanizin.create', compact('karyawan', 'mastercuti'));
+    }
 }

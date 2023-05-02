@@ -159,6 +159,7 @@ class HargaController extends Controller
 
     public function update(Request $request, $kode_barang)
     {
+
         $kode_barang = Crypt::decrypt($kode_barang);
         $request->validate([
             'kode_barang' => 'required',
@@ -174,7 +175,7 @@ class HargaController extends Controller
             'harga_returdus' => 'required',
             'harga_returpack' => 'required',
             'harga_returpcs' => 'required',
-            'status_harga' => 'required'
+            'show' => 'required'
         ]);
 
         $produk = explode("|", $request->kode_produk);
@@ -196,6 +197,9 @@ class HargaController extends Controller
                 'harga_returpcs' => str_replace(".", "", $request->harga_returpcs),
                 'show' => $request->show
             ]);
+
+
+
 
         if ($simpan) {
             return Redirect::back()->with(['success' => 'Data Berhasil Di Update']);

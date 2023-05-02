@@ -120,6 +120,7 @@ use App\Http\Controllers\WhatsappController;
 use App\Models\Barangpembelian;
 use App\Models\Logamtokertas;
 use App\Models\Pemasukangudanglogistik;
+use App\Models\Pengajuanizin;
 use App\Models\Penjualan;
 use App\Models\Pinjaman;
 use App\Models\Saldoawalmutasibarangproduksi;
@@ -1594,6 +1595,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/pengajuanizin/approve', [PengajuanizinController::class, 'approve']);
     Route::post('/pengajuanizin/approveizinpulang', [PengajuanizinController::class, 'approveizinpulang']);
     Route::post('/pengajuanizin/approveizinkeluar', [PengajuanizinController::class, 'approveizinkeluar']);
+    Route::get('/pengajuanizin/create', [PengajuanizinController::class, 'create']);
 
     //Jadwal Kerja
     Route::get('/jadwalkerja', [JadwalkerjaController::class, 'index']);
