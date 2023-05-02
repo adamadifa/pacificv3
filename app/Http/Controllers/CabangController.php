@@ -53,6 +53,7 @@ class CabangController extends Controller
         $request->validate([
             'nama_cabang' => 'required',
             'alamat_cabang' => 'required',
+            'lokasi_cabang' => 'required',
             'telepon' => 'required|numeric'
         ]);
 
@@ -61,6 +62,7 @@ class CabangController extends Controller
             ->update([
                 'nama_cabang' => $request->nama_cabang,
                 'alamat_cabang' => $request->alamat_cabang,
+                'lokasi_Cabang' => $request->lokasi_cabang,
                 'telepon' => $request->telepon
             ]);
 

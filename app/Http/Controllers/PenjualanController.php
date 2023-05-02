@@ -6613,6 +6613,8 @@ class PenjualanController extends Controller
             SUM( IF ( kode_produk = 'SP8',detailretur.subtotal, NULL ) ) AS SP8,
             SUM( IF ( kode_produk = 'SC',detailretur.jumlah/isipcsdus, NULL ) ) AS JML_SC,
             SUM( IF ( kode_produk = 'SC',detailretur.subtotal, NULL ) ) AS SC,
+            SUM( IF ( kode_produk = 'SP500',detailretur.jumlah/isipcsdus, NULL ) ) AS JML_SP500,
+            SUM( IF ( kode_produk = 'SP500',detailretur.subtotal, NULL ) ) AS SP500,
             SUM(detailretur.subtotal) as totalretur,
             total_gb");
             $query->join('barang', 'detailretur.kode_barang', '=', 'barang.kode_barang');

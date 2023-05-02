@@ -19,7 +19,7 @@ class KaryawanController extends Controller
         $nama_karyawan = $request->nama_karyawan_search;
         $query = Karyawan::query();
         $query->select('nik', 'nama_karyawan', 'tgl_masuk', 'master_karyawan.kode_dept', 'nama_dept', 'jenis_kelamin', 'nama_jabatan', 'id_perusahaan', 'id_kantor', 'klasifikasi', 'status_karyawan');
-        $query->leftjoin('departemen', 'master_karyawan.kode_dept', '=', 'departemen.kode_dept');
+        $query->leftjoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
         $query->leftjoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
         if (!empty($nama_karyawan)) {
             $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');
@@ -86,14 +86,14 @@ class KaryawanController extends Controller
         $karyawan = $query->paginate(15);
         $karyawan->appends($request->all());
         $kantor = DB::table('cabang')->orderBy('kode_cabang')->get();
-        $departemen = DB::table('departemen')->where('status_pengajuan', 0)->get();
+        $departemen = DB::table('hrd_departemen')->get();
         $group = DB::table('hrd_group')->orderBy('nama_group')->get();
         return view('karyawan.index', compact('karyawan', 'departemen', 'kantor', 'group'));
     }
 
     public function create()
     {
-        $departemen = DB::table('departemen')->where('status_pengajuan', 0)->get();
+        $departemen = DB::table('hrd_departemen')->get();
         $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         $jabatan = DB::table('hrd_jabatan')->orderBy('nama_jabatan')->get();
         $group = DB::table('hrd_group')->orderBy('nama_group')->get();
@@ -154,7 +154,7 @@ class KaryawanController extends Controller
     public function edit($nik)
     {
         $nik = Crypt::decrypt($nik);
-        $departemen = DB::table('departemen')->where('status_pengajuan', 0)->get();
+        $departemen = DB::table('hrd_departemen')->get();
         $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         $jabatan = DB::table('hrd_jabatan')->orderBy('nama_jabatan')->get();
         $group = DB::table('hrd_group')->orderBy('nama_group')->get();
@@ -215,7 +215,7 @@ class KaryawanController extends Controller
     {
         $nik = Crypt::decrypt($nik);
         $karyawan = DB::table('master_karyawan')
-            ->leftjoin('departemen', 'master_karyawan.kode_dept', '=', 'departemen.kode_dept')
+            ->leftjoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
             ->leftjoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
             ->leftJoin('cabang', 'master_karyawan.id_kantor', '=', 'cabang.kode_cabang')
             ->leftJoin('hrd_group', 'master_karyawan.grup', '=', 'hrd_group.id')

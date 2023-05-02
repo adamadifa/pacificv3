@@ -133,6 +133,7 @@ class PengajuanizinController extends Controller
         $nik = $data->nik;
         $status = $data->status;
         $kode_izin = $data->kode_izin;
+        $status_approve = $data->status_approved;
         $level = Auth::user()->level;
         if (isset($request->approve)) {
             try {
@@ -143,32 +144,36 @@ class PengajuanizinController extends Controller
                 } else {
                     DB::beginTransaction();
                     try {
-                        DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
-                            'hrd' => 1,
-                            'status_approved' => 1
-                        ]);
+                        if ($status_approve != 1) {
+                            DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
+                                'hrd' => 1,
+                                'status_approved' => 1
+                            ]);
 
-                        while (strtotime($dari) <= strtotime($sampai)) {
-                            $datapresensi[] = [
-                                'nik' => $nik,
-                                'tgl_presensi' => $dari,
-                                'jam_in' => null,
-                                'jam_out' => null,
-                                'lokasi_in' => null,
-                                'lokasi_out' => null,
-                                'kode_jam_kerja' => null,
-                                'status' => $status,
-                                'kode_izin' => $kode_izin
-                            ];
-                            $dari = date("Y-m-d", strtotime("+1 day", strtotime($dari)));
-                        }
+                            while (strtotime($dari) <= strtotime($sampai)) {
+                                $datapresensi[] = [
+                                    'nik' => $nik,
+                                    'tgl_presensi' => $dari,
+                                    'jam_in' => null,
+                                    'jam_out' => null,
+                                    'lokasi_in' => null,
+                                    'lokasi_out' => null,
+                                    'kode_jam_kerja' => null,
+                                    'status' => $status,
+                                    'kode_izin' => $kode_izin
+                                ];
+                                $dari = date("Y-m-d", strtotime("+1 day", strtotime($dari)));
+                            }
 
-                        $chunks = array_chunk($datapresensi, 5);
-                        foreach ($chunks as $chunk) {
-                            Presensi::insert($chunk);
+                            $chunks = array_chunk($datapresensi, 5);
+                            foreach ($chunks as $chunk) {
+                                Presensi::insert($chunk);
+                            }
+                            DB::commit();
+                            return Redirect::back()->with(['success' => 'Pengajuan Izin Disetujui']);
+                        } else {
+                            return Redirect::back()->with(['warning' => 'Data Sudah Disetujui']);
                         }
-                        DB::commit();
-                        return Redirect::back()->with(['success' => 'Pengajuan Izin Disetujui']);
                     } catch (\Exception $e) {
                         dd($e);
                         DB::rollBack();
@@ -228,6 +233,7 @@ class PengajuanizinController extends Controller
         $jam_pulang = $hariini . " " . $data->jam_pulang;
         //dd($jam_pulang);
         $level = Auth::user()->level;
+        $status_approve = $data->status_approve;
         if (isset($request->approve)) {
             try {
                 if ($level != "manager hrd") {
@@ -237,17 +243,21 @@ class PengajuanizinController extends Controller
                 } else {
                     DB::beginTransaction();
                     try {
-                        DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
-                            'hrd' => 1,
-                            'status_approved' => 1
-                        ]);
+                        if ($status_approve != 1) {
+                            DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
+                                'hrd' => 1,
+                                'status_approved' => 1
+                            ]);
 
-                        DB::table('presensi')->where('nik', $nik)->where('tgl_presensi', $hariini)->update([
-                            'jam_out' => $jam_pulang,
-                            'kode_izin' => $kode_izin
-                        ]);
-                        DB::commit();
-                        return Redirect::back()->with(['success' => 'Pengajuan Izin Disetujui']);
+                            DB::table('presensi')->where('nik', $nik)->where('tgl_presensi', $hariini)->update([
+                                'jam_out' => $jam_pulang,
+                                'kode_izin' => $kode_izin
+                            ]);
+                            DB::commit();
+                            return Redirect::back()->with(['success' => 'Pengajuan Izin Disetujui']);
+                        } else {
+                            return Redirect::back()->with(['warning' => 'Data Sudah Disetujui']);
+                        }
                     } catch (\Exception $e) {
                         dd($e);
                         DB::rollBack();
@@ -307,6 +317,7 @@ class PengajuanizinController extends Controller
         $jam_pulang = $hariini . " " . $data->jam_pulang;
         //dd($jam_pulang);
         $level = Auth::user()->level;
+        $status_approve = $data->status_approved;
         if (isset($request->approve)) {
             try {
                 if ($level != "manager hrd") {
@@ -316,16 +327,20 @@ class PengajuanizinController extends Controller
                 } else {
                     DB::beginTransaction();
                     try {
-                        DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
-                            'hrd' => 1,
-                            'status_approved' => 1
-                        ]);
+                        if ($status_approve != 1) {
+                            DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
+                                'hrd' => 1,
+                                'status_approved' => 1
+                            ]);
 
-                        DB::table('presensi')->where('nik', $nik)->where('tgl_presensi', $hariini)->update([
-                            'kode_izin' => $kode_izin
-                        ]);
-                        DB::commit();
-                        return Redirect::back()->with(['success' => 'Pengajuan Izin Disetujui']);
+                            DB::table('presensi')->where('nik', $nik)->where('tgl_presensi', $hariini)->update([
+                                'kode_izin' => $kode_izin
+                            ]);
+                            DB::commit();
+                            return Redirect::back()->with(['success' => 'Pengajuan Izin Disetujui']);
+                        } else {
+                            return Redirect::back()->with(['warning' => 'Data Sudah Disetujui']);
+                        }
                     } catch (\Exception $e) {
                         dd($e);
                         DB::rollBack();

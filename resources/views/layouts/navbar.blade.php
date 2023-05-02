@@ -1212,6 +1212,14 @@
                         </a>
                     </li>
                     @endif
+                    @if (in_array($level,$jadwal_kerja_menu))
+                    <li class="{{ request()->is(['jadwalkerja', 'jadwalkerja/*']) ? 'active' : '' }}">
+                        <a href="/jadwalkerja">
+                            <i class="feather icon-calendar"></i>
+                            <span class="menu-item" data-i18n="Second Level">Jadwal Kerja</span>
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </li>
             @endif

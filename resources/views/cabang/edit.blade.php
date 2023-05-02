@@ -49,6 +49,11 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
+                                            <x-inputtext label="Lokasi Cabang" field="lokasi_cabang" icon="feather icon-map-pin" value="{{ $data->lokasi_cabang }}" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
                                             <x-inputtext label="Telepon" field="telepon" icon="feather icon-phone" value="{{ $data->telepon }}" />
                                         </div>
                                     </div>

@@ -27,6 +27,7 @@ use App\Http\Controllers\HargaController;
 use App\Http\Controllers\HargaControoler;
 use App\Http\Controllers\HppController;
 use App\Http\Controllers\InsentifController;
+use App\Http\Controllers\JadwalkerjaController;
 use App\Http\Controllers\JenissimpananController;
 use App\Http\Controllers\JurnalkoreksiController;
 use App\Http\Controllers\JurnalumumController;
@@ -1593,4 +1594,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/pengajuanizin/approve', [PengajuanizinController::class, 'approve']);
     Route::post('/pengajuanizin/approveizinpulang', [PengajuanizinController::class, 'approveizinpulang']);
     Route::post('/pengajuanizin/approveizinkeluar', [PengajuanizinController::class, 'approveizinkeluar']);
+
+    //Jadwal Kerja
+    Route::get('/jadwalkerja', [JadwalkerjaController::class, 'index']);
+    Route::post('/jadwalkerja/pindahjadwal', [JadwalkerjaController::class, 'pindahjadwal']);
+    Route::post('/jadwalkerja/updatejadwalkerja', [JadwalkerjaController::class, 'updatejadwalkerja']);
 });

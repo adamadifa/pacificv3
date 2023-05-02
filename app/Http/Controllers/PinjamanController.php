@@ -37,7 +37,7 @@ class PinjamanController extends Controller
         $query->select('pinjaman.*', 'nama_karyawan', 'nama_jabatan', 'nama_dept', 'totalpembayaran');
         $query->join('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik');
         $query->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
-        $query->join('departemen', 'master_karyawan.kode_dept', '=', 'departemen.kode_dept');
+        $query->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
         $query->leftJoin(
             DB::raw("(
             SELECT no_pinjaman,SUM(jumlah) as totalpembayaran FROM pinjaman_historibayar GROUP BY no_pinjaman
@@ -115,7 +115,7 @@ class PinjamanController extends Controller
         $cbg = new Cabang();
         $cabang = $cbg->getCabang($this->cabang);
 
-        $departemen = DB::table('departemen')->where('status_pengajuan', 0)->get();
+        $departemen = DB::table('hrd_departemen')->get();
         return view('pinjaman.index', compact('pinjaman', 'cabang', 'departemen'));
     }
     public function create($nik)
@@ -123,7 +123,7 @@ class PinjamanController extends Controller
         $nik = Crypt::decrypt($nik);
         $query = Karyawan::query();
         $query->select('nik', 'nama_karyawan', 'tgl_masuk', 'nama_dept', 'jenis_kelamin', 'nama_jabatan', 'id_perusahaan', 'id_kantor', 'klasifikasi', 'status_karyawan', 'nama_cabang');
-        $query->join('departemen', 'master_karyawan.kode_dept', '=', 'departemen.kode_dept');
+        $query->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
         $query->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
         $query->leftjoin('cabang', 'master_karyawan.id_kantor', '=', 'cabang.kode_cabang');
         $query->where('nik', $nik);
@@ -147,7 +147,7 @@ class PinjamanController extends Controller
         $query->select('pinjaman.*', 'nama_karyawan', 'nama_jabatan', 'nama_dept', 'totalpembayaran');
         $query->join('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik');
         $query->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
-        $query->join('departemen', 'master_karyawan.kode_dept', '=', 'departemen.kode_dept');
+        $query->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
         $query->leftJoin(
             DB::raw("(
             SELECT no_pinjaman,SUM(jumlah) as totalpembayaran FROM pinjaman_historibayar GROUP BY no_pinjaman
@@ -280,7 +280,7 @@ class PinjamanController extends Controller
         $pinjaman = DB::table('pinjaman')
             ->join('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik')
             ->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
-            ->join('departemen', 'master_karyawan.kode_dept', '=', 'departemen.kode_dept')
+            ->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
             ->join('cabang', 'master_karyawan.id_kantor', '=', 'cabang.kode_cabang')
             ->where('no_pinjaman', $no_pinjaman)->first();
 
@@ -370,7 +370,7 @@ class PinjamanController extends Controller
         $pinjaman = DB::table('pinjaman')
             ->join('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik')
             ->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
-            ->join('departemen', 'master_karyawan.kode_dept', '=', 'departemen.kode_dept')
+            ->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
             ->join('cabang', 'master_karyawan.id_kantor', '=', 'cabang.kode_cabang')
             ->where('pinjaman.no_pinjaman', $no_pinjaman)->first();
 
@@ -404,7 +404,7 @@ class PinjamanController extends Controller
         $pinjaman = DB::table('pinjaman')
             ->join('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik')
             ->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
-            ->join('departemen', 'master_karyawan.kode_dept', '=', 'departemen.kode_dept')
+            ->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
             ->join('cabang', 'master_karyawan.id_kantor', '=', 'cabang.kode_cabang')
             ->where('no_pinjaman', $no_pinjaman)->first();
         try {

@@ -61,7 +61,7 @@
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
                 <td rowspan="3">No</td>
                 <td rowspan="3">Nama Sales</td>
-                <td colspan="28">Produk</td>
+                <td colspan="30">Produk</td>
                 <td rowspan="3" bgcolor="#f5ae15">Total Retur</td>
                 <td rowspan="3" bgcolor="#f5ae15">Penyeseuaian</td>
                 <td rowspan="3" bgcolor="#f5ae15">Total Retur Netto</td>
@@ -81,9 +81,12 @@
                 <td colspan="2">SAUS PREMIUM</td>
                 <td colspan="2">SAUS PREMIUM PRORMO</td>
                 <td colspan="2">SAMBAL CABE 200</td>
+                <td colspan="2">SAUS PREMIUM 500</td>
 
             </tr>
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
+                <td>Qty</td>
+                <td>Rp</td>
                 <td>Qty</td>
                 <td>Rp</td>
                 <td>Qty</td>
@@ -131,6 +134,7 @@
           $qtytotalSPP       = 0;
           $qtytotalSP8       = 0;
           $qtytotalSC       = 0;
+          $qtytotalSP500       = 0;
 
           $grandtytotalAB     = 0;
           $grandtytotalAR     = 0;
@@ -146,6 +150,7 @@
           $grandtytotalSPP     = 0;
           $grandtytotalSP8     = 0;
           $grandtytotalSC     = 0;
+          $grandtytotalSP500     = 0;
 
 
 
@@ -163,6 +168,7 @@
           $totalSPP        = 0;
           $totalSP8        = 0;
           $totalSC        = 0;
+          $totalSP500        = 0;
 
           $grandtotalAB       = 0;
           $grandtotalAR       = 0;
@@ -178,6 +184,7 @@
           $grandtotalSPP       = 0;
           $grandtotalSP8       = 0;
           $grandtotalSC       = 0;
+          $grandtotalSP500       = 0;
 
 
           $totalretur       = 0;
@@ -205,6 +212,7 @@
             $qtytotalSPP       = $qtytotalSPP + $p->JML_SPP;
             $qtytotalSP8       = $qtytotalSP8 + $p->JML_SP8;
             $qtytotalSC       = $qtytotalSC + $p->JML_SC;
+            $qtytotalSP500       = $qtytotalSP500 + $p->JML_SP500;
 
             $grandtytotalAB     = $grandtytotalAB + $p->JML_AB;
             $grandtytotalAR     = $grandtytotalAR + $p->JML_AR;
@@ -220,6 +228,7 @@
             $grandtytotalSPP     = $grandtytotalSPP + $p->JML_SPP;
             $grandtytotalSP8     = $grandtytotalSP8 + $p->JML_SP8;
             $grandtytotalSC     = $grandtytotalSC + $p->JML_SC;
+            $grandtytotalSP500     = $grandtytotalSP500 + $p->JML_SP500;
 
 
             $totalAB         = $totalAB + $p->AB;
@@ -236,6 +245,7 @@
             $totalSPP         = $totalSPP + $p->SPP;
             $totalSP8         = $totalSP8 + $p->SP8;
             $totalSC         = $totalSC + $p->SC;
+            $totalSP500         = $totalSP500 + $p->SP500;
 
             $grandtotalAB       = $grandtotalAB + $p->AB;
             $grandtotalAR       = $grandtotalAR + $p->AR;
@@ -251,6 +261,7 @@
             $grandtotalSPP       = $grandtotalSPP + $p->SPP;
             $grandtotalSP8       = $grandtotalSP8 + $p->SP8;
             $grandtotalSC       = $grandtotalSC + $p->SC;
+            $grandtotalSP500       = $grandtotalSP500 + $p->SP500;
 
             $totalretur        = $totalretur + $p->totalretur;
             $grandtotalretur     = $grandtotalretur + $p->totalretur;
@@ -306,6 +317,10 @@
     echo desimal($p->JML_SC);} ?></td>
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SC)) {
     echo rupiah($p->SC);} ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_SP500)) {
+        echo desimal($p->JML_SC);} ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP500)) {
+        echo rupiah($p->SC);} ?></td>
 
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($p->totalretur)) {
                                                                 echo rupiah($p->totalretur);} ?></td>
@@ -348,6 +363,8 @@
             <td align="right" >' . rupiah($totalSPP) . '</td>
             <td align="right" >' . desimal($qtytotalSC) . '</td>
             <td align="right" >' . rupiah($totalSC) . '</td>
+            <td align="right" >' . desimal($qtytotalSP500) . '</td>
+            <td align="right" >' . rupiah($totalSP500) . '</td>
             <td align="right" >' . rupiah($totalretur) . '</td>
             <td align="right" >' . rupiah($totalpenyesuaian) . '</td>
             <td align="right" >' . rupiah($grandtotalreturnetto) . '</td>
@@ -366,6 +383,8 @@
               $qtytotalSP       = 0;
               $qtytotalSPP       = 0;
               $qtytotalSP8       = 0;
+              $qtytotalSC       = 0;
+              $qtytotalSP500       = 0;
 
 
               $totalAB         = 0;
@@ -381,6 +400,8 @@
               $totalSP         = 0;
               $totalSPP         = 0;
               $totalSP8         = 0;
+              $totalSC         = 0;
+              $totalSP500         = 0;
 
               $totalretur       = 0;
               $totalpenyesuaian     = 0;
@@ -422,6 +443,8 @@
                 <td align="right"><?php echo rupiah($grandtotalSPP); ?></td>
                 <td align="right"><?php echo desimal($grandtytotalSC); ?></td>
                 <td align="right"><?php echo rupiah($grandtotalSC); ?></td>
+                <td align="right"><?php echo desimal($grandtytotalSP500); ?></td>
+                <td align="right"><?php echo rupiah($grandtotalSP500); ?></td>
                 <td align="right"><?php echo rupiah($grandtotalretur); ?></td>
                 <td align="right"><?php echo rupiah($grandtotalpenyesuaian); ?></td>
                 <td align="right"><?php echo rupiah($grandtotalallreturnetto); ?></td>
@@ -430,7 +453,7 @@
     </table>
     <br>
     <?php
-    $totalqtyretur  = $grandtytotalAB + $grandtytotalAR  + $grandtytotalASE  + $grandtytotalBB  + $grandtytotalCG + $grandtytotalCGG  + $grandtytotalDB + $grandtytotalDEP + $grandtytotalDK + $grandtytotalDS + $grandtytotalSP + $grandtytotalSPP + $grandtytotalSP8 + $grandtytotalSC;
+    $totalqtyretur  = $grandtytotalAB + $grandtytotalAR  + $grandtytotalASE  + $grandtytotalBB  + $grandtytotalCG + $grandtytotalCGG  + $grandtytotalDB + $grandtytotalDEP + $grandtytotalDK + $grandtytotalDS + $grandtytotalSP + $grandtytotalSPP + $grandtytotalSP8 + $grandtytotalSC + $grandtytotalSP500 ;
     $average     = ($totalqtyretur !=0) ? $grandtotalpenyesuaian / $totalqtyretur : 0;
     $avgAB       = $grandtytotalAB * $average;
     $avgAR       = $grandtytotalAR * $average;
@@ -446,6 +469,7 @@
     $avgSPP      = $grandtytotalSPP * $average;
     $avgSP8      = $grandtytotalSP8 * $average;
     $avgSC      = $grandtytotalSC * $average;
+    $avgSP500      = $grandtytotalSP500 * $average;
     ?>
     <table class="datatable3" style="width:120%">
         <thead>
@@ -465,6 +489,7 @@
                 <th>SAUS PREMIUM</th>
                 <th>SAUS PREMIUM PROMO</th>
                 <th>SAMBAL CABE 200</th>
+                <th>SAUS PREMIUM 500</th>
             </tr>
         </thead>
         <tbody>

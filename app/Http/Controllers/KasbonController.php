@@ -35,7 +35,7 @@ class KasbonController extends Controller
         $query->select('kasbon.*', 'nama_karyawan', 'nama_jabatan', 'nama_dept', 'totalpembayaran', 'tgl_bayar', 'jatuh_tempo');
         $query->join('master_karyawan', 'kasbon.nik', '=', 'master_karyawan.nik');
         $query->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
-        $query->join('departemen', 'master_karyawan.kode_dept', '=', 'departemen.kode_dept');
+        $query->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
         $query->leftJoin(
             DB::raw("(
             SELECT no_kasbon,tgl_bayar, jumlah as totalpembayaran FROM kasbon_historibayar
@@ -109,7 +109,7 @@ class KasbonController extends Controller
         $cbg = new Cabang();
         $cabang = $cbg->getCabang($this->cabang);
 
-        $departemen = DB::table('departemen')->where('status_pengajuan', 0)->get();
+        $departemen = DB::table('hrd_departemen')->get();
         return view('kasbon.index', compact('kasbon', 'cabang', 'departemen'));
     }
     public function create($nik)
@@ -117,7 +117,7 @@ class KasbonController extends Controller
         $nik = Crypt::decrypt($nik);
         $query = Karyawan::query();
         $query->select('nik', 'nama_karyawan', 'tgl_masuk', 'nama_dept', 'jenis_kelamin', 'nama_jabatan', 'id_perusahaan', 'id_kantor', 'klasifikasi', 'status_karyawan', 'nama_cabang', 'master_karyawan.id_jabatan');
-        $query->join('departemen', 'master_karyawan.kode_dept', '=', 'departemen.kode_dept');
+        $query->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
         $query->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
         $query->leftjoin('cabang', 'master_karyawan.id_kantor', '=', 'cabang.kode_cabang');
         $query->where('nik', $nik);
@@ -190,7 +190,7 @@ class KasbonController extends Controller
         $kasbon = DB::table('kasbon')
             ->join('master_karyawan', 'kasbon.nik', '=', 'master_karyawan.nik')
             ->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
-            ->join('departemen', 'master_karyawan.kode_dept', '=', 'departemen.kode_dept')
+            ->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
             ->join('cabang', 'master_karyawan.id_kantor', '=', 'cabang.kode_cabang')
             ->where('no_kasbon', $no_kasbon)->first();
 

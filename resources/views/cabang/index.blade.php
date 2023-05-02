@@ -36,6 +36,7 @@
                                     <th>Kode Cabang</th>
                                     <th>Nama Cabang</th>
                                     <th>Alamat</th>
+                                    <th>Lokasi</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -46,6 +47,7 @@
                                     <td>{{ $d->kode_cabang }}</td>
                                     <td>{{ $d->nama_cabang }}</td>
                                     <td>{{ $d->alamat_cabang }}</td>
+                                    <td>{{ $d->lokasi_cabang }}</td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             <a class="ml-1" href="/cabang/{{\Crypt::encrypt($d->kode_cabang)}}/edit"><i class="feather icon-edit success"></i></a>
