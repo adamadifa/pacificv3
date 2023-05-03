@@ -8193,7 +8193,7 @@ class PenjualanController extends Controller
         $query = Penjualan::query();
         $query->selectRaw("penjualan.no_fak_penj,nama_pelanggan,
         AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500,
-        SUM(IF(penjualan.jenistransaksi='tunai',total,0)) as totaltunai,
+        SUM(IF(penjualan.jenistransaksi='tunai',total,0)) - SUM(IFNULL(totalretur,0)) as totaltunai,
         SUM(IF(penjualan.jenistransaksi='kredit',total,0)) as totalkredit,
         totalbayar,totalgiro,totaltransfer,totalvoucher");
         $query->leftJoin(
@@ -8279,6 +8279,21 @@ class PenjualanController extends Controller
             ) transfer"),
             function ($join) {
                 $join->on('penjualan.no_fak_penj', '=', 'transfer.no_fak_penj');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+                SELECT retur.no_fak_penj AS no_fak_penj,
+                sum(retur.total) AS totalretur
+                FROM
+                retur
+                WHERE tglretur = '$tanggal'
+                GROUP BY
+                retur.no_fak_penj
+            ) returbulanini"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'returbulanini.no_fak_penj');
             }
         );
         $query->where('tgltransaksi', $tanggal);
