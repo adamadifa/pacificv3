@@ -170,6 +170,8 @@ foreach( $detail as $d ) {
     $data .=$d->nama_barang."<br>";
     $l = strlen(rupiah($jumlah_dus * $d->harga_dus));
     $lpack = strlen(rupiah($jumlah_pack * $d->harga_pack));
+    $lpcs = strlen(rupiah($jumlah_pcs * $d->harga_pcs));
+    $lpotongan = strlen($faktur->potongan);
     if($l==9){
         $len = $len +1;
     }else if($l==8){
@@ -210,6 +212,46 @@ foreach( $detail as $d ) {
     }else if($lpack==1){
         $lenpack = $len +2;
     }
+
+    if($lpcs==9){
+        $lenpcs = $len +1;
+    }else if($lpcs==8){
+        $lenpcs = $len +2;
+    }else if($lpcs==7){
+        $lenpcs = $len +2;
+    }else if($lpcs==6){
+        $lenpcs = $len +2;
+    }else if($lpcs==5){
+        $lenpcs = $len +2;
+    }else if($lpcs==4){
+        $lenpcs = $len +2;
+    }else if($lpcs==3){
+        $lenpcs = $len +2;
+    }else if($lpcs==2){
+        $lenpcs = $len +2;
+    }else if($lpcs==1){
+        $lenpcs = $len +2;
+    }
+
+    if($lpot==9){
+        $lenpot = $len +1;
+    }else if($lpot==8){
+        $lenpot = $len +2;
+    }else if($lpot==7){
+        $lenpot = $len +2;
+    }else if($lpot==6){
+        $lenpot = $len +2;
+    }else if($lpot==5){
+        $lenpot = $len +2;
+    }else if($lpot==4){
+        $lenpot = $len +2;
+    }else if($lpot==3){
+        $lenpot = $len +2;
+    }else if($lpot==2){
+        $lenpot = $len +2;
+    }else if($lpot==1){
+        $lenpot = $len +2;
+    }
     if(!empty($jumlah_dus)){
         $data .=sprintf("%-$len"."s\t%s\n", $jumlah_dus." Dus x ".rupiah($d->harga_dus),rupiah($jumlah_dus * $d->harga_dus));
     }
@@ -219,11 +261,11 @@ foreach( $detail as $d ) {
     }
     if(!empty($jumlah_pcs)){
         //$data .= "<br>";
-        $data .=sprintf("%-$len"."s\t%s\n", $jumlah_pcs." Pcs x ".rupiah($d->harga_pcs),rupiah($jumlah_pcs * $d->harga_pcs));
+        $data .=sprintf("%-$lenpcs"."s\t%s\n", $jumlah_pcs." Pcs x ".rupiah($d->harga_pcs),rupiah($jumlah_pcs * $d->harga_pcs));
     }
 }
 $data .="------------------------------------------<br>";
-$data .=sprintf("%-$len"."s\t%s\n","Potongan",rupiah($faktur->potongan));
+$data .=sprintf("%-$lenpot"."s\t%s\n","Potongan",rupiah($faktur->potongan));
 $data .=sprintf("%-$len"."s\t%s\n","TOTAL",rupiah($totalnonppn));
 $data .=sprintf("%-$len"."s\t%s\n","RETUR",rupiah($retur->totalretur));
 $data .=sprintf("%-$len"."s\t%s\n","PPN",rupiah($faktur->ppn));
