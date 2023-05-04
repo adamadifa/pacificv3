@@ -246,6 +246,21 @@ class PembayaranpinjamanController extends Controller
         }
 
 
+        if ($bulan == 1) {
+            $bulanlast = 12;
+            $tahunlast = $tahun - 1;
+        } else {
+            $bulanlast = $bulan - 1;
+            $tahunlast = $tahun;
+        }
+
+
+        $cek = DB::table('pinjaman_potongangaji')->count();
+        $ceklast = DB::table('pinjaman_potongangaji')->where('bulan', $bulanlast)->where('tahun', $tahunlast)->count();
+        if ($cek > 0 && $ceklast == 0) {
+            return Redirect::back()->with(['warning' => 'Bulan Sebelumnya Belum Digenerate']);
+        }
+
 
         DB::beginTransaction();
         try {
@@ -278,7 +293,8 @@ class PembayaranpinjamanController extends Controller
                 ];
                 DB::table('pinjaman_historibayar')->insert($data);
                 DB::table('pinjaman_rencanabayar')->where('bulan', $bulanpotongan)->where('tahun', $tahunpotongan)->where('no_pinjaman', $d->no_pinjaman)->update([
-                    'bayar' => $d->jumlah
+                    'bayar' => $d->jumlah,
+                    'kode_potongan' => $kode_potongan
                 ]);
             }
 
@@ -298,6 +314,7 @@ class PembayaranpinjamanController extends Controller
         try {
             DB::table('pinjaman_potongangaji')->where('kode_potongan', $kode_potongan)->delete();
             DB::table('pinjaman_historibayar')->where('kode_potongan', $kode_potongan)->delete();
+            DB::table('pinjaman_rencanabayar')->where('kode_potongan', $kode_potongan)->update(['kode_potongan' => null, 'bayar' => 0]);
             DB::commit();
             return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
         } catch (\Exception $e) {

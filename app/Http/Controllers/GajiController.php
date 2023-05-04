@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Gaji;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -12,6 +13,9 @@ class GajiController extends Controller
 {
     public function index(Request $request)
     {
+        $level = Auth::user()->level;
+        $show_for_hrd = ['14', '4', '5', '2'];
+        $level_show_all = ['manager accounting', 'direktur', 'admin'];
         $query = Gaji::query();
         $query->select('hrd_mastergaji.*', 'nama_karyawan', 'nama_jabatan');
         $query->join('master_karyawan', 'hrd_mastergaji.nik', '=', 'master_karyawan.nik');
@@ -20,6 +24,12 @@ class GajiController extends Controller
         if (!empty($request->nama_karyawan_search)) {
             $query->where('nama_karyawan', 'like', '%' . $request->nama_karyawan_search . '%');
         }
+
+        if (!in_array($level, $level_show_all)) {
+            $query->whereNotIn('id_jabatan', $show_for_hrd);
+        }
+
+
         $gaji = $query->paginate(15);
         return view('gaji.index', compact('gaji'));
     }
@@ -27,7 +37,17 @@ class GajiController extends Controller
     public function create()
 
     {
-        $karyawan = DB::table('master_karyawan')->orderBy('nama_karyawan')->get();
+        $level = Auth::user()->level;
+        $show_for_hrd = ['14', '4', '5', '2'];
+        $level_show_all = ['manager accounting', 'direktur', 'admin'];
+        if (!in_array($level, $level_show_all)) {
+            $karyawan = DB::table('master_karyawan')->orderBy('nama_karyawan')->get();
+        } else {
+            $karyawan = DB::table('master_karyawan')
+                ->whereNotIn('id_jabatan', $show_for_hrd)
+                ->orderBy('nama_karyawan')->get();
+        }
+
         return view('gaji.create', compact('karyawan'));
     }
 

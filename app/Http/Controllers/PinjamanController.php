@@ -182,7 +182,8 @@ class PinjamanController extends Controller
                     return view('pinjaman.notiftopup', compact('cekpinjaman'));
                 }
             } else {
-                return view('pinjaman.create', compact('karyawan', 'gaji', 'jmk', 'kontrak'));
+                //return view('pinjaman.create', compact('karyawan', 'gaji', 'jmk', 'kontrak'));
+                return view('pinjaman.create2', compact('karyawan', 'gaji', 'jmk', 'kontrak'));
             }
         }
     }

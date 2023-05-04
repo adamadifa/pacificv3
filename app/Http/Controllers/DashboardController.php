@@ -417,7 +417,7 @@ class DashboardController extends Controller
 
         $rekapdepartemen = DB::table('master_karyawan')
             ->selectRaw('master_karyawan.kode_dept,nama_dept,COUNT(nik) as jmlkaryawan')
-            ->join('departemen', 'master_karyawan.kode_dept', '=', 'departemen.kode_dept')
+            ->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
             ->groupByRaw('master_karyawan.kode_dept,nama_dept')
             ->get();
 

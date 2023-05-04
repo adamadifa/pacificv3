@@ -243,13 +243,13 @@ class GlobalProvider extends ServiceProvider
             $karyawan_hapus = ['admin', 'manager hrd'];
 
 
-            $gaji_tambah = ['admin'];
-            $gaji_edit = ['admin'];
-            $gaji_hapus = ['admin'];
+            $gaji_tambah = ['admin', 'manager accounting', 'manager hrd'];
+            $gaji_edit = ['admin', 'manager accounting', 'manager hrd'];
+            $gaji_hapus = ['admin', 'manager accounting', 'manager hrd'];
 
-            $insentif_tambah = ['admin'];
-            $insentif_edit = ['admin'];
-            $insentif_hapus = ['admin'];
+            $insentif_tambah = ['admin', 'manager accounting', 'manager hrd'];
+            $insentif_edit = ['admin', 'manager accounting', 'manager hrd'];
+            $insentif_hapus = ['admin', 'manager accounting', 'manager hrd'];
 
             //Supplier
             $supplier_menu = ['admin', 'manager pembelian', 'admin pembelian', 'manager accounting', 'spv accounting', 'audit', 'admin pajak 2'];
@@ -856,8 +856,8 @@ class GlobalProvider extends ServiceProvider
             $kontrak_menu = ['admin', 'direktur', 'manager hrd'];
             $pengajuan_izin_menu = ['admin', 'manager hrd', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'manager accounting', 'manager ga', 'emf', 'manager marketing', 'rsm'];
             $jadwal_kerja_menu = ['admin', 'manager hrd'];
-            $gaji_menu = ['admin', 'direktur'];
-            $insentif_menu = ['admin', 'direktur'];
+            $gaji_menu = ['admin', 'direktur', 'manager accounting', 'manager hrd'];
+            $insentif_menu = ['admin', 'direktur', 'manager accounting', 'manager hrd'];
 
             //General Affair
             $ga_menu = ['admin', 'general affair', 'manager ga', 'direktur', 'manager accounting', 'emf'];

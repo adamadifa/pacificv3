@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Insentif;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -12,6 +13,10 @@ class InsentifController extends Controller
 {
     public function index(Request $request)
     {
+
+        $level = Auth::user()->level;
+        $show_for_hrd = ['14', '4', '5', '2'];
+        $level_show_all = ['manager accounting', 'direktur', 'admin'];
         $query = Insentif::query();
         $query->select('hrd_masterinsentif.*', 'nama_karyawan', 'nama_jabatan');
         $query->join('master_karyawan', 'hrd_masterinsentif.nik', '=', 'master_karyawan.nik');
@@ -19,6 +24,10 @@ class InsentifController extends Controller
         $query->orderBy('kode_insentif', 'desc');
         if (!empty($request->nama_karyawan_search)) {
             $query->where('nama_karyawan', 'like', '%' . $request->nama_karyawan_search . '%');
+        }
+
+        if (!in_array($level, $level_show_all)) {
+            $query->whereNotIn('id_jabatan', $show_for_hrd);
         }
         $insentif = $query->paginate(15);
         return view('insentif.index', compact('insentif'));

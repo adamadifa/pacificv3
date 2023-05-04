@@ -32,7 +32,7 @@
                         @endif
 
                         <div class="card-body">
-                            <form action="/gaji">
+                            <form action="/insentif">
                                 <div class="row">
                                     <div class="col-lg-10 col-sm-10">
                                         <x-inputtext label="Nama Karyawan" field="nama_karyawan_search" icon="feather icon-users" value="{{ Request('nama_karyawan_search') }}" />

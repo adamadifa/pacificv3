@@ -51,6 +51,9 @@
         <!-- DataTable starts -->
         @include('layouts.notification')
         <div class="card">
+            <div class="card-header">
+                <a href="/karyawan" class="btn btn-primary"><i class="feather icon-plus mr-1"></i> Tambah Data</a>
+            </div>
             <div class="card-body">
                 <form action="/pinjaman">
                     <div class="row">
