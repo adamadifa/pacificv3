@@ -320,6 +320,8 @@ $data .="------------------------------------------<br>";
         $lenretur = $len +8;
     }else if($lretur==1){
         $lenretur = $len +9;
+    }else{
+        $lenretur = $len + 10;
     }
 $data .=sprintf("%-$lenpot"."s\t%s\n","Potongan",rupiah($faktur->potongan));
 $data .=sprintf("%-$lentotal"."s\t%s\n","TOTAL",rupiah($totalnonppn));
