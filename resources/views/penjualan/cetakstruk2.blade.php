@@ -186,22 +186,22 @@ foreach( $detail as $d ) {
     }
 }
 $data .="------------------------------------------<br>";
-$data .=sprintf("%-$len"."s\t%s\n","Potongan","           ".rupiah($faktur->potongan));
-$data .=sprintf("%-$len"."s\t%s\n","TOTAL","           ".rupiah($totalnonppn));
-$data .=sprintf("%-$len"."s\t%s\n","RETUR","           ".rupiah($retur->totalretur));
-$data .=sprintf("%-$len"."s\t%s\n","PPN","           ".rupiah($faktur->ppn));
-$data .=sprintf("%-$len"."s\t%s\n","GRAND TOTAL","           ".rupiah($faktur->total-$retur->totalretur));
+$data .=sprintf("%-$len"."s\t%s\n","Potongan",rupiah($faktur->potongan));
+$data .=sprintf("%-$len"."s\t%s\n","TOTAL",rupiah($totalnonppn));
+$data .=sprintf("%-$len"."s\t%s\n","RETUR",rupiah($retur->totalretur));
+$data .=sprintf("%-$len"."s\t%s\n","PPN",rupiah($faktur->ppn));
+$data .=sprintf("%-$len"."s\t%s\n","GRAND TOTAL",rupiah($faktur->total-$retur->totalretur));
 $data .="------------------------------------------<br>";
 $data .="Pembayaran<br>";
 $totalbayar=0;
 foreach( $pembayaran as $d ) {
     $totalbayar += $d->bayar;
-$data .=sprintf("%-$len"."s\t%s\n",date('d-m-y',strtotime($d->tglbayar)),"           ".rupiah($d->bayar));
+$data .=sprintf("%-$len"."s\t%s\n",date('d-m-y',strtotime($d->tglbayar)),rupiah($d->bayar));
 }
 $data .= "
 ";
-$data .=sprintf("%-$len"."s\t%s\n","Total Bayar","           ".rupiah($totalbayar));
-$data .=sprintf("%-$len"."s\t%s\n","Sisa Tagihan","           ".rupiah($faktur->total - $retur->totalretur - $totalbayar));
+$data .=sprintf("%-$len"."s\t%s\n","Total Bayar",rupiah($totalbayar));
+$data .=sprintf("%-$len"."s\t%s\n","Sisa Tagihan",rupiah($faktur->total - $retur->totalretur - $totalbayar));
 $data .= "
 
 ";
