@@ -171,7 +171,7 @@ foreach( $detail as $d ) {
     $l = strlen(rupiah($jumlah_dus * $d->harga_dus));
     $lpack = strlen(rupiah($jumlah_pack * $d->harga_pack));
     $lpcs = strlen(rupiah($jumlah_pcs * $d->harga_pcs));
-    $lpotongan = strlen($faktur->potongan);
+    $lpot = strlen($faktur->potongan);
     if($l==9){
         $len = $len +1;
     }else if($l==8){
