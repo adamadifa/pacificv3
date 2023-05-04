@@ -127,7 +127,7 @@ function maxLen($input) {
     return $length;
 }
 
-$len = 30;
+$len = 20;
 $data = "";
 $total = 0;
 $data .="------------------------------------------<br>";
