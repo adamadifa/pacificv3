@@ -168,71 +168,98 @@ foreach( $detail as $d ) {
     $jumlah_pcs = $sisapack;
     $total += $d->subtotal;
     $data .=$d->nama_barang."<br>";
-    $l = strlen(rupiah($jumlah_dus * $d->harga_dus));
-    $lpack = strlen(rupiah($jumlah_pack * $d->harga_pack));
-    $lpcs = strlen(rupiah($jumlah_pcs * $d->harga_pcs));
+
+
+
+
+
+
+
+
+
+
+
+
+    // echo "LENPACK =".$lenpack."<br>";
+    // echo "LENDUS =".$lendus."(".$l.")<br>";
+    // echo "LENPCS =".$lenpcs."<br>";
+    // echo "LENPOT =".$lenpot."<br>";
+    if(!empty($jumlah_dus)){
+        $harga_dus = rupiah($jumlah_dus * $d->harga_dus);
+        $l = strlen($harga_dus);
+        if($l==9){
+            $lendus = $len +1;
+        }else if($l==8){
+            $lendus = $len +2;
+        }else if($l==7){
+            $lendus = $len +3;
+        }else if($l==6){
+            $lendus = $len +4;
+        }else if($l==5){
+            $lendus = $len +5;
+        }else if($l==4){
+            $lendus = $len +6;
+        }else if($l==3){
+            $lendus = $len +7;
+        }else if($l==2){
+            $lendus = $len +8;
+        }else if($l==1){
+            $lendus = $len +9;
+        }
+        $data .=sprintf("%-$lendus"."s\t%s\n", $jumlah_dus." Dus x ".rupiah($d->harga_dus),rupiah($jumlah_dus * $d->harga_dus));
+    }
+    if(!empty($jumlah_pack)){
+        $lpack = strlen(rupiah($jumlah_pack * $d->harga_pack));
+        //$data .= "<br>";
+        if($lpack==9){
+            $lenpack = $len +1;
+        }else if($lpack==8){
+            $lenpack = $len +2;
+        }else if($lpack==7){
+            $lenpack = $len +3;
+        }else if($lpack==6){
+            $lenpack = $len +4;
+        }else if($lpack==5){
+            $lenpack = $len +5;
+        }else if($lpack==4){
+            $lenpack = $len +6;
+        }else if($lpack==3){
+            $lenpack = $len +7;
+        }else if($lpack==2){
+            $lenpack = $len +8;
+        }else if($lpack==1){
+            $lenpack = $len +9;
+        }
+        $data .=sprintf("%-$lenpack"."s\t%s\n", $jumlah_pack." Pck x ".rupiah($d->harga_pack),rupiah($jumlah_pack * $d->harga_pack));
+    }
+    if(!empty($jumlah_pcs)){
+        $lpcs = strlen(rupiah($jumlah_pcs * $d->harga_pcs));
+        if($lpcs==9){
+            $lenpcs = $len +1;
+        }else if($lpcs==8){
+            $lenpcs = $len +2;
+        }else if($lpcs==7){
+            $lenpcs = $len +3;
+        }else if($lpcs==6){
+            $lenpcs = $len +4;
+        }else if($lpcs==5){
+            $lenpcs = $len +5;
+        }else if($lpcs==4){
+            $lenpcs = $len +6;
+        }else if($lpcs==3){
+            $lenpcs = $len +7;
+        }else if($lpcs==2){
+            $lenpcs = $len +8;
+        }else if($lpcs==1){
+            $lenpcs = $len +9;
+        }
+
+        //$data .= "<br>";
+        $data .=sprintf("%-$lenpcs"."s\t%s\n", $jumlah_pcs." Pcs x ".rupiah($d->harga_pcs),rupiah($jumlah_pcs * $d->harga_pcs));
+    }
+}
+$data .="------------------------------------------<br>";
     $lpot = strlen($faktur->potongan);
-    if($l==9){
-        $lendus = $len +1;
-    }else if($l==8){
-        $lendus = $len +2;
-    }else if($l==7){
-        $lendus = $len +3;
-    }else if($l==6){
-        $lendus = $len +4;
-    }else if($l==5){
-        $lendus = $len +5;
-    }else if($l==4){
-        $lendus = $len +6;
-    }else if($l==3){
-        $lendus = $len +7;
-    }else if($l==2){
-        $lendus = $len +8;
-    }else if($l==1){
-        $lendus = $len +9;
-    }
-
-
-    if($lpack==9){
-        $lenpack = $len +1;
-    }else if($lpack==8){
-        $lenpack = $len +2;
-    }else if($lpack==7){
-        $lenpack = $len +3;
-    }else if($lpack==6){
-        $lenpack = $len +4;
-    }else if($lpack==5){
-        $lenpack = $len +5;
-    }else if($lpack==4){
-        $lenpack = $len +6;
-    }else if($lpack==3){
-        $lenpack = $len +7;
-    }else if($lpack==2){
-        $lenpack = $len +8;
-    }else if($lpack==1){
-        $lenpack = $len +9;
-    }
-
-    if($lpcs==9){
-        $lenpcs = $len +1;
-    }else if($lpcs==8){
-        $lenpcs = $len +2;
-    }else if($lpcs==7){
-        $lenpcs = $len +3;
-    }else if($lpcs==6){
-        $lenpcs = $len +4;
-    }else if($lpcs==5){
-        $lenpcs = $len +5;
-    }else if($lpcs==4){
-        $lenpcs = $len +6;
-    }else if($lpcs==3){
-        $lenpcs = $len +7;
-    }else if($lpcs==2){
-        $lenpcs = $len +8;
-    }else if($lpcs==1){
-        $lenpcs = $len +9;
-    }
-
     if($lpot==9){
         $lenpot = $len +1;
     }else if($lpot==8){
@@ -252,19 +279,6 @@ foreach( $detail as $d ) {
     }else if($lpot==1){
         $lenpot = $len +9;
     }
-    if(!empty($jumlah_dus)){
-        $data .=sprintf("%-$lendus"."s\t%s\n", $jumlah_dus." Dus x ".rupiah($d->harga_dus),rupiah($jumlah_dus * $d->harga_dus));
-    }
-    if(!empty($jumlah_pack)){
-        //$data .= "<br>";
-        $data .=sprintf("%-$lenpack"."s\t%s\n", $jumlah_pack." Pck x ".rupiah($d->harga_pack),rupiah($jumlah_pack * $d->harga_pack));
-    }
-    if(!empty($jumlah_pcs)){
-        //$data .= "<br>";
-        $data .=sprintf("%-$lenpcs"."s\t%s\n", $jumlah_pcs." Pcs x ".rupiah($d->harga_pcs),rupiah($jumlah_pcs * $d->harga_pcs));
-    }
-}
-$data .="------------------------------------------<br>";
 $data .=sprintf("%-$lenpot"."s\t%s\n","Potongan",rupiah($faktur->potongan));
 $data .=sprintf("%-$len"."s\t%s\n","TOTAL",rupiah($totalnonppn));
 $data .=sprintf("%-$len"."s\t%s\n","RETUR",rupiah($retur->totalretur));
