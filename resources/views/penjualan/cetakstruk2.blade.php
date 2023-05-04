@@ -185,147 +185,147 @@ foreach( $detail as $d ) {
     // echo "LENPCS =".$lenpcs."<br>";
     // echo "LENPOT =".$lenpot."<br>";
     if(!empty($jumlah_dus)){
-        $harga_dus = rupiah($jumlah_dus * $d->harga_dus);
-        $l = strlen($harga_dus);
-        if($l==9){
-            $lendus = $len +1;
-        }else if($l==8){
-            $lendus = $len +2;
-        }else if($l==7){
-            $lendus = $len +3;
-        }else if($l==6){
-            $lendus = $len +4;
-        }else if($l==5){
-            $lendus = $len +5;
-        }else if($l==4){
-            $lendus = $len +6;
-        }else if($l==3){
-            $lendus = $len +7;
-        }else if($l==2){
-            $lendus = $len +8;
-        }else if($l==1){
-            $lendus = $len +9;
-        }
-        $data .=sprintf("%-$lendus"."s\t%s\n", $jumlah_dus." Dus x ".rupiah($d->harga_dus),rupiah($jumlah_dus * $d->harga_dus));
+        // $harga_dus = rupiah($jumlah_dus * $d->harga_dus);
+        // $l = strlen($harga_dus);
+        // if($l==9){
+        //     $lendus = $len +1;
+        // }else if($l==8){
+        //     $lendus = $len +2;
+        // }else if($l==7){
+        //     $lendus = $len +3;
+        // }else if($l==6){
+        //     $lendus = $len +4;
+        // }else if($l==5){
+        //     $lendus = $len +5;
+        // }else if($l==4){
+        //     $lendus = $len +6;
+        // }else if($l==3){
+        //     $lendus = $len +7;
+        // }else if($l==2){
+        //     $lendus = $len +8;
+        // }else if($l==1){
+        //     $lendus = $len +9;
+        // }
+        $data .=sprintf("%-$len"."s\t%s\n", $jumlah_dus." Dus x ".rupiah($d->harga_dus),rupiah($jumlah_dus * $d->harga_dus));
     }
     if(!empty($jumlah_pack)){
-        $lpack = strlen(rupiah($jumlah_pack * $d->harga_pack));
-        //$data .= "<br>";
-        if($lpack==9){
-            $lenpack = $len +1;
-        }else if($lpack==8){
-            $lenpack = $len +2;
-        }else if($lpack==7){
-            $lenpack = $len +3;
-        }else if($lpack==6){
-            $lenpack = $len +4;
-        }else if($lpack==5){
-            $lenpack = $len +5;
-        }else if($lpack==4){
-            $lenpack = $len +6;
-        }else if($lpack==3){
-            $lenpack = $len +7;
-        }else if($lpack==2){
-            $lenpack = $len +8;
-        }else if($lpack==1){
-            $lenpack = $len +9;
-        }
-        $data .=sprintf("%-$lenpack"."s\t%s\n", $jumlah_pack." Pck x ".rupiah($d->harga_pack),rupiah($jumlah_pack * $d->harga_pack));
+        // $lpack = strlen(rupiah($jumlah_pack * $d->harga_pack));
+        // //$data .= "<br>";
+        // if($lpack==9){
+        //     $lenpack = $len +1;
+        // }else if($lpack==8){
+        //     $lenpack = $len +2;
+        // }else if($lpack==7){
+        //     $lenpack = $len +3;
+        // }else if($lpack==6){
+        //     $lenpack = $len +4;
+        // }else if($lpack==5){
+        //     $lenpack = $len +5;
+        // }else if($lpack==4){
+        //     $lenpack = $len +6;
+        // }else if($lpack==3){
+        //     $lenpack = $len +7;
+        // }else if($lpack==2){
+        //     $lenpack = $len +8;
+        // }else if($lpack==1){
+        //     $lenpack = $len +9;
+        // }
+        $data .=sprintf("%-$len"."s\t%s\n", $jumlah_pack." Pck x ".rupiah($d->harga_pack),rupiah($jumlah_pack * $d->harga_pack));
     }
     if(!empty($jumlah_pcs)){
-        $lpcs = strlen(rupiah($jumlah_pcs * $d->harga_pcs));
-        if($lpcs==9){
-            $lenpcs = $len +1;
-        }else if($lpcs==8){
-            $lenpcs = $len +2;
-        }else if($lpcs==7){
-            $lenpcs = $len +3;
-        }else if($lpcs==6){
-            $lenpcs = $len +4;
-        }else if($lpcs==5){
-            $lenpcs = $len +5;
-        }else if($lpcs==4){
-            $lenpcs = $len +6;
-        }else if($lpcs==3){
-            $lenpcs = $len +7;
-        }else if($lpcs==2){
-            $lenpcs = $len +8;
-        }else if($lpcs==1){
-            $lenpcs = $len +9;
-        }
+        // $lpcs = strlen(rupiah($jumlah_pcs * $d->harga_pcs));
+        // if($lpcs==9){
+        //     $lenpcs = $len +1;
+        // }else if($lpcs==8){
+        //     $lenpcs = $len +2;
+        // }else if($lpcs==7){
+        //     $lenpcs = $len +3;
+        // }else if($lpcs==6){
+        //     $lenpcs = $len +4;
+        // }else if($lpcs==5){
+        //     $lenpcs = $len +5;
+        // }else if($lpcs==4){
+        //     $lenpcs = $len +6;
+        // }else if($lpcs==3){
+        //     $lenpcs = $len +7;
+        // }else if($lpcs==2){
+        //     $lenpcs = $len +8;
+        // }else if($lpcs==1){
+        //     $lenpcs = $len +9;
+        // }
 
         //$data .= "<br>";
-        $data .=sprintf("%-$lenpcs"."s\t%s\n", $jumlah_pcs." Pcs x ".rupiah($d->harga_pcs),rupiah($jumlah_pcs * $d->harga_pcs));
+        $data .=sprintf("%-$len"."s\t%s\n", $jumlah_pcs." Pcs x ".rupiah($d->harga_pcs),rupiah($jumlah_pcs * $d->harga_pcs));
     }
 }
 $data .="------------------------------------------<br>";
-    $lpot = strlen($faktur->potongan);
-    $ltotal = strlen($totalnonppn);
-    $lretur = strlen($retur->totalretur);
-    if($lpot==9){
-        $lenpot = $len +1;
-    }else if($lpot==8){
-        $lenpot = $len +2;
-    }else if($lpot==7){
-        $lenpot = $len +3;
-    }else if($lpot==6){
-        $lenpot = $len +4;
-    }else if($lpot==5){
-        $lenpot = $len +5;
-    }else if($lpot==4){
-        $lenpot = $len +6;
-    }else if($lpot==3){
-        $lenpot = $len +7;
-    }else if($lpot==2){
-        $lenpot = $len +8;
-    }else if($lpot==1){
-        $lenpot = $len +9;
-    }
+    // $lpot = strlen($faktur->potongan);
+    // $ltotal = strlen($totalnonppn);
+    // $lretur = strlen($retur->totalretur);
+    // if($lpot==9){
+    //     $lenpot = $len +1;
+    // }else if($lpot==8){
+    //     $lenpot = $len +2;
+    // }else if($lpot==7){
+    //     $lenpot = $len +3;
+    // }else if($lpot==6){
+    //     $lenpot = $len +4;
+    // }else if($lpot==5){
+    //     $lenpot = $len +5;
+    // }else if($lpot==4){
+    //     $lenpot = $len +6;
+    // }else if($lpot==3){
+    //     $lenpot = $len +7;
+    // }else if($lpot==2){
+    //     $lenpot = $len +8;
+    // }else if($lpot==1){
+    //     $lenpot = $len +9;
+    // }
 
-    if($ltotal==9){
-        $lentotal = $len +1;
-    }else if($ltotal==8){
-        $lentotal = $len +2;
-    }else if($ltotal==7){
-        $lentotal = $len +3;
-    }else if($ltotal==6){
-        $lentotal = $len +4;
-    }else if($ltotal==5){
-        $lentotal = $len +5;
-    }else if($ltotal==4){
-        $lentotal = $len +6;
-    }else if($ltotal==3){
-        $lentotal = $len +7;
-    }else if($ltotal==2){
-        $lentotal = $len +8;
-    }else if($ltotal==1){
-        $lentotal = $len +9;
-    }
+    // if($ltotal==9){
+    //     $lentotal = $len +1;
+    // }else if($ltotal==8){
+    //     $lentotal = $len +2;
+    // }else if($ltotal==7){
+    //     $lentotal = $len +3;
+    // }else if($ltotal==6){
+    //     $lentotal = $len +4;
+    // }else if($ltotal==5){
+    //     $lentotal = $len +5;
+    // }else if($ltotal==4){
+    //     $lentotal = $len +6;
+    // }else if($ltotal==3){
+    //     $lentotal = $len +7;
+    // }else if($ltotal==2){
+    //     $lentotal = $len +8;
+    // }else if($ltotal==1){
+    //     $lentotal = $len +9;
+    // }
 
-    if($lretur==9){
-        $lenretur = $len +1;
-    }else if($lretur==8){
-        $lenretur = $len +2;
-    }else if($lretur==7){
-        $lenretur = $len +3;
-    }else if($lretur==6){
-        $lenretur = $len +4;
-    }else if($lretur==5){
-        $lenretur = $len +5;
-    }else if($lretur==4){
-        $lenretur = $len +6;
-    }else if($lretur==3){
-        $lenretur = $len +7;
-    }else if($lretur==2){
-        $lenretur = $len +8;
-    }else if($lretur==1){
-        $lenretur = $len +9;
-    }else{
-        $lenretur = $len + 10;
-    }
-$data .=sprintf("%-$lenpot"."s\t%s\n","Potongan",rupiah($faktur->potongan));
-$data .=sprintf("%-$lentotal"."s\t%s\n","TOTAL",rupiah($totalnonppn));
-$data .=sprintf("%-$lenretur"."s\t%s\n","RETUR",rupiah($retur->totalretur));
+    // if($lretur==9){
+    //     $lenretur = $len +1;
+    // }else if($lretur==8){
+    //     $lenretur = $len +2;
+    // }else if($lretur==7){
+    //     $lenretur = $len +3;
+    // }else if($lretur==6){
+    //     $lenretur = $len +4;
+    // }else if($lretur==5){
+    //     $lenretur = $len +5;
+    // }else if($lretur==4){
+    //     $lenretur = $len +6;
+    // }else if($lretur==3){
+    //     $lenretur = $len +7;
+    // }else if($lretur==2){
+    //     $lenretur = $len +8;
+    // }else if($lretur==1){
+    //     $lenretur = $len +9;
+    // }else{
+    //     $lenretur = $len + 10;
+    // }
+$data .=sprintf("%-$len"."s\t%s\n","Potongan",rupiah($faktur->potongan));
+$data .=sprintf("%-$len"."s\t%s\n","TOTAL",rupiah($totalnonppn));
+$data .=sprintf("%-$len"."s\t%s\n","RETUR",rupiah($retur->totalretur));
 $data .=sprintf("%-$len"."s\t%s\n","PPN",rupiah($faktur->ppn));
 $data .=sprintf("%-$len"."s\t%s\n","GRAND TOTAL",rupiah($faktur->total-$retur->totalretur));
 $data .="------------------------------------------<br>";
