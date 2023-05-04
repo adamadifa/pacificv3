@@ -168,17 +168,54 @@ foreach( $detail as $d ) {
     $jumlah_pcs = $sisapack;
     $total += $d->subtotal;
     $data .=$d->nama_barang."<br>";
-    if(!empty($jumlah_dus)){
-        if ($jumlah_dus > 99) {
-            $data .=sprintf("%-$len"."s\t%s\n", $jumlah_dus." Dus x ".rupiah($d->harga_dus),rupiah($jumlah_dus * $d->harga_dus));
-        }else{
-            $data .=sprintf("%-$len"."s\t%s\n", $jumlah_dus." Dus x ".rupiah($d->harga_dus),rupiah($jumlah_dus * $d->harga_dus));
-        }
+    $l = strlen(rupiah($jumlah_dus * $d->harga_dus));
+    $lpack = strlen(rupiah($jumlah_pack * $d->harga_pack));
+    if($l==9){
+        $len = $len +1;
+    }else if($l==8){
+        $len = $len +2;
+    }else if($l==7){
+        $len = $len +2;
+    }else if($l==6){
+        $len = $len +2;
+    }else if($l==5){
+        $len = $len +2;
+    }else if($l==4){
+        $len = $len +2;
+    }else if($l==3){
+        $len = $len +2;
+    }else if($l==2){
+        $len = $len +2;
+    }else if($l==1){
+        $len = $len +2;
+    }
 
+
+    if($lpack==9){
+        $lenpack = $len +1;
+    }else if($lpack==8){
+        $lenpack = $len +2;
+    }else if($lpack==7){
+        $lenpack = $len +2;
+    }else if($lpack==6){
+        $lenpack = $len +2;
+    }else if($lpack==5){
+        $lenpack = $len +2;
+    }else if($lpack==4){
+        $lenpack = $len +2;
+    }else if($lpack==3){
+        $lenpack = $len +2;
+    }else if($lpack==2){
+        $lenpack = $len +2;
+    }else if($lpack==1){
+        $lenpack = $len +2;
+    }
+    if(!empty($jumlah_dus)){
+        $data .=sprintf("%-$len"."s\t%s\n", $jumlah_dus." Dus x ".rupiah($d->harga_dus),rupiah($jumlah_dus * $d->harga_dus))
     }
     if(!empty($jumlah_pack)){
         //$data .= "<br>";
-        $data .=sprintf("%-$len"."s\t%s\n", $jumlah_pack." Pck x ".rupiah($d->harga_pack),rupiah($jumlah_pack * $d->harga_pack));
+        $data .=sprintf("%-$lenpack"."s\t%s\n", $jumlah_pack." Pck x ".rupiah($d->harga_pack),rupiah($jumlah_pack * $d->harga_pack));
     }
     if(!empty($jumlah_pcs)){
         //$data .= "<br>";
