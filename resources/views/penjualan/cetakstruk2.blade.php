@@ -260,6 +260,8 @@ foreach( $detail as $d ) {
 }
 $data .="------------------------------------------<br>";
     $lpot = strlen($faktur->potongan);
+    $ltotal = strlen($totalnonppn);
+    $lretur = strlen($retur->totalretur);
     if($lpot==9){
         $lenpot = $len +1;
     }else if($lpot==8){
@@ -279,9 +281,49 @@ $data .="------------------------------------------<br>";
     }else if($lpot==1){
         $lenpot = $len +9;
     }
+
+    if($ltotal==9){
+        $lentotal = $len +1;
+    }else if($ltotal==8){
+        $lentotal = $len +2;
+    }else if($ltotal==7){
+        $lentotal = $len +3;
+    }else if($ltotal==6){
+        $lentotal = $len +4;
+    }else if($ltotal==5){
+        $lentotal = $len +5;
+    }else if($ltotal==4){
+        $lentotal = $len +6;
+    }else if($ltotal==3){
+        $lentotal = $len +7;
+    }else if($ltotal==2){
+        $lentotal = $len +8;
+    }else if($ltotal==1){
+        $lentotal = $len +9;
+    }
+
+    if($lretur==9){
+        $lenretur = $len +1;
+    }else if($lretur==8){
+        $lenretur = $len +2;
+    }else if($lretur==7){
+        $lenretur = $len +3;
+    }else if($lretur==6){
+        $lenretur = $len +4;
+    }else if($lretur==5){
+        $lenretur = $len +5;
+    }else if($lretur==4){
+        $lenretur = $len +6;
+    }else if($lretur==3){
+        $lenretur = $len +7;
+    }else if($lretur==2){
+        $lenretur = $len +8;
+    }else if($lretur==1){
+        $lenretur = $len +9;
+    }
 $data .=sprintf("%-$lenpot"."s\t%s\n","Potongan",rupiah($faktur->potongan));
-$data .=sprintf("%-$len"."s\t%s\n","TOTAL",rupiah($totalnonppn));
-$data .=sprintf("%-$len"."s\t%s\n","RETUR",rupiah($retur->totalretur));
+$data .=sprintf("%-$lentotal"."s\t%s\n","TOTAL",rupiah($totalnonppn));
+$data .=sprintf("%-$lenretur"."s\t%s\n","RETUR",rupiah($retur->totalretur));
 $data .=sprintf("%-$len"."s\t%s\n","PPN",rupiah($faktur->ppn));
 $data .=sprintf("%-$len"."s\t%s\n","GRAND TOTAL",rupiah($faktur->total-$retur->totalretur));
 $data .="------------------------------------------<br>";
