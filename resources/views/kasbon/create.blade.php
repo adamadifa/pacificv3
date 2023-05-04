@@ -95,6 +95,8 @@
                             $maxkasbon = 600000;
                         }
 
+                        $jmlcicilan = $cicilan != null ? $cicilan->jumlah : 0;
+                        $maxkasbon = $maxkasbon - $jmlcicilan;
                         echo rupiah($maxkasbon);
                         ?>
                     </td>

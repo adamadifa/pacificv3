@@ -124,7 +124,17 @@ class KasbonController extends Controller
         $karyawan = $query->first();
 
         $kontrak = DB::table('hrd_kontrak')->where('nik', $nik)->orderBy('dari', 'desc')->first();
-        return view('kasbon.create', compact('karyawan', 'kontrak'));
+
+        $cekpinjaman = DB::table('pinjaman')
+            ->select('pinjaman.*')
+            ->where('nik', $nik)
+            ->first();
+
+        $no_pinjaman = $cekpinjaman != null  ?  $cekpinjaman->no_pinjaman : '';
+        $cicilan = DB::table('pinjaman_rencanabayar')->where('no_pinjaman', $no_pinjaman)->where('cicilan_ke', 1)->first();
+
+
+        return view('kasbon.create', compact('karyawan', 'kontrak', 'cicilan'));
     }
 
     public function store(Request $request)
