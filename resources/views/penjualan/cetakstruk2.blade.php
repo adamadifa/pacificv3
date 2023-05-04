@@ -127,7 +127,7 @@ function maxLen($input) {
     return $length;
 }
 
-$len = 5;
+$len = 10;
 $data = "";
 $total = 0;
 $data .="------------------------------------------<br>";
@@ -173,23 +173,23 @@ foreach( $detail as $d ) {
     $lpcs = strlen(rupiah($jumlah_pcs * $d->harga_pcs));
     $lpot = strlen($faktur->potongan);
     if($l==9){
-        $len = $len +1;
+        $lendus = $len +1;
     }else if($l==8){
-        $len = $len +2;
+        $lendus = $len +2;
     }else if($l==7){
-        $len = $len +3;
+        $lendus = $len +3;
     }else if($l==6){
-        $len = $len +4;
+        $lendus = $len +4;
     }else if($l==5){
-        $len = $len +5;
+        $lendus = $len +5;
     }else if($l==4){
-        $len = $len +6;
+        $lendus = $len +6;
     }else if($l==3){
-        $len = $len +7;
+        $lendus = $len +7;
     }else if($l==2){
-        $len = $len +8;
+        $lendus = $len +8;
     }else if($l==1){
-        $len = $len +9;
+        $lendus = $len +9;
     }
 
 
@@ -253,7 +253,7 @@ foreach( $detail as $d ) {
         $lenpot = $len +9;
     }
     if(!empty($jumlah_dus)){
-        $data .=sprintf("%-$len"."s\t%s\n", $jumlah_dus." Dus x ".rupiah($d->harga_dus),rupiah($jumlah_dus * $d->harga_dus));
+        $data .=sprintf("%-$lendus"."s\t%s\n", $jumlah_dus." Dus x ".rupiah($d->harga_dus),rupiah($jumlah_dus * $d->harga_dus));
     }
     if(!empty($jumlah_pack)){
         //$data .= "<br>";
