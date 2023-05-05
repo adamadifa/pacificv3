@@ -8193,7 +8193,7 @@ class PenjualanController extends Controller
         $query = Penjualan::query();
         $query->selectRaw("penjualan.no_fak_penj,nama_pelanggan,
         AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500,
-        SUM(IF(penjualan.jenistransaksi='tunai',total,0)) - SUM(IFNULL(totalretur,0)) as totaltunai,
+        SUM(totaltunai) - SUM(IFNULL(totalretur,0)) as totaltunai,
         SUM(IF(penjualan.jenistransaksi='kredit',total,0)) as totalkredit,
         totalbayar,totalgiro,totaltransfer,totalvoucher");
         $query->leftJoin(
@@ -8236,11 +8236,12 @@ class PenjualanController extends Controller
             DB::raw("(
             SELECT
                 no_fak_penj,
-                SUM(IF(status_bayar IS NULL,bayar,0)) AS totalbayar,
+                SUM(IF(jenisbayar='tunai',bayar,0)) as totaltunai,
+                SUM(IF(jenisbayar='titipan',bayar,0)) as totalbayar,
                 SUM(IF(status_bayar ='voucher',bayar,0)) AS totalvoucher
             FROM
                 historibayar
-            WHERE tglbayar = '$tanggal' AND jenistransaksi != 'tunai'
+            WHERE tglbayar = '$tanggal'
             GROUP BY
                 no_fak_penj
             ) hb"),
@@ -8273,7 +8274,7 @@ class PenjualanController extends Controller
             FROM
             transfer
             INNER JOIN penjualan ON transfer.no_fak_penj = penjualan.no_fak_penj
-            WHERE tgl_transfer = '$tanggal' AND jenistransaksi != 'tunai'
+            WHERE tgl_transfer = '$tanggal'
             GROUP BY
                 no_fak_penj
             ) transfer"),

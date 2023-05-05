@@ -459,7 +459,7 @@
                         <table style="width:100%">
                             <tr>
                                 <td style="width:40%">Penjualan Tunai</td>
-                                <td>Rp.....................................................</td>
+                                <td>Rp. {{ rupiah($totaltunai) }}</td>
                             </tr>
                             <tr>
                                 <td style="width:40%">Penjualan Botol / Peti</td>
@@ -467,7 +467,9 @@
                             </tr>
                             <tr>
                                 <td style="width:40%">Tagihan</td>
-                                <td><u>Rp.....................................................</u></td>
+                                <td>
+                                    Rp.{{ rupiah($totaltitipan1 + $totaltitipan2) }}
+                                </td>
                             </tr>
                             <tr>
                                 <td style="width:40%">Dikurangi</td>
