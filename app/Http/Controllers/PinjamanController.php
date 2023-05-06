@@ -168,24 +168,25 @@ class PinjamanController extends Controller
         $cekmasakerja =  diffInMonths($start, $end);
 
 
-        if ($sp != null) {
-            return view('pinjaman.notifsp', compact('sp'));
-        } else if ($karyawan->status_karyawan == "K" && $cekmasakerja < 15) {
-            return view('pinjaman.notifmasakerjakurang', compact('cekmasakerja'));
-        } else {
-            if ($cekpinjaman != null) {
-                $jumlah_pinjaman = $cekpinjaman->jumlah_pinjaman;
-                $minpembayar = (75 / 100) * $jumlah_pinjaman;
-                if ($cekpinjaman->totalpembayaran >= $minpembayar) {
-                    return view('pinjaman.create', compact('karyawan', 'gaji', 'jmk', 'kontrak'));
-                } else {
-                    return view('pinjaman.notiftopup', compact('cekpinjaman'));
-                }
-            } else {
-                //return view('pinjaman.create', compact('karyawan', 'gaji', 'jmk', 'kontrak'));
-                return view('pinjaman.create2', compact('karyawan', 'gaji', 'jmk', 'kontrak'));
-            }
-        }
+        // if ($sp != null) {
+        //     return view('pinjaman.notifsp', compact('sp'));
+        // } else if ($karyawan->status_karyawan == "K" && $cekmasakerja < 15) {
+        //     return view('pinjaman.notifmasakerjakurang', compact('cekmasakerja'));
+        // } else {
+        //     if ($cekpinjaman != null) {
+        //         $jumlah_pinjaman = $cekpinjaman->jumlah_pinjaman;
+        //         $minpembayar = (75 / 100) * $jumlah_pinjaman;
+        //         if ($cekpinjaman->totalpembayaran >= $minpembayar) {
+        //             return view('pinjaman.create', compact('karyawan', 'gaji', 'jmk', 'kontrak'));
+        //         } else {
+        //             return view('pinjaman.notiftopup', compact('cekpinjaman'));
+        //         }
+        //     } else {
+        //         //return view('pinjaman.create', compact('karyawan', 'gaji', 'jmk', 'kontrak'));
+        //         return view('pinjaman.create2', compact('karyawan', 'gaji', 'jmk', 'kontrak'));
+        //     }
+        // }
+        return view('pinjaman.create2', compact('karyawan', 'gaji', 'jmk', 'kontrak'));
     }
 
     public function store(Request $request)

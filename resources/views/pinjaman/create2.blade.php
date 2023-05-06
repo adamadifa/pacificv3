@@ -294,22 +294,22 @@
                 return number;
             }
         }
-        $("#angsuran").change(function(e) {
-            var angsuranmax = "{{ $angsuranmax }}";
-            var jmlangsuran = $("#jml_angsuran").val();
-            var jml_angsuran = parseInt(jmlangsuran.replace(/\./g, ''));
-            if (parseInt(jml_angsuran) > parseInt(angsuranmax)) {
-                swal({
-                    title: 'Oops'
-                    , text: 'Jumlah Angsuran Tidak Boleh lebih dari ' + angsuranmax
-                    , icon: 'warning'
-                    , showConfirmButton: false
-                }).then(function() {
-                    $("#jml_angsuran").val(0);
-                    $("#angsuran").val(0);
-                });
-            }
-        });
+        // $("#angsuran").change(function(e) {
+        //     var angsuranmax = "{{ $angsuranmax }}";
+        //     var jmlangsuran = $("#jml_angsuran").val();
+        //     var jml_angsuran = parseInt(jmlangsuran.replace(/\./g, ''));
+        //     if (parseInt(jml_angsuran) > parseInt(angsuranmax)) {
+        //         swal({
+        //             title: 'Oops'
+        //             , text: 'Jumlah Angsuran Tidak Boleh lebih dari ' + angsuranmax
+        //             , icon: 'warning'
+        //             , showConfirmButton: false
+        //         }).then(function() {
+        //             $("#jml_angsuran").val(0);
+        //             $("#angsuran").val(0);
+        //         });
+        //     }
+        // });
 
         function hitungpinjaman() {
             var jmlpinjaman = $("#jml_pinjaman").val();
