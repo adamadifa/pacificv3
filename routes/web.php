@@ -1090,10 +1090,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/laporankeuangan/rekapbg', [LaporankeuanganController::class, 'rekapbg']);
     Route::get('/laporankeuangan/saldokasbesar', [LaporankeuanganController::class, 'saldokasbesar']);
     Route::get('/laporankeuangan/lpu', [LaporankeuanganController::class, 'lpu']);
+    Route::get('/laporankeuangan/pinjaman', [LaporankeuanganController::class, 'pinjaman']);
 
     Route::post('/laporankeuangan/penjualan/cetak', [LaporankeuanganController::class, 'cetak_penjualan']);
     Route::post('/laporankeuangan/uanglogam/cetak', [LaporankeuanganController::class, 'cetak_uanglogam']);
     Route::post('/laporankeuangan/rekapbg/cetak', [LaporankeuanganController::class, 'cetak_rekapbg']);
+    Route::post('/laporankeuangan/pinjaman/cetak', [LaporankeuanganController::class, 'cetak_pinjaman']);
     Route::post('/laporankeuangan/saldokasbesar/cetak', [LaporankeuanganController::class, 'cetak_saldokasbesar']);
     Route::post('/laporankeuangan/lpu/cetak', [LaporankeuanganController::class, 'cetak_lpu']);
 

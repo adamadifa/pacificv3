@@ -6,6 +6,7 @@ use App\Models\Bank;
 use App\Models\Cabang;
 use App\Models\Kaskecil;
 use App\Models\Ledger;
+use App\Models\Pinjaman;
 use App\Models\Salesman;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -578,5 +579,53 @@ class LaporankeuanganController extends Controller
 
             return view('kasbesar.laporan.cetak_lpu', compact('salesman', 'bank', 'jmlbank', 'jmlsales', 'cabang', 'bulan', 'tahun', 'namabulan', 'dari', 'sampai', 'kode_cabang'));
         }
+    }
+
+
+    public function pinjaman()
+    {
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
+        $departemen = DB::table('hrd_departemen')->get();
+        return view('penjualan.laporan.frm.lap_pinjaman', compact('cabang', 'departemen'));
+    }
+
+    public function cetak_pinjaman(Request $request)
+    {
+        $id_kantor = $request->id_kantor;
+        $kode_dept = $request->kode_dept;
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+
+        $query = Pinjaman::query();
+        $query->select('pinjaman.*', 'nama_karyawan', 'nama_jabatan', 'nama_dept', 'totalpembayaran');
+        $query->join('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik');
+        $query->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
+        $query->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
+        $query->leftJoin(
+            DB::raw("(
+            SELECT no_pinjaman,SUM(jumlah) as totalpembayaran FROM pinjaman_historibayar GROUP BY no_pinjaman
+        ) hb"),
+            function ($join) {
+                $join->on('pinjaman.no_pinjaman', '=', 'hb.no_pinjaman');
+            }
+        );
+        if (!empty($request->dari) && !empty($request->sampai)) {
+            $query->whereBetween('tgl_pinjaman', [$request->dari, $request->sampai]);
+        }
+
+        if (!empty($request->id_kantor)) {
+            $query->where('master_karyawan.id_kantor', $request->id_kantor);
+        }
+
+        if (!empty($request->kode_dept)) {
+            $query->where('master_karyawan.kode_dept', $request->kode_dept);
+        }
+
+        $pinjaman = $query->get();
+
+        $departemen = DB::table('hrd_departemen')->where('kode_dept', $kode_dept)->first();
+        $kantor = DB::table('cabang')->where('kode_cabang', $id_kantor)->first();
+        return view('pinjaman.laporan.cetak', compact('pinjaman', 'departemen', 'kantor', 'dari', 'sampai'));
     }
 }

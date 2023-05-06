@@ -61,6 +61,13 @@
                 </li>
             </a>
             @endif
+            @if (in_array($level,$lap_pinjaman))
+            <a href="/laporankeuangan/pinjaman" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporankeuangan/pinjaman']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Pinjaman
+                </li>
+            </a>
+            @endif
         </ul>
     </div>
 </div>
