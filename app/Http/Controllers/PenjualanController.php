@@ -272,7 +272,7 @@ class PenjualanController extends Controller
             // dd($lastmonth);
             $cekpenjualan = DB::table('penjualan')
                 ->where('id_karyawan', $pelanggan->id_sales)
-                ->where('tgltransaksid', $lasttgl)
+                ->where('tgltransaksi', $lasttgl)
                 ->orderBy('no_fak_penj', 'desc')->first();
             $lastnofak = $cekpenjualan != null ? $cekpenjualan->no_fak_penj : '';
 
