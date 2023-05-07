@@ -264,13 +264,15 @@ class PenjualanController extends Controller
             // $kode_faktur = substr($salesman->no_fak_awal, 3, 1);
             // $nomor_awal = substr($salesman->no_fak_awal, 4);
             // $jmlchar = strlen($nomor_awal);
+            $lastinput = DB::table('penjualan')->where('id_karyawan', $pelanggan->id_sales)->orderBy('tgltransaksi', 'desc')->first();
+            $lasttgl = $lastinput->tgltransaksi;
             $tahunini = date('Y');
             $hariini = strtotime(date("Y-m-d"));
-            $lastmonth    = date('Y-m-d', strtotime("-3 day", $hariini));
+            $lastmonth    = date('Y-m-d', strtotime("-2 day", $hariini));
             // dd($lastmonth);
             $cekpenjualan = DB::table('penjualan')
                 ->where('id_karyawan', $pelanggan->id_sales)
-                ->whereBetween('tgltransaksi', [$lastmonth, date('Y-m-d')])
+                ->where('tgltransaksi', $lasttgl)
                 ->orderBy('no_fak_penj', 'desc')->first();
             $lastnofak = $cekpenjualan != null ? $cekpenjualan->no_fak_penj : '';
 
