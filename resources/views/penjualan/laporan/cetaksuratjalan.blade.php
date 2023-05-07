@@ -47,6 +47,11 @@
                 <tr>
                     <td>NOMOR {{ $faktur->no_fak_penj }}</td>
                 </tr>
+                @if (!empty($faktur->no_po))
+                <tr>
+                    <td>PO : {{ $faktur->no_po }}</td>
+                </tr>
+                @endif
             </table>
         </td>
         <td colspan="6" align="left">

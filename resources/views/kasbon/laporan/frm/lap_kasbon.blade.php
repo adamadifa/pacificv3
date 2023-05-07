@@ -1,15 +1,15 @@
 @extends('layouts.midone')
-@section('titlepage','Laporan Pinjaman')
+@section('titlepage','Laporan Kasbon')
 @section('content')
 <div class="content-wrapper">
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Laporan Pinjaman</h2>
+                    <h2 class="content-header-title float-left mb-0">Laporan Kasbon</h2>
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/laporankeuangan/pinjaman">Laporan Pinjaman</a>
+                            <li class="breadcrumb-item"><a href="/laporankeuangan/kasbon">Laporan Kasbon</a>
                             </li>
                         </ol>
                     </div>
@@ -27,7 +27,7 @@
                     <div class="col-lg-7 col-sm-12">
                         <div class="card">
                             <div class="card-body">
-                                <form action="/laporankeuangan/pinjaman/cetak" method="POST" id="frmLaporan" target="_blank">
+                                <form action="/laporankeuangan/kasbon/cetak" method="POST" id="frmLaporan" target="_blank">
                                     @csrf
 
 

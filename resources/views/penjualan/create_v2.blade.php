@@ -6,7 +6,7 @@
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Input Penjualan</h2>
+                    <h2 class="content-header-title float-left mb-0">Input Penjualan V2</h2>
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/inputpenjualanv2">Input Penjualan</a>
@@ -70,6 +70,13 @@
                                             <x-inputtext label="Salesman" field="nama_karyawan" icon="feather icon-users" readonly />
                                         </div>
                                     </div>
+                                    @if (Auth::user()->kode_cabang="BDG")
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <x-inputtext label="No. PO Pelanggan" field="no_po" icon="fa fa-barcode" />
+                                        </div>
+                                    </div>
+                                    @endif
                                     <div class="row" id="ket">
 
                                         <div class="col-12">

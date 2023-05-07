@@ -1091,11 +1091,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/laporankeuangan/saldokasbesar', [LaporankeuanganController::class, 'saldokasbesar']);
     Route::get('/laporankeuangan/lpu', [LaporankeuanganController::class, 'lpu']);
     Route::get('/laporankeuangan/pinjaman', [LaporankeuanganController::class, 'pinjaman']);
+    Route::get('/laporankeuangan/kasbon', [LaporankeuanganController::class, 'kasbon']);
 
     Route::post('/laporankeuangan/penjualan/cetak', [LaporankeuanganController::class, 'cetak_penjualan']);
     Route::post('/laporankeuangan/uanglogam/cetak', [LaporankeuanganController::class, 'cetak_uanglogam']);
     Route::post('/laporankeuangan/rekapbg/cetak', [LaporankeuanganController::class, 'cetak_rekapbg']);
     Route::post('/laporankeuangan/pinjaman/cetak', [LaporankeuanganController::class, 'cetak_pinjaman']);
+    Route::post('/laporankeuangan/kasbon/cetak', [LaporankeuanganController::class, 'cetak_kasbon']);
     Route::post('/laporankeuangan/saldokasbesar/cetak', [LaporankeuanganController::class, 'cetak_saldokasbesar']);
     Route::post('/laporankeuangan/lpu/cetak', [LaporankeuanganController::class, 'cetak_lpu']);
 
@@ -1556,6 +1558,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('pembayaranpinjaman/generatebayarpinjaman', [PembayaranpinjamanController::class, 'generatebayarpinjaman']);
     Route::delete('pembayaranpinjaman/{kode_potongan}/deletegenerate', [PembayaranpinjamanController::class, 'deletegenerate']);
     Route::post('/pembayaranpinjaman/show', [PembayaranpinjamanController::class, 'show']);
+    Route::get('/pembayaranpinjaman/{kode_potongan}/{export}/cetak', [PembayaranpinjamanController::class, 'cetak']);
 
 
     //Kasbon
@@ -1564,6 +1567,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('kasbon/store', [KasbonController::class, 'store']);
     Route::delete('kasbon/{no_kasbon}/delete', [KasbonController::class, 'delete']);
     Route::post('kasbon/edit', [KasbonController::class, 'edit']);
+    Route::get('/pembayarankasbon/{kode_potongan}/{export}/cetak', [PembayarankasbonController::class, 'cetak']);
 
     //Pembayaran Kasbon
     Route::get('/pembayarankasbon', [PembayarankasbonController::class, 'index']);

@@ -416,7 +416,7 @@ class PinjamanController extends Controller
             $data = [
                 'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
                 'sender' => '6289670444321',
-                'number' => '08122266840',
+                'number' => '082218770017',
                 'message' => '*' . $pinjaman->nama_karyawan . '*, Ajuan Pinjaman dengan Nomor Pinjaman *' . $pinjaman->no_pinjaman . '* dengan total pinjaman *' . rupiah($pinjaman->jumlah_pinjaman) . '* sudah di proses oleh bagian keuangan, silahkan tunggu 1 x 24 jam untuk proses pencairan dana ke rekening.'
             ];
             $curl = curl_init();

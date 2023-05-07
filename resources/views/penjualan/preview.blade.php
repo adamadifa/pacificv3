@@ -186,6 +186,7 @@
                             <td>
                                 {{ $data['no_fak_penj'] }}
                                 <input type="hidden" name="no_fak_penj" value="{{ $data['no_fak_penj'] }}">
+                                <input type="hidden" name="no_po" value="{{ $data['no_po'] }}">
                             </td>
                             <td style="font-weight: bold">Kode Pelanggan</td>
                             <td>
@@ -198,6 +199,12 @@
                                 <input type="hidden" name="id_karyawan" value="{{ $data['id_karyawan'] }}">
                             </td>
                         </tr>
+                        @if (!empty($data['no_po']))
+                        <tr>
+                            <td style="font-weight: bold">No. PO</td>
+                            <td>{{ $data['no_po'] }}</td>
+                        </tr>
+                        @endif
                         <tr>
                             <td style="font-weight: bold">Tanggal</td>
                             <td>

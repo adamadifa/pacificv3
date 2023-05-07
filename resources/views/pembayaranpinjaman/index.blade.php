@@ -111,6 +111,7 @@
                                     <td>
                                         <div class="btn-group">
                                             <a href="#" class="detail info" kode_potongan="{{ $d->kode_potongan }}"><i class="feather icon-file-text"></i></a>
+                                            @if ($loop->last)
                                             <form method="POST" class="deleteform" action="/pembayaranpinjaman/{{Crypt::encrypt($d->kode_potongan)}}/deletegenerate">
                                                 @csrf
                                                 @method('DELETE')
@@ -118,6 +119,8 @@
                                                     <i class="feather icon-trash danger"></i>
                                                 </a>
                                             </form>
+                                            @endif
+
                                         </div>
 
                                     </td>

@@ -482,6 +482,7 @@ class GlobalProvider extends ServiceProvider
             $pembayaranpinjaman_view = ['admin'];
             $inputbayarpinjaman = ['admin', 'manager hrd', 'manager accounting'];
             $lap_pinjaman = ['admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'manager accounting', 'manager ga', 'emf', 'manager marketing', 'rsm'];
+            $lap_kasbon = ['admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'manager accounting', 'manager ga', 'emf', 'manager marketing', 'rsm'];
 
             $kasbon_view = ['admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'manager accounting', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager hrd'];
             $pembayarankasbon_view = ['admin'];
@@ -1045,6 +1046,7 @@ class GlobalProvider extends ServiceProvider
                 'pembayaranpinjaman_view' => $pembayaranpinjaman_view,
                 'inputbayarpinjaman' => $inputbayarpinjaman,
                 'lap_pinjaman' => $lap_pinjaman,
+                'lap_kasbon' => $lap_kasbon,
 
 
                 'kasbon_view' => $kasbon_view,

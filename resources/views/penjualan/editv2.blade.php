@@ -73,6 +73,13 @@
                                             <x-inputtext label="Salesman" value='{{ $faktur->id_karyawan." | ".$faktur->nama_karyawan." | ".$faktur->kategori_salesman }}' field="nama_karyawan" icon="feather icon-users" readonly />
                                         </div>
                                     </div>
+                                    @if (!empty($faktur->no_po))
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <x-inputtext label="No. PO" value="{{ $faktur->no_po }}" field="no_po" icon="fa fa-barcode" />
+                                        </div>
+                                    </div>
+                                    @endif
                                     <div class="row" id="ket">
                                         <div class="col-12">
                                             <div class="form-group">

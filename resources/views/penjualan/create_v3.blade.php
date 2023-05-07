@@ -78,6 +78,13 @@
                                             <x-inputtext label="Salesman" field="nama_karyawan" icon="feather icon-users" value="{{ $pelanggan != null ? $pelanggan->id_sales. '|'.$pelanggan->nama_karyawan.'|'.$pelanggan->kategori_salesman : ''}}" readonly />
                                         </div>
                                     </div>
+                                    @if (Auth::user()->kode_cabang="BDG" && $pelanggan->kategori_salesman=="TO")
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <x-inputtext label="No. PO Pelanggan" field="no_po" icon="fa fa-barcode" />
+                                        </div>
+                                    </div>
+                                    @endif
                                 </div>
                             </div>
                         </div>

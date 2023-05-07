@@ -273,14 +273,15 @@ class PembayaranpinjamanController extends Controller
             $rencana = DB::table('pinjaman_rencanabayar')->where('bulan', $bulanpotongan)->where('tahun', $tahunpotongan)
                 ->where('bayar', 0)
                 ->get();
+
             foreach ($rencana as $d) {
                 $historibayar = DB::table("pinjaman_historibayar")
                     ->whereRaw('YEAR(tgl_bayar)="' . $tahun . '"')
                     ->orderBy("no_bukti", "desc")
                     ->first();
-                $tahun = substr($tahun, 2, 2);
+                $thn = substr($tahun, 2, 2);
                 $last_nobukti = $historibayar != null ? $historibayar->no_bukti : '';
-                $no_bukti  = buatkode($last_nobukti, "PJ" . $tahun, 4);
+                $no_bukti  = buatkode($last_nobukti, "PJ" . $thn, 4);
 
                 $data = [
                     'no_bukti' => $no_bukti,
@@ -334,6 +335,34 @@ class PembayaranpinjamanController extends Controller
             ->orderBy('no_pinjaman')
             ->get();
 
-        return view('pembayaranpinjaman.show', compact('historibayar'));
+        return view('pembayaranpinjaman.show', compact('historibayar', 'kode_potongan'));
+    }
+
+
+    public function cetak($kode_potongan, $export)
+    {
+        $kode_potongan = Crypt::decrypt($kode_potongan);
+        $potongan = DB::table('pinjaman_potongangaji')->where('kode_potongan', $kode_potongan)->first();
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        $bln = $bulan[$potongan->bulan];
+        $thn = $potongan->tahun;
+        $historibayar = DB::table('pinjaman_historibayar')
+            ->select('pinjaman_historibayar.no_pinjaman', 'pinjaman.nik', 'nama_karyawan', 'jumlah', 'cicilan_ke', 'nama_jabatan', 'nama_dept', 'no_bukti')
+            ->join('pinjaman', 'pinjaman_historibayar.no_pinjaman', '=', 'pinjaman.no_pinjaman')
+            ->join('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik')
+            ->leftJoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
+            ->leftJoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
+            ->where('kode_potongan', $kode_potongan)
+            ->orderBy('no_pinjaman')
+            ->get();
+
+        if ($export == "true") {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Pembayaran Pinjaman Bulan $bln $thn.xls");
+        }
+
+        return view('pembayaranpinjaman.cetak', compact('historibayar', 'bln', 'thn'));
     }
 }

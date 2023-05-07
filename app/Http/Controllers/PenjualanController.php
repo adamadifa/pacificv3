@@ -265,10 +265,13 @@ class PenjualanController extends Controller
             // $nomor_awal = substr($salesman->no_fak_awal, 4);
             // $jmlchar = strlen($nomor_awal);
             $tahunini = date('Y');
+            $hariini = strtotime(date("Y-m-d"));
+            $lastmonth    = date('Y-m-d', strtotime("-30 day", $hariini));
+            // dd($lastmonth);
             $cekpenjualan = DB::table('penjualan')
                 ->where('id_karyawan', $pelanggan->id_sales)
-                ->whereRaw('YEAR(tgltransaksi)="' . $tahunini . '"')
-                ->orderBy('date_created', 'desc')->first();
+                ->whereBetween('tgltransaksi', [$lastmonth, date('Y-m-d')])
+                ->orderBy('no_fak_penj', 'desc')->first();
             $lastnofak = $cekpenjualan != null ? $cekpenjualan->no_fak_penj : '';
 
 
@@ -1304,6 +1307,7 @@ class PenjualanController extends Controller
         $id_admin = Auth::user()->id;
         $keterangan = $request->keterangan;
         $no_fak_auto = $ceklevel == "salesman" ? 1 : null;
+        $no_po = $request->no_po;
         //Potongan
         $potaida        = str_replace(".", "", $request->potaida);
         if (empty($potaida)) {
@@ -1494,7 +1498,8 @@ class PenjualanController extends Controller
                 'status' => $status,
                 'status_lunas' => $status_lunas,
                 'keterangan' => $keterangan,
-                'no_fak_auto' => $no_fak_auto
+                'no_fak_auto' => $no_fak_auto,
+                'no_po' => $no_po
             ]);
 
             $tmp = DB::table('detailpenjualan_temp')->where('id_admin', $id_admin)
@@ -1871,7 +1876,7 @@ class PenjualanController extends Controller
         $id_admin = Auth::user()->id;
         $keterangan = $request->keterangan;
         $ppn = !empty($request->ppn) ? str_replace(".", "", $request->ppn) : 0;
-
+        $no_po = $request->no_po;
         $potaida        = str_replace(".", "", $request->potaida);
         if (empty($potaida)) {
             $potaida = 0;
@@ -2058,7 +2063,8 @@ class PenjualanController extends Controller
                     'jatuhtempo' => $jatuhtempo,
                     'keterangan' => $keterangan,
                     'status' => $status,
-                    'status_lunas' => $status_lunas
+                    'status_lunas' => $status_lunas,
+                    'no_po' => $no_po
                 ]);
 
             $edit = DB::table('detailpenjualan_edit')->where('no_fak_penj', $no_fak_penj)
@@ -7189,6 +7195,7 @@ class PenjualanController extends Controller
         $nama_pelanggan = $request->nama_pelanggan;
         $id_admin = Auth::user()->id;
         $keterangan = $request->keterangan;
+        $no_po = $request->no_po;
         //Potongan
         $potaida        = str_replace(".", "", $request->potaida);
         if (empty($potaida)) {
@@ -7318,7 +7325,8 @@ class PenjualanController extends Controller
             'ppn' => $ppn,
             'totalnonppn' => $totalnonppn,
             'kode_cabang' => $kode_cabang,
-            'keterangan' => $keterangan
+            'keterangan' => $keterangan,
+            'no_po' => $no_po
         ];
 
         $barang = DB::table('detailpenjualan_temp')

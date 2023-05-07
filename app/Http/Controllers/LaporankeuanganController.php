@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bank;
 use App\Models\Cabang;
+use App\Models\Kasbon;
 use App\Models\Kaskecil;
 use App\Models\Ledger;
 use App\Models\Pinjaman;
@@ -590,6 +591,8 @@ class LaporankeuanganController extends Controller
         return view('penjualan.laporan.frm.lap_pinjaman', compact('cabang', 'departemen'));
     }
 
+
+
     public function cetak_pinjaman(Request $request)
     {
         $id_kantor = $request->id_kantor;
@@ -626,6 +629,67 @@ class LaporankeuanganController extends Controller
 
         $departemen = DB::table('hrd_departemen')->where('kode_dept', $kode_dept)->first();
         $kantor = DB::table('cabang')->where('kode_cabang', $id_kantor)->first();
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Pinjaman $dari-$sampai.xls");
+        }
         return view('pinjaman.laporan.cetak', compact('pinjaman', 'departemen', 'kantor', 'dari', 'sampai'));
+    }
+
+
+    public function kasbon()
+    {
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
+        $departemen = DB::table('hrd_departemen')->get();
+        return view('kasbon.laporan.frm.lap_kasbon', compact('cabang', 'departemen'));
+    }
+
+
+    public function cetak_kasbon(Request $request)
+    {
+        $id_kantor = $request->id_kantor;
+        $kode_dept = $request->kode_dept;
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+
+        $query = Kasbon::query();
+        $query->select('kasbon.*', 'nama_karyawan', 'nama_jabatan', 'nama_dept', 'totalpembayaran');
+        $query->join('master_karyawan', 'kasbon.nik', '=', 'master_karyawan.nik');
+        $query->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
+        $query->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
+        $query->leftJoin(
+            DB::raw("(
+            SELECT no_kasbon,SUM(jumlah) as totalpembayaran FROM kasbon_historibayar GROUP BY no_kasbon
+        ) hb"),
+            function ($join) {
+                $join->on('kasbon.no_kasbon', '=', 'hb.no_kasbon');
+            }
+        );
+        if (!empty($request->dari) && !empty($request->sampai)) {
+            $query->whereBetween('tgl_kasbon', [$request->dari, $request->sampai]);
+        }
+
+        if (!empty($request->id_kantor)) {
+            $query->where('master_karyawan.id_kantor', $request->id_kantor);
+        }
+
+        if (!empty($request->kode_dept)) {
+            $query->where('master_karyawan.kode_dept', $request->kode_dept);
+        }
+
+        $kasbon = $query->get();
+
+        $departemen = DB::table('hrd_departemen')->where('kode_dept', $kode_dept)->first();
+        $kantor = DB::table('cabang')->where('kode_cabang', $id_kantor)->first();
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Kasbon $dari-$sampai.xls");
+        }
+        return view('kasbon.laporan.cetak', compact('kasbon', 'departemen', 'kantor', 'dari', 'sampai'));
     }
 }

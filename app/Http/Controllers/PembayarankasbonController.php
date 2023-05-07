@@ -63,6 +63,20 @@ class PembayarankasbonController extends Controller
             $bulan = "0" . $bulan;
         }
 
+        if ($bulan == 1) {
+            $bulanlast = 12;
+            $tahunlast = $tahun - 1;
+        } else {
+            $bulanlast = $bulan - 1;
+            $tahunlast = $tahun;
+        }
+
+        $cek = DB::table('kasbon_potongangaji')->count();
+        $ceklast = DB::table('kasbon_potongangaji')->where('bulan', $bulanlast)->where('tahun', $tahunlast)->count();
+        if ($cek > 0 && $ceklast == 0) {
+            return Redirect::back()->with(['warning' => 'Bulan Sebelumnya Belum Digenerate']);
+        }
+
         $jatuhtempo = $tahunpotongan . "-" . $bulanpotongan . "-01";
 
         DB::beginTransaction();
@@ -115,7 +129,7 @@ class PembayarankasbonController extends Controller
             ->orderBy('no_kasbon')
             ->get();
 
-        return view('pembayarankasbon.show', compact('historibayar'));
+        return view('pembayarankasbon.show', compact('historibayar', 'kode_potongan'));
     }
 
     public function deletegenerate($kode_potongan)
@@ -130,5 +144,33 @@ class PembayarankasbonController extends Controller
             DB::rollBack();
             return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
         }
+    }
+
+
+    public function cetak($kode_potongan, $export)
+    {
+        $kode_potongan = Crypt::decrypt($kode_potongan);
+        $potongan = DB::table('kasbon_potongangaji')->where('kode_potongan', $kode_potongan)->first();
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        $bln = $bulan[$potongan->bulan];
+        $thn = $potongan->tahun;
+        $historibayar = DB::table('kasbon_historibayar')
+            ->select('kasbon_historibayar.no_kasbon', 'kasbon.nik', 'nama_karyawan', 'jumlah', 'nama_jabatan', 'nama_dept', 'no_bukti')
+            ->join('kasbon', 'kasbon_historibayar.no_kasbon', '=', 'kasbon.no_kasbon')
+            ->join('master_karyawan', 'kasbon.nik', '=', 'master_karyawan.nik')
+            ->leftJoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
+            ->leftJoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
+            ->where('kode_potongan', $kode_potongan)
+            ->orderBy('no_kasbon')
+            ->get();
+
+        if ($export == "true") {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Pembayaran Kasbon Bulan $bln $thn.xls");
+        }
+
+        return view('pembayarankasbon.cetak', compact('historibayar', 'bln', 'thn'));
     }
 }
