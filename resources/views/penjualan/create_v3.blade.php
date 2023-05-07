@@ -52,6 +52,19 @@
                                     <h4 class="card-title">Data Penjualan</h4>
                                 </div>
                                 <div class="card-body">
+
+                                    <div class="row" id="ceknofak">
+                                        <input type="hidden" id="ceknofakval" value="0">
+                                        <div class="col">
+                                            <div class="alert alert-danger">
+                                                <h4 class="alert-heading"><i class="feather icon-info mr-1"></i> Warning !</h4>
+                                                <p>No. Faktur Sudah Digunakan, Silahkan Hubungi Admin Untuk mengetahun No. Faktur Terakhir</p>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
                                     <div class="row">
                                         <div class="col-12">
                                             <x-inputtext label="No. Faktur" field="no_fak_penj" value="{{ $no_fak_penj_auto }}" icon="fa fa-barcode" />
@@ -680,10 +693,47 @@
         });
 
 
-        $("#no_fak_penj").on('change', function(e) {
-            if (e.keyCode == 32) return false;
-            var no_fak_penj = $("#no_fak_penj").val();
+        // $("#no_fak_penj").on('change', function(e) {
+        //     if (e.keyCode == 32) return false;
+        //     var no_fak_penj = $("#no_fak_penj").val();
 
+        //     $.ajax({
+        //         type: 'POST'
+        //         , url: '/penjualan/ceknofaktur'
+        //         , data: {
+        //             _token: "{{ csrf_token() }}"
+        //             , no_fak_penj: no_fak_penj
+        //         }
+        //         , cache: false
+        //         , success: function(respond) {
+        //             var status = respond;
+        //             console.log(status);
+        //             if (status > 0) {
+        //                 swal({
+        //                     title: 'Oops'
+        //                     , text: 'No Faktur ' + no_fak_penj + " Sudah Digunakan !"
+        //                     , icon: 'warning'
+        //                     , showConfirmButton: false
+        //                 }).then(function() {
+        //                     $("#no_fak_penj").val("");
+        //                     $("#no_fak_penj").focus();
+        //                 });
+        //             }
+        //         }
+        //     });
+        // });
+
+        //Konversi Ke Format Rupiah
+
+        $("#no_fak_penj").on('keyup', function(e) {
+            if (e.keyCode == 32) return false;
+            ceknofakpenj();
+        });
+
+        $("#ceknofak").hide();
+
+        function ceknofakpenj() {
+            var no_fak_penj = $("#no_fak_penj").val();
             $.ajax({
                 type: 'POST'
                 , url: '/penjualan/ceknofaktur'
@@ -702,15 +752,21 @@
                             , icon: 'warning'
                             , showConfirmButton: false
                         }).then(function() {
-                            $("#no_fak_penj").val("");
+                            //$("#no_fak_penj").val("");
+                            $("#ceknofak").show();
+                            $("#ceknofakval").val(1);
                             $("#no_fak_penj").focus();
                         });
+                    } else {
+                        $("#ceknofakval").val(0);
+                        $("#ceknofak").hide();
                     }
                 }
             });
-        });
+        }
 
-        //Konversi Ke Format Rupiah
+        ceknofakpenj();
+
         function convertToRupiah(number) {
             if (number) {
                 var rupiah = "";
@@ -915,9 +971,21 @@
             var jenistransaksi = $("#jenistransaksi").val();
             var cektemp = $("#cektemp").val();
             var kategori_salesman = $("#kategori_salesman").val();
+            var ceknofak = $("#ceknofakval").val();
             // alert(nama_pelanggan);
             if (cektutuplaporan > 0) {
                 swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
+                return false;
+            } else if (ceknofak > 0) {
+                swal({
+                    title: 'Oops'
+                    , text: 'No. Faktur Sudah Digunakan Silahkan Hubungi Admin Untuk  Mengetahui Nomor Faktur Terakhir !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#no_fak_penj").focus();
+                });
+                $("#btnsimpan").prop('disabled', false);
                 return false;
             } else if (no_fak_penj == "" && kategori_salesman == "CANVASER") {
                 swal({
@@ -926,7 +994,7 @@
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
-                    $("#jenistransaksi").focus();
+                    $("#no_fak_penj").focus();
                 });
                 $("#btnsimpan").prop('disabled', false);
                 return false;

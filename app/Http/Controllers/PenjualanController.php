@@ -288,8 +288,11 @@ class PenjualanController extends Controller
                 } else {
                     $no_fak_penj_auto = $no_fak_awal;
                 }
+
+                $ceknofak = DB::table('penjualan')->where('no_fak_penj', $no_fak_penj_auto)->count();
             } else {
                 $no_fak_penj_auto = "Auto";
+                $ceknofak = 0;
             }
 
 
@@ -320,7 +323,7 @@ class PenjualanController extends Controller
                 ->where('penjualan.kode_pelanggan', $kode_pelanggan)
                 ->groupBy('penjualan.kode_pelanggan')
                 ->first();
-            return view('penjualan.create_v3', compact('pelanggan', 'piutang', 'no_fak_penj_auto'));
+            return view('penjualan.create_v3', compact('pelanggan', 'piutang', 'no_fak_penj_auto', 'ceknofak'));
         } else {
             return view('penjualan.create_v2');
         }
