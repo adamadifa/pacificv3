@@ -266,7 +266,7 @@ class PenjualanController extends Controller
             // $jmlchar = strlen($nomor_awal);
             $tahunini = date('Y');
             $hariini = strtotime(date("Y-m-d"));
-            $lastmonth    = date('Y-m-d', strtotime("-30 day", $hariini));
+            $lastmonth    = date('Y-m-d', strtotime("-3 day", $hariini));
             // dd($lastmonth);
             $cekpenjualan = DB::table('penjualan')
                 ->where('id_karyawan', $pelanggan->id_sales)
