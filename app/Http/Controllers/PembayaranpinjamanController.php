@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pembayaranpinjaman;
 use App\Models\Pinjamanpotongangaji;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,6 +14,10 @@ class PembayaranpinjamanController extends Controller
 {
     public function index(Request $request)
     {
+        $level = Auth::user()->level;
+        $show_for_hrd = config('global.show_for_hrd');
+        $show_for_hrd_2 = config('global.show_for_hrd_2');
+        $level_show_all = config('global.show_all');
 
         $query = Pinjamanpotongangaji::query();
         $query->select('pinjaman_potongangaji.kode_potongan', 'bulan', 'tahun', 'totalpembayaran');
@@ -30,14 +35,31 @@ class PembayaranpinjamanController extends Controller
                 $query->where('tahun', $request->tahun);
             }
         }
-        $query->leftJoin(
-            DB::raw("(
-            SELECT kode_potongan,SUM(jumlah) as totalpembayaran FROM pinjaman_historibayar GROUP BY kode_potongan
-        ) hb"),
-            function ($join) {
-                $join->on('pinjaman_potongangaji.kode_potongan', '=', 'hb.kode_potongan');
-            }
-        );
+        if (!in_array($level, $level_show_all)) {
+            $query->leftJoin(
+                DB::raw("(
+                SELECT kode_potongan,SUM(jumlah) as totalpembayaran
+                FROM pinjaman_historibayar
+                INNER JOIN pinjaman ON pinjaman_historibayar.no_pinjaman = pinjaman.no_pinjaman
+                INNER JOIN master_karyawan ON pinjaman.nik = master_karyawan.nik
+                WHERE id_jabatan NOT IN ($show_for_hrd_2)
+                GROUP BY kode_potongan
+            ) hb"),
+                function ($join) {
+                    $join->on('pinjaman_potongangaji.kode_potongan', '=', 'hb.kode_potongan');
+                }
+            );
+        } else {
+            $query->leftJoin(
+                DB::raw("(
+                SELECT kode_potongan,SUM(jumlah) as totalpembayaran FROM pinjaman_historibayar GROUP BY kode_potongan
+            ) hb"),
+                function ($join) {
+                    $join->on('pinjaman_potongangaji.kode_potongan', '=', 'hb.kode_potongan');
+                }
+            );
+        }
+
         $query->orderBy('bulan');
         $pinjamanpotongangaji = $query->get();
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
@@ -327,13 +349,20 @@ class PembayaranpinjamanController extends Controller
     public function show(Request $request)
     {
         $kode_potongan = $request->kode_potongan;
-        $historibayar = DB::table('pinjaman_historibayar')
-            ->select('pinjaman_historibayar.no_pinjaman', 'pinjaman.nik', 'nama_karyawan', 'jumlah', 'cicilan_ke')
-            ->join('pinjaman', 'pinjaman_historibayar.no_pinjaman', '=', 'pinjaman.no_pinjaman')
-            ->join('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik')
-            ->where('kode_potongan', $kode_potongan)
-            ->orderBy('no_pinjaman')
-            ->get();
+        $level = Auth::user()->level;
+        $show_for_hrd = config('global.show_for_hrd');
+        $level_show_all = config('global.show_all');
+
+        $query = Pembayaranpinjaman::query();
+        $query->select('pinjaman_historibayar.no_pinjaman', 'pinjaman.nik', 'nama_karyawan', 'jumlah', 'cicilan_ke');
+        $query->join('pinjaman', 'pinjaman_historibayar.no_pinjaman', '=', 'pinjaman.no_pinjaman');
+        $query->join('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik');
+        $query->where('kode_potongan', $kode_potongan);
+        if (!in_array($level, $level_show_all)) {
+            $query->whereNotIn('id_jabatan', $show_for_hrd);
+        }
+        $query->orderBy('no_pinjaman');
+        $historibayar = $query->get();
 
         return view('pembayaranpinjaman.show', compact('historibayar', 'kode_potongan'));
     }
@@ -346,15 +375,24 @@ class PembayaranpinjamanController extends Controller
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         $bln = $bulan[$potongan->bulan];
         $thn = $potongan->tahun;
-        $historibayar = DB::table('pinjaman_historibayar')
-            ->select('pinjaman_historibayar.no_pinjaman', 'pinjaman.nik', 'nama_karyawan', 'jumlah', 'cicilan_ke', 'nama_jabatan', 'nama_dept', 'no_bukti')
-            ->join('pinjaman', 'pinjaman_historibayar.no_pinjaman', '=', 'pinjaman.no_pinjaman')
-            ->join('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik')
-            ->leftJoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
-            ->leftJoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
-            ->where('kode_potongan', $kode_potongan)
-            ->orderBy('no_pinjaman')
-            ->get();
+
+        $level = Auth::user()->level;
+        $show_for_hrd = config('global.show_for_hrd');
+        $level_show_all = config('global.show_all');
+
+
+        $query = Pembayaranpinjaman::query();
+        $query->select('pinjaman_historibayar.no_pinjaman', 'pinjaman.nik', 'nama_karyawan', 'jumlah', 'cicilan_ke', 'nama_jabatan', 'nama_dept', 'no_bukti');
+        $query->join('pinjaman', 'pinjaman_historibayar.no_pinjaman', '=', 'pinjaman.no_pinjaman');
+        $query->join('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik');
+        $query->leftJoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
+        $query->leftJoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
+        $query->where('kode_potongan', $kode_potongan);
+        if (!in_array($level, $level_show_all)) {
+            $query->whereNotIn('master_karyawan.id_jabatan', $show_for_hrd);
+        }
+        $query->orderBy('no_pinjaman');
+        $historibayar = $query->get();
 
         if ($export == "true") {
             // Fungsi header dengan mengirimkan raw data excel

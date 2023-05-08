@@ -601,6 +601,9 @@ class LaporankeuanganController extends Controller
         $sampai = $request->sampai;
         $level = Auth::user()->level;
         $cabang = Auth::user()->kode_cabang;
+        $show_for_hrd = config('global.show_for_hrd');
+        $show_for_hrd_2 = config('global.show_for_hrd_2');
+        $level_show_all = config('global.show_all');
 
         $query = Pinjaman::query();
         $query->select('pinjaman.*', 'nama_karyawan', 'nama_jabatan', 'nama_dept', 'totalpembayaran');
@@ -668,7 +671,9 @@ class LaporankeuanganController extends Controller
             $query->whereIn('master_karyawan.id_kantor', $list_wilayah);
         }
 
-
+        if (!in_array($level, $level_show_all)) {
+            $query->whereNotIn('id_jabatan', $show_for_hrd);
+        }
         $pinjaman = $query->get();
 
         $departemen = DB::table('hrd_departemen')->where('kode_dept', $kode_dept)->first();
@@ -698,6 +703,11 @@ class LaporankeuanganController extends Controller
         $kode_dept = $request->kode_dept;
         $dari = $request->dari;
         $sampai = $request->sampai;
+        $level = Auth::user()->level;
+        $cabang = Auth::user()->kode_cabang;
+        $show_for_hrd = config('global.show_for_hrd');
+        $show_for_hrd_2 = config('global.show_for_hrd_2');
+        $level_show_all = config('global.show_all');
 
         $query = Kasbon::query();
         $query->select('kasbon.*', 'nama_karyawan', 'nama_jabatan', 'nama_dept', 'totalpembayaran');
@@ -722,6 +732,51 @@ class LaporankeuanganController extends Controller
 
         if (!empty($request->kode_dept)) {
             $query->where('master_karyawan.kode_dept', $request->kode_dept);
+        }
+
+        if ($level == "kepala admin") {
+            $query->where('id_kantor', $cabang);
+            $query->where('id_perusahaan', "MP");
+        }
+
+        if ($level == "kepala penjualan") {
+            $query->where('id_kantor', $cabang);
+            $query->where('id_perusahaan', "PCF");
+        }
+
+        if ($level == "manager pembelian") {
+            $query->where('master_karyawan.kode_dept', 'PMB');
+        }
+
+        if ($level == "kepala gudang") {
+            $query->where('master_karyawan.kode_dept', 'GDG');
+        }
+
+        if ($level == "manager produksi") {
+            $query->where('master_karyawan.kode_dept', 'PRD');
+        }
+
+        if ($level == "manager ga") {
+            $query->where('master_karyawan.kode_dept', 'GAF');
+        }
+
+        if ($level == "emf") {
+            $query->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GAF', 'GDG', 'PDQ']);
+        }
+
+
+        if ($level == "manager marketing") {
+            $query->where('master_karyawan.kode_dept', 'MKT');
+        }
+
+        if ($level == "rsm") {
+            $list_wilayah = Auth::user()->wilayah != null ? unserialize(Auth::user()->wilayah) : NULL;
+            $wilayah = $list_wilayah != null ? "'" . implode("', '", $list_wilayah) . "'" : '';
+            $query->whereIn('master_karyawan.id_kantor', $list_wilayah);
+        }
+
+        if (!in_array($level, $level_show_all)) {
+            $query->whereNotIn('master_karyawan.id_jabatan', $show_for_hrd);
         }
 
         $kasbon = $query->get();

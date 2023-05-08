@@ -14,8 +14,8 @@ class GajiController extends Controller
     public function index(Request $request)
     {
         $level = Auth::user()->level;
-        $show_for_hrd = ['14', '4', '5', '2'];
-        $level_show_all = ['manager accounting', 'direktur', 'admin'];
+        $show_for_hrd = config('global.show_for_hrd');
+        $level_show_all = config('global.show_all');
         $query = Gaji::query();
         $query->select('hrd_mastergaji.*', 'nama_karyawan', 'nama_jabatan');
         $query->join('master_karyawan', 'hrd_mastergaji.nik', '=', 'master_karyawan.nik');
@@ -38,9 +38,11 @@ class GajiController extends Controller
 
     {
         $level = Auth::user()->level;
-        $show_for_hrd = ['14', '4', '5', '2'];
-        $level_show_all = ['manager accounting', 'direktur', 'admin'];
-        if (!in_array($level, $level_show_all)) {
+        $show_for_hrd = config('global.show_for_hrd');
+        $level_show_all = config('global.show_all');
+
+
+        if (in_array($level, $level_show_all)) {
             $karyawan = DB::table('master_karyawan')->orderBy('nama_karyawan')->get();
         } else {
             $karyawan = DB::table('master_karyawan')

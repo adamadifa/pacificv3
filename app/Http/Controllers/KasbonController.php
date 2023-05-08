@@ -31,6 +31,8 @@ class KasbonController extends Controller
     {
         $level = Auth::user()->level;
         $cabang = Auth::user()->kode_cabang;
+        $show_for_hrd = config('global.show_for_hrd');
+        $level_show_all = config('global.show_all');
         $query = Kasbon::query();
         $query->select('kasbon.*', 'nama_karyawan', 'nama_jabatan', 'nama_dept', 'totalpembayaran', 'tgl_bayar', 'jatuh_tempo');
         $query->join('master_karyawan', 'kasbon.nik', '=', 'master_karyawan.nik');
@@ -101,6 +103,9 @@ class KasbonController extends Controller
             $query->whereIn('master_karyawan.id_kantor', $list_wilayah);
         }
 
+        if (!in_array($level, $level_show_all)) {
+            $query->whereNotIn('master_karyawan.id_jabatan', $show_for_hrd);
+        }
         $query->orderBy('no_kasbon', 'desc');
         $kasbon = $query->paginate(15);
         $kasbon->appends($request->all());

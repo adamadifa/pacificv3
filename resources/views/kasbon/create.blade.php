@@ -15,6 +15,7 @@
 </style>
 <form method="POST" action="/kasbon/store" id="frmKasbon">
     @csrf
+    <input type="hidden" name="id_jabatan" id="id_jabatan" value="{{ $karyawan->id_jabatan }}">
     <div class="row">
 
         <div class="col-12">
@@ -68,7 +69,6 @@
                 <tr>
                     <th>Akhir Kontrak</th>
                     <td>
-                        <input type="hidden" name="id_jabatan" id="id_jabatan" value="{{ $karyawan->id_jabatan }}">
                         <input type="hidden" name="akhir_kontrak" id="akhir_kontrak" value="{{ $kontrak->sampai }}">
                         {{ $kontrak != null ? DateToIndo2($kontrak->sampai) : "" }}
                     </td>

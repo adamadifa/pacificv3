@@ -15,8 +15,8 @@ class InsentifController extends Controller
     {
 
         $level = Auth::user()->level;
-        $show_for_hrd = ['14', '4', '5', '2'];
-        $level_show_all = ['manager accounting', 'direktur', 'admin'];
+        $show_for_hrd = config('global.show_for_hrd');
+        $level_show_all = config('global.show_all');
         $query = Insentif::query();
         $query->select('hrd_masterinsentif.*', 'nama_karyawan', 'nama_jabatan');
         $query->join('master_karyawan', 'hrd_masterinsentif.nik', '=', 'master_karyawan.nik');
@@ -36,7 +36,19 @@ class InsentifController extends Controller
     public function create()
 
     {
-        $karyawan = DB::table('master_karyawan')->orderBy('nama_karyawan')->get();
+        $level = Auth::user()->level;
+        $show_for_hrd = config('global.show_for_hrd');
+        $level_show_all = config('global.show_all');
+
+
+        if (in_array($level, $level_show_all)) {
+            $karyawan = DB::table('master_karyawan')->orderBy('nama_karyawan')->get();
+        } else {
+            $karyawan = DB::table('master_karyawan')
+                ->whereNotIn('id_jabatan', $show_for_hrd)
+                ->orderBy('nama_karyawan')->get();
+        }
+
         return view('insentif.create', compact('karyawan'));
     }
 

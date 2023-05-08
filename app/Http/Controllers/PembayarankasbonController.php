@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kasbonpotongangaji;
+use App\Models\Pembayarankasbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -13,6 +14,11 @@ class PembayarankasbonController extends Controller
 {
     public function index(Request $request)
     {
+
+        $level = Auth::user()->level;
+        $show_for_hrd = config('global.show_for_hrd');
+        $show_for_hrd_2 = config('global.show_for_hrd_2');
+        $level_show_all = config('global.show_all');
 
         $query = Kasbonpotongangaji::query();
         $query->select('kasbon_potongangaji.kode_potongan', 'bulan', 'tahun', 'totalpembayaran');
@@ -30,14 +36,30 @@ class PembayarankasbonController extends Controller
                 $query->where('tahun', $request->tahun);
             }
         }
-        $query->leftJoin(
-            DB::raw("(
-            SELECT kode_potongan,SUM(jumlah) as totalpembayaran FROM kasbon_historibayar GROUP BY kode_potongan
-        ) hb"),
-            function ($join) {
-                $join->on('kasbon_potongangaji.kode_potongan', '=', 'hb.kode_potongan');
-            }
-        );
+        if (!in_array($level, $level_show_all)) {
+            $query->leftJoin(
+                DB::raw("(
+                SELECT kode_potongan,SUM(jumlah) as totalpembayaran
+                FROM kasbon_historibayar
+                INNER JOIN kasbon ON kasbon_historibayar.no_kasbon = kasbon.no_kasbon
+                INNER JOIN master_karyawan ON kasbon.nik = master_karyawan.nik
+                WHERE master_karyawan.id_jabatan NOT IN ($show_for_hrd_2)
+                GROUP BY kode_potongan
+            ) hb"),
+                function ($join) {
+                    $join->on('kasbon_potongangaji.kode_potongan', '=', 'hb.kode_potongan');
+                }
+            );
+        } else {
+            $query->leftJoin(
+                DB::raw("(
+                SELECT kode_potongan,SUM(jumlah) as totalpembayaran FROM kasbon_historibayar GROUP BY kode_potongan
+            ) hb"),
+                function ($join) {
+                    $join->on('kasbon_potongangaji.kode_potongan', '=', 'hb.kode_potongan');
+                }
+            );
+        }
         $query->orderBy('bulan');
         $kasbonpotongangaji = $query->get();
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
@@ -121,13 +143,19 @@ class PembayarankasbonController extends Controller
     public function show(Request $request)
     {
         $kode_potongan = $request->kode_potongan;
-        $historibayar = DB::table('kasbon_historibayar')
-            ->select('kasbon_historibayar.no_kasbon', 'kasbon.nik', 'nama_karyawan', 'jumlah')
-            ->join('kasbon', 'kasbon_historibayar.no_kasbon', '=', 'kasbon.no_kasbon')
-            ->join('master_karyawan', 'kasbon.nik', '=', 'master_karyawan.nik')
-            ->where('kode_potongan', $kode_potongan)
-            ->orderBy('no_kasbon')
-            ->get();
+        $level = Auth::user()->level;
+        $show_for_hrd = config('global.show_for_hrd');
+        $level_show_all = config('global.show_all');
+        $query = Pembayarankasbon::query();
+        $query->select('kasbon_historibayar.no_kasbon', 'kasbon.nik', 'nama_karyawan', 'jumlah');
+        $query->join('kasbon', 'kasbon_historibayar.no_kasbon', '=', 'kasbon.no_kasbon');
+        $query->join('master_karyawan', 'kasbon.nik', '=', 'master_karyawan.nik');
+        $query->where('kode_potongan', $kode_potongan);
+        if (!in_array($level, $level_show_all)) {
+            $query->whereNotIn('master_karyawan.id_jabatan', $show_for_hrd);
+        }
+        $query->orderBy('no_kasbon');
+        $historibayar = $query->get();
 
         return view('pembayarankasbon.show', compact('historibayar', 'kode_potongan'));
     }
@@ -154,15 +182,23 @@ class PembayarankasbonController extends Controller
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         $bln = $bulan[$potongan->bulan];
         $thn = $potongan->tahun;
-        $historibayar = DB::table('kasbon_historibayar')
-            ->select('kasbon_historibayar.no_kasbon', 'kasbon.nik', 'nama_karyawan', 'jumlah', 'nama_jabatan', 'nama_dept', 'no_bukti')
-            ->join('kasbon', 'kasbon_historibayar.no_kasbon', '=', 'kasbon.no_kasbon')
-            ->join('master_karyawan', 'kasbon.nik', '=', 'master_karyawan.nik')
-            ->leftJoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
-            ->leftJoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
-            ->where('kode_potongan', $kode_potongan)
-            ->orderBy('no_kasbon')
-            ->get();
+
+        $level = Auth::user()->level;
+        $show_for_hrd = config('global.show_for_hrd');
+        $level_show_all = config('global.show_all');
+
+        $query = Pembayarankasbon::query();
+        $query->select('kasbon_historibayar.no_kasbon', 'kasbon.nik', 'nama_karyawan', 'jumlah', 'nama_jabatan', 'nama_dept', 'no_bukti');
+        $query->join('kasbon', 'kasbon_historibayar.no_kasbon', '=', 'kasbon.no_kasbon');
+        $query->join('master_karyawan', 'kasbon.nik', '=', 'master_karyawan.nik');
+        $query->leftJoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
+        $query->leftJoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
+        $query->where('kode_potongan', $kode_potongan);
+        if (!in_array($level, $level_show_all)) {
+            $query->whereNotIn('master_karyawan.id_jabatan', $show_for_hrd);
+        }
+        $query->orderBy('no_kasbon');
+        $historibayar = $query->get();
 
         if ($export == "true") {
             // Fungsi header dengan mengirimkan raw data excel

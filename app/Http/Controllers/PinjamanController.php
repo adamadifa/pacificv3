@@ -33,6 +33,8 @@ class PinjamanController extends Controller
     {
         $level = Auth::user()->level;
         $cabang = Auth::user()->kode_cabang;
+        $show_for_hrd = config('global.show_for_hrd');
+        $level_show_all = config('global.show_all');
         $query = Pinjaman::query();
         $query->select('pinjaman.*', 'nama_karyawan', 'nama_jabatan', 'nama_dept', 'totalpembayaran');
         $query->join('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik');
@@ -105,6 +107,10 @@ class PinjamanController extends Controller
             $list_wilayah = Auth::user()->wilayah != null ? unserialize(Auth::user()->wilayah) : NULL;
             $wilayah = $list_wilayah != null ? "'" . implode("', '", $list_wilayah) . "'" : '';
             $query->whereIn('master_karyawan.id_kantor', $list_wilayah);
+        }
+
+        if (!in_array($level, $level_show_all)) {
+            $query->whereNotIn('id_jabatan', $show_for_hrd);
         }
 
         $query->orderBy('no_pinjaman', 'desc');
