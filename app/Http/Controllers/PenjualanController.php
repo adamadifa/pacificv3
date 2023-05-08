@@ -8249,7 +8249,7 @@ class PenjualanController extends Controller
             DB::raw("(
             SELECT
                 no_fak_penj,
-                SUM(IF(jenisbayar='tunai',bayar,0)) as totaltunai,
+                SUM(IF(jenisbayar='tunai' AND status_bayar IS NULL,bayar,0)) as totaltunai,
                 SUM(IF(jenisbayar='titipan',bayar,0)) as totalbayar,
                 SUM(IF(status_bayar ='voucher',bayar,0)) AS totalvoucher
             FROM

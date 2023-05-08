@@ -330,7 +330,71 @@
                     <td></td>
                     <td></td>
                 </tr>
+
                 @endforeach
+                @if (Auth::user()->kode_cabang=="TSM")
+                <tr>
+                    <td style="padding:15px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                </tr>
+                <tr>
+                    <td style="padding:15px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                </tr>
+                <tr>
+                    <td style="padding:15px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                    <td style="padding:5px"></td>
+                </tr>
+                @endif
+
                 <tr>
                     <th colspan="2">TERJUAL</th>
                     <th>{{ desimal($totalAB) }}</th>
