@@ -402,7 +402,7 @@ class GlobalProvider extends ServiceProvider
                 'admin', 'direktur', 'general manager', 'manager marketing', 'rsm', 'manager accounting', 'spv accounting',
                 'kepala penjualan', 'kepala admin', 'admin pusat', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'admin kas kecil', 'audit',
                 'kasir', 'audit', 'admin garut', 'admin kas', 'manager accounting', 'admin kas dan penjualan', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil',
-                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'admin penjualan kasir dan kas kecil', 'audit', 'admin pajak 2'
+                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'admin penjualan kasir dan kas kecil', 'audit', 'admin pajak 2', 'manager hrd', 'manager produksi'
             ];
             $laporan_ledger = [
                 'admin', 'direktur',
@@ -481,8 +481,8 @@ class GlobalProvider extends ServiceProvider
             $pinjaman_view = ['admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'manager accounting', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager hrd'];
             $pembayaranpinjaman_view = ['admin'];
             $inputbayarpinjaman = ['admin', 'manager hrd', 'manager accounting'];
-            $lap_pinjaman = ['admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'manager accounting', 'manager ga', 'emf', 'manager marketing', 'rsm'];
-            $lap_kasbon = ['admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'manager accounting', 'manager ga', 'emf', 'manager marketing', 'rsm'];
+            $lap_pinjaman = ['admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'manager accounting', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager hrd'];
+            $lap_kasbon = ['admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'manager accounting', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager hrd'];
 
             $kasbon_view = ['admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'manager accounting', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager hrd'];
             $pembayarankasbon_view = ['admin'];

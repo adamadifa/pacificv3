@@ -1037,6 +1037,11 @@
                             <i class="feather icon-file-text"></i>
                             <span class="menu-item" data-i18n="Second Level">Laporan</span>
                         </a>
+                        @elseif($level=="manager hrd" || $level=="manager produksi")
+                        <a href="/laporankeuangan/pinjaman">
+                            <i class="feather icon-file-text"></i>
+                            <span class="menu-item" data-i18n="Second Level">Laporan</span>
+                        </a>
                         @else
                         <a href="/laporankeuangan/kaskecil">
                             <i class="feather icon-file-text"></i>

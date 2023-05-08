@@ -39,6 +39,10 @@
                                             <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker />
                                         </div>
                                     </div>
+                                    @php
+                                    $level_search = ["admin","manager hrd","manager accounting","direktur"];
+                                    @endphp
+                                    @if (in_array($level,$level_search))
                                     <div class="row" id="pilihcabang">
                                         <div class="col-lg-12 col-sm-12">
                                             <div class="form-group  ">
@@ -63,6 +67,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @endif
                                     <div class="row">
                                         <div class="col-lg-8 col-sm-12">
                                             <div class="form-group">
