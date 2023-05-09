@@ -74,6 +74,7 @@ use App\Http\Controllers\PemasukangudanglogistikController;
 use App\Http\Controllers\PemasukanmaintenanceController;
 use App\Http\Controllers\PemasukanproduksiController;
 use App\Http\Controllers\PembayaranController;
+use App\Http\Controllers\PembayaranjmkController;
 use App\Http\Controllers\PembayarankasbonController;
 use App\Http\Controllers\PembayaranpinjamanController;
 use App\Http\Controllers\PembelianController;
@@ -1607,4 +1608,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/jadwalkerja', [JadwalkerjaController::class, 'index']);
     Route::post('/jadwalkerja/pindahjadwal', [JadwalkerjaController::class, 'pindahjadwal']);
     Route::post('/jadwalkerja/updatejadwalkerja', [JadwalkerjaController::class, 'updatejadwalkerja']);
+
+    //JMK
+    Route::get('/pembayaranjmk', [PembayaranjmkController::class, 'index']);
+    Route::get('/pembayaranjmk/create', [PembayaranjmkController::class, 'create']);
 });

@@ -1225,6 +1225,14 @@
                         </a>
                     </li>
                     @endif
+                    @if (in_array($level,$pembayaran_jmk))
+                    <li class="{{ request()->is(['pembayaranjmk', 'pembayaranjmk/*']) ? 'active' : '' }}">
+                        <a href="/pembayaranjmk">
+                            <i class="feather icon-dollar-sign"></i>
+                            <span class="menu-item" data-i18n="Second Level">Pembayaran JMK</span>
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </li>
             @endif
