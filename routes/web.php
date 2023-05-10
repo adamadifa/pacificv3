@@ -69,6 +69,7 @@ use App\Http\Controllers\OpnamegudanglogistikController;
 use App\Http\Controllers\OpnamemutasibarangproduksiController;
 use App\Http\Controllers\Pasarcontroller;
 use App\Http\Controllers\PelangganController;
+use App\Http\Controllers\PelanggaranController;
 use App\Http\Controllers\PemasukangudangbahanController;
 use App\Http\Controllers\PemasukangudanglogistikController;
 use App\Http\Controllers\PemasukanmaintenanceController;
@@ -1616,4 +1617,13 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/pembayaranjmk/{no_bukti}/delete', [PembayaranjmkController::class, 'delete']);
     Route::post('/pembayaranjmk/edit', [PembayaranjmkController::class, 'edit']);
     Route::post('/pembayaranjmk/{no_bukti}/update', [PembayaranjmkController::class, 'update']);
+
+
+    //Pelanggaran
+    Route::get('/pelanggaran', [PelanggaranController::class, 'index']);
+    Route::get('/pelanggaran/create', [PelanggaranController::class, 'create']);
+    Route::post('/pelanggaran/store', [PelanggaranController::class, 'store']);
+    Route::delete('/pelanggaran/{no_bukti}/delete', [PelanggaranController::class, 'delete']);
+    Route::post('/pelanggaran/edit', [PelanggaranController::class, 'edit']);
+    Route::post('/pelanggaran/{no_sp}/update', [PelanggaranController::class, 'update']);
 });

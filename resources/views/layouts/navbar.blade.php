@@ -1233,6 +1233,14 @@
                         </a>
                     </li>
                     @endif
+                    @if (in_array($level,$pelanggaran_menu))
+                    <li class="{{ request()->is(['pelanggaran', 'pelanggaran/*']) ? 'active' : '' }}">
+                        <a href="/pelanggaran">
+                            <i class="feather icon-thumbs-down"></i>
+                            <span class="menu-item" data-i18n="Second Level">Pelanggaran</span>
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </li>
             @endif

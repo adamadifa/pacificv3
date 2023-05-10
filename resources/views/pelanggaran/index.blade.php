@@ -1,15 +1,15 @@
 @extends('layouts.midone')
-@section('titlepage','Pembayaran JMK')
+@section('titlepage','Pelanggaran')
 @section('content')
 <div class="content-wrapper">
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Pembayaran JMK</h2>
+                    <h2 class="content-header-title float-left mb-0">Pelanggaran</h2>
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/pembayaranjmk">Pembayaran JMK</a>
+                            <li class="breadcrumb-item"><a href="/pelanggaran">Pelanggaran</a>
                             </li>
                         </ol>
                     </div>
@@ -24,10 +24,10 @@
         <div class="col-md-12 col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    <a href="#" class="btn btn-primary" id="inputbayarjmk"><i class="fa fa-plus mr-1"></i> Input Bayar JMK</a>
+                    <a href="#" class="btn btn-primary" id="inputpelanggaran"><i class="fa fa-plus mr-1"></i> Input Pelanggaran</a>
                 </div>
                 <div class="card-body">
-                    <form action="/pembayaranjmk">
+                    <form action="/pelanggaran">
                         <div class="row">
                             <div class="col-lg-3 col-sm-12">
                                 <x-inputtext label="Nama Karyawan" field="nama_karyawan_search" icon="feather icon-users" value="{{ Request('nama_karyawan_search') }}" />
@@ -71,35 +71,48 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th>No.</th>
-                                    <th>No. Bukti</th>
+                                    <th>No. Surat</th>
                                     <th>Tanggal</th>
                                     <th>NIK</th>
                                     <th>Nama Karyawan</th>
                                     <th>Jabatan</th>
-                                    <th>Perusahaan</th>
+
                                     <th>Kantor</th>
                                     <th>Dept</th>
-                                    <th>Jumlah</th>
+                                    <th>Kategori</th>
+                                    <th>Berlaku</th>
+                                    <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($jmk as $d)
+                                @foreach ($pelanggaran as $d)
                                 <tr>
-                                    <td>{{ $loop->iteration + $jmk->firstItem()-1 }}</td>
-                                    <td>{{ $d->no_bukti }}</td>
-                                    <td>{{ $d->tgl_pembayaran }}</td>
+                                    <td>{{ $loop->iteration + $pelanggaran->firstItem()-1 }}</td>
+                                    <td>{{ $d->no_sp }}</td>
+                                    <td>{{ date('d-m-Y',strtotime($d->dari)) }}</td>
                                     <td>{{ $d->nik }}</td>
                                     <td>{{ $d->nama_karyawan }}</td>
                                     <td>{{ $d->nama_jabatan }}</td>
-                                    <td>{{ $d->id_perusahaan }}</td>
                                     <td>{{ $d->id_kantor }}</td>
                                     <td>{{ $d->nama_dept }}</td>
-                                    <td class="text-right">{{ rupiah($d->jumlah) }}</td>
+                                    <td>{{ $d->ket }}</td>
+                                    <td>{{ date('d-m-Y',strtotime($d->dari)) }} s/d {{ date('d-m-Y',strtotime($d->sampai)) }}</td>
+                                    <td>
+                                        @php
+                                        $hariini = date('Y-m-d');
+                                        @endphp
+
+                                        @if ($hariini > $d->sampai)
+                                        <span class="badge bg-success">Selesai</span>
+                                        @else
+                                        <span class="badge bg-danger">Belum Selesai</span>
+                                        @endif
+                                    </td>
                                     <td>
                                         <div class="btn-group">
-                                            <a class="ml-1 edit" no_bukti="{{ $d->no_bukti }}" href="#"><i class="feather icon-edit success"></i></a>
-                                            <form method="POST" class="deleteform" action="/pembayaranjmk/{{Crypt::encrypt($d->no_bukti)}}/delete">
+                                            <a class="ml-1 edit" no_sp="{{ $d->no_sp }}" href="#"><i class="feather icon-edit success"></i></a>
+                                            <form method="POST" class="deleteform" action="/pelanggaran/{{Crypt::encrypt($d->no_sp)}}/delete">
                                                 @csrf
                                                 @method('DELETE')
                                                 <a href="#" class="delete-confirm ml-1">
@@ -112,7 +125,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        {{ $jmk->links('vendor.pagination.vuexy') }}
+                        {{ $pelanggaran->links('vendor.pagination.vuexy') }}
                     </div>
                 </div>
             </div>
@@ -120,16 +133,16 @@
     </div>
 </div>
 
-<div class="modal fade text-left" id="mdlinputbayarjmk" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+<div class="modal fade text-left" id="mdlinputpelanggaran" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel18">Pembayaran JMK</h4>
+                <h4 class="modal-title" id="myModalLabel18">Input Pelanggaran</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" id="loadinputbayarjmk">
+            <div class="modal-body" id="loadinputpelanggaran">
 
             </div>
         </div>
@@ -137,16 +150,16 @@
 </div>
 
 
-<div class="modal fade text-left" id="mdleditbayarjmk" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+<div class="modal fade text-left" id="mdleditpelanggaran" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel18">Edit Pembayaran JMK</h4>
+                <h4 class="modal-title" id="myModalLabel18">Edit Pelanggaran</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" id="loadeditbayarjmk">
+            <div class="modal-body" id="loadeditpelanggaran">
 
             </div>
         </div>
@@ -158,10 +171,10 @@
 @push('myscript')
 <script>
     $(function() {
-        $('#inputbayarjmk').click(function(e) {
+        $('#inputpelanggaran').click(function(e) {
             e.preventDefault();
-            $("#loadinputbayarjmk").load('/pembayaranjmk/create');
-            $('#mdlinputbayarjmk').modal({
+            $("#loadinputpelanggaran").load('/pelanggaran/create');
+            $('#mdlinputpelanggaran').modal({
                 backdrop: 'static'
                 , keyboard: false
             });
@@ -188,21 +201,21 @@
 
         $(".edit").click(function(e) {
             e.preventDefault();
-            var no_bukti = $(this).attr("no_bukti");
+            var no_sp = $(this).attr("no_sp");
             $.ajax({
                 type: 'POST'
-                , url: '/pembayaranjmk/edit'
+                , url: '/pelanggaran/edit'
                 , data: {
                     _token: "{{ csrf_token() }}"
-                    , no_bukti: no_bukti
+                    , no_sp: no_sp
                 }
                 , cache: false
                 , success: function(respond) {
-                    $('#mdleditbayarjmk').modal({
+                    $('#mdleditpelanggaran').modal({
                         backdrop: 'static'
                         , keyboard: false
                     });
-                    $("#loadeditbayarjmk").html(respond);
+                    $("#loadeditpelanggaran").html(respond);
                 }
             });
         });
