@@ -98,8 +98,8 @@
                                     <td class="text-right">{{ rupiah($d->jumlah) }}</td>
                                     <td>
                                         <div class="btn-group">
-                                            <a class="ml-1 edit" no_kontrak="{{ $d->no_kontrak }}" href="#"><i class="feather icon-edit success"></i></a>
-                                            <form method="POST" class="deleteform" action="/kontrak/{{Crypt::encrypt($d->no_kontrak)}}/delete">
+                                            <a class="ml-1 edit" no_bukti="{{ $d->no_bukti }}" href="#"><i class="feather icon-edit success"></i></a>
+                                            <form method="POST" class="deleteform" action="/pembayaranjmk/{{Crypt::encrypt($d->no_bukti)}}/delete">
                                                 @csrf
                                                 @method('DELETE')
                                                 <a href="#" class="delete-confirm ml-1">
@@ -112,7 +112,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        {{-- {{ $datakontrak->links('vendor.pagination.vuexy') }} --}}
+                        {{ $jmk->links('vendor.pagination.vuexy') }}
                     </div>
                 </div>
             </div>
@@ -136,6 +136,23 @@
     </div>
 </div>
 
+
+<div class="modal fade text-left" id="mdleditbayarjmk" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Edit Pembayaran JMK</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="loadeditbayarjmk">
+
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @push('myscript')
@@ -147,6 +164,46 @@
             $('#mdlinputbayarjmk').modal({
                 backdrop: 'static'
                 , keyboard: false
+            });
+        });
+
+        $('.delete-confirm').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+            event.preventDefault();
+            swal({
+                    title: `Are you sure you want to delete this record?`
+                    , text: "If you delete this, it will be gone forever."
+                    , icon: "warning"
+                    , buttons: true
+                    , dangerMode: true
+                , })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
+        });
+
+
+        $(".edit").click(function(e) {
+            e.preventDefault();
+            var no_bukti = $(this).attr("no_bukti");
+            $.ajax({
+                type: 'POST'
+                , url: '/pembayaranjmk/edit'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , no_bukti: no_bukti
+                }
+                , cache: false
+                , success: function(respond) {
+                    $('#mdleditbayarjmk').modal({
+                        backdrop: 'static'
+                        , keyboard: false
+                    });
+                    $("#loadeditbayarjmk").html(respond);
+                }
             });
         });
     })

@@ -1612,4 +1612,8 @@ Route::middleware(['auth'])->group(function () {
     //JMK
     Route::get('/pembayaranjmk', [PembayaranjmkController::class, 'index']);
     Route::get('/pembayaranjmk/create', [PembayaranjmkController::class, 'create']);
+    Route::post('/pembayaranjmk/store', [PembayaranjmkController::class, 'store']);
+    Route::delete('/pembayaranjmk/{no_bukti}/delete', [PembayaranjmkController::class, 'delete']);
+    Route::post('/pembayaranjmk/edit', [PembayaranjmkController::class, 'edit']);
+    Route::post('/pembayaranjmk/{no_bukti}/update', [PembayaranjmkController::class, 'update']);
 });

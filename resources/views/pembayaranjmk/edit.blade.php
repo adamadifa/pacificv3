@@ -13,7 +13,7 @@
     }
 
 </style>
-<form action="/pembayaranjmk/store" method="POST" id="frmJmk">
+<form action="/pembayaranjmk/{{ Crypt::encrypt($jmk->no_bukti); }}/update" method="POST" id="frmJmk">
     @csrf
     <div class="row">
         <div class="col-12">
@@ -22,7 +22,7 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext label="Tanggal Pembayaran" field="tgl_pembayaran" icon="feather icon-calendar" datepicker />
+            <x-inputtext label="Tanggal Pembayaran" value="{{ $jmk->tgl_pembayaran }}" field="tgl_pembayaran" icon="feather icon-calendar" datepicker />
         </div>
     </div>
     <div class="row">
@@ -31,7 +31,7 @@
                 <select name="nik" id="nik" class="form-control">
                     <option value="">Pilih Karyawan</option>
                     @foreach ($karyawan as $d)
-                    <option value="{{ $d->nik }}">{{ $d->nama_karyawan }}</option>
+                    <option {{ $jmk->nik == $d->nik ? 'selected' : '' }} value="{{ $d->nik }}">{{ $d->nama_karyawan }}</option>
                     @endforeach
                 </select>
             </div>
@@ -39,7 +39,7 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext field="jumlah" label="Jumlah" icon="feather icon-dollar-sign" right />
+            <x-inputtext field="jumlah" label="Jumlah" value="{{ rupiah($jmk->jumlah) }}" icon="feather icon-dollar-sign" right />
         </div>
     </div>
     <div class="row">

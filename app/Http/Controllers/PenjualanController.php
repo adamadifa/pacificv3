@@ -8206,7 +8206,7 @@ class PenjualanController extends Controller
         $query = Penjualan::query();
         $query->selectRaw("penjualan.no_fak_penj,nama_pelanggan,
         AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500,
-        SUM(totaltunai) - SUM(IFNULL(totalretur,0)) as totaltunai,
+        SUM(totaltunai) as totaltunai,
         SUM(IF(penjualan.jenistransaksi='kredit',total,0)) as totalkredit,
         totalbayar,totalgiro,totaltransfer,totalvoucher");
         $query->leftJoin(
