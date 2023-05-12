@@ -89,6 +89,7 @@ use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\PermintaanpengirimanController;
 use App\Http\Controllers\PermintaanproduksiController;
 use App\Http\Controllers\PinjamanController;
+use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\ProduksiController;
 use App\Http\Controllers\QrcodeController;
 use App\Http\Controllers\RatiokomisiController;
@@ -1604,6 +1605,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/pengajuanizin/approveizinpulang', [PengajuanizinController::class, 'approveizinpulang']);
     Route::post('/pengajuanizin/approveizinkeluar', [PengajuanizinController::class, 'approveizinkeluar']);
     Route::get('/pengajuanizin/create', [PengajuanizinController::class, 'create']);
+    Route::post('/pengajuanizin/store', [PengajuanizinController::class, 'store']);
+    Route::delete('/pengajuanizin/{kode_izin}/delete', [PengajuanizinController::class, 'delete']);
 
     //Jadwal Kerja
     Route::get('/jadwalkerja', [JadwalkerjaController::class, 'index']);
@@ -1626,4 +1629,8 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/pelanggaran/{no_bukti}/delete', [PelanggaranController::class, 'delete']);
     Route::post('/pelanggaran/edit', [PelanggaranController::class, 'edit']);
     Route::post('/pelanggaran/{no_sp}/update', [PelanggaranController::class, 'update']);
+
+    //Presensi
+
+    Route::get('/presensi/monitoring', [PresensiController::class, 'monitoring']);
 });

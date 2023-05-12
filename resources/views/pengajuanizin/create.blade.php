@@ -1,4 +1,5 @@
-<form method="POST" action="/pengajuanizin/store">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<form method="POST" action="/pengajuanizin/store" id="frmPengajuanizin" enctype="multipart/form-data">
     @csrf
     <div class="row">
         <div class="col-12">
@@ -61,10 +62,10 @@
     </div>
     <div class="row">
         <div class="col-6">
-            <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" />
+            <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker />
         </div>
         <div class="col-6">
-            <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" />
+            <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker />
         </div>
     </div>
     <div class="row" id="fileUpload1">
@@ -92,8 +93,21 @@
         </div>
     </div>
 </form>
+<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
 <script>
     $(function() {
+
+        // $('#jam_pulang').datetimepicker({
+        //     format: 'hh:mm'
+        //     , autoclose: false
+        // });
+
+        $("#jam_pulang,#jam_keluar").datetimepicker({
+            format: 'HH:mm'
+        });
+
+
         $("#nik").selectize();
 
         function hidesid() {
@@ -144,15 +158,7 @@
         hidejampulang();
         hidejamkeluar();
 
-        $(".datepicker").datepicker({
-            format: "yyyy-mm-dd"
-            , minDate: null
-        });
-        $('.timepicker').timepicker({
 
-            twelveHour: false
-            , fromNow: 0
-        });
 
         $("#status").change(function() {
             var status = $(this).val();
@@ -220,7 +226,13 @@
             var Difference_In_Days = Difference_In_Time / (1000 * 3600 * 24);
 
             //To display the final no. of days (result)
-            $("#jmlhari").val(Difference_In_Days + 1);
+            var result = Difference_In_Days + 1;
+            if (dari == "" || sampai == "") {
+                var hasil = 0;
+            } else {
+                var hasil = result;
+            }
+            $("#jmlhari").val(hasil);
         }
 
 
@@ -244,49 +256,6 @@
             loadjumlahhari();
         });
 
-        $("#frmIzin").submit(function() {
-            var dari = $("#dari").val();
-            var sampai = $("#sampai").val();
-            var status = $("#status").val();
-            var keterangan = $("#keterangan").val();
-            var jenis_izin = $("#jenis_izin").val();
-            if (dari == "") {
-                Swal.fire({
-                    title: 'Oops !'
-                    , text: 'Tanggal Harus Diisi'
-                    , icon: 'warning'
-                });
-                return false;
-            } else if (sampai == "") {
-                Swal.fire({
-                    title: 'Oops !'
-                    , text: 'Sampai Harus Diisi'
-                    , icon: 'warning'
-                });
-                return false;
-            } else if (status == "") {
-                Swal.fire({
-                    title: 'Oops !'
-                    , text: 'Status Harus Diisi'
-                    , icon: 'warning'
-                });
-                return false;
-            } else if (status == "i" && jenis_izin == "") {
-                Swal.fire({
-                    title: 'Oops !'
-                    , text: 'Jenis Izin Harus Diisi'
-                    , icon: 'warning'
-                });
-                return false;
-            } else if (keterangan == "") {
-                Swal.fire({
-                    title: 'Oops !'
-                    , text: 'Ketereangan Harus Diisi'
-                    , icon: 'warning'
-                });
-                return false;
-            }
-        });
 
         function gettanggal() {
             var tanggal = $("#dari").val();
@@ -315,6 +284,78 @@
                 $("#sampai").val("");
             }
         });
+
+
+        $("#frmPengajuanizin").submit(function() {
+            var nik = $("#nik").val();
+            var dari = $("#dari").val();
+            var sampai = $("#sampai").val();
+            var status = $("#status").val();
+            var keterangan = $("#keterangan").val();
+            var jenis_izin = $("#jenis_izin").val();
+            if (nik == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Nik Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#nik").focus();
+                });
+                return false;
+            } else if (status == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Status Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#status").focus();
+                });
+                return false;
+            } else if (dari == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Tanggal Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#dari").focus();
+                });
+                return false;
+            } else if (sampai == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Sampai Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#sampai").focus();
+                });
+                return false;
+            } else if (status == "i" && jenis_izin == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Jenis Izin Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#jenis_izin").focus();
+                });
+                return false;
+            } else if (keterangan == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Keterangan Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#keterangan").focus();
+                });
+                return false;
+            }
+        });
+
 
     });
 

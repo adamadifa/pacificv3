@@ -173,9 +173,22 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <a href="#" class="approveizin" kode_izin="{{ $d->kode_izin }}">
-                                                            <i class="feather icon-external-link text-primary"></i>
-                                                        </a>
+                                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                                            <a href="#" class="approveizin" kode_izin="{{ $d->kode_izin }}">
+                                                                <i class="feather icon-external-link text-primary"></i>
+                                                            </a>
+                                                            @if (empty($d->head_dept))
+                                                            <form method="POST" class="deleteform" action="/pengajuanizin/{{Crypt::encrypt($d->kode_izin)}}/delete">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <a href="#" class="delete-confirm ml-1">
+                                                                    <i class="feather icon-trash danger"></i>
+                                                                </a>
+                                                            </form>
+                                                            @endif
+
+                                                        </div>
+
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -225,15 +238,55 @@
         </div>
     </div>
 </div>
+<div class="modal fade text-left" id="mdlbuatizin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Buat Izin</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="loadbuatizin">
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('myscript')
 <script>
     $(function() {
+
+        $("#buatizin").click(function(e) {
+            $('#mdlbuatizin').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+            $("#loadbuatizin").load('/pengajuanizin/create');
+        });
         $(".approveizin").click(function(e) {
             $("#mdlapprove").modal("show");
             var kode_izin = $(this).attr('kode_izin');
             $("#kode_izin").val(kode_izin);
+        });
+
+        $('.delete-confirm').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+            event.preventDefault();
+            swal({
+                    title: `Are you sure you want to delete this record?`
+                    , text: "If you delete this, it will be gone forever."
+                    , icon: "warning"
+                    , buttons: true
+                    , dangerMode: true
+                , })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
         });
     });
 

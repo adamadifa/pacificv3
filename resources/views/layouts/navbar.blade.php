@@ -1241,6 +1241,14 @@
                         </a>
                     </li>
                     @endif
+                    @if (in_array($level,$monitoring_presensi))
+                    <li class="{{ request()->is(['presensi/monitoring']) ? 'active' : '' }}">
+                        <a href="/presensi/monitoring">
+                            <i class="feather icon-monitor"></i>
+                            <span class="menu-item" data-i18n="Second Level">Monitoring Presensi</span>
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </li>
             @endif

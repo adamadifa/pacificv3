@@ -47,10 +47,10 @@
                                         <form action="/pengajuanizin">
                                             <div class="row">
                                                 <div class="col-lg-6 col-sm-12">
-                                                    <x-inputtext label="Dari" field="dari" value="{{ Request('dari') }}" icon="feather icon-calendar" datepicker />
+                                                    <x-inputtext label="Dari" field="dari_search" value="{{ Request('dari') }}" icon="feather icon-calendar" datepicker />
                                                 </div>
                                                 <div class="col-lg-6 col-sm-12">
-                                                    <x-inputtext label="Sampai" field="sampai" value="{{ Request('sampai') }}" icon="feather icon-calendar" datepicker />
+                                                    <x-inputtext label="Sampai" field="sampai_search" value="{{ Request('sampai') }}" icon="feather icon-calendar" datepicker />
                                                 </div>
                                             </div>
                                             @php
@@ -156,9 +156,22 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <a href="#" class="approveizin" kode_izin="{{ $d->kode_izin }}">
-                                                            <i class="feather icon-external-link text-primary"></i>
-                                                        </a>
+                                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                                            <a href="#" class="approveizin" kode_izin="{{ $d->kode_izin }}">
+                                                                <i class="feather icon-external-link text-primary"></i>
+                                                            </a>
+                                                            @if (empty($d->head_dept))
+                                                            <form method="POST" class="deleteform" action="/pengajuanizin/{{Crypt::encrypt($d->kode_izin)}}/delete">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <a href="#" class="delete-confirm ml-1">
+                                                                    <i class="feather icon-trash danger"></i>
+                                                                </a>
+                                                            </form>
+                                                            @endif
+
+                                                        </div>
+
                                                     </td>
                                                 </tr>
                                                 @endforeach
@@ -237,8 +250,29 @@
     });
 
     $("#buatizin").click(function(e) {
-        $("#mdlbuatizin").modal("show");
+        $('#mdlbuatizin').modal({
+            backdrop: 'static'
+            , keyboard: false
+        });
         $("#loadbuatizin").load('/pengajuanizin/create');
+    });
+
+    $('.delete-confirm').click(function(event) {
+        var form = $(this).closest("form");
+        var name = $(this).data("name");
+        event.preventDefault();
+        swal({
+                title: `Are you sure you want to delete this record?`
+                , text: "If you delete this, it will be gone forever."
+                , icon: "warning"
+                , buttons: true
+                , dangerMode: true
+            , })
+            .then((willDelete) => {
+                if (willDelete) {
+                    form.submit();
+                }
+            });
     });
 
 </script>

@@ -7,6 +7,7 @@ use App\Models\Pengajuanizin;
 use App\Models\Presensi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
@@ -380,5 +381,73 @@ class PengajuanizinController extends Controller
         $karyawan = DB::table('master_karyawan')->orderBy('nama_karyawan')->get();
         $mastercuti = DB::table('hrd_mastercuti')->get();
         return view('pengajuanizin.create', compact('karyawan', 'mastercuti'));
+    }
+
+    public function store(Request $request)
+    {
+        $nik = $request->nik;
+        $dari = $request->jenis_izin == "PL" || $request->jenis_izin == "KL" ? date("Y-m-d") : $request->dari;
+        $sampai =  $request->jenis_izin == "PL" || $request->jenis_izin == "KL" ? date("Y-m-d") : $request->sampai;
+        $jmlhari = $request->jmlhari;
+        $status = $request->status;
+        $keterangan = $request->keterangan;
+        $jenis_izin = $request->jenis_izin;
+        $jam_pulang = $request->jam_pulang;
+        $jam_keluar = $request->jam_keluar;
+        $jenis_cuti = $request->jenis_cuti;
+        $tgl = explode("-", $dari);
+        $tahun = substr($tgl[0], 2, 2);
+        $izin = DB::table("pengajuan_izin")
+            ->whereRaw('YEAR(dari)="' . $tgl[0] . '"')
+            ->orderBy("kode_izin", "desc")
+            ->first();
+
+        $last_kodeizin = $izin != null ? $izin->kode_izin : '';
+        $kode_izin  = buatkode($last_kodeizin, "IZ" . $tahun, 3);
+        if ($request->hasFile('sid')) {
+            $sid = $kode_izin . "." . $request->file('sid')->getClientOriginalExtension();
+        } else {
+            $sid = null;
+        }
+        $data = [
+            'kode_izin' => $kode_izin,
+            'nik' => $nik,
+            'dari' => $dari,
+            'sampai' => $sampai,
+            'jmlhari' => $jmlhari,
+            'status' => $status,
+            'keterangan' => $keterangan,
+            'sid' => $sid,
+            'jenis_izin' => $jenis_izin,
+            'jam_pulang' => $jam_pulang,
+            'jam_keluar' => $jam_keluar,
+            'jenis_cuti' => $jenis_cuti
+        ];
+
+        try {
+            $simpan = DB::table('pengajuan_izin')->insert($data);
+            if ($simpan) {
+                if ($request->hasFile('sid')) {
+                    $folderPath = "public/uploads/sid/";
+                    $request->file('sid')->storeAs($folderPath, $sid);
+                }
+            }
+            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+        } catch (\Exception $e) {
+            dd($e);
+            return Redirect::back()->with(['error' => 'Data Gagal Disimpan']);
+        }
+    }
+
+
+    public function delete($kode_izin)
+    {
+        $kode_izin = Crypt::decrypt($kode_izin);
+        try {
+            DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->delete();
+            return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['error' => 'Data Gagal Dihapus']);
+        }
     }
 }

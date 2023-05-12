@@ -862,6 +862,7 @@ class GlobalProvider extends ServiceProvider
             $pelanggaran_menu = ['admin', 'manager hrd'];
             $gaji_menu = ['admin', 'direktur', 'manager accounting', 'manager hrd'];
             $insentif_menu = ['admin', 'direktur', 'manager accounting', 'manager hrd'];
+            $monitoring_presensi = ['admin', 'manager hrd'];
 
             //General Affair
             $ga_menu = ['admin', 'manager ga', 'general affair', 'manager ga', 'direktur', 'manager accounting', 'emf'];
@@ -1247,7 +1248,7 @@ class GlobalProvider extends ServiceProvider
                 'jadwal_kerja_menu' => $jadwal_kerja_menu,
                 'pembayaran_jmk' => $pembayaran_jmk,
                 'pelanggaran_menu' => $pelanggaran_menu,
-
+                'monitoring_presensi' => $monitoring_presensi,
 
                 'gaji_menu' => $gaji_menu,
                 'gaji_tambah' => $gaji_tambah,
