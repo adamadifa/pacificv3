@@ -41,11 +41,14 @@
             <div class="row">
                 <div class="col-12">
                     <div class="card">
-                        @if (in_array($level,$karyawan_tambah))
+
                         <div class="card-header">
+                            @if (in_array($level,$karyawan_tambah))
                             <a href="#" id="tambahkaryawan" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
+                            @endif
+                            <a href="#" id="cekhabiskontrak" class="btn btn-danger"><i class="feather icon-user-x mr-1"></i>Karyawan Habis Kontrak</a>
                         </div>
-                        @endif
+
 
                         <div class="card-body">
                             <form action="/karyawan">
@@ -345,6 +348,22 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade text-left" id="mdlcekhabiskontrak" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Data Karyawan Habis Kontrak</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loadhabiskontrak"></div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @push('myscript')
 <script>
@@ -357,6 +376,16 @@
                 , keyboard: false
             });
             $("#loadinputkaryawan").load('/karyawan/create');
+        });
+
+
+        $('#cekhabiskontrak').click(function(e) {
+            e.preventDefault();
+            $('#mdlcekhabiskontrak').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+            $("#loadhabiskontrak").load('/karyawan/habiskontrak');
         });
 
         $('.edit').click(function(e) {

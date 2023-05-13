@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cabang;
 use App\Models\Karyawan;
+use App\Models\Kontrak;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -42,13 +43,13 @@ class KaryawanController extends Controller
         }
 
         if ($level == "kepala admin") {
-            $query->where('id_kantor', $cabang);
-            $query->where('id_perusahaan', "MP");
+            $query->where('master_karyawan.id_kantor', $cabang);
+            $query->where('master_karyawan.id_perusahaan', "MP");
         }
 
         if ($level == "kepala penjualan") {
-            $query->where('id_kantor', $cabang);
-            $query->where('id_perusahaan', "PCF");
+            $query->where('master_karyawan.id_kantor', $cabang);
+            $query->where('master_karyawan.id_perusahaan', "PCF");
         }
 
         if ($level == "manager pembelian") {
@@ -236,5 +237,232 @@ class KaryawanController extends Controller
         $nik = $request->nik;
         $karyawan = DB::table('master_karyawan')->where('nik', $nik)->first();
         echo $karyawan->id_jabatan . "|" . $karyawan->kode_dept . "|" . $karyawan->id_kantor . "|" . $karyawan->id_perusahaan;
+    }
+
+
+    public function habiskontrak()
+    {
+        $level = Auth::user()->level;
+        $cabang = Auth::user()->kode_cabang;
+        $hariini = date("Y-m-d");
+        $bulanini = date("m");
+        $tahunini = date("Y");
+        $bulandepan = date("m") + 1 > 12 ? (date("m") + 1) - 12 : date("m") + 1;
+        $tahun2 = $bulandepan > 12 ? $tahunini + 1 : $tahunini;
+        $duabulan = date("m") + 2 > 12 ? (date("m") + 2) - 12 : date("m") + 2;
+        $tahun3 = $duabulan > 12 ? $tahunini + 1 : $tahunini;
+        $qkontrak_lewat = Kontrak::query();
+        $qkontrak_lewat->selectRaw('hrd_kontrak.nik, nama_karyawan, IFNULL(jb.nama_jabatan,jb2.nama_jabatan) as nama_jabatan, IFNULL(hrd_kontrak.kode_dept,master_karyawan.kode_dept) as kode_dept, sampai, IFNULL(hrd_kontrak.id_perusahaan,master_karyawan.id_perusahaan) as id_perusahaan, IFNULL(hrd_kontrak.id_kantor,master_karyawan.id_kantor) as id_kantor');
+        $qkontrak_lewat->join('master_karyawan', 'hrd_kontrak.nik', '=', 'master_karyawan.nik');
+        $qkontrak_lewat->leftjoin('hrd_jabatan as jb', 'hrd_kontrak.id_jabatan', '=', 'jb.id');
+        $qkontrak_lewat->leftjoin('hrd_jabatan as jb2', 'master_karyawan.id_jabatan', '=', 'jb2.id');
+        $qkontrak_lewat->where('sampai', '<', $hariini);
+        $qkontrak_lewat->where('status_kontrak', 1);
+        $qkontrak_lewat->where('status_karyawan', 'K');
+        if ($level == "kepala admin") {
+            $qkontrak_lewat->where('master_karyawan.id_kantor', $cabang);
+            $qkontrak_lewat->where('master_karyawan.id_perusahaan', "MP");
+        }
+
+        if ($level == "kepala penjualan") {
+            $qkontrak_lewat->where('master_karyawan.id_kantor', $cabang);
+            $qkontrak_lewat->where('master_karyawan.id_perusahaan', "PCF");
+        }
+
+        if ($level == "manager pembelian") {
+            $qkontrak_lewat->where('master_karyawan.kode_dept', 'PMB');
+        }
+
+        if ($level == "kepala gudang") {
+            $qkontrak_lewat->where('master_karyawan.kode_dept', 'GDG');
+        }
+
+        if ($level == "manager produksi") {
+            $qkontrak_lewat->where('master_karyawan.kode_dept', 'PRD');
+        }
+
+        if ($level == "manager ga") {
+            $qkontrak_lewat->where('master_karyawan.kode_dept', 'GAF');
+        }
+
+        if ($level == "emf") {
+            $qkontrak_lewat->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GAF', 'GDG', 'PDQ']);
+        }
+
+
+        if ($level == "manager marketing") {
+            $qkontrak_lewat->where('master_karyawan.kode_dept', 'MKT');
+        }
+
+        if ($level == "rsm") {
+            $list_wilayah = Auth::user()->wilayah != null ? unserialize(Auth::user()->wilayah) : NULL;
+            $wilayah = $list_wilayah != null ? "'" . implode("', '", $list_wilayah) . "'" : '';
+            $qkontrak_lewat->whereIn('master_karyawan.id_kantor', $list_wilayah);
+        }
+        $qkontrak_lewat->orderBy('sampai');
+
+        $qkontrak_bulanini = Kontrak::query();
+        $qkontrak_bulanini->selectRaw('hrd_kontrak.nik, nama_karyawan, IFNULL(jb.nama_jabatan,jb2.nama_jabatan) as nama_jabatan, IFNULL(hrd_kontrak.kode_dept,master_karyawan.kode_dept) as kode_dept, sampai, IFNULL(hrd_kontrak.id_perusahaan,master_karyawan.id_perusahaan) as id_perusahaan, IFNULL(hrd_kontrak.id_kantor,master_karyawan.id_kantor) as id_kantor');
+        $qkontrak_bulanini->join('master_karyawan', 'hrd_kontrak.nik', '=', 'master_karyawan.nik');
+        $qkontrak_bulanini->leftjoin('hrd_jabatan as jb', 'hrd_kontrak.id_jabatan', '=', 'jb.id');
+        $qkontrak_bulanini->leftjoin('hrd_jabatan as jb2', 'master_karyawan.id_jabatan', '=', 'jb2.id');
+        $qkontrak_bulanini->whereRaw('MONTH(sampai)=' . $bulanini);
+        $qkontrak_bulanini->whereRaw('YEAR(sampai)=' . $tahunini);
+        $qkontrak_bulanini->where('status_kontrak', 1);
+        $qkontrak_bulanini->where('status_karyawan', 'K');
+        if ($level == "kepala admin") {
+            $qkontrak_bulanini->where('master_karyawan.id_kantor', $cabang);
+            $qkontrak_bulanini->where('master_karyawan.id_perusahaan', "MP");
+        }
+
+        if ($level == "kepala penjualan") {
+            $qkontrak_bulanini->where('master_karyawan.id_kantor', $cabang);
+            $qkontrak_bulanini->where('master_karyawan.id_perusahaan', "PCF");
+        }
+
+        if ($level == "manager pembelian") {
+            $qkontrak_bulanini->where('master_karyawan.kode_dept', 'PMB');
+        }
+
+        if ($level == "kepala gudang") {
+            $qkontrak_bulanini->where('master_karyawan.kode_dept', 'GDG');
+        }
+
+        if ($level == "manager produksi") {
+            $qkontrak_bulanini->where('master_karyawan.kode_dept', 'PRD');
+        }
+
+        if ($level == "manager ga") {
+            $qkontrak_bulanini->where('master_karyawan.kode_dept', 'GAF');
+        }
+
+        if ($level == "emf") {
+            $qkontrak_bulanini->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GAF', 'GDG', 'PDQ']);
+        }
+
+
+        if ($level == "manager marketing") {
+            $qkontrak_bulanini->where('master_karyawan.kode_dept', 'MKT');
+        }
+
+        if ($level == "rsm") {
+            $list_wilayah = Auth::user()->wilayah != null ? unserialize(Auth::user()->wilayah) : NULL;
+            $wilayah = $list_wilayah != null ? "'" . implode("', '", $list_wilayah) . "'" : '';
+            $qkontrak_bulanini->whereIn('master_karyawan.id_kantor', $list_wilayah);
+        }
+        $qkontrak_bulanini->orderBy('sampai');
+
+
+        $qkontrak_bulandepan = Kontrak::query();
+        $qkontrak_bulandepan->selectRaw('hrd_kontrak.nik, nama_karyawan, IFNULL(jb.nama_jabatan,jb2.nama_jabatan) as nama_jabatan, IFNULL(hrd_kontrak.kode_dept,master_karyawan.kode_dept) as kode_dept, sampai, IFNULL(hrd_kontrak.id_perusahaan,master_karyawan.id_perusahaan) as id_perusahaan, IFNULL(hrd_kontrak.id_kantor,master_karyawan.id_kantor) as id_kantor');
+        $qkontrak_bulandepan->join('master_karyawan', 'hrd_kontrak.nik', '=', 'master_karyawan.nik');
+        $qkontrak_bulandepan->leftjoin('hrd_jabatan as jb', 'hrd_kontrak.id_jabatan', '=', 'jb.id');
+        $qkontrak_bulandepan->leftjoin('hrd_jabatan as jb2', 'master_karyawan.id_jabatan', '=', 'jb2.id');
+        $qkontrak_bulandepan->whereRaw('MONTH(sampai)=' . $bulandepan);
+        $qkontrak_bulandepan->whereRaw('YEAR(sampai)=' . $tahun2);
+        $qkontrak_bulandepan->where('status_kontrak', 1);
+        $qkontrak_bulandepan->where('status_karyawan', 'K');
+        if ($level == "kepala admin") {
+            $qkontrak_bulandepan->where('master_karyawan.id_kantor', $cabang);
+            $qkontrak_bulandepan->where('master_karyawan.id_perusahaan', "MP");
+        }
+
+        if ($level == "kepala penjualan") {
+            $qkontrak_bulandepan->where('master_karyawan.id_kantor', $cabang);
+            $qkontrak_bulandepan->where('master_karyawan.id_perusahaan', "PCF");
+        }
+
+        if ($level == "manager pembelian") {
+            $qkontrak_bulandepan->where('master_karyawan.kode_dept', 'PMB');
+        }
+
+        if ($level == "kepala gudang") {
+            $qkontrak_bulandepan->where('master_karyawan.kode_dept', 'GDG');
+        }
+
+        if ($level == "manager produksi") {
+            $qkontrak_bulandepan->where('master_karyawan.kode_dept', 'PRD');
+        }
+
+        if ($level == "manager ga") {
+            $qkontrak_bulandepan->where('master_karyawan.kode_dept', 'GAF');
+        }
+
+        if ($level == "emf") {
+            $qkontrak_bulandepan->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GAF', 'GDG', 'PDQ']);
+        }
+
+
+        if ($level == "manager marketing") {
+            $qkontrak_bulandepan->where('master_karyawan.kode_dept', 'MKT');
+        }
+
+        if ($level == "rsm") {
+            $list_wilayah = Auth::user()->wilayah != null ? unserialize(Auth::user()->wilayah) : NULL;
+            $wilayah = $list_wilayah != null ? "'" . implode("', '", $list_wilayah) . "'" : '';
+            $qkontrak_bulanini->whereIn('master_karyawan.id_kantor', $list_wilayah);
+        }
+        $qkontrak_bulandepan->orderBy('sampai');
+
+
+        $qkontrak_duabulan = Kontrak::query();
+        $qkontrak_duabulan->selectRaw('hrd_kontrak.nik, nama_karyawan, IFNULL(jb.nama_jabatan,jb2.nama_jabatan) as nama_jabatan, IFNULL(hrd_kontrak.kode_dept,master_karyawan.kode_dept) as kode_dept, sampai, IFNULL(hrd_kontrak.id_perusahaan,master_karyawan.id_perusahaan) as id_perusahaan, IFNULL(hrd_kontrak.id_kantor,master_karyawan.id_kantor) as id_kantor');
+        $qkontrak_duabulan->join('master_karyawan', 'hrd_kontrak.nik', '=', 'master_karyawan.nik');
+        $qkontrak_duabulan->leftjoin('hrd_jabatan as jb', 'hrd_kontrak.id_jabatan', '=', 'jb.id');
+        $qkontrak_duabulan->leftjoin('hrd_jabatan as jb2', 'master_karyawan.id_jabatan', '=', 'jb2.id');
+        $qkontrak_duabulan->whereRaw('MONTH(sampai)=' . $duabulan);
+        $qkontrak_duabulan->whereRaw('YEAR(sampai)=' . $tahun3);
+        $qkontrak_duabulan->where('status_kontrak', 1);
+        $qkontrak_duabulan->where('status_karyawan', 'K');
+        if ($level == "kepala admin") {
+            $qkontrak_duabulan->where('master_karyawan.id_kantor', $cabang);
+            $qkontrak_duabulan->where('master_karyawan.id_perusahaan', "MP");
+        }
+
+        if ($level == "kepala penjualan") {
+            $qkontrak_duabulan->where('master_karyawan.id_kantor', $cabang);
+            $qkontrak_duabulan->where('master_karyawan.id_perusahaan', "PCF");
+        }
+
+        if ($level == "manager pembelian") {
+            $qkontrak_duabulan->where('master_karyawan.kode_dept', 'PMB');
+        }
+
+        if ($level == "kepala gudang") {
+            $qkontrak_duabulan->where('master_karyawan.kode_dept', 'GDG');
+        }
+
+        if ($level == "manager produksi") {
+            $qkontrak_duabulan->where('master_karyawan.kode_dept', 'PRD');
+        }
+
+        if ($level == "manager ga") {
+            $qkontrak_duabulan->where('master_karyawan.kode_dept', 'GAF');
+        }
+
+        if ($level == "emf") {
+            $qkontrak_duabulan->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GAF', 'GDG', 'PDQ']);
+        }
+
+
+        if ($level == "manager marketing") {
+            $qkontrak_duabulan->where('master_karyawan.kode_dept', 'MKT');
+        }
+        $qkontrak_duabulan->orderBy('sampai');
+
+
+        $kontrak_lewat = $qkontrak_lewat->get();
+        $jml_kontrak_lewat = $qkontrak_lewat->count();
+
+        $kontrak_bulanini = $qkontrak_bulanini->get();
+        $jml_kontrak_bulanini = $qkontrak_bulanini->count();
+
+        $kontrak_bulandepan = $qkontrak_bulandepan->get();
+        $jml_kontrak_bulandepan = $qkontrak_bulandepan->count();
+
+        $kontrak_duabulan = $qkontrak_duabulan->get();
+        $jml_kontrak_duabulan = $qkontrak_duabulan->count();
+
+        return view('karyawan.habiskontrak', compact('kontrak_lewat', 'jml_kontrak_lewat', 'kontrak_bulanini', 'jml_kontrak_bulanini', 'hariini', 'kontrak_bulandepan', 'jml_kontrak_bulandepan', 'kontrak_duabulan', 'jml_kontrak_duabulan'));
     }
 }

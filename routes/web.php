@@ -124,6 +124,7 @@ use App\Models\Barangpembelian;
 use App\Models\Logamtokertas;
 use App\Models\Pemasukangudanglogistik;
 use App\Models\Pengajuanizin;
+use App\Models\Penilaiankaryawan;
 use App\Models\Penjualan;
 use App\Models\Pinjaman;
 use App\Models\Saldoawalmutasibarangproduksi;
@@ -1126,6 +1127,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/penilaiankaryawan/{kode_penilaian}/update', [PenilaiankaryawanController::class, 'update']);
 
 
+
     //Harga
     Route::get('/harga', [HargaController::class, 'index']);
     Route::get('/harga/create', [HargaController::class, 'create']);
@@ -1492,7 +1494,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/karyawan/{nik}/update', [KaryawanController::class, 'update']);
     Route::get('/karyawan/{nik}/show', [KaryawanController::class, 'show']);
     Route::post('/karyawan/getkaryawankontrak', [KaryawanController::class, 'getkaryawankontrak']);
-
+    Route::get('/karyawan/habiskontrak', [KaryawanController::class, 'habiskontrak']);
     //SAP
     Route::get('/homesap', [DashboardController::class, 'homesap']);
     Route::get('/salesperformance', [SapController::class, 'salesperfomance']);
