@@ -441,6 +441,7 @@ class DashboardController extends Controller
             ->leftjoin('hrd_jabatan as jb2', 'master_karyawan.id_jabatan', '=', 'jb2.id')
             ->where('sampai', '<', $hariini)
             ->where('status_kontrak', 1)
+            ->where('status_karyawan', 'K')
             ->orderBy('sampai');
 
         $qkontrak_bulanini = DB::table('hrd_kontrak')
@@ -451,6 +452,7 @@ class DashboardController extends Controller
             ->whereRaw('MONTH(sampai)=' . $bulanini)
             ->whereRaw('YEAR(sampai)=' . $tahunini)
             ->where('status_kontrak', 1)
+            ->where('status_karyawan', 'K')
             ->orderBy('sampai');
 
 
@@ -462,6 +464,7 @@ class DashboardController extends Controller
             ->whereRaw('MONTH(sampai)=' . $bulandepan)
             ->whereRaw('YEAR(sampai)=' . $tahun2)
             ->where('status_kontrak', 1)
+            ->where('status_karyawan', 'K')
             ->orderBy('sampai');
 
 
@@ -473,6 +476,7 @@ class DashboardController extends Controller
             ->whereRaw('MONTH(sampai)=' . $duabulan)
             ->whereRaw('YEAR(sampai)=' . $tahun3)
             ->where('status_kontrak', 1)
+            ->where('status_karyawan', 'K')
             ->orderBy('sampai');
 
 
