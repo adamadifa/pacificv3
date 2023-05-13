@@ -34,6 +34,7 @@
                     <option value="TM">Tidak Masuk Kantor</option>
                     <option value="PL">Pulang</option>
                     <option value="KL">Keluar Kantor</option>
+                    <option value="TL">Terlambat</option>
                 </select>
             </div>
         </div>
@@ -58,6 +59,11 @@
     <div class="row" id="jam_keluar_form">
         <div class="col-12">
             <x-inputtext label="Jam Keluar" field="jam_keluar" icon="feather icon-clock" />
+        </div>
+    </div>
+    <div class="row" id="jam_terlambat_form">
+        <div class="col-12">
+            <x-inputtext label="Jam Terlambat" field="jam_terlambat" icon="feather icon-clock" />
         </div>
     </div>
     <div class="row">
@@ -103,7 +109,7 @@
         //     , autoclose: false
         // });
 
-        $("#jam_pulang,#jam_keluar").datetimepicker({
+        $("#jam_pulang,#jam_keluar,#jam_terlambat").datetimepicker({
             format: 'HH:mm'
         });
 
@@ -144,6 +150,16 @@
 
         }
 
+
+        function hidejamterlambat() {
+            $("#jam_terlambat_form").hide();
+        }
+
+        function showjamterlambat() {
+            $("#jam_terlambat_form").show();
+
+        }
+
         function hidejamkeluar() {
             $("#jam_keluar_form").hide();
         }
@@ -157,6 +173,7 @@
         hidejeniscuti();
         hidejampulang();
         hidejamkeluar();
+        hidejamterlambat();
 
 
 
@@ -196,7 +213,13 @@
                 hidejamkeluar();
             }
 
-            if (jenis_izin == "PL" || jenis_izin == "KL") {
+            if (jenis_izin == "TL") {
+                showjamterlambat();
+            } else {
+                hidejamterlambat();
+            }
+
+            if (jenis_izin == "PL" || jenis_izin == "KL" || jenis_izin == "TL") {
                 $("#jml_hari_frm").hide();
                 $("#dari").val("{{ date('Y-m-d') }}");
                 $("#sampai").val("{{ date('Y-m-d') }}");

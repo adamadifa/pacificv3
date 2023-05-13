@@ -41,7 +41,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        <a href="#" class="btn btn-primary" id="buatizin"><i class="fa fa-plus mr-1"></i> Buat Izin</a>
+                        <a href="#" class="btn btn-primary" id="buatizin"><i class="fa fa-plus mr-1"></i> Buat Pengajuan</a>
                     </div>
                     <div class="card-body">
                         <ul class="nav nav-tabs" role="tablist">

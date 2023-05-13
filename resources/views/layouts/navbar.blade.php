@@ -1177,7 +1177,7 @@
                             <i class="feather icon-edit"></i>
                             <span class="menu-item" data-i18n="Second Level">Penilaian karyawan</span>
                         </a>
-                        @elseif(Auth::user()->level=="manager accounting" && Auth::user()->kategori_jabatan == 3 ||Auth::user()->level=="kepala gudang" && Auth::user()->kategori_jabatan == 3 || Auth::user()->level=="manager ga" && Auth::user()->kategori_jabatan == 3 || Auth::user()->level=="manager produksi" && Auth::user()->kategori_jabatan == 3 || Auth::user()->level=="manager pembelian" && Auth::user()->kategori_jabatan == 3)
+                        @elseif(Auth::user()->level=="manager accounting" && Auth::user()->kategori_jabatan == 3 ||Auth::user()->level=="kepala gudang" && Auth::user()->kategori_jabatan == 3 || Auth::user()->level=="manager ga" && Auth::user()->kategori_jabatan == 3 || Auth::user()->level=="manager produksi" && Auth::user()->kategori_jabatan == 3 || Auth::user()->level=="admin produksi" && Auth::user()->kategori_jabatan == 3 || Auth::user()->level=="manager pembelian" && Auth::user()->kategori_jabatan == 3)
                         <a href="/penilaiankaryawan/5/MP/list">
                             <i class="feather icon-edit"></i>
                             <span class="menu-item" data-i18n="Second Level">Penilaian karyawan</span>
@@ -1213,7 +1213,7 @@
                     <li class="{{ request()->is(['pengajuanizin', 'pengajuanizin/*']) ? 'active' : '' }}">
                         <a href="/pengajuanizin">
                             <i class="feather icon-file-text"></i>
-                            <span class="menu-item" data-i18n="Second Level">Pengajuan Izin</span>
+                            <span class="menu-item" data-i18n="Second Level">Pengajuan</span>
                         </a>
                     </li>
                     @endif

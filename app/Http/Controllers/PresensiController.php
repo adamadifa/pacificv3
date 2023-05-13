@@ -14,9 +14,10 @@ class PresensiController extends Controller
         $level = Auth::user()->level;
         $cabang = Auth::user()->kode_cabang;
         $nama_karyawan = $request->nama_karyawan_search;
-        $tanggal = date("Y-m-d");
+        $tanggal = !empty($request->tanggal) ? $request->tanggal : date('Y-m-d');
+        // $tanggal = date("Y-m-d");
         $query = Karyawan::query();
-        $query->select('master_karyawan.nik', 'nama_karyawan', 'tgl_masuk', 'master_karyawan.kode_dept', 'nama_dept', 'jenis_kelamin', 'nama_jabatan', 'id_perusahaan', 'id_kantor', 'klasifikasi', 'status_karyawan', 'nama_jadwal', 'jam_masuk', 'jam_pulang', 'jam_in', 'jam_out', 'presensi.status as status_presensi');
+        $query->select('master_karyawan.nik', 'nama_karyawan', 'tgl_masuk', 'master_karyawan.kode_dept', 'nama_dept', 'jenis_kelamin', 'nama_jabatan', 'id_perusahaan', 'id_kantor', 'klasifikasi', 'status_karyawan', 'nama_jadwal', 'jam_masuk', 'jam_pulang', 'jam_in', 'jam_out', 'presensi.status as status_presensi', 'kode_izin', 'kode_izin_terlambat');
         $query->leftjoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
         $query->leftjoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
         $query->leftJoin(

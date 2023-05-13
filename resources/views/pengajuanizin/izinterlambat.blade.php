@@ -10,6 +10,13 @@
         margin-bottom: 5px !important;
     }
 
+    .col-4,
+    .col-5,
+    .col-6,
+    .col-3 {
+        padding-right: 1px !important;
+    }
+
 </style>
 
 <div class="content-wrapper">
@@ -47,10 +54,10 @@
                                         <form action="/pengajuanizin">
                                             <div class="row">
                                                 <div class="col-lg-6 col-sm-12">
-                                                    <x-inputtext label="Dari" field="dari_search" value="{{ Request('dari') }}" icon="feather icon-calendar" datepicker />
+                                                    <x-inputtext label="Dari" field="dari" value="{{ Request('dari') }}" icon="feather icon-calendar" datepicker />
                                                 </div>
                                                 <div class="col-lg-6 col-sm-12">
-                                                    <x-inputtext label="Sampai" field="sampai_search" value="{{ Request('sampai') }}" icon="feather icon-calendar" datepicker />
+                                                    <x-inputtext label="Sampai" field="sampai" value="{{ Request('sampai') }}" icon="feather icon-calendar" datepicker />
                                                 </div>
                                             </div>
                                             @php
@@ -118,7 +125,7 @@
                                                     <th>Nama Karyawan</th>
                                                     <th>Jabatan</th>
                                                     <th>Dept</th>
-                                                    <th>Jml Hari</th>
+                                                    <th>Jam Terlambat</th>
                                                     <th>Ket</th>
                                                     <th>Head Dept</th>
                                                     <th>HRD</th>
@@ -130,12 +137,12 @@
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $d->kode_izin }}</td>
-                                                    <td>{{ date('d-m-Y',strtotime($d->dari)) }} s/d {{ date('d-m-Y',strtotime($d->sampai)) }}</td>
+                                                    <td>{{ date('d-m-Y',strtotime($d->dari)) }}</td>
                                                     <td>{{ $d->nik }}</td>
                                                     <td>{{ $d->nama_karyawan }}</td>
                                                     <td>{{ $d->nama_jabatan }}</td>
                                                     <td>{{ $d->kode_dept }}</td>
-                                                    <td>{{ $d->jmlhari }} Hari</td>
+                                                    <td>{{ $d->jam_terlambat }}</td>
                                                     <td>{{ $d->keterangan }}</td>
                                                     <td class="text-center">
                                                         @if (empty($d->head_dept))
@@ -198,7 +205,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/pengajuanizin/approve" method="POST">
+                <form action="/pengajuanizin/approveizinterlambat" method="POST">
                     @csrf
                     <input type="hidden" name="kode_izin" id="kode_izin">
                     <div class="row">
@@ -221,8 +228,6 @@
         </div>
     </div>
 </div>
-
-
 <div class="modal fade text-left" id="mdlbuatizin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -242,37 +247,37 @@
 @push('myscript')
 <script>
     $(function() {
+
+        $("#buatizin").click(function(e) {
+            $('#mdlbuatizin').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+            $("#loadbuatizin").load('/pengajuanizin/create');
+        });
         $(".approveizin").click(function(e) {
             $("#mdlapprove").modal("show");
             var kode_izin = $(this).attr('kode_izin');
             $("#kode_izin").val(kode_izin);
         });
-    });
 
-    $("#buatizin").click(function(e) {
-        $('#mdlbuatizin').modal({
-            backdrop: 'static'
-            , keyboard: false
+        $('.delete-confirm').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+            event.preventDefault();
+            swal({
+                    title: `Are you sure you want to delete this record?`
+                    , text: "If you delete this, it will be gone forever."
+                    , icon: "warning"
+                    , buttons: true
+                    , dangerMode: true
+                , })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
         });
-        $("#loadbuatizin").load('/pengajuanizin/create');
-    });
-
-    $('.delete-confirm').click(function(event) {
-        var form = $(this).closest("form");
-        var name = $(this).data("name");
-        event.preventDefault();
-        swal({
-                title: `Are you sure you want to delete this record?`
-                , text: "If you delete this, it will be gone forever."
-                , icon: "warning"
-                , buttons: true
-                , dangerMode: true
-            , })
-            .then((willDelete) => {
-                if (willDelete) {
-                    form.submit();
-                }
-            });
     });
 
 </script>

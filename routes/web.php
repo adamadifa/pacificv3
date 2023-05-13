@@ -1601,9 +1601,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pengajuanizin/izinkeluar', [PengajuanizinController::class, 'index']);
     Route::get('/pengajuanizin/sakit', [PengajuanizinController::class, 'index']);
     Route::get('/pengajuanizin/cuti', [PengajuanizinController::class, 'index']);
+    Route::get('/pengajuanizin/izinterlambat', [PengajuanizinController::class, 'index']);
     Route::post('/pengajuanizin/approve', [PengajuanizinController::class, 'approve']);
     Route::post('/pengajuanizin/approveizinpulang', [PengajuanizinController::class, 'approveizinpulang']);
     Route::post('/pengajuanizin/approveizinkeluar', [PengajuanizinController::class, 'approveizinkeluar']);
+    Route::post('/pengajuanizin/approveizinterlambat', [PengajuanizinController::class, 'approveizinterlambat']);
     Route::get('/pengajuanizin/create', [PengajuanizinController::class, 'create']);
     Route::post('/pengajuanizin/store', [PengajuanizinController::class, 'store']);
     Route::delete('/pengajuanizin/{kode_izin}/delete', [PengajuanizinController::class, 'delete']);

@@ -274,7 +274,7 @@ class PenjualanController extends Controller
                 ->where('id_karyawan', $pelanggan->id_sales)
                 ->where('tgltransaksi', $lasttgl)
                 ->orderBy('date_created', 'desc')
-                ->orderBy('no_fak_penj', 'desc')->first();
+                ->first();
             $lastnofak = $cekpenjualan != null ? $cekpenjualan->no_fak_penj : '';
 
 
