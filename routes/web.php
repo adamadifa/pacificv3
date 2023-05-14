@@ -1611,6 +1611,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pengajuanizin/create', [PengajuanizinController::class, 'create']);
     Route::post('/pengajuanizin/store', [PengajuanizinController::class, 'store']);
     Route::delete('/pengajuanizin/{kode_izin}/delete', [PengajuanizinController::class, 'delete']);
+    Route::post('/pengajuanizin/updatejammasukkk', [PengajuanizinController::class, 'updatejammasukkk']);
 
     //Jadwal Kerja
     Route::get('/jadwalkerja', [JadwalkerjaController::class, 'index']);

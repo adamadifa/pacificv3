@@ -16,6 +16,7 @@
 
 <form method="POST" action="/pinjaman/store" id="frmPinjaman">
     @csrf
+    <input type="hidden" id="cekpembayaran">
     <div class="row" id="step1">
         <div class="col-12">
             <table class="table table-bordered">
@@ -229,7 +230,6 @@
 <script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
 <script>
     $(function() {
-
         $("#frmPinjaman").submit(function(e) {
             // e.preventDefault();
             hitungpinjaman();

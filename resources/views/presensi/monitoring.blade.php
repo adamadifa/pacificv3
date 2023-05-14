@@ -1,5 +1,5 @@
 @extends('layouts.midone')
-@section('titlepage','Data Karyawan')
+@section('titlepage','Monitoring Presesensi')
 @section('content')
 <div class="content-wrapper">
     <div class="content-header row">
@@ -22,6 +22,25 @@
         <!-- DataTable starts -->
         @include('layouts.notification')
         <div class="col-md-12 col-sm-12">
+            <div class="row mb-2">
+                <div class=" col-12 d-flex">
+                    @php
+                    $day=date('D', strtotime(date('Y-m-d')));
+                    $dayList = array(
+                    'Sun' => 'Minggu',
+                    'Mon' => 'Senin',
+                    'Tue' => 'Selasa',
+                    'Wed' => 'Rabu',
+                    'Thu' => 'Kamis',
+                    'Fri' => 'Jumat',
+                    'Sat' => 'Sabtu'
+                    );
+                    $namahari = $dayList[$day];
+                    @endphp
+                    <h1 style="font-size:40px; font-family:arial; margin-right:10px;">{{ $namahari }}, {{ DateToIndo2(date('Y-m-d')) }}</h1>
+                    <h1 style="font-size: 40px; font-family: arial;" id="jam"></h1>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-12">
                     <div class="card">
@@ -126,9 +145,12 @@
                                         $diff = $akhir - $awal;
 
                                         if(empty($d->jam_out)){
-                                        $jam = 0;
+                                            $jam = 0;
+                                            $menit = 0;
                                         }else{
-                                        $jam = floor($diff / (60 * 60));
+                                            $jam = floor($diff / (60 * 60));
+                                            $m = $diff - ( $jam * (60 * 60) );
+                                            $menit = floor( $m / 60 );
                                         }
 
                                         if(!empty($d->jam_in)){
@@ -142,13 +164,16 @@
                                                 $menitterlambatfix = floor( $menitterlambat / 60 );
                                                 $jterlambat = $jamterlambat <= 9 ? "0" .$jamterlambat : $jamterlambat ; $mterlambat=$menitterlambatfix <=9 ? "0" .$menitterlambatfix : $menitterlambatfix;
                                                 $terlambat=$jterlambat.":".$mterlambat;
+                                                $desimalterlambat = ($menitterlambatfix * 100) / 60;
                                             }else{
                                                 $terlambat="Tepat waktu";
                                                 $jamterlambat=0;
+                                                $desimalterlambat = 0;
                                             }
                                         }else{
                                             $terlambat="";
                                             $jamterlambat=0;
+                                            $desimalterlambat = 0;
                                         }
 
                                             $day=date('D', strtotime($d->tgl_presensi));
@@ -163,27 +188,43 @@
                                             );
 
                                             $namahari = $dayList[$day];
+                                            $jamterlambat = $jamterlambat < 0 && !empty($d->kode_izin_terlambat) ? 0 : $jamterlambat;
 
-                                            if($jam > 7 AND $namahari != 'Sabtu'){
-                                            $totaljam = 7;
-                                            }else if($jam > 5 AND $namahari == "Sabtu"){
-                                            $totaljam = 5;
+
+                                            $jt = $jamterlambat.".".$desimalterlambat;
+                                            if($namahari != 'Sabtu'){
+                                            $totaljam = 7.00 - $jt ;
+                                            }else if( $namahari == "Sabtu"){
+                                            $totaljam = 5.00 - $jt;
                                             }else{
-                                            $totaljam = $jam;
+                                            $totaljam = $jam.":".$menit;
                                             }
 
-
-                                            $grandtotaljam = $totaljam - $jamterlambat;
+                                            if(!empty($d->jam_out)){
+                                                if($jam_out < $d->jam_pulang){
+                                                    $desimalmenit = ($menit * 100) / 60;
+                                                    $grandtotaljam = $jam.".".$menit;
+                                                }else{
+                                                    $grandtotaljam = $totaljam;
+                                                }
+                                            }else{
+                                                $grandtotaljam = 0;
+                                            }
 
                                             if(!empty($d->jam_in) AND $d->kode_dept != 'MKT'){
                                                 if($jam_in > $d->jam_masuk AND empty($d->kode_izin_terlambat)){
-                                                    if($menitterlambatfix >= 5 AND $menitterlambatfix < 10){
-                                                        $denda = 5000;
-                                                    }else if($menitterlambatfix >= 10 AND $menitterlambatfix <15){
-                                                        $denda = 10000;
-                                                    }else if($menitterlambatfix >= 15 AND $menitterlambatfix <= 59){
-                                                        $denda = 15000;
+                                                    if ($jamterlambat < 1) {
+                                                        if($menitterlambatfix >= 5 AND $menitterlambatfix < 10){
+                                                            $denda = 5000;
+                                                        }else if($menitterlambatfix >= 10 AND $menitterlambatfix <15){
+                                                            $denda = 10000;
+                                                        }else if($menitterlambatfix >= 15 AND $menitterlambatfix <= 59){
+                                                            $denda = 15000;
+                                                        }
+                                                    }else{
+                                                        $denda = 0;
                                                     }
+
                                                 }else{
                                                     $denda = 0;
                                                 }
@@ -220,8 +261,20 @@
                                             </td>
                                             <td>{{ !empty($denda)  ? rupiah($denda) : '' }}</td>
                                             <td></td>
-                                            <td class="text-center">{{ $grandtotaljam }}</td>
-                                            <td></td>
+                                            <td class="text-center">{{ desimal($grandtotaljam) }}</td>
+                                            <td>
+                                                {{ $d->Jenis_izin }}
+                                                @if ($d->status_izin =="i")
+                                                @if ($d->jenis_izin == "PL")
+                                                <span class="badge bg-danger">Izin Pulang</span>
+                                                @elseif($d->jenis_izin=="TL")
+                                                <span class="badge bg-info">Izin Terlambat</span>
+                                                @elseif($d->jenis_izin=="KL")
+                                                <span class="badge bg-info">Izin Keluar</span>
+                                                @endif
+                                                @endif
+
+                                            </td>
 
                                         </tr>
                                         @endforeach
@@ -243,3 +296,29 @@
 <!-- Input Karyawan -->
 
 @endsection
+@push('myscript')
+<script type="text/javascript">
+    window.onload = function() {
+        jam();
+    }
+
+    function jam() {
+        var e = document.getElementById('jam')
+            , d = new Date()
+            , h, m, s;
+        h = d.getHours();
+        m = set(d.getMinutes());
+        s = set(d.getSeconds());
+
+        e.innerHTML = h + ':' + m + ':' + s;
+
+        setTimeout('jam()', 1000);
+    }
+
+    function set(e) {
+        e = e < 10 ? '0' + e : e;
+        return e;
+    }
+
+</script>
+@endpush

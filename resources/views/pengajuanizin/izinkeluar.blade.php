@@ -146,7 +146,7 @@
                                                     <td>{{ $d->jam_keluar }}</td>
                                                     <td>
                                                         @if (empty($d->jam_masuk))
-                                                        <a href="#"><i class="fa fa-history text-warning"></i></a>
+                                                        <a href="#" class="updatejammasuk" kode_izin="{{ $d->kode_izin }}"><i class="fa fa-history text-warning"></i></a>
                                                         @else
                                                         {{ $d->jam_masuk }}
                                                         @endif
@@ -250,12 +250,45 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade text-left" id="mdlupdatejammasuk" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Update Jam Masuk</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/pengajuanizin/updatejammasukkk" method="POST">
+                    @csrf
+                    <input type="hidden" id="kode_izin_kk" name="kode_izin">
+                    <div class="row">
+                        <div class="col-12">
+                            <x-inputtext label="Jam Masuk Keluar Kantor" field="jam_masuk_kk" icon="feather icon-clock" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <button type="submit" name="submit" class="btn btn-primary btn-block"><i class="feather icon-refresh-ccw mr-1"></i>Update</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('myscript')
 <script>
     $(function() {
-
+        $("#jam_masuk_kk").datetimepicker({
+            format: 'HH:mm'
+        });
         $("#buatizin").click(function(e) {
             $('#mdlbuatizin').modal({
                 backdrop: 'static'
@@ -267,6 +300,16 @@
             $("#mdlapprove").modal("show");
             var kode_izin = $(this).attr('kode_izin');
             $("#kode_izin").val(kode_izin);
+        });
+
+        $(".updatejammasuk").click(function(e) {
+            var kode_izin = $(this).attr("kode_izin");
+            $("#kode_izin_kk").val(kode_izin);
+            $('#mdlupdatejammasuk').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+
         });
 
         $('.delete-confirm').click(function(event) {

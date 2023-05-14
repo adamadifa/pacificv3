@@ -145,7 +145,9 @@ class PinjamanController extends Controller
             ->groupBy('nik')
             ->first();
         $hariini = date("Y-m-d");
-        $sp = DB::table('hrd_sp')->where('nik', $nik)->where('sampai', '>', $hariini)->first();
+        $sp = DB::table('hrd_sp')->where('nik', $nik)->where('sampai', '>', $hariini)
+            ->orderBy('dari', 'desc')
+            ->first();
 
 
 
@@ -163,7 +165,7 @@ class PinjamanController extends Controller
             }
         );
         $query->where('pinjaman.nik', $nik);
-        $query->whereRaw('jumlah_pinjaman - totalpembayaran != 0');
+        $query->whereRaw('IFNULL(jumlah_pinjaman,0) - IFNULL(totalpembayaran,0) != 0');
         $cekpinjaman = $query->first();
 
         $kontrak = DB::table('hrd_kontrak')->where('nik', $nik)->orderBy('dari', 'desc')->first();
@@ -173,26 +175,33 @@ class PinjamanController extends Controller
 
         $cekmasakerja =  diffInMonths($start, $end);
 
+        $jenis_sp = $sp != null ? $sp->ket : '';
+        $id_kantor = $karyawan->id_kantor;
 
-        // if ($sp != null) {
-        //     return view('pinjaman.notifsp', compact('sp'));
-        // } else if ($karyawan->status_karyawan == "K" && $cekmasakerja < 15) {
-        //     return view('pinjaman.notifmasakerjakurang', compact('cekmasakerja'));
-        // } else {
-        //     if ($cekpinjaman != null) {
-        //         $jumlah_pinjaman = $cekpinjaman->jumlah_pinjaman;
-        //         $minpembayar = (75 / 100) * $jumlah_pinjaman;
-        //         if ($cekpinjaman->totalpembayaran >= $minpembayar) {
-        //             return view('pinjaman.create', compact('karyawan', 'gaji', 'jmk', 'kontrak'));
-        //         } else {
-        //             return view('pinjaman.notiftopup', compact('cekpinjaman'));
-        //         }
-        //     } else {
-        //         //return view('pinjaman.create', compact('karyawan', 'gaji', 'jmk', 'kontrak'));
-        //         return view('pinjaman.create2', compact('karyawan', 'gaji', 'jmk', 'kontrak'));
-        //     }
-        // }
-        return view('pinjaman.create2', compact('karyawan', 'gaji', 'jmk', 'kontrak'));
+        //echo $jenis_sp . "-" . $id_kantor;
+        if (
+            $sp != null && $jenis_sp == "SP3" && $id_kantor == "PST"
+            || $sp != null && $jenis_sp == "SP2" && $id_kantor == "PST"
+            || $sp != null && $jenis_sp == "SP1" && $id_kantor != "PST"
+        ) {
+            return view('pinjaman.notifsp', compact('sp'));
+        } else if ($karyawan->status_karyawan == "K" && $cekmasakerja < 15) {
+            return view('pinjaman.notifmasakerjakurang', compact('cekmasakerja'));
+        } else {
+            if ($cekpinjaman != null) {
+                $jumlah_pinjaman = $cekpinjaman->jumlah_pinjaman;
+                $minpembayar = (75 / 100) * $jumlah_pinjaman;
+                if ($cekpinjaman->totalpembayaran >= $minpembayar) {
+                    return view('pinjaman.create', compact('karyawan', 'gaji', 'jmk', 'kontrak'));
+                } else {
+                    return view('pinjaman.notiftopup', compact('cekpinjaman'));
+                }
+            } else {
+                return view('pinjaman.create', compact('karyawan', 'gaji', 'jmk', 'kontrak'));
+                // return view('pinjaman.create2', compact('karyawan', 'gaji', 'jmk', 'kontrak'));
+            }
+        }
+        //return view('pinjaman.create2', compact('karyawan', 'gaji', 'jmk', 'kontrak'));
     }
 
     public function store(Request $request)
@@ -211,7 +220,17 @@ class PinjamanController extends Controller
         $angsuran = $request->angsuran;
         $jumlah_angsuran = str_replace(".", "", $request->jml_angsuran);
         $mulai_cicilan = $request->mulai_cicilan;
+        $bln_cicilan = date("m", strtotime($mulai_cicilan));
+        $thn_cicilan = date("Y", strtotime($mulai_cicilan));
 
+
+        if ($bln_cicilan == 1) {
+            $bln_cicilan = 12;
+            $thn_cicilan = $thn_cicilan - 1;
+        } else {
+            $bln_cicilan = $bln_cicilan - 1;
+            $thn_cicilan = $thn_cicilan;
+        }
         $tanggal = $request->tgl_pinjaman;
         $tgl = explode("-", $tanggal);
         $tahun = substr($tgl[0], 2, 2);
@@ -222,7 +241,10 @@ class PinjamanController extends Controller
         $last_nopinjaman = $pinjaman != null ? $pinjaman->no_pinjaman : '';
         $no_pinjaman  = buatkode($last_nopinjaman, "PJK" . $tahun, 3);
         $cicilan_terakhir = $jumlah_angsuran + ($jumlah_pinjaman - ($jumlah_angsuran * $angsuran));
-
+        $cekpembayaran = DB::table('pinjaman_potongangaji')->where('bulan', $bln_cicilan)->where('tahun', $thn_cicilan)->count();
+        if ($cekpembayaran > 0) {
+            return Redirect::back()->with(['warning' => 'Pinjaman Pada Periode Ini Sudah Ditutup']);
+        }
         $data = [
             'no_pinjaman' => $no_pinjaman,
             'tgl_pinjaman' => $tgl_pinjaman,

@@ -17,9 +17,10 @@ class PresensiController extends Controller
         $tanggal = !empty($request->tanggal) ? $request->tanggal : date('Y-m-d');
         // $tanggal = date("Y-m-d");
         $query = Karyawan::query();
-        $query->select('master_karyawan.nik', 'nama_karyawan', 'tgl_masuk', 'master_karyawan.kode_dept', 'nama_dept', 'jenis_kelamin', 'nama_jabatan', 'id_perusahaan', 'id_kantor', 'klasifikasi', 'status_karyawan', 'nama_jadwal', 'jam_masuk', 'jam_pulang', 'jam_in', 'jam_out', 'presensi.status as status_presensi', 'kode_izin', 'kode_izin_terlambat');
+        $query->select('master_karyawan.nik', 'nama_karyawan', 'tgl_masuk', 'master_karyawan.kode_dept', 'nama_dept', 'jenis_kelamin', 'nama_jabatan', 'id_perusahaan', 'id_kantor', 'klasifikasi', 'status_karyawan', 'nama_jadwal', 'jam_kerja.jam_masuk', 'jam_kerja.jam_pulang', 'jam_in', 'jam_out', 'presensi.status as status_presensi', 'presensi.kode_izin', 'kode_izin_terlambat', 'tgl_presensi', 'pengajuan_izin.status as status_izin', 'pengajuan_izin.jenis_izin');
         $query->leftjoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
         $query->leftjoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
+
         $query->leftJoin(
             DB::raw("(
             SELECT
@@ -32,6 +33,7 @@ class PresensiController extends Controller
                 $join->on('master_karyawan.nik', '=', 'presensi.nik');
             }
         );
+        $query->leftjoin('pengajuan_izin', 'presensi.kode_izin', '=', 'pengajuan_izin.kode_izin');
         $query->leftJoin(
             DB::raw("(
             SELECT

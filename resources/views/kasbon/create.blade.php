@@ -96,7 +96,19 @@
                         }
 
                         $jmlcicilan = $cicilan != null ? $cicilan->jumlah : 0;
-                        $maxkasbon = $maxkasbon - $jmlcicilan;
+
+                        if(!empty($kasbon_max)){
+                            if($kasbon_max > $maxkasbon){
+                                $maxkasbon = $maxkasbon;
+                            }else{
+                                $maxkasbon = $kasbon_max;
+                            }
+                        }else{
+                            $maxkasbon = $maxkasbon;
+                        }
+
+
+
                         echo rupiah($maxkasbon);
                         ?>
                     </td>

@@ -108,6 +108,8 @@ class PengajuanizinController extends Controller
         } else if (request()->is('pengajuanizin/cuti')) {
             $query->where('pengajuan_izin.status', 'c');
         }
+
+        $query->orderBy('kode_izin', 'desc');
         $pengajuan_izin = $query->get();
         $cbg = new Cabang();
         $cabang = $cbg->getCabang($this->cabang);
@@ -195,7 +197,7 @@ class PengajuanizinController extends Controller
         if (isset($request->decline)) {
             try {
                 if ($level != "manager hrd") {
-                    DB::table('pengajuan_izin')->where('kode_izind', $kode_izin)->update([
+                    DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
                         'head_dept' => 2
                     ]);
                 } else {
@@ -238,7 +240,7 @@ class PengajuanizinController extends Controller
         $jam_pulang = $hariini . " " . $data->jam_pulang;
         //dd($jam_pulang);
         $level = Auth::user()->level;
-        $status_approve = $data->status_approve;
+        $status_approve = $data->status_approved;
         if (isset($request->approve)) {
             try {
                 if ($level != "manager hrd") {
@@ -254,7 +256,7 @@ class PengajuanizinController extends Controller
                                 'status_approved' => 1
                             ]);
 
-                            DB::table('presensi')->where('nik', $nik)->where('tgl_presensi', $hariini)->update([
+                            DB::table('presensi')->where('nik', $nik)->where('tgl_presensi', $dari)->update([
                                 'jam_out' => $jam_pulang,
                                 'kode_izin' => $kode_izin
                             ]);
@@ -289,7 +291,7 @@ class PengajuanizinController extends Controller
                             'hrd' => 2,
                             'status_approved' => 2
                         ]);
-                        DB::table('presensi')->where('nik', $nik)->where('tgl_presensi', $hariini)->update([
+                        DB::table('presensi')->where('nik', $nik)->where('tgl_presensi', $dari)->update([
                             'jam_out' => null,
                             'kode_izin' => null
                         ]);
@@ -320,6 +322,8 @@ class PengajuanizinController extends Controller
         $kode_izin = $data->kode_izin;
         $hariini = date("Y-m-d");
         $jam_pulang = $hariini . " " . $data->jam_pulang;
+
+
         //dd($jam_pulang);
         $level = Auth::user()->level;
         $status_approve = $data->status_approved;
@@ -338,7 +342,7 @@ class PengajuanizinController extends Controller
                                 'status_approved' => 1
                             ]);
 
-                            DB::table('presensi')->where('nik', $nik)->where('tgl_presensi', $hariini)->update([
+                            DB::table('presensi')->where('nik', $nik)->where('tgl_presensi', $dari)->update([
                                 'kode_izin' => $kode_izin
                             ]);
                             DB::commit();
@@ -369,6 +373,10 @@ class PengajuanizinController extends Controller
                     DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
                         'hrd' => 2,
                         'status_approved' => 2
+                    ]);
+
+                    DB::table('presensi')->where('nik', $nik)->where('tgl_presensi', $dari)->update([
+                        'kode_izin' => NULL
                     ]);
                 }
 
@@ -521,12 +529,31 @@ class PengajuanizinController extends Controller
                         'hrd' => 2,
                         'status_approved' => 2
                     ]);
+
+                    DB::table('presensi')->where('nik', $nik)->where('tgl_presensi', $dari)->update([
+                        'kode_izin_terlambat' => NULL
+                    ]);
                 }
 
                 return Redirect::back()->with(['success' => 'Pengajuan Izin Ditolak']);
             } catch (\Exception $e) {
                 return Redirect::back()->with(['warning' => 'Pengajuan Izin Gagal Ditolak']);
             }
+        }
+    }
+
+
+    public function updatejammasukkk(Request $request)
+    {
+        $kode_izin = $request->kode_izin;
+        $jam_masuk = $request->jam_masuk_kk;
+
+        try {
+            DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update(['jam_masuk' => $jam_masuk]);
+            return Redirect::back()->with(['success' => 'Data Berhasil Diupdate']);
+        } catch (\Exception $e) {
+            dd($e);
+            return Redirect::back()->with(['warning' => 'Data Gagal Diupdate']);
         }
     }
 }

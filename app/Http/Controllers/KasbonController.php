@@ -131,15 +131,25 @@ class KasbonController extends Controller
         $kontrak = DB::table('hrd_kontrak')->where('nik', $nik)->orderBy('dari', 'desc')->first();
 
         $cekpinjaman = DB::table('pinjaman')
-            ->select('pinjaman.*')
+            ->select('pinjaman.*', 'totalpembayaran')
             ->where('nik', $nik)
+            ->leftJoin(
+                DB::raw("(
+                SELECT no_pinjaman,SUM(jumlah) as totalpembayaran FROM pinjaman_historibayar GROUP BY no_pinjaman
+            ) hb"),
+                function ($join) {
+                    $join->on('pinjaman.no_pinjaman', '=', 'hb.no_pinjaman');
+                }
+            )
+            ->whereRaw('IFNULL(jumlah_pinjaman,0) - IFNULL(totalpembayaran,0) != 0')
             ->first();
 
         $no_pinjaman = $cekpinjaman != null  ?  $cekpinjaman->no_pinjaman : '';
+        $angsuran_max = $cekpinjaman != null ? $cekpinjaman->angsuran_max : 0;
         $cicilan = DB::table('pinjaman_rencanabayar')->where('no_pinjaman', $no_pinjaman)->where('cicilan_ke', 1)->first();
+        $kasbon_max = $cekpinjaman != null ? $cekpinjaman->angsuran_max - $cicilan->jumlah : 0;
 
-
-        return view('kasbon.create', compact('karyawan', 'kontrak', 'cicilan'));
+        return view('kasbon.create', compact('karyawan', 'kontrak', 'cicilan', 'kasbon_max'));
     }
 
     public function store(Request $request)
@@ -151,6 +161,18 @@ class KasbonController extends Controller
         $akhir_kontrak = $request->akhir_kontrak;
         $id_jabatan = $request->id_jabatan;
         $jatuh_tempo = $request->jatuh_tempo;
+        $bln_cicilan = date("m", strtotime($jatuh_tempo));
+        $thn_cicilan = date("Y", strtotime($jatuh_tempo));
+
+
+        if ($bln_cicilan == 1) {
+            $bln_cicilan = 12;
+            $thn_cicilan = $thn_cicilan - 1;
+        } else {
+            $bln_cicilan = $bln_cicilan - 1;
+            $thn_cicilan = $thn_cicilan;
+        }
+
 
         $tgl = explode("-", $tgl_kasbon);
         $tahun = substr($tgl[0], 2, 2);
@@ -162,7 +184,10 @@ class KasbonController extends Controller
         $no_kasbon  = buatkode($last_nokasbon, "KB" . $tahun, 3);
 
         $id_user = Auth::user()->id;
-
+        $cekpembayaran = DB::table('kasbon_potongangaji')->where('bulan', $bln_cicilan)->where('tahun', $thn_cicilan)->count();
+        if ($cekpembayaran > 0) {
+            return Redirect::back()->with(['warning' => 'Kasbon Pada Periode Ini Sudah Ditutup']);
+        }
         $data = [
             'no_kasbon' => $no_kasbon,
             'tgl_kasbon' => $tgl_kasbon,
