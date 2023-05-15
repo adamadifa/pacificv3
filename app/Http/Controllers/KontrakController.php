@@ -498,8 +498,9 @@ class KontrakController extends Controller
                 'sampai' => $sampai,
                 'status_kontrak' => 1
             ]);
-
-            DB::table('hrd_kontrak')->where('no_kontrak', $lastkontrak->no_kontrak)->update(['status_kontrak' => 0]);
+            if ($lastkontrak != null) {
+                DB::table('hrd_kontrak')->where('no_kontrak', $lastkontrak->no_kontrak)->update(['status_kontrak' => 0]);
+            }
             DB::commit();
             return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
         } catch (\Exception $e) {

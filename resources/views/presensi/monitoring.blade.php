@@ -270,7 +270,23 @@
                                                 @elseif($d->jenis_izin=="TL")
                                                 <span class="badge bg-info">Izin Terlambat</span>
                                                 @elseif($d->jenis_izin=="KL")
-                                                <span class="badge bg-info">Izin Keluar</span>
+                                                <?php
+                                                if(!empty($d->jam_masuk_kk)){
+                                                    $jk1 = strtotime($d->jam_keluar);
+                                                    $jk2 = strtotime($d->jam_masuk_kk);
+                                                    $difjk = $jk2 - $jk1;
+                                                    $jamkk = floor($difjk / (60 * 60));
+                                                    $menitkk = $difjk - ( $jamkk * (60 * 60) );
+                                                    $menitkkfix = floor( $menitkk / 60 );
+                                                    $jkk = $jamkk <= 9 ? "0" .$jamkk : $jamkk ;
+                                                    $mkk=$menitkkfix <=9 ? "0" .$menitkkfix : $menitkkfix;
+                                                    $lamakk=$jkk.":".$mkk;
+                                                }else{
+                                                    $lamakk= "";
+                                                }
+
+                                                ?>
+                                                <span class="badge bg-info" data-toggle="popover" data-content="Jam Keluar : {{ $d->jam_keluar }} Jam Masuk : {{ $d->jam_masuk_kk }}" data-trigger="hover" data-original-title="Informasi Keluar Kantor">Izin Keluar {{ $lamakk }}</span>
                                                 @endif
                                                 @endif
 
