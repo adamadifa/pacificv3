@@ -432,7 +432,7 @@ class KaryawanController extends Controller
             $qkontrak_duabulan->where('master_karyawan.kode_dept', 'GDG');
         }
 
-        if ($level == "manager produksi") {
+        if ($level == "manager produksi" || $level == "admin produksi") {
             $qkontrak_duabulan->where('master_karyawan.kode_dept', 'PRD');
         }
 
