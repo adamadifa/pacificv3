@@ -108,6 +108,7 @@
     <?php
     $tgl1 = "2021-08-31";
     $bln = $bulan;
+    dd($bln."-".$tahun);
     $tanggal = $tahun . "-" . $bln . "-" . "31";
     if ($bln == 9 and $tahun == "2021") {
     $persentaseljt = 55;

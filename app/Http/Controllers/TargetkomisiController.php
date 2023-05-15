@@ -2499,7 +2499,7 @@ class TargetkomisiController extends Controller
             return view('targetkomisi.laporan.cetak_insentif_oktober2022', compact('insentif', 'cabang', 'namabulan', 'bulan', 'tahun'));
         } elseif ($bulan == 9 && $tahun == 2022) {
             return view('targetkomisi.laporan.cetak_insentif_september2022', compact('insentif', 'cabang', 'namabulan', 'bulan', 'tahun'));
-        } else if ($bulan >= 5 && $tahun >= 2022) {
+        } else if ($bulan >= 5 && $tahun == 2022) {
             return view('targetkomisi.laporan.cetak_insentif_mei2022', compact('insentif', 'cabang', 'namabulan', 'bulan', 'tahun'));
         } else {
             echo "1";

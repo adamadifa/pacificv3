@@ -128,6 +128,7 @@
     } else if ($bln <= 8 and $tahun == "2021") {
     $persentaseljt = 50;
     }
+
     ?>
     <table class="datatable3">
         <thead>
