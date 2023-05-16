@@ -363,7 +363,7 @@
                     title: 'Oops'
                     , text: 'Angsuran Tidak Boleh Lebih dari !' + tenormax
                     , icon: 'warning'
-                    , showConfirmButton: false
+                    , showConfirmButton: true
                 }).then(function() {
                     $("#angsuran").val(0);
                     $("#jml_angsuran").val(0);
@@ -383,9 +383,6 @@
             var tgl = tanggal[2];
             var bulan = tanggal[1];
             var tahun = tanggal[0];
-
-
-
             if (tgl == 19 || tgl == 20) {
                 swal({
                     title: 'Oops'
@@ -426,6 +423,24 @@
                 $("#mulai_cicilan").val(mulai_cicilan);
             }
 
+        });
+
+
+        $("#angsuran").change(function(e) {
+            var angsuranmax = "{{ $angsuranmax }}";
+            var jmlangsuran = $("#jml_angsuran").val();
+            var jml_angsuran = parseInt(jmlangsuran.replace(/\./g, ''));
+            if (parseInt(jml_angsuran) > parseInt(angsuranmax)) {
+                Swa.fire({
+                    title: 'Oops'
+                    , text: 'Jumlah Angsuran Tidak Boleh lebih dari ' + angsuranmax
+                    , icon: 'warning'
+                    , showConfirmButton: true
+                }).then(function() {
+                    $("#jml_angsuran").val(0);
+                    $("#angsuran").val(0);
+                });
+            }
         });
     });
 

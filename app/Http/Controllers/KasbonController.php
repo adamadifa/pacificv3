@@ -144,11 +144,15 @@ class KasbonController extends Controller
             ->whereRaw('IFNULL(jumlah_pinjaman,0) - IFNULL(totalpembayaran,0) != 0')
             ->first();
 
+
+
         $no_pinjaman = $cekpinjaman != null  ?  $cekpinjaman->no_pinjaman : '';
         $angsuran_max = $cekpinjaman != null ? $cekpinjaman->angsuran_max : 0;
-        $cicilan = DB::table('pinjaman_rencanabayar')->where('no_pinjaman', $no_pinjaman)->where('cicilan_ke', 1)->first();
-        $kasbon_max = $cekpinjaman != null ? $cekpinjaman->angsuran_max - $cicilan->jumlah : 0;
 
+        $cicilan = DB::table('pinjaman_rencanabayar')->where('no_pinjaman', $no_pinjaman)->where('cicilan_ke', 1)->first();
+
+
+        $kasbon_max = $cekpinjaman != null ? $cekpinjaman->angsuran_max - $cicilan->jumlah : 0;
         return view('kasbon.create', compact('karyawan', 'kontrak', 'cicilan', 'kasbon_max'));
     }
 

@@ -4358,7 +4358,11 @@ class PenjualanController extends Controller
             header("Content-Disposition: attachment; filename=Tunai Kredit Periode $dari-$sampai-$time.xls");
         }
 
-        return view('penjualan.laporan.cetak_tunaikredit', compact('tunaikredit', 'salesman', 'cabang', 'dari', 'sampai', 'retur', 'potongan'));
+        if ($request->jenis_laporan == 1) {
+            return view('penjualan.laporan.cetak_tunaikredit', compact('tunaikredit', 'salesman', 'cabang', 'dari', 'sampai', 'retur', 'potongan'));
+        } else {
+            return view('penjualan.laporan.cetak_tunaikredit_v2', compact('tunaikredit', 'salesman', 'cabang', 'dari', 'sampai', 'retur', 'potongan'));
+        }
     }
 
     public function laporankartupiutang()

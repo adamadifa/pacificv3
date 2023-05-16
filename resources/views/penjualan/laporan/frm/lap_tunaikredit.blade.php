@@ -55,6 +55,16 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <select name="jenis_laporan" id="jenis_laporan" class="form-control">
+                                                    <option value="1">Standar</option>
+                                                    <option value="2">PPN Per Produk</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="row" id="pilihperiode">
                                         <div class="col-6">
                                             <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker />
@@ -104,7 +114,7 @@
             var kode_cabang = $("#kode_cabang").val();
             var dari = $("#dari").val();
             var sampai = $("#sampai").val();
-
+            var jenis_laporan = $("#jenis_laporan").val();
             var start = new Date(dari);
             var end = new Date(sampai);
 
@@ -149,6 +159,15 @@
                     $("#dari").focus();
                 });
                 return false;
+            } else if (jenis_laporan == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Jenis Laporan Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#jenis_laporan").focus();
+                });
             } else {
                 return true;
             }

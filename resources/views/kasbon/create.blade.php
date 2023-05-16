@@ -97,6 +97,7 @@
 
                         $jmlcicilan = $cicilan != null ? $cicilan->jumlah : 0;
 
+                        //echo $maxkasbon;
                         if(!empty($kasbon_max)){
                             if($kasbon_max > $maxkasbon){
                                 $maxkasbon = $maxkasbon;
