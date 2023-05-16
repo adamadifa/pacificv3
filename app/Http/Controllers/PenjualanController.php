@@ -8558,4 +8558,42 @@ class PenjualanController extends Controller
             return Redirect::back()->with(['warning' => 'Data Gagal di Update']);
         }
     }
+
+
+    public function persentasesfa()
+    {
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        return view('penjualan.laporan.frm.lap_persentasesfa', compact('cabang', 'bulan'));
+    }
+
+
+    public function cetakpersentasesfa(Request $request)
+    {
+        $kode_cabang = $request->kode_cabang;
+        $id_karyawan = $request->id_karyawan;
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $dari = $tahun . "-" . $bulan . "-01";
+        $sampai = date("Y-m-t", strtotime($dari));
+
+        $query = Penjualan::query();
+        $query->selectRaw('penjualan.id_karyawan,nama_karyawan,karyawan.kode_cabang,COUNT(no_fak_penj) as totaltransaksi,
+        SUM(IF(`level`="salesman",1,0)) as totaltransaksisfa,
+        SUM(IF(`level`="salesman",1,0)) / COUNT(no_fak_penj)  * 100 as persentase');
+        $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $query->join('users', 'penjualan.id_admin', '=', 'users.id');
+        $query->whereBetween('tgltransaksi', [$dari, $sampai]);
+        if (!empty($kode_cabang)) {
+            $query->where('karyawan.kode_cabang', $kode_cabang);
+        }
+        $query->where('nama_karyawan', '!=', '-');
+        $query->groupBy('penjualan.id_karyawan', 'nama_karyawan', 'karyawan.kode_cabang');
+        $query->orderBy('karyawan.kode_cabang');
+        $persentasesfa = $query->get();
+        $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
+        $salesman = Salesman::where('id_karyawan', $id_karyawan)->first();
+        return view('penjualan.laporan.cetak_persentasesfa', compact('persentasesfa', 'cabang', 'dari', 'sampai', 'salesman'));
+    }
 }

@@ -129,6 +129,11 @@
                     <i class="feather icon-file mr-1"></i>Sales Perfomance
                 </li>
             </a>
+            <a href="/laporanpenjualan/persentasesfa" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanpenjualan/persentasesfa']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Persentase SFA
+                </li>
+            </a>
             @endif
         </ul>
     </div>

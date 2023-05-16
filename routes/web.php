@@ -1313,8 +1313,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/penjualan/{no_fak_penj}/showforsales', [PenjualanController::class, 'showforsales']);
     Route::get('/penjualan/{no_fak_penj}/updatepending', [PenjualanController::class, 'updatepending']);
     Route::get('/laporanpenjualan/analisatransaksi', [PenjualanController::class, 'analisatransaksi']);
+    Route::get('/laporanpenjualan/persentasesfa', [PenjualanController::class, 'persentasesfa']);
     Route::get('/laporanpenjualan/tunaitransfer', [PenjualanController::class, 'tunaitransfer']);
     Route::post('/laporanpenjualan/analisatransaksi/cetak', [PenjualanController::class, 'cetakanalisatransaksi']);
+    Route::post('/laporanpenjualan/persentasesfa/cetak', [PenjualanController::class, 'cetakpersentasesfa']);
     Route::post('/laporanpenjualan/tunaitransfer/cetak', [PenjualanController::class, 'cetaktunaitransfer']);
     Route::post('/penjualan/ceknofaktur', [PenjualanController::class, 'ceknofaktur']);
     Route::post('/penjualan/editbarangtemp', [PenjualanController::class, 'editbarangtemp']);
