@@ -5931,7 +5931,10 @@ class PenjualanController extends Controller
         $dari = $tahun . "-" . $bulan . "-01";
         $sampai = date("Y-m-t", strtotime($dari));
         $harganet = DB::table('penjualan')
-            ->selectRaw("SUM(bruto_AB) as bruto_AB,
+            ->selectRaw("
+            SUM(ppn) as totalppn,
+            SUM(subtotal) as totalbruto,
+            SUM(bruto_AB) as bruto_AB,
             SUM(bruto_AR) as bruto_AR,
             SUM(bruto_AS) as bruto_AS,
             SUM(bruto_BB) as bruto_BB,
@@ -5947,100 +5950,100 @@ class PenjualanController extends Controller
             SUM(bruto_SP8) as bruto_SP8,
             SUM(bruto_SP500) as bruto_SP500,
 
-		SUM(qty_AB) as qty_AB,
-		SUM(qty_AR) as qty_AR,
-		SUM(qty_AS) as qty_AS,
-		SUM(qty_BB) as qty_BB,
-		SUM(qty_BBP) as qty_BBP,
-		SUM(qty_CG) as qty_CG,
-		SUM(qty_CGG) as qty_CGG,
-		SUM(qty_CG5) as qty_CG5,
-		SUM(qty_DEP) as qty_DEP,
-		SUM(qty_DS) as qty_DS,
-		SUM(qty_SP) as qty_SP,
-		SUM(qty_SPP) as qty_SPP,
-		SUM(qty_SC) as qty_SC,
-		SUM(qty_SP8) as qty_SP8,
-		SUM(qty_SP500) as qty_SP500,
+            SUM(qty_AB) as qty_AB,
+            SUM(qty_AR) as qty_AR,
+            SUM(qty_AS) as qty_AS,
+            SUM(qty_BB) as qty_BB,
+            SUM(qty_BBP) as qty_BBP,
+            SUM(qty_CG) as qty_CG,
+            SUM(qty_CGG) as qty_CGG,
+            SUM(qty_CG5) as qty_CG5,
+            SUM(qty_DEP) as qty_DEP,
+            SUM(qty_DS) as qty_DS,
+            SUM(qty_SP) as qty_SP,
+            SUM(qty_SPP) as qty_SPP,
+            SUM(qty_SC) as qty_SC,
+            SUM(qty_SP8) as qty_SP8,
+            SUM(qty_SP500) as qty_SP500,
 
 
-		SUM(qtydus_AB) as qtydus_AB,
-		SUM(qtydus_AR) as qtydus_AR,
-		SUM(qtydus_AS) as qtydus_AS,
-		SUM(qtydus_BB) as qtydus_BB,
-		SUM(qtydus_BBP) as qtydus_BBP,
-		SUM(qtydus_CG) as qtydus_CG,
-		SUM(qtydus_CGG) as qtydus_CGG,
-		SUM(qtydus_CG5) as qtydus_CG5,
-		SUM(qtydus_DEP) as qtydus_DEP,
-		SUM(qtydus_DS) as qtydus_DS,
-		SUM(qtydus_SP) as qtydus_SP,
-		SUM(qtydus_SPP) as qtydus_SPP,
-		SUM(qtydus_SC) as qtydus_SC,
-		SUM(qtydus_SP8) as qtydus_SP8,
-		SUM(qtydus_SP500) as qtydus_SP500,
+            SUM(qtydus_AB) as qtydus_AB,
+            SUM(qtydus_AR) as qtydus_AR,
+            SUM(qtydus_AS) as qtydus_AS,
+            SUM(qtydus_BB) as qtydus_BB,
+            SUM(qtydus_BBP) as qtydus_BBP,
+            SUM(qtydus_CG) as qtydus_CG,
+            SUM(qtydus_CGG) as qtydus_CGG,
+            SUM(qtydus_CG5) as qtydus_CG5,
+            SUM(qtydus_DEP) as qtydus_DEP,
+            SUM(qtydus_DS) as qtydus_DS,
+            SUM(qtydus_SP) as qtydus_SP,
+            SUM(qtydus_SPP) as qtydus_SPP,
+            SUM(qtydus_SC) as qtydus_SC,
+            SUM(qtydus_SP8) as qtydus_SP8,
+            SUM(qtydus_SP500) as qtydus_SP500,
 
-		SUM(potaida) as  potonganAIDA,
-		SUM(IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0)) as potonganSWAN,
+            SUM(potaida) as  potonganAIDA,
+            SUM(IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0)) as potonganSWAN,
 
-		SUM(IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0)) as qtyAIDA,
-		SUM(IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0) + IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) as qtySWAN,
+            SUM(IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0)) as qtyAIDA,
+            SUM(IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0) + IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) as qtySWAN,
 
-		SUM(IFNULL(IFNULL(potaida,0) / (IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0)),0)) as diskonaida,
-		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0) + IFNULL(qtydus_SPP,0)+ IFNULL(qtydus_SC,0)+ IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)),0)) as diskonswan,
+            SUM(IFNULL(IFNULL(potaida,0) / (IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0)),0)) as diskonaida,
+            SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0) + IFNULL(qtydus_SPP,0)+ IFNULL(qtydus_SC,0)+ IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)),0)) as diskonswan,
 
-		SUM(IFNULL((IFNULL(potaida,0) / (IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0))) * qtydus_AB,0)) as diskon_AB,
-		SUM(IFNULL((IFNULL(potaida,0) / (IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0))) * qtydus_AR,0)) as diskon_AR,
-		SUM(IFNULL((IFNULL(potaida,0) / (IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0))) * qtydus_AS,0)) as diskon_AS,
-		SUM(IFNULL((IFNULL(potaida,0) / (IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0))) * qtydus_CG,0)) as diskon_CG,
-		SUM(IFNULL((IFNULL(potaida,0) / (IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0))) * qtydus_CGG,0)) as diskon_CGG,
-		SUM(IFNULL((IFNULL(potaida,0) / (IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0))) * qtydus_CG5,0)) as diskon_CG5,
-
-
-        SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0) ) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0) + IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) * qtydus_BB,0)) as diskon_BB,
+            SUM(IFNULL((IFNULL(potaida,0) / (IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0))) * qtydus_AB,0)) as diskon_AB,
+            SUM(IFNULL((IFNULL(potaida,0) / (IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0))) * qtydus_AR,0)) as diskon_AR,
+            SUM(IFNULL((IFNULL(potaida,0) / (IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0))) * qtydus_AS,0)) as diskon_AS,
+            SUM(IFNULL((IFNULL(potaida,0) / (IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0))) * qtydus_CG,0)) as diskon_CG,
+            SUM(IFNULL((IFNULL(potaida,0) / (IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0))) * qtydus_CGG,0)) as diskon_CGG,
+            SUM(IFNULL((IFNULL(potaida,0) / (IFNULL(qtydus_AB,0) + IFNULL(qtydus_AR,0) + IFNULL(qtydus_AS,0) + IFNULL(qtydus_CG,0) + IFNULL(qtydus_CGG,0) + IFNULL(qtydus_CG5,0))) * qtydus_CG5,0)) as diskon_CG5,
 
 
-		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) * qtydus_BBP,0)) as diskon_BBP,
+            SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0) ) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0) + IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) * qtydus_BB,0)) as diskon_BB,
 
 
-		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) * qtydus_DEP,0)) as diskon_DEP,
+            SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) * qtydus_BBP,0)) as diskon_BBP,
 
 
-		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) * qtydus_DS,0)) as diskon_DS,
+            SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) * qtydus_DEP,0)) as diskon_DEP,
 
 
-		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) * qtydus_SP,0)) as diskon_SP,
+            SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) * qtydus_DS,0)) as diskon_DS,
 
 
-		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) * qtydus_SPP,0)) as diskon_SPP,
+            SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) * qtydus_SP,0)) as diskon_SP,
 
 
-		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) * qtydus_SC,0)) as diskon_SC,
+            SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) * qtydus_SPP,0)) as diskon_SPP,
 
 
-		SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + + IFNULL(qtydus_SP500,0)) * qtydus_SP8,0)) as diskon_SP8,
-
-        SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + + IFNULL(qtydus_SP500,0)) * qtydus_SP500,0)) as diskon_SP500,
+            SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) * qtydus_SC,0)) as diskon_SC,
 
 
+            SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + + IFNULL(qtydus_SP500,0)) * qtydus_SP8,0)) as diskon_SP8,
 
-		SUM(penyharga) as penyharga,
+            SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + + IFNULL(qtydus_SP500,0)) * qtydus_SP500,0)) as diskon_SP500,
 
-		SUM(IFNULL(retur_AB,0)) as retur_AB,
-		SUM(IFNULL(retur_AR,0)) as retur_AR,
-		SUM(IFNULL(retur_AS,0)) as retur_AS,
-		SUM(IFNULL(retur_BB,0)) as retur_BB,
-		SUM(IFNULL(retur_BBP,0)) as retur_BBP,
-		SUM(IFNULL(retur_CG,0)) as retur_CG,
-		SUM(IFNULL(retur_CGG,0)) as retur_AB,
-		SUM(IFNULL(retur_CG5,0)) as retur_CG5,
-		SUM(IFNULL(retur_DEP,0)) as retur_DEP,
-		SUM(IFNULL(retur_DS,0)) as retur_DS,
-		SUM(IFNULL(retur_SP,0)) as retur_SP,
-		SUM(IFNULL(retur_SPP,0)) as retur_SPP,
-		SUM(IFNULL(retur_SC,0)) as retur_SC,
-		SUM(IFNULL(retur_SP8,0)) as retur_SP8,
-		SUM(IFNULL(retur_SP500,0)) as retur_SP500
+
+
+            SUM(penyharga) as penyharga,
+
+            SUM(IFNULL(retur_AB,0)) as retur_AB,
+            SUM(IFNULL(retur_AR,0)) as retur_AR,
+            SUM(IFNULL(retur_AS,0)) as retur_AS,
+            SUM(IFNULL(retur_BB,0)) as retur_BB,
+            SUM(IFNULL(retur_BBP,0)) as retur_BBP,
+            SUM(IFNULL(retur_CG,0)) as retur_CG,
+            SUM(IFNULL(retur_CGG,0)) as retur_AB,
+            SUM(IFNULL(retur_CG5,0)) as retur_CG5,
+            SUM(IFNULL(retur_DEP,0)) as retur_DEP,
+            SUM(IFNULL(retur_DS,0)) as retur_DS,
+            SUM(IFNULL(retur_SP,0)) as retur_SP,
+            SUM(IFNULL(retur_SPP,0)) as retur_SPP,
+            SUM(IFNULL(retur_SC,0)) as retur_SC,
+            SUM(IFNULL(retur_SP8,0)) as retur_SP8,
+            SUM(IFNULL(retur_SP500,0)) as retur_SP500
         ")
             ->leftJoin(
                 DB::raw("(

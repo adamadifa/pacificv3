@@ -62,8 +62,8 @@
             <tr bgcolor="#295ea9" style="color:white;">
                 <td rowspan="3" align="center">Kode Barang</td>
                 <td rowspan="3" align="center">Nama Barang</td>
-                <td colspan="4" align="center">Penjualan Tunai</td>
-                <td colspan="4" align="center">Penjualan Kredit</td>
+                <td colspan="6" align="center">Penjualan Tunai</td>
+                <td colspan="6" align="center">Penjualan Kredit</td>
                 <td colspan="4">Total Penjualan Tunai Kredit</td>
                 <td rowspan="3" align="center">PPN</td>
                 <td rowspan="3" align="center">Bruto + PPN</td>
@@ -73,8 +73,12 @@
             <tr bgcolor="#295ea9" style="color:white;">
                 <td colspan="3" align="center">Qty</td>
                 <td rowspan="2" align="center">Total</td>
+                <td rowspan="2" align="center">PPN</td>
+                <td rowspan="2" align="center">Bruto + PPN</td>
                 <td colspan="3" align="center">Qty</td>
                 <td rowspan="2" align="center">Total</td>
+                <td rowspan="2" align="center">PPN</td>
+                <td rowspan="2" align="center">Bruto + PPN</td>
                 <td colspan="3" align="center">Total Qty</td>
                 <td rowspan="2" align="center">Total Penjualan</td>
 
@@ -113,10 +117,17 @@
             $totalbrutokredit = $tunaikredit->sum('totaljual_kredit');
             $totalbruto = $totalbrutotunai + $totalbrutokredit;
 
+            $ppn_tunai = $potongan->ppn_tunai ;
+            $ppn_kredit = $potongan->ppn_kredit;
             $totalppn = $potongan->ppn_tunai + $potongan->ppn_kredit;
 
+            $totalppnperproduktunai = 0;
+            $totalppnperprodukkredit = 0;
             $totalppnperproduk = 0;
             $totalbrutoppn = 0;
+            $totalbrutoppntunai = 0;
+            $totalbrutoppnkredit = 0;
+
             @endphp
             @foreach ($tunaikredit as $t)
             @php
@@ -231,6 +242,17 @@
             }else{
             $ppnperdus = 0;
             }
+
+
+            $ppnperproduktunai = $subtotalt / $totalbrutotunai * $ppn_tunai;
+            $totalppnperproduktunai += $ppnperproduktunai;
+            $brutoppntunai = $subtotalt + $ppnperproduktunai;
+            $totalbrutoppntunai += $brutoppntunai;
+
+            $ppnperprodukkredit = $subtotalk / $totalbrutokredit * $ppn_kredit;
+            $totalppnperprodukkredit += $ppnperprodukkredit;
+            $brutoppnkredit = $subtotalk + $ppnperprodukkredit;
+            $totalbrutoppnkredit += $brutoppnkredit;
             @endphp
             <tr>
                 <td><b><?php echo $t->kode_produk; ?></b></td>
@@ -239,10 +261,14 @@
                 <td align="center"><?php if ($jmlpackt != 0) {echo rupiah($jmlpackt);} else {echo "";} ?></td>
                 <td align="center"><?php if ($jmlpcst != 0) {echo rupiah($jmlpcst);} else {echo "";} ?></td>
                 <td align="right"><?php if ($subtotalt != 0) {echo rupiah($subtotalt);} else {echo "";} ?></td>
+                <td align="right"><?php if ($ppnperproduktunai != 0) {echo rupiah($ppnperproduktunai);} else {echo "";} ?></td>
+                <td align="right"><?php if ($brutoppntunai != 0) {echo rupiah($brutoppntunai);} else {echo "";} ?></td>
                 <td align="center"><?php if ($jmldusk != 0) {echo rupiah($jmldusk);} else {echo "";} ?></td>
                 <td align="center"><?php if ($jmlpackk != 0) {echo rupiah($jmlpackk);} else {echo "";} ?></td>
                 <td align="center"><?php if ($jmlpcsk != 0) {echo rupiah($jmlpcsk);} else {echo "";} ?></td>
                 <td align="right"><?php if ($subtotalk != 0) {echo rupiah($subtotalk);} else {echo "";} ?></td>
+                <td align="right"><?php if ($ppnperproduktunai != 0) {echo rupiah($ppnperprodukkredit);} else {echo "";} ?></td>
+                <td align="right"><?php if ($brutoppntunai != 0) {echo rupiah($brutoppnkredit);} else {echo "";} ?></td>
                 <td align="center"><?php if ($jmldusall != 0) {echo rupiah($jmldusall);} else {echo "";} ?></td>
                 <td align="center"><?php if ($jmlpackall != 0) {echo rupiah($jmlpackall);} else {echo "";} ?></td>
                 <td align="center"><?php if ($jmlpcsall != 0) {echo rupiah($jmlpcsall);} else {echo "";} ?></td>
@@ -274,10 +300,14 @@
                 <td align="center"></td>
                 <td align="center"></td>
                 <td align="right"><?php echo rupiah($totalt); ?></td>
+                <td align="right"><?php echo rupiah($totalppnperproduktunai); ?></td>
+                <td align="right"><?php echo rupiah($totalbrutoppntunai); ?></td>
                 <td align="center"></td>
                 <td align="center"></td>
                 <td align="center"></td>
                 <td align="right"><?php echo rupiah($totalk); ?></td>
+                <td align="right"><?php echo rupiah($totalppnperprodukkredit); ?></td>
+                <td align="right"><?php echo rupiah($totalbrutoppnkredit); ?></td>
                 <td align="center"></td>
                 <td align="center"></td>
                 <td align="center"></td>
@@ -286,42 +316,42 @@
                 <td align="right"><?php echo rupiah($totalbrutoppn);  ?></td>
             </tr>
             <tr>
-                <td colspan="5"><b>Retur Penjualan</b></td>
+                <td colspan="7"><b>Retur Penjualan</b></td>
                 <td align="right"><?php echo rupiah($retur->totalretur_tunai); ?></td>
-                <td colspan="3"></td>
+                <td colspan="5"></td>
                 <td align="right"><?php echo rupiah($retur->totalretur_kredit); ?></td>
                 <td colspan="5"></td>
                 <td align="right"><?php echo rupiah($totalallretur); ?></td>
             </tr>
             <tr>
-                <td colspan="5">Penyesuaian Harga</td>
+                <td colspan="7">Penyesuaian Harga</td>
                 <td align="right"><?php echo rupiah($potongan->totpenyharga_tunai); ?></td>
-                <td colspan="3"></td>
+                <td colspan="5"></td>
                 <td align="right"><?php echo rupiah($potongan->totpenyharga_kredit); ?></td>
                 <td colspan="5"></td>
                 <td align="right"><?php echo rupiah($totalallpenyharga); ?></td>
             </tr>
             <tr>
-                <td colspan="5">Potongan Harga</td>
+                <td colspan="7">Potongan Harga</td>
                 <td align="right"><?php echo rupiah($potongan->totpotongan_tunai); ?></td>
-                <td colspan="3"></td>
+                <td colspan="5"></td>
                 <td align="right"><?php echo rupiah($potongan->totpotongan_kredit); ?></td>
                 <td colspan="5"></td>
                 <td align="right"><?php echo rupiah($totalallpotongan); ?></td>
             </tr>
             <tr>
-                <td colspan="5">Potongan Isitimwa</td>
+                <td colspan="7">Potongan Isitimwa</td>
                 <td align="right"><?php echo rupiah($potongan->totpotistimewa_tunai); ?></td>
-                <td colspan="3"></td>
+                <td colspan="5"></td>
                 <td align="right"><?php echo rupiah($potongan->totpotistimewa_kredit); ?></td>
                 <td colspan="5"></td>
                 <td align="right"><?php echo rupiah($totalallpotistimewa); ?></td>
             </tr>
 
             <tr bgcolor="#06b947" style="color:white; font-size:12;">
-                <td colspan="5">Penjualan Netto</td>
+                <td colspan="7">Penjualan Netto</td>
                 <td align="right"><?php echo rupiah($totalallt); ?></td>
-                <td colspan="3"></td>
+                <td colspan="5"></td>
                 <td align="right"><?php echo rupiah($totalallk); ?></td>
                 <td colspan="5"></td>
                 <td align="right"><?php echo rupiah($totalallt + $totalallk); ?></td>
