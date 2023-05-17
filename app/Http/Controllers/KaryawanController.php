@@ -277,7 +277,7 @@ class KaryawanController extends Controller
             $qkontrak_lewat->where('master_karyawan.kode_dept', 'GDG');
         }
 
-        if ($level == "manager produksi" || $level == "admin produksi") {
+        if ($level == "manager produksi" || $level == "spv produksi") {
             $qkontrak_lewat->where('master_karyawan.kode_dept', 'PRD');
         }
 
