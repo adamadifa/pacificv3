@@ -191,7 +191,7 @@
                                                     @endif
                                                     @endif
 
-                                                    @if ($level == "manager pembelian" || $level=="manager produksi" || $level=="manager ga")
+                                                    @if ($level == "manager pembelian" || $level=="manager produksi" || $level=="spv produksi" || $level=="manager ga")
                                                     @if ($d->nama_jabatan!="MANAGER")
                                                     @if ($d->status_karyawan != "O")
                                                     <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukanpinjaman"><i class="feather icon-external-link primary ml-1"></i></a>
