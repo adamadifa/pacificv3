@@ -60,7 +60,7 @@ class KaryawanController extends Controller
             $query->where('master_karyawan.kode_dept', 'GDG');
         }
 
-        if ($level == "manager produksi" || $level == "admin produksi") {
+        if ($level == "manager produksi" || $level == "spv produksi") {
             $query->where('master_karyawan.kode_dept', 'PRD');
         }
 
@@ -328,7 +328,7 @@ class KaryawanController extends Controller
             $qkontrak_bulanini->where('master_karyawan.kode_dept', 'GDG');
         }
 
-        if ($level == "manager produksi" || $level == "admin produksi") {
+        if ($level == "manager produksi" || $level == "spv produksi") {
             $qkontrak_bulanini->where('master_karyawan.kode_dept', 'PRD');
         }
 
@@ -380,7 +380,7 @@ class KaryawanController extends Controller
             $qkontrak_bulandepan->where('master_karyawan.kode_dept', 'GDG');
         }
 
-        if ($level == "manager produksi" || $level == "admin produksi") {
+        if ($level == "manager produksi" || $level == "spv produksi") {
             $qkontrak_bulandepan->where('master_karyawan.kode_dept', 'PRD');
         }
 
@@ -432,7 +432,7 @@ class KaryawanController extends Controller
             $qkontrak_duabulan->where('master_karyawan.kode_dept', 'GDG');
         }
 
-        if ($level == "manager produksi" || $level == "admin produksi") {
+        if ($level == "manager produksi" || $level == "spv produksi") {
             $qkontrak_duabulan->where('master_karyawan.kode_dept', 'PRD');
         }
 
