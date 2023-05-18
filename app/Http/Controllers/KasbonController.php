@@ -80,7 +80,7 @@ class KasbonController extends Controller
             $query->where('master_karyawan.kode_dept', 'GDG');
         }
 
-        if ($level == "manager produksi") {
+        if ($level == "manager produksi" || $level == "spv produksi") {
             $query->where('master_karyawan.kode_dept', 'PRD');
         }
 
