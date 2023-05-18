@@ -16,8 +16,8 @@ class BarangpembelianController extends Controller
     {
         $query = Barangpembelian::query();
         $query->select('master_barang_pembelian.*', 'kategori', 'nama_dept');
-        $query->join('kategori_barang_pembelian', 'master_barang_pembelian.kode_kategori', '=', 'kategori_barang_pembelian.kode_kategori');
-        $query->join('departemen', 'master_barang_pembelian.kode_dept', '=', 'departemen.kode_dept');
+        $query->leftjoin('kategori_barang_pembelian', 'master_barang_pembelian.kode_kategori', '=', 'kategori_barang_pembelian.kode_kategori');
+        $query->leftjoin('departemen', 'master_barang_pembelian.kode_dept', '=', 'departemen.kode_dept');
         if (!empty($request->jenis_barang)) {
             $query->where('jenis_barang', $request->jenis_barang);
         }
