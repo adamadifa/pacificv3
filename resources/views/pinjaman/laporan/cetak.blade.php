@@ -66,9 +66,9 @@
                 <th>Jumlah</th>
                 <th>Bayar</th>
                 <th>Sisa Tagihan</th>
-                <th>Mulai Cicilan</th>
-                <th>Ket</th>
                 <th>Status</th>
+                <th>Ket</th>
+                <th>Mulai Cicilan</th>
                 <th>Angsuran</th>
                 <th>Angsuran / Bulan</th>
             </tr>
