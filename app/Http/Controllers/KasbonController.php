@@ -63,13 +63,19 @@ class KasbonController extends Controller
         }
 
         if ($level == "kepala admin") {
-            $query->where('id_kantor', $cabang);
-            $query->where('id_perusahaan', "MP");
+            $query->where('master_karyawan.id_kantor', $cabang);
+            $query->where('master_karyawan.id_perusahaan', "MP");
+            $query->where('nama_jabatan', '!=', 'KEPALA ADMIN');
         }
 
         if ($level == "kepala penjualan") {
-            $query->where('id_kantor', $cabang);
-            $query->where('id_perusahaan', "PCF");
+            if (Auth::user()->id == "27") {
+                $query->whereIn('master_karyawan.id_kantor', [$cabang, 'PWK']);
+            } else {
+                $query->where('master_karyawan.id_kantor', $cabang);
+            }
+            $query->where('nama_jabatan', '!=', 'KEPALA PENJUALAN');
+            $query->where('master_karyawan.id_perusahaan', "PCF");
         }
 
         if ($level == "manager pembelian") {
@@ -78,10 +84,17 @@ class KasbonController extends Controller
 
         if ($level == "kepala gudang") {
             $query->where('master_karyawan.kode_dept', 'GDG');
+            $query->whereNotIN('nama_jabatan', ['MANAGER', 'ASST. MANAGER']);
         }
 
-        if ($level == "manager produksi" || $level == "spv produksi") {
+        if ($level == "spv produksi") {
             $query->where('master_karyawan.kode_dept', 'PRD');
+            $query->whereNotIN('nama_jabatan', ['MANAGER', 'SUPERVISOR']);
+        }
+
+        if ($level == "manager produksi") {
+            $query->whereIn('master_karyawan.kode_dept', ['PRD', 'MTC']);
+            $query->where('nama_jabatan', '!=', 'MANAGER');
         }
 
         if ($level == "manager ga") {
@@ -89,18 +102,22 @@ class KasbonController extends Controller
         }
 
         if ($level == "emf") {
-            $query->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GAF', 'GDG', 'PDQ']);
+            $query->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GAF', 'GDG', 'HRD', 'PDQ']);
         }
 
 
         if ($level == "manager marketing") {
             $query->where('master_karyawan.kode_dept', 'MKT');
+            $query->where('nama_jabatan', 'REGIONAL SALES MANAGER');
         }
 
         if ($level == "rsm") {
             $list_wilayah = Auth::user()->wilayah != null ? unserialize(Auth::user()->wilayah) : NULL;
             $wilayah = $list_wilayah != null ? "'" . implode("', '", $list_wilayah) . "'" : '';
             $query->whereIn('master_karyawan.id_kantor', $list_wilayah);
+            $query->where('master_karyawan.kode_dept', 'MKT');
+            $query->where('nama_jabatan', 'KEPALA PENJUALAN');
+            $query->where('id_perusahaan', 'PCF');
         }
 
         if (!in_array($level, $level_show_all)) {
@@ -115,7 +132,12 @@ class KasbonController extends Controller
         $cabang = $cbg->getCabang($this->cabang);
 
         $departemen = DB::table('hrd_departemen')->get();
-        return view('kasbon.index', compact('kasbon', 'cabang', 'departemen'));
+        $hakakses = config('global.pinjamanpage');
+        if (in_array($level, $hakakses)) {
+            return view('kasbon.index', compact('kasbon', 'cabang', 'departemen'));
+        } else {
+            echo "Anda Tidak Memiliki Hak Akses";
+        }
     }
     public function create($nik)
     {

@@ -210,9 +210,11 @@
                                                     @endif
                                                     @endif
 
-
+                                                    @php
+                                                    $level_kepalagudang = ["ASST. MANAGER","MANAGER"];
+                                                    @endphp
                                                     @if ($level == "kepala gudang")
-                                                    @if ($d->nama_jabatan!="ASST. MANAGER")
+                                                    @if (!in_array($d->nama_jabatan,$level_kepalagudang))
                                                     <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukanpinjaman"><i class="feather icon-external-link primary ml-1"></i></a>
 
                                                     <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukankasbon"><i class="feather icon-external-link warning ml-1"></i></a>
@@ -222,7 +224,7 @@
                                                     $level_emf = ["ASST. MANAGER","MANAGER"];
                                                     @endphp
                                                     @if ($level == "emf")
-                                                    @if (in_array($d->nama_jabatan,$level_emf))
+                                                    @if (in_array($d->nama_jabatan,$level_emf) || $d->kode_dept == 'PDQ')
                                                     <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukanpinjaman"><i class="feather icon-external-link primary ml-1"></i></a>
 
                                                     <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukankasbon"><i class="feather icon-external-link warning ml-1"></i></a>
@@ -242,7 +244,7 @@
                                                     @if (Auth::user()->id=="57")
                                                     @if ($d->kode_dept == "AKT" || $d->kode_dept=="KEU")
                                                     @if ($d->id_kantor=="PST" || $d->nama_jabatan=="KEPALA ADMIN")
-                                                    @if ($d->nama_jabatan != "MANAGER")
+                                                    @if ($d->nama_jabatan != "MANAGER" AND $d->nama_jabatan != "GENERAL MANAGER")
                                                     <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukanpinjaman"><i class="feather icon-external-link primary ml-1"></i></a>
 
                                                     <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukankasbon"><i class="feather icon-external-link warning ml-1"></i></a>
@@ -252,6 +254,7 @@
 
                                                     @endif
                                                     @endif
+
 
 
                                                     @if (Auth::user()->id=="20")
@@ -264,13 +267,21 @@
 
                                                     @endif
 
-                                                    {{-- @if ($level == "manager hrd")
+
+                                                    @if ($level == "direktur")
+                                                    @if ($d->nama_jabatan == "GENERAL MANAGER")
+                                                    <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukanpinjaman"><i class="feather icon-external-link primary ml-1"></i></a>
+
+                                                    <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukankasbon"><i class="feather icon-external-link warning ml-1"></i></a>
+                                                    @endif
+                                                    @endif
+                                                    @if (Auth::user()->id == "85")
                                                     @if ($d->kode_dept =="HRD")
                                                     <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukanpinjaman"><i class="feather icon-external-link primary ml-1"></i></a>
 
                                                     <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukankasbon"><i class="feather icon-external-link warning ml-1"></i></a>
                                                     @endif
-                                                    @endif --}}
+                                                    @endif
                                                 </div>
                                             </td>
                                         </tr>

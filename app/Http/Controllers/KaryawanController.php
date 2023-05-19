@@ -15,6 +15,7 @@ class KaryawanController extends Controller
 {
     public function index(Request $request)
     {
+        $hakakses = config('global.karyawanpage');
         $level = Auth::user()->level;
         $cabang = Auth::user()->kode_cabang;
         $nama_karyawan = $request->nama_karyawan_search;
@@ -45,10 +46,16 @@ class KaryawanController extends Controller
         if ($level == "kepala admin") {
             $query->where('master_karyawan.id_kantor', $cabang);
             $query->where('master_karyawan.id_perusahaan', "MP");
+            $query->where('nama_jabatan', '!=', 'KEPALA ADMIN');
         }
 
         if ($level == "kepala penjualan") {
-            $query->where('master_karyawan.id_kantor', $cabang);
+            if (Auth::user()->id == "27") {
+                $query->whereIn('master_karyawan.id_kantor', [$cabang, 'PWK']);
+            } else {
+                $query->where('master_karyawan.id_kantor', $cabang);
+            }
+            $query->where('nama_jabatan', '!=', 'KEPALA PENJUALAN');
             $query->where('master_karyawan.id_perusahaan', "PCF");
         }
 
@@ -58,14 +65,17 @@ class KaryawanController extends Controller
 
         if ($level == "kepala gudang") {
             $query->where('master_karyawan.kode_dept', 'GDG');
+            $query->whereNotIN('nama_jabatan', ['MANAGER', 'ASST. MANAGER']);
         }
 
         if ($level == "spv produksi") {
             $query->where('master_karyawan.kode_dept', 'PRD');
+            $query->whereNotIN('nama_jabatan', ['MANAGER', 'SUPERVISOR']);
         }
 
         if ($level == "manager produksi") {
             $query->whereIn('master_karyawan.kode_dept', ['PRD', 'MTC']);
+            $query->where('nama_jabatan', '!=', 'MANAGER');
         }
 
         if ($level == "manager ga") {
@@ -73,12 +83,13 @@ class KaryawanController extends Controller
         }
 
         if ($level == "emf") {
-            $query->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GAF', 'GDG', 'PDQ']);
+            $query->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GAF', 'GDG', 'HRD', 'PDQ']);
         }
 
 
         if ($level == "manager marketing") {
             $query->where('master_karyawan.kode_dept', 'MKT');
+            $query->where('nama_jabatan', 'REGIONAL SALES MANAGER');
         }
 
         if ($level == "rsm") {
@@ -86,6 +97,8 @@ class KaryawanController extends Controller
             $wilayah = $list_wilayah != null ? "'" . implode("', '", $list_wilayah) . "'" : '';
             $query->whereIn('master_karyawan.id_kantor', $list_wilayah);
             $query->where('master_karyawan.kode_dept', 'MKT');
+            $query->where('nama_jabatan', 'KEPALA PENJUALAN');
+            $query->where('id_perusahaan', 'PCF');
         }
 
         $query->orderBy('nama_karyawan');
@@ -94,7 +107,11 @@ class KaryawanController extends Controller
         $kantor = DB::table('cabang')->orderBy('kode_cabang')->get();
         $departemen = DB::table('hrd_departemen')->get();
         $group = DB::table('hrd_group')->orderBy('nama_group')->get();
-        return view('karyawan.index', compact('karyawan', 'departemen', 'kantor', 'group'));
+        if (in_array($level, $hakakses)) {
+            return view('karyawan.index', compact('karyawan', 'departemen', 'kantor', 'group'));
+        } else {
+            echo "Anda Tidak Punya Hak Akses";
+        }
     }
 
     public function create()

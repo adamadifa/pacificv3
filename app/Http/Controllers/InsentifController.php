@@ -13,7 +13,7 @@ class InsentifController extends Controller
 {
     public function index(Request $request)
     {
-
+        $hakakses = config('global.gajipage');
         $level = Auth::user()->level;
         $show_for_hrd = config('global.show_for_hrd');
         $level_show_all = config('global.show_all');
@@ -30,7 +30,11 @@ class InsentifController extends Controller
             $query->whereNotIn('id_jabatan', $show_for_hrd);
         }
         $insentif = $query->paginate(15);
-        return view('insentif.index', compact('insentif'));
+        if (in_array($level, $hakakses)) {
+            return view('insentif.index', compact('insentif'));
+        } else {
+            echo "Anda Tidak Memiliki Hak Akses";
+        }
     }
 
     public function create()

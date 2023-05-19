@@ -13,6 +13,7 @@ class GajiController extends Controller
 {
     public function index(Request $request)
     {
+        $hakakses = config('global.gajipage');
         $level = Auth::user()->level;
         $show_for_hrd = config('global.show_for_hrd');
         $level_show_all = config('global.show_all');
@@ -31,7 +32,12 @@ class GajiController extends Controller
 
 
         $gaji = $query->paginate(15);
-        return view('gaji.index', compact('gaji'));
+
+        if (in_array($level, $hakakses)) {
+            return view('gaji.index', compact('gaji'));
+        } else {
+            echo "Anda Tidak Memiliki Hak Akses";
+        }
     }
 
     public function create()

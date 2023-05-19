@@ -145,7 +145,7 @@
                         </a>
                     </li>
                     @endif
-                    @if (in_array($level,$gaji_menu))
+                    @if (in_array($level,$gaji_menu) && Auth::user()->id != 109)
                     <li class="{{ request()->is(['gaji', 'gaji/*']) ? 'active' : '' }}">
                         <a href="/gaji">
                             <i class="feather icon-dollar-sign"></i>
@@ -153,7 +153,7 @@
                         </a>
                     </li>
                     @endif
-                    @if (in_array($level,$insentif_menu))
+                    @if (in_array($level,$insentif_menu) && Auth::user()->id != 109)
                     <li class="{{ request()->is(['insentif', 'insentif/*']) ? 'active' : '' }}">
                         <a href="/insentif">
                             <i class="feather icon-dollar-sign"></i>
