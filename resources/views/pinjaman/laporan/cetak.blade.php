@@ -53,7 +53,7 @@
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
     </b>
     <br>
-    <table class="datatable3" style="width:80%">
+    <table class="datatable3" style="width:100%">
         <thead bgcolor="#024a75" style="color:white; font-size:12;">
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
                 <th>No</th>
