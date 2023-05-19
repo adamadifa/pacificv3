@@ -60,8 +60,12 @@ class KaryawanController extends Controller
             $query->where('master_karyawan.kode_dept', 'GDG');
         }
 
-        if ($level == "manager produksi" || $level == "spv produksi") {
+        if ($level == "spv produksi") {
             $query->where('master_karyawan.kode_dept', 'PRD');
+        }
+
+        if ($level == "manager produksi") {
+            $query->whereIn('master_karyawan.kode_dept', ['PRD', 'MTC']);
         }
 
         if ($level == "manager ga") {
@@ -81,6 +85,7 @@ class KaryawanController extends Controller
             $list_wilayah = Auth::user()->wilayah != null ? unserialize(Auth::user()->wilayah) : NULL;
             $wilayah = $list_wilayah != null ? "'" . implode("', '", $list_wilayah) . "'" : '';
             $query->whereIn('master_karyawan.id_kantor', $list_wilayah);
+            $query->where('master_karyawan.kode_dept', 'MKT');
         }
 
         $query->orderBy('nama_karyawan');

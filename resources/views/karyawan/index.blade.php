@@ -191,6 +191,14 @@
                                                     @endif
                                                     @endif
 
+                                                    @if ($level == "rsm")
+                                                    @if ($d->nama_jabatan=="KEPALA PENJUALAN")
+                                                    <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukanpinjaman"><i class="feather icon-external-link primary ml-1"></i></a>
+
+                                                    <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukankasbon"><i class="feather icon-external-link warning ml-1"></i></a>
+                                                    @endif
+                                                    @endif
+
                                                     @if ($level == "manager pembelian" || $level=="manager produksi" || $level=="spv produksi" || $level=="manager ga")
                                                     @if ($d->nama_jabatan!="MANAGER")
                                                     @if ($d->status_karyawan != "O")
