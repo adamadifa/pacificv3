@@ -145,7 +145,7 @@
                         </a>
                     </li>
                     @endif
-                    @if (in_array($level,$gaji_menu) && Auth::user()->id != 109)
+                    @if (in_array($level,$gaji_menu) && Auth::user()->id != 90)
                     <li class="{{ request()->is(['gaji', 'gaji/*']) ? 'active' : '' }}">
                         <a href="/gaji">
                             <i class="feather icon-dollar-sign"></i>
