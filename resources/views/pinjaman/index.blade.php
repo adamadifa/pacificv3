@@ -184,11 +184,11 @@
                                 <td>
                                     <div class="btn-group">
                                         @php
-                                        $user_approve = [57];
+                                        $user_approve = [57,23,1];
                                         @endphp
                                         @if (in_array(Auth::user()->id,$user_approve))
                                         @if ($d->status==0 )
-                                        <a href="/pinjaman/{{ Crypt::encrypt($d->no_pinjaman) }}/approve"><i class=" feather icon-check success"></i></a>
+                                        <a href="#" class="approve" no_pinjaman="{{ $d->no_pinjaman }}"><i class=" feather icon-external-link success"></i></a>
                                         @else
                                         @if (empty($d->totalpembayaran))
                                         <a href="/pinjaman/{{ Crypt::encrypt($d->no_pinjaman) }}/decline"><i class="fa fa-close danger"></i></a>
@@ -197,6 +197,9 @@
                                         @endif
 
                                         <a class="ml-1 show" no_pinjaman="{{ $d->no_pinjaman }}" href="#"><i class="feather icon-file-text info"></i></a>
+                                        <a href="/pinjaman/{{ Crypt::encrypt($d->no_pinjaman) }}/cetakformulir" target="_blank" class="ml-1"><i class="feather icon-printer text-primary"></i></a>
+
+
                                         @if (empty($d->totalpembayaran) && Auth::user()->id == $d->id_user)
                                         <a class="ml-1 edit" no_pinjaman="{{ $d->no_pinjaman }}" href="#"><i class="feather icon-edit success"></i></a>
                                         <form method="POST" class="deleteform" action="/pinjaman/{{Crypt::encrypt($d->no_pinjaman)}}/delete">
@@ -241,6 +244,21 @@
     </div>
 </div>
 
+<div class="modal fade text-left" id="mdlprosespinjaman" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Proses Pinjaman</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loadprosespinjaman"></div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade text-left" id="mdlshowpinjaman" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document" style="max-width:1200px">
@@ -276,6 +294,15 @@
 @push('myscript')
 <script>
     $(function() {
+        $(".approve").click(function(e) {
+            e.preventDefault();
+            var no_pinjaman = $(this).attr("no_pinjaman");
+            prosespinjaman(no_pinjaman);
+            $('#mdlprosespinjaman').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+        });
 
         function loadpinjaman(no_pinjaman) {
             $.ajax({
@@ -288,6 +315,22 @@
                 , cache: false
                 , success: function(respond) {
                     $("#loadajukanpinjaman").html(respond);
+                }
+            });
+        }
+
+
+        function prosespinjaman(no_pinjaman) {
+            $.ajax({
+                type: 'POST'
+                , url: '/pinjaman/prosespinjaman'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , no_pinjaman: no_pinjaman
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loadprosespinjaman").html(respond);
                 }
             });
         }

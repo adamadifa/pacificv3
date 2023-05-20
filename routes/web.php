@@ -1555,7 +1555,10 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/pinjaman/show', [PinjamanController::class, 'show']);
     Route::post('/pinjaman/getrencanabayar', [PinjamanController::class, 'getrencanabayar']);
     Route::post('/pinjaman/gethistoribayar', [PinjamanController::class, 'gethistoribayar']);
-
+    Route::get('/pinjaman/{no_pinjaman}/cetakformulir', [PinjamanController::class, 'cetakformulir']);
+    Route::post('pinjaman/prosespinjaman', [PinjamanController::class, 'prosespinjaman']);
+    Route::post('pinjaman/prosespinjaman', [PinjamanController::class, 'prosespinjaman']);
+    Route::post('pinjaman/{no_pinjaman}/storeprosespinjaman', [PinjamanController::class, 'storeprosespinjaman']);
     //Pembayaran Pinjaman
 
     Route::get('/pembayaranpinjaman', [PembayaranpinjamanController::class, 'index']);

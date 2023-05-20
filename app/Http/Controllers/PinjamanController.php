@@ -510,4 +510,55 @@ class PinjamanController extends Controller
             return Redirect::back()->with(['warning' => 'Data Gagal Di Update']);
         }
     }
+
+
+
+    public function cetakformulir($no_pinjaman)
+    {
+        $no_pinjaman = Crypt::decrypt($no_pinjaman);
+        $pinjaman = DB::table('pinjaman')
+            ->join('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik')
+            ->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
+            ->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
+            ->join('cabang', 'master_karyawan.id_kantor', '=', 'cabang.kode_cabang')
+            ->where('pinjaman.no_pinjaman', $no_pinjaman)->first();
+
+
+        $hariini = date("Y-m-d");
+
+        return view('pinjaman.cetakformulir', compact('pinjaman'));
+    }
+
+
+    public function prosespinjaman(Request $request)
+    {
+        $no_pinjaman = $request->no_pinjaman;
+        $pinjaman = DB::table('pinjaman')
+            ->join('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik')
+            ->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
+            ->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
+            ->join('cabang', 'master_karyawan.id_kantor', '=', 'cabang.kode_cabang')
+            ->where('no_pinjaman', $no_pinjaman)->first();
+
+        $bank = DB::table('master_bank')->where('kode_cabang', 'PST')->get();
+        $hariini = date("Y-m-d");
+
+        return view('pinjaman.proses', compact('pinjaman', 'bank'));
+    }
+
+    public function storeprosespinjaman($no_pinjaman, Request $request)
+    {
+        $no_pinjaman = Crypt::decrypt($no_pinjaman);
+        $pinjaman = DB::table('pinjaman')
+            ->join('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik')
+            ->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
+            ->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
+            ->join('cabang', 'master_karyawan.id_kantor', '=', 'cabang.kode_cabang')
+            ->where('no_pinjaman', $no_pinjaman)->first();
+        $status = $request->statusaksi;
+        $tgl_transfer = $request->tgl_transfer;
+        $nama_karyawan = $pinjaman->nama_karyawan;
+
+        dd($nama_karyawan);
+    }
 }
