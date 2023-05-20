@@ -192,6 +192,7 @@
                                         $user_approve = [57,23,1];
                                         @endphp
                                         @if (in_array(Auth::user()->id,$user_approve))
+                                        @if ($d->tgl_pinjaman != "2023-05-01")
                                         @if ($d->status==0 )
                                         <a href="#" class="approve" no_pinjaman="{{ $d->no_pinjaman }}"><i class=" feather icon-external-link success"></i></a>
                                         @else
@@ -200,6 +201,8 @@
                                         @endif
                                         @endif
                                         @endif
+                                        @endif
+
 
                                         <a class="ml-1 show" no_pinjaman="{{ $d->no_pinjaman }}" href="#"><i class="feather icon-file-text info"></i></a>
                                         <a href="/pinjaman/{{ Crypt::encrypt($d->no_pinjaman) }}/cetakformulir" target="_blank" class="ml-1"><i class="feather icon-printer text-primary"></i></a>
