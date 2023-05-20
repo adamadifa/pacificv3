@@ -318,9 +318,9 @@
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SC)) {
     echo rupiah($p->SC);} ?></td>
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_SP500)) {
-        echo desimal($p->JML_SC);} ?></td>
+        echo desimal($p->JML_SP500);} ?></td>
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP500)) {
-        echo rupiah($p->SC);} ?></td>
+        echo rupiah($p->SP500);} ?></td>
 
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($p->totalretur)) {
                                                                 echo rupiah($p->totalretur);} ?></td>
