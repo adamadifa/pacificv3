@@ -153,7 +153,7 @@
                         </a>
                     </li>
                     @endif
-                    @if (in_array($level,$insentif_menu) && Auth::user()->id != 109)
+                    @if (in_array($level,$insentif_menu) && Auth::user()->id != 90)
                     <li class="{{ request()->is(['insentif', 'insentif/*']) ? 'active' : '' }}">
                         <a href="/insentif">
                             <i class="feather icon-dollar-sign"></i>
