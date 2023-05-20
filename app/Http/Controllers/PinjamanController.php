@@ -36,7 +36,7 @@ class PinjamanController extends Controller
         $show_for_hrd = config('global.show_for_hrd');
         $level_show_all = config('global.show_all');
         $query = Pinjaman::query();
-        $query->select('pinjaman.*', 'nama_karyawan', 'nama_jabatan', 'nama_dept', 'totalpembayaran');
+        $query->select('pinjaman.*', 'nama_karyawan', 'nama_jabatan', 'nama_dept', 'totalpembayaran', 'tgl_ledger');
         $query->join('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik');
         $query->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
         $query->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
@@ -48,6 +48,7 @@ class PinjamanController extends Controller
                 $join->on('pinjaman.no_pinjaman', '=', 'hb.no_pinjaman');
             }
         );
+        $query->leftJoin('ledger_bank', 'pinjaman.no_pinjaman', '=', 'ledger_bank.no_ref');
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('tgl_pinjaman', [$request->dari, $request->sampai]);
         }
@@ -557,8 +558,62 @@ class PinjamanController extends Controller
             ->where('no_pinjaman', $no_pinjaman)->first();
         $status = $request->statusaksi;
         $tgl_transfer = $request->tgl_transfer;
+        $tanggal = explode("-", $tgl_transfer);
+        $tahun = substr($tanggal[0], 2, 2);
+        $cabang = "PST";
         $nama_karyawan = $pinjaman->nama_karyawan;
+        $bank = $request->bank;
+        $jumlah = $pinjaman->jumlah_pinjaman;
+        DB::beginTransaction();
+        try {
+            if ($status == 1) {
+                DB::table('pinjaman')->where('no_pinjaman', $no_pinjaman)->update([
+                    'status' => 1
+                ]);
 
-        dd($nama_karyawan);
+                DB::table('ledger_bank')->where('no_ref', $no_pinjaman)->delete();
+                $lastledger = DB::table('ledger_bank')
+                    ->select('no_bukti')
+                    ->whereRaw('LEFT(no_bukti,7) ="LR' . $cabang . $tahun . '"')
+                    ->orderBy('no_bukti', 'desc')
+                    ->first();
+                if ($lastledger == null) {
+                    $last_no_bukti = 'LR' . $cabang . $tahun . '0000';
+                } else {
+                    $last_no_bukti = $lastledger->no_bukti;
+                }
+                $no_bukti = buatkode($last_no_bukti, 'LR' . $cabang . $tahun, 4);
+
+                DB::table('ledger_bank')
+                    ->insert([
+                        'no_bukti'        => $no_bukti,
+                        'no_ref'          => $no_pinjaman,
+                        'bank'            => $bank,
+                        'tgl_ledger'      => $tgl_transfer,
+                        'pelanggan'       => $nama_karyawan,
+                        'keterangan'      => "Piutang Karyawan " . $nama_karyawan,
+                        'kode_akun'       => '1-1451',
+                        'jumlah'          => $jumlah,
+                        'status_dk'       => 'D',
+                        'status_validasi' => 1,
+                    ]);
+            } else if ($status == 2) {
+                DB::table('pinjaman')->where('no_pinjaman', $no_pinjaman)->update([
+                    'status' => 2
+                ]);
+                DB::table('ledger_bank')->where('no_ref', $no_pinjaman)->delete();
+            } else {
+                DB::table('pinjaman')->where('no_pinjaman', $no_pinjaman)->update([
+                    'status' => 0
+                ]);
+                DB::table('ledger_bank')->where('no_ref', $no_pinjaman)->delete();
+            }
+            DB::commit();
+            return Redirect::back()->with(['success' => 'Data Berhasil Diupdate']);
+        } catch (\Exception $e) {
+            // dd($e);
+            DB::rollBack();
+            return Redirect::back()->with(['warning' => 'Data Gagal Di Update']);
+        }
     }
 }

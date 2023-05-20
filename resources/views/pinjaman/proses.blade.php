@@ -1,4 +1,4 @@
-<form action="/pinjaman/{{ Crypt::encrypt($pinjaman->no_pinjaman) }}/storeprosespinjaman" method="POST">
+<form action="/pinjaman/{{ Crypt::encrypt($pinjaman->no_pinjaman) }}/storeprosespinjaman" method="POST" id="frmPinjaman">
     @csrf
     <div class="row">
         <div class="col-12">
@@ -54,7 +54,6 @@
                     <option value="">Status</option>
                     <option value="0">Pending</option>
                     <option value="1">Diterima</option>
-                    <option value="2">Ditolak</option>
                 </select>
             </div>
         </div>
@@ -87,7 +86,7 @@
         </div>
     </div>
 </form>
-
+<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
 <script>
     $(function() {
         $("#bankpengirim").selectize();
@@ -110,6 +109,53 @@
                 diterima();
             } else {
                 hidetanggal();
+            }
+        });
+
+        $("#frmPinjaman").submit(function(e) {
+            var status = $("#statusaksi").val();
+            var tgl_transfer = $("#tgl_transfer").val();
+            var bankpengirim = $("#bankpengirim").val();
+            if (status == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Pilih Status Aksi!'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#statusaksi").focus();
+                });
+                return false;
+            } else {
+                if (status == 1) {
+                    if (tgl_transfer == "") {
+                        swal({
+                            title: 'Oops'
+                            , text: 'Tanggal Transfer Harus Diisi !'
+                            , icon: 'warning'
+                            , showConfirmButton: false
+                        }).then(function() {
+                            $("#tgl_transfer").focus();
+                        });
+                        return false;
+                    } else if (bankpengirim == "") {
+                        swal({
+                            title: 'Oops'
+                            , text: 'Bank Harus Diisi !'
+                            , icon: 'warning'
+                            , showConfirmButton: false
+                        }).then(function() {
+                            $("#bankpengirim").focus();
+                        });
+                        return false;
+                    } else {
+                        $("#btnSubmit").prop('disabled', true);
+                        return true;
+                    }
+                } else {
+                    $("#btnSubmit").prop('disabled', true);
+                    return true;
+                }
             }
         });
 

@@ -175,11 +175,16 @@
                                 </td>
                                 <td>{!! $d->jumlah_pinjaman - $d->totalpembayaran == 0 ? '<span class="badge bg-success">L</span>' : '<span class="badge bg-danger">BL</span>' !!}</td>
                                 <td>
+                                    @if ($d->tgl_pinjaman == "2023-05-01")
+                                    <span class="badge bg-info">Koperasi</span>
+                                    @else
                                     @if ($d->status==0)
                                     <span class="badge bg-warning"><i class="fa fa-history"></i></span>
                                     @else
-                                    <span class="badge bg-success"><i class="fa fa-check"></i></span>
+                                    <span class="badge bg-success">{{ DateToIndo2($d->tgl_ledger) }}</span>
                                     @endif
+                                    @endif
+
                                 </td>
                                 <td>
                                     <div class="btn-group">
@@ -191,7 +196,7 @@
                                         <a href="#" class="approve" no_pinjaman="{{ $d->no_pinjaman }}"><i class=" feather icon-external-link success"></i></a>
                                         @else
                                         @if (empty($d->totalpembayaran))
-                                        <a href="/pinjaman/{{ Crypt::encrypt($d->no_pinjaman) }}/decline"><i class="fa fa-close danger"></i></a>
+                                        <a href="#" class="approve" no_pinjaman="{{ $d->no_pinjaman }}"><i class=" feather icon-external-link success"></i></a>
                                         @endif
                                         @endif
                                         @endif
