@@ -188,7 +188,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group">
-                                <button class="btn btn-primary w-100"><i class="feather icon-settings mr-1"></i>Generate</button>
+                                <button class="btn btn-primary w-100" id="btnSubmit"><i class="feather icon-settings mr-1"></i>Generate</button>
                             </div>
                         </div>
                     </div>
@@ -271,6 +271,8 @@
                 });
 
                 return false;
+            } else {
+                $("#btnSubmit").prop('disabled', true);
             }
         });
 

@@ -57,6 +57,7 @@
                 <th>Saldo Awal</th>
                 <th>Bayar</th>
                 <th>Sisa Tagihan</th>
+                <th>Jumlah Angsuran</th>
                 <th>Cicilan Ke</th>
             </tr>
         </thead>
@@ -80,6 +81,7 @@
                 <td style="text-align: right">{{ rupiah($saldoawal) }}</td>
                 <td style="text-align: right">{{ rupiah($d->jumlah) }}</td>
                 <td style="text-align: right">{{ rupiah($saldoawal- $d->jumlah) }}</td>
+                <td>{{ $d->angsuran }} Bulan</td>
                 <td>{{ $d->cicilan_ke }}</td>
             </tr>
             @endforeach

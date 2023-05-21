@@ -61,7 +61,13 @@ class KontrabonController extends Controller
         $kontrabon = $query->paginate(15);
         $kontrabon->appends($request->all());
         $supplier = Supplier::orderBy('nama_supplier')->get();
-        return view('kontrabon.index', compact('supplier', 'kontrabon'));
+        $level = Auth::user()->level;
+        $hakakses = config('global.pinjamanpage');
+        if (in_array($level, $hakakses)) {
+            return view('kontrabon.index', compact('supplier', 'kontrabon'));
+        } else {
+            echo "Anda Tidak Memilik Hak Akses";
+        }
     }
 
     public function show(Request $request)
