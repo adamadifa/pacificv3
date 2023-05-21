@@ -377,18 +377,38 @@ class PembayaranpinjamanController extends Controller
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         $bln = $bulan[$potongan->bulan];
         $thn = $potongan->tahun;
+        $id_user = Auth::user()->id;
 
+        if ($potongan->bulan == 12) {
+            $bulanpotongan = 1;
+            $tahunpotongan = $thn + 1;
+        } else {
+            $bulanpotongan = $potongan->bulan + 1;
+            $tahunpotongan = $thn;
+        }
+
+        $tglpotongan = $tahunpotongan . "-" . $bulanpotongan . "-01";
         $level = Auth::user()->level;
         $show_for_hrd = config('global.show_for_hrd');
         $level_show_all = config('global.show_all');
 
 
         $query = Pembayaranpinjaman::query();
-        $query->select('pinjaman_historibayar.no_pinjaman', 'pinjaman.nik', 'nama_karyawan', 'jumlah', 'cicilan_ke', 'nama_jabatan', 'nama_dept', 'no_bukti');
+        $query->select('pinjaman_historibayar.no_pinjaman', 'pinjaman.nik', 'nama_karyawan', 'jumlah', 'cicilan_ke', 'nama_jabatan', 'nama_dept', 'no_bukti', 'jumlah_pinjaman', 'totalpembayaran');
         $query->join('pinjaman', 'pinjaman_historibayar.no_pinjaman', '=', 'pinjaman.no_pinjaman');
         $query->join('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik');
         $query->leftJoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
         $query->leftJoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
+        $query->leftJoin(
+            DB::raw("(
+            SELECT no_pinjaman,SUM(jumlah) as totalpembayaran FROM pinjaman_historibayar
+            WHERE tgl_bayar < '$tglpotongan'
+            GROUP BY no_pinjaman
+        ) hb"),
+            function ($join) {
+                $join->on('pinjaman.no_pinjaman', '=', 'hb.no_pinjaman');
+            }
+        );
         $query->where('kode_potongan', $kode_potongan);
         if (!in_array($level, $level_show_all)) {
             $query->whereNotIn('master_karyawan.id_jabatan', $show_for_hrd);

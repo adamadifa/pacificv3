@@ -1577,15 +1577,16 @@ Route::middleware(['auth'])->group(function () {
     Route::post('kasbon/store', [KasbonController::class, 'store']);
     Route::delete('kasbon/{no_kasbon}/delete', [KasbonController::class, 'delete']);
     Route::post('kasbon/edit', [KasbonController::class, 'edit']);
-    Route::get('/pembayarankasbon/{kode_potongan}/{export}/cetak', [PembayarankasbonController::class, 'cetak']);
 
+    Route::post('kasbon/proseskasbon', [KasbonController::class, 'proseskasbon']);
+    Route::post('kasbon/{no_kasbon}/storeproseskasbon', [KasbonController::class, 'storeproseskasbon']);
+    Route::get('/kasbon/{no_kasbon}/cetakformulir', [KasbonController::class, 'cetakformulir']);
     //Pembayaran Kasbon
     Route::get('/pembayarankasbon', [PembayarankasbonController::class, 'index']);
     Route::post('pembayarankasbon/generatebayarpinjaman', [PembayarankasbonController::class, 'generatebayarpinjaman']);
     Route::post('/pembayarankasbon/show', [PembayarankasbonController::class, 'show']);
     Route::delete('pembayarankasbon/{kode_potongan}/deletegenerate', [PembayarankasbonController::class, 'deletegenerate']);
-
-
+    Route::get('/pembayarankasbon/{kode_potongan}/{export}/cetak', [PembayarankasbonController::class, 'cetak']);
 
     Route::get('/gaji', [GajiController::class, 'index']);
     Route::get('/gaji/create', [GajiController::class, 'create']);

@@ -54,7 +54,9 @@
                 <th>Nama Karyawan</th>
                 <th>Jabatan</th>
                 <th>Departemen</th>
+                <th>Saldo Awal</th>
                 <th>Bayar</th>
+                <th>Sisa Tagihan</th>
                 <th>Cicilan Ke</th>
             </tr>
         </thead>
@@ -65,6 +67,7 @@
             @foreach ($historibayar as $d)
             @php
             $total+= $d->jumlah;
+            $saldoawal = $d->jumlah_pinjaman-$d->totalpembayaran;
             @endphp
             <tr>
                 <td>{{ $loop->iteration }}</td>
@@ -74,7 +77,9 @@
                 <td>{{ $d->nama_karyawan }}</td>
                 <td>{{ $d->nama_jabatan }}</td>
                 <td>{{ $d->nama_dept }}</td>
+                <td style="text-align: right">{{ rupiah($saldoawal) }}</td>
                 <td style="text-align: right">{{ rupiah($d->jumlah) }}</td>
+                <td style="text-align: right">{{ rupiah($saldoawal- $d->jumlah) }}</td>
                 <td>{{ $d->cicilan_ke }}</td>
             </tr>
             @endforeach

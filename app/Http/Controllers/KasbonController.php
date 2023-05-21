@@ -34,7 +34,7 @@ class KasbonController extends Controller
         $show_for_hrd = config('global.show_for_hrd');
         $level_show_all = config('global.show_all');
         $query = Kasbon::query();
-        $query->select('kasbon.*', 'nama_karyawan', 'nama_jabatan', 'nama_dept', 'totalpembayaran', 'tgl_bayar', 'jatuh_tempo');
+        $query->select('kasbon.*', 'nama_karyawan', 'nama_jabatan', 'nama_dept', 'totalpembayaran', 'tgl_bayar', 'jatuh_tempo', 'tgl_ledger');
         $query->join('master_karyawan', 'kasbon.nik', '=', 'master_karyawan.nik');
         $query->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
         $query->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
@@ -46,6 +46,7 @@ class KasbonController extends Controller
                 $join->on('kasbon.no_kasbon', '=', 'hb.no_kasbon');
             }
         );
+        $query->leftJoin('ledger_bank', 'kasbon.no_kasbon', '=', 'ledger_bank.no_ref');
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('tgl_kasbon', [$request->dari, $request->sampai]);
         }
@@ -264,5 +265,106 @@ class KasbonController extends Controller
         $hariini = date("Y-m-d");
 
         return view('kasbon.edit', compact('kasbon'));
+    }
+
+
+    public function proseskasbon(Request $request)
+    {
+        $no_pinjaman = $request->no_pinjaman;
+        $no_kasbon = $request->no_kasbon;
+        $kasbon = DB::table('kasbon')
+            ->join('master_karyawan', 'kasbon.nik', '=', 'master_karyawan.nik')
+            ->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
+            ->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
+            ->join('cabang', 'master_karyawan.id_kantor', '=', 'cabang.kode_cabang')
+            ->where('no_kasbon', $no_kasbon)->first();
+
+
+        $bank = DB::table('master_bank')->where('kode_cabang', 'PST')->get();
+        return view('kasbon.proses', compact('kasbon', 'bank'));
+    }
+
+
+    public function storeproseskasbon($no_kasbon, Request $request)
+    {
+        $no_kasbon = Crypt::decrypt($no_kasbon);
+        $kasbon = DB::table('kasbon')
+            ->join('master_karyawan', 'kasbon.nik', '=', 'master_karyawan.nik')
+            ->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
+            ->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
+            ->join('cabang', 'master_karyawan.id_kantor', '=', 'cabang.kode_cabang')
+            ->where('no_kasbon', $no_kasbon)->first();
+        $status = $request->statusaksi;
+        $tgl_transfer = $request->tgl_transfer;
+        $tanggal = explode("-", $tgl_transfer);
+        $tahun = substr($tanggal[0], 2, 2);
+        $cabang = "PST";
+        $nama_karyawan = $kasbon->nama_karyawan;
+        $bank = $request->bank;
+        $jumlah = $kasbon->jumlah_kasbon;
+        DB::beginTransaction();
+        try {
+            if ($status == 1) {
+                DB::table('kasbon')->where('no_kasbon', $no_kasbon)->update([
+                    'status' => 1
+                ]);
+
+                DB::table('ledger_bank')->where('no_ref', $no_kasbon)->delete();
+                $lastledger = DB::table('ledger_bank')
+                    ->select('no_bukti')
+                    ->whereRaw('LEFT(no_bukti,7) ="LR' . $cabang . $tahun . '"')
+                    ->orderBy('no_bukti', 'desc')
+                    ->first();
+                if ($lastledger == null) {
+                    $last_no_bukti = 'LR' . $cabang . $tahun . '0000';
+                } else {
+                    $last_no_bukti = $lastledger->no_bukti;
+                }
+                $no_bukti = buatkode($last_no_bukti, 'LR' . $cabang . $tahun, 4);
+
+                DB::table('ledger_bank')
+                    ->insert([
+                        'no_bukti'        => $no_bukti,
+                        'no_ref'          => $no_kasbon,
+                        'bank'            => $bank,
+                        'tgl_ledger'      => $tgl_transfer,
+                        'pelanggan'       => $nama_karyawan,
+                        'keterangan'      => "Piutang Karyawan " . $nama_karyawan,
+                        'kode_akun'       => '1-1451',
+                        'jumlah'          => $jumlah,
+                        'status_dk'       => 'D',
+                        'status_validasi' => 1,
+                    ]);
+            } else if ($status == 2) {
+                DB::table('kasbon')->where('no_kasbon', $no_kasbon)->update([
+                    'status' => 2
+                ]);
+                DB::table('ledger_bank')->where('no_ref', $no_kasbon)->delete();
+            } else {
+                DB::table('kasbon')->where('no_kasbon', $no_kasbon)->update([
+                    'status' => 0
+                ]);
+                DB::table('ledger_bank')->where('no_ref', $no_kasbon)->delete();
+            }
+            DB::commit();
+            return Redirect::back()->with(['success' => 'Data Berhasil Diupdate']);
+        } catch (\Exception $e) {
+            // dd($e);
+            DB::rollBack();
+            return Redirect::back()->with(['warning' => 'Data Gagal Di Update']);
+        }
+    }
+
+
+    public function cetakformulir($no_kasbon)
+    {
+        $no_kasbon = Crypt::decrypt($no_kasbon);
+        $kasbon = DB::table('kasbon')
+            ->join('master_karyawan', 'kasbon.nik', '=', 'master_karyawan.nik')
+            ->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
+            ->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
+            ->join('cabang', 'master_karyawan.id_kantor', '=', 'cabang.kode_cabang')
+            ->where('no_kasbon', $no_kasbon)->first();
+        return view('kasbon.cetakformulir', compact('kasbon'));
     }
 }

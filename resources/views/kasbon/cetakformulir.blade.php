@@ -96,48 +96,39 @@
             <tr>
                 <td style="width: 200px">NIK</td>
                 <td>:</td>
-                <td>{{ $pinjaman->nik }}</td>
+                <td>{{ $kasbon->nik }}</td>
             </tr>
             <tr>
                 <td>Nama Karyawan</td>
                 <td>:</td>
-                <td>{{ $pinjaman->nama_karyawan }}</td>
+                <td>{{ $kasbon->nama_karyawan }}</td>
             </tr>
             <tr>
                 <td>Status Karyawan</td>
                 <td>:</td>
-                <td>{{ $pinjaman->status_karyawan == "T" ? "Tetap" : "Kontrak" }}</td>
+                <td>{{ $kasbon->status_karyawan == "T" ? "Tetap" : "Kontrak" }}</td>
             </tr>
             <tr>
                 <td>Jabatan/Posisi Kerja</td>
                 <td>:</td>
-                <td>{{ ucwords(strtolower($pinjaman->nama_jabatan)) }}</td>
+                <td>{{ ucwords(strtolower($kasbon->nama_jabatan)) }}</td>
             </tr>
             <tr>
                 <td>Fasilitas Pinjaman</td>
                 <td>:</td>
-                <td>Pinjaman Jangka Panjang (PJP)</td>
+                <td>Kasbon</td>
             </tr>
             <tr>
                 <td>Acc. Pencairan</td>
                 <td>:</td>
-                <td>{{ rupiah($pinjaman->jumlah_pinjaman) }}</td>
+                <td>{{ rupiah($kasbon->jumlah_kasbon) }}</td>
             </tr>
             <tr>
                 <td>Terbilang</td>
                 <td>:</td>
-                <td>{{ ucwords(terbilang($pinjaman->jumlah_pinjaman)) }} Rupiah</td>
+                <td>{{ ucwords(terbilang($kasbon->jumlah_kasbon)) }} Rupiah</td>
             </tr>
-            <tr>
-                <td>Jangka Waktu</td>
-                <td>:</td>
-                <td>{{ $pinjaman->angsuran }} bulan</td>
-            </tr>
-            <tr>
-                <td> Cicilan/Bulan </td>
-                <td>:</td>
-                <td>{{ rupiah($pinjaman->jumlah_angsuran) }}</td>
-            </tr>
+
         </table>
         <ol>
             <li>
@@ -158,7 +149,7 @@
         <table style="width: 100% !important">
             <tr>
                 <td colspan="2"></td>
-                <td style="text-align: left">Tasikmalaya, {{ DateToIndo2($pinjaman->tgl_pinjaman) }}</td>
+                <td style="text-align: left">Tasikmalaya, {{ DateToIndo2($kasbon->tgl_kasbon) }}</td>
             </tr>
             <tr>
                 <td style="text-align: center; width:30%;"">Pemohon,
@@ -171,7 +162,7 @@
                     <br>
                     <br>
                     <br>
-                    <b>{{ ucwords(strtolower($pinjaman->nama_karyawan)) }}</b>
+                    <b>{{ ucwords(strtolower($kasbon->nama_karyawan)) }}</b>
                 </td>
                 <td style=" text-align: center; width:30%; vertical-align:top">Diverifikasi Oleh,
                     <br>

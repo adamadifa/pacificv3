@@ -17,7 +17,7 @@
         padding-right: 1px !important;
     }
 
-    .modal:nth-of-type(even) {
+    /* .modal:nth-of-type(even) {
         z-index: 2000 !important;
     }
 
@@ -27,7 +27,7 @@
 
     .modal {
         overflow-y: auto;
-    }
+    } */
 
 </style>
 <div class="content-wrapper">
@@ -132,7 +132,8 @@
                                 <th>Sisa Tagihan</th>
                                 <th>Jatuh Tempo</th>
                                 <th>Tgl Bayar</th>
-                                <th>Keterangan</th>
+                                <th>Ket</th>
+                                <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -163,7 +164,23 @@
                                 <td>{!! $d->jumlah_kasbon - $d->totalpembayaran == 0 ? '<span class="badge bg-success">Lunas</span>' : '<span class="badge bg-danger">Belum Lunas</span>' !!}</td>
                                 </td>
                                 <td>
+                                    @if ($d->status==0)
+                                    <span class="badge bg-warning"><i class="fa fa-history"></i></span>
+                                    @else
+                                    <span class="badge bg-success">{{ DateToIndo2($d->tgl_ledger) }}</span>
+                                    @endif
+                                </td>
+                                <td>
                                     <div class="btn-group">
+
+                                        @php
+                                        $user_approve = [57,23,1];
+                                        @endphp
+                                        @if (in_array(Auth::user()->id,$user_approve))
+                                        <a href="#" class="approve" no_kasbon="{{ $d->no_kasbon }}"><i class=" feather icon-external-link success"></i></a>
+                                        @endif
+                                        <a href="/kasbon/{{ Crypt::encrypt($d->no_kasbon) }}/cetakformulir" target="_blank" class="ml-1"><i class="feather icon-printer text-primary"></i></a>
+                                        @if (empty($d->totalpembayaran) && Auth::user()->id == $d->id_user)
                                         <a class="ml-1 edit" no_kasbon="{{ $d->no_kasbon }}" href="#"><i class="feather icon-edit success"></i></a>
                                         <form method="POST" class="deleteform" action="/kasbon/{{Crypt::encrypt($d->no_kasbon)}}/delete">
                                             @csrf
@@ -172,6 +189,7 @@
                                                 <i class="feather icon-trash danger"></i>
                                             </a>
                                         </form>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
@@ -207,11 +225,53 @@
 
 
 
+<div class="modal fade text-left" id="mdlproseskasbon" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Proses Kasbon</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loadproseskasbon"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 @endsection
 @push('myscript')
 <script>
     $(function() {
+
+
+        $(".approve").click(function(e) {
+            e.preventDefault();
+            var no_kasbon = $(this).attr("no_kasbon");
+            proseskasbon(no_kasbon);
+            $('#mdlproseskasbon').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+        });
+
+        function proseskasbon(no_kasbon) {
+            $.ajax({
+                type: 'POST'
+                , url: '/kasbon/proseskasbon'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , no_kasbon: no_kasbon
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loadproseskasbon").html(respond);
+                }
+            });
+        }
 
         function loadkasbon(no_kasbon) {
             $.ajax({

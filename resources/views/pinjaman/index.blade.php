@@ -17,7 +17,7 @@
         padding-right: 1px !important;
     }
 
-    .modal:nth-of-type(even) {
+    /* .modal:nth-of-type(even) {
         z-index: 2000 !important;
     }
 
@@ -27,7 +27,7 @@
 
     .modal {
         overflow-y: auto;
-    }
+    } */
 
 </style>
 <div class="content-wrapper">
@@ -192,7 +192,8 @@
                                         $user_approve = [57,23,1];
                                         @endphp
                                         @if (in_array(Auth::user()->id,$user_approve))
-                                        @if ($d->tgl_pinjaman != "2023-05-01")
+                                        <a href="#" class="approve" no_pinjaman="{{ $d->no_pinjaman }}"><i class=" feather icon-external-link success"></i></a>
+                                        {{-- @if ($d->tgl_pinjaman != "2023-05-01")
                                         @if ($d->status==0 )
                                         <a href="#" class="approve" no_pinjaman="{{ $d->no_pinjaman }}"><i class=" feather icon-external-link success"></i></a>
                                         @else
@@ -200,7 +201,7 @@
                                         <a href="#" class="approve" no_pinjaman="{{ $d->no_pinjaman }}"><i class=" feather icon-external-link success"></i></a>
                                         @endif
                                         @endif
-                                        @endif
+                                        @endif --}}
                                         @endif
 
 

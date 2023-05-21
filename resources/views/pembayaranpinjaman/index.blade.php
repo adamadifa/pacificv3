@@ -42,7 +42,7 @@
         <div class="col-md-12 col-sm-12 col-lg-6">
             <div class="card">
                 <div class="card-header">
-                    @if ($level=="manager accounting")
+                    @if ($level=="manager accounting" || $level=="admin")
                     <a href="#" id="inputbayar" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Input Pembayaran</a>
                     @endif
                 </div>
