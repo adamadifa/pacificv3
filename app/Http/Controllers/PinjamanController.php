@@ -245,7 +245,9 @@ class PinjamanController extends Controller
         $mulai_cicilan = $request->mulai_cicilan;
         $bln_cicilan = date("m", strtotime($mulai_cicilan));
         $thn_cicilan = date("Y", strtotime($mulai_cicilan));
-
+        $karyawan = DB::table('master_karyawan')->where('nik', $nik)
+            ->leftJoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
+            ->first();
 
         if ($bln_cicilan == 1) {
             $bln_cicilan = 12;
@@ -317,11 +319,69 @@ class PinjamanController extends Controller
 
                 $bln++;
             }
+            //087708590299 Ika
+            //0811211451 Ardi
+            $data = [
+                'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
+                'sender' => '6289670444321',
+                'number' => '087708590299',
+                'message' => '*' . $nik . "-" . $karyawan->nama_karyawan . '*, dari Departemen ' . $karyawan->nama_dept . ' Mengajukan Pinjaman dengan Nomor Pinjaman *' . $no_pinjaman . '* dan total pinjaman *' . $request->jml_pinjaman . '* Menunggu untuk Segera di proses.'
+            ];
+
+            $ardi = [
+                'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
+                'sender' => '6289670444321',
+                'number' => '0811211451',
+                'message' => '*' . $nik . "-" . $karyawan->nama_karyawan . '*, dari Departemen ' . $karyawan->nama_dept . ' Mengajukan Pinjaman dengan Nomor Pinjaman *' . $no_pinjaman . '* dan total pinjaman *' . $request->jml_pinjaman . '* Menunggu untuk Segera di proses.'
+            ];
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'https://wa.pedasalami.com/send-message',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => json_encode($data),
+                CURLOPT_HTTPHEADER => array(
+                    'Content-Type: application/json'
+                ),
+            ));
+
+            $response = curl_exec($curl);
+
+            curl_close($curl);
+
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'https://wa.pedasalami.com/send-message',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => json_encode($ardi),
+                CURLOPT_HTTPHEADER => array(
+                    'Content-Type: application/json'
+                ),
+            ));
+
+            $response = curl_exec($curl);
+
+            curl_close($curl);
+            //echo $response;
             DB::commit();
             return redirect('/pinjaman')->with(['success' => 'Data Berhasil Disimpan']);
         } catch (\Exception $e) {
             DB::rollBack();
-            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);
+            //return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);
             dd($e);
         }
     }
