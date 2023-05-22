@@ -63,11 +63,8 @@ class KontrabonController extends Controller
         $supplier = Supplier::orderBy('nama_supplier')->get();
         $level = Auth::user()->level;
         $hakakses = config('global.pinjamanpage');
-        if (in_array($level, $hakakses)) {
-            return view('kontrabon.index', compact('supplier', 'kontrabon'));
-        } else {
-            echo "Anda Tidak Memilik Hak Akses";
-        }
+
+        return view('kontrabon.index', compact('supplier', 'kontrabon'));
     }
 
     public function show(Request $request)

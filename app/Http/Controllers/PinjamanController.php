@@ -624,6 +624,7 @@ class PinjamanController extends Controller
         $nama_karyawan = $pinjaman->nama_karyawan;
         $bank = $request->bank;
         $jumlah = $pinjaman->jumlah_pinjaman;
+        $no_hp = $pinjaman->no_hp;
         DB::beginTransaction();
         try {
             if ($status == 1) {
