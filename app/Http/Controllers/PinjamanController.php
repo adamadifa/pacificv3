@@ -625,6 +625,7 @@ class PinjamanController extends Controller
         $bank = $request->bank;
         $jumlah = $pinjaman->jumlah_pinjaman;
         $no_hp = $pinjaman->no_hp;
+        //dd($no_hp);
         DB::beginTransaction();
         try {
             if ($status == 1) {
@@ -658,6 +659,34 @@ class PinjamanController extends Controller
                         'status_dk'       => 'D',
                         'status_validasi' => 1,
                     ]);
+                if (!empty($no_hp)) {
+                    $data = [
+                        'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
+                        'sender' => '6289670444321',
+                        'number' => $no_hp,
+                        'message' => '*' . $pinjaman->nama_karyawan . '*, Ajuan Pinjaman dengan Nomor Pinjaman *' . $pinjaman->no_pinjaman . '* dengan total pinjaman *' . rupiah($pinjaman->jumlah_pinjaman) . '* sudah di proses oleh bagian keuangan, silahkan tunggu 1 x 24 jam untuk proses pencairan dana ke rekening.'
+                    ];
+                    $curl = curl_init();
+
+                    curl_setopt_array($curl, array(
+                        CURLOPT_URL => 'https://wa.pedasalami.com/send-message',
+                        CURLOPT_RETURNTRANSFER => true,
+                        CURLOPT_ENCODING => '',
+                        CURLOPT_MAXREDIRS => 10,
+                        CURLOPT_TIMEOUT => 0,
+                        CURLOPT_FOLLOWLOCATION => true,
+                        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                        CURLOPT_CUSTOMREQUEST => 'POST',
+                        CURLOPT_POSTFIELDS => json_encode($data),
+                        CURLOPT_HTTPHEADER => array(
+                            'Content-Type: application/json'
+                        ),
+                    ));
+
+                    $response = curl_exec($curl);
+
+                    curl_close($curl);
+                }
             } else if ($status == 2) {
                 DB::table('pinjaman')->where('no_pinjaman', $no_pinjaman)->update([
                     'status' => 2

@@ -144,7 +144,9 @@ class KontrabonController extends Controller
         $jenisbayar = $request->jenisbayar;
         $id_admin = Auth::user()->id;
 
-        $detailtemp = DB::table('detailkontrabon_temp')->where('kode_supplier', $kode_supplier)->where('id_admin', $id_admin)->get();
+        $detailtemp = DB::table('detailkontrabon_temp')
+            ->where('kode_supplier', $kode_supplier)
+            ->where('id_admin', $id_admin)->get();
         DB::beginTransaction();
         try {
             $data = [

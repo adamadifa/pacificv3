@@ -190,7 +190,9 @@ class KasbonController extends Controller
         $jatuh_tempo = $request->jatuh_tempo;
         $bln_cicilan = date("m", strtotime($jatuh_tempo));
         $thn_cicilan = date("Y", strtotime($jatuh_tempo));
-
+        $karyawan = DB::table('master_karyawan')->where('nik', $nik)
+            ->leftJoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
+            ->first();
 
         if ($bln_cicilan == 1) {
             $bln_cicilan = 12;
@@ -229,6 +231,61 @@ class KasbonController extends Controller
 
         try {
             DB::table('kasbon')->insert($data);
+            $data = [
+                'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
+                'sender' => '6289670444321',
+                'number' => '082218770017',
+                'message' => '*' . $nik . "-" . $karyawan->nama_karyawan . '*, dari Departemen ' . $karyawan->nama_dept . ' Mengajukan Kasbon dengan Nomor Kasbon *' . $no_kasbon . '* dan total pinjaman *' . $request->jml_kasbon . '* Menunggu untuk Segera di proses.'
+            ];
+
+            $ardi = [
+                'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
+                'sender' => '6289670444321',
+                'number' => '082218770017',
+                'message' => '*' . $nik . "-" . $karyawan->nama_karyawan . '*, dari Departemen ' . $karyawan->nama_dept . ' Mengajukan Kasbon dengan Nomor Kasbon *' . $no_kasbon . '* dan total pinjaman *' . $request->jml_kasbon . '* Menunggu untuk Segera di proses.'
+            ];
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'https://wa.pedasalami.com/send-message',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => json_encode($data),
+                CURLOPT_HTTPHEADER => array(
+                    'Content-Type: application/json'
+                ),
+            ));
+
+            $response = curl_exec($curl);
+
+            curl_close($curl);
+
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'https://wa.pedasalami.com/send-message',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => json_encode($ardi),
+                CURLOPT_HTTPHEADER => array(
+                    'Content-Type: application/json'
+                ),
+            ));
+
+            $response = curl_exec($curl);
+
+            curl_close($curl);
             return redirect('/kasbon')->with(['success' => 'Data Berhasil Disimpan']);
         } catch (\Exception $e) {
             dd($e);
@@ -302,6 +359,7 @@ class KasbonController extends Controller
         $nama_karyawan = $kasbon->nama_karyawan;
         $bank = $request->bank;
         $jumlah = $kasbon->jumlah_kasbon;
+        $no_hp = $kasbon->no_hp;
         DB::beginTransaction();
         try {
             if ($status == 1) {
@@ -335,6 +393,35 @@ class KasbonController extends Controller
                         'status_dk'       => 'D',
                         'status_validasi' => 1,
                     ]);
+
+                if (!empty($no_hp)) {
+                    $data = [
+                        'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
+                        'sender' => '6289670444321',
+                        'number' => $no_hp,
+                        'message' => '*' . $kasbon->nama_karyawan . '*, Ajuan Kasbon dengan Nomor Kasbon *' . $kasbon->no_kasbon . '* dan total kasbon *' . rupiah($kasbon->jumlah_kasbon) . '* sudah di proses oleh bagian keuangan, silahkan tunggu 1 x 24 jam untuk proses pencairan dana ke rekening.'
+                    ];
+                    $curl = curl_init();
+
+                    curl_setopt_array($curl, array(
+                        CURLOPT_URL => 'https://wa.pedasalami.com/send-message',
+                        CURLOPT_RETURNTRANSFER => true,
+                        CURLOPT_ENCODING => '',
+                        CURLOPT_MAXREDIRS => 10,
+                        CURLOPT_TIMEOUT => 0,
+                        CURLOPT_FOLLOWLOCATION => true,
+                        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                        CURLOPT_CUSTOMREQUEST => 'POST',
+                        CURLOPT_POSTFIELDS => json_encode($data),
+                        CURLOPT_HTTPHEADER => array(
+                            'Content-Type: application/json'
+                        ),
+                    ));
+
+                    $response = curl_exec($curl);
+
+                    curl_close($curl);
+                }
             } else if ($status == 2) {
                 DB::table('kasbon')->where('no_kasbon', $no_kasbon)->update([
                     'status' => 2
