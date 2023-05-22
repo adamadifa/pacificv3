@@ -234,14 +234,14 @@ class KasbonController extends Controller
             $data = [
                 'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
                 'sender' => '6289670444321',
-                'number' => '082218770017',
+                'number' => '087708590299',
                 'message' => '*' . $nik . "-" . $karyawan->nama_karyawan . '*, dari Departemen ' . $karyawan->nama_dept . ' Mengajukan Kasbon dengan Nomor Kasbon *' . $no_kasbon . '* dan total pinjaman *' . $request->jml_kasbon . '* Menunggu untuk Segera di proses.'
             ];
 
             $ardi = [
                 'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
                 'sender' => '6289670444321',
-                'number' => '082218770017',
+                'number' => '0811211451',
                 'message' => '*' . $nik . "-" . $karyawan->nama_karyawan . '*, dari Departemen ' . $karyawan->nama_dept . ' Mengajukan Kasbon dengan Nomor Kasbon *' . $no_kasbon . '* dan total pinjaman *' . $request->jml_kasbon . '* Menunggu untuk Segera di proses.'
             ];
             $curl = curl_init();
