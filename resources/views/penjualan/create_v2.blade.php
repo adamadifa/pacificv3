@@ -70,7 +70,8 @@
                                             <x-inputtext label="Salesman" field="nama_karyawan" icon="feather icon-users" readonly />
                                         </div>
                                     </div>
-                                    @if (Auth::user()->kode_cabang="BDG")
+
+                                    @if (Auth::user()->kode_cabang=="BDG")
                                     <div class="row">
                                         <div class="col-12">
                                             <x-inputtext label="No. PO Pelanggan" field="no_po" icon="fa fa-barcode" />

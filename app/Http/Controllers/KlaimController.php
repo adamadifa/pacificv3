@@ -336,21 +336,7 @@ class KlaimController extends Controller
         $no_bukti = $ledger->no_bukti;
         $tgl_ledger = $ledger->tgl_ledger;
         $keterangan = "Penerimaan Kas Kecil";
-        $akun = [
-            'BDG' => '1-1102',
-            'BGR' => '1-1103',
-            'PST' => '1-1104',
-            'TSM' => '1-1104',
-            'SKB' => '1-1113',
-            'PWT' => '1-1114',
-            'TGL' => '1-1115',
-            'SBY' => '1-1116',
-            'SMR' => '1-1117',
-            'KLT' => '1-1118',
-            'GRT' => '1-1119',
-            'PWK' => '1-1120',
-            'BTN' => '1-1121'
-        ];
+        $akun = getAkunkaskecil();
 
         $akunpsttsm = [
             'PST' => '1-1111',

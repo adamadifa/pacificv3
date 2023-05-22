@@ -85,33 +85,7 @@ class PembayaranController extends Controller
         $no_bukti_bukubesar  = buatkode($lastno_bukti, 'GJ' . $bulan . $tahun, 6);
 
 
-        if ($kode_cabang == 'TSM') {
-            $akun = "1-1468";
-        } else if ($kode_cabang == 'BDG') {
-            $akun = "1-1402";
-        } else if ($kode_cabang == 'BGR') {
-            $akun = "1-1403";
-        } else if ($kode_cabang == 'PWT') {
-            $akun = "1-1404";
-        } else if ($kode_cabang == 'TGL') {
-            $akun = "1-1405";
-        } else if ($kode_cabang == "SKB") {
-            $akun = "1-1407";
-        } else if ($kode_cabang == "GRT") {
-            $akun = "1-1468";
-        } else if ($kode_cabang == "SMR") {
-            $akun = "1-1488";
-        } else if ($kode_cabang == "SBY") {
-            $akun = "1-1486";
-        } else if ($kode_cabang == "PST") {
-            $akun = "1-1489";
-        } else if ($kode_cabang == "KLT") {
-            $akun = "1-1490";
-        } else if ($kode_cabang == "PWK") {
-            $akun = "1-1492";
-        } else if ($kode_cabang == "BTN") {
-            $akun = "1-1493";
-        }
+        $akun = getAkunpiutangcabang(Auth::user()->kode_cabang);
         DB::beginTransaction();
         try {
             DB::table('historibayar')
@@ -202,33 +176,7 @@ class PembayaranController extends Controller
             $ket_voucher = NULL;
         }
 
-        if ($kode_cabang == 'TSM') {
-            $akun = "1-1468";
-        } else if ($kode_cabang == 'BDG') {
-            $akun = "1-1402";
-        } else if ($kode_cabang == 'BGR') {
-            $akun = "1-1403";
-        } else if ($kode_cabang == 'PWT') {
-            $akun = "1-1404";
-        } else if ($kode_cabang == 'TGL') {
-            $akun = "1-1405";
-        } else if ($kode_cabang == "SKB") {
-            $akun = "1-1407";
-        } else if ($kode_cabang == "GRT") {
-            $akun = "1-1468";
-        } else if ($kode_cabang == "SMR") {
-            $akun = "1-1488";
-        } else if ($kode_cabang == "SBY") {
-            $akun = "1-1486";
-        } else if ($kode_cabang == "PST") {
-            $akun = "1-1489";
-        } else if ($kode_cabang == "KLT") {
-            $akun = "1-1490";
-        } else if ($kode_cabang == "PWK") {
-            $akun = "1-1492";
-        } else if ($kode_cabang == "BTN") {
-            $akun = "1-1493";
-        }
+        $akun = getAkunpiutangcabang(Auth::user()->kode_cabang);
 
         DB::beginTransaction();
         try {

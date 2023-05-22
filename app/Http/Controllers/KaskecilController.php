@@ -165,21 +165,7 @@ class KaskecilController extends Controller
     {
         $kode_cabang = $request->kode_cabang;
         $nobukti = $request->nobukti;
-        $akun = [
-            'BDG' => '1-1102',
-            'BGR' => '1-1103',
-            'PST' => '1-1111',
-            'TSM' => '1-1112',
-            'SKB' => '1-1113',
-            'PWT' => '1-1114',
-            'TGL' => '1-1115',
-            'SBY' => '1-1116',
-            'SMR' => '1-1117',
-            'KLT' => '1-1118',
-            'GRT' => '1-1119',
-            'PWK' => '1-1120',
-            'BTN' => '1-1121'
-        ];
+        $akun = getAkunkaskecil();
         $kaskecil_temp = DB::table('kaskecil_detail_temp')->where('nobukti', $nobukti)->get();
         DB::beginTransaction();
         try {
@@ -415,21 +401,7 @@ class KaskecilController extends Controller
 
         $cekakun = substr($kode_akun, 0, 3);
 
-        $akun = [
-            'BDG' => '1-1102',
-            'BGR' => '1-1103',
-            'PST' => '1-1111',
-            'TSM' => '1-1112',
-            'SKB' => '1-1113',
-            'PWT' => '1-1114',
-            'TGL' => '1-1115',
-            'SBY' => '1-1116',
-            'SMR' => '1-1117',
-            'KLT' => '1-1118',
-            'GRT' => '1-1119',
-            'PWK' => '1-1120',
-            'BTN' => '1-1121'
-        ];
+        $akun = getAkunkaskecil();
         if ($split == 1) {
             DB::beginTransaction();
             try {

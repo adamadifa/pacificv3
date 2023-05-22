@@ -98,3 +98,65 @@ function diffInMonths(\DateTime $date1, \DateTime $date2)
 
     return (int) round($months);
 }
+
+
+//Seting Cabang Baru
+
+function getAkunpiutangcabang($kode_cabang)
+{
+    if ($kode_cabang == 'TSM') {
+        $akun = "1-1468";
+    } else if ($kode_cabang == 'BDG') {
+        $akun = "1-1402";
+    } else if ($kode_cabang == 'BGR') {
+        $akun = "1-1403";
+    } else if ($kode_cabang == 'PWT') {
+        $akun = "1-1404";
+    } else if ($kode_cabang == 'TGL') {
+        $akun = "1-1405";
+    } else if ($kode_cabang == "SKB") {
+        $akun = "1-1407";
+    } else if ($kode_cabang == "GRT") {
+        $akun = "1-1468";
+    } else if ($kode_cabang == "SMR") {
+        $akun = "1-1488";
+    } else if ($kode_cabang == "SBY") {
+        $akun = "1-1486";
+    } else if ($kode_cabang == "PST") {
+        $akun = "1-1489";
+    } else if ($kode_cabang == "KLT") {
+        $akun = "1-1490";
+    } else if ($kode_cabang == "PWK") {
+        $akun = "1-1492";
+    } else if ($kode_cabang == "BTN") {
+        $akun = "1-1493";
+    } else if ($kode_cabang == "BKI") {
+        $akun = "1-1494";
+    }
+
+    return $akun;
+}
+
+
+
+function getAkunkaskecil()
+{
+    $akun = [
+        'BDG' => '1-1102',
+        'BGR' => '1-1103',
+        'PST' => '1-1111',
+        'TSM' => '1-1112',
+        'SKB' => '1-1113',
+        'PWT' => '1-1114',
+        'TGL' => '1-1115',
+        'SBY' => '1-1116',
+        'SMR' => '1-1117',
+        'KLT' => '1-1118',
+        'GRT' => '1-1119',
+        'PWK' => '1-1120',
+        'BTN' => '1-1121',
+        'BKI' => '1-1122'
+    ];
+
+    return $akun;
+}
