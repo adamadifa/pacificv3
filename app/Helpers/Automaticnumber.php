@@ -132,6 +132,8 @@ function getAkunpiutangcabang($kode_cabang)
         $akun = "1-1493";
     } else if ($kode_cabang == "BKI") {
         $akun = "1-1494";
+    } else {
+        $akun = "99";
     }
 
     return $akun;
