@@ -1042,6 +1042,7 @@ class LaporanaccountingController extends Controller
             SUM(IF(kode_cabang='TSM',jumlah,0)) as tsm,
             SUM(IF(kode_cabang='PWK',jumlah,0)) as pwk,
             SUM(IF(kode_cabang='BTN',jumlah,0)) as btn,
+            SUM(IF(kode_cabang='BKI',jumlah,0)) as bki,
             SUM(jumlah) as total");
         }
 
@@ -1099,6 +1100,7 @@ class LaporanaccountingController extends Controller
             SUM(IF(karyawan.kode_cabang='TSM',ppn,0)) as tsm,
             SUM(IF(karyawan.kode_cabang='PWK',ppn,0)) as pwk,
             SUM(IF(karyawan.kode_cabang='BTN',ppn,0)) as btn,
+            SUM(IF(karyawan.kode_cabang='BKI',ppn,0)) as bki,
             SUM(ppn) as total
         ");
         }
@@ -1328,6 +1330,22 @@ class LaporanaccountingController extends Controller
 
             ) as btn,
 
+
+            SUM(IF(unit='Bekasi',
+            CASE
+                WHEN satuan = 'KG' THEN qty_berat * 1000
+                WHEN satuan = 'Liter' THEN qty_berat * 1000 * IFNULL((SELECT harga FROM harga_minyak WHERE bulan ='$bulan' AND tahun = '$tahun'),0)
+                ELSE qty_unit
+            END
+            *
+            CASE
+                WHEN satuan ='KG' THEN (harga +totalharga + IF(qtypengganti2=0,(qtypengganti2*1000) * 0,( (qtypengganti2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000))))) + IF(qtylainnya2=0,(qtylainnya2*1000) * 0,( (qtylainnya2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000)))))) /  ( (qtyberatsa*1000) + (qtypemb2 * 1000) + (qtylainnya2*1000) + (qtypengganti2*1000))
+            ELSE
+            (harga + totalharga + IF(qtylainnya1=0,qtylainnya1*0,qtylainnya1 * IF(qtylainnya1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  ))) + IF(qtypengganti1=0,qtypengganti1*0,qtypengganti1 * IF(qtypengganti1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  )))) / (qtyunitsa + qtypemb1 + qtylainnya1 + qtypengganti1)
+            END,0)
+
+            ) as btn,
+
             SUM(
             CASE
                 WHEN satuan = 'KG' THEN qty_berat * 1000
@@ -1522,13 +1540,21 @@ class LaporanaccountingController extends Controller
             (sa.totalsa + gm.totalpemasukan) / (sa.qtysaldoawal + gm.qtypemasukan)
             END ,0)) as pwk,
 
-            SUM(IF(kode_cabang='BTN',qty *
-            CASE
-                WHEN sa.hargasaldoawal IS NULL THEN gm.hargapemasukan
-                WHEN gm.hargapemasukan IS NULL THEN sa.hargasaldoawal
-                ELSE
-                (sa.totalsa + gm.totalpemasukan) / (sa.qtysaldoawal + gm.qtypemasukan)
-                END ,0)) as btn,
+        SUM(IF(kode_cabang='BTN',qty *
+        CASE
+            WHEN sa.hargasaldoawal IS NULL THEN gm.hargapemasukan
+            WHEN gm.hargapemasukan IS NULL THEN sa.hargasaldoawal
+            ELSE
+            (sa.totalsa + gm.totalpemasukan) / (sa.qtysaldoawal + gm.qtypemasukan)
+            END ,0)) as btn,
+
+        SUM(IF(kode_cabang='BKI',qty *
+        CASE
+            WHEN sa.hargasaldoawal IS NULL THEN gm.hargapemasukan
+            WHEN gm.hargapemasukan IS NULL THEN sa.hargasaldoawal
+            ELSE
+            (sa.totalsa + gm.totalpemasukan) / (sa.qtysaldoawal + gm.qtypemasukan)
+            END ,0)) as bki,
 
 
 
@@ -1612,6 +1638,10 @@ class LaporanaccountingController extends Controller
             SUM(IF(karyawan.kode_cabang ='BTN',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanBTN,
             SUM(IF(karyawan.kode_cabang ='BTN',brutoaida-potaida - potisaida-penyaida,0)) as netaidaBTN,
 
+
+            SUM(IF(karyawan.kode_cabang ='BKI',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanBKI,
+            SUM(IF(karyawan.kode_cabang ='BKI',brutoaida-potaida - potisaida-penyaida,0)) as netaidaBKI,
+
             SUM(brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0)) as totalswan,
             SUM(brutoaida-potaida - potisaida-penyaida) as totalaida
             ");
@@ -1668,6 +1698,10 @@ class LaporanaccountingController extends Controller
             SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='KLT',detailretur.subtotal,0)) as returaidaKLT,
             SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='PWK',detailretur.subtotal,0)) as returswanPWK,
             SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='PWK',detailretur.subtotal,0)) as returaidaPWK,
+            SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='BTN',detailretur.subtotal,0)) as returswanBTN,
+            SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='BTN',detailretur.subtotal,0)) as returaidaBTN,
+            SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='BKI',detailretur.subtotal,0)) as returswanBKI,
+            SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='BKI',detailretur.subtotal,0)) as returaidaBKI,
             SUM(IF(master_barang.jenis_produk = 'SWAN',detailretur.subtotal,0)) as totalreturswan,
             SUM(IF(master_barang.jenis_produk = 'AIDA',detailretur.subtotal,0)) as totalreturaida
             ");
@@ -1704,6 +1738,7 @@ class LaporanaccountingController extends Controller
             SUM(CASE WHEN cabangbarunew = 'KLT' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS KLT,
             SUM(CASE WHEN cabangbarunew =  'PWK' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS PWK,
             SUM(CASE WHEN cabangbarunew =  'BTN' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS BTN,
+            SUM(CASE WHEN cabangbarunew =  'BKI' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS BKI,
             SUM(ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0)) as totalpiutang
         ");
         }
