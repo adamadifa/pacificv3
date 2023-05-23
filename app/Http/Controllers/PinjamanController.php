@@ -338,7 +338,7 @@ class PinjamanController extends Controller
                 'message' => '*' . $nik . "-" . $karyawan->nama_karyawan . '*, dari Departemen ' . $karyawan->nama_dept . ' Mengajukan Pinjaman dengan Nomor Pinjaman *' . $no_pinjaman . '* dan total pinjaman *' . $request->jml_pinjaman . '* Menunggu untuk Segera di proses.'
             ];
 
-            if (in_array($karyawan->id_jabatan, $notmanagement)) {
+            if (!in_array($karyawan->id_jabatan, $notmanagement)) {
                 $curl = curl_init();
 
                 curl_setopt_array($curl, array(
