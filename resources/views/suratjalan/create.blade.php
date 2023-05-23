@@ -42,6 +42,7 @@
                     <option value="TASIKMALAYA" data-tarif="0">TASIKMALAYA</option>
                     <option value="PURWAKARTA" data-tarif="0">PURWAKARTA</option>
                     <option value="PEMALANG" data-tarif="0">PEMALANG</option>
+                    <option value="BEKASI" data-tarif="0">BEKASI</option>
 
                 </select>
             </div>
