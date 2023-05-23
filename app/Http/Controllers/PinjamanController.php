@@ -327,14 +327,14 @@ class PinjamanController extends Controller
             $data = [
                 'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
                 'sender' => '6289670444321',
-                'number' => '082218771107',
+                'number' => '087708590299',
                 'message' => '*' . $nik . "-" . $karyawan->nama_karyawan . '*, dari Departemen ' . $karyawan->nama_dept . ' Mengajukan Pinjaman dengan Nomor Pinjaman *' . $no_pinjaman . '* dan total pinjaman *' . $request->jml_pinjaman . '* Menunggu untuk Segera di proses.'
             ];
 
             $ardi = [
                 'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
                 'sender' => '6289670444321',
-                'number' => '082218770017',
+                'number' => '0811211451',
                 'message' => '*' . $nik . "-" . $karyawan->nama_karyawan . '*, dari Departemen ' . $karyawan->nama_dept . ' Mengajukan Pinjaman dengan Nomor Pinjaman *' . $no_pinjaman . '* dan total pinjaman *' . $request->jml_pinjaman . '* Menunggu untuk Segera di proses.'
             ];
 
