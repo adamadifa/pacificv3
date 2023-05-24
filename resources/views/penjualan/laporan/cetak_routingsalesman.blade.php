@@ -88,7 +88,7 @@
                     'Sat' => 'Sabtu'
                 );
 
-                if($dayList[$day] != $d->hari){
+                if(strtolower($dayList[$day]) != strtolower($d->hari)){
                     $bgcolor = "red";
                     $color="white";
                 }else{
