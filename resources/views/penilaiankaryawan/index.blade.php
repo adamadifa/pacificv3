@@ -235,6 +235,7 @@
 
                                                 <?php
                                                 $lastindex = $cekindex - 1;
+                                                if(Auth::user()->level != 'spv pdqc' && Auth::user()->level!="spv produksi"){
                                                 if($cekindex == 0){
                                                 ?>
                                                 <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/{{ Crypt::encrypt($field_kategori) }}/approve" class="success ml-1"><i class="fa fa-check"></i></a>
@@ -250,6 +251,7 @@
                                                     }else{
                                                         echo "<span class='badge bg-warning ml-1'>Waiting</span>";
                                                     }
+                                                }
                                                 }
                                                 ?>
                                                 @endif
