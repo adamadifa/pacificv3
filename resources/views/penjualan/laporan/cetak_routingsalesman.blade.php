@@ -106,7 +106,7 @@
                 <td style="text-align: right">{{ rupiah($d->totalpenjualan) }}</td>
                 <td style="text-align: right">{{ rupiah($d->totalbayar) }}</td>
                 <td>{{ $d->hari }}</td>
-                <td>{{ $dayList[$day] != $d->hari ? 'Tidak Sesuai Jadwal' : '' }}</td>
+                <td>{{ strtolower($dayList[$day]) != strtolower($d->hari) ? 'Tidak Sesuai Jadwal' : '' }}</td>
             </tr>
             @php
             $no++;
