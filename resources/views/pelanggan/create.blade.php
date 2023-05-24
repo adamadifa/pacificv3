@@ -99,7 +99,7 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group  @error('hari') error @enderror">
-                                                <select name="hari" id="" class="form-control">
+                                                {{-- <select name="hari" id="" class="form-control">
                                                     <option value="">Hari</option>
                                                     <option @if (old('hari')=='Senin' ) selected @endif value="Senin">Senin</option>
                                                     <option @if (old('hari')=='Selasa' ) selected @endif value="Selasa">Selasa</option>
@@ -108,7 +108,100 @@
                                                     <option @if (old('hari')=='Jumat' ) selected @endif value="Jumat">Jumat</option>
                                                     <option @if (old('hari')=='Sabtu' ) selected @endif value="Sabtu">Sabtu</option>
                                                     <option @if (old('hari')=='Minggu' ) selected @endif value="Minggu">Minggu</option>
-                                                </select>
+                                                </select> --}}
+
+                                                <ul class="list-unstyled mb-0">
+                                                    <li class="d-inline-block mr-2">
+                                                        <fieldset>
+                                                            <div class="vs-checkbox-con vs-checkbox-success">
+                                                                <input type="checkbox" name="hari[]" value="Senin">
+                                                                <span class="vs-checkbox">
+                                                                    <span class="vs-checkbox--check">
+                                                                        <i class="vs-icon feather icon-check"></i>
+                                                                    </span>
+                                                                </span>
+                                                                <span class="">Senin</span>
+                                                            </div>
+                                                        </fieldset>
+                                                    </li>
+                                                    <li class="d-inline-block mr-2">
+                                                        <fieldset>
+                                                            <div class="vs-checkbox-con vs-checkbox-success">
+                                                                <input type="checkbox" name="hari[]" value="Selasa">
+                                                                <span class="vs-checkbox">
+                                                                    <span class="vs-checkbox--check">
+                                                                        <i class="vs-icon feather icon-check"></i>
+                                                                    </span>
+                                                                </span>
+                                                                <span class="">Selasa</span>
+                                                            </div>
+                                                        </fieldset>
+                                                    </li>
+                                                    <li class="d-inline-block mr-2">
+                                                        <fieldset>
+                                                            <div class="vs-checkbox-con vs-checkbox-success">
+                                                                <input type="checkbox" name="hari[]" value="Rabu">
+                                                                <span class="vs-checkbox">
+                                                                    <span class="vs-checkbox--check">
+                                                                        <i class="vs-icon feather icon-check"></i>
+                                                                    </span>
+                                                                </span>
+                                                                <span class="">Rabu</span>
+                                                            </div>
+                                                        </fieldset>
+                                                    </li>
+                                                    <li class="d-inline-block mr-2">
+                                                        <fieldset>
+                                                            <div class="vs-checkbox-con vs-checkbox-success">
+                                                                <input type="checkbox" name="hari[]" value="Kamis"> <span class="vs-checkbox">
+                                                                    <span class="vs-checkbox--check">
+                                                                        <i class="vs-icon feather icon-check"></i>
+                                                                    </span>
+                                                                </span>
+                                                                <span class="">Kamis</span>
+                                                            </div>
+                                                        </fieldset>
+                                                    </li>
+                                                    <li class="d-inline-block mr-2">
+                                                        <fieldset>
+                                                            <div class="vs-checkbox-con vs-checkbox-success">
+                                                                <input type="checkbox" name="hari[]" value="Jumat">
+                                                                <span class="vs-checkbox">
+                                                                    <span class="vs-checkbox--check">
+                                                                        <i class="vs-icon feather icon-check"></i>
+                                                                    </span>
+                                                                </span>
+                                                                <span class="">Jumat</span>
+                                                            </div>
+                                                        </fieldset>
+                                                    </li>
+                                                    <li class="d-inline-block mr-2">
+                                                        <fieldset>
+                                                            <div class="vs-checkbox-con vs-checkbox-success">
+                                                                <input type="checkbox" name="hari[]" value="Sabtu">
+                                                                <span class="vs-checkbox">
+                                                                    <span class="vs-checkbox--check">
+                                                                        <i class="vs-icon feather icon-check"></i>
+                                                                    </span>
+                                                                </span>
+                                                                <span class="">Sabtu</span>
+                                                            </div>
+                                                        </fieldset>
+                                                    </li>
+                                                    <li class="d-inline-block mr-2">
+                                                        <fieldset>
+                                                            <div class="vs-checkbox-con vs-checkbox-success">
+                                                                <input type="checkbox" name="hari[]" value="Minggu">
+                                                                <span class="vs-checkbox">
+                                                                    <span class="vs-checkbox--check">
+                                                                        <i class="vs-icon feather icon-check"></i>
+                                                                    </span>
+                                                                </span>
+                                                                <span class="">Minggu</span>
+                                                            </div>
+                                                        </fieldset>
+                                                    </li>
+                                                </ul>
                                                 @error('hari')
                                                 <div class="help-block">
                                                     <ul role="alert">

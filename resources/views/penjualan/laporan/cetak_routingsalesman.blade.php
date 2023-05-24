@@ -88,12 +88,14 @@
                     'Sat' => 'Sabtu'
                 );
 
-                if(strtolower($dayList[$day]) != strtolower($d->hari)){
-                    $bgcolor = "red";
-                    $color="white";
-                }else{
+                if(str_contains($d->hari,$dayList[$day])){
                     $bgcolor="";
                     $color="";
+                    $ket = "";
+                }else{
+                    $bgcolor = "red";
+                    $color="white";
+                    $ket = "Tidak Sesuai Jadwdal";
                 }
             ?>
 
@@ -106,7 +108,7 @@
                 <td style="text-align: right">{{ rupiah($d->totalpenjualan) }}</td>
                 <td style="text-align: right">{{ rupiah($d->totalbayar) }}</td>
                 <td>{{ $d->hari }}</td>
-                <td>{{ strtolower($dayList[$day]) != strtolower($d->hari) ? 'Tidak Sesuai Jadwal' : '' }}</td>
+                <td>{{ $ket }}</td>
             </tr>
             @php
             $no++;
@@ -125,12 +127,15 @@
                     'Sat' => 'Sabtu'
                 );
 
-                if($dayList[$day] != $d->hari){
-                    $bgcolor = "red";
-                    $color="white";
-                }else{
+                if(str_contains($d->hari,$dayList[$day])){
+
                     $bgcolor="";
                     $color="";
+                    $ket = "";
+                }else{
+                    $bgcolor = "red";
+                    $color="white";
+                    $ket = "Tidak Sesuai Jadwdal";
                 }
             ?>
             <tr style="background-color:{{ $bgcolor }}; color:{{ $color }}">
@@ -142,7 +147,7 @@
                 <td></td>
                 <td style="text-align: right">{{ rupiah($d->totalbayar) }}</td>
                 <td>{{ $d->hari }}</td>
-                <td>{{ $dayList[$day] != $d->hari ? 'Tidak Sesuai Jadwal' : '' }}</td>
+                <td>{{ $ket }}</td>
             </tr>
             @php
             $no++;

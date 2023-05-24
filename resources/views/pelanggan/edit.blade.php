@@ -107,44 +107,165 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group  @error('hari') error @enderror">
-                                                <select name="hari" id="" class="form-control">
+                                                {{-- <select name="hari" id="" class="form-control">
                                                     <option value="">Hari</option>
                                                     <option @isset($data->hari) @if (old('hari'))
                                                         {{ old('hari') == 'Senin' ? 'selected' : '' }} @else
-                                                        {{ $data->hari == 'Senin' ? 'selected' : '' }} @endif @else
-                                                        {{ old('hari') == 'Senin' ? 'selected' : '' }}
-                                                        @endisset value="Senin">Senin</option>
-                                                    <option @isset($data->hari) @if (old('hari'))
-                                                        {{ old('hari') == 'Selasa' ? 'selected' : '' }} @else
-                                                        {{ $data->hari == 'Selasa' ? 'selected' : '' }} @endif @else
-                                                        {{ old('hari') == 'Selasa' ? 'selected' : '' }}
-                                                        @endisset value="Selasa">Selasa</option>
-                                                    <option @isset($data->hari) @if (old('hari'))
-                                                        {{ old('hari') == 'Rabu' ? 'selected' : '' }} @else
-                                                        {{ $data->hari == 'Rabu' ? 'selected' : '' }} @endif @else
-                                                        {{ old('hari') == 'Rabu' ? 'selected' : '' }}
-                                                        @endisset value="Rabu">Rabu</option>
-                                                    <option @isset($data->hari) @if (old('hari'))
-                                                        {{ old('hari') == 'Kamis' ? 'selected' : '' }} @else
-                                                        {{ $data->hari == 'Kamis' ? 'selected' : '' }} @endif @else
-                                                        {{ old('hari') == 'Kamis' ? 'selected' : '' }}
-                                                        @endisset value="Kamis">Kamis</option>
-                                                    <option @isset($data->hari) @if (old('hari'))
-                                                        {{ old('hari') == 'Jumat' ? 'selected' : '' }} @else
-                                                        {{ $data->hari == 'Jumat' ? 'selected' : '' }} @endif @else
-                                                        {{ old('hari') == 'Jumat' ? 'selected' : '' }}
-                                                        @endisset value="Jumat">Jumat</option>
-                                                    <option @isset($data->hari) @if (old('hari'))
-                                                        {{ old('hari') == 'Sabtu' ? 'selected' : '' }} @else
-                                                        {{ $data->hari == 'Sabtu' ? 'selected' : '' }} @endif @else
-                                                        {{ old('hari') == 'Sabtu' ? 'selected' : '' }}
-                                                        @endisset value="Sabtu">Sabtu</option>
-                                                    <option @isset($data->hari) @if (old('hari'))
-                                                        {{ old('hari') == 'Minggu' ? 'selected' : '' }} @else
-                                                        {{ $data->hari == 'Minggu' ? 'selected' : '' }} @endif @else
-                                                        {{ old('hari') == 'Minggu' ? 'selected' : '' }}
-                                                        @endisset value="Minggu">Minggu</option>
-                                                </select>
+                                                {{ $data->hari == 'Senin' ? 'selected' : '' }} @endif @else
+                                                {{ old('hari') == 'Senin' ? 'selected' : '' }}
+                                                @endisset value="Senin">Senin</option>
+                                                <option @isset($data->hari) @if (old('hari'))
+                                                    {{ old('hari') == 'Selasa' ? 'selected' : '' }} @else
+                                                    {{ $data->hari == 'Selasa' ? 'selected' : '' }} @endif @else
+                                                    {{ old('hari') == 'Selasa' ? 'selected' : '' }}
+                                                    @endisset value="Selasa">Selasa</option>
+                                                <option @isset($data->hari) @if (old('hari'))
+                                                    {{ old('hari') == 'Rabu' ? 'selected' : '' }} @else
+                                                    {{ $data->hari == 'Rabu' ? 'selected' : '' }} @endif @else
+                                                    {{ old('hari') == 'Rabu' ? 'selected' : '' }}
+                                                    @endisset value="Rabu">Rabu</option>
+                                                <option @isset($data->hari) @if (old('hari'))
+                                                    {{ old('hari') == 'Kamis' ? 'selected' : '' }} @else
+                                                    {{ $data->hari == 'Kamis' ? 'selected' : '' }} @endif @else
+                                                    {{ old('hari') == 'Kamis' ? 'selected' : '' }}
+                                                    @endisset value="Kamis">Kamis</option>
+                                                <option @isset($data->hari) @if (old('hari'))
+                                                    {{ old('hari') == 'Jumat' ? 'selected' : '' }} @else
+                                                    {{ $data->hari == 'Jumat' ? 'selected' : '' }} @endif @else
+                                                    {{ old('hari') == 'Jumat' ? 'selected' : '' }}
+                                                    @endisset value="Jumat">Jumat</option>
+                                                <option @isset($data->hari) @if (old('hari'))
+                                                    {{ old('hari') == 'Sabtu' ? 'selected' : '' }} @else
+                                                    {{ $data->hari == 'Sabtu' ? 'selected' : '' }} @endif @else
+                                                    {{ old('hari') == 'Sabtu' ? 'selected' : '' }}
+                                                    @endisset value="Sabtu">Sabtu</option>
+                                                <option @isset($data->hari) @if (old('hari'))
+                                                    {{ old('hari') == 'Minggu' ? 'selected' : '' }} @else
+                                                    {{ $data->hari == 'Minggu' ? 'selected' : '' }} @endif @else
+                                                    {{ old('hari') == 'Minggu' ? 'selected' : '' }}
+                                                    @endisset value="Minggu">Minggu</option>
+                                                </select> --}}
+                                                <ul class="list-unstyled mb-0">
+                                                    <li class="d-inline-block mr-2">
+                                                        <fieldset>
+                                                            <div class="vs-checkbox-con vs-checkbox-success">
+                                                                <input type="checkbox" name="hari[]" <?php
+                                                                    if (str_contains($data->hari, 'Senin')) {
+                                                                        echo 'checked';
+                                                                    }
+                                                                ?> value="Senin">
+                                                                <span class="vs-checkbox">
+                                                                    <span class="vs-checkbox--check">
+                                                                        <i class="vs-icon feather icon-check"></i>
+                                                                    </span>
+                                                                </span>
+                                                                <span class="">Senin</span>
+                                                            </div>
+                                                        </fieldset>
+                                                    </li>
+                                                    <li class="d-inline-block mr-2">
+                                                        <fieldset>
+                                                            <div class="vs-checkbox-con vs-checkbox-success">
+                                                                <input type="checkbox" name="hari[]" <?php
+                                                                    if (str_contains($data->hari, 'Selasa')) {
+                                                                        echo 'checked';
+                                                                    }
+                                                                ?> value="Selasa">
+                                                                <span class="vs-checkbox">
+                                                                    <span class="vs-checkbox--check">
+                                                                        <i class="vs-icon feather icon-check"></i>
+                                                                    </span>
+                                                                </span>
+                                                                <span class="">Selasa</span>
+                                                            </div>
+                                                        </fieldset>
+                                                    </li>
+                                                    <li class="d-inline-block mr-2">
+                                                        <fieldset>
+                                                            <div class="vs-checkbox-con vs-checkbox-success">
+                                                                <input type="checkbox" name="hari[]" value="Rabu" <?php
+                                                                if (str_contains($data->hari, 'Rabu')) {
+                                                                    echo 'checked';
+                                                                }
+                                                            ?>>
+                                                                <span class="vs-checkbox">
+                                                                    <span class="vs-checkbox--check">
+                                                                        <i class="vs-icon feather icon-check"></i>
+                                                                    </span>
+                                                                </span>
+                                                                <span class="">Rabu</span>
+                                                            </div>
+                                                        </fieldset>
+                                                    </li>
+                                                    <li class="d-inline-block mr-2">
+                                                        <fieldset>
+                                                            <div class="vs-checkbox-con vs-checkbox-success">
+                                                                <input type="checkbox" name="hari[]" value="Kamis" <?php
+                                                                if (str_contains($data->hari, 'Kamis')) {
+                                                                    echo 'checked';
+                                                                }
+                                                            ?>>
+                                                                <span class="vs-checkbox">
+                                                                    <span class="vs-checkbox--check">
+                                                                        <i class="vs-icon feather icon-check"></i>
+                                                                    </span>
+                                                                </span>
+                                                                <span class="">Kamis</span>
+                                                            </div>
+                                                        </fieldset>
+                                                    </li>
+                                                    <li class="d-inline-block mr-2">
+                                                        <fieldset>
+                                                            <div class="vs-checkbox-con vs-checkbox-success">
+                                                                <input type="checkbox" name="hari[]" value="Jumat" <?php
+                                                                if (str_contains($data->hari, 'Jumat')) {
+                                                                    echo 'checked';
+                                                                }
+                                                            ?>>
+                                                                <span class="vs-checkbox">
+                                                                    <span class="vs-checkbox--check">
+                                                                        <i class="vs-icon feather icon-check"></i>
+                                                                    </span>
+                                                                </span>
+                                                                <span class="">Jumat</span>
+                                                            </div>
+                                                        </fieldset>
+                                                    </li>
+                                                    <li class="d-inline-block mr-2">
+                                                        <fieldset>
+                                                            <div class="vs-checkbox-con vs-checkbox-success">
+                                                                <input type="checkbox" name="hari[]" value="Sabtu" <?php
+                                                                if (str_contains($data->hari, 'Sabtu')) {
+                                                                    echo 'checked';
+                                                                }
+                                                            ?>>
+                                                                <span class="vs-checkbox">
+                                                                    <span class="vs-checkbox--check">
+                                                                        <i class="vs-icon feather icon-check"></i>
+                                                                    </span>
+                                                                </span>
+                                                                <span class="">Sabtu</span>
+                                                            </div>
+                                                        </fieldset>
+                                                    </li>
+                                                    <li class="d-inline-block mr-2">
+                                                        <fieldset>
+                                                            <div class="vs-checkbox-con vs-checkbox-success">
+                                                                <input type="checkbox" name="hari[]" value="Minggu" <?php
+                                                                if (str_contains($data->hari, 'Minggu')) {
+                                                                    echo 'checked';
+                                                                }
+                                                            ?>>
+                                                                <span class="vs-checkbox">
+                                                                    <span class="vs-checkbox--check">
+                                                                        <i class="vs-icon feather icon-check"></i>
+                                                                    </span>
+                                                                </span>
+                                                                <span class="">Minggu</span>
+                                                            </div>
+                                                        </fieldset>
+                                                    </li>
+                                                </ul>
                                                 @error('hari')
                                                 <div class="help-block">
                                                     <ul role="alert">

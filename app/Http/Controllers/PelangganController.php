@@ -328,7 +328,6 @@ class PelangganController extends Controller
             'alamat_toko' => 'required',
             'no_hp' => 'required',
             'pasar' => 'required',
-            'hari' => 'required',
             'kode_cabang' => 'required',
             'id_karyawan' => 'required',
             'status_pelanggan' => 'required',
@@ -374,6 +373,10 @@ class PelangganController extends Controller
             $longitude = "";
         }
 
+        $hari = "";
+        foreach ($request->hari as $d) {
+            $hari .= $d . ",";
+        }
         $simpan = DB::table('pelanggan')->insert([
             'kode_pelanggan' => $kodepelanggan,
             'nik' => $request->nik,
@@ -383,7 +386,7 @@ class PelangganController extends Controller
             'alamat_pelanggan' => $request->alamat_pelanggan,
             'alamat_toko' => $request->alamat_toko,
             'no_hp' => $request->no_hp,
-            'hari' => $request->hari,
+            'hari' => $hari,
             'pasar' => $request->pasar,
             'kode_cabang' => $request->kode_cabang,
             'id_sales' => $request->id_karyawan,
@@ -470,6 +473,12 @@ class PelangganController extends Controller
     {
         $kode_pelanggan = Crypt::decrypt($kode_pelanggan);
         $pelanggan = Pelanggan::where('kode_pelanggan', $kode_pelanggan)->first();
+        $hari = "";
+        foreach ($request->hari as $d) {
+            $hari .= $d . ",";
+        }
+
+
         $file = $pelanggan->foto;
         $request->validate([
             'nama_pelanggan' => 'required',
@@ -477,7 +486,7 @@ class PelangganController extends Controller
             'alamat_toko' => 'required',
             'no_hp' => 'required',
             'pasar' => 'required',
-            'hari' => 'required',
+
             'kode_cabang' => 'required',
             'id_karyawan' => 'required',
             'status_pelanggan' => 'required',
@@ -509,7 +518,7 @@ class PelangganController extends Controller
                 'alamat_pelanggan' => $request->alamat_pelanggan,
                 'alamat_toko' => $request->alamat_toko,
                 'no_hp' => $request->no_hp,
-                'hari' => $request->hari,
+                'hari' => $hari,
                 'pasar' => $request->pasar,
                 'kode_cabang' => $request->kode_cabang,
                 'id_sales' => $request->id_karyawan,

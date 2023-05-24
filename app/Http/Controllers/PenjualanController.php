@@ -4063,13 +4063,14 @@ class PenjualanController extends Controller
                     SELECT
                         penjualan.id_karyawan,
                         COUNT(DISTINCT penjualan.kode_pelanggan,tgltransaksi) as jmlkunjungan,
-                        COUNT(DISTINCT CASE WHEN DAYNAME(tgltransaksi)='Monday' AND pelanggan.hari='Senin' OR
-                        DAYNAME(tgltransaksi)='Tuesday' AND pelanggan.hari='Selasa' OR
-                        DAYNAME(tgltransaksi)='Wednesday' AND pelanggan.hari='Rabu' OR
-                        DAYNAME(tgltransaksi)='Thursday' AND pelanggan.hari='Kamis' OR
-                        DAYNAME(tgltransaksi)='Friday' AND pelanggan.hari='Jumat' OR
-                        DAYNAME(tgltransaksi)='Saturday' AND pelanggan.hari='Sabtu' OR
-                        DAYNAME(tgltransaksi)='Sunday' AND pelanggan.hari='Minggu'  THEN  penjualan.kode_pelanggan END) jmlsesuaijadwal
+                        COUNT(DISTINCT CASE WHEN
+                        DAYNAME(tgltransaksi)='Monday' AND pelanggan.hari like '%Senin%' OR
+                        DAYNAME(tgltransaksi)='Tuesday' AND pelanggan.hari like '%Selasa%' OR
+                        DAYNAME(tgltransaksi)='Wednesday' AND pelanggan.hari like '%Rabu%' OR
+                        DAYNAME(tgltransaksi)='Thursday' AND pelanggan.hari like '%Kamis%' OR
+                        DAYNAME(tgltransaksi)='Friday' AND pelanggan.hari like '%Jumat%' OR
+                        DAYNAME(tgltransaksi)='Saturday' AND pelanggan.hari like '%Sabtu%' OR
+                        DAYNAME(tgltransaksi)='Sunday' AND pelanggan.hari like '%Minggu%'  THEN  penjualan.kode_pelanggan END) jmlsesuaijadwal
                     FROM
                     `penjualan`
                     INNER JOIN `pelanggan` ON `penjualan`.`kode_pelanggan` = `pelanggan`.`kode_pelanggan`
@@ -4088,13 +4089,14 @@ class PenjualanController extends Controller
                     SELECT
                         penjualan.id_karyawan,
                         COUNT(DISTINCT penjualan.kode_pelanggan,tgltransaksi) as jmlkunjungan2,
-                        COUNT(DISTINCT CASE WHEN DAYNAME(tgltransaksi)='Monday' AND pelanggan.hari='Senin' OR
-                        DAYNAME(tgltransaksi)='Tuesday' AND pelanggan.hari='Selasa' OR
-                        DAYNAME(tgltransaksi)='Wednesday' AND pelanggan.hari='Rabu' OR
-                        DAYNAME(tgltransaksi)='Thursday' AND pelanggan.hari='Kamis' OR
-                        DAYNAME(tgltransaksi)='Friday' AND pelanggan.hari='Jumat' OR
-                        DAYNAME(tgltransaksi)='Saturday' AND pelanggan.hari='Sabtu' OR
-                        DAYNAME(tgltransaksi)='Sunday' AND pelanggan.hari='Minggu'  THEN  penjualan.kode_pelanggan END) jmlsesuaijadwal2
+                        COUNT(DISTINCT CASE WHEN
+                        DAYNAME(tglbayar)='Monday' AND pelanggan.hari like '%Senin%' OR
+                        DAYNAME(tglbayar)='Tuesday' AND pelanggan.hari like '%Selasa%' OR
+                        DAYNAME(tglbayar)='Wednesday' AND pelanggan.hari like '%Rabu%' OR
+                        DAYNAME(tglbayar)='Thursday' AND pelanggan.hari like '%Kamis%' OR
+                        DAYNAME(tglbayar)='Friday' AND pelanggan.hari like '%Jumat%' OR
+                        DAYNAME(tglbayar)='Saturday' AND pelanggan.hari like '%Sabtu%' OR
+                        DAYNAME(tglbayar)='Sunday' AND pelanggan.hari like '%Minggu%'  THEN  penjualan.kode_pelanggan END) jmlsesuaijadwal2
                     FROM
                         `historibayar`
                         INNER JOIN `penjualan` ON `historibayar`.`no_fak_penj` = `penjualan`.`no_fak_penj`
