@@ -230,18 +230,7 @@
             $totalpcsall = $totalpcsall + $jmlpcsall;
             $totalall = $totalall + $subtotalall;
 
-            $ppnperproduk = $subtotalall / $totalbruto * $totalppn;
-            $totalppnperproduk += $ppnperproduk;
 
-
-            $brutoppn = $subtotalall + $ppnperproduk;
-            $totalbrutoppn += $brutoppn;
-            $jmldusppn = $t->jumlah / $t->isipcsdus;
-            if(!empty($jmldusppn)){
-            $ppnperdus = $ppnperproduk / $jmldusppn;
-            }else{
-            $ppnperdus = 0;
-            }
 
 
             $ppnperproduktunai = $subtotalt / $totalbrutotunai * $ppn_tunai;
@@ -253,6 +242,20 @@
             $totalppnperprodukkredit += $ppnperprodukkredit;
             $brutoppnkredit = $subtotalk + $ppnperprodukkredit;
             $totalbrutoppnkredit += $brutoppnkredit;
+
+
+            $ppnperproduk = $ppnperproduktunai + $ppnperprodukkredit ;
+            $totalppnperproduk += $ppnperproduk;
+
+
+            $brutoppn = $brutoppntunai + $brutoppnkredit;
+            $totalbrutoppn += $brutoppn;
+            $jmldusppn = $t->jumlah / $t->isipcsdus;
+            if(!empty($jmldusppn)){
+            $ppnperdus = $ppnperproduk / $jmldusppn;
+            }else{
+            $ppnperdus = 0;
+            }
             @endphp
             <tr>
                 <td><b><?php echo $t->kode_produk; ?></b></td>
@@ -268,7 +271,7 @@
                 <td align="center"><?php if ($jmlpcsk != 0) {echo rupiah($jmlpcsk);} else {echo "";} ?></td>
                 <td align="right"><?php if ($subtotalk != 0) {echo rupiah($subtotalk);} else {echo "";} ?></td>
                 <td align="right"><?php if ($ppnperproduktunai != 0) {echo rupiah($ppnperprodukkredit);} else {echo "";} ?></td>
-                <td align="right"><?php if ($brutoppntunai != 0) {echo rupiah($brutoppnkredit);} else {echo "";} ?></td>
+                <td align="right"><?php if ($brutoppnkredit != 0) {echo rupiah($brutoppnkredit);} else {echo "";} ?></td>
                 <td align="center"><?php if ($jmldusall != 0) {echo rupiah($jmldusall);} else {echo "";} ?></td>
                 <td align="center"><?php if ($jmlpackall != 0) {echo rupiah($jmlpackall);} else {echo "";} ?></td>
                 <td align="center"><?php if ($jmlpcsall != 0) {echo rupiah($jmlpcsall);} else {echo "";} ?></td>
