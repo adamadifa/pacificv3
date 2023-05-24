@@ -174,7 +174,7 @@
                                     <div class="btn-group">
 
                                         @php
-                                        $user_approve = [57,23,1];
+                                        $user_approve = [57,23,1,88,52];
                                         @endphp
                                         @if (in_array(Auth::user()->id,$user_approve))
                                         <a href="#" class="approve" no_kasbon="{{ $d->no_kasbon }}"><i class=" feather icon-external-link success"></i></a>
