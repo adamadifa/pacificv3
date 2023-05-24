@@ -331,6 +331,20 @@ class PinjamanController extends Controller
                 'message' => '*' . $nik . "-" . $karyawan->nama_karyawan . '*, dari Departemen ' . $karyawan->nama_dept . ' Mengajukan Pinjaman dengan Nomor Pinjaman *' . $no_pinjaman . '* dan total pinjaman *' . $request->jml_pinjaman . '* Menunggu untuk Segera di proses.'
             ];
 
+            $rani = [
+                'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
+                'sender' => '6289670444321',
+                'number' => '081221403962',
+                'message' => '*' . $nik . "-" . $karyawan->nama_karyawan . '*, dari Departemen ' . $karyawan->nama_dept . ' Mengajukan Pinjaman dengan Nomor Pinjaman *' . $no_pinjaman . '* dan total pinjaman *' . $request->jml_pinjaman . '* Menunggu untuk Segera di proses.'
+            ];
+
+            $siska = [
+                'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
+                'sender' => '6289670444321',
+                'number' => '085942091886',
+                'message' => '*' . $nik . "-" . $karyawan->nama_karyawan . '*, dari Departemen ' . $karyawan->nama_dept . ' Mengajukan Pinjaman dengan Nomor Pinjaman *' . $no_pinjaman . '* dan total pinjaman *' . $request->jml_pinjaman . '* Menunggu untuk Segera di proses.'
+            ];
+
             $ardi = [
                 'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
                 'sender' => '6289670444321',
@@ -351,6 +365,48 @@ class PinjamanController extends Controller
                     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                     CURLOPT_CUSTOMREQUEST => 'POST',
                     CURLOPT_POSTFIELDS => json_encode($data),
+                    CURLOPT_HTTPHEADER => array(
+                        'Content-Type: application/json'
+                    ),
+                ));
+
+                $response = curl_exec($curl);
+
+                curl_close($curl);
+
+                $curl = curl_init();
+
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL => 'https://wa.pedasalami.com/send-message',
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => '',
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => 'POST',
+                    CURLOPT_POSTFIELDS => json_encode($rani),
+                    CURLOPT_HTTPHEADER => array(
+                        'Content-Type: application/json'
+                    ),
+                ));
+
+                $response = curl_exec($curl);
+
+                curl_close($curl);
+
+                $curl = curl_init();
+
+                curl_setopt_array($curl, array(
+                    CURLOPT_URL => 'https://wa.pedasalami.com/send-message',
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => '',
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => 'POST',
+                    CURLOPT_POSTFIELDS => json_encode($siska),
                     CURLOPT_HTTPHEADER => array(
                         'Content-Type: application/json'
                     ),
