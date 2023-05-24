@@ -12,7 +12,7 @@ $total+= $d->jumlah;
     <td>{{ $d->keterangan }}</td>
     <td>{{ $d->name }}</td>
     <td>
-        @if ($loop->first)
+        @if ($loop->last)
         @if (empty($d->kode_potongan))
         <a href="#" no_bukti="{{ $d->no_bukti }}" class="delete-confirm ml-1">
             <i class="feather icon-trash danger"></i>
