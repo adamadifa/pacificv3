@@ -93,17 +93,27 @@
                 <td style="text-align:center">{{ $d->no_ref }}</td>
                 <td style="text-align:center">{{ !empty($d->tgl_penerimaan) ? date("d-m-Y",strtotime($d->tgl_penerimaan)) : '' }}</td>
                 <td>
+                    @if ($level == "manager accounting")
+                    {{ ucwords(strtolower($d->pelanggan)) }}
+                    @else
                     @if (!in_array($d->id_jabatan,$management))
                     {{ ucwords(strtolower($d->pelanggan)) }}
                     @endif
-
+                    @endif
                 </td>
                 <td>
+
+                    @if ($level == "manager accounting")
+                    {{ ucwords(strtoupper($d->keterangan)) }}
+                    @else
                     @if (!in_array($d->id_jabatan,$management))
                     {{ ucwords(strtoupper($d->keterangan)) }}
                     @else
                     PIUTANG KARYAWAN
                     @endif
+                    @endif
+
+
                 </td>
                 <td>
                     @if ($d->peruntukan =="PC")
