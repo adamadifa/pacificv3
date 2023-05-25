@@ -132,6 +132,7 @@ class LaporankeuanganController extends Controller
         $sampai_kode_akun = $request->sampai_kode_akun;
         $dari = $request->dari;
         $sampai = $request->sampai;
+        $management = config('global.show_for_hrd');
         $bank = Bank::where('kode_bank', $kode_bank)->first();
         if ($bank == null) {
             $namabank = "";
@@ -140,9 +141,11 @@ class LaporankeuanganController extends Controller
         }
         if ($jenislaporan == "detail") {
             $query = Ledger::query();
-            $query->select('ledger_bank.*', 'nama_akun', 'nama_bank');
+            $query->select('ledger_bank.*', 'nama_akun', 'nama_bank', 'id_jabatan');
             $query->join('coa', 'ledger_bank.kode_akun', '=', 'coa.kode_akun');
             $query->join('master_bank', 'ledger_bank.bank', '=', 'master_bank.kode_bank');
+            $query->leftJoin('pinjaman', 'ledger_bank.no_ref', '=', 'pinjaman.no_pinjaman');
+            $query->leftJoin('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik');
             $query->orderBy('tgl_ledger');
             $query->orderBy('date_created');
             $query->whereBetween('tgl_ledger', [$request->dari, $request->sampai]);
@@ -195,7 +198,7 @@ class LaporankeuanganController extends Controller
                 // Mendefinisikan nama file ekspor "hasil-export.xls"
                 header("Content-Disposition: attachment; filename=Ledger  Periode $dari-$sampai.xls");
             }
-            return view('ledger.laporan.cetak_ledger', compact('ledger', 'saldoawal', 'bank', 'dari', 'sampai'));
+            return view('ledger.laporan.cetak_ledger', compact('ledger', 'saldoawal', 'bank', 'dari', 'sampai', 'management'));
         } else {
             $query = Ledger::query();
             $query->selectRaw(
