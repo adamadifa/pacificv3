@@ -124,6 +124,40 @@ class KasbonController extends Controller
         if (!in_array($level, $level_show_all)) {
             $query->whereNotIn('master_karyawan.id_jabatan', $show_for_hrd);
         }
+
+        if ($level == "admin pdqc") {
+            $listkaryawan = [
+                '08.12.100',
+                '11.10.090',
+                '13.02.198',
+                '91.01.016',
+                '03.04.045',
+                '08.05.042',
+                '12.09.182',
+                '05.01.055',
+                '13.03.202'
+            ];
+
+            $query->whereIn('kasbon.nik', $listkaryawan);
+        }
+
+        if ($level == "spv pdqc") {
+            $listkaryawan = [
+                '13.03.200',
+                '14.08.220',
+                '13.07.021',
+                '15.05.174',
+                '10.08.128',
+                '13.09.206',
+                '13.09.209',
+                '19.09.303',
+                '21.06.304',
+                '16.01.069',
+                '18.03.305'
+            ];
+
+            $query->whereIn('kasbon.nik', $listkaryawan);
+        }
         $query->orderBy('no_kasbon', 'desc');
         $kasbon = $query->paginate(15);
         $kasbon->appends($request->all());

@@ -175,6 +175,55 @@
                                                     <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukankasbon"><i class="feather icon-external-link warning ml-1"></i></a>
                                                     @endif
 
+
+                                                    @if ($level=="admin pdqc")
+                                                    @php
+                                                    $listkaryawan = [
+                                                    '08.12.100',
+                                                    '11.10.090',
+                                                    '13.02.198',
+                                                    '91.01.016',
+                                                    '03.04.045',
+                                                    '08.05.042',
+                                                    '12.09.182',
+                                                    '05.01.055',
+                                                    '13.03.202'
+                                                    ];
+                                                    @endphp
+
+                                                    @if (in_array($d->nik,$listkaryawan))
+                                                    <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukanpinjaman"><i class="feather icon-external-link primary ml-1"></i></a>
+
+                                                    <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukankasbon"><i class="feather icon-external-link warning ml-1"></i></a>
+                                                    @endif
+
+                                                    @endif
+
+
+                                                    @if ($level=="spv pdqc")
+                                                    @php
+                                                    $listkaryawan = [
+                                                    '13.03.200',
+                                                    '14.08.220',
+                                                    '13.07.021',
+                                                    '15.05.174',
+                                                    '10.08.128',
+                                                    '13.09.206',
+                                                    '13.09.209',
+                                                    '19.09.303',
+                                                    '21.06.304',
+                                                    '16.01.069',
+                                                    '18.03.305'
+                                                    ];
+                                                    @endphp
+
+                                                    @if (in_array($d->nik,$listkaryawan))
+                                                    <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukanpinjaman"><i class="feather icon-external-link primary ml-1"></i></a>
+
+                                                    <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukankasbon"><i class="feather icon-external-link warning ml-1"></i></a>
+                                                    @endif
+
+                                                    @endif
                                                     @if ($level == "kepala admin")
                                                     @if ($d->nama_jabatan!="KEPALA ADMIN")
                                                     <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukanpinjaman"><i class="feather icon-external-link primary ml-1"></i></a>
