@@ -22,7 +22,7 @@ class PenilaiankaryawanController extends Controller
         $dept = $list_dept != null ? "'" . implode("', '", $list_dept) . "'" : '';
         $wilayah = $list_wilayah != null ? "'" . implode("', '", $list_wilayah) . "'" : '';
         $qkaryawan =  Masterkaryawan::query();
-        $qkaryawan->select('nik', 'nama_karyawan', 'nama_jabatan');
+        $qkaryawan->select('nik', 'nama_karyawan', 'nama_jabatan', 'id_kantor');
         $qkaryawan->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
         $qkaryawan->join('hrd_kategori_jabatan', 'hrd_jabatan.id_kategori_jabatan', '=', 'hrd_kategori_jabatan.id');
         if (Auth::user()->kode_cabang != "PCF") {
