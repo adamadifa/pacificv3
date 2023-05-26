@@ -8,7 +8,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/paper-css/0.3.0/paper.css">
     <style>
         @page {
-            size: A4
+            size: 215mm 330mm;
+        }
+
+        body.F4 .sheet {
+            width: 215mm;
+            height: 330mm
         }
 
         body {
@@ -57,7 +62,7 @@
 
     </style>
 </head>
-<body class="A4">
+<body class="F4">
 
     <!-- Each sheet element should have the class "sheet" -->
     <!-- "padding-**mm" is optional: you can set 10, 15, 20 or 25 -->
@@ -142,7 +147,7 @@
                 </tr>
                 @endif
                 <tr>
-                    <td>{{ $no }}</td>
+                    <td>{{ $loop->iteration }}</td>
                     <td>
                         <input type="hidden" name="id_penilaian[]" value="{{ $d->id }}">
                         {{ $d->penilaian }}
@@ -322,7 +327,10 @@
                     @endforeach
                 </td>
                 <td style="height:200px; width:50%; vertical-align:top">
-                    <b>Pemutihan Tahun :</b>
+                    <b>Pemutihan :</b><br>
+                    @foreach ($historipemutihan as $d)
+                    <b>{{ $loop->iteration }} </b> : {{ DateToIndo2($d->tgl_pembayaran) }} <br>
+                    @endforeach
                 </td>
             </tr>
         </table>

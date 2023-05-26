@@ -228,11 +228,34 @@
         </div>
     </div>
 </div>
+<div class="modal fade text-left" id="mdlbuatizin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Buat Izin</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="loadbuatizin">
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @push('myscript')
 <script>
     $(function() {
+        $("#buatizin").click(function(e) {
+            $('#mdlbuatizin').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+            $("#loadbuatizin").load('/pengajuanizin/create');
+        });
+
         $(".approveizin").click(function(e) {
             $("#mdlapprove").modal("show");
             var kode_izin = $(this).attr('kode_izin');

@@ -169,11 +169,20 @@
                                                     </form>
                                                     @endif
                                                     @if (in_array($level,$karyawan_pinjaman))
+
+
+                                                    @if ($level=="manager audit")
+                                                    <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukanpinjaman"><i class="feather icon-external-link primary ml-1"></i></a>
+
+                                                    <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukankasbon"><i class="feather icon-external-link warning ml-1"></i></a>
+                                                    @endif
+
                                                     @if ($level=="admin")
                                                     <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukanpinjaman"><i class="feather icon-external-link primary ml-1"></i></a>
 
                                                     <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukankasbon"><i class="feather icon-external-link warning ml-1"></i></a>
                                                     @endif
+
 
 
                                                     @if ($level=="admin pdqc")

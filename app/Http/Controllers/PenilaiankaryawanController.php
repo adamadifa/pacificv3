@@ -507,10 +507,12 @@ class PenilaiankaryawanController extends Controller
         $histori_kontrak = DB::table('hrd_kontrak')->where('nik', $penilaian->nik)
             ->orderBy('dari')
             ->get();
+
+        $historipemutihan = DB::table('hrd_bayarjmk')->where('nik', $penilaian->nik)->orderBy('tgl_pembayaran')->get();
         if ($kategori == 1) {
-            return view('penilaiankaryawan.cetak', compact('tanggal', 'dari', 'sampai', 'karyawan', 'kategori_penilaian', 'kategori', 'penilaian', 'approve', 'inisial', 'histori_kontrak'));
+            return view('penilaiankaryawan.cetak', compact('tanggal', 'dari', 'sampai', 'karyawan', 'kategori_penilaian', 'kategori', 'penilaian', 'approve', 'inisial', 'histori_kontrak', 'historipemutihan'));
         } else {
-            return view('penilaiankaryawan.cetak_operator', compact('tanggal', 'dari', 'sampai', 'karyawan', 'kategori_penilaian', 'kategori', 'penilaian', 'approve', 'inisial', 'histori_kontrak'));
+            return view('penilaiankaryawan.cetak_operator', compact('tanggal', 'dari', 'sampai', 'karyawan', 'kategori_penilaian', 'kategori', 'penilaian', 'approve', 'inisial', 'histori_kontrak', 'historipemutihan'));
         }
     }
 

@@ -128,6 +128,10 @@ class KaryawanController extends Controller
             $query->where('nama_jabatan', 'REGIONAL SALES MANAGER');
         }
 
+        if ($level == "manager audit") {
+            $query->where('master_karyawan.kode_dept', 'ADT');
+        }
+
         if ($level == "rsm") {
             $list_wilayah = Auth::user()->wilayah != null ? unserialize(Auth::user()->wilayah) : NULL;
             $wilayah = $list_wilayah != null ? "'" . implode("', '", $list_wilayah) . "'" : '';

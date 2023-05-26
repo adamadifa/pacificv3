@@ -158,6 +158,10 @@ class KasbonController extends Controller
 
             $query->whereIn('kasbon.nik', $listkaryawan);
         }
+
+        if ($level == "manager audit") {
+            $query->where('master_karyawan.kode_dept', 'ADT');
+        }
         $query->orderBy('no_kasbon', 'desc');
         $kasbon = $query->paginate(15);
         $kasbon->appends($request->all());
