@@ -22,7 +22,7 @@ class PenilaiankaryawanController extends Controller
         $dept = $list_dept != null ? "'" . implode("', '", $list_dept) . "'" : '';
         $wilayah = $list_wilayah != null ? "'" . implode("', '", $list_wilayah) . "'" : '';
         $qkaryawan =  Masterkaryawan::query();
-        $qkaryawan->select('nik', 'nama_karyawan', 'nama_jabatand', 'master_karyawan.id_kantor');
+        $qkaryawan->select('nik', 'nama_karyawan', 'nama_jabatan', 'master_karyawan.id_kantor');
         $qkaryawan->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
         $qkaryawan->join('hrd_kategori_jabatan', 'hrd_jabatan.id_kategori_jabatan', '=', 'hrd_kategori_jabatan.id');
         if (Auth::user()->kode_cabang != "PCF") {
@@ -184,7 +184,7 @@ class PenilaiankaryawanController extends Controller
         $lastfield = strtolower($inisial[$lastindex]);
 
         $query = Penilaiankaryawan::query();
-        $query->select('hrd_penilaian.kode_penilaian', 'tanggal', 'hrd_penilaian.nik', 'nama_karyawan', 'hrd_penilaian.periode_kontrak', 'hrd_penilaian.kode_dept', 'nama_dept', 'hrd_penilaian.id_jabatan', 'nama_jabatan', 'kp', 'ka', 'rsm', 'm', 'gm', 'hrd', 'dirut', 'status', 'pemutihan', 'no_kb', 'hrd_kontrak.no_kontrak');
+        $query->select('hrd_penilaian.kode_penilaian', 'tanggal', 'hrd_penilaian.nik', 'nama_karyawan', 'id_kantor', 'hrd_penilaian.periode_kontrak', 'hrd_penilaian.kode_dept', 'nama_dept', 'hrd_penilaian.id_jabatan', 'nama_jabatan', 'kp', 'ka', 'rsm', 'm', 'gm', 'hrd', 'dirut', 'status', 'pemutihan', 'no_kb', 'hrd_kontrak.no_kontrak');
         $query->join('master_karyawan', 'hrd_penilaian.nik', '=', 'master_karyawan.nik');
         $query->join('hrd_departemen', 'hrd_penilaian.kode_dept', '=', 'hrd_departemen.kode_dept');
         $query->join('hrd_jabatan', 'hrd_penilaian.id_jabatan', '=', 'hrd_jabatan.id');
