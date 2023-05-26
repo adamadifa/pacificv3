@@ -103,6 +103,7 @@
                                         <th rowspan="2">Tanggal</th>
                                         <th rowspan="2">Nik</th>
                                         <th rowspan="2">Nama Karyawan</th>
+                                        <th rowspan="2">Kantor</th>
                                         <th rowspan="2">Periode</th>
                                         <th rowspan="2">Departemen</th>
                                         <th rowspan="2">Jabatan</th>
@@ -128,7 +129,9 @@
                                         <td>{{ DateToIndo2($d->tanggal) }}</td>
                                         <td>{{ $d->nik }}</td>
                                         <td>{{ $d->nama_karyawan }}</td>
-
+                                        <td>
+                                            {{ $d->id_kantor }}
+                                        </td>
                                         <td>
                                             @php
                                             $periode = explode("/",$d->periode_kontrak);
