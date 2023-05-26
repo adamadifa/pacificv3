@@ -221,24 +221,24 @@
 
             if (jenis_izin == "PL" || jenis_izin == "KL" || jenis_izin == "TL") {
                 $("#jml_hari_frm").hide();
-                $("#dari").val("{{ date('Y-m-d') }}");
-                $("#sampai").val("{{ date('Y-m-d') }}");
-                $("#dari").prop('disabled', true);
-                $("#sampai").prop('disabled', true);
+                $("#frmPengajuanizin").find("#dari").val("{{ date('Y-m-d') }}");
+                $("#frmPengajuanizin").find("#sampai").val("{{ date('Y-m-d') }}");
+                $("#frmPengajuanizin").find("#dari").prop('disabled', true);
+                $("#frmPengajuanizin").find("#sampai").prop('disabled', true);
             } else {
                 $("#jml_hari_frm").show();
-                $("#dari").val("");
-                $("#sampai").val("");
-                $("#dari").prop('disabled', false);
-                $("#sampai").prop('disabled', false);
+                $("#frmPengajuanizin").find("#dari").val("");
+                $("#frmPengajuanizin").find("#sampai").val("");
+                $("#frmPengajuanizin").find("#dari").prop('disabled', false);
+                $("#frmPengajuanizin").find("#sampai").prop('disabled', false);
             }
         });
 
 
 
         function loadjumlahhari() {
-            var dari = $("#dari").val();
-            var sampai = $("#sampai").val();
+            var dari = $("#frmPengajuanizin").find("#dari").val();
+            var sampai = $("#frmPengajuanizin").find("#sampai").val();
             var date1 = new Date(dari);
             var date2 = new Date(sampai);
 
@@ -264,7 +264,7 @@
         //     loadjumlahhari();
         // });
 
-        $("#sampai").change(function(e) {
+        $("#frmPengajuanizin").find("#sampai").change(function(e) {
             // var sampai = $(this).val();
             // var jenis_cuti = $("#jenis_cuti").val();
             // if (jenis_cuti == "C02") {
@@ -281,16 +281,16 @@
 
 
         function gettanggal() {
-            var tanggal = $("#dari").val();
+            var tanggal = $("#frmPengajuanizin").find("#dari").val();
             var someDate = new Date(tanggal);
             var numberOfDaysToAdd = 89;
             var result = someDate.setDate(someDate.getDate() + numberOfDaysToAdd);
             var str = (new Date(result)).toLocaleDateString('en-CA');
-            $("#sampai").val(str);
+            $("#frmPengajuanizin").find("#sampai").val(str);
             console.log(str)
         }
 
-        $("#dari").change(function(e) {
+        $("#frmPengajuanizin").find("#dari").change(function(e) {
             var jenis_cuti = $("#jenis_cuti").val();
             if (jenis_cuti == "C02") {
                 gettanggal();
@@ -304,15 +304,15 @@
                 gettanggal();
                 loadjumlahhari();
             } else {
-                $("#sampai").val("");
+                $("#frmPengajuanizin").find("#sampai").val("");
             }
         });
 
 
         $("#frmPengajuanizin").submit(function() {
             var nik = $("#nik").val();
-            var dari = $("#dari").val();
-            var sampai = $("#sampai").val();
+            var dari = $("#frmPengajuanizin").find("#dari").val();
+            var sampai = $("#frmPengajuanizin").find("#sampai").val();
             var status = $("#status").val();
             var keterangan = $("#keterangan").val();
             var jenis_izin = $("#jenis_izin").val();
@@ -343,7 +343,7 @@
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
-                    $("#dari").focus();
+                    $("#frmPengajuanizin").find("#dari").focus();
                 });
                 return false;
             } else if (sampai == "") {
@@ -353,7 +353,7 @@
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
-                    $("#sampai").focus();
+                    $("#frmPengajuanizin").find("#sampai").focus();
                 });
                 return false;
             } else if (status == "i" && jenis_izin == "") {

@@ -609,7 +609,7 @@ class LaporankeuanganController extends Controller
         $level_show_all = config('global.show_all');
 
         $query = Pinjaman::query();
-        $query->select('pinjaman.*', 'nama_karyawan', 'nama_jabatan', 'nama_dept', 'totalpembayaran');
+        $query->select('pinjaman.*', 'nama_karyawan', 'nama_jabatan', 'nama_dept', 'totalpembayaran', 'id_jabatan');
         $query->join('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik');
         $query->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
         $query->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
@@ -687,7 +687,7 @@ class LaporankeuanganController extends Controller
             // Mendefinisikan nama file ekspor "hasil-export.xls"
             header("Content-Disposition: attachment; filename=Laporan Pinjaman $dari-$sampai.xls");
         }
-        return view('pinjaman.laporan.cetak', compact('pinjaman', 'departemen', 'kantor', 'dari', 'sampai'));
+        return view('pinjaman.laporan.cetak', compact('pinjaman', 'departemen', 'kantor', 'dari', 'sampai', 'show_for_hrd'));
     }
 
 

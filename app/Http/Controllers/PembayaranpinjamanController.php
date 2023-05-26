@@ -394,7 +394,7 @@ class PembayaranpinjamanController extends Controller
 
 
         $query = Pembayaranpinjaman::query();
-        $query->select('pinjaman_historibayar.no_pinjaman', 'pinjaman.nik', 'nama_karyawan', 'jumlah', 'cicilan_ke', 'nama_jabatan', 'nama_dept', 'no_bukti', 'jumlah_pinjaman', 'totalpembayaran', 'angsuran');
+        $query->select('pinjaman_historibayar.no_pinjaman', 'pinjaman.nik', 'nama_karyawan', 'jumlah', 'cicilan_ke', 'master_karyawan.id_jabatan', 'nama_jabatan', 'nama_dept', 'no_bukti', 'jumlah_pinjaman', 'totalpembayaran', 'angsuran');
         $query->join('pinjaman', 'pinjaman_historibayar.no_pinjaman', '=', 'pinjaman.no_pinjaman');
         $query->join('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik');
         $query->leftJoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
@@ -423,6 +423,6 @@ class PembayaranpinjamanController extends Controller
             header("Content-Disposition: attachment; filename=Laporan Pembayaran Pinjaman Bulan $bln $thn.xls");
         }
 
-        return view('pembayaranpinjaman.cetak', compact('historibayar', 'bln', 'thn'));
+        return view('pembayaranpinjaman.cetak', compact('historibayar', 'bln', 'thn', 'show_for_hrd'));
     }
 }

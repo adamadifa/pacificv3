@@ -71,6 +71,7 @@
                 <th>Mulai Cicilan</th>
                 <th>Angsuran</th>
                 <th>Angsuran / Bulan</th>
+                <th>Kategori</th>
             </tr>
         </thead>
 
@@ -105,15 +106,26 @@
                 </td>
                 <td style="color:{{ $d->jumlah_pinjaman - $d->totalpembayaran != 0 ? 'red' : 'green' }}">{!! $d->jumlah_pinjaman - $d->totalpembayaran == 0 ? 'Lunas' : 'Belum Lunas' !!}</td>
                 <td style="color:{{ $d->status==0 ? 'orange' : 'green' }}">
+                    @if ($d->tgl_pinjaman == "2023-05-01")
+                    <span style="color:blue !important">Koperasi</span>
+                    @else
                     @if ($d->status==0)
                     Belum di Proses
                     @else
                     Sudah di Proses
                     @endif
+                    @endif
+
                 </td>
                 <td>{{ DateToIndo2($d->mulai_cicilan) }}</td>
                 <td>{{ $d->angsuran }} bulan</td>
                 <td style="text-align: right">{{ rupiah($d->jumlah_angsuran) }}</td>
+                <td>
+                    @if (in_array($d->id_jabatan,$show_for_hrd))
+                    <span class="info">Management</span>
+                    @endif
+
+                </td>
             </tr>
             @endforeach
             <tr>

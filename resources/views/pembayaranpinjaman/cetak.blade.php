@@ -59,6 +59,7 @@
                 <th>Sisa Tagihan</th>
                 <th>Jumlah Angsuran</th>
                 <th>Cicilan Ke</th>
+                <th>Kategori</th>
             </tr>
         </thead>
         <tbody>
@@ -83,6 +84,12 @@
                 <td style="text-align: right">{{ rupiah($saldoawal- $d->jumlah) }}</td>
                 <td>{{ $d->angsuran }} Bulan</td>
                 <td>{{ $d->cicilan_ke }}</td>
+                <td>
+                    @if (in_array($d->id_jabatan,$show_for_hrd))
+                    <span class="info">Management</span>
+                    @endif
+
+                </td>
             </tr>
             @endforeach
             <tr>
