@@ -276,7 +276,7 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            {{-- {{ $salesman->links('vendor.pagination.vuexy') }} --}}
+                            {{ $penilaian->links('vendor.pagination.vuexy') }}
                         </div>
 
                         <!-- DataTable ends -->
