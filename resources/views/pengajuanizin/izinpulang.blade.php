@@ -51,7 +51,7 @@
                             <div class="tab-pane active">
                                 <div class="row mb-1">
                                     <div class="col-12">
-                                        <form action="/pengajuanizin">
+                                        <form action="/pengajuanizin/izinpulang">
                                             <div class="row">
                                                 <div class="col-lg-6 col-sm-12">
                                                     <x-inputtext label="Dari" field="dari" value="{{ Request('dari') }}" icon="feather icon-calendar" datepicker />

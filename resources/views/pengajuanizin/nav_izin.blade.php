@@ -1,18 +1,49 @@
 <li class="nav-item">
-    <a class="nav-link {{ request()->is('pengajuanizin') ? 'active' : '' }}" href=" /pengajuanizin">Izin Absen</a>
+    <a class="nav-link {{ request()->is('pengajuanizin') ? 'active' : '' }}" href=" /pengajuanizin">Izin Absen
+        @if (!empty($pi->tidakmasuk))
+        <span class="badge bg-danger">{{ $pi->tidakmasuk }}</span>
+        @endif
+    </a>
 </li>
 <li class="nav-item">
-    <a class="nav-link  {{ request()->is('pengajuanizin/izinkeluar') ? 'active' : '' }}" href="/pengajuanizin/izinkeluar">Izin Keluar</a>
+    <a class="nav-link  {{ request()->is('pengajuanizin/izinkeluar') ? 'active' : '' }}" href="/pengajuanizin/izinkeluar">Izin Keluar
+        @if (!empty($pi->keluar))
+        <span class="badge bg-danger">{{ $pi->keluar }}</span>
+        @endif
+    </a>
 </li>
 <li class="nav-item">
-    <a class="nav-link {{ request()->is('pengajuanizin/izinpulang') ? 'active' : '' }}" href="/pengajuanizin/izinpulang">Izin Pulang</a>
+    <a class="nav-link {{ request()->is('pengajuanizin/izinpulang') ? 'active' : '' }}" href="/pengajuanizin/izinpulang">Izin Pulang
+        @if (!empty($pi->pulang))
+        <span class="badge bg-danger">{{ $pi->pulang }}</span>
+        @endif
+    </a>
 </li>
 <li class="nav-item">
-    <a class="nav-link {{ request()->is('pengajuanizin/izinterlambat') ? 'active' : '' }}" href="/pengajuanizin/izinterlambat">Izin Terlambat</a>
+    <a class="nav-link {{ request()->is('pengajuanizin/izinterlambat') ? 'active' : '' }}" href="/pengajuanizin/izinterlambat">
+        @if (!empty($pi->terlambat))
+        <span class="badge bg-danger">{{ $pi->terlambat }}</span>
+        @endif
+        Izin Terlambat</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link {{ request()->is('pengajuanizin/sakit') ? 'active' : '' }}" href="/pengajuanizin/sakit">Sakit</a>
+    <a class="nav-link {{ request()->is('pengajuanizin/sakit') ? 'active' : '' }}" href="/pengajuanizin/sakit">Sakit
+        @if (!empty($pi->sakit))
+        <span class="badge bg-danger">{{ $pi->sakit }}</span>
+        @endif
+    </a>
 </li>
 <li class="nav-item">
-    <a class="nav-link {{ request()->is('pengajuanizin/cuti') ? 'active' : '' }}" href="/pengajuanizin/cuti">Cuti</a>
+    <a class="nav-link {{ request()->is('pengajuanizin/cuti') ? 'active' : '' }}" href="/pengajuanizin/cuti">
+        Cuti
+        @if (!empty($pi->cuti))
+        <span class="badge bg-danger">{{ $pi->cuti }}</span>
+        @endif
+    </a>
+</li>
+
+<li class="nav-item">
+    <a class="nav-link {{ request()->is('pengajuanizin/koreksipresensi') ? 'active' : '' }}" href="/pengajuanizin/cuti">
+        Koreksi Presensi
+    </a>
 </li>

@@ -446,6 +446,20 @@ class PengajuanizinController extends Controller
                     $request->file('sid')->storeAs($folderPath, $sid);
                 }
             }
+
+            if ($status == "c") {
+                return redirect('/pengajuanizin/cuti')->with(['success' => 'Data Berhasil Disimpan']);
+            } elseif ($status == "s") {
+                return redirect('/pengajuanizin/sakit')->with(['success' => 'Data Berhasil Disimpan']);
+            } elseif ($jenis_izin == "TM") {
+                return redirect('/pengajuanizin')->with(['success' => 'Data Berhasil Disimpan']);
+            } elseif ($jenis_izin == "KL") {
+                return redirect('/pengajuanizin/izinkeluar')->with(['success' => 'Data Berhasil Disimpan']);
+            } elseif ($jenis_izin == "PL") {
+                return redirect('/pengajuanizin/izinpulang')->with(['success' => 'Data Berhasil Disimpan']);
+            } elseif ($jenis_izin == "TL") {
+                return redirect('/pengajuanizin/izinterlambat')->with(['success' => 'Data Berhasil Disimpan']);
+            }
             return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
         } catch (\Exception $e) {
             dd($e);

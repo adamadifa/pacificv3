@@ -323,7 +323,7 @@
             <tr>
                 <td style="height:200px; width:50%; vertical-align:top">
                     @foreach ($histori_kontrak as $d)
-                    <b>Kontrak Ke {{ $loop->iteration }} </b> : {{ DateToIndo2($d->dari) }} s/d {{ DateToIndo2($d->sampai) }} <br><br>
+                    <b>Kontrak Ke {{ $loop->iteration }} </b> : {{ DateToIndo2($d->dari) }} s/d {{ DateToIndo2($d->sampai) }} <br>
                     @endforeach
                 </td>
                 <td style="height:200px; width:50%; vertical-align:top">

@@ -126,6 +126,19 @@ class GlobalProvider extends ServiceProvider
                     ->whereNotNull('last_seen')
                     ->orderBy('last_seen', 'DESC')
                     ->paginate(10);
+
+
+                //Pengajuan Izin
+
+                $pi = DB::table('pengajuan_izin')
+                    ->selectRaw("SUM(IF(status='i' AND jenis_izin = 'TM',1,0)) as tidakmasuk,
+                    SUM(IF(status='i' AND jenis_izin = 'TL',1,0)) as terlambat,
+                    SUM(IF(status='i' AND jenis_izin = 'PL',1,0)) as pulang,
+                    SUM(IF(status='i' AND jenis_izin = 'KL',1,0)) as keluar,
+                    SUM(IF(status='c',1,0)) as cuti,
+                    SUM(IF(status='s',1,0)) as sakit")
+                    ->where('status_approved', 0)
+                    ->first();
             } else {
                 $level = "";
                 $getcbg = "";
@@ -138,6 +151,7 @@ class GlobalProvider extends ServiceProvider
                 $ticket_pending_done =  null;
                 $jmlpenilaiankar = null;
                 $users = null;
+                $pi = null;
             }
 
             $cabangpkp = ['TSM', 'BDG', 'PWT', 'BGR'];
@@ -1288,7 +1302,8 @@ class GlobalProvider extends ServiceProvider
                 'map_pelanggan' => $map_pelanggan,
                 'scan' => $scan,
                 'pajak' => $pajak,
-                'cabangpkp' => $cabangpkp
+                'cabangpkp' => $cabangpkp,
+                'pi' => $pi
 
             ];
             View::share($shareddata);
