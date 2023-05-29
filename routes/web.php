@@ -343,6 +343,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/limitkredit/{no_pengajuan}/approve', [LimitkreditController::class, 'approve']);
     Route::get('/limitkredit/{no_pengajuan}/decline', [LimitkreditController::class, 'decline']);
 
+
     //Penjualan
     //Laporan Penjualan
     Route::get('/laporanpenjualan/penjualan', [PenjualanController::class, 'laporanpenjualan']);
@@ -1610,14 +1611,19 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pengajuanizin/sakit', [PengajuanizinController::class, 'index']);
     Route::get('/pengajuanizin/cuti', [PengajuanizinController::class, 'index']);
     Route::get('/pengajuanizin/izinterlambat', [PengajuanizinController::class, 'index']);
+    Route::get('/pengajuanizin/koreksipresensi', [PengajuanizinController::class, 'index']);
     Route::post('/pengajuanizin/approve', [PengajuanizinController::class, 'approve']);
+    Route::post('/pengajuanizin/approvekoreksipresensi', [PengajuanizinController::class, 'approvekoreksipresensi']);
     Route::post('/pengajuanizin/approveizinpulang', [PengajuanizinController::class, 'approveizinpulang']);
     Route::post('/pengajuanizin/approveizinkeluar', [PengajuanizinController::class, 'approveizinkeluar']);
     Route::post('/pengajuanizin/approveizinterlambat', [PengajuanizinController::class, 'approveizinterlambat']);
     Route::get('/pengajuanizin/create', [PengajuanizinController::class, 'create']);
+    Route::get('/pengajuanizin/createkoreksi', [PengajuanizinController::class, 'createkoreksi']);
     Route::post('/pengajuanizin/store', [PengajuanizinController::class, 'store']);
+    Route::post('/pengajuanizin/storekoreksipresensi', [PengajuanizinController::class, 'storekoreksipresensi']);
     Route::delete('/pengajuanizin/{kode_izin}/delete', [PengajuanizinController::class, 'delete']);
     Route::post('/pengajuanizin/updatejammasukkk', [PengajuanizinController::class, 'updatejammasukkk']);
+    Route::post('/pengajuanizin/getpresensihariini', [PengajuanizinController::class, 'getpresensihariini']);
 
     //Jadwal Kerja
     Route::get('/jadwalkerja', [JadwalkerjaController::class, 'index']);

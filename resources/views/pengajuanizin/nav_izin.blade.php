@@ -43,7 +43,7 @@
 </li>
 
 <li class="nav-item">
-    <a class="nav-link {{ request()->is('pengajuanizin/koreksipresensi') ? 'active' : '' }}" href="/pengajuanizin/cuti">
+    <a class="nav-link {{ request()->is('pengajuanizin/koreksipresensi') ? 'active' : '' }}" href="/pengajuanizin/koreksipresensi">
         Koreksi Presensi
     </a>
 </li>

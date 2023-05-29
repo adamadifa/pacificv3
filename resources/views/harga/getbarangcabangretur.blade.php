@@ -41,7 +41,7 @@
 </table>
 </div>
 </div> --}}
-<table class="table table-hover-animation" style="width:100% !important">
+<table class="table table-hover-animation" id="mybarang" style="width:100% !important">
     <thead class="thead-dark">
         <tr>
             <th>Kode Barang</th>
@@ -71,7 +71,17 @@
 </table>
 <script>
     $(function() {
-        $(".pilihbarang").click(function(e) {
+
+
+        $("#mybarang").DataTable({
+            bAutoWidth: false
+            , order: [
+                [1, 'asc']
+            ]
+        , });
+
+
+        $('#mybarang tbody').on('click', '.pilihbarang', function(e) {
             e.preventDefault();
             var kode_barang = $(this).attr("kode_barang");
             var nama_barang = $(this).attr("nama_barang");
@@ -107,6 +117,42 @@
             }
             $("#mdlbarang").modal("hide");
         });
+        // $(".pilihbarang").click(function(e) {
+        //     e.preventDefault();
+        //     var kode_barang = $(this).attr("kode_barang");
+        //     var nama_barang = $(this).attr("nama_barang");
+        //     var harga_dus = $(this).attr("harga_dus");
+        //     var harga_pack = $(this).attr("harga_pack");
+        //     var harga_pcs = $(this).attr("harga_pcs");
+        //     var isipcsdus = $(this).attr("isipcsdus");
+        //     var isipcs = $(this).attr("isipcs");
+        //     var nama_pelanggan = $("#nama_pelanggan").val();
+        //     $("#kode_barang").val(kode_barang);
+        //     $("#nama_barang").val(nama_barang);
+        //     $("#harga_dus").val(harga_dus);
+        //     $("#harga_pack").val(harga_pack);
+        //     $("#harga_pcs").val(harga_pcs);
+
+        //     $("#harga_dus_old").val(harga_dus);
+        //     $("#harga_pack_old").val(harga_pack);
+        //     $("#harga_pcs_old").val(harga_pcs);
+
+        //     $("#isipcsdus").val(isipcsdus);
+        //     $("#isipcs").val(isipcs);
+        //     if (harga_pack == 0) {
+        //         $("#harga_pack").prop("readonly", true);
+        //         $("#jml_pack").prop("readonly", true);
+        //     } else {
+        //         if (nama_pelanggan.includes('KPBN')) {
+        //             $("#harga_pack").prop("readonly", false);
+        //             $("#jml_pack").prop("readonly", false);
+        //         } else {
+        //             $("#harga_pack").prop("readonly", true);
+        //             $("#jml_pack").prop("readonly", false);
+        //         }
+        //     }
+        //     $("#mdlbarang").modal("hide");
+        // });
     });
 
 </script>

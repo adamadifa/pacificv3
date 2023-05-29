@@ -45,6 +45,7 @@ class PresensiController extends Controller
             jadwal_kerja_detail.kode_jadwal,nama_jadwal,kode_jam_kerja
             ) jadwal"),
             function ($join) {
+                $join->on('presensi.kode_jadwal', '=', 'jadwal.kode_jadwal');
                 $join->on('presensi.kode_jam_kerja', '=', 'jadwal.kode_jam_kerja');
             }
         );

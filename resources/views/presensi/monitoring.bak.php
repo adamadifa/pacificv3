@@ -135,11 +135,107 @@
                                     <tbody>
 
                                         @foreach ($karyawan as $d)
-                                        @php
+                                        <?php
                                         $jam_in = date("H:i", strtotime($d->jam_in));
                                         $jam_out = date("H:i", strtotime($d->jam_out));
                                         $status = $d->status_presensi;
-                                        @endphp
+                                        //Menghitung total Jam
+                                        $awal = strtotime($d->jam_in);
+                                        $akhir = strtotime($d->jam_out);
+                                        $diff = $akhir - $awal;
+
+                                        if (empty($d->jam_out)) {
+                                            $jam = 0;
+                                            $menit = 0;
+                                        } else {
+                                            $jam = floor($diff / (60 * 60));
+                                            $m = $diff - ($jam * (60 * 60));
+                                            $menit = floor($m / 60);
+                                        }
+
+                                        if (!empty($d->jam_in)) {
+                                            if ($jam_in > $d->jam_masuk) {
+                                                $jam_masuk = $d->tgl_presensi . " " . $d->jam_masuk;
+                                                $j1 = strtotime($jam_masuk);
+                                                $j2 = strtotime($d->jam_in);
+                                                $diffterlambat = $j2 - $j1;
+                                                $jamterlambat = floor($diffterlambat / (60 * 60));
+                                                $menitterlambat = $diffterlambat - ($jamterlambat * (60 * 60));
+                                                $menitterlambatfix = floor($menitterlambat / 60);
+                                                $jterlambat = $jamterlambat <= 9 ? "0" . $jamterlambat : $jamterlambat;
+                                                $mterlambat = $menitterlambatfix <= 9 ? "0" . $menitterlambatfix : $menitterlambatfix;
+                                                $terlambat = $jterlambat . ":" . $mterlambat;
+                                                $desimalterlambat = ($menitterlambatfix * 100) / 60;
+                                            } else {
+                                                $terlambat = "Tepat waktu";
+                                                $jamterlambat = 0;
+                                                $desimalterlambat = 0;
+                                            }
+                                        } else {
+                                            $terlambat = "";
+                                            $jamterlambat = 0;
+                                            $desimalterlambat = 0;
+                                        }
+
+                                        $day = date('D', strtotime($d->tgl_presensi));
+                                        $dayList = array(
+                                            'Sun' => 'Minggu',
+                                            'Mon' => 'Senin',
+                                            'Tue' => 'Selasa',
+                                            'Wed' => 'Rabu',
+                                            'Thu' => 'Kamis',
+                                            'Fri' => 'Jumat',
+                                            'Sat' => 'Sabtu'
+                                        );
+
+                                        $namahari = $dayList[$day];
+                                        $jamterlambat = $jamterlambat < 0 && !empty($d->kode_izin_terlambat) ? 0 : $jamterlambat;
+
+
+                                        $jt = $jamterlambat . "." . $desimalterlambat;
+                                        if ($namahari != 'Sabtu') {
+                                            $totaljam = 7.00 - $jt;
+                                        } else if ($namahari == "Sabtu") {
+                                            $totaljam = 5.00 - $jt;
+                                        } else {
+                                            $totaljam = $jam . ":" . $menit;
+                                        }
+
+                                        if (!empty($d->jam_out)) {
+                                            if ($jam_out < $d->jam_pulang) {
+                                                $desimalmenit = ($menit * 100) / 60;
+                                                $grandtotaljam = $jam . "." . $menit;
+                                            } else {
+                                                $grandtotaljam = $totaljam;
+                                            }
+                                        } else {
+                                            $grandtotaljam = 0;
+                                        }
+
+                                        if (!empty($d->jam_in) and $d->kode_dept != 'MKT') {
+                                            if ($jam_in > $d->jam_masuk and empty($d->kode_izin_terlambat)) {
+                                                // if ($jamterlambat < 1) {
+                                                //     if($menitterlambatfix >= 5 AND $menitterlambatfix < 10){
+                                                //         $denda = 5000;
+                                                //     }else if($menitterlambatfix >= 10 AND $menitterlambatfix <15){
+                                                //         $denda = 10000;
+                                                //     }else if($menitterlambatfix >= 15 AND $menitterlambatfix <= 59){
+                                                //         $denda = 15000;
+                                                //     }
+                                                // }else{
+                                                //     $denda = 0;
+                                                // }
+
+                                                $denda = 0;
+                                            } else {
+                                                $denda = 0;
+                                            }
+                                        } else {
+                                            $denda = 0;
+                                        }
+
+
+                                        ?>
                                         <tr>
                                             <td class="text-center">{{ $loop->iteration + $karyawan->firstItem()-1 }}</td>
                                             <td>{{ $d->nik }}</td>
@@ -162,6 +258,42 @@
                                                 <span class="badge bg-primary">S</span>
                                                 @endif
                                             </td>
+                                            <td>
+                                                {{ $terlambat }}
+                                            </td>
+                                            <td>{{ !empty($denda)  ? rupiah($denda) : '' }}</td>
+                                            <td></td>
+                                            <td class="text-center">{{ desimal($grandtotaljam) }}</td>
+                                            <td>
+                                                {{ $d->Jenis_izin }}
+                                                @if ($d->status_izin =="i")
+                                                @if ($d->jenis_izin == "PL")
+                                                <span class="badge bg-danger">Izin Pulang</span>
+                                                @elseif($d->jenis_izin=="TL")
+                                                <span class="badge bg-info">Izin Terlambat</span>
+                                                @elseif($d->jenis_izin=="KL")
+                                                <?php
+                                                if (!empty($d->jam_masuk_kk)) {
+                                                    $jk1 = strtotime($d->jam_keluar);
+                                                    $jk2 = strtotime($d->jam_masuk_kk);
+                                                    $difjk = $jk2 - $jk1;
+                                                    $jamkk = floor($difjk / (60 * 60));
+                                                    $menitkk = $difjk - ($jamkk * (60 * 60));
+                                                    $menitkkfix = floor($menitkk / 60);
+                                                    $jkk = $jamkk <= 9 ? "0" . $jamkk : $jamkk;
+                                                    $mkk = $menitkkfix <= 9 ? "0" . $menitkkfix : $menitkkfix;
+                                                    $lamakk = $jkk . ":" . $mkk;
+                                                } else {
+                                                    $lamakk = "";
+                                                }
+
+                                                ?>
+                                                <span class="badge bg-info" data-toggle="popover" data-content="Jam Keluar : {{ $d->jam_keluar }} Jam Masuk : {{ $d->jam_masuk_kk }}" data-trigger="hover" data-original-title="Informasi Keluar Kantor">Izin Keluar {{ $lamakk }}</span>
+                                                @endif
+                                                @endif
+
+                                            </td>
+
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -189,9 +321,9 @@
     }
 
     function jam() {
-        var e = document.getElementById('jam')
-            , d = new Date()
-            , h, m, s;
+        var e = document.getElementById('jam'),
+            d = new Date(),
+            h, m, s;
         h = d.getHours();
         m = set(d.getMinutes());
         s = set(d.getSeconds());
@@ -205,6 +337,5 @@
         e = e < 10 ? '0' + e : e;
         return e;
     }
-
 </script>
 @endpush
