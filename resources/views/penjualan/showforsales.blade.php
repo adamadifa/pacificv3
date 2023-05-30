@@ -65,7 +65,7 @@
                         </div>
                     </div>
                 </div>
-                @if ($data->tgltransaksi != date("Y-m-d"))
+                @if (date("Y-m-d",strtotime($data->date_created)) != date("Y-m-d"))
                 <div class="row mb-1">
                     <div class="col-12">
                         <a href="#" class="btn btn-info btn-block" id="cetakfaktur">
