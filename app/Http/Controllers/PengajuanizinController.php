@@ -700,6 +700,7 @@ class PengajuanizinController extends Controller
                             $datapresensi = [
                                 'nik' => $nik,
                                 'tgl_presensi' => $tgl_presensi,
+                                'status' => 'h',
                                 'jam_in' => $jam_in,
                                 'jam_out' => $jam_out,
                                 'kode_jadwal' => $kode_jadwal,
