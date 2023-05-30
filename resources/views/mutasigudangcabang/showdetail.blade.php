@@ -60,7 +60,7 @@
             <td><?php if (!empty($jmlpcs)) {
                 echo $jmlpcs;
             } ?></td>
-            <td align="right"><?php echo desimal($jumlah); ?></td>
+            <td align="right"><?php echo desimal3($jumlah); ?></td>
             <td><?php echo $d->satuan; ?></td>
         </tr>
         @endforeach

@@ -189,8 +189,8 @@
                                         //Jam terlambat dalam Desimal
 
                                         $jt = $jamterlambat . "." . $desimalterlambat;
-
-
+                                        $jt = !empty($jt) ? $jt : 0;
+                                        // menghitung Denda
                                         if (!empty($d->jam_in) and $d->kode_dept != 'MKT') {
                                             if ($jam_in > $d->jam_masuk and empty($d->kode_izin_terlambat)) {
                                                 if ($jamterlambat < 1) {
@@ -211,8 +211,6 @@
                                             $denda = 0;
                                         }
 
-
-
                                          //Menghitung total Jam
                                         $awal = strtotime($d->jam_in);
                                         $akhir = strtotime($d->jam_out);
@@ -226,31 +224,16 @@
                                             $menit = floor($m / 60);
                                         }
 
-                                        if ($namahari != 'Sabtu') {
-                                            $totaljam = 7.00 - $jt;
-                                        } else if ($namahari == "Sabtu") {
-                                            $totaljam = 5.00 - $jt;
-                                        } else {
-                                            $totaljam = $jam . ":" . $menit;
+                                        // if ($namahari != 'Sabtu') {
+                                        //     $totaljam = 7.00 - $jt;
+                                        // } else if ($namahari == "Sabtu") {
+                                        //     $totaljam = 5.00 - $jt;
+                                        // } else {
+                                        //     $totaljam = $jam . ":" . $menit;
                                         }
 
-                                        if (!empty($d->jam_out)) {
-                                            if ($jam_out < $d->jam_pulang) {
-                                                if($jam_out > "12:30"){
-                                                    $desimalmenit = ($menit * 100) / 60;
-                                                    $grandtotaljam = $jam-1 . "." . $menit;
-                                                }else{
-                                                    $desimalmenit = ($menit * 100) / 60;
-                                                    $grandtotaljam = $jam . "." . $menit;
-                                                }
 
-                                                $grandtotaljam = $grandtotaljam - $jt;
-                                            } else {
-                                                $grandtotaljam = $totaljam;
-                                            }
-                                        } else {
-                                            $grandtotaljam = 0;
-                                        }
+
                                         ?>
                                         <tr>
                                             <td class="text-center">{{ $loop->iteration + $karyawan->firstItem()-1 }}</td>
@@ -279,12 +262,7 @@
                                             </td>
                                             <td>{{ !empty($denda)  ? rupiah($denda) : '' }}</td>
                                             <td></td>
-                                            <td class="text-center">{{ desimal($grandtotaljam) }}</td>
-                                            <td>
-                                                {{ $d->Jenis_izin }}
-
-
-                                            </td>
+                                            <td>{{ $jt }}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>
