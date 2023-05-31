@@ -106,7 +106,7 @@
                     <label for="" class="form-label">Gaji Pokok</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Gaji Pokok" value="{{ rupiah($gaji->gaji_pokok) }}" field="gaji_pokok" icon="feather icon-file" right />
+                    <x-inputtext label="Gaji Pokok" value="{{$gaji != null ? rupiah($gaji->gaji_pokok) : 0 }}" field="gaji_pokok" icon="feather icon-file" right />
                 </div>
             </div>
             <div class="row">
@@ -114,7 +114,7 @@
                     <label for="" class="form-label">Tunjangan Jabatan</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Tunjangan Jabatan" value="{{ rupiah($gaji->t_jabatan) }}" field="t_jabatan" icon="feather icon-file" right />
+                    <x-inputtext label="Tunjangan Jabatan" value="{{ $gaji != null ? rupiah($gaji->t_jabatan) : 0 }}" field="t_jabatan" icon="feather icon-file" right />
                 </div>
             </div>
             <div class="row">
@@ -122,7 +122,7 @@
                     <label for="" class="form-label">Tunjangan Masa Kerja</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Tunjangan Masa Kerja" value="{{ rupiah($gaji->t_masakerja) }}" field="t_masakerja" icon="feather icon-file" right />
+                    <x-inputtext label="Tunjangan Masa Kerja" value="{{ $gaji != null ? rupiah($gaji->t_masakerja) : 0 }}" field="t_masakerja" icon="feather icon-file" right />
                 </div>
             </div>
             <div class="row">
@@ -130,7 +130,7 @@
                     <label for="" class="form-label">T. Tanggung Jawab</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Tunjangan Tanggung Jawab" value="{{ rupiah($gaji->t_tanggungjawab) }}" field="t_tanggungjawab" icon="feather icon-file" right />
+                    <x-inputtext label="Tunjangan Tanggung Jawab" value="{{ $gaji != null ? rupiah($gaji->t_tanggungjawab) : 0 }}" field="t_tanggungjawab" icon="feather icon-file" right />
                 </div>
             </div>
             <div class="row">
@@ -138,7 +138,7 @@
                     <label for="" class="form-label">Tunjangan Makan</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Tunjangan Makan" value="{{ rupiah($gaji->t_makan) }}" field="t_makan" icon="feather icon-file" right />
+                    <x-inputtext label="Tunjangan Makan" value="{{ $gaji != null ? rupiah($gaji->t_makan) : 0 }}" field="t_makan" icon="feather icon-file" right />
                 </div>
             </div>
             <div class="row">
@@ -146,7 +146,7 @@
                     <label for="" class="form-label">Tunjangan Istri</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Tunjangan Istri" value="{{ rupiah($gaji->t_istri) }}" field="t_istri" icon="feather icon-file" right />
+                    <x-inputtext label="Tunjangan Istri" value="{{ $gaji != null ? rupiah($gaji->t_istri) : 0 }}" field="t_istri" icon="feather icon-file" right />
                 </div>
             </div>
             <div class="row">
@@ -154,7 +154,7 @@
                     <label for="" class="form-label">Tunj. Skill Khusus</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Tunjangan Skill Khusus" value="{{ rupiah($gaji->t_skill) }}" field="t_skill" icon="feather icon-file" right />
+                    <x-inputtext label="Tunjangan Skill Khusus" value="{{ $gaji != null ? rupiah($gaji->t_skill) : 0 }}" field="t_skill" icon="feather icon-file" right />
                 </div>
             </div>
             <div class="row">

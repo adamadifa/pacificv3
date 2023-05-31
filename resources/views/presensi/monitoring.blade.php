@@ -159,7 +159,7 @@
 
 
                                                 $terlambat = $jterlambat . ":" . $mterlambat;
-                                                $desimalterlambat = ($menitterlambat * 100) / 60;
+                                                $desimalterlambat = ROUND(($menitterlambat * 100) / 60);
                                             } else {
                                                 $terlambat = "Tepat waktu";
                                                 $jamterlambat = 0;
@@ -224,14 +224,32 @@
                                             $menit = floor($m / 60);
                                         }
 
-                                        // if ($namahari != 'Sabtu') {
-                                        //     $totaljam = 7.00 - $jt;
-                                        // } else if ($namahari == "Sabtu") {
-                                        //     $totaljam = 5.00 - $jt;
-                                        // } else {
-                                        //     $totaljam = $jam . ":" . $menit;
+                                        if ($namahari != 'Sabtu') {
+                                            $totaljam = 7.00 - $jt;
+                                        } else if ($namahari == "Sabtu") {
+                                            $totaljam = 5.00 - $jt;
+                                        } else {
+                                            $totaljam = $jam . ":" . $menit;
                                         }
 
+
+                                        if (!empty($d->jam_out)) {
+                                            if ($jam_out < $d->jam_pulang) {
+                                                if($jam_out > "12:30"){
+                                                    $desimalmenit = ($menit * 100) / 60;
+                                                    $grandtotaljam = $jam-1 . "." . $menit;
+                                                }else{
+                                                    $desimalmenit = ($menit * 100) / 60;
+                                                    $grandtotaljam = $jam . "." . $menit;
+                                                }
+
+                                                $grandtotaljam = $grandtotaljam - $jt;
+                                            } else {
+                                                $grandtotaljam = $totaljam;
+                                            }
+                                        } else {
+                                            $grandtotaljam = 0;
+                                        }
 
 
                                         ?>
@@ -262,7 +280,7 @@
                                             </td>
                                             <td>{{ !empty($denda)  ? rupiah($denda) : '' }}</td>
                                             <td></td>
-                                            <td>{{ $jt }}</td>
+                                            <td>{{ $grandtotaljam }}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>
