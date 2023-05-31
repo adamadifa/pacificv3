@@ -29,7 +29,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-md-12 col-sm-12">
+                <div class="col-lg-2 col-md-12 col-sm-12">
                     <div class="card text-center">
                         <div class="card-content">
                             <div class="card-body">
@@ -39,12 +39,27 @@
                                     </div>
                                 </div>
                                 <h1 class="text-bold-700"><a href="/limitkredit?status=pending">{{ $jmlpengajuan }}</a></h1>
-                                <p class="mb-0 line-ellipsis">Menunggu Persetujuan {{ ucwords(Auth::user()->level) }}<br><br><br></p>
+                                <p class="mb-0 line-ellipsis">Ajuan Limit Kredit {{ ucwords(Auth::user()->level) }}<br><br><br></p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-5 col-md-12 col-sm-12">
+                <div class="col-lg-2 col-md-12 col-sm-12">
+                    <div class="card text-center">
+                        <div class="card-content">
+                            <div class="card-body">
+                                <div class="avatar bg-rgba-info p-50 m-0 mb-1 mt-2">
+                                    <div class="avatar-content">
+                                        <i class="feather icon-file-text text-info font-large-3"></i>
+                                    </div>
+                                </div>
+                                <h1 class="text-bold-700"><a href="/penilaiankaryawan/3/MP/list">{{ $jmlpenilaiankar }}</a></h1>
+                                <p class="mb-0 line-ellipsis">Penilaian Karyawan<br><br><br></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12 col-sm-12">
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">Rekap Penjualan</h4>
