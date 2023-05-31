@@ -248,6 +248,8 @@
                                 $totalupah = $kb->gaji_pokok ;
                             }else{
                                 $$totalupah = $kb->gaji_pokok + $kb->t_tanggungjawab + $kb->t_makan + $kb->t_skill + $kb->t_jabatan;
+                            }else{
+                                $totalupah = $masakerja;
                             }
 
                             ?>
