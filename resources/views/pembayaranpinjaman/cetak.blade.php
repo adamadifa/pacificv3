@@ -44,7 +44,7 @@
         PERIODE PEMBAYARAN GAJI BULAN {{ $bln }} {{ $thn }}
     </b>
     <br>
-    <table class="datatable3" style="width:80%">
+    <table class="datatable3">
         <thead bgcolor="#024a75" style="color:white; font-size:12;">
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
                 <th>No</th>
@@ -55,8 +55,10 @@
                 <th>Jabatan</th>
                 <th>Departemen</th>
                 <th>Saldo Awal</th>
-                <th>Bayar</th>
+                <th>Potong Gaji</th>
+                <th>Pelunasan</th>
                 <th>Sisa Tagihan</th>
+                <th>Keterangan</th>
                 <th>Jumlah Angsuran</th>
                 <th>Cicilan Ke</th>
                 <th>Kategori</th>
@@ -65,11 +67,18 @@
         <tbody>
             @php
             $total = 0;
+            $totalsaldoawal = 0;
+            $totalpelunasannow = 0;
+            $totalsisatagihan = 0;
             @endphp
             @foreach ($historibayar as $d)
             @php
             $total+= $d->jumlah;
-            $saldoawal = $d->jumlah_pinjaman-$d->totalpembayaran;
+            $saldoawal = $d->jumlah_pinjaman-$d->totalpembayaran-$d->totalpelunasanlast;
+            $sisatagihan = $saldoawal- $d->jumlah - $d->totalpelunasannow;
+            $totalsaldoawal += $saldoawal;
+            $totalpelunasannow += $d->totalpelunasannow;
+            $totalsisatagihan += $sisatagihan;
             @endphp
             <tr>
                 <td>{{ $loop->iteration }}</td>
@@ -81,7 +90,15 @@
                 <td>{{ $d->nama_dept }}</td>
                 <td style="text-align: right">{{ rupiah($saldoawal) }}</td>
                 <td style="text-align: right">{{ rupiah($d->jumlah) }}</td>
-                <td style="text-align: right">{{ rupiah($saldoawal- $d->jumlah) }}</td>
+                <td style="text-align: right">{{ !empty($d->totalpelunasannow) ? rupiah($d->totalpelunasannow) : '' }}</td>
+                <td style="text-align: right">{{ rupiah($saldoawal- $d->jumlah - $d->totalpelunasannow) }}</td>
+                <td>
+                    @if ($sisatagihan == 0)
+                    <span style="color:green">Lunas</span>
+                    @else
+                    <span style="color:red">Belum Lunas</span>
+                    @endif
+                </td>
                 <td>{{ $d->angsuran }} Bulan</td>
                 <td>{{ $d->cicilan_ke }}</td>
                 <td>
@@ -94,7 +111,10 @@
             @endforeach
             <tr>
                 <th colspan="7">TOTAL</th>
+                <th style="text-align: right">{{ rupiah($totalsaldoawal) }}</th>
                 <th style="text-align: right">{{ rupiah($total) }}</th>
+                <th style="text-align: right">{{ rupiah($totalpelunasannow) }}</th>
+                <th style="text-align: right">{{ rupiah($totalsisatagihan) }}</th>
             </tr>
         </tbody>
 

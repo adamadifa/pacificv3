@@ -170,6 +170,8 @@ class PinjamanController extends Controller
         if ($level == "manager audit") {
             $query->where('master_karyawan.kode_dept', 'ADT');
         }
+
+
         $query->orderBy('no_pinjaman', 'desc');
         $pinjaman = $query->paginate(15);
         $pinjaman->appends($request->all());

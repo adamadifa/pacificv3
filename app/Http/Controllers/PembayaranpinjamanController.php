@@ -386,7 +386,8 @@ class PembayaranpinjamanController extends Controller
             $bulanpotongan = $potongan->bulan + 1;
             $tahunpotongan = $thn;
         }
-
+        $tglgajidari = $potongan->tahun . "-" . $potongan->bulan . "-01";
+        $tglgajisampai = date("Y-m-t", strtotime($tglgajidari));
         $tglpotongan = $tahunpotongan . "-" . $bulanpotongan . "-01";
         $level = Auth::user()->level;
         $show_for_hrd = config('global.show_for_hrd');
@@ -394,7 +395,7 @@ class PembayaranpinjamanController extends Controller
 
 
         $query = Pembayaranpinjaman::query();
-        $query->select('pinjaman_historibayar.no_pinjaman', 'pinjaman.nik', 'nama_karyawan', 'jumlah', 'cicilan_ke', 'master_karyawan.id_jabatan', 'nama_jabatan', 'nama_dept', 'no_bukti', 'jumlah_pinjaman', 'totalpembayaran', 'angsuran');
+        $query->select('pinjaman_historibayar.no_pinjaman', 'pinjaman.nik', 'nama_karyawan', 'jumlah', 'cicilan_ke', 'master_karyawan.id_jabatan', 'nama_jabatan', 'nama_dept', 'no_bukti', 'jumlah_pinjaman', 'totalpembayaran', 'angsuran', 'totalpelunasannow', 'totalpelunasanlast');
         $query->join('pinjaman', 'pinjaman_historibayar.no_pinjaman', '=', 'pinjaman.no_pinjaman');
         $query->join('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik');
         $query->leftJoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
@@ -402,11 +403,33 @@ class PembayaranpinjamanController extends Controller
         $query->leftJoin(
             DB::raw("(
             SELECT no_pinjaman,SUM(jumlah) as totalpembayaran FROM pinjaman_historibayar
-            WHERE tgl_bayar < '$tglpotongan'
+            WHERE tgl_bayar < '$tglpotongan' AND kode_potongan IS NOT NULL
             GROUP BY no_pinjaman
         ) hb"),
             function ($join) {
                 $join->on('pinjaman.no_pinjaman', '=', 'hb.no_pinjaman');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+            SELECT no_pinjaman,SUM(jumlah) as totalpelunasannow FROM pinjaman_historibayar
+            WHERE tgl_bayar BETWEEN '$tglgajidari' AND '$tglgajisampai' AND kode_potongan IS NULL
+            GROUP BY no_pinjaman
+        ) hbplnow"),
+            function ($join) {
+                $join->on('pinjaman.no_pinjaman', '=', 'hbplnow.no_pinjaman');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+            SELECT no_pinjaman,SUM(jumlah) as totalpelunasanlast FROM pinjaman_historibayar
+            WHERE tgl_bayar < '$tglgajidari' AND kode_potongan IS NULL
+            GROUP BY no_pinjaman
+        ) hbpllast"),
+            function ($join) {
+                $join->on('pinjaman.no_pinjaman', '=', 'hbpllast.no_pinjaman');
             }
         );
         $query->where('kode_potongan', $kode_potongan);
