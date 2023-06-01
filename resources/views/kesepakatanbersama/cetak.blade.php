@@ -182,7 +182,7 @@
                 <th>Rincian Upah</th>
                 <th>
                     Perhitungan Besaran Uang Masa Kerja <br>
-                    Masa Kerja :
+                    Masa Kerja : Dihitung dari Awal Kontrak Terakhir Pemutihan
                 </th>
             </tr>
             <tr>
