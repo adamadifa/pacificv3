@@ -750,10 +750,23 @@ class LaporankeuanganController extends Controller
 
     public function cetak_kartupinjaman(Request $request)
     {
+
+        $namabulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         $id_kantor = $request->id_kantor;
         $kode_dept = $request->kode_dept;
-        $dari = $request->dari;
-        $sampai = $request->sampai;
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        if ($bulan == 12) {
+            $bulanpotongan = 1;
+            $tahunpotongan = $tahun + 1;
+        } else {
+            $bulanpotongan = $bulan + 1;
+            $tahunpotongan = $tahun;
+        }
+
+        $tglgajidari = $tahun . "-" . $bulan . "-01";
+        $tglgajisampai = date("Y-m-t", strtotime($tglgajidari));
+        $tglpotongan = $tahunpotongan . "-" . $bulanpotongan . "-01";
         $level = Auth::user()->level;
         $cabang = Auth::user()->kode_cabang;
         $show_for_hrd = config('global.show_for_hrd');
@@ -762,38 +775,60 @@ class LaporankeuanganController extends Controller
 
         $query = Pinjaman::query();
         $query->selectRaw("pinjaman.nik, nama_karyawan,
-        SUM(IF(tgl_pinjaman < '$dari',jumlah_pinjaman,0)) as jumlah_lastpinjaman,
-        SUM(IFNULL(jumlah_lastpembayaran,0)) as jumlah_lastpembayaran,
-        SUM(IF(tgl_pinjaman BETWEEN '$dari' AND '$sampai',jumlah_pinjaman,0)) as jumlah_pinjamannow,
-        jumlah_pembayarannow
+        SUM(IF(tgl_pinjaman < '$tglgajidari',jumlah_pinjaman,0)) as jumlah_pinjamanlast,
+        SUM(totalpembayaranlast) as total_pembayaranlast,
+        SUM(totalpelunasanlast) as total_pelunasanlast,
+        SUM(IF(tgl_pinjaman BETWEEN '$tglgajidari' AND '$tglgajisampai',jumlah_pinjaman,0)) as jumlah_pinjamannow,
+        SUM(totalpembayarannow) as total_pembayarannow,
+        SUM(totalpelunasannow) as total_pelunasannow
         ");
         $query->join('master_karyawan', 'pinjaman.nik', '=', 'master_karyawan.nik');
         $query->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
         $query->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
         $query->leftJoin(
             DB::raw("(
-            SELECT nik,SUM(jumlah) as jumlah_lastpembayaran FROM pinjaman_historibayar
-            INNER JOIN pinjaman ON pinjaman_historibayar.no_pinjaman = pinjaman.no_pinjaman
-            WHERE tgl_bayar < '$dari'
-            GROUP BY nik
+            SELECT no_pinjaman,SUM(jumlah) as totalpembayaranlast FROM pinjaman_historibayar
+            WHERE tgl_bayar < '$tglpotongan' AND kode_potongan IS NOT NULL
+            GROUP BY no_pinjaman
         ) hb"),
             function ($join) {
-                $join->on('pinjaman.nik', '=', 'hb.nik');
+                $join->on('pinjaman.no_pinjaman', '=', 'hb.no_pinjaman');
             }
         );
 
         $query->leftJoin(
             DB::raw("(
-            SELECT nik,SUM(jumlah) as jumlah_pembayarannow FROM pinjaman_historibayar
-            INNER JOIN pinjaman ON pinjaman_historibayar.no_pinjaman = pinjaman.no_pinjaman
-
-            GROUP BY nik
-        ) hbnow"),
+            SELECT no_pinjaman,SUM(jumlah) as totalpelunasanlast FROM pinjaman_historibayar
+            WHERE tgl_bayar < '$tglgajidari' AND kode_potongan IS NULL
+            GROUP BY no_pinjaman
+        ) hbpllast"),
             function ($join) {
-                $join->on('pinjaman.nik', '=', 'hbnow.nik');
+                $join->on('pinjaman.no_pinjaman', '=', 'hbpllast.no_pinjaman');
             }
         );
-        $query->where('tgl_pinjaman', '<=', $sampai);
+
+        $query->leftJoin(
+            DB::raw("(
+            SELECT no_pinjaman,SUM(jumlah) as totalpelunasannow FROM pinjaman_historibayar
+            WHERE tgl_bayar BETWEEN '$tglgajidari' AND '$tglgajisampai' AND kode_potongan IS NULL
+            GROUP BY no_pinjaman
+        ) hbplnow"),
+            function ($join) {
+                $join->on('pinjaman.no_pinjaman', '=', 'hbplnow.no_pinjaman');
+            }
+        );
+        $query->leftJoin(
+            DB::raw("(
+            SELECT no_pinjaman,SUM(jumlah) as totalpembayarannow FROM pinjaman_historibayar
+            WHERE tgl_bayar = '$tglpotongan' AND kode_potongan IS NOT NULL
+            GROUP BY no_pinjaman
+        ) hbnow"),
+            function ($join) {
+                $join->on('pinjaman.no_pinjaman', '=', 'hbnow.no_pinjaman');
+            }
+        );
+        $query->where('tgl_pinjaman', '<=', $tglgajisampai);
+
         if (!empty($request->id_kantor)) {
             $query->where('master_karyawan.id_kantor', $request->id_kantor);
         }
@@ -904,7 +939,7 @@ class LaporankeuanganController extends Controller
             $query->where('master_karyawan.kode_dept', 'ADT');
         }
 
-        $query->groupByRaw('pinjaman.nik,nama_karyawan,jumlah_pembayarannow');
+        $query->groupByRaw('pinjaman.nik,nama_karyawan');
         $query->orderBy('pinjaman.no_pinjaman');
         $pinjaman = $query->get();
 
@@ -916,8 +951,216 @@ class LaporankeuanganController extends Controller
             // Mendefinisikan nama file ekspor "hasil-export.xls"
             header("Content-Disposition: attachment; filename=Laporan Kartu Pinjaman.xls");
         }
-        return view('pinjaman.laporan.cetak_kartupinjaman', compact('pinjaman', 'departemen', 'kantor', 'dari', 'sampai', 'show_for_hrd'));
+        return view('pinjaman.laporan.cetak_kartupinjaman', compact('pinjaman', 'departemen', 'kantor', 'show_for_hrd', 'namabulan', 'bulan', 'tahun'));
     }
+
+    public function cetak_kartukasbon(Request $request)
+    {
+
+        $namabulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        $id_kantor = $request->id_kantor;
+        $kode_dept = $request->kode_dept;
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        if ($bulan == 12) {
+            $bulanpotongan = 1;
+            $tahunpotongan = $tahun + 1;
+        } else {
+            $bulanpotongan = $bulan + 1;
+            $tahunpotongan = $tahun;
+        }
+
+        $tglgajidari = $tahun . "-" . $bulan . "-01";
+        $tglgajisampai = date("Y-m-t", strtotime($tglgajidari));
+        $tglpotongan = $tahunpotongan . "-" . $bulanpotongan . "-01";
+        $level = Auth::user()->level;
+        $cabang = Auth::user()->kode_cabang;
+        $show_for_hrd = config('global.show_for_hrd');
+        $show_for_hrd_2 = config('global.show_for_hrd_2');
+        $level_show_all = config('global.show_all');
+
+        $query = Kasbon::query();
+        $query->selectRaw("kasbon.nik, nama_karyawan,
+        SUM(IF(tgl_kasbon < '$tglgajidari',jumlah_kasbon,0)) as jumlah_kasbonlast,
+        SUM(totalpembayaranlast) as total_pembayaranlast,
+        SUM(totalpelunasanlast) as total_pelunasanlast,
+        SUM(IF(tgl_kasbon BETWEEN '$tglgajidari' AND '$tglgajisampai',jumlah_kasbon,0)) as jumlah_kasbonnow,
+        SUM(totalpembayarannow) as total_pembayarannow,
+        SUM(totalpelunasannow) as total_pelunasannow
+        ");
+        $query->join('master_karyawan', 'kasbon.nik', '=', 'master_karyawan.nik');
+        $query->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
+        $query->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
+        $query->leftJoin(
+            DB::raw("(
+            SELECT no_kasbon,SUM(jumlah) as totalpembayaranlast FROM kasbon_historibayar
+            WHERE tgl_bayar < '$tglpotongan' AND kode_potongan IS NOT NULL
+            GROUP BY no_kasbon
+        ) hb"),
+            function ($join) {
+                $join->on('kasbon.no_kasbon', '=', 'hb.no_kasbon');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+            SELECT no_kasbon,SUM(jumlah) as totalpelunasanlast FROM kasbon_historibayar
+            WHERE tgl_bayar < '$tglgajidari' AND kode_potongan IS NULL
+            GROUP BY no_kasbon
+        ) hbpllast"),
+            function ($join) {
+                $join->on('kasbon.no_kasbon', '=', 'hbpllast.no_kasbon');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+            SELECT no_kasbon,SUM(jumlah) as totalpelunasannow FROM kasbon_historibayar
+            WHERE tgl_bayar BETWEEN '$tglgajidari' AND '$tglgajisampai' AND kode_potongan IS NULL
+            GROUP BY no_kasbon
+        ) hbplnow"),
+            function ($join) {
+                $join->on('kasbon.no_kasbon', '=', 'hbplnow.no_kasbon');
+            }
+        );
+        $query->leftJoin(
+            DB::raw("(
+            SELECT no_kasbon,SUM(jumlah) as totalpembayarannow FROM kasbon_historibayar
+            WHERE tgl_bayar = '$tglpotongan' AND kode_potongan IS NOT NULL
+            GROUP BY no_kasbon
+        ) hbnow"),
+            function ($join) {
+                $join->on('kasbon.no_kasbon', '=', 'hbnow.no_kasbon');
+            }
+        );
+        $query->where('tgl_kasbon', '<=', $tglgajisampai);
+
+        if (!empty($request->id_kantor)) {
+            $query->where('master_karyawan.id_kantor', $request->id_kantor);
+        }
+
+        if (!empty($request->kode_dept)) {
+            $query->where('master_karyawan.kode_dept', $request->kode_dept);
+        }
+
+        if ($level == "kepala admin") {
+            $query->where('master_karyawan.id_kantor', $cabang);
+            $query->where('master_karyawan.id_perusahaan', "MP");
+            $query->where('nama_jabatan', '!=', 'KEPALA ADMIN');
+        }
+
+        if ($level == "kepala penjualan") {
+            if (Auth::user()->id == "27") {
+                $query->whereIn('master_karyawan.id_kantor', [$cabang, 'PWK']);
+            } else {
+                $query->where('master_karyawan.id_kantor', $cabang);
+            }
+            $query->where('nama_jabatan', '!=', 'KEPALA PENJUALAN');
+            $query->where('master_karyawan.id_perusahaan', "PCF");
+        }
+
+        if ($level == "manager pembelian") {
+            $query->where('master_karyawan.kode_dept', 'PMB');
+        }
+
+        if ($level == "kepala gudang") {
+            $query->where('master_karyawan.kode_dept', 'GDG');
+            $query->whereNotIN('nama_jabatan', ['MANAGER', 'ASST. MANAGER']);
+        }
+
+        if ($level == "spv produksi") {
+            $query->where('master_karyawan.kode_dept', 'PRD');
+            $query->whereNotIN('nama_jabatan', ['MANAGER', 'SUPERVISOR']);
+        }
+
+        if ($level == "manager produksi") {
+            $query->whereIn('master_karyawan.kode_dept', ['PRD', 'MTC']);
+            $query->where('nama_jabatan', '!=', 'MANAGER');
+        }
+
+        if ($level == "manager ga") {
+            $query->where('master_karyawan.kode_dept', 'GAF');
+        }
+
+        if ($level == "emf") {
+            $query->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GAF', 'GDG', 'HRD', 'PDQ']);
+        }
+
+
+        if ($level == "manager marketing") {
+            $query->where('master_karyawan.kode_dept', 'MKT');
+            $query->where('nama_jabatan', 'REGIONAL SALES MANAGER');
+        }
+
+        if ($level == "rsm") {
+            $list_wilayah = Auth::user()->wilayah != null ? unserialize(Auth::user()->wilayah) : NULL;
+            $wilayah = $list_wilayah != null ? "'" . implode("', '", $list_wilayah) . "'" : '';
+            $query->whereIn('master_karyawan.id_kantor', $list_wilayah);
+            $query->where('master_karyawan.kode_dept', 'MKT');
+            $query->where('nama_jabatan', 'KEPALA PENJUALAN');
+            $query->where('id_perusahaan', 'PCF');
+        }
+
+        if (!in_array($level, $level_show_all)) {
+            $query->whereNotIn('id_jabatan', $show_for_hrd);
+        }
+
+
+        if ($level == "admin pdqc") {
+            $listkaryawan = [
+                '08.12.100',
+                '11.10.090',
+                '13.02.198',
+                '91.01.016',
+                '03.04.045',
+                '08.05.042',
+                '12.09.182',
+                '05.01.055',
+                '13.03.202'
+            ];
+
+            $query->whereIn('pinjaman.nik', $listkaryawan);
+        }
+
+
+        if ($level == "spv pdqc") {
+            $listkaryawan = [
+                '13.03.200',
+                '14.08.220',
+                '13.07.021',
+                '15.05.174',
+                '10.08.128',
+                '13.09.206',
+                '13.09.209',
+                '19.09.303',
+                '21.06.304',
+                '16.01.069',
+                '18.03.305'
+            ];
+
+            $query->whereIn('kasbon.nik', $listkaryawan);
+        }
+
+        if ($level == "manager audit") {
+            $query->where('master_karyawan.kode_dept', 'ADT');
+        }
+
+        $query->groupByRaw('kasbon.nik,nama_karyawan');
+        $query->orderBy('kasbon.no_kasbon');
+        $kasbon = $query->get();
+
+        $departemen = DB::table('hrd_departemen')->where('kode_dept', $kode_dept)->first();
+        $kantor = DB::table('cabang')->where('kode_cabang', $id_kantor)->first();
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Kartu Pinjaman.xls");
+        }
+        return view('kasbon.laporan.cetak_kartukasbon', compact('kasbon', 'departemen', 'kantor', 'show_for_hrd', 'namabulan', 'bulan', 'tahun'));
+    }
+
+
 
 
     public function kasbon()
@@ -934,7 +1177,18 @@ class LaporankeuanganController extends Controller
         $cbg = new Cabang();
         $cabang = $cbg->getCabang($this->cabang);
         $departemen = DB::table('hrd_departemen')->get();
-        return view('pinjaman.laporan.frm.lap_kartupinjaman', compact('cabang', 'departemen'));
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        return view('pinjaman.laporan.frm.lap_kartupinjaman', compact('cabang', 'departemen', 'bulan'));
+    }
+
+
+    public function kartukasbon()
+    {
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
+        $departemen = DB::table('hrd_departemen')->get();
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        return view('kasbon.laporan.frm.lap_kartukasbon', compact('cabang', 'departemen', 'bulan'));
     }
 
 

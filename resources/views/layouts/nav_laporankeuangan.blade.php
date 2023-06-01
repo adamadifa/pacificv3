@@ -82,6 +82,13 @@
                 </li>
             </a>
             @endif
+            @if (in_array($level,$lap_kasbon))
+            <a href="/laporankeuangan/kartukasbon" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporankeuangan/kartukasbon']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Kartu Kasbon
+                </li>
+            </a>
+            @endif
         </ul>
     </div>
 </div>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak Pinjaman {{ date("d-m-y") }}</title>
+    <title>Cetak kasbon {{ date("d-m-y") }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -49,7 +49,7 @@
         <br>
         @endif
 
-        LAPORAN PINJAMAN<br>
+        LAPORAN kasbon<br>
         BULAN {{ strtoupper($namabulan[$bulan]) }} TAHUN {{ $tahun }}
     </b>
     <br>
@@ -65,7 +65,7 @@
                 <th rowspan="2">SALDO AKHIR</th>
             </tr>
             <tr>
-                <th>PINJAMAN</th>
+                <th>kasbon</th>
                 <th>LAIN LAIN</th>
                 <th>CICILAN</th>
                 <th>LAIN LAIN</th>
@@ -81,26 +81,26 @@
             $totalsaldoakhir = 0;
             @endphp
 
-            @foreach ($pinjaman as $d)
+            @foreach ($kasbon as $d)
             @php
-            $jumlah_pinjamanlast = $d->jumlah_pinjamanlast;
+            $jumlah_kasbonlast = $d->jumlah_kasbonlast;
             $jumlah_pelunasanlast = $d->total_pelunasanlast;
             $jumlah_pembayaranlast = $d->total_pembayaranlast;
 
-            $jumlah_pinjamannow = $d->jumlah_pinjamannow;
+            $jumlah_kasbonnow = $d->jumlah_kasbonnow;
             $jumlah_pembayarannow = $d->total_pembayarannow;
             $jumlah_pelunasannow = $d->total_pelunasannow;
 
-            $saldoawal = $jumlah_pinjamanlast - $jumlah_pembayaranlast - $jumlah_pelunasanlast ;
+            $saldoawal = $jumlah_kasbonlast - $jumlah_pembayaranlast - $jumlah_pelunasanlast ;
 
 
             $totalpembayarannow = $jumlah_pembayarannow + $jumlah_pelunasannow;
-            $saldoakhir = $saldoawal + $jumlah_pinjamannow - $totalpembayarannow ;
+            $saldoakhir = $saldoawal + $jumlah_kasbonnow - $totalpembayarannow ;
 
             $totalsaldoawal += $saldoawal;
             $totalsaldoakhir += $saldoakhir;
             $totalpembayaran += $totalpembayarannow;
-            $totalpenambahan += $jumlah_pinjamannow;
+            $totalpenambahan += $jumlah_kasbonnow;
 
             @endphp
             <tr>
@@ -108,7 +108,7 @@
                 <td>{{ $d->nik }}</td>
                 <td>{{ $d->nama_karyawan }}</td>
                 <td style="text-align: right">{{ !empty($saldoawal) ?  rupiah($saldoawal) : '' }}</td>
-                <td style="text-align: right">{{ !empty($jumlah_pinjamannow) ?  rupiah($jumlah_pinjamannow) : '' }}</td>
+                <td style="text-align: right">{{ !empty($jumlah_kasbonnow) ?  rupiah($jumlah_kasbonnow) : '' }}</td>
                 <td></td>
                 <td style="text-align: right">{{ !empty($totalpembayarannow) ?  rupiah($totalpembayarannow) : '' }}</td>
                 <td></td>
