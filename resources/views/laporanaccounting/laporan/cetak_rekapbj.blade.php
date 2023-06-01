@@ -200,7 +200,7 @@
                 $qtygrt = ($d->sa_grt + $d->mutasi_grt) / $d->isipcsdus;
                 $qtypwk = ($d->sa_pwk + $d->mutasi_pwk) / $d->isipcsdus;
                 $qtybtn = ($d->sa_btn + $d->mutasi_btn) / $d->isipcsdus;
-                $qtybki = ($d->mutasi_bki) / $d->isipcsdus;
+                $qtybki = ($d->sa_bki + $d->mutasi_bki) / $d->isipcsdus;
                 $harga = ROUND($d->harga_hpp);
 
                 $jmltsm = ROUND(ROUND($qtytsm, 2) * ROUND($d->harga_tsm));
