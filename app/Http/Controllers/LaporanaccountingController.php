@@ -133,7 +133,7 @@ class LaporanaccountingController extends Controller
 			(SUM(IF(mgc.kode_cabang='PST' AND inout_good = 'IN',jumlah,0)) - SUM(IF(mgc.kode_cabang='PST' AND inout_good = 'OUT',jumlah,0))) as mutasi_pst,
             (SUM(IF(mgc.kode_cabang='PWK' AND inout_good = 'IN',jumlah,0)) - SUM(IF(mgc.kode_cabang='PWK' AND inout_good = 'OUT',jumlah,0))) as mutasi_pwk,
             (SUM(IF(mgc.kode_cabang='BTN' AND inout_good = 'IN',jumlah,0)) - SUM(IF(mgc.kode_cabang='BTN' AND inout_good = 'OUT',jumlah,0))) as mutasi_btn,
-            (SUM(IF(mgc.kode_cabang='BKI' AND inout_good = 'IN',jumlah,0)) - SUM(IF(mgc.kode_cabang='BTN' AND inout_good = 'OUT',jumlah,0))) as mutasi_bki
+            (SUM(IF(mgc.kode_cabang='BKI' AND inout_good = 'IN',jumlah,0)) - SUM(IF(mgc.kode_cabang='BKI' AND inout_good = 'OUT',jumlah,0))) as mutasi_bki
 			FROM detail_mutasi_gudang_cabang dm
 			INNER JOIN mutasi_gudang_cabang mgc ON dm.no_mutasi_gudang_cabang = mgc.no_mutasi_gudang_cabang
 			WHERE tgl_mutasi_gudang_cabang BETWEEN '$tgl1' AND '$tgl2'
