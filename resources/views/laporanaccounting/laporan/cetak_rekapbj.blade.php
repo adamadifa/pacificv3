@@ -200,7 +200,7 @@
                 $qtygrt = ($d->sa_grt + $d->mutasi_grt) / $d->isipcsdus;
                 $qtypwk = ($d->sa_pwk + $d->mutasi_pwk) / $d->isipcsdus;
                 $qtybtn = ($d->sa_btn + $d->mutasi_btn) / $d->isipcsdus;
-                $qtybki = ($d->sa_bki + $d->mutasi_bki) / $d->isipcsdus;
+                $qtybki = ($d->mutasi_bki) / $d->isipcsdus;
                 $harga = ROUND($d->harga_hpp);
 
                 $jmltsm = ROUND(ROUND($qtytsm, 2) * ROUND($d->harga_tsm));
@@ -389,7 +389,7 @@
                         <td align="right"><?php if (!empty($jmlbtn)) {echo number_format($jmlbtn, '0', ',', '.');} ?></td>
 
 
-                        <td align="right"><?php echo number_format($d->sa_bki, '2', ',', '.'); ?></td>
+                        <td align="right"><?php echo number_format($qtybki, '2', ',', '.'); ?></td>
                         <td align="right"><?php if (!empty($d->harga_bki)) {echo number_format($d->harga_bki, '0', ',', '.');} ?>
                         </td>
                         <td align="right"><?php if (!empty($jmlbki)) {echo number_format($jmlbki, '0', ',', '.');} ?></td>
