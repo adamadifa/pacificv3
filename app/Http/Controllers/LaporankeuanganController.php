@@ -1288,7 +1288,7 @@ class LaporankeuanganController extends Controller
         }
 
         if (!in_array($level, $level_show_all)) {
-            $query->whereNotIn('id_jabatan', $show_for_hrd);
+            $query->whereNotIn('master_karyawan.id_jabatan', $show_for_hrd);
         }
 
 
