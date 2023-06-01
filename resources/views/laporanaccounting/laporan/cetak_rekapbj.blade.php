@@ -389,7 +389,7 @@
                         <td align="right"><?php if (!empty($jmlbtn)) {echo number_format($jmlbtn, '0', ',', '.');} ?></td>
 
 
-                        <td align="right"><?php echo number_format($qtybki, '2', ',', '.'); ?></td>
+                        <td align="right"><?php echo number_format($d->sa_bki, '2', ',', '.'); ?></td>
                         <td align="right"><?php if (!empty($d->harga_bki)) {echo number_format($d->harga_bki, '0', ',', '.');} ?>
                         </td>
                         <td align="right"><?php if (!empty($jmlbki)) {echo number_format($jmlbki, '0', ',', '.');} ?></td>
