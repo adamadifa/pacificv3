@@ -1102,7 +1102,7 @@ class LaporankeuanganController extends Controller
         }
 
         if (!in_array($level, $level_show_all)) {
-            $query->whereNotIn('id_jabatan', $show_for_hrd);
+            $query->whereNotIn('master_karyawan.id_jabatan', $show_for_hrd);
         }
 
 
@@ -1230,13 +1230,19 @@ class LaporankeuanganController extends Controller
         }
 
         if ($level == "kepala admin") {
-            $query->where('id_kantor', $cabang);
-            $query->where('id_perusahaan', "MP");
+            $query->where('master_karyawan.id_kantor', $cabang);
+            $query->where('master_karyawan.id_perusahaan', "MP");
+            $query->where('nama_jabatan', '!=', 'KEPALA ADMIN');
         }
 
         if ($level == "kepala penjualan") {
-            $query->where('id_kantor', $cabang);
-            $query->where('id_perusahaan', "PCF");
+            if (Auth::user()->id == "27") {
+                $query->whereIn('master_karyawan.id_kantor', [$cabang, 'PWK']);
+            } else {
+                $query->where('master_karyawan.id_kantor', $cabang);
+            }
+            $query->where('nama_jabatan', '!=', 'KEPALA PENJUALAN');
+            $query->where('master_karyawan.id_perusahaan', "PCF");
         }
 
         if ($level == "manager pembelian") {
@@ -1245,10 +1251,17 @@ class LaporankeuanganController extends Controller
 
         if ($level == "kepala gudang") {
             $query->where('master_karyawan.kode_dept', 'GDG');
+            $query->whereNotIN('nama_jabatan', ['MANAGER', 'ASST. MANAGER']);
+        }
+
+        if ($level == "spv produksi") {
+            $query->where('master_karyawan.kode_dept', 'PRD');
+            $query->whereNotIN('nama_jabatan', ['MANAGER', 'SUPERVISOR']);
         }
 
         if ($level == "manager produksi") {
-            $query->where('master_karyawan.kode_dept', 'PRD');
+            $query->whereIn('master_karyawan.kode_dept', ['PRD', 'MTC']);
+            $query->where('nama_jabatan', '!=', 'MANAGER');
         }
 
         if ($level == "manager ga") {
@@ -1256,22 +1269,66 @@ class LaporankeuanganController extends Controller
         }
 
         if ($level == "emf") {
-            $query->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GAF', 'GDG', 'PDQ']);
+            $query->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GAF', 'GDG', 'HRD', 'PDQ']);
         }
 
 
         if ($level == "manager marketing") {
             $query->where('master_karyawan.kode_dept', 'MKT');
+            $query->where('nama_jabatan', 'REGIONAL SALES MANAGER');
         }
 
         if ($level == "rsm") {
             $list_wilayah = Auth::user()->wilayah != null ? unserialize(Auth::user()->wilayah) : NULL;
             $wilayah = $list_wilayah != null ? "'" . implode("', '", $list_wilayah) . "'" : '';
             $query->whereIn('master_karyawan.id_kantor', $list_wilayah);
+            $query->where('master_karyawan.kode_dept', 'MKT');
+            $query->where('nama_jabatan', 'KEPALA PENJUALAN');
+            $query->where('id_perusahaan', 'PCF');
         }
 
         if (!in_array($level, $level_show_all)) {
-            $query->whereNotIn('master_karyawan.id_jabatan', $show_for_hrd);
+            $query->whereNotIn('id_jabatan', $show_for_hrd);
+        }
+
+
+        if ($level == "admin pdqc") {
+            $listkaryawan = [
+                '08.12.100',
+                '11.10.090',
+                '13.02.198',
+                '91.01.016',
+                '03.04.045',
+                '08.05.042',
+                '12.09.182',
+                '05.01.055',
+                '13.03.202'
+            ];
+
+            $query->whereIn('kasbon.nik', $listkaryawan);
+        }
+
+
+        if ($level == "spv pdqc") {
+            $listkaryawan = [
+                '13.03.200',
+                '14.08.220',
+                '13.07.021',
+                '15.05.174',
+                '10.08.128',
+                '13.09.206',
+                '13.09.209',
+                '19.09.303',
+                '21.06.304',
+                '16.01.069',
+                '18.03.305'
+            ];
+
+            $query->whereIn('kasbon.nik', $listkaryawan);
+        }
+
+        if ($level == "manager audit") {
+            $query->where('master_karyawan.kode_dept', 'ADT');
         }
 
         $kasbon = $query->get();
