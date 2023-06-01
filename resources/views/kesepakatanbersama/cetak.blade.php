@@ -169,7 +169,8 @@
             <br>
             <ol>
                 <li>
-                    PIHAK PERTAMA (I) dan PIHAK KEDUA (II) telah sepakat untuk mengakhiri hubungan kerja terhitung mulai tanggal 20 Januari 2023.
+                    PIHAK PERTAMA (I) dan PIHAK KEDUA (II) telah sepakat untuk mengakhiri hubungan kerja terhitung mulai tanggal
+                    {{ DateToIndo2($kontrak->sampai)}}
                 </li>
                 <li>
                     PIHAK PERTAMA ( I ) bersedia untuk memberikan kompensasi atau kebijakan kepada PIHAK KEDUA ( II ) yang besarnya sebagai berikut :
