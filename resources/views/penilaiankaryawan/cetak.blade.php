@@ -114,7 +114,7 @@
         <br>
         <b style="font-size:14px">A. Penilaian</b>
 
-        <table class="datatable3" style="width:100%">
+        <table class="datatable3">
             <tbody>
                 @php
                 $no = 1;
