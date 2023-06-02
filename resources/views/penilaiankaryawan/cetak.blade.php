@@ -131,7 +131,7 @@
                 </tr>
                 <tr style="font-weight:bold">
                     <td rowspan="2">No.</th>
-                    <td rowspan="2" style="width: 80%">Sasaran Kerja</th>
+                    <td rowspan="2" style="width: 70%">Sasaran Kerja</th>
                     <td colspan="2" align="center">Hasil Penilaian</th>
                 </tr>
                 <tr style="font-weight: bold">
