@@ -255,19 +255,19 @@
 
                             <td style="width: 2px">1.</td>
                             <td>Jasa Masa Kerja</td>
-                            <td>{{ $jmlkali }}</td>
+                            <td>15%</td>
                             <td>x</td>
                             <td>Rp. {{ rupiah($totalupah) }}</td>
                             <td>Rp.</td>
-                            <td style="text-align:right">{{ rupiah($jmlkali * $totalupah) }}</td>
+                            <td style="text-align:right">{{ rupiah((15/100) * $totalupah) }}</td>
                         </tr>
                         <tr>
 
                             <td style="width: 2px; border-bottom:1px solid black">2.</td>
                             <td style="border-bottom:1px solid black">Uang Pengganti Hak</td>
-                            <td style="border-bottom:1px solid black">15%</td>
+                            <td style="border-bottom:1px solid black">0%</td>
                             <td style="border-bottom:1px solid black">x</td>
-                            <td style="border-bottom:1px solid black">Rp. {{ rupiah($jmlkali * $totalupah) }}</td>
+                            <td style="border-bottom:1px solid black">Rp. {{ rupiah((0/100) * $totalupah) }}</td>
                             <td style="border-bottom:1px solid black">Rp.</td>
                             <td style="border-bottom:1px solid black; text-align:right">
                                 @php
