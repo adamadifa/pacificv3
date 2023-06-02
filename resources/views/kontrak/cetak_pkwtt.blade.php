@@ -346,7 +346,7 @@
             <tr>
                 <td style="text-align:center">
                     <u>{{ $kontrak->nama_karyawan }}</u><br>
-                    Karyawan
+                    Karyawans
                 </td>
                 <td style="text-align:center">
                     <u>{{ $nama_pihaksatu }}</u><br>
