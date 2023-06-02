@@ -339,14 +339,14 @@
                 <td style="text-align:center">PIHAK PERTAMA</td>
             </tr>
             <tr>
-                <td></td>
+                <td style="height: 100px"></td>
                 <td></td>
                 <td></td>
             </tr>
             <tr>
                 <td style="text-align:center">
                     <u>{{ $kontrak->nama_karyawan }}</u><br>
-                    Karyawans
+                    Karyawan
                 </td>
                 <td style="text-align:center">
                     <u>{{ $nama_pihaksatu }}</u><br>
