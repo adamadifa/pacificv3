@@ -42,7 +42,7 @@ class DashboardController extends Controller
             return $this->dashboardkepalapenjualan();
         } else if (Auth::user()->level == "kepala admin" || Auth::user()->level == "admin pusat") {
             return $this->dashboardkepalaadmin();
-        } else if (Auth::user()->level == "manager accounting" || Auth::user()->level == "audit" || Auth::user()->level == "spv accounting" || Auth::user()->level == "admin pajak 2") {
+        } else if (Auth::user()->level == "manager accounting" || Auth::user()->level == "audit" || Auth::user()->level == "spv accounting" || Auth::user()->level == "admin pajak 2" || Auth::user()->level == "manager audit") {
             return $this->dashboardaccounting();
         } else if (Auth::user()->level == "staff keuangan") {
             return $this->dashboardstaffkeuangan();
