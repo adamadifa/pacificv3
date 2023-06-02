@@ -265,7 +265,7 @@
 
                             <td style="width: 2px; border-bottom:1px solid black">2.</td>
                             <td style="border-bottom:1px solid black">Uang Pengganti Hak</td>
-                            <td style="border-bottom:1px solid black">%</td>
+                            <td style="border-bottom:1px solid black">0%</td>
                             <td style="border-bottom:1px solid black">x</td>
                             <td style="border-bottom:1px solid black">Rp. {{ rupiah($jmlkali * $totalupah) }}</td>
                             <td style="border-bottom:1px solid black">Rp.</td>
@@ -281,7 +281,7 @@
                             <td>Rp.</td>
                             <td style="text-align:right; font-weight:bold">
                                 @php
-                                $jml_ujmk = ($jmlkali * $totalupah) + $uph;
+                                $jml_ujmk = ((15/100) * $totalupah) + $uph;
                                 @endphp
                                 {{ rupiah($jml_ujmk) }}
                             </td>
