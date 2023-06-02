@@ -204,38 +204,28 @@
                             <td>:</td>
                             <td>Rp. {{ rupiah($kontrak->gaji_pokok) }},-</td>
                         </tr>
+
                         <tr>
                             <td>b.</td>
-                            <td style="width:140px">Masa Kerja</td>
-                            <td>:</td>
-                            <td>Rp. {{ rupiah($kontrak->t_masakerja) }},-</td>
-                        </tr>
-                        <tr>
-                            <td>c.</td>
                             <td style="width:140px">Tj. Jabatan</td>
                             <td>:</td>
                             <td>Rp. {{ rupiah($kontrak->t_jabatan) }},-</td>
                         </tr>
                         <tr>
-                            <td>d.</td>
+                            <td>c.</td>
                             <td style="width:140px">Tj. Tanggungjawab</td>
                             <td>:</td>
                             <td>Rp. {{ rupiah($kontrak->t_tanggungjawab) }},-</td>
                         </tr>
                         <tr>
-                            <td>e.</td>
+                            <td>d.</td>
                             <td style="width:140px">Tj. Makan</td>
                             <td>:</td>
                             <td>Rp. {{ rupiah($kontrak->t_makan) }},-</td>
                         </tr>
+
                         <tr>
-                            <td>f.</td>
-                            <td style="width:140px">Tj. Istri</td>
-                            <td>:</td>
-                            <td>Rp. {{ rupiah($kontrak->t_istri) }},-</td>
-                        </tr>
-                        <tr>
-                            <td>g.</td>
+                            <td>e.</td>
                             <td style="width:140px">Skill Khusus</td>
                             <td>:</td>
                             <td>Rp. {{ rupiah($kontrak->t_skill) }},-</td>
@@ -349,7 +339,7 @@
                 <td style="text-align:center">PIHAK PERTAMA</td>
             </tr>
             <tr>
-                <td style="height: 40px"></td>
+                <td style="height: 60px"></td>
                 <td></td>
                 <td></td>
             </tr>
