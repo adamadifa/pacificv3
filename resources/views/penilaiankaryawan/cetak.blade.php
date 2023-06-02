@@ -23,7 +23,7 @@
         .datatable3 {
             border: 1px solid #09090a;
             border-collapse: collapse;
-            font-size: 12px;
+            font-size: 11px;
         }
 
         .datatable3 td {
@@ -37,7 +37,7 @@
             text-align: left;
             padding: 10px;
             text-align: center;
-            font-size: 14px;
+            font-size: 12px;
         }
 
         .datatable4 {
