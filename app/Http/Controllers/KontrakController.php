@@ -332,9 +332,14 @@ class KontrakController extends Controller
                 'old_id_kantor' => $old_id_kantor,
                 'kode_dept' => $kode_dept,
                 'old_kode_dept' => $old_kode_dept,
-                'kode_penilaian' => $kode_penilaian
+                'kode_penilaian' => $kode_penilaian,
+                'status_kontrak' => 1
             ]);
 
+            $lastkontrak = DB::table('hrd_kontrak')->where('nik', $nik)->orderBy('dari', 'desc')->first();
+            if ($lastkontrak != null) {
+                DB::table('hrd_kontrak')->where('no_kontrak', $lastkontrak->no_kontrak)->update(['status_kontrak' => 0]);
+            }
             DB::table('hrd_mastergaji')->insert([
                 'kode_gaji' => $kode_gaji,
                 'nik' => $nik,
