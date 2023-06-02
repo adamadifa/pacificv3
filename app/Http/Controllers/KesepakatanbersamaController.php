@@ -96,7 +96,9 @@ class KesepakatanbersamaController extends Controller
         $potongan = DB::table('hrd_potongankb')->where('no_kb', $no_kb)->get();
 
         $kontrak = DB::table('hrd_kontrak')->where('no_kontrak', $kb->no_kontrak)->first();
-        return view('kesepakatanbersama.cetak', compact('kb', 'approve', 'potongan', 'kontrak'));
+
+        $cekjmk = DB::table('hrd_bayarjmk')->where('nik', $kb->nik)->orderBy('tgl_pembayaran', 'desc')->first();
+        return view('kesepakatanbersama.cetak', compact('kb', 'approve', 'potongan', 'kontrak', 'cekjmk'));
     }
 
     public function edit(Request $request)

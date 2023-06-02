@@ -252,14 +252,22 @@
                             }
 
                             ?>
-
+                            @if ($cekjmk != null)
+                            @php
+                            $persentasejmk = 15;
+                            @endphp
+                            @else
+                            @php
+                            $persentasejmk = 25;
+                            @endphp
+                            @endif
                             <td style="width: 2px">1.</td>
                             <td>Jasa Masa Kerja</td>
-                            <td>15%</td>
+                            <td>{{ $persentasejmk }}%</td>
                             <td>x</td>
                             <td>Rp. {{ rupiah($totalupah) }}</td>
                             <td>Rp.</td>
-                            <td style="text-align:right">{{ rupiah((15/100) * $totalupah) }}</td>
+                            <td style="text-align:right">{{ rupiah(($persentasejmk/100) * $totalupah) }}</td>
                         </tr>
                         <tr>
 
@@ -281,7 +289,7 @@
                             <td>Rp.</td>
                             <td style="text-align:right; font-weight:bold">
                                 @php
-                                $jml_ujmk = ((15/100) * $totalupah) + $uph;
+                                $jml_ujmk = (($persentasejmk/100) * $totalupah) + $uph;
                                 @endphp
                                 {{ rupiah($jml_ujmk) }}
                             </td>
