@@ -339,7 +339,7 @@
                 <td style="text-align:center">PIHAK PERTAMA</td>
             </tr>
             <tr>
-                <td style="height: 60px"></td>
+                <td style="height: 100px"></td>
                 <td></td>
                 <td></td>
             </tr>
