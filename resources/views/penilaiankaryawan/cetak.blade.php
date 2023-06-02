@@ -113,8 +113,7 @@
         </table>
         <br>
         <b style="font-size:14px">A. Penilaian</b>
-        <br>
-        <br>
+
         <table class="datatable3" style="width:100%">
             <tbody>
                 @php
