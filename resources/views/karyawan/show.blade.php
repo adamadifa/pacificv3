@@ -44,9 +44,18 @@
                                 @endif
                                 @else
                                 @php
-                                $path = Storage::url('karyawan/'.$karyawan->foto);
+                                $src = 'https://presensi.pacific-tasikmalaya.com/storage/uploads/karyawan/'.$karyawan->foto;
+                                //$path = Storage::url('karyawan/'.$karyawan->foto);
                                 @endphp
-                                <img src="{{ url($path) }}" class="card-img" style="height: 350px !important">
+                                {{-- <img src="{{ url($path) }}" class="card-img" style="height: 350px !important"> --}}
+                                @if (@getimagesize($src))
+                                <img src="https://presensi.pacific-tasikmalaya.com/storage/uploads/karyawan/{{ $karyawan->foto }}" style="height: 350px" alt="">
+                                @else
+                                @if($karyawan->jenis_kelamin == " 1") <img src="{{ asset('app-assets/images/male.jpg') }}" class="card-img" style="width: 120px; height:150px; object-fit:cover; border-radius:10px; position:absolute; right:70px; top:80px;">
+                                @else
+                                <img src="{{ asset('app-assets/images/female.jpg') }}" class="card-img" style="width: 120px; height:150px; object-fit:cover; border-radius:10px; position:absolute; right:70px; top:80px;">
+                                @endif
+                                @endif
                                 @endif
 
                             </div>

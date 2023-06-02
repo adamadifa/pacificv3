@@ -91,30 +91,55 @@
             </tr>
         </table>
         <br>
-        <table class="datatable3">
-            <tr>
-                <td style="font-weight: bold">Periode Kontrak / Masa Percobaan</td>
-                <td>
-                    {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
-                </td>
-            </tr>
-            <tr>
-                <td>NIK</td>
-                <td>{{ $penilaian->nik }}</td>
-            </tr>
-            <tr>
-                <td>Nama Karyawan</td>
-                <td>{{ $karyawan->nama_karyawan }}</td>
-            </tr>
-            <tr>
-                <td>Departemen / Posisi</td>
-                <td>{{ $karyawan->nama_dept  }} / {{ $karyawan->nama_jabatan }}</td>
-            </tr>
-        </table>
-        <br>
+        <div style="display:flex; justify-content: space-between">
+            <div>
+                <table class="datatable3">
+                    <tr>
+                        <td style="font-weight: bold">Periode Kontrak / Masa Percobaan</td>
+                        <td>
+                            {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>NIK</td>
+                        <td>{{ $penilaian->nik }}</td>
+                    </tr>
+                    <tr>
+                        <td>Nama Karyawan</td>
+                        <td>{{ $karyawan->nama_karyawan }}</td>
+                    </tr>
+                    <tr>
+                        <td>Departemen / Posisi</td>
+                        <td>{{ $karyawan->nama_dept  }} / {{ $karyawan->nama_jabatan }}</td>
+                    </tr>
+                </table>
+            </div>
+            <div>
+                @php
+                $foto = $karyawan->foto;
+                $src = 'https://presensi.pacific-tasikmalaya.com/storage/uploads/karyawan/'.$foto;
+                @endphp
+
+
+
+
+
+                @if (@getimagesize($src))
+                <img src="https://presensi.pacific-tasikmalaya.com/storage/uploads/karyawan/{{ $foto }}" style="width: 120px; height:150px; object-fit:cover; border-radius:10px; position:absolute; right:70px; top:80px;" alt="">
+                @else
+                @if($karyawan->jenis_kelamin == "1")
+                <img src="{{ asset('app-assets/images/male.jpg') }}" class="card-img" style="width: 120px; height:150px; object-fit:cover; border-radius:10px; position:absolute; right:70px; top:80px;">
+                @else
+                <img src="{{ asset('app-assets/images/female.jpg') }}" class="card-img" style="width: 120px; height:150px; object-fit:cover; border-radius:10px; position:absolute; right:70px; top:80px;">
+                @endif
+                @endif
+
+            </div>
+        </div>
+
         <b style="font-size:14px">A. Penilaian</b>
 
-        <table class="datatable3">
+        <table class="datatable3" style="width: 100%">
             <tbody>
                 @php
                 $no = 1;
@@ -134,9 +159,9 @@
                     <td rowspan="2" style="width: 70%">Sasaran Kerja</th>
                     <td colspan="2" align="center">Hasil Penilaian</th>
                 </tr>
-                <tr style="font-weight: bold">
-                    <td>Tidak Memuaskan</td>
-                    <td>Sangat Memuaskan</td>
+                <tr style="font-weight: bold; text-align:center">
+                    <td>TM</td>
+                    <td>SM</td>
                 </tr>
                 @endif
 

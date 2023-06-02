@@ -489,7 +489,7 @@ class PenilaiankaryawanController extends Controller
         $sampai = $periode_kontrak[1];
         $nik = $penilaian->nik;
         $karyawan = DB::table('hrd_penilaian')
-            ->selectRaw('hrd_penilaian.nik,nama_karyawan,hrd_penilaian.kode_dept,nama_dept,hrd_penilaian.id_jabatan,nama_jabatan,hrd_penilaian.id_kategori_jabatan,hrd_penilaian.id_kantor,hrd_penilaian.id_perusahaan,status,ka,kp,rsm,m,gm,hrd,dirut')
+            ->selectRaw('hrd_penilaian.nik,nama_karyawan,foto,jenis_kelamin,hrd_penilaian.kode_dept,nama_dept,hrd_penilaian.id_jabatan,nama_jabatan,hrd_penilaian.id_kategori_jabatan,hrd_penilaian.id_kantor,hrd_penilaian.id_perusahaan,status,ka,kp,rsm,m,gm,hrd,dirut')
             ->join('master_karyawan', 'hrd_penilaian.nik', '=', 'master_karyawan.nik')
             ->join('hrd_jabatan', 'hrd_penilaian.id_jabatan', '=', 'hrd_jabatan.id')
             ->leftjoin('hrd_departemen', 'hrd_penilaian.kode_dept', '=', 'hrd_departemen.kode_dept')
