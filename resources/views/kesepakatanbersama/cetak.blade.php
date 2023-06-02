@@ -265,9 +265,9 @@
 
                             <td style="width: 2px; border-bottom:1px solid black">2.</td>
                             <td style="border-bottom:1px solid black">Uang Pengganti Hak</td>
-                            <td style="border-bottom:1px solid black">0%</td>
+                            <td style="border-bottom:1px solid black">%</td>
                             <td style="border-bottom:1px solid black">x</td>
-                            <td style="border-bottom:1px solid black">Rp. {{ $jmlkali * $totalupah) }}</td>
+                            <td style="border-bottom:1px solid black">Rp. {{ rupiah($jmlkali * $totalupah) }}</td>
                             <td style="border-bottom:1px solid black">Rp.</td>
                             <td style="border-bottom:1px solid black; text-align:right">
                                 @php
