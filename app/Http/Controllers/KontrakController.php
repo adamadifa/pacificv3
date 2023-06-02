@@ -139,6 +139,11 @@ class KontrakController extends Controller
         $kode_gaji  = buatkode($last_kodegaji, "GJ" . $tahun, 3);
         DB::beginTransaction();
         try {
+
+            $lastkontrak = DB::table('hrd_kontrak')->where('nik', $nik)->orderBy('dari', 'desc')->first();
+            if ($lastkontrak != null) {
+                DB::table('hrd_kontrak')->where('no_kontrak', $lastkontrak->no_kontrak)->update(['status_kontrak' => 0]);
+            }
             DB::table('hrd_kontrak')->insert([
                 'no_kontrak' => $no_kontrak,
                 'nik' => $nik,

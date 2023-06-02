@@ -199,7 +199,7 @@
                                         <td>
 
                                             <div class="btn-group">
-                                                <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/cetak" class="info mr-1"><i class="feather icon-printer"></i></a>
+                                                <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/cetak" target="_blank" class="info mr-1"><i class="feather icon-printer"></i></a>
                                                 @if (array_search(strtolower($kat_jab_user),$approve) == 0 || Auth::user()->level=="manager hrd" || Auth::user()->level=="direktur")
                                                 @if (empty($d->$field_kategori))
                                                 <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian)}}/edit" class="success"><i class="feather icon-edit"></i></a>
