@@ -187,7 +187,12 @@
                     $tanggal = $cekjmk->tgl_pembayaran;
                     $nextmonth = date('Y-m-d', strtotime('+1 month', strtotime($tanggal)));
                     @endphp
-                    {{ $nextmonth }}
+                    @php
+                    $awalmasakerja = date_create($nextmonth);
+                    $akhirmasakerja = date_create($kontrak->sampai); // waktu sekarang
+                    $diffmasakerja = date_diff( $awalmasakerja, $akhirmasakerja );
+                    echo $diffmasakerja->y . ' tahun, '.$diffmasakerja->m.' bulan, '.$diffmasakerja->d.' Hari'
+                    @endphp
                 </th>
             </tr>
             <tr>
