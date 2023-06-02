@@ -182,7 +182,12 @@
                 <th>Rincian Upah</th>
                 <th>
                     Perhitungan Besaran Uang Masa Kerja <br>
-                    Masa Kerja : Dihitung dari Awal Kontrak Terakhir Pemutihan
+                    Masa Kerja :
+                    @php
+                    $tanggal = $cekjmk->tgl_pembayaran;
+                    $nextmonth = date('Y-m-d', strtotime('+1 month', strtotime($tanggal)));
+                    @endphp
+                    {{ $nextmonth }}
                 </th>
             </tr>
             <tr>
