@@ -234,7 +234,7 @@
                     <table class="datatable4">
                         <tr>
                             <?php
-                            $masakerja = $diff->y;
+                            $masakerja = $diffmasakerja->y;
                             if($masakerja >= 3 && $masakerja < 6){
                                 $jmlkali=2;
                             }else if($masakerja >= 6 && $masakerja < 9 ){
