@@ -5885,22 +5885,72 @@ class PenjualanController extends Controller
         $harganet = DB::table('penjualan')
             ->selectRaw("
             SUM(ppn) as totalppn,
+            SUM(IF(jenistransaksi='tunai',ppn,0)) as totalppntunai,
+            SUM(IF(jenistransaksi='kredit',ppn,0)) as totalppnkredit,
             SUM(subtotal) as totalbruto,
+            SUM(IF(jenistransaksi='tunai',subtotal,0)) as totalbrutotunai,
+            SUM(IF(jenistransaksi='kredit',subtotal,0)) as totalbrutokredit,
             SUM(bruto_AB) as bruto_AB,
+            SUM(bruto_AB_tunai) as bruto_AB_tunai,
+            SUM(bruto_AB_kredit) as bruto_AB_kredit,
+
             SUM(bruto_AR) as bruto_AR,
+            SUM(bruto_AR_tunai) as bruto_AR_tunai,
+            SUM(bruto_AR_kredit) as bruto_AR_kredit,
+
             SUM(bruto_AS) as bruto_AS,
+            SUM(bruto_AS_tunai) as bruto_AS_tunai,
+            SUM(bruto_AS_kredit) as bruto_AS_kredit,
+
             SUM(bruto_BB) as bruto_BB,
+            SUM(bruto_BB_tunai) as bruto_BB_tunai,
+            SUM(bruto_BB_kredit) as bruto_BB_kredit,
+
             SUM(bruto_BBP) as bruto_BBP,
+            SUM(bruto_BBP_tunai) as bruto_BBP_tunai,
+            SUM(bruto_BBP_kredit) as bruto_BBP_kredit,
+
             SUM(bruto_CG) as bruto_CG,
+            SUM(bruto_CG_tunai) as bruto_CG_tunai,
+            SUM(bruto_CG_kredit) as bruto_CG_kredit,
+
+
             SUM(bruto_CGG) as bruto_CGG,
+            SUM(bruto_CGG_tunai) as bruto_CGG_tunai,
+            SUM(bruto_CGG_kredit) as bruto_CGG_kredit,
+
             SUM(bruto_CG5) as bruto_CG5,
+            SUM(bruto_CG5_tunai) as bruto_CG5_tunai,
+            SUM(bruto_CG5_kredit) as bruto_CG5_kredit,
+
             SUM(bruto_DEP) as bruto_DEP,
+            SUM(bruto_DEP_tunai) as bruto_DEP_tunai,
+            SUM(bruto_DEP_kredit) as bruto_DEP_kredit,
+
             SUM(bruto_DS) as bruto_DS,
+            SUM(bruto_DS_tunai) as bruto_DS_tunai,
+            SUM(bruto_DS_kredit) as bruto_DS_kredit,
+
             SUM(bruto_SP) as bruto_SP,
+            SUM(bruto_SP_tunai) as bruto_SP_tunai,
+            SUM(bruto_SP_kredit) as bruto_SP_kredit,
+
             SUM(bruto_SPP) as bruto_SPP,
+            SUM(bruto_SPP_tunai) as bruto_SPP_tunai,
+            SUM(bruto_SPP_kredit) as bruto_SPP_kredit,
+
             SUM(bruto_SC) as bruto_SC,
+            SUM(bruto_SC_tunai) as bruto_SC_tunai,
+            SUM(bruto_SC_kredit) as bruto_SC_kredit,
+
             SUM(bruto_SP8) as bruto_SP8,
+            SUM(bruto_SP8_tunai) as bruto_SP8_tunai,
+            SUM(bruto_SP8_kredit) as bruto_SP8_kredit,
+
             SUM(bruto_SP500) as bruto_SP500,
+            SUM(bruto_SP500_tunai) as bruto_SP500_tunai,
+            SUM(bruto_SP500_kredit) as bruto_SP500_kredit,
+
 
             SUM(qty_AB) as qty_AB,
             SUM(qty_AR) as qty_AR,
@@ -6002,20 +6052,70 @@ class PenjualanController extends Controller
                 SELECT
 		dp.no_fak_penj,
 		SUM(IF(b.kode_produk = 'AB',dp.subtotal,0)) as bruto_AB,
+		SUM(IF(b.kode_produk = 'AB' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_AB_tunai,
+		SUM(IF(b.kode_produk = 'AB' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_AB_kredit,
+
 		SUM(IF(b.kode_produk = 'AR',dp.subtotal,0)) as bruto_AR,
+        SUM(IF(b.kode_produk = 'AR' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_AR_tunai,
+		SUM(IF(b.kode_produk = 'AR' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_AR_kredit,
+
 		SUM(IF(b.kode_produk = 'AS',dp.subtotal,0)) as bruto_AS,
+        SUM(IF(b.kode_produk = 'AS' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_AS_tunai,
+		SUM(IF(b.kode_produk = 'AS' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_AS_kredit,
+
+
 		SUM(IF(b.kode_produk = 'BB',dp.subtotal,0)) as bruto_BB,
+        SUM(IF(b.kode_produk = 'BB' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_BB_tunai,
+		SUM(IF(b.kode_produk = 'BB' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_BB_kredit,
+
 		SUM(IF(b.kode_produk = 'BBP',dp.subtotal,0)) as bruto_BBP,
+        SUM(IF(b.kode_produk = 'BBP' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_BBP_tunai,
+		SUM(IF(b.kode_produk = 'BBP' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_BBP_kredit,
+
+
 		SUM(IF(b.kode_produk = 'CG',dp.subtotal,0)) as bruto_CG,
+        SUM(IF(b.kode_produk = 'CG' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_CG_tunai,
+		SUM(IF(b.kode_produk = 'CG' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_CG_kredit,
+
 		SUM(IF(b.kode_produk = 'CGG',dp.subtotal,0)) as bruto_CGG,
+        SUM(IF(b.kode_produk = 'CGG' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_CGG_tunai,
+		SUM(IF(b.kode_produk = 'CGG' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_CGG_kredit,
+
 		SUM(IF(b.kode_produk = 'CG5',dp.subtotal,0)) as bruto_CG5,
+        SUM(IF(b.kode_produk = 'CG5' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_CG5_tunai,
+		SUM(IF(b.kode_produk = 'CG5' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_CG5_kredit,
+
 		SUM(IF(b.kode_produk = 'DEP',dp.subtotal,0)) as bruto_DEP,
+        SUM(IF(b.kode_produk = 'DEP' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_DEP_tunai,
+		SUM(IF(b.kode_produk = 'DEP' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_DEP_kredit,
+
 		SUM(IF(b.kode_produk = 'DS',dp.subtotal,0)) as bruto_DS,
+        SUM(IF(b.kode_produk = 'DS' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_DS_tunai,
+		SUM(IF(b.kode_produk = 'DS' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_DS_kredit,
+
 		SUM(IF(b.kode_produk = 'SP',dp.subtotal,0)) as bruto_SP,
+        SUM(IF(b.kode_produk = 'SP' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_SP_tunai,
+		SUM(IF(b.kode_produk = 'SP' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_SP_kredit,
+
 		SUM(IF(b.kode_produk = 'SPP',dp.subtotal,0)) as bruto_SPP,
+        SUM(IF(b.kode_produk = 'SPP' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_SPP_tunai,
+		SUM(IF(b.kode_produk = 'SPP' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_SPP_kredit,
+
+
 		SUM(IF(b.kode_produk = 'SC',dp.subtotal,0)) as bruto_SC,
+        SUM(IF(b.kode_produk = 'SC' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_SC_tunai,
+		SUM(IF(b.kode_produk = 'SC' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_SC_kredit,
+
+
 		SUM(IF(b.kode_produk = 'SP8',dp.subtotal,0)) as bruto_SP8,
+        SUM(IF(b.kode_produk = 'SP8' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_SP8_tunai,
+		SUM(IF(b.kode_produk = 'SP8' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_SP8_kredit,
+
+
 		SUM(IF(b.kode_produk = 'SP500',dp.subtotal,0)) as bruto_SP500,
+        SUM(IF(b.kode_produk = 'SP500' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_SP500_tunai,
+		SUM(IF(b.kode_produk = 'SP500' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_SP500_kredit,
+
 
 		SUM(IF(b.kode_produk = 'AB' AND promo !=1 OR b.kode_produk = 'AB' AND promo IS NULL,dp.jumlah,0)) as   qty_AB,
 		SUM(IF(b.kode_produk = 'AR' AND promo !=1 OR b.kode_produk = 'AR' AND promo IS NULL,dp.jumlah,0)) as   qty_AR,
@@ -6051,6 +6151,7 @@ class PenjualanController extends Controller
 		FROM detailpenjualan dp
 		INNER JOIN barang b ON dp.kode_barang = b.kode_barang
 		INNER JOIN master_barang mb ON b.kode_produk = mb.kode_produk
+        INNER JOIN penjualan ON dp.no_fak_penj = penjualan.no_fak_penj
 		GROUP BY dp.no_fak_penj
             ) detail"),
                 function ($join) {
