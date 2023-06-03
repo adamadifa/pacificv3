@@ -169,7 +169,7 @@
             <br>
             <ol>
                 <li>
-                    PIHAK PERTAMA (I) dan PIHAK KEDUA (II) telah sepakat terkait kontrak kerja yang diputihkanmulai tanggal
+                    PIHAK PERTAMA (I) dan PIHAK KEDUA (II) telah sepakat terkait kontrak kerja yang diputihkan mulai tanggal
                     {{ DateToIndo2($kontrak->sampai)}}
                 </li>
                 <li>
