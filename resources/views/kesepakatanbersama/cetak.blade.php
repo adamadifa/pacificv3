@@ -366,7 +366,7 @@
         </p>
         <table class="datatable4">
             <tr>
-                <td colspan="3"></td>
+                <td colspan="3" style="text-align: center">Tasikmalaya, {{ DateToIndo2($kontrak->sampai)}}</td>
             </tr>
             <tr>
                 <td style="text-align:center">PIHAK KEDUA</td>
