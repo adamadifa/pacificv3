@@ -271,13 +271,16 @@
                             $persentasejmk = 25;
                             @endphp
                             @endif
+                            @php
+                            $totalpemutihan = ($persentasejmk/100) * $totalupah;
+                            @endphp
                             <td style="width: 2px">1.</td>
                             <td>Jasa Masa Kerja</td>
                             <td>{{ $persentasejmk }}%</td>
                             <td>x</td>
                             <td>Rp. {{ rupiah($totalupah) }}</td>
                             <td>Rp.</td>
-                            <td style="text-align:right">{{ rupiah(($persentasejmk/100) * $totalupah) }}</td>
+                            <td style="text-align:right">{{ rupiah($totalpemutihan) }}</td>
                         </tr>
                         <tr>
 
@@ -285,7 +288,7 @@
                             <td style="border-bottom:1px solid black">Uang Pengganti Hak</td>
                             <td style="border-bottom:1px solid black">0%</td>
                             <td style="border-bottom:1px solid black">x</td>
-                            <td style="border-bottom:1px solid black">Rp. {{ rupiah($jmlkali * $totalupah) }}</td>
+                            <td style="border-bottom:1px solid black">Rp. {{ rupiah($totalpemutihan) }}</td>
                             <td style="border-bottom:1px solid black">Rp.</td>
                             <td style="border-bottom:1px solid black; text-align:right">
                                 @php
