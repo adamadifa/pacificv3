@@ -165,11 +165,11 @@
         </table>
         <p style="text-indent:1cm; text-align:justify">
             Untuk selanjutnya disebut PIHAK KEDUA ( II) atau pekerja.<br>
-            Pada tanggal {{ DateToIndo2(date('Y-m-d')) }} PIHAK PERTAMA ( I ) dan PIHAK KEDUA ( II ) bertempat di CV Makmur Permata Tasikmalaya telah mengadakan perundingan atau musyawarah mufakat yang mendalam secara kekeluargaan dengan menghasilkan kesepakatan sebagai berikut :
+            Pada tanggal {{ DateToIndo2($kontrak->sampai)}} PIHAK PERTAMA ( I ) dan PIHAK KEDUA ( II ) bertempat di CV Makmur Permata Tasikmalaya telah mengadakan perundingan atau musyawarah mufakat yang mendalam secara kekeluargaan dengan menghasilkan kesepakatan sebagai berikut :
             <br>
             <ol>
                 <li>
-                    PIHAK PERTAMA (I) dan PIHAK KEDUA (II) telah sepakat untuk mengakhiri hubungan kerja terhitung mulai tanggal
+                    PIHAK PERTAMA (I) dan PIHAK KEDUA (II) telah sepakat terkait kontrak kerja yang diputihkanmulai tanggal
                     {{ DateToIndo2($kontrak->sampai)}}
                 </li>
                 <li>
