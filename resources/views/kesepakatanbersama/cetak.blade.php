@@ -165,7 +165,7 @@
         </table>
         <p style="text-indent:1cm; text-align:justify">
             Untuk selanjutnya disebut PIHAK KEDUA ( II) atau pekerja.<br>
-            Pada tanggal 19 Januari 2023 PIHAK PERTAMA ( I ) dan PIHAK KEDUA ( II ) bertempat di CV Makmur Permata Tasikmalaya telah mengadakan perundingan atau musyawarah mufakat yang mendalam secara kekeluargaan dengan menghasilkan kesepakatan sebagai berikut :
+            Pada tanggal {{ DateToIndo2(date('Y-m-d')) }} PIHAK PERTAMA ( I ) dan PIHAK KEDUA ( II ) bertempat di CV Makmur Permata Tasikmalaya telah mengadakan perundingan atau musyawarah mufakat yang mendalam secara kekeluargaan dengan menghasilkan kesepakatan sebagai berikut :
             <br>
             <ol>
                 <li>
