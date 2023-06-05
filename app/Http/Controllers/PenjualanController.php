@@ -90,9 +90,39 @@ class PenjualanController extends Controller
                     $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
                 }
             );
+
+            $query->leftJoin(
+                DB::raw("(
+                    SELECT
+                        pj.no_fak_penj,
+                        IF( salesbaru IS NULL, pj.id_karyawan, salesbaru ) AS salesbarunew,
+                        karyawan.nama_karyawan AS nama_sales,
+                        IF( cabangbaru IS NULL, karyawan.kode_cabang, cabangbaru ) AS cabangbarunew
+                    FROM
+                        penjualan pj
+                    INNER JOIN karyawan ON pj.id_karyawan = karyawan.id_karyawan
+                    LEFT JOIN (
+                    SELECT
+                        MAX( id_move ) AS id_move,
+                        no_fak_penj,
+                        move_faktur.id_karyawan AS salesbaru,
+                        karyawan.kode_cabang AS cabangbaru
+                    FROM
+                        move_faktur
+                        INNER JOIN karyawan ON move_faktur.id_karyawan = karyawan.id_karyawan
+                    GROUP BY
+                        no_fak_penj,
+                        move_faktur.id_karyawan,
+                        karyawan.kode_cabang
+                    ) move_fak ON ( pj.no_fak_penj = move_fak.no_fak_penj)
+                ) pjmove"),
+                function ($join) {
+                    $join->on('penjualan.no_fak_penj', '=', 'pjmove.no_fak_penj');
+                }
+            );
             $query->whereBetween('tgltransaksi', [$request->dari, $request->sampai]);
             if (!empty($request->id_karyawan)) {
-                $query->where('penjualan.id_karyawan', $request->id_karyawan);
+                $query->where('salesbarunew', $request->id_karyawan);
             }
 
             // if ($this->cabang != "PCF") {
@@ -114,7 +144,7 @@ class PenjualanController extends Controller
                 foreach ($cbg as $c) {
                     $cabang[] = $c->kode_cabang;
                 }
-                $query->whereIn('karyawan.kode_cabang', $cabang);
+                $query->whereIn('cabangbarunew', $cabang);
             }
             $penjualan = $query->get();
             return view('penjualan.laporan.cetaksuratjalantanggal', compact('penjualan', 'pelangganmp'));
@@ -127,7 +157,37 @@ class PenjualanController extends Controller
             $query->orderBy('tgltransaksi', 'desc');
             $query->orderBy('no_fak_penj', 'asc');
             $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
-            $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+
+            $query->leftJoin(
+                DB::raw("(
+                    SELECT
+                        pj.no_fak_penj,
+                        IF( salesbaru IS NULL, pj.id_karyawan, salesbaru ) AS salesbarunew,
+                        karyawan.nama_karyawan AS nama_sales,
+                        IF( cabangbaru IS NULL, karyawan.kode_cabang, cabangbaru ) AS cabangbarunew
+                    FROM
+                        penjualan pj
+                    INNER JOIN karyawan ON pj.id_karyawan = karyawan.id_karyawan
+                    LEFT JOIN (
+                    SELECT
+                        MAX( id_move ) AS id_move,
+                        no_fak_penj,
+                        move_faktur.id_karyawan AS salesbaru,
+                        karyawan.kode_cabang AS cabangbaru
+                    FROM
+                        move_faktur
+                        INNER JOIN karyawan ON move_faktur.id_karyawan = karyawan.id_karyawan
+                    GROUP BY
+                        no_fak_penj,
+                        move_faktur.id_karyawan,
+                        karyawan.kode_cabang
+                    ) move_fak ON ( pj.no_fak_penj = move_fak.no_fak_penj)
+                ) pjmove"),
+                function ($join) {
+                    $join->on('penjualan.no_fak_penj', '=', 'pjmove.no_fak_penj');
+                }
+            );
+            $query->join('karyawan', 'pjmove.salesbarunew', '=', 'karyawan.id_karyawan');
             if (empty($request->no_fak_penj) && empty($request->nama_pelanggan) && empty($request->kode_pelanggan) && empty($request->id_karyawan) && empty($request->dari) && empty($request->sampai)) {
                 $query->WhereRaw("MATCH(nama_pelanggan) AGAINST('" . $pelanggan .  "')");
             }
@@ -139,10 +199,10 @@ class PenjualanController extends Controller
             }
 
             if (!empty($request->id_karyawan)) {
-                $query->where('penjualan.id_karyawan', $request->id_karyawan);
+                $query->where('salesbarunew', $request->id_karyawan);
             }
             if (!empty($request->no_fak_penj)) {
-                $query->where('no_fak_penj', $request->no_fak_penj);
+                $query->where('penjualan.no_fak_penj', $request->no_fak_penj);
             }
 
             if (!empty($request->status)) {
@@ -164,7 +224,7 @@ class PenjualanController extends Controller
             }
 
             if (Auth::user()->level == "salesman") {
-                $query->where('penjualan.id_karyawan', Auth::user()->id_salesman);
+                $query->where('salesbarunew', Auth::user()->id_salesman);
             }
             // if ($this->cabang != "PCF") {
             //     if ($this->cabang == "GRT") {
@@ -185,7 +245,7 @@ class PenjualanController extends Controller
                 foreach ($cbg as $c) {
                     $cabang[] = $c->kode_cabang;
                 }
-                $query->whereIn('karyawan.kode_cabang', $cabang);
+                $query->whereIn('cabangbarunew', $cabang);
             }
             $penjualan = $query->paginate(15);
 

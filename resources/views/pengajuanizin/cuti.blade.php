@@ -257,7 +257,7 @@
                 backdrop: 'static'
                 , keyboard: false
             });
-            $("#loadbuatizin").load('/pengajuanizin/create');
+            $("#loadbuatizin").load('/pengajuanizin/createizincuti');
         });
         $(".approveizin").click(function(e) {
             $("#mdlapprove").modal("show");

@@ -129,7 +129,7 @@
                                             <th>Denda</th>
                                             <th>Keluar</th>
                                             <th>Total Jam</th>
-                                            <th>Keterangan</th>
+
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -140,11 +140,13 @@
                                         // Jam Masuk adalah Jam Masuk Seharusnya
                                         $jam_in = date("H:i", strtotime($d->jam_in));
                                         $jam_out = date("H:i", strtotime($d->jam_out));
+                                        $jam_pulang = date("H:i", strtotime($d->jam_pulang));
+                                        $jam_masuk = $d->tgl_presensi . " " . $d->jam_masuk;
                                         $status = $d->status_presensi;
                                         if (!empty($d->jam_in)) {
                                             if ($jam_in > $d->jam_masuk) {
 
-                                                $jam_masuk = $d->tgl_presensi . " " . $d->jam_masuk;
+
 
                                                 $j1 = strtotime($jam_masuk);
                                                 $j2 = strtotime($d->jam_in);
@@ -172,6 +174,49 @@
                                         }
 
 
+                                        if(!empty($d->jam_keluar)){
+                                            $jamkeluar = $d->tgl_presensi." ".$d->jam_keluar;
+                                            if(!empty($d->jam_masuk_kk)){
+                                                $jam_masuk_kk = $d->tgl_presensi." ".$d->jam_masuk_kk;
+                                            }else{
+                                                $jam_masuk_kk = $d->tgl_presensi." ".$d->jam_pulang;
+                                            }
+
+                                            $jk1 = strtotime($jamkeluar);
+                                            $jk2 = strtotime($jam_masuk_kk);
+                                            $difkeluarkantor = $jk2 - $jk1;
+
+                                            $jamkeluarkantor = floor($difkeluarkantor / (60 * 60));
+                                            $menitkeluarkantor = floor(($difkeluarkantor - ($jamkeluarkantor * (60 * 60)))/60);
+
+                                            $jkeluarkantor = $jamkeluarkantor <= 9 ? "0" . $jamkeluarkantor : $jamkeluarkantor;
+                                            $mkeluarkantor = $menitkeluarkantor <= 9 ? "0" . $menitkeluarkantor : $menitkeluarkantor;
+
+                                            if(empty($d->jam_masuk_kk)){
+                                                if($d->total_jam == 7){
+                                                    $totaljamkeluar = ($jkeluarkantor-1).":".$mkeluarkantor;
+                                                }else{
+                                                    $totaljamkeluar = $jkeluarkantor.":".$mkeluarkantor;
+                                                }
+                                            }else{
+                                                $totaljamkeluar = $jkeluarkantor.":".$mkeluarkantor;
+                                            }
+                                            $desimaljamkeluar = ROUND(($menitkeluarkantor * 100) / 60);
+
+                                        }else{
+                                            $totaljamkeluar = "";
+                                            $desimaljamkeluar = 0;
+                                            $jamkeluarkantor = 0;
+                                        }
+
+
+                                        if(!empty($d->jam_out) && $jam_out < $d->jam_pulang){
+                                            $pc = "Pulang Cepat";
+                                        }else{
+                                            $pc = "";
+                                        }
+
+
                                         $day = date('D', strtotime($d->tgl_presensi));
                                         $dayList = array(
                                             'Sun' => 'Minggu',
@@ -189,6 +234,11 @@
                                         //Jam terlambat dalam Desimal
 
                                         $jt = $jamterlambat . "." . $desimalterlambat;
+                                        if($jamkeluarkantor > 0){
+                                            $jk = $jamkeluarkantor.".".$desimaljamkeluar;
+                                        }else{
+                                            $jk = 0;
+                                        }
                                         $jt = !empty($jt) ? $jt : 0;
                                         // menghitung Denda
                                         if (!empty($d->jam_in) and $d->kode_dept != 'MKT') {
@@ -212,7 +262,7 @@
                                         }
 
                                          //Menghitung total Jam
-                                        $awal = strtotime($d->jam_in);
+                                        $awal = strtotime($jam_masuk);
                                         $akhir = strtotime($d->jam_out);
                                         $diff = $akhir - $awal;
                                         if (empty($d->jam_out)) {
@@ -224,17 +274,23 @@
                                             $menit = floor($m / 60);
                                         }
 
-                                        if ($namahari != 'Sabtu') {
-                                            $totaljam = 7.00 - $jt;
-                                        } else if ($namahari == "Sabtu") {
-                                            $totaljam = 5.00 - $jt;
-                                        } else {
-                                            $totaljam = $jam . ":" . $menit;
-                                        }
+                                        // if ($namahari != 'Sabtu') {
+                                        //     $totaljam = 7.00 - $jt;
+                                        // } else if ($namahari == "Sabtu") {
+                                        //     $totaljam = 5.00 - $jt;
+                                        // } else {
+                                        //     $totaljam = $jam . ":" . $menit;
+                                        // }
 
+                                        if ($denda == 0 and empty($d->kode_izin_terlambat)) {
+                                            $jt = $jt;
+                                        }else{
+                                            $jt = 0;
+                                        }
+                                        $totaljam = $d->total_jam - $jt - $jk;
 
                                         if (!empty($d->jam_out)) {
-                                            if ($jam_out < $d->jam_pulang) {
+                                            if ($jam_out < $jam_pulang) {
                                                 if($jam_out > "12:30"){
                                                     $desimalmenit = ($menit * 100) / 60;
                                                     $grandtotaljam = $jam-1 . "." . $menit;
@@ -243,7 +299,7 @@
                                                     $grandtotaljam = $jam . "." . $menit;
                                                 }
 
-                                                $grandtotaljam = $grandtotaljam - $jt;
+                                                $grandtotaljam = $grandtotaljam - $jt - $jk;
                                             } else {
                                                 $grandtotaljam = $totaljam;
                                             }
@@ -261,8 +317,19 @@
 
                                             <td>{{ $d->id_kantor }}</td>
                                             <td>{{ $d->nama_jadwal }} ({{ $d->jam_masuk }} s/d {{ $d->jam_pulang }})</td>
-                                            <td>{!! $d->jam_in != null ? $jam_in : '<span class="danger">Belum Absen</span>' !!}</td>
-                                            <td>{!! $d->jam_out != null ? $jam_out : '<span class="danger">Belum Absen</span>' !!}</td>
+                                            <td>{!! $d->jam_in != null ? $jam_in : '<span class="danger">Belum Absen</span>' !!}
+                                                @if (!empty($d->kode_izin_terlambat))
+                                                (Izin)
+                                                @endif
+                                            </td>
+                                            <td style="color:{{ $jam_out < $d->jam_pulang ? 'red' : '' }}">{!! $d->jam_out != null ? $jam_out : '<span class="danger">Belum Absen</span>' !!}
+                                                @if (!empty($pc))
+                                                (PC)
+                                                @endif
+                                                @if (!empty($d->kode_izin_pulang))
+                                                (Izin)
+                                                @endif
+                                            </td>
 
                                             <td>
                                                 @if ($status == "h")
@@ -279,8 +346,8 @@
                                                 {{ $terlambat }}
                                             </td>
                                             <td>{{ !empty($denda)  ? rupiah($denda) : '' }}</td>
-                                            <td></td>
-                                            <td>{{ $grandtotaljam }}</td>
+                                            <td>{{ $totaljamkeluar }}</td>
+                                            <td style="color:{{ $grandtotaljam < $d->total_jam ?  'red' : '' }}; text-align:center">{{ $grandtotaljam > 0 ? $grandtotaljam : 0 }}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>

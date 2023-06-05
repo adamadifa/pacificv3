@@ -66,12 +66,17 @@
             <x-inputtext label="Jam Terlambat" field="jam_terlambat" icon="feather icon-clock" />
         </div>
     </div>
-    <div class="row">
+    <div class="row" id="tanggal_form">
         <div class="col-6">
             <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker />
         </div>
         <div class="col-6">
             <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker />
+        </div>
+    </div>
+    <div class="row" id="tanggal_form2">
+        <div class="col-12">
+            <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker />
         </div>
     </div>
     <div class="row" id="fileUpload1">
@@ -175,6 +180,9 @@
         hidejamkeluar();
         hidejamterlambat();
 
+        $("#tanggal_form").show();
+        $("#tanggal_form2").hide();
+
 
 
         $("#status").change(function() {
@@ -221,16 +229,20 @@
 
             if (jenis_izin == "PL" || jenis_izin == "KL" || jenis_izin == "TL") {
                 $("#jml_hari_frm").hide();
-                $("#frmPengajuanizin").find("#dari").val("{{ date('Y-m-d') }}");
-                $("#frmPengajuanizin").find("#sampai").val("{{ date('Y-m-d') }}");
-                $("#frmPengajuanizin").find("#dari").prop('disabled', true);
-                $("#frmPengajuanizin").find("#sampai").prop('disabled', true);
+                $("#tanggal_form").hide();
+                $("#tanggal_form2").show();
+                // $("#frmPengajuanizin").find("#dari").val("{{ date('Y-m-d') }}");
+                // $("#frmPengajuanizin").find("#sampai").val("{{ date('Y-m-d') }}");
+                // $("#frmPengajuanizin").find("#dari").prop('disabled', true);
+                // $("#frmPengajuanizin").find("#sampai").prop('disabled', true);
             } else {
                 $("#jml_hari_frm").show();
-                $("#frmPengajuanizin").find("#dari").val("");
-                $("#frmPengajuanizin").find("#sampai").val("");
-                $("#frmPengajuanizin").find("#dari").prop('disabled', false);
-                $("#frmPengajuanizin").find("#sampai").prop('disabled', false);
+                $("#tanggal_form").show();
+                $("#tanggal_form2").hide();
+                // $("#frmPengajuanizin").find("#dari").val("");
+                // $("#frmPengajuanizin").find("#sampai").val("");
+                // $("#frmPengajuanizin").find("#dari").prop('disabled', false);
+                // $("#frmPengajuanizin").find("#sampai").prop('disabled', false);
             }
         });
 

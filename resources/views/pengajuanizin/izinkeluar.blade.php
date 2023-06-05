@@ -148,7 +148,7 @@
                                                         @if (empty($d->jam_masuk))
                                                         <a href="#" class="updatejammasuk" kode_izin="{{ $d->kode_izin }}"><i class="fa fa-history text-warning"></i></a>
                                                         @else
-                                                        {{ $d->jam_masuk }}
+                                                        <a href="#" class="updatejammasuk" kode_izin="{{ $d->kode_izin }}">{{ $d->jam_masuk }}</a>
                                                         @endif
                                                     </td>
                                                     <td>{{ $d->keterangan }}</td>
@@ -172,10 +172,27 @@
                                                     </td>
                                                     <td>
                                                         <div class="btn-group" role="group" aria-label="Basic example">
+                                                            @if ($level != "manager hrd")
+                                                            @if (empty($d->head_dept) && empty($d->hrd))
                                                             <a href="#" class="approveizin" kode_izin="{{ $d->kode_izin }}">
                                                                 <i class="feather icon-external-link text-primary"></i>
                                                             </a>
-                                                            @if (empty($d->head_dept))
+                                                            @elseif(!empty($d->head_dept) && empty($d->hrd))
+                                                            <a href="/izinkeluar/{{ $d->kode_izin }}/batalkan" class="warning">Batalkan</a>
+                                                            @endif
+                                                            @else
+                                                            @if (!empty($d->head_dept) && empty($d->hrd))
+                                                            <a href="#" class="approveizin" kode_izin="{{ $d->kode_izin }}">
+                                                                <i class="feather icon-external-link text-primary"></i>
+                                                            </a>
+                                                            @elseif(empty($d->head_dept))
+                                                            <span class="badge bg-warning">Waiting</span>
+                                                            @elseif(!empty($d->hrd))
+                                                            <a href="/izinkeluar/{{ $d->kode_izin }}/batalkan" class="warning">Batalkan</a>
+                                                            @endif
+                                                            @endif
+
+                                                            @if (empty($d->head_dept) && $level != "manager hrd")
                                                             <form method="POST" class="deleteform" action="/pengajuanizin/{{Crypt::encrypt($d->kode_izin)}}/delete">
                                                                 @csrf
                                                                 @method('DELETE')
@@ -286,15 +303,13 @@
 @push('myscript')
 <script>
     $(function() {
-        $("#jam_masuk_kk").datetimepicker({
-            format: 'HH:mm'
-        });
+        $('#jam_masuk_kk').mask('00:00');
         $("#buatizin").click(function(e) {
             $('#mdlbuatizin').modal({
                 backdrop: 'static'
                 , keyboard: false
             });
-            $("#loadbuatizin").load('/pengajuanizin/create');
+            $("#loadbuatizin").load('/pengajuanizin/createizinkeluar');
         });
         $(".approveizin").click(function(e) {
             $("#mdlapprove").modal("show");

@@ -168,10 +168,27 @@
                                                     </td>
                                                     <td>
                                                         <div class="btn-group" role="group" aria-label="Basic example">
+                                                            @if ($level != "manager hrd")
+                                                            @if (empty($d->head_dept) && empty($d->hrd))
                                                             <a href="#" class="approveizin" kode_izin="{{ $d->kode_izin }}">
                                                                 <i class="feather icon-external-link text-primary"></i>
                                                             </a>
-                                                            @if (empty($d->head_dept))
+                                                            @elseif(!empty($d->head_dept) && empty($d->hrd))
+                                                            <a href="/koreksipresensi/{{ $d->kode_izin }}/batalkan" class="warning">Batalkan</a>
+                                                            @endif
+                                                            @else
+                                                            @if (!empty($d->head_dept) && empty($d->hrd))
+                                                            <a href="#" class="approveizin" kode_izin="{{ $d->kode_izin }}">
+                                                                <i class="feather icon-external-link text-primary"></i>
+                                                            </a>
+                                                            @elseif(empty($d->head_dept))
+                                                            <span class="badge bg-warning">Waiting</span>
+                                                            @elseif(!empty($d->hrd))
+                                                            <a href="/koreksipresensi/{{ $d->kode_izin }}/batalkan" class="warning">Batalkan</a>
+                                                            @endif
+                                                            @endif
+
+                                                            @if (empty($d->head_dept) && $level != "manager hrd")
                                                             <form method="POST" class="deleteform" action="/pengajuanizin/{{Crypt::encrypt($d->kode_izin)}}/delete">
                                                                 @csrf
                                                                 @method('DELETE')

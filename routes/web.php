@@ -1622,13 +1622,24 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/pengajuanizin/approveizinkeluar', [PengajuanizinController::class, 'approveizinkeluar']);
     Route::post('/pengajuanizin/approveizinterlambat', [PengajuanizinController::class, 'approveizinterlambat']);
     Route::get('/pengajuanizin/create', [PengajuanizinController::class, 'create']);
+    Route::get('/pengajuanizin/createizinterlambat', [PengajuanizinController::class, 'createizinterlambat']);
+    Route::get('/pengajuanizin/createizinabsen', [PengajuanizinController::class, 'createizinabsen']);
+    Route::get('/pengajuanizin/createizinkeluar', [PengajuanizinController::class, 'createizinkeluar']);
+    Route::get('/pengajuanizin/createizinpulang', [PengajuanizinController::class, 'createizinpulang']);
+    Route::get('/pengajuanizin/createizinsakit', [PengajuanizinController::class, 'createizinsakit']);
+    Route::get('/pengajuanizin/createizincuti', [PengajuanizinController::class, 'createizincuti']);
     Route::get('/pengajuanizin/createkoreksi', [PengajuanizinController::class, 'createkoreksi']);
     Route::post('/pengajuanizin/store', [PengajuanizinController::class, 'store']);
     Route::post('/pengajuanizin/storekoreksipresensi', [PengajuanizinController::class, 'storekoreksipresensi']);
     Route::delete('/pengajuanizin/{kode_izin}/delete', [PengajuanizinController::class, 'delete']);
     Route::post('/pengajuanizin/updatejammasukkk', [PengajuanizinController::class, 'updatejammasukkk']);
     Route::post('/pengajuanizin/getpresensihariini', [PengajuanizinController::class, 'getpresensihariini']);
-
+    Route::get('/koreksipresensi/{kode_izin}/batalkan', [PengajuanizinController::class, 'batalkankoreksipresensi']);
+    Route::get('/izinterlambat/{kode_izin}/batalkan', [PengajuanizinController::class, 'batalkanizinterlambat']);
+    Route::get('/izinkeluar/{kode_izin}/batalkan', [PengajuanizinController::class, 'batalkanizinkeluar']);
+    Route::get('/izinpulang/{kode_izin}/batalkan', [PengajuanizinController::class, 'batalkanizinpulang']);
+    Route::get('/izinabsen/{kode_izin}/batalkan', [PengajuanizinController::class, 'batalkan']);
+    Route::get('/sakit/{kode_izin}/batalkan', [PengajuanizinController::class, 'batalkan']);
     //Jadwal Kerja
     Route::get('/jadwalkerja', [JadwalkerjaController::class, 'index']);
     Route::post('/jadwalkerja/pindahjadwal', [JadwalkerjaController::class, 'pindahjadwal']);

@@ -76,55 +76,75 @@
 
             var start = new Date(hariini);
             var end = new Date(tgl_presensi);
-            //alert(start);
-            if (end.getTime() < start.getTime()) {
-                $.ajax({
-                    url: '/pengajuanizin/getpresensihariini'
-                    , type: 'POST'
-                    , data: {
-                        _token: "{{ csrf_token() }}"
-                        , tgl_presensi: tgl_presensi
-                        , nik: nik
-                    }
-                    , cache: false
-                    , success: function(respond) {
-                        var data = respond.split("|");
-                        $("#jam_masuk").val(data[0]);
-                        $("#jam_masuk_old").val(data[0]);
-                        $("#jam_pulang").val(data[1]);
-                        $("#jam_pulang_old").val(data[1]);
-                        $("#kode_jadwal_old").val(data[2]);
-                        var $select = $('#kode_jadwal').selectize();
-                        var control = $select[0].selectize;
-                        control.setValue(data[2]);
-
-                    }
-                });
-            } else {
-                if (tgl_presensi != "") {
-                    swal({
-                        title: 'Oops'
-                        , text: 'Data Presensi yang dapat diubah, Hanya Data Persensi Sebelum Tanggal Hari ini !'
-                        , icon: 'warning'
-                        , showConfirmButton: false
-                    }).then(function() {
-                        $("#jam_masuk").val("");
-                        $("#jam_masuk_old").val("");
-                        $("#jam_pulang").val("");
-                        $("#jam_pulang_old").val("");
-                        $("#kode_jadwal_old").val("");
-                        var $select = $('#kode_jadwal').selectize();
-                        var control = $select[0].selectize;
-                        control.setValue("");
-                    });
-                    return false;
+            $.ajax({
+                url: '/pengajuanizin/getpresensihariini'
+                , type: 'POST'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , tgl_presensi: tgl_presensi
+                    , nik: nik
                 }
+                , cache: false
+                , success: function(respond) {
+                    var data = respond.split("|");
+                    $("#jam_masuk").val(data[0]);
+                    $("#jam_masuk_old").val(data[0]);
+                    $("#jam_pulang").val(data[1]);
+                    $("#jam_pulang_old").val(data[1]);
+                    $("#kode_jadwal_old").val(data[2]);
+                    var $select = $('#kode_jadwal').selectize();
+                    var control = $select[0].selectize;
+                    control.setValue(data[2]);
 
-            }
+                }
+            });
+            //alert(start);
+            // if (end.getTime() < start.getTime()) {
+            //     $.ajax({
+            //         url: '/pengajuanizin/getpresensihariini'
+            //         , type: 'POST'
+            //         , data: {
+            //             _token: "{{ csrf_token() }}"
+            //             , tgl_presensi: tgl_presensi
+            //             , nik: nik
+            //         }
+            //         , cache: false
+            //         , success: function(respond) {
+            //             var data = respond.split("|");
+            //             $("#jam_masuk").val(data[0]);
+            //             $("#jam_masuk_old").val(data[0]);
+            //             $("#jam_pulang").val(data[1]);
+            //             $("#jam_pulang_old").val(data[1]);
+            //             $("#kode_jadwal_old").val(data[2]);
+            //             var $select = $('#kode_jadwal').selectize();
+            //             var control = $select[0].selectize;
+            //             control.setValue(data[2]);
+
+            //         }
+            //     });
+            // } else {
+            //     if (tgl_presensi != "") {
+            //         swal({
+            //             title: 'Oops'
+            //             , text: 'Data Presensi yang dapat diubah, Hanya Data Persensi Sebelum Tanggal Hari ini !'
+            //             , icon: 'warning'
+            //             , showConfirmButton: false
+            //         }).then(function() {
+            //             $("#jam_masuk").val("");
+            //             $("#jam_masuk_old").val("");
+            //             $("#jam_pulang").val("");
+            //             $("#jam_pulang_old").val("");
+            //             $("#kode_jadwal_old").val("");
+            //             var $select = $('#kode_jadwal').selectize();
+            //             var control = $select[0].selectize;
+            //             control.setValue("");
+            //         });
+            //         return false;
+            //     }
+
+            // }
         }
-        $("#jam_masuk,#jam_pulang").datetimepicker({
-            format: 'HH:mm'
-        });
+        $('#jam_masuk,#jam_pulang').mask('00:00');
 
 
         $("#nik,#kode_jadwal").selectize();
