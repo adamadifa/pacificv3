@@ -660,6 +660,14 @@
                                     <span class="menu-item danger">Penjualan (PPN)</span>
                                 </a>
                             </li>
+                            @if (Auth::user()->kode_cabang=="BKI")
+                            <li class="{{ request()->is(['inputpenjualanv2']) ? 'active' : '' }}">
+                                <a href="/inputpenjualanv2">
+                                    <i class="feather icon-shopping-cart"></i>
+                                    <span class="menu-item">Input Penjualan</span>
+                                </a>
+                            </li>
+                            @endif
                             @else
                             <li class="{{ request()->is(['inputpenjualanv2']) ? 'active' : '' }}">
                                 <a href="/inputpenjualanv2">

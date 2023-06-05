@@ -154,7 +154,7 @@ class GlobalProvider extends ServiceProvider
                 $pi = null;
             }
 
-            $cabangpkp = ['TSM', 'BDG', 'PWT', 'BGR', 'BKI'];
+            $cabangpkp = ['TSM', 'BDG', 'PWT', 'BGR'];
 
             if ($level == "salesman") {
                 if (in_array($getcbg, $cabangpkp)) {
