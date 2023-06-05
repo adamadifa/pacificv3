@@ -129,7 +129,7 @@ class PembayaranController extends Controller
 
     public function edit(Request $request)
     {
-        $kode_cabang = $request->kode_cabang;
+        $kode_cabang = Auth::user()->kode_cabang;
         $salesman = DB::table('karyawan')->where('kode_cabang', $kode_cabang)->get();
         $girotolak = DB::table('giro')
             ->select('giro.id_giro', 'no_giro')
