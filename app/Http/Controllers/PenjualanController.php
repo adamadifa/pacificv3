@@ -2799,7 +2799,7 @@ class PenjualanController extends Controller
             ->where('retur.no_fak_penj', $no_fak_penj)
             ->orderBy('retur.no_retur_penj')
             ->get();
-        $salesman = DB::table('karyawan')->where('kode_cabang', $data->kode_cabang)->where('status_aktif_sales', 1)->get();
+        $salesman = DB::table('karyawan')->where('kode_cabang', Auth::user()->kode_cabang)->where('status_aktif_sales', 1)->get();
         $girotolak = DB::table('giro')
             ->select('giro.id_giro', 'no_giro')
             ->leftJoin(
