@@ -209,7 +209,7 @@ class PenjualanController extends Controller
                 if ($request->status == 1) {
                     $query->where('status', $request->status);
                 } else if ($request->status == 2) {
-                    $query->whereRaw('MID(no_fak_penj,4,2)="PR"');
+                    $query->whereRaw('MID(penjualan.no_fak_penj,4,2)="PR"');
                 }
             }
 
