@@ -140,6 +140,7 @@
                                         // Jam Masuk adalah Jam Masuk Seharusnya
                                         $jam_in = date("H:i", strtotime($d->jam_in));
                                         $jam_out = date("H:i", strtotime($d->jam_out));
+                                        $jam_istirahat = date("H:i",strtotime($d->jam_istriahat))
                                         $jam_pulang = date("H:i", strtotime($d->jam_pulang));
                                         $jam_masuk = $d->tgl_presensi . " " . $d->jam_masuk;
                                         $status = $d->status_presensi;
@@ -291,7 +292,7 @@
 
                                         if (!empty($d->jam_out)) {
                                             if ($jam_out < $jam_pulang) {
-                                                if($jam_out > "12:30"){
+                                                if($jam_out > $jam_istirahat){
                                                     $desimalmenit = ($menit * 100) / 60;
                                                     $grandtotaljam = $jam-1 . "." . $menit;
                                                 }else{

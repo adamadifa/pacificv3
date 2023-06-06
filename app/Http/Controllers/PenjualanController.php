@@ -4426,6 +4426,7 @@ class PenjualanController extends Controller
         IFNULL(penjbulanini.ppn,0) AS ppn,
         (IFNULL(totalpf,0)-IFNULL(totalgb,0)) AS totalretur,
         IFNULL(penjbulanini.total,0) -(IFNULL(totalpf,0)-IFNULL(totalgb,0))  AS piutangbulanini,
+
         (ifnull(penjualan.total,0) - (ifnull(totalpf_last,0)-ifnull(totalgb_last,0))) AS totalpiutang,
         ifnull(bayarsebelumbulanini,0) AS bayarsebelumbulanini,lastpayment,
         ifnull(bayarbulanini,0) AS bayarbulanini");

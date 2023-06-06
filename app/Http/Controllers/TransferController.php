@@ -166,33 +166,36 @@ class TransferController extends Controller
             $id_transfer[] = $d->id_transfer;
         }
 
-        if ($cabang == 'TSM') {
-            $akun = "1-1468";
-        } else if ($cabang == 'BDG') {
-            $akun = "1-1402";
-        } else if ($cabang == 'BGR') {
-            $akun = "1-1403";
-        } else if ($cabang == 'PWT') {
-            $akun = "1-1404";
-        } else if ($cabang == 'TGL') {
-            $akun = "1-1405";
-        } else if ($cabang == "SKB") {
-            $akun = "1-1407";
-        } else if ($cabang == "GRT") {
-            $akun = "1-1487";
-        } else if ($cabang == "SMR") {
-            $akun = "1-1488";
-        } else if ($cabang == "SBY") {
-            $akun = "1-1486";
-        } else if ($cabang == "PST") {
-            $akun = "1-1489";
-        } else if ($cabang == "KLT") {
-            $akun = "1-1490";
-        } else if ($cabang == "PWK") {
-            $akun = "1-1492";
-        } else if ($cabang == "BTN") {
-            $akun = "1-1493";
-        }
+        // if ($cabang == 'TSM') {
+        //     $akun = "1-1468";
+        // } else if ($cabang == 'BDG') {
+        //     $akun = "1-1402";
+        // } else if ($cabang == 'BGR') {
+        //     $akun = "1-1403";
+        // } else if ($cabang == 'PWT') {
+        //     $akun = "1-1404";
+        // } else if ($cabang == 'TGL') {
+        //     $akun = "1-1405";
+        // } else if ($cabang == "SKB") {
+        //     $akun = "1-1407";
+        // } else if ($cabang == "GRT") {
+        //     $akun = "1-1487";
+        // } else if ($cabang == "SMR") {
+        //     $akun = "1-1488";
+        // } else if ($cabang == "SBY") {
+        //     $akun = "1-1486";
+        // } else if ($cabang == "PST") {
+        //     $akun = "1-1489";
+        // } else if ($cabang == "KLT") {
+        //     $akun = "1-1490";
+        // } else if ($cabang == "PWK") {
+        //     $akun = "1-1492";
+        // } else if ($cabang == "BTN") {
+        //     $akun = "1-1493";
+        // }
+
+
+        $akun = getAkunpiutangcabang($cabang);
 
         DB::beginTransaction();
         try {
