@@ -365,33 +365,33 @@ class PinjamanController extends Controller
             //0811211451 Ardi
 
             $notmanagement = config('global.show_for_hrd');
-            $data = [
-                'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
-                'sender' => '6289670444321',
-                'number' => '087708590299',
-                'message' => '*' . $nik . "-" . $karyawan->nama_karyawan . '*, dari Departemen ' . $karyawan->nama_dept . ' Mengajukan Pinjaman dengan Nomor Pinjaman *' . $no_pinjaman . '* dan total pinjaman *' . $request->jml_pinjaman . '* Menunggu untuk Segera di proses.'
-            ];
+            // $data = [
+            //     'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
+            //     'sender' => '6289670444321',
+            //     'number' => '087708590299',
+            //     'message' => '*' . $nik . "-" . $karyawan->nama_karyawan . '*, dari Departemen ' . $karyawan->nama_dept . ' Mengajukan Pinjaman dengan Nomor Pinjaman *' . $no_pinjaman . '* dan total pinjaman *' . $request->jml_pinjaman . '* Menunggu untuk Segera di proses.'
+            // ];
 
-            $rani = [
-                'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
-                'sender' => '6289670444321',
-                'number' => '081221403962',
-                'message' => '*' . $nik . "-" . $karyawan->nama_karyawan . '*, dari Departemen ' . $karyawan->nama_dept . ' Mengajukan Pinjaman dengan Nomor Pinjaman *' . $no_pinjaman . '* dan total pinjaman *' . $request->jml_pinjaman . '* Menunggu untuk Segera di proses.'
-            ];
+            // $rani = [
+            //     'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
+            //     'sender' => '6289670444321',
+            //     'number' => '081221403962',
+            //     'message' => '*' . $nik . "-" . $karyawan->nama_karyawan . '*, dari Departemen ' . $karyawan->nama_dept . ' Mengajukan Pinjaman dengan Nomor Pinjaman *' . $no_pinjaman . '* dan total pinjaman *' . $request->jml_pinjaman . '* Menunggu untuk Segera di proses.'
+            // ];
 
-            $siska = [
-                'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
-                'sender' => '6289670444321',
-                'number' => '085942091886',
-                'message' => '*' . $nik . "-" . $karyawan->nama_karyawan . '*, dari Departemen ' . $karyawan->nama_dept . ' Mengajukan Pinjaman dengan Nomor Pinjaman *' . $no_pinjaman . '* dan total pinjaman *' . $request->jml_pinjaman . '* Menunggu untuk Segera di proses.'
-            ];
+            // $siska = [
+            //     'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
+            //     'sender' => '6289670444321',
+            //     'number' => '085942091886',
+            //     'message' => '*' . $nik . "-" . $karyawan->nama_karyawan . '*, dari Departemen ' . $karyawan->nama_dept . ' Mengajukan Pinjaman dengan Nomor Pinjaman *' . $no_pinjaman . '* dan total pinjaman *' . $request->jml_pinjaman . '* Menunggu untuk Segera di proses.'
+            // ];
 
-            $ardi = [
-                'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
-                'sender' => '6289670444321',
-                'number' => '0811211451',
-                'message' => '*' . $nik . "-" . $karyawan->nama_karyawan . '*, dari Departemen ' . $karyawan->nama_dept . ' Mengajukan Pinjaman dengan Nomor Pinjaman *' . $no_pinjaman . '* dan total pinjaman *' . $request->jml_pinjaman . '* Menunggu untuk Segera di proses.'
-            ];
+            // $ardi = [
+            //     'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
+            //     'sender' => '6289670444321',
+            //     'number' => '0811211451',
+            //     'message' => '*' . $nik . "-" . $karyawan->nama_karyawan . '*, dari Departemen ' . $karyawan->nama_dept . ' Mengajukan Pinjaman dengan Nomor Pinjaman *' . $no_pinjaman . '* dan total pinjaman *' . $request->jml_pinjaman . '* Menunggu untuk Segera di proses.'
+            // ];
 
             if (!in_array($karyawan->id_jabatan, $notmanagement)) {
                 // $curl = curl_init();
@@ -626,33 +626,33 @@ class PinjamanController extends Controller
             DB::table('pinjaman')->where('no_pinjaman', $no_pinjaman)->update([
                 'status' => 1
             ]);
-            $data = [
-                'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
-                'sender' => '6289670444321',
-                'number' => '082218770017',
-                'message' => '*' . $pinjaman->nama_karyawan . '*, Ajuan Pinjaman dengan Nomor Pinjaman *' . $pinjaman->no_pinjaman . '* dengan total pinjaman *' . rupiah($pinjaman->jumlah_pinjaman) . '* sudah di proses oleh bagian keuangan, silahkan tunggu 1 x 24 jam untuk proses pencairan dana ke rekening.'
-            ];
-            $curl = curl_init();
+            // $data = [
+            //     'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
+            //     'sender' => '6289670444321',
+            //     'number' => '082218770017',
+            //     'message' => '*' . $pinjaman->nama_karyawan . '*, Ajuan Pinjaman dengan Nomor Pinjaman *' . $pinjaman->no_pinjaman . '* dengan total pinjaman *' . rupiah($pinjaman->jumlah_pinjaman) . '* sudah di proses oleh bagian keuangan, silahkan tunggu 1 x 24 jam untuk proses pencairan dana ke rekening.'
+            // ];
+            // $curl = curl_init();
 
-            curl_setopt_array($curl, array(
-                CURLOPT_URL => 'https://wa.pedasalami.com/send-message',
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => '',
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => 'POST',
-                CURLOPT_POSTFIELDS => json_encode($data),
-                CURLOPT_HTTPHEADER => array(
-                    'Content-Type: application/json'
-                ),
-            ));
+            // curl_setopt_array($curl, array(
+            //     CURLOPT_URL => 'https://wa.pedasalami.com/send-message',
+            //     CURLOPT_RETURNTRANSFER => true,
+            //     CURLOPT_ENCODING => '',
+            //     CURLOPT_MAXREDIRS => 10,
+            //     CURLOPT_TIMEOUT => 0,
+            //     CURLOPT_FOLLOWLOCATION => true,
+            //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            //     CURLOPT_CUSTOMREQUEST => 'POST',
+            //     CURLOPT_POSTFIELDS => json_encode($data),
+            //     CURLOPT_HTTPHEADER => array(
+            //         'Content-Type: application/json'
+            //     ),
+            // ));
 
-            $response = curl_exec($curl);
+            // $response = curl_exec($curl);
 
-            curl_close($curl);
-            echo $response;
+            // curl_close($curl);
+            // echo $response;
 
             return Redirect::back()->with(['success' => 'Data Berhasil Di Update']);
         } catch (\Exception $e) {
@@ -762,32 +762,32 @@ class PinjamanController extends Controller
                         'status_validasi' => 1,
                     ]);
                 if (!empty($no_hp)) {
-                    $data = [
-                        'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
-                        'sender' => '6289670444321',
-                        'number' => $no_hp,
-                        'message' => '*' . $pinjaman->nama_karyawan . '*, Ajuan Pinjaman dengan Nomor Pinjaman *' . $pinjaman->no_pinjaman . '* dengan total pinjaman *' . rupiah($pinjaman->jumlah_pinjaman) . '* sudah di proses oleh bagian keuangan, silahkan tunggu 1 x 24 jam untuk proses pencairan dana ke rekening.'
-                    ];
-                    $curl = curl_init();
+                    // $data = [
+                    //     'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
+                    //     'sender' => '6289670444321',
+                    //     'number' => $no_hp,
+                    //     'message' => '*' . $pinjaman->nama_karyawan . '*, Ajuan Pinjaman dengan Nomor Pinjaman *' . $pinjaman->no_pinjaman . '* dengan total pinjaman *' . rupiah($pinjaman->jumlah_pinjaman) . '* sudah di proses oleh bagian keuangan, silahkan tunggu 1 x 24 jam untuk proses pencairan dana ke rekening.'
+                    // ];
+                    // $curl = curl_init();
 
-                    curl_setopt_array($curl, array(
-                        CURLOPT_URL => 'https://wa.pedasalami.com/send-message',
-                        CURLOPT_RETURNTRANSFER => true,
-                        CURLOPT_ENCODING => '',
-                        CURLOPT_MAXREDIRS => 10,
-                        CURLOPT_TIMEOUT => 0,
-                        CURLOPT_FOLLOWLOCATION => true,
-                        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                        CURLOPT_CUSTOMREQUEST => 'POST',
-                        CURLOPT_POSTFIELDS => json_encode($data),
-                        CURLOPT_HTTPHEADER => array(
-                            'Content-Type: application/json'
-                        ),
-                    ));
+                    // curl_setopt_array($curl, array(
+                    //     CURLOPT_URL => 'https://wa.pedasalami.com/send-message',
+                    //     CURLOPT_RETURNTRANSFER => true,
+                    //     CURLOPT_ENCODING => '',
+                    //     CURLOPT_MAXREDIRS => 10,
+                    //     CURLOPT_TIMEOUT => 0,
+                    //     CURLOPT_FOLLOWLOCATION => true,
+                    //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    //     CURLOPT_CUSTOMREQUEST => 'POST',
+                    //     CURLOPT_POSTFIELDS => json_encode($data),
+                    //     CURLOPT_HTTPHEADER => array(
+                    //         'Content-Type: application/json'
+                    //     ),
+                    // ));
 
-                    $response = curl_exec($curl);
+                    // $response = curl_exec($curl);
 
-                    curl_close($curl);
+                    // curl_close($curl);
                 }
             } else if ($status == 2) {
                 DB::table('pinjaman')->where('no_pinjaman', $no_pinjaman)->update([
