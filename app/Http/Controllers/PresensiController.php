@@ -17,7 +17,7 @@ class PresensiController extends Controller
         $tanggal = !empty($request->tanggal) ? $request->tanggal : date('Y-m-d');
         // $tanggal = date("Y-m-d");
         $query = Karyawan::query();
-        $query->select('master_karyawan.nik', 'nama_karyawan', 'tgl_masuk', 'master_karyawan.kode_dept', 'nama_dept', 'jenis_kelamin', 'nama_jabatan', 'id_perusahaan', 'id_kantor', 'klasifikasi', 'status_karyawan', 'nama_jadwal', 'jam_kerja.jam_masuk', 'jam_kerja.jam_pulang', 'jam_in', 'jam_out', 'presensi.status as status_presensi', 'presensi.kode_izin', 'kode_izin_terlambat', 'tgl_presensi', 'pengajuan_izin.status as status_izin', 'pengajuan_izin.jenis_izin', 'pengajuan_izin.jam_keluar', 'pengajuan_izin.jam_masuk as jam_masuk_kk', 'total_jam', 'kode_izin_pulang', 'jam_istirahat');
+        $query->select('master_karyawan.nik', 'nama_karyawan', 'tgl_masuk', 'master_karyawan.kode_dept', 'nama_dept', 'jenis_kelamin', 'nama_jabatan', 'id_perusahaan', 'id_kantor', 'klasifikasi', 'status_karyawan', 'nama_jadwal', 'jam_kerja.jam_masuk', 'jam_kerja.jam_pulang', 'jam_in', 'jam_out', 'presensi.status as status_presensi', 'presensi.kode_izin', 'kode_izin_terlambat', 'tgl_presensi', 'pengajuan_izin.status as status_izin', 'pengajuan_izin.jenis_izin', 'pengajuan_izin.jam_keluar', 'pengajuan_izin.jam_masuk as jam_masuk_kk', 'total_jam', 'kode_izin_pulang', 'jam_istirahat', 'jam_awal_istirahat', 'sid');
         $query->leftjoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
         $query->leftjoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
 
@@ -34,21 +34,8 @@ class PresensiController extends Controller
             }
         );
         $query->leftjoin('pengajuan_izin', 'presensi.kode_izin', '=', 'pengajuan_izin.kode_izin');
-        $query->leftJoin(
-            DB::raw("(
-            SELECT
-                jadwal_kerja_detail.kode_jadwal,nama_jadwal,kode_jam_kerja
-            FROM
-                jadwal_kerja_detail
-            INNER JOIN jadwal_kerja ON jadwal_kerja_detail.kode_jadwal = jadwal_kerja.kode_jadwal
-            GROUP BY
-            jadwal_kerja_detail.kode_jadwal,nama_jadwal,kode_jam_kerja
-            ) jadwal"),
-            function ($join) {
-                $join->on('presensi.kode_jadwal', '=', 'jadwal.kode_jadwal');
-                $join->on('presensi.kode_jam_kerja', '=', 'jadwal.kode_jam_kerja');
-            }
-        );
+
+        $query->leftjoin('jadwal_kerja', 'presensi.kode_jadwal', '=', 'jadwal_kerja.kode_jadwal');
         $query->leftjoin('jam_kerja', 'presensi.kode_jam_kerja', '=', 'jam_kerja.kode_jam_kerja');
         if (!empty($nama_karyawan)) {
             $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');

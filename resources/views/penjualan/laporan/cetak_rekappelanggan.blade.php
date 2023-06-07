@@ -69,6 +69,7 @@
                 <td rowspan="2">Nama Pelanggan</td>
                 <td rowspan="2">Pasar</td>
                 <td colspan="17">Produk</td>
+                <td rowspan="2">JML SKU</td>
             </tr>
             <tr>
                 <td>AB</td>
@@ -188,6 +189,7 @@
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP500)) {
 																		echo desimal($p->SP500);
 																	} ?></td>
+                <td>{{ $p->jml_sku }}</td>
 
             </tr>
 

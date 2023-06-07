@@ -281,6 +281,10 @@ class PengajuanizinController extends Controller
         $level = Auth::user()->level;
         $status_approve = $data->status_approved;
         if (isset($request->approve)) {
+            $cekpresensi =  DB::table('presensi')->where('nik', $nik)->where('tgl_presensi', $dari)->count();
+            if (empty($cekpresensi)) {
+                return Redirect::back()->with(['warning' => 'Karyawan Tersebut Belum Melakukan Presensi, Silahkan Lakukan Presensi Terlebih Dahulu, atau Input di Koreksi Presensi']);
+            }
             try {
                 if ($level != "manager hrd") {
                     DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
@@ -362,7 +366,7 @@ class PengajuanizinController extends Controller
         try {
             if ($level != "manager hrd") {
                 DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
-                    'head_dept' => 2
+                    'head_dept' => null
                 ]);
             } else {
                 try {
@@ -395,18 +399,20 @@ class PengajuanizinController extends Controller
         $kode_izin = $request->kode_izin;
         $data = DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->first();
         $dari = $data->dari;
-        $sampai = $data->sampai;
         $nik = $data->nik;
-        $status = $data->status;
         $kode_izin = $data->kode_izin;
-        $hariini = date("Y-m-d");
-        $jam_pulang = $hariini . " " . $data->jam_pulang;
+
+
 
 
         //dd($jam_pulang);
         $level = Auth::user()->level;
         $status_approve = $data->status_approved;
         if (isset($request->approve)) {
+            $cekpresensi =  DB::table('presensi')->where('nik', $nik)->where('tgl_presensi', $dari)->count();
+            if (empty($cekpresensi)) {
+                return Redirect::back()->with(['warning' => 'Karyawan Tersebut Belum Melakukan Presensi, Silahkan Lakukan Presensi Terlebih Dahulu, atau Input di Koreksi Presensi']);
+            }
             try {
                 if ($level != "manager hrd") {
                     DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
@@ -701,6 +707,10 @@ class PengajuanizinController extends Controller
         $level = Auth::user()->level;
         $status_approve = $data->status_approved;
         if (isset($request->approve)) {
+            $cekpresensi =  DB::table('presensi')->where('nik', $nik)->where('tgl_presensi', $dari)->count();
+            if (empty($cekpresensi)) {
+                return Redirect::back()->with(['warning' => 'Karyawan Tersebut Belum Melakukan Presensi, Silahkan Lakukan Presensi Terlebih Dahulu, atau Input di Koreksi Presensi']);
+            }
             try {
                 if ($level != "manager hrd") {
                     DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([

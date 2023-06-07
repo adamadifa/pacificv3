@@ -140,9 +140,11 @@
                                         // Jam Masuk adalah Jam Masuk Seharusnya
                                         $jam_in = date("H:i", strtotime($d->jam_in));
                                         $jam_out = date("H:i", strtotime($d->jam_out));
-                                        $jam_istirahat = date("H:i",strtotime($d->jam_istriahat))
+                                        $jam_istirahat = date("H:i",strtotime($d->jam_istirahat));
                                         $jam_pulang = date("H:i", strtotime($d->jam_pulang));
                                         $jam_masuk = $d->tgl_presensi . " " . $d->jam_masuk;
+                                        $jam_awal_istirahat = $d->tgl_presensi. " ".$d->jam_awal_istirahat;
+                                        $jam_akhir_istirahat = $d->tgl_presensi. " ".$d->jam_istirahat;
                                         $status = $d->status_presensi;
                                         if (!empty($d->jam_in)) {
                                             if ($jam_in > $d->jam_masuk) {
@@ -263,10 +265,19 @@
                                         }
 
                                          //Menghitung total Jam
+                                        if($d->jam_out > $jam_awal_istirahat && $d->jam_out < $jam_akhir_istirahat){
+                                            $jout = $jam_awal_istirahat;
+                                        }else{
+                                            $jout = $d->jam_out;
+                                        }
+
+
+
+                                        //echo $jam_awal_istirahat."|";
                                         $awal = strtotime($jam_masuk);
-                                        $akhir = strtotime($d->jam_out);
+                                        $akhir = strtotime($jout);
                                         $diff = $akhir - $awal;
-                                        if (empty($d->jam_out)) {
+                                        if (empty($jout)) {
                                             $jam = 0;
                                             $menit = 0;
                                         } else {
@@ -292,23 +303,28 @@
 
                                         if (!empty($d->jam_out)) {
                                             if ($jam_out < $jam_pulang) {
-                                                if($jam_out > $jam_istirahat){
-                                                    $desimalmenit = ($menit * 100) / 60;
-                                                    $grandtotaljam = $jam-1 . "." . $menit;
+                                                if($jam_out > $jam_istirahat && !empty($d->jam_istirahat)){
+                                                    $desimalmenit = ROUND(($menit * 100) / 60);
+                                                    $grandtotaljam = $jam-1 . "." . $desimalmenit;
                                                 }else{
-                                                    $desimalmenit = ($menit * 100) / 60;
-                                                    $grandtotaljam = $jam . "." . $menit;
+                                                    $desimalmenit = ROUND(($menit * 100) / 60);
+                                                    $grandtotaljam = $jam . "." . $desimalmenit;
                                                 }
 
                                                 $grandtotaljam = $grandtotaljam - $jt - $jk;
                                             } else {
+                                                $desimalmenit = 0;
                                                 $grandtotaljam = $totaljam;
                                             }
                                         } else {
+                                            $desimalmenit = 0;
                                             $grandtotaljam = 0;
                                         }
 
-
+                                        //echo $jam."|";
+                                        //echo $jam.$menit;
+                                        //echo $jam_istirahat;
+                                        //echo $desimalmenit."|";
                                         ?>
                                         <tr>
                                             <td class="text-center">{{ $loop->iteration + $karyawan->firstItem()-1 }}</td>
@@ -340,10 +356,15 @@
                                                 @elseif($status=="c")
                                                 <span class="badge bg-warning">C</span>
                                                 @elseif($status=="s")
+                                                @if (!empty($d->sid))
+                                                <span class="badge bg-primary">SID</span>
+                                                @else
                                                 <span class="badge bg-primary">S</span>
                                                 @endif
+
+                                                @endif
                                             </td>
-                                            <td>
+                                            <td style="color:{{ $terlambat != "Tepat waktu" ? "red" : "green" }}">
                                                 {{ $terlambat }}
                                             </td>
                                             <td>{{ !empty($denda)  ? rupiah($denda) : '' }}</td>
