@@ -134,6 +134,7 @@
                 <th colspan="3" rowspan="2">PENETRASI SKU</th>
                 <th colspan="2" rowspan="2">PRODUKTIVITAS KENDARAAN</th>
                 <th colspan="2" rowspan="2">OUTLET AKTIF</th>
+                <th colspan="2" rowspan="2">KETEPATAN ROUTING</th>
                 <th colspan="2" rowspan="2">EFFECTIVE CALL</th>
                 <th rowspan="2" colspan="3" style="background-color: #9e9895;">CASH IN</th>
                 <th rowspan="2" colspan="3" style="background-color: #e43a90;">LJT</th>
@@ -174,7 +175,9 @@
                 <th style="background-color: #0daeff;">POIN</th>
                 <th style="background-color: #ff570d;">TOTAL POIN</th>
                 <th style="background-color: #ff570d;">REWARD</th>
-                <th> > 3 SKU</th>
+                <th> 3 SKU</th>
+                <th>PERSENTASE</th>
+                <th>REWARD</th>
                 <th>PERSENTASE</th>
                 <th>REWARD</th>
                 <th>PERSENTASE</th>
@@ -448,6 +451,10 @@
                         $rewardljt = 500000;
                     } else  if ($ratioljt > 0.20 and $ratioljt <= 0.40) {
                         $rewardljt = 375000;
+                    }else  if ($ratioljt > 0.40 and $ratioljt <= 0.60) {
+                        $rewardljt = 250000;
+                    }else  if ($ratioljt > 0.60 and $ratioljt <= 0.80) {
+                        $rewardljt = 125000;
                     } else {
                         $rewardljt = 0;
                     }
@@ -457,9 +464,7 @@
 
                 if($d->status_komisi == 1){
 
-                    if (round($totalpoin,2) <= 70) {
-                        $rewardpoin = 0;
-                    } else if (round($totalpoin,2) > 70 and round($totalpoin,2) <= 75) {
+                    if (round($totalpoin,2) >= 70 and round($totalpoin,2) <= 75) {
                         $rewardpoin = 500000;
                     } else if (round($totalpoin,2) > 75 and round($totalpoin,2) <= 80) {
                         $rewardpoin = 1000000;
@@ -478,40 +483,14 @@
                     $rewardpoin = 0;
                 }
 
-                $totalrewardpoin += $rewardpoin;
-                $totalrewardcashin += $rewardcashin;
-                $totalrewardljt += $rewardljt;
-                $totalreward = $rewardcashin + $rewardljt + $rewardpoin;
-                $grandtotalrewardsales += $totalreward;
-                $totaltargetBBDP += $d->target_BB_DP;
-                $totalrealisasiBBDP += $realisasi_BB_DEP;
 
-                $totaltargetDS += $d->target_DS;
-                $totalrealisasiDS += $realisasi_DS;
-
-                $totaltargetSP += $d->target_SP;
-                $totalrealisasiSP += $realisasi_SP;
-
-                $totaltargetAR += $d->target_AR;
-                $totalrealisasiAR += $realisasi_AR;
-
-                $totaltargetABASCG5 += $d->target_AB_AS_CG5;
-                $totalrealisasiABASCG5 += $realisasi_AB_AS_CG5;
-
-                $totaltargetSC += $d->target_SC;
-                $totalrealisasiSC += $realisasi_SC;
-
-                $totalcashin += $d->realisasi_cashin;
-                $totalsisapiutang += $d->sisapiutang;
 
 
                 $persentasesku = !empty($d->jmlpelanggan) ? ROUND($d->jmltigasku / $d->jmlpelanggan * 100) : 0;
 
                 if($d->status_komisi == 1){
 
-                    if ($persentasesku <= 65) {
-                        $rewardsku = 0;
-                    }else if ($persentasesku > 65 and $persentasesku  <= 70) {
+                     if ($persentasesku >= 65 and $persentasesku  <= 70) {
                         $rewardsku = 100000;
                     } else if ($persentasesku >= 70 and $persentasesku  <= 75) {
                         $rewardsku = 200000;
@@ -537,9 +516,7 @@
                 $transvsregister = $d->jmlpelanggan != null ? $d->jmltrans / $d->jmlpelanggan* 100 : 0;
 
                 if($d->status_komisi == 1){
-                    if ($transvsregister <= 80) {
-                        $reward_oa = 0;
-                    } else if ($transvsregister > 80 and $transvsregister <= 85) {
+                     if ($transvsregister >= 80 and $transvsregister <= 85) {
                         $reward_oa = 200000;
                     } else if ($transvsregister > 85 and $transvsregister <= 90) {
                         $reward_oa = 400000;
@@ -590,6 +567,50 @@
                 }else{
                     $reward_ec = 0;
                 }
+
+
+                $persentaserouting = !empty($d->jmlkunjungan) ? ROUND($d->jmlsesuaijadwal/$d->jmlkunjungan * 100) : 0;
+
+                if($d->status_komisi == 1){
+                    if ($persentaserouting >= 85 and $persentaserouting <= 90) {
+                        $reward_routing = 200000;
+                    } else if ($persentaserouting > 90 and $persentaserouting <= 95) {
+                        $reward_routing = 400000;
+                    }  else if ($persentaserouting > 95 and $persentaserouting <= 100) {
+                        $reward_routing = 600000;
+                    } else {
+                        $reward_routing = 0;
+                    }
+                }else{
+                    $reward_routing = 0;
+                }
+
+
+                $totalrewardpoin += $rewardpoin;
+                $totalrewardcashin += $rewardcashin;
+                $totalrewardljt += $rewardljt;
+                $totalreward = $rewardpoin + $rewardsku + $reward_oa + $reward_routing + $reward_ec + $rewardcashin + $rewardljt ;
+                $grandtotalrewardsales += $totalreward;
+                $totaltargetBBDP += $d->target_BB_DP;
+                $totalrealisasiBBDP += $realisasi_BB_DEP;
+
+                $totaltargetDS += $d->target_DS;
+                $totalrealisasiDS += $realisasi_DS;
+
+                $totaltargetSP += $d->target_SP;
+                $totalrealisasiSP += $realisasi_SP;
+
+                $totaltargetAR += $d->target_AR;
+                $totalrealisasiAR += $realisasi_AR;
+
+                $totaltargetABASCG5 += $d->target_AB_AS_CG5;
+                $totalrealisasiABASCG5 += $realisasi_AB_AS_CG5;
+
+                $totaltargetSC += $d->target_SC;
+                $totalrealisasiSC += $realisasi_SC;
+
+                $totalcashin += $d->realisasi_cashin;
+                $totalsisapiutang += $d->sisapiutang;
             ?>
             <tr>
                 <td><?php echo $no; ?></td>
@@ -628,17 +649,55 @@
                 </td>
                 <td align="right"><?php echo desimal($reward_oa); ?></td>
                 <td align="center">
+                    {{ desimal($persentaserouting) }}%
+                </td>
+                <td align="right"><?php echo desimal($reward_routing); ?></td>
+                <td align="center">
                     {{ desimal($ec) }}%
                 </td>
-                //Cashin
+                <!--Cashin-->
                 <td align="right"><?php echo desimal($reward_ec); ?></td>
                 <td align="right" style="background-color: #9e9895;"><?php echo desimal($d->realisasi_cashin); ?></td>
                 <td align="center" style="background-color: #9e9895;"><?php echo $ratiocashin; ?>%</td>
                 <td align="right" style="background-color: #9e9895;"><?php echo desimal($rewardcashin); ?></td>
-                //LJT
+                <!-- LJT -->
                 <td align="right" style="background-color: #e43a90;"><?php if ($d->sisapiutang > 0) {echo desimal($d->sisapiutang); } else {echo 0;} ?></td>
                 <td align="center" style="background-color: #e43a90;"><?php echo round($ratioljt, 2); ?></td>
                 <td align="right" style="background-color: #e43a90;"><?php echo desimal($rewardljt); ?></td>
+                <td align="right" style="background-color: #ff570d;"><?php echo desimal($totalreward); ?></td>
+                <td style="text-align: right">
+                    @if (in_array($level,$inputpotongankomisi))
+                    <a href="#" class="inputpotongan" id_karyawan="{{ $d->id_karyawan }}" nama_karyawan="{{ $d->nama_karyawan }}" style="color:red">
+                        {{ $d->potongankomisi != null ? desimal($d->potongankomisi) : 'Input Potongan' }}
+                    </a>
+                    @else
+                    &#128274;
+                    @endif
+                </td>
+                <td style="text-align: right">
+                    @php
+                    $totalkomisi = $totalreward - $d->potongankomisi;
+                    @endphp
+                    {{ desimal($totalkomisi) }}
+                </td>
+                <td style="text-align: right">
+                    @if (in_array($level,$inputpotongankomisi))
+                    <a href="#" class="inputkomisiakhir" id_karyawan="{{ $d->id_karyawan }}" nama_karyawan="{{ $d->nama_karyawan }}" style="color:red">
+                        {{ $d->komisifix != null ? desimal($d->komisifix) : desimal($totalkomisi) }}
+                    </a>
+                    @else
+                    &#128274;
+                    @endif
+                </td>
+                <td>
+                    @if (!empty($d->potongankomisi))
+                    Potongan : {{ $d->ket_potongan }}
+                    @endif
+
+                    @if (!empty($d->ket_komisifix))
+                    Disesuaikan Karena : {{ $d->ket_komisifix }}
+                    @endif
+                </td>
             </tr>
 
             <?php $no++;} ?>

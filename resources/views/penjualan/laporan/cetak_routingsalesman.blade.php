@@ -114,45 +114,6 @@
             $no++;
             @endphp
             @endforeach
-            @foreach ($historibayar as $d)
-            <?php
-                $day = date('D', strtotime($d->tglbayar));
-                $dayList = array(
-                    'Sun' => 'Minggu',
-                    'Mon' => 'Senin',
-                    'Tue' => 'Selasa',
-                    'Wed' => 'Rabu',
-                    'Thu' => 'Kamis',
-                    'Fri' => 'Jumat',
-                    'Sat' => 'Sabtu'
-                );
-
-                if(str_contains($d->hari,$dayList[$day])){
-
-                    $bgcolor="";
-                    $color="";
-                    $ket = "";
-                }else{
-                    $bgcolor = "red";
-                    $color="white";
-                    $ket = "Tidak Sesuai Jadwdal";
-                }
-            ?>
-            <tr style="background-color:{{ $bgcolor }}; color:{{ $color }}">
-                <td>{{ $no }}</td>
-                <td>{{ $dayList[$day] }}, {{ date("d-m-Y",strtotime($d->tglbayar)) }}</td>
-                <td>{{ $d->kode_pelanggan }}</td>
-                <td>{{ $d->nama_pelanggan }}</td>
-                <td>{{ ucwords(strtolower($d->jenistransaksi ))}}</td>
-                <td></td>
-                <td style="text-align: right">{{ rupiah($d->totalbayar) }}</td>
-                <td>{{ $d->hari }}</td>
-                <td>{{ $ket }}</td>
-            </tr>
-            @php
-            $no++;
-            @endphp
-            @endforeach
         </tbody>
     </table>
 

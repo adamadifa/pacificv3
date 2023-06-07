@@ -1429,7 +1429,9 @@ class TargetkomisiController extends Controller
             ket_komisifix,
             jmlpelanggan,
             jmltrans,
-            jmltigasku
+            jmltigasku,
+            jmlkunjungan,
+            jmlsesuaijadwal
         ');
 
         $query->leftJoin(
@@ -1441,6 +1443,38 @@ class TargetkomisiController extends Controller
             ) pelangganaktif"),
             function ($join) {
                 $join->on('karyawan.id_karyawan', '=', 'pelangganaktif.id_karyawan');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+                SELECT karyawan.id_karyawan,
+                IFNULL(jmlkunjungan,0) as jmlkunjungan,
+                IFNULL(jmlsesuaijadwal,0) as jmlsesuaijadwal
+                FROM karyawan
+                LEFT JOIN (
+                    SELECT
+                            penjualan.id_karyawan,
+                            COUNT(DISTINCT penjualan.kode_pelanggan,tgltransaksi) as jmlkunjungan,
+                            COUNT(DISTINCT CASE WHEN
+                            DAYNAME(tgltransaksi)='Monday' AND pelanggan.hari like '%Senin%' OR
+                            DAYNAME(tgltransaksi)='Tuesday' AND pelanggan.hari like '%Selasa%' OR
+                            DAYNAME(tgltransaksi)='Wednesday' AND pelanggan.hari like '%Rabu%' OR
+                            DAYNAME(tgltransaksi)='Thursday' AND pelanggan.hari like '%Kamis%' OR
+                            DAYNAME(tgltransaksi)='Friday' AND pelanggan.hari like '%Jumat%' OR
+                            DAYNAME(tgltransaksi)='Saturday' AND pelanggan.hari like '%Sabtu%' OR
+                            DAYNAME(tgltransaksi)='Sunday' AND pelanggan.hari like '%Minggu%'  THEN  penjualan.kode_pelanggan END) jmlsesuaijadwal
+                    FROM
+                    `penjualan`
+                    INNER JOIN `pelanggan` ON `penjualan`.`kode_pelanggan` = `pelanggan`.`kode_pelanggan`
+                    INNER JOIN `karyawan` ON `penjualan`.`id_karyawan` = `karyawan`.`id_karyawan`
+                    WHERE `tgltransaksi` BETWEEN '$dari' AND '$sampai' AND `nama_pelanggan` != 'BATAL'
+                    GROUP BY
+                            penjualan.id_karyawan
+                ) kunjungan ON (karyawan.id_karyawan = kunjungan.id_karyawan)
+            ) kunjungan"),
+            function ($join) {
+                $join->on('karyawan.id_karyawan', '=', 'kunjungan.id_karyawan');
             }
         );
 
