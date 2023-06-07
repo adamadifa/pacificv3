@@ -290,7 +290,15 @@
             $totalrewardpoin = 0;
             $totalrewardcashin=0;
             $totalrewardljt = 0;
-
+            $totalpelangganaktif = 0;
+            $totaltransaksi = 0;
+            $totaltigasku = 0;
+            $totalrewardsku =0;
+            $totalreward_oa = 0;
+            $totalkunjungan = 0;
+            $totalsesuaijadwal = 0;
+            $totalrewardrouting = 0;
+            $totalrewardec = 0;
             foreach ($komisi as $d) {
                 if($d->status_komisi==1){
                     $komisi_aktif += 1;
@@ -486,7 +494,7 @@
 
 
 
-                $persentasesku = !empty($d->jmlpelanggan) ? ROUND($d->jmltigasku / $d->jmlpelanggan * 100) : 0;
+                $persentasesku = !empty($d->jmlpelanggan) ? $d->jmltigasku / $d->jmlpelanggan * 100 : 0;
 
                 if($d->status_komisi == 1){
 
@@ -611,6 +619,16 @@
 
                 $totalcashin += $d->realisasi_cashin;
                 $totalsisapiutang += $d->sisapiutang;
+
+                $totalpelangganaktif += $d->jmlpelanggan;
+                $totaltransaksi += $d->jmltrans;
+                $totaltigasku += $d->jmltigasku;
+                $totalrewardsku += $rewardsku;
+                $totalreward_oa += $reward_oa;
+                $totalkunjungan += $d->jmlkunjungan;
+                $totalsesuaijadwal += $d->jmlsesuaijadwal;
+                $totalrewardrouting += $reward_routing;
+                $totalrewardec += $reward_ec;
             ?>
             <tr>
                 <td><?php echo $no; ?></td>
@@ -636,39 +654,39 @@
                 <td align="right" style="background-color: #0daeff;"><?php echo desimal($realisasi_SC); ?></td>
                 <td align="right" style="background-color: #0daeff;"><?php echo desimal($hasilpoinSC); ?></td>
                 <td align="right" style="background-color: #ff570d;"><?php echo round($totalpoin,2); ?></td>
-                <td align="right" style="background-color: #ff570d;"><?php echo desimal($rewardpoin); ?></td>
+                <td align="right" style="background-color: #ff570d;"><?php echo rupiah($rewardpoin); ?></td>
                 <td align="center">{{ !empty($d->jmlpelanggan) ?  rupiah($d->jmlpelanggan) : '' }}</td>
                 <td align="center">{{ !empty($d->jmltrans) ?  rupiah($d->jmltrans) : '' }}</td>
                 <td align="center">{{ !empty($d->jmltigasku) ?  rupiah($d->jmltigasku) : '' }}</td>
-                <td align="center">{{ !empty($persentasesku) ?  $persentasesku.'%': '' }}</td>
-                <td align="right"><?php echo desimal($rewardsku); ?></td>
+                <td align="center">{{ !empty($persentasesku) ?  desimal($persentasesku).'%': '' }}</td>
+                <td align="right"><?php echo rupiah($rewardsku); ?></td>
                 <td></td>
                 <td></td>
                 <td align="center">
                     {{ desimal($transvsregister) }}%
                 </td>
-                <td align="right"><?php echo desimal($reward_oa); ?></td>
+                <td align="right"><?php echo rupiah($reward_oa); ?></td>
                 <td align="center">
                     {{ desimal($persentaserouting) }}%
                 </td>
-                <td align="right"><?php echo desimal($reward_routing); ?></td>
+                <td align="right"><?php echo rupiah($reward_routing); ?></td>
                 <td align="center">
                     {{ desimal($ec) }}%
                 </td>
                 <!--Cashin-->
-                <td align="right"><?php echo desimal($reward_ec); ?></td>
+                <td align="right"><?php echo rupiah($reward_ec); ?></td>
                 <td align="right" style="background-color: #9e9895;"><?php echo desimal($d->realisasi_cashin); ?></td>
                 <td align="center" style="background-color: #9e9895;"><?php echo $ratiocashin; ?>%</td>
-                <td align="right" style="background-color: #9e9895;"><?php echo desimal($rewardcashin); ?></td>
+                <td align="right" style="background-color: #9e9895;"><?php echo rupiah($rewardcashin); ?></td>
                 <!-- LJT -->
                 <td align="right" style="background-color: #e43a90;"><?php if ($d->sisapiutang > 0) {echo desimal($d->sisapiutang); } else {echo 0;} ?></td>
                 <td align="center" style="background-color: #e43a90;"><?php echo round($ratioljt, 2); ?></td>
-                <td align="right" style="background-color: #e43a90;"><?php echo desimal($rewardljt); ?></td>
-                <td align="right" style="background-color: #ff570d;"><?php echo desimal($totalreward); ?></td>
+                <td align="right" style="background-color: #e43a90;"><?php echo rupiah($rewardljt); ?></td>
+                <td align="right" style="background-color: #ff570d;"><?php echo rupiah($totalreward); ?></td>
                 <td style="text-align: right">
                     @if (in_array($level,$inputpotongankomisi))
                     <a href="#" class="inputpotongan" id_karyawan="{{ $d->id_karyawan }}" nama_karyawan="{{ $d->nama_karyawan }}" style="color:red">
-                        {{ $d->potongankomisi != null ? desimal($d->potongankomisi) : 'Input Potongan' }}
+                        {{ $d->potongankomisi != null ? rupiah($d->potongankomisi) : 'Input Potongan' }}
                     </a>
                     @else
                     &#128274;
@@ -678,12 +696,12 @@
                     @php
                     $totalkomisi = $totalreward - $d->potongankomisi;
                     @endphp
-                    {{ desimal($totalkomisi) }}
+                    {{ rupiah($totalkomisi) }}
                 </td>
                 <td style="text-align: right">
                     @if (in_array($level,$inputpotongankomisi))
                     <a href="#" class="inputkomisiakhir" id_karyawan="{{ $d->id_karyawan }}" nama_karyawan="{{ $d->nama_karyawan }}" style="color:red">
-                        {{ $d->komisifix != null ? desimal($d->komisifix) : desimal($totalkomisi) }}
+                        {{ $d->komisifix != null ? rupiah($d->komisifix) : rupiah($totalkomisi) }}
                     </a>
                     @else
                     &#128274;
@@ -700,7 +718,301 @@
                 </td>
             </tr>
 
-            <?php $no++;} ?>
+            <?php $no++;
+            if (empty($totaltargetBBDP)) {
+                    $totalratioBBDP = 0;
+                } else {
+                    $totalratioBBDP = $totalrealisasiBBDP / $totaltargetBBDP;
+                }
+
+                if ($totalratioBBDP > 1) {
+                    $totalhasilpoinBBDP =  $poinBBDP;
+                } else {
+                    $totalhasilpoinBBDP = $totalratioBBDP * $poinBBDP;
+                }
+
+                if (empty($totaltargetDS)) {
+                    $totalratioDS = 0;
+                } else {
+                    $totalratioDS = $totalrealisasiDS / $totaltargetDS;
+                }
+
+                if ($totalratioDS > 1) {
+                    $totalhasilpoinDS =  $poinDS;
+                } else {
+                    $totalhasilpoinDS = $totalratioDS * $poinDS;
+                }
+
+                if (empty($totaltargetSP)) {
+                    $totalratioSP = 0;
+                } else {
+                    $totalratioSP = $totalrealisasiSP / $totaltargetSP;
+                }
+
+                if ($totalratioSP > 1) {
+                    $totalhasilpoinSP =  $poinSP;
+                } else {
+                    $totalhasilpoinSP = $totalratioSP * $poinSP;
+                }
+
+                if (empty($totaltargetAR)) {
+                    $totalratioAR = 0;
+                } else {
+                    $totalratioAR = $totalrealisasiAR / $totaltargetAR;
+                }
+
+                if ($totalratioAR > 1) {
+                    $totalhasilpoinAR =  $poinAR;
+                } else {
+                    $totalhasilpoinAR = $totalratioAR * $poinAR;
+                }
+
+                if (empty($totaltargetABASCG5)) {
+                    $totalratioABASCG5 = 0;
+                } else {
+                    $totalratioABASCG5 = $totalrealisasiABASCG5 / $totaltargetABASCG5;
+                }
+
+                if ($totalratioABASCG5 > 1) {
+                    $totalhasilpoinABASCG5 =  $poinASABCG5;
+                } else {
+                    $totalhasilpoinABASCG5 = $totalratioABASCG5 * $poinASABCG5;
+                }
+
+                if (empty($totaltargetSC)) {
+                    $totalratioSC = 0;
+                } else {
+                    $totalratioSC = $totalrealisasiSC / $totaltargetSC;
+                }
+
+                if ($totalratioSC > 1) {
+                    $totalhasilpoinSC =  $poinSC;
+                } else {
+                    $totalhasilpoinSC = $totalratioSC * $poinSC;
+                }
+
+
+
+                $totalallpoin = $totalhasilpoinBBDP + $totalhasilpoinDS + $totalhasilpoinSP + $totalhasilpoinAR + $totalhasilpoinABASCG5 + $totalhasilpoinSC;
+
+                if ($totalallpoin < 70) {
+                    $rewardallpoin = 0;
+                } else if ($totalallpoin >= 70 and $totalallpoin <= 75) {
+                    $rewardallpoin = 1500000;
+                } else if ($totalallpoin > 75 and $totalallpoin <= 80) {
+                    $rewardallpoin = 3000000;
+                } else if ($totalallpoin > 80 and $totalallpoin <= 85) {
+                    $rewardallpoin = 4500000;
+                } else if ($totalallpoin > 85 and $totalallpoin <= 90) {
+                    $rewardallpoin = 6000000;
+                } else if ($totalallpoin > 90 and $totalallpoin <= 95) {
+                    $rewardallpoin = 7500000;
+                } else if ($totalallpoin > 95 and $totalallpoin <= 100) {
+                    $rewardallpoin = 9000000;
+                } else {
+                    $rewardallpoin = 0;
+                }
+
+                $rewardcashinkp = $totalcashin * (0.05 / 100);
+                $ratioljtkp = !empty($totalcashin) ? ($totalsisapiutang / $totalcashin) * 100 : 0;
+
+
+                if ($ratioljtkp > 0) {
+                    $ratioljtkp = $ratioljtkp;
+                } else {
+                    $ratioljtkp = 0;
+                }
+
+                if ($totalsisapiutang > 0) {
+                    $totalsisapiutang = $totalsisapiutang;
+                } else {
+                    $totalsisapiutang = 0;
+                }
+
+                if ($ratioljtkp >= 0 and $ratioljtkp <= 0.5) {
+                    $rewardljtkp = 2500000;
+                } else  if ($ratioljtkp > 0.5 and $ratioljtkp <= 1) {
+                    $rewardljtkp = 2250000;
+                } else  if ($ratioljtkp > 1 and $ratioljtkp <= 1.5) {
+                    $rewardljtkp = 2000000;
+                } else  if ($ratioljtkp > 1.5 and $ratioljtkp <= 2) {
+                    $rewardljtkp = 1750000;
+                } else  if ($ratioljtkp > 2 and $ratioljtkp <= 2.5) {
+                    $rewardljtkp = 1500000;
+                } else  if ($ratioljtkp > 2.5 and $ratioljtkp <= 3) {
+                    $rewardljtkp = 1250000;
+                } else  if ($ratioljtkp > 3 and $ratioljtkp <= 3.5) {
+                    $rewardljtkp = 1000000;
+                } else  if ($ratioljtkp > 3.5 and $ratioljtkp <= 4) {
+                    $rewardljtkp = 750000;
+                } else  if ($ratioljtkp > 4 and $ratioljtkp <= 4.5) {
+                    $rewardljtkp = 500000;
+                } else  if ($ratioljtkp > 4.5 and $ratioljtkp <= 5) {
+                    $rewardljtkp = 250000;
+                } else {
+                    $rewardljtkp = 0;
+                }
+                $totalrewardkp = $rewardallpoin + $rewardcashinkp + $rewardljtkp;
+            }
+            if(in_array($cbg->kode_cabang,$supervisorcabang)){
+            ?>
+            <tr>
+                <td><?php echo $no; ?></td>
+                <td colspan="3">SUPERVISOR</td>
+                <td align="right" style="background-color: #0ca0c9;"><?php echo desimal($totaltargetBBDP); ?></td>
+                <td align="right" style="background-color: #0ca0c9;"><?php echo desimal($totalrealisasiBBDP); ?></td>
+                <td align="right" style="background-color: #0ca0c9;"><?php echo desimal($totalhasilpoinBBDP); ?></td>
+                <td align="right" style="background-color: #0ca0c9;"><?php echo desimal($totaltargetDS); ?></td>
+                <td align="right" style="background-color: #0ca0c9;"><?php echo desimal($totalrealisasiDS); ?></td>
+                <td align="right" style="background-color: #0ca0c9;"><?php echo desimal($totalhasilpoinDS); ?></td>
+                <td align="right" style="background-color: #0ca0c9;"><?php echo desimal($totaltargetSP); ?></td>
+                <td align="right" style="background-color: #0ca0c9;"><?php echo desimal($totalrealisasiSP); ?></td>
+                <td align="right" style="background-color: #0ca0c9;"><?php echo desimal($totalhasilpoinSP); ?></td>
+                <td align="right" style="background-color: #0ca0c9;"><?php echo desimal($totaltargetAR); ?></td>
+                <td align="right" style="background-color: #0ca0c9;"><?php echo desimal($totalrealisasiAR); ?></td>
+                <td align="right" style="background-color: #0ca0c9;"><?php echo desimal($totalhasilpoinAR); ?></td>
+                <td align="right" style="background-color: #0ca0c9;"><?php echo desimal($totaltargetABASCG5); ?></td>
+                <td align="right" style="background-color: #0ca0c9;"><?php echo desimal($totalrealisasiABASCG5); ?></td>
+                <td align="right" style="background-color: #0ca0c9;"><?php echo desimal($totalhasilpoinABASCG5); ?></td>
+                <td align="right" style="background-color: #0ca0c9;"><?php echo desimal($totaltargetSC); ?></td>
+                <td align="right" style="background-color: #0ca0c9;"><?php echo desimal($totalrealisasiSC); ?></td>
+                <td align="right" style="background-color: #0ca0c9;"><?php echo desimal($totalhasilpoinSC); ?></td>
+                <td align="right" style="background-color: #0ca0c9;"><?php echo desimal($totalallpoin ); ?></td>
+                <td align="right" style="background-color: #0ca0c9;">
+                    <?php
+                        $rewardpoinspv = $totalrewardpoin/$komisi_aktif;
+                        echo rupiah($rewardpoinspv );
+                    ?>
+                </td>
+                <td align="center" style="background-color: #0ca0c9;">{{ rupiah($totalpelangganaktif) }}</td>
+                <td align="center" style="background-color: #0ca0c9;">{{ rupiah($totaltransaksi) }}</td>
+                <td align="center" style="background-color: #0ca0c9;">{{ rupiah($totaltigasku) }}</td>
+                <td align="center" style="background-color: #0ca0c9;">
+                    @php
+                    $totalpersentasesku = !empty($totalpelangganaktif) ? $totaltigasku / $totalpelangganaktif * 100 : 0;
+                    @endphp
+                    {{ desimal($totalpersentasesku) }} %
+                </td>
+
+                <td align="right" style="background-color: #0ca0c9;">
+                    <?php
+                        $rewardskuspv = $totalrewardsku/$komisi_aktif;
+                        echo rupiah($rewardskuspv);
+                    ?>
+                </td>
+                <td style="background-color: #0ca0c9;"></td>
+                <td style="background-color: #0ca0c9;"></td>
+                <td align="center" style="background-color: #0ca0c9;">
+                    @php
+                    $totalpersentase_oa = !empty($totalpelangganaktif) ? $totaltransaksi/$totalpelangganaktif * 100 : 0;
+                    @endphp
+                    {{ desimal($totalpersentase_oa) }} %
+                </td>
+                <td align="right" style="background-color: #0ca0c9;">
+                    <?php
+                        $reward_oa_spv = $totalreward_oa/$komisi_aktif;
+                        echo rupiah($reward_oa_spv);
+                    ?>
+                </td>
+                <td align="center" style="background-color: #0ca0c9;">
+                    @php
+                    $totalpersentase_routing = !empty($totalkunjungan) ? $totalsesuaijadwal/$totalkunjungan * 100 : 0;
+                    @endphp
+                    {{ desimal($totalpersentase_routing) }} %
+                </td>
+                <td align="right" style="background-color: #0ca0c9;">
+                    <?php
+                        $reward_routing_spv = $totalrewardrouting/$komisi_aktif;
+                        echo rupiah($reward_routing_spv);
+                    ?>
+                </td>
+                <td align="center" style="background-color: #0ca0c9;">
+                    @php
+                    $totalpersentase_ec = $totaltransaksi / 23;
+                    @endphp
+                    {{ desimal($totalpersentase_ec) }} %
+                </td>
+                <td align="right" style="background-color: #0ca0c9;">
+                    <?php
+                        $reward_ec_spv = $totalrewardec /$komisi_aktif;
+                        echo rupiah($reward_ec_spv);
+                    ?>
+                </td>
+                <td align="right" style="background-color: #0ca0c9;"><?php echo desimal($totalcashin); ?></td>
+                <td align="center" style="background-color: #0ca0c9;"></td>
+                <td align="right" style="background-color: #0ca0c9;">
+                    <?php
+                        $rewardcashinspv= $totalrewardcashin/$komisi_aktif;
+                        echo rupiah($rewardcashinspv);
+                    ?>
+                </td>
+                <td align="right" style="background-color: #0ca0c9;"><?php echo desimal($totalsisapiutang); ?></td>
+                <td align="center" style="background-color: #0ca0c9;"><?php echo ROUND($ratioljtkp, 2); ?></td>
+                <td align="right" style="background-color: #0ca0c9;"><?php echo rupiah($rewardljtspv = $totalrewardljt / $komisi_aktif); ?></td>
+                <td align="right" style="background-color: #0ca0c9;">
+                    <?php
+                        $totalrewardspv = $rewardpoinspv + $rewardskuspv + $reward_oa_spv +  $reward_routing_spv + $reward_ec_spv+ $rewardcashinspv + $rewardljtspv;
+                    ?>
+                    {{ rupiah($totalrewardspv) }}
+                </td>
+                <td style="text-align: right">
+                    @if (in_array($level,$inputpotongankomisi))
+                    <a href="#" class="inputpotongan" id_karyawan="SPV{{ $cbg->kode_cabang }}" nama_karyawan="SUPERVISOR" style="color:red">
+                        {{ $potonganspv != null && $potonganspv->jumlah != null ? rupiah($potonganspv->jumlah) : 'Input Potongan' }}
+                    </a>
+                    @else
+                    &#128274;
+                    @endif
+                </td>
+                <td style="text-align: right">
+
+                    @php
+                    $potonganspv = $potonganspv != null ? $potonganspv->jumlah : 0;
+                    $totalkomisispv = $totalrewardspv - $potonganspv;
+                    @endphp
+                    {{ rupiah($totalkomisispv) }}
+                </td>
+
+                <td style="text-align: right">
+                    @if (in_array($level,$inputpotongankomisi))
+                    <a href="#" class="inputkomisiakhir" id_karyawan="SPV{{ $cbg->kode_cabang }}" nama_karyawan="SUPERVISOR" style="color:red">
+                        {{$komisiakhirspv !=null && $komisiakhirspv->jumlah != null ? rupiah($komisiakhirspv->jumlah) : rupiah($totalkomisispv) }}
+                    </a>
+                    @else
+                    &#128274;
+                    @endif
+                </td>
+            </tr>
+            <?php }else{
+            $totalrewardspv=0;
+            }
+            ?>
+            <tr>
+                <td><?php echo $no; ?></td>
+                <td colspan="3">KEPALA PENJUALAN</td>
+                <td align="right" style="background-color: #35ce35;"><?php echo desimal($totaltargetBBDP); ?></td>
+                <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalrealisasiBBDP); ?></td>
+                <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalhasilpoinBBDP); ?></td>
+                <td align="right" style="background-color: #35ce35;"><?php echo desimal($totaltargetDS); ?></td>
+                <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalrealisasiDS); ?></td>
+                <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalhasilpoinDS); ?></td>
+                <td align="right" style="background-color: #35ce35;"><?php echo desimal($totaltargetSP); ?></td>
+                <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalrealisasiSP); ?></td>
+                <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalhasilpoinSP); ?></td>
+                <td align="right" style="background-color: #35ce35;"><?php echo desimal($totaltargetAR); ?></td>
+                <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalrealisasiAR); ?></td>
+                <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalhasilpoinAR); ?></td>
+                <td align="right" style="background-color: #35ce35;"><?php echo desimal($totaltargetABASCG5); ?></td>
+                <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalrealisasiABASCG5); ?></td>
+                <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalhasilpoinABASCG5); ?></td>
+                <td align="right" style="background-color: #35ce35;"><?php echo desimal($totaltargetSC); ?></td>
+                <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalrealisasiSC); ?></td>
+                <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalhasilpoinSC); ?></td>
+                <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalallpoin ); ?></td>
+
+
+            </tr>
+
         </tbody>
     </table>
 

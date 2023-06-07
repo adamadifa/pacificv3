@@ -1915,9 +1915,10 @@ class TargetkomisiController extends Controller
         }
 
 
-        if ($dari >= '2023-2-01' and $dari < '2023-06-01') {
+        //dd($dari);
+        if ($dari >= '2023-2-01' and $dari < '2023-6-01') {
             return $this->cetakkomisimaret2023($cabang, $bulan, $tahun, $aturankomisi, $dari, $hariini, $sampai);
-        } elseif ($dari >= '2023-06-01') {
+        } elseif ($dari >= '2023-6-01') {
             return $this->cetakkomisijuni2023($cabang, $bulan, $tahun, $aturankomisi, $dari, $hariini, $sampai);
         }
         $lastmonth = date('Y-m-d', strtotime(date($dari) . '- 1 month'));
