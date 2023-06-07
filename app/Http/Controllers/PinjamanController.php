@@ -305,6 +305,7 @@ class PinjamanController extends Controller
             ->whereRaw('YEAR(tgl_pinjaman)="' . $tgl[0] . '"')
             ->orderBy("no_pinjaman", "desc")
             ->first();
+
         $last_nopinjaman = $pinjaman != null ? $pinjaman->no_pinjaman : '';
         $no_pinjaman  = buatkode($last_nopinjaman, "PJK" . $tahun, 3);
         $cicilan_terakhir = $jumlah_angsuran + ($jumlah_pinjaman - ($jumlah_angsuran * $angsuran));
@@ -332,6 +333,9 @@ class PinjamanController extends Controller
         ];
         $tgl_cicilan = explode("-", $mulai_cicilan);
         $bln = $tgl_cicilan[1];
+
+
+        //dd($data);
         DB::beginTransaction();
         try {
             DB::table('pinjaman')->insert($data);
@@ -393,70 +397,70 @@ class PinjamanController extends Controller
             //     'message' => '*' . $nik . "-" . $karyawan->nama_karyawan . '*, dari Departemen ' . $karyawan->nama_dept . ' Mengajukan Pinjaman dengan Nomor Pinjaman *' . $no_pinjaman . '* dan total pinjaman *' . $request->jml_pinjaman . '* Menunggu untuk Segera di proses.'
             // ];
 
-            if (!in_array($karyawan->id_jabatan, $notmanagement)) {
-                // $curl = curl_init();
+            //if (!in_array($karyawan->id_jabatan, $notmanagement)) {
+            // $curl = curl_init();
 
-                // curl_setopt_array($curl, array(
-                //     CURLOPT_URL => 'https://wa.pedasalami.com/send-message',
-                //     CURLOPT_RETURNTRANSFER => true,
-                //     CURLOPT_ENCODING => '',
-                //     CURLOPT_MAXREDIRS => 10,
-                //     CURLOPT_TIMEOUT => 0,
-                //     CURLOPT_FOLLOWLOCATION => true,
-                //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                //     CURLOPT_CUSTOMREQUEST => 'POST',
-                //     CURLOPT_POSTFIELDS => json_encode($data),
-                //     CURLOPT_HTTPHEADER => array(
-                //         'Content-Type: application/json'
-                //     ),
-                // ));
+            // curl_setopt_array($curl, array(
+            //     CURLOPT_URL => 'https://wa.pedasalami.com/send-message',
+            //     CURLOPT_RETURNTRANSFER => true,
+            //     CURLOPT_ENCODING => '',
+            //     CURLOPT_MAXREDIRS => 10,
+            //     CURLOPT_TIMEOUT => 0,
+            //     CURLOPT_FOLLOWLOCATION => true,
+            //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            //     CURLOPT_CUSTOMREQUEST => 'POST',
+            //     CURLOPT_POSTFIELDS => json_encode($data),
+            //     CURLOPT_HTTPHEADER => array(
+            //         'Content-Type: application/json'
+            //     ),
+            // ));
 
-                // $response = curl_exec($curl);
+            // $response = curl_exec($curl);
 
-                // curl_close($curl);
+            // curl_close($curl);
 
-                // $curl = curl_init();
+            // $curl = curl_init();
 
-                // curl_setopt_array($curl, array(
-                //     CURLOPT_URL => 'https://wa.pedasalami.com/send-message',
-                //     CURLOPT_RETURNTRANSFER => true,
-                //     CURLOPT_ENCODING => '',
-                //     CURLOPT_MAXREDIRS => 10,
-                //     CURLOPT_TIMEOUT => 0,
-                //     CURLOPT_FOLLOWLOCATION => true,
-                //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                //     CURLOPT_CUSTOMREQUEST => 'POST',
-                //     CURLOPT_POSTFIELDS => json_encode($rani),
-                //     CURLOPT_HTTPHEADER => array(
-                //         'Content-Type: application/json'
-                //     ),
-                // ));
+            // curl_setopt_array($curl, array(
+            //     CURLOPT_URL => 'https://wa.pedasalami.com/send-message',
+            //     CURLOPT_RETURNTRANSFER => true,
+            //     CURLOPT_ENCODING => '',
+            //     CURLOPT_MAXREDIRS => 10,
+            //     CURLOPT_TIMEOUT => 0,
+            //     CURLOPT_FOLLOWLOCATION => true,
+            //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            //     CURLOPT_CUSTOMREQUEST => 'POST',
+            //     CURLOPT_POSTFIELDS => json_encode($rani),
+            //     CURLOPT_HTTPHEADER => array(
+            //         'Content-Type: application/json'
+            //     ),
+            // ));
 
-                // $response = curl_exec($curl);
+            // $response = curl_exec($curl);
 
-                // curl_close($curl);
+            // curl_close($curl);
 
-                // $curl = curl_init();
+            // $curl = curl_init();
 
-                // curl_setopt_array($curl, array(
-                //     CURLOPT_URL => 'https://wa.pedasalami.com/send-message',
-                //     CURLOPT_RETURNTRANSFER => true,
-                //     CURLOPT_ENCODING => '',
-                //     CURLOPT_MAXREDIRS => 10,
-                //     CURLOPT_TIMEOUT => 0,
-                //     CURLOPT_FOLLOWLOCATION => true,
-                //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                //     CURLOPT_CUSTOMREQUEST => 'POST',
-                //     CURLOPT_POSTFIELDS => json_encode($siska),
-                //     CURLOPT_HTTPHEADER => array(
-                //         'Content-Type: application/json'
-                //     ),
-                // ));
+            // curl_setopt_array($curl, array(
+            //     CURLOPT_URL => 'https://wa.pedasalami.com/send-message',
+            //     CURLOPT_RETURNTRANSFER => true,
+            //     CURLOPT_ENCODING => '',
+            //     CURLOPT_MAXREDIRS => 10,
+            //     CURLOPT_TIMEOUT => 0,
+            //     CURLOPT_FOLLOWLOCATION => true,
+            //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            //     CURLOPT_CUSTOMREQUEST => 'POST',
+            //     CURLOPT_POSTFIELDS => json_encode($siska),
+            //     CURLOPT_HTTPHEADER => array(
+            //         'Content-Type: application/json'
+            //     ),
+            // ));
 
-                // $response = curl_exec($curl);
+            // $response = curl_exec($curl);
 
-                // curl_close($curl);
-            }
+            // curl_close($curl);
+            // }
 
             // $curl = curl_init();
 
