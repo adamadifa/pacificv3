@@ -226,41 +226,41 @@
                     Pihak Kedua menerima pekerjaan yang diberikan pihak CV Makmur Permata dengan jabatan sebagai {{ $kontrak->nama_jabatan }} yang berlokasi di PUSAT serta bersedia ditempatkan diluar lokasi dan departemen tersebut bila Perusahaan memerlukan.
                 </li>
                 <li>
-                    Pihak kedua setuju menerima upah sebesar Rp {{ rupiah($totalgaji) }} ,- dengan rincian sebagai berikut :
-                    <table>
+                    Pihak kedua setuju menerima upah dengan rincian terlampir:
+                    {{-- <table>
                         <tr>
                             <td>a.</td>
                             <td style="width:140px">Gaji Pokok</td>
                             <td>:</td>
                             <td>Rp. {{ rupiah($kontrak->gaji_pokok) }},-</td>
-                        </tr>
+                    </tr>
 
-                        <tr>
-                            <td>b.</td>
-                            <td style="width:140px">Tj. Jabatan</td>
-                            <td>:</td>
-                            <td>Rp. {{ rupiah($kontrak->t_jabatan) }},-</td>
-                        </tr>
-                        <tr>
-                            <td>c.</td>
-                            <td style="width:140px">Tj. Tanggungjawab</td>
-                            <td>:</td>
-                            <td>Rp. {{ rupiah($kontrak->t_tanggungjawab) }},-</td>
-                        </tr>
-                        <tr>
-                            <td>d.</td>
-                            <td style="width:140px">Tj. Makan</td>
-                            <td>:</td>
-                            <td>Rp. {{ rupiah($kontrak->t_makan) }},-</td>
-                        </tr>
+                    <tr>
+                        <td>b.</td>
+                        <td style="width:140px">Tj. Jabatan</td>
+                        <td>:</td>
+                        <td>Rp. {{ rupiah($kontrak->t_jabatan) }},-</td>
+                    </tr>
+                    <tr>
+                        <td>c.</td>
+                        <td style="width:140px">Tj. Tanggungjawab</td>
+                        <td>:</td>
+                        <td>Rp. {{ rupiah($kontrak->t_tanggungjawab) }},-</td>
+                    </tr>
+                    <tr>
+                        <td>d.</td>
+                        <td style="width:140px">Tj. Makan</td>
+                        <td>:</td>
+                        <td>Rp. {{ rupiah($kontrak->t_makan) }},-</td>
+                    </tr>
 
-                        <tr>
-                            <td>e.</td>
-                            <td style="width:140px">Skill Khusus</td>
-                            <td>:</td>
-                            <td>Rp. {{ rupiah($kontrak->t_skill) }},-</td>
-                        </tr>
-                    </table>
+                    <tr>
+                        <td>e.</td>
+                        <td style="width:140px">Skill Khusus</td>
+                        <td>:</td>
+                        <td>Rp. {{ rupiah($kontrak->t_skill) }},-</td>
+                    </tr>
+                    </table> --}}
                 </li>
             </ol>
 
@@ -279,9 +279,6 @@
                 </li>
             </ol>
         </p>
-
-    </section>
-    <section class="sheet padding-10mm">
         <p>
             <h4 style="text-align: center">
                 PASAL 4<br>
@@ -303,19 +300,24 @@
                 <li>
                     Dalam hal pekerja diberhentikan karena kesalahan pekerja atau pengunduran diri maka Pekerja hanya akan menerima pendapatan atau upah sampai saat tanggal pemutusan perjanjian kerja tersebut.
                 </li>
-                <li>
-                    Dalam hal pihak kesatu atau pihak kedua melakukan pemutusan perjanjian kerja sebagaimana dimaksud diatas maka pihak kedua tidak berhak menuntut ganti rugi.
-                </li>
-                <li>
-                    Apabila pihak kedua habis kontrak dan tidak diperpanjang, maka pihak kesatu tidak wajib memberikan alasan tentang tidak diperpanjangnya.
-                </li>
-                <li>
-                    Untuk hal-hal yang belum tercantum dalam syarat-syarat kerja ini berlaku ketentuan-ketentuan umum pada PKB.
-                </li>
-                <li>
-                    Apabila dikemudian hari terdapat kekeliruan pada surat perjanjian kerja bersama ini maka akan ditinjau kembali dan diperbaiki sebagaimana mestinya.
-                </li>
+
             </ol>
+    </section>
+    <section class="sheet padding-10mm">
+        <ol start="3">
+            <li>
+                Dalam hal pihak kesatu atau pihak kedua melakukan pemutusan perjanjian kerja sebagaimana dimaksud diatas maka pihak kedua tidak berhak menuntut ganti rugi.
+            </li>
+            <li>
+                Apabila pihak kedua habis kontrak dan tidak diperpanjang, maka pihak kesatu tidak wajib memberikan alasan tentang tidak diperpanjangnya.
+            </li>
+            <li>
+                Untuk hal-hal yang belum tercantum dalam syarat-syarat kerja ini berlaku ketentuan-ketentuan umum pada PKB.
+            </li>
+            <li>
+                Apabila dikemudian hari terdapat kekeliruan pada surat perjanjian kerja bersama ini maka akan ditinjau kembali dan diperbaiki sebagaimana mestinya.
+            </li>
+        </ol>
         </p>
         <p>
             <h4 style="text-align: center">
@@ -378,7 +380,7 @@
                 <td style="text-align:center">PIHAK PERTAMA</td>
             </tr>
             <tr>
-                <td style="height: 80px"></td>
+                <td style="height: 120px"></td>
                 <td></td>
                 <td></td>
             </tr>
