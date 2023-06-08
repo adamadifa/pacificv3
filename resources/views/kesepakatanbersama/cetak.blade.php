@@ -261,6 +261,8 @@
                                 $totalupah = $kb->gaji_pokok + $kb->t_tanggungjawab + $kb->t_makan + $kb->t_skill + $kb->t_jabatan;
                             }
 
+                            $grandtotalupah = $kb->gaji_pokok + $kb->t_tanggungjawab + $kb->t_makan + $kb->t_skill + $kb->t_jabatan;
+
                             ?>
                             @if ($cekjmk != null)
                             @php
@@ -346,7 +348,7 @@
                             <td style="font-weight:bold">Total Upah</td>
                             <td style="font-weight:bold; text-align:right">
 
-                                {{ rupiah($totalupah) }}
+                                {{ rupiah($grandtotalupah) }}
                             </td>
                         </tr>
                     </table>
@@ -366,7 +368,7 @@
         </p>
         <table class="datatable4">
             <tr>
-                <td colspan="3" style="text-align: center">Tasikmalaya, {{ DateToIndo2($kontrak->sampai)}}</td>
+                <td colspan="4" style="text-align: center">Tasikmalaya, {{ DateToIndo2($kontrak->sampai)}}</td>
             </tr>
             <tr>
                 <td style="text-align:center">PIHAK KEDUA</td>
