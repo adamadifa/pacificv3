@@ -265,9 +265,15 @@
 
                             ?>
                             @if ($cekjmk != null)
+                            @if ($diffmasakerja->y == 1 AND $diffmasakerja->m >=3)
+                            @php
+                            $persentasejmk = 25;
+                            @endphp
+                            @else
                             @php
                             $persentasejmk = 15;
                             @endphp
+                            @endif
                             @else
                             @php
                             $persentasejmk = 25;
@@ -277,7 +283,7 @@
                             $totalpemutihan = ($persentasejmk/100) * $totalupah;
                             @endphp
                             <td style="width: 2px">1.</td>
-                            <td>Jasa Masa Kerja</td>
+                            <td>Jasa Masa Kerja {{ $diffmasakerja->m }}</td>
                             <td>{{ $persentasejmk }}%</td>
                             <td>x</td>
                             <td>Rp. {{ rupiah($totalupah) }}</td>
