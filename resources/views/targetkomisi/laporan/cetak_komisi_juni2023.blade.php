@@ -184,7 +184,7 @@
                 <th>REWARD</th>
                 <th>PERSENTASE</th>
                 <th>REWARD</th>
-                <th>PERSENTASE</th>
+                <th>RATA RATA</th>
                 <th>REWARD</th>
                 <th style="background-color: #9e9895;">REALISASI</th>
                 <th style="background-color: #9e9895;">RATIO</th>
@@ -542,7 +542,7 @@
 
                 //Outlet Aktif
 
-                $ec = $d->jmltrans / 23;
+                $ec = $d->jmltrans / 24;
 
                 if($d->status_komisi == 1){
                     if ($ec > 10 and $transvsregister <= 15) {
@@ -671,7 +671,7 @@
                 </td>
                 <td align="right"><?php echo rupiah($reward_routing); ?></td>
                 <td align="center">
-                    {{ desimal($ec) }}%
+                    {{ desimal($ec) }}
                 </td>
                 <!--Cashin-->
                 <td align="right"><?php echo rupiah($reward_ec); ?></td>
