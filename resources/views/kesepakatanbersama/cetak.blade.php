@@ -370,7 +370,7 @@
             </tr>
             <tr>
                 <td style="text-align:center">PIHAK KEDUA</td>
-                <td style="text-align:center">PIHAK PERTAMA</td>
+                <td style="text-align:center" colspan="2">PIHAK PERTAMA</td>
                 <td style="text-align:center">MENYETUJUI</td>
             </tr>
             <tr>
@@ -386,6 +386,10 @@
                 <td style="text-align:center">
                     <u>{{ $nama_pihaksatu }}</u><br>
                     {{ $jabatan_pihaksatu }}
+                </td>
+                <td style="text-align:center">
+                    <u>Eris Fardiana</u><br>
+                    GM Operasional
                 </td>
                 <td style="text-align:center">
                     <u>{{ $approve->direktur }}</u><br>
