@@ -54,7 +54,7 @@ class KontrakController extends Controller
             ->where('status_karyawan', '!=', 'T')
             ->where('status_karyawan', '!=', 'O')
             ->orderBy('nama_karyawan')->get();
-        $departemen = DB::table('departemen')->where('status_pengajuan', 0)->get();
+        $departemen = DB::table('hrd_departemen')->get();
 
         return view('kontrak.create', compact('kantor', 'jabatan', 'karyawan', 'departemen', 'kantor'));
     }
@@ -64,7 +64,7 @@ class KontrakController extends Controller
         $no_kontrak = $request->no_kontrak;
         $jabatan = DB::table('hrd_jabatan')->orderBy('nama_jabatan')->get();
         $kantor = DB::table('cabang')->orderBy('kode_cabang')->get();
-        $departemen = DB::table('departemen')->where('status_pengajuan', 0)->get();
+        $departemen = DB::table('hrd_departemen')->get();
 
         $karyawan = DB::table('master_karyawan')->orderBy('nama_karyawan')->get();
         $kontrak = DB::table('hrd_kontrak')->where('no_kontrak', $no_kontrak)->first();
@@ -93,7 +93,7 @@ class KontrakController extends Controller
             ->first();
         $jabatan = DB::table('hrd_jabatan')->orderBy('nama_jabatan')->get();
         $gaji = DB::table('hrd_mastergaji')->where('nik', $penilaian->nik)->orderBy('tgl_berlaku', 'desc')->first();
-        $departemen = DB::table('departemen')->where('status_pengajuan', 0)->get();
+        $departemen = DB::table('hrd_departemen')->get();
         $kantor = DB::table('cabang')->orderBy('kode_cabang')->get();
         return view('kontrak.createformpenilaian', compact('penilaian', 'jabatan', 'gaji', 'departemen', 'kantor'));
     }
@@ -412,7 +412,7 @@ class KontrakController extends Controller
             ->where('kode_penilaian', $kode_penilaian)
             ->first();
         $jabatan = DB::table('hrd_jabatan')->orderBy('nama_jabatan')->get();
-        $departemen = DB::table('departemen')->where('status_pengajuan', 0)->get();
+        $departemen = DB::table('hrd_departemen')->get();
         $kantor = DB::table('cabang')->orderBy('kode_cabang')->get();
         $gaji = DB::table('hrd_mastergaji')->where('nik', $penilaian->nik)->orderBy('tgl_berlaku', 'desc')->first();
         return view('kontrak.createformpenilaian', compact('penilaian', 'jabatan', 'gaji', 'departemen', 'kantor'));
