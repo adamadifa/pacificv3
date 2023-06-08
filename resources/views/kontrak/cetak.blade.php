@@ -223,7 +223,7 @@
             @endphp
             <ol>
                 <li>
-                    Pihak Kedua menerima pekerjaan yang diberikan pihak CV Makmur Permata dengan jabatan sebagai Operator Produksi yang berlokasi di PUSAT serta bersedia ditempatkan diluar lokasi dan departemen tersebut bila Perusahaan memerlukan.
+                    Pihak Kedua menerima pekerjaan yang diberikan pihak CV Makmur Permata dengan jabatan sebagai {{ $d->nama_jabatan }} yang berlokasi di PUSAT serta bersedia ditempatkan diluar lokasi dan departemen tersebut bila Perusahaan memerlukan.
                 </li>
                 <li>
                     Pihak kedua setuju menerima upah sebesar Rp {{ rupiah($totalgaji) }} ,- dengan rincian sebagai berikut :
