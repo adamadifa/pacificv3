@@ -83,23 +83,27 @@
 
             $persentasekunjungansesuai = !empty($grandtotalkunjungan) ? $grandtotalkunjungansesuai / $grandtotalkunjungan * 100 : 0;
             $persentasekunjungantidaksesuai = !empty($grandtotalkunjungan) ? $grandtotalkunjungantidaksesuai / $grandtotalkunjungan * 100 : 0;
+
+
+            $tidaksesuai = !empty($d->totalkunjungan) ? $totaltidaksesuai/$d->totalkunjungan * 100 : 0;
+            $sesuai = !empty($d->totalkunjungan) ? $d->totalsesuaijadwal/$d->totalkunjungan * 100 : 0;
             @endphp
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $d->id_karyawan }}</td>
                 <td>{{ $d->nama_karyawan }}</td>
                 <td style="text-align: center">{{ $d->totalkunjungan }}</td>
-                <td style="text-align: center">{{ $d->totalsesuaijadwal }} ({{ !empty($d->totalkunjungan) ? ROUND($d->totalsesuaijadwal/$d->totalkunjungan * 100) : 0 }} % )</td>
+                <td style="text-align: center">{{ $d->totalsesuaijadwal }} ({{ desimal($sesuai) }} % )</td>
                 <td style="text-align: center">
-                    {{ $totaltidaksesuai }} ({{ !empty($d->totalkunjungan) ? ROUND($totaltidaksesuai/$d->totalkunjungan * 100) : 0 }} % )
+                    {{ $totaltidaksesuai }} ({{ desimal($tidaksesuai) }} % )
                 </td>
             </tr>
             @endforeach
             <tr>
                 <th colspan="3">TOTAL</th>
                 <th style="text-align: center">{{ $grandtotalkunjungan }}</th>
-                <th style="text-align: center">{{ $grandtotalkunjungansesuai }} ({{ ROUND($persentasekunjungansesuai) }}%)</th>
-                <th style="text-align: center">{{ $grandtotalkunjungantidaksesuai }} ({{ ROUND($persentasekunjungantidaksesuai) }}%)</th>
+                <th style="text-align: center">{{ $grandtotalkunjungansesuai }} ({{ desimal($persentasekunjungansesuai) }}%)</th>
+                <th style="text-align: center">{{ $grandtotalkunjungantidaksesuai }} ({{ desimal($persentasekunjungantidaksesuai) }}%)</th>
             </tr>
         </tbody>
     </table>
