@@ -928,9 +928,9 @@
                 </td>
                 <td align="center" style="background-color: #0ca0c9;">
                     @php
-                    $totalpersentase_ec = $totaltransaksi / 23;
+                    $totalpersentase_ec = $totaltransaksi / 24;
                     @endphp
-                    {{ desimal($totalpersentase_ec) }} %
+                    {{ desimal($totalpersentase_ec) }}
                 </td>
                 <td align="right" style="background-color: #0ca0c9;">
                     <?php
