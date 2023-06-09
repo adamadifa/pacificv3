@@ -73,16 +73,20 @@ class Cabang extends Model
         $yulianto = 82;
         $ega = 7;
         $dadang = 97;
+        $srinurul = 115;
         $listcabang = array('BDG', 'PWK');
         $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB', 'BTN');
         $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
         $egacabang = array('TSM', 'GRT');
+        $srinurulcabang = array('BDG', 'BGR', 'TGL', 'PWT', 'TSM', 'SKB', 'PWK', 'BTN', 'PST');
         if ($iduser == $oki) {
             $cabang = DB::table('cabang')->whereIn('kode_cabang', $listcabang)->get();
         } else if ($iduser == $yulianto) {
             $cabang = DB::table('cabang')->whereIn('kode_cabang', $wilayah_barat)->get();
         } else if ($iduser == $dadang) {
             $cabang = DB::table('cabang')->whereIn('kode_cabang', $wilayah_timur)->get();
+        } else if ($iduser == $srinurul) {
+            $cabang = DB::table('cabang')->whereIn('kode_cabang', $srinurulcabang)->get();
         } else {
             if ($cbg == "PCF") {
                 $cabang = DB::table('cabang')->get();

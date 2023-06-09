@@ -421,8 +421,8 @@ class GlobalProvider extends ServiceProvider
             $laporan_ledger = [
                 'admin', 'direktur',
                 'general manager', 'manager accounting', 'spv accounting', 'admin kas kecil', 'audit', 'manager audit',
-                'admin kas', 'manager accounting', 'admin kas dan penjualan', 'kepala penjualan', 'admin persediaan dan kas kecil',
-                'admin penjualan dan kas kecil', 'staff keuangan', 'audit', 'manager audit', 'admin pajak 2'
+                'admin kas', 'manager accounting', 'admin kas dan penjualan', 'kepala penjualan', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil', 'staff keuangan', 'audit', 'manager audit', 'admin pajak 2',
+                'admin pusat'
             ];
             $laporan_kaskecil = [
                 'admin', 'direktur', 'general manager',

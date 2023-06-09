@@ -97,7 +97,7 @@ class LaporankeuanganController extends Controller
 
     public function ledger()
     {
-        $role = ['admin', 'direktur', 'general manager', 'manager accounting', 'staff keuangan', 'spv accounting', 'audit', 'admin pajak 2'];
+        $role = ['admin', 'direktur', 'general manager', 'manager accounting', 'staff keuangan', 'spv accounting'];
         $level = Auth::user()->level;
         if (in_array($level, $role)) {
             $bank = DB::table('master_bank')->orderBy('kode_bank')->get();
@@ -110,7 +110,12 @@ class LaporankeuanganController extends Controller
                 }
                 $bank = DB::table('master_bank')->whereIn('kode_cabang', $list)->orderBy('kode_bank')->get();
             } else {
-                $bank = DB::table('master_bank')->where('kode_cabang', $this->cabang)->orderBy('kode_bank')->get();
+                if (Auth::user()->id == 115) {
+                    $list = ['BNI CV', 'BNI TGL', 'BNI SKB', 'BNI SBY', 'BNI PWT', 'BNI PWK', 'BNI KLT', 'BNI BTN', 'BNI BGR', 'BNI SMR', 'BNI BDG'];
+                    $bank = DB::table('master_bank')->whereIn('kode_bank', $list)->orderBy('kode_bank')->get();
+                } else {
+                    $bank = DB::table('master_bank')->where('kode_cabang', $this->cabang)->orderBy('kode_bank')->get();
+                }
             }
         }
         if ($this->cabang == "PCF") {

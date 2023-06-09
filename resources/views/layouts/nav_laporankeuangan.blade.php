@@ -19,11 +19,19 @@
                 </li>
             </a>
             @else
+            @if (Auth::user()->id==115)
+            <a href="/laporankeuangan/ledger" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporankeuangan/ledger']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Ledger / Mutasi Bank
+                </li>
+            </a>
+            @else
             <a href="/laporankeuangan/ledger" style="color:#626262">
                 <li class="list-group-item {{ request()->is(['laporankeuangan/ledger']) ? 'active' : '' }}">
                     <i class="feather icon-file mr-1"></i> Mutasi Bank
                 </li>
             </a>
+            @endif
             @endif
             @endif
             @if (in_array($level,$laporan_saldokasbesar))
