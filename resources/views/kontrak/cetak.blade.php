@@ -284,6 +284,8 @@
                 </li>
             </ol>
         </p>
+
+        @if (in_array($kontrak->id_jabatan,$management))
         <p>
             <h4 style="text-align: center">
                 PASAL 4<br>
@@ -307,23 +309,65 @@
                 </li>
 
             </ol>
+        </p>
+        @endif
+
     </section>
     <section class="sheet padding-10mm">
-        <ol start="3">
-            <li>
-                Dalam hal pihak kesatu atau pihak kedua melakukan pemutusan perjanjian kerja sebagaimana dimaksud diatas maka pihak kedua tidak berhak menuntut ganti rugi.
-            </li>
-            <li>
-                Apabila pihak kedua habis kontrak dan tidak diperpanjang, maka pihak kesatu tidak wajib memberikan alasan tentang tidak diperpanjangnya.
-            </li>
-            <li>
-                Untuk hal-hal yang belum tercantum dalam syarat-syarat kerja ini berlaku ketentuan-ketentuan umum pada PKB.
-            </li>
-            <li>
-                Apabila dikemudian hari terdapat kekeliruan pada surat perjanjian kerja bersama ini maka akan ditinjau kembali dan diperbaiki sebagaimana mestinya.
-            </li>
-        </ol>
+        @if (in_array($kontrak->id_jabatan,$management))
+        <p>
+            <ol start="3">
+                <li>
+                    Dalam hal pihak kesatu atau pihak kedua melakukan pemutusan perjanjian kerja sebagaimana dimaksud diatas maka pihak kedua tidak berhak menuntut ganti rugi.
+                </li>
+                <li>
+                    Apabila pihak kedua habis kontrak dan tidak diperpanjang, maka pihak kesatu tidak wajib memberikan alasan tentang tidak diperpanjangnya.
+                </li>
+                <li>
+                    Untuk hal-hal yang belum tercantum dalam syarat-syarat kerja ini berlaku ketentuan-ketentuan umum pada PKB.
+                </li>
+                <li>
+                    Apabila dikemudian hari terdapat kekeliruan pada surat perjanjian kerja bersama ini maka akan ditinjau kembali dan diperbaiki sebagaimana mestinya.
+                </li>
+            </ol>
         </p>
+        @else
+        <p>
+            <h4 style="text-align: center">
+                PASAL 4<br>
+                PEMUTUSAN HUBUNGAN KERJA
+            </h4>
+            <ol>
+                <li>
+                    Perjanjian kerja ini dapat terputus dan berakhir sebelum masa berlakunya, apabila :
+                    <ol type="a">
+                        <li>Hasil Evaluasi Pekerja dinilai tidak mampu dan tidak cakap melaksanakan tugasnya</li>
+                        <li>
+                            Pekerja tidak hadir selama 5 (lima) hari secara berurutan dalam 1 (satu) bulan, tanpa izin atau tanpa alasan yang bisa dipertanggungjawabkan.
+                        </li>
+                        <li>
+                            Pekerja mengajukan pengunduran diri.
+                        </li>
+                    </ol>
+                </li>
+                <li>
+                    Dalam hal pekerja diberhentikan karena kesalahan pekerja atau pengunduran diri maka Pekerja hanya akan menerima pendapatan atau upah sampai saat tanggal pemutusan perjanjian kerja tersebut.
+                </li>
+                <li>
+                    Dalam hal pihak kesatu atau pihak kedua melakukan pemutusan perjanjian kerja sebagaimana dimaksud diatas maka pihak kedua tidak berhak menuntut ganti rugi.
+                </li>
+                <li>
+                    Apabila pihak kedua habis kontrak dan tidak diperpanjang, maka pihak kesatu tidak wajib memberikan alasan tentang tidak diperpanjangnya.
+                </li>
+                <li>
+                    Untuk hal-hal yang belum tercantum dalam syarat-syarat kerja ini berlaku ketentuan-ketentuan umum pada PKB.
+                </li>
+                <li>
+                    Apabila dikemudian hari terdapat kekeliruan pada surat perjanjian kerja bersama ini maka akan ditinjau kembali dan diperbaiki sebagaimana mestinya.
+                </li>
+            </ol>
+        </p>
+        @endif
         <p>
             <h4 style="text-align: center">
                 PASAL 5<br>
