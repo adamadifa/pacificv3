@@ -226,41 +226,46 @@
                     Pihak Kedua menerima pekerjaan yang diberikan pihak CV Makmur Permata dengan jabatan sebagai {{ $kontrak->nama_jabatan }} yang berlokasi di {{ $kontrak->id_kantor == "PST" ? "KANTOR PUSAT TASIKMALAYA" : "CABANG ".strtoupper($kontrak->nama_cabang) }} serta bersedia ditempatkan diluar lokasi dan departemen tersebut bila Perusahaan memerlukan.
                 </li>
                 <li>
+                    @if (in_array($kontrak->id_jabatan,$management))
                     Pihak kedua setuju menerima upah dengan rincian terlampir:
-                    {{-- <table>
+                    @else
+                    Pihak kedua setuju menerima upah dengan rincian berikut:
+                    <table>
                         <tr>
                             <td>a.</td>
                             <td style="width:140px">Gaji Pokok</td>
                             <td>:</td>
                             <td>Rp. {{ rupiah($kontrak->gaji_pokok) }},-</td>
-                    </tr>
+                        </tr>
 
-                    <tr>
-                        <td>b.</td>
-                        <td style="width:140px">Tj. Jabatan</td>
-                        <td>:</td>
-                        <td>Rp. {{ rupiah($kontrak->t_jabatan) }},-</td>
-                    </tr>
-                    <tr>
-                        <td>c.</td>
-                        <td style="width:140px">Tj. Tanggungjawab</td>
-                        <td>:</td>
-                        <td>Rp. {{ rupiah($kontrak->t_tanggungjawab) }},-</td>
-                    </tr>
-                    <tr>
-                        <td>d.</td>
-                        <td style="width:140px">Tj. Makan</td>
-                        <td>:</td>
-                        <td>Rp. {{ rupiah($kontrak->t_makan) }},-</td>
-                    </tr>
+                        <tr>
+                            <td>b.</td>
+                            <td style="width:140px">Tj. Jabatan</td>
+                            <td>:</td>
+                            <td>Rp. {{ rupiah($kontrak->t_jabatan) }},-</td>
+                        </tr>
+                        <tr>
+                            <td>c.</td>
+                            <td style="width:140px">Tj. Tanggungjawab</td>
+                            <td>:</td>
+                            <td>Rp. {{ rupiah($kontrak->t_tanggungjawab) }},-</td>
+                        </tr>
+                        <tr>
+                            <td>d.</td>
+                            <td style="width:140px">Tj. Makan</td>
+                            <td>:</td>
+                            <td>Rp. {{ rupiah($kontrak->t_makan) }},-</td>
+                        </tr>
 
-                    <tr>
-                        <td>e.</td>
-                        <td style="width:140px">Skill Khusus</td>
-                        <td>:</td>
-                        <td>Rp. {{ rupiah($kontrak->t_skill) }},-</td>
-                    </tr>
-                    </table> --}}
+                        <tr>
+                            <td>e.</td>
+                            <td style="width:140px">Skill Khusus</td>
+                            <td>:</td>
+                            <td>Rp. {{ rupiah($kontrak->t_skill) }},-</td>
+                        </tr>
+                    </table>
+                    @endif
+
                 </li>
             </ol>
 

@@ -394,10 +394,11 @@ class KontrakController extends Controller
             ->where('tgl_berlaku', '<=', $kontrak->dari)
             ->orderBy('tgl_berlaku', 'desc')->first();
 
+        $management = config('global.show_for_hrd');
         if ($kontrak->masa_kontrak_kerja != "Karyawan Tetap") {
-            return view('kontrak.cetak', compact('kontrak', 'approve'));
+            return view('kontrak.cetak', compact('kontrak', 'approve', 'management'));
         } else {
-            return view('kontrak.cetak_pkwtt', compact('kontrak', 'approve'));
+            return view('kontrak.cetak_pkwtt', compact('kontrak', 'approve', 'management'));
         }
     }
 
