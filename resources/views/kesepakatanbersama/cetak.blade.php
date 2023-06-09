@@ -283,7 +283,7 @@
                             $totalpemutihan = ($persentasejmk/100) * $totalupah;
                             @endphp
                             <td style="width: 2px">1.</td>
-                            <td>Jasa Masa Kerja {{ $diffmasakerja->m }}</td>
+                            <td>Jasa Masa Kerja </td>
                             <td>{{ $persentasejmk }}%</td>
                             <td>x</td>
                             <td>Rp. {{ rupiah($totalupah) }}</td>

@@ -321,6 +321,10 @@
                                             $grandtotaljam = 0;
                                         }
 
+
+                                        if (empty($d->jam_in)) {
+                                            $grandtotaljam = 0;
+                                        }
                                         //echo $jam."|";
                                         //echo $jam.$menit;
                                         //echo $jam_istirahat;
