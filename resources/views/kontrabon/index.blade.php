@@ -133,6 +133,8 @@
                                     </td>
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
+                                            <a class="ml-1" target="_blank" href="/kontrabon/{{ Crypt::encrypt($d->no_kontrabon) }}/cetak"><i class=" feather icon-printer primary"></i></a>
+
                                             <a class="ml-1 detailkontrabon" href="#" no_kontrabon="{{ Crypt::encrypt($d->no_kontrabon) }}"><i class=" feather icon-file-text info"></i></a>
 
 

@@ -37,6 +37,7 @@ use App\Http\Controllers\KaskecilController;
 use App\Http\Controllers\KendaraanController;
 use App\Http\Controllers\KesepakatanbersamaController;
 use App\Http\Controllers\KlaimController;
+use App\Http\Controllers\KonfigurasijadwalController;
 use App\Http\Controllers\KontrabonangkutanController;
 use App\Http\Controllers\KontrabonController;
 use App\Http\Controllers\KontrakController;
@@ -530,6 +531,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/kontrabon/{no_kontrabon}/batalkankontrabon', [KontrabonController::class, 'batalkankontrabon']);
     Route::get('/kontrabon/{no_kontrabon}/approvekontrabon', [KontrabonController::class, 'approvekontrabon']);
     Route::get('/kontrabon/{no_kontrabon}/cancelkontrabon', [KontrabonController::class, 'cancelkontrabon']);
+    Route::get('/kontrabon/{no_kontrabon}/cetak', [KontrabonController::class, 'cetak']);
     Route::post('/kontrabon/getNokontrabon', [KontrabonController::class, 'getNokontrabon']);
     Route::get('/pembelian', [PembelianController::class, 'index']);
     Route::post('/pembelian/showdetailpembelian', [PembelianController::class, 'showdetailpembelian']);
@@ -1665,4 +1667,7 @@ Route::middleware(['auth'])->group(function () {
     //Presensi
 
     Route::get('/presensi/monitoring', [PresensiController::class, 'monitoring']);
+
+    //Jadwal Shift
+    Route::post('/konfigurasijadwal/store', [KonfigurasijadwalController::class, 'store']);
 });

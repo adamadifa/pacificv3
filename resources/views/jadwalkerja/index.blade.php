@@ -20,165 +20,29 @@
     <div class="content-body">
         @include('layouts.notification')
         <div class="row">
-            <div class="col-3">
+            <div class="col-6">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="card-title">Non Shift</h4>
+                        <a href="#" class="btn btn-primary" id="buatjadwal"><i class="fa fa-plus mr-1"></i> Buat Jadwal</a>
                     </div>
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-12">
-                                <p>
-                                    <b>Jumlah Karyawan : </b> {{ $jmlnonshift }}
-                                </p>
-                            </div>
-                        </div>
                         <div class="row">
                             <div class="col-12">
                                 <table class="table table-striped table-hover-animation" id="tabelnonshift">
                                     <thead>
                                         <tr>
                                             <th>No.</th>
-                                            <th>NIK</th>
-                                            <th>Nama</th>
-                                            <th>Kantor</th>
+                                            <th>Kode Jadwal</th>
+                                            <th>Periode</th>
                                         </tr>
                                     </thead>
                                     <tbody style="font-size:11px !Important">
-                                        @foreach ($nonshift as $d)
-                                        <tr nik="{{ $d->nik }}">
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $d->nik }}</td>
-                                            <td>{{ ucwords(strtolower($d->nama_karyawan)) }}</td>
-                                            <td>{{ $d->id_kantor }}</td>
-                                        </tr>
-                                        @endforeach
+
                                     </tbody>
                                 </table>
                             </div>
                         </div>
 
-                    </div>
-                </div>
-            </div>
-            <div class="col-3">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Shift 1</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-12">
-                                <p>
-                                    <b>Jumlah Karyawan : </b> {{ $jmlshift1 }}
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <table class="table table-striped table-hover-animation" id="tabelshift1">
-                                    <thead>
-                                        <tr>
-                                            <th>No.</th>
-                                            <th>NIK</th>
-                                            <th>Nama</th>
-                                            <th>Kantor</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody style="font-size:11px !Important">
-                                        @foreach ($shift1 as $d)
-                                        <tr nik="{{ $d->nik }}">
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $d->nik }}</td>
-                                            <td>{{ ucwords(strtolower($d->nama_karyawan)) }}</td>
-                                            <td>{{ $d->id_kantor }}</td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-            <div class="col-3">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Shift 2</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-12">
-                                <p>
-                                    <b>Jumlah Karyawan : </b> {{ $jmlshift2 }}
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <table class="table table-striped table-hover-animation" id="tabelshift2">
-                                    <thead>
-                                        <tr>
-                                            <th>No.</th>
-                                            <th>NIK</th>
-                                            <th>Nama</th>
-                                            <th>Kantor</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody style="font-size:11px !Important">
-                                        @foreach ($shift2 as $d)
-                                        <tr nik="{{ $d->nik }}">
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $d->nik }}</td>
-                                            <td>{{ ucwords(strtolower($d->nama_karyawan)) }}</td>
-                                            <td>{{ $d->id_kantor }}</td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-3">
-                <div class="card">
-                    <div class="card-header">
-                        <h4 class="card-title">Shift 3</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-12">
-                                <p>
-                                    <b>Jumlah Karyawan : </b> {{ $jmlshift3 }}
-                                </p>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
-                                <table class="table table-striped table-hover-animation" id="tabelshift3">
-                                    <thead>
-                                        <tr>
-                                            <th>No.</th>
-                                            <th>NIK</th>
-                                            <th>Nama</th>
-                                            <th>Kantor</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody style="font-size:11px !Important">
-                                        @foreach ($shift3 as $d)
-                                        <tr nik="{{ $d->nik }}">
-                                            <td>{{ $loop->iteration }}</td>
-                                            <td>{{ $d->nik }}</td>
-                                            <td>{{ ucwords(strtolower($d->nama_karyawan)) }}</td>
-                                            <td>{{ $d->id_kantor }}</td>
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -186,17 +50,37 @@
     </div>
 </div>
 
-<div class="modal fade text-left" id="mdlpindahjadwal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+<div class="modal fade text-left" id="mdlbuatjadwal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel18">Pindah Jadwal</h4>
+                <h4 class="modal-title" id="myModalLabel18">Buat Jadwal</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" id="loadpindahjadwal">
-
+            <div class="modal-body">
+                <form action="/konfigurasijadwal/store" method="POST" id="frmSetjadwal">
+                    @csrf
+                    <div class="row">
+                        <div class="col-12">
+                            <x-inputtext label="Auto" field="kode_setjadwal" icon="feather icon-credit-card" readonly />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+                            <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker />
+                        </div>
+                        <div class="col-6">
+                            <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <button class="btn btn-primary btn-block" type="submit" name="submit"><i class="feather icon-send mr-1"></i>Submit</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -205,81 +89,29 @@
 @push('myscript')
 <script>
     $(function() {
-        $('#tabelnonshift tbody > tr').click(function() {
-            var nik = $(this).attr('nik');
-            $("#mdlpindahjadwal").modal("show");
-            $.ajax({
-                type: 'POST'
-                , url: '/jadwalkerja/pindahjadwal'
-                , data: {
-                    _token: '{{ csrf_token() }}'
-                    , nik: nik
-                }
-                , cache: false
-                , success: function(respond) {
-                    $("#loadpindahjadwal").html(respond);
-                }
+        $("#buatjadwal").click(function(e) {
+            e.preventDefault();
+            $('#mdlbuatjadwal').modal({
+                backdrop: 'static'
+                , keyboard: false
             });
-            //your code
         });
 
-        $('#tabelshift3 tbody > tr').click(function() {
-            var nik = $(this).attr('nik');
-            $("#mdlpindahjadwal").modal("show");
-            $.ajax({
-                type: 'POST'
-                , url: '/jadwalkerja/pindahjadwal'
-                , data: {
-                    _token: '{{ csrf_token() }}'
-                    , nik: nik
-                }
-                , cache: false
-                , success: function(respond) {
-                    $("#loadpindahjadwal").html(respond);
-                }
-            });
-            //your code
+        $("#frmSetjadwal").submit(function(e) {
+            var dari = $("#dari").val();
+            var sampai = $("#sampai").val();
+            if (dari == "" || sampai == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Periode Harus Dipilih !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#dari").focus();
+                });
+                return false;
+            }
         });
-
-
-        $('#tabelshift1 tbody > tr').click(function() {
-            var nik = $(this).attr('nik');
-            $("#mdlpindahjadwal").modal("show");
-            $.ajax({
-                type: 'POST'
-                , url: '/jadwalkerja/pindahjadwal'
-                , data: {
-                    _token: '{{ csrf_token() }}'
-                    , nik: nik
-                }
-                , cache: false
-                , success: function(respond) {
-                    $("#loadpindahjadwal").html(respond);
-                }
-            });
-            //your code
-        });
-
-
-        $('#tabelshift2 tbody > tr').click(function() {
-            var nik = $(this).attr('nik');
-            $("#mdlpindahjadwal").modal("show");
-            $.ajax({
-                type: 'POST'
-                , url: '/jadwalkerja/pindahjadwal'
-                , data: {
-                    _token: '{{ csrf_token() }}'
-                    , nik: nik
-                }
-                , cache: false
-                , success: function(respond) {
-                    $("#loadpindahjadwal").html(respond);
-                }
-            });
-            //your code
-        });
-
-
 
     });
 

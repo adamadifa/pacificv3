@@ -844,4 +844,21 @@ class KontrabonController extends Controller
         $no_kontrabon = buatkode($lastnokontrabon, $kategori, 3) . "/" . $bulan . "/" . $tahun;
         echo $no_kontrabon;
     }
+
+
+    public function cetak(Request $request)
+    {
+        $no_kontrabon = Crypt::decrypt($request->no_kontrabon);
+        $kontrabon = DB::table('kontrabon')
+            ->select('kontrabon.*', 'nama_supplier')
+            ->join('supplier', 'kontrabon.kode_supplier', '=', 'supplier.kode_supplier')
+            ->where('no_kontrabon', $no_kontrabon)->first();
+        $detailkontrabon = DB::table('detail_kontrabon')
+            ->select('detail_kontrabon.*', 'tgl_pembelian', 'nama_barang', 'qty', 'harga', 'penyesuaian')
+            ->join('pembelian', 'detail_kontrabon.nobukti_pembelian', '=', 'pembelian.nobukti_pembelian')
+            ->join('detail_pembelian', 'detail_kontrabon.nobukti_pembelian', '=', 'detail_pembelian.nobukti_pembelian')
+            ->join('master_barang_pembelian', 'detail_pembelian.kode_barang', '=', 'master_barang_pembelian.kode_barang')
+            ->where('no_kontrabon', $no_kontrabon)->get();
+        return view('kontrabon.cetak', compact('kontrabon', 'detailkontrabon'));
+    }
 }
