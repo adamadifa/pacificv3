@@ -75,7 +75,7 @@ class Cabang extends Model
         $dadang = 97;
         $srinurul = 115;
         $listcabang = array('BDG', 'PWK');
-        $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB', 'BTN');
+        $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB', 'BTN', 'BKI');
         $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
         $egacabang = array('TSM', 'GRT');
         $srinurulcabang = array('BDG', 'BGR', 'TGL', 'PWT', 'TSM', 'SKB', 'PWK', 'BTN', 'PST');
