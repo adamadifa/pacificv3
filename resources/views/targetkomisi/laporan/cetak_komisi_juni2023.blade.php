@@ -1009,8 +1009,47 @@
                 <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalrealisasiSC); ?></td>
                 <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalhasilpoinSC); ?></td>
                 <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalallpoin ); ?></td>
-
-
+                <td align="right" style="background-color: #35ce35;"></td>
+                <td align="center" style="background-color: #35ce35;">{{ rupiah($totalpelangganaktif) }}</td>
+                <td align="center" style="background-color: #35ce35;">{{ rupiah($totaltransaksi) }}</td>
+                <td align="center" style="background-color: #35ce35;">{{ rupiah($totaltigasku) }}</td>
+                <td align="center" style="background-color: #35ce35;">
+                    @php
+                    $totalpersentasesku = !empty($totalpelangganaktif) ? $totaltigasku / $totalpelangganaktif * 100 : 0;
+                    @endphp
+                    {{ desimal($totalpersentasesku) }} %
+                </td>
+                <td align="center" style="background-color: #35ce35;"></td>
+                <td align="center" style="background-color: #35ce35;"></td>
+                <td align="center" style="background-color: #35ce35;"></td>
+                <td align="center" style="background-color: #35ce35;">
+                    @php
+                    $totalpersentase_oa = !empty($totalpelangganaktif) ? $totaltransaksi/$totalpelangganaktif * 100 : 0;
+                    @endphp
+                    {{ desimal($totalpersentase_oa) }} %
+                </td>
+                <td align="center" style="background-color: #35ce35;">
+                <td align="center" style="background-color: #35ce35;">
+                    @php
+                    $totalpersentase_routing = !empty($totalkunjungan) ? $totalsesuaijadwal/$totalkunjungan * 100 : 0;
+                    @endphp
+                    {{ desimal($totalpersentase_routing) }} %
+                </td>
+                <td align="center" style="background-color: #35ce35;">
+                <td align="center" style="background-color: #35ce35;">
+                    @php
+                    $totalpersentase_ec = $totaltransaksi / 24;
+                    @endphp
+                    {{ desimal($totalpersentase_ec) }}
+                </td>
+                <td align="center" style="background-color: #35ce35;">
+                <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalcashin); ?></td>
+                <td align="center" style="background-color: #35ce35;"></td>
+                <td align="right" style="background-color: #35ce35;"></td>
+                <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalsisapiutang); ?></td>
+                <td align="center" style="background-color: #35ce35;"><?php echo ROUND($ratioljtkp, 2); ?></td>
+                <td align="center" style="background-color: #35ce35;">
+                <td align="center" style="background-color: #35ce35;">
             </tr>
 
         </tbody>
