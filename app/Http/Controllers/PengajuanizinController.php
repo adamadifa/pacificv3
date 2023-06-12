@@ -111,6 +111,8 @@ class PengajuanizinController extends Controller
             $query->where('pengajuan_izin.status', 'c');
         } else if (request()->is('pengajuanizin/koreksipresensi')) {
             $query->where('pengajuan_izin.status', 'k');
+        } else if (request()->is('pengajuanizin/perjalanandinas')) {
+            $query->where('pengajuan_izin.status', 'p');
         }
 
         $query->orderBy('kode_izin', 'desc');
@@ -134,6 +136,8 @@ class PengajuanizinController extends Controller
             return view('pengajuanizin.cuti', compact('pengajuan_izin', 'cabang', 'departemen'));
         } else if (request()->is('pengajuanizin/koreksipresensi')) {
             return view('pengajuanizin.koreksipresensi', compact('pengajuan_izin', 'cabang', 'departemen'));
+        } else if (request()->is('pengajuanizin/perjalanandinas')) {
+            return view('pengajuanizin.perjalanandinas', compact('pengajuan_izin', 'cabang', 'departemen'));
         }
     }
 
@@ -564,6 +568,13 @@ class PengajuanizinController extends Controller
         return view('pengajuanizin.createkoreksi', compact('karyawan', 'jadwal'));
     }
 
+    public function createperjalanandinas()
+    {
+        $karyawan = DB::table('master_karyawan')->orderBy('nama_karyawan')->get();
+        $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
+        return view('pengajuanizin.createperjalanandinas', compact('karyawan', 'cabang'));
+    }
+
     public function store(Request $request)
     {
         $nik = $request->nik;
@@ -591,6 +602,8 @@ class PengajuanizinController extends Controller
         } else {
             $sid = null;
         }
+
+        $kode_cabang = $request->kode_cabang;
         $data = [
             'kode_izin' => $kode_izin,
             'nik' => $nik,
@@ -604,7 +617,8 @@ class PengajuanizinController extends Controller
             'jam_pulang' => $jam_pulang,
             'jam_keluar' => $jam_keluar,
             'jam_terlambat' => $jam_terlambat,
-            'jenis_cuti' => $jenis_cuti
+            'jenis_cuti' => $jenis_cuti,
+            'kode_cabang' => $kode_cabang
         ];
 
         try {
@@ -620,6 +634,8 @@ class PengajuanizinController extends Controller
                 return redirect('/pengajuanizin/cuti')->with(['success' => 'Data Berhasil Disimpan']);
             } elseif ($status == "s") {
                 return redirect('/pengajuanizin/sakit')->with(['success' => 'Data Berhasil Disimpan']);
+            } elseif ($status == "k") {
+                return redirect('/pengajuanizin/perjalanandinas')->with(['success' => 'Data Berhasil Disimpan']);
             } elseif ($jenis_izin == "TM") {
                 return redirect('/pengajuanizin')->with(['success' => 'Data Berhasil Disimpan']);
             } elseif ($jenis_izin == "KL") {
@@ -990,6 +1006,108 @@ class PengajuanizinController extends Controller
     }
 
 
+
+    public function approveperjalanandinas(Request $request)
+    {
+        $kode_izin = $request->kode_izin;
+        $level = Auth::user()->level;
+        $data = DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->first();
+        $status_approve = $data->status_approved;
+
+
+        if (isset($request->approve)) {
+            try {
+                if ($level != "manager hrd") {
+                    DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
+                        'head_dept' => 1
+                    ]);
+                } else {
+                    DB::beginTransaction();
+                    try {
+                        if ($status_approve != 1) {
+                            DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
+                                'hrd' => 1,
+                                'status_approved' => 1
+                            ]);
+                            //DB::table('presensi')->where('nik', $nik)->where('tgl_presensi', $tgl_presensi)->delete();
+                            //Cek Data Presensi Karyawan Pada Tanggal Tersebut
+                            DB::commit();
+                            return Redirect::back()->with(['success' => 'Koreksi Presensi Disetujui']);
+                        } else {
+                            return Redirect::back()->with(['warning' => 'Data Sudah Disetujui']);
+                        }
+                    } catch (\Exception $e) {
+                        dd($e);
+                        DB::rollBack();
+                        return Redirect::back()->with(['warning' => 'Koreksi Presensi Gagal Disetujui']);
+                    }
+                }
+
+                return Redirect::back()->with(['success' => 'Koreksi Presensi Disetujui']);
+            } catch (\Exception $e) {
+                return Redirect::back()->with(['warning' => 'Koreksi Presensi Gagal Disetujui']);
+            }
+        }
+
+        if (isset($request->decline)) {
+            try {
+                if ($level != "manager hrd") {
+                    DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
+                        'head_dept' => 2
+                    ]);
+                } else {
+                    DB::beginTransaction();
+                    try {
+                        DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
+                            'hrd' => 2,
+                            'status_approved' => 2
+                        ]);
+                        DB::commit();
+                        return Redirect::back()->with(['success' => 'Pengajuan Izin Ditolak']);
+                    } catch (\Exception $e) {
+                        dd($e);
+                        DB::rollBack();
+                        return Redirect::back()->with(['warning' => 'Pengajuan Izin Gagal Ditolak']);
+                    }
+                }
+
+                return Redirect::back()->with(['success' => 'Pengajuan Izin Ditolak']);
+            } catch (\Exception $e) {
+                return Redirect::back()->with(['warning' => 'Pengajuan Izin Gagal Ditolak']);
+            }
+        }
+    }
+
+
+    public function batalkanperjalanandinas($kode_izin)
+    {
+        $level = Auth::user()->level;
+        try {
+            if ($level != "manager hrd") {
+                DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
+                    'head_dept' => NULL
+                ]);
+            } else {
+                DB::beginTransaction();
+                try {
+                    DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
+                        'hrd' => NULL,
+                        'status_approved' => NULL
+                    ]);
+                    DB::commit();
+                    return Redirect::back()->with(['success' => 'Pengajuan Izin Dibatalkan']);
+                } catch (\Exception $e) {
+                    dd($e);
+                    DB::rollBack();
+                    return Redirect::back()->with(['warning' => 'Pengajuan Izin Gagal Dibatalkan']);
+                }
+            }
+
+            return Redirect::back()->with(['success' => 'Pengajuan Izin Dibatalkan']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Pengajuan Izin Gagal Dibatalkan']);
+        }
+    }
     public function batalkankoreksipresensi($kode_izin)
     {
         $data = DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->first();

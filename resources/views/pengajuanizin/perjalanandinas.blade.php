@@ -51,7 +51,7 @@
                             <div class="tab-pane active">
                                 <div class="row mb-1">
                                     <div class="col-12">
-                                        <form action="/pengajuanizin/koreksipresensi">
+                                        <form action="/pengajuanizin/perjalanandinas">
                                             <div class="row">
                                                 <div class="col-lg-6 col-sm-12">
                                                     <x-inputtext label="Dari" field="dari" value="{{ Request('dari') }}" icon="feather icon-calendar" datepicker />
@@ -125,9 +125,8 @@
                                                     <th>Nama Karyawan</th>
                                                     <th>Jabatan</th>
                                                     <th>Dept</th>
-                                                    <th>Jadwal</th>
-                                                    <th>Jam Masuk</th>
-                                                    <th>Jam Pulang</th>
+                                                    <th>Jml Hari</th>
+                                                    <th>Cabang</th>
                                                     <th>Ket</th>
                                                     <th>Head Dept</th>
                                                     <th>HRD</th>
@@ -139,14 +138,13 @@
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $d->kode_izin }}</td>
-                                                    <td>{{ date('d-m-Y',strtotime($d->dari)) }}</td>
+                                                    <td>{{ date('d-m-Y',strtotime($d->dari)) }} s/d {{ date('d-m-Y',strtotime($d->sampai)) }}</td>
                                                     <td>{{ $d->nik }}</td>
                                                     <td>{{ $d->nama_karyawan }}</td>
                                                     <td>{{ $d->nama_jabatan }}</td>
                                                     <td>{{ $d->kode_dept }}</td>
-                                                    <td>{{ $d->nama_jadwal }}</td>
-                                                    <td>{{ $d->jam_masuk }}</td>
-                                                    <td>{{ $d->jam_pulang }}</td>
+                                                    <td>{{ $d->jmlhari }} Hari</td>
+                                                    <td>{{ $d->kode_cabang }}</td>
                                                     <td>{{ $d->keterangan }}</td>
                                                     <td class="text-center">
                                                         @if (empty($d->head_dept))
@@ -174,7 +172,7 @@
                                                                 <i class="feather icon-external-link text-primary"></i>
                                                             </a>
                                                             @elseif(!empty($d->head_dept) && empty($d->hrd))
-                                                            <a href="/koreksipresensi/{{ $d->kode_izin }}/batalkan" class="warning">Batalkan</a>
+                                                            <a href="/perjalanandinas/{{ $d->kode_izin }}/batalkan" class="warning">Batalkan</a>
                                                             @endif
                                                             @else
                                                             @if (!empty($d->head_dept) && empty($d->hrd))
@@ -184,7 +182,7 @@
                                                             @elseif(empty($d->head_dept))
                                                             <span class="badge bg-warning">Waiting</span>
                                                             @elseif(!empty($d->hrd))
-                                                            <a href="/koreksipresensi/{{ $d->kode_izin }}/batalkan" class="warning">Batalkan</a>
+                                                            <a href="/perjalanandinas/{{ $d->kode_izin }}/batalkan" class="warning">Batalkan</a>
                                                             @endif
                                                             @endif
 
@@ -226,7 +224,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/pengajuanizin/approvekoreksipresensi" method="POST">
+                <form action="/pengajuanizin/approveperjalanandinas" method="POST">
                     @csrf
                     <input type="hidden" name="kode_izin" id="kode_izin">
                     <div class="row">
@@ -249,16 +247,16 @@
         </div>
     </div>
 </div>
-<div class="modal fade text-left" id="mdlkoreksipresensi" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+<div class="modal fade text-left" id="mdlperjalanandinas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel18">Koreksi Presensi</h4>
+                <h4 class="modal-title" id="myModalLabel18">Perjalanan Dinas</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" id="loadinputkoreksipresensi">
+            <div class="modal-body" id="loadinputperjalanandinas">
             </div>
         </div>
     </div>
@@ -270,11 +268,11 @@
     $(function() {
 
         $("#buatkoreksi").click(function(e) {
-            $('#mdlkoreksipresensi').modal({
+            $('#mdlperjalanandinas').modal({
                 backdrop: 'static'
                 , keyboard: false
             });
-            $("#loadinputkoreksipresensi").load('/pengajuanizin/createkoreksi');
+            $("#loadinputperjalanandinas").load('/pengajuanizin/createperjalanandinas');
         });
         $(".approveizin").click(function(e) {
             $("#mdlapprove").modal("show");

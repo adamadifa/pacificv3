@@ -45,5 +45,14 @@
 <li class="nav-item">
     <a class="nav-link {{ request()->is('pengajuanizin/koreksipresensi') ? 'active' : '' }}" href="/pengajuanizin/koreksipresensi">
         Koreksi Presensi
+        @if (!empty($pi->koreksi))
+        <span class="badge bg-danger">{{ $pi->koreksi }}</span>
+        @endif
+    </a>
+</li>
+<li class="nav-item">
+    <a class="nav-link {{ request()->is('pengajuanizin/perjalanandinas') ? 'active' : '' }}" href="/pengajuanizin/perjalanandinas">
+        Perjalanan Dinas
+
     </a>
 </li>

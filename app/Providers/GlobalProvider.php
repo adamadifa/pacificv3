@@ -136,7 +136,8 @@ class GlobalProvider extends ServiceProvider
                     SUM(IF(status='i' AND jenis_izin = 'PL',1,0)) as pulang,
                     SUM(IF(status='i' AND jenis_izin = 'KL',1,0)) as keluar,
                     SUM(IF(status='c',1,0)) as cuti,
-                    SUM(IF(status='s',1,0)) as sakit")
+                    SUM(IF(status='s',1,0)) as sakit,
+                    SUM(IF(status='k',1,0)) as koreksi")
                     ->where('status_approved', 0)
                     ->first();
             } else {
