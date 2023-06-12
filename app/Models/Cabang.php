@@ -22,7 +22,7 @@ class Cabang extends Model
         $ega = 7;
         $dadang = 97;
         $listcabang = array('BDG', 'PWK');
-        $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB', 'BTN');
+        $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB', 'BTN', 'BKI');
         $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
         $egacabang = array('TSM', 'GRT');
         if ($iduser == $oki) {

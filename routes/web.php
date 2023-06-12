@@ -1669,5 +1669,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/presensi/monitoring', [PresensiController::class, 'monitoring']);
 
     //Jadwal Shift
+    Route::get('/konfigurasijadwal', [KonfigurasijadwalController::class, 'index']);
+    Route::get('/konfigurasijadwal/{kode_setjadwal}/edit', [KonfigurasijadwalController::class, 'edit']);
+    Route::get('/konfigurasijadwal/{kode_setjadwal}/aturjadwal', [KonfigurasijadwalController::class, 'aturjadwal']);
+    Route::get('/konfigurasijadwal/{id_group}/showgroup', [KonfigurasijadwalController::class, 'showgroup']);
+    Route::post('/konfigurasijadwal/{kode_setjadwal}/update', [KonfigurasijadwalController::class, 'update']);
     Route::post('/konfigurasijadwal/store', [KonfigurasijadwalController::class, 'store']);
+    Route::post('/konfigurasijadwal/aturshift', [KonfigurasijadwalController::class, 'aturshift']);
+    Route::post('/konfigurasijadwal/storekaryawanshift', [KonfigurasijadwalController::class, 'storekaryawanshift']);
+    Route::post('/konfigurasijadwal/hapuskaryawanshift', [KonfigurasijadwalController::class, 'hapuskaryawanshift']);
+    Route::post('/konfigurasijadwal/storeallkaryawanshift', [KonfigurasijadwalController::class, 'storeallkaryawanshift']);
+    Route::post('/konfigurasijadwal/cancelallkaryawanshift', [KonfigurasijadwalController::class, 'cancelallkaryawanshift']);
+    Route::post('/konfigurasijadwal/showjadwal', [KonfigurasijadwalController::class, 'showjadwal']);
 });
