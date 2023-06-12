@@ -134,6 +134,11 @@
                     <i class="feather icon-file mr-1"></i>Persentase SFA
                 </li>
             </a>
+            <a href="/laporanpenjualan/persentaselokasi" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanpenjualan/persentaselokasi']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Persentase Lokasi Pelanggan
+                </li>
+            </a>
             @endif
         </ul>
     </div>

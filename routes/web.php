@@ -1321,9 +1321,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/penjualan/{no_fak_penj}/updatepending', [PenjualanController::class, 'updatepending']);
     Route::get('/laporanpenjualan/analisatransaksi', [PenjualanController::class, 'analisatransaksi']);
     Route::get('/laporanpenjualan/persentasesfa', [PenjualanController::class, 'persentasesfa']);
+    Route::get('/laporanpenjualan/persentaselokasi', [PenjualanController::class, 'persentaselokasi']);
     Route::get('/laporanpenjualan/tunaitransfer', [PenjualanController::class, 'tunaitransfer']);
     Route::post('/laporanpenjualan/analisatransaksi/cetak', [PenjualanController::class, 'cetakanalisatransaksi']);
     Route::post('/laporanpenjualan/persentasesfa/cetak', [PenjualanController::class, 'cetakpersentasesfa']);
+    Route::post('/laporanpenjualan/persentaselokasi/cetak', [PenjualanController::class, 'cetakpersentaselokasi']);
     Route::post('/laporanpenjualan/tunaitransfer/cetak', [PenjualanController::class, 'cetaktunaitransfer']);
     Route::post('/penjualan/ceknofaktur', [PenjualanController::class, 'ceknofaktur']);
     Route::post('/penjualan/editbarangtemp', [PenjualanController::class, 'editbarangtemp']);
@@ -1674,6 +1676,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/konfigurasijadwal/{kode_setjadwal}/aturjadwal', [KonfigurasijadwalController::class, 'aturjadwal']);
     Route::get('/konfigurasijadwal/{id_group}/showgroup', [KonfigurasijadwalController::class, 'showgroup']);
     Route::post('/konfigurasijadwal/{kode_setjadwal}/update', [KonfigurasijadwalController::class, 'update']);
+    Route::delete('/konfigurasijadwal/{kode_setjadwal}/delete', [KonfigurasijadwalController::class, 'delete']);
     Route::post('/konfigurasijadwal/store', [KonfigurasijadwalController::class, 'store']);
     Route::post('/konfigurasijadwal/aturshift', [KonfigurasijadwalController::class, 'aturshift']);
     Route::post('/konfigurasijadwal/storekaryawanshift', [KonfigurasijadwalController::class, 'storekaryawanshift']);
@@ -1681,4 +1684,5 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/konfigurasijadwal/storeallkaryawanshift', [KonfigurasijadwalController::class, 'storeallkaryawanshift']);
     Route::post('/konfigurasijadwal/cancelallkaryawanshift', [KonfigurasijadwalController::class, 'cancelallkaryawanshift']);
     Route::post('/konfigurasijadwal/showjadwal', [KonfigurasijadwalController::class, 'showjadwal']);
+    Route::post('/konfigurasijadwal/updatekaryawanshift', [KonfigurasijadwalController::class, 'updatekaryawanshift']);
 });

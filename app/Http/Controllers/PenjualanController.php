@@ -8698,6 +8698,14 @@ class PenjualanController extends Controller
         return view('penjualan.laporan.frm.lap_persentasesfa', compact('cabang', 'bulan'));
     }
 
+    public function persentaselokasi()
+    {
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        return view('penjualan.laporan.frm.lap_persentaselokasi', compact('cabang', 'bulan'));
+    }
+
 
     public function cetakpersentasesfa(Request $request)
     {
@@ -8731,5 +8739,43 @@ class PenjualanController extends Controller
             header("Content-Disposition: attachment; filename=Laporan Persentase SFA $dari-$sampai.xls");
         }
         return view('penjualan.laporan.cetak_persentasesfa', compact('persentasesfa', 'cabang', 'dari', 'sampai', 'salesman'));
+    }
+
+
+
+    public function cetakpersentaselokasi(Request $request)
+    {
+        $kode_cabang = $request->kode_cabang;
+        $id_karyawan = $request->id_karyawan;
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $dari = $tahun . "-" . $bulan . "-01";
+        $sampai = date("Y-m-t", strtotime($dari));
+
+        $query = Pelanggan::query();
+        $query->selectRaw('pelanggan.id_sales,nama_karyawan,
+        karyawan.kode_cabang,
+        COUNT(kode_pelanggan) as jmlpelangganaktif,
+        SUM(IF(latitude IS NOT NULL AND latitude !=0 AND longitude IS NOT NULL AND longitude !=0,1,0)) as lokasi,
+        SUM(IF(status_location=1,1,0)) as updatebysfa');
+        $query->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
+        $query->where('pelanggan.time_stamps', '<=', $sampai);
+        if (!empty($kode_cabang)) {
+            $query->where('karyawan.kode_cabang', $kode_cabang);
+        }
+        $query->where('nama_karyawan', '!=', '-');
+        $query->where('status_pelanggan', 1);
+        $query->groupBy('pelanggan.id_sales', 'nama_karyawan', 'karyawan.kode_cabang');
+        $query->orderBy('karyawan.kode_cabang');
+        $persentaselokasi = $query->get();
+        $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
+        $salesman = Salesman::where('id_karyawan', $id_karyawan)->first();
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Persentase Lokasi $dari-$sampai.xls");
+        }
+        return view('penjualan.laporan.cetak_persentaselokasi', compact('persentaselokasi', 'cabang', 'dari', 'sampai', 'salesman'));
     }
 }

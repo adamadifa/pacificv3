@@ -1488,11 +1488,11 @@ class TargetkomisiController extends Controller
             INNER JOIN penjualan ON detailpenjualan.no_fak_penj = penjualan.no_fak_penj
             INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
             INNER JOIN master_barang ON barang.kode_produk = master_barang.kode_produk
-            WHERE tgltransaksi BETWEEN '2023-06-01' AND '2023-06-06' AND promo IS NULL
+            WHERE tgltransaksi BETWEEN '$dari' AND '$sampai' AND promo IS NULL
             GROUP BY penjualan.kode_pelanggan,penjualan.id_karyawan
             ORDER BY penjualan.kode_pelanggan
             ) sku ON (karyawan.id_karyawan = sku.id_karyawan)
-            WHERE jml_sku = 3 GROUP BY karyawan.id_karyawan
+            WHERE jml_sku >= 3 GROUP BY karyawan.id_karyawan
             ) sku"),
             function ($join) {
                 $join->on('karyawan.id_karyawan', '=', 'sku.id_karyawan');

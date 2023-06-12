@@ -33,7 +33,7 @@
                 @if ($d->kode_jadwal == $kode_jadwal)
                 <a href="#" class="hapuskaryawanshift" id_group="{{ $d->grup }}" kode_setjadwal="{{ $kode_setjadwal }}" nik="{{ $d->nik }}"><i class="fa fa-close danger"></i></a>
                 @else
-                <a href="#" class="gantikaryawanshift" id_group="{{ $d->grup }}" kode_setjadwal="{{ $kode_setjadwal }}" nik="{{ $d->nik }}"><i class="fa fa-refresh warning"></i></a>
+                <a href="#" class="gantikaryawanshift" id_group="{{ $d->grup }}" kode_jadwal="{{ $kode_jadwal }}" kode_setjadwal="{{ $kode_setjadwal }}" nik="{{ $d->nik }}"><i class="fa fa-refresh warning"></i></a>
                 @endif
 
                 @else
@@ -153,7 +153,9 @@
                         });
                     } else {
                         loadgroup(id_group);
-                        showshift(kode_jadwal);
+                        showshift("JD002");
+                        showshift("JD003");
+                        showshift("JD004");
                     }
                     $(this).closest("td").find(".loadingshift").hide();
                     $(this).show();
@@ -190,7 +192,9 @@
                         });
                     } else {
                         loadgroup(id_group);
-                        showshift(kode_jadwal);
+                        showshift("JD002");
+                        showshift("JD003");
+                        showshift("JD004");
 
                     }
                     $(this).closest("td").find(".loadingshift").hide();
@@ -227,7 +231,9 @@
                         });
                     } else {
                         loadgroup2(id_group);
-                        showshift(kode_jadwal);
+                        showshift("JD002");
+                        showshift("JD003");
+                        showshift("JD004");
                     }
                 }
             });
@@ -262,8 +268,50 @@
                         });
                     } else {
                         loadgroup2(id_group);
-                        showshift(kode_jadwal);
+                        showshift("JD002");
+                        showshift("JD003");
+                        showshift("JD004");
                     }
+                }
+            });
+        });
+
+        $(".gantikaryawanshift").click(function(e) {
+            e.preventDefault();
+            var kode_setjadwal = "{{ $kode_setjadwal }}";
+            var kode_jadwal = "{{ $kode_jadwal }}";
+            var nik = $(this).attr("nik");
+            var id_group = $(this).attr('id_group');
+            $(this).hide();
+            $(this).closest("td").find(".loadingshift").show();
+            $.ajax({
+                type: 'POST'
+                , url: '/konfigurasijadwal/updatekaryawanshift'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , kode_setjadwal: kode_setjadwal
+                    , kode_jadwal: kode_jadwal
+                    , nik: nik
+                }
+                , cache: false
+                , success: function(respond) {
+                    if (respond == 1) {
+                        swal({
+                            title: 'Oops'
+                            , text: 'Data Gagal Disimpan, Hubungi IT !'
+                            , icon: 'warning'
+                            , showConfirmButton: false
+                        }).then(function() {
+
+                        });
+                    } else {
+                        loadgroup(id_group);
+                        showshift("JD002");
+                        showshift("JD003");
+                        showshift("JD004");
+                    }
+                    $(this).closest("td").find(".loadingshift").hide();
+                    $(this).show();
                 }
             });
         });

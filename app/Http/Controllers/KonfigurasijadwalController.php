@@ -63,6 +63,7 @@ class KonfigurasijadwalController extends Controller
         $cek = DB::table('konfigurasi_jadwalkerja')
             ->whereRaw('"' . $dari . '" >= dari')
             ->whereRaw('"' . $dari . '" <= sampai')
+            ->where('kode_setjadwal', '!=', $kode_setjadwal)
             ->count();
 
         if (!empty($cek)) {
@@ -145,9 +146,29 @@ class KonfigurasijadwalController extends Controller
             DB::table('konfigurasi_jadwalkerja_detail')->insert($data);
             return 0;
         } catch (\Exception $e) {
-            return $e;
+            return 1;
         }
     }
+
+
+    public function updatekaryawanshift(Request $request)
+    {
+        $kode_setjadwal = $request->kode_setjadwal;
+        $kode_jadwal = $request->kode_jadwal;
+        $nik = $request->nik;
+        try {
+            DB::table('konfigurasi_jadwalkerja_detail')
+                ->where('kode_setjadwal', $kode_setjadwal)
+                ->where('nik', $nik)
+                ->update([
+                    'kode_jadwal' => $kode_jadwal
+                ]);
+            return 0;
+        } catch (\Exception $e) {
+            return 1;
+        }
+    }
+
 
     public function hapuskaryawanshift(Request $request)
     {
@@ -234,5 +255,16 @@ class KonfigurasijadwalController extends Controller
             ->orderBy('nama_karyawan')
             ->get();
         return view('konfigurasijadwal.showjadwal', compact('jadwal'));
+    }
+
+    public function delete($kode_jadwal)
+    {
+        $kode_jadwal = Crypt::decrypt($kode_jadwal);
+        try {
+            DB::table('konfigurasi_jadwalkerja')->where('kode_setjadwal', $kode_jadwal)->delete();
+            return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
+        }
     }
 }
