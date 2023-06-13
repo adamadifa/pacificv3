@@ -79,6 +79,9 @@ class GlobalProvider extends ServiceProvider
 
                     $qpenilaian->whereIn('id_kategori_jabatan', $approve_jabatan);
                     $qpenilaian->whereNull($field_kategori);
+                    if ($auth->user()->level == "direktur") {
+                        $qpenilaian->whereNotNull('hrd_penilaian.hrd');
+                    }
                     $penilaian = $qpenilaian->first();
                     $jmlpenilaiankar = $penilaian->jml;
                 } else {
