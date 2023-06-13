@@ -2875,7 +2875,9 @@ class TargetkomisiController extends Controller
         }
 
         $query = Cabang::query();
-        $query->selectRaw("cabang.kode_cabang,nama_cabang,(IFNULL(jml_belumsetorbulanlalu,0) + IFNULL(totalsetoran,0) + IFNULL(jml_gmlast,0) - IFNULL(jml_gmnow,0) - IFNULL(jml_belumsetorbulanini,0)) as cashin,sisapiutang,lamalpc,jam_lpc,cashin_jt");
+        $query->selectRaw("cabang.kode_cabang,nama_cabang,(IFNULL(jml_belumsetorbulanlalu,0) + IFNULL(totalsetoran,0) + IFNULL(jml_gmlast,0) - IFNULL(jml_gmnow,0) - IFNULL(jml_belumsetorbulanini,0)) as cashin,
+        IFNULL(sisapiutangsaldo,0) + IFNULL(sisapiutang,0) as sisapiutang,
+        ,lamalpc,jam_lpc,cashin_jt");
         $query->leftJoin(
             DB::raw("(
                 SELECT belumsetor.kode_cabang,SUM(jumlah) as jml_belumsetorbulanlalu
