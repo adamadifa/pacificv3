@@ -1436,13 +1436,14 @@ class TargetkomisiController extends Controller
 
         $query->leftJoin(
             DB::raw("(
-                SELECT id_karyawan, COUNT(DISTINCT(kode_pelanggan)) as jmlpelanggan
+                SELECT id_sales, COUNT(DISTINCT(penjualan.kode_pelanggan)) as jmlpelanggan
                 FROM penjualan
-                WHERE tgltransaksi BETWEEN '$startdate' AND '$enddate'
-                GROUP BY id_karyawan
+                INNER JOIN pelanggan ON penjualan.kode_pelanggan = pelanggan.kode_pelanggan
+                WHERE tgltransaksi BETWEEN '$startdate' AND '$enddate' AND nama_pelanggan != 'BATAL'
+                GROUP BY id_sales
             ) pelangganaktif"),
             function ($join) {
-                $join->on('karyawan.id_karyawan', '=', 'pelangganaktif.id_karyawan');
+                $join->on('karyawan.id_karyawan', '=', 'pelangganaktif.id_sales');
             }
         );
 
