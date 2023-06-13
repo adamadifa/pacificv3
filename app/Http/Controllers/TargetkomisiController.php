@@ -2850,6 +2850,7 @@ class TargetkomisiController extends Controller
         $tahun = $request->tahun;
         $namabulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         $dari = $tahun . "-" . $bulan . "-01";
+        $hariini = date('Y-m-d');
         $sampai = date('Y-m-t', strtotime($dari));
         if ($hariini < $sampai) {
             $sampai = $hariini;
