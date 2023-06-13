@@ -2998,7 +2998,6 @@ class TargetkomisiController extends Controller
             DB::raw("(
                 SELECT cabangbarunew,SUM((ifnull(penjualan.total,0) - (ifnull(totalpf_last,0)-ifnull(totalgb_last,0)))-ifnull(totalbayar,0)) as sisapiutang
                 FROM penjualan
-                INNER JOIN pelanggan ON penjualan.kode_pelanggan = pelanggan.kode_pelanggan
                 LEFT JOIN (
                     SELECT pj.no_fak_penj,
                     IF(salesbaru IS NULL,pj.id_karyawan,salesbaru) as salesbarunew, karyawan.nama_karyawan as nama_sales,
@@ -3033,9 +3032,7 @@ class TargetkomisiController extends Controller
                     WHERE tglbayar <= '$sampai'
                     GROUP BY no_fak_penj
                     ) hblalu ON (penjualan.no_fak_penj = hblalu.no_fak_penj)
-                WHERE tgltransaksi <= '$sampai' AND (ifnull(penjualan.total,0) - (ifnull(totalpf_last,0)-ifnull(totalgb_last,0)))-ifnull(totalbayar,0) !=0 AND
-                IFNULL(pelanggan.jatuhtempo+1,15)
-                AND penjualan.id_karyawan NOT IN ('SGRT01','SGRT02')
+                WHERE tgltransaksi <= '$sampai' AND (ifnull(penjualan.total,0) - (ifnull(totalpf_last,0)-ifnull(totalgb_last,0)))-ifnull(totalbayar,0) !=0 AND  AND penjualan.id_karyawan NOT IN ('SGRT01','SGRT02')
                 AND penjualan.jenistransaksi ='kredit'
                 GROUP BY cabangbarunew
             ) penj"),
