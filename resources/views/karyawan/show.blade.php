@@ -49,7 +49,7 @@
                                 @endphp
                                 {{-- <img src="{{ url($path) }}" class="card-img" style="height: 350px !important"> --}}
                                 @if (@getimagesize($src))
-                                <img src="https://presensi.pacific-tasikmalaya.com/storage/uploads/karyawan/{{ $karyawan->foto }}" style="height: 350px" alt="">
+                                <img src="https://presensi.pacific-tasikmalaya.com/storage/uploads/karyawan/{{ $karyawan->foto }}" style="height: 350px" alt="" class="card-img">
                                 @else
                                 @if($karyawan->jenis_kelamin == " 1") <img src="{{ asset('app-assets/images/male.jpg') }}" class="card-img" style="width: 120px; height:150px; object-fit:cover; border-radius:10px; position:absolute; right:70px; top:80px;">
                                 @else
