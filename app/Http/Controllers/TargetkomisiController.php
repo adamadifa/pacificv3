@@ -2851,6 +2851,11 @@ class TargetkomisiController extends Controller
         $namabulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         $dari = $tahun . "-" . $bulan . "-01";
         $sampai = date('Y-m-t', strtotime($dari));
+        if ($hariini < $sampai) {
+            $sampai = $hariini;
+        } else {
+            $sampai = $sampai;
+        }
         $cbg = Auth::user()->kode_cabang;
         $kode_cabang = $request->kode_cabang;
         $cabang = DB::table('cabang')->where('kode_cabang', $cbg)->first();
