@@ -295,7 +295,15 @@
                                         // }
 
                                         if ($denda == 0 and empty($d->kode_izin_terlambat)) {
-                                            $jt = $jt;
+                                            if($d->kode_dept != "MKT"){
+                                                $jt = $jt;
+                                            }else{
+                                                if($jamterlambat < 1){
+                                                    $jt = 0;
+                                                }else{
+                                                    $jt = $jt;
+                                                }
+                                            }
                                         }else{
                                             $jt = 0;
                                         }

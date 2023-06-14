@@ -1690,4 +1690,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/konfigurasijadwal/showjadwal', [KonfigurasijadwalController::class, 'showjadwal']);
     Route::post('/konfigurasijadwal/updatekaryawanshift', [KonfigurasijadwalController::class, 'updatekaryawanshift']);
     Route::post('/konfigurasijadwal/gantishift', [KonfigurasijadwalController::class, 'gantishift']);
+    Route::post('/konfigurasijadwal/storegantishift', [KonfigurasijadwalController::class, 'storegantishift']);
+    Route::get('/konfigurasijadwal/{kode_setjadwal}/showgantishift', [KonfigurasijadwalController::class, 'showgantishift']);
+    Route::post('/konfigurasijadwal/deletegantishift', [KonfigurasijadwalController::class, 'deletegantishift']);
 });

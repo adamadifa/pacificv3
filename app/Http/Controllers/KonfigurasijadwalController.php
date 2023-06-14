@@ -282,11 +282,64 @@ class KonfigurasijadwalController extends Controller
         $bulan_sampai = $sampai[1] - 1;
         $tahun_sampai = $sampai[0];
 
-        $grup = array(26, 27, 28, 30, 31);
+        $grup = array(26, 27, 28, 29, 30, 31);
         $karyawan = DB::table('master_karyawan')
             ->orderBy('nama_karyawan')
             ->whereIn('grup', $grup)
             ->get();
-        return view('konfigurasijadwal.gantishift', compact('karyawan', 'hari_dari', 'bulan_dari', 'tahun_dari', 'hari_sampai', 'bulan_sampai', 'tahun_sampai'));
+        return view('konfigurasijadwal.gantishift', compact('karyawan', 'hari_dari', 'bulan_dari', 'tahun_dari', 'hari_sampai', 'bulan_sampai', 'tahun_sampai', 'kode_setjadwal'));
+    }
+
+    public function storegantishift(Request $request)
+    {
+        $kode_setjadwal = $request->kode_setjadwal;
+        $nik = $request->nik;
+        $tanggal = $request->tanggal;
+        $kode_jadwal = $request->kode_jadwal;
+
+        $tahun = substr(date('Y', strtotime($tanggal)), 2, 2);
+        $gantishift = DB::table('konfigurasi_gantishift')->whereRaw('MID(kode_gs,3,2)="' . $tahun . '"')
+            ->orderBy('kode_gs', 'desc')->first();
+        $last_kodeshift = $gantishift != null ? $gantishift->kode_gs : '';
+        $kode_gs = buatkode($last_kodeshift, "GS" . $tahun, 3);
+        $cek = DB::table('konfigurasi_gantishift')->where('nik', $nik)->where('tanggal', $tanggal)->count();
+        if ($cek > 0) {
+            return 2;
+        }
+        try {
+            $data = [
+                'kode_gs' => $kode_gs,
+                'nik' => $nik,
+                'tanggal' => $tanggal,
+                'kode_jadwal' => $kode_jadwal,
+                'kode_setjadwal' => $kode_setjadwal
+            ];
+
+            DB::table('konfigurasi_gantishift')->insert($data);
+            return 0;
+        } catch (\Exception $e) {
+            return 1;
+        }
+    }
+
+    public function showgantishift($kode_setjadwal)
+    {
+        $gantishift = DB::table('konfigurasi_gantishift')
+            ->join('master_karyawan', 'konfigurasi_gantishift.nik', '=', 'master_karyawan.nik')
+            ->join('hrd_group', 'master_karyawan.grup', '=', 'hrd_group.id')
+            ->join('jadwal_kerja', 'konfigurasi_gantishift.kode_jadwal', '=', 'jadwal_kerja.kode_jadwal')
+            ->where('kode_setjadwal', $kode_setjadwal)->get();
+        return view('konfigurasijadwal.showgantishift', compact('gantishift'));
+    }
+
+    public function deletegantishift(Request $request)
+    {
+        $kode_gs = $request->kode_gs;
+        try {
+            DB::table('konfigurasi_gantishift')->where('kode_gs', $kode_gs)->delete();
+            return 0;
+        } catch (\Exception $e) {
+            return 1;
+        }
     }
 }
