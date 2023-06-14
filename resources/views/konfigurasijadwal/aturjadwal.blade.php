@@ -19,6 +19,11 @@
     </div>
     <div class="content-body">
         @include('layouts.notification')
+        <div class="row mb-2">
+            <div class="col-12 text-right">
+                <button class="btn btn-warning" id="gantishift"><i class="feather icon-refresh-cw mr-1"></i>Ganti Shift</button>
+            </div>
+        </div>
         <div class="row">
             <div class="col-4">
                 <div class="card">
@@ -118,6 +123,22 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade text-left" id="mdlgantishift" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Ganti Shift <span id="kategorishift"></span></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="loadgantishift">
+
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('myscript')
@@ -143,6 +164,28 @@
                 , cache: false
                 , success: function(respond) {
                     $("#loadaturshift").html(respond);
+                }
+            });
+        });
+
+
+        $("#gantishift").click(function(e) {
+            e.preventDefault();
+            var kode_setjadwal = "{{ $konfigurasijadwal->kode_setjadwal }}";
+            $('#mdlgantishift').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+            $.ajax({
+                type: 'POST'
+                , url: '/konfigurasijadwal/gantishift'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , kode_setjadwal: kode_setjadwal
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loadgantishift").html(respond);
                 }
             });
         });

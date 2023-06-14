@@ -60,7 +60,7 @@
         <div class="col-12">
             <div class="form-group">
                 <select class="form-control" id="bankpengirim" name="bank">
-                    <option value="">Bank Penerima</option>
+                    <option value="">Debet Rekening</option>
                     @foreach ($bank as $d)
                     <option value="{{$d->kode_bank}}">{{$d->nama_bank}}</option>
                     @endforeach

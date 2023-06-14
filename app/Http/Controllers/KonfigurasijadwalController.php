@@ -267,4 +267,26 @@ class KonfigurasijadwalController extends Controller
             return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
         }
     }
+
+    public function gantishift(Request $request)
+    {
+        $kode_setjadwal = $request->kode_setjadwal;
+        $setjadwal = DB::table('konfigurasi_jadwalkerja')->where('kode_setjadwal', $kode_setjadwal)->first();
+        $dari = explode("-", $setjadwal->dari);
+        $sampai = explode("-", $setjadwal->sampai);
+        $hari_dari = $dari[2];
+        $bulan_dari = $dari[1] - 1;
+        $tahun_dari = $dari[0];
+
+        $hari_sampai = $sampai[2];
+        $bulan_sampai = $sampai[1] - 1;
+        $tahun_sampai = $sampai[0];
+
+        $grup = array(26, 27, 28, 30, 31);
+        $karyawan = DB::table('master_karyawan')
+            ->orderBy('nama_karyawan')
+            ->whereIn('grup', $grup)
+            ->get();
+        return view('konfigurasijadwal.gantishift', compact('karyawan', 'hari_dari', 'bulan_dari', 'tahun_dari', 'hari_sampai', 'bulan_sampai', 'tahun_sampai'));
+    }
 }
