@@ -97,7 +97,7 @@ class LaporankeuanganController extends Controller
 
     public function ledger()
     {
-        $role = ['admin', 'direktur', 'general manager', 'manager accounting', 'staff keuangan', 'spv accounting'];
+        $role = ['admin', 'direktur', 'general manager', 'manager accounting', 'staff keuangan', 'spv accounting', 'staff keuangan 3'];
         $level = Auth::user()->level;
         if (in_array($level, $role)) {
             $bank = DB::table('master_bank')->orderBy('kode_bank')->get();

@@ -12,7 +12,7 @@
             </a>
             @endif
             @if (in_array($level,$laporan_ledger))
-            @if ($getcbg == "PCF")
+            @if ($getcbg == "PCF" AND Auth::user()->id != 88)
             <a href="/laporankeuangan/ledger" style="color:#626262">
                 <li class="list-group-item {{ request()->is(['laporankeuangan/ledger']) ? 'active' : '' }}">
                     <i class="feather icon-file mr-1"></i>Ledger / Mutasi Bank
