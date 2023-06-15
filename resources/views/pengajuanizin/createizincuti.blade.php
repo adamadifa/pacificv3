@@ -26,7 +26,7 @@
         </div>
     </div>
 
-    <input type="hidden" name="status" value="s">
+    <input type="hidden" name="status" value="c">
     <div class="row" id="tanggal_form">
         <div class="col-6">
             <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker />

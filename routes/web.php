@@ -25,6 +25,7 @@ use App\Http\Controllers\GudangController;
 use App\Http\Controllers\HargaawalController;
 use App\Http\Controllers\HargaController;
 use App\Http\Controllers\HargaControoler;
+use App\Http\Controllers\HariliburController;
 use App\Http\Controllers\HppController;
 use App\Http\Controllers\InsentifController;
 use App\Http\Controllers\JadwalkerjaController;
@@ -1693,4 +1694,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/konfigurasijadwal/storegantishift', [KonfigurasijadwalController::class, 'storegantishift']);
     Route::get('/konfigurasijadwal/{kode_setjadwal}/showgantishift', [KonfigurasijadwalController::class, 'showgantishift']);
     Route::post('/konfigurasijadwal/deletegantishift', [KonfigurasijadwalController::class, 'deletegantishift']);
+
+    //Harilibur
+
+    Route::get('/harilibur', [HariliburController::class, 'index']);
+    Route::post('/harilibur/store', [HariliburController::class, 'store']);
 });

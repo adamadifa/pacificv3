@@ -1244,6 +1244,14 @@
                         </a>
                     </li>
                     @endif
+                    @if (in_array($level,$hari_libur_menu))
+                    <li class="{{ request()->is(['harilibur', 'harilibur/*']) ? 'active' : '' }}">
+                        <a href="/harilibur">
+                            <i class="feather icon-calendar"></i>
+                            <span class="menu-item" data-i18n="Second Level">Hari Libur</span>
+                        </a>
+                    </li>
+                    @endif
                     @if (in_array($level,$pembayaran_jmk))
                     <li class="{{ request()->is(['pembayaranjmk', 'pembayaranjmk/*']) ? 'active' : '' }}">
                         <a href="/pembayaranjmk">

@@ -458,8 +458,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
-
-                                                    @if ($pajak == 1)
+                                                    @php
+                                                    $kode_cabang_pelanggan = substr($pelanggan->kode_pelanggan,0,3);
+                                                    @endphp
+                                                    @if ($pajak == 1 ||$getcbg=="BKI" && in_array($kode_cabang_pelanggan,$cabangpkp) )
                                                     <div class="form-group" style="margin-bottom: 5px">
                                                         <div class="position-relative has-icon-left">
                                                             <input type="text" id="totalnonppn" class="form-control text-right money" style="font-weight: bold" readonly name="totalnonppn" placeholder="Total">
