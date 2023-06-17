@@ -168,6 +168,31 @@ class PengajuanizinController extends Controller
                             ]);
 
                             while (strtotime($dari) <= strtotime($sampai)) {
+                                $cekperjalanandinas = DB::table('pengajuan_izin')
+                                    ->where('status', 'p')
+                                    ->whereRaw('"' . $dari . '" >= dari')
+                                    ->whereRaw('"' . $dari . '" <= sampai')
+                                    ->where('nik', $nik)
+                                    ->first();
+
+                                if ($cekperjalanandinas != null) {
+                                    $cekjadwaldinas = DB::table('jadwal_kerja')
+                                        ->where('nama_jadwal', 'NON SHIFT')
+                                        ->where('kode_cabang', $cekperjalanandinas->kode_cabang)->first();
+                                    $kode_jadwal = $cekjadwaldinas->kode_jadwal;
+                                }
+                                $ceklibur = DB::table('harilibur')->where('tanggal_limajam', $dari)->count();
+                                if ($ceklibur > 0) {
+                                    $hariini = "Sabtu";
+                                } else {
+                                    $hariini = $this->hari_ini();
+                                }
+
+                                $jadwal = DB::table('jadwal_kerja_detail')
+                                    ->join('jadwal_kerja', 'jadwal_kerja_detail.kode_jadwal', '=', 'jadwal_kerja.kode_jadwal')
+                                    ->where('hari', $hariini)->where('jadwal_kerja_detail.kode_jadwal', $kode_jadwal)
+                                    ->first();
+                                $jam_kerja = DB::table('jam_kerja')->where('kode_jam_kerja', $jadwal->kode_jam_kerja)->first();
                                 $datapresensi[] = [
                                     'nik' => $nik,
                                     'tgl_presensi' => $dari,
@@ -175,7 +200,8 @@ class PengajuanizinController extends Controller
                                     'jam_out' => null,
                                     'lokasi_in' => null,
                                     'lokasi_out' => null,
-                                    'kode_jam_kerja' => null,
+                                    'kode_jadwal' => $kode_jadwal,
+                                    'kode_jam_kerja' => $jam_kerja->kode_jadwal,
                                     'status' => $status,
                                     'kode_izin' => $kode_izin
                                 ];
@@ -629,7 +655,6 @@ class PengajuanizinController extends Controller
                     $request->file('sid')->storeAs($folderPath, $sid);
                 }
             }
-
             if ($status == "c") {
                 return redirect('/pengajuanizin/cuti')->with(['success' => 'Data Berhasil Disimpan']);
             } elseif ($status == "s") {

@@ -8718,11 +8718,13 @@ class PenjualanController extends Controller
     {
         $kode_cabang = $request->kode_cabang;
         $id_karyawan = $request->id_karyawan;
-        $bulan = $request->bulan;
-        $tahun = $request->tahun;
-        $dari = $tahun . "-" . $bulan . "-01";
-        $sampai = date("Y-m-t", strtotime($dari));
+        // $bulan = $request->bulan;
+        // $tahun = $request->tahun;
+        // $dari = $tahun . "-" . $bulan . "-01";
+        // $sampai = date("Y-m-t", strtotime($dari));
 
+        $dari = $request->dari;
+        $sampai = $request->sampai;
         $query = Penjualan::query();
         $query->selectRaw('penjualan.id_karyawan,nama_karyawan,karyawan.kode_cabang,COUNT(no_fak_penj) as totaltransaksi,
         SUM(IF(`level`="salesman",1,0)) as totaltransaksisfa,

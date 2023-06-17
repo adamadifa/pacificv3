@@ -46,7 +46,15 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    <div class="row" id="pilihperiode">
+                                        <div class="col-6">
+                                            <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker />
+                                        </div>
+                                        <div class="col-6">
+                                            <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker />
+                                        </div>
+                                    </div>
+                                    <!--
                                     <div class="row" id="pilihbulan">
                                         <div class="col-12">
                                             {{-- <label for="" class="form-label mb-1">Omset Bulan</label> --}}
@@ -81,6 +89,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    -->
                                     <div class="row">
                                         <div class="col-lg-8 col-sm-12">
                                             <div class="form-group">
