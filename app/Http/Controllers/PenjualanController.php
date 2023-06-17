@@ -2172,6 +2172,12 @@ class PenjualanController extends Controller
                 DB::table('historibayar')->where('no_fak_penj', $no_fak_penj_new)->delete();
                 DB::table('giro')->where('no_fak_penj', $no_fak_penj_new)->delete();
                 DB::table('transfer')->where('no_fak_penj', $no_fak_penj_new)->delete();
+                $cekretur = DB::table('retur')
+                    ->selectRaw('no_fak_penj,SUM(total) as totalretur')
+                    ->where('no_fak_penj', $no_fak_penj_new)
+                    ->first();
+
+                $totalretur = $cekretur != null ? $cekretur->totalretur : 0;
                 DB::table('historibayar')
                     ->insert([
                         'nobukti' => $nobukti,
@@ -2179,7 +2185,7 @@ class PenjualanController extends Controller
                         'tglbayar' => $tgltransaksi,
                         'jenistransaksi' => $jenistransaksi,
                         'jenisbayar' => $jenisbayar,
-                        'bayar' => $subtotal,
+                        'bayar' => $subtotal - $totalretur,
                         'id_admin' => $id_admin,
                         'id_karyawan' => $id_karyawan
                     ]);
