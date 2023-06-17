@@ -152,6 +152,8 @@ class PengajuanizinController extends Controller
         $kode_izin = $data->kode_izin;
         $status_approve = $data->status_approved;
         $level = Auth::user()->level;
+        $cekjadwal = DB::table('master_karyawan')->where('nik', $nik)->first();
+        $kode_jadwal = $cekjadwal->kode_jadwal;
         if (isset($request->approve)) {
             try {
                 if ($level != "manager hrd") {
@@ -168,6 +170,7 @@ class PengajuanizinController extends Controller
                             ]);
 
                             while (strtotime($dari) <= strtotime($sampai)) {
+                                $tgl = date("D", strtotime($dari));
                                 $cekperjalanandinas = DB::table('pengajuan_izin')
                                     ->where('status', 'p')
                                     ->whereRaw('"' . $dari . '" >= dari')
@@ -185,14 +188,16 @@ class PengajuanizinController extends Controller
                                 if ($ceklibur > 0) {
                                     $hariini = "Sabtu";
                                 } else {
-                                    $hariini = $this->hari_ini();
+                                    $hariini = hari($tgl);
                                 }
 
                                 $jadwal = DB::table('jadwal_kerja_detail')
                                     ->join('jadwal_kerja', 'jadwal_kerja_detail.kode_jadwal', '=', 'jadwal_kerja.kode_jadwal')
                                     ->where('hari', $hariini)->where('jadwal_kerja_detail.kode_jadwal', $kode_jadwal)
                                     ->first();
-                                $jam_kerja = DB::table('jam_kerja')->where('kode_jam_kerja', $jadwal->kode_jam_kerja)->first();
+                                $kode_jam_kerja_jadwal = $jadwal != null ? $jadwal->kode_jam_kerja : null;
+                                $jam_kerja = DB::table('jam_kerja')->where('kode_jam_kerja', $kode_jam_kerja_jadwal)->first();
+                                $kode_jam_kerja = $jam_kerja != null ? $jam_kerja->kode_jam_kerja : null;
                                 $datapresensi[] = [
                                     'nik' => $nik,
                                     'tgl_presensi' => $dari,
@@ -201,7 +206,7 @@ class PengajuanizinController extends Controller
                                     'lokasi_in' => null,
                                     'lokasi_out' => null,
                                     'kode_jadwal' => $kode_jadwal,
-                                    'kode_jam_kerja' => $jam_kerja->kode_jadwal,
+                                    'kode_jam_kerja' => $kode_jam_kerja,
                                     'status' => $status,
                                     'kode_izin' => $kode_izin
                                 ];

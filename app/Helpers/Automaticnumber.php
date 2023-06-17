@@ -117,7 +117,7 @@ function getAkunpiutangcabang($kode_cabang)
     } else if ($kode_cabang == "SKB") {
         $akun = "1-1407";
     } else if ($kode_cabang == "GRT") {
-        $akun = "1-1468";
+        $akun = "1-1487";
     } else if ($kode_cabang == "SMR") {
         $akun = "1-1488";
     } else if ($kode_cabang == "SBY") {

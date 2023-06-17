@@ -12,46 +12,7 @@ use Illuminate\Support\Facades\Redirect;
 class PresensiController extends Controller
 {
 
-    public function hari_ini()
-    {
-        $hari = date("D");
 
-        switch ($hari) {
-            case 'Sun':
-                $hari_ini = "Minggu";
-                break;
-
-            case 'Mon':
-                $hari_ini = "Senin";
-                break;
-
-            case 'Tue':
-                $hari_ini = "Selasa";
-                break;
-
-            case 'Wed':
-                $hari_ini = "Rabu";
-                break;
-
-            case 'Thu':
-                $hari_ini = "Kamis";
-                break;
-
-            case 'Fri':
-                $hari_ini = "Jumat";
-                break;
-
-            case 'Sat':
-                $hari_ini = "Sabtu";
-                break;
-
-            default:
-                $hari_ini = "Tidak di ketahui";
-                break;
-        }
-
-        return $hari_ini;
-    }
     public function monitoring(Request $request)
     {
         $level = Auth::user()->level;
@@ -173,6 +134,7 @@ class PresensiController extends Controller
         $jam_masuk = $tgl_presensi . " " . $request->jam_masuk;
         $jam_pulang = $tgl_presensi . " " . $request->jam_pulang;
         $nextday = date('Y-m-d', strtotime('+1 day', strtotime($tgl_presensi)));
+        $tgl = date("D", strtotime($tgl_presensi));
 
         $cekperjalanandinas = DB::table('pengajuan_izin')
             ->where('status', 'p')
@@ -191,7 +153,7 @@ class PresensiController extends Controller
         if ($ceklibur > 0) {
             $hariini = "Sabtu";
         } else {
-            $hariini = $this->hari_ini();
+            $hariini = hari($tgl);
         }
 
         $jadwal = DB::table('jadwal_kerja_detail')
