@@ -8756,11 +8756,13 @@ class PenjualanController extends Controller
     {
         $kode_cabang = $request->kode_cabang;
         $id_karyawan = $request->id_karyawan;
-        $bulan = $request->bulan;
-        $tahun = $request->tahun;
-        $dari = $tahun . "-" . $bulan . "-01";
-        $sampai = date("Y-m-t", strtotime($dari));
+        // $bulan = $request->bulan;
+        // $tahun = $request->tahun;
+        // $dari = $tahun . "-" . $bulan . "-01";
+        // $sampai = date("Y-m-t", strtotime($dari));
 
+        $dari = $request->dari;
+        $sampai = $request->sampai;
         $query = Pelanggan::query();
         $query->selectRaw('pelanggan.id_sales,nama_karyawan,
         karyawan.kode_cabang,
