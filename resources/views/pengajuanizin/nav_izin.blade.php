@@ -21,10 +21,12 @@
 </li>
 <li class="nav-item">
     <a class="nav-link {{ request()->is('pengajuanizin/izinterlambat') ? 'active' : '' }}" href="/pengajuanizin/izinterlambat">
+
+        Izin Terlambat
         @if (!empty($pi->terlambat))
         <span class="badge bg-danger">{{ $pi->terlambat }}</span>
         @endif
-        Izin Terlambat</a>
+    </a>
 </li>
 <li class="nav-item">
     <a class="nav-link {{ request()->is('pengajuanizin/sakit') ? 'active' : '' }}" href="/pengajuanizin/sakit">Sakit

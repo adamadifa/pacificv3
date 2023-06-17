@@ -421,7 +421,7 @@ class ReturController extends Controller
     {
         $no_retur_penj = Crypt::decrypt($no_retur_penj);
         $retur = DB::table('retur')
-            ->select('retur.*', 'penjualan.jenistransaksi', 'penjualan.tgltransaksi')
+            ->select('retur.*', 'penjualan.jenistransaksi', 'penjualan.tgltransaksi', 'penjualan.total as totalpenjualan')
             ->join('penjualan', 'retur.no_fak_penj', '=', 'penjualan.no_fak_penj')
             ->where('no_retur_penj', $no_retur_penj)->first();
 
@@ -441,13 +441,13 @@ class ReturController extends Controller
                     ->where('no_fak_penj', $retur->no_fak_penj)
                     ->where('tglbayar', $retur->tgltransaksi)
                     ->update([
-                        'bayar' =>  DB::raw('bayar +' . $retur->total)
+                        'bayar' => $retur->totalpenjualan
                     ]);
 
                 DB::table('buku_besar')
                     ->where('no_ref', $nobukti)
                     ->update([
-                        'debet' =>  DB::raw('debet +' . $retur->total)
+                        'debet' =>  $retur->totalpenjualan
                     ]);
             }
             DB::commit();

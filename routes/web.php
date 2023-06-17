@@ -1674,6 +1674,8 @@ Route::middleware(['auth'])->group(function () {
     //Presensi
 
     Route::get('/presensi/monitoring', [PresensiController::class, 'monitoring']);
+    Route::post('/presensi/updatepresensi', [PresensiController::class, 'updatepresensi']);
+    Route::post('/presensi/storeupdatepresensi', [PresensiController::class, 'storeupdatepresensi']);
 
     //Jadwal Shift
     Route::get('/konfigurasijadwal', [KonfigurasijadwalController::class, 'index']);
@@ -1699,4 +1701,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/harilibur', [HariliburController::class, 'index']);
     Route::post('/harilibur/store', [HariliburController::class, 'store']);
+    Route::delete('/harilibur/{kode_libur}/delete', [HariliburController::class, 'delete']);
+    Route::get('/harilibur/{kode_libur}/edit', [HariliburController::class, 'edit']);
+    Route::post('/harilibur/{kode_libur}/update', [HariliburController::class, 'update']);
 });

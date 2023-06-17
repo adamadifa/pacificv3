@@ -129,6 +129,7 @@
                                             <th>Denda</th>
                                             <th>Keluar</th>
                                             <th>Total Jam</th>
+                                            <th>#</th>
 
                                         </tr>
                                     </thead>
@@ -213,7 +214,7 @@
                                         }
 
 
-                                        if(!empty($d->jam_out) && $jam_out < $d->jam_pulang){
+                                        if(!empty($d->jam_out) && $jam_out < $jam_pulang){
                                             $pc = "Pulang Cepat";
                                         }else{
                                             $pc = "";
@@ -345,13 +346,13 @@
                                             <td>{{ $d->kode_dept }}</td>
 
                                             <td>{{ $d->id_kantor }}</td>
-                                            <td>{{ $d->nama_jadwal }} ({{ $d->jam_masuk }} s/d {{ $d->jam_pulang }})</td>
+                                            <td>{{ $d->nama_jadwal }} {{ $d->jadwalcabang }} ({{ $d->jam_masuk }} s/d {{ $d->jam_pulang }})</td>
                                             <td>{!! $d->jam_in != null ? $jam_in : '<span class="danger">Belum Absen</span>' !!}
                                                 @if (!empty($d->kode_izin_terlambat))
                                                 (Izin)
                                                 @endif
                                             </td>
-                                            <td style="color:{{ $jam_out < $d->jam_pulang ? 'red' : '' }}">{!! $d->jam_out != null ? $jam_out : '<span class="danger">Belum Absen</span>' !!}
+                                            <td style="color:{{ $jam_out < $jam_pulang ? 'red' : '' }}">{!! $d->jam_out != null ? $jam_out : '<span class="danger">Belum Absen</span>' !!}
                                                 @if (!empty($pc))
                                                 (PC)
                                                 @endif
@@ -365,6 +366,8 @@
                                                 <span class="badge bg-success">H</span>
                                                 @elseif($status=="i")
                                                 <span class="badge bg-info">I</span>
+                                                @elseif($status=="a")
+                                                <span class="badge bg-danger">A</span>
                                                 @elseif($status=="c")
                                                 <span class="badge bg-warning">C</span>
                                                 @elseif($status=="s")
@@ -382,6 +385,11 @@
                                             <td>{{ !empty($denda)  ? rupiah($denda) : '' }}</td>
                                             <td>{{ $totaljamkeluar }}</td>
                                             <td style="color:{{ $grandtotaljam < $d->total_jam ?  'red' : '' }}; text-align:center">{{ $grandtotaljam > 0 ? $grandtotaljam : 0 }}</td>
+                                            <td>
+                                                @if ($level == "manager hrd" || $level=="admin")
+                                                <a href="#" class="edit" nik="{{ $d->nik }}"><i class="feather icon-edit info"></i></a>
+                                                @endif
+                                            </td>
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -400,7 +408,20 @@
     </div>
 </div>
 <!-- Input Karyawan -->
-
+<div class="modal fade text-left" id="mdlupdatepresensi" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Update Presensi Presensi <span id="tglupdatepresensi"></span></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="loadupdatepresensi">
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @push('myscript')
 <script type="text/javascript">
@@ -425,6 +446,36 @@
         e = e < 10 ? '0' + e : e;
         return e;
     }
+
+</script>
+
+<script>
+    $(function() {
+        $(".edit").click(function(e) {
+            e.preventDefault();
+            var nik = $(this).attr('nik');
+            var tanggal = "{{ Request('tanggal') }}";
+            var tgl = tanggal == "" ? "{{ date('Y-m-d') }}" : tanggal;
+            $("#tglupdatepresensi").text(tgl);
+            $("#mdlupdatepresensi").modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+            $.ajax({
+                type: 'POST'
+                , url: '/presensi/updatepresensi'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , nik: nik
+                    , tgl: tgl
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loadupdatepresensi").html(respond);
+                }
+            });
+        });
+    });
 
 </script>
 @endpush
