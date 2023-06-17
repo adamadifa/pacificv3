@@ -2175,6 +2175,7 @@ class PenjualanController extends Controller
                 $cekretur = DB::table('retur')
                     ->selectRaw('no_fak_penj,SUM(total) as totalretur')
                     ->where('no_fak_penj', $no_fak_penj_new)
+                    ->groupBy('no_fak_penj')
                     ->first();
 
                 $totalretur = $cekretur != null ? $cekretur->totalretur : 0;
