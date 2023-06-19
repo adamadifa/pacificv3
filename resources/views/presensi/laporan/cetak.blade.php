@@ -57,7 +57,7 @@
         @endif
     </b>
     <br>
-    <table class="datatable3">
+    <table class="datatable3" style="width: 150%">
         <thead bgcolor="#024a75" style="color:white; font-size:12;">
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
                 <th rowspan="2">No</th>
@@ -93,7 +93,9 @@
                         $jam_out_tanggal = $jam_out != "NA" ? $jam_out : '';
                         $nama_jadwal = $datapresensi[2];
                         $jam_masuk = $datapresensi[3];
+                        $jam_masuk_tanggal =$tgl_presensi." ".$datapresensi[3];
                         $jam_pulang = $datapresensi[4];
+                        $jam_pulang_presensi =$jam_pulang != "NA" ? date("H:i",strtotime($jam_pulang)) : '';
                         $jam_pulang_tanggal = $jam_pulang != "NA" ? $tgl_presensi." ".$jam_pulang : '';
                         $jam_keluar = $datapresensi[9] != "NA" ? $datapresensi[9] : '';
                         $jam_masuk_kk = $datapresensi[10] != "NA" ? $datapresensi[10] : '';
@@ -101,6 +103,10 @@
                         $status = $datapresensi[5] != "NA" ? $datapresensi[5] : '';
                         $sid = $datapresensi[12] != "NA" ? $datapresensi[12] : '';
                         $kode_izin_terlambat = $datapresensi[7] != "NA" ? $datapresensi[7] : '';
+                        $jam_istirahat = $datapresensi[14];
+                        $jam_istirahat_presensi =$jam_istirahat != "NA" ? date("H:i",strtotime($jam_istirahat)) : '';
+                        $jam_awal_istirahat = $datapresensi[13] != "NA" ? $tgl_presensi." ".$datapresensi[13] : '';
+                        $jam_akhir_istirahat = $datapresensi[14] != "NA" ? $tgl_presensi." ".$datapresensi[14] : '';
                         $kode_dept = $d->kode_dept;
                         if (!empty($jam_in)) {
                             if ($jam_in_presensi > $jam_masuk) {
@@ -215,11 +221,88 @@
                         } else {
                             $denda = 0;
                         }
+
+                        //Menghitung total Jam
+                        if($d->jam_out > $jam_awal_istirahat && $d->jam_out < $jam_akhir_istirahat){ // Shift 3 Belum Di Set
+                            $jout = $jam_awal_istirahat;
+                        }else{
+                            $jout = $jam_out;
+                        }
+
+
+                        $awal = strtotime($jam_masuk_tanggal);
+                        $akhir = strtotime($jout);
+                        $diff = $akhir - $awal;
+                        if (empty($jout)) {
+                            $jam = 0;
+                            $menit = 0;
+                        } else {
+                            $jam = floor($diff / (60 * 60));
+                            $m = $diff - ($jam * (60 * 60));
+                            $menit = floor($m / 60);
+                        }
+
+                        if ($denda == 0 and empty($kode_izin_terlambat)) {
+                            if($kode_dept != "MKT"){
+                                $jt = $jt;
+                            }else{
+                                if($jamterlambat < 1){
+                                    $jt = 0;
+                                }else{
+                                    $jt = $jt;
+                                }
+                            }
+                        }else{
+                            $jt = 0;
+                        }
+                        $totaljam = $total_jam - $jt - $jk;
+
+
+                        if ($jam_out != "NA") {
+                            if ($jam_out_presensi < $jam_pulang_presensi) { //Shift 3 Belum Di Set
+                                if($jam_out_presensi > $jam_istirahat_presensi && $jam_istirahat != "NA"){
+                                    $desimalmenit = ROUND(($menit * 100) / 60);
+                                    $grandtotaljam = $jam-1 . "." . $desimalmenit;
+                                }else{
+                                    $desimalmenit = ROUND(($menit * 100) / 60);
+                                    $grandtotaljam = $jam . "." . $desimalmenit;
+                                }
+
+                                $grandtotaljam = $grandtotaljam - $jt - $jk;
+                            } else {
+                                $desimalmenit = 0;
+                                $grandtotaljam = $totaljam;
+                            }
+                        } else {
+                            $desimalmenit = 0;
+                            $grandtotaljam = 0;
+                        }
+
+                        if ($jam_in == "NA") {
+                            if($status == "i"){
+                                $grandtotaljam = 0;
+                            }else if($status == "s"){
+                                if(!empty($sid)){
+                                    $grandtotaljam = 7;
+                                }else{
+                                    $grandtotaljam = 0;
+                                }
+                            }else if($status == "c"){
+                                $grandtotaljam = 7;
+                            }else{
+                                $grandtotaljam = 0;
+                            }
+                        }
+                        // echo "Total Jam :" .$total_jam."<br>" ;
+                        // echo "Jam Terlambat :".$jt."<br>";
+                        // echo "___________________________- <br>";
+
                 ?>
                 <td>
                     @if ($status == "h")
                     {{-- <span>{{ $rangetanggal[$i] }}</span><br>
                     <span>{{ $jam_out_tanggal }} s.d {{ $jam_pulang_tanggal }}</span> --}}
+                    {{-- <span>{{ $jam_masuk_tanggal."--".$jout }}</span> --}}
                     <span style="font-weight: bold">{{ $nama_jadwal }}</span>
                     <br>
                     <span style="color:green">{{ $jam_masuk != "NA" ? date("H:i",strtotime($jam_masuk)) : '' }}</span> -
@@ -228,32 +311,44 @@
                     <span>{!! $jam_in != "NA" ? date("H:i",strtotime($jam_in)) : '<span style="color:red">Belum Scan</span>' !!}</span> -
                     <span>{!! $jam_out != "NA" ? date("H:i",strtotime($jam_out)) : '<span style="color:red">Belum Scan</span>' !!}</span>
                     <br>
+                    @if ($jam_in != "NA")
                     @if (!empty($terlambat))
-                    <span style="color:{{ $colorterlambat }}">{{ $terlambat != "Tepat Waktu" ? "Telat : ".$terlambat : $terlambat }}</span>
+
+                    <span style="color:{{ $colorterlambat }}">{{ $terlambat != "Tepat waktu" ? "Telat : ".$terlambat."(".$jt.")" : $terlambat }}
+                        @if (!empty($kode_izin_terlambat))
+                        <span style="color:green"> - Sudah Izin</span>
+                        @endif
+                    </span>
                     <br>
                     @endif
                     @if (!empty($denda))
-                    <span style="color:{{ $colorterlambat }}">{{ rupiah($denda) }}</span>
+                    <span style="color:{{ $colorterlambat }}">Denda :{{ rupiah($denda) }}</span>
                     <br>
                     @endif
+                    @endif
+
                     @if (!empty($pc))
                     <span style="color:red">{{ $pc }}</span>
                     <br>
                     @endif
                     @if (!empty($jam_keluar))
-                    <span style="color:#ce7c01">Keluar : {{ $totaljamkeluar }}</span>
+                    <span style="color:#ce7c01">Keluar : {{ $totaljamkeluar }} ({{ $jk }})</span>
+                    <br>
                     @endif
+                    <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
                     @elseif($status=="s")
                     <span style="color:rgb(195, 63, 27)">SAKIT
                         @if (!empty($sid))
-                        <span style="color:green">- SID</span>
-
+                        <span style="color:green">- SID</span><br>
+                        <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
                         @endif
                     </span>
                     @elseif($status=="i")
-                    <span style="color:rgb(27, 5, 171);">IZIN</span>
+                    <span style="color:rgb(27, 5, 171);">IZIN</span><br>
+                    <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
                     @elseif($status=="c")
-                    <span style="color:rgb(154, 56, 4);">CUTI</span>
+                    <span style="color:rgb(154, 56, 4);">CUTI</span><br>
+                    <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
                     @endif
 
                 </td>

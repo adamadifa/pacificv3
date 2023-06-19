@@ -266,7 +266,12 @@
                                                     <i class="feather icon-printer"></i>
                                                 </a>
                                                 @endif
-
+                                                @else
+                                                @if (!empty($d->no_kontrak))
+                                                <a href="/kontrak/{{ Crypt::encrypt($d->no_kontrak) }}/cetak" target="_blank" class="success">
+                                                    <i class="feather icon-printer"></i>
+                                                </a>
+                                                @endif
                                                 @endif
 
                                             </div>

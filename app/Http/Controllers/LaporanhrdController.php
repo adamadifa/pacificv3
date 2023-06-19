@@ -88,7 +88,23 @@ class LaporanhrdController extends Controller
         hari_12,
         hari_13,
         hari_14,
-        hari_15
+        hari_15,
+        hari_16,
+        hari_17,
+        hari_18,
+        hari_19,
+        hari_20,
+        hari_21,
+        hari_22,
+        hari_23,
+        hari_24,
+        hari_25,
+        hari_26,
+        hari_27,
+        hari_28,
+        hari_29,
+        hari_30,
+        hari_31
 
         ');
         $query->leftJoin(
@@ -108,7 +124,11 @@ class LaporanhrdController extends Controller
                 '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
                 '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
                 '|',IFNULL(jam_kerja.total_jam,'NA'),
-                '|',IFNULL(pengajuan_izin.sid,'NA')
+                '|',IFNULL(pengajuan_izin.sid,'NA'),
+                '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                '|',IFNULL(jam_kerja.total_jam,'NA'),
+                '|',IFNULL(jam_kerja.lintashari,'NA')
                 ),NULL)) as hari_1,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[1]',CONCAT(
@@ -124,7 +144,11 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
                     '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
                     '|',IFNULL(jam_kerja.total_jam,'NA'),
-                    '|',IFNULL(pengajuan_izin.sid,'NA')
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
                     ),NULL)) as hari_2,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[2]',CONCAT(
@@ -140,7 +164,11 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
                     '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
                     '|',IFNULL(jam_kerja.total_jam,'NA'),
-                    '|',IFNULL(pengajuan_izin.sid,'NA')
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
                     ),NULL)) as hari_3,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[3]',CONCAT(
@@ -156,7 +184,11 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
                     '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
                     '|',IFNULL(jam_kerja.total_jam,'NA'),
-                    '|',IFNULL(pengajuan_izin.sid,'NA')
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
                     ),NULL)) as hari_4,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[4]',CONCAT(
@@ -172,7 +204,11 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
                     '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
                     '|',IFNULL(jam_kerja.total_jam,'NA'),
-                    '|',IFNULL(pengajuan_izin.sid,'NA')
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
                     ),NULL)) as hari_5,
 
 
@@ -189,7 +225,11 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
                     '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
                     '|',IFNULL(jam_kerja.total_jam,'NA'),
-                    '|',IFNULL(pengajuan_izin.sid,'NA')
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
                     ),NULL)) as hari_6,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[6]',CONCAT(
@@ -205,7 +245,11 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
                     '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
                     '|',IFNULL(jam_kerja.total_jam,'NA'),
-                    '|',IFNULL(pengajuan_izin.sid,'NA')
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
                     ),NULL)) as hari_7,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[7]',CONCAT(
@@ -221,7 +265,11 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
                     '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
                     '|',IFNULL(jam_kerja.total_jam,'NA'),
-                    '|',IFNULL(pengajuan_izin.sid,'NA')
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
                     ),NULL)) as hari_8,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[8]',CONCAT(
@@ -237,7 +285,11 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
                     '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
                     '|',IFNULL(jam_kerja.total_jam,'NA'),
-                    '|',IFNULL(pengajuan_izin.sid,'NA')
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
                     ),NULL)) as hari_9,
 
 
@@ -254,7 +306,11 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
                     '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
                     '|',IFNULL(jam_kerja.total_jam,'NA'),
-                    '|',IFNULL(pengajuan_izin.sid,'NA')
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
                     ),NULL)) as hari_10,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[10]',CONCAT(
@@ -270,7 +326,11 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
                     '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
                     '|',IFNULL(jam_kerja.total_jam,'NA'),
-                    '|',IFNULL(pengajuan_izin.sid,'NA')
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
                     ),NULL)) as hari_11,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[11]',CONCAT(
@@ -286,7 +346,11 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
                     '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
                     '|',IFNULL(jam_kerja.total_jam,'NA'),
-                    '|',IFNULL(pengajuan_izin.sid,'NA')
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
                     ),NULL)) as hari_12,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[12]',CONCAT(
@@ -302,7 +366,11 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
                     '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
                     '|',IFNULL(jam_kerja.total_jam,'NA'),
-                    '|',IFNULL(pengajuan_izin.sid,'NA')
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
                     ),NULL)) as hari_13,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[13]',CONCAT(
@@ -318,7 +386,11 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
                     '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
                     '|',IFNULL(jam_kerja.total_jam,'NA'),
-                    '|',IFNULL(pengajuan_izin.sid,'NA')
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
                     ),NULL)) as hari_14,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[14]',CONCAT(
@@ -334,8 +406,340 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
                     '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
                     '|',IFNULL(jam_kerja.total_jam,'NA'),
-                    '|',IFNULL(pengajuan_izin.sid,'NA')
-                    ),NULL)) as hari_15
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
+                    ),NULL)) as hari_15,
+
+                MAX(IF(tgl_presensi = '$rangetanggal[15]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
+                    ),NULL)) as hari_16,
+
+
+                MAX(IF(tgl_presensi = '$rangetanggal[16]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
+                    ),NULL)) as hari_17,
+
+                MAX(IF(tgl_presensi = '$rangetanggal[17]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
+                    ),NULL)) as hari_18,
+
+                MAX(IF(tgl_presensi = '$rangetanggal[18]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
+                    ),NULL)) as hari_19,
+
+                MAX(IF(tgl_presensi = '$rangetanggal[19]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
+                    ),NULL)) as hari_20,
+
+                MAX(IF(tgl_presensi = '$rangetanggal[20]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
+                    ),NULL)) as hari_21,
+
+
+                MAX(IF(tgl_presensi = '$rangetanggal[21]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
+                    ),NULL)) as hari_22,
+
+                MAX(IF(tgl_presensi = '$rangetanggal[22]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
+                    ),NULL)) as hari_23,
+
+                MAX(IF(tgl_presensi = '$rangetanggal[23]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
+                    ),NULL)) as hari_24,
+
+                MAX(IF(tgl_presensi = '$rangetanggal[24]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
+                    ),NULL)) as hari_25,
+
+                MAX(IF(tgl_presensi = '$rangetanggal[25]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
+                    ),NULL)) as hari_26,
+
+                MAX(IF(tgl_presensi = '$rangetanggal[26]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
+                    ),NULL)) as hari_27,
+
+
+                MAX(IF(tgl_presensi = '$rangetanggal[27]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
+                    ),NULL)) as hari_28,
+
+                MAX(IF(tgl_presensi = '$rangetanggal[28]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
+                    ),NULL)) as hari_29,
+
+                MAX(IF(tgl_presensi = '$rangetanggal[29]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
+                    ),NULL)) as hari_30,
+
+
+
+                MAX(IF(tgl_presensi = '$rangetanggal[30]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA'),
+                    '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(jam_kerja.lintashari,'NA')
+                    ),NULL)) as hari_31
+
+
+
 
 
 
