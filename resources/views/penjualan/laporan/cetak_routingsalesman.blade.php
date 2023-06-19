@@ -95,7 +95,7 @@
                 }else{
                     $bgcolor = "red";
                     $color="white";
-                    $ket = "Tidak Sesuai Jadwdal";
+                    $ket = "Tidak Sesuai Jadwal";
                 }
             ?>
 
