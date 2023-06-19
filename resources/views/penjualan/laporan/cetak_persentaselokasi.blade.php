@@ -59,16 +59,20 @@
     <table class="datatable3" border="1">
         <thead bgcolor="#024a75" style="color:white; font-size:12;">
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
-                <th>No.</th>
-                <th>ID Salesman</th>
-                <th>Nama Salesman</th>
-                <th>Cabang</th>
-                <th>Jml Pelanggan Aktif</th>
+                <th rowspan="2">No.</th>
+                <th rowspan="2">ID Salesman</th>
+                <th rowspan="2">Nama Salesman</th>
+                <th rowspan="2">Cabang</th>
+                <th rowspan="2">Jml Pelanggan Aktif</th>
+                <th colspan="4">Lokasi</th>
+                <th rowspan="2">No.HP</th>
+                <th rowspan="2">Persentase</th>
+            </tr>
+            <tr>
                 <th>Lokasi Teriisi</th>
                 <th>Persentase</th>
                 <th>Sudah di Update SFA</th>
                 <th>Persentase</th>
-
             </tr>
         </thead>
         <tbody>
@@ -78,6 +82,7 @@
             $kode_cabang = @$persentaselokasi[$key + 1]->kode_cabang;
             $persentaselokasiterisi = $d->lokasi / $d->jmlpelangganaktif * 100;
             $persentasesfa = $d->updatebysfa / $d->jmlpelangganaktif * 100;
+            $persentasenohp = $d->nohpcomplete / $d->jmlpelangganaktif * 100;
             @endphp
             <tr>
                 <td>{{ $loop->iteration }}</td>
@@ -89,11 +94,13 @@
                 <td align="center">{{ desimal($persentaselokasiterisi) }} %</td>
                 <td align="center">{{ rupiah($d->updatebysfa) }}</td>
                 <td align="center">{{ desimal($persentasesfa) }} %</td>
+                <td align="center">{{ $d->nohpcomplete }}</td>
+                <td align="center">{{ desimal($persentasenohp) }} %</td>
 
             </tr>
             @if ($kode_cabang != $d->kode_cabang)
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
-                <th colspan="9"></th>
+                <th colspan="11"></th>
             </tr>
             @endif
             @endforeach
