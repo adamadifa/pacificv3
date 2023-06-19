@@ -4089,7 +4089,6 @@ class PenjualanController extends Controller
             if (!empty($id_karyawan)) {
                 $qpenjualan->where('penjualan.id_karyawan', $id_karyawan);
             }
-            $qpenjualan->groupByRaw('tgltransaksi,penjualan.kode_pelanggan,nama_pelanggan,hari');
             $qpenjualan->orderByRaw('tgltransaksi,nama_pelanggan');
             $penjualan = $qpenjualan->get();
 
@@ -4128,16 +4127,17 @@ class PenjualanController extends Controller
             $query->leftJoin(
                 DB::raw("(
                     SELECT
-                        penjualan.id_karyawan,
-                        COUNT(DISTINCT penjualan.kode_pelanggan,tgltransaksi) as jmlkunjungan,
-                        COUNT(DISTINCT CASE WHEN
-                        DAYNAME(tgltransaksi)='Monday' AND pelanggan.hari like '%Senin%' OR
-                        DAYNAME(tgltransaksi)='Tuesday' AND pelanggan.hari like '%Selasa%' OR
-                        DAYNAME(tgltransaksi)='Wednesday' AND pelanggan.hari like '%Rabu%' OR
-                        DAYNAME(tgltransaksi)='Thursday' AND pelanggan.hari like '%Kamis%' OR
-                        DAYNAME(tgltransaksi)='Friday' AND pelanggan.hari like '%Jumat%' OR
-                        DAYNAME(tgltransaksi)='Saturday' AND pelanggan.hari like '%Sabtu%' OR
-                        DAYNAME(tgltransaksi)='Sunday' AND pelanggan.hari like '%Minggu%'  THEN  penjualan.kode_pelanggan END) jmlsesuaijadwal
+                    penjualan.id_karyawan,
+                    COUNT(no_fak_penj) as jmlkunjungan,
+                    COUNT(
+                    CASE WHEN
+                    DAYNAME(tgltransaksi)='Monday' AND pelanggan.hari like '%Senin%' OR
+                    DAYNAME(tgltransaksi)='Tuesday' AND pelanggan.hari like '%Selasa%' OR
+                    DAYNAME(tgltransaksi)='Wednesday' AND pelanggan.hari like '%Rabu%' OR
+                    DAYNAME(tgltransaksi)='Thursday' AND pelanggan.hari like '%Kamis%' OR
+                    DAYNAME(tgltransaksi)='Friday' AND pelanggan.hari like '%Jumat%' OR
+                    DAYNAME(tgltransaksi)='Saturday' AND pelanggan.hari like '%Sabtu%' OR
+                    DAYNAME(tgltransaksi)='Sunday' AND pelanggan.hari like '%Minggu%'  THEN  penjualan.no_fak_penj END ) as jmlsesuaijadwal
                     FROM
                     `penjualan`
                     INNER JOIN `pelanggan` ON `penjualan`.`kode_pelanggan` = `pelanggan`.`kode_pelanggan`

@@ -909,10 +909,16 @@ class GlobalProvider extends ServiceProvider
                 'manager accounting', 'direktur', 'general manager', 'admin pusat'
             ];
 
+
+
             $tutuplaporan = ['admin', 'manager accounting'];
             $ticket_hapus = ['manager accounting'];
             $ticket_approve = ['admin', 'manager accounting'];
             $ticket_done = ['admin'];
+
+            $lap_hrd = ['admin'];
+
+
             $shareddata = [
 
                 'operator_pusat' => $operator_pusat,
@@ -1309,7 +1315,8 @@ class GlobalProvider extends ServiceProvider
                 'scan' => $scan,
                 'pajak' => $pajak,
                 'cabangpkp' => $cabangpkp,
-                'pi' => $pi
+                'pi' => $pi,
+                'lap_hrd' => $lap_hrd
 
             ];
             View::share($shareddata);

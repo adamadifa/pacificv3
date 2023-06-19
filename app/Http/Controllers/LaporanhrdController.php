@@ -1,0 +1,375 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Karyawan;
+use App\Models\Presensi;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+class LaporanhrdController extends Controller
+{
+    public function presensi()
+    {
+
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        $departemen = DB::table('hrd_departemen')->orderBy('nama_dept')->get();
+        return view('presensi.laporan.lap_presensi', compact('bulan', 'departemen'));
+    }
+
+    public function getkantor(Request $request)
+    {
+        $kode_dept = $request->kode_dept;
+        $kantor = DB::table('master_karyawan')
+            ->select('id_kantor')
+            ->where('kode_dept', $kode_dept)
+            ->groupBy('id_kantor')
+            ->get();
+        return view('presensi.laporan.getkantor', compact('kantor'));
+    }
+
+    public function getgroup(Request $request)
+    {
+        $kode_dept = $request->kode_dept;
+        $group = DB::table('master_karyawan')
+            ->select('master_karyawan.grup', 'nama_group')
+            ->join('hrd_group', 'master_karyawan.grup', '=', 'hrd_group.id')
+            ->where('kode_dept', $kode_dept)
+            ->groupByRaw('master_karyawan.grup,nama_group')
+            ->get();
+        return view('presensi.laporan.getgroup', compact('group'));
+    }
+
+
+    public function cetakpresensi(Request $request)
+    {
+        $kode_dept = $request->kode_dept;
+        $id_kantor = $request->id_kantor;
+        $id_group = $request->id_group;
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+
+        if ($bulan == 1) {
+            $lastbulan = 12;
+            $lasttahun = $tahun - 1;
+        } else {
+            $lastbulan = $bulan - 1;
+            $lasttahun = $tahun;
+        }
+
+        $dari = $lasttahun . "-" . $lastbulan . "-21";
+        $sampai = $tahun . "-" . $bulan . "-20";
+        while (strtotime($dari) <= strtotime($sampai)) {
+            $rangetanggal[] = $dari;
+            $dari = date("Y-m-d", strtotime("+1 day", strtotime($dari)));
+        }
+
+        // dd($rangetanggal);
+        $jmlrange = count($rangetanggal);
+        $namabulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        $departemen = DB::table('hrd_departemen')->where('kode_dept', $kode_dept)->first();
+        $kantor = DB::table('cabang')->where('kode_cabang', $id_kantor)->first();
+        $group = DB::table('hrd_group')->where('id', $id_group)->first();
+
+
+        $query = Karyawan::query();
+        $query->selectRaw('master_karyawan.nik,nama_karyawan,kode_dept,
+        hari_1,
+        hari_2,
+        hari_3,
+        hari_4,
+        hari_5,
+        hari_6,
+        hari_7,
+        hari_8,
+        hari_9,
+        hari_10,
+        hari_11,
+        hari_12,
+        hari_13,
+        hari_14,
+        hari_15
+
+        ');
+        $query->leftJoin(
+            DB::raw("(
+            SELECT
+                presensi.nik,
+                MAX(IF(tgl_presensi = '$rangetanggal[0]',CONCAT(
+                IFNULL(jam_in,'NA'),
+                '|',IFNULL(jam_out,'NA'),
+                '|',IFNULL(nama_jadwal,'NA'),
+                '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                '|',IFNULL(presensi.status,'NA'),
+                '|',IFNULL(presensi.kode_izin,'NA'),
+                '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                '|',IFNULL(jam_kerja.total_jam,'NA'),
+                '|',IFNULL(pengajuan_izin.sid,'NA')
+                ),NULL)) as hari_1,
+
+                MAX(IF(tgl_presensi = '$rangetanggal[1]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA')
+                    ),NULL)) as hari_2,
+
+                MAX(IF(tgl_presensi = '$rangetanggal[2]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA')
+                    ),NULL)) as hari_3,
+
+                MAX(IF(tgl_presensi = '$rangetanggal[3]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA')
+                    ),NULL)) as hari_4,
+
+                MAX(IF(tgl_presensi = '$rangetanggal[4]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA')
+                    ),NULL)) as hari_5,
+
+
+                MAX(IF(tgl_presensi = '$rangetanggal[5]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA')
+                    ),NULL)) as hari_6,
+
+                MAX(IF(tgl_presensi = '$rangetanggal[6]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA')
+                    ),NULL)) as hari_7,
+
+                MAX(IF(tgl_presensi = '$rangetanggal[7]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA')
+                    ),NULL)) as hari_8,
+
+                MAX(IF(tgl_presensi = '$rangetanggal[8]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA')
+                    ),NULL)) as hari_9,
+
+
+                MAX(IF(tgl_presensi = '$rangetanggal[9]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA')
+                    ),NULL)) as hari_10,
+
+                MAX(IF(tgl_presensi = '$rangetanggal[10]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA')
+                    ),NULL)) as hari_11,
+
+                MAX(IF(tgl_presensi = '$rangetanggal[11]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA')
+                    ),NULL)) as hari_12,
+
+                MAX(IF(tgl_presensi = '$rangetanggal[12]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA')
+                    ),NULL)) as hari_13,
+
+                MAX(IF(tgl_presensi = '$rangetanggal[13]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA')
+                    ),NULL)) as hari_14,
+
+                MAX(IF(tgl_presensi = '$rangetanggal[14]',CONCAT(
+                    IFNULL(jam_in,'NA'),
+                    '|',IFNULL(jam_out,'NA'),
+                    '|',IFNULL(nama_jadwal,'NA'),
+                    '|',IFNULL(jam_kerja.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.jam_pulang,'NA'),
+                    '|',IFNULL(presensi.status,'NA'),
+                    '|',IFNULL(presensi.kode_izin,'NA'),
+                    '|',IFNULL(presensi.kode_izin_terlambat,'NA'),
+                    '|',IFNULL(presensi.kode_izin_pulang,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_keluar,'NA'),
+                    '|',IFNULL(pengajuan_izin.jam_masuk,'NA'),
+                    '|',IFNULL(jam_kerja.total_jam,'NA'),
+                    '|',IFNULL(pengajuan_izin.sid,'NA')
+                    ),NULL)) as hari_15
+
+
+
+
+
+
+            FROM
+                presensi
+            LEFT JOIN pengajuan_izin ON presensi.kode_izin = pengajuan_izin.kode_izin
+            LEFT JOIN jadwal_kerja ON presensi.kode_jadwal = jadwal_kerja.kode_jadwal
+            LEFT JOIN jam_kerja ON presensi.kode_jam_kerja = jam_kerja.kode_jam_kerja
+            GROUP BY
+                presensi.nik
+            ) presensi"),
+            function ($join) {
+                $join->on('presensi.nik', '=', 'master_karyawan.nik');
+            }
+        );
+
+        if (!empty($kode_dept)) {
+            $query->where('master_karyawan.kode_dept', $kode_dept);
+        }
+
+        if (!empty($id_kantor)) {
+            $query->where('master_karyawan.id_kantor', $id_kantor);
+        }
+
+        if (!empty($id_group)) {
+            $query->where('master_karyawan.grup', $id_group);
+        }
+        $query->groupBy('master_karyawan.nik', 'nama_karyawan');
+        $query->orderBy('nama_karyawan');
+        $presensi = $query->get();
+        //dd($presensi);
+        return view('presensi.laporan.cetak', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi'));
+    }
+}

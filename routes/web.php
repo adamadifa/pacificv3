@@ -48,6 +48,7 @@ use App\Http\Controllers\LaporangudangbahanController;
 use App\Http\Controllers\LaporangudangcabangController;
 use App\Http\Controllers\LaporangudangjadiController;
 use App\Http\Controllers\LaporangudanglogistikController;
+use App\Http\Controllers\LaporanhrdController;
 use App\Http\Controllers\LaporankeuanganController;
 use App\Http\Controllers\LaporanmaintenanceController;
 use App\Http\Controllers\LaporanpembelianController;
@@ -1704,4 +1705,9 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/harilibur/{kode_libur}/delete', [HariliburController::class, 'delete']);
     Route::get('/harilibur/{kode_libur}/edit', [HariliburController::class, 'edit']);
     Route::post('/harilibur/{kode_libur}/update', [HariliburController::class, 'update']);
+
+    Route::get('/laporanhrd/presensi', [LaporanhrdController::class, 'presensi']);
+    Route::post('/laporanhrd/getkantor', [LaporanhrdController::class, 'getkantor']);
+    Route::post('/laporanhrd/getgroup', [LaporanhrdController::class, 'getgroup']);
+    Route::post('/laporanhrd/presensi/cetak', [LaporanhrdController::class, 'cetakpresensi']);
 });

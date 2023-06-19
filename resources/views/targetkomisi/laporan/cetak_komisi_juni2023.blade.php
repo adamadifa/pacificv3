@@ -577,7 +577,7 @@
                 }
 
 
-                $persentaserouting = !empty($d->jmlkunjungan) ? ROUND($d->jmlsesuaijadwal/$d->jmlkunjungan * 100) : 0;
+                $persentaserouting = !empty($d->jmlkunjungan) ? $d->jmlsesuaijadwal/$d->jmlkunjungan * 100 : 0;
 
                 if($d->status_komisi == 1){
                     if ($persentaserouting >= 85 and $persentaserouting <= 90) {

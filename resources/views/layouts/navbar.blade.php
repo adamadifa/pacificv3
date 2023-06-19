@@ -1207,6 +1207,7 @@
                             <i class="feather icon-edit"></i>
                             <span class="menu-item" data-i18n="Second Level">Penilaian karyawan</span>
                         </a>
+
                         @endif
 
                     </li>
@@ -1276,6 +1277,15 @@
                         </a>
                     </li>
                     @endif
+
+                    @if (in_array($level,$lap_hrd))
+                    <li class="{{ request()->is(['laporanhrd/presensi']) ? 'active' : '' }}">
+                        <a href="/laporanhrd/presensi">
+                            <i class="feather icon-file-text"></i>
+                            <span class="menu-item" data-i18n="Second Level">Laporan</span>
+                        </a>
+                        @endif
+                    </li>
                 </ul>
             </li>
             @endif

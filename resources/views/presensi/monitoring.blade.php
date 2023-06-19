@@ -233,6 +233,8 @@
                                         );
 
                                         $namahari = $dayList[$day];
+                                        
+                                        
                                         $jamterlambat = $jamterlambat < 0 && !empty($d->kode_izin_terlambat) ? 0 : $jamterlambat;
 
                                         //Jam terlambat dalam Desimal

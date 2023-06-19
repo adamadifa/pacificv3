@@ -56,19 +56,23 @@
     <table class="datatable3">
         <thead bgcolor="#024a75" style="color:white; font-size:12;">
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
-                <th rowspan="2">NO</th>
-                <th rowspan="2">NIK</th>
-                <th rowspan="2">NAMA KARYAWAN</th>
-                <th rowspan="2">SALDO AWAL</th>
+                <th rowspan="3">NO</th>
+                <th rowspan="3">NIK</th>
+                <th rowspan="3">NAMA KARYAWAN</th>
+                <th rowspan="3">SALDO AWAL</th>
                 <th colspan="2">PENAMBAHAN</th>
-                <th colspan="2">PEMBAYARAN</th>
-                <th rowspan="2">SALDO AKHIR</th>
+                <th colspan="3">PEMBAYARAN</th>
+                <th rowspan="3">SALDO AKHIR</th>
             </tr>
             <tr>
-                <th>PINJAMAN</th>
-                <th>LAIN LAIN</th>
-                <th>CICILAN</th>
-                <th>LAIN LAIN</th>
+                <th rowspan="2">PINJAMAN</th>
+                <th rowspan="2">LAIN LAIN</th>
+                <th colspan="2">CICILAN</th>
+                <th rowspan="2">LAIN LAIN</th>
+            </tr>
+            <tr>
+                <th>GAJI</th>
+                <th>CASH</th>
             </tr>
         </thead>
 
@@ -79,6 +83,9 @@
             $totalpenambahan = 0;
             $totalpembayaran = 0;
             $totalsaldoakhir = 0;
+            $totalpmbnow = 0;
+            $totalplnow = 0;
+            $no = 1;
             @endphp
 
             @foreach ($pinjaman as $d)
@@ -95,6 +102,8 @@
 
 
             $totalpembayarannow = $jumlah_pembayarannow + $jumlah_pelunasannow;
+            $totalpmbnow += $jumlah_pembayarannow;
+            $totalplnow += $jumlah_pelunasannow;
             $saldoakhir = $saldoawal + $jumlah_pinjamannow - $totalpembayarannow ;
 
             $totalsaldoawal += $saldoawal;
@@ -103,24 +112,32 @@
             $totalpenambahan += $jumlah_pinjamannow;
 
             @endphp
+            @if (!empty($saldoawal) || !empty($jumlah_pinjamannow))
             <tr>
-                <td>{{ $loop->iteration }}</td>
+                <td>{{ $no }}</td>
                 <td>{{ $d->nik }}</td>
                 <td>{{ $d->nama_karyawan }}</td>
                 <td style="text-align: right">{{ !empty($saldoawal) ?  rupiah($saldoawal) : '' }}</td>
                 <td style="text-align: right">{{ !empty($jumlah_pinjamannow) ?  rupiah($jumlah_pinjamannow) : '' }}</td>
                 <td></td>
-                <td style="text-align: right">{{ !empty($totalpembayarannow) ?  rupiah($totalpembayarannow) : '' }}</td>
+                <td style="text-align: right">{{ !empty($jumlah_pembayarannow) ?  rupiah($jumlah_pembayarannow) : '' }}</td>
+                <td style="text-align: right">{{ !empty($jumlah_pelunasannow) ?  rupiah($jumlah_pelunasannow) : '' }}</td>
                 <td></td>
                 <td style="text-align: right">{{ !empty($saldoakhir) ?  rupiah($saldoakhir) : '' }}</td>
             </tr>
+            @php
+            $no++;
+            @endphp
+            @endif
+
             @endforeach
             <tr bgcolor=" #024a75" style=" color:white; font-size:12;">
                 <th colspan="3">TOTAL</th>
                 <th style="text-align: right">{{ rupiah($totalsaldoawal) }}</th>
                 <th style="text-align: right">{{ rupiah($totalpenambahan) }}</th>
                 <th></th>
-                <th style="text-align: right">{{ rupiah($totalpembayaran) }}</th>
+                <th style="text-align: right">{{ rupiah($totalpmbnow) }}</th>
+                <th style="text-align: right">{{ rupiah($totalplnow) }}</th>
                 <th></th>
                 <th style="text-align: right">{{ rupiah($totalsaldoakhir) }}</th>
             </tr>
