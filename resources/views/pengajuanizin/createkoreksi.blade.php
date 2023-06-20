@@ -24,7 +24,7 @@
                 <select name="kode_jadwal" id="kode_jadwal" class="form-control">
                     <option value="">Pilih Jadwal</option>
                     @foreach ($jadwal as $d)
-                    <option value="{{ $d->kode_jadwal }}">{{ $d->nama_jadwal }}</option>
+                    <option value="{{ $d->kode_jadwal }}">{{ $d->nama_jadwal }} {{ $d->kode_cabang }}</option>
                     @endforeach
                 </select>
                 <input type="hidden" name="kode_jadwal_old" id="kode_jadwal_old">

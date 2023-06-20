@@ -8136,7 +8136,7 @@ class PenjualanController extends Controller
             //     ->orderBy('barang_new.kode_produk', 'asc')
             //     ->get();
         } else {
-            if (str_contains($pelanggan->nama_pelanggan, 'KPBN')) {
+            if (str_contains($pelanggan->nama_pelanggan, 'KPBN') || str_contains($pelanggan->nama_pelanggan, 'WSI')) {
                 $barang = Harga::orderby('nama_barang', 'asc')
                     ->select('barang.*')
                     ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')->where('status', 1)

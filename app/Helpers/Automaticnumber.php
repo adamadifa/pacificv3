@@ -1,5 +1,8 @@
 <?php
 //Buat Kode Otomatis
+
+use Illuminate\Support\Facades\DB;
+
 function buatkode($nomor_terakhir, $kunci, $jumlah_karakter = 0)
 {
     /* mencari nomor baru dengan memecah nomor terakhir dan menambahkan 1
@@ -203,4 +206,16 @@ function hari($hari)
     }
 
     return $hari_ini;
+}
+
+
+function ceklibur($tanggal, $id_kantor)
+{
+    $ceklibur = DB::table('harilibur')->where('tanggal_libur', $tanggal)->where('id_kantor', $id_kantor)->first();
+    if ($ceklibur != null) {
+        $keterangan = $ceklibur->keterangan;
+        return $keterangan;
+    } else {
+        return 0;
+    }
 }

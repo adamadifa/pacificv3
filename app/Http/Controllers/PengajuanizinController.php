@@ -609,8 +609,10 @@ class PengajuanizinController extends Controller
     public function store(Request $request)
     {
         $nik = $request->nik;
-        $dari = $request->jenis_izin == "PL" || $request->jenis_izin == "KL" || $request->jenis_izin == "TL" ? date("Y-m-d") : $request->dari;
-        $sampai =  $request->jenis_izin == "PL" || $request->jenis_izin == "KL" || $request->jenis_izin == "TL" ? date("Y-m-d") : $request->sampai;
+        // $dari = $request->jenis_izin == "PL" || $request->jenis_izin == "KL" || $request->jenis_izin == "TL" ? date("Y-m-d") : $request->dari;
+        $dari = $request->dari;
+        // $sampai =  $request->jenis_izin == "PL" || $request->jenis_izin == "KL" || $request->jenis_izin == "TL" ? date("Y-m-d") : $request->sampai;
+        $sampai = $request->sampai;
         $jmlhari = $request->jmlhari;
         $status = $request->status;
         $keterangan = $request->keterangan;

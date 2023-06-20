@@ -20,7 +20,7 @@
                 <select name="kode_barang" id="kode_barang_pilih" class="form-control">
                     <option value="">Pilih Barang</option>
                     @foreach ($barang as $d)
-                    <option value="{{ $d->kode_barang }}" kode_barang="{{ $d->kode_barang }}" nama_barang="{{ $d->nama_barang }}" isipcsdus="{{ $d->isipcsdus }}" isipcs="{{ $d->isipcs }}" harga_dus="{{ rupiah($d->harga_returdus) }}" harga_pack="{{ rupiah($d->harga_returpack) }}" harga_pcs="{{ rupiah($d->harga_returpcs) }}">{{ $d->nama_barang }}</option>
+                    <option value="{{ $d->kode_barang }}" kode_barang="{{ $d->kode_barang }}" nama_barang="{{ $d->nama_barang }}" isipcsdus="{{ $d->isipcsdus }}" isipcs="{{ $d->isipcs }}" harga_dus="{{ rupiah($d->harga_returdus) }}" harga_pack="{{ rupiah($d->harga_returpack) }}" harga_pcs="{{ rupiah($d->harga_returpcs) }}">{{ $d->nama_barang }} - ({{ $d->kategori_harga }})</option>
                     @endforeach
                 </select>
             </div>

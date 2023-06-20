@@ -63,7 +63,13 @@
                 <th rowspan="2">No</th>
                 <th rowspan="2">Nik</th>
                 <th rowspan="2">Nama karyawan</th>
+                <th rowspan="2">Kantor</th>
                 <th colspan="{{ $jmlrange }}">Bulan {{ $namabulan[$bulan]}} {{ $tahun }}</th>
+                <th rowspan="2">Total Jam</th>
+                <th rowspan="2">Terlambat</th>
+                <th rowspan="2">Keluar</th>
+                <th rowspan="2">Denda</th>
+                <th rowspan="2">Premi</th>
             </tr>
             <tr>
                 @foreach ($rangetanggal as $d)
@@ -80,12 +86,47 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $d->nik }}</td>
                 <td>{{ $d->nama_karyawan }}</td>
+                <td>{{ $d->id_kantor }}</td>
                 <?php
+                $totalterlambat = 0;
+                $totalkeluar = 0;
+                $totaldenda = 0;
                 for($i=0; $i < count($rangetanggal); $i++){
                     $hari_ke = "hari_".$i+1;
                     $tgl_presensi =  $rangetanggal[$i];
+                    $ceklibur = ceklibur($tgl_presensi,$d->id_kantor);
+                    $namahari = hari($tgl_presensi);
+                    if($namahari=="Minggu"){
+                        $colorcolumn = "#ffaf03";
+                        $colortext = "white";
+                    }else{
+                        if($d->$hari_ke != NULL){
+                            if (!empty($ceklibur)) {
+                                $colorcolumn = "rgb(4, 163, 65)";
+                                $colortext = "white";
+                            }else{
+                                $colorcolumn = "";
+                                $colortext = "";
+                            }
+                        }else{
+                            if (!empty($ceklibur)) {
+                                $colorcolumn = "rgb(4, 163, 65)";
+                                $colortext = "white";
+                            }else{
+                                $colorcolumn = "red";
+                                $colortext = "white";
+                            }
+                        }
+
+                    }
                     if($d->$hari_ke != NULL){
                         $datapresensi = explode("|",$d->$hari_ke);
+                        $lintashari = $datapresensi[16] != "NA" ? $datapresensi[16] : '';
+                        if(!empty($lintashari)){
+                            $tgl_pulang = date('Y-m-d', strtotime('+1 day', strtotime($tgl_presensi)));
+                        }else{
+                            $tgl_pulang = $tgl_presensi;
+                        }
                         $jam_in = $datapresensi[0];
                         $jam_in_presensi = $jam_in != "NA" ? date("H:i",strtotime($jam_in)) : '';
                         $jam_out = $datapresensi[1];
@@ -96,7 +137,7 @@
                         $jam_masuk_tanggal =$tgl_presensi." ".$datapresensi[3];
                         $jam_pulang = $datapresensi[4];
                         $jam_pulang_presensi =$jam_pulang != "NA" ? date("H:i",strtotime($jam_pulang)) : '';
-                        $jam_pulang_tanggal = $jam_pulang != "NA" ? $tgl_presensi." ".$jam_pulang : '';
+                        $jam_pulang_tanggal = $jam_pulang != "NA" ? $tgl_pulang." ".$jam_pulang : '';
                         $jam_keluar = $datapresensi[9] != "NA" ? $datapresensi[9] : '';
                         $jam_masuk_kk = $datapresensi[10] != "NA" ? $datapresensi[10] : '';
                         $total_jam = $datapresensi[11] != "NA" ? $datapresensi[11] : 0;
@@ -181,7 +222,7 @@
                         }
 
 
-                        if(!empty($jam_out) && $jam_out_tanggal < $jam_pulang_tanggal){
+                        if($jam_out != "NA" && $jam_out_tanggal < $jam_pulang_tanggal){
                             $pc = "Pulang Cepat";
                         }else{
                             $pc = "";
@@ -253,14 +294,18 @@
                                 }
                             }
                         }else{
-                            $jt = 0;
+                            if($jamterlambat < 1){
+                                $jt = 0;
+                            }else{
+                                $jt = $jt;
+                            }
                         }
                         $totaljam = $total_jam - $jt - $jk;
 
 
                         if ($jam_out != "NA") {
-                            if ($jam_out_presensi < $jam_pulang_presensi) { //Shift 3 Belum Di Set
-                                if($jam_out_presensi > $jam_istirahat_presensi && $jam_istirahat != "NA"){
+                            if ($jam_out < $jam_pulang_tanggal) { //Shift 3 Belum Di Set | Coba
+                                if($jam_out > $jam_akhir_istirahat && $jam_istirahat != "NA"){
                                     $desimalmenit = ROUND(($menit * 100) / 60);
                                     $grandtotaljam = $jam-1 . "." . $desimalmenit;
                                 }else{
@@ -298,7 +343,7 @@
                         // echo "___________________________- <br>";
 
                 ?>
-                <td>
+                <td style="background-color: {{ $colorcolumn }}; color:{{ $colortext }}">
                     @if ($status == "h")
                     {{-- <span>{{ $rangetanggal[$i] }}</span><br>
                     <span>{{ $jam_out_tanggal }} s.d {{ $jam_pulang_tanggal }}</span> --}}
@@ -341,6 +386,9 @@
                         @if (!empty($sid))
                         <span style="color:green">- SID</span><br>
                         <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
+                        @else
+                        <br>
+                        <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
                         @endif
                     </span>
                     @elseif($status=="i")
@@ -354,12 +402,26 @@
                 </td>
                 <?php
                     }else{
+                    $jt = 0;
+                    $jk = 0;
+                    $denda = 0;
                 ?>
-                <td style="background-color: red"></td>
+                <td style="background-color:{{ $colorcolumn }}; color:white">{{ !empty($ceklibur) ? $ceklibur : "";  }}</td>
                 <?Php
                     }
+
+                    $totalterlambat += $jt;
+                    $totalkeluar += $jk;
+                    $totaldenda += $denda;
                 }
+
+
                 ?>
+                <td></td>
+                <td style="text-align: center; color:red; font-size:16px">{{ !empty($totalterlambat) ? $totalterlambat : '' }}</td>
+                <td style="text-align: center; color:rgb(255, 140, 0);font-size:16px">{{ !empty($totalkeluar) ? $totalkeluar : '' }}</td>
+                <td style="text-align: right; color:red; font-size:16px">{{ !empty($totaldenda) ? rupiah($totaldenda) : '' }}</td>
+                <td></td>
             </tr>
             @endforeach
         </tbody>

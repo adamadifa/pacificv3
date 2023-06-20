@@ -43,6 +43,8 @@ class LaporanhrdController extends Controller
 
     public function cetakpresensi(Request $request)
     {
+
+        //dd(ceklibur('2023-06-18', 'BDG'));
         $kode_dept = $request->kode_dept;
         $id_kantor = $request->id_kantor;
         $id_group = $request->id_group;
@@ -73,7 +75,7 @@ class LaporanhrdController extends Controller
 
 
         $query = Karyawan::query();
-        $query->selectRaw('master_karyawan.nik,nama_karyawan,kode_dept,
+        $query->selectRaw('master_karyawan.nik,nama_karyawan,kode_dept,id_kantor,
         hari_1,
         hari_2,
         hari_3,
