@@ -93,6 +93,7 @@ class PembayarankasbonController extends Controller
             $tahunlast = $tahun;
         }
 
+        //dd($tahun);
         $cek = DB::table('kasbon_potongangaji')->count();
         $ceklast = DB::table('kasbon_potongangaji')->where('bulan', $bulanlast)->where('tahun', $tahunlast)->count();
         if ($cek > 0 && $ceklast == 0) {
@@ -110,15 +111,18 @@ class PembayarankasbonController extends Controller
             ]);
 
             $rencana = DB::table('kasbon')->where('jatuh_tempo', $jatuhtempo)->get();
+
+
             foreach ($rencana as $d) {
                 $historibayar = DB::table("kasbon_historibayar")
                     ->whereRaw('YEAR(tgl_bayar)="' . $tahun . '"')
                     ->orderBy("no_bukti", "desc")
                     ->first();
-                $tahun = substr($tahun, 2, 2);
+                $thn = substr($tahun, 2, 2);
                 $last_nobukti = $historibayar != null ? $historibayar->no_bukti : '';
-                $no_bukti  = buatkode($last_nobukti, "KB" . $tahun, 4);
+                $no_bukti  = buatkode($last_nobukti, "KB" . $thn, 4);
 
+                //echo $thn;
                 $data = [
                     'no_bukti' => $no_bukti,
                     'tgl_bayar' => $tahunpotongan . "-" . $bulanpotongan . "-01",
