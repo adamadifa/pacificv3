@@ -444,7 +444,7 @@
                 </td>
                 @if ($kontrak->id_perusahaan != "MP")
                 <td style="text-align:center">
-                    <u>{{ pihakpertamacabang($kontrak->id_kantor,$kontrak->id_perushaan) }}</u><br>
+                    <u>{{ pihakpertamacabang($kontrak->id_kantor,$kontrak->id_perusahaan) }}</u><br>
                     Kepala Admin
                 </td>
                 @endif
