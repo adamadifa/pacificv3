@@ -442,7 +442,7 @@
                     <u>{{ $kontrak->nama_karyawan }}</u><br>
                     Karyawan
                 </td>
-                @if ($d->id_perusahaan != "MP")
+                @if ($kontrak->id_perusahaan != "MP")
                 <td style="text-align:center">
                     <u>{{ pihakpertamacabang($kontrak->id_kantor,$kontrak->id_perushaan) }}</u><br>
                     Kepala Admin
