@@ -426,7 +426,11 @@
             </tr>
             <tr>
                 <td style="text-align:center">PIHAK KEDUA</td>
+                @if ($kontrak->id_perusahaan!= "MP")
+                <td style="text-align:center" colspan="2">PIHAK PERTAMA</td>
+                @else
                 <td style="text-align:center">PIHAK PERTAMA</td>
+                @endif
             </tr>
             <tr>
                 <td style="height: 90px"></td>
@@ -438,6 +442,13 @@
                     <u>{{ $kontrak->nama_karyawan }}</u><br>
                     Karyawan
                 </td>
+                @if ($d->id_perusahaan != "MP")
+                <td style="text-align:center">
+                    <u>{{ pihakpertamacabang($kontrak->id_kantor,$kontrak->id_perushaan) }}</u><br>
+                    Kepala Admin
+                </td>
+                @endif
+
                 <td style="text-align:center">
                     <u>{{ $nama_pihaksatu }}</u><br>
                     {{ $jabatan_pihaksatu }}

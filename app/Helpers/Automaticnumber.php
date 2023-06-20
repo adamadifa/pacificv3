@@ -219,3 +219,47 @@ function ceklibur($tanggal, $id_kantor)
         return 0;
     }
 }
+
+
+
+function pihakpertamacabang($cabang, $perusahaan)
+{
+    $kepalaadmin = [
+        'PWT' => 'Dimas Suteja',
+        'BTN' => 'Anif Ardiana',
+        'BDG' => 'M. Hirzam Purnama Dimas',
+        'SKB' => 'Aceng Cahya Sugianto',
+        'TGL' => 'Rosihul Iman',
+        'SBY' => 'Excel Delvara Bachriandy',
+        'SMR' => 'Muh. Fahmi Fadil',
+        'KLT' => 'Fikkry Yusuf',
+        'BGR' => 'Nurman Susila',
+        'GRT' => 'Dade Gunawan',
+        'BKI' => 'Wahib Al Aziz',
+        'PWK' => 'Ricky Irawan',
+        'TSM' => 'Sri Maharani'
+    ];
+
+
+    $kepalapenjualan = [
+        'PWT' => 'Aria Permana Wiguna',
+        'BTN' => 'Bagus Eka Winarno',
+        'BDG' => 'Oki Rahmat Effendy',
+        'SKB' => 'Agus Hanafi',
+        'TGL' => 'Iwan Santoso',
+        'SBY' => 'Iman Hilman',
+        'SMR' => 'Rully Wiwik H',
+        'KLT' => 'Nunuk Ratmiwati',
+        'BGR' => 'Uus Kuswaya',
+        'GRT' => 'Purnomo Raya',
+        'BKI' => 'Yohanes Dewangkorojati',
+        'PWK' => 'Oki Rahmat Effendy',
+        'TSM' => 'Aceng Saepul Anwar'
+    ];
+
+    if ($perusahaan == "MP") {
+        return $kepalaadmin[$cabang];
+    } else {
+        return $kepalapenjualan[$cabang];
+    }
+}
