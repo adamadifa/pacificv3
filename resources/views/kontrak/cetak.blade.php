@@ -229,7 +229,10 @@
                     @if (in_array($kontrak->id_jabatan,$management))
                     Pihak kedua setuju menerima upah dengan rincian terlampir:
                     @else
-                    Pihak kedua setuju menerima upah dengan rincian berikut:
+                    @php
+                    $totalupah = $kontrak->gaji_pokok + $kontrak->t_jabatan + $kontrak->t_tanggungjawab + $kontrak->t_makan + $kontrak->t_skill;
+                    @endphp
+                    Pihak kedua setuju menerima upah Sebesar <b>{{ rupiah($totalupah) }}</b> dengan rincian berikut:
                     <table>
                         <tr>
                             <td>a.</td>
@@ -442,7 +445,12 @@
                     <u>{{ $kontrak->nama_karyawan }}</u><br>
                     Karyawan
                 </td>
-                @if ($kontrak->id_perusahaan != "MP")
+                @if ($kontrak->id_kantor != "PST" && $kontrak->id_perusahaan == "PCF")
+                <td style="text-align:center">
+                    <u>{{ pihakpertamacabang($kontrak->id_kantor,$kontrak->id_perusahaan) }}</u><br>
+                    Kepala Penjualan
+                </td>
+                @elseif($kontrak->id_kantor !="PST" && $kontrak->id_perusahaan=="MP")
                 <td style="text-align:center">
                     <u>{{ pihakpertamacabang($kontrak->id_kantor,$kontrak->id_perusahaan) }}</u><br>
                     Kepala Admin
