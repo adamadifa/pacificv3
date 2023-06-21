@@ -42,7 +42,7 @@
                                             <th>Grup</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="loadshift1">
+                                    <tbody id="loadshift1" style="font-size:11px !important">
                                     </tbody>
                                 </table>
                             </div>
@@ -68,7 +68,7 @@
                                             <th>Grup</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="loadshift2">
+                                    <tbody id="loadshift2" style="font-size:11px !important">
 
                                     </tbody>
                                 </table>
@@ -95,7 +95,7 @@
                                             <th>Grup</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="loadshift3">
+                                    <tbody id="loadshift3" style="font-size:11px !important">
 
                                     </tbody>
                                 </table>

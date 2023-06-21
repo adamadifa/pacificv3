@@ -64,7 +64,7 @@
                 <th rowspan="2">Nik</th>
                 <th rowspan="2">Nama karyawan</th>
                 <th rowspan="2">Kantor</th>
-                <th colspan="{{ $jmlrange }}">Bulan {{ $namabulan[$bulan]}} {{ $tahun }}</th>
+                <th colspan="{{ $jmlrange }}">Bulan {{ $namabulan[$bulan*1]}} {{ $tahun }}</th>
                 <th rowspan="2">Total Jam</th>
                 <th rowspan="2">Terlambat</th>
                 <th rowspan="2">Keluar</th>
@@ -338,6 +338,15 @@
                                 $grandtotaljam = 0;
                             }
                         }
+
+
+                        if ($nama_jadwal == "SHIFT 2" && $grandtotaljam > 5) {
+                            $premi = 5000;
+                        }else if($nama_jadwal=="SHIFT 3" && $grandtotaljam > 5){
+                            $premi = 6000;
+                        }else{
+                            $premi = 0;
+                        }
                         // echo "Total Jam :" .$total_jam."<br>" ;
                         // echo "Jam Terlambat :".$jt."<br>";
                         // echo "___________________________- <br>";
@@ -345,6 +354,7 @@
                 ?>
                 <td style="background-color: {{ $colorcolumn }}; color:{{ $colortext }}">
                     @if ($status == "h")
+                    {{-- <span>{{ $jam_out ."|". $jam_akhir_istirahat }}</span><br> --}}
                     {{-- <span>{{ $rangetanggal[$i] }}</span><br>
                     <span>{{ $jam_out_tanggal }} s.d {{ $jam_pulang_tanggal }}</span> --}}
                     {{-- <span>{{ $jam_masuk_tanggal."--".$jout }}</span> --}}
@@ -398,13 +408,17 @@
                     <span style="color:rgb(154, 56, 4);">CUTI</span><br>
                     <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
                     @endif
-
+                    @if (!empty($premi))
+                    <br>
+                    <span style="color: blue">Premi : {{ rupiah($premi) }}</span>
+                    @endif
                 </td>
                 <?php
                     }else{
                     $jt = 0;
                     $jk = 0;
                     $denda = 0;
+                    $premi = 0;
                 ?>
                 <td style="background-color:{{ $colorcolumn }}; color:white">{{ !empty($ceklibur) ? $ceklibur : "";  }}</td>
                 <?Php
