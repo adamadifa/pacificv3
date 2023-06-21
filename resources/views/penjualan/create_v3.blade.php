@@ -461,7 +461,7 @@
                                                     @php
                                                     $kode_cabang_pelanggan = substr($pelanggan->kode_pelanggan,0,3);
                                                     @endphp
-                                                    @if ($pajak == 1 ||$getcbg=="BKI" && in_array($kode_cabang_pelanggan,$cabangpkp) )
+                                                    @if ($pajak == 1 )
                                                     <div class="form-group" style="margin-bottom: 5px">
                                                         <div class="position-relative has-icon-left">
                                                             <input type="text" id="totalnonppn" class="form-control text-right money" style="font-weight: bold" readonly name="totalnonppn" placeholder="Total">
@@ -658,6 +658,8 @@
             var kode_pelanggan = $("#kode_pelanggan").val();
             var kategori_salesman = $("#kategori_salesman").val();
             var kode_cabang = $("#kode_cabang").val();
+            var pajak = "{{ $pajak }}";
+            //alert(pajak);
             if (kode_pelanggan == "") {
                 swal({
                     title: 'Oops'
@@ -678,6 +680,8 @@
                         , kode_pelanggan: kode_pelanggan
                         , kategori_salesman: kategori_salesman
                         , kode_cabang: kode_cabang
+                        , pajak: pajak
+
                     }
                     , cache: false
                     , success: function(respond) {

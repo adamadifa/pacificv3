@@ -6,7 +6,7 @@
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Input Penjualan V2</h2>
+                    <h2 class="content-header-title float-left mb-0">Input Penjualan V2d</h2>
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/inputpenjualanv2">Input Penjualan</a>
@@ -937,6 +937,8 @@
             var kode_pelanggan = $("#kode_pelanggan").val();
             var kategori_salesman = $("#kategori_salesman").val();
             var kode_cabang = $("#kode_cabang").val();
+            var pajak = "{{ $pajak }}";
+            //alert(pajak);
             if (kode_pelanggan == "") {
                 swal({
                     title: 'Oops'
@@ -957,7 +959,8 @@
                         , kategori_salesman: kategori_salesman
                         , kode_cabang: kode_cabang
                         , kode_pelanggan: kode_pelanggan
-                    }
+                        , pajak: pajak
+                    , }
                     , cache: false
                     , success: function(respond) {
                         aktifbutton();

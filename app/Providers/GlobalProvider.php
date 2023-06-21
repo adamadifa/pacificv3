@@ -161,10 +161,19 @@ class GlobalProvider extends ServiceProvider
             $cabangpkp = ['TSM', 'BDG', 'PWT', 'BGR'];
 
             if ($level == "salesman") {
-                if (in_array($getcbg, $cabangpkp)) {
-                    $pajak = 1;
+
+                if ($getcbg == "BKI") {
+                    if (request()->is('inputpenjualanppn')) {
+                        $pajak = "1";
+                    } else {
+                        $pajak = "0";
+                    }
                 } else {
-                    $pajak = 0;
+                    if (in_array($getcbg, $cabangpkp)) {
+                        $pajak = 1;
+                    } else {
+                        $pajak = 0;
+                    }
                 }
             } else {
                 if (request()->is('inputpenjualanppn')) {

@@ -307,6 +307,7 @@ class PenjualanController extends Controller
 
     public function create_v2()
     {
+
         if (Auth::user()->level == "salesman") {
             $kodepelanggan = Cookie::get('kodepelanggan');
             $kode_pelanggan = $kodepelanggan != null ? Crypt::decrypt($kodepelanggan) : '';
@@ -8107,6 +8108,7 @@ class PenjualanController extends Controller
             $kategori_salesman = "NORMAL";
         }
         $kode_pelanggan = $request->kode_pelanggan;
+        $pajak = $request->pajak;
         $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)->first();
         // $barang = DB::table('barang')
         //     ->select('barang.*')
@@ -8146,18 +8148,67 @@ class PenjualanController extends Controller
                     ->get();
             } else {
                 if ($kategori_salesman == "TOCANVASER") {
-                    $barang = Harga::orderby('nama_barang', 'asc')
-                        ->select('barang.*')
-                        ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')
-                        ->where('status', 1)
-                        ->where('show', 1)
-                        ->where('kode_cabang', $kode_cabang)
-                        ->where('kategori_harga', 'TO')
-                        ->orwhere('kode_cabang', $kode_cabang)
-                        ->where('kategori_harga', 'CANVASER')
-                        ->where('status', 1)
-                        ->where('show', 1)
-                        ->get();
+                    if ($pelanggan->kode_cabang == "BKI") {
+                        if (empty($pajak)) {
+                            $barang = Harga::orderby('nama_barang', 'asc')
+                                ->select('barang.*')
+                                ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')
+                                ->where('status', 1)
+                                ->where('show', 1)
+                                ->where('kode_cabang', $kode_cabang)
+                                ->where('kategori_harga', 'TO')
+                                ->where('ppn', 'IN')
+                                ->orwhere('kode_cabang', $kode_cabang)
+                                ->where('kategori_harga', 'CANVASER')
+                                ->where('status', 1)
+                                ->where('show', 1)
+                                ->where('ppn', 'IN')
+                                ->orderByRaw('barang.kode_produk,barang.kategori_harga')
+                                ->get();
+                        } else {
+                            $barang = Harga::orderby('nama_barang', 'asc')
+                                ->select('barang.*')
+                                ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')
+                                ->where('status', 1)
+                                ->where('show', 1)
+                                ->where('kode_cabang', $kode_cabang)
+                                ->where('kategori_harga', 'TO')
+                                ->where('ppn', 'EX')
+                                ->orwhere('kode_cabang', $kode_cabang)
+                                ->where('kategori_harga', 'CANVASER')
+                                ->where('status', 1)
+                                ->where('show', 1)
+                                ->where('ppn', 'EX')
+                                ->orderByRaw('barang.kode_produk,barang.kategori_harga')
+                                ->get();
+                        }
+                    } else {
+                        $barang = Harga::orderby('nama_barang', 'asc')
+                            ->select('barang.*')
+                            ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')
+                            ->where('status', 1)
+                            ->where('show', 1)
+                            ->where('kode_cabang', $kode_cabang)
+                            ->where('kategori_harga', 'TO')
+                            ->orwhere('kode_cabang', $kode_cabang)
+                            ->where('kategori_harga', 'CANVASER')
+                            ->where('status', 1)
+                            ->where('show', 1)
+                            ->get();
+                    }
+
+                    // $barang = Harga::orderby('nama_barang', 'asc')
+                    //     ->select('barang.*')
+                    //     ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')
+                    //     ->where('status', 1)
+                    //     ->where('show', 1)
+                    //     ->where('kode_cabang', $kode_cabang)
+                    //     ->where('kategori_harga', 'TO')
+                    //     ->orwhere('kode_cabang', $kode_cabang)
+                    //     ->where('kategori_harga', 'CANVASER')
+                    //     ->where('status', 1)
+                    //     ->where('show', 1)
+                    //     ->get();
                     // $barangnew = DB::table('barang_new')
                     //     ->select('barang_new.*')
                     //     ->join('master_barang', 'barang_new.kode_produk', '=', 'master_barang.kode_produk')->where('barang_new.status_harga', 1)
