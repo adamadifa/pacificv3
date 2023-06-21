@@ -94,7 +94,7 @@
                 for($i=0; $i < count($rangetanggal); $i++){
                     $hari_ke = "hari_".$i+1;
                     $tgl_presensi =  $rangetanggal[$i];
-                    $ceklibur = ceklibur($tgl_presensi,$d->id_kantor);
+                    $ceklibur = NULL;
                     $namahari = hari($tgl_presensi);
                     if($namahari=="Minggu"){
                         $colorcolumn = "#ffaf03";
