@@ -342,4 +342,11 @@ class KonfigurasijadwalController extends Controller
             return 1;
         }
     }
+
+
+    public function setjadwal($nik)
+    {
+        $karyawan = DB::table('master_karyawan')->where('nik', $nik)->first();
+        return view('konfigurasijadwal.setjadwal', compact('karyawan'));
+    }
 }

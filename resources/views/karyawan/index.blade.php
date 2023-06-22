@@ -154,7 +154,7 @@
                                             </td>
                                             <td>
                                                 <div class="btn-group" role="group" aria-label="Basic example">
-
+                                                    <a href="#" class="info setjadwal" nik="{{ $d->nik }}" id_kantor="{{ $d->id_kantor }}"><i class="feather icon-watch"></i></a>
                                                     @if (in_array($level,$karyawan_edit))
                                                     <a class="ml-1 edit" nik="{{ Crypt::encrypt($d->nik) }}" href="#"><i class="feather icon-edit success"></i></a>
                                                     @endif
@@ -380,6 +380,21 @@
     </div>
 </div>
 
+<div class="modal fade text-left" id="mdlsetjadwal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Konfigurasi Jadwal</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loadsetjadwal"></div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade text-left" id="mdleditkaryawan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -449,6 +464,26 @@
 @push('myscript')
 <script>
     $(function() {
+
+        // $('.setjadwal').click(function(e) {
+        //     e.preventDefault();
+        //     var nik = $(this).attr(nik);
+        //     $('#mdlsetjadwal').modal({
+        //         backdrop: 'static'
+        //         , keyboard: false
+        //     });
+        //     $("#loadsetjadwal").load('/konfigurasijadwal/' + nik + '/setjadwal');
+        // });
+        $(".setjadwal").click(function(e) {
+            e.preventDefault();
+            var nik = $(this).attr("nik");
+
+            $('#mdlsetjadwal').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+            $("#loadsetjadwal").load('/konfigurasijadwal/' + nik + '/setjadwal');
+        });
 
         $('#tambahkaryawan').click(function(e) {
             e.preventDefault();

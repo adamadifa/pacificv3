@@ -1697,6 +1697,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/konfigurasijadwal/storegantishift', [KonfigurasijadwalController::class, 'storegantishift']);
     Route::get('/konfigurasijadwal/{kode_setjadwal}/showgantishift', [KonfigurasijadwalController::class, 'showgantishift']);
     Route::post('/konfigurasijadwal/deletegantishift', [KonfigurasijadwalController::class, 'deletegantishift']);
+    Route::get('/konfigurasijadwal/{nik}/setjadwal', [KonfigurasijadwalController::class, 'setjadwal']);
 
     //Harilibur
 
