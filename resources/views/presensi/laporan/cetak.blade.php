@@ -288,7 +288,11 @@
 
                         if ($denda == 0 and empty($kode_izin_terlambat)) {
                             if($kode_dept != "MKT"){
-                                $jt = $jt;
+                                if($jamterlambat < 1){
+                                    $jt = 0;
+                                }else{
+                                    $jt = $jt;
+                                }
                             }else{
                                 if($jamterlambat < 1){
                                     $jt = 0;
@@ -358,6 +362,7 @@
                 <td style="background-color: {{ $colorcolumn }}; color:{{ $colortext }}">
 
                     @if ($status == "h")
+                    {{-- <span>{{ $jt }}</span> --}}
                     {{-- <span>{{ $jam_out ."|". $jam_akhir_istirahat }}</span><br> --}}
                     {{-- <span>{{ $rangetanggal[$i] }}</span><br>
                     <span>{{ $jam_out_tanggal }} s.d {{ $jam_pulang_tanggal }}</span> --}}

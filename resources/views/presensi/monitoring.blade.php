@@ -256,6 +256,8 @@
                                                         $denda = 10000;
                                                     }else if($menitterlambat >= 15 AND $menitterlambat <= 59){
                                                         $denda = 15000;
+                                                    }else{
+                                                        $denda = 0;
                                                     }
                                                 }else{
                                                     $denda = 0;
@@ -299,7 +301,11 @@
 
                                         if ($denda == 0 and empty($d->kode_izin_terlambat)) {
                                             if($d->kode_dept != "MKT"){
-                                                $jt = $jt;
+                                                if($jamterlambat < 1){
+                                                    $jt = 0;
+                                                }else{
+                                                    $jt = $jt;
+                                                }
                                             }else{
                                                 if($jamterlambat < 1){
                                                     $jt = 0;
