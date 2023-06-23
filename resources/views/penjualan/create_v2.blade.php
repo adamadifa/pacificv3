@@ -938,7 +938,7 @@
             var kategori_salesman = $("#kategori_salesman").val();
             var kode_cabang = $("#kode_cabang").val();
             var pajak = "{{ $pajak }}";
-            //alert(pajak);
+            alert(pajak);
             console.log(pajak);
             if (kode_pelanggan == "") {
                 swal({
