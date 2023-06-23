@@ -212,6 +212,7 @@ function hari($hari)
 function ceklibur($dari, $sampai)
 {
     $no = 1;
+    $libur = [];
     $ceklibur = DB::table('harilibur')->whereBetween('tanggal_libur', [$dari, $sampai])->get();
     foreach ($ceklibur as $d) {
         $libur[] = [
