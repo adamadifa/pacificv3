@@ -165,7 +165,7 @@
 
 
                                                 $terlambat = $jterlambat . ":" . $mterlambat;
-                                                $desimalterlambat = ROUND(($menitterlambat * 100) / 60);
+                                                $desimalterlambat = ROUND(($menitterlambat / 60),2);
                                             } else {
                                                 $terlambat = "Tepat waktu";
                                                 $jamterlambat = 0;
@@ -205,7 +205,7 @@
                                             }else{
                                                 $totaljamkeluar = $jkeluarkantor.":".$mkeluarkantor;
                                             }
-                                            $desimaljamkeluar = ROUND(($menitkeluarkantor * 100) / 60);
+                                            $desimaljamkeluar = ROUND(($menitkeluarkantor / 60),2);
 
                                         }else{
                                             $totaljamkeluar = "";
@@ -239,9 +239,9 @@
 
                                         //Jam terlambat dalam Desimal
 
-                                        $jt = $jamterlambat . "." . $desimalterlambat;
+                                        $jt = $jamterlambat + $desimalterlambat;
                                         if($jamkeluarkantor > 0){
-                                            $jk = $jamkeluarkantor.".".$desimaljamkeluar;
+                                            $jk = $jamkeluarkantor+$desimaljamkeluar;
                                         }else{
                                             $jk = 0;
                                         }

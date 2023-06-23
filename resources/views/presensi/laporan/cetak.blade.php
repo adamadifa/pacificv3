@@ -171,7 +171,7 @@
                                 //Total Keterlambatan Dalam Jam dan Menit
                                 $terlambat = $jterlambat . ":" . $mterlambat;
                                 //Keterlambatan Menit Dalam Desimal
-                                $desimalterlambat = ROUND(($menitterlambat * 100) / 60);
+                                $desimalterlambat = ROUND(($menitterlambat / 60),2);
                                 $colorterlambat ="red";
                             } else {
                                 $terlambat = "Tepat waktu";
@@ -217,7 +217,7 @@
                             }else{
                                 $totaljamkeluar = $jkeluarkantor.":".$mkeluarkantor;
                             }
-                            $desimaljamkeluar = ROUND(($menitkeluarkantor * 100) / 60);
+                            $desimaljamkeluar = ROUND(($menitkeluarkantor/ 60),2);
                         }else{
                             $totaljamkeluar = "";
                             $desimaljamkeluar = 0;
@@ -236,9 +236,9 @@
 
                         //Jam terlambat dalam Desimal
 
-                        $jt = !empty($jamterlambat) || !empty($desimalterlambat) ? $jamterlambat . "." . $desimalterlambat : 0;
+                        $jt = $jamterlambat + $desimalterlambat;
                         if($jamkeluarkantor > 0){
-                            $jk = $jamkeluarkantor.".".$desimaljamkeluar;
+                            $jk = $jamkeluarkantor + $desimaljamkeluar;
                         }else{
                             $jk = 0;
                         }
@@ -362,7 +362,7 @@
                 <td style="background-color: {{ $colorcolumn }}; color:{{ $colortext }}">
 
                     @if ($status == "h")
-                    {{-- <span>{{ $jt }}</span> --}}
+                    <span>{{ $desimalterlambat }}</span>
                     {{-- <span>{{ $jam_out ."|". $jam_akhir_istirahat }}</span><br> --}}
                     {{-- <span>{{ $rangetanggal[$i] }}</span><br>
                     <span>{{ $jam_out_tanggal }} s.d {{ $jam_pulang_tanggal }}</span> --}}
