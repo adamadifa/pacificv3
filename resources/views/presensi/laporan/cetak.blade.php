@@ -94,7 +94,10 @@
                 for($i=0; $i < count($rangetanggal); $i++){
                     $hari_ke = "hari_".$i+1;
                     $tgl_presensi =  $rangetanggal[$i];
-                    $ceklibur = NULL;
+                    $tgllibur = "'".$tgl_presensi."'";
+                    $search_items = array('id_kantor' => $d->id_kantor, 'tanggal_libur' => $tgl_presensi);
+                    $ceklibur = cektgllibur($datalibur, $search_items);
+                    // /dd($ceklibur);
                     $namahari = hari($tgl_presensi);
                     if($namahari=="Minggu"){
                         $colorcolumn = "#ffaf03";
@@ -353,6 +356,7 @@
 
                 ?>
                 <td style="background-color: {{ $colorcolumn }}; color:{{ $colortext }}">
+
                     @if ($status == "h")
                     {{-- <span>{{ $jam_out ."|". $jam_akhir_istirahat }}</span><br> --}}
                     {{-- <span>{{ $rangetanggal[$i] }}</span><br>
@@ -420,7 +424,7 @@
                     $denda = 0;
                     $premi = 0;
                 ?>
-                <td style="background-color:{{ $colorcolumn }}; color:white">{{ !empty($ceklibur) ? $ceklibur : "";  }}</td>
+                <td style="background-color:{{ $colorcolumn }}; color:white">{{ !empty($ceklibur) ? $ceklibur[0]["keterangan"] : "" }}</td>
                 <?Php
                     }
 

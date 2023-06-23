@@ -66,6 +66,16 @@ class LaporanhrdController extends Controller
         $sampai = $tahun . "-" . $bulan . "-20";
 
 
+        $datalibur = ceklibur($dari, $sampai);
+
+        // Define search list with multiple key=>value pair
+        //$search_items = array('id_kantor' => "TSM", 'tanggal_libur' => "2023-06-17");
+
+        // Call search and pass the array and
+        // the search list
+        //$res = cektgllibur($ceklibur, $search_items);
+        //dd(empty($res));
+
 
         while (strtotime($dari) <= strtotime($sampai)) {
             $rangetanggal[] = $dari;
@@ -1432,6 +1442,6 @@ class LaporanhrdController extends Controller
         $query->orderBy('nama_karyawan');
         $presensi = $query->get();
         //dd($presensi);
-        return view('presensi.laporan.cetak', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi'));
+        return view('presensi.laporan.cetak', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur'));
     }
 }

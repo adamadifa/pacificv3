@@ -209,16 +209,56 @@ function hari($hari)
 }
 
 
-function ceklibur($tanggal, $id_kantor)
+function ceklibur($dari, $sampai)
 {
-    $ceklibur = DB::table('harilibur')->where('tanggal_libur', $tanggal)->where('id_kantor', $id_kantor)->first();
-    if ($ceklibur != null) {
-        $keterangan = $ceklibur->keterangan;
-        return $keterangan;
-    } else {
-        return 0;
+    $no = 1;
+    $ceklibur = DB::table('harilibur')->whereBetween('tanggal_libur', [$dari, $sampai])->get();
+    foreach ($ceklibur as $d) {
+        $libur[] = [
+            'id_kantor' => $d->id_kantor,
+            'tanggal_libur' => $d->tanggal_libur,
+            'keterangan' => $d->keterangan
+        ];
     }
+
+    return $libur;
 }
+
+function cektgllibur($array, $search_list)
+{
+
+    // Create the result array
+    $result = array();
+
+    // Iterate over each array element
+    foreach ($array as $key => $value) {
+
+        // Iterate over each search condition
+        foreach ($search_list as $k => $v) {
+
+            // If the array element does not meet
+            // the search condition then continue
+            // to the next element
+            if (!isset($value[$k]) || $value[$k] != $v) {
+
+                // Skip two loops
+                continue 2;
+            }
+        }
+
+        // Append array element's key to the
+        //result array
+        $result[] = $value;
+    }
+
+    // Return result
+    return $result;
+}
+
+
+
+
+
 
 
 

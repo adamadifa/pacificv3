@@ -939,6 +939,7 @@
             var kode_cabang = $("#kode_cabang").val();
             var pajak = "{{ $pajak }}";
             //alert(pajak);
+            console.log(pajak);
             if (kode_pelanggan == "") {
                 swal({
                     title: 'Oops'
