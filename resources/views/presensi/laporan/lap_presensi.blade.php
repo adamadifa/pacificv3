@@ -114,7 +114,7 @@
                 </div>
             </div>
             <div class="col-lg-3 col-sm-12">
-                @include('layouts.nav_penjualan.navright')
+                {{-- @include('layouts.nav_penjualan.navright') --}}
             </div>
 
             <div class="col-lg-8 col-sm-12">

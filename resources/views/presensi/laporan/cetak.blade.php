@@ -65,9 +65,10 @@
                 <th rowspan="2">Nama karyawan</th>
                 <th rowspan="2">Kantor</th>
                 <th colspan="{{ $jmlrange }}">Bulan {{ $namabulan[$bulan*1]}} {{ $tahun }}</th>
-                <th rowspan="2">Total Jam</th>
+                <th rowspan="2">Total Jam<br> 1 Bulan</th>
                 <th rowspan="2">Terlambat</th>
                 <th rowspan="2">Keluar</th>
+                <th rowspan="2">Total<br> Jam Kerja</th>
                 <th rowspan="2">Denda</th>
                 <th rowspan="2">Premi</th>
             </tr>
@@ -80,6 +81,7 @@
         <tbody>
             @php
             $no = 1;
+            $totaljam1bulan = 173;
             @endphp
             @foreach ($presensi as $d)
             <tr>
@@ -91,6 +93,7 @@
                 $totalterlambat = 0;
                 $totalkeluar = 0;
                 $totaldenda = 0;
+                $totalpremi = 0;
                 for($i=0; $i < count($rangetanggal); $i++){
                     $hari_ke = "hari_".$i+1;
                     $tgl_presensi =  $rangetanggal[$i];
@@ -362,7 +365,7 @@
                 <td style="background-color: {{ $colorcolumn }}; color:{{ $colortext }}">
 
                     @if ($status == "h")
-                    <span>{{ $desimalterlambat }}</span>
+                    {{-- <span>{{ $desimalterlambat }}</span> --}}
                     {{-- <span>{{ $jam_out ."|". $jam_akhir_istirahat }}</span><br> --}}
                     {{-- <span>{{ $rangetanggal[$i] }}</span><br>
                     <span>{{ $jam_out_tanggal }} s.d {{ $jam_pulang_tanggal }}</span> --}}
@@ -436,15 +439,17 @@
                     $totalterlambat += $jt;
                     $totalkeluar += $jk;
                     $totaldenda += $denda;
+                    $totalpremi += $premi;
                 }
 
-
+                $totaljamkerja = $totaljam1bulan - $totalterlambat - $totalkeluar;
                 ?>
-                <td></td>
+                <td style="font-size: 16px; text-align:center; font-weight:bold">{{ $totaljam1bulan }}</td>
                 <td style="text-align: center; color:red; font-size:16px">{{ !empty($totalterlambat) ? $totalterlambat : '' }}</td>
                 <td style="text-align: center; color:rgb(255, 140, 0);font-size:16px">{{ !empty($totalkeluar) ? $totalkeluar : '' }}</td>
+                <td style="font-size: 16px; text-align:center; font-weight:bold">{{ !empty($totaljamkerja) ? $totaljamkerja : '' }}</td>
                 <td style="text-align: right; color:red; font-size:16px">{{ !empty($totaldenda) ? rupiah($totaldenda) : '' }}</td>
-                <td></td>
+                <td style="text-align: right;  font-size:16px">{{ !empty($totalpremi) ? rupiah($totalpremi) : '' }}</td>
             </tr>
             @endforeach
         </tbody>
