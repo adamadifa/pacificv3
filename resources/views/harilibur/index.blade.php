@@ -111,6 +111,9 @@
                                             <td>{{ $d->keterangan }}</td>
                                             <td>
                                                 <div class="btn-group">
+                                                    <a href="/harilibur/{{ Crypt::encrypt($d->kode_libur) }}/tambahkaryawan">
+                                                        <i class="feather icon-settings success mr-1"></i>
+                                                    </a>
                                                     <a href="#" class="edit" kode_libur="{{ $d->kode_libur }}"><i class="feather icon-edit info"></i></a>
                                                     <form method="POST" class="deleteform" action="/harilibur/{{Crypt::encrypt($d->kode_libur)}}/delete">
                                                         @csrf
@@ -154,6 +157,11 @@
                     </div>
                     <div class="row">
                         <div class="col-12">
+                            <x-inputtext label="Tanggal" field="tanggal" icon="feather icon-calendar" datepicker />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
                             <div class="form-group">
                                 <select name="id_kantor" id="id_kantor" class="form-control">
                                     <option value="">Pilih Kantor</option>
@@ -166,9 +174,16 @@
                     </div>
                     <div class="row">
                         <div class="col-12">
-                            <x-inputtext label="Tanggal" field="tanggal" icon="feather icon-calendar" datepicker />
+                            <div class="form-group">
+                                <select name="kategori" id="kategori" class="form-control">
+                                    <option value="">Pilih Kategori Libur</option>
+                                    <option value="1">Libur Nasional</option>
+                                    <option value="2">Libur Pengganti Minggu</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
+
                     <div class="row">
                         <div class="col-12">
                             <x-inputtext label="Keterangan" field="keterangan" icon="feather icon-file" />
@@ -241,6 +256,8 @@
         $("#frmLibur").submit(function(e) {
             var tanggal = $("#tanggal").val();
             var keterangan = $("#keterangan").val();
+            var id_kantor = $("#id_kantor").val();
+            var kategori = $("#kategori").val();
             if (tanggal == "") {
                 swal({
                     title: 'Oops'
@@ -249,6 +266,26 @@
                     , showConfirmButton: false
                 }).then(function() {
                     $("#tanggal").focus();
+                });
+                return false;
+            } else if (id_kantor == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Kantor Harus Dipilih !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#id_kantor").focus();
+                });
+                return false;
+            } else if (kategori == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Kategori Harus Dipilih !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#kategori").focus();
                 });
                 return false;
             } else if (keterangan == "") {

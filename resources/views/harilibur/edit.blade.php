@@ -24,6 +24,17 @@
     </div>
     <div class="row">
         <div class="col-12">
+            <div class="form-group">
+                <select name="kategori" id="kategori" class="form-control">
+                    <option value="">Pilih Kategori Libur</option>
+                    <option {{ $harilibur->kategori == "1" ? "selected" : "" }} value="1">Libur Nasional</option>
+                    <option {{ $harilibur->kategori == "2" ? "selected" : "" }} value="2">Libur Pengganti Minggu</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
             <x-inputtext label="Keterangan" field="keterangan" value="{{ $harilibur->keterangan }}" icon="feather icon-file" />
         </div>
     </div>

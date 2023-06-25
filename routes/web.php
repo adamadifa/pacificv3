@@ -124,6 +124,7 @@ use App\Http\Controllers\TutuplaporanController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WhatsappController;
 use App\Models\Barangpembelian;
+use App\Models\Harilibur;
 use App\Models\Logamtokertas;
 use App\Models\Pemasukangudanglogistik;
 use App\Models\Pengajuanizin;
@@ -1706,6 +1707,11 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/harilibur/{kode_libur}/delete', [HariliburController::class, 'delete']);
     Route::get('/harilibur/{kode_libur}/edit', [HariliburController::class, 'edit']);
     Route::post('/harilibur/{kode_libur}/update', [HariliburController::class, 'update']);
+    Route::get('/harilibur/{kode_libur}/tambahkaryawan', [HariliburController::class, 'tambahkaryawan']);
+    Route::get('/harilibur/{kode_libur}/{id_kantor}/getkaryawan', [HariliburController::class, 'getkaryawan']);
+    Route::post('/harilibur/getlistkaryawan', [HariliburController::class, 'getlistkaryawan']);
+    Route::post('/harilibur/storekaryawanlibur', [HariliburController::class, 'storekaryawanlibur']);
+    Route::post('/harilibur/hapuskaryawanlibur', [HariliburController::class, 'hapuskaryawanlibur']);
 
     Route::get('/laporanhrd/presensi', [LaporanhrdController::class, 'presensi']);
     Route::post('/laporanhrd/getkantor', [LaporanhrdController::class, 'getkantor']);

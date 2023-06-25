@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Harilibur;
+use App\Models\Karyawan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
@@ -36,6 +37,7 @@ class HariliburController extends Controller
         $tanggal = $request->tanggal;
         $keterangan = $request->keterangan;
         $id_kantor = $request->id_kantor;
+        $kategori = $request->kategori;
         $tahun = substr(date('Y', strtotime($tanggal)), 2, 2);
         $harilibur = DB::table('harilibur')->whereRaw('MID(kode_libur,3,2)="' . $tahun . '"')
             ->orderBy('kode_libur', 'desc')->first();
@@ -47,6 +49,7 @@ class HariliburController extends Controller
             'kode_libur' => $kode_libur,
             'tanggal_libur' => $tanggal,
             'id_kantor' => $id_kantor,
+            'kategori' => $kategori,
             'keterangan' => $keterangan,
             'tanggal_limajam' => $beforeday
         ];
@@ -87,11 +90,13 @@ class HariliburController extends Controller
         $tanggal = $request->tanggal;
         $keterangan = $request->keterangan;
         $id_kantor = $request->id_kantor;
+        $kategori = $request->kategori;
         $beforeday = date('Y-m-d', strtotime('-1 day', strtotime($tanggal)));
         $data = [
             'tanggal_libur' => $tanggal,
             'keterangan' => $keterangan,
             'id_kantor' => $id_kantor,
+            'kategori' => $kategori,
             'tanggal_limajam' => $beforeday
         ];
         try {
@@ -106,6 +111,72 @@ class HariliburController extends Controller
         } catch (\Exception $e) {
             dd($e);
             return Redirect::back()->with(['warning' => 'Data Gagal Diupdate']);
+        }
+    }
+
+    public function tambahkaryawan($kode_libur)
+    {
+        $kode_libur = Crypt::decrypt($kode_libur);
+        $harilibur = DB::table('harilibur')->where('kode_libur', $kode_libur)->first();
+        return view('harilibur.tambahkaryawan', compact('harilibur'));
+    }
+
+    public function getkaryawan($kode_libur, $id_kantor)
+    {
+        return view('harilibur.getkaryawan', compact('kode_libur', 'id_kantor'));
+    }
+
+    public function getlistkaryawan(Request $request)
+    {
+        $kode_libur = $request->kode_libur;
+        $id_kantor = $request->id_kantor;
+        $query = Karyawan::query();
+        $query->select('master_karyawan.nik', 'nama_karyawan', 'kode_dept', 'nama_jabatan', 'nama_group', 'kode_libur');
+        $query->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
+        $query->join('hrd_group', 'master_karyawan.grup', '=', 'hrd_group.id');
+        $query->leftJoin(
+            DB::raw("(
+            SELECT nik,kode_libur
+            FROM harilibur_karyawan
+            WHERE kode_libur = '$kode_libur'
+        ) hariliburkaryawan"),
+            function ($join) {
+                $join->on('master_karyawan.nik', '=', 'hariliburkaryawan.nik');
+            }
+        );
+        $query->where('id_kantor', $id_kantor);
+        $query->orderBy('nama_karyawan');
+        $karyawan = $query->get();
+        return view('harilibur.getlistkaryawan', compact('kode_libur', 'karyawan', 'id_kantor'));
+    }
+
+    public function storekaryawanlibur(Request $request)
+    {
+        $kode_libur = $request->kode_libur;
+        $nik = $request->nik;
+        try {
+            DB::table('harilibur_karyawan')->insert([
+                'kode_libur' => $kode_libur,
+                'nik' => $nik
+            ]);
+            return 0;
+        } catch (\Exception $e) {
+            return 1;
+        }
+    }
+
+
+    public function hapuskaryawanlibur(Request $request)
+    {
+        $kode_libur = $request->kode_libur;
+        $nik = $request->nik;
+        try {
+            DB::table('harilibur_karyawan')->where('nik', $nik)
+                ->where('kode_libur', $kode_libur)
+                ->delete();
+            return 0;
+        } catch (\Exception $e) {
+            return 1;
         }
     }
 }
