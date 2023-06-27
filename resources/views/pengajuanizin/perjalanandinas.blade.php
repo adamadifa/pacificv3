@@ -41,7 +41,9 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
+                        @if (Auth::user()->pic_presensi == 1)
                         <a href="#" class="btn btn-primary" id="buatkoreksi"><i class="fa fa-plus mr-1"></i> Buat Pengajuan</a>
+                        @endif
                     </div>
                     <div class="card-body">
                         <ul class="nav nav-tabs" role="tablist">
