@@ -42,69 +42,166 @@ class PresensiController extends Controller
 
         $query->leftjoin('jadwal_kerja', 'presensi.kode_jadwal', '=', 'jadwal_kerja.kode_jadwal');
         $query->leftjoin('jam_kerja', 'presensi.kode_jam_kerja', '=', 'jam_kerja.kode_jam_kerja');
-        if (!empty($nama_karyawan)) {
-            $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');
+
+        if (Auth::user()->id != 69) {
+            if (!empty($nama_karyawan)) {
+                $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');
+            }
+            if (!empty($request->kode_dept_search)) {
+                $query->where('master_karyawan.kode_dept', $request->kode_dept_search);
+            }
+
+            if (!empty($request->id_perusahaan_search)) {
+                $query->where('master_karyawan.id_perusahaan', $request->id_perusahaan_search);
+            }
+
+            if (!empty($request->id_kantor_search)) {
+                $query->where('master_karyawan.id_kantor', $request->id_kantor_search);
+            }
+
+            if (!empty($request->grup_search)) {
+                $query->where('master_karyawan.grup', $request->grup_search);
+            }
+
+            if (!empty($kode_dept_presensi)) {
+                $query->where('master_karyawan.kode_dept', $kode_dept_presensi);
+                if ($cabang == "PCF") {
+                    $query->where('master_karyawan.id_kantor', 'PST');
+                } else {
+                    $query->where('master_karyawan.id_kantor', $cabang);
+                }
+            }
+
+            if (!empty(Auth::user()->pic_presensi)) {
+                if ($cabang != "PCF") {
+                    $query->where('master_karyawan.id_kantor', $cabang);
+                }
+            }
+
+            // if ($level == "kepala admin") {
+            //     $query->where('id_kantor', $cabang);
+            //     $query->where('id_perusahaan', "MP");
+            // }
+
+            // if ($level == "kepala penjualan") {
+            //     $query->where('id_kantor', $cabang);
+            //     $query->where('id_perusahaan', "PCF");
+            // }
+
+            // if ($level == "manager pembelian") {
+            //     $query->where('master_karyawan.kode_dept', 'PMB');
+            // }
+
+            // if ($level == "kepala gudang") {
+            //     $query->where('master_karyawan.kode_dept', 'GDG');
+            // }
+
+            // if ($level == "manager produksi") {
+            //     $query->where('master_karyawan.kode_dept', 'PRD');
+            // }
+
+            // if ($level == "manager ga") {
+            //     $query->where('master_karyawan.kode_dept', 'GAF');
+            // }
+
+            // if ($level == "emf") {
+            //     $query->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GAF', 'GDG', 'PDQ']);
+            // }
+
+
+            // if ($level == "manager marketing") {
+            //     $query->where('master_karyawan.kode_dept', 'MKT');
+            // }
+
+            // if ($level == "rsm") {
+            //     $list_wilayah = Auth::user()->wilayah != null ? unserialize(Auth::user()->wilayah) : NULL;
+            //     $wilayah = $list_wilayah != null ? "'" . implode("', '", $list_wilayah) . "'" : '';
+            //     $query->whereIn('master_karyawan.id_kantor', $list_wilayah);
+            // }
+
+
+
+
         }
 
-        if (!empty($request->kode_dept_search)) {
-            $query->where('master_karyawan.kode_dept', $request->kode_dept_search);
+        if (Auth::user()->id == 69) {
+            if (!empty($nama_karyawan)) {
+                $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');
+            }
+            if (!empty($request->kode_dept_search)) {
+                $query->where('master_karyawan.kode_dept', $request->kode_dept_search);
+            }
+
+            if (!empty($request->id_perusahaan_search)) {
+                $query->where('master_karyawan.id_perusahaan', $request->id_perusahaan_search);
+            }
+
+            if (!empty($request->id_kantor_search)) {
+                $query->where('master_karyawan.id_kantor', $request->id_kantor_search);
+            }
+
+            if (!empty($request->grup_search)) {
+                $query->where('master_karyawan.grup', $request->grup_search);
+            }
+
+            if (!empty($kode_dept_presensi)) {
+                $query->where('master_karyawan.kode_dept', $kode_dept_presensi);
+                if ($cabang == "PCF") {
+                    $query->where('master_karyawan.id_kantor', 'PST');
+                } else {
+                    $query->where('master_karyawan.id_kantor', $cabang);
+                }
+            }
+
+            if (!empty(Auth::user()->pic_presensi)) {
+                if ($cabang != "PCF") {
+                    $query->where('master_karyawan.id_kantor', $cabang);
+                }
+            }
+            $query->where('grup', 11);
+            $query->where('id_kantor', 'PST');
+            $query->where('nama_jabatan', '!=', 'MANAGER');
+            $query->orWhere('grup', 4);
+            $query->where('id_kantor', 'PST');
+            $query->where('nama_jabatan', 'MANAGER');
+            if (!empty($nama_karyawan)) {
+                $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');
+            }
+            if (!empty($request->kode_dept_search)) {
+                $query->where('master_karyawan.kode_dept', $request->kode_dept_search);
+            }
+
+            if (!empty($request->id_perusahaan_search)) {
+                $query->where('master_karyawan.id_perusahaan', $request->id_perusahaan_search);
+            }
+
+            if (!empty($request->id_kantor_search)) {
+                $query->where('master_karyawan.id_kantor', $request->id_kantor_search);
+            }
+
+            if (!empty($request->grup_search)) {
+                $query->where('master_karyawan.grup', $request->grup_search);
+            }
+
+            if (!empty($kode_dept_presensi)) {
+                $query->where('master_karyawan.kode_dept', $kode_dept_presensi);
+                if ($cabang == "PCF") {
+                    $query->where('master_karyawan.id_kantor', 'PST');
+                } else {
+                    $query->where('master_karyawan.id_kantor', $cabang);
+                }
+            }
+
+            if (!empty(Auth::user()->pic_presensi)) {
+                if ($cabang != "PCF") {
+                    $query->where('master_karyawan.id_kantor', $cabang);
+                }
+            }
         }
 
-        if (!empty($request->id_perusahaan_search)) {
-            $query->where('master_karyawan.id_perusahaan', $request->id_perusahaan_search);
-        }
-
-        if (!empty($request->id_kantor_search)) {
-            $query->where('master_karyawan.id_kantor', $request->id_kantor_search);
-        }
-
-        if (!empty($request->grup_search)) {
-            $query->where('master_karyawan.grup', $request->grup_search);
-        }
-
-        if ($level == "kepala admin") {
-            $query->where('id_kantor', $cabang);
-            $query->where('id_perusahaan', "MP");
-        }
-
-        if ($level == "kepala penjualan") {
-            $query->where('id_kantor', $cabang);
-            $query->where('id_perusahaan', "PCF");
-        }
-
-        if ($level == "manager pembelian") {
-            $query->where('master_karyawan.kode_dept', 'PMB');
-        }
-
-        if ($level == "kepala gudang") {
-            $query->where('master_karyawan.kode_dept', 'GDG');
-        }
-
-        if ($level == "manager produksi") {
-            $query->where('master_karyawan.kode_dept', 'PRD');
-        }
-
-        if ($level == "manager ga") {
-            $query->where('master_karyawan.kode_dept', 'GAF');
-        }
-
-        if ($level == "emf") {
-            $query->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GAF', 'GDG', 'PDQ']);
-        }
-
-
-        if ($level == "manager marketing") {
-            $query->where('master_karyawan.kode_dept', 'MKT');
-        }
-
-        if ($level == "rsm") {
-            $list_wilayah = Auth::user()->wilayah != null ? unserialize(Auth::user()->wilayah) : NULL;
-            $wilayah = $list_wilayah != null ? "'" . implode("', '", $list_wilayah) . "'" : '';
-            $query->whereIn('master_karyawan.id_kantor', $list_wilayah);
-        }
-
-        if (!empty($kode_dept_presensi)) {
-            $query->where('master_karyawan.kode_dept', $kode_dept_presensi);
+        if (Auth::user()->id == 73) {
+            $query->where('grup', 10);
+            $query->where('id_kantor', 'PST');
         }
 
         $query->orderBy('nama_karyawan');

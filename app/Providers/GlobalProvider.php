@@ -146,6 +146,19 @@ class GlobalProvider extends ServiceProvider
                 $qpi->leftJoin('master_karyawan', 'pengajuan_izin.nik', '=', 'master_karyawan.nik');
                 $qpi->leftjoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
                 $qpi->leftjoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
+
+                if ($level != "emf" || Auth::user()->id == 57) {
+                    if (!empty($kode_dept_presensi)) {
+                        $qpi->where('master_karyawan.kode_dept', $kode_dept_presensi);
+                    }
+
+                    if (!empty(Auth::user()->pic_presensi)) {
+                        if ($getcbg != "PCF") {
+                            $qpi->where('master_karyawan.id_kantor', $getcbg);
+                        }
+                    }
+                    $qpi->where('status_approved', 0);
+                }
                 if ($level == "kepala admin") {
                     $qpi->where('master_karyawan.id_kantor', $getcbg);
                     $qpi->where('master_karyawan.id_perusahaan', "MP");
@@ -183,45 +196,57 @@ class GlobalProvider extends ServiceProvider
 
                 if ($level == "manager ga") {
                     $qpi->where('master_karyawan.kode_dept', 'GAF');
+                    $qpi->where('nama_jabatan', '!=', 'MANAGER');
                 }
 
                 if ($level == "emf") {
-                    $qpi->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GAF', 'GDG', 'HRD', 'PDQ']);
+                    if (!empty($kode_dept_presensi)) {
+                        $qpi->where('master_karyawan.kode_dept', $kode_dept_presensi);
+                    }
+                    $qpi->where('status_approved', 0);
+                    $qpi->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GAF', 'GDG', 'HRD']);
+                    $qpi->where('nama_jabatan', '=', 'MANAGER');
+                    $qpi->orWhere('master_karyawan.kode_dept', 'PDQ');
+                    if (!empty($kode_dept_presensi)) {
+                        $qpi->where('master_karyawan.kode_dept', $kode_dept_presensi);
+                    }
+                    $qpi->where('status_approved', 0);
+                    $qpi->where('nama_jabatan', '!=', 'MANAGER');
                 }
 
-                if ($level == "admin pdqc") {
-                    $listkaryawan = [
-                        '08.12.100',
-                        '11.10.090',
-                        '13.02.198',
-                        '91.01.016',
-                        '03.04.045',
-                        '08.05.042',
-                        '12.09.182',
-                        '05.01.055',
-                        '13.03.202'
-                    ];
+                // if ($level == "admin pdqc") {
+                //     $listkaryawan = [
+                //         '08.12.100',
+                //         '11.10.090',
+                //         '13.02.198',
+                //         '91.01.016',
+                //         '03.04.045',
+                //         '08.05.042',
+                //         '12.09.182',
+                //         '05.01.055',
+                //         '13.03.202'
+                //     ];
 
-                    $qpi->whereIn('nik', $listkaryawan);
-                }
+                //     $qpi->whereIn('nik', $listkaryawan);
+                // }
 
-                if ($level == "spv pdqc") {
-                    $listkaryawan = [
-                        '13.03.200',
-                        '14.08.220',
-                        '13.07.021',
-                        '15.05.174',
-                        '10.08.128',
-                        '13.09.206',
-                        '13.09.209',
-                        '19.09.303',
-                        '21.06.304',
-                        '16.01.069',
-                        '18.03.305'
-                    ];
+                // if ($level == "spv pdqc") {
+                //     $listkaryawan = [
+                //         '13.03.200',
+                //         '14.08.220',
+                //         '13.07.021',
+                //         '15.05.174',
+                //         '10.08.128',
+                //         '13.09.206',
+                //         '13.09.209',
+                //         '19.09.303',
+                //         '21.06.304',
+                //         '16.01.069',
+                //         '18.03.305'
+                //     ];
 
-                    $qpi->whereIn('nik', $listkaryawan);
-                }
+                //     $qpi->whereIn('nik', $listkaryawan);
+                // }
 
 
 
@@ -243,10 +268,55 @@ class GlobalProvider extends ServiceProvider
                     $qpi->where('nama_jabatan', 'KEPALA PENJUALAN');
                     $qpi->where('id_perusahaan', 'PCF');
                 }
-                if (!empty($kode_dept_presensi)) {
-                    $qpi->where('master_karyawan.kode_dept', $kode_dept_presensi);
+
+                if (Auth::user()->id == 57) {
+                    if (!empty($kode_dept_presensi)) {
+                        $qpi->where('master_karyawan.kode_dept', $kode_dept_presensi);
+                    }
+
+                    if (!empty(Auth::user()->pic_presensi)) {
+                        if ($getcbg != "PCF") {
+                            $qpi->where('master_karyawan.id_kantor', $getcbg);
+                        }
+                    }
+                    $qpi->where('status_approved', 0);
+                    $qpi->whereIn('grup', [1, 5]);
+                    $qpi->where('id_kantor', 'PST');
+                    $qpi->where('nama_jabatan', '!=', 'MANAGER');
+                    $qpi->orWhere('status_approved', 0);
+                    $qpi->whereIn('grup', [1, 5]);
+                    $qpi->where('id_kantor', '!=', 'PST');
+                    $qpi->where('nama_jabatan', '=', 'KEPALA ADMIN');
+                    if (!empty($kode_dept_presensi)) {
+                        $qpi->where('master_karyawan.kode_dept', $kode_dept_presensi);
+                    }
+
+                    if (!empty(Auth::user()->pic_presensi)) {
+                        if ($getcbg != "PCF") {
+                            $qpi->where('master_karyawan.id_kantor', $getcbg);
+                        }
+                    }
                 }
-                $qpi->where('status_approved', 0);
+
+                if (Auth::user()->id == 20) {
+                    $qpi->whereIn('grup', [1, 5]);
+                    $qpi->where('id_kantor', 'PST');
+                    $qpi->where('nama_jabatan', 'MANAGER');
+                }
+
+                if (Auth::user()->id == 69) {
+                    $qpi->where('grup', 11);
+                    $qpi->where('id_kantor', 'PST');
+                    $qpi->where('nama_jabatan', '!=', 'MANAGER');
+                    $qpi->orWhere('grup', 4);
+                    $qpi->where('id_kantor', 'PST');
+                    $qpi->where('nama_jabatan', 'MANAGER');
+                }
+
+                if (Auth::user()->id == 73) {
+                    $qpi->where('grup', 10);
+                    $qpi->where('id_kantor', 'PST');
+                }
                 $pi = $qpi->first();
             } else {
                 $level = "";
@@ -990,7 +1060,7 @@ class GlobalProvider extends ServiceProvider
 
             $kesepakatanbersama = ['admin', 'direktur', 'manager hrd'];
             $kontrak_menu = ['admin', 'direktur', 'manager hrd'];
-            $pengajuan_izin_menu = ['admin', 'manager hrd', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'spv produksi', 'manager accounting', 'manager ga', 'emf', 'manager marketing', 'rsm'];
+            $pengajuan_izin_menu = ['admin', 'manager hrd', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'spv produksi', 'manager accounting', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager audit'];
             $jadwal_kerja_menu = ['admin', 'manager hrd'];
             $hari_libur_menu = ['admin', 'manager hrd'];
             $pembayaran_jmk = ['admin', 'manager hrd'];
