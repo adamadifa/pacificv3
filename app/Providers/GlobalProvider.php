@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Pengajuanizin;
 use App\Models\Penilaiankaryawan;
 use App\Models\User;
 use Illuminate\Support\ServiceProvider;
@@ -42,6 +43,7 @@ class GlobalProvider extends ServiceProvider
                 $kat_jabatan = $auth->user()->kategori_jabatan;
                 $getcbg = $auth->user()->kode_cabang;
                 $id_user = $auth->user()->id;
+                $kode_dept_presensi = $auth->user()->kode_dept_presensi;
 
 
                 if ($kat_jabatan != null) {
@@ -132,17 +134,120 @@ class GlobalProvider extends ServiceProvider
 
 
                 //Pengajuan Izin
+                $qpi = Pengajuanizin::query();
 
-                $pi = DB::table('pengajuan_izin')
-                    ->selectRaw("SUM(IF(status='i' AND jenis_izin = 'TM',1,0)) as tidakmasuk,
+                $qpi->selectRaw("SUM(IF(status='i' AND jenis_izin = 'TM',1,0)) as tidakmasuk,
                     SUM(IF(status='i' AND jenis_izin = 'TL',1,0)) as terlambat,
                     SUM(IF(status='i' AND jenis_izin = 'PL',1,0)) as pulang,
                     SUM(IF(status='i' AND jenis_izin = 'KL',1,0)) as keluar,
                     SUM(IF(status='c',1,0)) as cuti,
                     SUM(IF(status='s',1,0)) as sakit,
-                    SUM(IF(status='k',1,0)) as koreksi")
-                    ->where('status_approved', 0)
-                    ->first();
+                    SUM(IF(status='k',1,0)) as koreksi");
+                $qpi->leftJoin('master_karyawan', 'pengajuan_izin.nik', '=', 'master_karyawan.nik');
+                $qpi->leftjoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
+                $qpi->leftjoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
+                if ($level == "kepala admin") {
+                    $qpi->where('master_karyawan.id_kantor', $getcbg);
+                    $qpi->where('master_karyawan.id_perusahaan', "MP");
+                    $qpi->where('nama_jabatan', '!=', 'KEPALA ADMIN');
+                }
+
+                if ($level == "kepala penjualan") {
+                    if (Auth::user()->id == "27") {
+                        $qpi->whereIn('master_karyawan.id_kantor', [$getcbg, 'PWK']);
+                    } else {
+                        $qpi->where('master_karyawan.id_kantor', $getcbg);
+                    }
+                    $qpi->where('nama_jabatan', '!=', 'KEPALA PENJUALAN');
+                    $qpi->where('master_karyawan.id_perusahaan', "PCF");
+                }
+
+                if ($level == "manager pembelian") {
+                    $qpi->where('master_karyawan.kode_dept', 'PMB');
+                }
+
+                if ($level == "kepala gudang") {
+                    $qpi->where('master_karyawan.kode_dept', 'GDG');
+                    $qpi->whereNotIN('nama_jabatan', ['MANAGER', 'ASST. MANAGER']);
+                }
+
+                if ($level == "spv produksi") {
+                    $qpi->where('master_karyawan.kode_dept', 'PRD');
+                    $qpi->whereNotIN('nama_jabatan', ['MANAGER', 'SUPERVISOR']);
+                }
+
+                if ($level == "manager produksi") {
+                    $qpi->whereIn('master_karyawan.kode_dept', ['PRD', 'MTC']);
+                    $qpi->where('nama_jabatan', '!=', 'MANAGER');
+                }
+
+                if ($level == "manager ga") {
+                    $qpi->where('master_karyawan.kode_dept', 'GAF');
+                }
+
+                if ($level == "emf") {
+                    $qpi->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GAF', 'GDG', 'HRD', 'PDQ']);
+                }
+
+                if ($level == "admin pdqc") {
+                    $listkaryawan = [
+                        '08.12.100',
+                        '11.10.090',
+                        '13.02.198',
+                        '91.01.016',
+                        '03.04.045',
+                        '08.05.042',
+                        '12.09.182',
+                        '05.01.055',
+                        '13.03.202'
+                    ];
+
+                    $qpi->whereIn('nik', $listkaryawan);
+                }
+
+                if ($level == "spv pdqc") {
+                    $listkaryawan = [
+                        '13.03.200',
+                        '14.08.220',
+                        '13.07.021',
+                        '15.05.174',
+                        '10.08.128',
+                        '13.09.206',
+                        '13.09.209',
+                        '19.09.303',
+                        '21.06.304',
+                        '16.01.069',
+                        '18.03.305'
+                    ];
+
+                    $qpi->whereIn('nik', $listkaryawan);
+                }
+
+
+
+
+                if ($level == "manager marketing") {
+                    $qpi->where('master_karyawan.kode_dept', 'MKT');
+                    $qpi->where('nama_jabatan', 'REGIONAL SALES MANAGER');
+                }
+
+                if ($level == "manager audit") {
+                    $qpi->where('master_karyawan.kode_dept', 'ADT');
+                }
+
+                if ($level == "rsm") {
+                    $list_wilayah = Auth::user()->wilayah != null ? unserialize(Auth::user()->wilayah) : NULL;
+                    $wilayah = $list_wilayah != null ? "'" . implode("', '", $list_wilayah) . "'" : '';
+                    $qpi->whereIn('master_karyawan.id_kantor', $list_wilayah);
+                    $qpi->where('master_karyawan.kode_dept', 'MKT');
+                    $qpi->where('nama_jabatan', 'KEPALA PENJUALAN');
+                    $qpi->where('id_perusahaan', 'PCF');
+                }
+                if (!empty($kode_dept_presensi)) {
+                    $qpi->where('master_karyawan.kode_dept', $kode_dept_presensi);
+                }
+                $qpi->where('status_approved', 0);
+                $pi = $qpi->first();
             } else {
                 $level = "";
                 $getcbg = "";
@@ -156,6 +261,7 @@ class GlobalProvider extends ServiceProvider
                 $jmlpenilaiankar = null;
                 $users = null;
                 $pi = null;
+                $kode_dept_presensi = null;
             }
 
             $cabangpkp = ['TSM', 'BDG', 'PWT', 'BGR'];

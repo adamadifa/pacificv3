@@ -158,12 +158,14 @@
                                                     <td>
                                                         <div class="btn-group" role="group" aria-label="Basic example">
                                                             @if ($level != "manager hrd")
+                                                            @if (empty(Auth::user()->pic_presensi))
                                                             @if (empty($d->head_dept) && empty($d->hrd))
                                                             <a href="#" class="approveizin" kode_izin="{{ $d->kode_izin }}">
                                                                 <i class="feather icon-external-link text-primary"></i>
                                                             </a>
                                                             @elseif(!empty($d->head_dept) && empty($d->hrd))
                                                             <a href="/izinabsen/{{ $d->kode_izin }}/batalkan" class="warning">Batalkan</a>
+                                                            @endif
                                                             @endif
                                                             @else
                                                             @if (!empty($d->head_dept) && empty($d->hrd))

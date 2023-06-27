@@ -100,9 +100,32 @@
                                         </div>
                                     </div>
                                     @else
-                                    <div class="col-lg-8 col-sm-12">
+                                    @if (Auth::user()->kode_dept_presensi == "PRD")
+                                    <div class="col-3">
+                                        <x-inputtext label="Tanggal" field="tanggal" icon="feather icon-calendar" datepicker value="{{ Request('tanggal') }}" />
+                                    </div>
+                                    <div class="col-lg-6 col-sm-12">
                                         <x-inputtext label="Nama Karyawan" field="nama_karyawan_search" icon="feather icon-users" value="{{ Request('nama_karyawan_search') }}" />
                                     </div>
+                                    <div class="col-lg-3 col-sm-12">
+                                        <div class="form-group">
+                                            <select name="grup_search" id="grup_search" class="form-control">
+                                                <option value="">Grup</option>
+                                                @foreach ($group as $d)
+                                                <option {{ Request('grup_search')==$d->id ? 'selected' : '' }} value="{{ $d->id }}">{{ $d->nama_group }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    @else
+                                    <div class="col-3">
+                                        <x-inputtext label="Tanggal" field="tanggal" icon="feather icon-calendar" datepicker value="{{ Request('tanggal') }}" />
+                                    </div>
+                                    <div class="col-lg-9 col-sm-12">
+                                        <x-inputtext label="Nama Karyawan" field="nama_karyawan_search" icon="feather icon-users" value="{{ Request('nama_karyawan_search') }}" />
+                                    </div>
+                                    @endif
+
                                     @endif
 
                                 </div>

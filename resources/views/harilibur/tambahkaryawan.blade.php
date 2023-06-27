@@ -20,7 +20,7 @@
     <div class="content-body">
         @include('layouts.notification')
         <div class="row">
-            <div class="col-4">
+            <div class="col-6">
                 <div class="card">
                     <div class="card-header">
                         <a href="#" class="btn btn-primary" id="tambahkaryawan"><i class="fa fa-plus mr-1"></i> Tambah Karyawan</a>
@@ -63,13 +63,16 @@
                                 <table class="table  table-hover-animation" id="tabelshift1">
                                     <thead>
                                         <tr>
+                                            <th>No.</th>
                                             <th>Nik</th>
                                             <th>Nama Karyawan</th>
+                                            <th>Kode Dept</th>
                                             <th>Jabatan</th>
                                             <th>Grup</th>
+                                            <th>#</th>
                                         </tr>
                                     </thead>
-                                    <tbody id="loadshift1" style="font-size:11px !important">
+                                    <tbody id="loadliburkaryawan" style="font-size:14px !important">
                                     </tbody>
                                 </table>
                             </div>
@@ -114,6 +117,14 @@
 
             $("#loadkaryawan").load('/harilibur/' + kode_libur + '/' + id_kantor + '/getkaryawan');
         });
+
+
+        function loadliburkaryawan() {
+            var kode_libur = "{{ $harilibur->kode_libur }}";
+            $("#loadliburkaryawan").load('/harilibur/' + kode_libur + '/getliburkaryawan');
+        }
+
+        loadliburkaryawan();
     });
 
 </script>

@@ -16,6 +16,7 @@ class PresensiController extends Controller
     public function monitoring(Request $request)
     {
         $level = Auth::user()->level;
+        $kode_dept_presensi = Auth::user()->kode_dept_presensi;
         $cabang = Auth::user()->kode_cabang;
         $nama_karyawan = $request->nama_karyawan_search;
         $tanggal = !empty($request->tanggal) ? $request->tanggal : date('Y-m-d');
@@ -102,8 +103,12 @@ class PresensiController extends Controller
             $query->whereIn('master_karyawan.id_kantor', $list_wilayah);
         }
 
+        if (!empty($kode_dept_presensi)) {
+            $query->where('master_karyawan.kode_dept', $kode_dept_presensi);
+        }
+
         $query->orderBy('nama_karyawan');
-        $karyawan = $query->paginate(15);
+        $karyawan = $query->paginate(20);
         $karyawan->appends($request->all());
         $kantor = DB::table('cabang')->orderBy('kode_cabang')->get();
         $departemen = DB::table('hrd_departemen')->get();

@@ -1503,7 +1503,7 @@ class TargetkomisiController extends Controller
 
         $query->leftJoin(
             DB::raw("(
-                SELECT id_karyawan, COUNT(DISTINCT(kode_pelanggan)) as jmltrans
+                SELECT id_karyawan, COUNT(no_fak_penj) as jmltrans
                 FROM penjualan
                 WHERE tgltransaksi BETWEEN '$dari' AND '$sampai'
                 GROUP BY id_karyawan

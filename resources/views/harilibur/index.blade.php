@@ -35,7 +35,7 @@
     <div class="content-body">
         @include('layouts.notification')
         <div class="row">
-            <div class="col-6">
+            <div class="col-8">
                 <div class="card">
                     <div class="card-header">
                         <a href="#" class="btn btn-primary" id="tambahlibur"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
@@ -45,7 +45,7 @@
                             <div class="col-12">
                                 <form action="{{ URL::current() }}">
                                     <div class="row">
-                                        <div class="col-4">
+                                        <div class="col-3">
                                             {{-- <label for="" class="form-label mb-1">Omset Bulan</label> --}}
                                             <div class="form-group">
                                                 <select class="form-control" id="bulan" name="bulan">
@@ -61,7 +61,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-4">
+                                        <div class="col-3">
                                             <div class="form-group">
                                                 <select class="form-control" id="tahun" name="tahun">
                                                     <option value="">Tahun</option>
@@ -73,6 +73,16 @@
                                                     <?php
                                                     }
                                                     ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-3">
+                                            <div class="form-group">
+                                                <select name="kategori_search" id="kategori_search" class="form-control">
+                                                    <option value="">Pilih Kategori Libur</option>
+                                                    <option value="1" {{ Request('kategori_search') ==1 ? 'selected' : '' }}>Libur Nasional</option>
+                                                    <option value="2" {{ Request('kategori_search') ==2  ? 'selected' : '' }}>Libur Pengganti Minggu</option>
+                                                    <option value="3" {{ Request('kategori_search') ==3  ? 'selected' : '' }}>WFH</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -97,6 +107,7 @@
                                             <th>Kode Libur</th>
                                             <th>Tanggal</th>
                                             <th>Kantor</th>
+                                            <th>Kategori</th>
                                             <th>Keterangan</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -108,6 +119,15 @@
                                             <td>{{ $d->kode_libur }}</td>
                                             <td>{{ date("d-m-Y",strtotime($d->tanggal_libur)) }}</td>
                                             <td>{{ $d->id_kantor }}</td>
+                                            <td>
+                                                @if ($d->kategori==1)
+                                                <span class="badge bg-success">Libur Nasional</span>
+                                                @elseif($d->kategori==2)
+                                                <span class="badge bg-info">Libur Pengganti Minggu</span>
+                                                @elseif($d->kategori==3)
+                                                <span class="badge bg-warning">WFH</span>
+                                                @endif
+                                            </td>
                                             <td>{{ $d->keterangan }}</td>
                                             <td>
                                                 <div class="btn-group">
@@ -179,11 +199,16 @@
                                     <option value="">Pilih Kategori Libur</option>
                                     <option value="1">Libur Nasional</option>
                                     <option value="2">Libur Pengganti Minggu</option>
+                                    <option value="3">WFH</option>
                                 </select>
                             </div>
                         </div>
                     </div>
-
+                    <div class="row" id="tglminggu">
+                        <div class="col-12">
+                            <x-inputtext label="Tanggal Minggu Yang Diganti" field="tanggal_minggu" icon="feather icon-calendar" datepicker />
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-12">
                             <x-inputtext label="Keterangan" field="keterangan" icon="feather icon-file" />
@@ -219,6 +244,7 @@
 @push('myscript')
 <script>
     $(function() {
+        $("#tglminggu").hide();
         $("#tambahlibur").click(function(e) {
             e.preventDefault();
             $('#mdltambahlibur').modal({
@@ -253,11 +279,23 @@
                     }
                 });
         });
+
+        $("#kategori").change(function(e) {
+            var kategori = $(this).val();
+            //alert(kategori);
+            if (kategori == 2) {
+                $("#tglminggu").show();
+            } else {
+                $("#tglminggu").hide();
+
+            }
+        });
         $("#frmLibur").submit(function(e) {
             var tanggal = $("#tanggal").val();
             var keterangan = $("#keterangan").val();
             var id_kantor = $("#id_kantor").val();
             var kategori = $("#kategori").val();
+            var tanggal_minggu = $("#tanggal_minggu").val();
             if (tanggal == "") {
                 swal({
                     title: 'Oops'
@@ -286,6 +324,16 @@
                     , showConfirmButton: false
                 }).then(function() {
                     $("#kategori").focus();
+                });
+                return false;
+            } else if (kategori == 2 && tanggal_minggu == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Tanggal Minggu Yang Diganti Harus Dipilih !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#tanggal_minggu").focus();
                 });
                 return false;
             } else if (keterangan == "") {

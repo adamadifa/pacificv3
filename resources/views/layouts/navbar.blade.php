@@ -1160,7 +1160,7 @@
             </li>
             @endif
 
-            @if (in_array($level, $hrd_menu) || in_array($kat_jabatan,$hrd_menu))
+            @if (in_array($level, $hrd_menu) || in_array($kat_jabatan,$hrd_menu) || Auth::user()->pic_presensi==1)
             <li class=" nav-item">
                 <a href="#"><i class="fa fa-users" style="color:rgb(200, 5, 77)"></i><span class="menu-title">HRD</span></a>
                 <ul class="menu-content">
@@ -1229,7 +1229,7 @@
                         </a>
                     </li>
                     @endif
-                    @if (in_array($level,$pengajuan_izin_menu))
+                    @if (in_array($level,$pengajuan_izin_menu) || Auth::user()->pic_presensi==1)
                     <li class="{{ request()->is(['pengajuanizin', 'pengajuanizin/*']) ? 'active' : '' }}">
                         <a href="/pengajuanizin">
                             <i class="feather icon-file-text"></i>
@@ -1269,7 +1269,7 @@
                         </a>
                     </li>
                     @endif
-                    @if (in_array($level,$monitoring_presensi))
+                    @if (in_array($level,$monitoring_presensi) || Auth::user()->pic_presensi == 1)
                     <li class="{{ request()->is(['presensi/monitoring']) ? 'active' : '' }}">
                         <a href="/presensi/monitoring">
                             <i class="feather icon-monitor"></i>

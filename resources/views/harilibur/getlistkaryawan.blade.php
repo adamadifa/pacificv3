@@ -26,9 +26,18 @@
     $(function() {
         $('.loadingshift').hide();
 
+        function loadliburkaryawan() {
+            var kode_libur = "{{ $kode_libur }}";
+            $("#loadliburkaryawan").load('/harilibur/' + kode_libur + '/getliburkaryawan');
+        }
+
         function loadlistkaryawan() {
             var kode_libur = "{{ $kode_libur }}";
             var id_kantor = "{{ $id_kantor }}";
+            var kode_dept = $("#kode_dept_search").val();
+            var id_perusahaan = $("#id_perusahaan_search").val();
+            var grup = $("#grup_search").val();
+            var nama_karyawan = $("#nama_karyawan_search").val();
             $.ajax({
                 type: 'POST'
                 , url: '/harilibur/getlistkaryawan'
@@ -36,10 +45,15 @@
                     _token: "{{ csrf_token() }}"
                     , kode_libur: kode_libur
                     , id_kantor: id_kantor
+                    , kode_dept: kode_dept
+                    , id_perusahaan: id_perusahaan
+                    , grup: grup
+                    , nama_karyawan: nama_karyawan
                 }
                 , cache: false
                 , success: function(respond) {
                     $("#loadlistkaryawan").html(respond);
+                    loadliburkaryawan();
                 }
             });
         }

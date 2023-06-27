@@ -25,12 +25,18 @@
     <div class="row">
         <div class="col-12">
             <div class="form-group">
-                <select name="kategori" id="kategori" class="form-control">
+                <select name="kategori" id="kategori_edit" class="form-control">
                     <option value="">Pilih Kategori Libur</option>
                     <option {{ $harilibur->kategori == "1" ? "selected" : "" }} value="1">Libur Nasional</option>
                     <option {{ $harilibur->kategori == "2" ? "selected" : "" }} value="2">Libur Pengganti Minggu</option>
+                    <option {{ $harilibur->kategori == "3" ? "selected" : "" }} value="3">WFH</option>
                 </select>
             </div>
+        </div>
+    </div>
+    <div class="row" id="tglminggu_edit">
+        <div class="col-12">
+            <x-inputtext label="Tanggal Minggu Yang Diganti" value="{{ $harilibur->tanggal_minggu }}" field="tanggal_minggu" icon="feather icon-calendar" datepicker />
         </div>
     </div>
     <div class="row">
@@ -48,6 +54,18 @@
 <script src="{{ asset('app-assets/js/external/selectize.js') }}"></script>
 <script>
     $(function() {
+
+        function loadtglminggu() {
+            var kategori = $("#kategori_edit").val();
+
+            if (kategori == 2) {
+                $("#tglminggu_edit").show();
+            } else {
+                $("#tglminggu_edit").hide();
+            }
+        }
+
+        loadtglminggu();
         $("#frmLibur").submit(function(e) {
             var tanggal = $("#tanggal").val();
             var keterangan = $("#keterangan").val();
@@ -72,6 +90,10 @@
                 });
                 return false;
             }
+        });
+
+        $("#kategori_edit").change(function(e) {
+            loadtglminggu();
         });
     });
 

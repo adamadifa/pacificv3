@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cabang;
+use App\Models\Karyawan;
 use App\Models\Pengajuanizin;
 use App\Models\Presensi;
 use Faker\Core\Number;
@@ -29,7 +30,9 @@ class PengajuanizinController extends Controller
     }
     public function index(Request $request)
     {
+        $kode_dept_presensi = Auth::user()->kode_dept_presensi;
         $level = Auth::user()->level;
+        $cabang = Auth::user()->kode_cabang;
         $query = Pengajuanizin::query();
         $query->select('pengajuan_izin.*', 'nama_karyawan', 'nama_jabatan', 'kode_dept', 'nama_cuti', 'nama_jadwal');
         $query->join('master_karyawan', 'pengajuan_izin.nik', '=', 'master_karyawan.nik');
@@ -41,30 +44,20 @@ class PengajuanizinController extends Controller
             $query->whereBetween('dari', [$request->dari, $request->sampai]);
         }
 
-        if (!empty($request->kode_cabang)) {
-            $query->where('master_karyawan.id_kantor', $request->kode_cabang);
-        }
-
-        if (!empty($request->kode_dept)) {
-            $query->where('master_karyawan.kode_dept', $request->kode_dept);
-        }
-
-        if (!empty($request->nama_karyawan)) {
-            $query->where('nama_karyawan', 'like', '%' . $request->nama_karyawan . '%');
-        }
-
         if ($level == "kepala admin") {
-            $query->where('id_kantor', $this->cabang);
-            $query->where('id_perusahaan', "MP");
+            $query->where('master_karyawan.id_kantor', $cabang);
+            $query->where('master_karyawan.id_perusahaan', "MP");
+            $query->where('nama_jabatan', '!=', 'KEPALA ADMIN');
         }
-
-        // if ($level == "manager hrd") {
-        //     $query->where('pengajuan_izin.head_dept', 1);
-        // }
 
         if ($level == "kepala penjualan") {
-            $query->where('id_kantor', $this->cabang);
-            $query->where('id_perusahaan', "PCF");
+            if (Auth::user()->id == "27") {
+                $query->whereIn('master_karyawan.id_kantor', [$cabang, 'PWK']);
+            } else {
+                $query->where('master_karyawan.id_kantor', $cabang);
+            }
+            $query->where('nama_jabatan', '!=', 'KEPALA PENJUALAN');
+            $query->where('master_karyawan.id_perusahaan', "PCF");
         }
 
         if ($level == "manager pembelian") {
@@ -73,10 +66,17 @@ class PengajuanizinController extends Controller
 
         if ($level == "kepala gudang") {
             $query->where('master_karyawan.kode_dept', 'GDG');
+            $query->whereNotIN('nama_jabatan', ['MANAGER', 'ASST. MANAGER']);
+        }
+
+        if ($level == "spv produksi") {
+            $query->where('master_karyawan.kode_dept', 'PRD');
+            $query->whereNotIN('nama_jabatan', ['MANAGER', 'SUPERVISOR']);
         }
 
         if ($level == "manager produksi") {
-            $query->where('master_karyawan.kode_dept', 'PRD');
+            $query->whereIn('master_karyawan.kode_dept', ['PRD', 'MTC']);
+            $query->where('nama_jabatan', '!=', 'MANAGER');
         }
 
         if ($level == "manager ga") {
@@ -84,18 +84,62 @@ class PengajuanizinController extends Controller
         }
 
         if ($level == "emf") {
-            $query->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GAF', 'GDG', 'PDQ']);
+            $query->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GAF', 'GDG', 'HRD', 'PDQ']);
         }
+
+        if ($level == "admin pdqc") {
+            $listkaryawan = [
+                '08.12.100',
+                '11.10.090',
+                '13.02.198',
+                '91.01.016',
+                '03.04.045',
+                '08.05.042',
+                '12.09.182',
+                '05.01.055',
+                '13.03.202'
+            ];
+
+            $query->whereIn('nik', $listkaryawan);
+        }
+
+        if ($level == "spv pdqc") {
+            $listkaryawan = [
+                '13.03.200',
+                '14.08.220',
+                '13.07.021',
+                '15.05.174',
+                '10.08.128',
+                '13.09.206',
+                '13.09.209',
+                '19.09.303',
+                '21.06.304',
+                '16.01.069',
+                '18.03.305'
+            ];
+
+            $query->whereIn('nik', $listkaryawan);
+        }
+
+
 
 
         if ($level == "manager marketing") {
             $query->where('master_karyawan.kode_dept', 'MKT');
+            $query->where('nama_jabatan', 'REGIONAL SALES MANAGER');
+        }
+
+        if ($level == "manager audit") {
+            $query->where('master_karyawan.kode_dept', 'ADT');
         }
 
         if ($level == "rsm") {
             $list_wilayah = Auth::user()->wilayah != null ? unserialize(Auth::user()->wilayah) : NULL;
             $wilayah = $list_wilayah != null ? "'" . implode("', '", $list_wilayah) . "'" : '';
             $query->whereIn('master_karyawan.id_kantor', $list_wilayah);
+            $query->where('master_karyawan.kode_dept', 'MKT');
+            $query->where('nama_jabatan', 'KEPALA PENJUALAN');
+            $query->where('id_perusahaan', 'PCF');
         }
         if (request()->is('pengajuanizin')) {
             $query->where('jenis_izin', 'TM');
@@ -114,7 +158,9 @@ class PengajuanizinController extends Controller
         } else if (request()->is('pengajuanizin/perjalanandinas')) {
             $query->where('pengajuan_izin.status', 'p');
         }
-
+        if (!empty($kode_dept_presensi)) {
+            $query->where('master_karyawan.kode_dept', $kode_dept_presensi);
+        }
         $query->orderBy('kode_izin', 'desc');
         $pengajuan_izin = $query->get();
         $cbg = new Cabang();
@@ -544,41 +590,71 @@ class PengajuanizinController extends Controller
 
     public function create()
     {
-        $karyawan = DB::table('master_karyawan')->orderBy('nama_karyawan')->get();
+        $kode_dept_presensi = Auth::user()->kode_dept_presensi;
+        $qkaryawan = Karyawan::query();
+        if (!empty($kode_dept_presensi)) {
+            $qkaryawan->where('master_karyawan.kode_dept', $kode_dept_presensi);
+        }
+        $karyawan = $qkaryawan->get();
         $mastercuti = DB::table('hrd_mastercuti')->get();
         return view('pengajuanizin.create', compact('karyawan', 'mastercuti'));
     }
 
     public function createizinterlambat()
     {
-        $karyawan = DB::table('master_karyawan')->orderBy('nama_karyawan')->get();
+        $kode_dept_presensi = Auth::user()->kode_dept_presensi;
+        $qkaryawan = Karyawan::query();
+        if (!empty($kode_dept_presensi)) {
+            $qkaryawan->where('master_karyawan.kode_dept', $kode_dept_presensi);
+        }
+        $karyawan = $qkaryawan->get();
         return view('pengajuanizin.createterlambat', compact('karyawan'));
     }
 
 
     public function createizinabsen()
     {
-        $karyawan = DB::table('master_karyawan')->orderBy('nama_karyawan')->get();
+        $kode_dept_presensi = Auth::user()->kode_dept_presensi;
+        $qkaryawan = Karyawan::query();
+        if (!empty($kode_dept_presensi)) {
+            $qkaryawan->where('master_karyawan.kode_dept', $kode_dept_presensi);
+        }
+        $karyawan = $qkaryawan->get();
         return view('pengajuanizin.createizinabsen', compact('karyawan'));
     }
 
 
     public function createizinkeluar()
     {
-        $karyawan = DB::table('master_karyawan')->orderBy('nama_karyawan')->get();
+        $kode_dept_presensi = Auth::user()->kode_dept_presensi;
+        $qkaryawan = Karyawan::query();
+        if (!empty($kode_dept_presensi)) {
+            $qkaryawan->where('master_karyawan.kode_dept', $kode_dept_presensi);
+        }
+        $karyawan = $qkaryawan->get();
         return view('pengajuanizin.createizinkeluar', compact('karyawan'));
     }
 
     public function createizinpulang()
     {
-        $karyawan = DB::table('master_karyawan')->orderBy('nama_karyawan')->get();
+        $kode_dept_presensi = Auth::user()->kode_dept_presensi;
+        $qkaryawan = Karyawan::query();
+        if (!empty($kode_dept_presensi)) {
+            $qkaryawan->where('master_karyawan.kode_dept', $kode_dept_presensi);
+        }
+        $karyawan = $qkaryawan->get();
         return view('pengajuanizin.createizinpulang', compact('karyawan'));
     }
 
 
     public function createizinsakit()
     {
-        $karyawan = DB::table('master_karyawan')->orderBy('nama_karyawan')->get();
+        $kode_dept_presensi = Auth::user()->kode_dept_presensi;
+        $qkaryawan = Karyawan::query();
+        if (!empty($kode_dept_presensi)) {
+            $qkaryawan->where('master_karyawan.kode_dept', $kode_dept_presensi);
+        }
+        $karyawan = $qkaryawan->get();
 
         return view('pengajuanizin.createizinsakit', compact('karyawan'));
     }
@@ -586,7 +662,12 @@ class PengajuanizinController extends Controller
     public function createizincuti()
     {
         $mastercuti = DB::table('hrd_mastercuti')->get();
-        $karyawan = DB::table('master_karyawan')->orderBy('nama_karyawan')->get();
+        $kode_dept_presensi = Auth::user()->kode_dept_presensi;
+        $qkaryawan = Karyawan::query();
+        if (!empty($kode_dept_presensi)) {
+            $qkaryawan->where('master_karyawan.kode_dept', $kode_dept_presensi);
+        }
+        $karyawan = $qkaryawan->get();
         return view('pengajuanizin.createizincuti', compact('karyawan', 'mastercuti'));
     }
 
@@ -594,14 +675,24 @@ class PengajuanizinController extends Controller
 
     public function createkoreksi()
     {
-        $karyawan = DB::table('master_karyawan')->orderBy('nama_karyawan')->get();
+        $kode_dept_presensi = Auth::user()->kode_dept_presensi;
+        $qkaryawan = Karyawan::query();
+        if (!empty($kode_dept_presensi)) {
+            $qkaryawan->where('master_karyawan.kode_dept', $kode_dept_presensi);
+        }
+        $karyawan = $qkaryawan->get();
         $jadwal = DB::table('jadwal_kerja')->orderBy('kode_jadwal')->get();
         return view('pengajuanizin.createkoreksi', compact('karyawan', 'jadwal'));
     }
 
     public function createperjalanandinas()
     {
-        $karyawan = DB::table('master_karyawan')->orderBy('nama_karyawan')->get();
+        $kode_dept_presensi = Auth::user()->kode_dept_presensi;
+        $qkaryawan = Karyawan::query();
+        if (!empty($kode_dept_presensi)) {
+            $qkaryawan->where('master_karyawan.kode_dept', $kode_dept_presensi);
+        }
+        $karyawan = $qkaryawan->get();
         $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         return view('pengajuanizin.createperjalanandinas', compact('karyawan', 'cabang'));
     }
