@@ -172,7 +172,7 @@
                                                     <td>
                                                         <div class="btn-group" role="group" aria-label="Basic example">
                                                             @if ($level != "manager hrd")
-                                                            @if (empty(Auth::user()->pic_presensi))
+                                                            @if (empty(Auth::user()->pic_presensi) || !empty(Auth::user()->pic_presensi) && $level=="kepala admin")
                                                             @if (empty($d->head_dept) && empty($d->hrd))
                                                             <a href="#" class="approveizin" kode_izin="{{ $d->kode_izin }}">
                                                                 <i class="feather icon-external-link text-primary"></i>
