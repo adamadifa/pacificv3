@@ -292,6 +292,7 @@
             $totalrewardljt = 0;
             $totalpelangganaktif = 0;
             $totaltransaksi = 0;
+            $totaltransaksipenjualan = 0;
             $totaltigasku = 0;
             $totalrewardsku =0;
             $totalreward_oa = 0;
@@ -622,6 +623,7 @@
 
                 $totalpelangganaktif += $d->jmlpelanggan;
                 $totaltransaksi += $d->jmltrans;
+                $totaltransaksipenjualan += $d->jmltranspenjualan;
                 $totaltigasku += $d->jmltigasku;
                 $totalrewardsku += $rewardsku;
                 $totalreward_oa += $reward_oa;
@@ -928,7 +930,7 @@
                 </td>
                 <td align="center" style="background-color: #0ca0c9;">
                     @php
-                    $totalpersentase_ec = $totaltransaksi / 24;
+                    $totalpersentase_ec = $totaltransaksipenjualan / 24;
                     @endphp
                     {{ desimal($totalpersentase_ec) }}
                 </td>
