@@ -1040,7 +1040,7 @@
                 <td align="center" style="background-color: #35ce35;">
                 <td align="center" style="background-color: #35ce35;">
                     @php
-                    $totalpersentase_ec = $totaltransaksi / 24;
+                    $totalpersentase_ec = $totaltransaksipenjualan / 24;
                     @endphp
                     {{ desimal($totalpersentase_ec) }}
                 </td>
