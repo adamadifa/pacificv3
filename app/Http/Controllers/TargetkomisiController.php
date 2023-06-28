@@ -1431,7 +1431,8 @@ class TargetkomisiController extends Controller
             jmltrans,
             jmltigasku,
             jmlkunjungan,
-            jmlsesuaijadwal
+            jmlsesuaijadwal,
+            jmltranspenjualan
         ');
 
         $query->leftJoin(

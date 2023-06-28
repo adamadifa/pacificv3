@@ -542,7 +542,7 @@
 
                 //Outlet Aktif
 
-                $ec = $d->jmltrans / 24;
+                $ec = $d->jmltranspenjualan / 24;
 
                 if($d->status_komisi == 1){
                     if ($ec > 10 and $transvsregister <= 15) {
