@@ -213,12 +213,104 @@ function ceklibur($dari, $sampai)
 {
     $no = 1;
     $libur = [];
-    $ceklibur = DB::table('harilibur')->whereBetween('tanggal_libur', [$dari, $sampai])->get();
+    $ceklibur = DB::table('harilibur')
+        ->selectRaw('tanggal_libur,
+        id_kantor,
+        keterangan,
+        IFNULL(harilibur_karyawan.nik,"ALL") as nik')
+        ->leftJoin('harilibur_karyawan', 'harilibur.kode_libur', '=', 'harilibur_karyawan.kode_libur')
+        ->where('kategori', 1)
+        ->whereBetween('tanggal_libur', [$dari, $sampai])->get();
+
     foreach ($ceklibur as $d) {
         $libur[] = [
+            'nik' => $d->nik,
             'id_kantor' => $d->id_kantor,
             'tanggal_libur' => $d->tanggal_libur,
             'keterangan' => $d->keterangan
+        ];
+    }
+
+    return $libur;
+}
+
+
+function cekliburpenggantiminggu($dari, $sampai)
+{
+    $no = 1;
+    $libur = [];
+    $ceklibur = DB::table('harilibur')
+        ->selectRaw('tanggal_libur,
+        id_kantor,
+        keterangan,
+        tanggal_minggu,
+        IFNULL(harilibur_karyawan.nik,"ALL") as nik')
+        ->leftJoin('harilibur_karyawan', 'harilibur.kode_libur', '=', 'harilibur_karyawan.kode_libur')
+        ->where('kategori', 2)
+        ->whereBetween('tanggal_libur', [$dari, $sampai])->get();
+
+    foreach ($ceklibur as $d) {
+        $libur[] = [
+            'nik' => $d->nik,
+            'id_kantor' => $d->id_kantor,
+            'tanggal_libur' => $d->tanggal_libur,
+            'keterangan' => $d->keterangan,
+            'tanggal_minggu' => $d->tanggal_minggu
+        ];
+    }
+
+    return $libur;
+}
+
+function cekminggumasuk($dari, $sampai)
+{
+    $no = 1;
+    $libur = [];
+    $ceklibur = DB::table('harilibur')
+        ->selectRaw('tanggal_libur,
+        id_kantor,
+        keterangan,
+        tanggal_minggu,
+        IFNULL(harilibur_karyawan.nik,"ALL") as nik')
+        ->leftJoin('harilibur_karyawan', 'harilibur.kode_libur', '=', 'harilibur_karyawan.kode_libur')
+        ->where('kategori', 2)
+        ->whereBetween('tanggal_minggu', [$dari, $sampai])->get();
+
+    foreach ($ceklibur as $d) {
+        $libur[] = [
+            'nik' => $d->nik,
+            'id_kantor' => $d->id_kantor,
+            'tanggal_libur' => $d->tanggal_libur,
+            'keterangan' => $d->keterangan,
+            'tanggal_minggu' => $d->tanggal_minggu
+        ];
+    }
+
+    return $libur;
+}
+
+
+function cekwfh($dari, $sampai)
+{
+    $no = 1;
+    $libur = [];
+    $ceklibur = DB::table('harilibur')
+        ->selectRaw('tanggal_libur,
+        id_kantor,
+        keterangan,
+        tanggal_minggu,
+        IFNULL(harilibur_karyawan.nik,"ALL") as nik')
+        ->leftJoin('harilibur_karyawan', 'harilibur.kode_libur', '=', 'harilibur_karyawan.kode_libur')
+        ->where('kategori', 3)
+        ->whereBetween('tanggal_libur', [$dari, $sampai])->get();
+
+    foreach ($ceklibur as $d) {
+        $libur[] = [
+            'nik' => $d->nik,
+            'id_kantor' => $d->id_kantor,
+            'tanggal_libur' => $d->tanggal_libur,
+            'keterangan' => $d->keterangan,
+            'tanggal_minggu' => $d->tanggal_minggu
         ];
     }
 

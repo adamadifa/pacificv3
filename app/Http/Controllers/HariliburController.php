@@ -63,7 +63,10 @@ class HariliburController extends Controller
             'tanggal_minggu' => $request->tanggal_minggu
         ];
         try {
-            $cek = DB::table('harilibur')->where('tanggal_libur', $tanggal)->count();
+            $cek = DB::table('harilibur')->where('tanggal_libur', $tanggal)
+                ->where('id_kantor', $id_kantor)
+                ->where('kategori', $kategori)
+                ->count();
             if ($cek > 0) {
                 return Redirect::back()->with(['warning' => 'Tanggal Libur Sudah Diinputkan Sebelumnya']);
             }
@@ -120,7 +123,11 @@ class HariliburController extends Controller
             'tanggal_minggu' => $tanggal_minggu
         ];
         try {
-            $cek = DB::table('harilibur')->where('tanggal_libur', $tanggal)->where('kode_libur', '!=', $kode_libur)->count();
+            $cek = DB::table('harilibur')
+                ->where('tanggal_libur', $tanggal)
+                ->where('id_kantor', $id_kantor)
+                ->where('kategori', $kategori)
+                ->where('kode_libur', '!=', $kode_libur)->count();
             if ($cek > 0) {
                 return Redirect::back()->with(['warning' => 'Tanggal Libur Sudah Diinputkan Sebelumnya']);
             }

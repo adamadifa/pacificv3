@@ -67,6 +67,9 @@ class LaporanhrdController extends Controller
 
 
         $datalibur = ceklibur($dari, $sampai);
+        $dataliburpenggantiminggu = cekliburpenggantiminggu($dari, $sampai);
+        $dataminggumasuk = cekminggumasuk($dari, $sampai);
+        $datawfh = cekwfh($dari, $sampai);
 
         // Define search list with multiple key=>value pair
         //$search_items = array('id_kantor' => "TSM", 'tanggal_libur' => "2023-06-17");
@@ -1442,6 +1445,6 @@ class LaporanhrdController extends Controller
         $query->orderBy('nama_karyawan');
         $presensi = $query->get();
         //dd($presensi);
-        return view('presensi.laporan.cetak', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur'));
+        return view('presensi.laporan.cetak', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh'));
     }
 }

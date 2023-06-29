@@ -57,7 +57,7 @@
         @endif
     </b>
     <br>
-    <table class="datatable3" style="width: 150%">
+    <table class="datatable3" style="width: 250%">
         <thead bgcolor="#024a75" style="color:white; font-size:12;">
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
                 <th rowspan="2">No</th>
@@ -87,7 +87,7 @@
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $d->nik }}</td>
-                <td>{{ $d->nama_karyawan }}</td>
+                <td style="width: 5%">{{ $d->nama_karyawan }}</td>
                 <td>{{ $d->id_kantor }}</td>
                 <?php
                 $totalterlambat = 0;
@@ -98,13 +98,27 @@
                     $hari_ke = "hari_".$i+1;
                     $tgl_presensi =  $rangetanggal[$i];
                     $tgllibur = "'".$tgl_presensi."'";
-                    $search_items = array('id_kantor' => $d->id_kantor, 'tanggal_libur' => $tgl_presensi);
+                    $search_items = array('nik'=>$d->nik,'id_kantor' => $d->id_kantor, 'tanggal_libur' => $tgl_presensi);
+                    $search_items_minggumasuk = array('nik'=>$d->nik,'id_kantor' => $d->id_kantor, 'tanggal_minggu' => $tgl_presensi);
+                    $search_items_all = array('nik'=>'ALL','id_kantor' => $d->id_kantor, 'tanggal_libur' => $tgl_presensi);
                     $ceklibur = cektgllibur($datalibur, $search_items);
-                    // /dd($ceklibur);
+                    if(empty($ceklibur)){
+                        $ceklibur = cektgllibur($datalibur,$search_items_all);
+                    }
+
+                    $cekliburpenggantiminggu = cektgllibur($dataliburpenggantiminggu,$search_items);
+                    $cekminggumasuk = cektgllibur($dataminggumasuk,$search_items_minggumasuk);
+                    $cekwfh = cektgllibur($datawfh,$search_items);
+                    //dd($ceklibur);
                     $namahari = hari($tgl_presensi);
                     if($namahari=="Minggu"){
-                        $colorcolumn = "#ffaf03";
-                        $colortext = "white";
+                        if(!empty($cekminggumasuk)){
+                            $colorcolumn = "";
+                            $colortext = "";
+                        }else{
+                            $colorcolumn = "#ffaf03";
+                            $colortext = "white";
+                        }
                     }else{
                         if($d->$hari_ke != NULL){
                             if (!empty($ceklibur)) {
@@ -114,6 +128,24 @@
                                 $colorcolumn = "";
                                 $colortext = "";
                             }
+
+                            if (!empty($cekliburpenggantiminggu)) {
+                                $colorcolumn = "#ffaf03";
+                                $colortext = "white";
+                            }else{
+                                $colorcolumn = "";
+                                $colortext = "";
+                            }
+
+                            if (!empty($cekwfh)) {
+                                $colorcolumn = "#0259a1";
+                                $colortext = "white";
+                            }else{
+                                $colorcolumn = "";
+                                $colortext = "";
+                            }
+
+
                         }else{
                             if (!empty($ceklibur)) {
                                 $colorcolumn = "rgb(4, 163, 65)";
@@ -122,6 +154,28 @@
                                 $colorcolumn = "red";
                                 $colortext = "white";
                             }
+
+
+                            if (!empty($cekliburpenggantiminggu)) {
+                                $colorcolumn = "#ffaf03";
+                                $colortext = "white";
+                            }else{
+                                if(empty($ceklibur)){
+                                    $colorcolumn = $colorcolumn;
+                                    $colortext = $colortext;
+                                }
+
+                            }
+
+                            if (!empty($cekwfh)) {
+                                $colorcolumn = "#0259a1";
+                                $colortext = "white";
+                            }else{
+                                $colorcolumn = $colorcolumn;
+                                $colortext = $colortext;
+                            }
+
+
                         }
 
                     }
@@ -247,20 +301,28 @@
                         }
 
                         $jt = !empty($jt) ? $jt : 0;
-
+                        //echo $jamterlambat."|<br>";
+                        //echo $menitterlambat."|";
                         // menghitung Denda
                         if (!empty($jam_in) and $kode_dept != 'MKT') {
                             if ($jam_in_presensi > $jam_masuk and empty($kode_izin_terlambat)) {
+
                                 if ($jamterlambat < 1) {
                                     if($menitterlambat >= 5 AND $menitterlambat < 10){
                                         $denda = 5000;
+                                        //echo "test5000|";
                                     }else if($menitterlambat >= 10 AND $menitterlambat <15){
                                         $denda = 10000;
+                                        //echo "test10ribu|";
                                     }else if($menitterlambat >= 15 AND $menitterlambat <= 59){
                                         $denda = 15000;
+                                        //echo "Test15ribu|";
+                                    }else{
+                                        $denda = 0;
                                     }
                                 }else{
                                     $denda = 0;
+                                    //echo "testlebihdari1jam";
                                 }
                             } else {
                                 $denda = 0;
@@ -268,6 +330,8 @@
                         } else {
                             $denda = 0;
                         }
+
+                        //echo $denda."|<br>";
 
                         //Menghitung total Jam
                         if($d->jam_out > $jam_awal_istirahat && $d->jam_out < $jam_akhir_istirahat){ // Shift 3 Belum Di Set
@@ -362,9 +426,10 @@
                         // echo "___________________________- <br>";
 
                 ?>
-                <td style="background-color: {{ $colorcolumn }}; color:{{ $colortext }}">
+                <td style="background-color: {{ $colorcolumn }}; color:{{ $colortext }}; width:3%">
 
                     @if ($status == "h")
+                    {{-- <span>{{ var_dump($ceklibur) }}</span> --}}
                     {{-- <span>{{ $desimalterlambat }}</span> --}}
                     {{-- <span>{{ $jam_out ."|". $jam_akhir_istirahat }}</span><br> --}}
                     {{-- <span>{{ $rangetanggal[$i] }}</span><br>
@@ -432,7 +497,12 @@
                     $denda = 0;
                     $premi = 0;
                 ?>
-                <td style="background-color:{{ $colorcolumn }}; color:white">{{ !empty($ceklibur) ? $ceklibur[0]["keterangan"] : "" }}</td>
+                <td style="background-color:{{ $colorcolumn }}; color:white; width:3%">
+                    {{-- <span>{{ var_dump(empty($ceklibur)) }}</span> --}}
+                    {{ !empty($ceklibur) ? $ceklibur[0]["keterangan"] : "" }}
+                    {{ !empty($cekwfh) ? "WFH" : "" }}
+                    {{ !empty($cekliburpenggantiminggu) ? $cekliburpenggantiminggu[0]["keterangan"] : "" }}
+                </td>
                 <?Php
                     }
 
