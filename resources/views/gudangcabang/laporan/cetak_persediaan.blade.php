@@ -256,7 +256,7 @@
             $saldoakhir = $saldoakhir + $penerimaan - $pengeluaran;
 
             $penerimaan_pcs = $m->penerimaanpusat + $m->transit_in + $m->retur + $jmllainlain_in_pcs + $m->repack + $jmlpeny_in_pcs;
-            $pengeluaran_pcs = $jmlpeny_out_pcs + $m->penjualan + $m->promosi + $m->reject_pasar + $m->reject_gudang + $m->transit_out + $jmllainlain_out_pcs;
+            $pengeluaran_pcs = $jmlpeny_out_pcs + $m->penjualan + $m->promosi + $m->reject_pasar + $m->reject_gudang + $m->transit_out + $jmllainlain_out_pcs + $m->reject_mobil;
             $realsaldoakhir = $realsaldoakhir + $penerimaan_pcs - $pengeluaran_pcs;
             $cek = $realsaldoakhir;
 
@@ -336,6 +336,7 @@
                     <td align="right" style="background-color:{{ $color_sa }}">{{ rupiah($jmlpcs) }}</td>
                     <td>{{ date("d-m-y H:i:s",strtotime($m->date_created)) }}</td>
                     <td>{{ !empty($m->date_updated) ? date("d-m-y H:i:s",strtotime($m->date_updated)) : '' }}</td>
+
                 </tr>
                 @endforeach
         </tbody>
