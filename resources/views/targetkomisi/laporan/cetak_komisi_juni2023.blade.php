@@ -522,7 +522,7 @@
 
                 //Outlet Aktif
 
-                $transvsregister = $d->jmlpelanggan != null ? $d->jmltranspenjualan / $d->jmlpelanggan* 100 : 0;
+                $transvsregister = $d->jmlpelanggan != null ? $d->jmltrans / $d->jmlpelanggan* 100 : 0;
 
                 if($d->status_komisi == 1){
                      if ($transvsregister >= 80 and $transvsregister <= 85) {
