@@ -545,9 +545,9 @@
 
                 $ec = $d->jmltranspenjualan / 24;
 
-                echo $transvsregister;
+                //echo $transvsregister;
                 if($d->status_komisi == 1){
-                    if ($ec > 10 and $transvsregister <= 15) {
+                    if ($ec > 10 and $ec <= 15) {
                        if($d->kategori_salesman == "TO"){
                             $reward_ec = 100000;
                        }else{
