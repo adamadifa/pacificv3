@@ -17,6 +17,21 @@
     <li class="nav-item">
         <a class="nav-link showgroup" id_group="30" id="aidac-tab" data-toggle="tab" href="#aidac" aria-controls="aidac" role="tab" aria-selected="false">AIDA C</a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link showgroup" id_group="23" id="aidac-tab" data-toggle="tab" href="#aidac" aria-controls="aidac" role="tab" aria-selected="false">PDQC</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link showgroup" id_group="24" id="aidac-tab" data-toggle="tab" href="#aidac" aria-controls="aidac" role="tab" aria-selected="false">QC RM</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link showgroup" id_group="25" id="aidac-tab" data-toggle="tab" href="#aidac" aria-controls="aidac" role="tab" aria-selected="false">QC LAB</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link showgroup" id_group="18" id="aidac-tab" data-toggle="tab" href="#aidac" aria-controls="aidac" role="tab" aria-selected="false">MTC</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link showgroup" id_group="7" id="aidac-tab" data-toggle="tab" href="#aidac" aria-controls="aidac" role="tab" aria-selected="false">SC</a>
+    </li>
 </ul>
 <div class="row">
     <div class="col-12">

@@ -421,9 +421,9 @@
                                             <td>{{ $totaljamkeluar }}</td>
                                             <td style="color:{{ $grandtotaljam < $d->total_jam ?  'red' : '' }}; text-align:center">{{ $grandtotaljam > 0 ? $grandtotaljam : 0 }}</td>
                                             <td>
-                                                @if ($level == "manager hrd" || $level=="admin")
+                                                {{-- @if ($level == "manager hrd" || $level=="admin" || Auth::user()->pic_presensi==1)
                                                 <a href="#" class="edit" nik="{{ $d->nik }}"><i class="feather icon-edit info"></i></a>
-                                                @endif
+                                                @endif --}}
                                             </td>
                                         </tr>
                                         @endforeach

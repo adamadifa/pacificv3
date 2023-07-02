@@ -264,6 +264,7 @@ class KonfigurasijadwalController extends Controller
             DB::table('konfigurasi_jadwalkerja')->where('kode_setjadwal', $kode_jadwal)->delete();
             return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
         } catch (\Exception $e) {
+            dd($e);
             return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
         }
     }

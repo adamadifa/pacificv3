@@ -1678,6 +1678,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/presensi/monitoring', [PresensiController::class, 'monitoring']);
     Route::post('/presensi/updatepresensi', [PresensiController::class, 'updatepresensi']);
     Route::post('/presensi/storeupdatepresensi', [PresensiController::class, 'storeupdatepresensi']);
+    Route::post('/presensi/getjamkerja', [PresensiController::class, 'getjamkerja']);
 
     //Jadwal Shift
     Route::get('/konfigurasijadwal', [KonfigurasijadwalController::class, 'index']);

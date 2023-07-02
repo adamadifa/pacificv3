@@ -31,8 +31,10 @@
             <select name="status" id="status" class="form-control">
                 <option value="">Status Kehadiran</option>
                 <option value="h" {{ $cek != null ? $cek->status == "h" ? "selected" : "" : "" }}>Hadir</option>
+                @if ($level=="manager hrd" || $level=="admin")
                 <option value="i" {{ $cek != null ? $cek->status == "i" ? "selected" : "" : "" }}>Izin</option>
                 <option value="s" {{ $cek != null ? $cek->status == "s" ? "selected" : "" : "" }}>Sakit</option>
+                @endif
                 <option value="a" {{ $cek != null ? $cek->status == "a" ? "selected" : "" : "" }}>Alfa</option>
             </select>
         </div>
@@ -44,6 +46,13 @@
                 @foreach ($jadwal as $d)
                 <option {{ $cek != null ? $cek->kode_jadwal == $d->kode_jadwal ? 'selected' : '' : '' }} value="{{ $d->kode_jadwal }}">{{ $d->nama_jadwal }}</option>
                 @endforeach
+            </select>
+        </div>
+    </div>
+    <div class="row statushadir mt-1">
+        <div class="col-12">
+            <select name="kode_jam_kerja" id="kode_jam_kerja" class="form-control">
+                <option value="">Pilih Jam Kerja</option>
             </select>
         </div>
     </div>
@@ -79,6 +88,23 @@
         loadstatus();
         $("#status").change(function(e) {
             loadstatus();
+        });
+
+
+        $("#kode_jadwal").change(function(e) {
+            var kode_jadwal = $(this).val();
+            $.ajax({
+                type: 'POST'
+                , url: '/presensi/getjamkerja'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , kode_jadwal: kode_jadwal
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#kode_jam_kerja").html(respond);
+                }
+            });
         });
         $('#jam_masuk,#jam_pulang').mask('00:00');
         $("#frmUpdatepresensi").submit(function(e) {

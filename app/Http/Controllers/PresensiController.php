@@ -322,4 +322,20 @@ class PresensiController extends Controller
             }
         }
     }
+
+
+    public function getjamkerja(Request $request)
+    {
+        $kode_jadwal = $request->kode_jadwal;
+        $jam_kerja = DB::table('jadwal_kerja_detail')
+            ->select('jadwal_kerja_detail.kode_jam_kerja', 'jam_masuk', 'jam_pulang')
+            ->leftJoin('jam_kerja', 'jadwal_kerja_detail.kode_jam_kerja', '=', 'jam_kerja.kode_jam_kerja')
+            ->where('kode_jadwal', $kode_jadwal)
+            ->groupByRaw('jadwal_kerja_detail.kode_jam_kerja,jam_masuk,jam_pulang')
+            ->get();
+
+        foreach ($jam_kerja as $d) {
+            echo "<option>" . $d->kode_jam_kerja . "-" . $d->jam_masuk . "s/d" . $d->jam_pulang . "</option>";
+        }
+    }
 }
