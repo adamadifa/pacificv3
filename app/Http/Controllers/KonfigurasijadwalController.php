@@ -115,7 +115,7 @@ class KonfigurasijadwalController extends Controller
                         $join->on('master_karyawan.nik', '=', 'konfigurasijadwalkerja.nik');
                     }
                 )
-                ->where('kode_dept', 'PDQC')
+                ->where('kode_dept', 'PDQ')
                 ->orderBy('nama_karyawan')
                 ->get();
         } else {
