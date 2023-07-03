@@ -128,6 +128,7 @@
                                                     <th>Nama Karyawan</th>
                                                     <th>Jabatan</th>
                                                     <th>Dept</th>
+                                                    <th>Kantor</th>
                                                     <th>Jadwal</th>
                                                     <th>Jam Masuk</th>
                                                     <th>Jam Pulang</th>
@@ -147,6 +148,7 @@
                                                     <td>{{ $d->nama_karyawan }}</td>
                                                     <td>{{ $d->nama_jabatan }}</td>
                                                     <td>{{ $d->kode_dept }}</td>
+                                                    <td>{{ $d->id_kantor }}</td>
                                                     <td>{{ $d->nama_jadwal }}</td>
                                                     <td>{{ $d->jam_masuk }}</td>
                                                     <td>{{ $d->jam_pulang }}</td>
