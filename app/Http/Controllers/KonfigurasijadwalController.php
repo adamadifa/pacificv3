@@ -100,22 +100,43 @@ class KonfigurasijadwalController extends Controller
 
         $kode_setjadwal = $request->kode_setjadwal;
         $shift = $request->shift;
-        $karyawan = DB::table('master_karyawan')
-            ->select('master_karyawan.nik', 'nama_karyawan', 'konfigurasijadwalkerja.kode_jadwal', 'nama_jadwal', 'grup')
-            ->leftJoin(
-                DB::raw("(
+
+        if ($id_group == 23) {
+            $karyawan = DB::table('master_karyawan')
+                ->select('master_karyawan.nik', 'nama_karyawan', 'konfigurasijadwalkerja.kode_jadwal', 'nama_jadwal', 'grup')
+                ->leftJoin(
+                    DB::raw("(
                 SELECT nik,konfigurasi_jadwalkerja_detail.kode_jadwal,nama_jadwal
                 FROM konfigurasi_jadwalkerja_detail
                 INNER JOIN jadwal_kerja ON konfigurasi_jadwalkerja_detail.kode_jadwal = jadwal_kerja.kode_jadwal
                 WHERE kode_setjadwal = '$kode_setjadwal'
             ) konfigurasijadwalkerja"),
-                function ($join) {
-                    $join->on('master_karyawan.nik', '=', 'konfigurasijadwalkerja.nik');
-                }
-            )
-            ->where('grup', $id_group)
-            ->orderBy('nama_karyawan')
-            ->get();
+                    function ($join) {
+                        $join->on('master_karyawan.nik', '=', 'konfigurasijadwalkerja.nik');
+                    }
+                )
+                ->where('kode_dept', 'PDQC')
+                ->orderBy('nama_karyawan')
+                ->get();
+        } else {
+            $karyawan = DB::table('master_karyawan')
+                ->select('master_karyawan.nik', 'nama_karyawan', 'konfigurasijadwalkerja.kode_jadwal', 'nama_jadwal', 'grup')
+                ->leftJoin(
+                    DB::raw("(
+                SELECT nik,konfigurasi_jadwalkerja_detail.kode_jadwal,nama_jadwal
+                FROM konfigurasi_jadwalkerja_detail
+                INNER JOIN jadwal_kerja ON konfigurasi_jadwalkerja_detail.kode_jadwal = jadwal_kerja.kode_jadwal
+                WHERE kode_setjadwal = '$kode_setjadwal'
+            ) konfigurasijadwalkerja"),
+                    function ($join) {
+                        $join->on('master_karyawan.nik', '=', 'konfigurasijadwalkerja.nik');
+                    }
+                )
+                ->where('grup', $id_group)
+                ->orderBy('nama_karyawan')
+                ->get();
+        }
+
 
         if (!isset($request->kode_jadwal)) {
             if ($shift == 1) {
