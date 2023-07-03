@@ -120,6 +120,7 @@
                                                     <th>Nama Karyawan</th>
                                                     <th>Jabatan</th>
                                                     <th>Dept</th>
+                                                    <th>Kantor</th>
                                                     <th>Jml Hari</th>
                                                     <th>Ket</th>
                                                     <th>Head Dept</th>
@@ -137,6 +138,7 @@
                                                     <td>{{ $d->nama_karyawan }}</td>
                                                     <td>{{ $d->nama_jabatan }}</td>
                                                     <td>{{ $d->kode_dept }}</td>
+                                                    <td>{{ $d->id_kantor }}</td>
                                                     <td>{{ $d->jmlhari }} Hari</td>
                                                     <td>{{ $d->keterangan }}</td>
                                                     <td class="text-center">
