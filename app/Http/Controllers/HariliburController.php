@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cabang;
 use App\Models\Harilibur;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -27,11 +29,16 @@ class HariliburController extends Controller
         if (!empty($request->kategori_search)) {
             $query->where('kategori', $request->kategori_search);
         }
+
+        if (Auth::user()->kode_cabang != "PCF") {
+            $query->where('id_kantor', Auth::user()->kode_cabang);
+        }
         $harilibur = $query->paginate(15);
         $harilibur->appends($request->all());
 
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
-        $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang(Auth::user()->kode_cabang);
         return view('harilibur.index', compact('harilibur', 'bulan', 'cabang'));
     }
 

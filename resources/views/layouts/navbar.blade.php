@@ -1245,7 +1245,7 @@
                         </a>
                     </li>
                     @endif
-                    @if (in_array($level,$hari_libur_menu))
+                    @if (in_array($level,$hari_libur_menu) && $getcbg == "PCF" || Auth::user()->pic_presensi==1 AND $getcbg !="PCF" )
                     <li class="{{ request()->is(['harilibur', 'harilibur/*']) ? 'active' : '' }}">
                         <a href="/harilibur">
                             <i class="feather icon-calendar"></i>
