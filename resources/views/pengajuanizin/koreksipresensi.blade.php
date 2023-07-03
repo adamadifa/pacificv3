@@ -132,7 +132,7 @@
                                                     <th>Jadwal</th>
                                                     <th>Jam Masuk</th>
                                                     <th>Jam Pulang</th>
-                                                    <th>Ket</th>
+                                                    <th style="width: 15%">Ket</th>
                                                     <th>Head Dept</th>
                                                     <th>HRD</th>
                                                     <th>Aksi</th>
