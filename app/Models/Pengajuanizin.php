@@ -61,6 +61,10 @@ class Pengajuanizin extends Model
             if (!empty($nama_karyawan)) {
                 $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');
             }
+        } else {
+            if (!empty($dari) && !empty($sampai)) {
+                $query->whereBetween('dari', [$dari, $sampai]);
+            }
         }
 
 
