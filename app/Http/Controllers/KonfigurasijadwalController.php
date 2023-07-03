@@ -290,7 +290,7 @@ class KonfigurasijadwalController extends Controller
             ->join('hrd_group', 'master_karyawan.grup', '=', 'hrd_group.id')
             ->where('konfigurasi_jadwalkerja_detail.kode_setjadwal', $kode_setjadwal)
             ->where('konfigurasi_jadwalkerja_detail.kode_jadwal', $kode_jadwal)
-            ->orderBy('nama_karyawan')
+            ->orderByRaw('master_karyawan.grup,nama_karyawan')
             ->get();
         return view('konfigurasijadwal.showjadwal', compact('jadwal'));
     }
