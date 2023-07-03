@@ -11,7 +11,7 @@ class Pengajuanizin extends Model
     use HasFactory;
     protected $table = 'pengajuan_izin';
 
-    function getpengajuan($level, $cabang, $kode_dept_presensi, $dari, $sampai)
+    function getpengajuan($level, $cabang, $kode_dept_presensi, $dari, $sampai, $nama_karyawan)
     {
 
         $query = Pengajuanizin::query();
@@ -22,7 +22,7 @@ class Pengajuanizin extends Model
         $query->leftjoin('jadwal_kerja', 'pengajuan_izin.kode_jadwal', '=', 'jadwal_kerja.kode_jadwal');
 
 
-        if ($level != "emf" || Auth::user()->id == "57" || Auth::user()->id == "69") {
+        if ($level != "emf" || Auth::user()->id != "57" || Auth::user()->id != "69") {
             if (!empty($dari) && !empty($sampai)) {
                 $query->whereBetween('dari', [$dari, $sampai]);
             }
@@ -56,6 +56,10 @@ class Pengajuanizin extends Model
                 if ($cabang != "PCF") {
                     $query->where('master_karyawan.id_kantor', $cabang);
                 }
+            }
+
+            if (!empty($nama_karyawan)) {
+                $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');
             }
         }
 
@@ -137,6 +141,9 @@ class Pengajuanizin extends Model
             }
             $query->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GAF', 'GDG', 'HRD']);
             $query->where('nama_jabatan', '=', 'MANAGER');
+            if (!empty($nama_karyawan)) {
+                $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');
+            }
 
             $query->orWhere('master_karyawan.kode_dept', 'PDQ');
             if (!empty($dari) && !empty($sampai)) {
@@ -174,6 +181,9 @@ class Pengajuanizin extends Model
                 }
             }
             $query->where('nama_jabatan', '!=', 'MANAGER');
+            if (!empty($nama_karyawan)) {
+                $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');
+            }
         }
 
         // if ($level == "admin pdqc") {
@@ -267,9 +277,14 @@ class Pengajuanizin extends Model
                     $query->where('master_karyawan.id_kantor', $cabang);
                 }
             }
+
+            if (!empty($nama_karyawan)) {
+                $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');
+            }
             $query->whereIn('grup', [1, 5]);
             $query->where('id_kantor', 'PST');
             $query->where('nama_jabatan', '!=', 'MANAGER');
+
             $query->orWhere('id_kantor', '!=', 'PST');
             $query->whereIn('grup', [1, 5]);
             $query->where('nama_jabatan', 'KEPALA ADMIN');
@@ -306,6 +321,10 @@ class Pengajuanizin extends Model
                 if ($cabang != "PCF") {
                     $query->where('master_karyawan.id_kantor', $cabang);
                 }
+            }
+
+            if (!empty($nama_karyawan)) {
+                $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');
             }
         }
 
@@ -350,6 +369,10 @@ class Pengajuanizin extends Model
                     $query->where('master_karyawan.id_kantor', $cabang);
                 }
             }
+
+            if (!empty($nama_karyawan)) {
+                $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');
+            }
             $query->where('grup', 11);
             $query->where('id_kantor', 'PST');
             $query->where('nama_jabatan', '!=', 'MANAGER');
@@ -389,6 +412,10 @@ class Pengajuanizin extends Model
                 if ($cabang != "PCF") {
                     $query->where('master_karyawan.id_kantor', $cabang);
                 }
+            }
+
+            if (!empty($nama_karyawan)) {
+                $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');
             }
         }
 

@@ -33,17 +33,18 @@ class PengajuanizinController extends Controller
         $level = Auth::user()->level;
         $cabang = Auth::user()->kode_cabang;
         $kode_dept_presensi = Auth::user()->kode_dept_presensi;
-        $dari = $request->dari;
-        $sampai = $request->sampai;
+        $dari = $request->dari_search;
+        $sampai = $request->sampai_search;
+        $nama_karyawan = $request->nama_karyawan;
 
         $pi = new Pengajuanizin();
-        $pengajuan_izin = $pi->getpengajuan($level, $cabang, $kode_dept_presensi, $dari, $sampai);
+        $pengajuan_izin = $pi->getpengajuan($level, $cabang, $kode_dept_presensi, $dari, $sampai, $nama_karyawan);
         //dd($pengajuan_izin);
 
         $cbg = new Cabang();
         $cabang = $cbg->getCabang($this->cabang);
 
-        $departemen = DB::table('departemen')->where('status_pengajuan', 0)->get();
+        $departemen = DB::table('hrd_departemen')->get();
 
         if (request()->is('pengajuanizin')) {
             return view('pengajuanizin.index', compact('pengajuan_izin', 'cabang', 'departemen'));
