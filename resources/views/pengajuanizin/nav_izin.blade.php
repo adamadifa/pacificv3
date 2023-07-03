@@ -58,3 +58,11 @@
 
     </a>
 </li>
+
+
+<style>
+    tbody {
+        font-size: 11px !important;
+    }
+
+</style>
