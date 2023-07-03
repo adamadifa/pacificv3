@@ -26,6 +26,9 @@
     <li class="nav-item">
         <a class="nav-link showgroup" id_group="7" id="aidac-tab" data-toggle="tab" href="#aidac" aria-controls="aidac" role="tab" aria-selected="false">SC</a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link showgroup" id_group="11" id="aidac-tab" data-toggle="tab" href="#aidac" aria-controls="aidac" role="tab" aria-selected="false">GD JADI</a>
+    </li>
 </ul>
 <div class="row">
     <div class="col-12">
