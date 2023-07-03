@@ -62,7 +62,7 @@
 
 <style>
     tbody {
-        font-size: 11px !important;
+        font-size: 12px !important;
     }
 
 </style>
