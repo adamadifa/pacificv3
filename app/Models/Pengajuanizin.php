@@ -420,7 +420,7 @@ class Pengajuanizin extends Model
         }
 
         if (Auth::user()->id == 73) {
-            $query->where('grup', 10);
+            $query->where('grup', 9);
             $query->where('id_kantor', 'PST');
         }
 

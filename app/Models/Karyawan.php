@@ -28,7 +28,7 @@ class Karyawan extends Model
                 }
 
                 if (Auth::user()->id == 73) {
-                    $qkaryawan->where('grup', 10);
+                    $qkaryawan->where('grup', 9);
                     $qkaryawan->where('id_kantor', 'PST');
                 }
             }
