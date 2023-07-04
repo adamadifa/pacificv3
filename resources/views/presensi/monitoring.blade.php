@@ -421,9 +421,9 @@
                                             <td>{{ $totaljamkeluar }}</td>
                                             <td style="color:{{ $grandtotaljam < $d->total_jam ?  'red' : '' }}; text-align:center">{{ $grandtotaljam > 0 ? $grandtotaljam : 0 }}</td>
                                             <td>
-                                                {{-- @if ($level == "manager hrd" || $level=="admin" || Auth::user()->pic_presensi==1)
-                                                <a href="#" class="edit" nik="{{ $d->nik }}"><i class="feather icon-edit info"></i></a>
-                                                @endif --}}
+                                                @if ($level == "manager hrd" || $level=="admin" || Auth::user()->pic_presensi==1)
+                                                <a href="#" class="edit" nik="{{ $d->nik }}" kode_jadwal="{{ $d->kode_jadwal }}"><i class="feather icon-edit info"></i></a>
+                                                @endif
                                             </td>
                                         </tr>
                                         @endforeach
@@ -491,6 +491,8 @@
             var nik = $(this).attr('nik');
             var tanggal = "{{ Request('tanggal') }}";
             var tgl = tanggal == "" ? "{{ date('Y-m-d') }}" : tanggal;
+            var kode_jadwal = $(this).attr("kode_jadwal");
+            alert(kode_jadwal);
             $("#tglupdatepresensi").text(tgl);
             $("#mdlupdatepresensi").modal({
                 backdrop: 'static'
@@ -503,6 +505,7 @@
                     _token: "{{ csrf_token() }}"
                     , nik: nik
                     , tgl: tgl
+                    , kode_jadwal: kode_jadwal
                 }
                 , cache: false
                 , success: function(respond) {

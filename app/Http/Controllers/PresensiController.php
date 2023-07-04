@@ -22,7 +22,7 @@ class PresensiController extends Controller
         $tanggal = !empty($request->tanggal) ? $request->tanggal : date('Y-m-d');
         // $tanggal = date("Y-m-d");
         $query = Karyawan::query();
-        $query->select('master_karyawan.nik', 'nama_karyawan', 'tgl_masuk', 'master_karyawan.kode_dept', 'nama_dept', 'jenis_kelamin', 'nama_jabatan', 'id_perusahaan', 'id_kantor', 'klasifikasi', 'status_karyawan', 'nama_jadwal', 'jam_kerja.jam_masuk', 'jam_kerja.jam_pulang', 'jam_in', 'jam_out', 'presensi.status as status_presensi', 'presensi.kode_izin', 'kode_izin_terlambat', 'tgl_presensi', 'pengajuan_izin.status as status_izin', 'pengajuan_izin.jenis_izin', 'pengajuan_izin.jam_keluar', 'pengajuan_izin.jam_masuk as jam_masuk_kk', 'total_jam', 'kode_izin_pulang', 'jam_istirahat', 'jam_awal_istirahat', 'sid', 'jadwal_kerja.kode_cabang as jadwalcabang');
+        $query->select('master_karyawan.nik', 'nama_karyawan', 'tgl_masuk', 'master_karyawan.kode_dept', 'nama_dept', 'jenis_kelamin', 'nama_jabatan', 'id_perusahaan', 'id_kantor', 'klasifikasi', 'status_karyawan', 'presensi.kode_jadwal', 'nama_jadwal', 'jam_kerja.jam_masuk', 'jam_kerja.jam_pulang', 'jam_in', 'jam_out', 'presensi.status as status_presensi', 'presensi.kode_izin', 'kode_izin_terlambat', 'tgl_presensi', 'pengajuan_izin.status as status_izin', 'pengajuan_izin.jenis_izin', 'pengajuan_izin.jam_keluar', 'pengajuan_izin.jam_masuk as jam_masuk_kk', 'total_jam', 'kode_izin_pulang', 'jam_istirahat', 'jam_awal_istirahat', 'sid', 'jadwal_kerja.kode_cabang as jadwalcabang');
         $query->leftjoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
         $query->leftjoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
 
@@ -217,6 +217,7 @@ class PresensiController extends Controller
     {
         $nik = $request->nik;
         $tgl = $request->tgl;
+        $kode_jadwal = $request->kode_jadwal;
         $cek = DB::table('presensi')->where('tgl_presensi', $tgl)->where('nik', $nik)->first();
         $karyawan = DB::table('master_karyawan')
             ->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
@@ -225,7 +226,7 @@ class PresensiController extends Controller
         $jadwal = DB::table('jadwal_kerja')
             ->where('kode_cabang', $karyawan->id_kantor)
             ->orderBy('kode_jadwal')->get();
-        return view('presensi.updatepresensi', compact('karyawan', 'tgl', 'jadwal', 'cek'));
+        return view('presensi.updatepresensi', compact('karyawan', 'tgl', 'jadwal', 'cek', 'kode_jadwal'));
     }
 
     public function storeupdatepresensi(Request $request)
@@ -233,8 +234,9 @@ class PresensiController extends Controller
         $nik = $request->nik;
         $tgl_presensi = $request->tgl_presensi;
         $kode_jadwal = $request->kode_jadwal;
-        $jam_masuk = $tgl_presensi . " " . $request->jam_masuk;
-        $jam_pulang = $tgl_presensi . " " . $request->jam_pulang;
+
+        $jam_masuk = $request->status == "h" ?  $tgl_presensi . " " . $request->jam_masuk : null;
+        $jam_pulang =  $request->status == "h" ? $tgl_presensi . " " . $request->jam_pulang :  null;
         $nextday = date('Y-m-d', strtotime('+1 day', strtotime($tgl_presensi)));
         $tgl = date("D", strtotime($tgl_presensi));
 
@@ -272,7 +274,7 @@ class PresensiController extends Controller
         $kode_izin = $cekizinterlambat != null  ? $cekizinterlambat->kode_izin : NULL;
 
         $cek = DB::table('presensi')->where('tgl_presensi', $tgl_presensi)->where('nik', $nik)->first();
-
+        $kode_jam_kerja = !empty($request->kode_jam_kerja) ? $request->kode_jam_kerja  : $jadwal->kode_jam_kerja;
         if ($cek == null) {
             $data = [
                 'nik' => $nik,
@@ -280,7 +282,7 @@ class PresensiController extends Controller
                 'jam_in' => $jam_masuk,
                 'jam_out' => $jam_pulang,
                 'kode_jadwal' => $kode_jadwal,
-                'kode_jam_kerja' => $jadwal->kode_jam_kerja,
+                'kode_jam_kerja' => $kode_jam_kerja,
                 'kode_izin_terlambat' => $kode_izin,
                 'status' => $request->status,
             ];
@@ -289,6 +291,7 @@ class PresensiController extends Controller
                 DB::table('presensi')->insert($data);
                 return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
             } catch (\Exception $e) {
+                dd($e);
                 return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);
             }
         } else {
@@ -298,7 +301,7 @@ class PresensiController extends Controller
                     'jam_in' => $jam_masuk,
                     'jam_out' => $jam_pulang,
                     'kode_jadwal' => $kode_jadwal,
-                    'kode_jam_kerja' => $jadwal->kode_jam_kerja,
+                    'kode_jam_kerja' => $kode_jam_kerja,
                     'status' => $request->status,
                 ];
             } else {
@@ -318,6 +321,7 @@ class PresensiController extends Controller
                     ->update($data);
                 return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
             } catch (\Exception $e) {
+                dd($e);
                 return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);
             }
         }
@@ -327,15 +331,19 @@ class PresensiController extends Controller
     public function getjamkerja(Request $request)
     {
         $kode_jadwal = $request->kode_jadwal;
+        $kode_jam_kerja = $request->kode_jam_kerja;
         $jam_kerja = DB::table('jadwal_kerja_detail')
-            ->select('jadwal_kerja_detail.kode_jam_kerja', 'jam_masuk', 'jam_pulang')
+            ->select('jadwal_kerja_detail.kode_jam_kerja', 'jam_masuk', 'jam_pulang', 'total_jam')
             ->leftJoin('jam_kerja', 'jadwal_kerja_detail.kode_jam_kerja', '=', 'jam_kerja.kode_jam_kerja')
             ->where('kode_jadwal', $kode_jadwal)
             ->groupByRaw('jadwal_kerja_detail.kode_jam_kerja,jam_masuk,jam_pulang')
             ->get();
 
+
+        echo "<option>Pilih Jam Kerja</option>";
         foreach ($jam_kerja as $d) {
-            echo "<option>" . $d->kode_jam_kerja . "-" . $d->jam_masuk . "s/d" . $d->jam_pulang . "</option>";
+            $selected = $d->kode_jam_kerja == $kode_jam_kerja  ? "selected" : "";
+            echo "<option value='" . $d->kode_jam_kerja . "' $selected>" . $d->kode_jam_kerja . "-" . $d->jam_masuk . " s/d " . $d->jam_pulang . " (" . $d->total_jam . " Jam Kerja) </option>";
         }
     }
 }
