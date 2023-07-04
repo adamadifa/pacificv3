@@ -492,7 +492,7 @@
             var tanggal = "{{ Request('tanggal') }}";
             var tgl = tanggal == "" ? "{{ date('Y-m-d') }}" : tanggal;
             var kode_jadwal = $(this).attr("kode_jadwal");
-            alert(kode_jadwal);
+            // /alert(kode_jadwal);
             $("#tglupdatepresensi").text(tgl);
             $("#mdlupdatepresensi").modal({
                 backdrop: 'static'
