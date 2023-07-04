@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cabang;
 use App\Models\Karyawan;
 use App\Models\Presensi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class LaporanhrdController extends Controller
@@ -14,7 +16,9 @@ class LaporanhrdController extends Controller
 
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         $departemen = DB::table('hrd_departemen')->orderBy('nama_dept')->get();
-        return view('presensi.laporan.lap_presensi', compact('bulan', 'departemen'));
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang(Auth::user()->kode_cabang);
+        return view('presensi.laporan.lap_presensi', compact('bulan', 'departemen', 'cabang'));
     }
 
     public function getkantor(Request $request)
@@ -28,13 +32,28 @@ class LaporanhrdController extends Controller
         return view('presensi.laporan.getkantor', compact('kantor'));
     }
 
+    public function getdepartemen(Request $request)
+    {
+        $id_kantor = $request->id_kantor;
+        $departemen = DB::table('master_karyawan')
+            ->select('master_karyawan.kode_dept', 'nama_dept')
+            ->where('id_kantor', $id_kantor)
+            ->leftJoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
+            ->groupBy('master_karyawan.kode_dept')
+            ->get();
+        echo "<option value=''>Semua Departemen</option>";
+        foreach ($departemen as $d) {
+            echo "<option value='$d->kode_dept'>$d->nama_dept</option>";
+        }
+    }
+
     public function getgroup(Request $request)
     {
-        $kode_dept = $request->kode_dept;
+        $id_kantor = $request->id_kantor;
         $group = DB::table('master_karyawan')
             ->select('master_karyawan.grup', 'nama_group')
             ->join('hrd_group', 'master_karyawan.grup', '=', 'hrd_group.id')
-            ->where('kode_dept', $kode_dept)
+            ->where('id_kantor', $id_kantor)
             ->groupByRaw('master_karyawan.grup,nama_group')
             ->get();
         return view('presensi.laporan.getgroup', compact('group'));

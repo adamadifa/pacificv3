@@ -29,13 +29,14 @@
                             <div class="card-body">
                                 <form action="/laporanhrd/presensi/cetak" method="POST" id="frmPresensi" target="_blank">
                                     @csrf
+
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <select name="kode_dept" id="kode_dept" class="form-control">
-                                                    <option value="">Semua Departemen</option>
-                                                    @foreach ($departemen as $d)
-                                                    <option value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
+                                                <select name="id_kantor" id="id_kantor" class="form-control">
+                                                    <option value="">Semua Kantor</option>
+                                                    @foreach ($cabang as $d)
+                                                    <option value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -44,8 +45,8 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <div class="form-group">
-                                                <select name="id_kantor" id="id_kantor" class="form-control">
-                                                    <option value="">Semua Cabang</option>
+                                                <select name="kode_dept" id="kode_dept" class="form-control">
+                                                    <option value="">Semua Departemen</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -131,31 +132,47 @@
     $(function() {
 
 
-        function loadkantor() {
-            var kode_dept = $("#kode_dept").val();
+        // function loadkantor() {
+        //     var kode_dept = $("#kode_dept").val();
+        //     $.ajax({
+        //         type: 'POST'
+        //         , url: '/laporanhrd/getkantor'
+        //         , data: {
+        //             _token: "{{ csrf_token() }}"
+        //             , kode_dept: kode_dept
+        //         }
+        //         , cache: false
+        //         , success: function(respond) {
+        //             $("#id_kantor").html(respond);
+        //         }
+        //     });
+        // }
+
+        function loaddepartemen() {
+            var id_kantor = $("#id_kantor").val();
             $.ajax({
                 type: 'POST'
-                , url: '/laporanhrd/getkantor'
+                , url: '/laporanhrd/getdepartemen'
                 , data: {
                     _token: "{{ csrf_token() }}"
-                    , kode_dept: kode_dept
+                    , id_kantor: id_kantor
                 }
                 , cache: false
                 , success: function(respond) {
-                    $("#id_kantor").html(respond);
+                    $("#kode_dept").html(respond);
                 }
             });
         }
 
 
         function loadgroup() {
-            var kode_dept = $("#kode_dept").val();
+            var id_kantor = $("#id_kantor").val();
             $.ajax({
                 type: 'POST'
                 , url: '/laporanhrd/getgroup'
                 , data: {
                     _token: "{{ csrf_token() }}"
-                    , kode_dept: kode_dept
+                    , id_kantor: id_kantor
                 }
                 , cache: false
                 , success: function(respond) {
@@ -163,8 +180,8 @@
                 }
             });
         }
-        $("#kode_dept").change(function(e) {
-            loadkantor();
+        $("#id_kantor").change(function(e) {
+            loaddepartemen();
             loadgroup();
         });
     });
