@@ -1,4 +1,4 @@
-<form action="/harilibur/{{ Crypt::encrypt($harilibur->kode_libur) }}/update" method="POST" id="frmLibur">
+<form action="/harilibur/{{ Crypt::encrypt($harilibur->kode_libur) }}/update" method="POST" id="frmLiburEdit">
     @csrf
     <div class="row">
         <div class="col-12">
@@ -66,9 +66,14 @@
         }
 
         loadtglminggu();
-        $("#frmLibur").submit(function(e) {
-            var tanggal = $("#tanggal").val();
-            var keterangan = $("#keterangan").val();
+        $("#frmLiburEdit").submit(function(e) {
+            var tanggal = $("#frmLiburEdit").find("#tanggal").val();
+            var keterangan = $("#frmLiburEdit").find("#keterangan").val();
+            var id_kantor = $("#frmLiburEdit").find("#id_kantor").val();
+            var kategori = $("#frmLiburEdit").find("#kategori_edit").val();
+            var tanggal_minggu = $("#frmLiburEdit").find("#tanggal_minggu").val();
+
+            //alert(kategori);
             if (tanggal == "") {
                 swal({
                     title: 'Oops'
@@ -77,6 +82,36 @@
                     , showConfirmButton: false
                 }).then(function() {
                     $("#tanggal").focus();
+                });
+                return false;
+            } else if (id_kantor == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Kantor Harus Dipilih !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#id_kantor").focus();
+                });
+                return false;
+            } else if (kategori == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Kategori Harus Dipilih !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#kategori").focus();
+                });
+                return false;
+            } else if (kategori == 2 && tanggal_minggu == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Tanggal Minggu Yang Diganti Harus Dipilih !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#tanggal_minggu").focus();
                 });
                 return false;
             } else if (keterangan == "") {
@@ -90,6 +125,7 @@
                 });
                 return false;
             }
+            return false;
         });
 
         $("#kategori_edit").change(function(e) {
