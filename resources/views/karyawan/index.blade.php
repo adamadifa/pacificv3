@@ -128,13 +128,14 @@
                                             <th>Kantor</th>
                                             <th>Klasifikasi</th>
                                             <th>Status</th>
+                                            <th>Pin</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
 
                                         @foreach ($karyawan as $d)
-                                        <tr>
+                                        <tr style="background-color:{{ $d->status_aktif == 0 ? '#ff695e' : '' }}">
                                             <td class="text-center">{{ $loop->iteration + $karyawan->firstItem()-1 }}</td>
                                             <td>{{ $d->nik }}</td>
                                             <td>{{ $d->nama_karyawan }}</td>
@@ -152,6 +153,7 @@
                                                 <span class="badge bg-warning">K</span>
                                                 @endif
                                             </td>
+                                            <td>{{ $d->pin }}</td>
                                             <td>
                                                 <div class="btn-group" role="group" aria-label="Basic example">
                                                     <a href="#" class="info setjadwal" nik="{{ $d->nik }}" id_kantor="{{ $d->id_kantor }}"><i class="feather icon-watch"></i></a>

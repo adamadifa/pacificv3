@@ -199,6 +199,23 @@
     </div>
     <div class="row">
         <div class="col-12">
+            <x-inputtext label="PIN" value="{{ $karyawan->pin }}" field="pin" icon="feather icon-credit-card" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group">
+                <select name="status_aktif" id="status_aktif" class="form-control">
+                    <option value="">Aktif / NonAktif</option>
+                    <option value="1" {{ $karyawan->status_aktif == 1 ? 'selected' :'' }}>Aktif</option>
+                    <option value="0" {{ $karyawan->status_aktif == 0 ? 'selected' :'' }}>Non Aktif</option>
+                </select>
+                <small class="danger"></small>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
             <div class="form-group">
                 <button class="btn btn-primary btn-block" type="submit"><i class="feather icon-send mr-1"></i>Simpan</button>
             </div>
@@ -227,6 +244,7 @@
         const tglmasukEl = document.querySelector('#tgl_masuk');
         const klasifikasiEl = document.querySelector('#klasifikasi');
         const statuskaryawanEl = document.querySelector('#status_karyawan');
+        const statusaktifEl = document.querySelector('#status_aktif');
         const form = document.querySelector('#frmSupplier');
         const checkNik = () => {
             let valid = false;
@@ -452,6 +470,19 @@
             return valid;
         };
 
+
+        const checkStatusaktif = () => {
+            let valid = false;
+            const status_aktif = statusaktifEl.value.trim();
+            if (!isRequired(status_aktif)) {
+                showError(statusaktifEl, 'Status Aktif Tidak Boleh Kosong.');
+            } else {
+                showSuccess(statusaktifEl);
+                valid = true;
+            }
+            return valid;
+        };
+
         const isRequired = value => value === '' ? false : true;
         const isBetween = (length, min, max) => length < min || length > max ? false : true;
         const isAngka = (angka) => {
@@ -519,9 +550,10 @@
                 , isIdJabatan = checkJabatan()
                 , isTglmasukValid = checkTglmasuk()
                 , isKlasifikasiValid = checkKlasifikasi()
-                , isStatuskaryawanValid = checkStatuskaryawan();
+                , isStatuskaryawanValid = checkStatuskaryawan()
+                , isStatusaktifValid = checkStatusaktif();
 
-            let isFormValid = isNikValid && isNoKtpValid && isNamakaryawanValid && isTempatlahirValid && isTgllahirValid && isAlamatValid && isJeniskelaminValid && isNohpValid && isStatuskawinValid && isIdperusahaanValid && isIdkantorValid && isKodedeptValid && isGrupValid && isIdJabatan && isTglmasukValid && isKlasifikasiValid && isStatuskaryawanValid;
+            let isFormValid = isNikValid && isNoKtpValid && isNamakaryawanValid && isTempatlahirValid && isTgllahirValid && isAlamatValid && isJeniskelaminValid && isNohpValid && isStatuskawinValid && isIdperusahaanValid && isIdkantorValid && isKodedeptValid && isGrupValid && isIdJabatan && isTglmasukValid && isKlasifikasiValid && isStatuskaryawanValid && isStatusaktifValid;
 
             // submit to the server if the form is valid
             if (isFormValid) {
@@ -600,6 +632,9 @@
                     break;
                 case 'status_karyawan':
                     checkStatuskaryawan();
+                    break;
+                case 'status_aktif':
+                    checkStatusaktif();
                     break;
             }
         }));

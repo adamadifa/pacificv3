@@ -20,7 +20,7 @@ class KaryawanController extends Controller
         $cabang = Auth::user()->kode_cabang;
         $nama_karyawan = $request->nama_karyawan_search;
         $query = Karyawan::query();
-        $query->select('nik', 'nama_karyawan', 'tgl_masuk', 'master_karyawan.kode_dept', 'nama_dept', 'jenis_kelamin', 'nama_jabatan', 'id_perusahaan', 'id_kantor', 'klasifikasi', 'status_karyawan');
+        $query->select('nik', 'nama_karyawan', 'tgl_masuk', 'master_karyawan.kode_dept', 'nama_dept', 'jenis_kelamin', 'nama_jabatan', 'id_perusahaan', 'id_kantor', 'klasifikasi', 'status_karyawan', 'pin', 'status_aktif');
         $query->leftjoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
         $query->leftjoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
         if (!empty($nama_karyawan)) {
@@ -245,7 +245,13 @@ class KaryawanController extends Controller
         $jenis_kelamin = $request->jenis_kelamin;
         $status_kawin = $request->status_kawin;
         $status_karyawan = $request->status_karyawan;
+        $status_aktif = $request->status_aktif;
+        $pin = $request->pin;
 
+        $cek = DB::table('master_karyawan')->where('pin', $pin)->count();
+        if ($cek > 0) {
+            return Redirect::back()->with(['warning' => 'Pin Sudah Terdaftar']);
+        }
         $data = [
             'no_ktp' => $no_ktp,
             'nama_karyawan' => $nama_karyawan,
@@ -263,7 +269,9 @@ class KaryawanController extends Controller
             'grup' => $grup,
             'jenis_kelamin' => $jenis_kelamin,
             'status_kawin' => $status_kawin,
-            'status_karyawan' => $status_karyawan
+            'status_karyawan' => $status_karyawan,
+            'status_aktif' => $status_aktif,
+            'pin' => $pin
         ];
 
         $simpan = DB::table('master_karyawan')->where('nik', $nik)->update($data);
