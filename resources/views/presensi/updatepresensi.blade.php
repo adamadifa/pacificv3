@@ -214,7 +214,7 @@
 
         function loadstatus() {
             var status = $("#status").val();
-            alert(status);
+            //alert(status);
             if (status == "h") {
                 $("#statusjam").show();
             } else {
