@@ -39,7 +39,7 @@ class LaporanhrdController extends Controller
             ->select('master_karyawan.kode_dept', 'nama_dept')
             ->where('id_kantor', $id_kantor)
             ->leftJoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
-            ->groupBy('master_karyawan.kode_dept')
+            ->groupByRaw('master_karyawan.kode_dept,nama_dept')
             ->get();
         echo "<option value=''>Semua Departemen</option>";
         foreach ($departemen as $d) {
