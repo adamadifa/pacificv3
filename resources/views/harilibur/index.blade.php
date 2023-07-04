@@ -108,7 +108,7 @@
                                             <th>Tanggal</th>
                                             <th>Kantor</th>
                                             <th>Kategori</th>
-                                            <th>Keterangan</th>
+                                            <th style="width:15%">Keterangan</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
