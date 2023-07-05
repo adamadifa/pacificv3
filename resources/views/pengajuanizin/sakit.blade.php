@@ -151,9 +151,21 @@
                                                     <td>{{ $d->jmlhari }} Hari</td>
                                                     <td>
                                                         @if (!empty($d->sid))
+                                                        @php
+                                                        $path = Storage::url('uploads/sid/'.$d->sid);
+                                                        $src = "uploads/sid/".$d->sid;
+                                                        $cekimage = Storage::disk('public')->exists($src);
+                                                        @endphp
+                                                        @if ($cekimage)
+                                                        <a href="{{ url($path) }}" class="text-info">
+                                                            <i class="feather icon-paperclip text-info"></i> Lihat SID
+                                                        </a>
+                                                        @else
                                                         <a href="#" class="text-info">
                                                             <i class="feather icon-paperclip text-info"></i> Lihat SID
                                                         </a>
+                                                        @endif
+
                                                         @else
                                                         <i class="fa fa-close text-danger"></i>
                                                         @endif
