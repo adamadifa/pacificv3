@@ -336,7 +336,7 @@ class PresensiController extends Controller
             ->select('jadwal_kerja_detail.kode_jam_kerja', 'jam_masuk', 'jam_pulang', 'total_jam')
             ->leftJoin('jam_kerja', 'jadwal_kerja_detail.kode_jam_kerja', '=', 'jam_kerja.kode_jam_kerja')
             ->where('kode_jadwal', $kode_jadwal)
-            ->groupByRaw('jadwal_kerja_detail.kode_jam_kerja,jam_masuk,jam_pulang')
+            ->groupByRaw('jadwal_kerja_detail.kode_jam_kerja,jam_masuk,jam_pulang,total_jam')
             ->get();
 
 
