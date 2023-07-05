@@ -22,7 +22,7 @@ class PresensiController extends Controller
         $tanggal = !empty($request->tanggal) ? $request->tanggal : date('Y-m-d');
         // $tanggal = date("Y-m-d");
         $query = Karyawan::query();
-        $query->select('master_karyawan.nik', 'nama_karyawan', 'tgl_masuk', 'master_karyawan.kode_dept', 'nama_dept', 'jenis_kelamin', 'nama_jabatan', 'id_perusahaan', 'id_kantor', 'klasifikasi', 'status_karyawan', 'presensi.kode_jadwal', 'nama_jadwal', 'jam_kerja.jam_masuk', 'jam_kerja.jam_pulang', 'jam_in', 'jam_out', 'presensi.status as status_presensi', 'presensi.kode_izin', 'kode_izin_terlambat', 'tgl_presensi', 'pengajuan_izin.status as status_izin', 'pengajuan_izin.jenis_izin', 'pengajuan_izin.jam_keluar', 'pengajuan_izin.jam_masuk as jam_masuk_kk', 'total_jam', 'kode_izin_pulang', 'jam_istirahat', 'jam_awal_istirahat', 'sid', 'jadwal_kerja.kode_cabang as jadwalcabang', 'lokasi_in', 'lokasi_out', 'presensi.id');
+        $query->select('master_karyawan.nik', 'nama_karyawan', 'tgl_masuk', 'master_karyawan.kode_dept', 'nama_dept', 'jenis_kelamin', 'nama_jabatan', 'id_perusahaan', 'id_kantor', 'klasifikasi', 'status_karyawan', 'presensi.kode_jadwal', 'nama_jadwal', 'jam_kerja.jam_masuk', 'jam_kerja.jam_pulang', 'jam_in', 'jam_out', 'presensi.status as status_presensi', 'presensi.kode_izin', 'kode_izin_terlambat', 'tgl_presensi', 'pengajuan_izin.status as status_izin', 'pengajuan_izin.jenis_izin', 'pengajuan_izin.jam_keluar', 'pengajuan_izin.jam_masuk as jam_masuk_kk', 'total_jam', 'kode_izin_pulang', 'jam_istirahat', 'jam_awal_istirahat', 'sid', 'jadwal_kerja.kode_cabang as jadwalcabang', 'lokasi_in', 'lokasi_out', 'presensi.id', 'pin');
         $query->leftjoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
         $query->leftjoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
 
@@ -375,5 +375,34 @@ class PresensiController extends Controller
                 return view('presensi.shownonmaps');
             }
         }
+    }
+
+
+    public function checkmesin(Request $request)
+    {
+        $tanggal = $request->tanggal;
+        $pin = $request->pin;
+        $url = 'https://developer.fingerspot.io/api/get_attlog';
+        $data = '{"trans_id":"1", "cloud_id":"C2609075E3170B2C", "start_date":"' . $tanggal . '", "end_date":"' . $tanggal . '"}';
+        $authorization = "Authorization: Bearer QNBCLO9OA0AWILQD";
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $authorization));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        $result = curl_exec($ch);
+        curl_close($ch);
+        $res = json_decode($result);
+        $data = $res->data;
+        $specific_value = $pin;
+        $filtered_array = array_filter($data, function ($obj) use ($specific_value) {
+            return $obj->pin == $specific_value;
+        });
+
+        return view('presensi.getmesin', compact('filtered_array'));
     }
 }

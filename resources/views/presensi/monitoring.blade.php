@@ -424,6 +424,7 @@
                                             <td>
                                                 @if ($level == "manager hrd" || $level=="admin" || Auth::user()->pic_presensi==1)
                                                 <a href="#" class="edit" nik="{{ $d->nik }}" kode_jadwal="{{ $d->kode_jadwal }}"><i class="feather icon-edit info"></i></a>
+                                                <a href="#" class="checkmesin" pin="{{ $d->pin }}" tanggal="{{ !empty(Request('tanggal')) ? Request('tanggal') : date('Y-m-d') }}"><i class="feather icon-monitor success"></i></a>
                                                 @endif
                                             </td>
                                         </tr>
@@ -473,6 +474,21 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade text-left" id="mdlcheckmesin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Data Presensi <span id="tglupdatepresensi"></span></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="loadcheckmesin">
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @push('myscript')
 <script type="text/javascript">
@@ -502,6 +518,32 @@
 
 <script>
     $(function() {
+
+        $(".checkmesin").click(function(e) {
+            e.preventDefault();
+            var pin = $(this).attr("pin");
+            var tanggal = $(this).attr("tanggal");
+            $("#mdlcheckmesin").modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+            $.ajax({
+                type: 'POST'
+                , url: '/presensi/checkmesin'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , pin: pin
+                    , tanggal: tanggal
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loadcheckmesin").html(respond);
+                }
+            });
+        });
+
+
+
         $(".edit").click(function(e) {
             e.preventDefault();
             var nik = $(this).attr('nik');
