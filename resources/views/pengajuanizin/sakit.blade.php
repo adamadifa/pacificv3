@@ -161,7 +161,7 @@
                                                             <i class="feather icon-paperclip text-info"></i> Lihat SID
                                                         </a>
                                                         @else
-                                                        <a href="#" class="text-info">
+                                                        <a href="https://presensi.pacific-tasikmalaya.com/storage/uploads/sid/{{ $d->sid }}" class="text-info">
                                                             <i class="feather icon-paperclip text-info"></i> Lihat SID
                                                         </a>
                                                         @endif
