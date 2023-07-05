@@ -382,12 +382,13 @@
 
                                             <td>{{ $d->id_kantor }}</td>
                                             <td>{{ $d->nama_jadwal }} {{ $d->jadwalcabang }} ({{ $d->jam_masuk }} s/d {{ $d->jam_pulang }})</td>
-                                            <td>{!! $d->jam_in != null ? $jam_in : '<span class="danger">Belum Absen</span>' !!}
+                                            <td>
+                                                {!! $d->jam_in != null ? '<a href="#" class="showpresensi" id="'.$d->id.'" status="in">'.$jam_in.'</a>' : '<span class="danger">Belum Absen</span>' !!}
                                                 @if (!empty($d->kode_izin_terlambat))
                                                 (Izin)
                                                 @endif
                                             </td>
-                                            <td style="color:{{ $jam_out < $jam_pulang ? 'red' : '' }}">{!! $d->jam_out != null ? $jam_out : '<span class="danger">Belum Absen</span>' !!}
+                                            <td style="color:{{ $jam_out < $jam_pulang ? 'red' : '' }}">{!! $d->jam_out != null ? '<a href="#" class="showpresensi" id="'.$d->id.'" status="out">'.$jam_out.'</a>' : '<span class="danger">Belum Absen</span>' !!}
                                                 @if (!empty($pc))
                                                 (PC)
                                                 @endif
@@ -457,6 +458,21 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade text-left" id="mdlshowpresensi" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Data Presensi <span id="tglupdatepresensi"></span></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="loadpresensi">
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @push('myscript')
 <script type="text/javascript">
@@ -510,6 +526,30 @@
                 , cache: false
                 , success: function(respond) {
                     $("#loadupdatepresensi").html(respond);
+                }
+            });
+        });
+
+        $(".showpresensi").click(function(e) {
+            e.preventDefault();
+            var id = $(this).attr("id");
+            var status = $(this).attr("status");
+            $("#mdlshowpresensi").modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+
+            $.ajax({
+                type: 'POST'
+                , url: '/presensi/show'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , id: id
+                    , status: status
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#loadpresensi").html(respond);
                 }
             });
         });
