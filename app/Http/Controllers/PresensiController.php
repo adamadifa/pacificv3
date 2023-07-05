@@ -238,8 +238,8 @@ class PresensiController extends Controller
         $jam_masuk = $request->status == "h" && !empty($request->jam_masuk) ?  $tgl_presensi . " " . $request->jam_masuk : null;
         $jam_pulang =  $request->status == "h" && !empty($request->jam_pulang) ? $tgl_presensi . " " . $request->jam_pulang :  null;
 
-        echo $jam_pulang;
-        die;
+
+
         $nextday = date('Y-m-d', strtotime('+1 day', strtotime($tgl_presensi)));
         $tgl = date("D", strtotime($tgl_presensi));
 
@@ -278,6 +278,9 @@ class PresensiController extends Controller
 
         $cek = DB::table('presensi')->where('tgl_presensi', $tgl_presensi)->where('nik', $nik)->first();
         $kode_jam_kerja = !empty($request->kode_jam_kerja) ? $request->kode_jam_kerja  : $jadwal->kode_jam_kerja;
+
+
+        dd($jam_pulang);
         if ($cek == null) {
             $data = [
                 'nik' => $nik,
