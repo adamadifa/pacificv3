@@ -270,7 +270,11 @@ class PresensiController extends Controller
         $jam_kerja = DB::table('jam_kerja')->where('kode_jam_kerja', $jadwal->kode_jam_kerja)->first();
         $lintashari  = $jam_kerja->lintashari;
         if (!empty($lintashari)) {
-            $jam_pulang = $nextday . " " . $request->jam_pulang;
+            if (!empty($request->jam_pulang)) {
+                $jam_pulang = $nextday . " " . $request->jam_pulang;
+            } else {
+                $jam_pulang = null;
+            }
         }
         $cekizinterlambat = DB::table('pengajuan_izin')->where('nik', $nik)->where('dari', $tgl_presensi)->where('jenis_izin', 'TL')->where('status_approved', 1)->first();
 
