@@ -284,26 +284,6 @@
                             $("#kode_jadwal").focus();
                         });
                         return false;
-                    } else if (jam_masuk == "" && level == "manager hrd" || jam_masuk == "" && level == "admin") {
-                        swal({
-                            title: 'Oops'
-                            , text: 'Jam Masuk Harus Diisi !'
-                            , icon: 'warning'
-                            , showConfirmButton: false
-                        }).then(function() {
-                            $("#jam_masuk").focus();
-                        });
-                        return false;
-                    } else if (jam_pulang == "" && level == "manager hrd" || jam_pulang == "" && level == "admin") {
-                        swal({
-                            title: 'Oops'
-                            , text: 'Jam Pulang Harus Diisi !'
-                            , icon: 'warning'
-                            , showConfirmButton: false
-                        }).then(function() {
-                            $("#jam_pulang").focus();
-                        });
-                        return false;
                     }
                 }
             }
