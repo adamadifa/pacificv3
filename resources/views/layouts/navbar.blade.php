@@ -1278,7 +1278,7 @@
                     </li>
                     @endif
 
-                    @if (in_array($level,$lap_hrd))
+                    @if (in_array($level,$lap_hrd) || Auth::user()->pic_presensi == 1)
                     <li class="{{ request()->is(['laporanhrd/presensi']) ? 'active' : '' }}">
                         <a href="/laporanhrd/presensi">
                             <i class="feather icon-file-text"></i>
