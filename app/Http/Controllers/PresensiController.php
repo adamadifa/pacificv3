@@ -284,7 +284,7 @@ class PresensiController extends Controller
         $kode_jam_kerja = !empty($request->kode_jam_kerja) ? $request->kode_jam_kerja  : $jadwal->kode_jam_kerja;
 
 
-        dd($jam_pulang);
+        //dd($jam_pulang);
         if ($cek == null) {
             $data = [
                 'nik' => $nik,
