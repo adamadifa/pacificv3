@@ -1101,7 +1101,7 @@ class GlobalProvider extends ServiceProvider
             $ticket_approve = ['admin', 'manager accounting'];
             $ticket_done = ['admin'];
 
-            $lap_hrd = ['admin'];
+            $lap_hrd = ['admin', 'manager hrd'];
 
 
             $shareddata = [
