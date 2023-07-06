@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Karyawan;
+use App\Models\Presensi;
 use Facade\Ignition\Tabs\Tab;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -414,5 +415,71 @@ class PresensiController extends Controller
         });
 
         return view('presensi.getmesin', compact('filtered_array'));
+    }
+
+
+
+
+    public function presensikaryawan(Request $request)
+    {
+
+
+
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $nik = $request->nik;
+        $kode_dept_presensi = Auth::user()->kode_dept_presensi;
+
+        $query = Presensi::query();
+        $query->select(
+            'tgl_presensi',
+            'presensi.nik',
+            'nama_karyawan',
+            'tgl_masuk',
+            'master_karyawan.kode_dept',
+            'nama_dept',
+            'jenis_kelamin',
+            'nama_jabatan',
+            'id_perusahaan',
+            'id_kantor',
+            'klasifikasi',
+            'status_karyawan',
+            'presensi.kode_jadwal',
+            'nama_jadwal',
+            'jam_kerja.jam_masuk',
+            'jam_kerja.jam_pulang',
+            'jam_in',
+            'jam_out',
+            'presensi.status as status_presensi',
+            'presensi.kode_izin',
+            'kode_izin_terlambat',
+            'pengajuan_izin.status as status_izin',
+            'pengajuan_izin.jenis_izin',
+            'pengajuan_izin.jam_keluar',
+            'pengajuan_izin.jam_masuk as jam_masuk_kk',
+            'total_jam',
+            'kode_izin_pulang',
+            'jam_istirahat',
+            'jam_awal_istirahat',
+            'sid',
+            'jadwal_kerja.kode_cabang as jadwalcabang',
+            'lokasi_in',
+            'lokasi_out',
+            'presensi.id',
+            'pin'
+        );
+        $query->join('master_karyawan', 'presensi.nik', '=', 'master_karyawan.nik');
+        $query->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
+        $query->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
+        $query->leftjoin('jadwal_kerja', 'presensi.kode_jadwal', '=', 'jadwal_kerja.kode_jadwal');
+        $query->leftjoin('jam_kerja', 'presensi.kode_jam_kerja', '=', 'jam_kerja.kode_jam_kerja');
+        $query->leftjoin('pengajuan_izin', 'presensi.kode_izin', '=', 'pengajuan_izin.kode_izin');
+        $query->whereBetween('tgl_presensi', [$dari, $sampai]);
+        $query->where('presensi.nik', $nik);
+        $karyawan = $query->get();
+
+        $kar = new Karyawan();
+        $listkaryawan = $kar->getkaryawanpengajuan($kode_dept_presensi);
+        return view('presensi.presensikaryawan', compact('karyawan', 'listkaryawan'));
     }
 }

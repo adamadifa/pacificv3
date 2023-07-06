@@ -1278,6 +1278,15 @@
                     </li>
                     @endif
 
+                    @if (in_array($level,$presensi_karyawan_menu))
+                    <li class="{{ request()->is(['presensi/presensikaryawan']) ? 'active' : '' }}">
+                        <a href="/presensi/presensikaryawan">
+                            <i class="feather icon-monitor"></i>
+                            <span class="menu-item" data-i18n="Second Level">Presensi Karyawan</span>
+                        </a>
+                    </li>
+                    @endif
+
                     @if (in_array($level,$lap_hrd) || Auth::user()->pic_presensi == 1)
                     <li class="{{ request()->is(['laporanhrd/presensi']) ? 'active' : '' }}">
                         <a href="/laporanhrd/presensi">
