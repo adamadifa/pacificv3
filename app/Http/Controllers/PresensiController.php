@@ -380,7 +380,7 @@ class PresensiController extends Controller
                 return view('presensi.shownonmaps');
             }
         } else if ($status == "out") {
-            if (!empty($presensi->lokasi_in)) {
+            if (!empty($presensi->lokasi_out)) {
                 return view('presensi.show_out', compact('presensi', 'latitude', 'longitude'));
             } else {
                 return view('presensi.shownonmaps');
