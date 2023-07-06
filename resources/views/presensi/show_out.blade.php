@@ -12,7 +12,7 @@
 
 <div id="map" class="mt-2"></div>
 <script>
-    var lokasi = "{{ $presensi-lokasi_out }}";
+    var lokasi = "{{ $presensi->lokasi_out }}";
     var lok = lokasi.split(",");
     var latitude = lok[0];
     var longitude = lok[1];
