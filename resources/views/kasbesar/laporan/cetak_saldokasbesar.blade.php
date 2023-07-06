@@ -171,6 +171,8 @@
                 ->where('tgl_logamtokertas',$dari)
                 ->where('tgl_logamtokertas','<=',$tgl_akhirsetoran)
                 ->where('kode_cabang',$kode_cabang)
+                ->whereRaw('MONTH(tgl_logamtokertas)="'.$bulan.'"')
+                ->whereRaw('YEAR(tgl_logamtokertas)="'.$tahun.'"')
                 ->groupBy('tgl_logamtokertas')
                 ->first();
 
