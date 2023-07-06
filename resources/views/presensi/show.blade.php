@@ -22,7 +22,10 @@
     var longitude_kantor = "{{ $longitude }}";
     console.log(latitude_kantor + "," + longitude_kantor);
     var rd = "{{ $presensi->radius_cabang }}";
-    var map = L.map('map').setView([latitude, longitude], 15);
+    var map = L.map('map', {
+        center: [latitude, longitude]
+        , zoom: 15
+    });
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19
