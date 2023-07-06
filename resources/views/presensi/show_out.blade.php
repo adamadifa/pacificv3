@@ -21,7 +21,7 @@
     var longitude_kantor = "{{ $longitude }}";
 
     var rd = "{{ $presensi->radius_cabang }}";
-    var map = L.map('map').setView([latitude, longitude], 18);
+    var map = L.map('map').setView([latitude, longitude], 14);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19
