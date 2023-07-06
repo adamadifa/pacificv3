@@ -39,4 +39,8 @@
         , radius: rd
     }).addTo(map);
 
+    setInterval(function() {
+        map.invalidateSize();
+    }, 100);
+
 </script>
