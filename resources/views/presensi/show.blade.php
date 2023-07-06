@@ -1,6 +1,6 @@
 <style>
     #map {
-        height: 250px;
+        height: 300px;
         width: 100%;
     }
 
