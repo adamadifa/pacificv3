@@ -59,6 +59,7 @@
                                     <thead class="thead-dark">
                                         <tr>
                                             <th>No</th>
+                                            <th>Tgl</th>
                                             <th>NIK</th>
                                             <th>Nama Karyawan</th>
                                             <th>Dept</th>
@@ -295,6 +296,7 @@
                                         ?>
                                         <tr>
                                             <td class="text-center">{{ $loop->iteration }}</td>
+                                            <td>{{ date("d/m/y",strtotime($d->tgl_presensi)) }}</td>
                                             <td>{{ $d->nik }}</td>
                                             <td>{{ $d->nama_karyawan }}</td>
                                             <td>{{ $d->kode_dept }}</td>
