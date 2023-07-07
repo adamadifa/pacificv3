@@ -199,7 +199,11 @@
     </div>
     <div class="row">
         <div class="col-12">
+            @if ($level != "admin")
+            <x-inputtext label="PIN" readonly value="{{ $karyawan->pin }}" field="pin" icon="feather icon-credit-card" />
+            @else
             <x-inputtext label="PIN" value="{{ $karyawan->pin }}" field="pin" icon="feather icon-credit-card" />
+            @endif
         </div>
     </div>
     <div class="row">
@@ -214,6 +218,11 @@
             </div>
         </div>
     </div>
+    <div class="row" id="tglnonaktif">
+        <div class="col-12">
+            <x-inputtext label="Tanggal Non Aktif" value="{{ $karyawan->tgl_nonaktif }}" field="tgl_nonaktif" icon="feather icon-calendar" datepicker />
+        </div>
+    </div>
     <div class="row">
         <div class="col-12">
             <div class="form-group">
@@ -226,6 +235,19 @@
 <script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
 <script>
     $(function() {
+
+        function loadstatusaktif() {
+            var status_aktif = $("#status_aktif").val();
+            if (status_aktif == "1") {
+                $("#tglnonaktif").hide();
+            } else {
+                $("#tglnonaktif").show();
+            }
+        }
+        $("#status_aktif").change(function(e) {
+            loadstatusaktif();
+        });
+
         const nikEl = document.querySelector('#nik');
         const noktpEl = document.querySelector('#no_ktp');
         const namakaryawanEl = document.querySelector('#nama_karyawan');

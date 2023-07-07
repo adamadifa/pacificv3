@@ -202,7 +202,8 @@ class KaryawanController extends Controller
             'grup' => $grup,
             'jenis_kelamin' => $jenis_kelamin,
             'status_kawin' => $status_kawin,
-            'status_karyawan' => $status_karyawan
+            'status_karyawan' => $status_karyawan,
+            'status_aktif' => 1
         ];
 
         $simpan = DB::table('master_karyawan')->insert($data);
@@ -247,8 +248,9 @@ class KaryawanController extends Controller
         $status_karyawan = $request->status_karyawan;
         $status_aktif = $request->status_aktif;
         $pin = $request->pin;
+        $tgl_nonaktif = $request->tgl_nonaktif;
 
-        $cek = DB::table('master_karyawan')->where('pin', $pin)->count();
+        $cek = DB::table('master_karyawan')->where('pin', $pin)->where('nik', '!=', $nik)->count();
         if ($cek > 0) {
             return Redirect::back()->with(['warning' => 'Pin Sudah Terdaftar']);
         }
@@ -271,7 +273,8 @@ class KaryawanController extends Controller
             'status_kawin' => $status_kawin,
             'status_karyawan' => $status_karyawan,
             'status_aktif' => $status_aktif,
-            'pin' => $pin
+            'pin' => $pin,
+            'tgl_nonaktif' => $tgl_nonaktif
         ];
 
         $simpan = DB::table('master_karyawan')->where('nik', $nik)->update($data);
