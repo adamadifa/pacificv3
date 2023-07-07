@@ -172,7 +172,7 @@
                                                             @endif
                                                             @endif
                                                             @else
-                                                            @if (!empty($d->head_dept) && empty($d->hrd))
+                                                            @if (!empty($d->head_dept) && empty($d->hrd) || empty($d->head_dept) && $d->kode_dept=="HRD")
                                                             <a href="#" class="approveizin" kode_izin="{{ $d->kode_izin }}">
                                                                 <i class="feather icon-external-link text-primary"></i>
                                                             </a>
