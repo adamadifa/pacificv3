@@ -206,7 +206,7 @@ class PresensiController extends Controller
         }
 
         $query->orderBy('nama_karyawan');
-        $karyawan = $query->paginate(20);
+        $karyawan = $query->paginate(40);
         $karyawan->appends($request->all());
         $kantor = DB::table('cabang')->orderBy('kode_cabang')->get();
         $departemen = DB::table('hrd_departemen')->get();
