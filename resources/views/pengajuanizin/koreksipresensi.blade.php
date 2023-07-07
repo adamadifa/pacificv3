@@ -118,100 +118,103 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
-                                        <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>No.</th>
-                                                    <th>Kode</th>
-                                                    <th>Tanggal</th>
-                                                    <th>NIK</th>
-                                                    <th>Nama Karyawan</th>
-                                                    <th>Jabatan</th>
-                                                    <th>Dept</th>
-                                                    <th>Kantor</th>
-                                                    <th>Jadwal</th>
-                                                    <th>Jam Masuk</th>
-                                                    <th>Jam Pulang</th>
-                                                    <th style="width: 15%">Ket</th>
-                                                    <th>Head Dept</th>
-                                                    <th>HRD</th>
-                                                    <th>Aksi</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($pengajuan_izin as $d)
-                                                <tr>
-                                                    <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $d->kode_izin }}</td>
-                                                    <td>{{ date('d-m-Y',strtotime($d->dari)) }}</td>
-                                                    <td>{{ $d->nik }}</td>
-                                                    <td>{{ $d->nama_karyawan }}</td>
-                                                    <td>{{ $d->nama_jabatan }}</td>
-                                                    <td>{{ $d->kode_dept }}</td>
-                                                    <td>{{ $d->id_kantor }}</td>
-                                                    <td>{{ $d->nama_jadwal }}</td>
-                                                    <td>{{ $d->jam_masuk }}</td>
-                                                    <td>{{ $d->jam_pulang }}</td>
-                                                    <td>{{ $d->keterangan }}</td>
-                                                    <td class="text-center">
-                                                        @if (empty($d->head_dept))
-                                                        <i class="fa fa-history text-warning"></i>
-                                                        @elseif($d->head_dept == 1)
-                                                        <i class="fa fa-check text-success"></i>
-                                                        @elseif($d->head_dept == 2)
-                                                        <i class="fa fa-close text-danger"></i>
-                                                        @endif
-                                                    </td>
-                                                    <td class="text-center">
-                                                        @if (empty($d->hrd))
-                                                        <i class="fa fa-history text-warning"></i>
-                                                        @elseif($d->hrd == 1)
-                                                        <i class="fa fa-check text-success"></i>
-                                                        @elseif($d->hrd == 2)
-                                                        <i class="fa fa-close text-danger"></i>
-                                                        @endif
-                                                    </td>
-                                                    <td>
-                                                        <div class="btn-group" role="group" aria-label="Basic example">
-                                                            @if ($level != "manager hrd")
-                                                            @if (empty(Auth::user()->pic_presensi) || !empty(Auth::user()->pic_presensi) && $level=="kepala admin")
-                                                            @if (empty($d->head_dept) && empty($d->hrd))
-                                                            <a href="#" class="approveizin" kode_izin="{{ $d->kode_izin }}">
-                                                                <i class="feather icon-external-link text-primary"></i>
-                                                            </a>
-                                                            @elseif(!empty($d->head_dept) && empty($d->hrd))
-                                                            <a href="/izinabsen/{{ $d->kode_izin }}/batalkan" class="warning">Batalkan</a>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>Kode</th>
+                                                        <th>Tanggal</th>
+                                                        <th>NIK</th>
+                                                        <th>Nama Karyawan</th>
+                                                        <th>Jabatan</th>
+                                                        <th>Dept</th>
+                                                        <th>Kantor</th>
+                                                        <th>Jadwal</th>
+                                                        <th>Jam Masuk</th>
+                                                        <th>Jam Pulang</th>
+                                                        <th style="width: 15%">Ket</th>
+                                                        <th>Head Dept</th>
+                                                        <th>HRD</th>
+                                                        <th>Aksi</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($pengajuan_izin as $d)
+                                                    <tr>
+                                                        <td>{{ $loop->iteration }}</td>
+                                                        <td>{{ $d->kode_izin }}</td>
+                                                        <td>{{ date('d-m-Y',strtotime($d->dari)) }}</td>
+                                                        <td>{{ $d->nik }}</td>
+                                                        <td>{{ $d->nama_karyawan }}</td>
+                                                        <td>{{ $d->nama_jabatan }}</td>
+                                                        <td>{{ $d->kode_dept }}</td>
+                                                        <td>{{ $d->id_kantor }}</td>
+                                                        <td>{{ $d->nama_jadwal }}</td>
+                                                        <td>{{ $d->jam_masuk }}</td>
+                                                        <td>{{ $d->jam_pulang }}</td>
+                                                        <td>{{ $d->keterangan }}</td>
+                                                        <td class="text-center">
+                                                            @if (empty($d->head_dept))
+                                                            <i class="fa fa-history text-warning"></i>
+                                                            @elseif($d->head_dept == 1)
+                                                            <i class="fa fa-check text-success"></i>
+                                                            @elseif($d->head_dept == 2)
+                                                            <i class="fa fa-close text-danger"></i>
                                                             @endif
+                                                        </td>
+                                                        <td class="text-center">
+                                                            @if (empty($d->hrd))
+                                                            <i class="fa fa-history text-warning"></i>
+                                                            @elseif($d->hrd == 1)
+                                                            <i class="fa fa-check text-success"></i>
+                                                            @elseif($d->hrd == 2)
+                                                            <i class="fa fa-close text-danger"></i>
                                                             @endif
-                                                            @else
-                                                            @if (!empty($d->head_dept) && empty($d->hrd))
-                                                            <a href="#" class="approveizin" kode_izin="{{ $d->kode_izin }}">
-                                                                <i class="feather icon-external-link text-primary"></i>
-                                                            </a>
-                                                            @elseif(empty($d->head_dept))
-                                                            <span class="badge bg-warning">Waiting</span>
-                                                            @elseif(!empty($d->hrd))
-                                                            <a href="/izinabsen/{{ $d->kode_izin }}/batalkan" class="warning">Batalkan</a>
-                                                            @endif
-                                                            @endif
-
-                                                            @if (empty($d->head_dept) && $level != "manager hrd")
-                                                            <form method="POST" class="deleteform" action="/pengajuanizin/{{Crypt::encrypt($d->kode_izin)}}/delete">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <a href="#" class="delete-confirm ml-1">
-                                                                    <i class="feather icon-trash danger"></i>
+                                                        </td>
+                                                        <td>
+                                                            <div class="btn-group" role="group" aria-label="Basic example">
+                                                                @if ($level != "manager hrd")
+                                                                @if (empty(Auth::user()->pic_presensi) || !empty(Auth::user()->pic_presensi) && $level=="kepala admin")
+                                                                @if (empty($d->head_dept) && empty($d->hrd))
+                                                                <a href="#" class="approveizin" kode_izin="{{ $d->kode_izin }}">
+                                                                    <i class="feather icon-external-link text-primary"></i>
                                                                 </a>
-                                                            </form>
-                                                            @endif
+                                                                @elseif(!empty($d->head_dept) && empty($d->hrd))
+                                                                <a href="/izinabsen/{{ $d->kode_izin }}/batalkan" class="warning">Batalkan</a>
+                                                                @endif
+                                                                @endif
+                                                                @else
+                                                                @if (!empty($d->head_dept) && empty($d->hrd))
+                                                                <a href="#" class="approveizin" kode_izin="{{ $d->kode_izin }}">
+                                                                    <i class="feather icon-external-link text-primary"></i>
+                                                                </a>
+                                                                @elseif(empty($d->head_dept))
+                                                                <span class="badge bg-warning">Waiting</span>
+                                                                @elseif(!empty($d->hrd))
+                                                                <a href="/izinabsen/{{ $d->kode_izin }}/batalkan" class="warning">Batalkan</a>
+                                                                @endif
+                                                                @endif
 
-                                                        </div>
+                                                                @if (empty($d->head_dept) && $level != "manager hrd")
+                                                                <form method="POST" class="deleteform" action="/pengajuanizin/{{Crypt::encrypt($d->kode_izin)}}/delete">
+                                                                    @csrf
+                                                                    @method('DELETE')
+                                                                    <a href="#" class="delete-confirm ml-1">
+                                                                        <i class="feather icon-trash danger"></i>
+                                                                    </a>
+                                                                </form>
+                                                                @endif
 
-                                                    </td>
-                                                </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
+                                                            </div>
+
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
