@@ -183,7 +183,7 @@
                                                             <a href="#" class="approveizin" kode_izin="{{ $d->kode_izin }}">
                                                                 <i class="feather icon-external-link text-primary"></i>
                                                             </a>
-                                                            @elseif(empty($d->head_dept))
+                                                            @elseif(empty($d->head_dept) && $d->kode_dept != "HRD")
                                                             <span class="badge bg-warning">Waiting</span>
                                                             @elseif(!empty($d->hrd))
                                                             <a href="/izinabsen/{{ $d->kode_izin }}/batalkan" class="warning">Batalkan</a>
