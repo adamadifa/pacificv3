@@ -199,6 +199,8 @@ class PengajuanizinController extends Controller
         $kode_izin = $data->kode_izin;
         $level = Auth::user()->level;
         try {
+            $izin = DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->first();
+            $jenis_izin = $izin->jenis_izin;
             if ($level != "manager hrd") {
                 DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
                     'head_dept' => NULL
@@ -211,7 +213,15 @@ class PengajuanizinController extends Controller
                         'status_approved' => NULL
                     ]);
 
-                    DB::table('presensi')->where('kode_izin', $kode_izin)->delete();
+                    if ($jenis_izin == "TL") {
+                        DB::table('presensi')->where('kode_izin_terlambat', $kode_izin)->update(['kode_izin_terlambat' => NULL]);
+                    } else if ($jenis_izin == "PL") {
+                        DB::table('presensi')->where('kode_izin_pulang', $kode_izin)->update(['kode_izin_pulang' => NULL]);
+                    } else if ($jenis_izin == "KL") {
+                        DB::table('presensi')->where('kode_izin', $kode_izin)->update(['kode_izin' => NULL]);
+                    } else {
+                        DB::table('presensi')->where('kode_izin', $kode_izin)->delete();
+                    }
                     DB::commit();
                     return Redirect::back()->with(['success' => 'Pengajuan Izin Dibatalkan']);
                 } catch (\Exception $e) {
