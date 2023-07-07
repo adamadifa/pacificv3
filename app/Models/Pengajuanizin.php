@@ -11,7 +11,7 @@ class Pengajuanizin extends Model
     use HasFactory;
     protected $table = 'pengajuan_izin';
 
-    function getpengajuan($level, $cabang, $kode_dept_presensi, $dari, $sampai, $nama_karyawan)
+    function getpengajuan($level, $cabang, $kode_dept_presensi, $dari, $sampai, $nama_karyawan, $kode_dept, $id_kantor)
     {
 
         $query = Pengajuanizin::query();
@@ -60,6 +60,14 @@ class Pengajuanizin extends Model
 
             if (!empty($nama_karyawan)) {
                 $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');
+            }
+
+            if (!empty($id_kantor)) {
+                $query->where('master_karyawan.id_kantor', $id_kantor);
+            }
+
+            if (!empty($kode_dept)) {
+                $query->where('master_karyawan.kode_dept', $kode_dept);
             }
         }
 

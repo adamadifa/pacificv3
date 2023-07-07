@@ -36,9 +36,10 @@ class PengajuanizinController extends Controller
         $dari = $request->dari_search;
         $sampai = $request->sampai_search;
         $nama_karyawan = $request->nama_karyawan;
-
+        $kode_dept = $request->kode_dept;
+        $id_kantor = $request->kode_cabang;
         $pi = new Pengajuanizin();
-        $pengajuan_izin = $pi->getpengajuan($level, $cabang, $kode_dept_presensi, $dari, $sampai, $nama_karyawan);
+        $pengajuan_izin = $pi->getpengajuan($level, $cabang, $kode_dept_presensi, $dari, $sampai, $nama_karyawan, $kode_dept, $id_kantor);
         //dd($pengajuan_izin);
 
         $cbg = new Cabang();
