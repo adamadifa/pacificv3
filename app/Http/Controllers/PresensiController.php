@@ -393,6 +393,8 @@ class PresensiController extends Controller
     {
         $tanggal = $request->tanggal;
         $pin = $request->pin;
+
+        //Mesin 1
         $url = 'https://developer.fingerspot.io/api/get_attlog';
         $data = '{"trans_id":"1", "cloud_id":"C2609075E3170B2C", "start_date":"' . $tanggal . '", "end_date":"' . $tanggal . '"}';
         $authorization = "Authorization: Bearer QNBCLO9OA0AWILQD";
@@ -408,13 +410,39 @@ class PresensiController extends Controller
         $result = curl_exec($ch);
         curl_close($ch);
         $res = json_decode($result);
-        $data = $res->data;
+        $datamesin1 = $res->data;
+
+
+        //Mesin 2
+        $url = 'https://developer.fingerspot.io/api/get_attlog';
+        $data = '{"trans_id":"1", "cloud_id":"C268909557211236", "start_date":"' . $tanggal . '", "end_date":"' . $tanggal . '"}';
+        $authorization = "Authorization: Bearer QNBCLO9OA0AWILQD";
+
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', $authorization));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        $result2 = curl_exec($ch);
+        curl_close($ch);
+        $res2 = json_decode($result2);
+        $datamesin2 = $res2->data;
+
         $specific_value = $pin;
-        $filtered_array = array_filter($data, function ($obj) use ($specific_value) {
+
+
+        $filtered_array = array_filter($datamesin1, function ($obj) use ($specific_value) {
             return $obj->pin == $specific_value;
         });
 
-        return view('presensi.getmesin', compact('filtered_array'));
+        $filtered_array_2 = array_filter($datamesin2, function ($obj) use ($specific_value) {
+            return $obj->pin == $specific_value;
+        });
+
+        return view('presensi.getmesin', compact('filtered_array', 'filtered_array_2'));
     }
 
 

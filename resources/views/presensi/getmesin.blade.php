@@ -1,15 +1,45 @@
-<table class="table">
-    <tr>
-        <th>PIN</th>
-        <th>Status Scan</th>
-        <th>Scan Date</th>
-    </tr>
-    @foreach ($filtered_array as $d)
-    <tr>
-        <td>{{ $d->pin }}</td>
-        <td>{{ $d->status_scan % 2 == 0 ? "IN" : "OUT"}}</td>
-        <td>{{ date("d-m-Y H:i:s",strtotime($d->scan_date)) }}</td>
-    </tr>
-    @endforeach
+<div class="row">
+    <div class="col-12">
+        <table class="table">
+            <tr>
+                <th colspan="3">Mesin 1</th>
+            </tr>
+            <tr>
+                <th>PIN</th>
+                <th>Status Scan</th>
+                <th>Scan Date</th>
+            </tr>
+            @foreach ($filtered_array as $d)
+            <tr>
+                <td>{{ $d->pin }}</td>
+                <td>{{ $d->status_scan % 2 == 0 ? "IN" : "OUT"}}</td>
+                <td>{{ date("d-m-Y H:i:s",strtotime($d->scan_date)) }}</td>
+            </tr>
+            @endforeach
+        </table>
+    </div>
+</div>
 
-</table>
+<div class="row">
+    <div class="col-12">
+        <table class="table">
+            <tr>
+                <th colspan="3">Mesin 2</th>
+            </tr>
+            <tr>
+                <th>PIN</th>
+                <th>Status Scan</th>
+                <th>Scan Date</th>
+            </tr>
+            @foreach ($filtered_array_2 as $d)
+            <tr>
+                <td>{{ $d->pin }}</td>
+                <td>{{ $d->status_scan % 2 == 0 ? "IN" : "OUT"}}</td>
+                <td>{{ date("d-m-Y H:i:s",strtotime($d->scan_date)) }}</td>
+            </tr>
+            @endforeach
+
+        </table>
+
+    </div>
+</div>
