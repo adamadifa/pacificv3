@@ -945,4 +945,188 @@ class DashboardController extends Controller
 
         return view('sap.home', compact('penjualan', 'penjualancabang', 'jmlpengajuan'));
     }
+
+    public function dashboardsfa(Request $request)
+    {
+
+        $tanggal = $request->tanggal;
+        $id_karyawan = $request->id_karyawan;
+        $rekap = DB::select("SELECT * FROM (
+            SELECT tgl_checkin as tgltransaksi,
+            karyawan.kode_cabang,
+            karyawan.id_karyawan,
+            nama_karyawan,
+            checkin.kode_pelanggan,
+            nama_pelanggan,
+            alamat_pelanggan,
+            checkin_time,checkout_time,
+            qty_AB,
+            qty_AR,
+            qty_AS,
+            qty_BB,
+            qty_DEP,
+            qty_SP8,
+            qty_SP,
+            qty_SP500,
+            qty_SC,
+            jml_tunai,
+            jml_kredit,
+            bayar_tunai,
+            bayar_titipan,
+            bayar_voucher,
+            bayar_transfer,
+            bayar_giro
+            FROM  checkin
+            LEFT JOIN users ON checkin.id_karyawan = users.id
+            LEFT JOIN karyawan ON  users.id_salesman = karyawan.id_karyawan
+            INNER JOIN pelanggan ON checkin.kode_pelanggan = pelanggan.kode_pelanggan
+            LEFT JOIN (
+                SELECT penjualan.kode_pelanggan,
+                ROUND(SUM(IF(kode_produk='AR',jumlah/isipcsdus,0)),2) as qty_AR,
+                ROUND(SUM(IF(kode_produk='AS',jumlah/isipcsdus,0)),2) as qty_AS,
+                ROUND(SUM(IF(kode_produk='AB',jumlah/isipcsdus,0)),2) as qty_AB,
+                ROUND(SUM(IF(kode_produk='BB',jumlah/isipcsdus,0)),2) as qty_BB,
+                ROUND(SUM(IF(kode_produk='DEP',jumlah/isipcsdus,0)),2) as qty_DEP,
+                ROUND(SUM(IF(kode_produk='SP8',jumlah/isipcsdus,0)),2) as qty_SP8,
+                ROUND(SUM(IF(kode_produk='SP',jumlah/isipcsdus,0)),2) as qty_SP,
+                ROUND(SUM(IF(kode_produk='SP500',jumlah/isipcsdus,0)),2) as qty_SP500,
+                ROUND(SUM(IF(kode_produk='SC',jumlah/isipcsdus,0)),2) as qty_SC,
+                SUM(IF(jenistransaksi='tunai',total,0)) as jml_tunai,
+                SUM(IF(jenistransaksi='kredit',total,0)) as jml_kredit
+                FROM detailpenjualan
+                INNER JOIN penjualan ON  detailpenjualan.no_fak_penj = penjualan.no_fak_penj
+                INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
+                WHERE
+                tgltransaksi = '$tanggal'
+                GROUP BY kode_pelanggan,tgltransaksi
+            ) penjualan ON (checkin.kode_pelanggan = penjualan.kode_pelanggan)
+
+            LEFT JOIN (
+                SELECT
+                kode_pelanggan,
+                SUM(IF(historibayar.jenisbayar = 'tunai',bayar,0)) as bayar_tunai,
+                SUM(IF(historibayar.jenisbayar = 'titipan',bayar,0)) as bayar_titipan,
+                SUM(IF(historibayar.status_bayar='voucher',bayar,0)) as bayar_voucher
+                FROM historibayar
+                INNER JOIN penjualan ON historibayar.no_fak_penj = penjualan.no_fak_penj
+                WHERE tglbayar = '$tanggal'
+                GROUP BY kode_pelanggan
+            ) historibayar ON (checkin.kode_pelanggan = historibayar.kode_pelanggan)
+
+
+            LEFT JOIN (
+                SELECT kode_pelanggan,SUM(jumlah) as bayar_transfer
+                FROM transfer
+                INNER JOIN penjualan ON transfer.no_fak_penj = penjualan.no_fak_penj
+                WHERE tgl_transfer = '$tanggal'
+                GROUP BY kode_pelanggan
+            ) transfer ON (checkin.kode_pelanggan = transfer.kode_pelanggan)
+
+
+            LEFT JOIN (
+                SELECT kode_pelanggan,SUM(jumlah) as bayar_giro
+                FROM giro
+                INNER JOIN penjualan ON giro.no_fak_penj = penjualan.no_fak_penj
+                WHERE tgl_giro = '$tanggal'
+                GROUP BY kode_pelanggan
+            ) giro ON (checkin.kode_pelanggan = giro.kode_pelanggan)
+            WHERE
+            tgl_checkin =  '$tanggal'
+            AND karyawan.id_karyawan = '$id_karyawan'
+
+            UNION
+
+
+            SELECT tgltransaksi,karyawan.
+            kode_cabang,
+            penjualan.id_karyawan,
+            nama_karyawan,
+            penjualan.kode_pelanggan,
+            nama_pelanggan,
+            alamat_pelanggan,
+            'NA' as 'checkin_time' , 'NA' as 'checkout_time',
+            SUM(IFNULL(qty_AR,0)) as qty_AR,
+            SUM(IFNULL(qty_AS,0)) as qty_AS,
+            SUM(IFNULL(qty_AB,0)) as qty_AB,
+            SUM(IFNULL(qty_BB,0)) as qty_BB,
+            SUM(IFNULL(qty_DEP,0)) as qty_DEP,
+            SUM(IFNULL(qty_SP8,0)) as qty_SP8,
+            SUM(IFNULL(qty_SP,0)) as qty_SP,
+            SUM(IFNULL(qty_SP500,0)) as qty_SP500,
+            SUM(IFNULL(qty_SC,0)) as qty_SC,
+            SUM(IF(penjualan.jenistransaksi='tunai',total,0)) as jml_tunai,
+            SUM(IF(penjualan.jenistransaksi='kredit',total,0)) as jml_kredit,
+            SUM(IFNULL(bayar_tunai,0)) as bayar_tunai,
+            SUM(IFNULL(bayar_titipan,0)) as bayar_titipan,
+            SUM(IFNULL(bayar_voucher,0)) as bayar_voucher,
+            SUM(IFNULL(bayar_transfer,0)) as bayar_transfer,
+            SUM(IFNULL(bayar_giro,0)) as bayar_giro
+            FROM penjualan
+            INNER JOIN karyawan ON penjualan.id_karyawan = karyawan.id_karyawan
+            INNER JOIN pelanggan ON penjualan.kode_pelanggan = pelanggan.kode_pelanggan
+            LEFT JOIN (
+                SELECT no_fak_penj,
+                ROUND(SUM(IF(kode_produk='AR',jumlah/isipcsdus,0)),2) as qty_AR,
+                ROUND(SUM(IF(kode_produk='AS',jumlah/isipcsdus,0)),2) as qty_AS,
+                ROUND(SUM(IF(kode_produk='AB',jumlah/isipcsdus,0)),2) as qty_AB,
+                ROUND(SUM(IF(kode_produk='BB',jumlah/isipcsdus,0)),2) as qty_BB,
+                ROUND(SUM(IF(kode_produk='DEP',jumlah/isipcsdus,0)),2) as qty_DEP,
+                ROUND(SUM(IF(kode_produk='SP8',jumlah/isipcsdus,0)),2) as qty_SP8,
+                ROUND(SUM(IF(kode_produk='SP',jumlah/isipcsdus,0)),2) as qty_SP,
+                ROUND(SUM(IF(kode_produk='SP500',jumlah/isipcsdus,0)),2) as qty_SP500,
+                ROUND(SUM(IF(kode_produk='SC',jumlah/isipcsdus,0)),2) as qty_SC
+                FROM detailpenjualan
+                INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
+                GROUP BY no_fak_penj
+            ) detailpenjualan ON (penjualan.no_fak_penj = detailpenjualan.no_fak_penj)
+
+
+            LEFT JOIN (
+                SELECT
+                historibayar.no_fak_penj,
+                SUM(IF(historibayar.jenisbayar = 'tunai',bayar,0)) as bayar_tunai,
+                SUM(IF(historibayar.jenisbayar = 'titipan',bayar,0)) as bayar_titipan,
+                SUM(IF(historibayar.status_bayar='voucher',bayar,0)) as bayar_voucher
+                FROM historibayar
+                INNER JOIN penjualan ON historibayar.no_fak_penj = penjualan.no_fak_penj
+                WHERE tglbayar = '$tanggal'
+                GROUP BY no_fak_penj
+            ) historibayar ON (historibayar.no_fak_penj = penjualan.no_fak_penj)
+
+            LEFT JOIN (
+                SELECT transfer.no_fak_penj,SUM(jumlah) as bayar_transfer
+                FROM transfer
+                INNER JOIN penjualan ON transfer.no_fak_penj = penjualan.no_fak_penj
+                WHERE tgl_transfer = '$tanggal'
+                GROUP BY no_fak_penj
+            ) transfer ON (penjualan.no_fak_penj = transfer.no_fak_penj)
+
+
+            LEFT JOIN (
+                SELECT giro.no_fak_penj,SUM(jumlah) as bayar_giro
+                FROM giro
+                INNER JOIN penjualan ON giro.no_fak_penj = penjualan.no_fak_penj
+                WHERE tgl_giro = '$tanggal'
+                GROUP BY no_fak_penj
+            ) giro ON (penjualan.no_fak_penj = giro.no_fak_penj)
+
+            WHERE tgltransaksi = '$tanggal'  AND penjualan.id_karyawan = '$id_karyawan'
+            AND  penjualan.kode_pelanggan NOT IN (SELECT kode_pelanggan FROM checkin WHERE tgl_checkin = '$tanggal')
+
+            GROUP BY tgltransaksi,karyawan.
+            kode_cabang,
+            penjualan.id_karyawan,
+            nama_karyawan,
+            penjualan.kode_pelanggan,
+            nama_pelanggan,
+            alamat_pelanggan
+
+            ) sfa ORDER BY checkin_time");
+
+        $kode_cabang = Auth::user()->kode_cabang;
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($kode_cabang);
+
+        return view('dashboard.sfa', compact('rekap', 'cabang'));
+    }
 }

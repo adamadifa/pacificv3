@@ -381,6 +381,7 @@ class GlobalProvider extends ServiceProvider
             $dashboardstaffkeuangan = ['staff keuangan', 'staff keuangan 2', 'staff keuangan 3'];
             $dashboardadminkaskecil = ['admin kas kecil', 'audit', 'manager audit'];
             $dashboardpembelian = ['manager pembelian', 'admin pembelian'];
+            $dashboard_sfa = ['admin', 'kepala admin', 'kepala penjualan', 'rsm', 'manager marketing', 'manager accounting'];
 
             //Data Master
             $datamaster = [
@@ -1131,6 +1132,7 @@ class GlobalProvider extends ServiceProvider
                 'dashboardstaffkeuangan' => $dashboardstaffkeuangan,
                 'dashboardadminkaskecil' => $dashboardadminkaskecil,
                 'dashboardpembelian' => $dashboardpembelian,
+                'dashboard_sfa' => $dashboard_sfa,
                 //Data Master
                 'datamaster_view' => $datamaster,
 

@@ -27,6 +27,14 @@
                     <span class="menu-title" data-i18n="Dashboard">Dashboard</span>
                 </a>
             </li>
+            @if (in_array($level,$dashboard_sfa))
+            <li class=" {{ request()->is(['dashboardsfa']) ? 'active' : '' }} nav-item">
+                <a href="/dashboardsfa">
+                    <i class="feather icon-shopping-bag"></i>
+                    <span class="menu-title" data-i18n="Dashboard">Dashboard SFA</span>
+                </a>
+            </li>
+            @endif
             @if (in_array($level,$scan))
             <li class=" {{ request()->is(['scan']) ? 'active' : '' }} nav-item">
                 <a href="/scan">
