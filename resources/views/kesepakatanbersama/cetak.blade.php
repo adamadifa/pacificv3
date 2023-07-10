@@ -184,7 +184,7 @@
                     Perhitungan Besaran Uang Masa Kerja <br>
                     Masa Kerja :
                     @php
-                    $tanggal = $cekjmk->tgl_pembayaran;
+                    $tanggal = $cekjmk != null ? $cekjmk->tgl_pembayaran : $kontrak->dari;
                     $nextmonth = date('Y-m-d', strtotime('+1 month', strtotime($tanggal)));
                     @endphp
                     @php
