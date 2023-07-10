@@ -83,16 +83,16 @@
             </div>
             <div class="row mt-1" id="statusjam">
                 <div class="col-6">
-                    <x-inputtext label="Jam Masuk" value="{{ $cek!=null ? $cek->jam_in !=null  ? date('H:i',strtotime($cek->jam_in)) : '' : '' }}" field="jam_masuk" icon="feather icon-clock" />
+                    <x-inputtext label="Jam Masuk" readonly value="{{ $cek!=null ? $cek->jam_in !=null  ? date('H:i',strtotime($cek->jam_in)) : '' : '' }}" field="jam_masuk" icon="feather icon-clock" />
 
                 </div>
                 <div class="col-6">
-                    <x-inputtext label="Jam Pulang" value="{{ $cek!=null ? $cek->jam_out !=null  ? date('H:i',strtotime($cek->jam_out)) : '' : '' }}" field="jam_pulang" icon="feather icon-clock" />
+                    <x-inputtext label="Jam Pulang" readonly value="{{ $cek!=null ? $cek->jam_out !=null  ? date('H:i',strtotime($cek->jam_out)) : '' : '' }}" field="jam_pulang" icon="feather icon-clock" />
                 </div>
             </div>
             @endif
             @else
-            @if ($level=="manager hrd" && $level=="admin")
+            @if ($level=="manager hrd" || $level=="admin")
             <div class="row">
                 <div class="col-12">
                     <table class="table">
@@ -183,12 +183,12 @@
             </div>
             <div class="row mt-1 statushadir">
                 <div class="col-6">
-                    <x-inputtext label="Jam Masuk" value="{{ $cek!=null ? $cek->jam_in !=null  ? date('H:i',strtotime($cek->jam_in)) : '' : '' }}" field="jam_masuk" icon="feather icon-clock" />
+                    <x-inputtext label="Jam Masuk" readonly value="{{ $cek!=null ? $cek->jam_in !=null  ? date('H:i',strtotime($cek->jam_in)) : '' : '' }}" field="jam_masuk" icon="feather icon-clock" />
 
                 </div>
 
                 <div class="col-6">
-                    <x-inputtext label="Jam Pulang" value="{{ $cek!=null ? $cek->jam_out !=null  ? date('H:i',strtotime($cek->jam_out)) : '' : '' }}" field="jam_pulang" icon="feather icon-clock" />
+                    <x-inputtext label="Jam Pulang" readonly value="{{ $cek!=null ? $cek->jam_out !=null  ? date('H:i',strtotime($cek->jam_out)) : '' : '' }}" field="jam_pulang" icon="feather icon-clock" />
                 </div>
 
             </div>
