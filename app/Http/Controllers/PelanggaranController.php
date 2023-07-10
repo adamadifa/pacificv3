@@ -76,6 +76,7 @@ class PelanggaranController extends Controller
             DB::table('hrd_sp')->insert($data);
             return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
         } catch (\Exception $e) {
+            dd($e);
             return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);
         }
     }
