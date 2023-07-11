@@ -1683,6 +1683,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/presensi/show', [PresensiController::class, 'show']);
     Route::post('/presensi/checkmesin', [PresensiController::class, 'checkmesin']);
     Route::get('/presensi/presensikaryawan', [PresensiController::class, 'presensikaryawan']);
+    Route::get('/presensi/{pin}/{status_scan}/{scan_date}/updatefrommachine', [PresensiController::class, 'updatefrommachine']);
 
     //Jadwal Shift
     Route::get('/konfigurasijadwal', [KonfigurasijadwalController::class, 'index']);
