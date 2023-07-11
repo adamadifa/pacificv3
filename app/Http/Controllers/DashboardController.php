@@ -952,7 +952,7 @@ class DashboardController extends Controller
         $tanggal = $request->tanggal;
         $id_karyawan = $request->id_karyawan;
         $rekap = DB::select("SELECT * FROM (
-            SELECT tgl_checkin as tgltransaksi,
+            SELECT tgl_checkin,tgltransaksi,
             karyawan.kode_cabang,
             karyawan.id_karyawan,
             nama_karyawan,
@@ -982,6 +982,7 @@ class DashboardController extends Controller
             INNER JOIN pelanggan ON checkin.kode_pelanggan = pelanggan.kode_pelanggan
             LEFT JOIN (
                 SELECT penjualan.kode_pelanggan,
+                tgltransaksi,
                 ROUND(SUM(IF(kode_produk='AR',jumlah/isipcsdus,0)),2) as qty_AR,
                 ROUND(SUM(IF(kode_produk='AS',jumlah/isipcsdus,0)),2) as qty_AS,
                 ROUND(SUM(IF(kode_produk='AB',jumlah/isipcsdus,0)),2) as qty_AB,
@@ -997,7 +998,7 @@ class DashboardController extends Controller
                 INNER JOIN penjualan ON  detailpenjualan.no_fak_penj = penjualan.no_fak_penj
                 INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
                 WHERE
-                tgltransaksi = '$tanggal'
+                date(date_created) = '$tanggal'
                 GROUP BY kode_pelanggan,tgltransaksi
             ) penjualan ON (checkin.kode_pelanggan = penjualan.kode_pelanggan)
 
@@ -1037,7 +1038,7 @@ class DashboardController extends Controller
             UNION
 
 
-            SELECT tgltransaksi,karyawan.
+            SELECT tgltransaksi as tgl_checkin,tgltransaksi,karyawan.
             kode_cabang,
             penjualan.id_karyawan,
             nama_karyawan,
@@ -1110,10 +1111,10 @@ class DashboardController extends Controller
                 GROUP BY no_fak_penj
             ) giro ON (penjualan.no_fak_penj = giro.no_fak_penj)
 
-            WHERE tgltransaksi = '$tanggal'  AND penjualan.id_karyawan = '$id_karyawan'
+            WHERE date(date_created) = '$tanggal'  AND penjualan.id_karyawan = '$id_karyawan'
             AND  penjualan.kode_pelanggan NOT IN (SELECT kode_pelanggan FROM checkin WHERE tgl_checkin = '$tanggal')
 
-            GROUP BY tgltransaksi,karyawan.
+            GROUP BY tgl_checkin,tgltransaksi,karyawan.
             kode_cabang,
             penjualan.id_karyawan,
             nama_karyawan,

@@ -61,10 +61,13 @@
                                         <th rowspan="2">ID Salesman</th>
                                         <th rowspan="2">Salesman</th> --}}
                                         <th colspan="2" style="text-align: center">Pelanggan</th>
+                                        <th rowspan="2">Checkin</th>
+                                        <th rowspan="2">Checkout</th>
                                         <th rowspan="2">Durasi</th>
                                         <th colspan="9" style="text-align: center">Transaksi</th>
                                         <th colspan="2" style="text-align: center">Penjualan</th>
                                         <th colspan="5" style="text-align: center">Pembayaran</th>
+                                        <th rowspan="2">Tgl Penjualan</th>
                                     </tr>
                                     <tr>
                                         <th>Kode</th>
@@ -111,6 +114,8 @@
                                         <td>{{ $d->kode_pelanggan }}</td>
                                         <td>{{ $d->nama_pelanggan }}</td>
                                         {{-- <td>{{ ucwords(strtolower($d->alamat_pelanggan)) }}</td> --}}
+                                        <td>{{ date("H:i:s",strtotime($d->checkin_time)) }}</td>
+                                        <td>{{ date("H:i:s",strtotime($d->checkout_time)) }}</td>
                                         <td>{!! $minutes != "NA" ? $minutes." Menit" : "<span class='danger'>Tidak Checkin</span>" !!} </td>
                                         <td class="text-center">{{ !empty($d->qty_AR) && $d->qty_AR > 0 ?  desimal($d->qty_AR) : "" }}</td>
                                         <td class="text-center">{{ !empty($d->qty_AS) && $d->qty_AS > 0 ?  desimal($d->qty_AS) : "" }}</td>
@@ -128,6 +133,7 @@
                                         <td class="text-right">{{ !empty($d->bayar_transfer) ? rupiah($d->bayar_transfer) : "" }}</td>
                                         <td class="text-right">{{ !empty($d->bayar_giro) ? rupiah($d->bayar_giro) : "" }}</td>
                                         <td class="text-right">{{ !empty($d->bayar_voucher) ? rupiah($d->bayar_voucher) : "" }}</td>
+                                        <td>{{ !empty($d->tgltransaksi) ? date("d-m-y",strtotime($d->tgltransaksi)) : "" }}</td>
                                     </tr>
                                     @endforeach
                                 </tbody>
