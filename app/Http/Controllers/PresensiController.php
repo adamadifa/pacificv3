@@ -701,8 +701,10 @@ class PresensiController extends Controller
                 $simpan = DB::table('presensi')->insert($data);
                 if ($simpan) {
                     echo "success|Terimkasih, Hati Hati Di Jalan|out";
+                    return Redirect::back()->with(['success' => 'Data Berhasil di Update']);
                 } else {
                     echo "error|Maaf Gagal absen, Hubungi Tim It|out";
+                    return Redirect::back()->with(['warning' => 'Data Gagal di Update']);
                 }
             } else {
                 $data_masuk = [
@@ -711,8 +713,10 @@ class PresensiController extends Controller
                 $update = DB::table('presensi')->where('tgl_presensi', $tgl_presensi)->where('nik', $nik)->update($data_masuk);
                 if ($update) {
                     echo "success|Terimkasih, Hati Hati Di Jalan|out";
+                    return Redirect::back()->with(['success' => 'Data Berhasil di Update']);
                 } else {
                     echo "error|Maaf Gagal absen, Hubungi Tim It|out";
+                    return Redirect::back()->with(['warning' => 'Data Gagal di Update']);
                 }
             }
         }
