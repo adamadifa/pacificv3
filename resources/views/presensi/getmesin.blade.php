@@ -16,9 +16,13 @@
                 <td>{{ $d->status_scan % 2 == 0 ? "IN" : "OUT"}} ({{ $d->status_scan }})</td>
                 <td>{{ date("d-m-Y H:i:s",strtotime($d->scan_date)) }}</td>
                 <td>
-                    <a href="/presensi/{{ Crypt::encrypt($d->pin) }}/{{ $d->status_scan }}/{{ date("Y-m-d H:i:s",strtotime($d->scan_date)) }}/updatefrommachine">
-                        <i class="feather icon-refresh-ccw info"></i>
-                    </a>
+                    <div class="btn-group">
+                        <a href="/presensi/{{ Crypt::encrypt($d->pin) }}/0/{{ date("Y-m-d H:i:s",strtotime($d->scan_date)) }}/updatefrommachine"> <i class="feather icon-log-in success mr-1"></i> Masuk </a>
+                        <a href="/presensi/{{ Crypt::encrypt($d->pin) }}/1/{{ date("Y-m-d H:i:s",strtotime($d->scan_date)) }}/updatefrommachine"> <i class="feather icon-log-out danger mr-1"></i> Pulang </a>
+                    </div>
+
+
+
                 </td>
             </tr>
             @endforeach
