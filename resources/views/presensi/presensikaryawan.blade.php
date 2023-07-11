@@ -344,7 +344,7 @@
                                             <td style="color:{{ $grandtotaljam < $d->total_jam ?  'red' : '' }}; text-align:center">{{ $grandtotaljam > 0 ? $grandtotaljam : 0 }}</td>
                                             <td>
                                                 @if ($level == "manager hrd" || $level=="admin" || Auth::user()->pic_presensi==1)
-                                                <a href="#" class="edit" nik="{{ $d->nik }}" kode_jadwal="{{ $d->kode_jadwal }}"><i class="feather icon-edit info"></i></a>
+                                                <a href="#" class="edit" nik="{{ $d->nik }}" kode_jadwal="{{ $d->kode_jadwal }}" tanggal="{{ $d->tgl_presensi }}"><i class="feather icon-edit info"></i></a>
                                                 <a href="#" class="checkmesin" pin="{{ $d->pin }}" tanggal="{{ !empty(Request('tanggal')) ? Request('tanggal') : date('Y-m-d') }}"><i class="feather icon-monitor success"></i></a>
                                                 @endif
                                             </td>
@@ -471,8 +471,8 @@
         $(".edit").click(function(e) {
             e.preventDefault();
             var nik = $(this).attr('nik');
-            var tanggal = "{{ Request('tanggal') }}";
-            var tgl = tanggal == "" ? "{{ date('Y-m-d') }}" : tanggal;
+            var tgl = $(this).attr('tanggal');
+            // var tgl = tanggal == "" ? "{{ date('Y-m-d') }}" : tanggal;
             var kode_jadwal = $(this).attr("kode_jadwal");
             // /alert(kode_jadwal);
             $("#tglupdatepresensi").text(tgl);
