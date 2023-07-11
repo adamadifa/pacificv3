@@ -18,7 +18,7 @@
                 <td>
                     <div class="btn-group">
                         <a href="/presensi/{{ Crypt::encrypt($d->pin) }}/0/{{ date("Y-m-d H:i:s",strtotime($d->scan_date)) }}/updatefrommachine"> <i class="feather icon-log-in success mr-1"></i> Masuk </a>
-                        <a href="/presensi/{{ Crypt::encrypt($d->pin) }}/1/{{ date("Y-m-d H:i:s",strtotime($d->scan_date)) }}/updatefrommachine" class="mr-1"> <i class="feather icon-log-out danger mr-1"></i> Pulang </a>
+                        <a href="/presensi/{{ Crypt::encrypt($d->pin) }}/1/{{ date("Y-m-d H:i:s",strtotime($d->scan_date)) }}/updatefrommachine" class="mr-1"> <i class="feather icon-log-out danger ml-1"></i> Pulang </a>
                     </div>
 
 
@@ -50,7 +50,7 @@
                 <td>
                     <div class="btn-group">
                         <a href="/presensi/{{ Crypt::encrypt($d->pin) }}/0/{{ date("Y-m-d H:i:s",strtotime($d->scan_date)) }}/updatefrommachine"> <i class="feather icon-log-in success mr-1"></i> Masuk </a>
-                        <a href="/presensi/{{ Crypt::encrypt($d->pin) }}/1/{{ date("Y-m-d H:i:s",strtotime($d->scan_date)) }}/updatefrommachine" class="mr-1"> <i class="feather icon-log-out danger mr-1"></i> Pulang </a>
+                        <a href="/presensi/{{ Crypt::encrypt($d->pin) }}/1/{{ date("Y-m-d H:i:s",strtotime($d->scan_date)) }}/updatefrommachine" class="ml-1"> <i class="feather icon-log-out danger mr-1"></i> Pulang </a>
                     </div>
                 </td>
             </tr>
