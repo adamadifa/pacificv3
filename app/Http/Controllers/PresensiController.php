@@ -681,9 +681,10 @@ class PresensiController extends Controller
                 ->where('nik', $nik)->where('tgl_presensi', $lastday)->first();
             //Cek Lintas Hari
             $last_lintashari = $ceklastpresensi != null  ? $ceklastpresensi->lintashari : "";
+            $tgl_pulang_shift_3 = date("H:i", strtotime(($jam)));
 
 
-            if (!empty($last_lintashari) || $jam <= "07:00") {
+            if (!empty($last_lintashari) && $tgl_pulang_shift_3 <= "08:00" || empty($last_lintashari) && $tgl_pulang_shift_3 <= "08:00") {
                 $tgl_presensi = $lastday;
             }
 
