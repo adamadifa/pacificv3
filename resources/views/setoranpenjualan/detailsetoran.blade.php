@@ -240,7 +240,7 @@
     </table>
     <h4>SUMMARY <br> TANGGAL <?php echo DateToIndo2($tgl_lhp); ?><br></h4>
     <?php
-                    $totalsummary = $totaltunai + $totaltagihan + $totalgiro + $totaltransfer - $totalgirotocash - $totalgirototransfer;
+                    $totalsummary = $totaltunai + $totaltagihan + $totalgiro + $totaltransfer - $totalgirototransfer;
                     ?>
     <table class="datatable3">
 
