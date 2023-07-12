@@ -4419,7 +4419,7 @@ class PenjualanController extends Controller
         pelanggan.pasar AS pasar,
         pelanggan.hari AS hari,
         pelanggan.jatuhtempo AS jatuhtempo,
-        pelanggan.kode_cabang AS kode_cabang,
+        karyawan.kode_cabang AS kode_cabang,
         penjualan.total AS total,
         penjualan.jenistransaksi AS jenistransaksi,
         penjualan.jenisbayar AS jenisbayar,
