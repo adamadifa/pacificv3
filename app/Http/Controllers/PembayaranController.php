@@ -522,12 +522,13 @@ class PembayaranController extends Controller
                 if (!empty($request->kode_cabang)) {
                     $query->where('karyawan.kode_cabang', $request->kode_cabang);
                 }
+
                 $query->whereNull('historibayar.id_giro');
                 $query->whereNull('historibayar.id_transfer');
                 $query->where('historibayar.girotocash', 1);
 
 
-                $query->whereBetween('tglbayar', [$dari, $sampai]);
+                $query->orwhereBetween('tglbayar', [$dari, $sampai]);
                 if (!empty($request->id_karyawan)) {
                     $query->where('historibayar.id_karyawan', $request->id_karyawan);
                 }
