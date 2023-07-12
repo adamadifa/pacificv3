@@ -8237,7 +8237,13 @@ class PenjualanController extends Controller
                 }
             }
         }
-        return view('penjualan.inputbarangtemp', compact('barang'));
+
+        if ($kode_cabang == "TSM" && str_contains($pelanggan->nama_pelanggan, 'KPBN')) {
+            $pengurangharga = 1000;
+        } else {
+            $pengurangharga = 0;
+        }
+        return view('penjualan.inputbarangtemp', compact('barang', 'pengurangharga'));
     }
 
 

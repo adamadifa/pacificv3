@@ -508,10 +508,16 @@ class HargaController extends Controller
             }
         }
 
-        if (Auth::user()->level == "salesman") {
-            return view('harga.getbarangsalesman', compact('barang'));
+        if ($kode_cabang == "TSM" && str_contains($pelanggan->nama_pelanggan, 'KPBN')) {
+            $pengurangharga = 1000;
         } else {
-            return view('harga.getbarangcabang', compact('barang'));
+            $pengurangharga = 0;
+        }
+
+        if (Auth::user()->level == "salesman") {
+            return view('harga.getbarangsalesman', compact('barang', 'pengurangharga'));
+        } else {
+            return view('harga.getbarangcabang', compact('barang', 'pengurangharga'));
         }
     }
 

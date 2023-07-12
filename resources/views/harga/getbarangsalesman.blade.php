@@ -2,8 +2,8 @@
 <tr>
     <td>{{ $d->kode_barang }}</td>
     <td>{{ $d->nama_barang }}</td>
-    <td class="text-right">{{ rupiah($d->harga_dus) }}</td>
-    <td><a href="#" class="btn btn-sm btn-primary pilihbarang" kode_barang="{{ $d->kode_barang }}" nama_barang="{{ $d->nama_barang }}" isipcsdus="{{ $d->isipcsdus }}" isipcs="{{ $d->isipcs }}" isipack="{{ $d->isipack }}" harga_dus="{{ rupiah($d->harga_dus) }}" harga_pack="{{ rupiah($d->harga_pack) }}" harga_pcs="{{ rupiah($d->harga_pcs) }}">Pilih</a></td>
+    <td class="text-right">{{ rupiah($d->harga_dus - $pengurangharga) }}</td>
+    <td><a href="#" class="btn btn-sm btn-primary pilihbarang" kode_barang="{{ $d->kode_barang }}" nama_barang="{{ $d->nama_barang }}" isipcsdus="{{ $d->isipcsdus }}" isipcs="{{ $d->isipcs }}" isipack="{{ $d->isipack }}" harga_dus="{{ rupiah($d->harga_dus-$pengurangharga) }}" harga_pack="{{ rupiah($d->harga_pack) }}" harga_pcs="{{ rupiah($d->harga_pcs) }}">Pilih</a></td>
 </tr>
 @endforeach
 
