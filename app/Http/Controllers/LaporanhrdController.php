@@ -1466,4 +1466,90 @@ class LaporanhrdController extends Controller
         //dd($presensi);
         return view('presensi.laporan.cetak', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh'));
     }
+
+
+    public function rekapterlambat()
+    {
+        $departemen = DB::table('hrd_departemen')->orderBy('nama_dept')->get();
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang(Auth::user()->kode_cabang);
+        return view('presensi.laporan.rekapterlambat', compact('departemen', 'cabang'));
+    }
+
+
+    public function cetakrekapterlambat(Request $request)
+    {
+        $id_kantor = $request->id_kantor;
+        $kode_dept = $request->kode_dept;
+        $id_group = $request->id_group;
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $query = Presensi::query();
+        $query->select(
+            'tgl_presensi',
+            'presensi.nik',
+            'nama_karyawan',
+            'tgl_masuk',
+            'master_karyawan.kode_dept',
+            'nama_dept',
+            'jenis_kelamin',
+            'nama_jabatan',
+            'id_perusahaan',
+            'id_kantor',
+            'klasifikasi',
+            'status_karyawan',
+            'presensi.kode_jadwal',
+            'nama_jadwal',
+            'jam_kerja.jam_masuk',
+            'jam_kerja.jam_pulang',
+            'jam_in',
+            'jam_out',
+            'presensi.status as status_presensi',
+            'presensi.kode_izin',
+            'kode_izin_terlambat',
+            'pengajuan_izin.status as status_izin',
+            'pengajuan_izin.jenis_izin',
+            'pengajuan_izin.jam_keluar',
+            'pengajuan_izin.jam_masuk as jam_masuk_kk',
+            'total_jam',
+            'kode_izin_pulang',
+            'jam_istirahat',
+            'jam_awal_istirahat',
+            'sid',
+            'jadwal_kerja.kode_cabang as jadwalcabang',
+            'lokasi_in',
+            'lokasi_out',
+            'presensi.id',
+            'pin'
+        );
+        $query->join('master_karyawan', 'presensi.nik', '=', 'master_karyawan.nik');
+        $query->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
+        $query->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
+        $query->leftjoin('jadwal_kerja', 'presensi.kode_jadwal', '=', 'jadwal_kerja.kode_jadwal');
+        $query->leftjoin('jam_kerja', 'presensi.kode_jam_kerja', '=', 'jam_kerja.kode_jam_kerja');
+        $query->leftjoin('pengajuan_izin', 'presensi.kode_izin', '=', 'pengajuan_izin.kode_izin');
+        if (!empty($id_kantor)) {
+            $query->where('master_karyawan.id_kantor', $id_kantor);
+        }
+
+        if (!empty($kode_dept)) {
+            $query->where('master_karyawan.kode_dept', $kode_dept);
+        }
+
+        if (!empty($id_group)) {
+            $query->where('master_karyawan.grup', $id_group);
+        }
+
+        $query->whereRaw('DATE_FORMAT(jam_in, "%H:%i") > DATE_FORMAT(jam_kerja.jam_masuk,"%H:%i")');
+        $query->whereBetween('tgl_presensi', [$dari, $sampai]);
+        $query->orderBy('presensi.nik');
+        $presensi = $query->get();
+
+        //dd($presensi);
+
+        $departemen = DB::table('hrd_departemen')->where('kode_dept', $kode_dept)->first();
+        $kantor = DB::table('cabang')->where('kode_cabang', $id_kantor)->first();
+        $group = DB::table('hrd_group')->where('id', $id_group)->first();
+        return view('presensi.laporan.cetakrekapketerlambatan', compact('presensi', 'departemen', 'kantor', 'group'));
+    }
 }
