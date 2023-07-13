@@ -55,7 +55,9 @@
 <li class="nav-item">
     <a class="nav-link {{ request()->is('pengajuanizin/perjalanandinas') ? 'active' : '' }}" href="/pengajuanizin/perjalanandinas">
         Perjalanan Dinas
-
+        @if (!empty($pi->perjalanandinas))
+        <span class="badge bg-danger">{{ $pi->perjalanandinas }}</span>
+        @endif
     </a>
 </li>
 

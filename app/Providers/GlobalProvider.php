@@ -142,7 +142,9 @@ class GlobalProvider extends ServiceProvider
                     SUM(IF(status='i' AND jenis_izin = 'KL',1,0)) as keluar,
                     SUM(IF(status='c',1,0)) as cuti,
                     SUM(IF(status='s',1,0)) as sakit,
-                    SUM(IF(status='k',1,0)) as koreksi");
+                    SUM(IF(status='k',1,0)) as koreksi,
+                    SUM(IF(status='p',1,0)) as perjalanandinas
+                    ");
                 $qpi->leftJoin('master_karyawan', 'pengajuan_izin.nik', '=', 'master_karyawan.nik');
                 $qpi->leftjoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
                 $qpi->leftjoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
