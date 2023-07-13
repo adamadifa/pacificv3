@@ -35,8 +35,8 @@
                                             <div class="form-group">
                                                 <select name="id_kantor" id="id_kantor" class="form-control">
                                                     <option value="">Semua Kantor</option>
-                                                    @foreach ($cabang as $d)
-                                                    <option value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
+                                                    @foreach ($cabang as $c)
+                                                    <option {{ (Request('kode_cabang')==$c->kode_cabang ? 'selected':'')}} value="{{ $c->kode_cabang }}">{{ strtoupper($c->kode_cabang=="PST" ? "PUSAT" : $c->nama_cabang) }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>

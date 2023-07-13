@@ -77,7 +77,7 @@
                                                             <option value="">Pilih Cabang</option>
                                                             @endif
                                                             @foreach ($cabang as $c)
-                                                            <option {{ (Request('kode_cabang')==$c->kode_cabang ? 'selected':'')}} value="{{ $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
+                                                            <option {{ (Request('kode_cabang')==$c->kode_cabang ? 'selected':'')}} value="{{ $c->kode_cabang }}">{{ strtoupper($c->kode_cabang=="PST" ? "PUSAT" : $c->nama_cabang) }}</option>
                                                             @endforeach
                                                         </select>
                                                     </div>
@@ -230,7 +230,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel18">Approve Pengajuan Izin</h4>
+                <h4 class="modal-title" id="myModalLabel18">Approve Pengajuan Masuk Kerja</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
