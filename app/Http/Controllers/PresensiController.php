@@ -321,7 +321,7 @@ class PresensiController extends Controller
             }
         }
 
-        dd($jam_kerja);
+        //dd($jam_kerja);
 
         //dd($jam_pulang);
         $cekizinterlambat = DB::table('pengajuan_izin')->where('nik', $nik)->where('dari', $tgl_presensi)->where('jenis_izin', 'TL')->where('status_approved', 1)->first();
@@ -372,7 +372,7 @@ class PresensiController extends Controller
                 ];
             }
 
-            dd($data);
+            //dd($data);
             try {
                 DB::table('presensi')
                     ->where('id', $cek->id)
