@@ -189,6 +189,7 @@
                                                             @if ($level == "manager hrd")
                                                             <a href="#" class="ket_hrd" kode_izin="{{ $d->kode_izin }}"><i class="feather icon-message-square ml-1 info"></i></a>
                                                             @endif
+
                                                             @if (empty($d->head_dept) && $level != "manager hrd")
                                                             <form method="POST" class="deleteform" action="/pengajuanizin/{{Crypt::encrypt($d->kode_izin)}}/delete">
                                                                 @csrf
@@ -294,12 +295,10 @@
         });
     });
 
-    $(function() {
-        $(".ket_hrd").click(function(e) {
-            $("#mdl_kethrd").modal("show");
-            var kode_izin = $(this).attr('kode_izin');
-            $("#load_kethrd").load('/pengajuanizin/' + kode_izin + '/create_kethrd');
-        });
+    $(".ket_hrd").click(function(e) {
+        $("#mdl_kethrd").modal("show");
+        var kode_izin = $(this).attr('kode_izin');
+        $("#load_kethrd").load('/pengajuanizin/' + kode_izin + '/create_kethrd');
     });
 
     $("#buatizin").click(function(e) {

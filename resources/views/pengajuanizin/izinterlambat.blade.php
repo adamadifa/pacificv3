@@ -147,7 +147,9 @@
                                                     <td>{{ $d->kode_dept }}</td>
                                                     <td>{{ $d->id_kantor }}</td>
                                                     <td>{{ $d->jam_terlambat }}</td>
-                                                    <td>{{ $d->keterangan }}</td>
+                                                    <td>{{ $d->keterangan }} <br>
+                                                        {!! !empty($d->keterangan_hrd) ? "<span class='danger'><b>HRD</b></span> : <span class='danger'>".$d->keterangan_hrd."</span>":"" !!}
+                                                    </td>
                                                     <td class="text-center">
                                                         @if (empty($d->head_dept))
                                                         <i class="fa fa-history text-warning"></i>
@@ -189,6 +191,11 @@
                                                             <a href="/izinabsen/{{ $d->kode_izin }}/batalkan" class="warning">Batalkan</a>
                                                             @endif
                                                             @endif
+
+                                                            @if ($level == "manager hrd")
+                                                            <a href="#" class="ket_hrd" kode_izin="{{ $d->kode_izin }}"><i class="feather icon-message-square ml-1 info"></i></a>
+                                                            @endif
+
 
                                                             @if (empty($d->head_dept) && $level != "manager hrd")
                                                             <form method="POST" class="deleteform" action="/pengajuanizin/{{Crypt::encrypt($d->kode_izin)}}/delete">
@@ -265,11 +272,31 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade text-left" id="mdl_kethrd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Keterangan HRD</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="load_kethrd">
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('myscript')
 <script>
     $(function() {
+        $(".ket_hrd").click(function(e) {
+            $("#mdl_kethrd").modal("show");
+            var kode_izin = $(this).attr('kode_izin');
+            $("#load_kethrd").load('/pengajuanizin/' + kode_izin + '/create_kethrd');
+        });
 
         $("#buatizin").click(function(e) {
             $('#mdlbuatizin').modal({
