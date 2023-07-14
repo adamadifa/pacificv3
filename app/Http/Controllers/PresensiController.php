@@ -276,7 +276,7 @@ class PresensiController extends Controller
         $nik = $request->nik;
         $tgl_presensi = $request->tgl_presensi;
         $kode_jadwal = $request->kode_jadwal;
-
+        $kode_jam_kerja = $request->kode_jam_kerja;
         $jam_masuk = $request->status == "h" && !empty($request->jam_masuk) ?  $tgl_presensi . " " . $request->jam_masuk : null;
         $jam_pulang =  $request->status == "h" && !empty($request->jam_pulang) ? $tgl_presensi . " " . $request->jam_pulang :  null;
 
@@ -298,18 +298,18 @@ class PresensiController extends Controller
                 ->where('kode_cabang', $cekperjalanandinas->kode_cabang)->first();
             $kode_jadwal = $cekjadwaldinas->kode_jadwal;
         }
-        $ceklibur = DB::table('harilibur')->where('tanggal_limajam', $tgl_presensi)->count();
-        if ($ceklibur > 0) {
-            $hariini = "Sabtu";
-        } else {
-            $hariini = hari($tgl);
-        }
-
+        // $ceklibur = DB::table('harilibur')->where('tanggal_limajam', $tgl_presensi)->count();
+        // if ($ceklibur > 0) {
+        //     $hariini = "Sabtu";
+        // } else {
+        //     $hariini = hari($tgl);
+        // }
+        $hariini = hari($tgl);
         $jadwal = DB::table('jadwal_kerja_detail')
             ->join('jadwal_kerja', 'jadwal_kerja_detail.kode_jadwal', '=', 'jadwal_kerja.kode_jadwal')
             ->where('hari', $hariini)->where('jadwal_kerja_detail.kode_jadwal', $kode_jadwal)
             ->first();
-        $jam_kerja = DB::table('jam_kerja')->where('kode_jam_kerja', $jadwal->kode_jam_kerja)->first();
+        $jam_kerja = DB::table('jam_kerja')->where('kode_jam_kerja', $kode_jam_kerja)->first();
 
 
         $lintashari  = $jam_kerja->lintashari;
@@ -320,6 +320,8 @@ class PresensiController extends Controller
                 $jam_pulang = null;
             }
         }
+
+        dd($jam_kerja);
 
         //dd($jam_pulang);
         $cekizinterlambat = DB::table('pengajuan_izin')->where('nik', $nik)->where('dari', $tgl_presensi)->where('jenis_izin', 'TL')->where('status_approved', 1)->first();
@@ -370,7 +372,7 @@ class PresensiController extends Controller
                 ];
             }
 
-            //dd($data);
+            dd($data);
             try {
                 DB::table('presensi')
                     ->where('id', $cek->id)
