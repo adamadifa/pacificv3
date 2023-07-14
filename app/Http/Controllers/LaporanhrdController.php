@@ -87,8 +87,10 @@ class LaporanhrdController extends Controller
 
         $datalibur = ceklibur($dari, $sampai);
         $dataliburpenggantiminggu = cekliburpenggantiminggu($dari, $sampai);
+
         $dataminggumasuk = cekminggumasuk($dari, $sampai);
         $datawfh = cekwfh($dari, $sampai);
+
 
         // Define search list with multiple key=>value pair
         //$search_items = array('id_kantor' => "TSM", 'tanggal_libur' => "2023-06-17");
@@ -1464,7 +1466,14 @@ class LaporanhrdController extends Controller
         $query->orderBy('nama_karyawan');
         $presensi = $query->get();
         //dd($presensi);
-        return view('presensi.laporan.cetak', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh'));
+
+
+        //dd(request()->is('laporanhrd/presensipsm/cetak'));
+        if (request()->is('laporanhrd/presensipsm/cetak')) {
+            return view('presensi.laporan.cetakpsm', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh'));
+        } else {
+            return view('presensi.laporan.cetak', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh'));
+        }
     }
 
 
@@ -1551,5 +1560,16 @@ class LaporanhrdController extends Controller
         $kantor = DB::table('cabang')->where('kode_cabang', $id_kantor)->first();
         $group = DB::table('hrd_group')->where('id', $id_group)->first();
         return view('presensi.laporan.cetakrekapketerlambatan', compact('presensi', 'departemen', 'kantor', 'group'));
+    }
+
+
+    public function presensipsm()
+    {
+
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        $departemen = DB::table('hrd_departemen')->orderBy('nama_dept')->get();
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang(Auth::user()->kode_cabang);
+        return view('presensi.laporan.lap_presensipsm', compact('bulan', 'departemen', 'cabang'));
     }
 }

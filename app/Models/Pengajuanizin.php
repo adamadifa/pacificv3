@@ -22,7 +22,7 @@ class Pengajuanizin extends Model
         $query->leftjoin('jadwal_kerja', 'pengajuan_izin.kode_jadwal', '=', 'jadwal_kerja.kode_jadwal');
 
 
-        if ($level != "emf" || Auth::user()->id != "57" || Auth::user()->id != "69") {
+        if ($level != "emf" || Auth::user()->id != "57" || Auth::user()->id != "69" || Auth::user()->id != 20) {
             if (!empty($dari) && !empty($sampai)) {
                 $query->whereBetween('dari', [$dari, $sampai]);
             }
@@ -250,7 +250,7 @@ class Pengajuanizin extends Model
         }
 
 
-        if (Auth::user()->id == 57) {
+        if (Auth::user()->id == 57 || Auth::user()->id == 20) {
             if (!empty($dari) && !empty($sampai)) {
                 $query->whereBetween('dari', [$dari, $sampai]);
             }
@@ -336,11 +336,11 @@ class Pengajuanizin extends Model
             }
         }
 
-        if (Auth::user()->id == 20) {
-            $query->whereIn('grup', [1, 5]);
-            $query->where('id_kantor', 'PST');
-            $query->where('nama_jabatan', 'MANAGER');
-        }
+        // if (Auth::user()->id == 20) {
+        //     $query->whereIn('grup', [1, 5]);
+        //     $query->where('id_kantor', 'PST');
+        //     $query->where('nama_jabatan', 'MANAGER');
+        // }
 
         if (Auth::user()->id == 69) {
             if (!empty($dari) && !empty($sampai)) {

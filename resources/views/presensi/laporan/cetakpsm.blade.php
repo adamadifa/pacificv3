@@ -135,7 +135,7 @@
     <br>
     <div id="table-scroll" class="table-scroll">
         <div class="table-wrap">
-            <table class="datatable3" style="width: 250%">
+            <table class="datatable3" style="width: 100%">
                 <thead bgcolor="#024a75" style="color:white; font-size:12;">
                     <tr bgcolor="#024a75" style="color:white; font-size:12;">
                         <th rowspan="2" class="fixed-side" style="color:black">No</th>
@@ -520,7 +520,7 @@
                         // echo "___________________________- <br>";
 
                 ?>
-                        <td style="background-color: {{ $colorcolumn }}; color:{{ $colortext }}; width:3%">
+                        <td style="background-color: {{ $colorcolumn }}; color:{{ $colortext }}; width:3%; font-size:14px !important">
 
                             @if ($status == "h")
                             {{-- <span>{{ var_dump($ceklibur) }}</span> --}}
@@ -529,7 +529,7 @@
                             {{-- <span>{{ $rangetanggal[$i] }}</span><br>
                             <span>{{ $jam_out_tanggal }} s.d {{ $jam_pulang_tanggal }}</span> --}}
                             {{-- <span>{{ $jam_masuk_tanggal."--".$jout }}</span> --}}
-                            <span style="font-weight: bold">{{ $nama_jadwal }}</span>
+                            {{-- <span style="font-weight: bold">{{ $nama_jadwal }}</span>
                             <br>
                             <span style="color:green">{{ $jam_masuk != "NA" ? date("H:i",strtotime($jam_masuk)) : '' }}</span> -
                             <span style="color:green">{{ $jam_pulang != "NA" ? date("H:i",strtotime($jam_pulang)) : '' }}</span>
@@ -561,28 +561,48 @@
                             <span style="color:#ce7c01">Keluar : {{ $totaljamkeluar }} ({{ $jk }})</span>
                             <br>
                             @endif
-                            <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
+                            <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span> --}}
+                            <?php
+                                if ($nama_jadwal == "SHIFT 2") {
+                                    $kodeshift = "S";
+                                }else if($nama_jadwal=="SHIFT 3"){
+                                    $kodeshift = "M";
+                                }else{
+                                    $kodeshift = "P";
+                                }
+
+
+                            ?>
+                            {{ $kodeshift }}
+                            {{ $grandtotaljam < $total_jam  ? $grandtotaljam : "" }}
                             @elseif($status=="s")
-                            <span style="color:rgb(195, 63, 27)">SAKIT
+                            {{-- <span style="color:rgb(195, 63, 27)">SAKIT
                                 @if (!empty($sid))
                                 <span style="color:green">- SID</span><br>
                                 <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
-                                @else
-                                <br>
-                                <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
-                                @endif
-                            </span>
-                            @elseif($status=="i")
-                            <span style="color:rgb(27, 5, 171);">IZIN</span><br>
-                            <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
-                            @elseif($status=="c")
-                            <span style="color:rgb(154, 56, 4);">CUTI</span><br>
+                            @else
+                            <br>
                             <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
                             @endif
-                            @if (!empty($premi))
+                            </span> --}}
+                            @if (!empty($sid))
+                            SID
+                            @else
+                            SKT
+                            @endif
+                            @elseif($status=="i")
+                            {{-- <span style="color:rgb(27, 5, 171);">IZIN</span><br>
+                            <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span> --}}
+                            I
+                            @elseif($status=="c")
+                            {{-- <span style="color:rgb(154, 56, 4);">CUTI</span><br>
+                            <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span> --}}
+                            C
+                            @endif
+                            {{-- @if (!empty($premi))
                             <br>
                             <span style="color: blue">Premi : {{ rupiah($premi) }}</span>
-                            @endif
+                            @endif --}}
                         </td>
                         <?php
                     }else{
@@ -593,9 +613,9 @@
                 ?>
                         <td style="background-color:{{ $colorcolumn }}; color:white; width:3%">
                             {{-- <span>{{ var_dump(empty($ceklibur)) }}</span> --}}
-                            {{ !empty($ceklibur) ? $ceklibur[0]["keterangan"] : "" }}
-                            {{ !empty($cekwfh) ? "Dirumahkan" : "" }}
-                            {{ !empty($cekliburpenggantiminggu) ? $cekliburpenggantiminggu[0]["keterangan"] : "" }}
+                            {{-- {{ !empty($ceklibur) ? $ceklibur[0]["keterangan"] : "" }} --}}
+                            {{ !empty($cekwfh) ? "P".$totaljamdirumahkan : "" }}
+                            {{-- {{ !empty($cekliburpenggantiminggu) ? $cekliburpenggantiminggu[0]["keterangan"] : "" }} --}}
                         </td>
                         <?Php
                     }

@@ -243,7 +243,7 @@ function cekliburpenggantiminggu($dari, $sampai)
         ->selectRaw('tanggal_libur,
         id_kantor,
         keterangan,
-        tanggal_minggu,
+        tanggal_diganti,
         IFNULL(harilibur_karyawan.nik,"ALL") as nik')
         ->leftJoin('harilibur_karyawan', 'harilibur.kode_libur', '=', 'harilibur_karyawan.kode_libur')
         ->where('kategori', 2)
@@ -255,7 +255,7 @@ function cekliburpenggantiminggu($dari, $sampai)
             'id_kantor' => $d->id_kantor,
             'tanggal_libur' => $d->tanggal_libur,
             'keterangan' => $d->keterangan,
-            'tanggal_minggu' => $d->tanggal_minggu
+            'tanggal_diganti' => $d->tanggal_diganti
         ];
     }
 
@@ -270,11 +270,11 @@ function cekminggumasuk($dari, $sampai)
         ->selectRaw('tanggal_libur,
         id_kantor,
         keterangan,
-        tanggal_minggu,
+        tanggal_diganti,
         IFNULL(harilibur_karyawan.nik,"ALL") as nik')
         ->leftJoin('harilibur_karyawan', 'harilibur.kode_libur', '=', 'harilibur_karyawan.kode_libur')
         ->where('kategori', 2)
-        ->whereBetween('tanggal_minggu', [$dari, $sampai])->get();
+        ->whereBetween('tanggal_diganti', [$dari, $sampai])->get();
 
     foreach ($ceklibur as $d) {
         $libur[] = [
@@ -282,7 +282,7 @@ function cekminggumasuk($dari, $sampai)
             'id_kantor' => $d->id_kantor,
             'tanggal_libur' => $d->tanggal_libur,
             'keterangan' => $d->keterangan,
-            'tanggal_minggu' => $d->tanggal_minggu
+            'tanggal_diganti' => $d->tanggal_diganti
         ];
     }
 
@@ -298,7 +298,7 @@ function cekwfh($dari, $sampai)
         ->selectRaw('tanggal_libur,
         id_kantor,
         keterangan,
-        tanggal_minggu,
+        tanggal_diganti,
         IFNULL(harilibur_karyawan.nik,"ALL") as nik')
         ->leftJoin('harilibur_karyawan', 'harilibur.kode_libur', '=', 'harilibur_karyawan.kode_libur')
         ->where('kategori', 3)
@@ -310,7 +310,7 @@ function cekwfh($dari, $sampai)
             'id_kantor' => $d->id_kantor,
             'tanggal_libur' => $d->tanggal_libur,
             'keterangan' => $d->keterangan,
-            'tanggal_minggu' => $d->tanggal_minggu
+            'tanggal_diganti' => $d->tanggal_diganti
         ];
     }
 

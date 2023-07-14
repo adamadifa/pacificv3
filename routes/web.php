@@ -1722,10 +1722,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/harilibur/{kode_libur}/getliburkaryawan', [HariliburController::class, 'getliburkaryawan']);
 
     Route::get('/laporanhrd/presensi', [LaporanhrdController::class, 'presensi']);
+    Route::get('/laporanhrd/presensipsm', [LaporanhrdController::class, 'presensipsm']);
     Route::post('/laporanhrd/getkantor', [LaporanhrdController::class, 'getkantor']);
     Route::post('/laporanhrd/getdepartemen', [LaporanhrdController::class, 'getdepartemen']);
     Route::post('/laporanhrd/getgroup', [LaporanhrdController::class, 'getgroup']);
     Route::post('/laporanhrd/presensi/cetak', [LaporanhrdController::class, 'cetakpresensi']);
+    Route::post('/laporanhrd/presensipsm/cetak', [LaporanhrdController::class, 'cetakpresensi']);
     Route::get('/laporanhrd/rekapterlambat', [LaporanhrdController::class, 'rekapterlambat']);
     Route::post('/laporanhrd/rekapterlambat/cetak', [LaporanhrdController::class, 'cetakrekapterlambat']);
 });

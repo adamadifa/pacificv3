@@ -32,13 +32,17 @@ class HariliburController extends Controller
 
         if (Auth::user()->kode_cabang != "PCF") {
             $query->where('id_kantor', Auth::user()->kode_cabang);
+        } else {
+            if (!empty($request->id_kantor_search)) {
+                $query->where('id_kantor', $request->id_kantor_search);
+            }
         }
         $harilibur = $query->paginate(15);
         $harilibur->appends($request->all());
 
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         $cbg = new Cabang();
-        $cabang = $cbg->getCabang(Auth::user()->kode_cabang);
+        $cabang = $cbg->getCabangpresensi(Auth::user()->kode_cabang);
         return view('harilibur.index', compact('harilibur', 'bulan', 'cabang'));
     }
 
@@ -67,7 +71,7 @@ class HariliburController extends Controller
             'kategori' => $kategori,
             'keterangan' => $keterangan,
             'tanggal_limajam' => $beforeday,
-            'tanggal_minggu' => $request->tanggal_minggu
+            'tanggal_diganti' => $request->tanggal_diganti
         ];
         try {
             $cek = DB::table('harilibur')->where('tanggal_libur', $tanggal)

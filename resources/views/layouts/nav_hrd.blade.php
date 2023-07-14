@@ -11,6 +11,11 @@
                     <i class="feather icon-file mr-1"></i>Laporan Presensi Peridoe Gaji
                 </li>
             </a>
+            <a href="/laporanhrd/presensipsm" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanhrd/presensipsm']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Laporan Presensi P/S/M
+                </li>
+            </a>
             <a href="/laporanhrd/rekapterlambat" style="color:#626262">
                 <li class="list-group-item {{ request()->is(['laporanhrd/rekapterlambat']) ? 'active' : '' }}">
                     <i class="feather icon-file mr-1"></i>Rekap Keterlambatan
