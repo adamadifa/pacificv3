@@ -545,6 +545,7 @@ class PresensiController extends Controller
         $query->leftjoin('pengajuan_izin', 'presensi.kode_izin', '=', 'pengajuan_izin.kode_izin');
         $query->whereBetween('tgl_presensi', [$dari, $sampai]);
         $query->where('presensi.nik', $nik);
+        $query->orderBy('presensi.tgl_presensi');
         $karyawan = $query->get();
 
         $kar = new Karyawan();
