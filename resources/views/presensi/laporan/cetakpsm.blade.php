@@ -161,6 +161,7 @@
                     @php
                     $no = 1;
                     $totaljam1bulan = 173;
+
                     @endphp
                     @foreach ($presensi as $d)
                     <tr>
@@ -521,7 +522,8 @@
 
                 ?>
                         <td style="background-color: {{ $colorcolumn }}; color:{{ $colortext }}; width:3%; font-size:14px !important">
-
+                            {{-- <span style="color:blue; font-size:10px; ">{{ date("d",strtotime($rangetanggal[$i])) }}</span>
+                            <br> --}}
                             @if ($status == "h")
                             {{-- <span>{{ var_dump($ceklibur) }}</span> --}}
                             {{-- <span>{{ $desimalterlambat }}</span> --}}
