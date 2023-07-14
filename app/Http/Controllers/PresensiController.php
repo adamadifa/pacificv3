@@ -310,6 +310,8 @@ class PresensiController extends Controller
             ->where('hari', $hariini)->where('jadwal_kerja_detail.kode_jadwal', $kode_jadwal)
             ->first();
         $jam_kerja = DB::table('jam_kerja')->where('kode_jam_kerja', $jadwal->kode_jam_kerja)->first();
+
+
         $lintashari  = $jam_kerja->lintashari;
         if (!empty($lintashari)) {
             if (!empty($request->jam_pulang)) {
@@ -318,6 +320,8 @@ class PresensiController extends Controller
                 $jam_pulang = null;
             }
         }
+
+        //dd($jam_pulang);
         $cekizinterlambat = DB::table('pengajuan_izin')->where('nik', $nik)->where('dari', $tgl_presensi)->where('jenis_izin', 'TL')->where('status_approved', 1)->first();
 
         $kode_izin = $cekizinterlambat != null  ? $cekizinterlambat->kode_izin : NULL;
@@ -366,7 +370,7 @@ class PresensiController extends Controller
                 ];
             }
 
-
+            //dd($data);
             try {
                 DB::table('presensi')
                     ->where('id', $cek->id)
