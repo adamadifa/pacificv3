@@ -1147,4 +1147,24 @@ class PengajuanizinController extends Controller
             return Redirect::back()->with(['warning' => 'Pengajuan Izin Gagal Dibatalkan']);
         }
     }
+
+    public function create_kethrd($kode_izin)
+    {
+        $izin = DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->first();
+        return view('pengajuanizin.create_kethrd', compact('izin'));
+    }
+
+
+    public function update_kethrd($kode_izin, Request $request)
+    {
+        try {
+            DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
+                'keterangan_hrd' => $request->keterangan_hrd
+            ]);
+
+            return Redirect::back()->with(['success' => 'Komentar Berhasil Ditambahkan']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Komentar Gagal Ditambahkan']);
+        }
+    }
 }
