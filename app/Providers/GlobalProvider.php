@@ -301,10 +301,39 @@ class GlobalProvider extends ServiceProvider
                 }
 
                 if (Auth::user()->id == 20) {
+                    if (!empty($kode_dept_presensi)) {
+                        $qpi->where('master_karyawan.kode_dept', $kode_dept_presensi);
+                    }
+
+                    if (!empty(Auth::user()->pic_presensi)) {
+                        if ($getcbg != "PCF") {
+                            $qpi->where('master_karyawan.id_kantor', $getcbg);
+                        }
+                    }
+                    $qpi->where('status_approved', 0);
                     $qpi->whereIn('grup', [1, 5]);
                     $qpi->where('id_kantor', 'PST');
-                    $qpi->where('nama_jabatan', 'MANAGER');
+                    //$qpi->where('nama_jabatan', '!=', 'MANAGER');
+                    $qpi->orWhere('status_approved', 0);
+                    $qpi->whereIn('grup', [1, 5]);
+                    $qpi->where('id_kantor', '!=', 'PST');
+                    $qpi->where('nama_jabatan', '=', 'KEPALA ADMIN');
+                    if (!empty($kode_dept_presensi)) {
+                        $qpi->where('master_karyawan.kode_dept', $kode_dept_presensi);
+                    }
+
+                    if (!empty(Auth::user()->pic_presensi)) {
+                        if ($getcbg != "PCF") {
+                            $qpi->where('master_karyawan.id_kantor', $getcbg);
+                        }
+                    }
                 }
+
+                // if (Auth::user()->id == 20) {
+                //     $qpi->whereIn('grup', [1, 5]);
+                //     $qpi->where('id_kantor', 'PST');
+                //     $qpi->where('nama_jabatan', 'MANAGER');
+                // }
 
                 if (Auth::user()->id == 69) {
                     $qpi->where('grup', 11);
