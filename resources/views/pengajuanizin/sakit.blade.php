@@ -345,117 +345,118 @@
                                     </div>
                                 </div>
                             </div>
-
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="modal fade text-left" id="mdlapprove" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel18">Approve Pengajuan Izin</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form action="/pengajuanizin/approve" method="POST">
-                        @csrf
-                        <input type="hidden" name="kode_izin" id="kode_izin">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="btn-group w-100">
-                                    <button name="approve" value="approve" class="btn btn-success w-100">
-                                        <i class="feather icon-check mr-1"></i>
-                                        Setuju
-                                    </button>
-                                    <button name="decline" value="decline" class="btn btn-danger w-100">
-                                        <i class="fa fa-close mr-1"></i>
-                                        Tolak
-                                    </button>
-                                </div>
+</div>
+<div class="modal fade text-left" id="mdlapprove" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Approve Pengajuan Izin</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/pengajuanizin/approve" method="POST">
+                    @csrf
+                    <input type="hidden" name="kode_izin" id="kode_izin">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="btn-group w-100">
+                                <button name="approve" value="approve" class="btn btn-success w-100">
+                                    <i class="feather icon-check mr-1"></i>
+                                    Setuju
+                                </button>
+                                <button name="decline" value="decline" class="btn btn-danger w-100">
+                                    <i class="fa fa-close mr-1"></i>
+                                    Tolak
+                                </button>
                             </div>
                         </div>
+                    </div>
 
-                    </form>
-                </div>
+                </form>
             </div>
         </div>
     </div>
-    <div class="modal fade text-left" id="mdlbuatizin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel18">Buat Izin</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="loadbuatizin">
-                </div>
+</div>
+<div class="modal fade text-left" id="mdlbuatizin" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Buat Izin</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="loadbuatizin">
             </div>
         </div>
     </div>
+</div>
 
-    <div class="modal fade text-left" id="mdl_kethrd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel18">Keterangan HRD</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="load_kethrd">
-                </div>
+<div class="modal fade text-left" id="mdl_kethrd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Keterangan HRD</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="load_kethrd">
             </div>
         </div>
     </div>
-    @endsection
+</div>
+@endsection
 
-    @push('myscript')
-    <script>
-        $(function() {
-            $(".ket_hrd").click(function(e) {
-                $("#mdl_kethrd").modal("show");
-                var kode_izin = $(this).attr('kode_izin');
-                $("#load_kethrd").load('/pengajuanizin/' + kode_izin + '/create_kethrd');
-            });
-
-            $("#buatizin").click(function(e) {
-                $('#mdlbuatizin').modal({
-                    backdrop: 'static'
-                    , keyboard: false
-                });
-                $("#loadbuatizin").load('/pengajuanizin/createizinsakit');
-            });
-            $(".approveizin").click(function(e) {
-                $("#mdlapprove").modal("show");
-                var kode_izin = $(this).attr('kode_izin');
-                $("#kode_izin").val(kode_izin);
-            });
-
-            $('.delete-confirm').click(function(event) {
-                var form = $(this).closest("form");
-                var name = $(this).data("name");
-                event.preventDefault();
-                swal({
-                        title: `Are you sure you want to delete this record?`
-                        , text: "If you delete this, it will be gone forever."
-                        , icon: "warning"
-                        , buttons: true
-                        , dangerMode: true
-                    , })
-                    .then((willDelete) => {
-                        if (willDelete) {
-                            form.submit();
-                        }
-                    });
-            });
+@push('myscript')
+<script>
+    $(function() {
+        $(".ket_hrd").click(function(e) {
+            $("#mdl_kethrd").modal("show");
+            var kode_izin = $(this).attr('kode_izin');
+            $("#load_kethrd").load('/pengajuanizin/' + kode_izin + '/create_kethrd');
         });
 
-    </script>
-    @endpush
+        $("#buatizin").click(function(e) {
+            $('#mdlbuatizin').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+            $("#loadbuatizin").load('/pengajuanizin/createizinsakit');
+        });
+        $(".approveizin").click(function(e) {
+            $("#mdlapprove").modal("show");
+            var kode_izin = $(this).attr('kode_izin');
+            $("#kode_izin").val(kode_izin);
+        });
+
+        $('.delete-confirm').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+            event.preventDefault();
+            swal({
+                    title: `Are you sure you want to delete this record?`
+                    , text: "If you delete this, it will be gone forever."
+                    , icon: "warning"
+                    , buttons: true
+                    , dangerMode: true
+                , })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
+        });
+    });
+
+</script>
+@endpush
