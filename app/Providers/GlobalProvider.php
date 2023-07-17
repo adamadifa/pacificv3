@@ -149,7 +149,7 @@ class GlobalProvider extends ServiceProvider
                 $qpi->leftjoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
                 $qpi->leftjoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
 
-                if ($level != "emf" || Auth::user()->id == 57) {
+                if ($level != "emf"  && $level != "direktur") {
                     if (!empty($kode_dept_presensi)) {
                         $qpi->where('master_karyawan.kode_dept', $kode_dept_presensi);
                     }
@@ -160,12 +160,28 @@ class GlobalProvider extends ServiceProvider
                         }
                     }
                     $qpi->where('status_approved', 0);
+                } else if (Auth::user()->id != 57 && Auth::user()->id != 20) {
+                    if (!empty($kode_dept_presensi)) {
+                        $qpi->where('master_karyawan.kode_dept', $kode_dept_presensi);
+                    }
+
+                    if (!empty(Auth::user()->pic_presensi)) {
+                        if ($getcbg != "PCF") {
+                            $qpi->where('master_karyawan.id_kantor', $getcbg);
+                        }
+                    }
                 }
+
+
+
+                //Kepala Admin
                 if ($level == "kepala admin") {
                     $qpi->where('master_karyawan.id_kantor', $getcbg);
                     $qpi->where('master_karyawan.id_perusahaan', "MP");
                     $qpi->where('nama_jabatan', '!=', 'KEPALA ADMIN');
                 }
+
+                //Kepala Penjualan
 
                 if ($level == "kepala penjualan") {
                     if (Auth::user()->id == "27") {
@@ -177,19 +193,28 @@ class GlobalProvider extends ServiceProvider
                     $qpi->where('master_karyawan.id_perusahaan', "PCF");
                 }
 
+                //Manager Pembelian
+
                 if ($level == "manager pembelian") {
                     $qpi->where('master_karyawan.kode_dept', 'PMB');
                 }
+
+
+                //Kepala Gudang
 
                 if ($level == "kepala gudang") {
                     $qpi->where('master_karyawan.kode_dept', 'GDG');
                     $qpi->whereNotIN('nama_jabatan', ['MANAGER', 'ASST. MANAGER']);
                 }
 
+                //SPV Produksi
+
                 if ($level == "spv produksi") {
                     $qpi->where('master_karyawan.kode_dept', 'PRD');
                     $qpi->whereNotIN('nama_jabatan', ['MANAGER', 'SUPERVISOR']);
                 }
+
+                //Manager Produksi
 
                 if ($level == "manager produksi") {
                     $qpi->whereIn('master_karyawan.kode_dept', ['PRD', 'MTC']);
@@ -200,6 +225,8 @@ class GlobalProvider extends ServiceProvider
                     $qpi->where('master_karyawan.kode_dept', 'GAF');
                     $qpi->where('nama_jabatan', '!=', 'MANAGER');
                 }
+
+                //EMF
 
                 if ($level == "emf") {
                     if (!empty($kode_dept_presensi)) {
@@ -251,16 +278,20 @@ class GlobalProvider extends ServiceProvider
                 // }
 
 
-
+                //Manager Marketing
 
                 if ($level == "manager marketing") {
                     $qpi->where('master_karyawan.kode_dept', 'MKT');
                     $qpi->where('nama_jabatan', 'REGIONAL SALES MANAGER');
                 }
 
+                //Manager Audit
                 if ($level == "manager audit") {
                     $qpi->where('master_karyawan.kode_dept', 'ADT');
                 }
+
+
+                //RSM
 
                 if ($level == "rsm") {
                     $list_wilayah = Auth::user()->wilayah != null ? unserialize(Auth::user()->wilayah) : NULL;
@@ -271,6 +302,8 @@ class GlobalProvider extends ServiceProvider
                     $qpi->where('id_perusahaan', 'PCF');
                 }
 
+
+                //Pa Ardi
                 if (Auth::user()->id == 57) {
                     if (!empty($kode_dept_presensi)) {
                         $qpi->where('master_karyawan.kode_dept', $kode_dept_presensi);
@@ -299,6 +332,8 @@ class GlobalProvider extends ServiceProvider
                         }
                     }
                 }
+
+                //Pa Ridwan
 
                 if (Auth::user()->id == 20) {
                     if (!empty($kode_dept_presensi)) {
@@ -335,6 +370,9 @@ class GlobalProvider extends ServiceProvider
                 //     $qpi->where('nama_jabatan', 'MANAGER');
                 // }
 
+
+                //Rani Gudang
+
                 if (Auth::user()->id == 69) {
                     $qpi->where('grup', 11);
                     $qpi->where('id_kantor', 'PST');
@@ -344,10 +382,27 @@ class GlobalProvider extends ServiceProvider
                     $qpi->where('nama_jabatan', 'MANAGER');
                 }
 
+                //Olga
+
                 if (Auth::user()->id == 73) {
                     $qpi->where('grup', 10);
                     $qpi->where('id_kantor', 'PST');
                 }
+
+                if ($level == "direktur") {
+                    if (!empty($kode_dept_presensi)) {
+                        $qpi->where('master_karyawan.kode_dept', $kode_dept_presensi);
+                    }
+
+                    if (!empty(Auth::user()->pic_presensi)) {
+                        if ($getcbg != "PCF") {
+                            $qpi->where('master_karyawan.id_kantor', $getcbg);
+                        }
+                    }
+                    $qpi->whereIn('nama_jabatan', ['MANAGER', 'GENERAL MANAGER', 'ASST. MANAGER']);
+                    $qpi->where('hrd', 1);
+                }
+
                 $pi = $qpi->first();
             } else {
                 $level = "";
@@ -1092,7 +1147,7 @@ class GlobalProvider extends ServiceProvider
 
             $kesepakatanbersama = ['admin', 'direktur', 'manager hrd'];
             $kontrak_menu = ['admin', 'direktur', 'manager hrd'];
-            $pengajuan_izin_menu = ['admin', 'manager hrd', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'spv produksi', 'manager accounting', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager audit'];
+            $pengajuan_izin_menu = ['admin', 'manager hrd', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'spv produksi', 'manager accounting', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager audit', 'direktur'];
             $jadwal_kerja_menu = ['admin', 'manager hrd'];
             $hari_libur_menu = ['admin', 'manager hrd'];
             $pembayaran_jmk = ['admin', 'manager hrd'];

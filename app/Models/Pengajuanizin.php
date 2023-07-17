@@ -72,6 +72,11 @@ class Pengajuanizin extends Model
         }
 
 
+        if ($level == "direktur") {
+            $query->whereIn('nama_jabatan', ['MANAGER', 'GENERAL MANAGER', 'ASST. MANAGER']);
+            $query->where('hrd', 1);
+        }
+
         if ($level == "kepala admin") {
             $query->where('master_karyawan.id_kantor', $cabang);
             $query->where('master_karyawan.id_perusahaan', "MP");

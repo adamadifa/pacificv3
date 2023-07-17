@@ -103,6 +103,7 @@
             @else
             {{ $faktur->alamat_pelanggan }}
             @endif
+            ({{ $faktur->pasar }})
         </td>
     </tr>
     @else
@@ -126,6 +127,7 @@
             @else
             {{ $faktur->alamat_pelanggan }}
             @endif
+            ({{ $faktur->pasar }})
         </td>
     </tr>
     @endif

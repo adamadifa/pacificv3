@@ -90,7 +90,7 @@
             @else
             {{ $faktur->alamat_pelanggan }}
             @endif
-
+            ({{ $faktur->pasar }})
         </td>
     </tr>
     <tr>
@@ -250,7 +250,7 @@
             @else
             {{ $faktur->alamat_pelanggan }}
             @endif
-
+            ({{ $faktur->pasar }})
         </td>
     </tr>
     <tr>

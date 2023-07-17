@@ -105,7 +105,7 @@
 
     .header-fixed>tbody>tr>td:nth-child(11),
     .header-fixed>thead>tr>th:nth-child(11) {
-        width: 13%;
+        width: 10%;
         float: left;
     }
 
@@ -117,6 +117,12 @@
 
     .header-fixed>tbody>tr>td:nth-child(13),
     .header-fixed>thead>tr>th:nth-child(13) {
+        width: 5%;
+        float: left;
+    }
+
+    .header-fixed>tbody>tr>td:nth-child(14),
+    .header-fixed>thead>tr>th:nth-child(14) {
         width: 5%;
         float: left;
     }
@@ -237,8 +243,9 @@
                                                         <th>Jml Hari</th>
                                                         <th>SID</th>
                                                         <th>Ket</th>
-                                                        <th class="text-center">Head Dept</th>
+                                                        <th class="text-center">Head</th>
                                                         <th class="text-center">HRD</th>
+                                                        <th class="text-center">Dirut</th>
                                                         <th>Aksi</th>
                                                     </tr>
                                                 </thead>
@@ -296,29 +303,64 @@
                                                             <i class="fa fa-close text-danger"></i>
                                                             @endif
                                                         </td>
+                                                        <td class="text-center filterable-cell">
+
+                                                            @php
+                                                            $jabatan = array("MANAGER","GENERAL MANAGER","ASST. MANAGER");
+                                                            @endphp
+                                                            @if (in_array($d->nama_jabatan,$jabatan))
+                                                            @if (empty($d->direktur))
+                                                            <i class="fa fa-history text-warning"></i>
+                                                            @elseif($d->direktur == 1)
+                                                            <i class="fa fa-check text-success"></i>
+                                                            @elseif($d->direktur == 2)
+                                                            <i class="fa fa-close text-danger"></i>
+                                                            @endif
+                                                            @else
+                                                            <i class="fa fa-minus-circle text-danger"></i>
+                                                            @endif
+
+                                                        </td>
                                                         <td class="filterable-cell">
                                                             <div class="btn-group" role="group" aria-label="Basic example">
-                                                                @if ($level != "manager hrd")
+                                                                {{-- Jika Level Bukan Manager HRD --}}
+                                                                @if ($level != "manager hrd" && $level != "direktur")
+                                                                {{-- Jika Bukan PIC atau PIC dan Level Kepala Admin --}}
                                                                 @if (empty(Auth::user()->pic_presensi) || !empty(Auth::user()->pic_presensi) && $level=="kepala admin")
+                                                                {{-- Jika Hed Dept Belum Approve dan HRD Belum Approve --}}
                                                                 @if (empty($d->head_dept) && empty($d->hrd))
                                                                 <a href="#" class="approveizin" kode_izin="{{ $d->kode_izin }}">
                                                                     <i class="feather icon-external-link text-primary"></i>
                                                                 </a>
+                                                                {{-- Jika Head Dept Sudah Approve dan HRD Belum Approve --}}
                                                                 @elseif(!empty($d->head_dept) && empty($d->hrd))
-                                                                <a href="/izinabsen/{{ $d->kode_izin }}/batalkan" class="warning">Batalkan</a>
+                                                                <a href="/izinabsen/{{ $d->kode_izin }}/batalkan" class="warning"><i class="fa fa-close text-danger"></i> </a>
                                                                 @endif
                                                                 @endif
-                                                                @else
-                                                                @if (!empty($d->head_dept) && empty($d->hrd))
+                                                                @elseif($level=="direktur")
+                                                                @if (empty($d->direktur))
                                                                 <a href="#" class="approveizin" kode_izin="{{ $d->kode_izin }}">
                                                                     <i class="feather icon-external-link text-primary"></i>
                                                                 </a>
+                                                                @else
+                                                                <a href="/izinabsen/{{ $d->kode_izin }}/batalkan" class="warning"><i class="fa fa-close text-danger"></i></a>
+                                                                @endif
+                                                                @else
+                                                                {{-- Level Manager HRD --}}
+                                                                {{-- Jika Head Dept Sudah Approve dan HRD Belum Approve --}}
+                                                                @if (!empty($d->head_dept) && empty($d->hrd) || empty($d->head_dept) && $d->kode_dept=="HRD")
+                                                                <a href="#" class="approveizin" kode_izin="{{ $d->kode_izin }}">
+                                                                    <i class="feather icon-external-link text-primary"></i>
+                                                                </a>
+                                                                {{-- Jika Heade Dept Belum Approve --}}
                                                                 @elseif(empty($d->head_dept))
-                                                                <span class="badge bg-warning">Waiting</span>
+                                                                {{-- <i class="fa fa-history text-warning"></i> --}}
+                                                                {{-- Jika HRD sudah Approve --}}
                                                                 @elseif(!empty($d->hrd))
-                                                                <a href="/izinabsen/{{ $d->kode_izin }}/batalkan" class="warning">Batalkan</a>
+                                                                <a href="/izinabsen/{{ $d->kode_izin }}/batalkan" class="warning"><i class="fa fa-close text-danger"></i></a>
                                                                 @endif
                                                                 @endif
+
 
                                                                 @if ($level == "manager hrd")
                                                                 <a href="#" class="ket_hrd" kode_izin="{{ $d->kode_izin }}"><i class="feather icon-message-square ml-1 info"></i></a>
@@ -333,9 +375,7 @@
                                                                     </a>
                                                                 </form>
                                                                 @endif
-
                                                             </div>
-
                                                         </td>
                                                     </tr>
                                                     @endforeach
