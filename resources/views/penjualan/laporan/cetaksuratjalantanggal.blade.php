@@ -131,7 +131,7 @@ $detail = DB::table('detailpenjualan')
             @else
             {{ $faktur->alamat_pelanggan }}
             @endif
-            ({{ $fatur->pasar }})
+            ({{ $faktur->pasar }})
         </td>
     </tr>
     @endif
