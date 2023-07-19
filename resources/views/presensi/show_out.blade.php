@@ -4,6 +4,14 @@
     }
 
 </style>
+<div class="detail">
+    <table class="table">
+        <tr>
+            <th>Jam Pulang</th>
+            <td>{{ date("d-m-Y H:i",strtotime($presensi->jam_out)) }}</td>
+        </tr>
+    </table>
+</div>
 @if (!empty($presensi->foto_out))
 <div class="foto">
     <img src="https://presensi.pacific-tasikmalaya.com/storage/uploads/absensi/{{ $presensi->foto_out }}" class="card-img" alt="">

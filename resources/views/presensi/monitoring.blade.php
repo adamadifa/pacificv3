@@ -170,11 +170,12 @@
                                         $jam_awal_istirahat = $d->tgl_presensi. " ".$d->jam_awal_istirahat;
                                         $jam_akhir_istirahat = $d->tgl_presensi. " ".$d->jam_istirahat;
                                         $status = $d->status_presensi;
+
+                                        $tgl_in = date("Y-m-d",strtotime($d->jam_in));
+                                        $tgl_out = date("Y-m-d",strtotime($d->jam_out));
+
                                         if (!empty($d->jam_in)) {
                                             if ($jam_in > $d->jam_masuk) {
-
-
-
                                                 $j1 = strtotime($jam_masuk);
                                                 $j2 = strtotime($d->jam_in);
 
@@ -394,6 +395,10 @@
                                                 @endif
                                                 @if (!empty($d->kode_izin_pulang))
                                                 (Izin)
+                                                @endif
+
+                                                @if ($tgl_out > $tgl_in)
+                                                <i class="feather icon-arrow-up-right text-info"></i>
                                                 @endif
                                             </td>
 

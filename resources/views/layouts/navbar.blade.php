@@ -153,7 +153,7 @@
                         </a>
                     </li>
                     @endif
-                    @if (in_array($level,$gaji_menu))
+                    @if (in_array($level,$gaji_menu) && Auth::user()->id != 176)
                     <li class="{{ request()->is(['gaji', 'gaji/*']) ? 'active' : '' }}">
                         <a href="/gaji">
                             <i class="feather icon-dollar-sign"></i>
@@ -161,7 +161,7 @@
                         </a>
                     </li>
                     @endif
-                    @if (in_array($level,$insentif_menu) )
+                    @if (in_array($level,$insentif_menu) && Auth::user()->id != 176 )
                     <li class="{{ request()->is(['insentif', 'insentif/*']) ? 'active' : '' }}">
                         <a href="/insentif">
                             <i class="feather icon-dollar-sign"></i>
@@ -771,7 +771,7 @@
                 </ul>
             </li>
             @endif
-            @if (in_array($level, $keuangan))
+            @if (in_array($level, $keuangan) && Auth::user()->id != 176)
             <li class=" nav-item">
                 <a href="#"><i class="feather icon-dollar-sign warning"></i><span class="menu-title">Keuangan</span></a>
                 <ul class="menu-content">
