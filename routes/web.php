@@ -1732,4 +1732,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/laporanhrd/presensipsm/cetak', [LaporanhrdController::class, 'cetakpresensi']);
     Route::get('/laporanhrd/rekapterlambat', [LaporanhrdController::class, 'rekapterlambat']);
     Route::post('/laporanhrd/rekapterlambat/cetak', [LaporanhrdController::class, 'cetakrekapterlambat']);
+    Route::post('/laporanhrd/getterlambat', [LaporanhrdController::class, 'getterlambat']);
+    Route::post('/updatecheckdenda', [LaporanhrdController::class, 'updatecheckdenda']);
 });

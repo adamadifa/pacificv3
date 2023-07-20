@@ -77,6 +77,14 @@
                     <div class="card-body">
                         <form action="{{ url()->current() }}">
                             <div class="row">
+                                <div class="col-lg-6 col-sm-12">
+                                    <x-inputtext label="Dari" field="dari_search" value="{{ Request('dari_search') }}" icon="feather icon-calendar" datepicker />
+                                </div>
+                                <div class="col-lg-6 col-sm-12">
+                                    <x-inputtext label="Sampai" field="sampai_search" value="{{ Request('sampai_search') }}" icon="feather icon-calendar" datepicker />
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-lg-4 col-sm-12">
                                     <x-inputtext label="Nama Karyawan" field="nama_karyawan" icon="feather icon-user" value="{{ Request('nama_karyawan') }}" />
                                 </div>

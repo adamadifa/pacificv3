@@ -246,6 +246,10 @@ class PenilaiankaryawanController extends Controller
         if (Auth::user()->level == "direktur") {
             $query->whereNotNull('hrd_penilaian.hrd');
         }
+
+        if (!empty($request->dari_search) && !empty($request->sampai_search)) {
+            $query->whereBetween('tanggal', [$request->dari_search, $request->sampai_search]);
+        }
         $query->orderByRaw('hrd_penilaian.status,tanggal,kode_penilaian');
         $penilaian = $query->paginate(15);
         $penilaian->appends($request->all());

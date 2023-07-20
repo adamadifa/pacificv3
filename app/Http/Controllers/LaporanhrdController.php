@@ -1507,6 +1507,34 @@ class LaporanhrdController extends Controller
         $id_group = $request->id_group;
         $dari = $request->dari;
         $sampai = $request->sampai;
+
+
+        //dd($presensi);
+
+        $departemen = DB::table('hrd_departemen')->where('kode_dept', $kode_dept)->first();
+        $kantor = DB::table('cabang')->where('kode_cabang', $id_kantor)->first();
+        $group = DB::table('hrd_group')->where('id', $id_group)->first();
+        return view('presensi.laporan.cetakrekapketerlambatan', compact('departemen', 'kantor', 'group', 'dari', 'sampai'));
+    }
+
+
+    public function presensipsm()
+    {
+
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        $departemen = DB::table('hrd_departemen')->orderBy('nama_dept')->get();
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang(Auth::user()->kode_cabang);
+        return view('presensi.laporan.lap_presensipsm', compact('bulan', 'departemen', 'cabang'));
+    }
+
+    public function getterlambat(Request $request)
+    {
+        $id_kantor = $request->id_kantor;
+        $kode_dept = $request->kode_dept;
+        $id_group = $request->id_group;
+        $dari = $request->dari;
+        $sampai = $request->sampai;
         $query = Presensi::query();
         $query->select(
             'tgl_presensi',
@@ -1568,22 +1596,18 @@ class LaporanhrdController extends Controller
         $query->orderBy('presensi.nik');
         $presensi = $query->get();
 
-        //dd($presensi);
-
-        $departemen = DB::table('hrd_departemen')->where('kode_dept', $kode_dept)->first();
-        $kantor = DB::table('cabang')->where('kode_cabang', $id_kantor)->first();
-        $group = DB::table('hrd_group')->where('id', $id_group)->first();
-        return view('presensi.laporan.cetakrekapketerlambatan', compact('presensi', 'departemen', 'kantor', 'group'));
+        return view('presensi.laporan.loadterlambat', compact('presensi', 'dari', 'sampai', 'id_kantor', 'kode_dept', 'id_group'));
     }
 
 
-    public function presensipsm()
+    public function updatecheckdenda(Request $request)
     {
-
-        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
-        $departemen = DB::table('hrd_departemen')->orderBy('nama_dept')->get();
-        $cbg = new Cabang();
-        $cabang = $cbg->getCabang(Auth::user()->kode_cabang);
-        return view('presensi.laporan.lap_presensipsm', compact('bulan', 'departemen', 'cabang'));
+        $id = $request->id;
+        try {
+            DB::table('presensi')->where('id', $id)->update(['check_denda' => 1]);
+            return 0;
+        } catch (\Exception $e) {
+            return $e;
+        }
     }
 }
