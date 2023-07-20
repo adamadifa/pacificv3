@@ -296,7 +296,7 @@
                                                                 {{-- Jika Level Bukan Manager HRD --}}
                                                                 @if ($level != "manager hrd" && $level != "direktur")
                                                                 {{-- Jika Bukan PIC atau PIC dan Level Kepala Admin --}}
-                                                                @if (empty(Auth::user()->pic_presensi) || !empty(Auth::user()->pic_presensi) && $level=="kepala admin" || !empty(Auth::user()->pic_presensi) && $level=="manager audit")
+                                                                @if (empty(Auth::user()->pic_presensi) || !empty(Auth::user()->pic_presensi) && $level=="kepala admin" )
                                                                 {{-- Jika Hed Dept Belum Approve dan HRD Belum Approve --}}
                                                                 @if (empty($d->head_dept) && empty($d->hrd))
                                                                 <a href="#" class="approveizin" kode_izin="{{ $d->kode_izin }}">
