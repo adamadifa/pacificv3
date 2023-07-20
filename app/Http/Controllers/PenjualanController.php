@@ -8850,4 +8850,54 @@ class PenjualanController extends Controller
         }
         return view('penjualan.laporan.cetak_persentaselokasi', compact('persentaselokasi', 'cabang', 'dari', 'sampai', 'salesman'));
     }
+
+
+    public function monitoringsku(Request $request)
+    {
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        return view('penjualan.monitoringsku', compact('bulan'));
+    }
+
+
+    public function getsku(Request $request)
+    {
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $id_karyawan = Auth::user()->id_salesman;
+        $dari = $tahun . "-" . $bulan . "-01";
+        $sampai = date("Y-m-t", strtotime($dari));
+
+        $query = Detailpenjualan::query();
+        $query->selectRaw("penjualan.kode_pelanggan,nama_pelanggan,
+        SUM( IF ( barang.kode_produk = 'AB', detailpenjualan.jumlah/barang.isipcsdus, NULL ) ) AS AB,
+        SUM( IF ( barang.kode_produk = 'AR', detailpenjualan.jumlah/barang.isipcsdus, NULL ) ) AS AR,
+        SUM( IF ( barang.kode_produk = 'AS', detailpenjualan.jumlah/barang.isipcsdus, NULL ) ) AS ASE,
+        SUM( IF ( barang.kode_produk = 'BB', detailpenjualan.jumlah/barang.isipcsdus, NULL ) ) AS BB,
+        SUM( IF ( barang.kode_produk = 'CG', detailpenjualan.jumlah/barang.isipcsdus, NULL ) ) AS CG,
+        SUM( IF ( barang.kode_produk = 'CGG', detailpenjualan.jumlah/barang.isipcsdus, NULL ) ) AS CGG,
+        SUM( IF ( barang.kode_produk = 'DB', detailpenjualan.jumlah/barang.isipcsdus, NULL ) ) AS DB,
+        SUM( IF ( barang.kode_produk = 'DEP', detailpenjualan.jumlah/barang.isipcsdus,NULL ) ) AS DEP,
+        SUM( IF ( barang.kode_produk = 'DK', detailpenjualan.jumlah/barang.isipcsdus, NULL ) ) AS DK,
+        SUM( IF ( barang.kode_produk = 'DS', detailpenjualan.jumlah/barang.isipcsdus, NULL ) ) AS DS,
+        SUM( IF ( barang.kode_produk = 'SP', detailpenjualan.jumlah/barang.isipcsdus, NULL ) ) AS SP,
+        SUM( IF ( barang.kode_produk = 'BBP', detailpenjualan.jumlah/barang.isipcsdus, NULL ) ) AS BBP,
+        SUM( IF ( barang.kode_produk = 'SPP', detailpenjualan.jumlah/barang.isipcsdus, NULL ) ) AS SPP,
+        SUM( IF ( barang.kode_produk = 'CG5', detailpenjualan.jumlah/barang.isipcsdus, NULL ) ) AS CG5,
+        SUM( IF ( barang.kode_produk = 'SC', detailpenjualan.jumlah/barang.isipcsdus, NULL ) ) AS SC,
+        SUM( IF ( barang.kode_produk = 'SP500', detailpenjualan.jumlah/barang.isipcsdus, NULL ) ) AS SP500,
+        SUM( IF ( barang.kode_produk = 'SP8', detailpenjualan.jumlah/barang.isipcsdus, NULL ) ) AS SP8,
+        COUNT(DISTINCT(kode_sku)) as jml_sku");
+        $query->join('barang', 'detailpenjualan.kode_barang', '=', 'barang.kode_barang');
+        $query->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk');
+        $query->join('penjualan', 'detailpenjualan.no_fak_penj', '=', 'penjualan.no_fak_penj');
+        $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $query->whereBetween('tgltransaksi', [$dari, $sampai]);
+        $query->where('penjualan.id_karyawan', $id_karyawan);
+        $query->groupByRaw('penjualan.kode_pelanggan,nama_pelanggan');
+        $query->orderbyRaw('COUNT(DISTINCT(kode_sku)) desc');
+        $rekappelanggan = $query->get();
+
+        return view('penjualan.getsku', compact('rekappelanggan'));
+    }
 }

@@ -43,6 +43,14 @@
                 </a>
             </li>
             @endif
+            @if (in_array($level,$monitoring_sku))
+            <li class=" {{ request()->is(['monitoringsku']) ? 'active' : '' }} nav-item">
+                <a href="/monitoringsku">
+                    <i class="feather icon-monitor"></i>
+                    <span class="menu-title">Monitoring SKU</span>
+                </a>
+            </li>
+            @endif
             @if (in_array($level,$tracking_salesman))
             <li class=" {{ request()->is(['tracking']) ? 'active' : '' }} nav-item">
                 <a href="/tracking">

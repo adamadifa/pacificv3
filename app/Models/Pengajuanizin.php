@@ -15,7 +15,7 @@ class Pengajuanizin extends Model
     {
 
         $query = Pengajuanizin::query();
-        $query->select('pengajuan_izin.*', 'nama_karyawan', 'nama_jabatan', 'kode_dept', 'nama_cuti', 'nama_jadwal', 'master_karyawan.id_kantor');
+        $query->select('pengajuan_izin.*', 'nama_karyawan', 'nama_jabatan', 'kode_dept', 'nama_cuti', 'nama_jadwal', 'master_karyawan.id_kantor', 'id_perusahaan');
         $query->join('master_karyawan', 'pengajuan_izin.nik', '=', 'master_karyawan.nik');
         $query->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
         $query->leftjoin('hrd_mastercuti', 'pengajuan_izin.jenis_cuti', '=', 'hrd_mastercuti.kode_cuti');
@@ -77,10 +77,14 @@ class Pengajuanizin extends Model
             $query->where('hrd', 1);
         }
 
-        if ($level == "kepala admin") {
+        if ($level == "kepala admin" && Auth::user()->pic_presensi == null) {
             $query->where('master_karyawan.id_kantor', $cabang);
             $query->where('master_karyawan.id_perusahaan', "MP");
             $query->where('nama_jabatan', '!=', 'KEPALA ADMIN');
+        }
+
+        if ($level == "kepala admin" && Auth::user()->pic_presensi == 1) {
+            $query->where('master_karyawan.id_kantor', $cabang);
         }
 
         if ($level == "kepala penjualan") {

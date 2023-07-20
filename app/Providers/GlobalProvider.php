@@ -175,10 +175,14 @@ class GlobalProvider extends ServiceProvider
 
 
                 //Kepala Admin
-                if ($level == "kepala admin") {
+                if ($level == "kepala admin" && Auth::user()->pic_presensi == null) {
                     $qpi->where('master_karyawan.id_kantor', $getcbg);
                     $qpi->where('master_karyawan.id_perusahaan', "MP");
                     $qpi->where('nama_jabatan', '!=', 'KEPALA ADMIN');
+                }
+
+                if ($level == "kepala admin" && Auth::user()->pic_presensi == 1) {
+                    $qpi->where('master_karyawan.id_kantor', $getcbg);
                 }
 
                 //Kepala Penjualan
@@ -1191,6 +1195,7 @@ class GlobalProvider extends ServiceProvider
 
             $lap_hrd = ['admin', 'manager hrd'];
 
+            $monitoring_sku = ['salesman'];
 
             $shareddata = [
 
@@ -1591,7 +1596,8 @@ class GlobalProvider extends ServiceProvider
                 'pajak' => $pajak,
                 'cabangpkp' => $cabangpkp,
                 'pi' => $pi,
-                'lap_hrd' => $lap_hrd
+                'lap_hrd' => $lap_hrd,
+                'monitoring_sku' => $monitoring_sku
 
             ];
             View::share($shareddata);
