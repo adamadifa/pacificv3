@@ -151,7 +151,7 @@
                         <th rowspan="2">Denda</th>
                         <th rowspan="2">Premi</th>
                     </tr>
-                    <tr>
+                    <tr bgcolor="#024a75" style="color:white;">
                         @foreach ($rangetanggal as $d)
                         <th>{{ date("d",strtotime($d)) }}</th>
                         @endforeach
