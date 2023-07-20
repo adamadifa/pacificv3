@@ -151,7 +151,7 @@
                         <th rowspan="2">Denda</th>
                         <th rowspan="2">Premi</th>
                     </tr>
-                    <tr>
+                    <tr bgcolor="#024a75" style="color:white;">
                         @foreach ($rangetanggal as $d)
                         <th>{{ date("d",strtotime($d)) }}</th>
                         @endforeach
@@ -164,7 +164,7 @@
                     @endphp
                     @foreach ($presensi as $d)
                     <tr>
-                        <td class="fixed-side" scope="col">{{ $loop->iteration }}</td>
+                        <td class=" fixed-side" scope="col">{{ $loop->iteration }}</td>
                         <td class="fixed-side" scope="col">{{ $d->nik }}</td>
                         <td style="width: 5%" class="fixed-side" scope="col">{{ $d->nama_karyawan }}</td>
                         <td class="fixed-side" scope="col">{{ $d->id_kantor }}</td>
