@@ -21,7 +21,13 @@
                                 </div>
                                 <div class="text-center">
                                     <h3 class="mb-1 text-white">Selamat Datang, {{ Auth::user()->name }} </h3>
-                                    <p class="m-auto w-75">Anda Masuk Sebagai Level {{ ucwords(Auth::user()->level) }}</p>
+                                    <p class="m-auto w-75">Anda Masuk Sebagai Level
+                                        @if (Auth::user()->id==176)
+                                        SPV HRD
+                                        @else
+                                        {{ ucwords(Auth::user()->level) }}
+                                        @endif
+                                    </p>
                                 </div>
                             </div>
                         </div>
