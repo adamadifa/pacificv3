@@ -72,7 +72,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="Tanggal Transaksi" field="tgltransaksi" icon="feather icon-calendar" datepicker value="{{ date('Y-m-d') }}" />
+                                            <x-inputtext label="Tanggal Transaksi" field="tgltransaksi" icon="feather icon-calendar" value="{{ date('Y-m-d') }}" />
                                         </div>
                                     </div>
                                     <div class="row">
@@ -609,11 +609,34 @@
     </div>
 </div>
 
+@php
+$tglhariini = date("Y-m-d");
+$hariini = explode("-",$tglhariini);
+$tahun_dari = $hariini[0];
+$bulan_dari = $hariini[1]-1;
+$hari_dari = $hariini[2];
+
+$nextday = date('Y-m-d', strtotime('+1 day', strtotime($tglhariini)));
+$besok = explode("-",$nextday);
+$tahun_sampai = $besok[0];
+$bulan_sampai = $besok[1]-1;
+$hari_sampai = $besok[2];
+@endphp
 @endsection
 
 @push('myscript')
 <script>
     $(function() {
+        var tahun_dari = "{{ $tahun_dari }}";
+        var bulan_dari = "{{ $bulan_dari }}";
+        var hari_dari = "{{ $hari_dari }}";
+        var tahun_sampai = "{{ $tahun_sampai }}";
+        var bulan_sampai = "{{ $bulan_sampai }}";
+        var hari_sampai = "{{ $hari_sampai }}";
+        $('#tgltransaksi').pickadate({
+            min: [tahun_dari, bulan_dari, hari_dari]
+            , format: 'yyyy-mm-dd'
+        });
 
         function nonaktifbutton() {
             $("#btnsimpan").prop('disabled', true);

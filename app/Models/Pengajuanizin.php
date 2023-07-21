@@ -22,7 +22,7 @@ class Pengajuanizin extends Model
         $query->leftjoin('jadwal_kerja', 'pengajuan_izin.kode_jadwal', '=', 'jadwal_kerja.kode_jadwal');
 
 
-        if ($level != "emf" || Auth::user()->id != "57" || Auth::user()->id != "69" || Auth::user()->id != 20) {
+        if ($level != "emf" || Auth::user()->id != "57" || Auth::user()->id != "69" || Auth::user()->id != 20 || $level != "direktur") {
             if (!empty($dari) && !empty($sampai)) {
                 $query->whereBetween('dari', [$dari, $sampai]);
             }
@@ -72,9 +72,95 @@ class Pengajuanizin extends Model
         }
 
 
+        // if ($level == "direktur") {
+        //     $query->whereIn('nama_jabatan', ['MANAGER', 'GENERAL MANAGER', 'ASST. MANAGER']);
+        //     $query->where('hrd', 1);
+        // }
+
+
         if ($level == "direktur") {
-            $query->whereIn('nama_jabatan', ['MANAGER', 'GENERAL MANAGER', 'ASST. MANAGER']);
+            if (!empty($dari) && !empty($sampai)) {
+                $query->whereBetween('dari', [$dari, $sampai]);
+            }
+            if (request()->is('pengajuanizin')) {
+                $query->where('jenis_izin', 'TM');
+            } else if (request()->is('pengajuanizin/izinpulang')) {
+                $query->where('jenis_izin', 'PL');
+            } else if (request()->is('pengajuanizin/izinkeluar')) {
+                $query->where('jenis_izin', 'KL');
+            } else if (request()->is('pengajuanizin/izinterlambat')) {
+                $query->where('jenis_izin', 'TL');
+            } else if (request()->is('pengajuanizin/sakit')) {
+                $query->where('pengajuan_izin.status', 's');
+            } else if (request()->is('pengajuanizin/cuti')) {
+                $query->where('pengajuan_izin.status', 'c');
+            } else if (request()->is('pengajuanizin/koreksipresensi')) {
+                $query->where('pengajuan_izin.status', 'k');
+            } else if (request()->is('pengajuanizin/perjalanandinas')) {
+                $query->where('pengajuan_izin.status', 'p');
+            }
+            if (!empty($kode_dept_presensi)) {
+                $query->where('master_karyawan.kode_dept', $kode_dept_presensi);
+                if ($cabang == "PCF") {
+                    $query->where('master_karyawan.id_kantor', 'PST');
+                } else {
+                    $query->where('master_karyawan.id_kantor', $cabang);
+                }
+            }
+
+            if (!empty(Auth::user()->pic_presensi)) {
+                if ($cabang != "PCF") {
+                    $query->where('master_karyawan.id_kantor', $cabang);
+                }
+            }
+
+            if (!empty($nama_karyawan)) {
+                $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');
+            }
+
+            $query->whereIn('nama_jabatan', ['MANAGER', 'ASST. MANAGER']);
             $query->where('hrd', 1);
+
+            $query->orWhere('nama_jabatan', 'GENERAL MANAGER');
+            $query->whereNull('direktur');
+            if (!empty($dari) && !empty($sampai)) {
+                $query->whereBetween('dari', [$dari, $sampai]);
+            }
+            if (request()->is('pengajuanizin')) {
+                $query->where('jenis_izin', 'TM');
+            } else if (request()->is('pengajuanizin/izinpulang')) {
+                $query->where('jenis_izin', 'PL');
+            } else if (request()->is('pengajuanizin/izinkeluar')) {
+                $query->where('jenis_izin', 'KL');
+            } else if (request()->is('pengajuanizin/izinterlambat')) {
+                $query->where('jenis_izin', 'TL');
+            } else if (request()->is('pengajuanizin/sakit')) {
+                $query->where('pengajuan_izin.status', 's');
+            } else if (request()->is('pengajuanizin/cuti')) {
+                $query->where('pengajuan_izin.status', 'c');
+            } else if (request()->is('pengajuanizin/koreksipresensi')) {
+                $query->where('pengajuan_izin.status', 'k');
+            } else if (request()->is('pengajuanizin/perjalanandinas')) {
+                $query->where('pengajuan_izin.status', 'p');
+            }
+            if (!empty($kode_dept_presensi)) {
+                $query->where('master_karyawan.kode_dept', $kode_dept_presensi);
+                if ($cabang == "PCF") {
+                    $query->where('master_karyawan.id_kantor', 'PST');
+                } else {
+                    $query->where('master_karyawan.id_kantor', $cabang);
+                }
+            }
+
+            if (!empty(Auth::user()->pic_presensi)) {
+                if ($cabang != "PCF") {
+                    $query->where('master_karyawan.id_kantor', $cabang);
+                }
+            }
+
+            if (!empty($nama_karyawan)) {
+                $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');
+            }
         }
 
         if ($level == "kepala admin" && Auth::user()->pic_presensi == null) {

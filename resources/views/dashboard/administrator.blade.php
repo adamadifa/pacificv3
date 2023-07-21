@@ -9,7 +9,7 @@
         {{-- <a href="/cetakstruk" class="btn btn-primary">Cetak</a> --}}
         <section id="dashboard-analytics">
             <div class="row">
-                <div class="col-lg-4 col-md-12 col-sm-12">
+                <div class="col-lg-3 col-md-12 col-sm-12">
                     <div class="card bg-analytics text-white">
                         <div class="card-content">
                             <div class="card-body text-center">
@@ -21,9 +21,13 @@
                                     </div>
                                 </div>
                                 <div class="text-center">
-                                    <h3 class="mb-1 text-white">Selamat Datang,{{ Auth::user()->id }} {{ Auth::user()->name }} </h3>
+                                    <h3 class="mb-1 text-white">Welcome,
+                                        @php
+                                        $name = explode(" ",Auth::user()->name);
+                                        @endphp
+                                        {{ $name[0] }} </h3>
                                     <h4 class="text-white">{{ date('d F Y H:i:s') }} </h4>
-                                    <p class="m-auto w-75">Anda Masuk Sebagai Level {{ ucwords(Auth::user()->level) }}</p>
+                                    <p class="m-auto w-75">Level {{ ucwords(Auth::user()->level) }}</p>
                                 </div>
                             </div>
                         </div>
@@ -59,7 +63,22 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-12 col-sm-12">
+                <div class="col-lg-2 col-md-12 col-sm-12">
+                    <div class="card text-center">
+                        <div class="card-content">
+                            <div class="card-body">
+                                <div class="avatar bg-rgba-warning p-50 m-0 mb-1 mt-2">
+                                    <div class="avatar-content">
+                                        <i class="feather icon-calendar text-warning font-large-3"></i>
+                                    </div>
+                                </div>
+                                <h1 class="text-bold-700"><a href="/penilaiankaryawan/3/MP/list">{{ $pi->approvedirut }}</a></h1>
+                                <p class="mb-0 line-ellipsis">Pengajuan Izin<br><br><br></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-12 col-sm-12">
                     <div class="card">
                         <div class="card-header">
                             <h4 class="card-title">Rekap Penjualan</h4>
