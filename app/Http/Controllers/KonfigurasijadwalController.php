@@ -324,7 +324,6 @@ class KonfigurasijadwalController extends Controller
         $grup = array(26, 27, 28, 29, 30, 31);
         $karyawan = DB::table('master_karyawan')
             ->orderBy('nama_karyawan')
-            ->whereIn('grup', $grup)
             ->get();
         return view('konfigurasijadwal.gantishift', compact('karyawan', 'hari_dari', 'bulan_dari', 'tahun_dari', 'hari_sampai', 'bulan_sampai', 'tahun_sampai', 'kode_setjadwal'));
     }

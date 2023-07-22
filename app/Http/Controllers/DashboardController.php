@@ -413,18 +413,21 @@ class DashboardController extends Controller
             SUM(IF(jenis_kelamin="2",1,0)) as jml_perempuan,
             SUM(IF(id_perusahaan="MP",1,0)) as jml_mp,
             SUM(IF(id_perusahaan="PCF",1,0)) as jml_pcf')
+            ->where('status_aktif', 1)
             ->first();
 
         $rekapdepartemen = DB::table('master_karyawan')
             ->selectRaw('master_karyawan.kode_dept,nama_dept,COUNT(nik) as jmlkaryawan')
             ->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
             ->groupByRaw('master_karyawan.kode_dept,nama_dept')
+            ->where('status_aktif', 1)
             ->get();
 
         $rekapkantor = DB::table('master_karyawan')
             ->selectRaw('master_karyawan.id_kantor,nama_cabang,COUNT(nik) as jmlkaryawan')
             ->join('cabang', 'master_karyawan.id_kantor', '=', 'cabang.kode_cabang')
             ->groupByRaw('master_karyawan.id_kantor,nama_cabang')
+            ->where('status_aktif', 1)
             ->get();
 
         $hariini = date("Y-m-d");
@@ -442,6 +445,7 @@ class DashboardController extends Controller
             ->where('sampai', '<', $hariini)
             ->where('status_kontrak', 1)
             ->where('status_karyawan', 'K')
+            ->where('status_aktif', 1)
             ->orderBy('sampai');
 
         $qkontrak_bulanini = DB::table('hrd_kontrak')
@@ -453,6 +457,7 @@ class DashboardController extends Controller
             ->whereRaw('YEAR(sampai)=' . $tahunini)
             ->where('status_kontrak', 1)
             ->where('status_karyawan', 'K')
+            ->where('status_aktif', 1)
             ->orderBy('sampai');
 
 
@@ -465,6 +470,7 @@ class DashboardController extends Controller
             ->whereRaw('YEAR(sampai)=' . $tahun2)
             ->where('status_kontrak', 1)
             ->where('status_karyawan', 'K')
+            ->where('status_aktif', 1)
             ->orderBy('sampai');
 
 
@@ -477,6 +483,7 @@ class DashboardController extends Controller
             ->whereRaw('YEAR(sampai)=' . $tahun3)
             ->where('status_kontrak', 1)
             ->where('status_karyawan', 'K')
+            ->where('status_aktif', 1)
             ->orderBy('sampai');
 
 
