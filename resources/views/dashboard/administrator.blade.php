@@ -72,7 +72,7 @@
                                         <i class="feather icon-calendar text-warning font-large-3"></i>
                                     </div>
                                 </div>
-                                <h1 class="text-bold-700"><a href="/penilaiankaryawan/3/MP/list">{{ $pi->approvedirut }}</a></h1>
+                                <h1 class="text-bold-700"><a href="/pengajuanizin">{{ $pi->approvedirut }}</a></h1>
                                 <p class="mb-0 line-ellipsis">Pengajuan Izin<br><br><br></p>
                             </div>
                         </div>
