@@ -223,7 +223,7 @@
             @endphp
             <ol>
                 <li>
-                    Pihak Kedua menerima pekerjaan yang diberikan pihak CV Makmur Permata dengan jabatan sebagai {{ $kontrak->nama_jabatan }} yang berlokasi di {{ $kontrak->id_kantor == "PST" ? "KANTOR PUSAT TASIKMALAYA" : "CABANG ".strtoupper($kontrak->nama_cabang) }} serta bersedia ditempatkan diluar lokasi dan departemen tersebut bila Perusahaan memerlukan.
+                    Pihak Kedua menerima pekerjaan yang diberikan pihak {{ $kontrak->id_perusahaan=="MP" ? "CV Makmur Permata" : "CV. Pacific" }} dengan jabatan sebagai {{ $kontrak->nama_jabatan }} yang berlokasi di {{ $kontrak->id_kantor == "PST" ? "KANTOR PUSAT TASIKMALAYA" : "CABANG ".strtoupper($kontrak->nama_cabang) }} serta bersedia ditempatkan diluar lokasi dan departemen tersebut bila Perusahaan memerlukan.
                 </li>
                 <li>
                     @if (in_array($kontrak->id_jabatan,$management))
