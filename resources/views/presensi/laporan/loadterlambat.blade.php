@@ -223,7 +223,7 @@ $nik = @$presensi[$key + 1]->nik;
         ?>
 
 
-<tr>
+<tr style="background-color:{{ !empty($d->check_denda) ? '#00b557' :'' }}">
     <td>{{ $loop->iteration }}</td>
     <td>{{ DateToIndo2($d->tgl_presensi) }}</td>
     <td>{{ $d->nik }}</td>
@@ -250,11 +250,13 @@ $nik = @$presensi[$key + 1]->nik;
     </td>
     <td style="text-align: right">{{ !empty($denda)  ? rupiah($denda) : '' }}</td>
     <td>
-        {!! !empty($d->check_denda) ? "<span style='color:green'>Sudah Di Cek</span>" : "<span style='color:red'>Belum di Cek</span>" !!}
+        {!! !empty($d->check_denda) ? "<span style='color:white'>Sudah Di Cek</span>" : "<span style='color:red'>Belum di Cek</span>" !!}
     </td>
     <td>
         @if (empty($d->check_denda))
         <button class="checklist" id="{{ $d->id }}">Checked</button>
+        @else
+        <button class="cancel" id="{{ $d->id }}">Cancel</button>
         @endif
     </td>
 </tr>
@@ -307,6 +309,23 @@ $totaldenda = 0;
             $.ajax({
                 type: 'POST'
                 , url: '/updatecheckdenda'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , id: id
+                }
+                , cache: false
+                , success: function(respond) {
+                    getterlambat();
+                }
+            });
+        });
+
+        $(".cancel").click(function(e) {
+            e.preventDefault();
+            var id = $(this).attr("id");
+            $.ajax({
+                type: 'POST'
+                , url: '/cancelcheckdenda'
                 , data: {
                     _token: "{{ csrf_token() }}"
                     , id: id

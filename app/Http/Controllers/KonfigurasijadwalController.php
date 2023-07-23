@@ -123,11 +123,11 @@ class KonfigurasijadwalController extends Controller
                 ->select('master_karyawan.nik', 'nama_karyawan', 'konfigurasijadwalkerja.kode_jadwal', 'nama_jadwal', 'grup')
                 ->leftJoin(
                     DB::raw("(
-            SELECT nik,konfigurasi_jadwalkerja_detail.kode_jadwal,nama_jadwal
-            FROM konfigurasi_jadwalkerja_detail
-            INNER JOIN jadwal_kerja ON konfigurasi_jadwalkerja_detail.kode_jadwal = jadwal_kerja.kode_jadwal
-            WHERE kode_setjadwal = '$kode_setjadwal'
-        ) konfigurasijadwalkerja"),
+                    SELECT nik,konfigurasi_jadwalkerja_detail.kode_jadwal,nama_jadwal
+                    FROM konfigurasi_jadwalkerja_detail
+                    INNER JOIN jadwal_kerja ON konfigurasi_jadwalkerja_detail.kode_jadwal = jadwal_kerja.kode_jadwal
+                    WHERE kode_setjadwal = '$kode_setjadwal'
+                ) konfigurasijadwalkerja"),
                     function ($join) {
                         $join->on('master_karyawan.nik', '=', 'konfigurasijadwalkerja.nik');
                     }

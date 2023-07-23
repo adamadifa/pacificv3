@@ -1734,6 +1734,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/laporanhrd/rekapterlambat/cetak', [LaporanhrdController::class, 'cetakrekapterlambat']);
     Route::post('/laporanhrd/getterlambat', [LaporanhrdController::class, 'getterlambat']);
     Route::post('/updatecheckdenda', [LaporanhrdController::class, 'updatecheckdenda']);
+    Route::post('/cancelcheckdenda', [LaporanhrdController::class, 'cancelcheckdenda']);
 
 
     Route::get('/monitoringsku', [PenjualanController::class, 'monitoringsku']);

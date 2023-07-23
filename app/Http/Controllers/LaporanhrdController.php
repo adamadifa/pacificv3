@@ -1476,8 +1476,10 @@ class LaporanhrdController extends Controller
                 header("Content-type: application/vnd-ms-excel");
                 // Mendefinisikan nama file ekspor "hasil-export.xls"
                 header("Content-Disposition: attachment; filename=Laporan Presensi Format P/S/M.xls");
+                return view('presensi.laporan.cetak_psmexcel', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh'));
+            } else {
+                return view('presensi.laporan.cetakpsm', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh'));
             }
-            return view('presensi.laporan.cetakpsm', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh'));
         } else {
             if (isset($_POST['export'])) {
                 echo "EXPORT";
@@ -1571,7 +1573,8 @@ class LaporanhrdController extends Controller
             'lokasi_in',
             'lokasi_out',
             'presensi.id',
-            'pin'
+            'pin',
+            'check_denda'
         );
         $query->join('master_karyawan', 'presensi.nik', '=', 'master_karyawan.nik');
         $query->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
@@ -1605,6 +1608,18 @@ class LaporanhrdController extends Controller
         $id = $request->id;
         try {
             DB::table('presensi')->where('id', $id)->update(['check_denda' => 1]);
+            return 0;
+        } catch (\Exception $e) {
+            return $e;
+        }
+    }
+
+
+    public function cancelcheckdenda(Request $request)
+    {
+        $id = $request->id;
+        try {
+            DB::table('presensi')->where('id', $id)->update(['check_denda' => null]);
             return 0;
         } catch (\Exception $e) {
             return $e;

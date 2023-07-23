@@ -59,53 +59,8 @@
             font-size: 14px;
         }
 
-        .table-scroll {
-            position: relative;
-            max-width: 100%;
-            margin: auto;
-            overflow: hidden;
-
-        }
-
-        .table-wrap {
-            width: 100%;
-            overflow: auto;
-        }
-
-        .table-scroll table {
-            width: 100%;
-            margin: auto;
-            border-collapse: separate;
-            border-spacing: 0;
-        }
-
-
-        .clone {
-            position: absolute;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-        }
-
-        .clone th,
-        .clone td {
-            visibility: hidden
-        }
-
-        .clone td,
-        .clone th {
-            border-color: transparent
-        }
-
-        .clone tbody th {
-            visibility: visible;
-            color: red;
-        }
-
-        .clone .fixed-side {
-            border: 1px solid #000;
-            background: #eee;
-            visibility: visible;
+        .freeze-table {
+            height: 800px;
         }
 
     </style>
@@ -133,43 +88,42 @@
         @endif
     </b>
     <br>
-    <div id="table-scroll" class="table-scroll">
-        <div class="table-wrap">
-            <table class="datatable3" style="width: 100%">
-                <thead bgcolor="#024a75" style="color:white; font-size:12;">
-                    <tr bgcolor="#024a75" style="color:white; font-size:12;">
-                        <th rowspan="2" class="fixed-side" style="color:black">No</th>
-                        <th rowspan="2" class="fixed-side" style="color:black">Nik</th>
-                        <th rowspan="2" class="fixed-side" style="color:black">Nama karyawan</th>
-                        <th rowspan="2" class="fixed-side" style="color:black">Kantor</th>
-                        <th colspan="{{ $jmlrange }}">Bulan {{ $namabulan[$bulan*1]}} {{ $tahun }}</th>
-                        <th rowspan="2">Total Jam<br> 1 Bulan</th>
-                        <th rowspan="2">Terlambat</th>
-                        <th rowspan="2">Dirumahkan</th>
-                        <th rowspan="2">Keluar</th>
-                        <th rowspan="2">Total<br> Jam Kerja</th>
-                        <th rowspan="2">Denda</th>
-                        <th rowspan="2">Premi</th>
-                    </tr>
-                    <tr bgcolor="#024a75" style="color:white;">
-                        @foreach ($rangetanggal as $d)
-                        <th>{{ date("d",strtotime($d)) }}</th>
-                        @endforeach
-                    </tr>
-                </thead>
-                <tbody>
-                    @php
-                    $no = 1;
-                    $totaljam1bulan = 173;
+    <div class="freeze-table">
+        <table class="datatable3 table" style="width: 130%">
+            <thead bgcolor="#024a75" style="color:white; font-size:12;">
+                <tr bgcolor="#024a75" style="color:white; font-size:12;">
+                    <th rowspan="2" class="fixed-side">No</th>
+                    <th rowspan="2" class="fixed-side">Nik</th>
+                    <th rowspan="2" class="fixed-side" style="width: 20%">Nama karyawan</th>
+                    <th rowspan="2" class="fixed-side">Kantor</th>
+                    <th colspan="{{ $jmlrange }}">Bulan {{ $namabulan[$bulan*1]}} {{ $tahun }}</th>
+                    <th rowspan="2">Total Jam<br> 1 Bulan</th>
+                    <th rowspan="2">Terlambat</th>
+                    <th rowspan="2">Dirumahkan</th>
+                    <th rowspan="2">Keluar</th>
+                    <th rowspan="2">Total<br> Jam Kerja</th>
+                    <th rowspan="2">Denda</th>
+                    <th rowspan="2">Premi</th>
+                </tr>
+                <tr bgcolor="#024a75" style="color:white;">
+                    @foreach ($rangetanggal as $d)
+                    <th>{{ date("d",strtotime($d)) }}</th>
+                    @endforeach
+                </tr>
+            </thead>
+            <tbody>
+                @php
+                $no = 1;
+                $totaljam1bulan = 173;
 
-                    @endphp
-                    @foreach ($presensi as $d)
-                    <tr>
-                        <td class="fixed-side" scope="col">{{ $loop->iteration }}</td>
-                        <td class="fixed-side" scope="col">{{ $d->nik }}</td>
-                        <td style="width: 5%" class="fixed-side" scope="col">{{ $d->nama_karyawan }}</td>
-                        <td class="fixed-side" scope="col">{{ $d->id_kantor }}</td>
-                        <?php
+                @endphp
+                @foreach ($presensi as $d)
+                <tr>
+                    <td class="fixed-side" scope="col">{{ $loop->iteration }}</td>
+                    <td class="fixed-side" scope="col">{{ "'".$d->nik }}</td>
+                    <td style="width: 5%" class="fixed-side" scope="col">{{ $d->nama_karyawan }}</td>
+                    <td class="fixed-side" scope="col">{{ $d->id_kantor }}</td>
+                    <?php
                 $totalterlambat = 0;
                 $totalkeluar = 0;
                 $totaldenda = 0;
@@ -521,50 +475,50 @@
                         // echo "___________________________- <br>";
 
                 ?>
-                        <td style="background-color: {{ $colorcolumn }}; color:{{ $colortext }}; width:3%; font-size:14px !important">
-                            {{-- <span style="color:blue; font-size:10px; ">{{ date("d",strtotime($rangetanggal[$i])) }}</span>
-                            <br> --}}
-                            @if ($status == "h")
-                            {{-- <span>{{ var_dump($ceklibur) }}</span> --}}
-                            {{-- <span>{{ $desimalterlambat }}</span> --}}
-                            {{-- <span>{{ $jam_out ."|". $jam_akhir_istirahat }}</span><br> --}}
-                            {{-- <span>{{ $rangetanggal[$i] }}</span><br>
-                            <span>{{ $jam_out_tanggal }} s.d {{ $jam_pulang_tanggal }}</span> --}}
-                            {{-- <span>{{ $jam_masuk_tanggal."--".$jout }}</span> --}}
-                            {{-- <span style="font-weight: bold">{{ $nama_jadwal }}</span>
-                            <br>
-                            <span style="color:green">{{ $jam_masuk != "NA" ? date("H:i",strtotime($jam_masuk)) : '' }}</span> -
-                            <span style="color:green">{{ $jam_pulang != "NA" ? date("H:i",strtotime($jam_pulang)) : '' }}</span>
-                            <br>
-                            <span>{!! $jam_in != "NA" ? date("H:i",strtotime($jam_in)) : '<span style="color:red">Belum Scan</span>' !!}</span> -
-                            <span>{!! $jam_out != "NA" ? date("H:i",strtotime($jam_out)) : '<span style="color:red">Belum Scan</span>' !!}</span>
-                            <br>
-                            @if ($jam_in != "NA")
-                            @if (!empty($terlambat))
+                    <td style="background-color: {{ $colorcolumn }}; color:{{ $colortext }}; width:3%; font-size:14px !important">
+                        {{-- <span style="color:blue; font-size:10px; ">{{ date("d",strtotime($rangetanggal[$i])) }}</span>
+                        <br> --}}
+                        @if ($status == "h")
+                        {{-- <span>{{ var_dump($ceklibur) }}</span> --}}
+                        {{-- <span>{{ $desimalterlambat }}</span> --}}
+                        {{-- <span>{{ $jam_out ."|". $jam_akhir_istirahat }}</span><br> --}}
+                        {{-- <span>{{ $rangetanggal[$i] }}</span><br>
+                        <span>{{ $jam_out_tanggal }} s.d {{ $jam_pulang_tanggal }}</span> --}}
+                        {{-- <span>{{ $jam_masuk_tanggal."--".$jout }}</span> --}}
+                        {{-- <span style="font-weight: bold">{{ $nama_jadwal }}</span>
+                        <br>
+                        <span style="color:green">{{ $jam_masuk != "NA" ? date("H:i",strtotime($jam_masuk)) : '' }}</span> -
+                        <span style="color:green">{{ $jam_pulang != "NA" ? date("H:i",strtotime($jam_pulang)) : '' }}</span>
+                        <br>
+                        <span>{!! $jam_in != "NA" ? date("H:i",strtotime($jam_in)) : '<span style="color:red">Belum Scan</span>' !!}</span> -
+                        <span>{!! $jam_out != "NA" ? date("H:i",strtotime($jam_out)) : '<span style="color:red">Belum Scan</span>' !!}</span>
+                        <br>
+                        @if ($jam_in != "NA")
+                        @if (!empty($terlambat))
 
-                            <span style="color:{{ $colorterlambat }}">{{ $terlambat != "Tepat waktu" ? "Telat : ".$terlambat."(".$jt.")" : $terlambat }}
-                                @if (!empty($kode_izin_terlambat))
-                                <span style="color:green"> - Sudah Izin</span>
-                                @endif
-                            </span>
-                            <br>
+                        <span style="color:{{ $colorterlambat }}">{{ $terlambat != "Tepat waktu" ? "Telat : ".$terlambat."(".$jt.")" : $terlambat }}
+                            @if (!empty($kode_izin_terlambat))
+                            <span style="color:green"> - Sudah Izin</span>
                             @endif
-                            @if (!empty($denda))
-                            <span style="color:{{ $colorterlambat }}">Denda :{{ rupiah($denda) }}</span>
-                            <br>
-                            @endif
-                            @endif
+                        </span>
+                        <br>
+                        @endif
+                        @if (!empty($denda))
+                        <span style="color:{{ $colorterlambat }}">Denda :{{ rupiah($denda) }}</span>
+                        <br>
+                        @endif
+                        @endif
 
-                            @if (!empty($pc))
-                            <span style="color:red">{{ $pc }}</span>
-                            <br>
-                            @endif
-                            @if (!empty($jam_keluar))
-                            <span style="color:#ce7c01">Keluar : {{ $totaljamkeluar }} ({{ $jk }})</span>
-                            <br>
-                            @endif
-                            <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span> --}}
-                            <?php
+                        @if (!empty($pc))
+                        <span style="color:red">{{ $pc }}</span>
+                        <br>
+                        @endif
+                        @if (!empty($jam_keluar))
+                        <span style="color:#ce7c01">Keluar : {{ $totaljamkeluar }} ({{ $jk }})</span>
+                        <br>
+                        @endif
+                        <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span> --}}
+                        <?php
                                 if ($nama_jadwal == "SHIFT 2") {
                                     $kodeshift = "S";
                                 }else if($nama_jadwal=="SHIFT 3"){
@@ -572,54 +526,51 @@
                                 }else{
                                     $kodeshift = "P";
                                 }
-
-
                             ?>
-                            {{ $kodeshift }}
-                            {{ $grandtotaljam < $total_jam  ? $grandtotaljam : "" }}
-                            @elseif($status=="s")
-                            {{-- <span style="color:rgb(195, 63, 27)">SAKIT
+                        {{ $kodeshift }}{{ $grandtotaljam < $total_jam  ? $grandtotaljam : "" }}
+                        @elseif($status=="s")
+                        {{-- <span style="color:rgb(195, 63, 27)">SAKIT
                                 @if (!empty($sid))
                                 <span style="color:green">- SID</span><br>
                                 <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
-                            @else
-                            <br>
-                            <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
-                            @endif
-                            </span> --}}
-                            @if (!empty($sid))
-                            SID
-                            @else
-                            SKT
-                            @endif
-                            @elseif($status=="i")
-                            {{-- <span style="color:rgb(27, 5, 171);">IZIN</span><br>
+                        @else
+                        <br>
+                        <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
+                        @endif
+                        </span> --}}
+                        @if (!empty($sid))
+                        SID
+                        @else
+                        SKT
+                        @endif
+                        @elseif($status=="i")
+                        {{-- <span style="color:rgb(27, 5, 171);">IZIN</span><br>
                             <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span> --}}
-                            I
-                            @elseif($status=="c")
-                            {{-- <span style="color:rgb(154, 56, 4);">CUTI</span><br>
+                        I
+                        @elseif($status=="c")
+                        {{-- <span style="color:rgb(154, 56, 4);">CUTI</span><br>
                             <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span> --}}
-                            C
-                            @endif
-                            {{-- @if (!empty($premi))
+                        C
+                        @endif
+                        {{-- @if (!empty($premi))
                             <br>
                             <span style="color: blue">Premi : {{ rupiah($premi) }}</span>
-                            @endif --}}
-                        </td>
-                        <?php
+                        @endif --}}
+                    </td>
+                    <?php
                     }else{
                     $jt = 0;
                     $jk = 0;
                     $denda = 0;
                     $premi = 0;
                 ?>
-                        <td style="background-color:{{ $colorcolumn }}; color:white; width:3%">
-                            {{-- <span>{{ var_dump(empty($ceklibur)) }}</span> --}}
-                            {{-- {{ !empty($ceklibur) ? $ceklibur[0]["keterangan"] : "" }} --}}
-                            {{ !empty($cekwfh) ? "P".$totaljamdirumahkan : "" }}
-                            {{-- {{ !empty($cekliburpenggantiminggu) ? $cekliburpenggantiminggu[0]["keterangan"] : "" }} --}}
-                        </td>
-                        <?Php
+                    <td style="background-color:{{ $colorcolumn }}; color:white; width:3%">
+                        {{-- <span>{{ var_dump(empty($ceklibur)) }}</span> --}}
+                        {{-- {{ !empty($ceklibur) ? $ceklibur[0]["keterangan"] : "" }} --}}
+                        {{ !empty($cekwfh) ? "P".$totaljamdirumahkan : "" }}
+                        {{-- {{ !empty($cekliburpenggantiminggu) ? $cekliburpenggantiminggu[0]["keterangan"] : "" }} --}}
+                    </td>
+                    <?Php
                     }
 
                     $totalterlambat += $jt;
@@ -630,25 +581,28 @@
 
                 $totaljamkerja = $totaljam1bulan - $totalterlambat - $totalkeluar - $totaldirumahkan;
                 ?>
-                        <td style="font-size: 16px; text-align:center; font-weight:bold">{{ $totaljam1bulan }}</td>
-                        <td style="text-align: center; color:red; font-size:16px">{{ !empty($totalterlambat) ? $totalterlambat : '' }}</td>
-                        <td style="text-align: center; color:rgb(255, 140, 0);font-size:16px">{{ !empty($totalkeluar) ? $totalkeluar : '' }}</td>
-                        <td style="text-align: center; color:rgb(255, 140, 0);font-size:16px">{{ !empty($totaldirumahkan) ? $totaldirumahkan : '' }}</td>
-                        <td style="font-size: 16px; text-align:center; font-weight:bold">{{ !empty($totaljamkerja) ? $totaljamkerja : '' }}</td>
-                        <td style="text-align: right; color:red; font-size:16px">{{ !empty($totaldenda) ? rupiah($totaldenda) : '' }}</td>
-                        <td style="text-align: right;  font-size:16px">{{ !empty($totalpremi) ? rupiah($totalpremi) : '' }}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
+                    <td style="font-size: 16px; text-align:center; font-weight:bold">{{ $totaljam1bulan }}</td>
+                    <td style="text-align: center; color:red; font-size:16px">{{ !empty($totalterlambat) ? $totalterlambat : '' }}</td>
+                    <td style="text-align: center; color:rgb(255, 140, 0);font-size:16px">{{ !empty($totaldirumahkan) ? $totaldirumahkan : '' }}</td>
+                    <td style="text-align: center; color:rgb(255, 140, 0);font-size:16px">{{ !empty($totalkeluar) ? $totalkeluar : '' }}</td>
+
+                    <td style="font-size: 16px; text-align:center; font-weight:bold">{{ !empty($totaljamkerja) ? $totaljamkerja : '' }}</td>
+                    <td style="text-align: right; color:red; font-size:16px">{{ !empty($totaldenda) ? rupiah($totaldenda) : '' }}</td>
+                    <td style="text-align: right;  font-size:16px">{{ !empty($totalpremi) ? rupiah($totalpremi) : '' }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
     </div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="{{ asset('dist/js/freeze/js/freeze-table.js') }}"></script>
 <script>
-    // requires jquery library
-    jQuery(document).ready(function() {
-        jQuery(".datatable3").clone(true).appendTo('#table-scroll').addClass('clone');
+    $(function() {
+        $('.freeze-table').freezeTable({
+            'scrollable': true
+            , 'columnNum': 4
+        });
     });
 
 </script>
