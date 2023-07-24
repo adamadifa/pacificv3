@@ -120,6 +120,8 @@ class PresensiController extends Controller
                 }
             }
 
+
+            $query->where('status_aktif', 1);
             // if ($level == "kepala admin") {
             //     $query->where('id_kantor', $cabang);
             //     $query->where('id_perusahaan', "MP");
@@ -200,9 +202,12 @@ class PresensiController extends Controller
                     $query->where('master_karyawan.id_kantor', $cabang);
                 }
             }
+
+
             $query->where('grup', 11);
             $query->where('id_kantor', 'PST');
             $query->where('nama_jabatan', '!=', 'MANAGER');
+            $query->where('status_aktif', 1);
             $query->orWhere('grup', 4);
             $query->where('id_kantor', 'PST');
             $query->where('nama_jabatan', 'MANAGER');
@@ -239,6 +244,8 @@ class PresensiController extends Controller
                     $query->where('master_karyawan.id_kantor', $cabang);
                 }
             }
+
+            $query->where('status_aktif', 1);
         }
 
         if (Auth::user()->id == 73) {

@@ -143,6 +143,9 @@
                     }
 
                     $cekliburpenggantiminggu = cektgllibur($dataliburpenggantiminggu,$search_items);
+                    if(empty($cekliburpenggantiminggu)){
+                        $cekliburpenggantiminggu = cektgllibur($dataliburpenggantiminggu,$search_items_all);
+                    }
                     $cekminggumasuk = cektgllibur($dataminggumasuk,$search_items_minggumasuk);
                     $cekwfh = cektgllibur($datawfh,$search_items);
                     if(empty($cekwfh)){
@@ -182,16 +185,16 @@
                                 $colorcolumn = "#ffaf03";
                                 $colortext = "white";
                             }else{
-                                $colorcolumn = "";
-                                $colortext = "";
+                                $colorcolumn = $colorcolumn;
+                                $colortext = $colortext;
                             }
 
                             if (!empty($cekwfh)) {
                                 $colorcolumn = "#fc0380";
                                 $colortext = "black";
                             }else{
-                                $colorcolumn = "";
-                                $colortext = "";
+                                $colorcolumn = $colorcolumn;
+                                $colortext = $colortext;
                             }
 
 
@@ -478,6 +481,7 @@
                     <td style="background-color: {{ $colorcolumn }}; color:{{ $colortext }}; width:3%; font-size:14px !important">
                         {{-- <span style="color:blue; font-size:10px; ">{{ date("d",strtotime($rangetanggal[$i])) }}</span>
                         <br> --}}
+                        {{-- {{ var_dump($cekliburpenggantiminggu) }} --}}
                         @if ($status == "h")
                         {{-- <span>{{ var_dump($ceklibur) }}</span> --}}
                         {{-- <span>{{ $desimalterlambat }}</span> --}}

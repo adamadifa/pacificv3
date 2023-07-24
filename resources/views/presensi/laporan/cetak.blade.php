@@ -142,6 +142,9 @@
                     }
 
                     $cekliburpenggantiminggu = cektgllibur($dataliburpenggantiminggu,$search_items);
+                    if(empty($cekliburpenggantiminggu)){
+                        $cekliburpenggantiminggu = cektgllibur($dataliburpenggantiminggu,$search_items_all);
+                    }
                     $cekminggumasuk = cektgllibur($dataminggumasuk,$search_items_minggumasuk);
                     $cekwfh = cektgllibur($datawfh,$search_items);
                     if(empty($cekwfh)){
@@ -181,16 +184,16 @@
                                 $colorcolumn = "#ffaf03";
                                 $colortext = "white";
                             }else{
-                                $colorcolumn = "";
-                                $colortext = "";
+                                $colorcolumn = $colorcolumn;
+                                $colortext = $colortext;
                             }
 
                             if (!empty($cekwfh)) {
                                 $colorcolumn = "#fc0380";
                                 $colortext = "black";
                             }else{
-                                $colorcolumn = "";
-                                $colortext = "";
+                                $colorcolumn = $colorcolumn;
+                                $colortext = $colortext;
                             }
 
 

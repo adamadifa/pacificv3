@@ -156,10 +156,12 @@
                                             </td>
                                             <td>
                                                 <div class="btn-group">
+                                                    @if ($level == "manager hrd")
                                                     @if (empty($d->hrd))
                                                     <a href="#" kode_libur="{{ Crypt::encrypt($d->kode_libur) }}" class="approve"><i class="feather icon-external-link primary"></i></a>
                                                     @else
                                                     <a href="/harilibur/{{ Crypt::encrypt($d->kode_libur) }}/batalkan" class="warning">Batalkan</a>
+                                                    @endif
                                                     @endif
                                                     <a href="/harilibur/{{ Crypt::encrypt($d->kode_libur) }}/tambahkaryawan">
                                                         <i class="feather icon-settings success ml-1"></i>
@@ -179,6 +181,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                {{ $harilibur->links('vendor.pagination.vuexy') }}
                             </div>
                         </div>
 

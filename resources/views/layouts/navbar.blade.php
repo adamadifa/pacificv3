@@ -1302,7 +1302,7 @@
                     @endif
                     @endif
                     @if (Auth::user()->id != "176")
-                    @if (in_array($level,$presensi_karyawan_menu))
+                    @if (in_array($level,$presensi_karyawan_menu) || Auth::user()->pic_presensi == 1)
                     <li class="{{ request()->is(['presensi/presensikaryawan']) ? 'active' : '' }}">
                         <a href="/presensi/presensikaryawan">
                             <i class="feather icon-monitor"></i>
@@ -1313,7 +1313,7 @@
                     @endif
                     @if (Auth::user()->id != "176")
                     @if (in_array($level,$lap_hrd) || Auth::user()->pic_presensi == 1)
-                    <li class="{{ request()->is(['laporanhrd/presensi']) ? 'active' : '' }}">
+                    <li class="{{ request()->is(['laporanhrd/presensi','laporanhrd/presensipsm','laporanhrd/rekapterlambat']) ? 'active' : '' }}">
                         <a href="/laporanhrd/presensi">
                             <i class="feather icon-file-text"></i>
                             <span class="menu-item" data-i18n="Second Level">Laporan</span>

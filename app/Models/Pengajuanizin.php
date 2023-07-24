@@ -614,7 +614,7 @@ class Pengajuanizin extends Model
         }
 
         $query->orderBy('kode_izin', 'desc');
-        $pengajuan_izin = $query->get();
+        $pengajuan_izin = $query;
         return $pengajuan_izin;
     }
 }
