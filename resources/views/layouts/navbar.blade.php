@@ -1245,6 +1245,7 @@
                         </a>
                     </li>
                     @endif
+                    @if (Auth::user()->id != "176")
                     @if (in_array($level,$pengajuan_izin_menu) || Auth::user()->pic_presensi==1)
                     <li class="{{ request()->is(['pengajuanizin', 'pengajuanizin/*']) ? 'active' : '' }}">
                         <a href="/pengajuanizin">
@@ -1253,6 +1254,8 @@
                         </a>
                     </li>
                     @endif
+                    @endif
+                    @if (Auth::user()->id != "176")
                     @if (in_array($level,$jadwal_kerja_menu))
                     <li class="{{ request()->is(['konfigurasijadwal', 'konfigurasijadwal/*']) ? 'active' : '' }}">
                         <a href="/konfigurasijadwal">
@@ -1261,6 +1264,8 @@
                         </a>
                     </li>
                     @endif
+                    @endif
+                    @if (Auth::user()->id != "176")
                     @if (in_array($level,$hari_libur_menu) && $getcbg == "PCF" || Auth::user()->pic_presensi == 1 && $getcbg != "PCF" )
                     <li class="{{ request()->is(['harilibur', 'harilibur/*']) ? 'active' : '' }}">
                         <a href="/harilibur">
@@ -1268,6 +1273,7 @@
                             <span class="menu-item" data-i18n="Second Level">Hari Libur</span>
                         </a>
                     </li>
+                    @endif
                     @endif
                     @if (in_array($level,$pembayaran_jmk))
                     <li class="{{ request()->is(['pembayaranjmk', 'pembayaranjmk/*']) ? 'active' : '' }}">
@@ -1285,6 +1291,7 @@
                         </a>
                     </li>
                     @endif
+                    @if (Auth::user()->id != "176")
                     @if (in_array($level,$monitoring_presensi) || Auth::user()->pic_presensi == 1)
                     <li class="{{ request()->is(['presensi/monitoring']) ? 'active' : '' }}">
                         <a href="/presensi/monitoring">
@@ -1293,7 +1300,8 @@
                         </a>
                     </li>
                     @endif
-
+                    @endif
+                    @if (Auth::user()->id != "176")
                     @if (in_array($level,$presensi_karyawan_menu))
                     <li class="{{ request()->is(['presensi/presensikaryawan']) ? 'active' : '' }}">
                         <a href="/presensi/presensikaryawan">
@@ -1302,7 +1310,8 @@
                         </a>
                     </li>
                     @endif
-
+                    @endif
+                    @if (Auth::user()->id != "176")
                     @if (in_array($level,$lap_hrd) || Auth::user()->pic_presensi == 1)
                     <li class="{{ request()->is(['laporanhrd/presensi']) ? 'active' : '' }}">
                         <a href="/laporanhrd/presensi">
@@ -1311,6 +1320,7 @@
                         </a>
                         @endif
                     </li>
+                    @endif
                 </ul>
             </li>
             @endif
