@@ -249,8 +249,11 @@ class KaryawanController extends Controller
         $status_aktif = $request->status_aktif;
         $pin = $request->pin;
         $tgl_nonaktif = $request->tgl_nonaktif;
-
-        $cek = DB::table('master_karyawan')->where('pin', $pin)->where('nik', '!=', $nik)->count();
+        if (!empty($pin)) {
+            $cek = DB::table('master_karyawan')->where('pin', $pin)->where('nik', '!=', $nik)->count();
+        } else {
+            $cek = 0;
+        }
         if ($cek > 0) {
             return Redirect::back()->with(['warning' => 'Pin Sudah Terdaftar']);
         }

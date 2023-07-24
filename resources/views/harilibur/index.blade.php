@@ -119,6 +119,7 @@
                                             <th>Kantor</th>
                                             <th>Kategori</th>
                                             <th style="width:15%">Keterangan</th>
+                                            <th>HRD</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -141,13 +142,30 @@
                                                 <span class="badge bg-primary">WFH</span>
                                                 @endif
                                             </td>
-                                            <td>{{ $d->keterangan }}</td>
+                                            <td>{{ ucwords(strtolower($d->keterangan)) }}</td>
+                                            <td>
+                                                @if (empty($d->hrd))
+                                                <i class="fa fa-history warning"></i>
+                                                @else
+                                                @if ($d->hrd==1)
+                                                <i class="feather icon-check success"></i>
+                                                @else
+                                                <i class="fa fa-close danger"></i>
+                                                @endif
+                                                @endif
+                                            </td>
                                             <td>
                                                 <div class="btn-group">
+                                                    @if (empty($d->hrd))
+                                                    <a href="#" kode_libur="{{ Crypt::encrypt($d->kode_libur) }}" class="approve"><i class="feather icon-external-link primary"></i></a>
+                                                    @else
+                                                    <a href="/harilibur/{{ Crypt::encrypt($d->kode_libur) }}/batalkan" class="warning">Batalkan</a>
+                                                    @endif
                                                     <a href="/harilibur/{{ Crypt::encrypt($d->kode_libur) }}/tambahkaryawan">
-                                                        <i class="feather icon-settings success mr-1"></i>
+                                                        <i class="feather icon-settings success ml-1"></i>
                                                     </a>
-                                                    <a href="#" class="edit" kode_libur="{{ $d->kode_libur }}"><i class="feather icon-edit info"></i></a>
+
+                                                    {{-- <a href="#" class="edit" kode_libur="{{ $d->kode_libur }}"><i class="feather icon-edit info"></i></a> --}}
                                                     <form method="POST" class="deleteform" action="/harilibur/{{Crypt::encrypt($d->kode_libur)}}/delete">
                                                         @csrf
                                                         @method('DELETE')
@@ -212,7 +230,8 @@
                                     <option value="">Pilih Kategori Libur</option>
                                     <option value="1">Libur Nasional</option>
                                     <option value="2">Libur Pengganti Minggu</option>
-                                    <option value="3">WFH</option>
+                                    <option value="3">Dirumahkan</option>
+                                    <option value="4">WFH</option>
                                 </select>
                             </div>
                         </div>
@@ -238,25 +257,52 @@
     </div>
 </div>
 
-<div class="modal fade text-left" id="mdleditlibur" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+<div class="modal fade text-left" id="mdlapprove" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel18">Edit Data Libur</h4>
+                <h4 class="modal-title" id="myModalLabel18">Approve Pengajuan Libur</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body" id="loadeditlibur">
+            <div class="modal-body">
+                <form action="/harilibur/approve" method="POST">
+                    @csrf
+                    <input type="hidden" name="kode_libur" id="kode_libur_approve">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="btn-group w-100">
+                                <button name="approve" value="approve" class="btn btn-success w-100">
+                                    <i class="feather icon-check mr-1"></i>
+                                    Setuju
+                                </button>
+                                <button name="decline" value="decline" class="btn btn-danger w-100">
+                                    <i class="fa fa-close mr-1"></i>
+                                    Tolak
+                                </button>
+                            </div>
+                        </div>
+                    </div>
 
+                </form>
             </div>
         </div>
     </div>
 </div>
+
 @endsection
 @push('myscript')
 <script>
     $(function() {
+
+        $(".approve").click(function(e) {
+            e.preventDefault();
+            $("#mdlapprove").modal("show");
+            var kode_libur = $(this).attr('kode_libur');
+            $("#kode_libur_approve").val(kode_libur);
+        });
+
         //$("#tglminggu").hide();
         $("#tambahlibur").click(function(e) {
             e.preventDefault();
@@ -266,15 +312,15 @@
             });
         });
 
-        $(".edit").click(function(e) {
-            e.preventDefault();
-            var kode_libur = $(this).attr('kode_libur');
-            $("#mdleditlibur").modal({
-                backdrop: 'static'
-                , keyboard: false
-            });
-            $("#loadeditlibur").load('/harilibur/' + kode_libur + '/edit');
-        });
+        // $(".edit").click(function(e) {
+        //     e.preventDefault();
+        //     var kode_libur = $(this).attr('kode_libur');
+        //     $("#mdleditlibur").modal({
+        //         backdrop: 'static'
+        //         , keyboard: false
+        //     });
+        //     $("#loadeditlibur").load('/harilibur/' + kode_libur + '/edit');
+        // });
         $('.delete-confirm').click(function(event) {
             var form = $(this).closest("form");
             var name = $(this).data("name");
@@ -296,12 +342,12 @@
         $("#kategori").change(function(e) {
             var kategori = $(this).val();
             //alert(kategori);
-            // if (kategori == 2) {
-            //     $("#tglminggu").show();
-            // } else {
-            //     $("#tglminggu").hide();
+            if (kategori == 3 || kategori == 4) {
+                $("#tanggal_diganti").hide();
+            } else {
+                $("#tanggal_diganti").show();
 
-            // }
+            }
         });
         $("#frmLibur").submit(function(e) {
             var tanggal = $("#tanggal").val();
@@ -339,7 +385,7 @@
                     $("#kategori").focus();
                 });
                 return false;
-            } else if (tanggal_diganti == "") {
+            } else if (tanggal_diganti == "" && kategori != 3) {
                 swal({
                     title: 'Oops'
                     , text: 'Tanggal Libur Yang Di Ganti Harus Diisi !'

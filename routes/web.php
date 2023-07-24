@@ -1722,6 +1722,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/harilibur/hapuskaryawanlibur', [HariliburController::class, 'hapuskaryawanlibur']);
     Route::post('/harilibur/hapusliburkaryawan', [HariliburController::class, 'hapusliburkaryawan']);
     Route::get('/harilibur/{kode_libur}/getliburkaryawan', [HariliburController::class, 'getliburkaryawan']);
+    Route::post('/harilibur/approve', [HariliburController::class, 'approve']);
+    Route::get('/harilibur/{kode_libur}/batalkan', [HariliburController::class, 'batalkan']);
 
     Route::get('/laporanhrd/presensi', [LaporanhrdController::class, 'presensi']);
     Route::get('/laporanhrd/presensipsm', [LaporanhrdController::class, 'presensipsm']);

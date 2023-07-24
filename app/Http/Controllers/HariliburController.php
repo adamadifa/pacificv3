@@ -37,6 +37,8 @@ class HariliburController extends Controller
                 $query->where('id_kantor', $request->id_kantor_search);
             }
         }
+
+        $query->orderBy('tanggal_libur', 'desc');
         $harilibur = $query->paginate(15);
         $harilibur->appends($request->all());
 
@@ -271,6 +273,41 @@ class HariliburController extends Controller
             return 0;
         } catch (\Exception $e) {
             return 1;
+        }
+    }
+
+    public function approve(Request $request)
+    {
+
+        $kode_libur = Crypt::decrypt($request->kode_libur);
+        if (isset($request->approve)) {
+            try {
+                DB::table('harilibur')->where('kode_libur', $kode_libur)->update(['hrd' => 1]);
+                return Redirect::back()->with(['success' => 'Pengajuan Libur Disetujui']);
+            } catch (\Exception $e) {
+                return Redirect::back()->with(['warning' => 'Data Gagal di Update']);
+                //throw $th;
+            }
+        } else {
+            try {
+                DB::table('harilibur')->where('kode_libur', $kode_libur)->update(['hrd' => 2]);
+                return Redirect::back()->with(['success' => 'Pengajuan Libur Ditolak']);
+            } catch (\Exception $e) {
+                return Redirect::back()->with(['warning' => 'Data Gagal di Update']);
+                //throw $th;
+            }
+        }
+    }
+
+    public function batalkan($kode_libur)
+    {
+        $kode_libur = Crypt::decrypt($kode_libur);
+        try {
+            DB::table('harilibur')->where('kode_libur', $kode_libur)->update(['hrd' => null]);
+            return Redirect::back()->with(['success' => 'Pengajuan Libur Dibatalkan']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Data Gagal di Update']);
+            //throw $th;
         }
     }
 }

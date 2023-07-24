@@ -84,6 +84,15 @@
                                         // Jam Masuk adalah Jam Masuk Seharusnya
                                         $jam_in = date("H:i", strtotime($d->jam_in));
                                         $jam_out = date("H:i", strtotime($d->jam_out));
+                                        $jam_out_tanggal = $d->jam_out;
+                                        $tgl_presensi = $d->tgl_presensi;
+                                        $lintashari = $d->lintashari;
+                                        if(!empty($lintashari)){
+                                            $tgl_pulang = date('Y-m-d', strtotime('+1 day', strtotime($tgl_presensi)));
+                                        }else{
+                                            $tgl_pulang = $tgl_presensi;
+                                        }
+                                        $jam_pulang_tanggal = $tgl_pulang. " ".$d->jam_pulang;
                                         $jam_istirahat = date("H:i",strtotime($d->jam_istirahat));
                                         $jam_pulang = date("H:i", strtotime($d->jam_pulang));
                                         $jam_masuk = $d->tgl_presensi . " " . $d->jam_masuk;
@@ -266,7 +275,7 @@
                                         $totaljam = $d->total_jam - $jt - $jk;
 
                                         if (!empty($d->jam_out)) {
-                                            if ($jam_out < $jam_pulang) {
+                                            if ($jam_out_tanggal < $jam_pulang_tanggal) {
                                                 if($jam_out > $jam_istirahat && !empty($d->jam_istirahat)){
                                                     $desimalmenit = ROUND(($menit * 100) / 60);
                                                     $grandtotaljam = $jam-1 . "." . $desimalmenit;

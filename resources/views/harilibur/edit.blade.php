@@ -65,6 +65,17 @@
             }
         }
 
+        $("#kategori").change(function(e) {
+            var kategori = $(this).val();
+            //alert(kategori);
+            if (kategori == 3) {
+                $("#tgl_pengganti").hide();
+            } else {
+                $("#tgl_pengganti").show();
+
+            }
+        });
+
         loadtglminggu();
         $("#frmLiburEdit").submit(function(e) {
             var tanggal = $("#frmLiburEdit").find("#tanggal").val();
