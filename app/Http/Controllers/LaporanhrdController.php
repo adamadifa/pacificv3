@@ -1462,7 +1462,7 @@ class LaporanhrdController extends Controller
         if (!empty($id_group)) {
             $query->where('master_karyawan.grup', $id_group);
         }
-
+        $query->where('status_aktif', 1);
         $query->orderBy('nama_karyawan');
         $presensi = $query->get();
         //dd($presensi);
