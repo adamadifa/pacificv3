@@ -578,7 +578,10 @@ class PengajuanizinController extends Controller
         $kode_dept_presensi = Auth::user()->kode_dept_presensi;
         $kar = new Karyawan();
         $karyawan = $kar->getkaryawanpengajuan($kode_dept_presensi);
-        $jadwal = DB::table('jadwal_kerja')->orderBy('kode_jadwal')->get();
+        $kode_cabang = Auth::user()->kode_cabang;
+        $jadwal = DB::table('jadwal_kerja')->orderBy('kode_jadwal')
+            ->where('kode_cabang', $kode_cabang)
+            ->get();
         return view('pengajuanizin.createkoreksi', compact('karyawan', 'jadwal'));
     }
 
