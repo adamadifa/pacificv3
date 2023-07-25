@@ -580,6 +580,9 @@ class PengajuanizinController extends Controller
         $kar = new Karyawan();
         $karyawan = $kar->getkaryawanpengajuan($kode_dept_presensi);
         $kode_cabang = Auth::user()->kode_cabang;
+        if ($kode_cabang == "PCF") {
+            $kode_cabang = "PST";
+        }
         $jadwal = DB::table('jadwal_kerja')->orderBy('kode_jadwal')
             ->where('kode_cabang', $kode_cabang)
             ->get();
