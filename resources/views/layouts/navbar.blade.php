@@ -1198,7 +1198,7 @@
                             <span class="menu-item" data-i18n="Second Level">Penilaian karyawan</span>
                         </a>
                         @elseif(Auth::user()->level=="manager marketing")
-                        <a href="/penilaiankaryawan/4/PCF/list">
+                        <a href="/penilaiankaryawan/4/MP/list">
                             <i class="feather icon-edit"></i>
                             <span class="menu-item" data-i18n="Second Level">Penilaian karyawan</span>
                         </a>
