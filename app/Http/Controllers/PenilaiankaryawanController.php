@@ -34,13 +34,22 @@ class PenilaiankaryawanController extends Controller
             } else if (Auth::user()->kategori_jabatan == 3) {
 
                 if (Auth::user()->level == "manager accounting") {
-                    $qkaryawan->whereIn('id_kategori_jabatan', [7, 8]);
+                    $qkaryawan->whereIn('id_kategori_jabatand', [7, 8]);
                 } else {
                     $qkaryawan->whereIn('id_kategori_jabatan', [8, 9, 10, 5, 15]);
                     $qkaryawan->where('id_kantor', 'PST');
                 }
             } else if (Auth::user()->kategori_jabatan == 2) {
-                $qkaryawan->whereIn('id_kategori_jabatan', [3, 4]);
+                if (Auth::user()->id == 20) {
+                    $qkaryawan->whereIn('nik', [
+                        '21.02.232',
+                        '23.05.046',
+                        '18.01.003',
+                        '16.11.266'
+                    ]);
+                } else {
+                    $qkaryawan->whereIn('id_kategori_jabatan', [3, 4]);
+                }
             }
         }
         if ($list_dept != NULL) {
