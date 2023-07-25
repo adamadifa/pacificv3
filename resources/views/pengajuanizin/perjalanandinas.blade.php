@@ -17,6 +17,116 @@
         padding-right: 1px !important;
     }
 
+    .header-fixed {
+        width: 100%
+    }
+
+    .header-fixed>thead,
+    .header-fixed>tbody,
+    .header-fixed>thead>tr,
+    .header-fixed>tbody>tr,
+    .header-fixed>thead>tr>th,
+    .header-fixed>tbody>tr>td {
+        display: block;
+    }
+
+    .header-fixed>tbody>tr:after,
+    .header-fixed>thead>tr:after {
+        content: ' ';
+        display: block;
+        visibility: hidden;
+        clear: both;
+    }
+
+    .header-fixed>tbody {
+        overflow-y: auto;
+        height: 400px;
+    }
+
+    .header-fixed>tbody>tr>td:nth-child(1),
+    .header-fixed>thead>tr>th:nth-child(1) {
+        width: 3%;
+        float: left;
+    }
+
+    .header-fixed>tbody>tr>td:nth-child(2),
+    .header-fixed>thead>tr>th:nth-child(2) {
+        width: 5%;
+        float: left;
+    }
+
+    .header-fixed>tbody>tr>td:nth-child(3),
+    .header-fixed>thead>tr>th:nth-child(3) {
+        width: 13%;
+        float: left;
+    }
+
+    .header-fixed>tbody>tr>td:nth-child(4),
+    .header-fixed>thead>tr>th:nth-child(4) {
+        width: 6%;
+        float: left;
+    }
+
+    .header-fixed>tbody>tr>td:nth-child(5),
+    .header-fixed>thead>tr>th:nth-child(5) {
+        width: 10%;
+        float: left;
+    }
+
+    .header-fixed>tbody>tr>td:nth-child(6),
+    .header-fixed>thead>tr>th:nth-child(6) {
+        width: 7%;
+        float: left;
+    }
+
+    .header-fixed>tbody>tr>td:nth-child(7),
+    .header-fixed>thead>tr>th:nth-child(7) {
+        width: 5%;
+        float: left;
+    }
+
+    .header-fixed>tbody>tr>td:nth-child(8),
+    .header-fixed>thead>tr>th:nth-child(8) {
+        width: 5%;
+        float: left;
+    }
+
+    .header-fixed>tbody>tr>td:nth-child(9),
+    .header-fixed>thead>tr>th:nth-child(9) {
+        width: 5%;
+        float: left;
+    }
+
+    .header-fixed>tbody>tr>td:nth-child(10),
+    .header-fixed>thead>tr>th:nth-child(10) {
+        width: 7%;
+        float: left;
+    }
+
+    .header-fixed>tbody>tr>td:nth-child(11),
+    .header-fixed>thead>tr>th:nth-child(11) {
+        width: 15%;
+        float: left;
+    }
+
+    .header-fixed>tbody>tr>td:nth-child(12),
+    .header-fixed>thead>tr>th:nth-child(12) {
+        width: 5%;
+        float: left;
+    }
+
+    .header-fixed>tbody>tr>td:nth-child(13),
+    .header-fixed>thead>tr>th:nth-child(13) {
+        width: 5%;
+        float: left;
+    }
+
+    .header-fixed>tbody>tr>td:nth-child(14),
+    .header-fixed>thead>tr>th:nth-child(14) {
+        width: 6%;
+        float: left;
+    }
+
 </style>
 
 <div class="content-wrapper">
@@ -117,7 +227,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
-                                        <table class="table table-striped">
+                                        <table class="table table-striped header-fixed">
                                             <thead>
                                                 <tr>
                                                     <th>No.</th>
@@ -131,31 +241,29 @@
                                                     <th>Jml Hari</th>
                                                     <th>Cabang</th>
                                                     <th>Ket</th>
-                                                    <th>Head Dept</th>
-                                                    <th>HRD</th>
+                                                    <th class="text-center">Head</th>
+                                                    <th class="text-center">HRD</th>
+                                                    <th class="text-center">Dirut</th>
                                                     <th>Aksi</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach ($pengajuan_izin as $d)
                                                 <tr>
-                                                    <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $d->kode_izin }}</td>
-                                                    <td>{{ date('d-m-Y',strtotime($d->dari)) }} s/d {{ date('d-m-Y',strtotime($d->sampai)) }}</td>
-                                                    <td>{{ $d->nik }}</td>
-                                                    <td>{{ $d->nama_karyawan }}</td>
-                                                    <td>{{ $d->nama_jabatan }}</td>
-                                                    <td>{{ $d->kode_dept }}</td>
-                                                    <td>{{ $d->id_kantor }}</td>
-                                                    <td>{{ $d->jmlhari }} Hari</td>
-                                                    <td>{{ $d->kode_cabang }}</td>
-                                                    <td>{{ $d->keterangan }} <br>
+                                                    <td class="filterable-cell">{{ $loop->iteration }}</td>
+                                                    <td class="filterable-cell">{{ $d->kode_izin }}</td>
+                                                    <td class="filterable-cell">{{ date('d-m-Y',strtotime($d->dari)) }} s/d {{ date('d-m-Y',strtotime($d->sampai)) }}</td>
+                                                    <td class="filterable-cell">{{ $d->nik }}</td>
+                                                    <td class="filterable-cell">{{ $d->nama_karyawan }}</td>
+                                                    <td class="filterable-cell">{{ $d->nama_jabatan }}</td>
+                                                    <td class="filterable-cell">{{ $d->kode_dept }}</td>
+                                                    <td class="filterable-cell">{{ $d->id_kantor }}</td>
+                                                    <td class="filterable-cell">{{ $d->jmlhari }} Hari</td>
+                                                    <td class="filterable-cell">{{ $d->kode_cabang }}</td>
+                                                    <td class="filterable-cell">{{ $d->keterangan }} <br>
                                                         {!! !empty($d->keterangan_hrd) ? "<span class='danger'><b>HRD</b></span> : <span class='danger'>".$d->keterangan_hrd."</span>":"" !!}
                                                     </td>
                                                     <td class="text-center filterable-cell">
-                                                        @if ($d->nama_jabatan == "GENERAL MANAGER")
-                                                        <i class="fa fa-minus-circle text-danger"></i>
-                                                        @else
                                                         @if (empty($d->head_dept))
                                                         <i class="fa fa-history text-warning"></i>
                                                         @elseif($d->head_dept == 1)
@@ -163,10 +271,8 @@
                                                         @elseif($d->head_dept == 2)
                                                         <i class="fa fa-close text-danger"></i>
                                                         @endif
-                                                        @endif
-
                                                     </td>
-                                                    <td class="text-center">
+                                                    <td class="text-center filterable-cell">
                                                         @if (empty($d->hrd))
                                                         <i class="fa fa-history text-warning"></i>
                                                         @elseif($d->hrd == 1)
@@ -175,6 +281,24 @@
                                                         <i class="fa fa-close text-danger"></i>
                                                         @endif
                                                     </td>
+                                                    <td class="text-center filterable-cell">
+
+                                                        @php
+                                                        $jabatan = array("MANAGER","GENERAL MANAGER","ASST. MANAGER");
+                                                        @endphp
+                                                        @if (in_array($d->nama_jabatan,$jabatan))
+                                                        @if (empty($d->direktur))
+                                                        <i class="fa fa-history text-warning"></i>
+                                                        @elseif($d->direktur == 1)
+                                                        <i class="fa fa-check text-success"></i>
+                                                        @elseif($d->direktur == 2)
+                                                        <i class="fa fa-close text-danger"></i>
+                                                        @endif
+                                                        @else
+                                                        <i class="fa fa-minus-circle text-danger"></i>
+                                                        @endif
+                                                    </td>
+
                                                     <td class="filterable-cell">
                                                         <div class="btn-group" role="group" aria-label="Basic example">
                                                             {{-- Jika Level Bukan Manager HRD --}}

@@ -1053,9 +1053,13 @@ class PengajuanizinController extends Controller
 
         if (isset($request->approve)) {
             try {
-                if ($level != "manager hrd") {
+                if ($level != "manager hrd" && $level != "direktur") {
                     DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
                         'head_dept' => 1
+                    ]);
+                } else if ($level == "direktur") {
+                    DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
+                        'direktur' => 1
                     ]);
                 } else {
                     DB::beginTransaction();
@@ -1068,20 +1072,20 @@ class PengajuanizinController extends Controller
                             //DB::table('presensi')->where('nik', $nik)->where('tgl_presensi', $tgl_presensi)->delete();
                             //Cek Data Presensi Karyawan Pada Tanggal Tersebut
                             DB::commit();
-                            return Redirect::back()->with(['success' => 'Koreksi Presensi Disetujui']);
+                            return Redirect::back()->with(['success' => 'Pengajuan Izin Disetujui']);
                         } else {
                             return Redirect::back()->with(['warning' => 'Data Sudah Disetujui']);
                         }
                     } catch (\Exception $e) {
                         dd($e);
                         DB::rollBack();
-                        return Redirect::back()->with(['warning' => 'Koreksi Presensi Gagal Disetujui']);
+                        return Redirect::back()->with(['warning' => 'Pengajuan Izin Gagal Disetujui']);
                     }
                 }
 
-                return Redirect::back()->with(['success' => 'Koreksi Presensi Disetujui']);
+                return Redirect::back()->with(['success' => 'Pengajuan izin  Disetujui']);
             } catch (\Exception $e) {
-                return Redirect::back()->with(['warning' => 'Koreksi Presensi Gagal Disetujui']);
+                return Redirect::back()->with(['warning' => 'Pengajuan Izin Gagal Disetujui']);
             }
         }
 
@@ -1090,6 +1094,10 @@ class PengajuanizinController extends Controller
                 if ($level != "manager hrd") {
                     DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
                         'head_dept' => 2
+                    ]);
+                } else if ($level == "direktur") {
+                    DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
+                        'direktur' => 2
                     ]);
                 } else {
                     DB::beginTransaction();
@@ -1122,6 +1130,10 @@ class PengajuanizinController extends Controller
             if ($level != "manager hrd") {
                 DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
                     'head_dept' => NULL
+                ]);
+            } else if ($level == "direktur") {
+                DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
+                    'direktur' => NULL
                 ]);
             } else {
                 DB::beginTransaction();
