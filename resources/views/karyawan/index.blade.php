@@ -103,13 +103,27 @@
                                             </select>
                                         </div>
                                     </div>
+                                    <div class="col-lg-2 col-sm-12">
+                                        <div class="form-group">
+                                            <select name="status_aktif" id="status_aktif" class="form-control">
+                                                <option value="">Status</option>
+                                                <option value="1" {{ Request('status_aktif') == "1" ? "selected" :"" }}>Aktif</option>
+                                                <option value="0" {{ Request('status_aktif') === "0" ? "selected" :"" }}>Non Aktif</option>
+                                            </select>
+                                        </div>
+                                    </div>
                                     @else
                                     <div class="col-lg-8 col-sm-12">
                                         <x-inputtext label="Nama Karyawan" field="nama_karyawan_search" icon="feather icon-users" value="{{ Request('nama_karyawan_search') }}" />
                                     </div>
                                     @endif
-                                    <div class="col-lg-2 col-sm-12">
-                                        <button type="submit" class="btn btn-primary"><i class="fa fa-search mr-1"></i> Cari</button>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-12 col-sm-12">
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary w-100"><i class="fa fa-search mr-1"></i> Cari</button>
+                                        </div>
                                     </div>
                                 </div>
                             </form>

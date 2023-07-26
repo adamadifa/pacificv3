@@ -19,10 +19,18 @@ class KaryawanController extends Controller
         $level = Auth::user()->level;
         $cabang = Auth::user()->kode_cabang;
         $nama_karyawan = $request->nama_karyawan_search;
+        $status_aktif = $request->status_aktif;
+
+        //dd($status_aktif);
         $query = Karyawan::query();
         $query->select('nik', 'nama_karyawan', 'tgl_masuk', 'master_karyawan.kode_dept', 'nama_dept', 'jenis_kelamin', 'nama_jabatan', 'id_perusahaan', 'id_kantor', 'klasifikasi', 'status_karyawan', 'pin', 'status_aktif');
         $query->leftjoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
         $query->leftjoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
+
+        if ($status_aktif == 1 || $status_aktif === "0") {
+            $query->where('status_aktif', $status_aktif);
+        }
+
         if (!empty($nama_karyawan)) {
             $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');
         }
