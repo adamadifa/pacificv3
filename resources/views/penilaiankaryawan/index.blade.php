@@ -268,7 +268,13 @@
                                                 @endif
                                                 @if (Auth::user()->level =="manager hrd" && !empty($d->dirut) && empty($d->pemutihan))
                                                 @if (empty($d->no_kontrak))
+                                                @if ($d->masa_kontrak_kerja=="Tidak Diperpanjang")
+                                                <span class="danger">Tidak Diperpanjang</span>
+                                                @else
                                                 <a href="#" nik="{{ $d->nik }}" kode_penilaian="{{ $d->kode_penilaian }}" class="danger buatkontrak">Buat Kontrak</a>
+                                                @endif
+
+
                                                 @else
                                                 <a href="/kontrak/{{ Crypt::encrypt($d->no_kontrak) }}/cetak" target="_blank" class="success">
                                                     <i class="feather icon-printer"></i>
