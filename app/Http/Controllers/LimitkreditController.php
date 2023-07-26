@@ -757,7 +757,7 @@ class LimitkreditController extends Controller
                     ->first();
 
 
-                $piutang = $cekpiutang->sisapiutang;
+                $piutang = $cekpiutang != null ? $cekpiutang->sisapiutang : 0;
                 $totalpiutang = $piutang +  $d->total;
 
 
