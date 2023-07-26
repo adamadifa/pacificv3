@@ -34,7 +34,7 @@ class PenilaiankaryawanController extends Controller
             } else if (Auth::user()->kategori_jabatan == 3) {
 
                 if (Auth::user()->level == "manager accounting") {
-                    $qkaryawan->whereIn('id_kategori_jabatand', [7, 8]);
+                    $qkaryawan->whereIn('id_kategori_jabatan', [7, 8]);
                 } else {
                     $qkaryawan->whereIn('id_kategori_jabatan', [8, 9, 10, 5, 15]);
                     $qkaryawan->where('id_kantor', 'PST');
