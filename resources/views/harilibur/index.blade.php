@@ -86,6 +86,8 @@
                                                 </select>
                                             </div>
                                         </div>
+
+                                        @if (Auth::user()->kode_cabang != "PCF" && Auth::user()->kode_cabang != "PST" )
                                         <div class="col-3">
                                             <div class="form-group">
                                                 <select id="id_kantor_search" name="id_kantor_search" class="form-control">
@@ -96,6 +98,8 @@
                                                 </select>
                                             </div>
                                         </div>
+                                        @endif
+
                                         <div class="col-2">
                                             <div class="form-group">
                                                 <button type="submit" name="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
@@ -117,6 +121,7 @@
                                             <th>Tanggal</th>
                                             <th>Pengganti Tgl</th>
                                             <th>Kantor</th>
+                                            <th>Dept</th>
                                             <th>Kategori</th>
                                             <th style="width:15%">Keterangan</th>
                                             <th>HRD</th>
@@ -131,6 +136,7 @@
                                             <td>{{ date("d-m-Y",strtotime($d->tanggal_libur)) }}</td>
                                             <td>{{ !empty($d->tanggal_diganti) ? date("d-m-Y",strtotime($d->tanggal_diganti)) : "" }}</td>
                                             <td>{{ $d->id_kantor }}</td>
+                                            <td>{{ $d->kode_dept }}</td>
                                             <td>
                                                 @if ($d->kategori==1)
                                                 <span class="badge bg-success">Libur Nasional</span>
@@ -214,6 +220,9 @@
                             <x-inputtext label="Tanggal" field="tanggal" icon="feather icon-calendar" datepicker />
                         </div>
                     </div>
+                    @if (Auth::user()->kode_cabang == "PCF" || Auth::user()->kode_cabang == "PST")
+                    <input type="hidden" name="id_kantor" value="PST">
+                    @else
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group">
@@ -226,6 +235,34 @@
                             </div>
                         </div>
                     </div>
+                    @endif
+
+                    @if (Auth::user()->kode_cabang =="PCF")
+                    @if (Auth::user()->level=="manager hrd" || Auth::user()->level=="admin")
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <select name="kode_dept" id="kode_dept" class="form-control">
+                                    <option value="">Departemen</option>
+                                    @foreach ($departemen as $d)
+                                    <option value="{{ $d->kode_dept }}">{{ strtoupper($d->nama_dept)}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    @else
+                    <input type="hidden" name="kode_dept" value="{{ Auth::user()->kode_dept_presensi }}">
+                    @endif
+                    @else
+                    @if (Auth::user()->kode_cabang=="PST")
+                    <input type="hidden" name="kode_dept" value="{{ Auth::user()->kode_dept_presensi }}">
+                    @else
+                    <input type="hidden" name="kode_dept" value="">
+                    @endif
+
+                    @endif
+
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group">
@@ -239,6 +276,8 @@
                             </div>
                         </div>
                     </div>
+
+
                     <div class="row" id="tgldiganti">
                         <div class="col-12">
                             <x-inputtext label="Tanggal Libur Yang Diganti" field="tanggal_diganti" icon="feather icon-calendar" datepicker />

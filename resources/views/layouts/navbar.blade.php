@@ -684,7 +684,7 @@
                                     <span class="menu-item">Input Penjualan</span>
                                 </a>
                             </li>
-                            @if (Auth::user()->kode_cabang=="BKI")
+                            @if (Auth::user()->kode_cabang=="BKI" || Auth::user()->kode_cabang=="SKB" )
                             <li class="{{ request()->is(['inputpenjualanppn']) ? 'active' : '' }}">
                                 <a href="/inputpenjualanppn">
                                     <i class="feather icon-shopping-cart"></i>

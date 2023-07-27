@@ -1,20 +1,31 @@
 <div class="row">
     <div class="col-3">
+        @if (Auth::user()->kode_cabang == "PCF" || Auth::user()->kode_cabang == "PST")
+        @if ($level=="manager hrd" || $level=="admin")
         <div class="form-group">
             <select name="kode_dept_search" id="kode_dept_search" class="form-control">
                 <option value="">Departemen</option>
                 @foreach ($departemen as $d)
-                <option {{ Request('kode_dept_search')==$d->kode_dept ? 'selected' : '' }} value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
+                <option {{ $kode_dept ==  $d->kode_dept ? 'selected' : '' }} value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
                 @endforeach
             </select>
         </div>
+        @else
+        <input type="hidden" name="kode_dept_search" id="kode_dept_search" value="{{ $kode_dept }}">
+        @endif
+        @else
+        <input type="hidden" name="kode_dept_search" id="kode_dept_search" value="">
+        @endif
+
     </div>
+    @if (Auth::user()->kode_cabang == "PCF" || Auth::user()->kode_cabang == "PST")
+    @if ($level=="manager hrd" || $level=="admin")
     <div class="col-2">
         <div class="form-group">
             <select name="id_perusahaan_search" id="id_perusahaan_search" class="form-control">
                 <option value="">MP/PCF</option>
-                <option value="MP" {{ Request('id_perusahaan_search') == "MP" ? "selected" : "" }}>MP</option>
-                <option value="PCF" {{ Request('id_perusahaan_search') == "PCF" ? "selected" : "" }}>PCF</option>
+                <option value="MP">MP</option>
+                <option value="PCF">PCF</option>
             </select>
         </div>
     </div>
@@ -23,7 +34,7 @@
             <select name="grup_search" id="grup_search" class="form-control">
                 <option value="">Grup</option>
                 @foreach ($group as $d)
-                <option {{ Request('grup_search')==$d->id ? 'selected' : '' }} value="{{ $d->id }}">{{ $d->nama_group }}</option>
+                <option value="{{ $d->id }}">{{ $d->nama_group }}</option>
                 @endforeach
             </select>
         </div>
@@ -31,6 +42,15 @@
     <div class="col-4">
         <x-inputtext label="Nama Karyawan" field="nama_karyawan_search" icon="feather icon-users" />
     </div>
+    @else
+    <input type="hidden" name="id_perusahaan_search" id="id_perusahaan_search" value="">
+    <input type="hidden" name="grup_search" id="grup_search" value="">
+    <div class="col-12">
+        <x-inputtext label="Nama Karyawan" field="nama_karyawan_search" icon="feather icon-users" />
+    </div>
+    @endif
+    @endif
+
 </div>
 </div>
 <div class="row">

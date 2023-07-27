@@ -52,6 +52,10 @@
                                         <td>{{ $harilibur->id_kantor }}</td>
                                     </tr>
                                     <tr>
+                                        <th>Departemen</th>
+                                        <td>{{ !empty($harilibur->kode_dept) ? $harilibur->kode_dept : "ALL"  }}</td>
+                                    </tr>
+                                    <tr>
                                         <th>Keterangan</th>
                                         <td>{{ $harilibur->keterangan }}</td>
                                     </tr>
@@ -109,13 +113,14 @@
         $("#tambahkaryawan").click(function(e) {
             e.preventDefault();
             var kode_libur = "{{ $harilibur->kode_libur }}";
-            var id_kantor = "{{ $harilibur->id_kantor }}"
+            var id_kantor = "{{ $harilibur->id_kantor }}";
+            var kode_dept = "{{ $harilibur->kode_dept }}";
             $("#mdltambahkaryawan").modal({
                 backdrop: 'static'
                 , keyboard: false
             , });
 
-            $("#loadkaryawan").load('/harilibur/' + kode_libur + '/' + id_kantor + '/getkaryawan');
+            $("#loadkaryawan").load('/harilibur/' + kode_libur + '/' + id_kantor + '/' + kode_dept + '/getkaryawan');
         });
 
 

@@ -44,8 +44,12 @@ class HariliburController extends Controller
 
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         $cbg = new Cabang();
-        $cabang = $cbg->getCabangpresensi(Auth::user()->kode_cabang);
-        return view('harilibur.index', compact('harilibur', 'bulan', 'cabang'));
+        if (Auth::user()->kode_cabang != "PCF") {
+            $cabang = $cbg->getCabangpresensi(Auth::user()->kode_cabang);
+        }
+
+        $departemen = DB::table('hrd_departemen')->orderBy('kode_dept')->get();
+        return view('harilibur.index', compact('harilibur', 'bulan', 'cabang', 'departemen'));
     }
 
     public function store(Request $request)
@@ -54,6 +58,7 @@ class HariliburController extends Controller
         $tanggal = $request->tanggal;
         $keterangan = $request->keterangan;
         $id_kantor = $request->id_kantor;
+        $kode_dept = $request->kode_dept;
         $kategori = $request->kategori;
         $tahun = substr(date('Y', strtotime($tanggal)), 2, 2);
         $harilibur = DB::table('harilibur')->whereRaw('MID(kode_libur,3,2)="' . $tahun . '"')
@@ -70,6 +75,7 @@ class HariliburController extends Controller
             'kode_libur' => $kode_libur,
             'tanggal_libur' => $tanggal,
             'id_kantor' => $id_kantor,
+            'kode_dept' => $kode_dept,
             'kategori' => $kategori,
             'keterangan' => $keterangan,
             'tanggal_limajam' => $beforeday,
@@ -161,11 +167,11 @@ class HariliburController extends Controller
         return view('harilibur.tambahkaryawan', compact('harilibur'));
     }
 
-    public function getkaryawan($kode_libur, $id_kantor)
+    public function getkaryawan($kode_libur, $id_kantor, $kode_dept)
     {
         $departemen = DB::table('hrd_departemen')->get();
         $group = DB::table('hrd_group')->orderBy('nama_group')->get();
-        return view('harilibur.getkaryawan', compact('kode_libur', 'id_kantor', 'departemen', 'group'));
+        return view('harilibur.getkaryawan', compact('kode_libur', 'id_kantor', 'kode_dept', 'departemen', 'group'));
     }
 
     public function getlistkaryawan(Request $request)
