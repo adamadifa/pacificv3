@@ -916,9 +916,15 @@ class PengajuanizinController extends Controller
         $status_approve = $data->status_approved;
         $level = Auth::user()->level;
         $kode_jadwal = $data->kode_jadwal;
+        if ($kode_jadwal == "JD004") {
+            $tgl_pulang = date('Y-m-d', strtotime('+1 day', strtotime($tgl_presensi)));
+        } else {
+            $tgl_pulang = $tgl_presensi;
+        }
         $hariini = hari($tgl_presensi);
         $jam_in = $tgl_presensi . " " . $data->jam_masuk;
-        $jam_out = $tgl_presensi . " " . $data->jam_pulang;
+
+        $jam_out = $tgl_pulang . " " . $data->jam_pulang;
         $jadwal = DB::table('jadwal_kerja_detail')
             ->join('jadwal_kerja', 'jadwal_kerja_detail.kode_jadwal', '=', 'jadwal_kerja.kode_jadwal')
             ->where('hari', $hariini)->where('jadwal_kerja_detail.kode_jadwal', $kode_jadwal)->first();
