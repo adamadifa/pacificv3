@@ -105,10 +105,10 @@
                                     </div>
                                     <div class="col-lg-2 col-sm-12">
                                         <div class="form-group">
-                                            <select name="status_aktif" id="status_aktif" class="form-control">
+                                            <select name="status_aktif_karyawan" id="status_aktif_karyawan" class="form-control">
                                                 <option value="">Status</option>
-                                                <option value="1" {{ Request('status_aktif') == "1" ? "selected" :"" }}>Aktif</option>
-                                                <option value="0" {{ Request('status_aktif') === "0" ? "selected" :"" }}>Non Aktif</option>
+                                                <option value="1" {{ Request('status_aktif_karyawan') == "1" ? "selected" :"" }}>Aktif</option>
+                                                <option value="0" {{ Request('status_aktif_karyawan') === "0" ? "selected" :"" }}>Non Aktif</option>
                                             </select>
                                         </div>
                                     </div>

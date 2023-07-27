@@ -19,7 +19,7 @@ class KaryawanController extends Controller
         $level = Auth::user()->level;
         $cabang = Auth::user()->kode_cabang;
         $nama_karyawan = $request->nama_karyawan_search;
-        $status_aktif = $request->status_aktif;
+        $status_aktif = $request->status_aktif_karyawan;
 
         //dd($status_aktif);
         $query = Karyawan::query();
