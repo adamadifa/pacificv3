@@ -17,7 +17,15 @@ class LaporanhrdController extends Controller
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         $departemen = DB::table('hrd_departemen')->orderBy('nama_dept')->get();
         $cbg = new Cabang();
-        $cabang = $cbg->getCabang(Auth::user()->kode_cabang);
+        if (Auth::user()->kode_cabang == "PCF" || Auth::user()->kode_cabang == "PST") {
+            if (Auth::user()->level == "manager hrd" || Auth::user()->level == "admin") {
+                $cabang = $cbg->getCabang("PST");
+            } else {
+                $cabang = DB::table('cabang')->where('kode_cabang', 'PST')->get();
+            }
+        } else {
+            $cabang = $cbg->getCabang(Auth::user()->kode_cabang);
+        }
         return view('presensi.laporan.lap_presensi', compact('bulan', 'departemen', 'cabang'));
     }
 
@@ -35,12 +43,33 @@ class LaporanhrdController extends Controller
     public function getdepartemen(Request $request)
     {
         $id_kantor = $request->id_kantor;
-        $departemen = DB::table('master_karyawan')
-            ->select('master_karyawan.kode_dept', 'nama_dept')
-            ->where('id_kantor', $id_kantor)
-            ->leftJoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
-            ->groupByRaw('master_karyawan.kode_dept,nama_dept')
-            ->get();
+        $kode_dept = Auth::user()->kode_dept_presensi;
+        if (Auth::user()->kode_cabang == "PCF" || Auth::user()->kode_cabang == "PST") {
+            if (Auth::user()->level == "manager hrd" || Auth::user()->level == "admin") {
+                $departemen = DB::table('master_karyawan')
+                    ->select('master_karyawan.kode_dept', 'nama_dept')
+                    ->where('id_kantor', $id_kantor)
+                    ->leftJoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
+                    ->groupByRaw('master_karyawan.kode_dept,nama_dept')
+                    ->get();
+            } else {
+                $departemen = DB::table('master_karyawan')
+                    ->select('master_karyawan.kode_dept', 'nama_dept')
+                    ->where('id_kantor', $id_kantor)
+                    ->where('master_karyawan.kode_dept', $kode_dept)
+                    ->leftJoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
+                    ->groupByRaw('master_karyawan.kode_dept,nama_dept')
+                    ->get();
+            }
+        } else {
+            $departemen = DB::table('master_karyawan')
+                ->select('master_karyawan.kode_dept', 'nama_dept')
+                ->where('id_kantor', $id_kantor)
+                ->leftJoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
+                ->groupByRaw('master_karyawan.kode_dept,nama_dept')
+                ->get();
+        }
+
         echo "<option value=''>Semua Departemen</option>";
         foreach ($departemen as $d) {
             echo "<option value='$d->kode_dept'>$d->nama_dept</option>";
@@ -50,12 +79,33 @@ class LaporanhrdController extends Controller
     public function getgroup(Request $request)
     {
         $id_kantor = $request->id_kantor;
-        $group = DB::table('master_karyawan')
-            ->select('master_karyawan.grup', 'nama_group')
-            ->join('hrd_group', 'master_karyawan.grup', '=', 'hrd_group.id')
-            ->where('id_kantor', $id_kantor)
-            ->groupByRaw('master_karyawan.grup,nama_group')
-            ->get();
+        $kode_dept = Auth::user()->kode_dept_presensi;
+        if (Auth::user()->kode_cabang == "PCF" || Auth::user()->kode_cabang == "PST") {
+            if (Auth::user()->level == "manager hrd" || Auth::user()->level == "admin") {
+                $group = DB::table('master_karyawan')
+                    ->select('master_karyawan.grup', 'nama_group')
+                    ->join('hrd_group', 'master_karyawan.grup', '=', 'hrd_group.id')
+                    ->where('id_kantor', $id_kantor)
+                    ->groupByRaw('master_karyawan.grup,nama_group')
+                    ->get();
+            } else {
+                $group = DB::table('master_karyawan')
+                    ->select('master_karyawan.grup', 'nama_group')
+                    ->join('hrd_group', 'master_karyawan.grup', '=', 'hrd_group.id')
+                    ->where('id_kantor', $id_kantor)
+                    ->where('master_karyawan.kode_dept', $kode_dept)
+                    ->groupByRaw('master_karyawan.grup,nama_group')
+                    ->get();
+            }
+        } else {
+            $group = DB::table('master_karyawan')
+                ->select('master_karyawan.grup', 'nama_group')
+                ->join('hrd_group', 'master_karyawan.grup', '=', 'hrd_group.id')
+                ->where('id_kantor', $id_kantor)
+                ->groupByRaw('master_karyawan.grup,nama_group')
+                ->get();
+        }
+
         return view('presensi.laporan.getgroup', compact('group'));
     }
 
@@ -1497,7 +1547,15 @@ class LaporanhrdController extends Controller
     {
         $departemen = DB::table('hrd_departemen')->orderBy('nama_dept')->get();
         $cbg = new Cabang();
-        $cabang = $cbg->getCabang(Auth::user()->kode_cabang);
+        if (Auth::user()->kode_cabang == "PCF" || Auth::user()->kode_cabang == "PST") {
+            if (Auth::user()->level == "manager hrd" || Auth::user()->level == "admin") {
+                $cabang = $cbg->getCabang("PST");
+            } else {
+                $cabang = DB::table('cabang')->where('kode_cabang', 'PST')->get();
+            }
+        } else {
+            $cabang = $cbg->getCabang(Auth::user()->kode_cabang);
+        }
         return view('presensi.laporan.rekapterlambat', compact('departemen', 'cabang'));
     }
 
@@ -1526,7 +1584,15 @@ class LaporanhrdController extends Controller
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         $departemen = DB::table('hrd_departemen')->orderBy('nama_dept')->get();
         $cbg = new Cabang();
-        $cabang = $cbg->getCabang(Auth::user()->kode_cabang);
+        if (Auth::user()->kode_cabang == "PCF" || Auth::user()->kode_cabang == "PST") {
+            if (Auth::user()->level == "manager hrd" || Auth::user()->level == "admin") {
+                $cabang = $cbg->getCabang("PST");
+            } else {
+                $cabang = DB::table('cabang')->where('kode_cabang', 'PST')->get();
+            }
+        } else {
+            $cabang = $cbg->getCabang(Auth::user()->kode_cabang);
+        }
         return view('presensi.laporan.lap_presensipsm', compact('bulan', 'departemen', 'cabang'));
     }
 

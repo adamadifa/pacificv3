@@ -1263,7 +1263,7 @@ class GlobalProvider extends ServiceProvider
             $ticket_approve = ['admin', 'manager accounting'];
             $ticket_done = ['admin'];
 
-            $lap_hrd = ['admin', 'manager hrd'];
+            $lap_hrd = ['admin', 'manager hrd', 'kepala gudang'];
 
             $monitoring_sku = ['salesman'];
 
