@@ -144,13 +144,13 @@ class GlobalProvider extends ServiceProvider
                     SUM(IF(status='s',1,0)) as sakit,
                     SUM(IF(status='k',1,0)) as koreksi,
                     SUM(IF(status='p',1,0)) as perjalanandinas,
-                    SUM(IF(status!='k',1,0)) as approvedirut
+                    COUNT(kode_izin) as approvedirut
                     ");
                 $qpi->leftJoin('master_karyawan', 'pengajuan_izin.nik', '=', 'master_karyawan.nik');
                 $qpi->leftjoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
                 $qpi->leftjoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
 
-                if ($level != "emf"  && $level != "direktur") {
+                if ($level != "emf"  && $level != "direktur" && $level != "manager hrd") {
                     if (!empty($kode_dept_presensi)) {
                         $qpi->where('master_karyawan.kode_dept', $kode_dept_presensi);
                     }
@@ -409,6 +409,42 @@ class GlobalProvider extends ServiceProvider
                     $qpi->where('hrd', 1);
                     $qpi->orWhere('nama_jabatan', 'GENERAL MANAGER');
                     $qpi->whereNull('direktur');
+                    if (!empty($kode_dept_presensi)) {
+                        $qpi->where('master_karyawan.kode_dept', $kode_dept_presensi);
+                    }
+
+                    if (!empty(Auth::user()->pic_presensi)) {
+                        if ($getcbg != "PCF") {
+                            $qpi->where('master_karyawan.id_kantor', $getcbg);
+                        }
+                    }
+                }
+
+
+                if ($level == "manager hrd") {
+                    if (!empty($kode_dept_presensi)) {
+                        $qpi->where('master_karyawan.kode_dept', $kode_dept_presensi);
+                    }
+
+                    if (!empty(Auth::user()->pic_presensi)) {
+                        if ($getcbg != "PCF") {
+                            $qpi->where('master_karyawan.id_kantor', $getcbg);
+                        }
+                    }
+
+                    $qpi->where('head_dept', 1);
+                    $qpi->whereNull('hrd');
+                    $qpi->orWhere('direktur', 1);
+                    $qpi->whereNull('hrd');
+                    if (!empty($kode_dept_presensi)) {
+                        $qpi->where('master_karyawan.kode_dept', $kode_dept_presensi);
+                    }
+
+                    if (!empty(Auth::user()->pic_presensi)) {
+                        if ($getcbg != "PCF") {
+                            $qpi->where('master_karyawan.id_kantor', $getcbg);
+                        }
+                    }
                 }
 
 

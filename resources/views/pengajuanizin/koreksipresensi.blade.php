@@ -87,7 +87,7 @@
 
     .header-fixed>tbody>tr>td:nth-child(8),
     .header-fixed>thead>tr>th:nth-child(8) {
-        width: 4%;
+        width: 5%;
         float: left;
     }
 
@@ -117,7 +117,7 @@
 
     .header-fixed>tbody>tr>td:nth-child(13),
     .header-fixed>thead>tr>th:nth-child(13) {
-        width: 7%;
+        width: 5%;
         float: left;
     }
 
@@ -280,6 +280,9 @@
                                                             {!! !empty($d->keterangan_hrd) ? "<span class='danger'><b>HRD</b></span> : <span class='danger'>".$d->keterangan_hrd."</span>":"" !!}
                                                         </td>
                                                         <td class="text-center filterable-cell">
+                                                            @if ($d->nama_jabatan == "GENERAL MANAGER")
+                                                            <i class="fa fa-minus-circle text-danger"></i>
+                                                            @else
                                                             @if (empty($d->head_dept))
                                                             <i class="fa fa-history text-warning"></i>
                                                             @elseif($d->head_dept == 1)
@@ -287,6 +290,8 @@
                                                             @elseif($d->head_dept == 2)
                                                             <i class="fa fa-close text-danger"></i>
                                                             @endif
+                                                            @endif
+
                                                         </td>
                                                         <td class="text-center filterable-cell">
                                                             @if (empty($d->hrd))
@@ -327,7 +332,7 @@
                                                                     <i class="feather icon-external-link text-primary"></i>
                                                                 </a>
                                                                 {{-- Jika Head Dept Sudah Approve dan HRD Belum Approve --}}
-                                                                @elseif(!empty($d->head_dept) && empty($d->hrd))
+                                                                @elseif(!empty($d->head_dept) && empty($d->hrd) )
                                                                 <a href="/izinabsen/{{ $d->kode_izin }}/batalkan" class="warning"><i class="fa fa-close text-danger"></i> </a>
                                                                 @endif
                                                                 @endif
@@ -342,7 +347,7 @@
                                                                 @else
                                                                 {{-- Level Manager HRD --}}
                                                                 {{-- Jika Head Dept Sudah Approve dan HRD Belum Approve --}}
-                                                                @if (!empty($d->head_dept) && empty($d->hrd) || empty($d->head_dept) && $d->kode_dept=="HRD")
+                                                                @if (!empty($d->head_dept) && empty($d->hrd) || empty($d->head_dept) && $d->kode_dept=="HRD" || empty($d->head_dept) && $d->nama_jabatan=="GENERAL MANAGER")
                                                                 <a href="#" class="approveizin" kode_izin="{{ $d->kode_izin }}">
                                                                     <i class="feather icon-external-link text-primary"></i>
                                                                 </a>
@@ -369,7 +374,10 @@
                                                                     </a>
                                                                 </form>
                                                                 @endif
+
+
                                                             </div>
+
                                                         </td>
                                                     </tr>
                                                     @endforeach

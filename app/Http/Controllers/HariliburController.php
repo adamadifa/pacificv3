@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cabang;
 use App\Models\Harilibur;
+use App\Models\Hariliburkaryawan;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,11 +31,17 @@ class HariliburController extends Controller
             $query->where('kategori', $request->kategori_search);
         }
 
-        if (Auth::user()->kode_cabang != "PCF") {
+        if (Auth::user()->kode_cabang != "PCF" && Auth::user()->kode_cabang != "PST") {
             $query->where('id_kantor', Auth::user()->kode_cabang);
         } else {
-            if (!empty($request->id_kantor_search)) {
-                $query->where('id_kantor', $request->id_kantor_search);
+            $level_search = array("manager hrd", "admin");
+            if (in_array(Auth::user()->level, $level_search)) {
+                if (!empty($request->id_kantor_search)) {
+                    $query->where('id_kantor', $request->id_kantor_search);
+                }
+            } else {
+                $query->where('id_kantor', 'PST');
+                $query->where('kode_dept', Auth::user()->kode_dept_presensi);
             }
         }
 
@@ -46,6 +53,8 @@ class HariliburController extends Controller
         $cbg = new Cabang();
         if (Auth::user()->kode_cabang != "PCF") {
             $cabang = $cbg->getCabangpresensi(Auth::user()->kode_cabang);
+        } else {
+            $cabang = $cbg->getCabangpresensi("PST");
         }
 
         $departemen = DB::table('hrd_departemen')->orderBy('kode_dept')->get();
@@ -82,10 +91,20 @@ class HariliburController extends Controller
             'tanggal_diganti' => $request->tanggal_diganti
         ];
         try {
-            $cek = DB::table('harilibur')->where('tanggal_libur', $tanggal)
-                ->where('id_kantor', $id_kantor)
-                ->where('kategori', $kategori)
-                ->count();
+
+            if (Auth::user()->kode_cabang != "PCF" && Auth::user()->kode_cabang != "PST") {
+                $cek = DB::table('harilibur')->where('tanggal_libur', $tanggal)
+                    ->where('id_kantor', $id_kantor)
+                    ->where('kategori', $kategori)
+                    ->count();
+            } else {
+                $cek = DB::table('harilibur')->where('tanggal_libur', $tanggal)
+                    ->where('kode_dept', $kode_dept)
+                    ->where('id_kantor', $id_kantor)
+                    ->where('kategori', $kategori)
+                    ->count();
+            }
+
             if ($cek > 0) {
                 return Redirect::back()->with(['warning' => 'Tanggal Libur Sudah Diinputkan Sebelumnya']);
             }
@@ -169,8 +188,19 @@ class HariliburController extends Controller
 
     public function getkaryawan($kode_libur, $id_kantor, $kode_dept)
     {
+        $level_access = array("manager hrd", "admin");
+        $level = Auth::user()->level;
+        if ($id_kantor == "PCF" || $id_kantor == "PST") {
+            if (in_array($level, $level_access)) {
+                $group = DB::table('hrd_group')->orderBy('nama_group')->get();
+            } else {
+                $group = DB::table('hrd_group')->where('kode_dept_group', $kode_dept)->orderBy('nama_group')->get();
+            }
+        } else {
+            $group = DB::table('hrd_group')->orderBy('nama_group')->get();
+        }
         $departemen = DB::table('hrd_departemen')->get();
-        $group = DB::table('hrd_group')->orderBy('nama_group')->get();
+
         return view('harilibur.getkaryawan', compact('kode_libur', 'id_kantor', 'kode_dept', 'departemen', 'group'));
     }
 
@@ -314,6 +344,88 @@ class HariliburController extends Controller
         } catch (\Exception $e) {
             return Redirect::back()->with(['warning' => 'Data Gagal di Update']);
             //throw $th;
+        }
+    }
+
+
+    public function storeallkaryawan(Request $request)
+    {
+        $kode_dept = $request->kode_dept;
+        $kode_libur = $request->kode_libur;
+        $id_kantor = $request->id_kantor;
+        $grup = $request->grup;
+        DB::beginTransaction();
+        try {
+            $nik = [];
+            $qkaryawan = Karyawan::query();
+            $qkaryawan->select('nik');
+            $qkaryawan->where('id_kantor', $id_kantor);
+            if (!empty($kode_dept)) {
+                $qkaryawan->where('kode_dept', $kode_dept);
+            }
+
+            if (!empty($grup)) {
+                $qkaryawan->where('grup', $grup);
+            }
+            $karyawan = $qkaryawan->get();
+            foreach ($karyawan as $d) {
+                $nik[] = $d->nik;
+                $data[] = [
+                    'kode_libur' => $kode_libur,
+                    'nik' => $d->nik
+                ];
+            }
+
+
+            DB::table('harilibur_karyawan')->where('kode_libur', $kode_libur)->whereIn('nik', $nik)->delete();
+            //dd($data);
+            $chunks = array_chunk($data, 5);
+            foreach ($chunks as $chunk) {
+                Hariliburkaryawan::insert($chunk);
+            }
+
+            DB::commit();
+            return 0;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            // return 1;
+            dd($e);
+        }
+    }
+
+    public function cancelkaryawan(Request $request)
+    {
+        $kode_dept = $request->kode_dept;
+        $kode_libur = $request->kode_libur;
+        $id_kantor = $request->id_kantor;
+        DB::beginTransaction();
+        try {
+            $nik = [];
+            $qkaryawan = Karyawan::query();
+            $qkaryawan->select('nik');
+            $qkaryawan->where('id_kantor', $id_kantor);
+            if (!empty($kode_dept)) {
+                $qkaryawan->where('kode_dept', $kode_dept);
+            }
+            $karyawan = $qkaryawan->get();
+            foreach ($karyawan as $d) {
+                $nik[] = $d->nik;
+                $data[] = [
+                    'kode_libur' => $kode_libur,
+                    'nik' => $d->nik
+                ];
+            }
+
+
+            DB::table('harilibur_karyawan')->where('kode_libur', $kode_libur)->whereIn('nik', $nik)->delete();
+
+
+            DB::commit();
+            return 0;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            // return 1;
+            dd($e);
         }
     }
 }

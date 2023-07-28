@@ -929,11 +929,16 @@ class PengajuanizinController extends Controller
             ->join('jadwal_kerja', 'jadwal_kerja_detail.kode_jadwal', '=', 'jadwal_kerja.kode_jadwal')
             ->where('hari', $hariini)->where('jadwal_kerja_detail.kode_jadwal', $kode_jadwal)->first();
 
+
         if (isset($request->approve)) {
             try {
-                if ($level != "manager hrd") {
+                if ($level != "manager hrd" && $level != "direktur") {
                     DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
                         'head_dept' => 1
+                    ]);
+                } else if ($level == "direktur") {
+                    DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
+                        'direktur' => 1
                     ]);
                 } else {
                     DB::beginTransaction();
@@ -996,9 +1001,13 @@ class PengajuanizinController extends Controller
 
         if (isset($request->decline)) {
             try {
-                if ($level != "manager hrd") {
+                if ($level != "manager hrd" && $level != "direktur") {
                     DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
                         'head_dept' => 2
+                    ]);
+                } else if ($level == "direktur") {
+                    DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
+                        'direktur' => 2
                     ]);
                 } else {
                     DB::beginTransaction();
@@ -1171,9 +1180,13 @@ class PengajuanizinController extends Controller
         $hariini = hari($tgl_presensi);
 
         try {
-            if ($level != "manager hrd") {
+            if ($level != "manager hrd" && $level != "direktur") {
                 DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
                     'head_dept' => NULL
+                ]);
+            } else if ($level == "direktur") {
+                DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
+                    'direktur' => NULL
                 ]);
             } else {
                 DB::beginTransaction();

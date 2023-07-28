@@ -114,7 +114,7 @@
             e.preventDefault();
             var kode_libur = "{{ $harilibur->kode_libur }}";
             var id_kantor = "{{ $harilibur->id_kantor }}";
-            var kode_dept = "{{ $harilibur->kode_dept }}";
+            var kode_dept = "{{ !empty($harilibur->kode_dept) ? $harilibur->kode_dept : 'ALL' }}";
             $("#mdltambahkaryawan").modal({
                 backdrop: 'static'
                 , keyboard: false

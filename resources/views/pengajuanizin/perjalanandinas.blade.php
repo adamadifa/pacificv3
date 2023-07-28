@@ -99,7 +99,7 @@
 
     .header-fixed>tbody>tr>td:nth-child(10),
     .header-fixed>thead>tr>th:nth-child(10) {
-        width: 7%;
+        width: 6%;
         float: left;
     }
 
@@ -123,7 +123,7 @@
 
     .header-fixed>tbody>tr>td:nth-child(14),
     .header-fixed>thead>tr>th:nth-child(14) {
-        width: 6%;
+        width: 5%;
         float: left;
     }
 

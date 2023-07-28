@@ -43,7 +43,7 @@
         @endif
     </a>
 </li>
-@if ($level != "direktur")
+
 <li class="nav-item">
     <a class="nav-link {{ request()->is('pengajuanizin/koreksipresensi') ? 'active' : '' }}" href="/pengajuanizin/koreksipresensi">
         Koreksi Presensi
@@ -52,7 +52,7 @@
         @endif
     </a>
 </li>
-@endif
+
 
 <li class="nav-item">
     <a class="nav-link {{ request()->is('pengajuanizin/perjalanandinas') ? 'active' : '' }}" href="/pengajuanizin/perjalanandinas">
