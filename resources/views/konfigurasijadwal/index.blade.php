@@ -23,7 +23,9 @@
             <div class="col-6">
                 <div class="card">
                     <div class="card-header">
+                        @if ($level=="manager hrd" || $level=="admin")
                         <a href="#" class="btn btn-primary" id="buatjadwal"><i class="fa fa-plus mr-1"></i> Buat Jadwal</a>
+                        @endif
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -46,6 +48,7 @@
                                             <td>
                                                 <div class="btn-group">
                                                     <a href="/konfigurasijadwal/{{ Crypt::encrypt($d->kode_setjadwal) }}/aturjadwal" class="mr-1"><i class="feather icon-settings success"></i></a>
+                                                    @if ($level=="manager hrd" || $level=="admin")
                                                     <a href="#" class="edit" kode_setjadwal="{{ $d->kode_setjadwal }}"><i class="feather icon-edit info"></i></a>
                                                     <form method="POST" class="deleteform" action="/konfigurasijadwal/{{Crypt::encrypt($d->kode_setjadwal)}}/delete">
                                                         @csrf
@@ -54,6 +57,8 @@
                                                             <i class="feather icon-trash danger"></i>
                                                         </a>
                                                     </form>
+                                                    @endif
+
                                                 </div>
                                             </td>
                                         </tr>

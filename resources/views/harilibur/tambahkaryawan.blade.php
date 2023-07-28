@@ -42,8 +42,12 @@
                                         <td>
                                             @if ($harilibur->kategori==1)
                                             Libur Nasional
-                                            @else
+                                            @elseif($harilibur->kategori==2)
                                             Libur Pengganti Minggu
+                                            @elseif($harilibur->kategori==3)
+                                            Dirumahkan
+                                            @elseif($harilibur->kategori==3)
+                                            WFH
                                             @endif
                                         </td>
                                     </tr>

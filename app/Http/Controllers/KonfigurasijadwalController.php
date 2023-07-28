@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Konfigurasijadwalkerjadetail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
@@ -284,14 +285,29 @@ class KonfigurasijadwalController extends Controller
     {
         $kode_jadwal = $request->kode_jadwal;
         $kode_setjadwal = $request->kode_setjadwal;
-        $jadwal = DB::table('konfigurasi_jadwalkerja_detail')
-            ->join('master_karyawan', 'konfigurasi_jadwalkerja_detail.nik', '=', 'master_karyawan.nik')
-            ->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
-            ->join('hrd_group', 'master_karyawan.grup', '=', 'hrd_group.id')
-            ->where('konfigurasi_jadwalkerja_detail.kode_setjadwal', $kode_setjadwal)
-            ->where('konfigurasi_jadwalkerja_detail.kode_jadwal', $kode_jadwal)
-            ->orderByRaw('master_karyawan.grup,nama_karyawan')
-            ->get();
+        $kode_dept = Auth::user()->kode_dept_presensi;
+        $level = Auth::user()->level;
+        if ($level == "manager hrd" || $level == "admin") {
+            $jadwal = DB::table('konfigurasi_jadwalkerja_detail')
+                ->join('master_karyawan', 'konfigurasi_jadwalkerja_detail.nik', '=', 'master_karyawan.nik')
+                ->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
+                ->join('hrd_group', 'master_karyawan.grup', '=', 'hrd_group.id')
+                ->where('konfigurasi_jadwalkerja_detail.kode_setjadwal', $kode_setjadwal)
+                ->where('konfigurasi_jadwalkerja_detail.kode_jadwal', $kode_jadwal)
+                ->orderByRaw('master_karyawan.grup,nama_karyawan')
+                ->get();
+        } else {
+            $jadwal = DB::table('konfigurasi_jadwalkerja_detail')
+                ->join('master_karyawan', 'konfigurasi_jadwalkerja_detail.nik', '=', 'master_karyawan.nik')
+                ->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
+                ->join('hrd_group', 'master_karyawan.grup', '=', 'hrd_group.id')
+                ->where('konfigurasi_jadwalkerja_detail.kode_setjadwal', $kode_setjadwal)
+                ->where('konfigurasi_jadwalkerja_detail.kode_jadwal', $kode_jadwal)
+                ->where('master_karyawan.kode_dept', $kode_dept)
+                ->orderByRaw('master_karyawan.grup,nama_karyawan')
+                ->get();
+        }
+
         return view('konfigurasijadwal.showjadwal', compact('jadwal'));
     }
 
