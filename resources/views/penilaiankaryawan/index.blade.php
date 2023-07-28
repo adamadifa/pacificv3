@@ -239,14 +239,16 @@
                                                 if (empty($d->$ceklevel) || $field_kategori=="dirut") {
                                                 ?>
                                                 @if (empty($d->no_kontrak))
+                                                @if(Auth::user()->level != 'spv pdqc' && Auth::user()->level!="spv produksi" && Auth::user()->level!="spv maintenance")
                                                 <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/{{ Crypt::encrypt($field_kategori) }}/batalkan" class="warning ml-1">Batalkan</a>
+                                                @endif
                                                 @endif
                                                 <?php } ?>
                                                 @else
 
                                                 <?php
                                                 $lastindex = $cekindex - 1;
-                                                if(Auth::user()->level != 'spv pdqc' && Auth::user()->level!="spv produksi"){
+                                                if(Auth::user()->level != 'spv pdqc' && Auth::user()->level!="spv produksi"  && Auth::user()->level!="spv maintenance"){
                                                 if($cekindex == 0){
                                                 ?>
                                                 <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/{{ Crypt::encrypt($field_kategori) }}/approve" class="success ml-1"><i class="fa fa-check"></i></a>

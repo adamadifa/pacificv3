@@ -1207,6 +1207,11 @@
                             <i class="feather icon-edit"></i>
                             <span class="menu-item" data-i18n="Second Level">Penilaian karyawan</span>
                         </a>
+                        @elseif(Auth::user()->level=="spv maintenance")
+                        <a href="/penilaiankaryawan/5/MP/list">
+                            <i class="feather icon-edit"></i>
+                            <span class="menu-item" data-i18n="Second Level">Penilaian karyawan</span>
+                        </a>
                         @elseif(Auth::user()->level=="manager accounting" && Auth::user()->kategori_jabatan == 3 ||Auth::user()->level=="kepala gudang" && Auth::user()->kategori_jabatan == 3 || Auth::user()->level=="admin gudang bahan" && Auth::user()->kategori_jabatan == 3 || Auth::user()->level=="manager ga" && Auth::user()->kategori_jabatan == 3 || Auth::user()->level=="general affair" && Auth::user()->kategori_jabatan == 3 || Auth::user()->level=="manager produksi" && Auth::user()->kategori_jabatan == 3 || Auth::user()->level=="spv produksi" && Auth::user()->kategori_jabatan == 3 || Auth::user()->level=="manager pembelian" && Auth::user()->kategori_jabatan == 3 || Auth::user()->level=="spv gudang pusat" && Auth::user()->kategori_jabatan == 3 )
                         <a href="/penilaiankaryawan/5/MP/list">
                             <i class="feather icon-edit"></i>

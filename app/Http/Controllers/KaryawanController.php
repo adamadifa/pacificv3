@@ -81,6 +81,10 @@ class KaryawanController extends Controller
             $query->whereNotIN('nama_jabatan', ['MANAGER', 'SUPERVISOR']);
         }
 
+        if ($level == "spv maintenance") {
+            $query->where('master_karyawan.kode_dept', 'MTC');
+        }
+
         if ($level == "manager produksi") {
             $query->whereIn('master_karyawan.kode_dept', ['PRD', 'MTC']);
             $query->where('nama_jabatan', '!=', 'MANAGER');
@@ -361,9 +365,11 @@ class KaryawanController extends Controller
             $qkontrak_lewat->where('master_karyawan.kode_dept', 'GDG');
         }
 
-        if ($level == "manager produksi" || $level == "spv produksi") {
-            $qkontrak_lewat->where('master_karyawan.kode_dept', 'PRD');
+        if ($level == "spv maintenance") {
+            $qkontrak_lewat->where('master_karyawan.kode_dept', 'MTC');
         }
+
+
 
         if ($level == "manager ga") {
             $qkontrak_lewat->where('master_karyawan.kode_dept', 'GAF');
@@ -414,6 +420,11 @@ class KaryawanController extends Controller
 
         if ($level == "manager produksi" || $level == "spv produksi") {
             $qkontrak_bulanini->where('master_karyawan.kode_dept', 'PRD');
+        }
+
+
+        if ($level == "spv maintenance") {
+            $qkontrak_bulanini->where('master_karyawan.kode_dept', 'MTC');
         }
 
         if ($level == "manager ga") {
@@ -468,6 +479,10 @@ class KaryawanController extends Controller
             $qkontrak_bulandepan->where('master_karyawan.kode_dept', 'PRD');
         }
 
+        if ($level == "spv maintenance") {
+            $qkontrak_bulandepan->where('master_karyawan.kode_dept', 'MTC');
+        }
+
         if ($level == "manager ga") {
             $qkontrak_bulandepan->where('master_karyawan.kode_dept', 'GAF');
         }
@@ -518,6 +533,10 @@ class KaryawanController extends Controller
 
         if ($level == "manager produksi" || $level == "spv produksi") {
             $qkontrak_duabulan->where('master_karyawan.kode_dept', 'PRD');
+        }
+
+        if ($level == "spv maintenance") {
+            $qkontrak_duabulan->where('master_karyawan.kode_dept', 'MTC');
         }
 
         if ($level == "manager ga") {

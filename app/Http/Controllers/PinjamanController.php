@@ -99,6 +99,11 @@ class PinjamanController extends Controller
             $query->whereNotIN('nama_jabatan', ['MANAGER', 'SUPERVISOR']);
         }
 
+        if ($level == "spv maintenance") {
+            $query->where('master_karyawan.kode_dept', 'MTC');
+            $query->whereNotIN('nama_jabatan', ['MANAGER', 'SUPERVISOR']);
+        }
+
         if ($level == "manager produksi") {
             $query->whereIn('master_karyawan.kode_dept', ['PRD', 'MTC']);
             $query->where('nama_jabatan', '!=', 'MANAGER');
