@@ -253,11 +253,14 @@ $nik = @$presensi[$key + 1]->nik;
         {!! !empty($d->check_denda) ? "<span style='color:white'>Sudah Di Cek</span>" : "<span style='color:red'>Belum di Cek</span>" !!}
     </td>
     <td>
+        @if ($level == "manager hrd")
         @if (empty($d->check_denda))
         <button class="checklist" id="{{ $d->id }}">Checked</button>
         @else
         <button class="cancel" id="{{ $d->id }}">Cancel</button>
         @endif
+        @endif
+
     </td>
 </tr>
 @if ($nik != $d->nik)
