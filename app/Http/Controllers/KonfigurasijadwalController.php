@@ -101,7 +101,17 @@ class KonfigurasijadwalController extends Controller
 
         $kode_setjadwal = $request->kode_setjadwal;
         $shift = $request->shift;
-
+        if (Auth::user()->level == "spv produksi") {
+            $id_group = 29;
+        } else if (Auth::user()->level == "general affair") {
+            $id_group = 7;
+        } else if (Auth::user()->level == "admin maintenance" || Auth::user()->level == "spv maintenance") {
+            $id_group = 18;
+        } else if (Auth::user()->level == "spv pdqc") {
+            $id_group = 23;
+        } else if (Auth::user()->level == "spv gudang pusat") {
+            $id_group = 11;
+        }
         if ($id_group == 23) {
             $karyawan = DB::table('master_karyawan')
                 ->select('master_karyawan.nik', 'nama_karyawan', 'konfigurasijadwalkerja.kode_jadwal', 'nama_jadwal', 'grup')
@@ -119,7 +129,7 @@ class KonfigurasijadwalController extends Controller
                 ->where('kode_dept', 'PDQ')
                 ->orderBy('nama_karyawan')
                 ->get();
-        } elseif ($id_group == "18") {
+        } elseif ($id_group == 18) {
             $karyawan = DB::table('master_karyawan')
                 ->select('master_karyawan.nik', 'nama_karyawan', 'konfigurasijadwalkerja.kode_jadwal', 'nama_jadwal', 'grup')
                 ->leftJoin(
@@ -338,9 +348,17 @@ class KonfigurasijadwalController extends Controller
         $tahun_sampai = $sampai[0];
 
         $grup = array(26, 27, 28, 29, 30, 31);
-        $karyawan = DB::table('master_karyawan')
-            ->orderBy('nama_karyawan')
-            ->get();
+        if (Auth::user()->level == "manager hrd" || Auth::user()->level == "admin") {
+            $karyawan = DB::table('master_karyawan')
+                ->orderBy('nama_karyawan')
+                ->get();
+        } else {
+            $karyawan = DB::table('master_karyawan')
+                ->orderBy('nama_karyawan')
+                ->where('kode_dept', Auth::user()->kode_dept_presensi)
+                ->get();
+        }
+
         return view('konfigurasijadwal.gantishift', compact('karyawan', 'hari_dari', 'bulan_dari', 'tahun_dari', 'hari_sampai', 'bulan_sampai', 'tahun_sampai', 'kode_setjadwal'));
     }
 
@@ -378,11 +396,24 @@ class KonfigurasijadwalController extends Controller
 
     public function showgantishift($kode_setjadwal)
     {
-        $gantishift = DB::table('konfigurasi_gantishift')
-            ->join('master_karyawan', 'konfigurasi_gantishift.nik', '=', 'master_karyawan.nik')
-            ->join('hrd_group', 'master_karyawan.grup', '=', 'hrd_group.id')
-            ->join('jadwal_kerja', 'konfigurasi_gantishift.kode_jadwal', '=', 'jadwal_kerja.kode_jadwal')
-            ->where('kode_setjadwal', $kode_setjadwal)->get();
+
+        $level = Auth::user()->level;
+        if ($level == "manager hrd" || $level == "admin") {
+            $gantishift = DB::table('konfigurasi_gantishift')
+                ->join('master_karyawan', 'konfigurasi_gantishift.nik', '=', 'master_karyawan.nik')
+                ->join('hrd_group', 'master_karyawan.grup', '=', 'hrd_group.id')
+                ->join('jadwal_kerja', 'konfigurasi_gantishift.kode_jadwal', '=', 'jadwal_kerja.kode_jadwal')
+                ->where('kode_setjadwal', $kode_setjadwal)->get();
+        } else {
+            $gantishift = DB::table('konfigurasi_gantishift')
+                ->join('master_karyawan', 'konfigurasi_gantishift.nik', '=', 'master_karyawan.nik')
+                ->join('hrd_group', 'master_karyawan.grup', '=', 'hrd_group.id')
+                ->join('jadwal_kerja', 'konfigurasi_gantishift.kode_jadwal', '=', 'jadwal_kerja.kode_jadwal')
+                ->where('kode_setjadwal', $kode_setjadwal)
+                ->where('master_karyawan.kode_dept', Auth::user()->kode_dept_presensi)
+                ->get();
+        }
+
         return view('konfigurasijadwal.showgantishift', compact('gantishift'));
     }
 

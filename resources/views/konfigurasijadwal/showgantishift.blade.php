@@ -1,6 +1,7 @@
 @foreach ($gantishift as $d)
 <tr>
     <td>{{ $loop->iteration }}</td>
+    <td>{{ date("d-m-y",strtotime($d->tanggal)) }}</td>
     <td>{{ $d->nik }}</td>
     <td>{{ $d->nama_karyawan }}</td>
     <td>{{ $d->nama_group }}</td>

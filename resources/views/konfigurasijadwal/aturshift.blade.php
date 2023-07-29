@@ -52,6 +52,30 @@
         <a class="nav-link showgroup" id_group="30" id="aidac-tab" data-toggle="tab" href="#aidac" aria-controls="aidac" role="tab" aria-selected="false">AIDA C</a>
     </li>
 </ul>
+@elseif($level=="general affair")
+<ul class="nav nav-tabs nav-justified" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active showgroup" id_group="7" id="aidac-tab" data-toggle="tab" href="#aidac" aria-controls="aidac" role="tab" aria-selected="false">SECURITY</a>
+    </li>
+</ul>
+@elseif($level=="admin maintenance" || $level=="spv maintenance")
+<ul class="nav nav-tabs nav-justified" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active showgroup" id_group="18" id="aidac-tab" data-toggle="tab" href="#aidac" aria-controls="aidac" role="tab" aria-selected="false">MTC</a>
+    </li>
+</ul>
+@elseif($level=="spv pdqc")
+<ul class="nav nav-tabs nav-justified" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active showgroup" id_group="23" id="aidac-tab" data-toggle="tab" href="#aidac" aria-controls="aidac" role="tab" aria-selected="false">PDQC</a>
+    </li>
+</ul>
+@elseif($level=="spv gudang pusat")
+<ul class="nav nav-tabs nav-justified" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active showgroup" id_group="11" id="aidac-tab" data-toggle="tab" href="#aidac" aria-controls="aidac" role="tab" aria-selected="false">GUDANG JADI</a>
+    </li>
+</ul>
 @endif
 
 <div class="row">

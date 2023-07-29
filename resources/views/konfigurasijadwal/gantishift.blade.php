@@ -52,6 +52,7 @@
             <thead>
                 <tr>
                     <th>No.</th>
+                    <th>Tgl</th>
                     <th>NIK</th>
                     <th>Nama</th>
                     <th>Grup</th>

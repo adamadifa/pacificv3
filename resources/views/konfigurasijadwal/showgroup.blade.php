@@ -1,9 +1,12 @@
+@if ($level=="admin" || $level=="manager hrd" || $level=="spv produksi")
 <div class="row mb-2">
     <div class="col-12 d-flex justify-content-between">
         <a href="#" class="btn btn-success" id="tambahkansemua" id_group="{{ $id_group }}" kode_jadwal="{{ $kode_jadwal }}" kode_setjadwal="{{ $kode_setjadwal }}"><i class="feather icon-user-check mr-1"></i>Tambahkan Semua</a>
         <a href="#" class="btn btn-danger" id="batalkansemua" id_group="{{ $id_group }}" kode_jadwal="{{ $kode_jadwal }}" kode_setjadwal="{{ $kode_setjadwal }}"><i class="feather icon-user-x mr-1"></i>Batalkan Semua</a>
     </div>
 </div>
+@endif
+
 <table class="table table-hover-animation">
     <thead>
         <tr>
