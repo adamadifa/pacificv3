@@ -87,7 +87,7 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $d->no_kasbon }}</td>
                 <td>{{ DateToIndo2($d->tgl_kasbon) }}</td>
-                <td>{{ $d->nik }}</td>
+                <td>{{ "'".$d->nik }}</td>
                 <td>{{ $d->nama_karyawan }}</td>
                 <td>{{ $d->nama_jabatan }}</td>
                 <td>{{ $d->nama_dept }}</td>
