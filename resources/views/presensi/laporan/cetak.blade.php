@@ -101,6 +101,7 @@
                     <th rowspan="2">Terlambat</th>
                     <th rowspan="2">Dirumahkan</th>
                     <th rowspan="2">Keluar</th>
+                    <th rowspan="2">Tidak Hadir</th>
                     <th rowspan="2">Total<br> Jam Kerja</th>
                     <th rowspan="2">Denda</th>
                     <th rowspan="2">Premi</th>
@@ -128,6 +129,7 @@
                 $totaldenda = 0;
                 $totalpremi = 0;
                 $totaldirumahkan = 0;
+                $totaltidakhadir = 0;
                 for($i=0; $i < count($rangetanggal); $i++){
                     $hari_ke = "hari_".$i+1;
                     $tgl_presensi =  $rangetanggal[$i];
@@ -231,6 +233,7 @@
 
                     }
                     if($d->$hari_ke != NULL){
+                        $tidakhadir = 0;
                         $datapresensi = explode("|",$d->$hari_ke);
                         $lintashari = $datapresensi[16] != "NA" ? $datapresensi[16] : '';
                         if(!empty($lintashari)){
@@ -547,6 +550,14 @@
                     $jk = 0;
                     $denda = 0;
                     $premi = 0;
+                    if($namahari=="Sabtu"){
+                        $tidakhadir = 5;
+                    }elseif($namahari=="Minggu"){
+                        $tidakhadir = 0;
+                    }else{
+                        $tidakhadir = 7;
+                    }
+
                 ?>
                     <td style="background-color:{{ $colorcolumn }}; color:white; width:3%">
                         {{-- <span>{{ var_dump(empty($ceklibur)) }}</span> --}}
@@ -561,14 +572,17 @@
                     $totalkeluar += $jk;
                     $totaldenda += $denda;
                     $totalpremi += $premi;
+                    $totaltidakhadir += $tidakhadir;
                 }
 
-                $totaljamkerja = $totaljam1bulan - $totalterlambat - $totalkeluar - $totaldirumahkan;
+                $totaljamkerja = $totaljam1bulan - $totalterlambat - $totalkeluar - $totaldirumahkan - $totaltidakhadir;
                 ?>
                     <td style="font-size: 16px; text-align:center; font-weight:bold">{{ $totaljam1bulan }}</td>
                     <td style="text-align: center; color:red; font-size:16px">{{ !empty($totalterlambat) ? $totalterlambat : '' }}</td>
-                    <td style="text-align: center; color:rgb(255, 140, 0);font-size:16px">{{ !empty($totalkeluar) ? $totalkeluar : '' }}</td>
                     <td style="text-align: center; color:rgb(255, 140, 0);font-size:16px">{{ !empty($totaldirumahkan) ? $totaldirumahkan : '' }}</td>
+                    <td style="text-align: center; color:rgb(255, 140, 0);font-size:16px">{{ !empty($totalkeluar) ? $totalkeluar : '' }}</td>
+                    <td style="text-align: center; color:rgb(255, 140, 0);font-size:16px">{{ !empty($totaltidakhadir) ? $totaltidakhadir : '' }}</td>
+
                     <td style="font-size: 16px; text-align:center; font-weight:bold">{{ !empty($totaljamkerja) ? $totaljamkerja : '' }}</td>
                     <td style="text-align: right; color:red; font-size:16px">{{ !empty($totaldenda) ? rupiah($totaldenda) : '' }}</td>
                     <td style="text-align: right;  font-size:16px">{{ !empty($totalpremi) ? rupiah($totalpremi) : '' }}</td>

@@ -105,7 +105,7 @@
             @endphp
             <tr>
                 <td>{{ $loop->iteration }}</td>
-                <td>{{ $d->nik }}</td>
+                <td>{{ "'".$d->nik }}</td>
                 <td>{{ $d->nama_karyawan }}</td>
                 <td style="text-align: right">{{ !empty($saldoawal) ?  rupiah($saldoawal) : '' }}</td>
                 <td style="text-align: right">{{ !empty($jumlah_kasbonnow) ?  rupiah($jumlah_kasbonnow) : '' }}</td>

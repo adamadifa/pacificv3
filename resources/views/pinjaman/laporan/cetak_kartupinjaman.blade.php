@@ -115,7 +115,7 @@
             @if (!empty($saldoawal) || !empty($jumlah_pinjamannow))
             <tr>
                 <td>{{ $no }}</td>
-                <td>{{ $d->nik }}</td>
+                <td>{{ "'".$d->nik }}</td>
                 <td>{{ $d->nama_karyawan }}</td>
                 <td style="text-align: right">{{ !empty($saldoawal) ?  rupiah($saldoawal) : '' }}</td>
                 <td style="text-align: right">{{ !empty($jumlah_pinjamannow) ?  rupiah($jumlah_pinjamannow) : '' }}</td>
