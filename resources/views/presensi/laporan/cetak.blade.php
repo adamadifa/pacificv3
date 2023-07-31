@@ -101,6 +101,7 @@
                     <th rowspan="2">Terlambat</th>
                     <th rowspan="2">Dirumahkan</th>
                     <th rowspan="2">Keluar</th>
+                    <th rowspan="2">PC</th>
                     <th rowspan="2">Tidak Hadir</th>
                     <th rowspan="2">Total<br> Jam Kerja</th>
                     <th rowspan="2">Denda</th>
@@ -130,9 +131,15 @@
                 $totalpremi = 0;
                 $totaldirumahkan = 0;
                 $totaltidakhadir = 0;
+                $totalpulangcepat = 0;
                 for($i=0; $i < count($rangetanggal); $i++){
+
+
                     $hari_ke = "hari_".$i+1;
                     $tgl_presensi =  $rangetanggal[$i];
+                    $start_kerja = date_create($d->tgl_masuk);
+                    $end_kerja = date_create($tgl_presensi);
+                    $cekmasakerja =  diffInMonths($start_kerja, $end_kerja);
                     $tgllibur = "'".$tgl_presensi."'";
                     $search_items = array('nik'=>$d->nik,'id_kantor' => $d->id_kantor, 'tanggal_libur' => $tgl_presensi);
 
@@ -149,9 +156,10 @@
                     // }
                     $cekminggumasuk = cektgllibur($dataminggumasuk,$search_items_minggumasuk);
                     $cekwfh = cektgllibur($datawfh,$search_items);
-                    if(empty($cekwfh)){
-                        $cekwfh = cektgllibur($datawfh,$search_items_all);
-                    }
+                    $cekwfhfull = cektgllibur($datawfhfull,$search_items);
+                    // if(empty($cekwfh)){
+                    //     $cekwfh = cektgllibur($datawfh,$search_items_all);
+                    // }
                     //dd($ceklibur);
                     $namahari = hari($tgl_presensi);
                     if($namahari == "Sabtu"){
@@ -203,7 +211,13 @@
                                 $colortext = $colortext;
                             }
 
-
+                            if (!empty($cekwfhfull)) {
+                                $colorcolumn = "#9f0ecf";
+                                $colortext = "black";
+                            }else{
+                                $colorcolumn = $colorcolumn;
+                                $colortext = $colortext;
+                            }
                         }else{
                             if (!empty($ceklibur)) {
                                 $colorcolumn = "rgb(4, 163, 65)";
@@ -227,6 +241,15 @@
 
                             if (!empty($cekwfh)) {
                                 $colorcolumn = "#fc0380";
+                                $colortext = "black";
+                            }else{
+                                $colorcolumn = $colorcolumn;
+                                $colortext = $colortext;
+                            }
+
+
+                            if (!empty($cekwfhfull)) {
+                                $colorcolumn = "#9f0ecf";
                                 $colortext = "black";
                             }else{
                                 $colorcolumn = $colorcolumn;
@@ -327,13 +350,15 @@
                             if(empty($jam_masuk_kk)){
                                 if($total_jam == 7){
                                     $totaljamkeluar = ($jkeluarkantor-1).":".$mkeluarkantor;
+                                    $desimaljamkeluar = ROUND(($menitkeluarkantor/ 60),2) - 1;
                                 }else{
                                     $totaljamkeluar = $jkeluarkantor.":".$mkeluarkantor;
+                                    $desimaljamkeluar = ROUND(($menitkeluarkantor/ 60),2);
                                 }
                             }else{
                                 $totaljamkeluar = $jkeluarkantor.":".$mkeluarkantor;
+                                $desimaljamkeluar = ROUND(($menitkeluarkantor/ 60),2);
                             }
-                            $desimaljamkeluar = ROUND(($menitkeluarkantor/ 60),2);
                         }else{
                             $totaljamkeluar = "";
                             $desimaljamkeluar = 0;
@@ -341,11 +366,7 @@
                         }
 
 
-                        if($jam_out != "NA" && $jam_out_tanggal < $jam_pulang_tanggal){
-                            $pc = "Pulang Cepat";
-                        }else{
-                            $pc = "";
-                        }
+
 
                         //Tambah 0 Didepan Jika < 10 pada Jam Terlambat
                         $jamterlambat = $jamterlambat < 0 && !empty($kode_izin_terlambat) ? 0 : $jamterlambat;
@@ -480,14 +501,47 @@
                         }else{
                             $premi = 0;
                         }
+
+
+
+                        if($jam_out != "NA" && $jam_out_tanggal < $jam_pulang_tanggal){
+                            $pc = "Pulang Cepat";
+                            // $jp1 = strtotime($jam_out_tanggal);
+                            // $jp2 = strtotime($jam_pulang_tanggal);
+                            // $diffpc = $jp2 - $jp1;
+
+                            // //Total Jam Keluar Kantor
+                            // $jampulangcepat = floor($diffpc / (60 * 60));
+                            // //Total Menit Keluar Kantor
+                            // $menitpulangcepat = floor(($diffpc - ($jampulangcepat * (60 * 60)))/60);
+
+                            // //Tambah 0 di Depan Jika < 10
+                            // $jpulangcepat = $jampulangcepat <= 9 ? "0" . $jampulangcepat : $jampulangcepat;
+                            // $mpulangcepat = $menitpulangcepat <= 9 ? "0" . $menitpulangcepat : $menitpulangcepat;
+
+                            // if($total_jam == 7){
+                            //     $totaljamkeluar = ($jkeluarkantor-1).":".$mkeluarkantor;
+                            //     $desimaljamkeluar = ROUND(($menitkeluarkantor/ 60),2) - 1;
+                            // }else{
+                            //     $totaljamkeluar = $jkeluarkantor.":".$mkeluarkantor;
+                            //     $desimaljamkeluar = ROUND(($menitkeluarkantor/ 60),2);
+                            // }
+
+                            $totalpc = $total_jam + $jk - $grandtotaljam;
+
+                        }else{
+                            $pc = "";
+                            $totalpc = 0;
+                        }
                         // echo "Total Jam :" .$total_jam."<br>" ;
                         // echo "Jam Terlambat :".$jt."<br>";
                         // echo "___________________________- <br>";
 
                 ?>
                     <td style="background-color: {{ $colorcolumn }}; color:{{ $colortext }}; width:3%">
-
+                        {{-- {{ $cekmasakerja }} --}}
                         @if ($status == "h")
+                        {{-- {{ $totalpc }} --}}
                         {{-- <span>{{ var_dump($ceklibur) }}</span> --}}
                         {{-- <span>{{ $desimalterlambat }}</span> --}}
                         {{-- <span>{{ $jam_out ."|". $jam_akhir_istirahat }}</span><br> --}}
@@ -555,7 +609,8 @@
                     $jk = 0;
                     $denda = 0;
                     $premi = 0;
-                    if(!empty($ceklibur) || !empty($cekliburpenggantiminggu) || !empty($cekwfh)){
+                    $totalpc = 0;
+                    if(!empty($ceklibur) && $cekmasakerja > 3 || !empty($cekliburpenggantiminggu) && $cekmasakerja > 3 || !empty($cekwfh) || !empty($cekwfhfull) && $cekmasakerja > 3 ){
                        $tidakhadir = 0;
                     }else{
                         if($namahari=="Sabtu"){
@@ -575,8 +630,10 @@
                 ?>
                     <td style="background-color:{{ $colorcolumn }}; color:white; width:3%">
                         {{-- <span>{{ var_dump(empty($ceklibur)) }}</span> --}}
+                        {{-- {{ $cekmasakerja }} --}}
                         {{ !empty($ceklibur) ? $ceklibur[0]["keterangan"] : "" }}
                         {{ !empty($cekwfh) ? "Dirumahkan" : "" }}
+                        {{ !empty($cekwfhfull) ? "WFH" : "" }}
                         {{ !empty($cekliburpenggantiminggu) ? $cekliburpenggantiminggu[0]["keterangan"] : "" }}
                     </td>
                     <?Php
@@ -587,14 +644,16 @@
                     $totaldenda += $denda;
                     $totalpremi += $premi;
                     $totaltidakhadir += $tidakhadir;
+                    $totalpulangcepat += $totalpc;
                 }
 
-                $totaljamkerja = $totaljam1bulan - $totalterlambat - $totalkeluar - $totaldirumahkan - $totaltidakhadir;
+                $totaljamkerja = $totaljam1bulan - $totalterlambat - $totalkeluar - $totaldirumahkan - $totaltidakhadir - $totalpulangcepat;
                 ?>
                     <td style="font-size: 16px; text-align:center; font-weight:bold">{{ $totaljam1bulan }}</td>
                     <td style="text-align: center; color:red; font-size:16px">{{ !empty($totalterlambat) ? $totalterlambat : '' }}</td>
                     <td style="text-align: center; color:rgb(255, 140, 0);font-size:16px">{{ !empty($totaldirumahkan) ? $totaldirumahkan : '' }}</td>
                     <td style="text-align: center; color:rgb(255, 140, 0);font-size:16px">{{ !empty($totalkeluar) ? $totalkeluar : '' }}</td>
+                    <td style="text-align: center; color:rgb(255, 140, 0);font-size:16px">{{ !empty($totalpulangcepat) ? $totalpulangcepat : '' }}</td>
                     <td style="text-align: center; color:rgb(255, 140, 0);font-size:16px">{{ !empty($totaltidakhadir) ? $totaltidakhadir : '' }}</td>
 
                     <td style="font-size: 16px; text-align:center; font-weight:bold">{{ !empty($totaljamkerja) ? $totaljamkerja : '' }}</td>

@@ -317,6 +317,34 @@ function cekwfh($dari, $sampai)
     return $libur;
 }
 
+
+function cekwfhfull($dari, $sampai)
+{
+    $no = 1;
+    $libur = [];
+    $ceklibur = DB::table('harilibur')
+        ->selectRaw('tanggal_libur,
+        id_kantor,
+        keterangan,
+        tanggal_diganti,
+        IFNULL(harilibur_karyawan.nik,"ALL") as nik')
+        ->leftJoin('harilibur_karyawan', 'harilibur.kode_libur', '=', 'harilibur_karyawan.kode_libur')
+        ->where('kategori', 4)
+        ->whereBetween('tanggal_libur', [$dari, $sampai])->get();
+
+    foreach ($ceklibur as $d) {
+        $libur[] = [
+            'nik' => $d->nik,
+            'id_kantor' => $d->id_kantor,
+            'tanggal_libur' => $d->tanggal_libur,
+            'keterangan' => $d->keterangan,
+            'tanggal_diganti' => $d->tanggal_diganti
+        ];
+    }
+
+    return $libur;
+}
+
 function cektgllibur($array, $search_list)
 {
 

@@ -157,7 +157,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">
-                        @if (Auth::user()->pic_presensi == 1)
+                        @if (Auth::user()->pic_presensi == 1 || $level=="manager hrd" || $level=="admin")
                         <a href="#" class="btn btn-primary" id="buatizin"><i class="fa fa-plus mr-1"></i> Buat Pengajuan</a>
                         @endif
                     </div>

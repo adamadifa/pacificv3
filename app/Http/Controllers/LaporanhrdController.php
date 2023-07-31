@@ -137,9 +137,9 @@ class LaporanhrdController extends Controller
 
         $datalibur = ceklibur($dari, $sampai);
         $dataliburpenggantiminggu = cekliburpenggantiminggu($dari, $sampai);
-
         $dataminggumasuk = cekminggumasuk($dari, $sampai);
         $datawfh = cekwfh($dari, $sampai);
+        $datawfhfull = cekwfhfull($dari, $sampai);
 
 
         // Define search list with multiple key=>value pair
@@ -169,7 +169,7 @@ class LaporanhrdController extends Controller
 
 
         if ($jmlrange == 31) {
-            $query->selectRaw('master_karyawan.nik,nama_karyawan,kode_dept,id_kantor,
+            $query->selectRaw('master_karyawan.nik,nama_karyawan,kode_dept,id_kantor,tgl_masuk,
                 hari_1,
                 hari_2,
                 hari_3,
@@ -846,7 +846,7 @@ class LaporanhrdController extends Controller
                 }
             );
         } elseif ($jmlrange == 30) {
-            $query->selectRaw('master_karyawan.nik,nama_karyawan,kode_dept,id_kantor,
+            $query->selectRaw('master_karyawan.nik,nama_karyawan,kode_dept,id_kantor,tgl_masuk,
                 hari_1,
                 hari_2,
                 hari_3,
@@ -1528,7 +1528,7 @@ class LaporanhrdController extends Controller
                 header("Content-Disposition: attachment; filename=Laporan Presensi Format P/S/M.xls");
                 return view('presensi.laporan.cetak_psmexcel', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh'));
             } else {
-                return view('presensi.laporan.cetakpsm', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh'));
+                return view('presensi.laporan.cetakpsm', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull'));
             }
         } else {
             if (isset($_POST['export'])) {
@@ -1538,7 +1538,7 @@ class LaporanhrdController extends Controller
                 // Mendefinisikan nama file ekspor "hasil-export.xls"
                 header("Content-Disposition: attachment; filename=Laporan Presensi Detail.xls");
             }
-            return view('presensi.laporan.cetak', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh'));
+            return view('presensi.laporan.cetak', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull'));
         }
     }
 

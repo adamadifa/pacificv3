@@ -427,7 +427,7 @@
                     $("#kategori").focus();
                 });
                 return false;
-            } else if (tanggal_diganti == "" && kategori != 3) {
+            } else if (tanggal_diganti == "" && kategori != 3 && kategori != 4) {
                 swal({
                     title: 'Oops'
                     , text: 'Tanggal Libur Yang Di Ganti Harus Diisi !'
