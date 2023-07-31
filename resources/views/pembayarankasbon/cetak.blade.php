@@ -69,7 +69,7 @@
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $d->no_bukti }}</td>
                 <td>{{ $d->no_kasbon }}</td>
-                <td>{{ $d->nik }}</td>
+                <td>{{ "'".$d->nik }}</td>
                 <td>{{ $d->nama_karyawan }}</td>
                 <td>{{ $d->nama_jabatan }}</td>
                 <td>{{ $d->nama_dept }}</td>
