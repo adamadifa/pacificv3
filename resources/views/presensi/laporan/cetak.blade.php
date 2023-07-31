@@ -139,9 +139,9 @@
                     $search_items_minggumasuk = array('nik'=>$d->nik,'id_kantor' => $d->id_kantor, 'tanggal_diganti' => $tgl_presensi);
                     $search_items_all = array('nik'=>'ALL','id_kantor' => $d->id_kantor, 'tanggal_libur' => $tgl_presensi);
                     $ceklibur = cektgllibur($datalibur, $search_items);
-                    if(empty($ceklibur)){
-                        $ceklibur = cektgllibur($datalibur,$search_items_all);
-                    }
+                    // if(empty($ceklibur)){
+                    //     $ceklibur = cektgllibur($datalibur,$search_items_all);
+                    // }
 
                     $cekliburpenggantiminggu = cektgllibur($dataliburpenggantiminggu,$search_items);
                     // if(empty($cekliburpenggantiminggu)){

@@ -696,13 +696,16 @@ class PengajuanizinController extends Controller
         $kode_jadwal_old = $request->kode_jadwal_old;
         $tgl = explode("-", $tgl_presensi);
         $tahun = substr($tgl[0], 2, 2);
+        $bulan = $tgl[1];
         $izin = DB::table("pengajuan_izin")
             ->whereRaw('YEAR(dari)="' . $tgl[0] . '"')
+            ->whereRaw('MONTH(dari)="' . $tgl[1] . '"')
+            ->whereRaw('LENGTH(kode_izin)=9')
             ->orderBy("kode_izin", "desc")
             ->first();
 
         $last_kodeizin = $izin != null ? $izin->kode_izin : '';
-        $kode_izin  = buatkode($last_kodeizin, "IZ" . $tahun, 3);
+        $kode_izin  = buatkode($last_kodeizin, "IZ" . $tahun . $bulan, 3);
         $data = [
             'kode_izin' => $kode_izin,
             'nik' => $nik,
