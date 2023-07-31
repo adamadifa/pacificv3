@@ -1270,6 +1270,17 @@
                     </li>
                     @endif
                     @endif
+
+                    @if (Auth::user()->id != "176")
+                    @if (in_array($level,$lembur_menu))
+                    <li class="{{ request()->is(['lembur', 'lembur/*']) ? 'active' : '' }}">
+                        <a href="/lembur">
+                            <i class="feather icon-calendar"></i>
+                            <span class="menu-item" data-i18n="Second Level">Lembur</span>
+                        </a>
+                    </li>
+                    @endif
+                    @endif
                     @if (Auth::user()->id != "176")
                     @if (in_array($level,$hari_libur_menu) || Auth::user()->pic_presensi == 1 )
                     <li class="{{ request()->is(['harilibur', 'harilibur/*']) ? 'active' : '' }}">

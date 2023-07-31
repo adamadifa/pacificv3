@@ -447,10 +447,18 @@ class PresensiController extends Controller
     {
         $tanggal = $request->tanggal;
         $pin = $request->pin;
+        $kode_jadwal = $request->kode_jadwal;
+        if ($kode_jadwal == "JD004") {
+            $nextday = date('Y-m-d', strtotime('+1 day', strtotime($tanggal)));
+        } else {
+            $nextday =  $tanggal;
+        }
+        $specific_value = $pin;
+
 
         //Mesin 1
         $url = 'https://developer.fingerspot.io/api/get_attlog';
-        $data = '{"trans_id":"1", "cloud_id":"C2609075E3170B2C", "start_date":"' . $tanggal . '", "end_date":"' . $tanggal . '"}';
+        $data = '{"trans_id":"1", "cloud_id":"C2609075E3170B2C", "start_date":"' . $tanggal . '", "end_date":"' . $nextday . '"}';
         $authorization = "Authorization: Bearer QNBCLO9OA0AWILQD";
 
         $ch = curl_init($url);
@@ -466,10 +474,14 @@ class PresensiController extends Controller
         $res = json_decode($result);
         $datamesin1 = $res->data;
 
+        $filtered_array = array_filter($datamesin1, function ($obj) use ($specific_value) {
+            return $obj->pin == $specific_value;
+        });
+
 
         //Mesin 2
         $url = 'https://developer.fingerspot.io/api/get_attlog';
-        $data = '{"trans_id":"1", "cloud_id":"C268909557211236", "start_date":"' . $tanggal . '", "end_date":"' . $tanggal . '"}';
+        $data = '{"trans_id":"1", "cloud_id":"C268909557211236", "start_date":"' . $tanggal . '", "end_date":"' . $nextday . '"}';
         $authorization = "Authorization: Bearer QNBCLO9OA0AWILQD";
 
         $ch = curl_init($url);
@@ -484,13 +496,6 @@ class PresensiController extends Controller
         curl_close($ch);
         $res2 = json_decode($result2);
         $datamesin2 = $res2->data;
-
-        $specific_value = $pin;
-
-
-        $filtered_array = array_filter($datamesin1, function ($obj) use ($specific_value) {
-            return $obj->pin == $specific_value;
-        });
 
         $filtered_array_2 = array_filter($datamesin2, function ($obj) use ($specific_value) {
             return $obj->pin == $specific_value;

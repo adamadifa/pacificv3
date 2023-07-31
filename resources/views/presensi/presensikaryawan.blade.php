@@ -354,7 +354,7 @@
                                             <td>
                                                 @if ($level == "manager hrd" || $level=="admin" || Auth::user()->pic_presensi==1)
                                                 <a href="#" class="edit" nik="{{ $d->nik }}" kode_jadwal="{{ $d->kode_jadwal }}" tanggal="{{ $d->tgl_presensi }}"><i class="feather icon-edit info"></i></a>
-                                                <a href="#" class="checkmesin" pin="{{ $d->pin }}" tanggal="{{ $d->tgl_presensi }}"><i class="feather icon-monitor success"></i></a>
+                                                <a href="#" class="checkmesin" pin="{{ $d->pin }}" tanggal="{{ $d->tgl_presensi }}" kode_jadwal="{{ $d->kode_jadwal }}"><i class="feather icon-monitor success"></i></a>
                                                 @endif
                                             </td>
                                         </tr>
@@ -456,6 +456,7 @@
             e.preventDefault();
             var pin = $(this).attr("pin");
             var tanggal = $(this).attr("tanggal");
+            var kode_jadwal = $(this).attr("kode_jadwal");
             $("#mdlcheckmesin").modal({
                 backdrop: 'static'
                 , keyboard: false
@@ -467,6 +468,7 @@
                     _token: "{{ csrf_token() }}"
                     , pin: pin
                     , tanggal: tanggal
+                    , kode_jadwal: kode_jadwal
                 }
                 , cache: false
                 , success: function(respond) {

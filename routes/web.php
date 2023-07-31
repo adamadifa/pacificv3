@@ -56,6 +56,7 @@ use App\Http\Controllers\Laporanproduksi;
 use App\Http\Controllers\LaporanproduksiController;
 use App\Http\Controllers\LebihsetorController;
 use App\Http\Controllers\LedgerController;
+use App\Http\Controllers\LemburController;
 use App\Http\Controllers\LimitkreditController;
 use App\Http\Controllers\LogamtokertasController;
 use App\Http\Controllers\LpcController;
@@ -1740,6 +1741,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/updatecheckdenda', [LaporanhrdController::class, 'updatecheckdenda']);
     Route::post('/cancelcheckdenda', [LaporanhrdController::class, 'cancelcheckdenda']);
 
+    //Lembur
+
+    Route::get('/lembur', [LemburController::class, 'index']);
+    Route::post('/lembur/store', [LemburController::class, 'store']);
+    Route::delete('/lembur/{kode_lembur}/delete', [LemburController::class, 'delete']);
 
     Route::get('/monitoringsku', [PenjualanController::class, 'monitoringsku']);
     Route::post('/getsku', [PenjualanController::class, 'getsku']);
