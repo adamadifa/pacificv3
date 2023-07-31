@@ -742,7 +742,7 @@ class Pengajuanizin extends Model
             $query->where('id_kantor', 'PST');
         }
 
-        $query->orderBy('kode_izin', 'desc');
+        $query->orderBy('dari', 'desc');
         $pengajuan_izin = $query;
         return $pengajuan_izin;
     }
