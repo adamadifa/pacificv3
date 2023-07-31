@@ -1358,6 +1358,8 @@ class PenjualanController extends Controller
         } else {
             $no_fak_penj = $request->no_fak_penj; //ok
         }
+
+        //dd($lastnofakpenj);
         //$no_fak_penj = $request->no_fak_penj; //ok
         //dd($no_fak_penj);
         $tgltransaksi = $request->tgltransaksi; //ok
