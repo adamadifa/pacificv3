@@ -144,9 +144,9 @@
                     }
 
                     $cekliburpenggantiminggu = cektgllibur($dataliburpenggantiminggu,$search_items);
-                    if(empty($cekliburpenggantiminggu)){
-                        $cekliburpenggantiminggu = cektgllibur($dataliburpenggantiminggu,$search_items_all);
-                    }
+                    // if(empty($cekliburpenggantiminggu)){
+                    //     $cekliburpenggantiminggu = cektgllibur($dataliburpenggantiminggu,$search_items_all);
+                    // }
                     $cekminggumasuk = cektgllibur($dataminggumasuk,$search_items_minggumasuk);
                     $cekwfh = cektgllibur($datawfh,$search_items);
                     if(empty($cekwfh)){
@@ -166,8 +166,13 @@
                     }
                     if($namahari=="Minggu"){
                         if(!empty($cekminggumasuk)){
+                            if($d->$hari_ke != NULL){
                             $colorcolumn = "";
                             $colortext = "";
+                            }else{
+                                $colorcolumn = "red";
+                                $colortext = "";
+                            }
                         }else{
                             $colorcolumn = "#ffaf03";
                             $colortext = "white";
@@ -550,13 +555,22 @@
                     $jk = 0;
                     $denda = 0;
                     $premi = 0;
-                    if($namahari=="Sabtu"){
-                        $tidakhadir = 5;
-                    }elseif($namahari=="Minggu"){
-                        $tidakhadir = 0;
+                    if(!empty($ceklibur) || !empty($cekliburpenggantiminggu) || !empty($cekwfh)){
+                       $tidakhadir = 0;
                     }else{
-                        $tidakhadir = 7;
+                        if($namahari=="Sabtu"){
+                            $tidakhadir = 5;
+                        }elseif($namahari=="Minggu"){
+                            if(!empty($cekminggumasuk)){
+                                $tidakhadir = 7;
+                            }else{
+                                $tidakhadir = 0;
+                            }
+                        }else{
+                            $tidakhadir = 7;
+                        }
                     }
+
 
                 ?>
                     <td style="background-color:{{ $colorcolumn }}; color:white; width:3%">
