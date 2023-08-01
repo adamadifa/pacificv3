@@ -89,23 +89,25 @@
     </b>
     <br>
     <div class="freeze-table">
-        <table class="datatable3" style="width: 250%">
+        <table class="datatable3" style="width: 280%">
             <thead bgcolor="#024a75" style="color:white; font-size:12;">
                 <tr bgcolor="#024a75" style="color:white; font-size:12;">
-                    <th rowspan="2" class="fixed-side">No</th>
-                    <th rowspan="2" class="fixed-side">Nik</th>
-                    <th rowspan="2" class="fixed-side">Nama karyawan</th>
-                    <th rowspan="2" class="fixed-side">Kantor</th>
+                    <th rowspan="2" class="fixed-side" style="width:1%">No</th>
+                    <th rowspan="2" class="fixed-side" style="width:1%">Nik</th>
+                    <th rowspan="2" class="fixed-side" style="width:3%">Nama karyawan</th>
+                    <th rowspan="2" class="fixed-side" style="width:1%">Kantor</th>
                     <th colspan="{{ $jmlrange }}">Bulan {{ $namabulan[$bulan*1]}} {{ $tahun }}</th>
-                    <th rowspan="2">Total Jam<br> 1 Bulan</th>
-                    <th rowspan="2">Terlambat</th>
-                    <th rowspan="2">Dirumahkan</th>
-                    <th rowspan="2">Keluar</th>
-                    <th rowspan="2">PC</th>
-                    <th rowspan="2">Tidak Hadir</th>
-                    <th rowspan="2">Total<br> Jam Kerja</th>
-                    <th rowspan="2">Denda</th>
-                    <th rowspan="2">Premi</th>
+                    <th rowspan="2" style="width:1%">Total Jam<br> 1 Bulan</th>
+                    <th rowspan="2" style="width:1%">Telat</th>
+                    <th rowspan="2" style="width:1%">Dirumahkan</th>
+                    <th rowspan="2" style="width:1%">Keluar</th>
+                    <th rowspan="2" style="width:1%">PC</th>
+                    <th rowspan="2" style="width:1%">Alfa</th>
+                    <th rowspan="2" style="width:1%">Izin<br>Absen</th>
+                    <th rowspan="2" style="width:1%">Sakit<br>Non SID</th>
+                    <th rowspan="2" style="width:1%">Total<br> Jam Kerja</th>
+                    <th rowspan="2" style="width:1%">Denda</th>
+                    <th rowspan="2" style="width:1%">Premi</th>
                 </tr>
                 <tr bgcolor="#024a75" style="color:white;">
                     @foreach ($rangetanggal as $d)
@@ -132,6 +134,9 @@
                 $totaldirumahkan = 0;
                 $totaltidakhadir = 0;
                 $totalpulangcepat = 0;
+                $totalizinabsen = 0;
+                //$izinsakit = 0;
+                $totalizinsakit = 0;
                 for($i=0; $i < count($rangetanggal); $i++){
 
 
@@ -169,7 +174,11 @@
                     }
 
                     if(!empty($cekwfh)){
-                        $totaljamdirumahkan = ROUND(($jamdirumahkan / 2),2);
+                        if($cekmasakerja > 3){
+                            $totaljamdirumahkan = ROUND(($jamdirumahkan / 2),2);
+                        }else{
+                            $totaljamdirumahkan = $jamdirumahkan;
+                        }
                         $totaldirumahkan += $totaljamdirumahkan;
                     }
                     if($namahari=="Minggu"){
@@ -264,6 +273,8 @@
                         $tidakhadir = 0;
                         $datapresensi = explode("|",$d->$hari_ke);
                         $lintashari = $datapresensi[16] != "NA" ? $datapresensi[16] : '';
+                        $izinpulangdirut = $datapresensi[17] != "NA" ? $datapresensi[17] : '';
+                        $izinabsendirut = $datapresensi[18] != "NA" ? $datapresensi[18] : '';
                         if(!empty($lintashari)){
                             $tgl_pulang = date('Y-m-d', strtotime('+1 day', strtotime($tgl_presensi)));
                         }else{
@@ -286,6 +297,7 @@
                         $status = $datapresensi[5] != "NA" ? $datapresensi[5] : '';
                         $sid = $datapresensi[12] != "NA" ? $datapresensi[12] : '';
                         $kode_izin_terlambat = $datapresensi[7] != "NA" ? $datapresensi[7] : '';
+                        $kode_izin_pulang = $datapresensi[8] != "NA" ? $datapresensi[8] : '';
                         $jam_istirahat = $datapresensi[14];
                         $jam_istirahat_presensi =$jam_istirahat != "NA" ? date("H:i",strtotime($jam_istirahat)) : '';
                         $jam_awal_istirahat = $datapresensi[13] != "NA" ? $tgl_presensi." ".$datapresensi[13] : '';
@@ -527,7 +539,11 @@
                             //     $desimaljamkeluar = ROUND(($menitkeluarkantor/ 60),2);
                             // }
 
-                            $totalpc = $total_jam + $jk - $grandtotaljam;
+                            if(!empty($izinpulangdirut)){
+                                $totalpc = 0;
+                            }else{
+                                $totalpc = $total_jam + $jk - $grandtotaljam;
+                            }
 
                         }else{
                             $pc = "";
@@ -538,9 +554,14 @@
                         // echo "___________________________- <br>";
 
                 ?>
-                    <td style="background-color: {{ $colorcolumn }}; color:{{ $colortext }}; width:3%">
+                    <td style="background-color: {{ $colorcolumn }}; color:{{ $colortext }}; width:2%">
                         {{-- {{ $cekmasakerja }} --}}
                         @if ($status == "h")
+                        @php
+                        $izinabsen = 0;
+                        $izinsakit = 0;
+                        @endphp
+                        {{ $kode_izin_pulang }} {{ $izinpulangdirut }}
                         {{-- {{ $totalpc }} --}}
                         {{-- <span>{{ var_dump($ceklibur) }}</span> --}}
                         {{-- <span>{{ $desimalterlambat }}</span> --}}
@@ -588,16 +609,59 @@
                             <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
                             @else
                             <br>
+                            <?php
+                                if($namahari=="Sabtu"){
+                                $izinsakit = 5;
+                                }elseif($namahari=="Minggu"){
+                                    if(!empty($cekminggumasuk)){
+                                        $izinsakit = 7;
+                                    }else{
+                                        $izinsakit = 0;
+                                    }
+                                }else{
+                                    $izinsakit = 7;
+                                }
+                            ?>
                             <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
                             @endif
+                            @php
+                            $izinabsen = 0;
+
+                            @endphp
                         </span>
                         @elseif($status=="i")
                         <span style="color:rgb(27, 5, 171);">IZIN</span><br>
                         <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
+
+                        <?php
+                            if(empty($izinabsendirut)){
+                                if($namahari=="Sabtu"){
+                                $izinabsen = 5;
+                                }elseif($namahari=="Minggu"){
+                                    if(!empty($cekminggumasuk)){
+                                        $izinabsen = 7;
+                                    }else{
+                                        $izinabsen = 0;
+                                    }
+                                }else{
+                                    $izinabsen = 7;
+                                }
+                            }else{
+                                $izinabsen = 0;
+                            }
+
+                            $izinsakit = 0;
+
+                        ?>
                         @elseif($status=="c")
                         <span style="color:rgb(154, 56, 4);">CUTI</span><br>
                         <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
+                        @php
+                        $izinabsen = 0;
+                        $izinsakit = 0;
+                        @endphp
                         @endif
+
                         @if (!empty($premi))
                         <br>
                         <span style="color: blue">Premi : {{ rupiah($premi) }}</span>
@@ -610,6 +674,8 @@
                     $denda = 0;
                     $premi = 0;
                     $totalpc = 0;
+                    $izinabsen = 0;
+                    $izinsakit = 0;
                     if(!empty($ceklibur) && $cekmasakerja > 3 || !empty($cekliburpenggantiminggu) && $cekmasakerja > 3 || !empty($cekwfh) || !empty($cekwfhfull) && $cekmasakerja > 3 ){
                        $tidakhadir = 0;
                     }else{
@@ -628,7 +694,7 @@
 
 
                 ?>
-                    <td style="background-color:{{ $colorcolumn }}; color:white; width:3%">
+                    <td style="background-color:{{ $colorcolumn }}; color:white; width:2%">
                         {{-- <span>{{ var_dump(empty($ceklibur)) }}</span> --}}
                         {{-- {{ $cekmasakerja }} --}}
                         {{ !empty($ceklibur) ? $ceklibur[0]["keterangan"] : "" }}
@@ -645,9 +711,11 @@
                     $totalpremi += $premi;
                     $totaltidakhadir += $tidakhadir;
                     $totalpulangcepat += $totalpc;
+                    $totalizinabsen += $izinabsen;
+                    $totalizinsakit += $izinsakit;
                 }
 
-                $totaljamkerja = $totaljam1bulan - $totalterlambat - $totalkeluar - $totaldirumahkan - $totaltidakhadir - $totalpulangcepat;
+                $totaljamkerja = $totaljam1bulan - $totalterlambat - $totalkeluar - $totaldirumahkan - $totaltidakhadir - $totalpulangcepat - $totalizinabsen - $izinsakit;
                 ?>
                     <td style="font-size: 16px; text-align:center; font-weight:bold">{{ $totaljam1bulan }}</td>
                     <td style="text-align: center; color:red; font-size:16px">{{ !empty($totalterlambat) ? $totalterlambat : '' }}</td>
@@ -655,7 +723,8 @@
                     <td style="text-align: center; color:rgb(255, 140, 0);font-size:16px">{{ !empty($totalkeluar) ? $totalkeluar : '' }}</td>
                     <td style="text-align: center; color:rgb(255, 140, 0);font-size:16px">{{ !empty($totalpulangcepat) ? $totalpulangcepat : '' }}</td>
                     <td style="text-align: center; color:rgb(255, 140, 0);font-size:16px">{{ !empty($totaltidakhadir) ? $totaltidakhadir : '' }}</td>
-
+                    <td style="text-align: center; color:rgb(255, 140, 0);font-size:16px">{{ !empty($totalizinabsen) ? $totalizinabsen : '' }}</td>
+                    <td style="text-align: center; color:rgb(255, 140, 0);font-size:16px">{{ !empty($totalizinsakit) ? $totalizinsakit : '' }}</td>
                     <td style="font-size: 16px; text-align:center; font-weight:bold">{{ !empty($totaljamkerja) ? $totaljamkerja : '' }}</td>
                     <td style="text-align: right; color:red; font-size:16px">{{ !empty($totaldenda) ? rupiah($totaldenda) : '' }}</td>
                     <td style="text-align: right;  font-size:16px">{{ !empty($totalpremi) ? rupiah($totalpremi) : '' }}</td>
