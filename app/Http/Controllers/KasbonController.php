@@ -219,7 +219,25 @@ class KasbonController extends Controller
 
 
         $kasbon_max = $cekpinjaman != null ? $cekpinjaman->angsuran_max - $cicilan->jumlah : 0;
-        return view('kasbon.create', compact('karyawan', 'kontrak', 'cicilan', 'kasbon_max'));
+
+        $cekkasbon = DB::table('kasbon')
+            ->leftJoin(
+                DB::raw("(
+                SELECT no_kasbon,tgl_bayar, jumlah as totalpembayaran FROM kasbon_historibayar
+            ) hb"),
+                function ($join) {
+                    $join->on('kasbon.no_kasbon', '=', 'hb.no_kasbon');
+                }
+            )
+            ->where('nik', $nik)
+            ->whereNull('totalpembayaran')
+            ->count();
+
+        if ($cekkasbon > 0) {
+            return view('kasbon.notifbelumlunas');
+        } else {
+            return view('kasbon.create', compact('karyawan', 'kontrak', 'cicilan', 'kasbon_max'));
+        }
     }
 
     public function store(Request $request)
