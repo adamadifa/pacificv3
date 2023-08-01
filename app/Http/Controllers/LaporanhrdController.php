@@ -400,7 +400,9 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.jam_awal_istirahat,'NA'),
                     '|',IFNULL(jam_kerja.jam_istirahat,'NA'),
                     '|',IFNULL(jam_kerja.total_jam,'NA'),
-                    '|',IFNULL(jam_kerja.lintashari,'NA')
+                    '|',IFNULL(jam_kerja.lintashari,'NA'),
+                    '|',IFNULL(izinpulang.direktur,'NA'),
+                    '|',IFNULL(pengajuan_izin.direktur,'NA')
                     ),NULL)) as hari_9,
 
 
