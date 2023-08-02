@@ -342,7 +342,7 @@
         </tr>
         <tr>
             <th bgcolor="#024a75" style="color:white; font-size:12; padding:5px !important">Transfer</th>
-            <td style="text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totaltransfer + $totalgirototransfer, '0', '', '.');  ?></td>
+            <td style="text-align: right; font-size:12px; font-weight:bold"><?php echo number_format($totaltransfer, '0', '', '.');  ?></td>
         </tr>
         <tr>
             <th bgcolor="#024a75" style="color:white; font-size:12; padding:5px !important">Ganti Giro Ke Cash</th>
