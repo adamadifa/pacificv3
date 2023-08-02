@@ -111,6 +111,15 @@
                     <th rowspan="2">TOTAL<br>OVERTIME</th>
                     <th colspan="2">PREMI SHIFT 2</th>
                     <th colspan="2">PREMI SHIFT 3</th>
+                    <th rowspan="2" style="background-color: orange;">BRUTO</th>
+                    <th rowspan="2" style="background-color: black;">POTONGAN<br>JAM</th>
+                    <th colspan="3" style="background-color: black;">BPJS</th>
+                    <th rowspan="2" style="background-color: black;">DENDA<br>TERLAMBAT</th>
+                    <th rowspan="2" style="background-color: black;">CICILAN<br>PJP</th>
+                    <th rowspan="2" style="background-color: black;">KASBON</th>
+                    <th rowspan="2" style="background-color: black;">SPIP</th>
+                    <th rowspan="2" style="background-color: orange;">JUMLAH<br>POTONGAN</th>
+                    <th rowspan="2" style="background-color: orange;">JUMLAH<br>BERSIH</th>
 
                 </tr>
                 <tr>
@@ -147,6 +156,9 @@
                     <th>JUMLAH</th>
                     <th>HARI</th>
                     <th>JUMLAH</th>
+                    <th style="background-color: black;">KESEHATAN</th>
+                    <th style="background-color: black;">PERUSAHAAN</th>
+                    <th style="background-color: black;">TENAGA KERJA</th>
                 </tr>
             </thead>
             <tbody>
@@ -660,6 +672,7 @@
                     $totalizinsakit += $izinsakit;
                 }
                 $totaljamkerja = $totaljam1bulan - $totalterlambat - $totalkeluar - $totaldirumahkan - $totaltidakhadir - $totalpulangcepat - $totalizinabsen - $izinsakit;
+                $totalpotonganjam = $totalterlambat + $totalkeluar + $totaldirumahkan + $totaltidakhadir + $totalpulangcepat + $totalizinabsen + $izinsakit;
                 ?>
                 <tr>
                     <td>{{ $loop->iteration }}</td>
@@ -740,6 +753,17 @@
                     <td align="right">{{ !empty($jmlpremi1) ? rupiah($jmlpremi1) : "" }}</td>
                     <td align="center">{{ !empty($jmlharipremi2) ? $jmlharipremi2 : "" }}</td>
                     <td align="right">{{ !empty($jmlpremi2) ? rupiah($jmlpremi2) : "" }}</td>
+                    <td align="right"></td>
+                    <td align="center">{{ !empty($totalpotonganjam) ? $totalpotonganjam : "" }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td align="right">{{ !empty($totaldenda) ? rupiah($totaldenda) : "" }}</td>
+                    <td align="right">{{ !empty($d->cicilan_pjp) ? rupiah($d->cicilan_pjp) : "" }}</td>
+                    <td align="right">{{ !empty($d->jml_kasbon) ? rupiah($d->jml_kasbon) : "" }}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                 </tr>
                 @endforeach
             </tbody>

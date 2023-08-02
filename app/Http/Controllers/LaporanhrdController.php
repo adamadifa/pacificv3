@@ -138,7 +138,7 @@ class LaporanhrdController extends Controller
         $id_group = $request->id_group;
         $bulan = $request->bulan;
         $tahun = $request->tahun;
-
+        $kode_potongan = "GJ" . $bulan . $tahun;
         if ($bulan == 1) {
             $lastbulan = 12;
             $lasttahun = $tahun - 1;
@@ -193,6 +193,7 @@ class LaporanhrdController extends Controller
                 im_ruanglingkup, im_penempatan,im_kinerja,
                 gaji_pokok,
                 t_jabatan,t_masakerja,t_tanggungjawab,t_makan,t_istri,t_skill,
+                cicilan_pjp,jml_kasbon,
                 hari_1,
                 hari_2,
                 hari_3,
@@ -947,8 +948,39 @@ class LaporanhrdController extends Controller
                     $join->on('master_karyawan.nik', '=', 'hrdgaji.nik');
                 }
             );
+
+            $query->leftJoin(
+                DB::raw("(
+                   SELECT nik, SUM(jumlah) as cicilan_pjp
+                   FROM pinjaman_historibayar
+                   INNER JOIN pinjaman ON pinjaman_historibayar.no_pinjaman = pinjaman.no_pinjaman
+                   WHERE kode_potongan = '$kode_potongan'
+                   GROUP BY nik
+                ) pjp"),
+                function ($join) {
+                    $join->on('master_karyawan.nik', '=', 'pjp.nik');
+                }
+            );
+
+            $query->leftJoin(
+                DB::raw("(
+                   SELECT nik, SUM(jumlah) as jml_kasbon
+                   FROM kasbon_historibayar
+                   INNER JOIN kasbon ON kasbon_historibayar.no_kasbon = kasbon.no_kasbon
+                   WHERE kode_potongan = '$kode_potongan'
+                   GROUP BY nik
+                ) kasbon"),
+                function ($join) {
+                    $join->on('master_karyawan.nik', '=', 'kasbon.nik');
+                }
+            );
         } elseif ($jmlrange == 30) {
-            $query->selectRaw('master_karyawan.nik,nama_karyawan,kode_dept,id_kantor,tgl_masuk,
+            $query->selectRaw('master_karyawan.*,nama_group,nama_dept,nama_jabatan,nama_cabang,klasifikasi,
+                iu_masakerja,iu_lembur,iu_penempatan,iu_kpi,
+                im_ruanglingkup, im_penempatan,im_kinerja,
+                gaji_pokok,
+                t_jabatan,t_masakerja,t_tanggungjawab,t_makan,t_istri,t_skill,
+                cicilan_pjp,jml_kasbon,
                 hari_1,
                 hari_2,
                 hari_3,
@@ -1665,6 +1697,47 @@ class LaporanhrdController extends Controller
             );
 
             $query->leftJoin('hrd_group', 'master_karyawan.grup', '=', 'hrd_group.id');
+            $query->leftJoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
+            $query->leftJoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
+            $query->leftJoin('cabang', 'master_karyawan.id_kantor', '=', 'cabang.kode_cabang');
+            $query->leftJoin('hrd_masterinsentif', 'master_karyawan.nik', '=', 'hrd_masterinsentif.nik');
+            $query->leftJoin(
+                DB::raw("(
+                    SELECT MAX(tgl_berlaku) as tgl_berlaku, nik,gaji_pokok,t_jabatan,t_masakerja,t_tanggungjawab,
+                    t_makan,t_istri,t_skill
+                    FROM hrd_mastergaji WHERE tgl_berlaku <= '$sampai' GROUP BY nik,gaji_pokok,t_jabatan,t_masakerja,t_tanggungjawab,
+                    t_makan,t_istri,t_skill
+                ) hrdgaji"),
+                function ($join) {
+                    $join->on('master_karyawan.nik', '=', 'hrdgaji.nik');
+                }
+            );
+
+            $query->leftJoin(
+                DB::raw("(
+                   SELECT nik, SUM(jumlah) as cicilan_pjp
+                   FROM pinjaman_historibayar
+                   INNER JOIN pinjaman ON pinjaman_historibayar.no_pinjaman = pinjaman.no_pinjaman
+                   WHERE kode_potongan = '$kode_potongan'
+                   GROUP BY nik
+                ) pjp"),
+                function ($join) {
+                    $join->on('master_karyawan.nik', '=', 'pjp.nik');
+                }
+            );
+
+            $query->leftJoin(
+                DB::raw("(
+                   SELECT nik, SUM(jumlah) as jml_kasbon
+                   FROM kasbon_historibayar
+                   INNER JOIN kasbon ON kasbon_historibayar.no_kasbon = kasbon.no_kasbon
+                   WHERE kode_potongan = '$kode_potongan'
+                   GROUP BY nik
+                ) kasbon"),
+                function ($join) {
+                    $join->on('master_karyawan.nik', '=', 'kasbon.nik');
+                }
+            );
         }
 
         if (!empty($kode_dept)) {
