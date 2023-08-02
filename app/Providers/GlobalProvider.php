@@ -1264,6 +1264,7 @@ class GlobalProvider extends ServiceProvider
             $ticket_done = ['admin'];
 
             $lap_hrd = ['admin', 'manager hrd', 'kepala gudang'];
+            $lap_gaji = ['admin', 'manager hrd', 'manager accounting', 'direktur'];
 
             $monitoring_sku = ['salesman'];
 
@@ -1668,6 +1669,7 @@ class GlobalProvider extends ServiceProvider
                 'cabangpkp' => $cabangpkp,
                 'pi' => $pi,
                 'lap_hrd' => $lap_hrd,
+                'lap_gaji' => $lap_gaji,
                 'monitoring_sku' => $monitoring_sku
 
             ];

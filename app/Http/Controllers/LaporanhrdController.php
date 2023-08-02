@@ -29,6 +29,25 @@ class LaporanhrdController extends Controller
         return view('presensi.laporan.lap_presensi', compact('bulan', 'departemen', 'cabang'));
     }
 
+
+    public function gaji()
+    {
+
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        $departemen = DB::table('hrd_departemen')->orderBy('nama_dept')->get();
+        $cbg = new Cabang();
+        if (Auth::user()->kode_cabang == "PCF" || Auth::user()->kode_cabang == "PST") {
+            if (Auth::user()->level == "manager hrd" || Auth::user()->level == "admin") {
+                $cabang = $cbg->getCabang("PST");
+            } else {
+                $cabang = DB::table('cabang')->where('kode_cabang', 'PST')->get();
+            }
+        } else {
+            $cabang = $cbg->getCabang(Auth::user()->kode_cabang);
+        }
+        return view('presensi.laporan.lap_gaji', compact('bulan', 'departemen', 'cabang'));
+    }
+
     public function getkantor(Request $request)
     {
         $kode_dept = $request->kode_dept;
@@ -169,7 +188,11 @@ class LaporanhrdController extends Controller
 
 
         if ($jmlrange == 31) {
-            $query->selectRaw('master_karyawan.nik,nama_karyawan,kode_dept,id_kantor,tgl_masuk,
+            $query->selectRaw('master_karyawan.*,nama_group,nama_dept,nama_jabatan,nama_cabang,klasifikasi,
+                iu_masakerja,iu_lembur,iu_penempatan,iu_kpi,
+                im_ruanglingkup, im_penempatan,im_kinerja,
+                gaji_pokok,
+                t_jabatan,t_masakerja,t_tanggungjawab,t_makan,t_istri,t_skill,
                 hari_1,
                 hari_2,
                 hari_3,
@@ -908,6 +931,22 @@ class LaporanhrdController extends Controller
                     $join->on('presensi.nik', '=', 'master_karyawan.nik');
                 }
             );
+            $query->leftJoin('hrd_group', 'master_karyawan.grup', '=', 'hrd_group.id');
+            $query->leftJoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
+            $query->leftJoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
+            $query->leftJoin('cabang', 'master_karyawan.id_kantor', '=', 'cabang.kode_cabang');
+            $query->leftJoin('hrd_masterinsentif', 'master_karyawan.nik', '=', 'hrd_masterinsentif.nik');
+            $query->leftJoin(
+                DB::raw("(
+                    SELECT MAX(tgl_berlaku) as tgl_berlaku, nik,gaji_pokok,t_jabatan,t_masakerja,t_tanggungjawab,
+                    t_makan,t_istri,t_skill
+                    FROM hrd_mastergaji WHERE tgl_berlaku <= '$sampai' GROUP BY nik,gaji_pokok,t_jabatan,t_masakerja,t_tanggungjawab,
+                    t_makan,t_istri,t_skill
+                ) hrdgaji"),
+                function ($join) {
+                    $join->on('master_karyawan.nik', '=', 'hrdgaji.nik');
+                }
+            );
         } elseif ($jmlrange == 30) {
             $query->selectRaw('master_karyawan.nik,nama_karyawan,kode_dept,id_kantor,tgl_masuk,
                 hari_1,
@@ -1615,6 +1654,7 @@ class LaporanhrdController extends Controller
             LEFT JOIN pengajuan_izin as izinpulang ON presensi.kode_izin_pulang = izinpulang.kode_izin
             LEFT JOIN jadwal_kerja ON presensi.kode_jadwal = jadwal_kerja.kode_jadwal
             LEFT JOIN jam_kerja ON presensi.kode_jam_kerja = jam_kerja.kode_jam_kerja
+
             WHERE tgl_presensi BETWEEN '$rangetanggal[0]' AND  '$rangetanggal[$lastrange]'
             GROUP BY
                 presensi.nik
@@ -1623,6 +1663,8 @@ class LaporanhrdController extends Controller
                     $join->on('presensi.nik', '=', 'master_karyawan.nik');
                 }
             );
+
+            $query->leftJoin('hrd_group', 'master_karyawan.grup', '=', 'hrd_group.id');
         }
 
         if (!empty($kode_dept)) {
@@ -1654,6 +1696,15 @@ class LaporanhrdController extends Controller
             } else {
                 return view('presensi.laporan.cetakpsm', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull'));
             }
+        } else if (request()->is('laporanhrd/gaji/cetak')) {
+            if (isset($_POST['export'])) {
+                echo "EXPORT";
+                // Fungsi header dengan mengirimkan raw data excel
+                header("Content-type: application/vnd-ms-excel");
+                // Mendefinisikan nama file ekspor "hasil-export.xls"
+                header("Content-Disposition: attachment; filename=Laporan Presensi Detail.xls");
+            }
+            return view('gaji.laporan.cetak_gaji', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull'));
         } else {
             if (isset($_POST['export'])) {
                 echo "EXPORT";

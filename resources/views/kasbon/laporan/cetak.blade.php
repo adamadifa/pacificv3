@@ -79,7 +79,7 @@
             @endphp
             @foreach ($kasbon as $d)
             @php
-            $totalkasbon += $d->jumlah;
+            $totalkasbon += $d->jumlah_kasbon;
             $totalpembayaran += $d->totalpembayaran;
 
             @endphp

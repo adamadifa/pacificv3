@@ -1740,6 +1740,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/laporanhrd/getterlambat', [LaporanhrdController::class, 'getterlambat']);
     Route::post('/updatecheckdenda', [LaporanhrdController::class, 'updatecheckdenda']);
     Route::post('/cancelcheckdenda', [LaporanhrdController::class, 'cancelcheckdenda']);
+    Route::get('/laporanhrd/gaji', [LaporanhrdController::class, 'gaji']);
+    Route::post('/laporanhrd/gaji/cetak', [LaporanhrdController::class, 'cetakpresensi']);
 
     //Lembur
 

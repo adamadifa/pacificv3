@@ -8,12 +8,12 @@
 
             <a href="/laporanhrd/presensi" style="color:#626262">
                 <li class="list-group-item {{ request()->is(['laporanhrd/presensi']) ? 'active' : '' }}">
-                    <i class="feather icon-file mr-1"></i>Laporan Presensi Peridoe Gaji
+                    <i class="feather icon-file mr-1"></i>Presensi Peridoe Gaji
                 </li>
             </a>
             <a href="/laporanhrd/presensipsm" style="color:#626262">
                 <li class="list-group-item {{ request()->is(['laporanhrd/presensipsm']) ? 'active' : '' }}">
-                    <i class="feather icon-file mr-1"></i>Laporan Presensi P/S/M
+                    <i class="feather icon-file mr-1"></i>Presensi P/S/M
                 </li>
             </a>
             <a href="/laporanhrd/rekapterlambat" style="color:#626262">
@@ -21,6 +21,14 @@
                     <i class="feather icon-file mr-1"></i>Rekap Keterlambatan
                 </li>
             </a>
+
+            @if (in_array($level,$lap_gaji))
+            <a href="/laporanhrd/gaji" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporanhrd/gaji']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Gaji
+                </li>
+            </a>
+            @endif
 
         </ul>
     </div>
