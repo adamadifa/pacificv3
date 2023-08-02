@@ -561,7 +561,7 @@
                         $izinabsen = 0;
                         $izinsakit = 0;
                         @endphp
-                        {{ $kode_izin_pulang }} {{ $izinpulangdirut }}
+                        {{-- {{ $kode_izin_pulang }} {{ $izinpulangdirut }} --}}
                         {{-- {{ $totalpc }} --}}
                         {{-- <span>{{ var_dump($ceklibur) }}</span> --}}
                         {{-- <span>{{ $desimalterlambat }}</span> --}}
