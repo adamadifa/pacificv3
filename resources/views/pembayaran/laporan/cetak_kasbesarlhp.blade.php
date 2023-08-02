@@ -320,7 +320,7 @@
     </table>
     <h4>SUMMARY <br> TANGGAL <?php echo DateToIndo2($dari); ?> s/d <?php echo $sampai; ?><br></h4>
     <?php
-                    $totalsummary = $totaltunai + $totaltagihan + $totalgiro + $totaltransfer  - $totalgirototransfer + $totalvoucher;
+                    $totalsummary = $totaltunai + $totaltagihan + $totalgiro + $totaltransfer  + $totalvoucher;
                     ?>
     <table class="datatable3">
 
