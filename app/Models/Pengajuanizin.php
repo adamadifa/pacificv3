@@ -337,7 +337,7 @@ class Pengajuanizin extends Model
         }
 
         if ($level == "emf") {
-            $jabatan_emf = array('MANAGER', 'ASST.MANAGER');
+            $jabatan_emf = array('MANAGER', 'ASST. MANAGER');
             if (!empty($dari) && !empty($sampai)) {
                 $query->whereBetween('dari', [$dari, $sampai]);
             }
