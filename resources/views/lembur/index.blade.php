@@ -52,6 +52,7 @@
                                             <th>Sampai</th>
                                             <th>Kantor</th>
                                             <th>Dept</th>
+                                            <th>Kategori</th>
                                             <th>Keterangan</th>
                                             <th>HRD</th>
                                             <th>Aksi</th>
@@ -66,6 +67,13 @@
                                             <td>{{ date("d-m-Y H:i",strtotime($d->tanggal_sampai)) }}</td>
                                             <td>{{ $d->id_kantor }}</td>
                                             <td>{{ $d->kode_dept }}</td>
+                                            <td>
+                                                @if ($d->kategori==1)
+                                                REGULER
+                                                @else
+                                                LEMBUR HARI LIBUR
+                                                @endif
+                                            </td>
                                             <td>{{ ucwords(strtolower($d->keterangan)) }}</td>
                                             <td>
                                                 @if (empty($d->hrd))
@@ -148,8 +156,8 @@
                             <x-inputtext label="Jam Akhir" field="jam_sampai" icon="feather icon-clock" />
                         </div>
                     </div>
-                    @if (Auth::user()->kode_cabang == "PCF" || Auth::user()->kode_cabang == "PST")
-                    @if ($level=="manager hrd" || $level == "admin")
+                    @if (Auth::user()->kode_cabang=="PCF")
+                    @if ($level=="manager hrd" || $level=="admin")
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group">
@@ -162,8 +170,9 @@
                             </div>
                         </div>
                     </div>
-                    @endif
+                    @else
                     <input type="hidden" name="id_kantor" value="PST">
+                    @endif
                     @else
                     <input type="hidden" name="id_kantor" value="{{ Auth::user()->kode_cabang }}">
                     @endif
@@ -192,6 +201,18 @@
                     <input type="hidden" name="kode_dept" value="">
                     @endif
                     @endif
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="form-group">
+                                <select name="kategori" id="kategori" class="form-control">
+                                    <option value="">Pilih Kategori Lembur</option>
+                                    <option value="1">REGULER</option>
+                                    <option value="2">LEMBUR HARI LIBUR</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row">
                         <div class="col-12">
                             <x-inputtext label="Keterangan" field="keterangan" icon="feather icon-file" />
@@ -229,6 +250,7 @@
             var id_kantor = $("#id_kantor").val();
             var kode_dept = $("#kode_dept").val();
             var keterangan = $("#keterangan").val();
+            var kategori = $("#kategori").val();
             var level = "{{ $level }}";
             if (tanggal_dari == "") {
                 swal({
@@ -288,6 +310,16 @@
                     , showConfirmButton: false
                 }).then(function() {
                     $("#kode_dept").focus();
+                });
+                return false;
+            } else if (kategori == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Kategori Lembur Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#kategori").focus();
                 });
                 return false;
             } else if (keterangan == "") {

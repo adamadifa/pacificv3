@@ -220,9 +220,10 @@
                             <x-inputtext label="Tanggal" field="tanggal" icon="feather icon-calendar" datepicker />
                         </div>
                     </div>
-                    @if (Auth::user()->kode_cabang == "PCF" || Auth::user()->kode_cabang == "PST")
-                    <input type="hidden" name="id_kantor" value="PST">
-                    @else
+
+
+                    @if (Auth::user()->kode_cabang=="PCF")
+                    @if ($level=="manager hrd" || $level=="admin")
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group">
@@ -235,6 +236,11 @@
                             </div>
                         </div>
                     </div>
+                    @else
+                    <input type="hidden" name="id_kantor" value="PST">
+                    @endif
+                    @else
+                    <input type="hidden" name="id_kantor" value="{{ Auth::user()->kode_cabang }}">
                     @endif
 
                     @if (Auth::user()->kode_cabang =="PCF")

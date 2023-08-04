@@ -1748,6 +1748,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/lembur', [LemburController::class, 'index']);
     Route::post('/lembur/store', [LemburController::class, 'store']);
     Route::delete('/lembur/{kode_lembur}/delete', [LemburController::class, 'delete']);
+    Route::get('/lembur/{kode_lembur}/tambahkaryawan', [LemburController::class, 'tambahkaryawan']);
+    Route::get('/lembur/{kode_lembur}/{id_kantor}/{kode_dept}/getkaryawan', [LemburController::class, 'getkaryawan']);
+    Route::post('/lembur/getlistkaryawan', [LemburController::class, 'getlistkaryawan']);
+    Route::post('/lembur/storekaryawanlembur', [LemburController::class, 'storekaryawanlembur']);
+    Route::post('/lembur/hapuskaryawanlembur', [LemburController::class, 'hapuskaryawanlembur']);
+    Route::post('/lembur/storeallkaryawan', [LemburController::class, 'storeallkaryawan']);
+    Route::post('/lembur/cancelkaryawan', [LemburController::class, 'cancelkaryawan']);
+    Route::get('/lembur/{kode_lembur}/getlemburkaryawan', [LemburController::class, 'getlemburkaryawan']);
+    Route::post('/lembur/hapuslemburkaryawan', [LemburController::class, 'hapuslemburkaryawan']);
 
     Route::get('/monitoringsku', [PenjualanController::class, 'monitoringsku']);
     Route::post('/getsku', [PenjualanController::class, 'getsku']);

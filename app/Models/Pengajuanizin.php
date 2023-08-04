@@ -337,6 +337,7 @@ class Pengajuanizin extends Model
         }
 
         if ($level == "emf") {
+            $jabatan_emf = array('MANAGER', 'ASST.MANAGER');
             if (!empty($dari) && !empty($sampai)) {
                 $query->whereBetween('dari', [$dari, $sampai]);
             }
@@ -371,8 +372,9 @@ class Pengajuanizin extends Model
                     $query->where('master_karyawan.id_kantor', $cabang);
                 }
             }
+
             $query->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GAF', 'GDG', 'HRD']);
-            $query->where('nama_jabatan', '=', 'MANAGER');
+            $query->whereIn('nama_jabatan', $jabatan_emf);
             if (!empty($nama_karyawan)) {
                 $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');
             }

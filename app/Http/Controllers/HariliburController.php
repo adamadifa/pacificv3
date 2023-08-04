@@ -50,12 +50,7 @@ class HariliburController extends Controller
         $harilibur->appends($request->all());
 
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
-        $cbg = new Cabang();
-        if (Auth::user()->kode_cabang != "PCF") {
-            $cabang = $cbg->getCabangpresensi(Auth::user()->kode_cabang);
-        } else {
-            $cabang = $cbg->getCabangpresensi("PST");
-        }
+        $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
 
         $departemen = DB::table('hrd_departemen')->orderBy('kode_dept')->get();
         return view('harilibur.index', compact('harilibur', 'bulan', 'cabang', 'departemen'));

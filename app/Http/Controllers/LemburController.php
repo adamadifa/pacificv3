@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cabang;
+use App\Models\Karyawan;
 use App\Models\Lembur;
+use App\Models\Lemburkaryawan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -45,12 +47,9 @@ class LemburController extends Controller
 
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
 
-        $cbg = new Cabang();
-        if (Auth::user()->kode_cabang != "PCF") {
-            $cabang = $cbg->getCabangpresensi(Auth::user()->kode_cabang);
-        } else {
-            $cabang = $cbg->getCabangpresensi("PST");
-        }
+        $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
+
+
 
         $departemen = DB::table('hrd_departemen')->orderBy('kode_dept')->get();
         return view('lembur.index', compact('cabang', 'departemen', 'lembur'));
@@ -63,7 +62,7 @@ class LemburController extends Controller
         $tanggal_sampai = $request->tanggal_sampai;
         $jam_dari = $request->jam_dari;
         $jam_sampai = $request->jam_sampai;
-
+        $kategori = $request->kategori;
         $dari = $tanggal_dari . " " . $jam_dari;
         $sampai = $tanggal_sampai . " " . $jam_sampai;
         $id_kantor = $request->id_kantor;
@@ -83,6 +82,7 @@ class LemburController extends Controller
             'id_kantor' => $id_kantor,
             'kode_dept' => $kode_dept,
             'keterangan' => $keterangan,
+            'kategori' => $kategori
         ];
         try {
 
@@ -117,6 +117,222 @@ class LemburController extends Controller
             return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
         } catch (\Exception $e) {
             return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
+        }
+    }
+
+
+    public function tambahkaryawan($kode_lembur)
+    {
+        $kode_lembur = Crypt::decrypt($kode_lembur);
+        $lembur = DB::table('lembur')->where('kode_lembur', $kode_lembur)->first();
+        return view('lembur.tambahkaryawan', compact('lembur'));
+    }
+
+
+    public function getkaryawan($kode_lembur, $id_kantor, $kode_dept)
+    {
+        $level_access = array("manager hrd", "admin");
+        $level = Auth::user()->level;
+        if ($id_kantor == "PCF" || $id_kantor == "PST") {
+            if (in_array($level, $level_access)) {
+                $group = DB::table('hrd_group')->orderBy('nama_group')->get();
+            } else {
+                $group = DB::table('hrd_group')->where('kode_dept_group', $kode_dept)->orderBy('nama_group')->get();
+            }
+        } else {
+            $group = DB::table('hrd_group')->orderBy('nama_group')->get();
+        }
+        $departemen = DB::table('hrd_departemen')->get();
+
+        return view('lembur.getkaryawan', compact('kode_lembur', 'id_kantor', 'kode_dept', 'departemen', 'group'));
+    }
+
+
+    public function getlistkaryawan(Request $request)
+    {
+        $kode_lembur = $request->kode_lembur;
+        $id_kantor = $request->id_kantor;
+        $kode_dept = $request->kode_dept;
+        $id_perusahaan = $request->id_perusahaan;
+        $grup = $request->grup;
+        $nama_karyawan = $request->nama_karyawan;
+        $query = Karyawan::query();
+        $query->select('master_karyawan.nik', 'nama_karyawan', 'kode_dept', 'nama_jabatan', 'nama_group', 'kode_lembur');
+        $query->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
+        $query->join('hrd_group', 'master_karyawan.grup', '=', 'hrd_group.id');
+        $query->leftJoin(
+            DB::raw("(
+            SELECT nik,kode_lembur
+            FROM lembur_karyawan
+            WHERE kode_lembur = '$kode_lembur'
+        ) lemburkaryawan"),
+            function ($join) {
+                $join->on('master_karyawan.nik', '=', 'lemburkaryawan.nik');
+            }
+        );
+
+        $query->where('id_kantor', $id_kantor);
+        if (!empty($kode_dept)) {
+            $query->where('kode_dept', $kode_dept);
+        }
+
+        if (!empty($id_perusahaan)) {
+            $query->where('id_perusahaan', $id_perusahaan);
+        }
+
+        if (!empty($grup)) {
+            $query->where('grup', $grup);
+        }
+
+        if (!empty($nama_karyawan)) {
+            $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');
+        }
+        $query->orderBy('nama_karyawan');
+        $karyawan = $query->get();
+        return view('lembur.getlistkaryawan', compact('kode_lembur', 'karyawan', 'id_kantor'));
+    }
+
+    public function storekaryawanlembur(Request $request)
+    {
+        $kode_lembur = $request->kode_lembur;
+        $nik = $request->nik;
+        try {
+            DB::table('lembur_karyawan')->insert([
+                'kode_lembur' => $kode_lembur,
+                'nik' => $nik
+            ]);
+            return 0;
+        } catch (\Exception $e) {
+            return 1;
+        }
+    }
+
+
+    public function hapuskaryawanlembur(Request $request)
+    {
+        $kode_lembur = $request->kode_lembur;
+        $nik = $request->nik;
+        try {
+            DB::table('lembur_karyawan')->where('nik', $nik)
+                ->where('kode_lembur', $kode_lembur)
+                ->delete();
+            return 0;
+        } catch (\Exception $e) {
+            return 1;
+        }
+    }
+
+    public function storeallkaryawan(Request $request)
+    {
+        $kode_dept = $request->kode_dept;
+        $kode_lembur = $request->kode_lembur;
+        $id_kantor = $request->id_kantor;
+        $grup = $request->grup;
+        DB::beginTransaction();
+        try {
+            $nik = [];
+            $qkaryawan = Karyawan::query();
+            $qkaryawan->select('nik');
+            $qkaryawan->where('id_kantor', $id_kantor);
+            if (!empty($kode_dept)) {
+                $qkaryawan->where('kode_dept', $kode_dept);
+            }
+
+            if (!empty($grup)) {
+                $qkaryawan->where('grup', $grup);
+            }
+            $karyawan = $qkaryawan->get();
+            foreach ($karyawan as $d) {
+                $nik[] = $d->nik;
+                $data[] = [
+                    'kode_lembur' => $kode_lembur,
+                    'nik' => $d->nik
+                ];
+            }
+
+
+            DB::table('lembur_karyawan')->where('kode_lembur', $kode_lembur)->whereIn('nik', $nik)->delete();
+            //dd($data);
+            $chunks = array_chunk($data, 5);
+            foreach ($chunks as $chunk) {
+                Lemburkaryawan::insert($chunk);
+            }
+
+            DB::commit();
+            return 0;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            // return 1;
+            dd($e);
+        }
+    }
+
+    public function cancelkaryawan(Request $request)
+    {
+        $kode_dept = $request->kode_dept;
+        $kode_lembur = $request->kode_lembur;
+        $id_kantor = $request->id_kantor;
+        DB::beginTransaction();
+        try {
+            $nik = [];
+            $qkaryawan = Karyawan::query();
+            $qkaryawan->select('nik');
+            $qkaryawan->where('id_kantor', $id_kantor);
+            if (!empty($kode_dept)) {
+                $qkaryawan->where('kode_dept', $kode_dept);
+            }
+            $karyawan = $qkaryawan->get();
+            foreach ($karyawan as $d) {
+                $nik[] = $d->nik;
+                $data[] = [
+                    'kode_lembur' => $kode_lembur,
+                    'nik' => $d->nik
+                ];
+            }
+
+
+            DB::table('lembur_karyawan')->where('kode_lembur', $kode_lembur)->whereIn('nik', $nik)->delete();
+
+
+            DB::commit();
+            return 0;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            // return 1;
+            dd($e);
+        }
+    }
+
+
+    public function getlemburkaryawan($kode_lembur)
+    {
+        $lemburkaryawan = DB::table('lembur_karyawan')
+            ->select(
+                'kode_lembur',
+                'lembur_karyawan.nik',
+                'nama_karyawan',
+                'kode_dept',
+                'nama_jabatan',
+                'nama_group',
+                'grup'
+            )
+            ->join('master_karyawan', 'lembur_karyawan.nik', '=', 'master_karyawan.nik')
+            ->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
+            ->join('hrd_group', 'master_karyawan.grup', '=', 'hrd_group.id')
+            ->where('kode_lembur', $kode_lembur)
+            ->orderByRaw('grup,nama_karyawan')
+            ->get();
+
+        return view('lembur.getlemburkaryawan', compact('lemburkaryawan'));
+    }
+
+    public function hapuslemburkaryawan(Request $request)
+    {
+        try {
+            DB::table('lembur_karyawan')->where('kode_lembur', $request->kode_lembur)->where('nik', $request->nik)->delete();
+            return 0;
+        } catch (\Exception $e) {
+            return 1;
         }
     }
 }
