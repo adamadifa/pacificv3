@@ -345,6 +345,36 @@ function cekwfhfull($dari, $sampai)
     return $libur;
 }
 
+
+function ceklembur($dari, $sampai)
+{
+    $no = 1;
+    $lembur = [];
+    $ceklembur = DB::table('lembur')
+        ->selectRaw('tanggal_dari,
+        tanggal_sampai,
+        id_kantor,
+        kode_dept,
+        keterangan,
+        kategori,
+        IFNULL(lembur_karyawan.nik,"ALL") as nik')
+        ->leftJoin('lembur_karyawan', 'lembur.kode_lembur', '=', 'lembur_karyawan.kode_lembur')
+        ->whereBetween('tanggal_dari', [$dari, $sampai])->get();
+
+    foreach ($ceklembur as $d) {
+        $lembur[] = [
+            'nik' => $d->nik,
+            'id_kantor' => $d->id_kantor,
+            'tanggal_dari' => $d->tanggal_dari,
+            'tanggal-sampai' => $d->tanggal_sampai,
+            'keterangan' => $d->keterangan,
+            'kategori' => $d->kategori
+        ];
+    }
+
+    return $lembur;
+}
+
 function cektgllibur($array, $search_list)
 {
 

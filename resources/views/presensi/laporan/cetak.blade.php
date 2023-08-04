@@ -162,10 +162,13 @@
                     $cekminggumasuk = cektgllibur($dataminggumasuk,$search_items_minggumasuk);
                     $cekwfh = cektgllibur($datawfh,$search_items);
                     $cekwfhfull = cektgllibur($datawfhfull,$search_items);
+                    $ceklembur = cektgllibur($datalembur,$search_items);
                     // if(empty($cekwfh)){
                     //     $cekwfh = cektgllibur($datawfh,$search_items_all);
                     // }
                     //dd($ceklibur);
+
+
                     $namahari = hari($tgl_presensi);
                     if($namahari == "Sabtu"){
                         $jamdirumahkan = 5;
@@ -270,6 +273,7 @@
 
                     }
                     if($d->$hari_ke != NULL){
+
                         $tidakhadir = 0;
                         $datapresensi = explode("|",$d->$hari_ke);
                         $lintashari = $datapresensi[16] != "NA" ? $datapresensi[16] : '';
@@ -561,6 +565,7 @@
                         $izinabsen = 0;
                         $izinsakit = 0;
                         @endphp
+                        {{ var_dump($ceklibur); }}
                         {{-- {{ $kode_izin_pulang }} {{ $izinpulangdirut }} --}}
                         {{-- {{ $totalpc }} --}}
                         {{-- <span>{{ var_dump($ceklibur) }}</span> --}}
@@ -697,6 +702,7 @@
                     <td style="background-color:{{ $colorcolumn }}; color:white; width:2%">
                         {{-- <span>{{ var_dump(empty($ceklibur)) }}</span> --}}
                         {{-- {{ $cekmasakerja }} --}}
+                        {{ var_dump($ceklembur); }}
                         {{ !empty($ceklibur) ? $ceklibur[0]["keterangan"] : "" }}
                         {{ !empty($cekwfh) ? "Dirumahkan" : "" }}
                         {{ !empty($cekwfhfull) ? "WFH" : "" }}

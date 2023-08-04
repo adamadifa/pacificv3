@@ -159,6 +159,10 @@ class LaporanhrdController extends Controller
         $dataminggumasuk = cekminggumasuk($dari, $sampai);
         $datawfh = cekwfh($dari, $sampai);
         $datawfhfull = cekwfhfull($dari, $sampai);
+        $datalembur = ceklembur($dari, $sampai);
+
+        dd($datalibur);
+
 
 
         // Define search list with multiple key=>value pair
@@ -1786,7 +1790,7 @@ class LaporanhrdController extends Controller
                 // Mendefinisikan nama file ekspor "hasil-export.xls"
                 header("Content-Disposition: attachment; filename=Laporan Presensi Detail.xls");
             }
-            return view('presensi.laporan.cetak', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull'));
+            return view('presensi.laporan.cetak', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur'));
         }
     }
 

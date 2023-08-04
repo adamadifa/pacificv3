@@ -333,21 +333,21 @@
                                                     @endif
                                                     @endif --}}
 
-                                                    @if (Auth::user()->id==57)
+                                                    @if (Auth::user()->id==57 || Auth::user()->id==20)
                                                     <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukanpinjaman"><i class="feather icon-external-link primary ml-1"></i></a>
 
                                                     <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukankasbon"><i class="feather icon-external-link warning ml-1"></i></a>
                                                     @endif
 
-                                                    @if (Auth::user()->id=="20")
-                                                    @if ($d->kode_dept =="KEU" && $d->nama_jabatan=="MANAGER")
+                                                    {{-- @if (Auth::user()->id=="20")
+                                                    @if ($d->kode_dept =="KEU" && $d->nama_jabatan=="MANAGER" && $d->nama_jabatan=="KEPALA ADMIN")
                                                     <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukanpinjaman"><i class="feather icon-external-link primary ml-1"></i></a>
 
                                                     <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukankasbon"><i class="feather icon-external-link warning ml-1"></i></a>
                                                     @endif
                                                     @endif
 
-                                                    @endif
+                                                    @endif --}}
 
 
                                                     @if ($level == "direktur")
