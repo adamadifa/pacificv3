@@ -340,14 +340,14 @@
                                                     @endif
 
                                                     {{-- @if (Auth::user()->id=="20")
-                                                    @if ($d->kode_dept =="KEU" && $d->nama_jabatan=="MANAGER" && $d->nama_jabatan=="KEPALA ADMIN")
+                                                    @if ($d->kode_dept =="KEU" && $d->nama_jabatan=="MANAGER" && $d->nama_jabatan=="KEPALA")
                                                     <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukanpinjaman"><i class="feather icon-external-link primary ml-1"></i></a>
 
                                                     <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukankasbon"><i class="feather icon-external-link warning ml-1"></i></a>
                                                     @endif
-                                                    @endif
-
                                                     @endif --}}
+
+                                                    @endif
 
 
                                                     @if ($level == "direktur")
