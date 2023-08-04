@@ -351,7 +351,9 @@ function ceklembur($dari, $sampai)
     $no = 1;
     $lembur = [];
     $ceklembur = DB::table('lembur')
-        ->selectRaw('tanggal_dari,
+        ->selectRaw('
+
+        tanggal_dari,
         tanggal_sampai,
         id_kantor,
         kode_dept,
@@ -365,8 +367,9 @@ function ceklembur($dari, $sampai)
         $lembur[] = [
             'nik' => $d->nik,
             'id_kantor' => $d->id_kantor,
+            'tanggal_lembur' => date("Y-m-d", strtotime($d->tanggal_dari)),
             'tanggal_dari' => $d->tanggal_dari,
-            'tanggal-sampai' => $d->tanggal_sampai,
+            'tanggal_sampai' => $d->tanggal_sampai,
             'keterangan' => $d->keterangan,
             'kategori' => $d->kategori
         ];

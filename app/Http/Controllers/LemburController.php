@@ -52,7 +52,7 @@ class LemburController extends Controller
 
 
         $departemen = DB::table('hrd_departemen')->orderBy('kode_dept')->get();
-        return view('lembur.index', compact('cabang', 'departemen', 'lembur'));
+        return view('lembur.index', compact('cabang', 'departemen', 'lembur', 'bulan'));
     }
 
     public function store(Request $request)
