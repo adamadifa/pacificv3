@@ -374,7 +374,7 @@ class Pengajuanizin extends Model
             }
 
             $query->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GAF', 'GDG', 'HRD']);
-            $query->whereIn('nama_jabatan', $jabatan_emf);
+            $query->whereIn('nama_jabatand', $jabatan_emf);
             if (!empty($nama_karyawan)) {
                 $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');
             }
