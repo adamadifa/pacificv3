@@ -234,12 +234,13 @@ class GlobalProvider extends ServiceProvider
                 //EMF
 
                 if ($level == "emf") {
+                    $jabatan_emf = array('MANAGER', 'ASST. MANAGER');
                     if (!empty($kode_dept_presensi)) {
                         $qpi->where('master_karyawan.kode_dept', $kode_dept_presensi);
                     }
                     $qpi->where('status_approved', 0);
                     $qpi->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GAF', 'GDG', 'HRD']);
-                    $qpi->where('nama_jabatan', '=', 'MANAGER');
+                    $qpi->whereIn('nama_jabatan', $jabatan_emf);
                     $qpi->orWhere('master_karyawan.kode_dept', 'PDQ');
                     if (!empty($kode_dept_presensi)) {
                         $qpi->where('master_karyawan.kode_dept', $kode_dept_presensi);
