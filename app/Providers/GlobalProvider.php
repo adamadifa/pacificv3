@@ -731,6 +731,10 @@ class GlobalProvider extends ServiceProvider
                 'admin', 'admin penjualan', 'manager accounting', 'admin kas dan penjualan', 'salesman', 'audit', 'manager audit', 'kepala admin', 'admin pusat', 'admin penjualan dan kas kecil',
                 'admin penjualan dan kasir', 'admin penjualan kasir dan kas kecil', 'admin garut', 'admin pajak 2'
             ];
+
+            //LHP
+
+            $lhp_menu = ['admin'];
             //LImit
             $limitkredit_view = [
                 'admin', 'admin penjualan', 'manager accounting', 'admin kas dan penjualan', 'audit', 'manager audit',
