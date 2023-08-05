@@ -33,7 +33,7 @@
 <script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
 <script src="{{asset('app-assets/js/scripts/ui/data-list-view.js')}}"></script>
 <script src="{{asset('app-assets/js/jquery.maskMoney.js')}}"></script>
-<script src="{{asset('app-assets/js/jquery.mask.min.js')}}"></script>
+
 <script src="{{asset('app-assets/js/scripts/forms/select/form-select2.js')}}"></script>
 
 <!-- END: Page JS-->
