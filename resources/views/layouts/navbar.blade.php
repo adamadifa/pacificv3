@@ -198,12 +198,10 @@
                 <a href="/penjualan"><i class="feather icon-shopping-bag success">
                     </i><span class="menu-item">Data Penjualan</span></a>
             </li>
-
-
-            <li class="{{ request()->is(['lhp', 'lhp/*']) ? 'active' : '' }}">
-                <a href="/lhp">
+            <li class="{{ request()->is(['retur', 'retur/*']) ? 'active' : '' }}">
+                <a href="/retur">
                     <i class="feather icon-package warning"></i>
-                    <span class="menu-item">Data LHP</span>
+                    <span class="menu-item">Data Retur</span>
                 </a>
             </li>
             <li class="{{ request()->is(['laporanpenjualan','laporanpenjualan/*','laporanretur','laporankasbesarpenjualan','laporankendaraan/*','laporaninsentif','laporankomisi'])? 'active': '' }}">
@@ -721,7 +719,7 @@
                             @endif
                             @if (in_array($level, $lhp_menu))
                             <li class="{{ request()->is(['lhp', 'lhp/*']) ? 'active' : '' }}">
-                                <a href="/retur">
+                                <a href="/lhp">
                                     <i class="feather icon-package"></i>
                                     <span class="menu-item">LHP</span>
                                 </a>
@@ -1282,7 +1280,7 @@
                     @endif
 
                     @if (Auth::user()->id != "176")
-                    @if (in_array($level,$lembur_menu) || Auth::user()->pic_presensi==1)
+                    @if (in_array($level,$lembur_menu))
                     <li class="{{ request()->is(['lembur', 'lembur/*']) ? 'active' : '' }}">
                         <a href="/lembur">
                             <i class="feather icon-calendar"></i>

@@ -57,6 +57,7 @@ use App\Http\Controllers\LaporanproduksiController;
 use App\Http\Controllers\LebihsetorController;
 use App\Http\Controllers\LedgerController;
 use App\Http\Controllers\LemburController;
+use App\Http\Controllers\LhpController;
 use App\Http\Controllers\LimitkreditController;
 use App\Http\Controllers\LogamtokertasController;
 use App\Http\Controllers\LpcController;
@@ -1760,4 +1761,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/monitoringsku', [PenjualanController::class, 'monitoringsku']);
     Route::post('/getsku', [PenjualanController::class, 'getsku']);
+
+    //LHP
+
+    Route::get('/lhp', [LhpController::class, 'index']);
 });

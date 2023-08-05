@@ -1385,6 +1385,7 @@ class GlobalProvider extends ServiceProvider
                 'penjualan_edit' => $penjualan_edit,
                 //Retur
                 'retur_view' => $retur_view,
+                'lhp_menu' => $lhp_menu,
                 //Limit Kredit
                 'limitkredit_view' => $limitkredit_view,
                 'limitkredit_hapus' => $limitkredit_hapus,
