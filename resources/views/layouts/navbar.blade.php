@@ -1280,7 +1280,7 @@
                     @endif
 
                     @if (Auth::user()->id != "176")
-                    @if (in_array($level,$lembur_menu))
+                    @if (in_array($level,$lembur_menu) || Auth::user()->pic_presensi==1)
                     <li class="{{ request()->is(['lembur', 'lembur/*']) ? 'active' : '' }}">
                         <a href="/lembur">
                             <i class="feather icon-calendar"></i>

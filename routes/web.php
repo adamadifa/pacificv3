@@ -1765,4 +1765,5 @@ Route::middleware(['auth'])->group(function () {
     //LHP
 
     Route::get('/lhp', [LhpController::class, 'index']);
+    Route::get('/lhp/create', [LhpController::class, 'create']);
 });
