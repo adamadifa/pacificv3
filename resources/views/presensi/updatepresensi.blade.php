@@ -211,6 +211,7 @@
     $(function() {
 
         //$(".statushadir").show();
+        $("#kode_jadwal").selectize();
 
         function loadstatus() {
             var status = $("#status").val();

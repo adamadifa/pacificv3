@@ -274,11 +274,11 @@ class PresensiController extends Controller
             ->where('nik', $nik)->first();
         if (Auth::user()->level == "admin" || Auth::user()->level == "manager hrd") {
             $jadwal = DB::table('jadwal_kerja')
-                ->orderBy('kode_jadwal')->get();
+                ->orderByRaw('kode_cabang,kode_jadwal')->get();
         } else {
             $jadwal = DB::table('jadwal_kerja')
                 ->where('kode_cabang', $karyawan->id_kantor)
-                ->orderBy('kode_jadwal')->get();
+                ->orderByRaw('kode_cabang,kode_jadwal')->get();
         }
 
         return view('presensi.updatepresensi', compact('karyawan', 'tgl', 'jadwal', 'cek', 'kode_jadwal'));
