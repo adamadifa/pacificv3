@@ -272,9 +272,15 @@ class PresensiController extends Controller
             ->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
             ->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
             ->where('nik', $nik)->first();
-        $jadwal = DB::table('jadwal_kerja')
-            ->where('kode_cabang', $karyawan->id_kantor)
-            ->orderBy('kode_jadwal')->get();
+        if (Auth::user()->level == "admin" || Auth::user()->level == "manager hrd") {
+            $jadwal = DB::table('jadwal_kerja')
+                ->orderBy('kode_jadwal')->get();
+        } else {
+            $jadwal = DB::table('jadwal_kerja')
+                ->where('kode_cabang', $karyawan->id_kantor)
+                ->orderBy('kode_jadwal')->get();
+        }
+
         return view('presensi.updatepresensi', compact('karyawan', 'tgl', 'jadwal', 'cek', 'kode_jadwal'));
     }
 
