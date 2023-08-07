@@ -176,6 +176,8 @@
                     $totaltidakhadir = 0;
                     $totalpulangcepat = 0;
                     $totalizinabsen = 0;
+                    $total_overtime_1 = 0;
+                    $total_overtime_2 = 0;
                     //$izinsakit = 0;
                     $totalizinsakit = 0;
                     $jmlharipremi1 = 0;
@@ -190,7 +192,7 @@
                     $cekmasakerja =  diffInMonths($start_kerja, $end_kerja);
                     $tgllibur = "'".$tgl_presensi."'";
                     $search_items = array('nik'=>$d->nik,'id_kantor' => $d->id_kantor, 'tanggal_libur' => $tgl_presensi);
-
+                    $search_items_lembur = array('nik'=>$d->nik,'id_kantor' => $d->id_kantor, 'tanggal_lembur' => $tgl_presensi);
                     $search_items_minggumasuk = array('nik'=>$d->nik,'id_kantor' => $d->id_kantor, 'tanggal_diganti' => $tgl_presensi);
                     $search_items_all = array('nik'=>'ALL','id_kantor' => $d->id_kantor, 'tanggal_libur' => $tgl_presensi);
                     $ceklibur = cektgllibur($datalibur, $search_items);
@@ -205,6 +207,7 @@
                     $cekminggumasuk = cektgllibur($dataminggumasuk,$search_items_minggumasuk);
                     $cekwfh = cektgllibur($datawfh,$search_items);
                     $cekwfhfull = cektgllibur($datawfhfull,$search_items);
+                    $ceklembur = cektgllibur($datalembur,$search_items_lembur);
                     // if(empty($cekwfh)){
                     //     $cekwfh = cektgllibur($datawfh,$search_items_all);
                     // }
@@ -224,6 +227,19 @@
                         }
                         $totaldirumahkan += $totaljamdirumahkan;
                     }
+
+
+                    //Ceklembur
+                    if(!empty($ceklembur)){
+                        $tgl_lembur_dari = $ceklembur[0]["tanggal_dari"];
+                        $tgl_lembur_sampai = $ceklembur[0]["tanggal_sampai"];
+                        $jmljam_lembur = hitungjamdesimal($tgl_lembur_dari,$tgl_lembur_sampai);
+                        $overtime_1 = $jmljam_lembur > 1 ? 1 : $jmljam_lembur;
+                        $overtime_2 = $jmljam_lembur > 1 ? $jmljam_lembur -1 : 0;
+                        $total_overtime_1 += $overtime_1;
+                        $total_overtime_2 += $overtime_2;
+                    }
+
                     if($namahari=="Minggu"){
                         if(!empty($cekminggumasuk)){
                             if($d->$hari_ke != NULL){
@@ -740,12 +756,34 @@
                         {{ !empty($totaljamkerja) ? $totaljamkerja : '' }}
                     </td>
                     <td align="right">
-                        {{ !empty($upah) ? rupiah($upah/173) : "" }}
+                        @php
+                        $upah_perjam = ROUND($upah/173);
+                        @endphp
+                        {{ !empty($upah) ? rupiah($upah_perjam) : "" }}
                     </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td style="text-align: center;  font-size:16px">{{ !empty($total_overtime_1) ? rupiah($total_overtime_1) : '' }}</td>
+
+                    <td align="right">
+                        @php
+                        if ($d->nama_jabatan=="SECURITY") {
+                        $upah_ot_1 = 8000 * $total_overtime_1;
+                        }else{
+                        $upah_ot_1 = ($upah_perjam * 1.5) * $total_overtime_1;
+                        }
+                        @endphp
+                        {{ !empty($upah_ot_1) ? rupiah($upah_ot_1) : "" }}
+                    </td>
+                    <td style="text-align: center;  font-size:16px">{{ !empty($total_overtime_2) ? rupiah($total_overtime_2) : '' }}</td>
+                    <td align="right">
+                        @php
+                        if ($d->nama_jabatan=="SECURITY") {
+                        $upah_ot_2 = 8000 * $total_overtime_2;
+                        }else{
+                        $upah_ot_2 = ($upah_perjam * 2) * $total_overtime_2;
+                        }
+                        @endphp
+                        {{ !empty($upah_ot_2) ? rupiah($upah_ot_2) : "" }}
+                    </td>
                     <td></td>
                     <td></td>
                     <td></td>

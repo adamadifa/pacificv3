@@ -4438,6 +4438,6 @@ class TargetkomisiController extends Controller
         }
 
 
-        return view('targetkomisi.laporan.cetak_komisi_juni2023', compact('komisi', 'cbg', 'nmbulan', 'tahun', 'produk', 'bulan', 'cabang', 'potongankp', 'komisiakhir', 'supervisorcabang', 'potonganspv', 'komisiakhirspv', 'startdate', 'enddate'));
+        return view('targetkomisi.laporan.cetak_komisi_juli2023', compact('komisi', 'cbg', 'nmbulan', 'tahun', 'produk', 'bulan', 'cabang', 'potongankp', 'komisiakhir', 'supervisorcabang', 'potonganspv', 'komisiakhirspv', 'startdate', 'enddate'));
     }
 }
