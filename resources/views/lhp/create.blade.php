@@ -1,6 +1,16 @@
 @extends('layouts.midone')
 @section('titlepage','Buat LHP')
 @section('content')
+<style>
+    .float {
+        position: fixed;
+        bottom: 40px;
+        right: 40px;
+        text-align: center;
+        z-index: 9000;
+    }
+
+</style>
 <div class="content-wrapper">
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
@@ -54,12 +64,19 @@
 
                     @include('layouts.notification')
 
-                    <form action="">
+                    <form action="/lhp/store" method="POST" id="frmLhp">
+                        <input type="hidden" name="tanggal" value="{{ Request('tanggal') }}" id="tanggal">
+                        <input type="hidden" name="kode_cabang" value="{{ Request('kode_cabang') }}" id="kode_cabang">
+                        <input type="hidden" name="id_karyawan" value="{{ Request('id_karyawan') }}" id="id_karyawan">
+                        @csrf
                         <div class="row">
                             <div class="col-12">
-                                <x-inputtext field="rute" label="Rute" icon="feather icon-maps" />
+                                <x-inputtext field="rute" label="Rute" icon="feather icon-map" />
                             </div>
                         </div>
+                        <button type="submit" name="submit" class=" float btn btn-primary">
+                            <i class="fa fa-send my-float"></i> Buat LHP
+                        </button>
                         <div class="row">
                             <div class="col-12">
                                 <table class="table table-hover-animation">
@@ -100,14 +117,20 @@
                                                 @endif
                                             </td>
                                             <td>
+                                                @if (empty($d->kode_lhp))
                                                 <div class="vs-checkbox-con vs-checkbox-primary">
-                                                    <input type="checkbox" name="id[]" value="{{ $d->id }}">
+                                                    <input type="checkbox" name="no_fak_penj[]" value="{{ $d->no_fak_penj }}">
                                                     <span class="vs-checkbox">
                                                         <span class="vs-checkbox--check">
                                                             <i class="vs-icon feather icon-check"></i>
                                                         </span>
                                                     </span>
                                                 </div>
+                                                @else
+                                                <span class="badge bg-success">
+                                                    {{ $d->kode_lhp }}
+                                                </span>
+                                                @endif
                                             </td>
                                         </tr>
                                         @endforeach
@@ -130,6 +153,7 @@
 <script>
     $(function() {
         function loadsalesmancabang(kode_cabang) {
+            var kode_cabang = $("#kode_cabang").val();
             var id_karyawan = "{{ Request('id_karyawan') }}";
             $.ajax({
                 type: 'POST'
@@ -146,9 +170,61 @@
             });
         }
 
+        loadsalesmancabang();
+
         $("#kode_cabang").change(function() {
-            var kode_cabang = $(this).val();
-            loadsalesmancabang(kode_cabang);
+            loadsalesmancabang();
+        });
+
+        $("#frmLhp").submit(function() {
+            var tanggal = $(this).find("#tanggal").val();
+            var kode_cabang = $("frmLhp").find("#kode_cabang").val();
+            var id_karyawan = $("frmLhp").find("#id_karyawan").val();
+            var rute = $("#rute").val();
+
+            if (tanggal == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Get Data Terlebih Dahulu !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#frmLhp").find("#tanggal").focus();
+                });
+                return false;
+            } else if (kode_cabang == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Get Data Terlebih Dahulu !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#frmLhp").find("#kode_cabang").focus();
+                });
+                return false;
+            } else if (id_karyawan == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Get Data terlebih Dahlu !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#frmLhp").find("#id_karyawan").focus();
+                });
+
+                return false;
+            } else if (rute == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Rute Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#frmLhp").find("#rute").focus();
+                });
+
+                return false;
+            }
         });
     });
 

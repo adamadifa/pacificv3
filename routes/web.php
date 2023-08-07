@@ -1766,4 +1766,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/lhp', [LhpController::class, 'index']);
     Route::get('/lhp/create', [LhpController::class, 'create']);
+    Route::post('/lhp/store', [LhpController::class, 'store']);
+    Route::delete('/lhp/{kode_lhp}/delete', [LhpController::class, 'delete']);
+    Route::get('/lhp/{kode_lhp}/cetak', [LhpController::class, 'cetak']);
 });

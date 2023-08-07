@@ -90,7 +90,9 @@
             @else
             {{ $faktur->alamat_pelanggan }}
             @endif
+            @if ($faktur->kode_cabang =="BDG")
             ({{ $faktur->pasar }})
+            @endif
         </td>
     </tr>
     <tr>
@@ -250,7 +252,9 @@
             @else
             {{ $faktur->alamat_pelanggan }}
             @endif
+            @if ($faktur->kode_cabang =="BDG")
             ({{ $faktur->pasar }})
+            @endif
         </td>
     </tr>
     <tr>

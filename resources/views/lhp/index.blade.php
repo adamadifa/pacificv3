@@ -64,16 +64,38 @@
                                 <th>No</th>
                                 <th>Kode LHP</th>
                                 <th>Tanggal</th>
-                                <th>Cabang</th>
                                 <th>Salesman</th>
+                                <th>Cabang</th>
                                 <th>Rute</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-
+                            @foreach ($lhp as $d)
+                            <tr>
+                                <td class="text-center">{{ $loop->iteration + $lhp->firstItem() - 1 }}</td>
+                                <td>{{ $d->kode_lhp }}</td>
+                                <td>{{ DateToIndo2($d->tanggal) }}</td>
+                                <td>{{ $d->nama_karyawan }}</td>
+                                <td>{{ $d->kode_cabang }}</td>
+                                <td>{{ strtoupper($d->rute) }}</td>
+                                <td>
+                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                        <a class="ml-1" href="/lhp/{{ Crypt::encrypt($d->kode_lhp) }}/cetak" target="_blank"><i class=" feather icon-printer primary"></i></a>
+                                        <form method="POST" class="deleteform" action="/lhp/{{Crypt::encrypt($d->kode_lhp)}}/delete">
+                                            @csrf
+                                            @method('DELETE')
+                                            <a href="#" class="delete-confirm ml-1">
+                                                <i class="feather icon-trash danger"></i>
+                                            </a>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
+                    {{ $lhp->links('vendor.pagination.vuexy') }}
                 </div>
             </div>
         </div>
@@ -82,3 +104,27 @@
 <!-- Edit Kas Kecil -->
 
 @endsection
+@push('myscript')
+<script>
+    $(function() {
+        $('.delete-confirm').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+            event.preventDefault();
+            swal({
+                    title: `Are you sure you want to delete this record?`
+                    , text: "If you delete this, it will be gone forever."
+                    , icon: "warning"
+                    , buttons: true
+                    , dangerMode: true
+                , })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
+        });
+    });
+
+</script>
+@endpush

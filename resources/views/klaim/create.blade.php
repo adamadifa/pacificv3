@@ -108,7 +108,7 @@
                         <x-inputtext label="Keterangan" field="keterangan" icon="feather icon-file" />
                     </div>
                 </div>
-                @csrf
+
                 <button type="submit" name="submit" class=" float btn btn-primary">
                     <i class="fa fa-plus my-float"></i> Buat Klaim
                 </button>
