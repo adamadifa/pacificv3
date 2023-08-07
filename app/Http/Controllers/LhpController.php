@@ -55,48 +55,199 @@ class LhpController extends Controller
         $id_karyawan = $request->id_karyawan;
 
         $query = Penjualan::query();
-        $query->select('penjualan.*', 'nama_pelanggan', 'nama_karyawan', 'karyawan.kode_cabang');
-        $query->orderBy('tgltransaksi', 'desc');
-        $query->orderBy('no_fak_penj', 'asc');
+        $query->selectRaw("penjualan.no_fak_penj,nama_pelanggan,
+        AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500,
+        SUM(totaltunai) as totaltunai,
+        SUM(IF(penjualan.jenistransaksi='kredit',total,0)) as totalkredit,
+        totalbayar,totalgiro,totaltransfer,totalvoucher");
+        $query->leftJoin(
+            DB::raw("(
+            SELECT
+                detailpenjualan.no_fak_penj,
+                SUM( IF ( kode_produk = 'AB', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS AB,
+                SUM( IF ( kode_produk = 'AR', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS AR,
+                SUM( IF ( kode_produk = 'AS', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS ASE,
+                SUM( IF ( kode_produk = 'BB', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS BB,
+                SUM( IF ( kode_produk = 'CG', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS CG,
+                SUM( IF ( kode_produk = 'CGG', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS CGG,
+                SUM( IF ( kode_produk = 'DB', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS DB,
+                SUM( IF ( kode_produk = 'DEP', detailpenjualan.jumlah/isipcsdus,NULL ) ) AS DEP,
+                SUM( IF ( kode_produk = 'DK', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS DK,
+                SUM( IF ( kode_produk = 'DS', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS DS,
+                SUM( IF ( kode_produk = 'BBP', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS BBP,
+                SUM( IF ( kode_produk = 'SPP', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SPP,
+                SUM( IF ( kode_produk = 'CG5', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS CG5,
+                SUM( IF ( kode_produk = 'SC', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SC,
+                SUM( IF ( kode_produk = 'SP8', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SP8,
+                SUM( IF ( kode_produk = 'SP8-P', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SP8P,
+                SUM( IF ( kode_produk = 'SP', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SP,
+                SUM( IF ( kode_produk = 'SP500', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SP500
+            FROM
+                detailpenjualan
+            INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
+            INNER JOIN penjualan ON detailpenjualan.no_fak_penj = penjualan.no_fak_penj
+            WHERE tgltransaksi = '$tanggal'
+            GROUP BY
+                detailpenjualan.no_fak_penj
+            ) dp"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'dp.no_fak_penj');
+            }
+        );
         $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $query->leftJoin(
+            DB::raw("(
+            SELECT
+                no_fak_penj,
+                SUM(IF(jenisbayar='tunai' AND status_bayar IS NULL,bayar,0)) as totaltunai,
+                SUM(IF(jenisbayar='titipan',bayar,0)) as totalbayar,
+                SUM(IF(status_bayar ='voucher',bayar,0)) AS totalvoucher
+            FROM
+                historibayar
+            WHERE tglbayar = '$tanggal'
+            GROUP BY
+                no_fak_penj
+            ) hb"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'hb.no_fak_penj');
+            }
+        );
 
         $query->leftJoin(
             DB::raw("(
-                    SELECT
-                        pj.no_fak_penj,
-                        IF( salesbaru IS NULL, pj.id_karyawan, salesbaru ) AS salesbarunew,
-                        karyawan.nama_karyawan AS nama_sales,
-                        IF( cabangbaru IS NULL, karyawan.kode_cabang, cabangbaru ) AS cabangbarunew
-                    FROM
-                        penjualan pj
-                    INNER JOIN karyawan ON pj.id_karyawan = karyawan.id_karyawan
-                    LEFT JOIN (
-                    SELECT
-                        MAX( id_move ) AS id_move,
-                        no_fak_penj,
-                        move_faktur.id_karyawan AS salesbaru,
-                        karyawan.kode_cabang AS cabangbaru
-                    FROM
-                        move_faktur
-                        INNER JOIN karyawan ON move_faktur.id_karyawan = karyawan.id_karyawan
-                    GROUP BY
-                        no_fak_penj,
-                        move_faktur.id_karyawan,
-                        karyawan.kode_cabang
-                    ) move_fak ON ( pj.no_fak_penj = move_fak.no_fak_penj)
-                ) pjmove"),
+            SELECT
+                no_fak_penj,
+                SUM(jumlah) AS totalgiro
+            FROM
+                giro
+            WHERE tgl_giro = '$tanggal'
+            GROUP BY
+                no_fak_penj
+            ) giro"),
             function ($join) {
-                $join->on('penjualan.no_fak_penj', '=', 'pjmove.no_fak_penj');
+                $join->on('penjualan.no_fak_penj', '=', 'giro.no_fak_penj');
             }
         );
-        $query->join('karyawan', 'pjmove.salesbarunew', '=', 'karyawan.id_karyawan');
+
+        $query->leftJoin(
+            DB::raw("(
+            SELECT
+                transfer.no_fak_penj,
+                SUM(jumlah) AS totaltransfer
+            FROM
+            transfer
+            INNER JOIN penjualan ON transfer.no_fak_penj = penjualan.no_fak_penj
+            WHERE tgl_transfer = '$tanggal'
+            GROUP BY
+                no_fak_penj
+            ) transfer"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'transfer.no_fak_penj');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+                SELECT retur.no_fak_penj AS no_fak_penj,
+                sum(retur.total) AS totalretur
+                FROM
+                retur
+                WHERE tglretur = '$tanggal'
+                GROUP BY
+                retur.no_fak_penj
+            ) returbulanini"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'returbulanini.no_fak_penj');
+            }
+        );
         $query->where('tgltransaksi', $tanggal);
         $query->where('karyawan.kode_cabang', $kode_cabang);
         $query->where('penjualan.id_karyawan', $id_karyawan);
+        $query->orderBy('penjualan.no_fak_penj');
+        $query->groupByRaw('penjualan.no_fak_penj,nama_pelanggan,AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500,totalbayar,totalgiro,totaltransfer,totalvoucher');
         $penjualan = $query->get();
 
+        $no_fak_penj = [];
+        foreach ($penjualan as $d) {
+            $no_fak_penj[] = $d->no_fak_penj;
+        }
+        $historibayar = DB::table('historibayar')
+            ->selectRaw('historibayar.no_fak_penj,nama_pelanggan,
+            SUM(IF(status_bayar IS NULL,bayar,0)) AS totalbayar,
+            SUM(IF(status_bayar ="voucher",bayar,0)) AS totalvoucher,
+            IFNULL(totalgiro,0) as totalgiro,IFNULL(totaltransfer,0) as totaltransfer')
+            ->join('penjualan', 'historibayar.no_fak_penj', '=', 'penjualan.no_fak_penj')
+            ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+            ->leftJoin(
+                DB::raw("(
+                SELECT
+                    no_fak_penj,
+                    SUM(jumlah) AS totalgiro
+                FROM
+                    giro
+                WHERE tgl_giro = '$tanggal'
+                GROUP BY
+                    no_fak_penj
+                ) giro"),
+                function ($join) {
+                    $join->on('penjualan.no_fak_penj', '=', 'giro.no_fak_penj');
+                }
+            )
 
-        return view('lhp.create', compact('cabang', 'penjualan'));
+            ->leftJoin(
+                DB::raw("(
+                SELECT
+                    no_fak_penj,
+                    SUM(jumlah) AS totaltransfer
+                FROM
+                    transfer
+                WHERE tgl_transfer = '$tanggal'
+                GROUP BY
+                    no_fak_penj
+                ) transfer"),
+                function ($join) {
+                    $join->on('penjualan.no_fak_penj', '=', 'transfer.no_fak_penj');
+                }
+            )
+            ->where('tglbayar', $tanggal)
+            ->whereNull('id_transfer')
+            ->whereNull('id_giro')
+            ->where('historibayar.id_karyawan', $id_karyawan)
+            ->whereNotIn('historibayar.no_fak_penj', $no_fak_penj)
+            ->orderBy('historibayar.no_fak_penj')
+            ->groupByRaw('historibayar.no_fak_penj,nama_pelanggan,totalgiro,totaltransfer')
+            ->get();
+
+        $no_fak_penj_hb = [];
+        foreach ($historibayar as $d) {
+            $no_fak_penj_hb[] = $d->no_fak_penj;
+        }
+
+        $giro = DB::table('giro')
+            ->selectRaw('giro.no_fak_penj,nama_pelanggan,SUM(jumlah) as totalgiro')
+            ->join('penjualan', 'giro.no_fak_penj', '=', 'penjualan.no_fak_penj')
+            ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+            ->where('tgl_giro', $tanggal)
+            ->where('giro.id_karyawan', $id_karyawan)
+            ->whereNotIn('giro.no_fak_penj', $no_fak_penj)
+            ->whereNotIn('giro.no_fak_penj', $no_fak_penj_hb)
+            ->orderBy('giro.no_fak_penj')
+            ->groupByRaw('giro.no_fak_penj,nama_pelanggan')
+            ->get();
+
+        $transfer = DB::table('transfer')
+            ->selectRaw('transfer.no_fak_penj,nama_pelanggan,SUM(jumlah) as totaltransfer')
+            ->join('penjualan', 'transfer.no_fak_penj', '=', 'penjualan.no_fak_penj')
+            ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+            ->where('tgl_transfer', $tanggal)
+            ->where('transfer.id_karyawan', $id_karyawan)
+            ->whereNotIn('transfer.no_fak_penj', $no_fak_penj)
+            ->whereNotIn('transfer.no_fak_penj', $no_fak_penj_hb)
+            ->orderBy('transfer.no_fak_penj')
+            ->groupByRaw('transfer.no_fak_penj,nama_pelanggan')
+            ->get();
+        return view('lhp.create', compact('cabang', 'penjualan', 'historibayar', 'giro', 'transfer'));
     }
 
     public function store(Request $request)
@@ -115,6 +266,7 @@ class LhpController extends Controller
         }
         $kode_lhp = buatkode($lastkode_lhp, 'LHP' . $kode_cabang . $tahun, 4);
 
+        //dd($_POST['no_fak_penj']);
         DB::beginTransaction();
         try {
             $data = array(
@@ -127,7 +279,30 @@ class LhpController extends Controller
             foreach ($_POST['no_fak_penj'] as $no_fak_penj) {
                 $data = ['kode_lhp' => $kode_lhp];
                 //echo $id;
-                DB::table('penjualan')->where('no_fak_penj', $no_fak_penj)->update($data);
+                DB::table('penjualan')->where('no_fak_penj', $no_fak_penj)
+                    ->where('tgltransaksi', $tanggal)
+                    ->where('penjualan.id_karyawan', $id_karyawan)
+                    ->update($data);
+
+                DB::table('historibayar')
+                    ->where('no_fak_penj', $no_fak_penj)
+                    ->where('tglbayar', $tanggal)
+                    ->whereNull('id_transfer')
+                    ->whereNull('id_giro')
+                    ->where('historibayar.id_karyawan', $id_karyawan)
+                    ->update($data);
+
+                DB::table('giro')
+                    ->where('no_fak_penj', $no_fak_penj)
+                    ->where('tgl_giro', $tanggal)
+                    ->where('giro.id_karyawan', $id_karyawan)
+                    ->update($data);
+
+                DB::table('transfer')
+                    ->where('no_fak_penj', $no_fak_penj)
+                    ->where('tgl_transfer', $tanggal)
+                    ->where('transfer.id_karyawan', $id_karyawan)
+                    ->update($data);
             }
 
             DB::commit();
@@ -147,6 +322,18 @@ class LhpController extends Controller
         try {
             DB::table('lhp')->where('kode_lhp', $kode_lhp)->delete();
             DB::table('penjualan')->where('kode_lhp', $kode_lhp)->update([
+                'kode_lhp' => null
+            ]);
+
+            DB::table('historibayar')->where('kode_lhp', $kode_lhp)->update([
+                'kode_lhp' => null
+            ]);
+
+            DB::table('transfer')->where('kode_lhp', $kode_lhp)->update([
+                'kode_lhp' => null
+            ]);
+
+            DB::table('giro')->where('kode_lhp', $kode_lhp)->update([
                 'kode_lhp' => null
             ]);
             DB::commit();
@@ -281,6 +468,7 @@ class LhpController extends Controller
         $query->where('tgltransaksi', $tanggal);
         $query->where('karyawan.kode_cabang', $kode_cabang);
         $query->where('penjualan.id_karyawan', $id_karyawan);
+        $query->where('penjualan.kode_lhp', $kode_lhp);
         $query->orderBy('penjualan.no_fak_penj');
         $query->groupByRaw('penjualan.no_fak_penj,nama_pelanggan,AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500,totalbayar,totalgiro,totaltransfer,totalvoucher');
         $penjualan = $query->get();
@@ -295,7 +483,8 @@ class LhpController extends Controller
         $historibayar = DB::table('historibayar')
             ->selectRaw('historibayar.no_fak_penj,nama_pelanggan,
             SUM(IF(status_bayar IS NULL,bayar,0)) AS totalbayar,
-            SUM(IF(status_bayar ="voucher",bayar,0)) AS totalvoucher,IFNULL(totalgiro,0) as totalgiro,IFNULL(totaltransfer,0) as totaltransfer')
+            SUM(IF(status_bayar ="voucher",bayar,0)) AS totalvoucher,
+            IFNULL(totalgiro,0) as totalgiro,IFNULL(totaltransfer,0) as totaltransfer')
             ->join('penjualan', 'historibayar.no_fak_penj', '=', 'penjualan.no_fak_penj')
             ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
             ->leftJoin(
@@ -334,6 +523,7 @@ class LhpController extends Controller
             ->whereNull('id_giro')
             ->where('historibayar.id_karyawan', $id_karyawan)
             ->whereNotIn('historibayar.no_fak_penj', $no_fak_penj)
+            ->where('historibayar.kode_lhp', $kode_lhp)
             ->orderBy('historibayar.no_fak_penj')
             ->groupByRaw('historibayar.no_fak_penj,nama_pelanggan,totalgiro,totaltransfer')
             ->get();
@@ -351,6 +541,7 @@ class LhpController extends Controller
             ->where('giro.id_karyawan', $id_karyawan)
             ->whereNotIn('giro.no_fak_penj', $no_fak_penj)
             ->whereNotIn('giro.no_fak_penj', $no_fak_penj_hb)
+            ->where('giro.kode_lhp', $kode_lhp)
             ->orderBy('giro.no_fak_penj')
             ->groupByRaw('giro.no_fak_penj,nama_pelanggan')
             ->get();
@@ -363,6 +554,7 @@ class LhpController extends Controller
             ->where('transfer.id_karyawan', $id_karyawan)
             ->whereNotIn('transfer.no_fak_penj', $no_fak_penj)
             ->whereNotIn('transfer.no_fak_penj', $no_fak_penj_hb)
+            ->where('transfer.kode_lhp', $kode_lhp)
             ->orderBy('transfer.no_fak_penj')
             ->groupByRaw('transfer.no_fak_penj,nama_pelanggan')
             ->get();
@@ -372,12 +564,14 @@ class LhpController extends Controller
             ->selectRaw('SUM(jumlah) as totalgiro')
             ->where('tgl_giro', $tanggal)
             ->where('giro.id_karyawan', $id_karyawan)
+            ->where('giro.kode_lhp', $kode_lhp)
             ->first();
 
 
         $alltransfer = DB::table('transfer')
             ->selectRaw('SUM(jumlah) as totaltransfer')
             ->where('tgl_transfer', $tanggal)
+            ->where('transfer.kode_lhp', $kode_lhp)
             ->where('transfer.id_karyawan', $id_karyawan)
             ->first();
 
@@ -390,6 +584,7 @@ class LhpController extends Controller
             ->where('tgltransaksi', $tanggal)
             ->where('karyawan.kode_cabang', $kode_cabang)
             ->where('penjualan.id_karyawan', $id_karyawan)
+            ->where('penjualan.kode_lhp', $kode_lhp)
             ->orderBy('barang.kode_produk')
             ->groupByRaw('barang.kode_produk,nama_barang,isipcsdus,isipack,isipcs')
             ->get();
