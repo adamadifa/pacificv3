@@ -75,7 +75,7 @@
                             </div>
                         </div>
                         <button type="submit" name="submit" class=" float btn btn-primary">
-                            <i class="fa fa-send my-float"></i> Buat LHP
+                            <i class="fa fa-send my-float"></i> SUBMIT LHP
                         </button>
                         <div class="row">
                             <div class="col-12">
@@ -215,6 +215,7 @@
                                                 <?php if (!empty($d->totalvoucher)) { echo rupiah($d->totalvoucher);} ?>
                                             </td>
                                             <td>
+                                                @if (empty($d->kode_lhp))
                                                 <div class="vs-checkbox-con vs-checkbox-primary">
                                                     <input type="checkbox" name="no_fak_penj[]" value="{{ $d->no_fak_penj }}">
                                                     <span class="vs-checkbox">
@@ -223,6 +224,11 @@
                                                         </span>
                                                     </span>
                                                 </div>
+                                                @else
+                                                <span class="badge bg-success">
+                                                    {{ $d->kode_lhp }}
+                                                </span>
+                                                @endif
                                             </td>
                                         </tr>
                                         @endforeach
@@ -263,6 +269,7 @@
                                                 <?php if (!empty($d->totalvoucher)) { echo rupiah($d->totalvoucher);} ?>
                                             </td>
                                             <td>
+                                                @if (empty($d->kode_lhp))
                                                 <div class="vs-checkbox-con vs-checkbox-primary">
                                                     <input type="checkbox" name="no_fak_penj[]" value="{{ $d->no_fak_penj }}">
                                                     <span class="vs-checkbox">
@@ -271,6 +278,11 @@
                                                         </span>
                                                     </span>
                                                 </div>
+                                                @else
+                                                <span class="badge bg-success">
+                                                    {{ $d->kode_lhp }}
+                                                </span>
+                                                @endif
                                             </td>
                                         </tr>
                                         @endforeach
@@ -300,6 +312,7 @@
                                             </td>
                                             <td></td>
                                             <td>
+                                                @if (empty($d->kode_lhp))
                                                 <div class="vs-checkbox-con vs-checkbox-primary">
                                                     <input type="checkbox" name="no_fak_penj[]" value="{{ $d->no_fak_penj }}">
                                                     <span class="vs-checkbox">
@@ -308,6 +321,11 @@
                                                         </span>
                                                     </span>
                                                 </div>
+                                                @else
+                                                <span class="badge bg-success">
+                                                    {{ $d->kode_lhp }}
+                                                </span>
+                                                @endif
                                             </td>
                                         </tr>
                                         @endforeach
@@ -339,6 +357,7 @@
                                             <td></td>
                                             <td></td>
                                             <td>
+                                                @if (empty($d->kode_lhp))
                                                 <div class="vs-checkbox-con vs-checkbox-primary">
                                                     <input type="checkbox" name="no_fak_penj[]" value="{{ $d->no_fak_penj }}">
                                                     <span class="vs-checkbox">
@@ -347,6 +366,11 @@
                                                         </span>
                                                     </span>
                                                 </div>
+                                                @else
+                                                <span class="badge bg-success">
+                                                    {{ $d->kode_lhp }}
+                                                </span>
+                                                @endif
                                             </td>
                                         </tr>
 

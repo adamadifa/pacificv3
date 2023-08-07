@@ -717,7 +717,7 @@
                                 </a>
                             </li>
                             @endif
-                            @if (in_array($level, $lhp_menu))
+                            @if (in_array($level, $lhp_menu) || Auth::user()->kode_cabang=="BDG")
                             <li class="{{ request()->is(['lhp', 'lhp/*']) ? 'active' : '' }}">
                                 <a href="/lhp">
                                     <i class="feather icon-package"></i>
