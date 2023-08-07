@@ -83,6 +83,7 @@
                                     <thead class="thead-dark">
                                         <tr>
                                             <th rowspan="2">PELANGGAN</th>
+                                            <th rowspan="2">AREA</th>
                                             <th rowspan="2">No. BON</th>
                                             <th colspan="10">NAMA PRODUK</th>
                                             <th colspan="2">PENJUALAN</th>
@@ -165,6 +166,7 @@
 
                                         <tr>
                                             <td>{{ ucwords(strtolower($d->nama_pelanggan)) }}</td>
+                                            <td>{{ ucwords(strtolower($d->pasar)) }}</td>
                                             <td>{{ $d->no_fak_penj }}</td>
                                             <td style="text-align:right; font-weight:bold">
                                                 <?php if (!empty($d->AB)) { echo desimal($d->AB); } ?>
@@ -243,6 +245,7 @@
                                         @endphp
                                         <tr>
                                             <td>{{ ucwords(strtolower($d->nama_pelanggan)) }}</td>
+                                            <td>{{ ucwords(strtolower($d->pasar)) }}</td>
                                             <td>{{ $d->no_fak_penj }}</td>
                                             <td></td>
                                             <td></td>
@@ -292,6 +295,7 @@
                                         @endphp
                                         <tr>
                                             <td>{{ ucwords(strtolower($d->nama_pelanggan)) }}</td>
+                                            <td>{{ ucwords(strtolower($d->pasar)) }}</td>
                                             <td>{{ $d->no_fak_penj }}</td>
                                             <td></td>
                                             <td></td>
@@ -337,6 +341,7 @@
                                         @endphp
                                         <tr>
                                             <td>{{ ucwords(strtolower($d->nama_pelanggan)) }}</td>
+                                            <td>{{ ucwords(strtolower($d->pasar)) }}</td>
                                             <td>{{ $d->no_fak_penj }}</td>
                                             <td></td>
                                             <td></td>

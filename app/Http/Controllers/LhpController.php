@@ -56,7 +56,7 @@ class LhpController extends Controller
 
         $query = Penjualan::query();
         $query->selectRaw("penjualan.no_fak_penj,nama_pelanggan,
-        kode_lhp,
+        kode_lhp,pasar,
         AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500,
         SUM(totaltunai) as totaltunai,
         SUM(IF(penjualan.jenistransaksi='kredit',total,0)) as totalkredit,
@@ -166,7 +166,7 @@ class LhpController extends Controller
         $query->where('karyawan.kode_cabang', $kode_cabang);
         $query->where('penjualan.id_karyawan', $id_karyawan);
         $query->orderBy('penjualan.no_fak_penj');
-        $query->groupByRaw('penjualan.no_fak_penj,kode_lhp,nama_pelanggan,AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500,totalbayar,totalgiro,totaltransfer,totalvoucher');
+        $query->groupByRaw('penjualan.no_fak_penj,kode_lhp,nama_pelanggan,AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500,totalbayar,totalgiro,totaltransfer,totalvoucher,pasar');
         $penjualan = $query->get();
 
         $no_fak_penj = [];
@@ -175,7 +175,7 @@ class LhpController extends Controller
         }
         $historibayar = DB::table('historibayar')
             ->selectRaw('historibayar.no_fak_penj,nama_pelanggan,historibayar.kode_lhp,
-            SUM(IF(status_bayar IS NULL,bayar,0)) AS totalbayar,
+            SUM(IF(status_bayar IS NULL,bayar,0)) AS totalbayar,pasar,
             SUM(IF(status_bayar ="voucher",bayar,0)) AS totalvoucher,
             IFNULL(totalgiro,0) as totalgiro,IFNULL(totaltransfer,0) as totaltransfer')
             ->join('penjualan', 'historibayar.no_fak_penj', '=', 'penjualan.no_fak_penj')
@@ -217,7 +217,7 @@ class LhpController extends Controller
             ->where('historibayar.id_karyawan', $id_karyawan)
             ->whereNotIn('historibayar.no_fak_penj', $no_fak_penj)
             ->orderBy('historibayar.no_fak_penj')
-            ->groupByRaw('historibayar.no_fak_penj,nama_pelanggan,totalgiro,totaltransfer,historibayar.kode_lhp')
+            ->groupByRaw('historibayar.no_fak_penj,nama_pelanggan,totalgiro,totaltransfer,historibayar.kode_lhp,pasar')
             ->get();
 
         $no_fak_penj_hb = [];
@@ -226,7 +226,7 @@ class LhpController extends Controller
         }
 
         $giro = DB::table('giro')
-            ->selectRaw('giro.no_fak_penj,nama_pelanggan,SUM(jumlah) as totalgiro,giro.kode_lhp')
+            ->selectRaw('giro.no_fak_penj,nama_pelanggan,SUM(jumlah) as totalgiro,giro.kode_lhp,pasar')
             ->join('penjualan', 'giro.no_fak_penj', '=', 'penjualan.no_fak_penj')
             ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
             ->where('tgl_giro', $tanggal)
@@ -234,11 +234,11 @@ class LhpController extends Controller
             ->whereNotIn('giro.no_fak_penj', $no_fak_penj)
             ->whereNotIn('giro.no_fak_penj', $no_fak_penj_hb)
             ->orderBy('giro.no_fak_penj')
-            ->groupByRaw('giro.no_fak_penj,nama_pelanggan,giro.kode_lhp')
+            ->groupByRaw('giro.no_fak_penj,nama_pelanggan,giro.kode_lhp,pasar')
             ->get();
 
         $transfer = DB::table('transfer')
-            ->selectRaw('transfer.no_fak_penj,nama_pelanggan,SUM(jumlah) as totaltransfer,transfer.kode_lhp')
+            ->selectRaw('transfer.no_fak_penj,nama_pelanggan,SUM(jumlah) as totaltransfer,transfer.kode_lhp,pasar')
             ->join('penjualan', 'transfer.no_fak_penj', '=', 'penjualan.no_fak_penj')
             ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
             ->where('tgl_transfer', $tanggal)
@@ -246,7 +246,7 @@ class LhpController extends Controller
             ->whereNotIn('transfer.no_fak_penj', $no_fak_penj)
             ->whereNotIn('transfer.no_fak_penj', $no_fak_penj_hb)
             ->orderBy('transfer.no_fak_penj')
-            ->groupByRaw('transfer.no_fak_penj,nama_pelanggan,transfer.kode_lhp')
+            ->groupByRaw('transfer.no_fak_penj,nama_pelanggan,transfer.kode_lhp,pasar')
             ->get();
         return view('lhp.create', compact('cabang', 'penjualan', 'historibayar', 'giro', 'transfer'));
     }
