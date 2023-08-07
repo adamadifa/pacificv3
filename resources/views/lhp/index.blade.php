@@ -21,9 +21,7 @@
         <div class="col-md-12 col-sm-12">
             <div class="card">
                 <div class="card-header">
-                    @if (in_array($level,$lhp_menu))
                     <a href="/lhp/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Buat LHP</a>
-                    @endif
                 </div>
                 <div class="card-body">
                     <form action="/lhp" id="frmcari">
@@ -107,6 +105,27 @@
 @push('myscript')
 <script>
     $(function() {
+        function loadsalesmancabang(kode_cabang) {
+            var kode_cabang = $("#kode_cabang").val();
+            var id_karyawan = "{{ Request('id_karyawan') }}";
+            $.ajax({
+                type: 'POST'
+                , url: '/salesman/getsalescab'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , kode_cabang: kode_cabang
+                    , id_karyawan: id_karyawan
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#id_karyawan").html(respond);
+                }
+            });
+        }
+        loadsalesmancabang();
+        $("#kode_cabang").change(function() {
+            loadsalesmancabang();
+        });
         $('.delete-confirm').click(function(event) {
             var form = $(this).closest("form");
             var name = $(this).data("name");
