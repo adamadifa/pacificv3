@@ -199,6 +199,8 @@ class LaporanhrdController extends Controller
                 gaji_pokok,
                 t_jabatan,t_masakerja,t_tanggungjawab,t_makan,t_istri,t_skill,
                 cicilan_pjp,jml_kasbon,
+                bpjs_kesehatan.perusahaan,bpjs_kesehatan.pekerja,bpjs_kesehatan.keluarga,
+                bpjs_tenagakerja.k_jht,bpjs_tenagakerja.k_jp,
                 hari_1,
                 hari_2,
                 hari_3,
@@ -956,6 +958,26 @@ class LaporanhrdController extends Controller
 
             $query->leftJoin(
                 DB::raw("(
+                    SELECT MAX(tgl_berlaku) as tgl_berlaku, nik,perusahaan,pekerja,keluarga
+                    FROM bpjs_kesehatan WHERE tgl_berlaku <= '$sampai' GROUP BY nik,perusahaan,pekerja,keluarga
+                ) bpjs_kesehatan"),
+                function ($join) {
+                    $join->on('master_karyawan.nik', '=', 'bpjs_kesehatan.nik');
+                }
+            );
+
+            $query->leftJoin(
+                DB::raw("(
+                    SELECT MAX(tgl_berlaku) as tgl_berlaku, nik,k_jht,k_jp
+                    FROM bpjs_tenagakerja WHERE tgl_berlaku <= '$sampai' GROUP BY nik,k_jht,k_jp
+                ) bpjs_tenagakerja"),
+                function ($join) {
+                    $join->on('master_karyawan.nik', '=', 'bpjs_tenagakerja.nik');
+                }
+            );
+
+            $query->leftJoin(
+                DB::raw("(
                    SELECT nik, SUM(jumlah) as cicilan_pjp
                    FROM pinjaman_historibayar
                    INNER JOIN pinjaman ON pinjaman_historibayar.no_pinjaman = pinjaman.no_pinjaman
@@ -986,6 +1008,8 @@ class LaporanhrdController extends Controller
                 gaji_pokok,
                 t_jabatan,t_masakerja,t_tanggungjawab,t_makan,t_istri,t_skill,
                 cicilan_pjp,jml_kasbon,
+                bpjs_kesehatan.perusahaan,bpjs_kesehatan.pekerja,bpjs_kesehatan.keluarga,
+                bpjs_tenagakerja.k_jht,bpjs_tenagakerja.k_jp,
                 hari_1,
                 hari_2,
                 hari_3,
@@ -1720,6 +1744,25 @@ class LaporanhrdController extends Controller
 
             $query->leftJoin(
                 DB::raw("(
+                    SELECT MAX(tgl_berlaku) as tgl_berlaku, nik,perusahaan,pekerja,keluarga
+                    FROM bpjs_kesehatan WHERE tgl_berlaku <= '$sampai' GROUP BY nik,perusahaan,pekerja,keluarga
+                ) bpjs_kesehatan"),
+                function ($join) {
+                    $join->on('master_karyawan.nik', '=', 'bpjs_kesehatan.nik');
+                }
+            );
+
+            $query->leftJoin(
+                DB::raw("(
+                    SELECT MAX(tgl_berlaku) as tgl_berlaku, nik,k_jht,k_jp
+                    FROM bpjs_tenagakerja WHERE tgl_berlaku <= '$sampai' GROUP BY nik,k_jht,k_jp
+                ) bpjs_tenagakerja"),
+                function ($join) {
+                    $join->on('master_karyawan.nik', '=', 'bpjs_tenagakerja.nik');
+                }
+            );
+            $query->leftJoin(
+                DB::raw("(
                    SELECT nik, SUM(jumlah) as cicilan_pjp
                    FROM pinjaman_historibayar
                    INNER JOIN pinjaman ON pinjaman_historibayar.no_pinjaman = pinjaman.no_pinjaman
@@ -1782,7 +1825,7 @@ class LaporanhrdController extends Controller
                 // Mendefinisikan nama file ekspor "hasil-export.xls"
                 header("Content-Disposition: attachment; filename=Laporan Presensi Detail.xls");
             }
-            return view('gaji.laporan.cetak_gaji', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur'));
+            return view('gaji.laporan.cetak_gaji', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'sampai'));
         } else {
             if (isset($_POST['export'])) {
                 echo "EXPORT";

@@ -107,7 +107,8 @@
                     <th rowspan="2">UPAH / JAM<br> (173)</th>
                     <th colspan="2">OVERTIME 1</th>
                     <th colspan="2">OVERTIME 2</th>
-                    <th colspan="2">LEMBUR HARI LIBUR</th>
+                    <th colspan="2">OT LIBUR 1</th>
+                    <th colspan="2">OT LIBUR 2</th>
                     <th rowspan="2">TOTAL<br>OVERTIME</th>
                     <th colspan="2">PREMI SHIFT 2</th>
                     <th colspan="2">PREMI SHIFT 3</th>
@@ -152,6 +153,8 @@
                     <th>JUMLAH</th>
                     <th>JAM</th>
                     <th>JUMLAH</th>
+                    <th>JAM</th>
+                    <th>JUMLAH</th>
                     <th>HARI</th>
                     <th>JUMLAH</th>
                     <th>HARI</th>
@@ -178,6 +181,8 @@
                     $totalizinabsen = 0;
                     $total_overtime_1 = 0;
                     $total_overtime_2 = 0;
+                    $total_overtime_libur_1 = 0;
+                    $total_overtime_libur_2 = 0;
                     //$izinsakit = 0;
                     $totalizinsakit = 0;
                     $jmlharipremi1 = 0;
@@ -234,10 +239,18 @@
                         $tgl_lembur_dari = $ceklembur[0]["tanggal_dari"];
                         $tgl_lembur_sampai = $ceklembur[0]["tanggal_sampai"];
                         $jmljam_lembur = hitungjamdesimal($tgl_lembur_dari,$tgl_lembur_sampai);
-                        $overtime_1 = $jmljam_lembur > 1 ? 1 : $jmljam_lembur;
-                        $overtime_2 = $jmljam_lembur > 1 ? $jmljam_lembur -1 : 0;
-                        $total_overtime_1 += $overtime_1;
-                        $total_overtime_2 += $overtime_2;
+                        $kategori_lembur = $ceklembur[0]["kategori"];
+                        if ($kategori_lembur==1) {
+                            $overtime_1 = $jmljam_lembur > 1 ? 1 : $jmljam_lembur;
+                            $overtime_2 = $jmljam_lembur > 1 ? $jmljam_lembur -1 : 0;
+                            $total_overtime_1 += $overtime_1;
+                            $total_overtime_2 += $overtime_2;
+                        }else if($kategori_lembur==2){
+                            $overtime_libur_1 = $jmljam_lembur >= 4 ? 4 : $jmljam_lembur;
+                            $overtime_libur_2 = $jmljam_lembur > 4 ? $jmljam_lembur-4 : 0;
+                            $total_overtime_libur_1 += $overtime_libur_1;
+                            $total_overtime_libur_2 += $overtime_libur_2;
+                        }
                     }
 
                     if($namahari=="Minggu"){
@@ -699,7 +712,7 @@
                     <td align="center">
                         @php
                         $awal = date_create($d->tgl_masuk);
-                        $akhir = date_create(date('Y-m-d')); // waktu sekarang
+                        $akhir = date_create($sampai); // waktu sekarang
                         $diff = date_diff( $awal, $akhir );
                         echo $diff->y . ' tahun, '.$diff->m.' bulan, '.$diff->d.' Hari'
                         @endphp
@@ -761,9 +774,9 @@
                         @endphp
                         {{ !empty($upah) ? rupiah($upah_perjam) : "" }}
                     </td>
-                    <td style="text-align: center;  font-size:16px">{{ !empty($total_overtime_1) ? rupiah($total_overtime_1) : '' }}</td>
+                    <td style="text-align: center;">{{ !empty($total_overtime_1) ? rupiah($total_overtime_1) : '' }}</td>
 
-                    <td align="right">
+                    <td align=" right">
                         @php
                         if ($d->nama_jabatan=="SECURITY") {
                         $upah_ot_1 = 8000 * $total_overtime_1;
@@ -773,7 +786,7 @@
                         @endphp
                         {{ !empty($upah_ot_1) ? rupiah($upah_ot_1) : "" }}
                     </td>
-                    <td style="text-align: center;  font-size:16px">{{ !empty($total_overtime_2) ? rupiah($total_overtime_2) : '' }}</td>
+                    <td style="text-align: center;">{{ !empty($total_overtime_2) ? rupiah($total_overtime_2) : '' }}</td>
                     <td align="right">
                         @php
                         if ($d->nama_jabatan=="SECURITY") {
@@ -784,24 +797,96 @@
                         @endphp
                         {{ !empty($upah_ot_2) ? rupiah($upah_ot_2) : "" }}
                     </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td style="text-align: center;">
+                        @php
+                        if($d->nama_jabatan=="SECURITY"){
+                        $total_overtime_libur_1 = 7;
+                        }
+                        @endphp
+                        {{ !empty($total_overtime_libur_1) ? $total_overtime_libur_1 : "" }}
+                    </td>
+                    <td align="right">
+                        @php
+                        if ($d->nama_jabatan=="SECURITY") {
+                        $upah_otl_1 = 92000;
+                        }else{
+                        $upah_otl_1 = ($upah_perjam * 1.5) * $total_overtime_libur_1;
+                        }
+                        @endphp
+                        {{ !empty($upah_otl_1) ? rupiah($upah_otl_1) : "" }}
+                    </td>
+                    <td style="text-align: center;">{{ !empty($total_overtime_libur_2) ? rupiah($total_overtime_libur_2) : '' }}</td>
+                    <td align="right">
+                        @php
+                        if ($d->nama_jabatan=="SECURITY") {
+                        $upah_otl_2 = 0;
+                        }else{
+                        $upah_otl_2 = ($upah_perjam * 2) * $total_overtime_libur_2;
+                        }
+                        @endphp
+                        {{ !empty($upah_otl_2) ? rupiah($upah_otl_2) : "" }}
+                    </td>
+                    <td align="right">
+                        @php
+                        $total_upah_overtime = $upah_ot_1 + $upah_ot_2 + $upah_otl_1 + $upah_otl_2;
+                        @endphp
+                        {{ !empty($total_upah_overtime) ?rupiah($total_upah_overtime) : "" }}
+                    </td>
                     <td align="center">{{ !empty($jmlharipremi1) ? $jmlharipremi1 : "" }}</td>
                     <td align="right">{{ !empty($jmlpremi1) ? rupiah($jmlpremi1) : "" }}</td>
                     <td align="center">{{ !empty($jmlharipremi2) ? $jmlharipremi2 : "" }}</td>
                     <td align="right">{{ !empty($jmlpremi2) ? rupiah($jmlpremi2) : "" }}</td>
-                    <td align="right"></td>
+                    <td align="right">
+                        @php
+                        $bruto = $upah + $jmlinsentif + $total_upah_overtime + $jmlpremi1 + $jmlpremi2;
+                        @endphp
+                        {{ !empty($bruto) ?  rupiah($bruto) : "" }}
+                    </td>
                     <td align="center">{{ !empty($totalpotonganjam) ? $totalpotonganjam : "" }}</td>
+                    <td align="right">
+                        <?php
+                            if($cekmasakerja <= 15){
+                                $bpjskesehatan=$d->perusahaan + $d->pekerja + $d->keluarga;
+                            }else{
+                                $bpjskesehatan = 0.5 * ($d->perusahaan + $d->pekerja) + $d->keluarga;;
+                            }
+                        ?>
+
+                        {{ !empty($bpjskesehatan) ? rupiah($bpjskesehatan) : "" }}
+
+                    </td>
                     <td></td>
-                    <td></td>
-                    <td></td>
+                    <td align="right">
+                        @php
+                        $bpjstenagakerja = $d->k_jht + $d->k_jp;
+                        @endphp
+                        {{ !empty($bpjstenagakerja) ? rupiah($bpjstenagakerja) : "" }}
+                    </td>
                     <td align="right">{{ !empty($totaldenda) ? rupiah($totaldenda) : "" }}</td>
                     <td align="right">{{ !empty($d->cicilan_pjp) ? rupiah($d->cicilan_pjp) : "" }}</td>
                     <td align="right">{{ !empty($d->jml_kasbon) ? rupiah($d->jml_kasbon) : "" }}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td align="right">
+                        <?php
+                            if($d->id_kantor=="PST" && $cekmasakerja > 3 || $d->id_kantor=="TSM" && $cekmasakerja > 3){
+                                $spip = 5000;
+                            }else{
+                                $spip = 0;
+                            }
+                        ?>
+                        {{ !empty($spip) ? rupiah($spip) : "" }}
+                    </td>
+                    <td align="right">
+                        @php
+                        $potongan = $bpjskesehatan + $bpjstenagakerja + $totaldenda + $d->cicilan_pjp + $d->jml_kasbon + $spip;
+                        @endphp
+                        {{ !empty($potongan) ? rupiah($potongan) : "" }}
+                    </td>
+                    <td align="right">
+                        @php
+                        $jmlbersih = $bruto - $potongan;
+                        @endphp
+                        {{ !empty($jmlbersih) ? rupiah($jmlbersih) : "" }}
+                    </td>
                 </tr>
                 @endforeach
             </tbody>

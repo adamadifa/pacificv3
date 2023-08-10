@@ -280,7 +280,7 @@
             </h4>
             <ol>
                 <li>
-                    Jam kerja adalah 8 jam sehari (termasuk istirahat 1 jam) atau 40 Jam seminggu Senin s/d Jumat 07.00 – 15.00 WIB dan Sabtu Jam 07.00 – 12.00 WIB. Atau sesuai jadwal kerja yang disepakati bersama.
+                    Jam kerja adalah 8 jam sehari (termasuk istirahat 1 jam) atau 40 Jam seminggu Senin s/d Jumat Atau sesuai jadwal kerja yang disepakati bersama.
                 </li>
                 <li>
                     Untuk lokasi cabang, hari dan jam kerja akan dilaksanakan dengan ketentuan yang telah disepakati oleh masing-masing cabang.
