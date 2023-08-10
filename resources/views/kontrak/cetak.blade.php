@@ -280,7 +280,7 @@
             </h4>
             <ol>
                 <li>
-                    Jam kerja adalah 8 jam per hari (Senin-Jumat) dan 5 jam (Sabtu) termasuk istirahat 1 jam atau sesuai jadwal yang telah disepakati bersama.
+                    Jam kerja adalah 8 jam per hari (Senin-Jumat) dan 6 jam (Sabtu) termasuk istirahat 1 jam atau sesuai jadwal yang telah disepakati bersama.
                 </li>
                 <li>
                     Untuk lokasi cabang, hari dan jam kerja akan dilaksanakan dengan ketentuan yang telah disepakati oleh masing-masing cabang.
