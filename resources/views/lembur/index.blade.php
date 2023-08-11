@@ -159,7 +159,7 @@
                                                 <div class="btn-group">
                                                     @if ($level == "manager hrd")
                                                     @if (empty($d->hrd))
-                                                    <a href="#" kode_libur="{{ Crypt::encrypt($d->kode_lembur) }}" class="approve"><i class="feather icon-external-link primary"></i></a>
+                                                    <a href="#" kode_lembur="{{ Crypt::encrypt($d->kode_lembur) }}" class="approve"><i class="feather icon-external-link primary"></i></a>
                                                     @else
                                                     <a href="/lembur/{{ Crypt::encrypt($d->kode_lembur) }}/batalkan" class="warning">Batalkan</a>
                                                     @endif
@@ -298,7 +298,39 @@
     </div>
 </div>
 
+<div class="modal fade text-left" id="mdlapprove" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Approve Pengajuan Lembur</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/lembur/approve" method="POST">
+                    @csrf
+                    <input type="hidden" name="kode_lembur" id="kode_lembur_approve">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="btn-group w-100">
+                                <button name="approve" value="approve" class="btn btn-success w-100">
+                                    <i class="feather icon-check mr-1"></i>
+                                    Setuju
+                                </button>
+                                <button name="decline" value="decline" class="btn btn-danger w-100">
+                                    <i class="fa fa-close mr-1"></i>
+                                    Tolak
+                                </button>
+                            </div>
+                        </div>
+                    </div>
 
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @push('myscript')
 <script>
@@ -311,6 +343,12 @@
             });
         });
 
+        $(".approve").click(function(e) {
+            e.preventDefault();
+            $("#mdlapprove").modal("show");
+            var kode_lembur = $(this).attr('kode_lembur');
+            $("#kode_lembur_approve").val(kode_lembur);
+        });
         $("#frmLembur").submit(function(e) {
             var tanggal_dari = $("#tanggal_dari").val();
             var tanggal_sampai = $("#tanggal_sampai").val();

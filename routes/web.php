@@ -1758,6 +1758,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/lembur/cancelkaryawan', [LemburController::class, 'cancelkaryawan']);
     Route::get('/lembur/{kode_lembur}/getlemburkaryawan', [LemburController::class, 'getlemburkaryawan']);
     Route::post('/lembur/hapuslemburkaryawan', [LemburController::class, 'hapuslemburkaryawan']);
+    Route::post('/lembur/approve', [LemburController::class, 'approve']);
+    Route::get('/lembur/{kode_lembur}/batalkan', [LemburController::class, 'batalkan']);
 
     Route::get('/monitoringsku', [PenjualanController::class, 'monitoringsku']);
     Route::post('/getsku', [PenjualanController::class, 'getsku']);

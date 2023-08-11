@@ -335,4 +335,40 @@ class LemburController extends Controller
             return 1;
         }
     }
+
+
+    public function approve(Request $request)
+    {
+
+        $kode_lembur = Crypt::decrypt($request->kode_lembur);
+        if (isset($request->approve)) {
+            try {
+                DB::table('lembur')->where('kode_lembur', $kode_lembur)->update(['hrd' => 1]);
+                return Redirect::back()->with(['success' => 'Pengajuan Lembur Disetujui']);
+            } catch (\Exception $e) {
+                return Redirect::back()->with(['warning' => 'Data Gagal di Update']);
+                //throw $th;
+            }
+        } else {
+            try {
+                DB::table('lembur')->where('kode_lembur', $kode_lembur)->update(['hrd' => 2]);
+                return Redirect::back()->with(['success' => 'Pengajuan Lembur Ditolak']);
+            } catch (\Exception $e) {
+                return Redirect::back()->with(['warning' => 'Data Gagal di Update']);
+                //throw $th;
+            }
+        }
+    }
+
+    public function batalkan($kode_lembur)
+    {
+        $kode_lembur = Crypt::decrypt($kode_lembur);
+        try {
+            DB::table('lembur')->where('kode_lembur', $kode_lembur)->update(['hrd' => null]);
+            return Redirect::back()->with(['success' => 'Pengajuan Lembur Dibatalkan']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Data Gagal di Update']);
+            //throw $th;
+        }
+    }
 }
