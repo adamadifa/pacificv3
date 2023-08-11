@@ -42,6 +42,7 @@
                                         <td>
                                             @php
                                             $jmljam = hitungjamdesimal($lembur->tanggal_dari,$lembur->tanggal_sampai);
+                                            $jmljam = $jmljam > 7 ? 7 : $jmljam;
                                             @endphp
                                             {{ $jmljam }} Jam
                                         </td>

@@ -162,9 +162,12 @@
                                         <?php
                                         //Jam In adalah Jam Ketika Melakukan Presensi
                                         // Jam Masuk adalah Jam Masuk Seharusnya
-                                        $jam_in = date("H:i", strtotime($d->jam_in));
-                                        $jam_out = date("H:i", strtotime($d->jam_out));
-                                        $jam_out_tanggal = $d->jam_out;
+                                        $jam_in = !empty($d->jam_in) ? date("H:i", strtotime($d->jam_in)) : "";
+                                        $jam_out = !empty($d->jam_out) ? date("H:i", strtotime($d->jam_out)) : "";
+
+                                        $jam_in_tanggal = !empty($d->jam_in) ? date("Y-m-d H:i",strtotime($d->jam_in)) : "";
+                                        $jam_out_tanggal = !empty($d->jam_out) ? date("Y-m-d H:i",strtotime($d->jam_out)) : "";
+
                                         $tgl_presensi = $d->tgl_presensi;
                                         $lintashari = $d->lintashari;
                                         if(!empty($lintashari)){
@@ -172,21 +175,40 @@
                                         }else{
                                             $tgl_pulang = $tgl_presensi;
                                         }
-                                        $jam_pulang_tanggal = $tgl_pulang. " ".$d->jam_pulang;
-                                        $jam_istirahat = date("H:i",strtotime($d->jam_istirahat));
-                                        $jam_pulang = date("H:i", strtotime($d->jam_pulang));
-                                        $jam_masuk = $d->tgl_presensi . " " . $d->jam_masuk;
-                                        $jam_awal_istirahat = $d->tgl_presensi. " ".$d->jam_awal_istirahat;
-                                        $jam_akhir_istirahat = $d->tgl_presensi. " ".$d->jam_istirahat;
+
+                                        $jam_pulang = !empty($d->jam_pulang) ? date("H:i", strtotime($d->jam_pulang)) : "";
+                                        $jam_pulang_tanggal = !empty($d->jam_pulang) ?  $tgl_pulang. " ".$jam_pulang : "";
+
+
+
+                                        $jam_masuk = !empty($d->jam_masuk) ? date("H:i",strtotime($d->jam_masuk)) : "";
+                                        $jam_masuk_tanggal = !empty($d->jam_masuk) ? $d->tgl_presensi . " " . $jam_masuk : "";
+
+
+                                        $j_masuk = $d->nama_jabatan=="SPG" ? $jam_in : $jam_masuk;
+                                        $j_masuk_tanggal = $tgl_presensi." ".$j_masuk;
+
+                                        $j_pulang = $d->nama_jabatan=="SPG" ? $jam_out : $jam_pulang;
+                                        $j_pulang_tanggal = $tgl_presensi." ".$j_pulang;
+
+                                        $jam_istirahat = !empty($d->jam_istirahat) ? date("H:i",strtotime($d->jam_istirahat)) : "";
+                                        $jam_awal_istirahat = !empty($d->jam_awal_istirahat) ? date("H:i",strtotime($d->jam_awal_istirahat)) : "";
+                                        $jam_akhir_istirahat = !empty($d->jam_akhir_istirahat) ? date("H:i",strtotime($d->jam_akhir_istirahat)) : "";
+
+                                        $jam_istirahat_tanggal = !empty($d->jam_istirahat) ?  $tgl_pulang." ".$jam_istirahat : "";
+                                        $jam_awal_istirahat_tanggal = !empty($d->jam_awal_istirahat) ? $tgl_pulang. " ".$jam_awal_istirahat : "";
+                                        $jam_akhir_istirahat_tanggal = !empty($d->jam_akhir_istirahat) ? $tgl_pulang. " ".$jam_akhir_istirahat : "";
+
+
                                         $status = $d->status_presensi;
 
                                         $tgl_in = date("Y-m-d",strtotime($d->jam_in));
                                         $tgl_out = date("Y-m-d",strtotime($d->jam_out));
 
                                         if (!empty($d->jam_in)) {
-                                            if ($jam_in > $d->jam_masuk) {
-                                                $j1 = strtotime($jam_masuk);
-                                                $j2 = strtotime($d->jam_in);
+                                            if ($jam_in_tanggal > $j_masuk_tanggal) {
+                                                $j1 = strtotime($j_masuk_tanggal);
+                                                $j2 = strtotime($jam_in_tanggal);
 
                                                 $diffterlambat = $j2 - $j1;
 
@@ -212,15 +234,19 @@
 
 
                                         if(!empty($d->jam_keluar)){
-                                            $jamkeluar = $d->tgl_presensi." ".$d->jam_keluar;
+                                            $jam_keluar_kk = date("H:i",strtotime($d->jam_keluar));
+                                            $jam_keluar_kk_tanggal = $tgl_pulang." ".$jam_keluar_kk;
+
+
                                             if(!empty($d->jam_masuk_kk)){
-                                                $jam_masuk_kk = $d->tgl_presensi." ".$d->jam_masuk_kk;
+                                                $jam_masuk_kk = date("H:i",strtotime($d->jam_masuk_kk));
+                                                $jam_masuk_kk_tanggal = $tgl_pulang." ".$jam_masuk_kk;
                                             }else{
-                                                $jam_masuk_kk = $d->tgl_presensi." ".$d->jam_pulang;
+                                                $jam_masuk_kk_tanggal = $tgl_pulang." ".$j_pulang;
                                             }
 
-                                            $jk1 = strtotime($jamkeluar);
-                                            $jk2 = strtotime($jam_masuk_kk);
+                                            $jk1 = strtotime($jam_keluar_kk_tanggal);
+                                            $jk2 = strtotime($jam_masuk_kk_tanggal);
                                             $difkeluarkantor = $jk2 - $jk1;
 
                                             $jamkeluarkantor = floor($difkeluarkantor / (60 * 60));
@@ -247,14 +273,14 @@
                                         }
 
 
-                                        if(!empty($d->jam_out) && $jam_out < $jam_pulang){
+                                        if(!empty($d->jam_out) && $jam_out_tanggal < $j_pulang_tanggal){
                                             $pc = "Pulang Cepat";
                                         }else{
                                             $pc = "";
                                         }
 
 
-                                        $day = date('D', strtotime($d->tgl_presensi));
+                                        $day = date('D', strtotime($tgl_presensi));
                                         $dayList = array(
                                             'Sun' => 'Minggu',
                                             'Mon' => 'Senin',
@@ -281,7 +307,7 @@
                                         $jt = !empty($jt) ? $jt : 0;
                                         // menghitung Denda
                                         if (!empty($d->jam_in) and $d->kode_dept != 'MKT') {
-                                            if ($jam_in > $d->jam_masuk and empty($d->kode_izin_terlambat)) {
+                                            if ($jam_in_tanggal > $j_masuk_tanggal and empty($d->kode_izin_terlambat)) {
                                                 if ($jamterlambat < 1) {
                                                     if($menitterlambat >= 5 AND $menitterlambat < 10){
                                                         $denda = 5000;
@@ -303,16 +329,16 @@
                                         }
 
                                          //Menghitung total Jam
-                                        if($d->jam_out > $jam_awal_istirahat && $d->jam_out < $jam_akhir_istirahat){
-                                            $jout = $jam_awal_istirahat;
+                                        if($jam_out_tanggal > $jam_awal_istirahat_tanggal && $jam_out_tanggal < $jam_akhir_istirahat_tanggal){
+                                            $jout = $jam_awal_istirahat_tanggal;
                                         }else{
-                                            $jout = $d->jam_out;
+                                            $jout = $jam_out_tanggal;
                                         }
 
 
 
                                         //echo $jam_awal_istirahat."|";
-                                        $awal = strtotime($jam_masuk);
+                                        $awal = strtotime($jam_masuk_tanggal);
                                         $akhir = strtotime($jout);
                                         $diff = $akhir - $awal;
                                         if (empty($jout)) {
@@ -357,7 +383,7 @@
 
                                         if (!empty($d->jam_out)) {
                                             if ($jam_out_tanggal < $jam_pulang_tanggal) {
-                                                if($jam_out > $jam_istirahat && !empty($d->jam_istirahat)){
+                                                if($jam_out_tanggal > $jam_istirahat_tanggal && !empty($jam_istirahat)){
                                                     $desimalmenit = ROUND(($menit * 100) / 60);
                                                     $grandtotaljam = $jam-1 . "." . $desimalmenit;
                                                 }else{
@@ -391,7 +417,7 @@
                                             <td>{{ $d->kode_dept }}</td>
 
                                             <td>{{ $d->id_kantor }}</td>
-                                            <td>{{ $d->nama_jadwal }} {{ $d->jadwalcabang }} ({{ $d->jam_masuk }} s/d {{ $d->jam_pulang }})</td>
+                                            <td>{{ $d->nama_jadwal }} {{ $d->jadwalcabang }} ({{ $j_masuk }} s/d {{ $j_pulang }})</td>
                                             <td>
                                                 {!! $d->jam_in != null ? '<a href="#" class="showpresensi" id="'.$d->id.'" status="in">'.$jam_in.'</a>' : '<span class="danger">Belum Absen</span>' !!}
                                                 @if (!empty($d->kode_izin_terlambat))
