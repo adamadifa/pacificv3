@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
 
 class SapController extends Controller
@@ -343,5 +344,86 @@ class SapController extends Controller
         $pelanggan = $query->paginate(15);
         $pelanggan->appends($request->all());
         return view('sap.pelanggan', compact('cabang', 'pelanggan'));
+    }
+
+
+    public function smactivity()
+    {
+
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
+        return view('sap.smactivity', compact('cabang'));
+    }
+
+    public function createsmactivity()
+    {
+        return view('sap.createsmactivity');
+    }
+
+
+    public function storesmactivity(Request $request)
+    {
+        $id = Auth::user()->id;
+        $lokasi = $request->lokasi;
+        $activity = $request->activity;
+        $lok = explode(",", $lokasi);
+        $latitude = $lok[0];
+        $longitude = $lok[1];
+        $kode_pelanggan = $request->kode_pelanggan;
+        $tglskrg = date("d");
+        $bulanskrg = date("m");
+        $tahunskrg = date("y");
+        $hariini = date("Y-m-d");
+        $tanggaljam = date("Y-m-d H:i:s");
+        $format = $tahunskrg . $bulanskrg . $tglskrg;
+        $smactivity = DB::table("activity_sm")
+            ->where('tanggal', $hariini)
+            ->orderBy("kode_act_sm", "desc")
+            ->first();
+        if ($smactivity == null) {
+            $lastkode = '';
+        } else {
+            $lastkode = $smactivity->kode_sm_act;
+        }
+        $kode_act_sm  = buatkode($lastkode, $format, 4);
+
+        if (isset($request->image)) {
+            $image = $request->image;
+            $folderPath = "public/uploads/smactivity/";
+            $formatName = $kode_act_sm;
+            $image_parts = explode(";base64", $image);
+            $image_base64 = base64_decode($image_parts[1]);
+            $fileName = $formatName . ".png";
+            $file = $folderPath . $fileName;
+        } else {
+            $fileName = null;
+        }
+
+        try {
+            $cek = DB::table('activity_sm')
+                ->whereRaw('DATE(tanggal)="' . $hariini . '"')
+                ->where('id_user', Auth::user()->id)
+                ->where('kode_pelanggan', $kode_pelanggan)
+                ->count();
+
+            if ($cek > 0) {
+                echo "error|Anda Sudah Melakukan Aktifitas pada Pelanggan Ini !";
+            } else {
+                $data = [
+                    'kode_act_sm' => $kode_act_sm,
+                    'tanggal' => $tanggaljam,
+                    'id_user' => Auth::user()->id,
+                    'kode_pelanggan' => $kode_pelanggan,
+                    'latitude' => $latitude,
+                    'longitude' => $longitude,
+                    'aktifitas' => $activity
+                ];
+
+                DB::table('activity_sm')->insert($data);
+                echo "success|Data Berhasil Disimpan";
+            }
+        } catch (\Exception $e) {
+            dd($e);
+        }
     }
 }

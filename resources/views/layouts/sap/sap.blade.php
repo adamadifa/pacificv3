@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="{{ asset('sap/assets/vendor/swiperjs-6.6.2/swiper-bundle.min.css')}}">
     <link rel="stylesheet" href="{{ asset('sap/dist/mc-calendar.min.css') }}" />
     <link rel="stylesheet" type="text/css" href="{{ asset('sap/assets/vendor/daterangepicker/daterangepicker.css') }}" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <!-- style css for this template -->
     <link href="{{ asset('sap/assets/css/style.css')}}" rel="stylesheet" id="style">
     <style>
@@ -265,6 +266,8 @@
     <script src="{{ asset('sap/dist/mc-calendar.min.js') }}"></script>
     <!-- page level custom script -->
     <script src="{{ asset('sap/assets/js/app.js') }}"></script>
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     @stack('myscript')
 </body>
 

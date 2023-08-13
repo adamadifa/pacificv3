@@ -1525,7 +1525,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/sap/limitkredit', [LimitkreditController::class, 'index']);
     Route::get('/sap/limitkredit/{no_pengajuan}/show', [SapController::class, 'showlimitkredit']);
     Route::get('/sap/pelanggan', [SapController::class, 'pelanggan']);
-
+    Route::get('/sap/smactivity', [SapController::class, 'smactivity']);
+    Route::get('/sap/smactivity/create', [SapController::class, 'createsmactivity']);
+    Route::post('/sap/smactivity/store', [SapController::class, 'storesmactivity']);
 
     //Kesepakatan Bersama
     Route::get('/kesepakatanbersama', [KesepakatanbersamaController::class, 'index']);

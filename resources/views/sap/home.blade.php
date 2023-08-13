@@ -126,11 +126,19 @@
 
 </div>
 <div class="row mt-2">
-    <div class="col-12 col-md-12">
+    <div class="col-6 col-md-6">
         <a href="/salesperformance" class="card text-center">
             <div class="card-body">
                 <i class="bi bi-bar-chart-line text-color-theme" style="font-size: 2rem;"></i>
                 <p class="text-color-theme size-12 small" style="margin-top: 10px">Sales Performance</p>
+            </div>
+        </a>
+    </div>
+    <div class="col-6 col-md-6">
+        <a href="/sap/smactivity" class="card text-center">
+            <div class="card-body">
+                <i class='bx bx-user-voice text-color-theme' style="font-size: 2.5rem;"></i>
+                <p class="text-color-theme size-12 small" style="margin-top: 10px">SM Activity</p>
             </div>
         </a>
     </div>
