@@ -259,7 +259,7 @@
             var grandtotal = total - voucher;
             if (cekpajak == 1) {
                 var hitungppn = parseInt(total) * (11 / 100);
-                var ppn = Math.ceil(hitungppn);
+                var ppn = Math.round(hitungppn);
             } else {
                 var ppn = 0;
             }
