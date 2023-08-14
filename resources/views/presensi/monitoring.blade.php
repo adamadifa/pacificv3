@@ -308,7 +308,7 @@
                                         // menghitung Denda
                                         if (!empty($d->jam_in) and $d->kode_dept != 'MKT') {
                                             if ($jam_in_tanggal > $j_masuk_tanggal and empty($d->kode_izin_terlambat)) {
-                                                if ($jamterlambat < 1) {
+                                                if ($jamterlambat <=1) {
                                                     if($menitterlambat >= 5 AND $menitterlambat < 10){
                                                         $denda = 5000;
                                                     }else if($menitterlambat >= 10 AND $menitterlambat <15){
