@@ -1373,7 +1373,7 @@
             var total = subtotal - potongan - potonganistimewa - penyesuaian;
             var grandtotal = total - voucher;
             if (cekpajak == 1) {
-                var ppn = Math.ceil(parseInt(total) * (11 / 100));
+                var ppn = Math.round(parseInt(total) * (11 / 100));
             } else {
                 var ppn = 0;
             }
