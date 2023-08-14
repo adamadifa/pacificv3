@@ -35,7 +35,7 @@
     <div class="content-body">
         @include('layouts.notification')
         <div class="row">
-            <div class="col-10">
+            <div class="col-12">
                 <div class="card">
                     <div class="card-header">
                         <a href="#" class="btn btn-primary" id="tambahlembur"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
