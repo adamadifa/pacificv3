@@ -67,6 +67,7 @@
                                         <div class="col-12">
                                             <input type="hidden" name="id_karyawan" id="id_karyawan">
                                             <input type="hidden" name="kategori_salesman" id="kategori_salesman">
+                                            <input type="hidden" name="status_promo" id="status_promo">
                                             <x-inputtext label="Salesman" field="nama_karyawan" icon="feather icon-users" readonly />
                                         </div>
                                     </div>
@@ -777,6 +778,7 @@
             var limitpelanggan = $(this).attr("limitpelanggan");
             var jatuhtempo = $(this).attr("jatuhtempo");
             var status = $(this).attr("status");
+            var status_promo = $(this).attr("status_promo");
             if (status == 'NonAktif') {
                 swal({
                     title: 'Oops'
@@ -808,6 +810,7 @@
 
                 $("#kode_cabang").val(kode_cabang);
                 $("#kategori_salesman").val(kategori_salesman);
+                $("#status_promo").val(status_promo);
                 $("#limitpel").val(limitpel);
                 $("#jatuhtempo").val(jatuhtempo);
                 $("#limitpelanggan").text(limitpelanggan);
@@ -937,9 +940,11 @@
             var kode_pelanggan = $("#kode_pelanggan").val();
             var kategori_salesman = $("#kategori_salesman").val();
             var kode_cabang = $("#kode_cabang").val();
-            //var pajak = "{{ $pajak }}";
-            alert(pajak);
-            console.log(pajak);
+            var status_promo = $("#status_promo").val();
+
+            var pajak = "{{ $pajak }}";
+            // alert(pajak);
+            // console.log(pajak);
             if (kode_pelanggan == "") {
                 swal({
                     title: 'Oops'
@@ -961,6 +966,7 @@
                         , kode_cabang: kode_cabang
                         , kode_pelanggan: kode_pelanggan
                         , pajak: pajak
+                        , status_promo: status_promo
                     , }
                     , cache: false
                     , success: function(respond) {
@@ -982,6 +988,7 @@
             var kode_pelanggan = $("#kode_pelanggan").val();
             var kategori_salesman = $("#kategori_salesman").val();
             var kode_cabang = $("#kode_cabang").val();
+            var status_promo = $("#status_promo").val();
             var pajak = "{{ $pajak }}";
             if (kode_pelanggan == "") {
                 swal({
@@ -1003,6 +1010,7 @@
                         , kode_cabang: kode_cabang
                         , kode_pelanggan: kode_pelanggan
                         , pajak: pajak
+                        , status_promo: status_promo
                     }
                     , cache: false
                     , success: function(respond) {

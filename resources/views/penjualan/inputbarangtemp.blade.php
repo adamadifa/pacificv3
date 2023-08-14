@@ -20,7 +20,7 @@
                 <select name="kode_barang" id="kode_barang_pilih" class="form-control">
                     <option value="">Pilih Barang</option>
                     @foreach ($barang as $d)
-                    <option value="{{ $d->kode_barang }}" kode_barang="{{ $d->kode_barang }}" nama_barang="{{ $d->nama_barang }}" isipcsdus="{{ $d->isipcsdus }}" isipcs="{{ $d->isipcs }}" harga_dus="{{ rupiah($d->harga_dus-$pengurangharga) }}" harga_pack="{{ rupiah($d->harga_pack) }}" harga_pcs="{{ rupiah($d->harga_pcs) }}">{{ $d->nama_barang }} ({{ $d->kategori_harga }})</option>
+                    <option value="{{ $d->kode_barang }}" kode_barang="{{ $d->kode_barang }}" nama_barang="{{ $d->nama_barang }}" isipcsdus="{{ $d->isipcsdus }}" isipcs="{{ $d->isipcs }}" harga_dus="{{ rupiah($d->harga_dus-$pengurangharga) }}" harga_pack="{{ rupiah($d->harga_pack) }}" harga_pcs="{{ rupiah($d->harga_pcs) }}">{{ $d->status_promo_product == 1 ? $d->nama_barang ."(PROMO)" : $d->nama_barang }} ({{ $d->kategori_harga }})</option>
                     @endforeach
                 </select>
             </div>
@@ -258,7 +258,8 @@
             var total = subtotal - potongan - potonganistimewa - penyesuaian;
             var grandtotal = total - voucher;
             if (cekpajak == 1) {
-                var ppn = parseInt(total) * (11 / 100);
+                var hitungppn = parseInt(total) * (11 / 100);
+                var ppn = Math.ceil(hitungppn);
             } else {
                 var ppn = 0;
             }

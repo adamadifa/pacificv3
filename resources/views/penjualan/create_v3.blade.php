@@ -88,6 +88,7 @@
                                         <div class="col-12">
                                             <input type="hidden" value="{{ $pelanggan != null ? $pelanggan->id_sales : '' }}" name="id_karyawan" id="id_karyawan">
                                             <input type="hidden" value="{{ $pelanggan != null ? $pelanggan->kategori_salesman : '' }}" name="kategori_salesman" id="kategori_salesman">
+                                            <input type="hidden" value="{{ $pelanggan != null ? $pelanggan->status_promo : '' }}" name="status_promo" id="status_promo">
                                             <x-inputtext label="Salesman" field="nama_karyawan" icon="feather icon-users" value="{{ $pelanggan != null ? $pelanggan->id_sales. '|'.$pelanggan->nama_karyawan.'|'.$pelanggan->kategori_salesman : ''}}" readonly />
                                         </div>
                                     </div>
@@ -681,6 +682,7 @@ $hari_sampai = $besok[2];
             var kode_pelanggan = $("#kode_pelanggan").val();
             var kategori_salesman = $("#kategori_salesman").val();
             var kode_cabang = $("#kode_cabang").val();
+            var status_promo = $("#status_promo").val();
             var pajak = "{{ $pajak }}";
             //alert(pajak);
             if (kode_pelanggan == "") {
@@ -704,6 +706,7 @@ $hari_sampai = $besok[2];
                         , kategori_salesman: kategori_salesman
                         , kode_cabang: kode_cabang
                         , pajak: pajak
+                        , status_promo: status_promo
 
                     }
                     , cache: false
@@ -1509,10 +1512,12 @@ $hari_sampai = $besok[2];
             var total = subtotal - potongan - potonganistimewa - penyesuaian;
             var grandtotal = total - voucher;
             if (cekpajak == 1) {
-                var ppn = parseInt(total) * (11 / 100);
+                var hitungppn = parseInt(total) * (11 / 100);
+                var ppn = Math.ceil(hitungppn);
             } else {
                 var ppn = 0;
             }
+            console.log(ppn);
             var totalwithppn = parseInt(grandtotal) + parseInt(ppn);
             var bruto = total;
             $("#grandtotal").text(convertToRupiah(totalwithppn));

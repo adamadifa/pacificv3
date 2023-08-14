@@ -59,7 +59,7 @@
         <tr>
             <td>{{ $d->kode_barang }}</td>
             <td>{{ $d->kode_produk }}</td>
-            <td>{{ $d->nama_barang }}</td>
+            <td>{!! $d->status_promo_product == 1 ? $d->nama_barang."<span style='color:red'>(PROMO)</span>" : $d->nama_barang !!}</td>
             <td class="text-right">{{ rupiah($d->harga_dus - $pengurangharga) }}</td>
             <td class="text-right">{{ rupiah($d->harga_pack) }}</td>
             <td class="text-right">{{ rupiah($d->harga_pcs) }}</td>

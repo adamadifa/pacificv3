@@ -313,7 +313,8 @@ $total += $d->subtotal;
             var total = subtotal - potongan - potonganistimewa - penyesuaian;
             var grandtotal = total - voucher;
             if (cekpajak == 1) {
-                var ppn = parseInt(total) * (11 / 100);
+                var hitungppn = parseInt(total) * (11 / 100);
+                var ppn = Math.ceil(hitungppn);
             } else {
                 var ppn = 0;
             }
