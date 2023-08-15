@@ -75,7 +75,7 @@
             showactivity();
         });
 
-
+        showactivity();
     });
 
 </script>
