@@ -433,7 +433,9 @@ class GlobalProvider extends ServiceProvider
                         }
                     }
 
-                    $qpi->where('head_dept', 1);
+                    if (Auth::user()->id == 164) {
+                        $qpi->where('head_dept', 1);
+                    }
                     $qpi->whereNull('hrd');
                     $qpi->orWhere('direktur', 1);
                     $qpi->whereNull('hrd');
