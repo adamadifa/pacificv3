@@ -1,13 +1,22 @@
 @extends('layouts.sap.sap')
 @section('content')
 <style>
-    .webcam-capture,
+    .webcam-capture {
+        display: inline-block;
+        width: 100% !important;
+        margin: auto;
+        height: 350px !important;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
     .webcam-capture video {
         display: inline-block;
         width: 100% !important;
         margin: auto;
         height: auto !important;
         border-radius: 15px;
+        object-fit: fill;
 
     }
 
