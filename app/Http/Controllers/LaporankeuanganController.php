@@ -1160,7 +1160,7 @@ class LaporankeuanganController extends Controller
             // Fungsi header dengan mengirimkan raw data excel
             header("Content-type: application/vnd-ms-excel");
             // Mendefinisikan nama file ekspor "hasil-export.xls"
-            header("Content-Disposition: attachment; filename=Laporan Kartu Pinjaman.xls");
+            header("Content-Disposition: attachment; filename=Laporan Kartu Kasbon.xls");
         }
         return view('kasbon.laporan.cetak_kartukasbon', compact('kasbon', 'departemen', 'kantor', 'show_for_hrd', 'namabulan', 'bulan', 'tahun'));
     }
