@@ -114,8 +114,9 @@ class Pengajuanizin extends Model
                 $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');
             }
 
-
-            $query->where('head_dept', 1);
+            if (Auth::user()->id == 164) {
+                $query->where('head_dept', 1);
+            }
 
 
             $query->orWhere('direktur', 1);
