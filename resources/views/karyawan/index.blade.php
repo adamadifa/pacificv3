@@ -142,6 +142,7 @@
                                             <th>Kantor</th>
                                             <th>Klasifikasi</th>
                                             <th>Status</th>
+                                            <th>Loc</th>
                                             <th>Pin</th>
                                             <th>Aksi</th>
                                         </tr>
@@ -165,6 +166,23 @@
                                                 <span class="badge bg-green">T</span>
                                                 @elseif($d->status_karyawan=="K")
                                                 <span class="badge bg-warning">K</span>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($d->kode_dept != "MKT")
+                                                <a href="#" class="ml-1">
+                                                    <i class="feather icon-lock danger"></i>
+                                                </a>
+                                                @else
+                                                @if ($d->lock_location==1)
+                                                <a href="/karyawan/{{ Crypt::encrypt($d->nik)}}/unlocklocation }}" class="ml-1">
+                                                    <i class="feather icon-lock danger"></i>
+                                                </a>
+                                                @else
+                                                <a href="/karyawan/{{ Crypt::encrypt($d->nik)}}/locklocation" class="ml-1">
+                                                    <i class="feather icon-unlock success"></i>
+                                                </a>
+                                                @endif
                                                 @endif
                                             </td>
                                             <td>{{ $d->pin }}</td>
@@ -364,6 +382,8 @@
                                                     <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukankasbon"><i class="feather icon-external-link warning ml-1"></i></a>
                                                     @endif
                                                     @endif
+
+
                                                 </div>
                                             </td>
                                         </tr>

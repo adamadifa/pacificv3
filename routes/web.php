@@ -1775,4 +1775,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/lhp/store', [LhpController::class, 'store']);
     Route::delete('/lhp/{kode_lhp}/delete', [LhpController::class, 'delete']);
     Route::get('/lhp/{kode_lhp}/cetak', [LhpController::class, 'cetak']);
+
+
+
+    //Lock Location
+
+    Route::get('/karyawan/{nik}/locklocation', [KaryawanController::class, 'locklocation']);
+    Route::get('/karyawan/{nik}/unlocklocation', [KaryawanController::class, 'unlocklocation']);
 });

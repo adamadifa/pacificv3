@@ -23,7 +23,7 @@ class KaryawanController extends Controller
 
         //dd($status_aktif);
         $query = Karyawan::query();
-        $query->select('nik', 'nama_karyawan', 'tgl_masuk', 'master_karyawan.kode_dept', 'nama_dept', 'jenis_kelamin', 'nama_jabatan', 'id_perusahaan', 'id_kantor', 'klasifikasi', 'status_karyawan', 'pin', 'status_aktif');
+        $query->select('nik', 'nama_karyawan', 'tgl_masuk', 'master_karyawan.kode_dept', 'nama_dept', 'jenis_kelamin', 'nama_jabatan', 'id_perusahaan', 'id_kantor', 'klasifikasi', 'status_karyawan', 'pin', 'status_aktif', 'lock_location');
         $query->leftjoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
         $query->leftjoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
 
@@ -567,5 +567,36 @@ class KaryawanController extends Controller
         $jml_kontrak_duabulan = $qkontrak_duabulan->count();
 
         return view('karyawan.habiskontrak', compact('kontrak_lewat', 'jml_kontrak_lewat', 'kontrak_bulanini', 'jml_kontrak_bulanini', 'hariini', 'kontrak_bulandepan', 'jml_kontrak_bulandepan', 'kontrak_duabulan', 'jml_kontrak_duabulan'));
+    }
+
+
+    public function locklocation($nik)
+    {
+        $nik = Crypt::decrypt($nik);
+        try {
+            DB::table('master_karyawan')->where('nik', $nik)->update([
+                'lock_location' => 1
+            ]);
+            return Redirect::back()->with(['success' => 'Data Lokasi Di Kunci']);
+        } catch (\Exception $e) {
+
+            dd($e);
+            return Redirect::back()->with(['warning' => 'Data Lokai Gagal DIkunci']);
+        }
+    }
+
+
+    public function unlocklocation($nik)
+    {
+
+        $nik = Crypt::decrypt($nik);
+        try {
+            DB::table('master_karyawan')->where('nik', $nik)->update([
+                'lock_location' => null
+            ]);
+            return Redirect::back()->with(['success' => 'Data Lokasi Di Buka']);
+        } catch (\Throwable $th) {
+            return Redirect::back()->with(['warning' => 'Data Lokasi Gagal Dibuka']);
+        }
     }
 }
