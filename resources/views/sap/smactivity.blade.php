@@ -71,7 +71,11 @@
             });
         }
 
-        showactivity();
+        $("#tanggal").change(function() {
+            showactivity();
+        });
+
+
     });
 
 </script>
