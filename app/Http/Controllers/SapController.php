@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 
 class SapController extends Controller
@@ -355,6 +356,33 @@ class SapController extends Controller
         return view('sap.smactivity', compact('cabang'));
     }
 
+
+    public function getsmactivity(Request $request)
+    {
+        $id = Auth::user()->id;
+        $kode_cabang = Auth::user()->kode_cabang;
+        $cabang = DB::table('cabang')->where('kode_cabang', $kode_cabang)->first();
+        $lokasi = explode(",", $cabang->lokasi_cabang);
+        $tanggal = explode("-", $request->tanggal);
+        $tgl1 = explode("/", $tanggal[0]);
+        $tgl2 = explode("/", $tanggal[1]);
+        $dari = str_replace(' ', '', implode("-", array($tgl1[2], $tgl1[1], $tgl1[0])));
+        $sampai = str_replace(' ', '', implode("-", array($tgl2[2], $tgl2[1], $tgl2[0])));
+        $hariini = date("Y-m-d");
+        if (!empty($request->tanggal)) {
+            $smactivity = DB::table('activity_sm')->where('id_user', $id)
+                ->whereRaw('DATE(tanggal)="' . $hariini . '"')
+                ->get();
+        } else {
+            $smactivity = DB::table('activity_sm')->where('id_user', $id)
+                ->whereRaw('DATE(tanggal)>="' . $dari . '"')
+                ->whereRaw('DATE(tanggal)<="' . $sampai . '"')
+                ->get();
+        }
+
+        return view('sap.getsmactivity', compact('smactivity', 'lokasi'));
+    }
+
     public function createsmactivity()
     {
         return view('sap.createsmactivity');
@@ -369,7 +397,7 @@ class SapController extends Controller
         $lok = explode(",", $lokasi);
         $latitude = $lok[0];
         $longitude = $lok[1];
-        $kode_pelanggan = $request->kode_pelanggan;
+        // $kode_pelanggan = $request->kode_pelanggan;
         $tglskrg = date("d");
         $bulanskrg = date("m");
         $tahunskrg = date("y");
@@ -377,13 +405,13 @@ class SapController extends Controller
         $tanggaljam = date("Y-m-d H:i:s");
         $format = $tahunskrg . $bulanskrg . $tglskrg;
         $smactivity = DB::table("activity_sm")
-            ->where('tanggal', $hariini)
+            ->whereRaw('DATE(tanggal)="' . $hariini . '"')
             ->orderBy("kode_act_sm", "desc")
             ->first();
         if ($smactivity == null) {
             $lastkode = '';
         } else {
-            $lastkode = $smactivity->kode_sm_act;
+            $lastkode = $smactivity->kode_act_sm;
         }
         $kode_act_sm  = buatkode($lastkode, $format, 4);
 
@@ -400,26 +428,28 @@ class SapController extends Controller
         }
 
         try {
-            $cek = DB::table('activity_sm')
-                ->whereRaw('DATE(tanggal)="' . $hariini . '"')
-                ->where('id_user', Auth::user()->id)
-                ->where('kode_pelanggan', $kode_pelanggan)
-                ->count();
-
+            // $cek = DB::table('activity_sm')
+            //     ->whereRaw('DATE(tanggal)="' . $hariini . '"')
+            //     ->where('id_user', Auth::user()->id)
+            //     ->count();
+            $cek = 0;
             if ($cek > 0) {
                 echo "error|Anda Sudah Melakukan Aktifitas pada Pelanggan Ini !";
             } else {
                 $data = [
                     'kode_act_sm' => $kode_act_sm,
                     'tanggal' => $tanggaljam,
-                    'id_user' => Auth::user()->id,
-                    'kode_pelanggan' => $kode_pelanggan,
+                    'id_user' => $id,
                     'latitude' => $latitude,
                     'longitude' => $longitude,
-                    'aktifitas' => $activity
+                    'aktifitas' => $activity,
+                    'foto' => $fileName
                 ];
 
                 DB::table('activity_sm')->insert($data);
+                if (isset($request->image)) {
+                    Storage::put($file, $image_base64);
+                }
                 echo "success|Data Berhasil Disimpan";
             }
         } catch (\Exception $e) {

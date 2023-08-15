@@ -30,7 +30,7 @@
         top: 210px;
         left: 20px;
         z-index: 9999;
-        width: 150px;
+        width: 200px;
         border-radius: 10px;
         padding: 5px;
     }
@@ -150,6 +150,7 @@
             })
         } else {
             $("#sendactivity").prop('disabled', true);
+            $("#sendactivity").text('Loading..');
             $.ajax({
                 type: 'POST'
                 , url: '/sap/smactivity/store'
@@ -168,7 +169,7 @@
                             , text: status[1]
                             , icon: 'success'
                         })
-                        setTimeout("location.href='/sap/smactivity'", 3000);
+                        setTimeout("location.href='/sap/smactivity'", 2000);
                     } else {
                         Swal.fire({
                             title: 'Error !'

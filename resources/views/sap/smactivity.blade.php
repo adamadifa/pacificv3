@@ -21,7 +21,6 @@
     }
 
 </style>
-<form action="/sap/pelanggan" />
 <div class="row mb-2">
     <div class="col-12">
         <div class="inputWithIcon">
@@ -31,25 +30,10 @@
         </div>
     </div>
 </div>
-<div class="row mt-2">
-    <div class="col-12">
-        <div class="group">
-            <select name="kode_cabang" class="select_join" id="kode_cabang">
-                <option value="">Pilih Cabang</option>
-                @foreach ($cabang as $d)
-                <option {{ Request('kode_cabang') == $d->kode_cabang ? 'selected' : '' }} value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
-                @endforeach
-            </select>
-        </div>
+<div class="row">
+    <div class="col" id="getsmactivity">
     </div>
 </div>
-
-<div class="row mt-2">
-    <div class="col-12">
-        <button class="btn w-100" type="submit" name="submit" style="background-color:#b11036; color:white">Cari Data</button>
-    </div>
-</div>
-</form>
 <a href="/sap/smactivity/create" class="float btn btn-rounded" style="background-color:#b11036; color:white;"><i class='bx bx-plus' style="font-size:1.5rem"></i></a>
 <div class="row mt-2">
     <div class="col-12">
@@ -69,6 +53,25 @@
                 format: 'DD/MM/YYYY'
             }
         });
+
+
+        function showactivity() {
+            var tanggal = $("#tanggal").val();
+            $.ajax({
+                type: 'POST'
+                , url: '/getsmactivity'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , tanggal: tanggal
+                }
+                , cache: false
+                , success: function(respond) {
+                    $("#getsmactivity").html(respond);
+                }
+            });
+        }
+
+        showactivity();
     });
 
 </script>

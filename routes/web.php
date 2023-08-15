@@ -1528,6 +1528,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/sap/smactivity', [SapController::class, 'smactivity']);
     Route::get('/sap/smactivity/create', [SapController::class, 'createsmactivity']);
     Route::post('/sap/smactivity/store', [SapController::class, 'storesmactivity']);
+    Route::post('/getsmactivity', [SapController::class, 'getsmactivity']);
 
     //Kesepakatan Bersama
     Route::get('/kesepakatanbersama', [KesepakatanbersamaController::class, 'index']);
