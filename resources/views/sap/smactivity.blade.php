@@ -57,6 +57,7 @@
 
         function showactivity() {
             var tanggal = $("#tanggal").val();
+            //alert(tanggal);
             $.ajax({
                 type: 'POST'
                 , url: '/getsmactivity'

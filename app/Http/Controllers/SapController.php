@@ -369,7 +369,7 @@ class SapController extends Controller
         $dari = str_replace(' ', '', implode("-", array($tgl1[2], $tgl1[1], $tgl1[0])));
         $sampai = str_replace(' ', '', implode("-", array($tgl2[2], $tgl2[1], $tgl2[0])));
         $hariini = date("Y-m-d");
-        if (!empty($request->tanggal)) {
+        if (empty($request->tanggal)) {
             $smactivity = DB::table('activity_sm')->where('id_user', $id)
                 ->whereRaw('DATE(tanggal)="' . $hariini . '"')
                 ->get();
