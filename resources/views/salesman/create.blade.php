@@ -86,6 +86,7 @@
                                                     <option @if (old('kategori_salesman')=='CANVASER' ) selected @endif value="CANVASER">CANVASER</option>
                                                     <option @if (old('kategori_salesman')=='RETAIL' ) selected @endif value="RETAIL">RETAIL</option>
                                                     <option @if (old('kategori_salesman')=='MOTORIS' ) selected @endif value="MOTORIS">MOTORIS</option>
+                                                    <option @if (old('kategori_salesman')=='TOCANVASER' ) selected @endif value="TOCANVASER">TOCANVASER</option>
                                                 </select>
                                                 @error('kategori_salesman')
                                                 <div class="help-block">

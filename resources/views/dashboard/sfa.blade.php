@@ -7,6 +7,14 @@
     <div class="content-body">
         <!-- Dashboard Analytics Start -->
         <section>
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->is(['dashboardsfa']) ? 'active' : '' }}" href="/dashboardsfa">SFA Salesman</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" {{ request()->is(['dashboardsfakp']) ? 'active' : '' }}" href="/dashboardsfakp">SFA SMM</a>
+                </li>
+            </ul>
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="row">
