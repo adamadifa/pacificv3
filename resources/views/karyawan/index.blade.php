@@ -175,7 +175,7 @@
                                                 </a>
                                                 @else
                                                 @if ($d->lock_location==1)
-                                                <a href="/karyawan/{{ Crypt::encrypt($d->nik)}}/unlocklocation }}" class="ml-1">
+                                                <a href="/karyawan/{{ Crypt::encrypt($d->nik)}}/unlocklocation" class="ml-1">
                                                     <i class="feather icon-lock danger"></i>
                                                 </a>
                                                 @else
