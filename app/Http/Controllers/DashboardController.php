@@ -1145,14 +1145,39 @@ class DashboardController extends Controller
         $tanggal = $request->tanggal;
         $kode_cabang = $request->kode_cabang;
 
-        $cbg = new Cabang();
-        $cabang = $cbg->getCabang($kode_cabang);
+
+        $cabang = DB::table('cabang')->get();
+
+
+
+        if (!empty($kode_cabang)) {
+            $lok_cabang = DB::table('cabang')->where('kode_cabang', $kode_cabang)->first();
+        } else {
+            $lok_cabang = DB::table('cabang')->where('kode_cabang', 'PST')->first();
+        }
+        $lokasi = explode(",", $lok_cabang->lokasi_cabang);
+
 
         $smactivity = DB::table('activity_sm')
+            ->select('activity_sm.*')
             ->leftJoin('users', 'activity_sm.id_user', '=', 'users.id')
             ->where('users.kode_cabang', $kode_cabang)
             ->whereRaw('DATE(tanggal)="' . $tanggal . '"')
+            ->orderBy('tanggal')
             ->get();
-        return view('dashboard.sfakp', compact('cabang', 'smactivity'));
+        return view('dashboard.sfakp', compact('cabang', 'smactivity', 'lokasi'));
+    }
+
+
+    public function showsmactivity($kode_act_sm)
+    {
+        $smactivity = DB::table('activity_sm')
+            ->select('activity_sm.*')
+            ->where('kode_act_sm', $kode_act_sm)
+            ->first();
+
+
+
+        return view('dashboard.showsmactivity', compact('smactivity'));
     }
 }

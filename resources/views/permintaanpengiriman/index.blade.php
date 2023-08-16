@@ -89,7 +89,11 @@
                                     <td class="text-center">{{ $loop->iteration + $pp->firstItem() - 1 }}</td>
                                     <td><a class="ml-1 detail" href="#" no_permintaan_pengiriman="{{ Crypt::encrypt($d->no_permintaan_pengiriman) }}">{{$d->no_permintaan_pengiriman}}</a></td>
 
-                                    <td>{{ date('d-m-Y', strtotime($d->tgl_permintaan_pengiriman)) }}</td>
+                                    <td>
+                                        <a href="#" no_permintaan_pengiriman="{{ $d->no_permintaan_pengiriman }}" class="ubahtanggal">
+                                            {{ date('d-m-Y', strtotime($d->tgl_permintaan_pengiriman)) }}
+                                        </a>
+                                    </td>
                                     <td>{{ $d->kode_cabang }}</td>
                                     <td>{{ $d->keterangan }}</td>
                                     <td>
@@ -166,6 +170,22 @@
             </div>
             <div class="modal-body">
                 <div id="loaddetailpp"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade text-left" id="mdlubahtanggal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Ubah Tanggal</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loadubahtanggal"></div>
             </div>
         </div>
     </div>
@@ -313,6 +333,19 @@
                     }
                 });
         });
+
+        // $(".ubahtanggal").click(function(e) {
+        //     e.preventDefault();
+        //     var no_permintaan_pengiriman = $(this).attr("no_permintaan_pengiriman");
+        //     $.ajax({
+        //         type: 'POST'
+        //         , url: '/permintaanpengiriman/ubahtanggal'
+        //         , data: {
+        //             _token: "{{ csrf_token() }}"
+        //         , }
+        //     });
+        //     $("#mdlubahtanggal").modal("show");
+        // });
         $('#inputpermintaan').click(function(e) {
             e.preventDefault();
             tampilkanproduk();

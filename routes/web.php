@@ -1530,7 +1530,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/sap/smactivity/create', [SapController::class, 'createsmactivity']);
     Route::post('/sap/smactivity/store', [SapController::class, 'storesmactivity']);
     Route::post('/getsmactivity', [SapController::class, 'getsmactivity']);
-
+    Route::get('/smactivity/{kode_act_sm}/show', [DashboardController::class, 'showsmactivity']);
     //Kesepakatan Bersama
     Route::get('/kesepakatanbersama', [KesepakatanbersamaController::class, 'index']);
     Route::post('/kesepakatanbersama/store', [KesepakatanbersamaController::class, 'store']);
