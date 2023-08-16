@@ -230,4 +230,29 @@ class PermintaanpengirimanController extends Controller
         ];
         DB::table('detail_permintaan_pengiriman')->where('no_permintaan_pengiriman', $no_permintaan_pengiriman)->where('kode_produk', $kode_produk)->update($data);
     }
+
+
+    public function ubahtanggal(Request $request)
+    {
+        $no_permintaan_pengiriman = $request->no_permintaan_pengiriman;
+        $pp = DB::table('permintaan_pengiriman')->where('no_permintaan_pengiriman', $no_permintaan_pengiriman)->first();
+        return view('permintaanpengiriman.ubahtanggal', compact('pp'));
+    }
+
+
+    public function updatetanggal(Request $request, $no_permintaan_pengiriman)
+    {
+        $no_permintaan_pengiriman = Crypt::decrypt($no_permintaan_pengiriman);
+        $tanggal = $request->tanggal;
+        try {
+            DB::table('permintaan_pengiriman')->where('no_permintaan_pengiriman', $no_permintaan_pengiriman)->update([
+                'tgl_permintaan_pengiriman' => $tanggal
+            ]);
+
+            return Redirect::back()->with(['success' => 'Data Berhasil Diupdate']);
+        } catch (\Exception $e) {
+            //throw $th;
+            return Redirect::back()->with(['warning' => 'Data Gagal Diupdate']);
+        }
+    }
 }

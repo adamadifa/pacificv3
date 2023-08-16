@@ -132,6 +132,7 @@ use App\Models\Pemasukangudanglogistik;
 use App\Models\Pengajuanizin;
 use App\Models\Penilaiankaryawan;
 use App\Models\Penjualan;
+use App\Models\Permintaanpengiriman;
 use App\Models\Pinjaman;
 use App\Models\Saldoawalmutasibarangproduksi;
 use App\Models\Setcoacabang;
@@ -257,7 +258,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/permintaanpengiriman/updatedetail', [PermintaanpengirimanController::class, 'updatedetail']);
     Route::post('/permintaanpengiriman/buatnopermintaan', [PermintaanpengirimanController::class, 'buatnopermintaan']);
     Route::delete('/permintaanpengiriman/{no_permintaan_pengiriman}/delete', [PermintaanpengirimanController::class, 'delete']);
-
+    Route::post('/permintaanpengiriman/ubahtanggal', [PermintaanpengirimanController::class, 'ubahtanggal']);
+    Route::post('/permintaanpengiriman/{no_permintaan_pengiriman}/updatetanggal', [PermintaanpengirimanController::class, 'updatetanggal']);
     //Ratio Komisi
     Route::get('/ratiokomisi', [RatiokomisiController::class, 'index']);
     Route::post('/ratiokomisi/getratiokomisi', [RatiokomisiController::class, 'getratiokomisi']);

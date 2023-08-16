@@ -176,7 +176,7 @@
 </div>
 
 <div class="modal fade text-left" id="mdlubahtanggal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel18">Ubah Tanggal</h4>
@@ -334,18 +334,24 @@
                 });
         });
 
-        // $(".ubahtanggal").click(function(e) {
-        //     e.preventDefault();
-        //     var no_permintaan_pengiriman = $(this).attr("no_permintaan_pengiriman");
-        //     $.ajax({
-        //         type: 'POST'
-        //         , url: '/permintaanpengiriman/ubahtanggal'
-        //         , data: {
-        //             _token: "{{ csrf_token() }}"
-        //         , }
-        //     });
-        //     $("#mdlubahtanggal").modal("show");
-        // });
+        $(".ubahtanggal").click(function(e) {
+            e.preventDefault();
+            var no_permintaan_pengiriman = $(this).attr("no_permintaan_pengiriman");
+            $.ajax({
+                type: 'POST'
+                , url: '/permintaanpengiriman/ubahtanggal'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , no_permintaan_pengiriman: no_permintaan_pengiriman
+                , }
+                , cache: false
+                , success: function(respond) {
+                    $("#loadubahtanggal").html(respond);
+                }
+            });
+            $("#mdlubahtanggal").modal("show");
+        });
+
         $('#inputpermintaan').click(function(e) {
             e.preventDefault();
             tampilkanproduk();
