@@ -329,7 +329,7 @@
 
 
                         $nama_jadwal = $datapresensi[2];
-                        if($d->nama_jabatan=="SPG"){
+                        if($d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB"){
                             $jam_masuk = $jam_in_presensi;
                             $jam_masuk_tanggal = $tgl_presensi." ".$jam_masuk;
                         }else{
@@ -339,7 +339,7 @@
 
 
 
-                        if($d->nama_jabatan=="SPG"){
+                        if($d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB"){
                             $jam_pulang = !empty($jam_out_presensi) ? $jam_out_presensi : "";
                             $jam_pulang_tanggal = !empty($jam_out_presensi) ? $tgl_pulang." ".$jam_pulang : "";
                         }else{
