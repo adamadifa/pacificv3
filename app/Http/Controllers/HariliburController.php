@@ -354,8 +354,8 @@ class HariliburController extends Controller
             $nik = [];
             $qkaryawan = Karyawan::query();
             $qkaryawan->select('nik');
-            $qkaryawan->where('id_kantord', $id_kantor);
-            if (!empty($kode_dept)) {
+            $qkaryawan->where('id_kantor', $id_kantor);
+            if (!empty($kode_dept) && $kode_dept != "ALL") {
                 $qkaryawan->where('kode_dept', $kode_dept);
             }
 
