@@ -758,6 +758,16 @@
                             <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
                         @else
                         <br> --}}
+
+                        {{-- <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
+                        @endif --}}
+                        @php
+                        $izinabsen = 0;
+                        @endphp
+                        @if (!empty($sid))
+                        SID
+                        @else
+                        SKT
                         <?php
                                 if($namahari=="Sabtu"){
                                 $izinsakit = 5;
@@ -771,15 +781,6 @@
                                     $izinsakit = 7;
                                 }
                             ?>
-                        {{-- <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
-                        @endif --}}
-                        @php
-                        $izinabsen = 0;
-                        @endphp
-                        @if (!empty($sid))
-                        SID
-                        @else
-                        SKT
                         @endif
                         </span>
                         @elseif($status=="i")
