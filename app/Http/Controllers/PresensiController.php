@@ -575,7 +575,12 @@ class PresensiController extends Controller
 
         $kar = new Karyawan();
         $listkaryawan = $kar->getkaryawanpengajuan($kode_dept_presensi);
-        return view('presensi.presensikaryawan', compact('karyawan', 'listkaryawan'));
+
+        $datalibur = ceklibur($dari, $sampai);
+        $dataliburpenggantiminggu = cekliburpenggantiminggu($dari, $sampai);
+        $dataminggumasuk = cekminggumasuk($dari, $sampai);
+
+        return view('presensi.presensikaryawan', compact('karyawan', 'listkaryawan', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk'));
     }
 
 

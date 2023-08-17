@@ -143,7 +143,10 @@
                                                 LEMBUR HARI LIBUR
                                                 @endif
                                             </td>
-                                            <td>{{ ucwords(strtolower($d->keterangan)) }}</td>
+                                            <td>{{ ucwords(strtolower($d->keterangan)) }}
+                                                <br>
+                                                {!! !empty($d->keterangan_hrd) ? "<span class='danger'><b>HRD</b></span> : <span class='danger'>".$d->keterangan_hrd."</span>":"" !!}
+                                            </td>
                                             <td>
                                                 @if (empty($d->hrd))
                                                 <i class="fa fa-history warning"></i>
@@ -176,6 +179,10 @@
                                                             <i class="feather icon-trash danger"></i>
                                                         </a>
                                                     </form>
+
+                                                    @if ($level == "manager hrd" || $level=="admin")
+                                                    <a href="#" class="ket_hrd" kode_lembur="{{ $d->kode_lembur }}"><i class="feather icon-message-square ml-1 info"></i></a>
+                                                    @endif
                                                 </div>
                                             </td>
                                         </tr>
@@ -331,10 +338,32 @@
         </div>
     </div>
 </div>
+<div class="modal fade text-left" id="mdl_kethrd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Keterangan HRD</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="load_kethrd">
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @push('myscript')
 <script>
     $(function() {
+
+        $(".ket_hrd").click(function(e) {
+            $("#mdl_kethrd").modal("show");
+            var kode_lembur = $(this).attr('kode_lembur');
+            $("#load_kethrd").load('/lembur/' + kode_lembur + '/create_kethrd');
+        });
+
+
         $("#tambahlembur").click(function(e) {
             e.preventDefault();
             $('#mdltambahlembur').modal({

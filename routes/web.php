@@ -94,6 +94,7 @@ use App\Http\Controllers\PenjualanController;
 use App\Http\Controllers\PermintaanpengirimanController;
 use App\Http\Controllers\PermintaanproduksiController;
 use App\Http\Controllers\PinjamanController;
+use App\Http\Controllers\PinjamannonpjpController;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\ProduksiController;
 use App\Http\Controllers\QrcodeController;
@@ -1591,6 +1592,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/pembayaranpinjaman/show', [PembayaranpinjamanController::class, 'show']);
     Route::get('/pembayaranpinjaman/{kode_potongan}/{export}/cetak', [PembayaranpinjamanController::class, 'cetak']);
 
+    //PinjamanNonPJP
+    Route::get('/pinjamannonpjp/{nik}/create', [PinjamannonpjpController::class, 'create']);
 
     //Kasbon
     Route::get('/kasbon/', [KasbonController::class, 'index']);
@@ -1766,7 +1769,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/lembur/hapuslemburkaryawan', [LemburController::class, 'hapuslemburkaryawan']);
     Route::post('/lembur/approve', [LemburController::class, 'approve']);
     Route::get('/lembur/{kode_lembur}/batalkan', [LemburController::class, 'batalkan']);
-
+    Route::get('/lembur/{kode_lembur}/create_kethrd', [LemburController::class, 'create_kethrd']);
+    Route::post('/lembur/{kode_lembur}/update_kethrd', [LemburController::class, 'update_kethrd']);
     Route::get('/monitoringsku', [PenjualanController::class, 'monitoringsku']);
     Route::post('/getsku', [PenjualanController::class, 'getsku']);
 

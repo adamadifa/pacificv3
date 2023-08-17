@@ -371,4 +371,24 @@ class LemburController extends Controller
             //throw $th;
         }
     }
+
+    public function create_kethrd($kode_lembur)
+    {
+        $lembur = DB::table('lembur')->where('kode_lembur', $kode_lembur)->first();
+        return view('lembur.create_kethrd', compact('lembur'));
+    }
+
+
+    public function update_kethrd($kode_lembur, Request $request)
+    {
+        try {
+            DB::table('lembur')->where('kode_lembur', $kode_lembur)->update([
+                'keterangan_hrd' => $request->keterangan_hrd
+            ]);
+
+            return Redirect::back()->with(['success' => 'Komentar Berhasil Ditambahkan']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Komentar Gagal Ditambahkan']);
+        }
+    }
 }

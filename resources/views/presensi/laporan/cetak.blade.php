@@ -329,23 +329,55 @@
 
 
                         $nama_jadwal = $datapresensi[2];
-                        if($d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB"){
-                            $jam_masuk = $jam_in_presensi;
-                            $jam_masuk_tanggal = $tgl_presensi." ".$jam_masuk;
+
+                        if($namahari== "Minggu"){
+                            if(!empty($cekminggumasuk)){
+                                if($d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB"){
+                                    $jam_masuk = $jam_in_presensi;
+                                    $jam_masuk_tanggal = $tgl_presensi." ".$jam_masuk;
+                                }else{
+                                    $jam_masuk = date("H:i",strtotime($datapresensi[3]));
+                                    $jam_masuk_tanggal = $tgl_presensi." ".$jam_masuk;
+                                }
+
+                                if($d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB"){
+                                    $jam_pulang = !empty($jam_out_presensi) ? $jam_out_presensi : "";
+                                    $jam_pulang_tanggal = !empty($jam_out_presensi) ? $tgl_pulang." ".$jam_pulang : "";
+                                }else{
+                                    $jam_pulang = $datapresensi[4] != "NA" ? date("H:i",strtotime($datapresensi[4])) : "";
+                                    $jam_pulang_tanggal = $datapresensi[4] != "NA" ? $tgl_pulang." ".$jam_pulang : "";
+                                }
+                            }else{
+                                $jam_masuk = $jam_in_presensi;
+                                $jam_masuk_tanggal = $tgl_presensi." ".$jam_masuk;
+                                $jam_pulang = !empty($jam_out_presensi) ? $jam_out_presensi : "";
+                                $jam_pulang_tanggal = !empty($jam_out_presensi) ? $tgl_pulang." ".$jam_pulang : "";
+                            }
                         }else{
-                            $jam_masuk = date("H:i",strtotime($datapresensi[3]));
-                            $jam_masuk_tanggal = $tgl_presensi." ".$jam_masuk;
+                            if(!empty($ceklibur) || !empty($cekliburpenggantiminggu)){
+                                $jam_masuk = $jam_in_presensi;
+                                $jam_masuk_tanggal = $tgl_presensi." ".$jam_masuk;
+                                $jam_pulang = !empty($jam_out_presensi) ? $jam_out_presensi : "";
+                                $jam_pulang_tanggal = !empty($jam_out_presensi) ? $tgl_pulang." ".$jam_pulang : "";
+                            }else{
+                                if($d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB"){
+                                    $jam_masuk = $jam_in_presensi;
+                                    $jam_masuk_tanggal = $tgl_presensi." ".$jam_masuk;
+                                }else{
+                                    $jam_masuk = date("H:i",strtotime($datapresensi[3]));
+                                    $jam_masuk_tanggal = $tgl_presensi." ".$jam_masuk;
+                                }
+
+                                if($d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB"){
+                                    $jam_pulang = !empty($jam_out_presensi) ? $jam_out_presensi : "";
+                                    $jam_pulang_tanggal = !empty($jam_out_presensi) ? $tgl_pulang." ".$jam_pulang : "";
+                                }else{
+                                    $jam_pulang = $datapresensi[4] != "NA" ? date("H:i",strtotime($datapresensi[4])) : "";
+                                    $jam_pulang_tanggal = $datapresensi[4] != "NA" ? $tgl_pulang." ".$jam_pulang : "";
+                                }
+                            }
                         }
 
-
-
-                        if($d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB"){
-                            $jam_pulang = !empty($jam_out_presensi) ? $jam_out_presensi : "";
-                            $jam_pulang_tanggal = !empty($jam_out_presensi) ? $tgl_pulang." ".$jam_pulang : "";
-                        }else{
-                            $jam_pulang = $datapresensi[4] != "NA" ? date("H:i",strtotime($datapresensi[4])) : "";
-                            $jam_pulang_tanggal = $datapresensi[4] != "NA" ? $tgl_pulang." ".$jam_pulang : "";
-                        }
 
 
                         //$jam_pulang_presensi =$jam_pulang != "NA" ? date("H:i",strtotime($jam_pulang)) : '';

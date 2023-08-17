@@ -44,7 +44,7 @@
 
     .header-fixed>tbody>tr>td:nth-child(2),
     .header-fixed>thead>tr>th:nth-child(2) {
-        width: 5%;
+        width: 6%;
         float: left;
     }
 
@@ -62,7 +62,7 @@
 
     .header-fixed>tbody>tr>td:nth-child(5),
     .header-fixed>thead>tr>th:nth-child(5) {
-        width: 13%;
+        width: 12%;
         float: left;
     }
 
@@ -245,7 +245,7 @@
                                                     <tr>
                                                         <td class="filterable-cell">{{ $loop->iteration }}</td>
                                                         <td class="filterable-cell">{{ $d->kode_izin }}</td>
-                                                        <td class="filterable-cell">{{ date('d-m-Y',strtotime($d->dari)) }} s/d {{ date('d-m-Y',strtotime($d->sampai)) }}</td>
+                                                        <td class="filterable-cell">{{ date('d-m-y',strtotime($d->dari)) }} s/d {{ date('d-m-y',strtotime($d->sampai)) }}</td>
                                                         <td class="filterable-cell">{{ $d->nik }}</td>
                                                         <td class="filterable-cell">{{ $d->nama_karyawan }}</td>
                                                         <td class="filterable-cell">{{ $d->nama_jabatan }}</td>

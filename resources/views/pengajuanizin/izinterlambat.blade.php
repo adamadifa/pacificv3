@@ -52,7 +52,7 @@
 
     .header-fixed>tbody>tr>td:nth-child(2),
     .header-fixed>thead>tr>th:nth-child(2) {
-        width: 5%;
+        width: 6%;
         float: left;
     }
 

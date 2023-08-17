@@ -188,7 +188,7 @@
                                             <td>{{ $d->pin }}</td>
                                             <td>
                                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                                    <a href="#" class="info setjadwal" nik="{{ $d->nik }}" id_kantor="{{ $d->id_kantor }}"><i class="feather icon-watch"></i></a>
+                                                    {{-- <a href="#" class="info setjadwal" nik="{{ $d->nik }}" id_kantor="{{ $d->id_kantor }}"><i class="feather icon-watch"></i></a> --}}
                                                     @if (in_array($level,$karyawan_edit))
                                                     <a class="ml-1 edit" nik="{{ Crypt::encrypt($d->nik) }}" href="#"><i class="feather icon-edit success"></i></a>
                                                     @endif
@@ -384,6 +384,9 @@
                                                     @endif
 
 
+                                                    @if (Auth::user()->id==57 || Auth::user()->id==1)
+                                                    <a href="#" nik="{{ Crypt::encrypt($d->nik) }}" class="ajukanpinjamannonpjp"><i class="feather icon-external-link success ml-1"></i></a>
+                                                    @endif
                                                 </div>
                                             </td>
                                         </tr>
@@ -500,6 +503,23 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade text-left" id="mdlajukanpinjamannonpjp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Ajukan Pinjaman</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loadajukanpinjamannonpjp"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 @push('myscript')
 <script>
@@ -563,6 +583,17 @@
                 , keyboard: false
             });
             $("#loadajukanpinjaman").load('/pinjaman/' + nik + '/create');
+        });
+
+
+        $('.ajukanpinjamannonpjp').click(function(e) {
+            var nik = $(this).attr("nik");
+            e.preventDefault();
+            $('#mdlajukanpinjamannonpjp').modal({
+                backdrop: 'static'
+                , keyboard: false
+            });
+            $("#loadajukanpinjamannonpjp").load('/pinjamannonpjp/' + nik + '/create');
         });
 
         $('.ajukankasbon').click(function(e) {

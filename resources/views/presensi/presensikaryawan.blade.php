@@ -89,6 +89,23 @@
                                         $jam_out_tanggal = !empty($d->jam_out) ? date("Y-m-d H:i",strtotime($d->jam_out)) : "";
 
                                         $tgl_presensi = $d->tgl_presensi;
+
+                                        $search_items_minggumasuk = array(
+                                            'nik'=>$d->nik,
+                                            'id_kantor' => $d->id_kantor,
+                                            'tanggal_diganti' => $tgl_presensi
+                                        );
+
+                                        $search_items = array(
+                                            'nik'=>$d->nik,
+                                            'id_kantor' => $d->id_kantor,
+                                            'tanggal_libur' => $tgl_presensi
+                                        );
+
+                                        $cekminggumasuk = cektgllibur($dataminggumasuk,$search_items_minggumasuk);
+                                        $ceklibur = cektgllibur($datalibur, $search_items);
+                                        $cekliburpenggantiminggu = cektgllibur($dataliburpenggantiminggu,$search_items);
+
                                         $lintashari = $d->lintashari;
                                         if(!empty($lintashari)){
                                             $tgl_pulang = date('Y-m-d', strtotime('+1 day', strtotime($tgl_presensi)));
@@ -104,11 +121,41 @@
                                         $jam_masuk = !empty($d->jam_masuk) ? date("H:i",strtotime($d->jam_masuk)) : "";
                                         $jam_masuk_tanggal = !empty($d->jam_masuk) ? $d->tgl_presensi . " " . $jam_masuk : "";
 
+                                        $day = date('D', strtotime($tgl_presensi));
+                                        $dayList = array(
+                                            'Sun' => 'Minggu',
+                                            'Mon' => 'Senin',
+                                            'Tue' => 'Selasa',
+                                            'Wed' => 'Rabu',
+                                            'Thu' => 'Kamis',
+                                            'Fri' => 'Jumat',
+                                            'Sat' => 'Sabtu'
+                                        );
 
-                                        $j_masuk = $d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB" ? $jam_in : $jam_masuk;
+                                        $namahari = $dayList[$day];
+
+                                        if($namahari=="Minggu"){
+                                            if(!empty($cekminggumasuk)){
+                                                $j_masuk = $d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB" ? $jam_in : $jam_masuk;
+                                                $j_pulang = $d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB" ? $jam_out : $jam_pulang;
+                                            }else{
+                                                $j_masuk = $jam_in;
+                                                $j_pulang = $jam_out;
+
+                                            }
+                                        }else{
+
+                                            if(!empty($ceklibur) || !empty($cekliburpenggantiminggu)){
+                                                $j_masuk = $jam_in;
+                                                $j_pulang = $jam_out;
+                                            }else{
+                                                $j_masuk = $d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB" ? $jam_in : $jam_masuk;
+                                                $j_pulang = $d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB" ? $jam_out : $jam_pulang;
+                                            }
+
+                                        }
+
                                         $j_masuk_tanggal = $tgl_presensi." ".$j_masuk;
-
-                                        $j_pulang = $d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB" ? $jam_out : $jam_pulang;
                                         $j_pulang_tanggal = $tgl_presensi." ".$j_pulang;
 
                                         $jam_istirahat = !empty($d->jam_istirahat) ? date("H:i",strtotime($d->jam_istirahat)) : "";
@@ -200,18 +247,7 @@
                                         }
 
 
-                                        $day = date('D', strtotime($tgl_presensi));
-                                        $dayList = array(
-                                            'Sun' => 'Minggu',
-                                            'Mon' => 'Senin',
-                                            'Tue' => 'Selasa',
-                                            'Wed' => 'Rabu',
-                                            'Thu' => 'Kamis',
-                                            'Fri' => 'Jumat',
-                                            'Sat' => 'Sabtu'
-                                        );
 
-                                        $namahari = $dayList[$day];
 
 
                                         $jamterlambat = $jamterlambat < 0 && !empty($d->kode_izin_terlambat) ? 0 : $jamterlambat;

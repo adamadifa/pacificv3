@@ -51,7 +51,7 @@
 
     .header-fixed>tbody>tr>td:nth-child(2),
     .header-fixed>thead>tr>th:nth-child(2) {
-        width: 5%;
+        width: 6%;
         float: left;
     }
 
@@ -69,7 +69,7 @@
 
     .header-fixed>tbody>tr>td:nth-child(5),
     .header-fixed>thead>tr>th:nth-child(5) {
-        width: 13%;
+        width: 12%;
         float: left;
     }
 
@@ -105,7 +105,7 @@
 
     .header-fixed>tbody>tr>td:nth-child(11),
     .header-fixed>thead>tr>th:nth-child(11) {
-        width: 10%;
+        width: 11%;
         float: left;
     }
 
