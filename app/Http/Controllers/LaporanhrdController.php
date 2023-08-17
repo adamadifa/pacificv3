@@ -1813,9 +1813,9 @@ class LaporanhrdController extends Controller
                 header("Content-type: application/vnd-ms-excel");
                 // Mendefinisikan nama file ekspor "hasil-export.xls"
                 header("Content-Disposition: attachment; filename=Laporan Presensi Format P/S/M.xls");
-                return view('presensi.laporan.cetak_psmexcel', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh'));
+                return view('presensi.laporan.cetak_psmexcel', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur'));
             } else {
-                return view('presensi.laporan.cetakpsm', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull'));
+                return view('presensi.laporan.cetakpsm', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur'));
             }
         } else if (request()->is('laporanhrd/gaji/cetak')) {
             if (isset($_POST['export'])) {

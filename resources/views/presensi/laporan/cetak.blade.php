@@ -402,10 +402,10 @@
                         $jam_istirahat_presensi =$datapresensi[14] != "NA" ? date("H:i",strtotime($datapresensi[14])) : '';
                         $jam_istirahat_presensi_tanggal = $datapresensi[14] != "NA" ? $tgl_pulang." ".$jam_istirahat_presensi : '';
 
-                        $jam_awal_istirahat = $datapresensi[13] != "NA" ? $tgl_presensi." ".$datapresensi[13] : '';
+                        $jam_awal_istirahat = $datapresensi[13] != "NA" ? date("H:i",strtotime($datapresensi[13])) : '';;
                         $jam_awal_istirahat_tanggal = $datapresensi[14] != "NA" ? $tgl_pulang." ".$jam_awal_istirahat : '';
 
-                        $jam_akhir_istirahat = $datapresensi[14] != "NA" ? $tgl_presensi." ".$datapresensi[14] : '';
+                        $jam_akhir_istirahat = $datapresensi[14] != "NA" ? date("H:i",strtotime($datapresensi[14])) : '';;
                         $jam_akhir_istirahat_tanggal = $datapresensi[14] != "NA" ? $tgl_pulang." ".$jam_akhir_istirahat :'';
 
 
@@ -643,6 +643,7 @@
                             $pc = "";
                             $totalpc = 0;
                         }
+
                         // echo "Total Jam :" .$total_jam."<br>" ;
                         // echo "Jam Terlambat :".$jt."<br>";
                         // echo "___________________________- <br>";
