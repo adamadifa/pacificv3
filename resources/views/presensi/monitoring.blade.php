@@ -185,10 +185,10 @@
                                         $jam_masuk_tanggal = !empty($d->jam_masuk) ? $d->tgl_presensi . " " . $jam_masuk : "";
 
 
-                                        $j_masuk = $d->nama_jabatan=="SPG" ? $jam_in : $jam_masuk;
+                                        $j_masuk = $d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB" ? $jam_in : $jam_masuk;
                                         $j_masuk_tanggal = $tgl_presensi." ".$j_masuk;
 
-                                        $j_pulang = $d->nama_jabatan=="SPG" ? $jam_out : $jam_pulang;
+                                        $j_pulang = $d->nama_jabatan=="SPG" | $d->nama_jabatan=="SPB" ? $jam_out : $jam_pulang;
                                         $j_pulang_tanggal = $tgl_presensi." ".$j_pulang;
 
                                         $jam_istirahat = !empty($d->jam_istirahat) ? date("H:i",strtotime($d->jam_istirahat)) : "";
