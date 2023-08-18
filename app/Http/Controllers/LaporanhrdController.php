@@ -202,7 +202,7 @@ class LaporanhrdController extends Controller
                 im_ruanglingkup, im_penempatan,im_kinerja,
                 gaji_pokok,
                 t_jabatan,t_masakerja,t_tanggungjawab,t_makan,t_istri,t_skill,
-
+                cicilan_pjp,jml_kasbon,
                 bpjs_kesehatan.perusahaan,bpjs_kesehatan.pekerja,bpjs_kesehatan.keluarga,
                 bpjs_tenagakerja.k_jht,bpjs_tenagakerja.k_jp,
                 hari_1,
@@ -240,7 +240,7 @@ class LaporanhrdController extends Controller
             $query->leftJoin(
                 DB::raw("(
             SELECT
-                presensi.nik,
+                presensi.nikd,
                 MAX(IF(tgl_presensi = '$rangetanggal[0]',CONCAT(
                 IFNULL(jam_in,'NA'),
                 '|',IFNULL(jam_out,'NA'),
