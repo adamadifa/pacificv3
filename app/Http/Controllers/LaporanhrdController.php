@@ -132,6 +132,7 @@ class LaporanhrdController extends Controller
     public function cetakpresensi(Request $request)
     {
 
+
         //dd(ceklibur('2023-06-18', 'BDG'));
         $kode_dept = $request->kode_dept;
         $id_kantor = $request->id_kantor;
@@ -139,6 +140,9 @@ class LaporanhrdController extends Controller
         $bulan = $request->bulan;
         $tahun = $request->tahun;
         $kode_potongan = "GJ" . $bulan . $tahun;
+        $level = Auth::user()->level;
+        $show_for_hrd = config('global.show_for_hrd');
+        $level_show_all = config('global.show_all');
         if ($bulan == 1) {
             $lastbulan = 12;
             $lasttahun = $tahun - 1;
@@ -1798,6 +1802,12 @@ class LaporanhrdController extends Controller
 
         if (!empty($id_group)) {
             $query->where('master_karyawan.grup', $id_group);
+        }
+
+        if (request()->is('laporanhrd/gaji/cetak')) {
+            if (!in_array($level, $level_show_all)) {
+                $query->whereNotIn('id_jabatan', $show_for_hrd);
+            }
         }
         $query->where('status_aktif', 1);
         $query->orderBy('nama_karyawan');

@@ -22,7 +22,7 @@
                 </li>
             </a>
 
-            @if ($level=="admin")
+            @if ($level=="admin" || $level=="manager hrd" || $level=="manager accounting")
             <a href="/laporanhrd/gaji" style="color:#626262">
                 <li class="list-group-item {{ request()->is(['laporanhrd/gaji']) ? 'active' : '' }}">
                     <i class="feather icon-file mr-1"></i>Gaji
