@@ -947,7 +947,7 @@ class LaporanhrdController extends Controller
             $query->leftJoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
             $query->leftJoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
             $query->leftJoin('cabang', 'master_karyawan.id_kantor', '=', 'cabang.kode_cabang');
-            $query->leftJoin('hrd_masterinsentif', 'master_karyawan.nik', '=', 'hrd_masterinsentif.nik');
+            // $query->leftJoin('hrd_masterinsentif', 'master_karyawan.nik', '=', 'hrd_masterinsentif.nik');
             $query->leftJoin(
                 DB::raw("(
                     SELECT MAX(tgl_berlaku) as tgl_berlaku, nik,gaji_pokok,t_jabatan,t_masakerja,t_tanggungjawab,
@@ -957,6 +957,18 @@ class LaporanhrdController extends Controller
                 ) hrdgaji"),
                 function ($join) {
                     $join->on('master_karyawan.nik', '=', 'hrdgaji.nik');
+                }
+            );
+
+            $query->leftJoin(
+                DB::raw("(
+                    SELECT MAX(tgl_berlaku) as tgl_berlaku, nik,iu_masakerja,iu_lembur,iu_penempatan,iu_kpi,
+                    im_ruanglingkup,im_penempatan,im_kinerja
+                    FROM hrd_masterinsentif WHERE tgl_berlaku <= '$sampai' GROUP BY nik,iu_masakerja,iu_lembur,iu_penempatan,iu_kpi,
+                    im_ruanglingkup,im_penempatan,im_kinerja
+                ) hrdinsentif"),
+                function ($join) {
+                    $join->on('master_karyawan.nik', '=', 'hrdinsentif.nik');
                 }
             );
 
@@ -1733,7 +1745,17 @@ class LaporanhrdController extends Controller
             $query->leftJoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
             $query->leftJoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
             $query->leftJoin('cabang', 'master_karyawan.id_kantor', '=', 'cabang.kode_cabang');
-            $query->leftJoin('hrd_masterinsentif', 'master_karyawan.nik', '=', 'hrd_masterinsentif.nik');
+            $query->leftJoin(
+                DB::raw("(
+                    SELECT MAX(tgl_berlaku) as tgl_berlaku, nik,iu_masakerja,iu_lembur,iu_penempatan,iu_kpi,
+                    im_ruanglingkup,im_penempatan,im_kinerja
+                    FROM hrd_masterinsentif WHERE tgl_berlaku <= '$sampai' GROUP BY nik,iu_masakerja,iu_lembur,iu_penempatan,iu_kpi,
+                    im_ruanglingkup,im_penempatan,im_kinerja
+                ) hrdinsentif"),
+                function ($join) {
+                    $join->on('master_karyawan.nik', '=', 'hrdinsentif.nik');
+                }
+            );
             $query->leftJoin(
                 DB::raw("(
                     SELECT MAX(tgl_berlaku) as tgl_berlaku, nik,gaji_pokok,t_jabatan,t_masakerja,t_tanggungjawab,
