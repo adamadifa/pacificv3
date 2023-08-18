@@ -854,9 +854,9 @@
                         {{-- <span>{{ var_dump(empty($ceklibur)) }}</span> --}}
                         {{-- {{ $cekmasakerja }} --}}
                         {{-- {{ var_dump($ceklembur); }} --}}
-                        {{ !empty($ceklibur) ? "P" : "" }}
-                        {{ !empty($cekwfh) ? "P".$totaljamdirumahkan : "" }}
-                        {{ !empty($cekwfhfull) ? "P" : "" }}
+                        {{ !empty($ceklibur) && $cekmasakerja > 3 ? "P" : "" }}
+                        {{ !empty($cekwfh) && $cekmasakerja > 4 ? "P".$totaljamdirumahkan : "" }}
+                        {{ !empty($cekwfhfull) && $cekmasakerja > 3 ? "P" : "" }}
                         {{-- {{ !empty($cekliburpenggantiminggu) ? $cekliburpenggantiminggu[0]["keterangan"] : "" }} --}}
                         @if (!empty($ceklembur))
                         <?php
