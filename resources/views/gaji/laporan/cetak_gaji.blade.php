@@ -705,16 +705,20 @@
                             $izinabsen = 0;
                             $izinsakit = 0;
                         }else if($status=="s"){
-                            if($namahari=="Sabtu"){
+                            if(empty($izinabsendirut)){
+                                if($namahari=="Sabtu"){
                                 $izinsakit = 5;
-                            }elseif($namahari=="Minggu"){
-                                if(!empty($cekminggumasuk)){
-                                    $izinsakit = 7;
+                                }elseif($namahari=="Minggu"){
+                                    if(!empty($cekminggumasuk)){
+                                        $izinsakit = 7;
+                                    }else{
+                                        $izinsakit = 0;
+                                    }
                                 }else{
-                                    $izinsakit = 0;
+                                    $izinsakit = 7;
                                 }
                             }else{
-                                $izinsakit = 7;
+                                $izinsakit = 0;
                             }
 
                             $izinabsen = 0;
