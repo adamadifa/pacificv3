@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class PinjamannonpjpController extends Controller
 {
@@ -21,5 +24,38 @@ class PinjamannonpjpController extends Controller
 
         return view('pinjamannonpjp.create', compact('karyawan'));
         //return view('pinjaman.create2', compact('karyawan', 'gaji', 'jmk', 'kontrak'));
+    }
+
+
+    public function store(Request $request)
+    {
+        $tgl_pinjaman = $request->tgl_pinjaman;
+        $jumlah_pinjaman = str_replace(".", "", $request->jml_pinjaman);
+        $tanggal = $request->tgl_pinjaman;
+        $nik = $request->nik;
+        $tgl = explode("-", $tanggal);
+        $tahun = substr($tgl[0], 2, 2);
+        $pinjaman = DB::table("pinjaman_nonpjp")
+            ->whereRaw('YEAR(tgl_pinjaman)="' . $tgl[0] . '"')
+            ->orderBy("no_pinjaman_nonpjp", "desc")
+            ->first();
+
+        $last_nopinjaman = $pinjaman != null ? $pinjaman->no_pinjaman_nonpjp : '';
+        $no_pinjaman  = buatkode($last_nopinjaman, "NPJ" . $tahun, 3);
+
+        try {
+            DB::table('pinjaman_nonpjp')->insert([
+                'no_pinjaman_nonpjp' => $no_pinjaman,
+                'nik' => $nik,
+                'tgl_pinjaman' => $tgl_pinjaman,
+                'jumlah_pinjaman' => $jumlah_pinjaman,
+                'id_user' => Auth::user()->id
+            ]);
+
+            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+        } catch (\Exception $e) {
+            dd($e);
+            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);
+        }
     }
 }

@@ -14,7 +14,7 @@
 
 </style>
 
-<form method="POST" action="/pinjaman/store" id="frmPinjaman">
+<form method="POST" action="/pinjamannonpjp/store" id="frmPinjaman">
     @csrf
     <input type="hidden" id="cekpembayaran">
     <div class="row" id="step1">
@@ -86,30 +86,6 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-4">
-                    <label for="" class="form-label">Angsuran</label>
-                </div>
-                <div class="col-8">
-                    <x-inputtext label="Angsuran" value="" field="angsuran" icon="feather icon-file" right />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-4">
-                    <label for="" class="form-label">Jumlah Angsuran / Bulan</label>
-                </div>
-                <div class="col-8">
-                    <x-inputtext label="Jumlah Angsuran" value="" field="jml_angsuran" icon="feather icon-file" right readonly />
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-4">
-                    <label for="" class="form-label">Mulai Cicilan</label>
-                </div>
-                <div class="col-8">
-                    <x-inputtext label="Mulai Cicilan" value="" field="mulai_cicilan" icon="feather icon-calendar" readonly />
-                </div>
-            </div>
-            <div class="row">
                 <div class="col-12">
                     <div class="form-group">
                         <button href="#" class="btn btn-primary btn-block" id="btnSubmit"><i class="feather icon-send mr-1"></i>Submit</button>
@@ -123,3 +99,33 @@
     </div>
 </form>
 <script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
+<script>
+    $(function() {
+        $("#frmPinjaman").submit(function(e) {
+            var jmlpinjaman = $("#jml_pinjaman").val();
+            var tgl_pinjaman = $("#tgl_pinjaman").val();
+            if (tgl_pinjaman == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Tanggal Pinjaman Tidak Boleh Kosong !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#tgl_pinjaman").focus();
+                });
+                return false;
+            } else if (jmlpinjaman == "" || jmlpinjaman == 0) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Jumlah Pinjaman Tidak Boleh Kosong !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#jml_pinjaman").focus();
+                });
+
+                return false;
+            }
+        });
+        $("#jml_pinjaman").maskMoney();
+    });

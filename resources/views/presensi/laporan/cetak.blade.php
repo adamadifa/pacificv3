@@ -152,7 +152,7 @@
                         $totalpremi_shift_3 = 0;
                         $totalhari_shift_2 = 0;
                         $totalhari_shift_3 = 0;
-                        //$izinsakit = 0;
+                        $izinsakit = 0;
                         $totalizinsakit = 0;
                         for($i=0; $i < count($rangetanggal); $i++){
                             $hari_ke = "hari_".$i+1;

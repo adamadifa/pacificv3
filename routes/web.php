@@ -1594,6 +1594,7 @@ Route::middleware(['auth'])->group(function () {
 
     //PinjamanNonPJP
     Route::get('/pinjamannonpjp/{nik}/create', [PinjamannonpjpController::class, 'create']);
+    Route::post('/pinjamannonpjp/store', [PinjamannonpjpController::class, 'store']);
 
     //Kasbon
     Route::get('/kasbon/', [KasbonController::class, 'index']);
