@@ -843,8 +843,7 @@
                             if ($kategori_lembur==1) {
                                 $overtime_1 = $jmljam_lembur > 1 ? 1 : $jmljam_lembur;
                                 $overtime_2 = $jmljam_lembur > 1 ? $jmljam_lembur -1 : 0;
-                                $total_overtime_1 += $overtime_1;
-                                $total_overtime_2 += $overtime_2;
+
                         ?>
                         <span style="color:rgb(255, 255, 255)">OT 1 : {{ $overtime_1 }}</span>
                         <br>
@@ -853,8 +852,7 @@
                             }else if($kategori_lembur==2){
                                 $overtime_libur_1 = $jmljam_lembur >= 4 ? 4 : $jmljam_lembur;
                                 $overtime_libur_2 = $jmljam_lembur > 4 ? $jmljam_lembur-4 : 0;
-                                $total_overtime_libur_1 += $overtime_libur_1;
-                                $total_overtime_libur_2 += $overtime_libur_2;
+
                             ?>
                         <span style="color:rgb(255, 255, 255)">OTL 1 : {{ $total_overtime_libur_1 }}</span>
                         <br>
@@ -876,6 +874,10 @@
                     $totalpulangcepat += $totalpc;
                     $totalizinabsen += $izinabsen;
                     $totalizinsakit += $izinsakit;
+                    $total_overtime_libur_1 += $overtime_libur_1;
+                    $total_overtime_libur_2 += $overtime_libur_2;
+                    $total_overtime_1 += $overtime_1;
+                    $total_overtime_2 += $overtime_2;
                 }
 
                 $totaljamkerja = $totaljam1bulan - $totalterlambat - $totalkeluar - $totaldirumahkan - $totaltidakhadir - $totalpulangcepat - $totalizinabsen - $totalizinsakit;
