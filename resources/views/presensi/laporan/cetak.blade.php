@@ -724,9 +724,9 @@
                             $total_overtime_libur_1 += $overtime_libur_1;
                             $total_overtime_libur_2 += $overtime_libur_2;
                         ?>
-                        <span style="color:rgb(255, 255, 255)">OTL 1 : {{ $total_overtime_libur_1 }}</span>
+                        <span style="color:rgb(255, 255, 255)">OTL 1 : {{ $overtime_libur_1 }}</span>
                         <br>
-                        <span style="color:rgb(255, 255, 255)">OTL 2 : {{ $total_overtime_libur_2 }}</span>
+                        <span style="color:rgb(255, 255, 255)">OTL 2 : {{ $overtime_libur_1 }}</span>
                         <?php
                         }
 
