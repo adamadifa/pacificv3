@@ -152,7 +152,7 @@
                         $totalpremi_shift_3 = 0;
                         $totalhari_shift_2 = 0;
                         $totalhari_shift_3 = 0;
-                        //$izinsakit = 0;
+                        $izinsakit = 0;
                         $totalizinsakit = 0;
                         for($i=0; $i < count($rangetanggal); $i++){
                             $hari_ke = "hari_".$i+1;
@@ -769,17 +769,23 @@
                         @else
                         SKT
                         <?php
-                                if($namahari=="Sabtu"){
-                                $izinsakit = 5;
-                                }elseif($namahari=="Minggu"){
-                                    if(!empty($cekminggumasuk)){
-                                        $izinsakit = 7;
+                                if(empty($izinabsendirut)){
+                                    if($namahari=="Sabtu"){
+                                    $izinsakit = 5;
+                                    }elseif($namahari=="Minggu"){
+                                        if(!empty($cekminggumasuk)){
+                                            $izinsakit = 7;
+                                        }else{
+                                            $izinsakit = 0;
+                                        }
                                     }else{
-                                        $izinsakit = 0;
+                                        $izinsakit = 7;
                                     }
                                 }else{
-                                    $izinsakit = 7;
+                                    $izinsakit = 0;
                                 }
+
+                                $izinabsen = 0;
                             ?>
                         @endif
                         </span>
