@@ -20,7 +20,7 @@
                 <select name="kode_barang" id="kode_barang_pilih" class="form-control">
                     <option value="">Pilih Barang</option>
                     @foreach ($barang as $d)
-                    <option value="{{ $d->kode_barang }}" kode_barang="{{ $d->kode_barang }}" nama_barang="{{ $d->nama_barang }}" isipcsdus="{{ $d->isipcsdus }}" isipcs="{{ $d->isipcs }}" harga_dus="{{ rupiah($d->harga_dus) }}" harga_pack="{{ rupiah($d->harga_pack) }}" harga_pcs="{{ rupiah($d->harga_pcs) }}">{{ $d->nama_barang }}</option>
+                    <option value="{{ $d->kode_barang }}" kode_barang="{{ $d->kode_barang }}" nama_barang="{{ $d->nama_barang }}" isipcsdus="{{ $d->isipcsdus }}" isipcs="{{ $d->isipcs }}" harga_dus="{{ rupiah($d->harga_dus-$pengurangharga) }}" harga_pack="{{ rupiah($d->harga_pack) }}" harga_pcs="{{ rupiah($d->harga_pcs) }}">{{ $d->status_promo_product == 1 ? $d->nama_barang ."(PROMO)" : $d->nama_barang }} ({{ $d->kategori_harga }})</option>
                     @endforeach
                 </select>
             </div>
@@ -359,11 +359,12 @@
                                 , icon: 'success'
                                 , showConfirmButton: false
                             }).then(function() {
-                                $('#mdlinputbarang').modal({
-                                    backdrop: 'static'
-                                    , keyboard: false
-                                });
+                                // $('#mdlinputbarang').modal({
+                                //     backdrop: 'static'
+                                //     , keyboard: false
+                                // });
                                 showtemp();
+                                $("#mdlinputbarang").modal("hide");
                                 $("#kode_barang_pilih").val("");
                                 $("#nama_barang").val("");
                                 $("#jml_dus").val("");
