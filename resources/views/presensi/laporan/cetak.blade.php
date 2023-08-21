@@ -741,16 +741,20 @@
                             @else
                             <br>
                             <?php
-                                if($namahari=="Sabtu"){
-                                $izinsakit = 5;
-                                }elseif($namahari=="Minggu"){
-                                    if(!empty($cekminggumasuk)){
-                                        $izinsakit = 7;
+                                if(empty($izinabsendirut)){
+                                    if($namahari=="Sabtu"){
+                                    $izinsakit = 5;
+                                    }elseif($namahari=="Minggu"){
+                                        if(!empty($cekminggumasuk)){
+                                            $izinsakit = 7;
+                                        }else{
+                                            $izinsakit = 0;
+                                        }
                                     }else{
-                                        $izinsakit = 0;
+                                        $izinsakit = 7;
                                     }
                                 }else{
-                                    $izinsakit = 7;
+                                    $izinsakit = 0;
                                 }
                             ?>
                             <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
