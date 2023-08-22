@@ -850,9 +850,16 @@ class GlobalProvider extends ServiceProvider
             $mutasibank_view = ['admin', 'kepala admin', 'admin pusat', 'admin kas kecil', 'audit', 'manager audit', 'admin kas', 'manager accounting', 'admin kas dan penjualan', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil', 'admin pajak 2', 'admin penjualan kasir dan kas kecil'];
 
             $pinjaman_view = ['admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'spv produksi', 'manager accounting', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager hrd', 'staff keuangan', 'staff keuangan 3', 'admin pdqc', 'spv pdqc', 'manager audit', 'spv maintenance'];
+
+
             $pembayaranpinjaman_view = ['admin', 'manager hrd', 'manager accounting', 'staff keuangan', 'staff keuangan 3'];
             $inputbayarpinjaman = ['admin', 'manager hrd', 'manager accounting'];
             $lap_pinjaman = ['admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'spv produksi', 'manager accounting', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager hrd', 'direktur', 'staff keuangan', 'staff keuangan 3'];
+
+            $piutangkaryawan_view = ['admin', 'manager accounting', 'manager hrd'];
+            $pembayaranpiutangkaryawan_view = ['admin', 'manager accounting', 'manager hrd'];
+            $inputbayarpiutangkaryawan = ['admin', 'manager accounting', 'manager hrd'];
+
             $lap_kasbon = ['admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'spv produksi', 'manager accounting', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager hrd', 'direktur', 'staff keuangan', 'staff keuangan 3'];
 
             $kasbon_view = ['admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'spv produksi', 'manager accounting', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager hrd', 'staff keuangan', 'staff keuangan 3', 'admin pdqc', 'spv pdqc', 'manager audit', 'spv maintenance'];
@@ -1434,6 +1441,11 @@ class GlobalProvider extends ServiceProvider
                 'inputbayarpinjaman' => $inputbayarpinjaman,
                 'lap_pinjaman' => $lap_pinjaman,
                 'lap_kasbon' => $lap_kasbon,
+
+
+                'piutangkaryawan_view' => $piutangkaryawan_view,
+                'pembayaranpiutangkaryawan_view' => $pembayaranpiutangkaryawan_view,
+                'inputbayarpiutangkaryawan' => $inputbayarpiutangkaryawan,
 
 
                 'kasbon_view' => $kasbon_view,

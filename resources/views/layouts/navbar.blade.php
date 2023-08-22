@@ -1021,6 +1021,34 @@
                     </li>
                     @endif
 
+
+                    @if (in_array($level, $piutangkaryawan_view))
+                    <li>
+                        <a href="#">
+                            <i class="feather icon-circle"></i>
+                            <span class="menu-item" data-i18n="Second Level">Piutang</span>
+                        </a>
+                        <ul class="menu-content">
+                            @if (in_array($level, $piutangkaryawan_view))
+                            <li class="{{ request()->is(['piutangkaryawan', 'piutangkaryawan/*']) ? 'active' : '' }}">
+                                <a href="/piutangkaryawan">
+                                    <i class="feather icon-book"></i>
+                                    <span class="menu-item" data-i18n="Second Level">Piutang</span>
+                                </a>
+                            </li>
+                            @endif
+                            @if (in_array($level, $pembayaranpiutangkaryawan_view))
+                            <li class="{{ request()->is(['pembayaranpiutang', 'pembayaranpiutang/*']) ? 'active' : '' }}">
+                                <a href="/pembayaranpiutang">
+                                    <i class="feather icon-book"></i>
+                                    <span class="menu-item" data-i18n="Second Level">Pembayaran</span>
+                                </a>
+                            </li>
+                            @endif
+
+                        </ul>
+                    </li>
+                    @endif
                     @if (in_array($level, $kasbon_view))
                     <li>
                         <a href="#">

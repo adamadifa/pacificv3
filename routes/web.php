@@ -83,6 +83,7 @@ use App\Http\Controllers\PembayaranController;
 use App\Http\Controllers\PembayaranjmkController;
 use App\Http\Controllers\PembayarankasbonController;
 use App\Http\Controllers\PembayaranpinjamanController;
+use App\Http\Controllers\PembayaranpinjamannonpjpController;
 use App\Http\Controllers\PembelianController;
 use App\Http\Controllers\PengajuanizinController;
 use App\Http\Controllers\PengeluarangudangbahanController;
@@ -95,6 +96,7 @@ use App\Http\Controllers\PermintaanpengirimanController;
 use App\Http\Controllers\PermintaanproduksiController;
 use App\Http\Controllers\PinjamanController;
 use App\Http\Controllers\PinjamannonpjpController;
+use App\Http\Controllers\PiutangkaryawanController;
 use App\Http\Controllers\PresensiController;
 use App\Http\Controllers\ProduksiController;
 use App\Http\Controllers\QrcodeController;
@@ -1595,6 +1597,16 @@ Route::middleware(['auth'])->group(function () {
     //PinjamanNonPJP
     Route::get('/pinjamannonpjp/{nik}/create', [PinjamannonpjpController::class, 'create']);
     Route::post('/pinjamannonpjp/store', [PinjamannonpjpController::class, 'store']);
+
+    //Piutangkaryawan
+    Route::get('/piutangkaryawan', [PiutangkaryawanController::class, 'index']);
+    Route::delete('/piutangkaryawan/{no_pinjaman_nonpjp}/delete', [PiutangkaryawanController::class, 'delete']);
+    Route::post('/piutangkaryawan/show', [PiutangkaryawanController::class, 'show']);
+    Route::post('/piutangkaryawan/gethistoribayar', [PiutangkaryawanController::class, 'gethistoribayar']);
+
+    Route::post('/pembayaranpiutangkaryawan/create', [PembayaranpinjamannonpjpController::class, 'create']);
+    Route::post('/pembayaranpiutangkaryawan/store', [PembayaranpinjamannonpjpController::class, 'store']);
+    Route::post('/pembayaranpiutangkaryawan/delete', [PembayaranpinjamannonpjpController::class, 'delete']);
 
     //Kasbon
     Route::get('/kasbon/', [KasbonController::class, 'index']);
