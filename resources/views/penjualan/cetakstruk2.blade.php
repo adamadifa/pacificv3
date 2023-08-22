@@ -13,7 +13,7 @@
         ------------------------------------------------<br>
     </p>
     <p style="display:flex; justify-content: space-between">
-        <span>{{ $faktur->no_fak_penj }}({{ $faktur->jenistransaksi }})</span><span>{{ $faktur->nama_karyawan }}</span>
+        <span>{{ $faktur->no_fak_penj }}({{ strtoupper($faktur->jenistransaksi) }})</span><span>{{ $faktur->nama_karyawan }}</span>
     </p>
     <p>
         {{ date("d-m-Y H:i:s",strtotime($faktur->date_created)) }}<br>
@@ -145,7 +145,7 @@ $data .="               CV PACIFIC        <br>";
 }
 $data .= $faktur->alamat_cabang."<br>";
 $data .="------------------------------------------<br>";
-$data .=sprintf("%-$len"."s\t%s\n",$faktur->no_fak_penj."(".$faktur->jenistransaksi.")","");
+$data .=sprintf("%-$len"."s\t%s\n",$faktur->no_fak_penj."(<b>".strtoupper($faktur->jenistransaksi)."</b>)","");
 $data .= $faktur->nama_karyawan."<br>";
 $data .=date("d-m-Y H:i:s",strtotime($faktur->date_created))."<br>";
 $data .=$faktur->kode_pelanggan." - ".$faktur->nama_pelanggan."<br>";
