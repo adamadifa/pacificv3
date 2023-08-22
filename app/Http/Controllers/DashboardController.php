@@ -1005,7 +1005,7 @@ class DashboardController extends Controller
                 INNER JOIN penjualan ON  detailpenjualan.no_fak_penj = penjualan.no_fak_penj
                 INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
                 WHERE
-                date(date_created) = '$tanggal'
+                date(date_created) = '$tanggal' AND penjualan.id_karyawan = '$id_karyawan'
                 GROUP BY kode_pelanggan,tgltransaksi
             ) penjualan ON (checkin.kode_pelanggan = penjualan.kode_pelanggan)
 
@@ -1017,7 +1017,7 @@ class DashboardController extends Controller
                 SUM(IF(historibayar.status_bayar='voucher',bayar,0)) as bayar_voucher
                 FROM historibayar
                 INNER JOIN penjualan ON historibayar.no_fak_penj = penjualan.no_fak_penj
-                WHERE tglbayar = '$tanggal'
+                WHERE tglbayar = '$tanggal' AND historibayar.id_karyawan = '$id_karyawan'
                 GROUP BY kode_pelanggan
             ) historibayar ON (checkin.kode_pelanggan = historibayar.kode_pelanggan)
 
@@ -1026,7 +1026,7 @@ class DashboardController extends Controller
                 SELECT kode_pelanggan,SUM(jumlah) as bayar_transfer
                 FROM transfer
                 INNER JOIN penjualan ON transfer.no_fak_penj = penjualan.no_fak_penj
-                WHERE tgl_transfer = '$tanggal'
+                WHERE tgl_transfer = '$tanggal' AND transfer.id_karyawan = '$id_karyawan'
                 GROUP BY kode_pelanggan
             ) transfer ON (checkin.kode_pelanggan = transfer.kode_pelanggan)
 
@@ -1035,7 +1035,7 @@ class DashboardController extends Controller
                 SELECT kode_pelanggan,SUM(jumlah) as bayar_giro
                 FROM giro
                 INNER JOIN penjualan ON giro.no_fak_penj = penjualan.no_fak_penj
-                WHERE tgl_giro = '$tanggal'
+                WHERE tgl_giro = '$tanggal' AND giro.id_karyawan = '$id_karyawan'
                 GROUP BY kode_pelanggan
             ) giro ON (checkin.kode_pelanggan = giro.kode_pelanggan)
             WHERE
@@ -1097,7 +1097,7 @@ class DashboardController extends Controller
                 SUM(IF(historibayar.status_bayar='voucher',bayar,0)) as bayar_voucher
                 FROM historibayar
                 INNER JOIN penjualan ON historibayar.no_fak_penj = penjualan.no_fak_penj
-                WHERE tglbayar = '$tanggal'
+                WHERE tglbayar = '$tanggal' AND historibayar.id_karyawan = '$id_karyawan'
                 GROUP BY no_fak_penj
             ) historibayar ON (historibayar.no_fak_penj = penjualan.no_fak_penj)
 
@@ -1105,7 +1105,7 @@ class DashboardController extends Controller
                 SELECT transfer.no_fak_penj,SUM(jumlah) as bayar_transfer
                 FROM transfer
                 INNER JOIN penjualan ON transfer.no_fak_penj = penjualan.no_fak_penj
-                WHERE tgl_transfer = '$tanggal'
+                WHERE tgl_transfer = '$tanggal' AND transfer.id_karyawan = '$id_karyawan'
                 GROUP BY no_fak_penj
             ) transfer ON (penjualan.no_fak_penj = transfer.no_fak_penj)
 
@@ -1114,7 +1114,7 @@ class DashboardController extends Controller
                 SELECT giro.no_fak_penj,SUM(jumlah) as bayar_giro
                 FROM giro
                 INNER JOIN penjualan ON giro.no_fak_penj = penjualan.no_fak_penj
-                WHERE tgl_giro = '$tanggal'
+                WHERE tgl_giro = '$tanggal' AND giro.id_karyawan = '$id_karyawan'
                 GROUP BY no_fak_penj
             ) giro ON (penjualan.no_fak_penj = giro.no_fak_penj)
 

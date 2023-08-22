@@ -71,6 +71,15 @@
             @include('layouts.notification')
             <div class="col-lg-12 col-sm-12">
                 <div class="card">
+
+                    @php
+                    $latitude1 = -6.646223122320823;
+                    $longitude1 = 107.36571020894631;
+                    $latitude2 = -6.6462205999999995;
+                    $longitude2 = 107.36570549999999;
+                    $jarak = hitungjarak($latitude1, $longitude1, $latitude2, $longitude2);
+                    @endphp
+                    {{ $jarak["meters"] }}
                     @if(in_array($level,$pelanggan_tambah))
                     <div class="card-header">
                         <a href="/pelanggan/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
