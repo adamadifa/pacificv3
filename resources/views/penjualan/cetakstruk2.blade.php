@@ -109,6 +109,10 @@
         <span>Sisa Bayar</span><span>{{ rupiah($faktur->total - $retur->totalretur - $totalbayar) }}</span>
     </div>
     <p style="text-align: center">
+        <br>
+        <br>
+        Tidak Di Perkenankan Transfer Ke Rekening Salesman<br>
+        Apapun Jenis Transaksinya Wajib Ditandatangani <br>kedua belah pihak<br><br>
         Terimakasih<br>
         www.pedasalami.com
     </p>
@@ -342,6 +346,10 @@ $data .=sprintf("%-$len"."s\t%s\n","Sisa Tagihan",rupiah($faktur->total - $retur
 $data .= "
 
 ";
+$data .= "     *Tidak Di Perkenankan Transfer<br>";
+$data .= "          Ke Rekening Salesman<br>";
+$data .= "    *Apapun Jenis Transaksinya Wajib <br>";
+$data .= "     ditandatangani keduabelah pihak<br><br>";
 $data .= "            Terimakasih<br>";
 $data .= "          www.pedasalami.com<br>";
 $data .= "<br>";
