@@ -1864,6 +1864,7 @@ class PenjualanController extends Controller
             ->select(
                 'penjualan.*',
                 'nama_pelanggan',
+                'pelanggan.no_hp',
                 'alamat_pelanggan',
                 'alamat_toko',
                 'nama_cabang',

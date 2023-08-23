@@ -81,7 +81,7 @@
         <td width="25%">{{ DateToIndo2($faktur->tgltransaksi) }}</td>
         <td>Nama Customer</td>
         <td>:</td>
-        <td><b>{{ $faktur->kode_pelanggan }}</b> - {{ $faktur->nama_pelanggan }}</td>
+        <td><b>{{ $faktur->kode_pelanggan }}</b> - {{ $faktur->nama_pelanggan }} ({{ $faktur->no_hp }})</td>
     </tr>
     <tr>
         <td>Jenis Transaksi</td>
