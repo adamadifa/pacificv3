@@ -16,7 +16,7 @@
     <td>
         @if (!empty($d->foto))
         @php
-        $path = Storage::url('lpc/'.$d->foto);
+        $path = Storage::url('lhp/'.$d->foto);
         @endphp
         <ul class="list-unstyled users-list m-0  d-flex align-items-center">
             <li data-toggle="tooltip" data-popup="tooltip-custom" data-placement="bottom" data-original-title="Vinnie Mostowy" class="avatar pull-up">
