@@ -351,7 +351,7 @@
 
 
                                         //echo $jam_awal_istirahat."|";
-                                        $awal = strtotime($jam_masuk_tanggal);
+                                        $awal = strtotime($j_masuk_tanggal);
                                         $akhir = strtotime($jout);
                                         $diff = $akhir - $awal;
                                         if (empty($jout)) {
@@ -395,7 +395,7 @@
                                         $totaljam = $d->total_jam - $jt - $jk;
 
                                         if (!empty($d->jam_out)) {
-                                            if ($jam_out_tanggal < $jam_pulang_tanggal) {
+                                            if ($jam_out_tanggal < $j_pulang_tanggal) {
                                                 if($jam_out_tanggal > $jam_istirahat_tanggal && !empty($jam_istirahat)){
                                                     $desimalmenit = ROUND(($menit * 100) / 60);
                                                     $grandtotaljam = $jam-1 . "." . $desimalmenit;
@@ -473,7 +473,9 @@
                                             </td>
                                             <td>{{ !empty($denda)  ? rupiah($denda) : '' }}</td>
                                             <td>{{ $totaljamkeluar }}</td>
-                                            <td style="color:{{ $grandtotaljam < $d->total_jam ?  'red' : '' }}; text-align:center">{{ $grandtotaljam > 0 ? $grandtotaljam : 0 }}</td>
+                                            <td style="color:{{ $grandtotaljam < $d->total_jam ?  'red' : '' }}; text-align:center">{{ $grandtotaljam > 0 ? $grandtotaljam : 0 }}
+                                                {{-- {{ $jout }} - {{ $jam_masuk_tanggal }} - {{ $j_masuk_tanggal }} --}}
+                                            </td>
                                             <td>
                                                 @if ($level == "manager hrd" || $level=="admin" || Auth::user()->pic_presensi==1)
                                                 <a href="#" class="edit" nik="{{ $d->nik }}" kode_jadwal="{{ $d->kode_jadwal }}"><i class="feather icon-edit info"></i></a>

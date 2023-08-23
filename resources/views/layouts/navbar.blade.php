@@ -1023,10 +1023,10 @@
 
 
                     @if (in_array($level, $piutangkaryawan_view))
-                    <li class="{{ request()->is(['dashboardga', 'dashboardga/*']) ? 'active' : '' }}">
-                        <a href="/dashboardga">
+                    <li class="{{ request()->is(['piutangkaryawan', 'piutangkaryawan/*']) ? 'active' : '' }}">
+                        <a href="/piutangkaryawan">
                             <i class="feather icon-home"></i>
-                            <span class="menu-item" data-i18n="Second Level">Dashboard</span>
+                            <span class="menu-item" data-i18n="Second Level">Piutang Karyawan</span>
                         </a>
                     </li>
 
