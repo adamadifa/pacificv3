@@ -362,9 +362,10 @@ $data .= "            Print Ke - ".$faktur->print + 1;
 
 <script>
     function BtPrint(prn) {
-        sendUrlToPrint(url);
+
         //alert(prn);
         var url = "{{ url($path) }}";
+        sendUrlToPrint(url);
         // /alert(url);
         var S = "#Intent;scheme=rawbt;";
         var P = "package=ru.a402d.rawbtprinter;end;";
