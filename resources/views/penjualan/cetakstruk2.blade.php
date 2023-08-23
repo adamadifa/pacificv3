@@ -1,6 +1,6 @@
 <div id="print" style="position: absolute; z-index:1;  background-color:white">
     @php
-    $path = Storage::url('signature/'.$faktur->signature);
+    $path = asset('app-assets/images/kredit.png');
     @endphp
     <p style="text-align: center">
         ------------------------------------------------<br>
@@ -365,12 +365,12 @@ $data .= "            Print Ke - ".$faktur->print + 1;
 
         //alert(prn);
         var url = "{{ url($path) }}";
-        //alert(url);
+        alert(url);
         var S = "#Intent;scheme=rawbt;";
         var P = "package=ru.a402d.rawbtprinter;end;";
         var textEncoded = encodeURI(prn);
         window.location.href = "intent:" + textEncoded + S + P;
-        // sendUrlToPrint(url);
+        sendUrlToPrint(url);
     }
 
 
