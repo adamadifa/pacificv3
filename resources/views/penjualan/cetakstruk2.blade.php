@@ -365,7 +365,7 @@ $data .= "            Print Ke - ".$faktur->print + 1;
 
         //alert(prn);
         var url = "{{ url($path) }}";
-        alert(url);
+        //alert(url);
         var S = "#Intent;scheme=rawbt;";
         var P = "package=ru.a402d.rawbtprinter;end;";
         var textEncoded = encodeURI(prn);
