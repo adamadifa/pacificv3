@@ -66,7 +66,7 @@
                                 <div class="card-body">
                                     <div class="row">
                                         <div class="col-12">
-                                            <x-inputtext label="Auto" readonly field="no_retur_penj" icon="fa fa-barcode" />
+                                            <x-inputtext label="Auto" field="no_retur_penj" icon="fa fa-barcode" />
                                         </div>
                                     </div>
                                     <div class="row">
