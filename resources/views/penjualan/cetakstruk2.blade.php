@@ -370,7 +370,7 @@ $data .= "            Print Ke - ".$faktur->print + 1;
         var P = "package=ru.a402d.rawbtprinter;end;";
         var textEncoded = encodeURI(prn);
         window.location.href = "intent:" + textEncoded + S + P;
-        sendUrlToPrint(url);
+        // sendUrlToPrint(url);
     }
 
 
