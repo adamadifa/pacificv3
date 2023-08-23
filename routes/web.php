@@ -1799,6 +1799,14 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/lhp/{kode_lhp}/delete', [LhpController::class, 'delete']);
     Route::get('/lhp/{kode_lhp}/cetak', [LhpController::class, 'cetak']);
 
+    Route::get('/lhp/kirimlhp', [LhpController::class, 'kirimlhp']);
+    Route::post('/lhp/kirimlhp/show', [LhpController::class, 'showkirimlhp']);
+    Route::get('/lhp/kirimlhp/create', [LhpController::class, 'createkirimlhp']);
+    Route::post('/lhp/kirimlhp/store', [LhpController::class, 'storekirimlhp']);
+    Route::post('/lhp/kirimlhp/approve', [LhpController::class, 'approvekirimlhp']);
+    Route::post('/lhp/kirimlhp/cancel', [LhpController::class, 'cancelkirimlhp']);
+    Route::post('/lhp/kirimlhp/delete', [LhpController::class, 'deletekirimlhp']);
+
 
 
     //Lock Location

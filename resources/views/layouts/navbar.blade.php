@@ -1463,6 +1463,14 @@
                         </a>
                     </li>
                     @endif
+                    @if (in_array($level, $kirimlpc))
+                    <li class="{{ request()->is(['lhp/kirimlphp', 'lhp/kirimlhp/*']) ? 'active' : '' }}">
+                        <a href="/lhp/kirimlhp">
+                            <i class="feather icon-file-text"></i>
+                            <span class="menu-item">Kirim LHP</span>
+                        </a>
+                    </li>
+                    @endif
                     @if (in_array($level, $tutuplaporan))
                     <li class="{{ request()->is(['tutuplaporan', 'tutuplaporan/*']) ? 'active' : '' }}">
                         <a href="/tutuplaporan">

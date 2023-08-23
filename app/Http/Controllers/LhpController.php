@@ -10,9 +10,23 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\View;
 
 class LhpController extends Controller
 {
+
+    protected $cabang;
+    public function __construct()
+    {
+        // Fetch the Site Settings object
+        $this->middleware(function ($request, $next) {
+            $this->cabang = Auth::user()->kode_cabang;
+            return $next($request);
+        });
+
+
+        View::share('cabang', $this->cabang);
+    }
     public function index(Request $request)
     {
         $kode_cabang = Auth::user()->kode_cabang;
@@ -592,5 +606,114 @@ class LhpController extends Controller
 
         $karyawan = DB::table('karyawan')->where('id_karyawan', $id_karyawan)->first();
         return view('penjualan.laporan.cetak_lhp', compact('tanggal', 'penjualan', 'historibayar', 'giro', 'transfer', 'karyawan', 'allgiro', 'alltransfer', 'rekapdp'));
+    }
+
+
+    public function kirimlhp()
+    {
+        $bln = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        return view('lhp.kirimlhp', compact('bln'));
+    }
+
+
+    public function showkirimlhp(Request $request)
+    {
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $bln = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        $lhp = DB::table('kirim_lhp')->where('bulan', $bulan)->where('tahun', $tahun)->get();
+        return view('lhp.showkirimlhp', compact('lhp', 'bln'));
+    }
+
+    public function createkirimlhp()
+    {
+        $bln = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        if ($this->cabang == "PCF") {
+            $cabang = DB::table('cabang')->get();
+        } else {
+            $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->get();
+        }
+        return view('lhp.createkirimlhp', compact('cabang', 'bln'));
+    }
+
+
+    public function storekirimlhp(Request $request)
+    {
+
+        $cek = DB::table('kirim_lhp')
+            ->where('kode_cabang', $request->kode_cabang)
+            ->where('bulan', $request->bulan)
+            ->where('tahun', $request->tahun)
+            ->count();
+        if ($cek > 0) {
+            return Redirect::back()->with(['warning' => 'Data Sudah Ada']);
+        } else {
+            try {
+                if ($request->hasfile('foto')) {
+                    $image = $request->file('foto');
+                    $image_name =  $request->kode_cabang . $request->bulan . $request->tahun . "." . $request->file('foto')->getClientOriginalExtension();
+                    $foto = $image_name;
+                } else {
+                    $foto = NULL;
+                }
+                DB::table('kirim_lhp')
+                    ->insert([
+                        'kode_lhp' => $request->kode_cabang . $request->bulan . $request->tahun,
+                        'kode_cabang' => $request->kode_cabang,
+                        'bulan' => $request->bulan,
+                        'tahun' => $request->tahun,
+                        'tgl_lhp' => $request->tgl_lhp,
+                        'jam_lhp' => $request->jam_lhp,
+                        'foto' => $foto
+                    ]);
+
+                $destination_path = "/public/lhp";
+                $request->file('foto')->storeAs($destination_path, $image_name);
+                return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+            } catch (\Exception $e) {
+                dd($e);
+                return Redirect::back()->with(['warning' => 'Data Gagak Disimpan']);
+            }
+        }
+    }
+
+
+    public function approvekirimlhp(Request $request)
+    {
+        $update = DB::table('kirim_lhp')
+            ->where('kode_lhp', $request->kode_lhp)
+            ->update([
+                'status' => 1
+            ]);
+        if ($update) {
+            echo 0;
+        } else {
+            echo 2;
+        }
+    }
+
+
+    public function cancelkirimlhp(Request $request)
+    {
+        $update = DB::table('kirim_lhp')
+            ->where('kode_lhp', $request->kode_lhp)
+            ->update([
+                'status' => 0
+            ]);
+        if ($update) {
+            echo 0;
+        } else {
+            echo 2;
+        }
+    }
+
+    public function deletekirimlhp(Request $request)
+    {
+        $hapus = DB::table('kirim_lhp')->where('kode_lhp', $request->kode_lhp)->delete();
+        if ($hapus) {
+            echo 0;
+        } else {
+            echo 2;
+        }
     }
 }
