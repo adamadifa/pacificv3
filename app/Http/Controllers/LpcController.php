@@ -6,6 +6,7 @@ use App\Models\Retur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
 
 class LpcController extends Controller
@@ -50,27 +51,40 @@ class LpcController extends Controller
 
     public function store(Request $request)
     {
+
         $cek = DB::table('lpc')
             ->where('kode_cabang', $request->kode_cabang)
             ->where('bulan', $request->bulan)
             ->where('tahun', $request->tahun)
             ->count();
         if ($cek > 0) {
-            echo 1;
+            return Redirect::back()->with(['warning' => 'Data Sudah Ada']);
         } else {
-            $simpan = DB::table('lpc')
-                ->insert([
-                    'kode_lpc' => $request->kode_cabang . $request->bulan . $request->tahun,
-                    'kode_cabang' => $request->kode_cabang,
-                    'bulan' => $request->bulan,
-                    'tahun' => $request->tahun,
-                    'tgl_lpc' => $request->tgl_lpc,
-                    'jam_lpc' => $request->jam_lpc
-                ]);
-            if ($simpan) {
-                echo 0;
-            } else {
-                echo 2;
+            try {
+                if ($request->hasfile('foto')) {
+                    $image = $request->file('foto');
+                    $image_name =  $request->kode_cabang . $request->bulan . $request->tahun . "." . $request->file('foto')->getClientOriginalExtension();
+                    $foto = $image_name;
+                } else {
+                    $foto = NULL;
+                }
+                DB::table('lpc')
+                    ->insert([
+                        'kode_lpc' => $request->kode_cabang . $request->bulan . $request->tahun,
+                        'kode_cabang' => $request->kode_cabang,
+                        'bulan' => $request->bulan,
+                        'tahun' => $request->tahun,
+                        'tgl_lpc' => $request->tgl_lpc,
+                        'jam_lpc' => $request->jam_lpc,
+                        'foto' => $foto
+                    ]);
+
+                $destination_path = "/public/lpc";
+                $request->file('foto')->storeAs($destination_path, $image_name);
+                return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+            } catch (\Exception $e) {
+                dd($e);
+                return Redirect::back()->with(['warning' => 'Data Gagak Disimpan']);
             }
         }
     }

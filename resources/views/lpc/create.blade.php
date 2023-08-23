@@ -1,4 +1,5 @@
-<form action="#" enctype="multipart/form-data">
+<form action="/lpc/store" id="frmLpc" enctype="multipart/form-data" method="POST">
+    @csrf
     <div class="row">
         <div class="col-12">
             <div class="form-group">
@@ -17,7 +18,7 @@
         <div class="col-12">
             <div class="form-group">
 
-                <select name="bulaninput" id="bulaninput" class="form-control">
+                <select name="bulan" id="bulaninput" class="form-control">
                     <option value="">Bulan</option>
                     <?php
                             $bl = date("m");
@@ -37,7 +38,7 @@
     <div class="row">
         <div class="col-12">
             <div class="form-group">
-                <select name="tahuninput" id="tahuninput" class="form-control">
+                <select name="tahun" id="tahuninput" class="form-control">
                     <option value="">Tahun</option>
                     <?php
                             $tahun = date("Y");
@@ -68,7 +69,14 @@
     <div class="row">
         <div class="col-12">
             <div class="form-group">
-                <button class="btn btn-primary btn-block" id="simpanlpc"><i class="feather icon-send"></i> Submit</button>
+                <input type="file" name="foto" class="form-control">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group">
+                <button class="btn btn-primary btn-block" type="submit" id="simpanlpc"><i class="feather icon-send"></i> Submit</button>
             </div>
         </div>
     </div>
@@ -76,6 +84,7 @@
 <script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
 <script>
     $(function() {
+
         $('#jam_lpc').mask('00:00', {
             'translation': {
                 A: {
@@ -101,8 +110,8 @@
                 }
             });
         }
-        $("#simpanlpc").click(function(e) {
-            e.preventDefault();
+
+        $("#frmLpc").submit(function(e) {
             var kode_cabang = $("#kode_cabang").val();
             var bulan = $("#bulaninput").val();
             var tahun = $("#tahuninput").val();
@@ -117,6 +126,7 @@
                 }).then(function() {
                     $("#kode_cabang").focus();
                 });
+                return false;
             } else if (bulan == "") {
                 swal({
                     title: 'Oops'
@@ -126,6 +136,7 @@
                 }).then(function() {
                     $("#bulaninput").focus();
                 });
+                return false;
             } else if (tahun == "") {
                 swal({
                     title: 'Oops'
@@ -135,6 +146,7 @@
                 }).then(function() {
                     $("#tahuninput").focus();
                 });
+                return false;
             } else if (tgl_lpc == "") {
                 swal({
                     title: 'Oops'
@@ -144,6 +156,7 @@
                 }).then(function() {
                     $("#tgl_lpc").focus();
                 });
+                return false;
             } else if (jam_lpc == "") {
                 swal({
                     title: 'Oops'
@@ -153,34 +166,91 @@
                 }).then(function() {
                     $("#jam_lpc").focus();
                 });
-            } else {
-                $.ajax({
-                    type: 'POST'
-                    , url: '/lpc/store'
-                    , data: {
-                        _token: "{{ csrf_token() }}"
-                        , kode_cabang: kode_cabang
-                        , bulan: bulan
-                        , tahun: tahun
-                        , tgl_lpc: tgl_lpc
-                        , jam_lpc: jam_lpc
-                    }
-                    , cache: false
-                    , success: function(respond) {
-                        if (respond == 1) {
-                            swal("Oops", "Data Sudah Ada", "warning");
-                        } else if (respond == 0) {
-                            swal("Berhasil ", "Data Berhasil Disimpan", "success");
-                        } else {
-                            swal("Gagal", "Data Gagal Disimpan", "danger");
-                        }
-
-                        loadlpc();
-                        $("#mdlinputlpc").modal("hide");
-                    }
-                });
+                return false;
             }
         });
+        // $("#simpanlpc").click(function(e) {
+        //     e.preventDefault();
+        //     var kode_cabang = $("#kode_cabang").val();
+        //     var bulan = $("#bulaninput").val();
+        //     var tahun = $("#tahuninput").val();
+        //     var tgl_lpc = $("#tgl_lpc").val();
+        //     var jam_lpc = $("#jam_lpc").val();
+        //     if (kode_cabang == "") {
+        //         swal({
+        //             title: 'Oops'
+        //             , text: 'Kode Cabang Harus Diisi !'
+        //             , icon: 'warning'
+        //             , showConfirmButton: false
+        //         }).then(function() {
+        //             $("#kode_cabang").focus();
+        //         });
+        //     } else if (bulan == "") {
+        //         swal({
+        //             title: 'Oops'
+        //             , text: 'Bulan Harus Diisi !'
+        //             , icon: 'warning'
+        //             , showConfirmButton: false
+        //         }).then(function() {
+        //             $("#bulaninput").focus();
+        //         });
+        //     } else if (tahun == "") {
+        //         swal({
+        //             title: 'Oops'
+        //             , text: 'Tahun Harus Diisi !'
+        //             , icon: 'warning'
+        //             , showConfirmButton: false
+        //         }).then(function() {
+        //             $("#tahuninput").focus();
+        //         });
+        //     } else if (tgl_lpc == "") {
+        //         swal({
+        //             title: 'Oops'
+        //             , text: 'Tanggal Harus Diisi !'
+        //             , icon: 'warning'
+        //             , showConfirmButton: false
+        //         }).then(function() {
+        //             $("#tgl_lpc").focus();
+        //         });
+        //     } else if (jam_lpc == "") {
+        //         swal({
+        //             title: 'Oops'
+        //             , text: 'Jam Harus Diisi !'
+        //             , icon: 'warning'
+        //             , showConfirmButton: false
+        //         }).then(function() {
+        //             $("#jam_lpc").focus();
+        //         });
+        //     } else {
+        //         $.ajax({
+        //             type: 'POST'
+        //             , url: '/lpc/store'
+        //             , data: {
+        //                 _token: "{{ csrf_token() }}"
+        //                 , kode_cabang: kode_cabang
+        //                 , bulan: bulan
+        //                 , tahun: tahun
+        //                 , tgl_lpc: tgl_lpc
+        //                 , jam_lpc: jam_lpc
+        //             }
+        //             , cache: false
+        //             , success: function(respond) {
+        //                 if (respond == 1) {
+        //                     swal("Oops", "Data Sudah Ada", "warning");
+        //                 } else if (respond == 0) {
+        //                     swal("Berhasil ", "Data Berhasil Disimpan", "success");
+        //                 } else {
+        //                     swal("Gagal", "Data Gagal Disimpan", "danger");
+        //                 }
+
+        //                 loadlpc();
+        //                 $("#mdlinputlpc").modal("hide");
+        //             }
+        //         });
+        //     }
+        // });
+
+
     });
 
 </script>

@@ -14,6 +14,20 @@
         @endif
     </td>
     <td>
+        @if (!empty($d->foto))
+        @php
+        $path = Storage::url('lpc/'.$d->foto);
+        @endphp
+        <ul class="list-unstyled users-list m-0  d-flex align-items-center">
+            <li data-toggle="tooltip" data-popup="tooltip-custom" data-placement="bottom" data-original-title="Vinnie Mostowy" class="avatar pull-up">
+                <a href="{{ url($path) }}" target="_blank">
+                    <img class="media-object rounded-circle" src="{{ url($path)}}" alt="Avatar" height="30" width="30">
+                </a>
+            </li>
+        </ul>
+        @endif
+    </td>
+    <td>
         @if($d->status!=1)
         @if (in_array($level,$kirimlpc_edit))
         <a class="ml-1 edit" href="#" kode_lpc="{{ $d->kode_lpc }}"><i class="feather icon-edit success"></i></a>
@@ -32,6 +46,7 @@
         @endif
         @endif
     </td>
+
 </tr>
 @endforeach
 

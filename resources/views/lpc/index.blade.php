@@ -21,7 +21,7 @@
         <!-- Data list view starts -->
         <!-- DataTable starts -->
         @include('layouts.notification')
-        <div class="col-md-6 col-sm-12">
+        <div class="col-md-8 col-sm-12">
             <div class="card">
                 @if (in_array($level,$kirimlpc_tambah))
                 <div class="card-header">
@@ -83,6 +83,7 @@
                                     <th>Tgl Kirim</th>
                                     <th>Jam Kirim</th>
                                     <th>Status</th>
+                                    <th>Resi</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -136,6 +137,9 @@
 @push('myscript')
 <script>
     $(function() {
+
+
+
         function loadlpc() {
             var tahun = $("#tahun").val();
             var bulan = $("#bulan").val();
