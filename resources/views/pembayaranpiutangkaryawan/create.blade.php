@@ -205,6 +205,33 @@
                                 loadhistoribayar();
                                 $("#mdlinputbayarpinjaman").modal("hide");
                             });
+                        } else if (respond == 2) {
+                            swal({
+                                title: 'Warning'
+                                , text: 'Pembayaran Potongan Gaji Sudah Ada !'
+                                , icon: 'warning'
+                                , showConfirmButton: false
+                            }).then(function() {
+                                loadhistoribayar();
+                            });
+                        } else if (respond == 3) {
+                            swal({
+                                title: 'Warning'
+                                , text: 'Pembayaran Potongan Komisi Sudah Ada !'
+                                , icon: 'warning'
+                                , showConfirmButton: false
+                            }).then(function() {
+                                loadhistoribayar();
+                            });
+                        } else if (respond == 3) {
+                            swal({
+                                title: 'Warning'
+                                , text: 'Pembayaran Titipan Pelanggan Sudah Ada !'
+                                , icon: 'warning'
+                                , showConfirmButton: false
+                            }).then(function() {
+                                loadhistoribayar();
+                            });
                         }
                     }
                 });

@@ -8,6 +8,7 @@ use App\Models\Kasbon;
 use App\Models\Kaskecil;
 use App\Models\Ledger;
 use App\Models\Pinjaman;
+use App\Models\Piutangkaryawan;
 use App\Models\Salesman;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -600,7 +601,60 @@ class LaporankeuanganController extends Controller
     }
 
 
+    public function piutangkaryawan()
+    {
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
+        $departemen = DB::table('hrd_departemen')->get();
+        return view('penjualan.laporan.frm.lap_piutangkaryawan', compact('cabang', 'departemen'));
+    }
 
+
+    public function cetak_piutangkaryawan(Request $request)
+    {
+        $id_kantor = $request->id_kantor;
+        $kode_dept = $request->kode_dept;
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $query = Piutangkaryawan::query();
+        $query->select('pinjaman_nonpjp.*', 'nama_karyawan', 'nama_jabatan', 'nama_dept', 'totalpembayaran', 'id_jabatan');
+        $query->join('master_karyawan', 'pinjaman_nonpjp.nik', '=', 'master_karyawan.nik');
+        $query->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
+        $query->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
+        $query->leftJoin(
+            DB::raw("(
+            SELECT no_pinjaman_nonpjp,SUM(jumlah) as totalpembayaran FROM pinjaman_nonpjp_historibayar GROUP BY no_pinjaman_nonpjp
+        ) hb"),
+            function ($join) {
+                $join->on('pinjaman_nonpjp.no_pinjaman_nonpjp', '=', 'hb.no_pinjaman_nonpjp');
+            }
+        );
+        if (!empty($request->dari) && !empty($request->sampai)) {
+            $query->whereBetween('tgl_pinjaman', [$request->dari, $request->sampai]);
+        }
+
+        if (!empty($request->id_kantor)) {
+            $query->where('master_karyawan.id_kantor', $request->id_kantor);
+        }
+
+        if (!empty($request->kode_dept)) {
+            $query->where('master_karyawan.kode_dept', $request->kode_dept);
+        }
+
+        $pinjaman = $query->get();
+
+        $departemen = DB::table('hrd_departemen')->where('kode_dept', $kode_dept)->first();
+        $kantor = DB::table('cabang')->where('kode_cabang', $id_kantor)->first();
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Pinjaman $dari-$sampai.xls");
+        }
+
+        //dd($pinjaman);
+        return view('piutangkaryawan.laporan.cetak', compact('pinjaman', 'departemen', 'kantor', 'dari', 'sampai'));
+    }
     public function cetak_pinjaman(Request $request)
     {
         $id_kantor = $request->id_kantor;
@@ -959,6 +1013,115 @@ class LaporankeuanganController extends Controller
         return view('pinjaman.laporan.cetak_kartupinjaman', compact('pinjaman', 'departemen', 'kantor', 'show_for_hrd', 'namabulan', 'bulan', 'tahun'));
     }
 
+
+    public function cetak_kartupiutangkaryawan(Request $request)
+    {
+
+        $namabulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        $id_kantor = $request->id_kantor;
+        $kode_dept = $request->kode_dept;
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        if ($bulan == 12) {
+            $bulanpotongan = 1;
+            $tahunpotongan = $tahun + 1;
+        } else {
+            $bulanpotongan = $bulan + 1;
+            $tahunpotongan = $tahun;
+        }
+
+        $tglgajidari = $tahun . "-" . $bulan . "-01";
+        $tglgajisampai = date("Y-m-t", strtotime($tglgajidari));
+        $tglpotongan = $tahunpotongan . "-" . $bulanpotongan . "-01";
+        $level = Auth::user()->level;
+        $cabang = Auth::user()->kode_cabang;
+
+
+        $query = Piutangkaryawan::query();
+        $query->selectRaw("pinjaman_nonpjp.nik, nama_karyawan,
+        SUM(IF(tgl_pinjaman < '$tglgajidari',jumlah_pinjaman,0)) as jumlah_pinjamanlast,
+        SUM(totalpembayaranlast) as total_pembayaranlast,
+        SUM(totalpelunasanlast) as total_pelunasanlast,
+        SUM(IF(tgl_pinjaman BETWEEN '$tglgajidari' AND '$tglgajisampai',jumlah_pinjaman,0)) as jumlah_pinjamannow,
+        SUM(totalpembayarannow) as total_pembayarannow,
+        SUM(totalpembayaranpotongkomisi) as total_pembayaranpotongkomisi,
+        SUM(totalpembayarantitipan) as total_pembayarantitipan,
+        SUM(totalpelunasannow) as total_pelunasannow
+        ");
+        $query->join('master_karyawan', 'pinjaman_nonpjp.nik', '=', 'master_karyawan.nik');
+        $query->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
+        $query->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
+        $query->leftJoin(
+            DB::raw("(
+            SELECT no_pinjaman_nonpjp,SUM(jumlah) as totalpembayaranlast FROM pinjaman_nonpjp_historibayar
+            WHERE tgl_bayar < '$tglpotongan' AND kode_potongan IS NOT NULL
+            GROUP BY no_pinjaman_nonpjp
+        ) hb"),
+            function ($join) {
+                $join->on('pinjaman_nonpjp.no_pinjaman_nonpjp', '=', 'hb.no_pinjaman_nonpjp');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+            SELECT no_pinjaman_nonpjp,SUM(jumlah) as totalpelunasanlast FROM pinjaman_nonpjp_historibayar
+            WHERE tgl_bayar < '$tglgajidari' AND kode_potongan IS NULL
+            GROUP BY no_pinjaman_nonpjp
+        ) hbpllast"),
+            function ($join) {
+                $join->on('pinjaman_nonpjp.no_pinjaman_nonpjp', '=', 'hbpllast.no_pinjaman_nonpjp');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+            SELECT no_pinjaman_nonpjp,SUM(jumlah) as totalpelunasannow FROM pinjaman_nonpjp_historibayar
+            WHERE tgl_bayar BETWEEN '$tglgajidari' AND '$tglgajisampai' AND kode_potongan IS NULL
+            GROUP BY no_pinjaman_nonpjp
+        ) hbplnow"),
+            function ($join) {
+                $join->on('pinjaman_nonpjp.no_pinjaman_nonpjp', '=', 'hbplnow.no_pinjaman_nonpjp');
+            }
+        );
+        $query->leftJoin(
+            DB::raw("(
+            SELECT no_pinjaman_nonpjp,
+            SUM(IF(jenis_bayar=1,jumlah,0)) as totalpembayarannow,
+            SUM(IF(jenis_bayar=2,jumlah,0)) as totalpembayaranpotongkomisi,
+            SUM(IF(jenis_bayar=3,jumlah,0)) as totalpembayarantitipan
+            FROM pinjaman_nonpjp_historibayar
+            WHERE tgl_bayar = '$tglpotongan'
+            GROUP BY no_pinjaman_nonpjp
+        ) hbnow"),
+            function ($join) {
+                $join->on('pinjaman_nonpjp.no_pinjaman_nonpjp', '=', 'hbnow.no_pinjaman_nonpjp');
+            }
+        );
+        $query->where('tgl_pinjaman', '<=', $tglgajisampai);
+
+        if (!empty($request->id_kantor)) {
+            $query->where('master_karyawan.id_kantor', $request->id_kantor);
+        }
+
+        if (!empty($request->kode_dept)) {
+            $query->where('master_karyawan.kode_dept', $request->kode_dept);
+        }
+
+        $query->groupByRaw('pinjaman_nonpjp.nik,nama_karyawan');
+        // $query->orderBy('pinjaman_nonpjp.no_pinjaman_nonpjp');
+        $pinjaman = $query->get();
+
+        $departemen = DB::table('hrd_departemen')->where('kode_dept', $kode_dept)->first();
+        $kantor = DB::table('cabang')->where('kode_cabang', $id_kantor)->first();
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Kartu Pinjaman.xls");
+        }
+        return view('piutangkaryawan.laporan.cetak_kartupiutangkaryawan', compact('pinjaman', 'departemen', 'kantor', 'namabulan', 'bulan', 'tahun'));
+    }
+
     public function cetak_kartukasbon(Request $request)
     {
 
@@ -1185,6 +1348,16 @@ class LaporankeuanganController extends Controller
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('pinjaman.laporan.frm.lap_kartupinjaman', compact('cabang', 'departemen', 'bulan'));
     }
+
+    public function kartupiutangkaryawan()
+    {
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
+        $departemen = DB::table('hrd_departemen')->get();
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        return view('piutangkaryawan.laporan.frm.lap_kartupiutangkaryawan', compact('cabang', 'departemen', 'bulan'));
+    }
+
 
 
     public function kartukasbon()

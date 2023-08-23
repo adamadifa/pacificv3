@@ -22,9 +22,17 @@ class PembayaranpinjamannonpjpController extends Controller
         $jenis_bayar = $request->jenis_bayar;
         $bulan = $request->bulan;
         $tahun = $request->tahun;
-        $kode_potongan = "GJ" . $bulan . $tahun;
+        if ($bulan == 12) {
+            $bulanpotongan = 1;
+            $tahunpotongan = $tahun + 1;
+        } else {
+            $bulanpotongan = $bulan + 1;
+            $tahunpotongan = $tahun;
+        }
+
+        $kode_potongan = $jenis_bayar == 1 ? "GJ" . $bulan . $tahun : "";
         $start = $tahun . "-" . $bulan . "-01";
-        $tgl_bayar = date("Y-m-t", strtotime($start));
+        $tgl_bayar = $tahunpotongan . "-" . $bulanpotongan . "-01";
         $jumlah = str_replace(".", "", $request->jumlah);
         $id_user = Auth::user()->id;
         $historibayar = DB::table("pinjaman_nonpjp_historibayar")
@@ -34,23 +42,33 @@ class PembayaranpinjamannonpjpController extends Controller
         $tahun = substr($tahun, 2, 2);
         $last_nobukti = $historibayar != null ? $historibayar->no_bukti : '';
         $no_bukti  = buatkode($last_nobukti, "PK" . $tahun, 4);
+        $cek = DB::table('pinjaman_nonpjp_historibayar')->where('kode_potongan', $kode_potongan)->count();
+        $cekpotongkomisi = DB::table('pinjaman_nonpjp_historibayar')->where('jenis_bayar', 2)->count();
+        $cektitipan = DB::table('pinjaman_nonpjp_historibayar')->where('jenis_bayar', 3)->count();
+        if ($cek > 0 && $jenis_bayar == 1) {
+            echo 2;
+        } else if ($cekpotongkomisi > 0) {
+            echo 3;
+        } else if ($cektitipan > 0) {
+            echo 4;
+        } else {
+            try {
+                $data = [
+                    'no_bukti' => $no_bukti,
+                    'tgl_bayar' => $tgl_bayar,
+                    'no_pinjaman_nonpjp' => $no_pinjaman_nonpjp,
+                    'jumlah' => $jumlah,
+                    'jenis_bayar' => $jenis_bayar,
+                    'kode_potongan' => $kode_potongan,
+                    'id_user' => $id_user
+                ];
 
-        try {
-            $data = [
-                'no_bukti' => $no_bukti,
-                'tgl_bayar' => $tgl_bayar,
-                'no_pinjaman_nonpjp' => $no_pinjaman_nonpjp,
-                'jumlah' => $jumlah,
-                'jenis_bayar' => $jenis_bayar,
-                'kode_potongan' => $kode_potongan,
-                'id_user' => $id_user
-            ];
-
-            DB::table('pinjaman_nonpjp_historibayar')->insert($data);
-            echo 0;
-        } catch (\Exception $e) {
-            //echo 1;
-            dd($e);
+                DB::table('pinjaman_nonpjp_historibayar')->insert($data);
+                echo 0;
+            } catch (\Exception $e) {
+                //echo 1;
+                dd($e);
+            }
         }
     }
 

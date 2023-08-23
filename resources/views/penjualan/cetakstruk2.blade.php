@@ -1,7 +1,10 @@
 <div id="print" style="position: absolute; z-index:1;  background-color:white">
+    @php
+    $path = Storage::url('signature/'.$faktur->signature);
+    @endphp
     <p style="text-align: center">
         ------------------------------------------------<br>
-        LEMBAR UNTUK PELANGGAN<br>
+        LEMBAR UNTUK PELANGGAN <br>
         @if (in_array($faktur->kode_pelanggan,$pelangganmp))
         CV MAKMUR PERMATA<br>
         Jln. Perintis Kemerdekaan 001/003<br>
@@ -361,10 +364,24 @@ $data .= "            Print Ke - ".$faktur->print + 1;
     function BtPrint(prn) {
 
         //alert(prn);
+        var url = "{{ url($path) }}";
+        alert(url);
         var S = "#Intent;scheme=rawbt;";
         var P = "package=ru.a402d.rawbtprinter;end;";
         var textEncoded = encodeURI(prn);
         window.location.href = "intent:" + textEncoded + S + P;
+        sendUrlToPrint(url);
+    }
+
+
+    function sendUrlToPrint(url) {
+        var beforeUrl = 'intent:';
+        var afterUrl = '#Intent;';
+        // Intent call with component
+        afterUrl += 'component=ru.a402d.rawbtprinter.activity.PrintDownloadActivity;'
+        afterUrl += 'package=ru.a402d.rawbtprinter;end;';
+        document.location = beforeUrl + encodeURI(url) + afterUrl;
+        return false;
     }
 
 </script>

@@ -97,6 +97,20 @@
                 </li>
             </a>
             @endif
+
+            @if (in_array($level,$piutangkaryawan_view))
+            <a href="/laporankeuangan/piutangkaryawan" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporankeuangan/piutangkaryawan']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Piutang Karyawan
+                </li>
+            </a>
+
+            <a href="/laporankeuangan/kartupiutangkaryawan" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporankeuangan/kartupiutangkaryawan']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Kartu Piutang Karyawan
+                </li>
+            </a>
+            @endif
         </ul>
     </div>
 </div>
