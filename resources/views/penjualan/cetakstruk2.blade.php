@@ -1,6 +1,11 @@
 <div id="print" style="position: absolute; z-index:1;  background-color:white">
     @php
+    if ($faktur->jenistransaksi == "kredit") {
     $path = asset('app-assets/images/kredit.png');
+    }else{
+    $path = asset('app-assets/images/tunai.png');
+    }
+
     @endphp
     <p style="text-align: center">
         ------------------------------------------------<br>
