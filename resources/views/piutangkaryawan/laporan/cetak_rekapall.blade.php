@@ -56,69 +56,25 @@
     <table class="datatable3">
         <thead bgcolor="#024a75" style="color:white; font-size:12;">
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
-                <th rowspan="4">NO</th>
-                <th rowspan="4">NIK</th>
-                <th rowspan="4">NAMA KARYAWAN</th>
-                <th colspan="7">PJP</th>
-                <th colspan="7">KASBON</th>
-                <th colspan="8">PIUTANG KARYAWAN</th>
-            </tr>
-            <tr>
-                <!-- PJP-->
-                <th rowspan="3">SALDO AWAL</th>
-                <th colspan="2">PENAMBAHAN</th>
-                <th colspan="3">PEMBAYARAN</th>
-                <th rowspan="3">SALDO AKHIR</th>
-
-                <!--- KASBON-->
-
-                <th rowspan="3">SALDO AWAL</th>
-                <th colspan="2">PENAMBAHAN</th>
-                <th colspan="3">PEMBAYARAN</th>
-                <th rowspan="3">SALDO AKHIR</th>
-
-
-                <!--- PIUTANG KARYAWAN-->
-
-                <th rowspan="3">SALDO AWAL</th>
-                <th colspan="2">PENAMBAHAN</th>
+                <th rowspan="2">NO</th>
+                <th rowspan="2">NIK</th>
+                <th rowspan="2">NAMA KARYAWAN</th>
+                <th rowspan="2">SALDOAWAL</th>
+                <th colspan="3">PENAMBAHAN</th>
                 <th colspan="4">PEMBAYARAN</th>
-                <th rowspan="3">SALDO AKHIR</th>
+                <th rowspan="2">SALDO AKHIR</th>
             </tr>
             <tr>
-                <!-- PJP-->
-                <th rowspan="2">PINJAMAN</th>
-                <th rowspan="2">LAIN LAIN</th>
-                <th colspan="2">CICILAN</th>
-                <th rowspan="2">LAIN LAIN</th>
-
-                <!--- KASBON-->
-
-                <th rowspan="2">KASBON</th>
-                <th rowspan="2">LAIN LAIN</th>
-                <th colspan="2">CICILAN</th>
-                <th rowspan="2">LAIN LAIN</th>
-
-                <!--- PIUTANG-->
-
-                <th rowspan="2">KASBON</th>
-                <th rowspan="2">LAIN LAIN</th>
-                <th colspan="3">CICILAN</th>
-                <th rowspan="2">LAIN LAIN</th>
-            </tr>
-            <tr>
-                <th>GAJI</th>
+                <th>PJP</th>
+                <th>KASBON</th>
+                <th>PIUTANG</th>
+                <th>UPAH</th>
                 <th>CASH</th>
-                <th>GAJI</th>
-                <th>CASH</th>
-                <th>GAJI</th>
-                <th>POT. KOMISI</th>
+                <th>KOMISI</th>
                 <th>TITIPAN</th>
             </tr>
         </thead>
-
         <tbody>
-
             @php
             //Pinjaman
             $pinjaman_totalsaldoawal = 0;
@@ -144,9 +100,15 @@
             $piutang_totalpotongkomisi = 0;
             $piutang_totaltitipan = 0;
             $piutang_totalplnow = 0;
+
+
+            $total_all_saldoawal = 0;
+            $total_all_upah = 0;
+            $total_all_cash = 0;
+            $total_all_saldoakhir = 0;
+
             @endphp
             @foreach ($piutangkaryawan as $d)
-
             @php
             $pinjaman_jumlah_pinjamanlast = $d->pinjaman_jumlah_pinjamanlast;
             $pinjaman_jumlah_pelunasanlast = $d->pinjaman_total_pelunasanlast;
@@ -219,72 +181,47 @@
             $piutang_totalsaldoakhir += $piutang_saldoakhir;
             $piutang_totalpembayaran += $piutang_totalpembayarannow;
             $piutang_totalpenambahan += $piutang_jumlah_pinjamannow;
+
+            $all_saldoawal = $pinjaman_saldoawal + $kasbon_saldoawal + $kasbon_jumlah_kasbonnow + $piutang_saldoawal;
+            $upah_all = $pinjaman_jumlah_pembayarannow + $kasbon_jumlah_pembayarannow + $d->piutang_total_pembayarannow;
+            $cash_all = $pinjaman_jumlah_pelunasannow + $kasbon_jumlah_pelunasannow;
+            $all_saldoakhir = $all_saldoawal + $pinjaman_jumlah_pinjamannow + $piutang_jumlah_pinjamannow - $upah_all - $cash_all - $piutang_jumlah_pembayaranpotongkomisi - $piutang_jumlah_pembayarantitipan;
+
+            $total_all_saldoawal += $all_saldoawal;
+            $total_all_upah += $upah_all;
+            $total_all_cash += $cash_all;
+            $total_all_saldoakhir += $all_saldoakhir;
             @endphp
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $d->nik }}</td>
                 <td>{{ $d->nama_karyawan }}</td>
-                <td align="right">{{ !empty($pinjaman_saldoawal) ?  rupiah($pinjaman_saldoawal) : "" }}</td>
+                <td align="right">
+                    {{ !empty($all_saldoawal) ? rupiah($all_saldoawal) : "" }}
+                </td>
                 <td style="text-align: right">{{ !empty($pinjaman_jumlah_pinjamannow) ?  rupiah($pinjaman_jumlah_pinjamannow) : '' }}</td>
-                <td></td>
-                <td style="text-align: right">{{ !empty($pinjaman_jumlah_pembayarannow) ?  rupiah($pinjaman_jumlah_pembayarannow) : '' }}</td>
-                <td style="text-align: right">{{ !empty($pinjaman_jumlah_pelunasannow) ?  rupiah($pinjaman_jumlah_pelunasannow) : '' }}</td>
-                <td></td>
-                <td style="text-align: right">{{ !empty($pinjaman_saldoakhir) ?  rupiah($pinjaman_saldoakhir) : '' }}</td>
-
-                <!-- KASBON -->
-                <td align="right">{{ !empty($kasbon_saldoawal) ?  rupiah($kasbon_saldoawal) : "" }}</td>
                 <td style="text-align: right">{{ !empty($kasbon_jumlah_kasbonnow) ?  rupiah($kasbon_jumlah_kasbonnow) : '' }}</td>
-                <td></td>
-                <td style="text-align: right">{{ !empty($kasbon_jumlah_pembayarannow) ?  rupiah($kasbon_jumlah_pembayarannow) : '' }}</td>
-                <td style="text-align: right">{{ !empty($kasbon_jumlah_pelunasannow) ?  rupiah($kasbon_jumlah_pelunasannow) : '' }}</td>
-                <td></td>
-                <td style="text-align: right">{{ !empty($kasbon_saldoakhir) ?  rupiah($kasbon_saldoakhir) : '' }}</td>
-
-                <!-- PIUTANG-->
-                <td style="text-align: right">{{ !empty($piutang_saldoawal) ?  rupiah($piutang_saldoawal) : '' }}</td>
                 <td style="text-align: right">{{ !empty($piutang_jumlah_pinjamannow) ?  rupiah($piutang_jumlah_pinjamannow) : '' }}</td>
-                <td></td>
-                <td style="text-align: right">{{ !empty($d->piutang_total_pembayarannow) ?  rupiah($d->piutang_total_pembayarannow) : '' }}</td>
+                <td style="text-align: right">{{ !empty($upah_all) ?  rupiah($upah_all) : '' }}</td>
+                <td style="text-align: right">{{ !empty($cash_all) ?  rupiah($cash_all) : '' }}</td>
                 <td style="text-align: right">{{ !empty($piutang_jumlah_pembayaranpotongkomisi) ?  rupiah($piutang_jumlah_pembayaranpotongkomisi) : '' }}</td>
                 <td style="text-align: right">{{ !empty($piutang_jumlah_pembayarantitipan) ?  rupiah($piutang_jumlah_pembayarantitipan) : '' }}</td>
-                <td></td>
-                <td style="text-align: right">{{ !empty($piutang_saldoakhir) ?  rupiah($piutang_saldoakhir) : '' }}</td>
+                <td style="text-align: right">{{ !empty($all_saldoakhir) ?  rupiah($all_saldoakhir) : '' }}</td>
             </tr>
-
             @endforeach
             <tr bgcolor=" #024a75" style=" color:white; font-size:12;">
                 <th colspan="3">TOTAL</th>
-                <th style="text-align: right">{{ rupiah($pinjaman_totalsaldoawal) }}</th>
+                <th style="text-align: right">{{ rupiah($total_all_saldoawal) }}</th>
                 <th style="text-align: right">{{ rupiah($pinjaman_totalpenambahan) }}</th>
-                <th></th>
-                <th style="text-align: right">{{ rupiah($pinjaman_totalpmbnow) }}</th>
-                <th style="text-align: right">{{ rupiah($pinjaman_totalplnow) }}</th>
-                <th></th>
-                <th style="text-align: right">{{ rupiah($pinjaman_totalsaldoakhir) }}</th>
-
-                <!-- KASBON -->
-
-                <th style="text-align: right">{{ rupiah($kasbon_totalsaldoawal) }}</th>
                 <th style="text-align: right">{{ rupiah($kasbon_totalpenambahan) }}</th>
-                <th></th>
-                <th style="text-align: right">{{ rupiah($kasbon_totalpmbnow) }}</th>
-                <th style="text-align: right">{{ rupiah($kasbon_totalplnow) }}</th>
-                <th></th>
-                <th style="text-align: right">{{ rupiah($kasbon_totalsaldoakhir) }}</th>
-
-                <!-- PIUTANG-->
-                <th style="text-align: right">{{ rupiah($piutang_totalsaldoawal) }}</th>
                 <th style="text-align: right">{{ rupiah($piutang_totalpenambahan) }}</th>
-                <th></th>
-                <th style="text-align: right">{{ rupiah($piutang_totalpmbnow) }}</th>
+                <th style="text-align: right">{{ rupiah($total_all_upah) }}</th>
+                <th style="text-align: right">{{ rupiah($total_all_cash) }}</th>
                 <th style="text-align: right">{{ rupiah($piutang_totalpotongkomisi) }}</th>
                 <th style="text-align: right">{{ rupiah($piutang_totaltitipan) }}</th>
-                <th></th>
-                <th style="text-align: right">{{ rupiah($piutang_totalsaldoakhir) }}</th>
+                <th style="text-align: right">{{ rupiah($total_all_saldoakhir) }}</th>
             </tr>
-            </tr>
-
         </tbody>
+
 
 </body>
