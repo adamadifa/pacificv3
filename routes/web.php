@@ -1115,6 +1115,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/laporankeuangan/kartupinjaman', [LaporankeuanganController::class, 'kartupinjaman']);
     Route::get('/laporankeuangan/kartukasbon', [LaporankeuanganController::class, 'kartukasbon']);
     Route::get('/laporankeuangan/kartupiutangkaryawan', [LaporankeuanganController::class, 'kartupiutangkaryawan']);
+    Route::get('/laporankeuangan/kartupiutangall', [LaporankeuanganController::class, 'kartupiutangall']);
 
     Route::post('/laporankeuangan/penjualan/cetak', [LaporankeuanganController::class, 'cetak_penjualan']);
     Route::post('/laporankeuangan/uanglogam/cetak', [LaporankeuanganController::class, 'cetak_uanglogam']);
@@ -1124,6 +1125,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/laporankeuangan/pinjaman/cetakkartupinjaman', [LaporankeuanganController::class, 'cetak_kartupinjaman']);
     Route::post('/laporankeuangan/pinjaman/cetakkartukasbon', [LaporankeuanganController::class, 'cetak_kartukasbon']);
     Route::post('/laporankeuangan/piutangkaryawan/cetakkartupiutangkaryawan', [LaporankeuanganController::class, 'cetak_kartupiutangkaryawan']);
+    Route::post('/laporankeuangan/piutangkaryawan/cetakkartupiutangkaryawanall', [LaporankeuanganController::class, 'cetak_kartupiutangkaryawanall']);
     Route::post('/laporankeuangan/kasbon/cetak', [LaporankeuanganController::class, 'cetak_kasbon']);
     Route::post('/laporankeuangan/saldokasbesar/cetak', [LaporankeuanganController::class, 'cetak_saldokasbesar']);
     Route::post('/laporankeuangan/lpu/cetak', [LaporankeuanganController::class, 'cetak_lpu']);

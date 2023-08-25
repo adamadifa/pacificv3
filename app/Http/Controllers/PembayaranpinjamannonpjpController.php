@@ -45,11 +45,13 @@ class PembayaranpinjamannonpjpController extends Controller
         $cek = DB::table('pinjaman_nonpjp_historibayar')->where('kode_potongan', $kode_potongan)->count();
         $cekpotongkomisi = DB::table('pinjaman_nonpjp_historibayar')->where('jenis_bayar', 2)->count();
         $cektitipan = DB::table('pinjaman_nonpjp_historibayar')->where('jenis_bayar', 3)->count();
+
+
         if ($cek > 0 && $jenis_bayar == 1) {
             echo 2;
-        } else if ($cekpotongkomisi > 0) {
+        } else if ($jenis_bayar == 2 && $cekpotongkomisi > 0) {
             echo 3;
-        } else if ($cektitipan > 0) {
+        } else if ($jenis_bayar == 3 && $cektitipan > 0) {
             echo 4;
         } else {
             try {

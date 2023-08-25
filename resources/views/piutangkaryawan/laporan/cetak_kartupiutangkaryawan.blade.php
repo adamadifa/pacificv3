@@ -98,7 +98,7 @@
             $jumlah_pembayaranlast = $d->total_pembayaranlast;
 
             $jumlah_pinjamannow = $d->jumlah_pinjamannow;
-            $jumlah_pembayarannow = $d->total_pembayarannow;
+            $jumlah_pembayarannow = $d->total_pembayarannow + $d->total_pembayaranpotongkomisi + $d->total_pembayarantitipan ;
             $jumlah_pembayaranpotongkomisi = $d->total_pembayaranpotongkomisi;
             $jumlah_pembayarantitipan = $d->total_pembayarantitipan;
             $jumlah_pelunasannow = $d->total_pelunasannow;
@@ -106,7 +106,7 @@
             $saldoawal = $jumlah_pinjamanlast - $jumlah_pembayaranlast - $jumlah_pelunasanlast ;
 
 
-            $totalpembayarannow = $jumlah_pembayarannow + $jumlah_pelunasannow;
+            $totalpembayarannow = $jumlah_pembayarannow + $jumlah_pelunasannow ;
             $totalpmbnow += $jumlah_pembayarannow;
             $totalplnow += $jumlah_pelunasannow;
 
@@ -129,7 +129,7 @@
                 <td style="text-align: right">{{ !empty($saldoawal) ?  rupiah($saldoawal) : '' }}</td>
                 <td style="text-align: right">{{ !empty($jumlah_pinjamannow) ?  rupiah($jumlah_pinjamannow) : '' }}</td>
                 <td></td>
-                <td style="text-align: right">{{ !empty($jumlah_pembayarannow) ?  rupiah($jumlah_pembayarannow) : '' }}</td>
+                <td style="text-align: right">{{ !empty($d->total_pembayarannow) ?  rupiah($d->total_pembayarannow) : '' }}</td>
                 <td style="text-align: right">{{ !empty($jumlah_pembayaranpotongkomisi) ?  rupiah($jumlah_pembayaranpotongkomisi) : '' }}</td>
                 <td style="text-align: right">{{ !empty($jumlah_pembayarantitipan) ?  rupiah($jumlah_pembayarantitipan) : '' }}</td>
                 <td></td>

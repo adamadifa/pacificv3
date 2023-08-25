@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bank;
 use App\Models\Cabang;
+use App\Models\Karyawan;
 use App\Models\Kasbon;
 use App\Models\Kaskecil;
 use App\Models\Ledger;
@@ -999,7 +1000,7 @@ class LaporankeuanganController extends Controller
         }
 
         $query->groupByRaw('pinjaman.nik,nama_karyawan');
-        $query->orderBy('pinjaman.no_pinjaman');
+        $query->orderBy('nama_karyawan');
         $pinjaman = $query->get();
 
         $departemen = DB::table('hrd_departemen')->where('kode_dept', $kode_dept)->first();
@@ -1314,7 +1315,7 @@ class LaporankeuanganController extends Controller
         }
 
         $query->groupByRaw('kasbon.nik,nama_karyawan');
-        $query->orderBy('kasbon.no_kasbon');
+        $query->orderBy('nama_karyawan');
         $kasbon = $query->get();
 
         $departemen = DB::table('hrd_departemen')->where('kode_dept', $kode_dept)->first();
@@ -1356,6 +1357,16 @@ class LaporankeuanganController extends Controller
         $departemen = DB::table('hrd_departemen')->get();
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('piutangkaryawan.laporan.frm.lap_kartupiutangkaryawan', compact('cabang', 'departemen', 'bulan'));
+    }
+
+
+    public function kartupiutangall()
+    {
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
+        $departemen = DB::table('hrd_departemen')->get();
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        return view('piutangkaryawan.laporan.frm.lap_kartupiutangall', compact('cabang', 'departemen', 'bulan'));
     }
 
 
@@ -1520,5 +1531,206 @@ class LaporankeuanganController extends Controller
             header("Content-Disposition: attachment; filename=Laporan Kasbon $dari-$sampai.xls");
         }
         return view('kasbon.laporan.cetak', compact('kasbon', 'departemen', 'kantor', 'dari', 'sampai'));
+    }
+
+
+
+    public function cetak_kartupiutangkaryawanall(Request $request)
+    {
+
+        $namabulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        $id_kantor = $request->id_kantor;
+        $kode_dept = $request->kode_dept;
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        if ($bulan == 12) {
+            $bulanpotongan = 1;
+            $tahunpotongan = $tahun + 1;
+        } else {
+            $bulanpotongan = $bulan + 1;
+            $tahunpotongan = $tahun;
+        }
+
+        $tglgajidari = $tahun . "-" . $bulan . "-01";
+        $tglgajisampai = date("Y-m-t", strtotime($tglgajidari));
+        $tglpotongan = $tahunpotongan . "-" . $bulanpotongan . "-01";
+
+
+        $query = Karyawan::query();
+        $query->selectRaw('
+            master_karyawan.nik,nama_karyawan,
+            pinjaman_jumlah_pinjamanlast,
+            pinjaman_total_pembayaranlast,
+            pinjaman_total_pelunasanlast,
+            pinjaman_jumlah_pinjamannow,
+            pinjaman_total_pembayarannow,
+            pinjaman_total_pelunasannow,
+
+            kasbon_jumlah_kasbonlast,
+            kasbon_total_pembayaranlast,
+            kasbon_total_pelunasanlast,
+            kasbon_jumlah_kasbonnow,
+            kasbon_total_pembayarannow,
+            kasbon_total_pelunasannow
+
+            piutang_jumlah_pinjamanlast,
+            piutang_total_pembayaranlast,
+            piutang_total_pelunasanlast,
+            piutang_jumlah_pinjamannow,
+            piutang_total_pembayarannow,
+            piutang_total_pembayaranpotongkomisi,
+            piutang_total_pembayarantitipan,
+            piutang_total_pelunasannow
+        ');
+
+        $query->leftJoin(
+            DB::raw("(
+            SELECT pinjaman.nik,
+            SUM(IF(tgl_pinjaman < '2023-08-01',jumlah_pinjaman,0)) as pinjaman_jumlah_pinjamanlast,
+            SUM(totalpembayaranlast) as pinjaman_total_pembayaranlast,
+            SUM(totalpelunasanlast) as pinjaman_total_pelunasanlast,
+            SUM(IF(tgl_pinjaman BETWEEN '2023-08-01' AND '2023-08-31',jumlah_pinjaman,0)) as pinjaman_jumlah_pinjamannow,
+            SUM(totalpembayarannow) as pinjaman_total_pembayarannow,
+            SUM(totalpelunasannow) as pinjaman_total_pelunasannow
+            FROM pinjaman
+            LEFT JOIN (
+                SELECT no_pinjaman,SUM(jumlah) as totalpembayaranlast FROM pinjaman_historibayar
+                WHERE tgl_bayar < '2023-09-01' AND kode_potongan IS NOT NULL
+                GROUP BY no_pinjaman
+            ) hb ON (pinjaman.no_pinjaman = hb.no_pinjaman)
+
+            LEFT JOIN (
+                SELECT no_pinjaman,SUM(jumlah) as totalpelunasanlast FROM pinjaman_historibayar
+                WHERE tgl_bayar < '2023-09-01' AND kode_potongan IS NULL
+                GROUP BY no_pinjaman
+            ) hbplast ON (pinjaman.no_pinjaman = hbplast.no_pinjaman)
+
+            LEFT JOIN (
+                SELECT no_pinjaman,SUM(jumlah) as totalpelunasannow FROM pinjaman_historibayar
+                WHERE tgl_bayar BETWEEN '2023-08-01' AND '2023-08-31' AND kode_potongan IS NULL
+                GROUP BY no_pinjaman
+            ) hbplnow ON (pinjaman.no_pinjaman = hbplnow.no_pinjaman)
+
+            LEFT JOIN (
+                SELECT no_pinjaman,SUM(jumlah) as totalpembayarannow FROM pinjaman_historibayar
+                WHERE tgl_bayar = '2023-09-01' AND kode_potongan IS NOT NULL
+                GROUP BY no_pinjaman
+            ) hbnow ON (pinjaman.no_pinjaman = hbnow.no_pinjaman)
+            WHERE tgl_pinjaman <= '2023-08-31'
+            GROUP BY pinjaman.nik
+        ) pinjaman"),
+            function ($join) {
+                $join->on('master_karyawan.nik', '=', 'pinjaman.nik');
+            }
+        );
+
+
+        $query->leftJoin(
+            DB::raw("(
+            SELECT kasbon.nik,
+            SUM(IF(tgl_kasbon < '2023-08-01',jumlah_kasbon,0)) as kasbon_jumlah_kasbonlast,
+            SUM(totalpembayaranlast) as kasbon_total_pembayaranlast,
+            SUM(totalpelunasanlast) as kasbon_total_pelunasanlast,
+            SUM(IF(tgl_kasbon BETWEEN '2023-08-01' AND '2023-08-31',jumlah_kasbon,0)) as kasbon_jumlah_kasbonnow,
+            SUM(totalpembayarannow) as kasbon_total_pembayarannow,
+            SUM(totalpelunasannow) as kasbon_total_pelunasannow
+            FROM kasbon
+            LEFT JOIN (
+                SELECT no_kasbon,SUM(jumlah) as totalpembayaranlast FROM kasbon_historibayar
+                WHERE tgl_bayar < '2023-09-01' AND kode_potongan IS NOT NULL
+                GROUP BY no_kasbon
+            ) hb ON (kasbon.no_kasbon = hb.no_kasbon)
+
+            LEFT JOIN (
+                SELECT no_kasbon,SUM(jumlah) as totalpelunasanlast FROM kasbon_historibayar
+                WHERE tgl_bayar < '2023-08-01' AND kode_potongan IS NULL
+                GROUP BY no_kasbon
+            ) hbpllast ON (kasbon.no_kasbon = hbpllast.no_kasbon)
+
+            LEFT JOIN (
+                SELECT no_kasbon,SUM(jumlah) as totalpelunasannow FROM kasbon_historibayar
+                WHERE tgl_bayar BETWEEN '2023-08-01' AND '2023-08-31' AND kode_potongan IS NULL
+                GROUP BY no_kasbon
+            ) hbplnow ON (kasbon.no_kasbon = hbplnow.no_kasbon)
+
+            LEFT JOIN (
+                SELECT no_kasbon,SUM(jumlah) as totalpembayarannow FROM kasbon_historibayar
+                WHERE tgl_bayar = '2023-09-01' AND kode_potongan IS NOT NULL
+                GROUP BY no_kasbon
+            ) hbnow ON (kasbon.no_kasbon = hbnow.no_kasbon)
+
+            WHERE tgl_kasbon <= '2023-08-31'
+            GROUP BY kasbon.nik
+        ) kasbon"),
+            function ($join) {
+                $join->on('master_karyawan.nik', '=', 'kasbon.nik');
+            }
+        );
+
+
+        $query->leftJoin(
+            DB::raw("(
+            SELECT pinjaman_nonpjp.nik,
+            SUM(IF(tgl_pinjaman < '2023-08-01',jumlah_pinjaman,0)) as piutang_jumlah_pinjamanlast,
+            SUM(totalpembayaranlast) as piutang_total_pembayaranlast,
+            SUM(totalpelunasanlast) as piutang_total_pelunasanlast,
+            SUM(IF(tgl_pinjaman BETWEEN '2023-08-01' AND '2023-08-31',jumlah_pinjaman,0)) as piutang_jumlah_pinjamannow,
+            SUM(totalpembayarannow) as piutang_total_pembayarannow,
+            SUM(totalpembayaranpotongkomisi) as piutang_total_pembayaranpotongkomisi,
+            SUM(totalpembayarantitipan) as piutang_total_pembayarantitipan,
+            SUM(totalpelunasannow) as piutang_total_pelunasannow
+            FROM pinjaman_nonpjp
+            LEFT JOIN (
+                SELECT no_pinjaman_nonpjp,SUM(jumlah) as totalpembayaranlast FROM pinjaman_nonpjp_historibayar
+                WHERE tgl_bayar < '2023-09-01' AND kode_potongan IS NOT NULL
+                GROUP BY no_pinjaman_nonpjp
+            ) hb ON (pinjaman_nonpjp.no_pinjaman_nonpjp = hb.no_pinjaman_nonpjp)
+
+
+            LEFT JOIN (
+                SELECT no_pinjaman_nonpjp,SUM(jumlah) as totalpelunasanlast FROM pinjaman_nonpjp_historibayar
+                WHERE tgl_bayar < '2023-08-01' AND kode_potongan IS NULL
+                GROUP BY no_pinjaman_nonpjp
+            ) hbpllast ON (pinjaman_nonpjp.no_pinjaman_nonpjp = hbpllast.no_pinjaman_nonpjp)
+
+
+            LEFT JOIN (
+                SELECT no_pinjaman_nonpjp,SUM(jumlah) as totalpelunasannow FROM pinjaman_nonpjp_historibayar
+                WHERE tgl_bayar BETWEEN '2023-08-01' AND '2023-08-31' AND kode_potongan IS NULL
+                GROUP BY no_pinjaman_nonpjp
+            ) hbplnow ON (pinjaman_nonpjp.no_pinjaman_nonpjp = hbplnow.no_pinjaman_nonpjp)
+
+
+            LEFT JOIN (
+                SELECT no_pinjaman_nonpjp,
+                SUM(IF(jenis_bayar=1,jumlah,0)) as totalpembayarannow,
+                SUM(IF(jenis_bayar=2,jumlah,0)) as totalpembayaranpotongkomisi,
+                SUM(IF(jenis_bayar=3,jumlah,0)) as totalpembayarantitipan
+                FROM pinjaman_nonpjp_historibayar
+                WHERE tgl_bayar = '2023-09-01'
+                GROUP BY no_pinjaman_nonpjp
+            ) hbnow ON (pinjaman_nonpjp.no_pinjaman_nonpjp = hbnow.no_pinjaman_nonpjp)
+
+            WHERE tgl_pinjaman <= '2023-08-31'
+            GROUP BY pinjaman_nonpjp.nik
+        ) piutang"),
+            function ($join) {
+                $join->on('master_karyawan.nik', '=', 'piutang.nik');
+            }
+        );
+        $query->orderBy('nama_karyawan');
+        $piutangkaryawan = $query->get();
+
+
+
+        $departemen = DB::table('hrd_departemen')->where('kode_dept', $kode_dept)->first();
+        $kantor = DB::table('cabang')->where('kode_cabang', $id_kantor)->first();
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Rekap Piutang Karyawan $bulan-$tahun.xls");
+        }
+        return view('piutangkaryawan.laporan.cetak_rekapall', compact('piutangkaryawan', 'departemen', 'kantor', 'namabulan', 'bulan', 'tahun'));
     }
 }

@@ -110,6 +110,11 @@
                     <i class="feather icon-file mr-1"></i>Kartu Piutang Karyawan
                 </li>
             </a>
+            <a href="/laporankeuangan/kartupiutangall" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['laporankeuangan/kartupiutangall']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Rekap Kartu Piutang
+                </li>
+            </a>
             @endif
         </ul>
     </div>
