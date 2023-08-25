@@ -30,7 +30,7 @@ class PenilaiankaryawanController extends Controller
         } else {
             if (Auth::user()->level == "rsm") {
                 $qkaryawan->whereIn('id_kantor', $list_wilayah);
-                $qkaryawan->where('id_jabatan', 11);
+                //$qkaryawan->where('id_jabatan', 11);
             } else if (Auth::user()->kategori_jabatan == 3) {
 
                 if (Auth::user()->level == "manager accounting") {

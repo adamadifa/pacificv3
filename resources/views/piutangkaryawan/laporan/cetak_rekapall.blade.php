@@ -68,10 +68,10 @@
                 <th>PJP</th>
                 <th>KASBON</th>
                 <th>PIUTANG</th>
-                <th>UPAH</th>
+                <th>POT. UPAH</th>
                 <th>CASH</th>
-                <th>KOMISI</th>
-                <th>TITIPAN</th>
+                <th>POT. KOMISI</th>
+                <th>TITIPAN PELANGGAN</th>
             </tr>
         </thead>
         <tbody>
