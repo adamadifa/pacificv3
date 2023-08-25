@@ -1571,7 +1571,7 @@ class LaporankeuanganController extends Controller
             kasbon_total_pelunasanlast,
             kasbon_jumlah_kasbonnow,
             kasbon_total_pembayarannow,
-            kasbon_total_pelunasannow
+            kasbon_total_pelunasannow,
 
             piutang_jumlah_pinjamanlast,
             piutang_total_pembayaranlast,
