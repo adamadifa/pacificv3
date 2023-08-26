@@ -101,9 +101,7 @@ class KonfigurasijadwalController extends Controller
 
         $kode_setjadwal = $request->kode_setjadwal;
         $shift = $request->shift;
-        if (Auth::user()->level == "spv produksi") {
-            $id_group = 29;
-        } else if (Auth::user()->level == "general affair") {
+        if (Auth::user()->level == "general affair") {
             $id_group = 7;
         } else if (Auth::user()->level == "admin maintenance" || Auth::user()->level == "spv maintenance") {
             $id_group = 18;
