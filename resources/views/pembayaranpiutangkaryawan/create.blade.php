@@ -6,6 +6,7 @@
                 <option value="1">Potong Gaji</option>
                 <option value="2">Potong Komisi</option>
                 <option value="3">Titipan Pelanggan</option>
+                <option value="4">Lainnya</option>
             </select>
         </div>
     </div>

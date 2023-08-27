@@ -61,7 +61,7 @@
                 <th rowspan="2">NAMA KARYAWAN</th>
                 <th rowspan="2">SALDOAWAL</th>
                 <th colspan="3">PENAMBAHAN</th>
-                <th colspan="4">PEMBAYARAN</th>
+                <th colspan="5">PEMBAYARAN</th>
                 <th rowspan="2">SALDO AKHIR</th>
             </tr>
             <tr>
@@ -72,6 +72,7 @@
                 <th>CASH</th>
                 <th>POT. KOMISI</th>
                 <th>TITIPAN PELANGGAN</th>
+                <th>LAINNYA</th>
             </tr>
         </thead>
         <tbody>
@@ -99,6 +100,7 @@
             $piutang_totalpmbnow = 0;
             $piutang_totalpotongkomisi = 0;
             $piutang_totaltitipan = 0;
+            $piutang_totallainnya = 0;
             $piutang_totalplnow = 0;
 
 
@@ -164,6 +166,7 @@
             $piutang_jumlah_pembayarannow = $d->piutang_total_pembayarannow + $d->piutang_total_pembayaranpotongkomisi + $d->piutang_total_pembayarantitipan ;
             $piutang_jumlah_pembayaranpotongkomisi = $d->piutang_total_pembayaranpotongkomisi;
             $piutang_jumlah_pembayarantitipan = $d->piutang_total_pembayarantitipan;
+            $piutang_jumlah_pembayaranlainnya = $d->piutang_total_pembayaranlainnya;
             $piutang_jumlah_pelunasannow = $d->piutang_total_pelunasannow;
 
             $piutang_saldoawal = $piutang_jumlah_pinjamanlast - $piutang_jumlah_pembayaranlast - $piutang_jumlah_pelunasanlast ;
@@ -174,6 +177,7 @@
 
             $piutang_totalpotongkomisi += $piutang_jumlah_pembayaranpotongkomisi;
             $piutang_totaltitipan += $piutang_jumlah_pembayarantitipan;
+            $piutang_totallainnya += $piutang_jumlah_pembayaranlainnya;
 
             $piutang_saldoakhir = $piutang_saldoawal + $piutang_jumlah_pinjamannow - $piutang_totalpembayarannow ;
 
@@ -185,7 +189,7 @@
             $all_saldoawal = $pinjaman_saldoawal + $kasbon_saldoawal + $piutang_saldoawal;
             $upah_all = $pinjaman_jumlah_pembayarannow + $kasbon_jumlah_pembayarannow + $d->piutang_total_pembayarannow;
             $cash_all = $pinjaman_jumlah_pelunasannow + $kasbon_jumlah_pelunasannow;
-            $all_saldoakhir = $all_saldoawal + $pinjaman_jumlah_pinjamannow + $piutang_jumlah_pinjamannow - $upah_all - $cash_all - $piutang_jumlah_pembayaranpotongkomisi - $piutang_jumlah_pembayarantitipan;
+            $all_saldoakhir = $all_saldoawal + $pinjaman_jumlah_pinjamannow + $piutang_jumlah_pinjamannow - $upah_all - $cash_all - $piutang_jumlah_pembayaranpotongkomisi - $piutang_jumlah_pembayarantitipan - $piutang_jumlah_pembayaranlainnya;
 
             $total_all_saldoawal += $all_saldoawal;
             $total_all_upah += $upah_all;
@@ -206,6 +210,7 @@
                 <td style="text-align: right">{{ !empty($cash_all) ?  rupiah($cash_all) : '' }}</td>
                 <td style="text-align: right">{{ !empty($piutang_jumlah_pembayaranpotongkomisi) ?  rupiah($piutang_jumlah_pembayaranpotongkomisi) : '' }}</td>
                 <td style="text-align: right">{{ !empty($piutang_jumlah_pembayarantitipan) ?  rupiah($piutang_jumlah_pembayarantitipan) : '' }}</td>
+                <td style="text-align: right">{{ !empty($piutang_jumlah_pembayaranlainnya) ?  rupiah($piutang_jumlah_pembayaranlainnya) : '' }}</td>
                 <td style="text-align: right">{{ !empty($all_saldoakhir) ?  rupiah($all_saldoakhir) : '' }}</td>
             </tr>
             @endforeach
@@ -219,6 +224,7 @@
                 <th style="text-align: right">{{ rupiah($total_all_cash) }}</th>
                 <th style="text-align: right">{{ rupiah($piutang_totalpotongkomisi) }}</th>
                 <th style="text-align: right">{{ rupiah($piutang_totaltitipan) }}</th>
+                <th style="text-align: right">{{ rupiah($piutang_totallainnya) }}</th>
                 <th style="text-align: right">{{ rupiah($total_all_saldoakhir) }}</th>
             </tr>
         </tbody>

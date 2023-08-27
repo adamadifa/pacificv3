@@ -1047,6 +1047,7 @@ class LaporankeuanganController extends Controller
         SUM(totalpembayarannow) as total_pembayarannow,
         SUM(totalpembayaranpotongkomisi) as total_pembayaranpotongkomisi,
         SUM(totalpembayarantitipan) as total_pembayarantitipan,
+        SUM(totalpembayaranlainnya) as total_pembayaranlainnya,
         SUM(totalpelunasannow) as total_pelunasannow
         ");
         $query->join('master_karyawan', 'pinjaman_nonpjp.nik', '=', 'master_karyawan.nik');
@@ -1089,7 +1090,8 @@ class LaporankeuanganController extends Controller
             SELECT no_pinjaman_nonpjp,
             SUM(IF(jenis_bayar=1,jumlah,0)) as totalpembayarannow,
             SUM(IF(jenis_bayar=2,jumlah,0)) as totalpembayaranpotongkomisi,
-            SUM(IF(jenis_bayar=3,jumlah,0)) as totalpembayarantitipan
+            SUM(IF(jenis_bayar=3,jumlah,0)) as totalpembayarantitipan,
+            SUM(IF(jenis_bayar=4,jumlah,0)) as totalpembayaranlainnya
             FROM pinjaman_nonpjp_historibayar
             WHERE tgl_bayar = '$tglpotongan'
             GROUP BY no_pinjaman_nonpjp
@@ -1580,43 +1582,44 @@ class LaporankeuanganController extends Controller
             piutang_total_pembayarannow,
             piutang_total_pembayaranpotongkomisi,
             piutang_total_pembayarantitipan,
+            piutang_total_pembayaranlainnya,
             piutang_total_pelunasannow
         ');
 
         $query->leftJoin(
             DB::raw("(
             SELECT pinjaman.nik,
-            SUM(IF(tgl_pinjaman < '2023-08-01',jumlah_pinjaman,0)) as pinjaman_jumlah_pinjamanlast,
+            SUM(IF(tgl_pinjaman < '$tglgajidari',jumlah_pinjaman,0)) as pinjaman_jumlah_pinjamanlast,
             SUM(totalpembayaranlast) as pinjaman_total_pembayaranlast,
             SUM(totalpelunasanlast) as pinjaman_total_pelunasanlast,
-            SUM(IF(tgl_pinjaman BETWEEN '2023-08-01' AND '2023-08-31',jumlah_pinjaman,0)) as pinjaman_jumlah_pinjamannow,
+            SUM(IF(tgl_pinjaman BETWEEN '$tglgajidari' AND '$tglgajisampai',jumlah_pinjaman,0)) as pinjaman_jumlah_pinjamannow,
             SUM(totalpembayarannow) as pinjaman_total_pembayarannow,
             SUM(totalpelunasannow) as pinjaman_total_pelunasannow
             FROM pinjaman
             LEFT JOIN (
                 SELECT no_pinjaman,SUM(jumlah) as totalpembayaranlast FROM pinjaman_historibayar
-                WHERE tgl_bayar < '2023-09-01' AND kode_potongan IS NOT NULL
+                WHERE tgl_bayar < '$tglpotongan' AND kode_potongan IS NOT NULL
                 GROUP BY no_pinjaman
             ) hb ON (pinjaman.no_pinjaman = hb.no_pinjaman)
 
             LEFT JOIN (
                 SELECT no_pinjaman,SUM(jumlah) as totalpelunasanlast FROM pinjaman_historibayar
-                WHERE tgl_bayar < '2023-09-01' AND kode_potongan IS NULL
+                WHERE tgl_bayar < '$tglpotongan' AND kode_potongan IS NULL
                 GROUP BY no_pinjaman
             ) hbplast ON (pinjaman.no_pinjaman = hbplast.no_pinjaman)
 
             LEFT JOIN (
                 SELECT no_pinjaman,SUM(jumlah) as totalpelunasannow FROM pinjaman_historibayar
-                WHERE tgl_bayar BETWEEN '2023-08-01' AND '2023-08-31' AND kode_potongan IS NULL
+                WHERE tgl_bayar BETWEEN '$tglgajidari' AND '$tglgajisampai' AND kode_potongan IS NULL
                 GROUP BY no_pinjaman
             ) hbplnow ON (pinjaman.no_pinjaman = hbplnow.no_pinjaman)
 
             LEFT JOIN (
                 SELECT no_pinjaman,SUM(jumlah) as totalpembayarannow FROM pinjaman_historibayar
-                WHERE tgl_bayar = '2023-09-01' AND kode_potongan IS NOT NULL
+                WHERE tgl_bayar = '$tglpotongan' AND kode_potongan IS NOT NULL
                 GROUP BY no_pinjaman
             ) hbnow ON (pinjaman.no_pinjaman = hbnow.no_pinjaman)
-            WHERE tgl_pinjaman <= '2023-08-31'
+            WHERE tgl_pinjaman <= '$tglgajisampai'
             GROUP BY pinjaman.nik
         ) pinjaman"),
             function ($join) {
@@ -1628,38 +1631,38 @@ class LaporankeuanganController extends Controller
         $query->leftJoin(
             DB::raw("(
             SELECT kasbon.nik,
-            SUM(IF(tgl_kasbon < '2023-08-01',jumlah_kasbon,0)) as kasbon_jumlah_kasbonlast,
+            SUM(IF(tgl_kasbon < '$tglgajidari',jumlah_kasbon,0)) as kasbon_jumlah_kasbonlast,
             SUM(totalpembayaranlast) as kasbon_total_pembayaranlast,
             SUM(totalpelunasanlast) as kasbon_total_pelunasanlast,
-            SUM(IF(tgl_kasbon BETWEEN '2023-08-01' AND '2023-08-31',jumlah_kasbon,0)) as kasbon_jumlah_kasbonnow,
+            SUM(IF(tgl_kasbon BETWEEN '$tglgajidari' AND '$tglgajisampai',jumlah_kasbon,0)) as kasbon_jumlah_kasbonnow,
             SUM(totalpembayarannow) as kasbon_total_pembayarannow,
             SUM(totalpelunasannow) as kasbon_total_pelunasannow
             FROM kasbon
             LEFT JOIN (
                 SELECT no_kasbon,SUM(jumlah) as totalpembayaranlast FROM kasbon_historibayar
-                WHERE tgl_bayar < '2023-09-01' AND kode_potongan IS NOT NULL
+                WHERE tgl_bayar < '$tglpotongan' AND kode_potongan IS NOT NULL
                 GROUP BY no_kasbon
             ) hb ON (kasbon.no_kasbon = hb.no_kasbon)
 
             LEFT JOIN (
                 SELECT no_kasbon,SUM(jumlah) as totalpelunasanlast FROM kasbon_historibayar
-                WHERE tgl_bayar < '2023-08-01' AND kode_potongan IS NULL
+                WHERE tgl_bayar < '$tglgajidari' AND kode_potongan IS NULL
                 GROUP BY no_kasbon
             ) hbpllast ON (kasbon.no_kasbon = hbpllast.no_kasbon)
 
             LEFT JOIN (
                 SELECT no_kasbon,SUM(jumlah) as totalpelunasannow FROM kasbon_historibayar
-                WHERE tgl_bayar BETWEEN '2023-08-01' AND '2023-08-31' AND kode_potongan IS NULL
+                WHERE tgl_bayar BETWEEN '$tglgajidari' AND '$tglgajisampai' AND kode_potongan IS NULL
                 GROUP BY no_kasbon
             ) hbplnow ON (kasbon.no_kasbon = hbplnow.no_kasbon)
 
             LEFT JOIN (
                 SELECT no_kasbon,SUM(jumlah) as totalpembayarannow FROM kasbon_historibayar
-                WHERE tgl_bayar = '2023-09-01' AND kode_potongan IS NOT NULL
+                WHERE tgl_bayar = '$tglpotongan' AND kode_potongan IS NOT NULL
                 GROUP BY no_kasbon
             ) hbnow ON (kasbon.no_kasbon = hbnow.no_kasbon)
 
-            WHERE tgl_kasbon <= '2023-08-31'
+            WHERE tgl_kasbon <= '$tglgajisampai'
             GROUP BY kasbon.nik
         ) kasbon"),
             function ($join) {
@@ -1671,32 +1674,33 @@ class LaporankeuanganController extends Controller
         $query->leftJoin(
             DB::raw("(
             SELECT pinjaman_nonpjp.nik,
-            SUM(IF(tgl_pinjaman < '2023-08-01',jumlah_pinjaman,0)) as piutang_jumlah_pinjamanlast,
+            SUM(IF(tgl_pinjaman < '$tglgajidari',jumlah_pinjaman,0)) as piutang_jumlah_pinjamanlast,
             SUM(totalpembayaranlast) as piutang_total_pembayaranlast,
             SUM(totalpelunasanlast) as piutang_total_pelunasanlast,
-            SUM(IF(tgl_pinjaman BETWEEN '2023-08-01' AND '2023-08-31',jumlah_pinjaman,0)) as piutang_jumlah_pinjamannow,
+            SUM(IF(tgl_pinjaman BETWEEN '$tglgajidari' AND '$tglgajisampai',jumlah_pinjaman,0)) as piutang_jumlah_pinjamannow,
             SUM(totalpembayarannow) as piutang_total_pembayarannow,
             SUM(totalpembayaranpotongkomisi) as piutang_total_pembayaranpotongkomisi,
             SUM(totalpembayarantitipan) as piutang_total_pembayarantitipan,
+            SUM(totalpembayaranlainnya) as piutang_total_pembayaranlainnya,
             SUM(totalpelunasannow) as piutang_total_pelunasannow
             FROM pinjaman_nonpjp
             LEFT JOIN (
                 SELECT no_pinjaman_nonpjp,SUM(jumlah) as totalpembayaranlast FROM pinjaman_nonpjp_historibayar
-                WHERE tgl_bayar < '2023-09-01' AND kode_potongan IS NOT NULL
+                WHERE tgl_bayar < '$tglpotongan' AND kode_potongan IS NOT NULL
                 GROUP BY no_pinjaman_nonpjp
             ) hb ON (pinjaman_nonpjp.no_pinjaman_nonpjp = hb.no_pinjaman_nonpjp)
 
 
             LEFT JOIN (
                 SELECT no_pinjaman_nonpjp,SUM(jumlah) as totalpelunasanlast FROM pinjaman_nonpjp_historibayar
-                WHERE tgl_bayar < '2023-08-01' AND kode_potongan IS NULL
+                WHERE tgl_bayar < '$tglgajidari' AND kode_potongan IS NULL
                 GROUP BY no_pinjaman_nonpjp
             ) hbpllast ON (pinjaman_nonpjp.no_pinjaman_nonpjp = hbpllast.no_pinjaman_nonpjp)
 
 
             LEFT JOIN (
                 SELECT no_pinjaman_nonpjp,SUM(jumlah) as totalpelunasannow FROM pinjaman_nonpjp_historibayar
-                WHERE tgl_bayar BETWEEN '2023-08-01' AND '2023-08-31' AND kode_potongan IS NULL
+                WHERE tgl_bayar BETWEEN '$tglgajidari' AND '$tglgajisampai' AND kode_potongan IS NULL
                 GROUP BY no_pinjaman_nonpjp
             ) hbplnow ON (pinjaman_nonpjp.no_pinjaman_nonpjp = hbplnow.no_pinjaman_nonpjp)
 
@@ -1705,13 +1709,14 @@ class LaporankeuanganController extends Controller
                 SELECT no_pinjaman_nonpjp,
                 SUM(IF(jenis_bayar=1,jumlah,0)) as totalpembayarannow,
                 SUM(IF(jenis_bayar=2,jumlah,0)) as totalpembayaranpotongkomisi,
-                SUM(IF(jenis_bayar=3,jumlah,0)) as totalpembayarantitipan
+                SUM(IF(jenis_bayar=3,jumlah,0)) as totalpembayarantitipan,
+                SUM(IF(jenis_bayar=4,jumlah,0)) as totalpembayaranlainnya
                 FROM pinjaman_nonpjp_historibayar
-                WHERE tgl_bayar = '2023-09-01'
+                WHERE tgl_bayar = '$tglpotongan'
                 GROUP BY no_pinjaman_nonpjp
             ) hbnow ON (pinjaman_nonpjp.no_pinjaman_nonpjp = hbnow.no_pinjaman_nonpjp)
 
-            WHERE tgl_pinjaman <= '2023-08-31'
+            WHERE tgl_pinjaman <= '$tglgajisampai'
             GROUP BY pinjaman_nonpjp.nik
         ) piutang"),
             function ($join) {

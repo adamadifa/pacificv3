@@ -67,13 +67,13 @@
             <tr>
                 <th rowspan="2">PINJAMAN</th>
                 <th rowspan="2">LAIN LAIN</th>
-                <th colspan="3">CICILAN</th>
-                <th rowspan="2">LAIN LAIN</th>
+                <th colspan="4">CICILAN</th>
             </tr>
             <tr>
                 <th>GAJI</th>
                 <th>POT. KOMISI</th>
                 <th>TITIPAN</th>
+                <th>LAINNYA</th>
             </tr>
         </thead>
 
@@ -87,6 +87,7 @@
             $totalpmbnow = 0;
             $totalpotongkomisi = 0;
             $totaltitipan = 0;
+            $totallainnya = 0;
             $totalplnow = 0;
             $no = 1;
             @endphp
@@ -101,6 +102,7 @@
             $jumlah_pembayarannow = $d->total_pembayarannow + $d->total_pembayaranpotongkomisi + $d->total_pembayarantitipan ;
             $jumlah_pembayaranpotongkomisi = $d->total_pembayaranpotongkomisi;
             $jumlah_pembayarantitipan = $d->total_pembayarantitipan;
+            $jumlah_pembayaranlainnya = $d->total_pembayaranlainnya;
             $jumlah_pelunasannow = $d->total_pelunasannow;
 
             $saldoawal = $jumlah_pinjamanlast - $jumlah_pembayaranlast - $jumlah_pelunasanlast ;
@@ -112,6 +114,7 @@
 
             $totalpotongkomisi += $jumlah_pembayaranpotongkomisi;
             $totaltitipan += $jumlah_pembayarantitipan;
+            $totallainnya += $jumlah_pembayaranlainnya;
 
             $saldoakhir = $saldoawal + $jumlah_pinjamannow - $totalpembayarannow ;
 
@@ -132,7 +135,8 @@
                 <td style="text-align: right">{{ !empty($d->total_pembayarannow) ?  rupiah($d->total_pembayarannow) : '' }}</td>
                 <td style="text-align: right">{{ !empty($jumlah_pembayaranpotongkomisi) ?  rupiah($jumlah_pembayaranpotongkomisi) : '' }}</td>
                 <td style="text-align: right">{{ !empty($jumlah_pembayarantitipan) ?  rupiah($jumlah_pembayarantitipan) : '' }}</td>
-                <td></td>
+                <td style="text-align: right">{{ !empty($jumlah_pembayaranlainnya) ?  rupiah($jumlah_pembayaranlainnya) : '' }}</td>
+
                 <td style="text-align: right">{{ !empty($saldoakhir) ?  rupiah($saldoakhir) : '' }}</td>
             </tr>
             @php
@@ -149,7 +153,8 @@
                 <th style="text-align: right">{{ rupiah($totalpmbnow) }}</th>
                 <th style="text-align: right">{{ rupiah($totalpotongkomisi) }}</th>
                 <th style="text-align: right">{{ rupiah($totaltitipan) }}</th>
-                <th></th>
+                <th style="text-align: right">{{ rupiah($totallainnya) }}</th>
+
                 <th style="text-align: right">{{ rupiah($totalsaldoakhir) }}</th>
             </tr>
         </tbody>

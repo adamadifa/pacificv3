@@ -17,6 +17,8 @@ $total+= $d->jumlah;
         Potong Komisi
         @elseif($d->jenis_bayar==3)
         Titip Pelanggan
+        @elseif($d->jenis_bayar==4)
+        Lainnya
         @endif
     </td>
     <td>{{ $d->name }}</td>
