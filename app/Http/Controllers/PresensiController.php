@@ -579,8 +579,19 @@ class PresensiController extends Controller
         $datalibur = ceklibur($dari, $sampai);
         $dataliburpenggantiminggu = cekliburpenggantiminggu($dari, $sampai);
         $dataminggumasuk = cekminggumasuk($dari, $sampai);
+        $datawfh = cekwfh($dari, $sampai);
+        $datawfhfull = cekwfhfull($dari, $sampai);
+        $datalembur = ceklembur($dari, $sampai);
 
-        return view('presensi.presensikaryawan', compact('karyawan', 'listkaryawan', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk'));
+        return view('presensi.presensikaryawan', compact(
+            'karyawan',
+            'listkaryawan',
+            'datalibur',
+            'dataliburpenggantiminggu',
+            'dataminggumasuk',
+            'datawfh',
+            'datawfhfull'
+        ));
     }
 
 

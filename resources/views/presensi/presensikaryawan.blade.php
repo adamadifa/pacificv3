@@ -105,6 +105,7 @@
                                         $cekminggumasuk = cektgllibur($dataminggumasuk,$search_items_minggumasuk);
                                         $ceklibur = cektgllibur($datalibur, $search_items);
                                         $cekliburpenggantiminggu = cektgllibur($dataliburpenggantiminggu,$search_items);
+                                        $cekdirumahkan = cektgllibur($datawfh,$search_items);
 
                                         $lintashari = $d->lintashari;
                                         if(!empty($lintashari)){
@@ -413,7 +414,7 @@
                                             </td>
                                             <td>{{ !empty($denda)  ? rupiah($denda) : '' }}</td>
                                             <td>{{ $totaljamkeluar }}</td>
-                                            <td style="color:{{ $grandtotaljam < $d->total_jam ?  'red' : '' }}; text-align:center">{{ $grandtotaljam > 0 ? $grandtotaljam : 0 }}</td>
+                                            <td style="color:{{ $grandtotaljam < $d->total_jam ?  'red' : '' }}; text-align:center">{{ $grandtotaljam > 0 ? $grandtotaljam : 0 }} {{ var_dump($cekdirumahkan) }}</td>
                                             <td>
                                                 @if ($level == "manager hrd" || $level=="admin" || Auth::user()->pic_presensi==1)
                                                 <a href="#" class="edit" nik="{{ $d->nik }}" kode_jadwal="{{ $d->kode_jadwal }}" tanggal="{{ $d->tgl_presensi }}"><i class="feather icon-edit info"></i></a>

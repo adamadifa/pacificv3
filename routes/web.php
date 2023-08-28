@@ -127,6 +127,7 @@ use App\Http\Controllers\TrackingController;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\TutuplaporanController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VisitController;
 use App\Http\Controllers\WhatsappController;
 use App\Models\Barangpembelian;
 use App\Models\Harilibur;
@@ -1815,4 +1816,17 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/karyawan/{nik}/locklocation', [KaryawanController::class, 'locklocation']);
     Route::get('/karyawan/{nik}/unlocklocation', [KaryawanController::class, 'unlocklocation']);
+
+
+    Route::controller(VisitController::class)->group(function () {
+        Route::get('/visit', 'index')->name('visit');
+        Route::post('/visit/show', 'show')->name('visit.show');
+        Route::get('/visit/create', 'create')->name('visit.create');
+        Route::post('/visit/store', 'store')->name('visit.store');
+        Route::post('/visit/delete', 'delete')->name('visit.delete');
+        Route::post('/visit/update', 'update')->name('visit.update');
+        Route::post('/visit/edit', 'edit')->name('visit.edit');
+        Route::get('/visit/laporanVisit', 'laporanVisit')->name('visit.laporanVisit');
+        Route::post('/visit/cetakVisit', 'cetakVisit')->name('visit.cetakVisit');
+    });
 });
