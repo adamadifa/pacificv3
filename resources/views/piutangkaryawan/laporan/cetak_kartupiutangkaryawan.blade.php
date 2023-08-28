@@ -124,7 +124,7 @@
             $totalpenambahan += $jumlah_pinjamannow;
 
             @endphp
-
+            @if (!empty($saldoawal) || !empty($jumlah_pinjamannow))
             <tr>
                 <td>{{ $no }}</td>
                 <td>{{ "'".$d->nik }}</td>
@@ -142,7 +142,7 @@
             @php
             $no++;
             @endphp
-
+            @endif
 
             @endforeach
             <tr bgcolor=" #024a75" style=" color:white; font-size:12;">

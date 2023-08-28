@@ -1604,7 +1604,7 @@ class LaporankeuanganController extends Controller
 
             LEFT JOIN (
                 SELECT no_pinjaman,SUM(jumlah) as totalpelunasanlast FROM pinjaman_historibayar
-                WHERE tgl_bayar < '$tglpotongan' AND kode_potongan IS NULL
+                WHERE tgl_bayar < '$tglgajidari' AND kode_potongan IS NULL
                 GROUP BY no_pinjaman
             ) hbplast ON (pinjaman.no_pinjaman = hbplast.no_pinjaman)
 
