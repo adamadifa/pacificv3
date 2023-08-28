@@ -43,8 +43,12 @@ class PembayaranpinjamannonpjpController extends Controller
         $last_nobukti = $historibayar != null ? $historibayar->no_bukti : '';
         $no_bukti  = buatkode($last_nobukti, "PK" . $tahun, 4);
         $cek = DB::table('pinjaman_nonpjp_historibayar')->where('kode_potongan', $kode_potongan)->count();
-        $cekpotongkomisi = DB::table('pinjaman_nonpjp_historibayar')->where('jenis_bayar', 2)->count();
-        $cektitipan = DB::table('pinjaman_nonpjp_historibayar')->where('jenis_bayar', 3)->count();
+        $cekpotongkomisi = DB::table('pinjaman_nonpjp_historibayar')
+            ->where('kode_potongan', $kode_potongan)
+            ->where('jenis_bayar', 2)->count();
+        $cektitipan = DB::table('pinjaman_nonpjp_historibayar')
+            ->where('kode_potongan', $kode_potongan)
+            ->where('jenis_bayar', 3)->count();
 
 
         if ($cek > 0 && $jenis_bayar == 1) {
