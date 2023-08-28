@@ -189,7 +189,7 @@
             $all_saldoawal = $pinjaman_saldoawal + $kasbon_saldoawal + $piutang_saldoawal;
             $upah_all = $pinjaman_jumlah_pembayarannow + $kasbon_jumlah_pembayarannow + $d->piutang_total_pembayarannow;
             $cash_all = $pinjaman_jumlah_pelunasannow + $kasbon_jumlah_pelunasannow;
-            $all_saldoakhir = $all_saldoawal + $pinjaman_jumlah_pinjamannow + $kasbon_jumlah_pinjamannow + $piutang_jumlah_pinjamannow - $upah_all - $cash_all - $piutang_jumlah_pembayaranpotongkomisi - $piutang_jumlah_pembayarantitipan - $piutang_jumlah_pembayaranlainnya;
+            $all_saldoakhir = $all_saldoawal + $pinjaman_jumlah_pinjamannow + $kasbon_jumlah_kasbonnow + $piutang_jumlah_pinjamannow - $upah_all - $cash_all - $piutang_jumlah_pembayaranpotongkomisi - $piutang_jumlah_pembayarantitipan - $piutang_jumlah_pembayaranlainnya;
 
             $total_all_saldoawal += $all_saldoawal;
             $total_all_upah += $upah_all;
