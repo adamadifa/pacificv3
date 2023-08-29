@@ -38,12 +38,40 @@
         }
     </style>
 </head>
+@php
+
+    if ($bulan == '1') {
+        $bulan = 'JANUARI';
+    } elseif ($bulan == '2') {
+        $bulan = 'FEBRUARI';
+    } elseif ($bulan == '3') {
+        $bulan = 'MARET';
+    } elseif ($bulan == '4') {
+        $bulan = 'APRIL';
+    } elseif ($bulan == '5') {
+        $bulan = 'MEI';
+    } elseif ($bulan == '6') {
+        $bulan = 'JUNI';
+    } elseif ($bulan == '7') {
+        $bulan = 'JULI';
+    } elseif ($bulan == '8') {
+        $bulan = 'AGUSTUS';
+    } elseif ($bulan == '9') {
+        $bulan = 'SEPTEMBER';
+    } elseif ($bulan == '10') {
+        $bulan = 'OKTOBER';
+    } elseif ($bulan == '11') {
+        $bulan = 'NOVEMBER';
+    } else {
+        $bulan = 'DESEMBER';
+    }
+@endphp
 
 <body>
     <b style="font-size:20px;">
         LAPORAN VISIT PELANGGAN<br>
         PERIODE BULAN {{ $bulan }} TAHUN {{ $tahun }}<br>
-        {{ $cabang != '' ? 'CABANG ' . $cabang : '' }}
+        {{ $cabang != '' ? 'CABANG ' . $cabang : 'SEMUA CABANG' }}
         <br>
     </b>
     <br>
@@ -67,7 +95,13 @@
             </tr>
         </thead>
         <tbody>
+            @php
+                $total = 0;
+            @endphp
             @foreach ($visit as $v)
+                @php
+                    $total += $v->nominal;
+                @endphp
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $v->tgl_visit }}</td>
@@ -76,7 +110,7 @@
                     <td>{{ $v->pasar }}</td>
                     <td>{{ $v->tgltransaksi }}</td>
                     <td>{{ $v->no_fak_penj }}</td>
-                    <td style="text-align: right">{{ number_format($v->nominal) }}</td>
+                    <td align="right">{{ rupiah($v->nominal) }}</td>
                     <td>{{ $v->jenistransaksi }}</td>
                     <td>{{ $v->hasil_konfirmasi }}</td>
                     <td>{{ $v->catatan }}</td>
@@ -88,7 +122,8 @@
         </tbody>
         <tfoot>
             <tr bgcolor="#31869b">
-                <th colspan="" style="color:white; font-size:14;">TOTAL</th>
+                <th colspan="7" style="color:white; font-size:14;">TOTAL</th>
+                <th style="color:white; font-size:14;" align="right">{{ rupiah($total) }}</th>
             </tr>
         </tfoot>
     </table>
