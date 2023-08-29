@@ -433,120 +433,122 @@
             </table>
             <br>
             <br>
-            <table class="datatable3">
-                <thead>
-                    <tr>
-                        <th rowspan="2">Kode Produk</th>
-                        <th rowspan="2">Nama Barang</th>
-                        <th colspan="3">Qty</th>
-                    </tr>
-                    <tr>
-                        <th>Dus</th>
-                        <th>Pack</th>
-                        <th>Pcs</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($rekapdp as $d)
-                    @php
-                    $jumlah = $d->jumlah / $d->isipcsdus;
-                    $jmldus = floor($d->jumlah / $d->isipcsdus);
-                    if ($d->jumlah != 0) {
-                    $sisadus = $d->jumlah % $d->isipcsdus;
-                    } else {
-                    $sisadus = 0;
-                    }
-                    if ($d->isipack == 0) {
-                    $jmlpack = 0;
-                    $sisapack = $sisadus;
-                    $s = "A";
-                    } else {
-                    $jmlpack = floor($sisadus / $d->isipcs);
-                    $sisapack = $sisadus % $d->isipcs;
-                    $s = "B";
-                    }
-                    $jmlpcs = $sisapack;
-                    @endphp
-                    <tr>
-                        <td>{{ $d->kode_produk }}</td>
-                        <td>{{ $d->nama_barang }}</td>
-                        <td><?php if (!empty($jmldus)) {
+            <div style="display: flex; gap:1">
+                <table class="datatable3">
+                    <thead>
+                        <tr>
+                            <th rowspan="2">Kode Produk</th>
+                            <th rowspan="2">Nama Barang</th>
+                            <th colspan="3">Qty</th>
+                        </tr>
+                        <tr>
+                            <th>Dus</th>
+                            <th>Pack</th>
+                            <th>Pcs</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($rekapdp as $d)
+                        @php
+                        $jumlah = $d->jumlah / $d->isipcsdus;
+                        $jmldus = floor($d->jumlah / $d->isipcsdus);
+                        if ($d->jumlah != 0) {
+                        $sisadus = $d->jumlah % $d->isipcsdus;
+                        } else {
+                        $sisadus = 0;
+                        }
+                        if ($d->isipack == 0) {
+                        $jmlpack = 0;
+                        $sisapack = $sisadus;
+                        $s = "A";
+                        } else {
+                        $jmlpack = floor($sisadus / $d->isipcs);
+                        $sisapack = $sisadus % $d->isipcs;
+                        $s = "B";
+                        }
+                        $jmlpcs = $sisapack;
+                        @endphp
+                        <tr>
+                            <td>{{ $d->kode_produk }}</td>
+                            <td>{{ $d->nama_barang }}</td>
+                            <td><?php if (!empty($jmldus)) {
                             echo $jmldus;
                         } ?></td>
-                        <td><?php if (!empty($jmlpack)) {
+                            <td><?php if (!empty($jmlpack)) {
                             echo $jmlpack;
                         } ?></td>
-                        <td><?php if (!empty($jmlpcs)) {
+                            <td><?php if (!empty($jmlpcs)) {
                             echo $jmlpcs;
                         } ?></td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-            <br>
-            <table style="width:100%" class="datatable2">
-                <tr>
-                    <td style="width: 50%">
-                        <table style="width:100%">
-                            <tr>
-                                <td style="width:25%">Uang Kertas</td>
-                                <td>Rp.........................................................................................................</td>
-                            </tr>
-                            <tr>
-                                <td style="width:20%">Uang Logam</td>
-                                <td>Rp.........................................................................................................</td>
-                            </tr>
-                            <tr>
-                                <td style="width:20%">Cek/BG</td>
-                                <td>Rp. {{ rupiah($allgiro->totalgiro) }}</td>
-                            </tr>
-                            <tr>
-                                <td style="width:20%">Transfer</td>
-                                <td>Rp. {{ rupiah($alltransfer->totaltransfer) }}</td>
-                            </tr>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
 
-                            <tr>
-                                <td style="width:20%">Jumlah</td>
-                                <td>Rp.........................................................................................................</td>
-                            </tr>
-                            <tr>
-                                <td style="width:20%">Setor</td>
-                                <td>Rp.........................................................................................................</td>
-                            </tr>
-                            <tr>
-                                <td style="width:20%">Selisih</td>
-                                <td>Rp.........................................................................................................</td>
-                            </tr>
-                        </table>
-                    </td>
-                    <td valign="top">
-                        <table style="width:100%">
-                            <tr>
-                                <td style="width:40%">Penjualan Tunai</td>
-                                <td>Rp. {{ rupiah($totaltunai) }}</td>
-                            </tr>
-                            <tr>
-                                <td style="width:40%">Penjualan Botol / Peti</td>
-                                <td>Rp.....................................................</td>
-                            </tr>
-                            <tr>
-                                <td style="width:40%">Tagihan</td>
-                                <td>
-                                    Rp.{{ rupiah($totaltitipan1 + $totaltitipan2) }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="width:40%">Dikurangi</td>
-                                <td>Rp.....................................................</td>
-                            </tr>
-                            <tr>
-                                <td style="width:40%">Retur / BS</td>
-                                <td>Rp.....................................................</td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-            </table>
+                <table class="datatable2" style="margin-left: 10px; width:70%">
+                    <tr>
+                        <td style="width: 60%">
+                            <table style="width:100%">
+                                <tr>
+                                    <td style="width:25%">Uang Kertas</td>
+                                    <td>Rp.........................................................................................................</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:20%">Uang Logam</td>
+                                    <td>Rp.........................................................................................................</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:20%">Cek/BG</td>
+                                    <td>Rp. {{ rupiah($allgiro->totalgiro) }}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:20%">Transfer</td>
+                                    <td>Rp. {{ rupiah($alltransfer->totaltransfer) }}</td>
+                                </tr>
+
+                                <tr>
+                                    <td style="width:20%">Jumlah</td>
+                                    <td>Rp.........................................................................................................</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:20%">Setor</td>
+                                    <td>Rp.........................................................................................................</td>
+                                </tr>
+                                <tr>
+                                    <td style="width:20%">Selisih</td>
+                                    <td>Rp.........................................................................................................</td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td valign="top" style="width: 40%">
+                            <table style="width:100%">
+                                <tr>
+                                    <td>Penjualan Tunai</td>
+                                    <td>Rp. {{ rupiah($totaltunai) }}</td>
+                                </tr>
+                                {{-- <tr>
+                                    <td style="width:40%">Penjualan Botol / Peti</td>
+                                    <td>Rp.....................................................</td>
+                                </tr> --}}
+                                <tr>
+                                    <td>Tagihan</td>
+                                    <td>
+                                        Rp.{{ rupiah($totaltitipan1 + $totaltitipan2) }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Dikurangi</td>
+                                    <td>Rp.....................................................</td>
+                                </tr>
+                                <tr>
+                                    <td>Retur / BS</td>
+                                    <td>Rp.....................................................</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
             <br>
             <table class="datatable2" style="width:100%">
                 <tr>
