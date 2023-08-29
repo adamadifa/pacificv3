@@ -33,6 +33,11 @@
                 </li>
             </a>
             @endif
+            <a href="/visit/laporanVisit" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['visit/laporanVisit']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Visit Pelanggan
+                </li>
+            </a>
         </ul>
     </div>
 </div>
