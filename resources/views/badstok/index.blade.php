@@ -27,8 +27,22 @@
                     <a href="/badstok/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
                 </div>
                 <div class="card-body">
-                    <form action="/badstok">
-
+                    <form action="/badstock">
+                        <div class="row">
+                            <div class="col-lg-6 col-sm-6">
+                                <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker value="{{ Request('dari') }}" />
+                            </div>
+                            <div class="col-lg-6 col-sm-6">
+                                <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker value="{{ Request('sampai') }}" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <button class="btn btn-primary w-100"><i class="feather icon-search mr-1"></i>Cari Data</button>
+                                </div>
+                            </div>
+                        </div>
                     </form>
                     <div class="table-responsive">
                         <table class="table table-hover-animation">

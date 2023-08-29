@@ -259,7 +259,24 @@ class PresensiController extends Controller
         $kantor = DB::table('cabang')->orderBy('kode_cabang')->get();
         $departemen = DB::table('hrd_departemen')->get();
         $group = DB::table('hrd_group')->orderBy('nama_group')->get();
-        return view('presensi.monitoring', compact('karyawan', 'departemen', 'kantor', 'group'));
+        $datalibur = ceklibur($tanggal, $tanggal);
+        $dataliburpenggantiminggu = cekliburpenggantiminggu($tanggal, $tanggal);
+        $dataminggumasuk = cekminggumasuk($tanggal, $tanggal);
+        $datawfh = cekwfh($tanggal, $tanggal);
+        $datawfhfull = cekwfhfull($tanggal, $tanggal);
+        $datalembur = ceklembur($tanggal, $tanggal);
+        return view('presensi.monitoring', compact(
+            'karyawan',
+            'departemen',
+            'kantor',
+            'group',
+            'datalibur',
+            'dataliburpenggantiminggu',
+            'dataminggumasuk',
+            'datawfh',
+            'datawfhfull',
+            'datalembur'
+        ));
     }
 
     public function updatepresensi(Request $request)

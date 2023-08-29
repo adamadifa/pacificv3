@@ -150,8 +150,16 @@
                                                 $j_masuk = $jam_in;
                                                 $j_pulang = $jam_out;
                                             }else{
-                                                $j_masuk = $d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB" ? $jam_in : $jam_masuk;
-                                                $j_pulang = $d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB" ? $jam_out : $jam_pulang;
+
+                                                if($d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB" || !empty($cekdirumahkan)){
+                                                    $j_masuk = $jam_in;
+                                                    $j_pulang = $jam_out;
+                                                }else{
+                                                    $j_masuk = $jam_masuk;
+                                                    $j_pulang = $jam_pulang;
+                                                }
+                                                // $j_masuk = $d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB" ? $jam_in : $jam_masuk;
+                                                // $j_pulang = $d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB" ? $jam_out : $jam_pulang;
                                             }
 
                                         }
@@ -336,22 +344,31 @@
                                                 $jt = $jt;
                                             }
                                         }
-                                        $totaljam = $d->total_jam - $jt - $jk;
+
+                                        if(!empty($cekdirumahkan)){
+                                            $totaljam = $jam - $jt - $jk;
+                                        }else{
+                                            $totaljam = $d->total_jam - $jt - $jk;
+                                        }
 
                                         if (!empty($d->jam_out)) {
                                             if ($jam_out_tanggal < $j_pulang_tanggal) {
                                                 if($jam_out_tanggal > $jam_istirahat_tanggal && !empty($jam_istirahat)){
                                                     $desimalmenit = ROUND(($menit * 100) / 60);
                                                     $grandtotaljam = $jam-1 . "." . $desimalmenit;
+                                                    $cek = 1;
                                                 }else{
                                                     $desimalmenit = ROUND(($menit * 100) / 60);
                                                     $grandtotaljam = $jam . "." . $desimalmenit;
+                                                    $cek = 2;
                                                 }
 
                                                 $grandtotaljam = $grandtotaljam - $jt - $jk;
+
                                             } else {
                                                 $desimalmenit = 0;
                                                 $grandtotaljam = $totaljam;
+                                                $cek = 3;
                                             }
                                         } else {
                                             $desimalmenit = 0;
@@ -414,7 +431,7 @@
                                             </td>
                                             <td>{{ !empty($denda)  ? rupiah($denda) : '' }}</td>
                                             <td>{{ $totaljamkeluar }}</td>
-                                            <td style="color:{{ $grandtotaljam < $d->total_jam ?  'red' : '' }}; text-align:center">{{ $grandtotaljam > 0 ? $grandtotaljam : 0 }} {{ var_dump($cekdirumahkan) }}</td>
+                                            <td style="color:{{ $grandtotaljam < $d->total_jam ?  'red' : '' }}; text-align:center">{{ $grandtotaljam > 0 ? $grandtotaljam : 0 }} </td>
                                             <td>
                                                 @if ($level == "manager hrd" || $level=="admin" || Auth::user()->pic_presensi==1)
                                                 <a href="#" class="edit" nik="{{ $d->nik }}" kode_jadwal="{{ $d->kode_jadwal }}" tanggal="{{ $d->tgl_presensi }}"><i class="feather icon-edit info"></i></a>

@@ -185,6 +185,23 @@
                                         $jam_masuk_tanggal = !empty($d->jam_masuk) ? $d->tgl_presensi . " " . $jam_masuk : "";
 
 
+                                        $search_items_minggumasuk = array(
+                                            'nik'=>$d->nik,
+                                            'id_kantor' => $d->id_kantor,
+                                            'tanggal_diganti' => $tgl_presensi
+                                        );
+
+                                        $search_items = array(
+                                            'nik'=>$d->nik,
+                                            'id_kantor' => $d->id_kantor,
+                                            'tanggal_libur' => $tgl_presensi
+                                        );
+
+                                        $cekminggumasuk = cektgllibur($dataminggumasuk,$search_items_minggumasuk);
+                                        $ceklibur = cektgllibur($datalibur, $search_items);
+                                        $cekliburpenggantiminggu = cektgllibur($dataliburpenggantiminggu,$search_items);
+                                        $cekdirumahkan = cektgllibur($datawfh,$search_items);
+
                                         $day = date('D', strtotime($tgl_presensi));
                                         $dayList = array(
                                             'Sun' => 'Minggu',
@@ -208,8 +225,16 @@
 
                                             }
                                         }else{
-                                            $j_masuk = $d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB" ? $jam_in : $jam_masuk;
-                                            $j_pulang = $d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB" ? $jam_out : $jam_pulang;
+
+                                            if($d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB" || !empty($cekdirumahkan)){
+                                                    $j_masuk = $jam_in;
+                                                    $j_pulang = $jam_out;
+                                                }else{
+                                                    $j_masuk = $jam_masuk;
+                                                    $j_pulang = $jam_pulang;
+                                                }
+                                            // $j_masuk = $d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB" ? $jam_in : $jam_masuk;
+                                            // $j_pulang = $d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB" ? $jam_out : $jam_pulang;
                                         }
 
                                         $j_masuk_tanggal = $tgl_presensi." ".$j_masuk;
@@ -392,7 +417,12 @@
                                                 $jt = $jt;
                                             }
                                         }
-                                        $totaljam = $d->total_jam - $jt - $jk;
+
+                                        if(!empty($cekdirumahkan)){
+                                            $totaljam = $jam - $jt - $jk;
+                                        }else{
+                                            $totaljam = $d->total_jam - $jt - $jk;
+                                        }
 
                                         if (!empty($d->jam_out)) {
                                             if ($jam_out_tanggal < $j_pulang_tanggal) {

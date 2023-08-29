@@ -16,6 +16,9 @@ class BadstokController extends Controller
     {
         $query = Badstok::query();
         $query->selectRaw('no_bs,tanggal,kode_cabang');
+        if (!empty($request->dari) && !empty($request->sampai)) {
+            $query->whereBetween('tanggal', [$request->dari, $request->sampai]);
+        }
         $badstok = $query->paginate(15);
         $badstok->appends($request->all());
         return view('badstok.index', compact('badstok'));

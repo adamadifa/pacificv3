@@ -141,6 +141,7 @@
                         $totaldenda = 0;
                         $totalpremi = 0;
                         $totaldirumahkan = 0;
+                        $minusdirumahkan = 0;
                         $totaltidakhadir = 0;
                         $totalpulangcepat = 0;
                         $totalizinabsen = 0;
@@ -360,7 +361,7 @@
                                 $jam_pulang = !empty($jam_out_presensi) ? $jam_out_presensi : "";
                                 $jam_pulang_tanggal = !empty($jam_out_presensi) ? $tgl_pulang." ".$jam_pulang : "";
                             }else{
-                                if($d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB"){
+                                if($d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB" || !empty($cekwfh)){
                                     $jam_masuk = $jam_in_presensi;
                                     $jam_masuk_tanggal = $tgl_presensi." ".$jam_masuk;
                                 }else{
@@ -368,7 +369,7 @@
                                     $jam_masuk_tanggal = $tgl_presensi." ".$jam_masuk;
                                 }
 
-                                if($d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB"){
+                                if($d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB" || !empty($cekwfh)){
                                     $jam_pulang = !empty($jam_out_presensi) ? $jam_out_presensi : "";
                                     $jam_pulang_tanggal = !empty($jam_out_presensi) ? $tgl_pulang." ".$jam_pulang : "";
                                 }else{
@@ -575,7 +576,11 @@
                                 $jt = $jt;
                             }
                         }
-                        $totaljam = $total_jam - $jt - $jk;
+                        if(!empty($cekwfh)){
+                            $totaljam = $jam - $jt - $jk;
+                        }else{
+                            $totaljam = $total_jam - $jt - $jk;
+                        }
 
 
                         if ($jam_out != "NA") {
@@ -642,6 +647,16 @@
                         }else{
                             $pc = "";
                             $totalpc = 0;
+                        }
+
+
+                        if(!empty($cekwfh)){
+                            if($cekmasakerja > 3){
+                                $minustotaljamdirumahkan = ROUND(($jamdirumahkan / 2),2);
+                            }else{
+                                $minustotaljamdirumahkan = $jamdirumahkan;
+                            }
+                            $minusdirumahkan += $minustotaljamdirumahkan;
                         }
 
                         // echo "Total Jam :" .$total_jam."<br>" ;
@@ -881,7 +896,7 @@
                     $totalizinabsen += $izinabsen;
                     $totalizinsakit += $izinsakit;
                 }
-
+                $totaldirumahkan = $totaldirumahkan - $minusdirumahkan;
                 $totaljamkerja = $totaljam1bulan - $totalterlambat - $totalkeluar - $totaldirumahkan - $totaltidakhadir - $totalpulangcepat - $totalizinabsen - $totalizinsakit;
                 ?>
                     <td style="font-size: 16px; text-align:center; font-weight:bold">{{ $totaljam1bulan }}</td>
