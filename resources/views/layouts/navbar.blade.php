@@ -1117,6 +1117,12 @@
                         </a>
                     </li>
                     @endif
+                    <li class="{{ request()->is(['visit', 'visit/*']) ? 'active' : '' }}">
+                        <a href="/visit">
+                            <i class="feather icon-settings"></i>
+                            <span class="menu-item" data-i18n="Second Level">Visit Pelanggan</span>
+                        </a>
+                    </li>
                     @if (in_array($level, $saldoawal_bukubesar_menu))
                     <li class="{{ request()->is(['saldoawalbb', 'saldoawalbb/*']) ? 'active' : '' }}">
                         <a href="/saldoawalbb">
