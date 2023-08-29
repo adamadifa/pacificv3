@@ -51,6 +51,9 @@
     <li class="nav-item">
         <a class="nav-link showgroup" id_group="30" id="aidac-tab" data-toggle="tab" href="#aidac" aria-controls="aidac" role="tab" aria-selected="false">AIDA C</a>
     </li>
+    <li class="nav-item">
+        <a class="nav-link showgroup" id_group="nongroup" id="aidac-tab" data-toggle="tab" href="#aidac" aria-controls="aidac" role="tab" aria-selected="false">NON GROUP</a>
+    </li>
 </ul>
 @elseif($level=="general affair")
 <ul class="nav nav-tabs nav-justified" role="tablist">

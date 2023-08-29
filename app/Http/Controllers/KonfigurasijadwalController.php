@@ -101,6 +101,7 @@ class KonfigurasijadwalController extends Controller
 
         $kode_setjadwal = $request->kode_setjadwal;
         $shift = $request->shift;
+        $group_produksi = array(26, 27, 28, 29, 30, 31);
         if (Auth::user()->level == "general affair") {
             $id_group = 7;
         } else if (Auth::user()->level == "admin maintenance" || Auth::user()->level == "spv maintenance") {
@@ -142,6 +143,24 @@ class KonfigurasijadwalController extends Controller
                     }
                 )
                 ->where('kode_dept', 'MTC')
+                ->orderBy('nama_karyawan')
+                ->get();
+        } elseif ($id_group == "nongroup") {
+            $karyawan = DB::table('master_karyawan')
+                ->select('master_karyawan.nik', 'nama_karyawan', 'konfigurasijadwalkerja.kode_jadwal', 'nama_jadwal', 'grup')
+                ->leftJoin(
+                    DB::raw("(
+                    SELECT nik,konfigurasi_jadwalkerja_detail.kode_jadwal,nama_jadwal
+                    FROM konfigurasi_jadwalkerja_detail
+                    INNER JOIN jadwal_kerja ON konfigurasi_jadwalkerja_detail.kode_jadwal = jadwal_kerja.kode_jadwal
+                    WHERE kode_setjadwal = '$kode_setjadwal'
+                ) konfigurasijadwalkerja"),
+                    function ($join) {
+                        $join->on('master_karyawan.nik', '=', 'konfigurasijadwalkerja.nik');
+                    }
+                )
+                ->where('kode_dept', 'PRD')
+                ->whereNotIn('grup', $group_produksi)
                 ->orderBy('nama_karyawan')
                 ->get();
         } else {
