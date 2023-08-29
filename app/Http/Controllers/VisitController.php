@@ -46,6 +46,8 @@ class VisitController extends Controller
             ->join('karyawan','karyawan.id_karyawan','pelanggan.id_sales')
             ->whereRaw('MONTH(tgl_visit)=' . $bulan)
             ->whereRaw('YEAR(tgl_visit)=' . $tahun)
+            ->orderBy('visit.kode_cabang','ASC')
+            ->orderBy('visit.tgL_visit','ASC')
             ->get();
         }else{
             $visit = DB::table('visit')
@@ -54,7 +56,9 @@ class VisitController extends Controller
             ->join('karyawan','karyawan.id_karyawan','pelanggan.id_sales')
             ->whereRaw('MONTH(tgl_visit)=' . $bulan)
             ->whereRaw('YEAR(tgl_visit)=' . $tahun)
-            ->whereRaw('visit.kode_cabang', $cabang)
+            ->where('visit.kode_cabang', $request->kode_cabang)
+            ->orderBy('visit.kode_cabang','ASC')
+            ->orderBy('visit.tgL_visit','ASC')
             ->get();
         }
         return view('visit.show', compact('visit'));
@@ -160,7 +164,7 @@ class VisitController extends Controller
             ->join('karyawan','karyawan.id_karyawan','pelanggan.id_sales')
             ->whereRaw('MONTH(tgl_visit)=' . $bulan)
             ->whereRaw('YEAR(tgl_visit)=' . $tahun)
-            ->whereRaw('visit.kode_cabang', $cabang)
+            ->where('visit.kode_cabang', $request->kode_cabang)
             ->get();
         }
         if (isset($_POST['export'])) {
