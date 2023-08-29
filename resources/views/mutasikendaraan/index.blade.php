@@ -21,7 +21,7 @@
         <!-- Data list view starts -->
         <!-- DataTable starts -->
         @include('layouts.notification')
-        <div class="col-md-8 col-sm-12">
+        <div class="col-md-12 col-sm-12">
             <div class="card">
                 <div class="card-header">
                     <a href="/mutasikendaraan/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>

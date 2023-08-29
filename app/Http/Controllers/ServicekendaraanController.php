@@ -26,7 +26,7 @@ class ServicekendaraanController extends Controller
         $query->select('no_invoice', 'kendaraan_service.no_polisi', 'merk', 'tipe', 'tipe_kendaraan', 'tgl_service', 'nama_bengkel', 'kendaraan_service.kode_cabang');
         $query->join('kendaraan', 'kendaraan_service.no_polisi', '=', 'kendaraan.no_polisi');
         $query->join('bengkel', 'kendaraan_service.kode_bengkel', '=', 'bengkel.kode_bengkel');
-        $query->orderBy('no_invoice', 'desc');
+        $query->orderBy('tgl_service', 'desc');
         $service = $query->paginate(15);
         $service->appends($request->all());
 
