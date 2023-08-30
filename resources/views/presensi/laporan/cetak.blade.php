@@ -203,14 +203,7 @@
                                 $jamdirumahkan = 7;
                             }
 
-                            if(!empty($cekwfh)){
-                                if($cekmasakerja > 3){
-                                    $totaljamdirumahkan = ROUND(($jamdirumahkan / 2),2);
-                                }else{
-                                    $totaljamdirumahkan = $jamdirumahkan;
-                                }
-                                $totaldirumahkan += $totaljamdirumahkan;
-                            }
+
 
 
                             //Pewarnaan Kolom
@@ -650,18 +643,27 @@
                         }
 
 
-                        if(!empty($cekwfh)){
-                            if($cekmasakerja > 3){
-                                $minustotaljamdirumahkan = ROUND(($jamdirumahkan / 2),2);
-                            }else{
-                                $minustotaljamdirumahkan = $jamdirumahkan;
-                            }
-                            $minusdirumahkan += $minustotaljamdirumahkan;
-                        }
+                        // if(!empty($cekwfh)){
+                        //     if($cekmasakerja > 3){
+                        //         $minustotaljamdirumahkan = ROUND(($jamdirumahkan / 2),2);
+                        //     }else{
+                        //         $minustotaljamdirumahkan = $jamdirumahkan;
+                        //     }
+                        //     $minusdirumahkan += $minustotaljamdirumahkan;
+                        // }
 
                         // echo "Total Jam :" .$total_jam."<br>" ;
                         // echo "Jam Terlambat :".$jt."<br>";
                         // echo "___________________________- <br>";
+
+                        if(!empty($cekwfh)){
+                            if($cekmasakerja > 3){
+                                $totaljamdirumahkan = ROUND(($jamdirumahkan / 2),2) - ($grandtotaljam -  ROUND(($jamdirumahkan / 2),2));
+                            }else{
+                                $totaljamdirumahkan = $jamdirumahkan;
+                            }
+                            $totaldirumahkan += $totaljamdirumahkan;
+                        }
 
                 ?>
                     <td style="background-color: {{ $colorcolumn }}; color:{{ $colortext }};">
@@ -842,7 +844,14 @@
                         }
                     }
 
-
+                    if(!empty($cekwfh)){
+                        if($cekmasakerja > 3){
+                            $totaljamdirumahkan = ROUND(($jamdirumahkan / 2),2);
+                        }else{
+                            $totaljamdirumahkan = $jamdirumahkan;
+                        }
+                        $totaldirumahkan += $totaljamdirumahkan;
+                    }
                 ?>
                     <td style="background-color:{{ $colorcolumn }}; color:white;">
                         {{-- <span>{{ var_dump(empty($ceklibur)) }}</span> --}}
@@ -896,7 +905,7 @@
                     $totalizinabsen += $izinabsen;
                     $totalizinsakit += $izinsakit;
                 }
-                $totaldirumahkan = $totaldirumahkan - $minusdirumahkan;
+
                 $totaljamkerja = $totaljam1bulan - $totalterlambat - $totalkeluar - $totaldirumahkan - $totaltidakhadir - $totalpulangcepat - $totalizinabsen - $totalizinsakit;
                 ?>
                     <td style="font-size: 16px; text-align:center; font-weight:bold">{{ $totaljam1bulan }}</td>

@@ -126,6 +126,7 @@ class KonfigurasijadwalController extends Controller
                     }
                 )
                 ->where('kode_dept', 'PDQ')
+                ->where('master_karyawan.status_aktif', 1)
                 ->orderBy('nama_karyawan')
                 ->get();
         } elseif ($id_group == 18) {
@@ -143,6 +144,7 @@ class KonfigurasijadwalController extends Controller
                     }
                 )
                 ->where('kode_dept', 'MTC')
+                ->where('master_karyawan.status_aktif', 1)
                 ->orderBy('nama_karyawan')
                 ->get();
         } elseif ($id_group == "nongroup") {
@@ -160,6 +162,7 @@ class KonfigurasijadwalController extends Controller
                     }
                 )
                 ->where('kode_dept', 'PRD')
+                ->where('master_karyawan.status_aktif', 1)
                 ->whereNotIn('grup', $group_produksi)
                 ->orderBy('nama_karyawan')
                 ->get();
@@ -178,6 +181,7 @@ class KonfigurasijadwalController extends Controller
                     }
                 )
                 ->where('grup', $id_group)
+                ->where('master_karyawan.status_aktif', 1)
                 ->orderBy('nama_karyawan')
                 ->get();
         }
