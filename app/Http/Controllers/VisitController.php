@@ -41,9 +41,9 @@ class VisitController extends Controller
 
         if ($cabang == '') {
             $visit = DB::table('visit')
-                ->join('penjualan', 'penjualan.no_fak_penj', 'visit.no_fak_penj')
-                ->join('pelanggan', 'penjualan.kode_pelanggan', 'pelanggan.kode_pelanggan')
-                ->join('karyawan', 'karyawan.id_karyawan', 'pelanggan.id_sales')
+                ->leftjoin('penjualan', 'penjualan.no_fak_penj', 'visit.no_fak_penj')
+                ->leftjoin('pelanggan', 'penjualan.kode_pelanggan', 'pelanggan.kode_pelanggan')
+                ->leftjoin('karyawan', 'karyawan.id_karyawan', 'pelanggan.id_sales')
                 ->whereRaw('MONTH(tgl_visit)=' . $bulan)
                 ->whereRaw('YEAR(tgl_visit)=' . $tahun)
                 ->orderBy('visit.kode_cabang', 'ASC')
@@ -51,9 +51,9 @@ class VisitController extends Controller
                 ->get();
         } else {
             $visit = DB::table('visit')
-                ->join('penjualan', 'penjualan.no_fak_penj', 'visit.no_fak_penj')
-                ->join('pelanggan', 'penjualan.kode_pelanggan', 'pelanggan.kode_pelanggan')
-                ->join('karyawan', 'karyawan.id_karyawan', 'pelanggan.id_sales')
+                ->leftjoin('penjualan', 'penjualan.no_fak_penj', 'visit.no_fak_penj')
+                ->leftjoin('pelanggan', 'penjualan.kode_pelanggan', 'pelanggan.kode_pelanggan')
+                ->leftjoin('karyawan', 'karyawan.id_karyawan', 'pelanggan.id_sales')
                 ->whereRaw('MONTH(tgl_visit)=' . $bulan)
                 ->whereRaw('YEAR(tgl_visit)=' . $tahun)
                 ->where('visit.kode_cabang', $request->kode_cabang)
