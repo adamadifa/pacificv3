@@ -1830,7 +1830,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/visit/laporanVisit', 'laporanVisit')->name('visit.laporanVisit');
         Route::post('/visit/cetakVisit', 'cetakVisit')->name('visit.cetakVisit');
     });
-
-    Route::get('/cetak', [PrinterController::class, 'cetak']);
-    Route::get('/show', [PrinterController::class, 'show']);
 });
+Route::get('/cetak', [PrinterController::class, 'cetak']);
+Route::get('/show', [PrinterController::class, 'show']);
