@@ -136,7 +136,7 @@ class PrinterController extends Controller
             /* Information for the receipt */
             $items = $datadetail;
 
-            dd($items);
+            //dd($items);
 
             $subtotal = new item('Subtotal', '12.95');
             $tax = new item('A local tax', '1.30');
