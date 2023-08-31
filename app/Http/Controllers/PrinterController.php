@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Mike42\Escpos\CapabilityProfile;
 use Mike42\Escpos\EscposImage;
 use Mike42\Escpos\PrintConnectors\RawbtPrintConnector;
@@ -54,19 +55,73 @@ class PrinterController extends Controller
     {
 
 
+        $no_fak_penj = "BDGE012668";
+        $pelangganmp = [
+            'TSM-00548',
+            'TSM-00493',
+            'TSM-02234',
+            'TSM-01117',
+            'TSM-00494',
+            'TSM-00466',
+            'PST00007',
+            'PST00008',
+            'PST00002'
+        ];
+        $faktur = DB::table('penjualan')
+            ->select('penjualan.*', 'nama_pelanggan', 'nama_karyawan', 'alamat_pelanggan', 'jenistransaksi', 'alamat_cabang', 'nama_cabang', 'print')
+            ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+            ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
+            ->where('no_fak_penj', $no_fak_penj)->first();
+
+        $detail = DB::table('detailpenjualan')
+            ->select('kode_produk', 'nama_barang', 'isipcsdus', 'isipack', 'isipcs', 'jumlah', 'subtotal', 'detailpenjualan.harga_dus', 'detailpenjualan.harga_pack', 'detailpenjualan.harga_pcs')
+            ->join('barang', 'detailpenjualan.kode_barang', '=', 'barang.kode_barang')
+            ->where('no_fak_penj', $no_fak_penj)
+            ->get();
+
+        $pembayaran = DB::table('historibayar')->where('no_fak_penj', $no_fak_penj)->get();
+        $retur = DB::table('retur')
+            ->selectRaw('SUM(total) as totalretur')
+            ->where('no_fak_penj', $no_fak_penj)->first();
+
         $profile = CapabilityProfile::load("POS-5890");
         $connector = new RawbtPrintConnector();
         $printer = new Printer($connector, $profile);
-        $urllogo = base_path('/public/logo.png');
-
+        if ($faktur->jenistransaksi == "kredit") {
+            $urllogo = base_path('/public/app-assets/images/kredit.png');
+        } else {
+            $urllogo = base_path('/public/app-assets/images/tunai.png');
+        }
+        $total = 0;
+        foreach ($detail as $d) {
+            $isipcsdus = $d->isipcsdus;
+            $isipack = $d->isipack;
+            $isipcs = $d->isipcs;
+            $jumlah = $d->jumlah;
+            $jumlah_dus = floor($jumlah / $isipcsdus);
+            if ($jumlah != 0) {
+                $sisadus = $jumlah % $isipcsdus;
+            } else {
+                $sisadus = 0;
+            }
+            if ($isipack == 0) {
+                $jumlah_pack = 0;
+                $sisapack = $sisadus;
+            } else {
+                $jumlah_pack = floor($sisadus / $isipcs);
+                $sisapack = $sisadus % $isipcs;
+            }
+            $jumlah_pcs = $sisapack;
+            $total += $d->subtotal;
+            $datadetail[] = new item($d->nama_barang, "");
+            $datadetail[] = new item($jumlah_dus . " Dus x " . $d->harga_dus, rupiah($jumlah_dus * $d->harga_dus));
+        }
         try {
             /* Information for the receipt */
-            $items = array(
-                new item("Example item #1", "4.00"),
-                new item("Another thing", "3.50"),
-                new item("Something else", "1.00"),
-                new item("A final item", "4.45"),
-            );
+            $items = $datadetail;
+
+            //dd($items);
 
             $subtotal = new item('Subtotal', '12.95');
             $tax = new item('A local tax', '1.30');
