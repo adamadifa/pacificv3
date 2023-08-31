@@ -55,7 +55,7 @@ class PrinterController extends Controller
         $profile = CapabilityProfile::load("POS-5890");
         $connector = new RawbtPrintConnector();
         $printer = new Printer($connector, $profile);
-        $urllogo = asset('rawbtlogo.png');
+        $urllogo = "https://rawbt.ru/mike42/example_rawbt/resources/rawbtlogo.png";
 
         try {
             /* Information for the receipt */
@@ -74,7 +74,7 @@ class PrinterController extends Controller
             $date = "Monday 6th of April 2015 02:56:25 PM";
 
             /* Start the printer */
-            $logo = EscposImage::load("rawbtlogo.png", false);
+            $logo = EscposImage::load($urllogo, false);
 
             /* Print top logo */
             if ($profile->getSupportsGraphics()) {
