@@ -98,6 +98,7 @@ use App\Http\Controllers\PinjamanController;
 use App\Http\Controllers\PinjamannonpjpController;
 use App\Http\Controllers\PiutangkaryawanController;
 use App\Http\Controllers\PresensiController;
+use App\Http\Controllers\PrinterController;
 use App\Http\Controllers\ProduksiController;
 use App\Http\Controllers\QrcodeController;
 use App\Http\Controllers\RatiokomisiController;
@@ -1829,4 +1830,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/visit/laporanVisit', 'laporanVisit')->name('visit.laporanVisit');
         Route::post('/visit/cetakVisit', 'cetakVisit')->name('visit.cetakVisit');
     });
+
+    Route::get('/cetak', [PrinterController::class, 'cetak']);
+    Route::get('/show', [PrinterController::class, 'show']);
 });
