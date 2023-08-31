@@ -99,7 +99,7 @@
             $jumlah_pembayaranlast = $d->total_pembayaranlast;
 
             $jumlah_pinjamannow = $d->jumlah_pinjamannow;
-            $jumlah_pembayarannow = $d->total_pembayarannow + $d->total_pembayaranpotongkomisi + $d->total_pembayarantitipan ;
+            $jumlah_pembayarannow = $d->total_pembayarannow + $d->total_pembayaranpotongkomisi + $d->total_pembayarantitipan + $d->total_pembayaranlainnya ;
             $jumlah_pembayaranpotongkomisi = $d->total_pembayaranpotongkomisi;
             $jumlah_pembayarantitipan = $d->total_pembayarantitipan;
             $jumlah_pembayaranlainnya = $d->total_pembayaranlainnya;
