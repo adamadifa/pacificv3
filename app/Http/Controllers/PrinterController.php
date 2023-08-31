@@ -116,12 +116,27 @@ class PrinterController extends Controller
             $total += $d->subtotal;
             $datadetail[] = new item($d->nama_barang, "");
             $datadetail[] = new item($jumlah_dus . " Dus x " . $d->harga_dus, rupiah($jumlah_dus * $d->harga_dus));
+            if (!empty($jumlah_pack)) {
+                $datadetail[] = new item($jumlah_pack . " Pck x " . $d->harga_pack, rupiah($jumlah_pack * $d->harga_pack));
+            }
+
+            if (!empty($jumlah_pcs)) {
+                $datadetail[] = new item($jumlah_pcs . " Pcs x " . $d->harga_pcs, rupiah($jumlah_pcs * $d->harga_pcs));
+            }
+        }
+
+        if (in_array($faktur->kode_pelanggan, $pelangganmp)) {
+            $perusahaan = "CV. MAKMUR PERMATA";
+            $alamat = "Jln. Perintis Kemerdekaan 001/003 Karsamenak, Kawalu, Kota Tasikmalaya";
+        } else {
+            $perusahaan = "CV. PACIFIC CABANG " . strtoupper($faktur->nama_cabang);
+            $alamat = $faktur->alamat_cabang;
         }
         try {
             /* Information for the receipt */
             $items = $datadetail;
 
-            //dd($items);
+            dd($items);
 
             $subtotal = new item('Subtotal', '12.95');
             $tax = new item('A local tax', '1.30');
@@ -144,9 +159,9 @@ class PrinterController extends Controller
             /* Name of shop */
             $printer->setJustification(Printer::JUSTIFY_CENTER);
             $printer->selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
-            $printer->text("ExampleMart Ltd.\n");
+            $printer->text($perusahaan . ".\n");
             $printer->selectPrintMode();
-            $printer->text("Shop No. 42.\n");
+            $printer->text($alamat . ".\n");
             $printer->feed();
 
 
