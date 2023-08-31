@@ -1833,3 +1833,4 @@ Route::middleware(['auth'])->group(function () {
 });
 Route::get('/cetak', [PrinterController::class, 'cetak']);
 Route::get('/show', [PrinterController::class, 'show']);
+Route::get('/cekphp', [PrinterController::class, 'cekphp']);

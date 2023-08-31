@@ -152,4 +152,9 @@ class PrinterController extends Controller
             $printer->close();
         }
     }
+
+    public function cekphp()
+    {
+        phpinfo();
+    }
 }
