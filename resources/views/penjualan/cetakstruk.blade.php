@@ -1,5 +1,8 @@
 <div id="print" style="position: absolute; z-index:1;  background-color:white">
     <p style="text-align: center">
+        {{ var_dump(empty($pembayaran)) }}
+
+        TEST
         ------------------------------------------------------------<br>
         LEMBAR UNTUK PELANGGAN<br>
         @if (in_array($faktur->kode_pelanggan,$pelangganmp))

@@ -7916,7 +7916,7 @@ class PenjualanController extends Controller
             ->where('no_fak_penj', $no_fak_penj)
             ->get();
 
-        $pembayaran = DB::table('historibayar')->where('no_fak_penj', $no_fak_penj)->get();
+        $pembayaran = DB::table('historibayar')->where('no_fak_penj', $no_fak_penj)->count();
         $retur = DB::table('retur')
             ->selectRaw('SUM(total) as totalretur')
             ->where('no_fak_penj', $no_fak_penj)->first();

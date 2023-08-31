@@ -68,10 +68,15 @@
                 @if (date("Y-m-d",strtotime($data->date_created)) != date("Y-m-d"))
                 <div class="row mb-1">
                     <div class="col-12">
-                        <a href="#" class="btn btn-info btn-block" id="cetakfaktur">
+                        {{-- <a href="#" class="btn btn-info btn-block" id="cetakfaktur">
+                            <i class="feather icon-printer mr-1"></i>
+                            Cetak Faktur
+                        </a> --}}
+                        <a href="#" onclick="ajax_print('/cetak/{{ Crypt::encrypt($data->no_fak_penj) }}',this)" class="btn btn-info btn-block">
                             <i class="feather icon-printer mr-1"></i>
                             Cetak Faktur
                         </a>
+
                     </div>
                 </div>
                 @else
@@ -983,6 +988,23 @@
 
 
 @push('myscript')
+<script>
+    // for php demo call
+    function ajax_print(url, btn) {
+        b = $(btn);
+        b.attr('data-old', b.text());
+        b.text('wait');
+        $.get(url, function(data) {
+            window.location.href = data; // main action
+        }).fail(function() {
+            alert("ajax error");
+        }).always(function() {
+            b.text(b.attr('data-old'));
+        })
+    }
+
+</script>
+
 <script>
     function sendUrlToPrint(url) {
         var beforeUrl = 'intent:';

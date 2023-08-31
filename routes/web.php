@@ -1831,6 +1831,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/visit/cetakVisit', 'cetakVisit')->name('visit.cetakVisit');
     });
 });
-Route::get('/cetak', [PrinterController::class, 'cetak']);
+Route::get('/cetak/{no_fak_penj}', [PrinterController::class, 'cetak']);
 Route::get('/show', [PrinterController::class, 'show']);
 Route::get('/cekphp', [PrinterController::class, 'cekphp']);

@@ -360,7 +360,6 @@ $data .= "    *Apapun Jenis Transaksinya Wajib <br>";
 $data .= "     ditandatangani keduabelah pihak<br><br>";
 $data .= "            Terimakasih<br>";
 $data .= "          www.pedasalami.com<br>";
-$data .= "          &lt;img src='{{ url($path) }}'&gt;<br>";
 $data .= "<br>";
 $data .= "            Print Ke - ".$faktur->print + 1;
  echo "<pre id='pre_print' style='position: absolute; z-index:0'>$data</pre>"; ?>
