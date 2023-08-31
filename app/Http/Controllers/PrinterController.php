@@ -52,10 +52,12 @@ class PrinterController extends Controller
     }
     public function cetak()
     {
+
+
         $profile = CapabilityProfile::load("POS-5890");
         $connector = new RawbtPrintConnector();
         $printer = new Printer($connector, $profile);
-        $urllogo = "https://rawbt.ru/mike42/example_rawbt/resources/rawbtlogo.png";
+        $urllogo = base_path('/public/logo.png');
 
         try {
             /* Information for the receipt */
