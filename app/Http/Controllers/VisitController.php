@@ -40,15 +40,28 @@ class VisitController extends Controller
         $cabang = $request->kode_cabang;
 
         if ($cabang == '') {
-            $visit = DB::table('visit')
-                ->leftjoin('penjualan', 'penjualan.no_fak_penj', 'visit.no_fak_penj')
-                ->leftjoin('pelanggan', 'penjualan.kode_pelanggan', 'pelanggan.kode_pelanggan')
-                ->leftjoin('karyawan', 'karyawan.id_karyawan', 'pelanggan.id_sales')
-                ->whereRaw('MONTH(tgl_visit)=' . $bulan)
-                ->whereRaw('YEAR(tgl_visit)=' . $tahun)
-                ->orderBy('visit.kode_cabang', 'ASC')
-                ->orderBy('visit.tgL_visit', 'ASC')
-                ->get();
+            if (Auth::user()->kode_cabang != "PCF") {
+                $visit = DB::table('visit')
+                    ->leftjoin('penjualan', 'penjualan.no_fak_penj', 'visit.no_fak_penj')
+                    ->leftjoin('pelanggan', 'penjualan.kode_pelanggan', 'pelanggan.kode_pelanggan')
+                    ->leftjoin('karyawan', 'karyawan.id_karyawan', 'pelanggan.id_sales')
+                    ->whereRaw('MONTH(tgl_visit)=' . $bulan)
+                    ->whereRaw('YEAR(tgl_visit)=' . $tahun)
+                    ->where('visit.kode_cabang', Auth::user()->kode_cabang)
+                    ->orderBy('visit.kode_cabang', 'ASC')
+                    ->orderBy('visit.tgL_visit', 'ASC')
+                    ->get();
+            } else {
+                $visit = DB::table('visit')
+                    ->leftjoin('penjualan', 'penjualan.no_fak_penj', 'visit.no_fak_penj')
+                    ->leftjoin('pelanggan', 'penjualan.kode_pelanggan', 'pelanggan.kode_pelanggan')
+                    ->leftjoin('karyawan', 'karyawan.id_karyawan', 'pelanggan.id_sales')
+                    ->whereRaw('MONTH(tgl_visit)=' . $bulan)
+                    ->whereRaw('YEAR(tgl_visit)=' . $tahun)
+                    ->orderBy('visit.kode_cabang', 'ASC')
+                    ->orderBy('visit.tgL_visit', 'ASC')
+                    ->get();
+            }
         } else {
             $visit = DB::table('visit')
                 ->leftjoin('penjualan', 'penjualan.no_fak_penj', 'visit.no_fak_penj')
