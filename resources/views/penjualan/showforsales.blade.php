@@ -85,7 +85,11 @@
                         <a href="/penjualan/{{ Crypt::encrypt($data->no_fak_penj) }}/editv2" class="btn  btn-success mr-1">
                             <i class="feather icon-edit"></i>
                         </a>
-                        <a href="#" class="btn btn-info btn-block" id="cetakfaktur">
+                        {{-- <a href="#" class="btn btn-info btn-block" id="cetakfaktur">
+                            <i class="feather icon-printer mr-1"></i>
+                            Cetak Faktur
+                        </a> --}}
+                        <a href="#" onclick="ajax_print('/cetak/{{ Crypt::encrypt($data->no_fak_penj) }}',this)" class="btn btn-info btn-block">
                             <i class="feather icon-printer mr-1"></i>
                             Cetak Faktur
                         </a>
