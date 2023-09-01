@@ -109,6 +109,8 @@
 
 
     $ratiopeny = ($totalqty != 0) ? $penyharga / $totalqty : 0;
+    $ratiopeny = $ratiopeny >= 1 ? ROUND($ratiopeny) : 0;
+
     //dd($harganet->qty_CG)
     @endphp
     <table class="datatable3">
@@ -298,25 +300,36 @@
 
             <td align="right">
                 <?php if($harganet->qty_AB!=0){
-                    echo number_format(($bruto_AB - (($harganet->qty_AB / $isipcs_ab) / $ratiopeny) - $harganet->diskon_AB) / ($harganet->qty_AB / $isipcs_ab), '0', '', '.'); }?>
+                    echo number_format(($bruto_AB - $peny_AB - $harganet->diskon_AB) / ($harganet->qty_AB / $isipcs_ab), '0', '', '.'); }?>
             </td>
-            <td align="right"><?php if($harganet->qty_AR!=0){echo number_format(($bruto_AR - (($harganet->qty_AR / $isipcs_ar) / $ratiopeny) - $harganet->diskon_AR) / ($harganet->qty_AR / $isipcs_ar), '0', '', '.'); }?></td>
-            <td align="right"><?php if($harganet->qty_AS!=0){echo number_format(($bruto_AS - (($harganet->qty_AS / $isipcs_as) / $ratiopeny) - $harganet->diskon_AS) / ($harganet->qty_AS / $isipcs_as), '0', '', '.'); }?></td>
+            <td align="right"><?php if($harganet->qty_AR!=0){echo number_format(($bruto_AR - $peny_AR - $harganet->diskon_AR) / ($harganet->qty_AR / $isipcs_ar), '0', '', '.'); }?></td>
+
+            <td align="right"><?php if($harganet->qty_AS!=0){echo number_format(($bruto_AS - $peny_AS - $harganet->diskon_AS) / ($harganet->qty_AS / $isipcs_as), '0', '', '.'); }?></td>
             <td align="right">
-                <?php if($harganet->qty_BB!=0){echo number_format(($bruto_BB - (($harganet->qty_BB / $isipcs_bb) / $ratiopeny) - $harganet->diskon_BB) / ($harganet->qty_BB / $isipcs_bb), '0', '', '.'); }?>
+                <?php if($harganet->qty_BB!=0){echo number_format(($bruto_BB - $peny_BB - $harganet->diskon_BB) / ($harganet->qty_BB / $isipcs_bb), '0', '', '.'); }?>
             </td>
 
-            <td align="right"><?php if($harganet->qty_BBP!=0){echo number_format(($bruto_BBP - (($harganet->qty_BBP / $isipcs_bbp) / $ratiopeny) - $harganet->diskon_BBP) / ($harganet->qty_BBP / $isipcs_bbp), '0', '', '.'); }?></td>
-            <td align="right"><?php if($harganet->qty_CG!=0){echo number_format(($bruto_CG - (($harganet->qty_CG / $isipcs_cg) / $ratiopeny) - $harganet->diskon_CG) / ($harganet->qty_CG / $isipcs_cg), '0', '', '.'); }?></td>
-            <td align="right"><?php if($harganet->qty_CGG!=0){echo number_format(($bruto_CGG - (($harganet->qty_CGG / $isipcs_cgg) / $ratiopeny) - $harganet->diskon_CGG) / ($harganet->qty_CGG / $isipcs_cgg), '0', '', '.'); }?></td>
-            <td align="right"><?php if($harganet->qty_CG5!=0){echo number_format(($bruto_CG5 - (($harganet->qty_CG5 / $isipcs_cg5) / $ratiopeny) - $harganet->diskon_CG5) / ($harganet->qty_CG5 / $isipcs_cg5), '0', '', '.'); }?></td>
-            <td align="right"><?php if($harganet->qty_DEP!=0){echo number_format(($bruto_DEP - (($harganet->qty_DEP / $isipcs_dep) / $ratiopeny) - $harganet->diskon_DEP) / ($harganet->qty_DEP / $isipcs_dep), '0', '', '.'); }?></td>
-            <td align="right"><?php if($harganet->qty_DS!=0){echo number_format(($bruto_DS - (($harganet->qty_DS / $isipcs_ds) / $ratiopeny) - $harganet->diskon_DS) / ($harganet->qty_DS / $isipcs_ds), '0', '', '.'); }?></td>
-            <td align="right"><?php if($harganet->qty_SP!=0){echo number_format(($bruto_SP - (($harganet->qty_SP / $isipcs_ab) / $ratiopeny) - $harganet->diskon_SP) / ($harganet->qty_SP / $isipcs_sp), '0', '', '.'); }?></td>
-            <td align="right"><?php if($harganet->qty_SC!=0){echo number_format(($bruto_SC - (($harganet->qty_SC / $isipcs_ab) / $ratiopeny) - $harganet->diskon_SC) / ($harganet->qty_SC / $isipcs_sc), '0', '', '.'); }?></td>
-            <td align="right"><?php if($harganet->qty_SP8!=0){echo number_format(($bruto_SP8 - (($harganet->qty_SP8 / $isipcs_ab) / $ratiopeny) - $harganet->diskon_SP8) / ($harganet->qty_SP8 / $isipcs_sp8), '0', '', '.'); }?></td>
+            <td align="right"><?php if($harganet->qty_BBP!=0){echo number_format(($bruto_BBP - $peny_BBP - $harganet->diskon_BBP) / ($harganet->qty_BBP / $isipcs_bbp), '0', '', '.'); }?></td>
 
-            <td align="right"><?php if($harganet->qty_SP500!=0){echo number_format(($bruto_SP500 - (($harganet->qty_SP500 / $isipcs_ab) / $ratiopeny) - $harganet->diskon_SP500) / ($harganet->qty_SP500 / $isipcs_sp500), '0', '', '.'); }?></td>
+
+            <td align="right"><?php if($harganet->qty_CG!=0){echo number_format(($bruto_CG - $peny_CG - $harganet->diskon_CG) / ($harganet->qty_CG / $isipcs_cg), '0', '', '.'); }?></td>
+
+            <td align="right"><?php if($harganet->qty_CGG!=0){echo number_format(($bruto_CGG - $peny_CGG - $harganet->diskon_CGG) / ($harganet->qty_CGG / $isipcs_cgg), '0', '', '.'); }?></td>
+            <td align="right"><?php if($harganet->qty_CG5!=0){echo number_format(($bruto_CG5 - $peny_CG5 - $harganet->diskon_CG5) / ($harganet->qty_CG5 / $isipcs_cg5), '0', '', '.'); }?></td>
+
+            <td align="right"><?php if($harganet->qty_DEP!=0){echo number_format(($bruto_DEP - $peny_DEP - $harganet->diskon_DEP) / ($harganet->qty_DEP / $isipcs_dep), '0', '', '.'); }?></td>
+
+
+            <td align="right"><?php if($harganet->qty_DS!=0){echo number_format(($bruto_DS - $peny_DS - $harganet->diskon_DS) / ($harganet->qty_DS / $isipcs_ds), '0', '', '.'); }?></td>
+
+            <td align="right"><?php if($harganet->qty_SP!=0){echo number_format(($bruto_SP - $peny_SP - $harganet->diskon_SP) / ($harganet->qty_SP / $isipcs_sp), '0', '', '.'); }?></td>
+
+            <td align="right"><?php if($harganet->qty_SC!=0){echo number_format(($bruto_SC - $peny_SC - $harganet->diskon_SC) / ($harganet->qty_SC / $isipcs_sc), '0', '', '.'); }?></td>
+
+
+            <td align="right"><?php if($harganet->qty_SP8!=0){echo number_format(($bruto_SP8 - $peny_SP8 - $harganet->diskon_SP8) / ($harganet->qty_SP8 / $isipcs_sp8), '0', '', '.'); }?></td>
+
+            <td align="right"><?php if($harganet->qty_SP500!=0){echo number_format(($bruto_SP500 - $peny_SP500 - $harganet->diskon_SP500) / ($harganet->qty_SP500 / $isipcs_sp500), '0', '', '.'); }?></td>
 
 
         </tr>
