@@ -122,7 +122,9 @@ class PrinterController extends Controller
             $jumlah_pcs = $sisapack;
             $total += $d->subtotal;
             $datadetail[] = new item($d->nama_barang, "");
-            $datadetail[] = new item($jumlah_dus . " Dus x " . $d->harga_dus, rupiah($jumlah_dus * $d->harga_dus));
+            if (!empty($jumlah_dus)) {
+                $datadetail[] = new item($jumlah_dus . " Dus x " . $d->harga_dus, rupiah($jumlah_dus * $d->harga_dus));
+            }
             if (!empty($jumlah_pack)) {
                 $datadetail[] = new item($jumlah_pack . " Pck x " . $d->harga_pack, rupiah($jumlah_pack * $d->harga_pack));
             }
