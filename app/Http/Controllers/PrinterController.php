@@ -268,7 +268,7 @@ class PrinterController extends Controller
             $printer->feed();
 
             if (!empty($faktur->signature)) {
-                $urlsignature = base_path('/public/storage/signature/BDGE012668.png');
+                $urlsignature = base_path('/public/storage/signature/') . $faktur->signature;
                 $signature = EscposImage::load($urlsignature, false);
                 /* Print top logo */
                 if ($profile->getSupportsGraphics()) {
@@ -374,7 +374,7 @@ class PrinterController extends Controller
             $printer->feed();
 
             if (!empty($faktur->signature)) {
-                $urlsignature = base_path('/public/storage/signature/BDGE012668.png');
+                $urlsignature = base_path('/public/storage/signature/') . $faktur->signature;
                 $signature = EscposImage::load($urlsignature, false);
                 /* Print top logo */
                 if ($profile->getSupportsGraphics()) {
