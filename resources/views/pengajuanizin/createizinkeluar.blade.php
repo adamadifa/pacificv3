@@ -28,6 +28,17 @@
     </div>
     <div class="row">
         <div class="col-12">
+            <div class="form-group">
+                <select name="keperluan" class="form-control" id="keperluan">
+                    <option value="">Keperluan</option>
+                    <option value="P">Pribadi</option>
+                    <option value="K">Kantor</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
             <x-inputtext field="keterangan" label="Keterangan" icon="feather icon-file-text" />
         </div>
     </div>
@@ -50,6 +61,7 @@
             var dari = $("#frmPengajuanizin").find("#dari").val();
             var keterangan = $("#keterangan").val();
             var jam_keluar = $("#jam_keluar").val();
+            var keperluan = $("#keperluan").val();
             if (nik == "") {
                 swal({
                     title: 'Oops'
@@ -78,6 +90,17 @@
                     , showConfirmButton: false
                 }).then(function() {
                     $("#jam_keluar").focus();
+                });
+
+                return false;
+            } else if (keperluan == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Keperluan Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#keperluan").focus();
                 });
 
                 return false;

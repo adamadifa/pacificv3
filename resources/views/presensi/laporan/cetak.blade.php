@@ -302,6 +302,7 @@
 
                         $lintashari = $datapresensi[16] != "NA" ? $datapresensi[16] : ''; // Lintas Hari
                         $izinpulangdirut = $datapresensi[17] != "NA" ? $datapresensi[17] : ''; //Izin Pulang Persetujuan Dirut
+                        $keperluankeluar = $datapresensi[19] != "NA" ? $datapresensi[19] : ''; //Izin Pulang Persetujuan Dirut
                         $izinabsendirut = $datapresensi[18] != "NA" ? $datapresensi[18] : ''; // Izin Absen Persetujuan Dirut
 
                         if(!empty($lintashari)){ // Jika Jadwal Presesni Lintas Hari
@@ -490,7 +491,11 @@
 
                         $jt = $jamterlambat + $desimalterlambat;
                         if($jamkeluarkantor > 0){
-                            $jk = $jamkeluarkantor + $desimaljamkeluar;
+                            if($keperluankeluar == "K"){
+                                $jk = 0;
+                            }else{
+                                $jk = $jamkeluarkantor + $desimaljamkeluar;
+                            }
                         }else{
                             $jk = 0;
                         }

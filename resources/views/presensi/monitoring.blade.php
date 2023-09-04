@@ -338,7 +338,11 @@
 
                                         $jt = $jamterlambat + $desimalterlambat;
                                         if($jamkeluarkantor > 0){
-                                            $jk = $jamkeluarkantor+$desimaljamkeluar;
+                                            if($d->keperluan=="K"){
+                                                $jk = 0;
+                                            }else{
+                                                $jk = $jamkeluarkantor+$desimaljamkeluar;
+                                            }
                                         }else{
                                             $jk = 0;
                                         }

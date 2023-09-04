@@ -362,7 +362,7 @@
                         $lintashari = $datapresensi[16] != "NA" ? $datapresensi[16] : ''; // Lintas Hari
                         $izinpulangdirut = $datapresensi[17] != "NA" ? $datapresensi[17] : ''; //Izin Pulang Persetujuan Dirut
                         $izinabsendirut = $datapresensi[18] != "NA" ? $datapresensi[18] : ''; // Izin Absen Persetujuan Dirut
-
+                        $keperluankeluar = $datapresensi[19] != "NA" ? $datapresensi[19] : ''; // Izin Absen Persetujuan Dirut
                         if(!empty($lintashari)){ // Jika Jadwal Presesni Lintas Hari
                             $tgl_pulang = date('Y-m-d', strtotime('+1 day', strtotime($tgl_presensi)));
                             // Tanggal Pulang adalah Tanggal Berikutnya
@@ -546,7 +546,11 @@
 
                         $jt = $jamterlambat + $desimalterlambat;
                         if($jamkeluarkantor > 0){
-                            $jk = $jamkeluarkantor + $desimaljamkeluar;
+                            if($keperluankeluar == "K"){
+                                $jk = 0;
+                            }else{
+                                $jk = $jamkeluarkantor + $desimaljamkeluar;
+                            }
                         }else{
                             $jk = 0;
                         }

@@ -273,7 +273,16 @@
                                                             <a href="#" class="updatejammasuk" kode_izin="{{ $d->kode_izin }}">{{ $d->jam_masuk }}</a>
                                                             @endif
                                                         </td>
-                                                        <td class="filterable-cell">{{ $d->keterangan }} <br>
+                                                        <td class="filterable-cell">
+                                                            @if ($d->keperluan=="P")
+                                                            <span class="badge bg-danger">Keperluan Pribadi</span>
+                                                            <br>
+                                                            @elseif($d->keperluan=="K")
+                                                            <span class="badge bg-success">Keperluan Kantor</span>
+                                                            <br>
+                                                            @endif
+
+                                                            {{ $d->keterangan }} <br>
                                                             {!! !empty($d->keterangan_hrd) ? "<span class='danger'><b>HRD</b></span> : <span class='danger'>".$d->keterangan_hrd."</span>":"" !!}
                                                         </td class="filterable-cell">
                                                         <td class="text-center filterable-cell">

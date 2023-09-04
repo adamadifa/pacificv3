@@ -613,6 +613,7 @@ class PengajuanizinController extends Controller
         $jam_keluar = $request->jam_keluar;
         $jam_terlambat = $request->jam_terlambat;
         $jenis_cuti = $request->jenis_cuti;
+        $keperluan = $request->keperluan;
         $tgl = explode("-", $dari);
         $tahun = substr($tgl[0], 2, 2);
         $bulan = $tgl[1];
@@ -648,7 +649,8 @@ class PengajuanizinController extends Controller
             'jam_keluar' => $jam_keluar,
             'jam_terlambat' => $jam_terlambat,
             'jenis_cuti' => $jenis_cuti,
-            'kode_cabang' => $kode_cabang
+            'kode_cabang' => $kode_cabang,
+            'keperluan' => $keperluan
         ];
 
         try {

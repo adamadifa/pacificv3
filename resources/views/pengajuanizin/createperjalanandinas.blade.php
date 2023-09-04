@@ -39,6 +39,7 @@
             </div>
         </div>
     </div>
+
     <div class="row">
         <div class="col-12">
             <x-inputtext field="keterangan" label="Keterangan" icon="feather icon-file-text" />

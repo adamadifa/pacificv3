@@ -64,7 +64,7 @@ class PresensiController extends Controller
         $tanggal = !empty($request->tanggal) ? $request->tanggal : date('Y-m-d');
         // $tanggal = date("Y-m-d");
         $query = Karyawan::query();
-        $query->select('master_karyawan.nik', 'nama_karyawan', 'tgl_masuk', 'master_karyawan.kode_dept', 'nama_dept', 'jenis_kelamin', 'nama_jabatan', 'id_perusahaan', 'id_kantor', 'klasifikasi', 'status_karyawan', 'presensi.kode_jadwal', 'nama_jadwal', 'jam_kerja.jam_masuk', 'jam_kerja.jam_pulang', 'jam_in', 'jam_out', 'presensi.status as status_presensi', 'presensi.kode_izin', 'kode_izin_terlambat', 'tgl_presensi', 'pengajuan_izin.status as status_izin', 'pengajuan_izin.jenis_izin', 'pengajuan_izin.jam_keluar', 'pengajuan_izin.jam_masuk as jam_masuk_kk', 'total_jam', 'kode_izin_pulang', 'jam_istirahat', 'jam_awal_istirahat', 'sid', 'jadwal_kerja.kode_cabang as jadwalcabang', 'lokasi_in', 'lokasi_out', 'presensi.id', 'pin', 'lintashari');
+        $query->select('master_karyawan.nik', 'nama_karyawan', 'tgl_masuk', 'master_karyawan.kode_dept', 'nama_dept', 'jenis_kelamin', 'nama_jabatan', 'id_perusahaan', 'id_kantor', 'klasifikasi', 'status_karyawan', 'presensi.kode_jadwal', 'nama_jadwal', 'jam_kerja.jam_masuk', 'jam_kerja.jam_pulang', 'jam_in', 'jam_out', 'presensi.status as status_presensi', 'presensi.kode_izin', 'kode_izin_terlambat', 'tgl_presensi', 'pengajuan_izin.status as status_izin', 'pengajuan_izin.jenis_izin', 'pengajuan_izin.jam_keluar', 'pengajuan_izin.jam_masuk as jam_masuk_kk', 'total_jam', 'kode_izin_pulang', 'jam_istirahat', 'jam_awal_istirahat', 'sid', 'jadwal_kerja.kode_cabang as jadwalcabang', 'lokasi_in', 'lokasi_out', 'presensi.id', 'pin', 'lintashari', 'keperluan');
         $query->leftjoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
         $query->leftjoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
 
@@ -577,7 +577,8 @@ class PresensiController extends Controller
             'lokasi_out',
             'presensi.id',
             'pin',
-            'lintashari'
+            'lintashari',
+            'keperluan'
         );
         $query->join('master_karyawan', 'presensi.nik', '=', 'master_karyawan.nik');
         $query->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
