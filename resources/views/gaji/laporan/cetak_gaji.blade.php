@@ -183,7 +183,7 @@
                     $total_overtime_2 = 0;
                     $total_overtime_libur_1 = 0;
                     $total_overtime_libur_2 = 0;
-                    //$izinsakit = 0;
+                    $izinsakit = 0;
                     $totalizinsakit = 0;
                     // $jmlharipremi1 = 0;
                     // $jmlharipremi2 = 0;
