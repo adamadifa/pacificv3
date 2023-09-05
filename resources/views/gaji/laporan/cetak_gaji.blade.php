@@ -195,165 +195,165 @@
                     $totalhari_shift_3 = 0;
                     for($i=0; $i < count($rangetanggal); $i++){
                         $hari_ke = "hari_".$i+1;
-                            $tgl_presensi =  $rangetanggal[$i];
+                        $tgl_presensi =  $rangetanggal[$i];
 
-                            // Menghitung Masa Kerja
-                            $start_kerja = date_create($d->tgl_masuk);
-                            $end_kerja = date_create($tgl_presensi);
-                            $cekmasakerja =  diffInMonths($start_kerja, $end_kerja);
+                        // Menghitung Masa Kerja
+                        $start_kerja = date_create($d->tgl_masuk);
+                        $end_kerja = date_create($tgl_presensi);
+                        $cekmasakerja =  diffInMonths($start_kerja, $end_kerja);
 
-                            $tgllibur = "'".$tgl_presensi."'";
+                        $tgllibur = "'".$tgl_presensi."'";
 
-                            $search_items = array(
-                                'nik'=>$d->nik,
-                                'id_kantor' => $d->id_kantor,
-                                'tanggal_libur' => $tgl_presensi
-                            );
-                            $search_items_lembur = array(
-                                'nik'=>$d->nik,
-                                'id_kantor' => $d->id_kantor,
-                                'tanggal_lembur' => $tgl_presensi
-                            );
-                            $search_items_minggumasuk = array(
-                                'nik'=>$d->nik,
-                                'id_kantor' => $d->id_kantor,
-                                'tanggal_diganti' => $tgl_presensi
-                            );
-                            $search_items_all = array(
-                                'nik'=>'ALL',
-                                'id_kantor' => $d->id_kantor,
-                                'tanggal_libur' => $tgl_presensi
-                            );
-
-
-                            $ceklibur = cektgllibur($datalibur, $search_items);
-                            $cekliburpenggantiminggu = cektgllibur($dataliburpenggantiminggu,$search_items);
-                            $cekminggumasuk = cektgllibur($dataminggumasuk,$search_items_minggumasuk);
-                            $cekwfh = cektgllibur($datawfh,$search_items);
-                            $cekwfhfull = cektgllibur($datawfhfull,$search_items);
-                            $ceklembur = cektgllibur($datalembur,$search_items_lembur);
+                        $search_items = array(
+                            'nik'=>$d->nik,
+                            'id_kantor' => $d->id_kantor,
+                            'tanggal_libur' => $tgl_presensi
+                        );
+                        $search_items_lembur = array(
+                            'nik'=>$d->nik,
+                            'id_kantor' => $d->id_kantor,
+                            'tanggal_lembur' => $tgl_presensi
+                        );
+                        $search_items_minggumasuk = array(
+                            'nik'=>$d->nik,
+                            'id_kantor' => $d->id_kantor,
+                            'tanggal_diganti' => $tgl_presensi
+                        );
+                        $search_items_all = array(
+                            'nik'=>'ALL',
+                            'id_kantor' => $d->id_kantor,
+                            'tanggal_libur' => $tgl_presensi
+                        );
 
 
-                            //Menghitung Jumlah Jam Dirumahkan
-                            $namahari = hari($tgl_presensi);
-                            if($namahari == "Sabtu"){
-                                $jamdirumahkan = 5;
+                    $ceklibur = cektgllibur($datalibur, $search_items);
+                    $cekliburpenggantiminggu = cektgllibur($dataliburpenggantiminggu,$search_items);
+                    $cekminggumasuk = cektgllibur($dataminggumasuk,$search_items_minggumasuk);
+                    $cekwfh = cektgllibur($datawfh,$search_items);
+                    $cekwfhfull = cektgllibur($datawfhfull,$search_items);
+                    $ceklembur = cektgllibur($datalembur,$search_items_lembur);
+
+
+                    //Menghitung Jumlah Jam Dirumahkan
+                    $namahari = hari($tgl_presensi);
+                    if($namahari == "Sabtu"){
+                        $jamdirumahkan = 5;
+                    }else{
+                        $jamdirumahkan = 7;
+                    }
+
+
+
+
+
+                    //Ceklembur
+                    if(!empty($ceklembur)){
+                        $tgl_lembur_dari = $ceklembur[0]["tanggal_dari"];
+                        $tgl_lembur_sampai = $ceklembur[0]["tanggal_sampai"];
+                        $jmljam_lbr = hitungjamdesimal($tgl_lembur_dari,$tgl_lembur_sampai);
+                        $jmljam_lembur = $jmljam_lbr > 7 ? 7 : $jmljam_lbr;
+                        $kategori_lembur = $ceklembur[0]["kategori"];
+                        if ($kategori_lembur==1) {
+                            $overtime_1 = $jmljam_lembur > 1 ? 1 : $jmljam_lembur;
+                            $overtime_2 = $jmljam_lembur > 1 ? $jmljam_lembur -1 : 0;
+                            $total_overtime_1 += $overtime_1;
+                            $total_overtime_2 += $overtime_2;
+                        }else if($kategori_lembur==2){
+                            $overtime_libur_1 = $jmljam_lembur >= 4 ? 4 : $jmljam_lembur;
+                            $overtime_libur_2 = $jmljam_lembur > 4 ? $jmljam_lembur-4 : 0;
+                            $total_overtime_libur_1 += $overtime_libur_1;
+                            $total_overtime_libur_2 += $overtime_libur_2;
+                        }
+                    }
+
+                    //Pewarnaan Kolom
+                    if($namahari=="Minggu"){ // Jika Hari Minggu
+                        if(!empty($cekminggumasuk)){ // Cek Jika Minggu Harus Masuk
+                            if($d->$hari_ke != NULL){ // Cek Jika Melakukan Presensi
+                                $colorcolumn = ""; // Warna Kolom Putih
+                                $colortext = "";
                             }else{
-                                $jamdirumahkan = 7;
+                                $colorcolumn = "red"; // Warna Kolom Merah Jika TIdak Absen
+                                $colortext = "";
+                            }
+                        }else{ // Jika Minggu Libur atau Tidak Ada Jadwal Masuk
+                            $colorcolumn = "#ffaf03"; // Warna Kolom Orange
+                            $colortext = "white";
+                        }
+                    }else{ // Jika Hari Bukan Hari Minggu
+                        if($d->$hari_ke != NULL){ // Jika Karyawa Melakukan Presensi
+                            if (!empty($ceklibur)) { // Jika Pada Hari Itu ada Libur Nasional
+                                $colorcolumn = "rgb(4, 163, 65)";
+                                $colortext = "white";
+                            }else{
+                                $colorcolumn = "";
+                                $colortext = "";
+                            }
+
+                            if (!empty($cekliburpenggantiminggu)) { // Jika Pada Hari Itu adalah Libur Pengganti Minggu
+                                $colorcolumn = "#ffaf03";
+                                $colortext = "white";
+                            }else{
+                                $colorcolumn = $colorcolumn;
+                                $colortext = $colortext;
+                            }
+
+                            if (!empty($cekwfh)) { // Jika pada Hari Itu Sedang Dirumahkan
+                                $colorcolumn = "#fc0380";
+                                $colortext = "black";
+                            }else{
+                                $colorcolumn = $colorcolumn;
+                                $colortext = $colortext;
+                            }
+
+                            if (!empty($cekwfhfull)) { // Jika pada Hari Itu Sedang WFH
+                                $colorcolumn = "#9f0ecf";
+                                $colortext = "black";
+                            }else{
+                                $colorcolumn = $colorcolumn;
+                                $colortext = $colortext;
+                            }
+                        }else{ // Jika Karyawan Tidak Melakukan Presensi
+
+                            if (!empty($ceklibur)) { // Jika Pada Hari Itu ada Libur Nasional
+                                $colorcolumn = "rgb(4, 163, 65)";
+                                $colortext = "white";
+                            }else{
+                                $colorcolumn = "red";
+                                $colortext = "white";
                             }
 
 
-
-
-
-                            //Ceklembur
-                            if(!empty($ceklembur)){
-                                $tgl_lembur_dari = $ceklembur[0]["tanggal_dari"];
-                                $tgl_lembur_sampai = $ceklembur[0]["tanggal_sampai"];
-                                $jmljam_lbr = hitungjamdesimal($tgl_lembur_dari,$tgl_lembur_sampai);
-                                $jmljam_lembur = $jmljam_lbr > 7 ? 7 : $jmljam_lbr;
-                                $kategori_lembur = $ceklembur[0]["kategori"];
-                                if ($kategori_lembur==1) {
-                                    $overtime_1 = $jmljam_lembur > 1 ? 1 : $jmljam_lembur;
-                                    $overtime_2 = $jmljam_lembur > 1 ? $jmljam_lembur -1 : 0;
-                                    $total_overtime_1 += $overtime_1;
-                                    $total_overtime_2 += $overtime_2;
-                                }else if($kategori_lembur==2){
-                                    $overtime_libur_1 = $jmljam_lembur >= 4 ? 4 : $jmljam_lembur;
-                                    $overtime_libur_2 = $jmljam_lembur > 4 ? $jmljam_lembur-4 : 0;
-                                    $total_overtime_libur_1 += $overtime_libur_1;
-                                    $total_overtime_libur_2 += $overtime_libur_2;
-                                }
-                            }
-
-                            //Pewarnaan Kolom
-                            if($namahari=="Minggu"){ // Jika Hari Minggu
-                                if(!empty($cekminggumasuk)){ // Cek Jika Minggu Harus Masuk
-                                    if($d->$hari_ke != NULL){ // Cek Jika Melakukan Presensi
-                                        $colorcolumn = ""; // Warna Kolom Putih
-                                        $colortext = "";
-                                    }else{
-                                        $colorcolumn = "red"; // Warna Kolom Merah Jika TIdak Absen
-                                        $colortext = "";
-                                    }
-                                }else{ // Jika Minggu Libur atau Tidak Ada Jadwal Masuk
-                                    $colorcolumn = "#ffaf03"; // Warna Kolom Orange
-                                    $colortext = "white";
-                                }
-                            }else{ // Jika Hari Bukan Hari Minggu
-                                if($d->$hari_ke != NULL){ // Jika Karyawa Melakukan Presensi
-                                    if (!empty($ceklibur)) { // Jika Pada Hari Itu ada Libur Nasional
-                                        $colorcolumn = "rgb(4, 163, 65)";
-                                        $colortext = "white";
-                                    }else{
-                                        $colorcolumn = "";
-                                        $colortext = "";
-                                    }
-
-                                    if (!empty($cekliburpenggantiminggu)) { // Jika Pada Hari Itu adalah Libur Pengganti Minggu
-                                        $colorcolumn = "#ffaf03";
-                                        $colortext = "white";
-                                    }else{
-                                        $colorcolumn = $colorcolumn;
-                                        $colortext = $colortext;
-                                    }
-
-                                    if (!empty($cekwfh)) { // Jika pada Hari Itu Sedang Dirumahkan
-                                        $colorcolumn = "#fc0380";
-                                        $colortext = "black";
-                                    }else{
-                                        $colorcolumn = $colorcolumn;
-                                        $colortext = $colortext;
-                                    }
-
-                                    if (!empty($cekwfhfull)) { // Jika pada Hari Itu Sedang WFH
-                                        $colorcolumn = "#9f0ecf";
-                                        $colortext = "black";
-                                    }else{
-                                        $colorcolumn = $colorcolumn;
-                                        $colortext = $colortext;
-                                    }
-                                }else{ // Jika Karyawan Tidak Melakukan Presensi
-
-                                    if (!empty($ceklibur)) { // Jika Pada Hari Itu ada Libur Nasional
-                                        $colorcolumn = "rgb(4, 163, 65)";
-                                        $colortext = "white";
-                                    }else{
-                                        $colorcolumn = "red";
-                                        $colortext = "white";
-                                    }
-
-
-                                    if (!empty($cekliburpenggantiminggu)) { // Jika Pada Hari Itu adalah Libur Pengganti Minggu
-                                        $colorcolumn = "#ffaf03";
-                                        $colortext = "white";
-                                    }else{
-                                        if(empty($ceklibur)){
-                                            $colorcolumn = $colorcolumn;
-                                            $colortext = $colortext;
-                                        }
-
-                                    }
-
-                                    if (!empty($cekwfh)) { // Jika pada Hari Itu Sedang Dirumahkan
-                                        $colorcolumn = "#fc0380";
-                                        $colortext = "black";
-                                    }else{
-                                        $colorcolumn = $colorcolumn;
-                                        $colortext = $colortext;
-                                    }
-
-
-                                    if (!empty($cekwfhfull)) { // Jika pada Hari Itu Sedang WFH
-                                        $colorcolumn = "#9f0ecf";
-                                        $colortext = "black";
-                                    }else{
-                                        $colorcolumn = $colorcolumn;
-                                        $colortext = $colortext;
-                                    }
+                            if (!empty($cekliburpenggantiminggu)) { // Jika Pada Hari Itu adalah Libur Pengganti Minggu
+                                $colorcolumn = "#ffaf03";
+                                $colortext = "white";
+                            }else{
+                                if(empty($ceklibur)){
+                                    $colorcolumn = $colorcolumn;
+                                    $colortext = $colortext;
                                 }
 
                             }
+
+                            if (!empty($cekwfh)) { // Jika pada Hari Itu Sedang Dirumahkan
+                                $colorcolumn = "#fc0380";
+                                $colortext = "black";
+                            }else{
+                                $colorcolumn = $colorcolumn;
+                                $colortext = $colortext;
+                            }
+
+
+                            if (!empty($cekwfhfull)) { // Jika pada Hari Itu Sedang WFH
+                                $colorcolumn = "#9f0ecf";
+                                $colortext = "black";
+                            }else{
+                                $colorcolumn = $colorcolumn;
+                                $colortext = $colortext;
+                            }
+                        }
+
+                    }
                     if($d->$hari_ke != NULL){
                         $tidakhadir = 0; // Jika Karyawan Absen Maka $tidakhadir dihitung 0
 
@@ -453,10 +453,10 @@
                         $jam_istirahat_presensi =$datapresensi[14] != "NA" ? date("H:i",strtotime($datapresensi[14])) : '';
                         $jam_istirahat_presensi_tanggal = $datapresensi[14] != "NA" ? $tgl_pulang." ".$jam_istirahat_presensi : '';
 
-                        $jam_awal_istirahat = $datapresensi[13] != "NA" ? $tgl_presensi." ".$datapresensi[13] : '';
+                        $jam_awal_istirahat = $datapresensi[13] != "NA" ? date("H:i",strtotime($datapresensi[13])) : '';;
                         $jam_awal_istirahat_tanggal = $datapresensi[14] != "NA" ? $tgl_pulang." ".$jam_awal_istirahat : '';
 
-                        $jam_akhir_istirahat = $datapresensi[14] != "NA" ? $tgl_presensi." ".$datapresensi[14] : '';
+                        $jam_akhir_istirahat = $datapresensi[14] != "NA" ? date("H:i",strtotime($datapresensi[14])) : '';;
                         $jam_akhir_istirahat_tanggal = $datapresensi[14] != "NA" ? $tgl_pulang." ".$jam_akhir_istirahat :'';
 
 
@@ -607,7 +607,6 @@
                             $m = $diff - ($jam * (60 * 60));
                             $menit = floor($m / 60);
                         }
-
                         if ($denda == 0 and empty($kode_izin_terlambat)) {
                             if($kode_dept != "MKT"){
                                 if($jamterlambat <= 1){
@@ -642,13 +641,17 @@
                                 if($jam_out_tanggal > $jam_akhir_istirahat_tanggal && $jam_istirahat != "NA"){
                                     $desimalmenit = ROUND(($menit * 100) / 60);
                                     $grandtotaljam = $jam-1 . "." . $desimalmenit;
+                                    $cek = "A";
                                 }else{
                                     $desimalmenit = ROUND(($menit * 100) / 60);
                                     $grandtotaljam = $jam . "." . $desimalmenit;
+                                    $cek = "B".$jam_out_tanggal."------".$jam_akhir_istirahat_tanggal;
                                 }
 
                                 $grandtotaljam = $grandtotaljam - $jt - $jk;
+
                             } else {
+                                $cek = "C";
                                 $desimalmenit = 0;
                                 $grandtotaljam = $totaljam;
                             }
@@ -703,6 +706,7 @@
                             $totalpc = 0;
                         }
 
+                        //echo $rangetanggal[$i]."-".$total_jam."+".$jk."+".$grandtotaljam."(".$cek.")<br>";
 
                         if(!empty($cekwfh)){
                             if($cekmasakerja > 3){
@@ -802,6 +806,8 @@
                     $totalizinsakit += $izinsakit;
                 }
                 $totaljamkerja = $totaljam1bulan - $totalterlambat - $totalkeluar - $totaldirumahkan - $totaltidakhadir - $totalpulangcepat - $totalizinabsen - $totalizinsakit;
+
+
                 $totalpotonganjam = $totalterlambat + $totalkeluar + $totaldirumahkan + $totaltidakhadir + $totalpulangcepat + $totalizinabsen + $totalizinsakit;
                 ?>
                 <tr>

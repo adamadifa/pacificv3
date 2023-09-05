@@ -641,7 +641,7 @@
                             }else{
                                 $totalpc = $total_jam + $jk - $grandtotaljam;
                             }
-
+$
                         }else{
                             $pc = "";
                             $totalpc = 0;
