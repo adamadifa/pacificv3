@@ -990,7 +990,8 @@
                         @php
                         $jmlbersih = $bruto - $potongan;
                         @endphp
-                        {{ !empty($jmlbersih) ? rupiah($jmlbersih) : "" }}
+                        {{ !empty($jmlbersih) ? rupiah($jmlbersih) : "" }}<br>
+                        {{ $jmlbersih }}
                     </td>
                 </tr>
                 @endforeach
