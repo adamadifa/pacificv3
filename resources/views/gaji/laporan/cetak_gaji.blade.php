@@ -867,7 +867,7 @@
                         {{ !empty($jmlinsentif) ? rupiah($jmlinsentif) : "" }}
                     </td>
                     <td style="text-align:center; font-weight:bold">
-                        {{ !empty($totaljamkerja) ? $totaljamkerja : '' }}
+                        {{ !empty($totaljamkerja) ? desimal($totaljamkerja) : '' }}
                     </td>
                     <td align="right">
                         @php
