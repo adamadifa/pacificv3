@@ -938,7 +938,7 @@
                     <td align="center">{{ !empty($totalhari_shift_3) ? $totalhari_shift_3 : "" }}</td>
                     <td align="right">{{ !empty($totalpremi_shift_3) ? rupiah($totalpremi_shift_3) : "" }}</td>
                     <td align="right">
-                        {{ $upah_perjam }}
+                        {{ $jmlinsentif }}
                         @php
                         $bruto = ($upah_perjam * $totaljamkerja) + $jmlinsentif + $total_upah_overtime + $totalpremi_shift_2 + $totalpremi_shift_3;
                         @endphp
