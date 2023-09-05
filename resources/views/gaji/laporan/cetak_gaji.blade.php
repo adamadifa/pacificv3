@@ -869,7 +869,7 @@
                     </td>
                     <td align="right">
                         @php
-                        $upah_perjam = ROUND($upah/173);
+                        $upah_perjam =$upah/173;
                         @endphp
                         {{ !empty($upah) ? rupiah($upah_perjam) : "" }}
                     </td>
