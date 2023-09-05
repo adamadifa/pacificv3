@@ -873,7 +873,7 @@
                         @php
                         $upah_perjam =$upah/173;
                         @endphp
-                        {{ !empty($upah) ? rupiah($upah_perjam) : "" }}
+                        {{ !empty($upah_perjam) ? rupiah($upah_perjam) : "" }}
                     </td>
                     <td style="text-align: center;">{{ !empty($total_overtime_1) ? rupiah($total_overtime_1) : '' }}</td>
 
@@ -938,6 +938,7 @@
                     <td align="center">{{ !empty($totalhari_shift_3) ? $totalhari_shift_3 : "" }}</td>
                     <td align="right">{{ !empty($totalpremi_shift_3) ? rupiah($totalpremi_shift_3) : "" }}</td>
                     <td align="right">
+                        {{ $upah_perjam }}
                         @php
                         $bruto = ($upah_perjam * $totaljamkerja) + $jmlinsentif + $total_upah_overtime + $totalpremi_shift_2 + $totalpremi_shift_3;
                         @endphp
