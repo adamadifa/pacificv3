@@ -544,7 +544,7 @@
 
                         //Jam terlambat dalam Desimal
 
-                        $jt = floor($jamterlambat + $desimalterlambat,1);
+                        $jt = round($jamterlambat + $desimalterlambat,1,PHP_ROUND_HALF_DOWN);
                         if($jamkeluarkantor > 0){
                             if($keperluankeluar == "K"){
                                 $jk = 0;
