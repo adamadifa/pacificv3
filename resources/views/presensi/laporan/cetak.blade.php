@@ -489,7 +489,7 @@
 
                         //Jam terlambat dalam Desimal
 
-                        $jt = $jamterlambat + $desimalterlambat;
+                        $jt = Floor($jamterlambat + $desimalterlambat,1);
                         if($jamkeluarkantor > 0){
                             if($keperluankeluar == "K"){
                                 $jk = 0;
