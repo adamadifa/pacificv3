@@ -943,6 +943,8 @@
                         $bruto = ($upah_perjam * $totaljamkerja) + $total_upah_overtime + $totalpremi_shift_2 + $totalpremi_shift_3;
                         @endphp
                         {{ !empty($bruto) ?  rupiah($bruto) : "" }}
+                        <br>
+                        {{ $bruto }}
                     </td>
                     <td align="center">{{ !empty($totalpotonganjam) ? $totalpotonganjam : "" }}</td>
                     <td align="right">
