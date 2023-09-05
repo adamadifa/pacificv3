@@ -966,7 +966,7 @@
                     <td align="right">{{ !empty($d->jml_kasbon) ? rupiah($d->jml_kasbon) : "" }}</td>
                     <td align="right">
                         <?php
-                            if($d->id_kantor=="PST" && $cekmasakerja > 3 || $d->id_kantor=="TSM" && $cekmasakerja > 3){
+                            if($d->id_kantor=="PST" && $cekmasakerja > 3 || $d->id_kantor=="TSM" && $cekmasakerja >= 3){
                                 $spip = 5000;
                             }else{
                                 $spip = 0;
