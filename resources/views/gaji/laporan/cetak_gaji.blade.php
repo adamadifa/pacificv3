@@ -973,6 +973,7 @@
                             }
                         ?>
                         {{ !empty($spip) ? rupiah($spip) : "" }}
+                        {{ $cekmasakerja }}
                     </td>
                     <td align="right">
                         @php
