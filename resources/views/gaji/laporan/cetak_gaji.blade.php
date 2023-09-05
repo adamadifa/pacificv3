@@ -806,7 +806,7 @@
                 ?>
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ $d->nik }}</td>
+                    <td>{{ "'".$d->nik }}</td>
                     <td>{{ $d->nama_karyawan }}</td>
                     <td align="center">{{ $d->nama_group }}</td>
                     <td align="center">{{ date("d-m-Y",strtotime($d->tgl_masuk)) }}</td>
