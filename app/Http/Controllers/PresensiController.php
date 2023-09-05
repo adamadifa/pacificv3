@@ -168,7 +168,7 @@ class PresensiController extends Controller
 
         }
 
-        if (Auth::user()->id == 69) {
+        if (Auth::user()->id == 73) {
             if (!empty($nama_karyawan)) {
                 $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');
             }
@@ -248,7 +248,7 @@ class PresensiController extends Controller
             $query->where('status_aktif', 1);
         }
 
-        if (Auth::user()->id == 73) {
+        if (Auth::user()->id == 69) {
             $query->where('grup', 9);
             $query->where('id_kantor', 'PST');
         }
