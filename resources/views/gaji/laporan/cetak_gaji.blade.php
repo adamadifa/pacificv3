@@ -954,6 +954,8 @@
                             }else{
                                 $bpjskesehatan = 0.5 * ($d->perusahaan + $d->pekerja) + $d->keluarga;;
                             }
+
+                            $bpjskesehatan = round($bpjskesehatan,1,PHP_ROUND_HALF_UP);
                         ?>
 
                         {{ !empty($bpjskesehatan) ? rupiah($bpjskesehatan) : "" }}
