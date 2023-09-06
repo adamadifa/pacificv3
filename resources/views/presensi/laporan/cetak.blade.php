@@ -731,7 +731,9 @@
 
                         if ($kategori_lembur==1) {
                             $overtime_1 = $jmljam_lembur > 1 ? 1 : $jmljam_lembur;
+                            $overtime_1 = round($overtime_1,1,PHP_ROUND_HALF_DOWN);
                             $overtime_2 = $jmljam_lembur > 1 ? $jmljam_lembur -1 : 0;
+                            $overtime_2 = round($overtime_2,1,PHP_ROUND_HALF_DOWN);
                             $total_overtime_1 += $overtime_1;
                             $total_overtime_2 += $overtime_2;
                         ?>
@@ -874,7 +876,10 @@
                             $kategori_lembur = $ceklembur[0]["kategori"];
                             if ($kategori_lembur==1) {
                                 $overtime_1 = $jmljam_lembur > 1 ? 1 : $jmljam_lembur;
+                                $overtime_1 = round($overtime_1,1,PHP_ROUND_HALF_DOWN);
                                 $overtime_2 = $jmljam_lembur > 1 ? $jmljam_lembur -1 : 0;
+                                $overtime_2 = round($overtime_2,1,PHP_ROUND_HALF_DOWN);
+
                                 $total_overtime_1 += $overtime_1;
                                 $total_overtime_2 += $overtime_2;
                         ?>
@@ -926,10 +931,10 @@
                     <td style="text-align: right;  font-size:16px">{{ !empty($totalpremi_shift_2) ? rupiah($totalpremi_shift_2) : '' }}</td>
                     <td style="text-align: center;  font-size:16px">{{ !empty($totalhari_shift_3) ? rupiah($totalhari_shift_3) : '' }}</td>
                     <td style="text-align: right;  font-size:16px">{{ !empty($totalpremi_shift_3) ? rupiah($totalpremi_shift_3) : '' }}</td>
-                    <td style="text-align: center;  font-size:16px">{{ !empty($total_overtime_1) ? rupiah($total_overtime_1) : '' }}</td>
-                    <td style="text-align: center;  font-size:16px">{{ !empty($total_overtime_2) ? rupiah($total_overtime_2) : '' }}</td>
-                    <td style="text-align: center;  font-size:16px">{{ !empty($total_overtime_libur_1) ? rupiah($total_overtime_libur_1) : '' }}</td>
-                    <td style="text-align: center;  font-size:16px">{{ !empty($total_overtime_libur_2) ? rupiah($total_overtime_libur_2) : '' }}</td>
+                    <td style="text-align: center;  font-size:16px">{{ !empty($total_overtime_1) ? $total_overtime_1 : '' }}</td>
+                    <td style="text-align: center;  font-size:16px">{{ !empty($total_overtime_2) ? $total_overtime_2 : '' }}</td>
+                    <td style="text-align: center;  font-size:16px">{{ !empty($total_overtime_libur_1) ? $total_overtime_libur_1 : '' }}</td>
+                    <td style="text-align: center;  font-size:16px">{{ !empty($total_overtime_libur_2) ? $total_overtime_libur_2 : '' }}</td>
 
                 </tr>
                 @endforeach

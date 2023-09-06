@@ -47,58 +47,42 @@
                                     <div class="row">
                                         <div class="col-2">
                                             {{-- <label for="" class="form-label mb-1">Omset Bulan</label> --}}
+                                            <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker value="{{ Request('dari') }}" />
+                                        </div>
+                                        <div class="col-2">
+                                            <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker value="{{ Request('sampai') }}" />
+                                        </div>
+                                        <div class="col-2">
                                             <div class="form-group">
-                                                <select class="form-control" id="bulan" name="bulan">
-                                                    <option value="">Bulan</option>
-                                                    <?php
-                                                    $bulanini = date("m");
-                                                    for ($i = 1; $i < count($bulan); $i++) {
-                                                    ?>
-                                                    <option {{ Request('bulan') == $i ? "selected" : "" }} value="<?php echo $i; ?>"><?php echo $bulan[$i]; ?></option>
-                                                    <?php
-                                                    }
-                                                    ?>
+                                                <select name="kategori_search" id="kategori_search" class="form-control">
+                                                    <option value="">Semua Kategori Libur</option>
+                                                    <option value="1" {{ Request('kategori_search') ==1 ? 'selected' : '' }}>Libur Nasional</option>
+                                                    <option value="2" {{ Request('kategori_search') ==2  ? 'selected' : '' }}>Libur Pengganti Minggu</option>
+                                                    <option value="3" {{ Request('kategori_search') ==3  ? 'selected' : '' }}>WFH</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-2">
                                             <div class="form-group">
-                                                <select class="form-control" id="tahun" name="tahun">
-                                                    <option value="">Tahun</option>
-                                                    <?php
-                                                    $tahunmulai = 2023;
-                                                    for ($thn = $tahunmulai; $thn <= date('Y'); $thn++) {
-                                                    ?>
-                                                    <option {{ Request('tahun') == $thn ? "selected" : "" }} value="<?php echo $thn; ?>"><?php echo $thn; ?></option>
-                                                    <?php
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-3">
-                                            <div class="form-group">
-                                                <select name="kategori_search" id="kategori_search" class="form-control">
-                                                    <option value="">Semua Kategori</option>
-                                                    <option value="1" {{ Request('kategori_search') ==1 ? 'selected' : '' }}>REGULER</option>
-                                                    <option value="2" {{ Request('kategori_search') ==2  ? 'selected' : '' }}>LEMBUR HARI LIBUR</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        @if (Auth::user()->kode_cabang != "PCF" && Auth::user()->kode_cabang != "PST" )
-                                        <div class="col-3">
-                                            <div class="form-group">
-                                                <select id="id_kantor_search" name="id_kantor_search" class="form-control">
+                                                <select name="kode_cabang_search" id="kode_cabang_search" class="form-control">
                                                     <option value="">Semua Kantor</option>
-                                                    @foreach ($cabang as $d)
-                                                    <option {{ Request('id_kantor_search') == $d->kode_cabang  ? 'selected' : '' }} value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
+                                                    @foreach ($cb as $d)
+                                                    <option value="{{ $d->kode_cabang }}" {{ Request('kode_cabang_search') == $d->kode_cabang ? 'selected' : '' }}>{{ $d->nama_cabang }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                         </div>
-                                        @endif
 
+                                        <div class="col-2">
+                                            <div class="form-group">
+                                                <select name="kode_dept_search" id="kode_dept_search" class="form-control">
+                                                    <option value="">Departemen</option>
+                                                    @foreach ($departemen as $d)
+                                                    <option value="{{ $d->kode_dept }}" {{ Request('kode_dept_search') == $d->kode_dept ? 'selected' : '' }}>{{ $d->nama_dept }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class="col-2">
                                             <div class="form-group">
                                                 <button type="submit" name="submit" class="btn btn-primary"><i class="fa fa-search"></i></button>
@@ -122,7 +106,7 @@
                                             <th>Kantor</th>
                                             <th>Dept</th>
                                             <th>Kategori</th>
-                                            <th>Keterangan</th>
+                                            <th style="width:25%">Keterangan</th>
                                             <th>HRD</th>
                                             <th>Aksi</th>
                                         </tr>

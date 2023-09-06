@@ -17,15 +17,28 @@ class LemburController extends Controller
     public function index(Request $request)
     {
         $query = Lembur::query();
-        if (!empty($request->bulan)) {
-            $query->whereRaw('MONTH(tanggal_dari)="' . $request->bulan . '"');
+        // if (!empty($request->bulan)) {
+        //     $query->whereRaw('MONTH(tanggal_dari)="' . $request->bulan . '"');
+        // }
+
+        // if (!empty($request->tahun)) {
+        //     $query->whereRaw('YEAR(tanggal_sampai)="' . $request->tahun . '"');
+        // }
+
+        if (!empty($request->dari) && !empty($request->sampai)) {
+            $query->wherebetween('tanggal_dari', [$request->dari, $request->sampai]);
+        }
+        if (!empty($request->kategori_search)) {
+            $query->where('kategori', $request->kategori_search);
         }
 
-        if (!empty($request->tahun)) {
-            $query->whereRaw('YEAR(tanggal_sampai)="' . $request->tahun . '"');
+        if (!empty($request->kode_cabang_search)) {
+            $query->where('id_kantor', $request->kode_cabang_search);
         }
 
-
+        if (!empty($request->kode_dept_search)) {
+            $query->where('kode_dept', $request->kode_dept_search);
+        }
 
         if (Auth::user()->kode_cabang != "PCF" && Auth::user()->kode_cabang != "PST") {
             $query->where('id_kantor', Auth::user()->kode_cabang);
@@ -49,10 +62,12 @@ class LemburController extends Controller
 
         $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
 
+        $cbg = new Cabang();
+        $cb = $cbg->getCabang(Auth::user()->kode_cabang);
 
 
         $departemen = DB::table('hrd_departemen')->orderBy('kode_dept')->get();
-        return view('lembur.index', compact('cabang', 'departemen', 'lembur', 'bulan'));
+        return view('lembur.index', compact('cabang', 'departemen', 'lembur', 'bulan', 'cb'));
     }
 
     public function store(Request $request)

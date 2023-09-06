@@ -896,7 +896,7 @@
                         @endphp
                         {{ !empty($upah_perjam) ? rupiah($upah_perjam) : "" }}
                     </td>
-                    <td style="text-align: center;">{{ !empty($total_overtime_1) ? rupiah($total_overtime_1) : '' }}</td>
+                    <td style="text-align: center;">{{ !empty($total_overtime_1) ? $total_overtime_1 : '' }}</td>
 
                     <td align=" right">
                         @php
@@ -932,7 +932,7 @@
                         if ($d->nama_jabatan=="SECURITY") {
                         $upah_otl_1 = 92000;
                         }else{
-                        $upah_otl_1 = ($upah_perjam * 1.5) * $total_overtime_libur_1;
+                        $upah_otl_1 = ($upah_perjam * 2) * $total_overtime_libur_1;
                         }
                         @endphp
                         {{ !empty($upah_otl_1) ? rupiah($upah_otl_1) : "" }}

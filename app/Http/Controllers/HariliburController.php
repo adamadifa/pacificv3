@@ -19,16 +19,23 @@ class HariliburController extends Controller
     {
 
         $query = Harilibur::query();
-        if (!empty($request->bulan)) {
-            $query->whereRaw('MONTH(tanggal_libur)="' . $request->bulan . '"');
-        }
+        // if (!empty($request->bulan)) {
+        //     $query->whereRaw('MONTH(tanggal_libur)="' . $request->bulan . '"');
+        // }
 
-        if (!empty($request->tahun)) {
-            $query->whereRaw('YEAR(tanggal_libur)="' . $request->tahun . '"');
-        }
+        // if (!empty($request->tahun)) {
+        //     $query->whereRaw('YEAR(tanggal_libur)="' . $request->tahun . '"');
+        // }
 
+        if (!empty($request->dari) && !empty($request->sampai)) {
+            $query->wherebetween('tanggal_libur', [$request->dari, $request->sampai]);
+        }
         if (!empty($request->kategori_search)) {
             $query->where('kategori', $request->kategori_search);
+        }
+
+        if (!empty($request->kode_cabang_search)) {
+            $query->where('id_kantor', $request->kode_cabang_search);
         }
 
         if (Auth::user()->kode_cabang != "PCF" && Auth::user()->kode_cabang != "PST") {
@@ -51,9 +58,10 @@ class HariliburController extends Controller
 
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
-
+        $cbg = new Cabang();
+        $cb = $cbg->getCabang(Auth::user()->kode_cabang);
         $departemen = DB::table('hrd_departemen')->orderBy('kode_dept')->get();
-        return view('harilibur.index', compact('harilibur', 'bulan', 'cabang', 'departemen'));
+        return view('harilibur.index', compact('harilibur', 'bulan', 'cabang', 'departemen', 'cb'));
     }
 
     public function store(Request $request)

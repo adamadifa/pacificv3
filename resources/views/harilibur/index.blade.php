@@ -47,36 +47,12 @@
                                     <div class="row">
                                         <div class="col-2">
                                             {{-- <label for="" class="form-label mb-1">Omset Bulan</label> --}}
-                                            <div class="form-group">
-                                                <select class="form-control" id="bulan" name="bulan">
-                                                    <option value="">Bulan</option>
-                                                    <?php
-                                                    $bulanini = date("m");
-                                                    for ($i = 1; $i < count($bulan); $i++) {
-                                                    ?>
-                                                    <option {{ Request('bulan') == $i ? "selected" : "" }} value="<?php echo $i; ?>"><?php echo $bulan[$i]; ?></option>
-                                                    <?php
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
+                                            <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker value="{{ Request('dari') }}" />
                                         </div>
                                         <div class="col-2">
-                                            <div class="form-group">
-                                                <select class="form-control" id="tahun" name="tahun">
-                                                    <option value="">Tahun</option>
-                                                    <?php
-                                                    $tahunmulai = 2023;
-                                                    for ($thn = $tahunmulai; $thn <= date('Y'); $thn++) {
-                                                    ?>
-                                                    <option {{ Request('tahun') == $thn ? "selected" : "" }} value="<?php echo $thn; ?>"><?php echo $thn; ?></option>
-                                                    <?php
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
+                                            <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker value="{{ Request('sampai') }}" />
                                         </div>
-                                        <div class="col-3">
+                                        <div class="col-2">
                                             <div class="form-group">
                                                 <select name="kategori_search" id="kategori_search" class="form-control">
                                                     <option value="">Semua Kategori Libur</option>
@@ -86,19 +62,17 @@
                                                 </select>
                                             </div>
                                         </div>
-
-                                        @if (Auth::user()->kode_cabang != "PCF" && Auth::user()->kode_cabang != "PST" )
-                                        <div class="col-3">
+                                        <div class="col-2">
                                             <div class="form-group">
-                                                <select id="id_kantor_search" name="id_kantor_search" class="form-control">
+                                                <select name="kode_cabang_search" id="kode_cabang_search" class="form-control">
                                                     <option value="">Semua Kantor</option>
-                                                    @foreach ($cabang as $d)
-                                                    <option {{ Request('id_kantor_search') == $d->kode_cabang  ? 'selected' : '' }} value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
+                                                    @foreach ($cb as $d)
+                                                    <option value="{{ $d->kode_cabang }}" {{ Request('kode_cabang_search') == $d->kode_cabang ? 'selected' : '' }}>{{ $d->nama_cabang }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                         </div>
-                                        @endif
+
 
                                         <div class="col-2">
                                             <div class="form-group">
@@ -131,7 +105,7 @@
                                     <tbody>
                                         @foreach ($harilibur as $d)
                                         <tr>
-                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $loop->iteration + $harilibur->firstItem() - 1 }}</td>
                                             <td>{{ $d->kode_libur }}</td>
                                             <td>{{ date("d-m-Y",strtotime($d->tanggal_libur)) }}</td>
                                             <td>{{ !empty($d->tanggal_diganti) ? date("d-m-Y",strtotime($d->tanggal_diganti)) : "" }}</td>
