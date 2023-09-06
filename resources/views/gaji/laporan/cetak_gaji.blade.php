@@ -697,16 +697,31 @@
                             $pc = "Pulang Cepat";
                             if(!empty($izinpulangdirut)){
                                 $totalpc = 0;
+                                $menitpc = 0;
                             }else{
-                                $totalpc = $total_jam + $jk - $grandtotaljam;
+                                $jpc1 = strtotime($jam_out_tanggal);
+                                $jpc2 = strtotime($jam_pulang_tanggal);
+
+                                $diffpc = $jpc2 - $jpc1;
+                                //Jam Terlambat
+                                $jampc = floor($diffpc / (60 * 60));
+                                //Menit Terlambat
+                                $menitpc = floor(($diffpc - ($jampc * (60 * 60)))/60);
+
+                                if($jampc > 1){
+                                    $totalpc = $total_jam + $jk - $grandtotaljam;
+                                }else{
+                                    $totalpc = 0;
+                                }
                             }
 
                         }else{
                             $pc = "";
                             $totalpc = 0;
+                            $menitpc = 0;
                         }
 
-                        //echo $rangetanggal[$i]."-".$total_jam."+".$jk."+".$grandtotaljam."(".$cek.")<br>";
+                        // echo $rangetanggal[$i]."-".$total_jam."+".$jk."+".$grandtotaljam."(".$cek.")----".$menitpc."<br>";
 
                         if(!empty($cekwfh)){
                             if($cekmasakerja > 3){
@@ -990,14 +1005,16 @@
                     </td>
                     <td align="right">
                         @php
-                        $potongan = $bpjskesehatan + $bpjstenagakerja + $totaldenda + $d->cicilan_pjp + $d->jml_kasbon + $spip;
+                        $potongan = ROUND($bpjskesehatan + $bpjstenagakerja + $totaldenda + $d->cicilan_pjp + $d->jml_kasbon + $spip,0);
                         @endphp
-                        {{ !empty($potongan) ? rupiah($potongan) : "" }}
+                        {{ !empty($potongan) ? desimal($potongan) : "" }}
                     </td>
                     <td align="right">
                         @php
                         $jmlbersih = $bruto - $potongan;
+
                         @endphp
+
                         {{ !empty($jmlbersih) ? rupiah($jmlbersih) : "" }}
                         {{-- {{ $jmlbersih }} --}}
                     </td>
