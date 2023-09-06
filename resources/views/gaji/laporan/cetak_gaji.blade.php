@@ -609,20 +609,20 @@
                         }
                         if ($denda == 0 and empty($kode_izin_terlambat)) {
                             if($kode_dept != "MKT"){
-                                if($jamterlambat <= 1){
+                                if($jamterlambat < 1){
                                     $jt = 0;
                                 }else{
                                     $jt = $jt;
                                 }
                             }else{
-                                if($jamterlambat <= 1){
+                                if($jamterlambat < 1){
                                     $jt = 0;
                                 }else{
                                     $jt = $jt;
                                 }
                             }
                         }else{
-                            if($jamterlambat <= 1){
+                            if($jamterlambat < 1){
                                 $jt = 0;
                             }else{
                                 $jt = $jt;

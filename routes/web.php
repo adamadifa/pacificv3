@@ -1830,7 +1830,33 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/visit/laporanVisit', 'laporanVisit')->name('visit.laporanVisit');
         Route::post('/visit/cetakVisit', 'cetakVisit')->name('visit.cetakVisit');
     });
+
+    Route::controller(RealisasiController::class)->group(function () {
+        Route::get('/realisasi', 'index')->name('realisasi');
+        Route::post('/realisasi/show', 'show')->name('realisasi.show');
+        Route::get('/realisasi/create', 'create')->name('realisasi.create');
+        Route::post('/realisasi/store', 'store')->name('realisasi.store');
+        Route::post('/realisasi/delete', 'delete')->name('realisasi.delete');
+        Route::post('/realisasi/update', 'update')->name('realisasi.update');
+        Route::post('/realisasi/edit', 'edit')->name('realisasi.edit');
+        Route::get('/realisasi/laporanRealisasi', 'laporanRealisasi')->name('realisasi.laporanRealisasi');
+        Route::post('/realisasi/cetakRealisasi', 'cetakRealisasi')->name('realisasi.cetakRealisasi');
+    });
+
+    Route::controller(JaminanController::class)->group(function () {
+        Route::get('/jaminan', 'index')->name('jaminan');
+        Route::post('/jaminan/show', 'show')->name('jaminan.show');
+        Route::get('/jaminan/create', 'create')->name('jaminan.create');
+        Route::post('/jaminan/store', 'store')->name('jaminan.store');
+        Route::post('/jaminan/delete', 'delete')->name('jaminan.delete');
+        Route::post('/jaminan/update', 'update')->name('jaminan.update');
+        Route::post('/jaminan/edit', 'edit')->name('jaminan.edit');
+        Route::get('/jaminan/laporanJaminan', 'laporanJaminan')->name('jaminan.laporanJaminan');
+        Route::post('/jaminan/cetakJaminan', 'cetakJaminan')->name('jaminan.cetakJaminan');
+    });
 });
+
+
 Route::get('/cetak/{no_fak_penj}', [PrinterController::class, 'cetak']);
 Route::get('/show', [PrinterController::class, 'show']);
 Route::get('/cekphp', [PrinterController::class, 'cekphp']);
