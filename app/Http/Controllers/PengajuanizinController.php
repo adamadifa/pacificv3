@@ -566,10 +566,11 @@ class PengajuanizinController extends Controller
     public function createizincuti()
     {
         $mastercuti = DB::table('hrd_mastercuti')->get();
+        $mastercutikhusus = DB::table('hrd_mastercutikhusus')->get();
         $kode_dept_presensi = Auth::user()->kode_dept_presensi;
         $kar = new Karyawan();
         $karyawan = $kar->getkaryawanpengajuan($kode_dept_presensi);
-        return view('pengajuanizin.createizincuti', compact('karyawan', 'mastercuti'));
+        return view('pengajuanizin.createizincuti', compact('karyawan', 'mastercuti', 'mastercutikhusus'));
     }
 
 
@@ -613,6 +614,8 @@ class PengajuanizinController extends Controller
         $jam_keluar = $request->jam_keluar;
         $jam_terlambat = $request->jam_terlambat;
         $jenis_cuti = $request->jenis_cuti;
+        $kat_cuti_khusus = $request->kat_cuti_khusus;
+
         $keperluan = $request->keperluan;
         $tgl = explode("-", $dari);
         $tahun = substr($tgl[0], 2, 2);
@@ -634,6 +637,13 @@ class PengajuanizinController extends Controller
             $sid = null;
         }
 
+
+        if ($request->hasFile('doccuti')) {
+            $doccuti = $kode_izin . "." . $request->file('doccuti')->getClientOriginalExtension();
+        } else {
+            $doccuti = null;
+        }
+
         $kode_cabang = $request->kode_cabang;
         $data = [
             'kode_izin' => $kode_izin,
@@ -649,6 +659,8 @@ class PengajuanizinController extends Controller
             'jam_keluar' => $jam_keluar,
             'jam_terlambat' => $jam_terlambat,
             'jenis_cuti' => $jenis_cuti,
+            'kode_cuti_khusus' => $kat_cuti_khusus,
+            'doccuti' => $doccuti,
             'kode_cabang' => $kode_cabang,
             'keperluan' => $keperluan
         ];
@@ -659,6 +671,11 @@ class PengajuanizinController extends Controller
                 if ($request->hasFile('sid')) {
                     $folderPath = "public/uploads/sid/";
                     $request->file('sid')->storeAs($folderPath, $sid);
+                }
+
+                if ($request->hasFile('doccuti')) {
+                    $folderPath = "public/uploads/doccuti/";
+                    $request->file('doccuti')->storeAs($folderPath, $doccuti);
                 }
             }
             if ($status == "c") {

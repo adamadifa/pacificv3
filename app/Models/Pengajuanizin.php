@@ -15,10 +15,11 @@ class Pengajuanizin extends Model
     {
 
         $query = Pengajuanizin::query();
-        $query->select('pengajuan_izin.*', 'nama_karyawan', 'nama_jabatan', 'kode_dept', 'nama_cuti', 'nama_jadwal', 'master_karyawan.id_kantor', 'id_perusahaan');
+        $query->select('pengajuan_izin.*', 'nama_karyawan', 'nama_jabatan', 'kode_dept', 'nama_cuti', 'nama_cuti_khusus', 'nama_jadwal', 'master_karyawan.id_kantor', 'id_perusahaan');
         $query->join('master_karyawan', 'pengajuan_izin.nik', '=', 'master_karyawan.nik');
         $query->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
         $query->leftjoin('hrd_mastercuti', 'pengajuan_izin.jenis_cuti', '=', 'hrd_mastercuti.kode_cuti');
+        $query->leftjoin('hrd_mastercutikhusus', 'pengajuan_izin.kode_cuti_khusus', '=', 'hrd_mastercutikhusus.kode_cuti_khusus');
         $query->leftjoin('jadwal_kerja', 'pengajuan_izin.kode_jadwal', '=', 'jadwal_kerja.kode_jadwal');
 
 

@@ -69,7 +69,7 @@
 
     .header-fixed>tbody>tr>td:nth-child(5),
     .header-fixed>thead>tr>th:nth-child(5) {
-        width: 13%;
+        width: 10%;
         float: left;
     }
 
@@ -105,7 +105,7 @@
 
     .header-fixed>tbody>tr>td:nth-child(11),
     .header-fixed>thead>tr>th:nth-child(11) {
-        width: 10%;
+        width: 13%;
         float: left;
     }
 
@@ -268,8 +268,14 @@
                                                         <td class="filterable-cell">{{ $d->jmlhari }} Hari</td>
                                                         <td class="filterable-cell">
                                                             {{ $d->nama_cuti }}
+
                                                         </td>
-                                                        <td class="filterable-cell">{{ $d->keterangan }} <br>
+                                                        <td class="filterable-cell">
+                                                            @if ($d->jenis_cuti=="C03")
+                                                            <span class="success">{{ $d->nama_cuti_khusus }}</span>
+                                                            @else
+                                                            {{ $d->keterangan }} <br>
+                                                            @endif
                                                             {!! !empty($d->keterangan_hrd) ? "<span class='danger'><b>HRD</b></span> : <span class='danger'>".$d->keterangan_hrd."</span>":"" !!}
                                                         </td>
                                                         <td class="text-center filterable-cell">
@@ -366,6 +372,22 @@
                                                                         <i class="feather icon-trash danger"></i>
                                                                     </a>
                                                                 </form>
+                                                                @endif
+                                                                @if (!empty($d->doccuti))
+                                                                @php
+                                                                $path = Storage::url('uploads/doccuti/'.$d->doccuti);
+                                                                $src = "uploads/doccuti/".$d->doccuti;
+                                                                $cekimage = Storage::disk('public')->exists($src);
+                                                                @endphp
+                                                                @if ($cekimage)
+                                                                <a href="{{ url($path) }}" class="text-info ml-1">
+                                                                    <i class="feather icon-paperclip text-info"></i>
+                                                                </a>
+                                                                @else
+                                                                <a href="https://presensi.pacific-tasikmalaya.com/storage/uploads/doccuti/{{ $d->doccuti }}" class="text-info ml-1">
+                                                                    <i class="feather icon-paperclip text-info"></i>
+                                                                </a>
+                                                                @endif
                                                                 @endif
 
 

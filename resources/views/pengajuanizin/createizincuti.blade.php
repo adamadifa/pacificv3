@@ -25,6 +25,18 @@
             </div>
         </div>
     </div>
+    <div class="row" id="kategori_cuti_khusus_form">
+        <div class="col-12">
+            <div class="form-group">
+                <select name="kat_cuti_khusus" id="kat_cuti_khusus" class="form-control">
+                    <option value="">Kategori Cuti</option>
+                    @foreach ($mastercutikhusus as $d)
+                    <option value="{{ $d->kode_cuti_khusus }}" jmlhari="{{ $d->jmlhari }}">{{ $d->nama_cuti_khusus }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    </div>
 
     <input type="hidden" name="status" value="c">
     <div class="row" id="tanggal_form">
@@ -41,7 +53,13 @@
             <x-inputtext field="jmlhari" label="Jumlah Hari" icon="feather icon-file-text" />
         </div>
     </div>
-
+    <div class="row" id="fileUpload1">
+        <div class="col-12">
+            <div class="form-group">
+                <input type="file" name="doccuti" class="form-control">
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-12">
             <x-inputtext field="keterangan" label="Keterangan" icon="feather icon-file-text" />
@@ -88,7 +106,20 @@
             loadjumlahhari();
         });
 
+        function loadcutikhusus() {
+            var jenis_cuti = $("#jenis_cuti").val();
+            if (jenis_cuti == "C03") {
+                $("#kategori_cuti_khusus_form").show();
+            } else {
+                $("#kategori_cuti_khusus_form").hide();
+            }
+        }
 
+        loadcutikhusus();
+
+        $("#jenis_cuti").click(function(e) {
+            loadcutikhusus();
+        });
 
         $("#frmPengajuanizin").submit(function() {
             var nik = $("#nik").val();
@@ -96,6 +127,7 @@
             var sampai = $("#frmPengajuanizin").find("#sampai").val();
             var keterangan = $("#keterangan").val();
             var jenis_cuti = $("#jenis_cuti").val();
+            var kat_cuti_khusus = $("#kat_cuti_khusus").val();
             if (nik == "") {
                 swal({
                     title: 'Oops'
@@ -110,6 +142,17 @@
                 swal({
                     title: 'Oops'
                     , text: 'Jenis Cuti Harus Diisi !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#jenis_cuti").focus();
+                });
+
+                return false;
+            } else if (jenis_cuti == "C03" && kat_cuti_khusus == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Kategori Cuti Harus Diisi !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {

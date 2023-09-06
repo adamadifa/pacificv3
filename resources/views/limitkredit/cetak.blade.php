@@ -311,10 +311,10 @@
     <tr style="text-align: center;">
         <td>Salesman</td>
         <td>Driver</td>
-        <td>Ka. Penjualan</td>
-        <td>Ka. Admin</td>
-        <td>Marketing Manager</td>
-        <td>Executive Manager</td>
+        <td>SMM</td>
+        <td>OM</td>
+        <td>RSM</td>
+        <td>GM</td>
         <td>Direktur</td>
     </tr>
 </table>
