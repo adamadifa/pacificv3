@@ -429,7 +429,7 @@
             </tr>
             <tr>
                 <td style="text-align:center">PIHAK KEDUA</td>
-                @if ($kontrak->id_perusahaan!= "MP")
+                @if ($kontrak->id_kantor!= "PST" )
                 <td style="text-align:center" colspan="2">PIHAK PERTAMA</td>
                 @else
                 <td style="text-align:center">PIHAK PERTAMA</td>
@@ -445,6 +445,7 @@
                     <u>{{ $kontrak->nama_karyawan }}</u><br>
                     Karyawan
                 </td>
+
                 @if ($kontrak->id_kantor != "PST" && $kontrak->id_perusahaan == "PCF")
                 <td style="text-align:center">
                     <u>{{ pihakpertamacabang($kontrak->id_kantor,$kontrak->id_perusahaan) }}</u><br>
