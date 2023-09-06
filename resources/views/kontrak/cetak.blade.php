@@ -429,7 +429,7 @@
             </tr>
             <tr>
                 <td style="text-align:center">PIHAK KEDUA</td>
-                @if ($kontrak->id_kantor!= "PST" )
+                @if ($kontrak->id_kantor!= "PST" && !in_array($kontrak->id_jabatan,[9,11]));
                 <td style="text-align:center" colspan="2">PIHAK PERTAMA</td>
                 @else
                 <td style="text-align:center">PIHAK PERTAMA</td>
