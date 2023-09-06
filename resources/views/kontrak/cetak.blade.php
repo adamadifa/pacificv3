@@ -446,12 +446,12 @@
                     Karyawan
                 </td>
 
-                @if ($kontrak->id_kantor != "PST" && $kontrak->id_perusahaan == "PCF")
+                @if ($kontrak->id_kantor != "PST" && $kontrak->id_perusahaan == "PCF" && !in_array($kontrak->id_jabatan,[9,11]))
                 <td style="text-align:center">
                     <u>{{ pihakpertamacabang($kontrak->id_kantor,$kontrak->id_perusahaan) }}</u><br>
                     Kepala Penjualan
                 </td>
-                @elseif($kontrak->id_kantor !="PST" && $kontrak->id_perusahaan=="MP")
+                @elseif($kontrak->id_kantor !="PST" && $kontrak->id_perusahaan=="MP" && !in_array($kontrak->id_jabatan,[9,11]))
                 <td style="text-align:center">
                     <u>{{ pihakpertamacabang($kontrak->id_kantor,$kontrak->id_perusahaan) }}</u><br>
                     Kepala Admin
