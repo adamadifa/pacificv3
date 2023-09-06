@@ -735,9 +735,9 @@
                             $total_overtime_1 += $overtime_1;
                             $total_overtime_2 += $overtime_2;
                         ?>
-                        <span style="color:rgb(255, 255, 255)">OT 1 : {{ $overtime_1 }}</span>
+                        <span style="color:rgb(6, 69, 158)">OT 1 : {{ $overtime_1 }}</span>
                         <br>
-                        <span style="color:rgb(255, 255, 255)">OT 2 : {{ $overtime_2 }}</span>
+                        <span style="color:rgb(6, 69, 158)">OT 2 : {{ $overtime_2 }}</span>
                         <?php
                         }else if($kategori_lembur==2){
                             $overtime_libur_1 = $jmljam_lembur >= 4 ? 4 : $jmljam_lembur;
