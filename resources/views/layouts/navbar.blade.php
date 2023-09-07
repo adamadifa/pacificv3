@@ -1132,7 +1132,7 @@
                     <li class="{{ request()->is(['realisasi', 'realisasi/*']) ? 'active' : '' }}">
                         <a href="/realisasi">
                             <i class="feather icon-settings"></i>
-                            <span class="menu-item" data-i18n="Second Level">Realisasi</span>
+                            <span class="menu-item" data-i18n="Second Level">Realisasi Program</span>
                         </a>
                     </li>
                     @if (in_array($level, $saldoawal_bukubesar_menu))
