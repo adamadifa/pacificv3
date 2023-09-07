@@ -1123,6 +1123,18 @@
                             <span class="menu-item" data-i18n="Second Level">Visit Pelanggan</span>
                         </a>
                     </li>
+                    <li class="{{ request()->is(['jaminan', 'jaminan/*']) ? 'active' : '' }}">
+                        <a href="/jaminan">
+                            <i class="feather icon-settings"></i>
+                            <span class="menu-item" data-i18n="Second Level">Jaminan</span>
+                        </a>
+                    </li>
+                    <li class="{{ request()->is(['realisasi', 'realisasi/*']) ? 'active' : '' }}">
+                        <a href="/realisasi">
+                            <i class="feather icon-settings"></i>
+                            <span class="menu-item" data-i18n="Second Level">Realisasi</span>
+                        </a>
+                    </li>
                     @if (in_array($level, $saldoawal_bukubesar_menu))
                     <li class="{{ request()->is(['saldoawalbb', 'saldoawalbb/*']) ? 'active' : '' }}">
                         <a href="/saldoawalbb">
