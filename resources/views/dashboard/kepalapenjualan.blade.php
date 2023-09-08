@@ -399,6 +399,11 @@
 @push('myscript')
 <script>
     $(function() {
+
+        $("#showpending").click(function(e) {
+            $("#frmpending").submit();
+        });
+
         function loaddppp() {
             $('#loaddppp').html("");
             $('#loadingdppp').show();
