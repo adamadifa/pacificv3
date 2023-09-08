@@ -160,9 +160,15 @@
                             $tgl_presensi =  $rangetanggal[$i];
 
                             // Menghitung Masa Kerja
+                            // $start_kerja = date_create($d->tgl_masuk);
+                            // $end_kerja = date_create($tgl_presensi);
+                            // $cekmasakerja =  diffInMonths($start_kerja, $end_kerja);
+
                             $start_kerja = date_create($d->tgl_masuk);
-                            $end_kerja = date_create($tgl_presensi);
-                            $cekmasakerja =  diffInMonths($start_kerja, $end_kerja);
+                            $end_kerja = date_create($tgl_presensi); // waktu sekarang
+                            $diff = date_diff( $start_kerja, $end_kerja );
+                            $cekmasakerja = ($diff->y * 12 ) + $diff->m;
+
 
                             $tgllibur = "'".$tgl_presensi."'";
 
@@ -863,6 +869,7 @@
                         {{-- <span>{{ var_dump(empty($ceklibur)) }}</span> --}}
                         {{-- {{ $cekmasakerja }} --}}
                         {{-- {{ var_dump($ceklembur); }} --}}
+                        {{-- {{ $cekmasakerja }} --}}
                         {{ !empty($ceklibur) ? $ceklibur[0]["keterangan"] : "" }}
                         {{ !empty($cekwfh) ? "Dirumahkan" : "" }}
                         {{ !empty($cekwfhfull) ? "WFH" : "" }}

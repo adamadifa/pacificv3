@@ -197,10 +197,16 @@
                         $hari_ke = "hari_".$i+1;
                         $tgl_presensi =  $rangetanggal[$i];
 
-                        // Menghitung Masa Kerja
+                        // // Menghitung Masa Kerja
+                        // $start_kerja = date_create($d->tgl_masuk);
+                        // $end_kerja = date_create($tgl_presensi);
+                        // $cekmasakerja =  diffInMonths($start_kerja, $end_kerja);
+
+
                         $start_kerja = date_create($d->tgl_masuk);
-                        $end_kerja = date_create($tgl_presensi);
-                        $cekmasakerja =  diffInMonths($start_kerja, $end_kerja);
+                        $end_kerja = date_create($tgl_presensi); // waktu sekarang
+                        $diff = date_diff( $start_kerja, $end_kerja );
+                        $cekmasakerja = ($diff->y * 12 ) + $diff->m;
 
                         $tgllibur = "'".$tgl_presensi."'";
 
