@@ -175,7 +175,7 @@
                                     </td>
                                     <!-- Kacab -->
                                     <td>
-                                        @if ($d->jumlah > 2000000)
+                                        @if ($d->jumlah >= 1000000)
                                         @if (empty($d->kacab))
                                         <i class="fa fa-history warning"></i>
                                         @elseif(
