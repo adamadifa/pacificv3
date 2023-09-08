@@ -99,7 +99,7 @@ class LimitkreditController extends Controller
                 $query->where('pengajuan_limitkredit_v3.status', 2);
                 $query->where('level', Auth::user()->level);
             }
-            $query->where('jumlah', '>', 2000000);
+            //$query->where('jumlah', '>', 2000000);
         }
 
 
