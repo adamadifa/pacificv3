@@ -109,7 +109,7 @@
                                     </span>
                                     <br>
                                     <div class="d-flex justify-content-end">
-                                        @if ($d->jumlah > 2000000)
+                                        @if ($d->jumlah >= 1000000)
                                         @if (empty($d->kacab))
                                         <div class="cardapprove bg-warning">
                                             KP
