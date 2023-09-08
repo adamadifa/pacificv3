@@ -661,7 +661,7 @@
                         // echo "___________________________- <br>";
 
                         if(!empty($cekwfh)){
-                            if($cekmasakerja > 3){
+                            if($cekmasakerja >= 3){
                                 $totaljamdirumahkan = ROUND(($jamdirumahkan / 2),2) - ($grandtotaljam -  ROUND(($jamdirumahkan / 2),2));
                             }else{
                                 $totaljamdirumahkan = $jamdirumahkan;
@@ -834,7 +834,7 @@
                     $totalpc = 0;
                     $izinabsen = 0;
                     $izinsakit = 0;
-                    if(!empty($ceklibur) && $cekmasakerja > 3 || !empty($cekliburpenggantiminggu) && $cekmasakerja > 3 || !empty($cekwfh) || !empty($cekwfhfull) && $cekmasakerja > 3 ){
+                    if(!empty($ceklibur) && $cekmasakerja >= 3 || !empty($cekliburpenggantiminggu) && $cekmasakerja >= 3 || !empty($cekwfh) || !empty($cekwfhfull) && $cekmasakerja >= 3 ){
                        $tidakhadir = 0;
                     }else{
                         if($namahari=="Sabtu"){
@@ -851,7 +851,7 @@
                     }
 
                     if(!empty($cekwfh)){
-                        if($cekmasakerja > 3){
+                        if($cekmasakerja >= 3){
                             $totaljamdirumahkan = ROUND(($jamdirumahkan / 2),2);
                         }else{
                             $totaljamdirumahkan = $jamdirumahkan;

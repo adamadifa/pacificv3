@@ -724,7 +724,7 @@
                         // echo $rangetanggal[$i]."-".$total_jam."+".$jk."+".$grandtotaljam."(".$cek.")----".$menitpc."<br>";
 
                         if(!empty($cekwfh)){
-                            if($cekmasakerja > 3){
+                            if($cekmasakerja >= 3){
                                 $totaljamdirumahkan = ROUND(($jamdirumahkan / 2),2) - ($grandtotaljam -  ROUND(($jamdirumahkan / 2),2));
                             }else{
                                 $totaljamdirumahkan = $jamdirumahkan;
@@ -786,7 +786,7 @@
                         $totalpc = 0;
                         $izinabsen = 0;
                         $izinsakit = 0;
-                        if(!empty($ceklibur) && $cekmasakerja > 3 || !empty($cekliburpenggantiminggu) && $cekmasakerja > 3 || !empty($cekwfh) || !empty($cekwfhfull) && $cekmasakerja > 3 ){
+                        if(!empty($ceklibur) && $cekmasakerja >= 3 || !empty($cekliburpenggantiminggu) && $cekmasakerja >= 3 || !empty($cekwfh) || !empty($cekwfhfull) && $cekmasakerja >= 3 ){
                         $tidakhadir = 0;
                         }else{
                             if($namahari=="Sabtu"){
@@ -803,7 +803,7 @@
                         }
 
                         if(!empty($cekwfh)){
-                            if($cekmasakerja > 3){
+                            if($cekmasakerja >= 3){
                                 $totaljamdirumahkan = ROUND(($jamdirumahkan / 2),2);
                             }else{
                                 $totaljamdirumahkan = $jamdirumahkan;
@@ -994,7 +994,7 @@
                     <td align="right">{{ !empty($d->jml_kasbon) ? rupiah($d->jml_kasbon) : "" }}</td>
                     <td align="right">
                         <?php
-                            if($d->id_kantor=="PST" && $cekmasakerja >=3 || $d->id_kantor=="TSM" && $cekmasakerja >= 3){
+                            if($d->id_kantor=="PST" && $cekmasakerja >=3 || $d->id_kantor=="TSM" && $cekmasakerja >= 3 || $d->spip == 1){
                                 $spip = 5000;
                             }else{
                                 $spip = 0;
