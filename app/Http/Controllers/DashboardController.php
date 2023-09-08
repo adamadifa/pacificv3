@@ -321,6 +321,9 @@ class DashboardController extends Controller
 
     function dashboardkepalapenjualan()
     {
+
+        $dari = date("Y") . "-" . date("m") . "-01";
+        $sampai = date("Y-m-t", strtotime($dari));
         $kode_cabang = Auth::user()->kode_cabang;
         $pengajuanterakhir = DB::table('pengajuan_limitkredit_v3')
             ->select(DB::raw('MAX(no_pengajuan) as no_pengajuan'))
@@ -389,7 +392,7 @@ class DashboardController extends Controller
             ->first();
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
-        return view('dashboard.kepalapenjualan', compact('jmlpengajuan', 'bulan', 'cabang', 'rekappenjualan'));
+        return view('dashboard.kepalapenjualan', compact('jmlpengajuan', 'bulan', 'cabang', 'rekappenjualan', 'dari', 'sampai'));
     }
 
     public function dashboardstaffkeuangan()
