@@ -151,12 +151,20 @@ class LaporanhrdController extends Controller
             $lasttahun = $tahun;
         }
 
+        if ($bulan == 12) {
+            $nextbulan = 1;
+            $nexttahun = $tahun + 1;
+        } else {
+            $nextbulan = $bulan + 1;
+            $nexttahun = $tahun;
+        }
         $lastbulan = $lastbulan < 10 ?  "0" . $lastbulan : $lastbulan;
         $bulan = $bulan < 10 ?  "0" . $bulan : $bulan;
 
         $dari = $lasttahun . "-" . $lastbulan . "-21";
         $sampai = $tahun . "-" . $bulan . "-20";
 
+        $berlakugaji = $nexttahun . "-" . $nextbulan . "-01";
 
         $datalibur = ceklibur($dari, $sampai);
         $dataliburpenggantiminggu = cekliburpenggantiminggu($dari, $sampai);
@@ -211,8 +219,8 @@ class LaporanhrdController extends Controller
                 gaji_pokok,
                 t_jabatan,t_masakerja,t_tanggungjawab,t_makan,t_istri,t_skill,
                 cicilan_pjp,jml_kasbon,
-                bpjs_kesehatan.perusahaan,bpjs_kesehatan.pekerja,bpjs_kesehatan.keluarga,
-                bpjs_tenagakerja.k_jht,bpjs_tenagakerja.k_jp,
+                bpjs_kesehatan.perusahaan,bpjs_kesehatan.pekerja,bpjs_kesehatan.keluarga,iuran_kes,
+                bpjs_tenagakerja.k_jht,bpjs_tenagakerja.k_jp,iuran_tk,
                 hari_1,
                 hari_2,
                 hari_3,
@@ -992,7 +1000,7 @@ class LaporanhrdController extends Controller
                     t_makan,t_istri,t_skill
                     FROM hrd_mastergaji
                     WHERE kode_gaji IN (SELECT MAX(kode_gaji) as kode_gaji FROM hrd_mastergaji
-                    WHERE tgl_berlaku <= '$sampai'  GROUP BY nik)
+                    WHERE tgl_berlaku <= '$berlakugaji'  GROUP BY nik)
                 ) hrdgaji"),
             function ($join) {
                 $join->on('master_karyawan.nik', '=', 'hrdgaji.nik');
@@ -1004,7 +1012,7 @@ class LaporanhrdController extends Controller
                     SELECT nik,iu_masakerja,iu_lembur,iu_penempatan,iu_kpi,
                     im_ruanglingkup,im_penempatan,im_kinerja
                     FROM hrd_masterinsentif WHERE kode_insentif IN (SELECT MAX(kode_insentif) as kode_insentif FROM hrd_masterinsentif
-                    WHERE tgl_berlaku <= '$sampai'  GROUP BY nik)
+                    WHERE tgl_berlaku <= '$berlakugaji'  GROUP BY nik)
                 ) hrdinsentif"),
             function ($join) {
                 $join->on('master_karyawan.nik', '=', 'hrdinsentif.nik');
@@ -1013,9 +1021,9 @@ class LaporanhrdController extends Controller
 
         $query->leftJoin(
             DB::raw("(
-                    SELECT nik,perusahaan,pekerja,keluarga
+                    SELECT nik,perusahaan,pekerja,keluarga,iuran as iuran_kes
                     FROM bpjs_kesehatan WHERE kode_bpjs_kes IN (SELECT MAX(kode_bpjs_kes) as kode_bpjs_kes FROM bpjs_kesehatan
-                    WHERE tgl_berlaku <= '$sampai'  GROUP BY nik)
+                    WHERE tgl_berlaku <= '$berlakugaji'  GROUP BY nik)
                 ) bpjs_kesehatan"),
             function ($join) {
                 $join->on('master_karyawan.nik', '=', 'bpjs_kesehatan.nik');
@@ -1024,9 +1032,9 @@ class LaporanhrdController extends Controller
 
         $query->leftJoin(
             DB::raw("(
-                    SELECT nik,k_jht,k_jp
+                    SELECT nik,k_jht,k_jp,iuran as iuran_tk
                     FROM bpjs_tenagakerja WHERE kode_bpjs_tk IN (SELECT MAX(kode_bpjs_tk) as kode_bpjs_tk FROM bpjs_tenagakerja
-                    WHERE tgl_berlaku <= '$sampai'  GROUP BY nik)
+                    WHERE tgl_berlaku <= '$berlakugaji'  GROUP BY nik)
                 ) bpjs_tenagakerja"),
             function ($join) {
                 $join->on('master_karyawan.nik', '=', 'bpjs_tenagakerja.nik');

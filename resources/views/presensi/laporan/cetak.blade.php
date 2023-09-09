@@ -495,7 +495,7 @@
 
                         //Jam terlambat dalam Desimal
 
-                        $jt = round($jamterlambat + $desimalterlambat,1,PHP_ROUND_HALF_DOWN);
+                        $jt = round($jamterlambat + $desimalterlambat,2,PHP_ROUND_HALF_DOWN);
                         if($jamkeluarkantor > 0){
                             if($keperluankeluar == "K"){
                                 $jk = 0;
@@ -541,7 +541,8 @@
 
                         //Menghitung total Jam
                         if($jam_out_tanggal > $jam_awal_istirahat_tanggal && $jam_out_tanggal < $jam_akhir_istirahat_tanggal){ // Shift 3 Belum Di Set
-                            $jout = $jam_awal_istirahat_tanggal;
+                            // $jout = $jam_awal_istirahat_tanggal;
+                            $jout = $jam_out_tanggal;
                         }else{
                             $jout = $jam_out_tanggal;
                         }
@@ -767,6 +768,9 @@
                             @if (!empty($sid))
                             <span style="color:green">- SID</span><br>
                             <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
+                            @php
+                            $izinsakit = 0;
+                            @endphp
                             @else
                             <br>
                             <?php
@@ -840,7 +844,9 @@
                     $totalpc = 0;
                     $izinabsen = 0;
                     $izinsakit = 0;
-                    if(!empty($ceklibur) && $cekmasakerja >= 3 || !empty($cekliburpenggantiminggu) && $cekmasakerja >= 3 || !empty($cekwfh) || !empty($cekwfhfull) && $cekmasakerja >= 3 ){
+                    if(!empty($ceklibur) && $cekmasakerja >= 3 ||
+                    !empty($cekliburpenggantiminggu) ||
+                    !empty($cekwfh) && $cekmasakerja >= 3 || !empty($cekwfhfull) && $cekmasakerja >= 3 ){
                        $tidakhadir = 0;
                     }else{
                         if($namahari=="Sabtu"){
@@ -870,6 +876,7 @@
                         {{-- {{ $cekmasakerja }} --}}
                         {{-- {{ var_dump($ceklembur); }} --}}
                         {{-- {{ $cekmasakerja }} --}}
+                        {{-- {{ $tidakhadir }} --}}
                         {{ !empty($ceklibur) ? $ceklibur[0]["keterangan"] : "" }}
                         {{ !empty($cekwfh) ? "Dirumahkan" : "" }}
                         {{ !empty($cekwfhfull) ? "WFH" : "" }}

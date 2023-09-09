@@ -550,7 +550,7 @@
 
                         //Jam terlambat dalam Desimal
 
-                        $jt = round($jamterlambat + $desimalterlambat,1,PHP_ROUND_HALF_DOWN);
+                        $jt = round($jamterlambat + $desimalterlambat,2,PHP_ROUND_HALF_DOWN);
                         if($jamkeluarkantor > 0){
                             if($keperluankeluar == "K"){
                                 $jk = 0;
@@ -596,7 +596,8 @@
 
                         //Menghitung total Jam
                         if($jam_out_tanggal > $jam_awal_istirahat_tanggal && $jam_out_tanggal < $jam_akhir_istirahat_tanggal){ // Shift 3 Belum Di Set
-                            $jout = $jam_awal_istirahat_tanggal;
+                            // $jout = $jam_awal_istirahat_tanggal;
+                            $jout = $jam_out_tanggal;
                         }else{
                             $jout = $jam_out_tanggal;
                         }
@@ -714,7 +715,7 @@
                                 //Menit Terlambat
                                 $menitpc = floor(($diffpc - ($jampc * (60 * 60)))/60);
 
-                                if($jampc > 1){
+                                if($jampc > 5 || $jampc >= 1){
                                     $totalpc = $total_jam + $jk - $grandtotaljam;
                                 }else{
                                     $totalpc = 0;
@@ -759,6 +760,8 @@
                                 }else{
                                     $izinsakit = 0;
                                 }
+                            }else{
+                                $izinsakit = 0;
                             }
 
                             $izinabsen = 0;
@@ -792,7 +795,10 @@
                         $totalpc = 0;
                         $izinabsen = 0;
                         $izinsakit = 0;
-                        if(!empty($ceklibur) && $cekmasakerja >= 3 || !empty($cekliburpenggantiminggu) && $cekmasakerja >= 3 || !empty($cekwfh) || !empty($cekwfhfull) && $cekmasakerja >= 3 ){
+                        if(!empty($ceklibur) && $cekmasakerja >= 3 ||
+                        !empty($cekliburpenggantiminggu) ||
+                        !empty($cekwfh) && $cekmasakerja >= 3 ||
+                        !empty($cekwfhfull) && $cekmasakerja >= 3 ){
                         $tidakhadir = 0;
                         }else{
                             if($namahari=="Sabtu"){
@@ -976,13 +982,14 @@
                     <td align="center">{{ !empty($totalpotonganjam) ? $totalpotonganjam : "" }}</td>
                     <td align="right">
                         <?php
-                            if($cekmasakerja <= 15){
-                                $bpjskesehatan=$d->perusahaan + $d->pekerja + $d->keluarga;
-                            }else{
-                                $bpjskesehatan = 0.5 * ($d->perusahaan + $d->pekerja) + $d->keluarga;;
-                            }
+                            // if($cekmasakerja <= 15){
+                            //     $bpjskesehatan=$d->perusahaan + $d->pekerja + $d->keluarga;
+                            // }else{
+                            //     $bpjskesehatan = 0.5 * ($d->perusahaan + $d->pekerja) + $d->keluarga;;
+                            // }
 
-                            $bpjskesehatan = round($bpjskesehatan,1,PHP_ROUND_HALF_UP);
+                            //$bpjskesehatan = round($bpjskesehatan,1,PHP_ROUND_HALF_UP);
+                            $bpjskesehatan = $d->iuran_kes;
                         ?>
 
                         {{ !empty($bpjskesehatan) ? rupiah($bpjskesehatan) : "" }}
@@ -991,7 +998,8 @@
                     <td></td>
                     <td align="right">
                         @php
-                        $bpjstenagakerja = $d->k_jht + $d->k_jp;
+                        //$bpjstenagakerja = $d->k_jht + $d->k_jp;
+                        $bpjstenagakerja = $d->iuran_tk;
                         @endphp
                         {{ !empty($bpjstenagakerja) ? rupiah($bpjstenagakerja) : "" }}
                     </td>
