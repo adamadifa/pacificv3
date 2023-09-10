@@ -1688,6 +1688,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/perjalanandinas/{kode_izin}/batalkan', [PengajuanizinController::class, 'batalkanperjalanandinas']);
     Route::get('/pengajuanizin/{kode_izin}/create_kethrd', [PengajuanizinController::class, 'create_kethrd']);
     Route::post('/pengajuanizin/{kode_izin}/update_kethrd', [PengajuanizinController::class, 'update_kethrd']);
+    Route::get('/pengajuanizin/{kode_izin}/cetak', [PengajuanizinController::class, 'cetak']);
+
     //Jadwal Kerja
     Route::get('/jadwalkerja', [JadwalkerjaController::class, 'index']);
     Route::post('/jadwalkerja/pindahjadwal', [JadwalkerjaController::class, 'pindahjadwal']);

@@ -1280,4 +1280,15 @@ class PengajuanizinController extends Controller
             return Redirect::back()->with(['warning' => 'Komentar Gagal Ditambahkan']);
         }
     }
+
+    public function cetak($kode_izin)
+    {
+        $kode_izin = Crypt::decrypt($kode_izin);
+        $izin = DB::table('pengajuan_izin')
+            ->join('master_karyawan', 'pengajuan_izin.nik', '=', 'master_karyawan.nik')
+            ->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
+            ->where('kode_izin', $kode_izin)
+            ->first();
+        return view('pengajuanizin.cetak', compact('izin'));
+    }
 }

@@ -266,7 +266,11 @@
                                                     @foreach ($pengajuan_izin as $d)
                                                     <tr>
                                                         <td class="filterable-cell">{{ $loop->iteration }}</td>
-                                                        <td class="filterable-cell">{{ $d->kode_izin }}</td>
+                                                        <td class="filterable-cell">
+                                                            <a href="/pengajuanizin/{{ Crypt::encrypt($d->kode_izin) }}/cetak" target="_blank">
+                                                                {{ $d->kode_izin }}
+                                                            </a>
+                                                        </td>
                                                         <td class="filterable-cell">{{ date('d-m-y',strtotime($d->dari)) }}</td>
                                                         <td class="filterable-cell">{{ $d->nik }}</td>
                                                         <td class="filterable-cell">{{ $d->nama_karyawan }}</td>
