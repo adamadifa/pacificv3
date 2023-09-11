@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ajuanfaktur;
 use App\Models\Cabang;
 use App\Models\Kendaraan;
 use App\Models\Limitkredit;
@@ -83,10 +84,28 @@ class DashboardController extends Controller
             $no_pengajuan[] = $d->no_pengajuan;
         }
 
+
+        $pengajuanterakhirfaktur = DB::table('pengajuan_faktur')
+            ->select(DB::raw('MAX(no_pengajuan) as no_pengajuan'))
+            ->groupBy('kode_pelanggan')
+            ->get();
+        foreach ($pengajuanterakhirfaktur as $d) {
+            $no_pengajuanfaktur[] = $d->no_pengajuan;
+        }
+
         if ($level == "direktur") {
             $jmlpengajuan = DB::table('pengajuan_limitkredit_v3')
                 ->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
                 ->whereIn('no_pengajuan', $no_pengajuan)
+                ->whereNotNull('mm')
+                ->whereNull('dirut')
+                ->where('status', 0)
+                ->count();
+
+
+            $jmlpengajuanfaktur = DB::table('pengajuan_faktur')
+                ->join('pelanggan', 'pengajuan_faktur.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+                ->whereIn('no_pengajuan', $no_pengajuanfaktur)
                 ->whereNotNull('mm')
                 ->whereNull('dirut')
                 ->where('status', 0)
@@ -104,11 +123,33 @@ class DashboardController extends Controller
                 $query->whereIn('pelanggan.kode_cabang', $wilayah_timur);
             }
             $jmlpengajuan = $query->count();
+
+
+            $queryfaktur = Ajuanfaktur::query();
+            $queryfaktur->join('pelanggan', 'pengajuan_faktur.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+            $queryfaktur->whereIn('no_pengajuan', $no_pengajuan);
+            $queryfaktur->whereNotNull('kacab');
+            $queryfaktur->whereNull('rsm');
+            $queryfaktur->where('status', 0);
+            if ($id_user == 82) {
+                $queryfaktur->whereIn('pelanggan.kode_cabang', $wilayah_barat);
+            } else if ($id_user == 97) {
+                $queryfaktur->whereIn('pelanggan.kode_cabang', $wilayah_timur);
+            }
+            $jmlpengajuanfaktur = $queryfaktur->count();
             //dd($id_user);
             //dd($jmlpengajuan);
         } else if ($level == "manager marketing") {
             $jmlpengajuan = DB::table('pengajuan_limitkredit_v3')
                 ->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+                ->whereIn('no_pengajuan', $no_pengajuan)
+                ->whereNotNull('rsm')
+                ->whereNull('mm')
+                ->where('status', 0)
+                ->count();
+
+            $jmlpengajuanfaktur = DB::table('pengajuan_faktur')
+                ->join('pelanggan', 'pengajuan_faktur.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
                 ->whereIn('no_pengajuan', $no_pengajuan)
                 ->whereNotNull('rsm')
                 ->whereNull('mm')
@@ -122,16 +163,30 @@ class DashboardController extends Controller
                 ->whereNull('gm')
                 ->where('status', 0)
                 ->count();
+
+            $jmlpengajuanfaktur = DB::table('pengajuan_faktur')
+                ->join('pelanggan', 'pengajuan_faktur.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+                ->whereIn('no_pengajuan', $no_pengajuan)
+                ->whereNotNull('mm')
+                ->whereNull('gm')
+                ->where('status', 0)
+                ->count();
         } else if ($level == "admin") {
             $jmlpengajuan = DB::table('pengajuan_limitkredit_v3')
                 ->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
                 ->whereIn('no_pengajuan', $no_pengajuan)
                 ->where('status', 0)
                 ->count();
+
+            $jmlpengajuanfaktur = DB::table('pengajuan_faktur')
+                ->join('pelanggan', 'pengajuan_faktur.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+                ->whereIn('no_pengajuan', $no_pengajuan)
+                ->where('status', 0)
+                ->count();
         }
 
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
-        return view('dashboard.administrator', compact('jmlpengajuan', 'bulan', 'cabang'));
+        return view('dashboard.administrator', compact('jmlpengajuan', 'bulan', 'cabang', 'jmlpengajuanfaktur'));
     }
 
     public function dashboardgudang()

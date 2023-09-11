@@ -57,8 +57,8 @@
                                         <i class="feather icon-shopping-bag text-danger font-large-3"></i>
                                     </div>
                                 </div>
-                                <h1 class="text-bold-700"><a href="/limitkredit?status=pending">{{ $jmlpengajuan }}</a></h1>
-                                <p class="mb-0 line-ellipsis">Ajuan Limit Kredit {{ ucwords(Auth::user()->level) }}<br><br><br></p>
+                                <h1 class="text-bold-700"><a href="/ajuanfaktur?status=pending">{{ $jmlpengajuanfaktur }}</a></h1>
+                                <p class="mb-0 line-ellipsis">Ajuan Jumlah Faktur {{ ucwords(Auth::user()->level) }}<br><br><br></p>
                             </div>
                         </div>
                     </div>
