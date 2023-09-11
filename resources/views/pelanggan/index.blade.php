@@ -68,8 +68,9 @@
             </div>
         </div>
         <div class="row">
-            @include('layouts.notification')
+
             <div class="col-lg-12 col-sm-12">
+                @include('layouts.notification')
                 <div class="card">
 
                     @php
@@ -79,7 +80,7 @@
                     $longitude2 = 107.36570549999999;
                     $jarak = hitungjarak($latitude1, $longitude1, $latitude2, $longitude2);
                     @endphp
-                    {{ $jarak["meters"] }}
+                    {{-- {{ $jarak["meters"] }} --}}
                     @if(in_array($level,$pelanggan_tambah))
                     <div class="card-header">
                         <a href="/pelanggan/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
@@ -234,6 +235,8 @@
                                                 @if (Auth::user()->level != "salesman")
                                                 @if (in_array($level,$pelanggan_ajuanlimit))
                                                 <a class="ml-1" href="/limitkredit/{{\Crypt::encrypt($d->kode_pelanggan)}}/create"><i class="feather icon-external-link primary"></i></a>
+
+                                                <a class="ml-1 ajukanfaktur" kode_pelanggan="{{ Crypt::encrypt($d->kode_pelanggan) }}" href="#"><i class="feather icon-external-link warning"></i></a>
                                                 @endif
                                                 @endif
                                             </div>
@@ -268,11 +271,33 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade text-left" id="mdlajukanfaktur" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Ajukan Faktur <span id="tglupdatepresensi"></span></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="loadformajukanfaktur">
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 @push('myscript')
 <script>
     $(function() {
-
+        $(".ajukanfaktur").click(function(e) {
+            e.preventDefault();
+            var kode_pelanggan = $(this).attr("kode_pelanggan");
+            $("#mdlajukanfaktur").modal("show");
+            // /alert(kode_pelanggan);
+            $("#loadformajukanfaktur").load('/ajuanfaktur/' + kode_pelanggan + '/create');
+        });
 
         $("#shownonaktif").click(function(e) {
             $("#mdlshownonaktif").modal("show");

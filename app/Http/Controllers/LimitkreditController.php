@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Redirect;
 class LimitkreditController extends Controller
 {
     protected $cabang;
+    protected $level;
     public function __construct()
     {
         // Fetch the Site Settings object

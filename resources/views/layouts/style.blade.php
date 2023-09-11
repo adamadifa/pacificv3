@@ -59,6 +59,8 @@
 *
 */
 
+
+
     .highcharts-figure,
     .highcharts-data-table table {
         min-width: 100%;
@@ -187,6 +189,22 @@
 
     .select2-dropdown {
         z-index: 9000 !important;
+    }
+
+</style>
+
+<style>
+    .form-label {
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    .form-group {
+        margin-bottom: 5px !important;
+    }
+
+    .form-label-group {
+        margin-bottom: 5px !important;
     }
 
 </style>

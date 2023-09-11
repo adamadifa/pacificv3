@@ -734,6 +734,15 @@
                             </li>
                             @endif
 
+                            @if (in_array($level, $limitkredit_view))
+                            <li class="{{ request()->is(['ajuanfaktur', 'ajuanfaktur/*']) ? 'active' : '' }}">
+                                <a href="/ajuanfaktur">
+                                    <i class="feather icon-credit-card"></i>
+                                    <span class="menu-item">Ajuan Faktur</span>
+                                </a>
+                            </li>
+                            @endif
+
                         </ul>
                     </li>
                     @endif

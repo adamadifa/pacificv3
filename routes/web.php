@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AjuanfakturController;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\AngkutanController;
 use App\Http\Controllers\Auth\LoginController;
@@ -1858,6 +1859,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/jaminan/laporanJaminan', 'laporanJaminan')->name('jaminan.laporanJaminan');
         Route::post('/jaminan/cetakJaminan', 'cetakJaminan')->name('jaminan.cetakJaminan');
     });
+
+    //Ajuan Faktur
+    Route::get('/ajuanfaktur', [AjuanfakturController::class, 'index']);
+    Route::get('/ajuanfaktur/{kode_pelanggan}/create', [AjuanfakturController::class, 'create']);
+    Route::post('/ajuanfaktur/{kode_pelanggan}/store', [AjuanfakturController::class, 'store']);
+    Route::get('/ajuanfaktur/{no_pengajuan}/approve', [AjuanfakturController::class, 'approve']);
+    Route::get('/ajuanfaktur/{no_pengajuan}/decline', [AjuanfakturController::class, 'decline']);
 });
 
 

@@ -252,8 +252,11 @@ class PrinterController extends Controller
                 foreach ($itemsbayar as $itembayar) {
                     $printer->text($itembayar->getAsString(32)); // for 58mm Font A
                 }
+                $sisatagihan = $faktur->total - $totalretur - $totalbayar;
+                $sisa = new item('SISA TAGIHAN', rupiah($sisatagihan));
                 $grandtotalbayar = new item('TOTAL BAYAR', rupiah($totalbayar));
                 $printer->text($grandtotalbayar->getAsString(32)); // for 58mm Font A
+                $printer->text($sisa->getAsString(32)); // for 58mm Font A
             }
 
 
@@ -360,7 +363,10 @@ class PrinterController extends Controller
                     $printer->text($itembayar->getAsString(32)); // for 58mm Font A
                 }
                 $grandtotalbayar = new item('TOTAL BAYAR', rupiah($totalbayar));
+                $sisatagihan = $faktur->total - $totalretur - $totalbayar;
+                $sisa = new item('SISA TAGIHAN', rupiah($sisatagihan));
                 $printer->text($grandtotalbayar->getAsString(32)); // for 58mm Font A
+                $printer->text($sisa->getAsString(32)); // for 58mm Font A
             }
 
             /* Footer */
