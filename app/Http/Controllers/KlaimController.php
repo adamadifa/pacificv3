@@ -236,8 +236,6 @@ class KlaimController extends Controller
         $tahun = substr($tgl[0], 2, 2);
         if ($kode_cabang == 'GRT') {
             $akun = "1-1119";
-        } else if ($kode_cabang == 'BKI') {
-            $akun = "1-1122";
         } else {
             $akun = "1-1104";
         }
