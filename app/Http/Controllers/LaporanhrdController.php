@@ -173,8 +173,9 @@ class LaporanhrdController extends Controller
         $datawfhfull = cekwfhfull($dari, $sampai);
         $datalembur = ceklembur($dari, $sampai);
 
-        //dd($datalembur);
 
+        // echo json_encode($datalembur);
+        // die;
 
 
 

@@ -625,12 +625,12 @@
                         }
 
 
-                        if ($nama_jadwal == "SHIFT 2" && $grandtotaljam > 5) {
+                        if ($nama_jadwal == "SHIFT 2" && $grandtotaljam >= 5) {
                             $premi = 5000;
                             $premi_shift_2 = 5000;
                             $totalpremi_shift_2 += $premi_shift_2;
                             $totalhari_shift_2 += 1;
-                        }else if($nama_jadwal=="SHIFT 3" && $grandtotaljam > 5){
+                        }else if($nama_jadwal=="SHIFT 3" && $grandtotaljam >= 5){
                             $premi = 6000;
                             $premi_shift_3 = 6000;
                             $totalpremi_shift_3 += $premi_shift_3;
@@ -728,6 +728,8 @@
                         <br>
                         @endif
                         <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
+                        <br>
+                        {{-- {{ var_dump($datalembur) }} --}}
                         @if (!empty($ceklembur))
                         <?php
                         $tgl_lembur_dari = $ceklembur[0]["tanggal_dari"];
@@ -881,6 +883,8 @@
                         {{ !empty($cekwfh) ? "Dirumahkan" : "" }}
                         {{ !empty($cekwfhfull) ? "WFH" : "" }}
                         {{ !empty($cekliburpenggantiminggu) ? $cekliburpenggantiminggu[0]["keterangan"] : "" }}
+
+
                         @if (!empty($ceklembur))
                         <?php
                             $tgl_lembur_dari = $ceklembur[0]["tanggal_dari"];

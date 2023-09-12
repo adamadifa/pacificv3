@@ -265,8 +265,10 @@
                             $total_overtime_1 += $overtime_1;
                             $total_overtime_2 += $overtime_2;
                         }else if($kategori_lembur==2){
-                            $overtime_libur_1 = $jmljam_lembur >= 4 ? 4 : $jmljam_lembur;
-                            $overtime_libur_2 = $jmljam_lembur > 4 ? $jmljam_lembur-4 : 0;
+                            // $overtime_libur_1 = $jmljam_lembur >= 4 ? 4 : $jmljam_lembur;
+                            // $overtime_libur_2 = $jmljam_lembur > 4 ? $jmljam_lembur-4 : 0;
+                            $overtime_libur_1 = $jmljam_lembur;
+                            $overtime_libur_2 = 0;
                             $total_overtime_libur_1 += $overtime_libur_1;
                             $total_overtime_libur_2 += $overtime_libur_2;
                         }
@@ -684,12 +686,12 @@
                         }
 
 
-                        if ($nama_jadwal == "SHIFT 2" && $grandtotaljam > 5) {
+                        if ($nama_jadwal == "SHIFT 2" && $grandtotaljam >= 5) {
                             $premi = 5000;
                             $premi_shift_2 = 5000;
                             $totalpremi_shift_2 += $premi_shift_2;
                             $totalhari_shift_2 += 1;
-                        }else if($nama_jadwal=="SHIFT 3" && $grandtotaljam > 5){
+                        }else if($nama_jadwal=="SHIFT 3" && $grandtotaljam >= 5){
                             $premi = 6000;
                             $premi_shift_3 = 6000;
                             $totalpremi_shift_3 += $premi_shift_3;

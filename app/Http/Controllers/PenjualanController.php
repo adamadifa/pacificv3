@@ -8154,6 +8154,15 @@ class PenjualanController extends Controller
                     ->where('kode_cabang', $kode_cabang)
                     ->where('kategori_harga', 'CANVASER')
                     ->get();
+            } else if (str_contains($pelanggan->nama_pelanggan, 'SMM')) {
+                $barang = Harga::orderby('nama_barang', 'asc')
+                    ->select('barang.*')
+                    ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')->where('status', 1)
+                    ->where('show', 1)
+                    ->where('kode_cabang', $kode_cabang)
+                    ->where('kategori_harga', $kategori_salesman)
+                    ->where('status_promo_product', 1)
+                    ->get();
             } else {
                 if ($kategori_salesman == "TOCANVASER") {
                     if ($pelanggan->kode_cabang == "BKI") {
