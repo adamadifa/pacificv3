@@ -9090,4 +9090,39 @@ class PenjualanController extends Controller
 
         return view('penjualan.getsku', compact('rekappelanggan'));
     }
+
+
+    public function getnofakpenj(Request $request)
+    {
+
+        $id_karyawan = $request->id_karyawan;
+        $salesman = DB::table('karyawan')->where('id_karyawan', $id_karyawan)->first();
+        $lastinput = DB::table('penjualan')->where('id_karyawan', $id_karyawan)
+            ->whereRaw('MID(no_fak_penj,4,2) != "PR"')
+            ->orderBy('tgltransaksi', 'desc')->first();
+
+
+        $lasttgl = $lastinput->tgltransaksi;
+
+
+        $cekpenjualan = DB::table('penjualan')
+            ->where('id_karyawan', $id_karyawan)
+            ->where('tgltransaksi', $lasttgl)
+            ->whereRaw('MID(no_fak_penj,4,2) != "PR"')
+            ->orderBy('date_created', 'desc')
+            ->first();
+
+
+        $lastnofak = $cekpenjualan != null ? $cekpenjualan->no_fak_penj : '';
+
+
+
+        $kode_cabang = $salesman->kode_cabang;
+        $kode_faktur = substr($cekpenjualan->no_fak_penj, 3, 1);
+        $nomor_awal = substr($cekpenjualan->no_fak_penj, 4);
+        $jmlchar = strlen($nomor_awal);
+        $no_fak_penj_auto  =  buatkode($lastnofak, $kode_cabang . $kode_faktur, $jmlchar);
+
+        echo $no_fak_penj_auto;
+    }
 }

@@ -1860,6 +1860,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/jaminan/cetakJaminan', 'cetakJaminan')->name('jaminan.cetakJaminan');
     });
 
+
+    Route::post('/getnofakpenj', [PenjualanController::class, 'getnofakpenj']);
     //Ajuan Faktur
     Route::get('/ajuanfaktur', [AjuanfakturController::class, 'index']);
     Route::get('/ajuanfaktur/{kode_pelanggan}/create', [AjuanfakturController::class, 'create']);

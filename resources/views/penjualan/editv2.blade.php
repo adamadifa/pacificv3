@@ -6,7 +6,7 @@
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Edit Penjualan</h2>
+                    <h2 class="content-header-title float-left mb-0">Edit Penjualan V2</h2>
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/penjualan/editv2">Edit Penjualan</a>
@@ -47,10 +47,24 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="row">
+                                        @php
+                                        $kode_pr = substr($faktur->no_fak_penj,3,2);
+                                        @endphp
+                                        @if ($kode_pr=="PR")
+                                        <div class="col-8">
+                                            <input type="hidden" name="no_fak_penj" value="{{ $faktur->no_fak_penj }}" id="no_fak_penj">
+                                            <x-inputtext label="No. Faktur" value="{{ $faktur->no_fak_penj }}" field="no_fak_penj_new" icon="fa fa-barcode" />
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#" id="getnofakpenj" class="btn btn-primary">GET</a>
+                                        </div>
+                                        @else
                                         <div class="col-12">
                                             <input type="hidden" name="no_fak_penj" value="{{ $faktur->no_fak_penj }}" id="no_fak_penj">
                                             <x-inputtext label="No. Faktur" value="{{ $faktur->no_fak_penj }}" field="no_fak_penj_new" icon="fa fa-barcode" />
                                         </div>
+                                        @endif
+
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
@@ -599,6 +613,23 @@
 @push('myscript')
 <script>
     $(function() {
+
+        $("#getnofakpenj").click(function(e) {
+            var id_karyawan = "{{ $faktur->id_karyawan }}";
+            $.ajax({
+                type: 'POST'
+                , url: '/getnofakpenj'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , id_karyawan: id_karyawan
+                }
+                , cache: false
+                , success: function(respond) {
+                    console.log(respond);
+                    $("#no_fak_penj_new").val(respond);
+                }
+            });
+        });
         $("#no_fak_penj").on('change', function(e) {
             if (e.keyCode == 32) return false;
             var no_fak_penj = $("#no_fak_penj").val();
