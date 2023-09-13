@@ -92,7 +92,7 @@
                                     <td>{{ $d->nama_pelanggan }}</td>
                                     <td>{{ $d->jmlfaktur }}</td>
                                     <td>
-                                        <a href="#"><span class="badge bg-success">Lihat Histori</span></a>
+                                        <a href="/pelanggan/{{ Crypt::encrypt($d->kode_pelanggan) }}/show"><span class="badge bg-success">Lihat Histori</span></a>
                                     </td>
                                     <td>
                                         @if (empty($d->kacab))
