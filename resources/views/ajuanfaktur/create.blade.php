@@ -42,8 +42,17 @@
         <div class="col-12">
             <x-inputtext label="Tanggal Pengajuan" field="tgl_pengajuan" icon="feather icon-calendar" datepicker />
         </div>
+    </div>
+    <div class="row">
         <div class="col-12">
             <x-inputtext label="Max Jumlah Faktur" field="jmlfaktur" icon="feather icon-file-text" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group">
+                <textarea name="keterangan" id="keterangan" class="form-control" cols="30" rows="5" placeholder="Keterangan"></textarea>
+            </div>
         </div>
     </div>
     <div class="row">

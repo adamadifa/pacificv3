@@ -151,6 +151,7 @@ class AjuanfakturController extends Controller
         $kode_cabang = $pelanggan->kode_cabang;
         $tgl_pengajuan = $request->tgl_pengajuan;
         $jmlfaktur = $request->jmlfaktur;
+        $keterangan = $request->keterangan;
         $tgl = explode("-", $tgl_pengajuan);
         $tahun = $tgl[0];
         $thn = substr($tahun, 2, 2);
@@ -173,7 +174,8 @@ class AjuanfakturController extends Controller
                 'no_pengajuan' => $no_pengajuan,
                 'tgl_pengajuan' => $tgl_pengajuan,
                 'kode_pelanggan' => $kode_pelanggan,
-                'jmlfaktur' => $jmlfaktur
+                'jmlfaktur' => $jmlfaktur,
+                'keterangan' => $keterangan
             ]);
 
             return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);

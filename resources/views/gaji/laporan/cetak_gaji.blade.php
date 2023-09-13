@@ -946,7 +946,7 @@
                         if ($d->nama_jabatan=="SECURITY") {
                         $upah_otl_1 = 92000;
                         }else{
-                        $upah_otl_1 = ($upah_perjam * 2) * $total_overtime_libur_1;
+                        $upah_otl_1 = ROUND(($upah_perjam * 2) * $total_overtime_libur_1);
                         }
                         @endphp
                         {{ !empty($upah_otl_1) ? rupiah($upah_otl_1) : "" }}

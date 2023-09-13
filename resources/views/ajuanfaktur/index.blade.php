@@ -75,6 +75,7 @@
                                     <th>Kode Pelanggan</th>
                                     <th>Pelanggan</th>
                                     <th>Jml Faktur</th>
+                                    <th>Keterangan</th>
                                     <th>Histori</th>
                                     <th>KP</th>
                                     <th>RSM</th>
@@ -91,6 +92,7 @@
                                     <td>{{ $d->kode_pelanggan }}</td>
                                     <td>{{ $d->nama_pelanggan }}</td>
                                     <td>{{ $d->jmlfaktur }}</td>
+                                    <td>{{ $d->keterangan }}</td>
                                     <td>
                                         <a href="/pelanggan/{{ Crypt::encrypt($d->kode_pelanggan) }}/show"><span class="badge bg-success">Lihat Histori</span></a>
                                     </td>
