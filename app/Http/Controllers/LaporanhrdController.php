@@ -139,7 +139,7 @@ class LaporanhrdController extends Controller
         $id_group = $request->id_group;
         $bulan = $request->bulan;
         $tahun = $request->tahun;
-        $jenislaporan = $request->jenislaporan;
+        $jenislaporan = $request->jenis_laporan;
         $kode_potongan = "GJ" . $bulan . $tahun;
         $level = Auth::user()->level;
         $show_for_hrd = config('global.show_for_hrd');
