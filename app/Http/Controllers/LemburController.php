@@ -26,7 +26,7 @@ class LemburController extends Controller
         // }
 
         if (!empty($request->dari) && !empty($request->sampai)) {
-            $query->wherebetween('tanggal_dari', [$request->dari, $request->sampai]);
+            $query->wherebetween('tanggal', [$request->dari, $request->sampai]);
         }
         if (!empty($request->kategori_search)) {
             $query->where('kategori', $request->kategori_search);
@@ -72,7 +72,7 @@ class LemburController extends Controller
 
     public function store(Request $request)
     {
-
+        $tanggal = $request->tanggal;
         $tanggal_dari = $request->tanggal_dari;
         $tanggal_sampai = $request->tanggal_sampai;
         $jam_dari = $request->jam_dari;
@@ -92,6 +92,7 @@ class LemburController extends Controller
 
         $data = [
             'kode_lembur' => $kode_lembur,
+            'tanggal' => $tanggal,
             'tanggal_dari' => $dari,
             'tanggal_sampai' => $sampai,
             'id_kantor' => $id_kantor,

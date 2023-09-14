@@ -352,7 +352,7 @@ function ceklembur($dari, $sampai)
     $lembur = [];
     $ceklembur = DB::table('lembur')
         ->selectRaw('
-
+        tanggal,
         tanggal_dari,
         tanggal_sampai,
         id_kantor,
@@ -361,13 +361,13 @@ function ceklembur($dari, $sampai)
         kategori,
         IFNULL(lembur_karyawan.nik,"ALL") as nik')
         ->leftJoin('lembur_karyawan', 'lembur.kode_lembur', '=', 'lembur_karyawan.kode_lembur')
-        ->whereRaw('DATE(tanggal_dari) BETWEEN "' . $dari . '" AND "' . $sampai . '"')->get();
+        ->whereBetween('tanggal', [$dari, $sampai])->get();
 
     foreach ($ceklembur as $d) {
         $lembur[] = [
             'nik' => $d->nik,
             'id_kantor' => $d->id_kantor,
-            'tanggal_lembur' => date("Y-m-d", strtotime($d->tanggal_dari)),
+            'tanggal_lembur' => $d->tanggal,
             'tanggal_dari' => $d->tanggal_dari,
             'tanggal_sampai' => $d->tanggal_sampai,
             'keterangan' => $d->keterangan,

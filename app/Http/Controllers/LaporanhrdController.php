@@ -1085,7 +1085,7 @@ class LaporanhrdController extends Controller
             }
         }
         $query->where('status_aktif', 1);
-        $query->orderBy('nama_karyawan');
+        $query->orderByRaw('nik,nama_karyawan');
         $presensi = $query->get();
         //dd($presensi);
 

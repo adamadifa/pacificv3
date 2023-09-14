@@ -101,6 +101,7 @@
                                         <tr>
                                             <th>No.</th>
                                             <th>Kode Lembur</th>
+                                            <th>Tanggal</th>
                                             <th>Dari</th>
                                             <th>Sampai</th>
                                             <th>Kantor</th>
@@ -116,6 +117,7 @@
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td>{{ $d->kode_lembur }}</td>
+                                            <td>{{ date("d-m-Y",strtotime($d->tanggal)) }}</td>
                                             <td>{{ date("d-m-Y H:i",strtotime($d->tanggal_dari)) }}</td>
                                             <td>{{ date("d-m-Y H:i",strtotime($d->tanggal_sampai)) }}</td>
                                             <td>{{ $d->id_kantor }}</td>
@@ -198,6 +200,11 @@
                     <div class="row">
                         <div class="col-12">
                             <x-inputtext label="Auto" field="kode_lembur" icon="feather icon-credit-card" readonly />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <x-inputtext label="Tanggal" field="tanggal" icon="feather icon-calendar" datepicker />
                         </div>
                     </div>
                     <div class="row">

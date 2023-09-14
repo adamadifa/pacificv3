@@ -89,7 +89,7 @@
     </b>
     <br>
     <div class="freeze-table">
-        <table class="datatable3" style="width: 250%">
+        <table class="datatable3" style="width: 280%">
             <thead bgcolor="#024a75" style="color:white; font-size:12;">
                 <tr bgcolor="#024a75" style="color:white; font-size:12;">
                     <th rowspan="2">No</th>
@@ -190,9 +190,13 @@
                     // $jmlpremi1 = 0;
                     // $jmlpremi2 = 0;
                     $totalpremi_shift_2 = 0;
+                    $totalpremilembur_shift_2 = 0;
                     $totalpremi_shift_3 = 0;
+                    $totalpremilembur_shift_3 = 0;
                     $totalhari_shift_2 = 0;
+                    $totalharilembur_shift_2 = 0;
                     $totalhari_shift_3 = 0;
+                    $totalharilembur_shift_3 = 0;
                     for($i=0; $i < count($rangetanggal); $i++){
                         $hari_ke = "hari_".$i+1;
                         $tgl_presensi =  $rangetanggal[$i];
@@ -256,9 +260,23 @@
                     if(!empty($ceklembur)){
                         $tgl_lembur_dari = $ceklembur[0]["tanggal_dari"];
                         $tgl_lembur_sampai = $ceklembur[0]["tanggal_sampai"];
+                        $jamlembur_dari = date("H:i",strtotime($tgl_lembur_dari));
                         $jmljam_lbr = hitungjamdesimal($tgl_lembur_dari,$tgl_lembur_sampai);
                         $jmljam_lembur = $jmljam_lbr > 7 ? 7 : $jmljam_lbr;
                         $kategori_lembur = $ceklembur[0]["kategori"];
+                        if(empty($ceklibur) && empty($cekliburpenggantiminggu) && empty($cekwfhfull) && $namahari != "Minggu" ){
+                            if($jamlembur_dari >= "22:00" && $jmljam_lbr>=5){
+                                $premilembur = 6000;
+                                $premilembur_shift_3 = 6000;
+                                $totalpremilembur_shift_3 += $premilembur_shift_3;
+                                $totalharilembur_shift_3 += 1;
+                            }else if($jamlembur_dari >= "15:00" && $jmljam_lbr>=5){
+                                $premilembur = 5000;
+                                $premilembur_shift_2 = 5000;
+                                $totalpremilembur_shift_2 += $premilembur_shift_2;
+                                $totalharilembur_shift_2 += 1;
+                            }
+                        }
                         if ($kategori_lembur==1) {
                             $overtime_1 = $jmljam_lembur > 1 ? 1 : $jmljam_lembur;
                             $overtime_2 = $jmljam_lembur > 1 ? $jmljam_lembur -1 : 0;
@@ -272,6 +290,8 @@
                             $total_overtime_libur_1 += $overtime_libur_1;
                             $total_overtime_libur_2 += $overtime_libur_2;
                         }
+                    }else{
+                        $premilembur = 0;
                     }
 
                     //Pewarnaan Kolom
@@ -794,6 +814,7 @@
                         $jk = 0;
                         $denda = 0;
                         $premi = 0;
+                        $premilembur = 0;
                         $totalpc = 0;
                         $izinabsen = 0;
                         $izinsakit = 0;
@@ -838,6 +859,12 @@
 
 
                 $totalpotonganjam = $totalterlambat + $totalkeluar + $totaldirumahkan + $totaltidakhadir + $totalpulangcepat + $totalizinabsen + $totalizinsakit;
+
+                $totalhariall_shift_2 = $totalhari_shift_2 + $totalharilembur_shift_2;
+                $totalpremiall_shift_2 = $totalpremi_shift_2 + $totalpremilembur_shift_2;
+
+                $totalhariall_shift_3 = $totalhari_shift_3 + $totalharilembur_shift_3;
+                $totalpremiall_shift_3 = $totalpremi_shift_3 + $totalpremilembur_shift_3;
                 ?>
                 <tr>
                     <td>{{ $loop->iteration }}</td>
@@ -931,6 +958,7 @@
                         $upah_ot_2 = ($upah_perjam * 2) * $total_overtime_2;
                         }
                         @endphp
+
                         {{ !empty($upah_ot_2) ? rupiah($upah_ot_2) : "" }}
                     </td>
                     <td style="text-align: center;">
@@ -946,7 +974,7 @@
                         if ($d->nama_jabatan=="SECURITY") {
                         $upah_otl_1 = 92000;
                         }else{
-                        $upah_otl_1 = ROUND(($upah_perjam * 2) * $total_overtime_libur_1);
+                        $upah_otl_1 = floor(($upah_perjam * 2) * $total_overtime_libur_1);
                         }
                         @endphp
                         {{ !empty($upah_otl_1) ? rupiah($upah_otl_1) : "" }}
@@ -968,14 +996,14 @@
                         @endphp
                         {{ !empty($total_upah_overtime) ?rupiah($total_upah_overtime) : "" }}
                     </td>
-                    <td align="center">{{ !empty($totalhari_shift_2) ? $totalhari_shift_2 : "" }}</td>
-                    <td align="right">{{ !empty($totalpremi_shift_2) ? rupiah($totalpremi_shift_2) : "" }}</td>
-                    <td align="center">{{ !empty($totalhari_shift_3) ? $totalhari_shift_3 : "" }}</td>
-                    <td align="right">{{ !empty($totalpremi_shift_3) ? rupiah($totalpremi_shift_3) : "" }}</td>
+                    <td align="center">{{ !empty($totalhariall_shift_2) ? $totalhariall_shift_2 : "" }}</td>
+                    <td align="right">{{ !empty($totalpremiall_shift_2) ? rupiah($totalpremiall_shift_2) : "" }}</td>
+                    <td align="center">{{ !empty($totalhariall_shift_3) ? $totalhariall_shift_3 : "" }}</td>
+                    <td align="right">{{ !empty($totalpremiall_shift_3) ? rupiah($totalpremiall_shift_3) : "" }}</td>
                     <td align="right">
 
                         @php
-                        $bruto = ($upah_perjam * $totaljamkerja) + $total_upah_overtime + $totalpremi_shift_2 + $totalpremi_shift_3;
+                        $bruto = ($upah_perjam * $totaljamkerja) + $total_upah_overtime + $totalpremiall_shift_2 + $totalpremiall_shift_3;
                         @endphp
                         {{ !empty($bruto) ?  rupiah($bruto) : "" }}
                         {{-- <br>
