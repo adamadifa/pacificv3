@@ -139,6 +139,7 @@ class LaporanhrdController extends Controller
         $id_group = $request->id_group;
         $bulan = $request->bulan;
         $tahun = $request->tahun;
+        $jenislaporan = $request->jenislaporan;
         $kode_potongan = "GJ" . $bulan . $tahun;
         $level = Auth::user()->level;
         $show_for_hrd = config('global.show_for_hrd');
@@ -161,8 +162,13 @@ class LaporanhrdController extends Controller
         $lastbulan = $lastbulan < 10 ?  "0" . $lastbulan : $lastbulan;
         $bulan = $bulan < 10 ?  "0" . $bulan : $bulan;
 
-        $dari = $lasttahun . "-" . $lastbulan . "-21";
-        $sampai = $tahun . "-" . $bulan . "-20";
+        if ($jenislaporan == 1) {
+            $dari = $lasttahun . "-" . $lastbulan . "-21";
+            $sampai = $tahun . "-" . $bulan . "-20";
+        } else {
+            $dari = $tahun . "-" . $bulan . "-01";
+            $sampai = date("Y-m-t", strtotime($dari));
+        }
 
         $berlakugaji = $nexttahun . "-" . $nextbulan . "-01";
 

@@ -8,7 +8,7 @@
 
             <a href="/laporanhrd/presensi" style="color:#626262">
                 <li class="list-group-item {{ request()->is(['laporanhrd/presensi']) ? 'active' : '' }}">
-                    <i class="feather icon-file mr-1"></i>Presensi Peridoe Gaji
+                    <i class="feather icon-file mr-1"></i>Presensi
                 </li>
             </a>
             <a href="/laporanhrd/presensipsm" style="color:#626262">

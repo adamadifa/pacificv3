@@ -948,8 +948,10 @@
                         }
                         @endphp
                         {{ !empty($upah_ot_1) ? rupiah($upah_ot_1) : "" }}
+                        <br>
+
                     </td>
-                    <td style="text-align: center;">{{ !empty($total_overtime_2) ? rupiah($total_overtime_2) : '' }}</td>
+                    <td style="text-align: center;">{{ !empty($total_overtime_2) ? $total_overtime_2 : '' }}</td>
                     <td align="right">
                         @php
                         if ($d->nama_jabatan=="SECURITY") {
