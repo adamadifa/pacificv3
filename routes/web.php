@@ -1868,6 +1868,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/ajuanfaktur/{kode_pelanggan}/store', [AjuanfakturController::class, 'store']);
     Route::get('/ajuanfaktur/{no_pengajuan}/approve', [AjuanfakturController::class, 'approve']);
     Route::get('/ajuanfaktur/{no_pengajuan}/decline', [AjuanfakturController::class, 'decline']);
+    Route::delete('/ajuanfaktur/{no_pengajuan}/delete', [AjuanfakturController::class, 'delete']);
 });
 
 

@@ -282,4 +282,16 @@ class AjuanfakturController extends Controller
             return Redirect::back()->with(['warning' => 'Data Gagal Disetujui Hubungi Tim IT']);
         }
     }
+
+
+    public function delete($no_pengajuan)
+    {
+        $no_pengajuan = Crypt::decrypt($no_pengajuan);
+        try {
+            DB::table('pengajuan_faktur')->where('no_pengajuan', $no_pengajuan)->delete();
+            return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['error' => 'Data Gagal Disimpan']);
+        }
+    }
 }

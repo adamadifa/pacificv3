@@ -71,11 +71,11 @@
                                 <tr>
 
                                     <th>No.Pengajuan</th>
-                                    <th>Tanggal</th>
+                                    <th style="width: 10%">Tanggal</th>
                                     <th>Kode Pelanggan</th>
                                     <th>Pelanggan</th>
                                     <th>Jml Faktur</th>
-                                    <th>Keterangan</th>
+                                    <th style="width:30%">Keterangan</th>
                                     <th>Histori</th>
                                     <th>KP</th>
                                     <th>RSM</th>
@@ -230,7 +230,23 @@
 @push('myscript')
 <script>
     $(function() {
-
+        $('.delete-confirm').click(function(event) {
+            var form = $(this).closest("form");
+            var name = $(this).data("name");
+            event.preventDefault();
+            swal({
+                    title: `Are you sure you want to delete this record?`
+                    , text: "If you delete this, it will be gone forever."
+                    , icon: "warning"
+                    , buttons: true
+                    , dangerMode: true
+                , })
+                .then((willDelete) => {
+                    if (willDelete) {
+                        form.submit();
+                    }
+                });
+        });
     });
 
 </script>

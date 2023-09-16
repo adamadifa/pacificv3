@@ -225,6 +225,7 @@
                                                 </form>
                                                 @endif
                                                 @endif
+
                                                 @if (!empty($d->$field_kategori))
                                                 <?php
                                                 if($cekindex < count($approve) -1) {
@@ -248,6 +249,16 @@
 
                                                 <?php
                                                 $lastindex = $cekindex - 1;
+
+                                                if($d->kode_dept=="HRD" && Auth::user()->level=="manager hrd"){
+                                                //var_dump($field_kategori);
+                                                $field_kategori = "m";
+                                                ?>
+
+                                                <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/{{ Crypt::encrypt($field_kategori) }}/approve" class="success ml-1"><i class="fa fa-check"></i></a>
+                                                <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/{{ Crypt::encrypt($field_kategori) }}/decline" class="danger ml-1"><i class="fa fa-close"></i></a>
+                                                <?php
+                                                }
                                                 if(Auth::user()->level != 'spv pdqc' && Auth::user()->level!="spv produksi"  && Auth::user()->level!="spv maintenance"){
                                                 if($cekindex == 0){
                                                 ?>
