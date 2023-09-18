@@ -285,14 +285,19 @@
                         }else if($kategori_lembur==2){
                             // $overtime_libur_1 = $jmljam_lembur >= 4 ? 4 : $jmljam_lembur;
                             // $overtime_libur_2 = $jmljam_lembur > 4 ? $jmljam_lembur-4 : 0;
-                            $overtime_libur_1 = $jmljam_lembur;
+                            $overtime_libur_1 = !empty($ceklibur) && $d->nama_jabatan =="SECURITY" ? $jmljam_lembur * 2 : $jmljam_lembur;
                             $overtime_libur_2 = 0;
                             $total_overtime_libur_1 += $overtime_libur_1;
                             $total_overtime_libur_2 += $overtime_libur_2;
                         }
+
+                        //echo $d->nik."------". $tgl_presensi."-----".$jmljam_lembur."<br>";
                     }else{
                         $premilembur = 0;
                     }
+
+
+
 
                     //Pewarnaan Kolom
                     if($namahari=="Minggu"){ // Jika Hari Minggu
@@ -383,7 +388,7 @@
 
                     }
                     if($d->$hari_ke != NULL){
-                        $tidakhadir = 0; // Jika Karyawan Absen Maka $tidakhadir dihitung 0
+                        //$tidakhadir = 0; // Jika Karyawan Absen Maka $tidakhadir dihitung 0
 
                         $datapresensi = explode("|",$d->$hari_ke); // Split Data Presensi
 
@@ -761,6 +766,15 @@
                             $totaldirumahkan += $totaljamdirumahkan;
                         }
 
+                        if($status== "a"){
+                            if($namahari=="Sabtu"){
+                                $tidakhadir = 5;
+                            }else{
+                                $tidakhadir = 7;
+                            }
+                        }else{
+                            $tidakhadir = 0; // Jika Karyawan Absen Maka $tidakhadir dihitung 0
+                        }
 
                         if($status=="h"){
                             $izinabsen = 0;
@@ -964,17 +978,17 @@
                         {{ !empty($upah_ot_2) ? rupiah($upah_ot_2) : "" }}
                     </td>
                     <td style="text-align: center;">
-                        @php
+                        {{-- @php
                         if($d->nama_jabatan=="SECURITY"){
                         $total_overtime_libur_1 = 7;
                         }
-                        @endphp
+                        @endphp --}}
                         {{ !empty($total_overtime_libur_1) ? $total_overtime_libur_1 : "" }}
                     </td>
                     <td align="right">
                         @php
                         if ($d->nama_jabatan=="SECURITY") {
-                        $upah_otl_1 = 92000;
+                        $upah_otl_1 = 13143 * $total_overtime_libur_1;
                         }else{
                         $upah_otl_1 = floor(($upah_perjam * 2) * $total_overtime_libur_1);
                         }

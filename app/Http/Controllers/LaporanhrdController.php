@@ -162,12 +162,12 @@ class LaporanhrdController extends Controller
         $lastbulan = $lastbulan < 10 ?  "0" . $lastbulan : $lastbulan;
         $bulan = $bulan < 10 ?  "0" . $bulan : $bulan;
 
-        if ($jenislaporan == 1) {
-            $dari = $lasttahun . "-" . $lastbulan . "-21";
-            $sampai = $tahun . "-" . $bulan . "-20";
-        } else {
+        if ($jenislaporan == 2) {
             $dari = $tahun . "-" . $bulan . "-01";
             $sampai = date("Y-m-t", strtotime($dari));
+        } else {
+            $dari = $lasttahun . "-" . $lastbulan . "-21";
+            $sampai = $tahun . "-" . $bulan . "-20";
         }
 
         $berlakugaji = $nexttahun . "-" . $nextbulan . "-01";

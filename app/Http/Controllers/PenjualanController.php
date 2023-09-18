@@ -9096,6 +9096,7 @@ class PenjualanController extends Controller
     {
 
         $id_karyawan = $request->id_karyawan;
+        $id_karyawan = "SBDG09";
         $salesman = DB::table('karyawan')->where('id_karyawan', $id_karyawan)->first();
         $lastinput = DB::table('penjualan')->where('id_karyawan', $id_karyawan)
             ->whereRaw('MID(no_fak_penj,4,2) != "PR"')

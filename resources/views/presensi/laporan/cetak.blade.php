@@ -306,7 +306,6 @@
                             }
                     if($d->$hari_ke != NULL){
 
-                        $tidakhadir = 0; // Jika Karyawan Absen Maka $tidakhadir dihitung 0
 
                         $datapresensi = explode("|",$d->$hari_ke); // Split Data Presensi
 
@@ -680,6 +679,16 @@
                             $totaldirumahkan += $totaljamdirumahkan;
                         }
 
+                        if($status== "a"){
+                            if($namahari=="Sabtu"){
+                                $tidakhadir = 5;
+                            }else{
+                                $tidakhadir = 7;
+                            }
+                        }else{
+                            $tidakhadir = 0; // Jika Karyawan Absen Maka $tidakhadir dihitung 0
+                        }
+
                 ?>
                     <td style="background-color: {{ $colorcolumn }}; color:{{ $colortext }};">
                         {{-- {{ $cekmasakerja }} --}}
@@ -743,18 +752,18 @@
                         $jmljam_lembur = $jmljam_lbr > 7 ? 7 : $jmljam_lbr;
                         $kategori_lembur = $ceklembur[0]["kategori"];
                         if(empty($ceklibur) && empty($cekliburpenggantiminggu) && empty($cekwfhfull) && $namahari != "Minggu" ){
-                                if($jamlembur_dari >= "22:00" && $jmljam_lbr>=5){
-                                    $premilembur = 6000;
-                                    $premilembur_shift_3 = 6000;
-                                    $totalpremilembur_shift_3 += $premilembur_shift_3;
-                                    $totalharilembur_shift_3 += 1;
-                                }else if($jamlembur_dari >= "15:00" && $jmljam_lbr>=5){
-                                    $premilembur = 5000;
-                                    $premilembur_shift_2 = 5000;
-                                    $totalpremilembur_shift_2 += $premilembur_shift_2;
-                                    $totalharilembur_shift_2 += 1;
-                                }
+                            if($jamlembur_dari >= "22:00" && $jmljam_lbr>=5){
+                                $premilembur = 6000;
+                                $premilembur_shift_3 = 6000;
+                                $totalpremilembur_shift_3 += $premilembur_shift_3;
+                                $totalharilembur_shift_3 += 1;
+                            }else if($jamlembur_dari >= "15:00" && $jmljam_lbr>=5){
+                                $premilembur = 5000;
+                                $premilembur_shift_2 = 5000;
+                                $totalpremilembur_shift_2 += $premilembur_shift_2;
+                                $totalharilembur_shift_2 += 1;
                             }
+                        }
                         if ($kategori_lembur==1) {
                             $overtime_1 = $jmljam_lembur > 1 ? 1 : $jmljam_lembur;
                             $overtime_1 = round($overtime_1,1,PHP_ROUND_HALF_DOWN);
@@ -787,6 +796,8 @@
                         $premilembur = 0;
                         @endphp
                         @endif
+                        @elseif($status=="a")
+                        Alfa
                         @elseif($status=="s")
                         <span style="color:rgb(195, 63, 27)">SAKIT
                             @if (!empty($sid))
