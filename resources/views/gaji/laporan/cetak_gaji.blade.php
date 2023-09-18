@@ -265,12 +265,12 @@
                         $jmljam_lembur = $jmljam_lbr > 7 ? 7 : $jmljam_lbr;
                         $kategori_lembur = $ceklembur[0]["kategori"];
                         if(empty($ceklibur) && empty($cekliburpenggantiminggu) && empty($cekwfhfull) && $namahari != "Minggu" ){
-                            if($jamlembur_dari >= "22:00" && $jmljam_lbr>=5){
+                            if($jamlembur_dari >= "22:00" && $jmljam_lbr>=4.98){
                                 $premilembur = 6000;
                                 $premilembur_shift_3 = 6000;
                                 $totalpremilembur_shift_3 += $premilembur_shift_3;
                                 $totalharilembur_shift_3 += 1;
-                            }else if($jamlembur_dari >= "15:00" && $jmljam_lbr>=5){
+                            }else if($jamlembur_dari >= "15:00" && $jmljam_lbr>=4.98){
                                 $premilembur = 5000;
                                 $premilembur_shift_2 = 5000;
                                 $totalpremilembur_shift_2 += $premilembur_shift_2;
@@ -711,12 +711,12 @@
                         }
 
 
-                        if ($nama_jadwal == "SHIFT 2" && $grandtotaljam >= 5) {
+                        if ($nama_jadwal == "SHIFT 2" && $grandtotaljam >= 4.98) {
                             $premi = 5000;
                             $premi_shift_2 = 5000;
                             $totalpremi_shift_2 += $premi_shift_2;
                             $totalhari_shift_2 += 1;
-                        }else if($nama_jadwal=="SHIFT 3" && $grandtotaljam >= 5){
+                        }else if($nama_jadwal=="SHIFT 3" && $grandtotaljam >= 4.98){
                             $premi = 6000;
                             $premi_shift_3 = 6000;
                             $totalpremi_shift_3 += $premi_shift_3;
