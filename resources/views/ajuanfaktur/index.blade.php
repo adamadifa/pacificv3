@@ -92,7 +92,13 @@
                                     <td>{{ $d->kode_pelanggan }}</td>
                                     <td>{{ $d->nama_pelanggan }}</td>
                                     <td>{{ $d->jmlfaktur }}</td>
-                                    <td>{{ $d->keterangan }}</td>
+                                    <td>
+                                        @if ($d->sikluspembayaran ==1)
+                                        <span class="badge bg-success">Pembayaran Saat Turun Barang Order Selanjutnya</span>
+                                        <br>
+                                        @endif
+                                        {{ $d->keterangan }}
+                                    </td>
                                     <td>
                                         <a href="/pelanggan/{{ Crypt::encrypt($d->kode_pelanggan) }}/show"><span class="badge bg-success">Lihat Histori</span></a>
                                     </td>
@@ -154,7 +160,8 @@
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             @if(in_array($level,$limitkredit_hapus))
                                             @if (empty($d->kacab))
-                                            <form method="POST" name="deleteform" class="deleteform" action="/ajuanfaktur/{{ Crypt::encrypt($d->no_pengajuan) }}/{{ Crypt::encrypt($d->kode_pelanggan) }}/delete">
+                                            <a class="ml-1 editajuan" href="#" no_pengajuan="{{ Crypt::encrypt($d->no_pengajuan)}}"><i class="feather icon-edit success"></i></a>
+                                            <form method="POST" name="deleteform" class="deleteform" action="/ajuanfaktur/{{ Crypt::encrypt($d->no_pengajuan) }}/delete">
                                                 @csrf
                                                 @method('DELETE')
                                                 <a href="#" class="delete-confirm ml-1">
@@ -200,6 +207,9 @@
 
                                             <a class="ml-1" href="/ajuanfaktur/{{ Crypt::encrypt($d->no_pengajuan) }}/approve"><i class=" fa fa-check success"></i></a>
                                             <a class="ml-1" href="/ajuanfaktur/{{ Crypt::encrypt($d->no_pengajuan) }}/decline"><i class=" fa fa-close danger"></i></a>
+
+
+
                                             @endif
 
                                             <!-- Direktur -->
@@ -224,12 +234,33 @@
         </div>
     </div>
 </div>
-
+<div class="modal fade text-left" id="mdlajukanfaktur" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Edit Ajukan Faktur <span id="tglupdatepresensi"></span></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="loadformajukanfaktur">
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('myscript')
 <script>
     $(function() {
+
+        $(".editajuan").click(function(e) {
+            e.preventDefault();
+            var no_pengajuan = $(this).attr("no_pengajuan");
+            $("#mdlajukanfaktur").modal("show");
+            // /alert(kode_pelanggan);
+            $("#loadformajukanfaktur").load('/ajuanfaktur/' + no_pengajuan + '/edit');
+        });
         $('.delete-confirm').click(function(event) {
             var form = $(this).closest("form");
             var name = $(this).data("name");

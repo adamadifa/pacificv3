@@ -144,6 +144,16 @@ class AjuanfakturController extends Controller
         return view('ajuanfaktur.create', compact('pelanggan'));
     }
 
+    public function edit($no_pengajuan)
+    {
+        $no_pengajuan = Crypt::decrypt($no_pengajuan);
+        $ajuanfaktur = DB::table('pengajuan_faktur')->where('no_pengajuan', $no_pengajuan)
+            ->join('pelanggan', 'pengajuan_faktur.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+            ->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan')
+            ->first();
+        return view('ajuanfaktur.edit', compact('ajuanfaktur'));
+    }
+
     public function store($kode_pelanggan, Request $request)
     {
         $kode_pelanggan = Crypt::decrypt($kode_pelanggan);
@@ -152,6 +162,7 @@ class AjuanfakturController extends Controller
         $tgl_pengajuan = $request->tgl_pengajuan;
         $jmlfaktur = $request->jmlfaktur;
         $keterangan = $request->keterangan;
+        $sikluspembayaran = $request->sikluspembayaran;
         $tgl = explode("-", $tgl_pengajuan);
         $tahun = $tgl[0];
         $thn = substr($tahun, 2, 2);
@@ -175,9 +186,36 @@ class AjuanfakturController extends Controller
                 'tgl_pengajuan' => $tgl_pengajuan,
                 'kode_pelanggan' => $kode_pelanggan,
                 'jmlfaktur' => $jmlfaktur,
+                'sikluspembayaran' => $sikluspembayaran,
                 'keterangan' => $keterangan
             ]);
 
+            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);
+            //throw $th;
+        }
+    }
+
+
+    public function update($no_pengajuan, Request $request)
+    {
+        $no_pengajuan = Crypt::decrypt($no_pengajuan);
+        $tgl_pengajuan = $request->tgl_pengajuan;
+        $jmlfaktur = $request->jmlfaktur;
+        $keterangan = $request->keterangan;
+        $sikluspembayaran = $request->sikluspembayaran;
+
+
+        try {
+            DB::table('pengajuan_faktur')
+                ->where('no_pengajuan', $no_pengajuan)
+                ->update([
+                    'tgl_pengajuan' => $tgl_pengajuan,
+                    'jmlfaktur' => $jmlfaktur,
+                    'sikluspembayaran' => $sikluspembayaran,
+                    'keterangan' => $keterangan
+                ]);
             return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
         } catch (\Exception $e) {
             return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);

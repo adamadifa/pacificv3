@@ -14,44 +14,44 @@
 
 </style>
 
-<form action="/ajuanfaktur/{{ Crypt::encrypt($pelanggan->kode_pelanggan) }}/store" method="POST" id="frmAjuanfaktur">
+<form action="/ajuanfaktur/{{ Crypt::encrypt($ajuanfaktur->no_pengajuan) }}/update" method="POST" id="frmAjuanfaktur">
     @csrf
     <div class="row">
         <div class="col-12">
             <table class="table">
                 <tr>
                     <th style="width: 30%">Kode Pelanggan</th>
-                    <td>{{ $pelanggan->kode_pelanggan }}</td>
+                    <td>{{ $ajuanfaktur->kode_pelanggan }}</td>
                 </tr>
                 <tr>
                     <th>Nama Pelanggan</th>
-                    <td>{{ $pelanggan->nama_pelanggan }}</td>
+                    <td>{{ $ajuanfaktur->nama_pelanggan }}</td>
                 </tr>
                 <tr>
                     <th>Alamat</th>
-                    <td>{{ $pelanggan->alamat_pelanggan }}</td>
+                    <td>{{ $ajuanfaktur->alamat_pelanggan }}</td>
                 </tr>
                 <tr>
                     <th>Salesman</th>
-                    <td>{{ $pelanggan->nama_karyawan }}</td>
+                    <td>{{ $ajuanfaktur->nama_karyawan }}</td>
                 </tr>
             </table>
         </div>
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext label="Tanggal Pengajuan" field="tgl_pengajuan" icon="feather icon-calendar" datepicker />
+            <x-inputtext label="Tanggal Pengajuan" value="{{ $ajuanfaktur->tgl_pengajuan }}" field="tgl_pengajuan" icon="feather icon-calendar" datepicker />
         </div>
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext label="Max Jumlah Faktur" field="jmlfaktur" icon="feather icon-file-text" />
+            <x-inputtext label="Max Jumlah Faktur" field="jmlfaktur" value="{{ $ajuanfaktur->jmlfaktur }}" icon="feather icon-file-text" />
         </div>
     </div>
     <div class="row">
         <div class="col-12">
             <div class="form-group">
-                <textarea name="keterangan" id="keterangan" class="form-control" cols="30" rows="5" placeholder="Keterangan"></textarea>
+                <textarea name="keterangan" id="keterangan" class="form-control" cols="30" rows="5" placeholder="Keterangan">{{ $ajuanfaktur->keterangan }}</textarea>
             </div>
         </div>
     </div>
@@ -59,7 +59,7 @@
         <div class="col-12">
             <div class="vs-checkbox-con vs-checkbox-primary">
 
-                <input type="checkbox" class="sikluspembayaran" name="sikluspembayaran" value="1">
+                <input type="checkbox" {{ $ajuanfaktur->sikluspembayaran==1 ? 'checked' : '' }} class="sikluspembayaran" name="sikluspembayaran" value="1">
                 <span class="vs-checkbox">
                     <span class="vs-checkbox--check">
                         <i class="vs-icon feather icon-check"></i>
