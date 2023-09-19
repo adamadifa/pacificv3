@@ -8155,14 +8155,29 @@ class PenjualanController extends Controller
                     ->where('kategori_harga', 'CANVASER')
                     ->get();
             } else if (str_contains($pelanggan->nama_pelanggan, 'SMM')) {
-                $barang = Harga::orderby('nama_barang', 'asc')
-                    ->select('barang.*')
-                    ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')->where('status', 1)
-                    ->where('show', 1)
-                    ->where('kode_cabang', $kode_cabang)
-                    ->where('kategori_harga', $kategori_salesman)
-                    ->where('status_promo_product', 1)
-                    ->get();
+                if ($kode_cabang == "GRT") {
+                    $barang = Harga::orderby('nama_barang', 'asc')
+                        ->select('barang.*')
+                        ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')->where('status', 1)
+                        ->where('show', 1)
+                        ->where('kode_cabang', $kode_cabang)
+                        ->where('kategori_harga', $kategori_salesman)
+                        ->where('status_promo_product', 1)
+                        ->orwhere('show', 1)
+                        ->where('kode_cabang', $kode_cabang)
+                        ->where('kategori_harga', $kategori_salesman)
+                        ->whereNull('status_promo_product')
+                        ->get();
+                } else {
+                    $barang = Harga::orderby('nama_barang', 'asc')
+                        ->select('barang.*')
+                        ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')->where('status', 1)
+                        ->where('show', 1)
+                        ->where('kode_cabang', $kode_cabang)
+                        ->where('kategori_harga', $kategori_salesman)
+                        ->where('status_promo_product', 1)
+                        ->get();
+                }
             } else {
                 if ($kategori_salesman == "TOCANVASER") {
                     if ($pelanggan->kode_cabang == "BKI") {
