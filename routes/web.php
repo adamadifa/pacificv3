@@ -1863,6 +1863,7 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::post('/getnofakpenj', [PenjualanController::class, 'getnofakpenj']);
+    Route::get('/penjualan/{no_fak_penj}/updatenofaktur', [PenjualanController::class, 'updatenofaktur']);
     //Route::get('/getnofakpenj', [PenjualanController::class, 'getnofakpenj']);
     //Ajuan Faktur
     Route::get('/ajuanfaktur', [AjuanfakturController::class, 'index']);

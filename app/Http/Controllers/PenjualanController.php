@@ -9163,4 +9163,53 @@ class PenjualanController extends Controller
 
         echo $no_fak_penj_auto;
     }
+
+
+
+    public function updatenofaktur($no_fak_penj)
+    {
+        $no_fak_penj = Crypt::decrypt($no_fak_penj);
+        $penjualan = DB::table('penjualan')->where('no_fak_penj', $no_fak_penj)->first();
+
+        $id_karyawan = $penjualan->id_karyawan;
+        //$id_karyawan = "SBDG09";
+        $salesman = DB::table('karyawan')->where('id_karyawan', $id_karyawan)->first();
+        $lastinput = DB::table('penjualan')->where('id_karyawan', $id_karyawan)
+            ->whereRaw('MID(no_fak_penj,4,2) != "PR"')
+            ->orderBy('tgltransaksi', 'desc')->first();
+
+
+        $lasttgl = $lastinput->tgltransaksi;
+        $startdate = date('Y-m-d', strtotime("-2 month", strtotime(date('Y-m-d'))));
+
+        $cekpenjualan = DB::table('penjualan')
+            ->where('id_karyawan', $id_karyawan)
+            ->whereBetween('tgltransaksi', [$startdate, date('Y-m-d')])
+            ->whereRaw('MID(no_fak_penj,4,2) != "PR"')
+            ->orderBy('no_fak_penj', 'desc')
+            ->first();
+
+
+        $lastnofak = $cekpenjualan != null ? $cekpenjualan->no_fak_penj : '';
+
+
+
+        $kode_cabang = $salesman->kode_cabang;
+        $kode_faktur = substr($cekpenjualan->no_fak_penj, 3, 1);
+        $nomor_awal = substr($cekpenjualan->no_fak_penj, 4);
+        $jmlchar = strlen($nomor_awal);
+        $no_fak_penj_auto  =  buatkode($lastnofak, $kode_cabang . $kode_faktur, $jmlchar);
+
+        try {
+            DB::table('penjualan')->where('no_fak_penj', $no_fak_penj)
+                ->update([
+                    'no_fak_penj' => $no_fak_penj_auto
+                ]);
+
+            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+        } catch (\Exception $e) {
+            dd($e);
+            return Redirect::back()->with(['warning' => 'No. Faktur Gagal Dibuat']);
+        }
+    }
 }

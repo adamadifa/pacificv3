@@ -164,6 +164,11 @@
                             <td>
                                 <div class="btn-group" role="group" aria-label="Basic example">
                                     @if (in_array($level,$penjualan_edit))
+                                    @if (substr($d->no_fak_penj,3,2)=="PR")
+                                    <a href="/penjualan/{{ Crypt::encrypt($d->no_fak_penj) }}/updatenofaktur">
+                                        <i class="feather icon-sliders warning"></i>
+                                    </a>
+                                    @endif
 
                                     <a class="ml-1" href="/penjualan/{{\Crypt::encrypt($d->no_fak_penj)}}/editv2"><i class="feather icon-edit success"></i></a>
 
