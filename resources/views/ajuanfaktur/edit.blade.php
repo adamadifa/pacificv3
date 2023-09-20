@@ -55,6 +55,7 @@
             </div>
         </div>
     </div>
+    @if ($ajuanfaktur->kategori_salesman=="TO")
     <div class="row mb-1">
         <div class="col-12">
             <div class="vs-checkbox-con vs-checkbox-primary">
@@ -69,6 +70,7 @@
             </div>
         </div>
     </div>
+    @endif
     <div class="row">
         <div class="col-12">
             <button class="btn btn-primary w-100" type="submit"><i class="feather icon-send mr-1"></i>Submit</button>
