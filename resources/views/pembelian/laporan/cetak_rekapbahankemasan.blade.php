@@ -62,6 +62,7 @@
                 <td>HARGA</td>
                 <td>SUBTOTAL</td>
                 <td>PENYESUAIAN</td>
+                <td>JURNAL KOREKSI</td>
                 <td>TOTAL</td>
             </tr>
         </thead>
@@ -80,12 +81,12 @@
           foreach ($pmb as $key => $d) {
             $totalqty = $totalqty + $d->qty;
             $totalsubtotal = $totalsubtotal + ($d->qty * $d->harga);
-            $grandtotal = $grandtotal + ($d->qty * $d->harga) + $d->penyesuaian;
+            $grandtotal = $grandtotal + ($d->qty * $d->harga) + $d->penyesuaian - $d->jml_jk;
             $totalpenyesuaian = $totalpenyesuaian + $d->penyesuaian;
 
             $totalqtysub = $totalqtysub + $d->qty;
             $totalsubtotalsub = $totalsubtotalsub + ($d->qty * $d->harga);
-            $grandtotalsub = $grandtotalsub + ($d->qty * $d->harga) + $d->penyesuaian;
+            $grandtotalsub = $grandtotalsub + ($d->qty * $d->harga) + $d->penyesuaian - $d->jml_jk;
             $totalpenyesuaiansub = $totalpenyesuaiansub + $d->penyesuaian;
             $supplier  = @$pmb[$key + 1]->kode_supplier;
         ?>
@@ -100,13 +101,14 @@
                 <td align="right"><?php echo desimal($d->harga); ?></td>
                 <td align="right"><?php echo desimal($d->harga * $d->qty); ?></td>
                 <td align="right"><?php echo desimal($d->penyesuaian); ?></td>
-                <td align="right"><?php echo desimal(($d->harga * $d->qty) + $d->penyesuaian); ?></td>
+                <td align="right"><?php echo desimal($d->jml_jk); ?></td>
+                <td align="right"><?php echo desimal(($d->harga * $d->qty) + $d->penyesuaian - $d->jml_jk); ?></td>
             </tr>
             <?php
             if ($supplier != $d->kode_supplier) {
             echo '
                 <tr bgcolor="#199291" style="color:white; font-weight:bold">
-                    <td colspan="6">TOTAL</td>
+                    <td colspan="7">TOTAL</td>
                     <td align="right">' . desimal($totalqtysub) . '</td>
                     <td></td>
                     <td align="right">' . desimal($totalsubtotalsub) . '</td>
@@ -126,7 +128,7 @@
         </tbody>
         <tfooter bgcolor="#024a75" style="color:white; font-size:12;">
             <tr bgcolor="#024a75" style="color:white; font-size:12; text-align:center">
-                <td colspan="6">TOTAL</td>
+                <td colspan="7">TOTAL</td>
                 <td align="right"><?php echo desimal($totalqty); ?></td>
                 <td></td>
                 <td align="right"><?php echo desimal($totalsubtotal); ?></td>

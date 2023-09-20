@@ -355,12 +355,27 @@ class LaporanpembelianController extends Controller
         $sampai = $request->sampai;
         $jenis_barang = $request->jenis_barang;
         $query = Detailpembelian::query();
-        $query->selectRaw("detail_pembelian.kode_barang,satuan,nama_barang,jenis_barang,SUM(qty) as totalqty,SUM((qty*harga)+penyesuaian) as totalharga");
+        $query->selectRaw("detail_pembelian.kode_barang,satuan,nama_barang,jenis_barang,SUM(qty) as totalqty,SUM((qty*harga)+penyesuaian) as totalharga,jml_jk");
         $query->join('pembelian', 'detail_pembelian.nobukti_pembelian', '=', 'pembelian.nobukti_pembelian');
         $query->join('supplier', 'pembelian.kode_supplier', '=', 'supplier.kode_supplier');
         $query->join('departemen', 'pembelian.kode_dept', '=', 'departemen.kode_dept');
         $query->join('coa', 'detail_pembelian.kode_akun', '=', 'coa.kode_akun');
         $query->join('master_barang_pembelian', 'detail_pembelian.kode_barang', '=', 'master_barang_pembelian.kode_barang');
+        $query->leftJoin(
+            DB::raw("(
+                SELECT
+                kode_barang,
+                SUM(qty * harga) AS jml_jk
+            FROM
+                jurnal_koreksi
+            WHERE status_dk = 'K' AND kode_akun = '5-1101' AND tgl_jurnalkoreksi BETWEEN '$dari' AND '$sampai'
+            GROUP BY
+                kode_barang
+            ) jurnal_koreksi"),
+            function ($join) {
+                $join->on('detail_pembelian.kode_barang', '=', 'jurnal_koreksi.kode_barang');
+            }
+        );
         $query->whereBetween('tgl_pembelian', [$dari, $sampai]);
         if ($jenis_barang == "BAHAN") {
             $query->where('jenis_barang', 'BAHAN BAKU');
@@ -375,7 +390,7 @@ class LaporanpembelianController extends Controller
             $query->orWhereBetween('tgl_pembelian', [$dari, $sampai]);
             $query->where('jenis_barang', 'KEMASAN');
         }
-        $query->groupByRaw("detail_pembelian.kode_barang,satuan,nama_barang,jenis_barang");
+        $query->groupByRaw("detail_pembelian.kode_barang,satuan,nama_barang,jenis_barang,jml_jk");
         $pmb = $query->get();
         if (isset($_POST['export'])) {
             // Fungsi header dengan mengirimkan raw data excel
@@ -413,9 +428,28 @@ class LaporanpembelianController extends Controller
             'nama_barang',
             'qty',
             'harga',
-            'penyesuaian'
+            'penyesuaian',
+            'jml_jk'
         );
         $query->join('pembelian', 'detail_pembelian.nobukti_pembelian', '=', 'pembelian.nobukti_pembelian');
+        $query->leftJoin(
+            DB::raw("(
+                SELECT
+                nobukti_pembelian,
+                kode_barang,
+                SUM(qty * harga) AS jml_jk
+            FROM
+                jurnal_koreksi
+            WHERE status_dk = 'K' AND kode_akun = '5-1101' AND tgl_jurnalkoreksi BETWEEN '$dari' AND '$sampai'
+            GROUP BY
+                nobukti_pembelian,
+                kode_barang
+            ) jurnal_koreksi"),
+            function ($join) {
+                $join->on('detail_pembelian.nobukti_pembelian', '=', 'jurnal_koreksi.nobukti_pembelian');
+                $join->on('detail_pembelian.kode_barang', '=', 'jurnal_koreksi.kode_barang');
+            }
+        );
         $query->join('supplier', 'pembelian.kode_supplier', '=', 'supplier.kode_supplier');
         $query->join('master_barang_pembelian', 'detail_pembelian.kode_barang', '=', 'master_barang_pembelian.kode_barang');
         $query->whereBetween('tgl_pembelian', [$dari, $sampai]);

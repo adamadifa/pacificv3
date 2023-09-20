@@ -59,6 +59,7 @@
                 <td>HARGA</td>
                 <td>QTY(gram)</td>
                 <td>HARGA(gram)</td>
+                <td>Jurnal Koreksi</td>
                 <td>TOTAL</td>
             </tr>
         </thead>
@@ -86,22 +87,26 @@
                 //
                 // $grandtotal 	= $totalharga;
                 // $total 				= $total + $grandtotal;
+
+                $totalharga = $d->totalharga - $d->jml_jk;
                 if ($d->jenis_barang == 'BAHAN BAKU') {
                     //echo "TEST";
-                    $totalbahanbaku = $totalbahanbaku + $d->totalharga;
+                    $totalbahanbaku = $totalbahanbaku + $totalharga;
                     $totalbahanpembantu = $totalbahanpembantu +  0;
                     $totalkemasan = $totalkemasan + 0;
                 } else if ($d->jenis_barang == 'Bahan Tambahan') {
                     $totalbahanbaku = $totalbahanbaku + 0;
-                    $totalbahanpembantu = $totalbahanpembantu + $d->totalharga;
+                    $totalbahanpembantu = $totalbahanpembantu + $totalharga;
                     $totalkemasan = $totalkemasan + 0;
                 } else if ($d->jenis_barang == 'KEMASAN') {
                     $totalbahanbaku = $totalbahanbaku + 0;
                     $totalbahanpembantu = $totalbahanpembantu + 0;
-                    $totalkemasan = $totalkemasan + $d->totalharga;
+                    $totalkemasan = $totalkemasan + $totalharga;
                 }
 
                 //echo strlen($d->jenis_barang);
+
+
             ?>
             <tr>
                 <td><?php echo $no; ?></td>
@@ -113,11 +118,13 @@
                 <?php if ($d->satuan == "KG") { ?>
                 <td align="center"><?php echo rupiah($d->totalqty * 1000); ?></td>
                 <td align="center"><?php echo rupiah($d->totalharga / ($d->totalqty * 1000)); ?></td>
-                <td align="right"><?php echo rupiah($d->totalharga); ?></td>
+                <td align="right">{{ rupiah($d->jml_jk) }}</td>
+                <td align="right"><?php echo rupiah($totalharga); ?></td>
                 <?php } else { ?>
                 <td align="center"><?php echo rupiah($d->totalqty); ?></td>
                 <td align="center"><?php echo rupiah($d->totalharga / ($d->totalqty)); ?></td>
-                <td align="right"><?php echo rupiah($d->totalharga); ?></td>
+                <td align="right">{{ rupiah($d->jml_jk) }}</td>
+                <td align="right"><?php echo rupiah($totalharga); ?></td>
                 <?php } ?>
             </tr>
             <?php
@@ -127,32 +134,39 @@
             <?php if ($jenis == 'BAHAN') { ?>
             <tr bgcolor="#024a75" style="color:white">
                 <td colspan="8"><b>Total Bahan Baku</b></td>
+                <td></td>
                 <td align="right"><b><?php echo rupiah($totalbahanbaku); ?></b></td>
             </tr>
             <tr bgcolor="#024a75" style="color:white">
                 <td colspan="8"><b>Total Bahan Pembantu</b></td>
+                <td></td>
                 <td align="right"><b><?php echo rupiah($totalbahanpembantu); ?></b></td>
             </tr>
             <?php } else if ($jenis == 'KEMASAN') { ?>
             <tr bgcolor="#024a75" style="color:white">
                 <td colspan="8"><b>Total Bahan Kemasan</b></td>
+                <td></td>
                 <td align="right"><b><?php echo rupiah($totalkemasan); ?></b></td>
             </tr>
             <?php } else { ?>
             <tr bgcolor="#024a75" style="color:white">
                 <td colspan="8"><b>Total Bahan Baku</b></td>
+                <td></td>
                 <td align="right"><b><?php echo rupiah($totalbahanbaku); ?></b></td>
             </tr>
             <tr bgcolor="#024a75" style="color:white">
                 <td colspan="8"><b>Total Bahan Pembantu</b></td>
+                <td></td>
                 <td align="right"><b><?php echo rupiah($totalbahanpembantu); ?></b></td>
             </tr>
             <tr bgcolor="#024a75" style="color:white">
                 <td colspan="8"><b>Total Bahan Kemasan</b></td>
+                <td></td>
                 <td align="right"><b><?php echo rupiah($totalkemasan); ?></b></td>
             </tr>
             <tr bgcolor="#024a75" style="color:white">
                 <td colspan="8"><b>Total</b></td>
+                <td></td>
                 <td align="right"><b><?php echo rupiah($totalkemasan+$totalbahanbaku+$totalbahanpembantu); ?></b></td>
             </tr>
             <?php } ?>

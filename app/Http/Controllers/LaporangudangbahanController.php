@@ -373,8 +373,16 @@ class LaporangudangbahanController extends Controller
         );
         $query->leftJoin(
             DB::raw("(
-                SELECT SUM((qty*harga)+penyesuaian) as totalharga,kode_barang
+                SELECT SUM((qty*harga)+penyesuaian) - SUM(IFNULL(jml_jk,0)) as totalharga,detail_pembelian.kode_barang
                 FROM detail_pembelian
+                LEFT JOIN (
+                    SELECT nobukti_pembelian,kode_barang, SUM(qty * harga) as jml_jk
+                    FROM jurnal_koreksi
+                    WHERE status_dk = 'K' AND  kode_akun = '5-1101'
+                    AND MONTH(tgl_jurnalkoreksi) = '$bulan' AND YEAR(tgl_jurnalkoreksi) = '$tahun'
+                    GROUP BY nobukti_pembelian,kode_barang
+                ) jurnalkoreksi ON (detail_pembelian.nobukti_pembelian = jurnalkoreksi.nobukti_pembelian AND detail_pembelian.kode_barang = jurnalkoreksi.kode_barang)
+
                 INNER JOIN pembelian ON detail_pembelian.nobukti_pembelian = pembelian.nobukti_pembelian
                 WHERE MONTH(tgl_pembelian) = '$bulan' AND YEAR(tgl_pembelian) = '$tahun'
                 GROUP BY kode_barang
