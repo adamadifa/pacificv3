@@ -153,4 +153,21 @@ class UserController extends Controller
             echo "gagal";
         }
     }
+
+
+    public function getusercabang(Request $request)
+    {
+        $kode_cabang = $request->kode_cabang;
+        $id_user = $request->id_user;
+        $user = DB::table('users')->where('kode_cabang', $kode_cabang)->get();
+        echo "<option value=''>Pilih User</option>";
+        foreach ($user as $d) {
+            if ($id_user == $d->id) {
+                $selected = "selected";
+            } else {
+                $selected = "";
+            }
+            echo "<option $selected value='" . $d->id . "'>" . $d->name . "</option>";
+        }
+    }
 }

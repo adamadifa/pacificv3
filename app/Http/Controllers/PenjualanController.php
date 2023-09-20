@@ -1686,6 +1686,13 @@ class PenjualanController extends Controller
                     //     ]);
                 }
             }
+
+            DB::table('log_aktivitas')->insert([
+                'id_user' => Auth::user()->id,
+                'datetime' => date("Y-m-d H:i:s"),
+                'activity' => 'Input Transaksi Penjualan dengan No. Faktur ' . $no_fak_penj . 'Untuk Pelanggan ' . $kode_pelanggan . ' Dengan Jenis Transaksi ' . $jenistransaksi,
+                'action' => 'c'
+            ]);
             DB::commit();
             if (Auth::user()->level == "salesman") {
                 return redirect('/penjualan/' . Crypt::encrypt($no_fak_penj) . '/showforsales')->with(['success' => 'Data Penjualan Berhasil di Simpan']);
@@ -1777,6 +1784,13 @@ class PenjualanController extends Controller
             //     ->leftJoin('historibayar', 'buku_besar.no_ref', '=', 'historibayar.nobukti')
             //     ->where('no_fak_penj', $no_fak_penj)
             //     ->delete();
+
+            DB::table('log_aktivitas')->insert([
+                'id_user' => Auth::user()->id,
+                'datetime' => date("Y-m-d H:i:s"),
+                'activity' => 'Menghapus Transaksi Penjualan dengan No. Faktur ' . $no_fak_penj,
+                'action' => 'd'
+            ]);
             DB::commit();
             if (Auth::user()->level == 'salesman') {
                 return redirect('/penjualan')->with(['success' => 'Data Berhasil Dihapus']);
@@ -2346,6 +2360,14 @@ class PenjualanController extends Controller
                         ]);
                 }
             }
+
+            $ket_nofaktur = $no_fak_penj != $no_fak_penj_new ? ' Menjadi ' . $no_fak_penj_new : '';
+            DB::table('log_aktivitas')->insert([
+                'id_user' => Auth::user()->id,
+                'datetime' => date("Y-m-d H:i:s"),
+                'activity' => 'Melakukan Update No. Faktur ' . $no_fak_penj . $ket_nofaktur . ' Pelanggan ' . $kode_pelanggan . ' Dengan Jenis Transaksi ' . $jenistransaksi,
+                'action' => 'u'
+            ]);
             DB::commit();
             if (Auth::user()->level == "salesman") {
                 return redirect('/penjualan/' . Crypt::encrypt($no_fak_penj_new) . '/showforsales')->with(['success' => 'Data Penjualan Berhasil di Update']);

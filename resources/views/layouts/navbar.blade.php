@@ -1515,6 +1515,15 @@
                         </a>
                     </li>
                     @endif
+
+
+                    <li class="{{ request()->is(['logaktivitas', 'logaktivitas/index']) ? 'active' : '' }}">
+                        <a href="/logaktivitas">
+                            <i class="feather icon-users"></i>
+                            <span class="menu-item">Log Aktivitas</span>
+                        </a>
+                    </li>
+
                     <li class="{{ request()->is(['user/gantipassword']) ? 'active' : '' }}">
                         <a href="/user/gantipassword">
                             <i class="fa fa-key"></i>

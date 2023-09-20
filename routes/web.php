@@ -61,6 +61,7 @@ use App\Http\Controllers\LedgerController;
 use App\Http\Controllers\LemburController;
 use App\Http\Controllers\LhpController;
 use App\Http\Controllers\LimitkreditController;
+use App\Http\Controllers\LogaktivitasController;
 use App\Http\Controllers\LogamtokertasController;
 use App\Http\Controllers\LpcController;
 use App\Http\Controllers\MaintenanceController;
@@ -199,7 +200,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/user/editprofile', [UserController::class, 'editprofile']);
     Route::post('/user/{id}/update', [UserController::class, 'update']);
     Route::post('/user/{id}/updateprofile', [UserController::class, 'updateprofile']);
-
+    Route::post('/user/getusercabang', [UserController::class, 'getusercabang']);
     //Tutup Laporan
     Route::post('/cektutuplaporan', [TutuplaporanController::class, 'cektutuplaporan']);
     //Cek Barang Penjualan Temporary
@@ -1872,6 +1873,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/ajuanfaktur/{no_pengajuan}/approve', [AjuanfakturController::class, 'approve']);
     Route::get('/ajuanfaktur/{no_pengajuan}/decline', [AjuanfakturController::class, 'decline']);
     Route::delete('/ajuanfaktur/{no_pengajuan}/delete', [AjuanfakturController::class, 'delete']);
+
+
+
+    //LogAktivitas
+
+    Route::get('/logaktivitas', [LogaktivitasController::class, 'index']);
 });
 
 
