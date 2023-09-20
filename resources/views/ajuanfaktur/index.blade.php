@@ -159,7 +159,7 @@
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             @if(in_array($level,$limitkredit_hapus))
-                                            @if (empty($d->kacab))
+                                            @if (empty($d->rsm))
                                             <a class="ml-1 editajuan" href="#" no_pengajuan="{{ Crypt::encrypt($d->no_pengajuan)}}"><i class="feather icon-edit success"></i></a>
                                             <form method="POST" name="deleteform" class="deleteform" action="/ajuanfaktur/{{ Crypt::encrypt($d->no_pengajuan) }}/delete">
                                                 @csrf
