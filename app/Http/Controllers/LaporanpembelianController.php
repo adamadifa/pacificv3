@@ -180,8 +180,26 @@ class LaporanpembelianController extends Controller
         $query = Detailpembelian::query();
         $query->selectRaw("detail_pembelian.nobukti_pembelian,tgl_pembelian,pembelian.kode_supplier,nama_supplier,
         detail_pembelian.kode_barang,nama_barang,jenis_barang,pembelian.kode_dept,nama_dept,detail_pembelian.keterangan,
-        detail_pembelian.kode_akun,nama_akun,ppn,qty,harga,penyesuaian");
+        detail_pembelian.kode_akun,nama_akun,ppn,qty,harga,penyesuaian,IFNULL(jml_jk,0) as jml_jk");
         $query->join('pembelian', 'detail_pembelian.nobukti_pembelian', '=', 'pembelian.nobukti_pembelian');
+        $query->leftJoin(
+            DB::raw("(
+                SELECT
+                nobukti_pembelian,
+                kode_barang,
+                SUM(qty * harga) AS jml_jk
+            FROM
+                jurnal_koreksi
+            WHERE status_dk = 'K' AND kode_akun = '5-1101' AND tgl_jurnalkoreksi BETWEEN '$dari' AND '$sampai'
+            GROUP BY
+                nobukti_pembelian,
+                kode_barang
+            ) jurnal_koreksi"),
+            function ($join) {
+                $join->on('detail_pembelian.nobukti_pembelian', '=', 'jurnal_koreksi.nobukti_pembelian');
+                $join->on('detail_pembelian.kode_barang', '=', 'jurnal_koreksi.kode_barang');
+            }
+        );
         $query->join('supplier', 'pembelian.kode_supplier', '=', 'supplier.kode_supplier');
         $query->join('departemen', 'pembelian.kode_dept', '=', 'departemen.kode_dept');
         $query->join('coa', 'detail_pembelian.kode_akun', '=', 'coa.kode_akun');

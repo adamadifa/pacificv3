@@ -57,6 +57,7 @@
                 <td>HARGA</td>
                 <td>SUBTOTAL</td>
                 <td>PENYESUAIAN</td>
+                <td>JURNAL KOREKSI</td>
                 <td>TOTAL</td>
             </tr>
         </thead>
@@ -65,7 +66,7 @@
             $total  = 0;
             $no = 1;
             foreach ($pmb as $key => $d) {
-                $totalharga = ($d->harga * $d->qty) + $d->penyesuaian;
+                $totalharga = ($d->harga * $d->qty) + $d->penyesuaian - $d->jml_jk;
                 $subtotal = $d->harga * $d->qty;
                 if ($d->ppn == '1') {
                     $cekppn  =  "&#10004;";
@@ -92,6 +93,7 @@
                 <td align="right"><?php echo desimal($d->harga); ?></td>
                 <td align="right"><?php echo desimal($subtotal); ?></td>
                 <td align="right"><?php echo desimal($d->penyesuaian); ?></td>
+                <td align="right"><?php echo desimal($d->jml_jk); ?></td>
                 <td align="right"><?php echo desimal($totalharga); ?></td>
             </tr>
             <?php
