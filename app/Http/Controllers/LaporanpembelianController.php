@@ -130,9 +130,28 @@ class LaporanpembelianController extends Controller
         $sampai = $request->sampai;
         $query = Detailpembelian::query();
         $query->selectRaw('pembelian.kode_supplier,nama_supplier,
-        (SUM( IF ( STATUS = "PMB", ((qty*harga)+penyesuaian), 0 ) )) as jumlah');
+        (SUM( IF ( STATUS = "PMB", ((qty*harga)+penyesuaian), 0 ) )) - SUM(IFNULL(jml_jk,0)) as jumlah');
+
         $query->join('pembelian', 'detail_pembelian.nobukti_pembelian', '=', 'pembelian.nobukti_pembelian');
         $query->join('supplier', 'pembelian.kode_supplier', '=', 'supplier.kode_supplier');
+        $query->leftJoin(
+            DB::raw("(
+                SELECT
+                nobukti_pembelian,
+                kode_barang,
+                SUM(qty * harga) AS jml_jk
+            FROM
+                jurnal_koreksi
+            WHERE status_dk = 'K' AND kode_akun = '5-1101' AND tgl_jurnalkoreksi BETWEEN '$dari' AND '$sampai'
+            GROUP BY
+                nobukti_pembelian,
+                kode_barang
+            ) jurnal_koreksi"),
+            function ($join) {
+                $join->on('detail_pembelian.nobukti_pembelian', '=', 'jurnal_koreksi.nobukti_pembelian');
+                $join->on('detail_pembelian.kode_barang', '=', 'jurnal_koreksi.kode_barang');
+            }
+        );
         $query->whereBetween('tgl_pembelian', [$dari, $sampai]);
         $query->groupByRaw('pembelian.kode_supplier,nama_supplier');
         $pmb = $query->get();
