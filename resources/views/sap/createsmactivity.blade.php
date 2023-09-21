@@ -118,6 +118,9 @@
         , width: 640
         , image_format: 'jpeg'
         , jpeg_quality: 80
+        , constraints: {
+            facingMode: 'environment'
+        }
     });
 
     Webcam.attach('.webcam-capture');
