@@ -9181,10 +9181,11 @@ class PenjualanController extends Controller
 
         $lasttgl = $lastinput->tgltransaksi;
         $startdate = date('Y-m-d', strtotime("-2 month", strtotime(date('Y-m-d'))));
+        $enddate = date('Y-m-t');
 
         $cekpenjualan = DB::table('penjualan')
             ->where('id_karyawan', $id_karyawan)
-            ->whereBetween('tgltransaksi', [$startdate, date('Y-m-d')])
+            ->whereBetween('tgltransaksi', [$startdate, $enddate])
             ->whereRaw('MID(no_fak_penj,4,2) != "PR"')
             ->orderBy('no_fak_penj', 'desc')
             ->first();
