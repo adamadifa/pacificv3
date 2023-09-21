@@ -359,6 +359,7 @@ function ceklembur($dari, $sampai)
         kode_dept,
         keterangan,
         kategori,
+        istirahat,
         IFNULL(lembur_karyawan.nik,"ALL") as nik')
         ->leftJoin('lembur_karyawan', 'lembur.kode_lembur', '=', 'lembur_karyawan.kode_lembur')
         ->whereBetween('tanggal', [$dari, $sampai])->get();
@@ -371,7 +372,8 @@ function ceklembur($dari, $sampai)
             'tanggal_dari' => $d->tanggal_dari,
             'tanggal_sampai' => $d->tanggal_sampai,
             'keterangan' => $d->keterangan,
-            'kategori' => $d->kategori
+            'kategori' => $d->kategori,
+            'istirahat' => $d->istirahat
         ];
     }
 

@@ -107,6 +107,7 @@
                                             <th>Kantor</th>
                                             <th>Dept</th>
                                             <th>Kategori</th>
+                                            <th>Istirahat</th>
                                             <th style="width:25%">Keterangan</th>
                                             <th>HRD</th>
                                             <th>Aksi</th>
@@ -127,6 +128,13 @@
                                                 REGULER
                                                 @else
                                                 LEMBUR HARI LIBUR
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($d->istirahat==1)
+                                                <span class="badge bg-success">Ada</span>
+                                                @else
+                                                <span><i class="fa fa-close danger"></i></span>
                                                 @endif
                                             </td>
                                             <td>{{ ucwords(strtolower($d->keterangan)) }}
@@ -282,6 +290,17 @@
                     </div>
                     <div class="row">
                         <div class="col-12">
+                            <div class="form-group">
+                                <select name="istirahat" id="istirahat" class="form-control">
+                                    <option value="">Istirahat / Tidak Istirahat</option>
+                                    <option value="1">Istirahat</option>
+                                    <option value="0">Tidak Istirahat</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
                             <x-inputtext label="Keterangan" field="keterangan" icon="feather icon-file" />
                         </div>
                     </div>
@@ -378,6 +397,7 @@
             var kode_dept = $("#kode_dept").val();
             var keterangan = $("#keterangan").val();
             var kategori = $("#kategori").val();
+            var istirahat = $("#istirahat").val();
             var level = "{{ $level }}";
             if (tanggal_dari == "") {
                 swal({
@@ -457,6 +477,16 @@
                     , showConfirmButton: false
                 }).then(function() {
                     $("#keterangan").focus();
+                });
+                return false;
+            } else if (istirahat == "") {
+                swal({
+                    title: 'Oops'
+                    , text: 'Istirahat / Tidak Istirahat Harus Dipilih !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#istirahat").focus();
                 });
                 return false;
             }

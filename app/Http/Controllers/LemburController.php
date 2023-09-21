@@ -83,6 +83,7 @@ class LemburController extends Controller
         $id_kantor = $request->id_kantor;
         $kode_dept = $request->kode_dept;
         $keterangan = $request->keterangan;
+        $istirahat = $request->istirahat;
         $tahun = substr(date('Y', strtotime($tanggal_dari)), 2, 2);
         $lembur = DB::table('lembur')->whereRaw('MID(kode_lembur,3,2)="' . $tahun . '"')
             ->orderBy('kode_lembur', 'desc')->first();
@@ -98,7 +99,8 @@ class LemburController extends Controller
             'id_kantor' => $id_kantor,
             'kode_dept' => $kode_dept,
             'keterangan' => $keterangan,
-            'kategori' => $kategori
+            'kategori' => $kategori,
+            'istirahat' => $istirahat
         ];
         try {
 

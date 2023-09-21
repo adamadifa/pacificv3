@@ -38,11 +38,27 @@
                                         <td>{{ date("d-m-Y H:i",strtotime($lembur->tanggal_dari)) }} s.d {{ date("d-m-Y H:i",strtotime($lembur->tanggal_sampai)) }}</td>
                                     </tr>
                                     <tr>
+                                        <th>Istirahat</th>
+                                        <td>
+                                            @if ($lembur->istirahat == 1)
+                                            @php
+                                            $istirahat = 1;
+                                            @endphp
+                                            <span class=" badge bg-success">Ada</span>
+                                            @else
+                                            @php
+                                            $istirahat = 0;
+                                            @endphp
+                                            <span class="badge bg-danger"><i class="fa fa-close danger"></i></span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <th>Jumlah Jam</th>
                                         <td>
                                             @php
                                             $jmljam = hitungjamdesimal($lembur->tanggal_dari,$lembur->tanggal_sampai);
-                                            $jmljam = $jmljam > 7 ? 7 : $jmljam;
+                                            $jmljam = $jmljam > 7 ? 7 : $jmljam-$istirahat;
                                             @endphp
                                             {{ $jmljam }} Jam
                                         </td>

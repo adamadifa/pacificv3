@@ -262,7 +262,8 @@
                         $tgl_lembur_sampai = $ceklembur[0]["tanggal_sampai"];
                         $jamlembur_dari = date("H:i",strtotime($tgl_lembur_dari));
                         $jmljam_lbr = hitungjamdesimal($tgl_lembur_dari,$tgl_lembur_sampai);
-                        $jmljam_lembur = $jmljam_lbr > 7 ? 7 : $jmljam_lbr;
+                        $istirahatlbr = $ceklembur[0]["istirahat"] == 1 ? 1 : 0;
+                        $jmljam_lembur = $jmljam_lbr > 7 ? 7 : $jmljam_lbr - $istirahatlbr;
                         $kategori_lembur = $ceklembur[0]["kategori"];
                         if(empty($ceklibur) && empty($cekliburpenggantiminggu) && empty($cekwfhfull) && $namahari != "Minggu" ){
                             if($jamlembur_dari >= "22:00" && $jmljam_lbr>=4.98){
