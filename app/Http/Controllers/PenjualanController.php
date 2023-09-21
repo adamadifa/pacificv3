@@ -9187,7 +9187,7 @@ class PenjualanController extends Controller
             ->where('id_karyawan', $id_karyawan)
             ->whereBetween('tgltransaksi', [$startdate, $enddate])
             ->whereRaw('MID(no_fak_penj,4,2) != "PR"')
-            ->orderBy('no_fak_penj', 'desc')
+            ->orderBy('date_created', 'desc')
             ->first();
 
 
