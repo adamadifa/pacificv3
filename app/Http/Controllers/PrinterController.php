@@ -187,7 +187,7 @@ class PrinterController extends Controller
             $printer->text($cabang . ".\n");
             $printer->selectPrintMode();
             $printer->text($alamat . ".\n");
-            $printer->feed();
+            $printer->text($date . "\n");
 
 
             /* Title of receipt */
@@ -286,20 +286,22 @@ class PrinterController extends Controller
 
 
 
-            $printer->feed(2);
-            $printer->text($date . "\n");
-            $printer->feed(2);
+
+
 
 
             //Faktur PERUSAHAAN
             /* Name of shop */
             $printer->setJustification(Printer::JUSTIFY_CENTER);
             $printer->selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+            $printer->text("\n");
+            $printer->text("\n");
+            $printer->feed(2);
             $printer->text($perusahaan . ".\n");
             $printer->text($cabang . ".\n");
             $printer->selectPrintMode();
             $printer->text($alamat . ".\n");
-            $printer->feed();
+            $printer->text($date . "\n");
 
 
             /* Title of receipt */
@@ -395,8 +397,7 @@ class PrinterController extends Controller
 
 
 
-            $printer->feed(2);
-            $printer->text($date . "\n");
+
             // /* Barcode Default look */
 
             // $printer->barcode("ABC", Printer::BARCODE_CODE39);
