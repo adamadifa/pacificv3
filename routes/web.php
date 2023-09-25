@@ -11,6 +11,7 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\BarangpembelianController;
 use App\Http\Controllers\BelumsetorController;
 use App\Http\Controllers\BpbjController;
+use App\Http\Controllers\BpjstkController;
 use App\Http\Controllers\CabangController;
 use App\Http\Controllers\CoaController;
 use App\Http\Controllers\CostratioController;
@@ -1651,6 +1652,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/insentif/{kode_insentif}/update', [InsentifController::class, 'update']);
     Route::delete('/insentif/{kode_insentif}/delete', [InsentifController::class, 'delete']);
 
+
+    //BPJS TK
+
+    Route::get('/bpjstk', [BpjstkController::class, 'index']);
+    Route::get('/bpjstk/create', [BpjstkController::class, 'create']);
 
     //Pengajuan Izin
     Route::get('/pengajuanizin', [PengajuanizinController::class, 'index']);

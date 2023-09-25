@@ -177,6 +177,15 @@
                         </a>
                     </li>
                     @endif
+
+                    @if (in_array($level,$bpjs_menu) && Auth::user()->id != 176 )
+                    <li class="{{ request()->is(['bpjstk', 'bpjstk/*']) ? 'active' : '' }}">
+                        <a href="/bpjstk">
+                            <i class="feather icon-dollar-sign"></i>
+                            <span class="menu-item" data-i18n="Second Level">BPJS TK</span>
+                        </a>
+                    </li>
+                    @endif
                 </ul>
             </li>
             @endif

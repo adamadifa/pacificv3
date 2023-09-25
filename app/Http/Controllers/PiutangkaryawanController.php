@@ -109,7 +109,7 @@ class PiutangkaryawanController extends Controller
         $histori = DB::table('pinjaman_nonpjp_historibayar')
             ->join('users', 'pinjaman_nonpjp_historibayar.id_user', '=', 'users.id')
             ->where('no_pinjaman_nonpjp', $no_pinjaman_nonpjp)
-            ->orderBy('tgl_bayar', 'desc')
+            ->orderBy('tgl_bayar', 'asc')
             ->get();
         return view('piutangkaryawan.gethistoribayar', compact('histori', 'no_pinjaman_nonpjp'));
     }

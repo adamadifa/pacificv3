@@ -7,7 +7,21 @@ $total+= $d->jumlah;
 @endphp
 <tr>
     <td>{{ $d->no_bukti }}</td>
-    <td>{{ date("d-m-Y",strtotime($d->tgl_bayar))}}</td>
+    @php
+    $tgl = explode("-",$d->tgl_bayar);
+    $bulan = $tgl[1];
+    $tahun = $tgl[0];
+
+    if($bulan == 1){
+    $bln = 12;
+    $thn = $tahun -1;
+    }else{
+    $bln = $bulan - 1;
+    $thn = $tahun;
+    }
+    $tanggal = $thn."-".$bln."-01";
+    @endphp
+    <td>{{ date("d-m-Y",strtotime($tanggal))}}</td>
     <td style="text-align: right">{{ rupiah($d->jumlah) }}</td>
     <td>
 
