@@ -54,6 +54,7 @@
                                             <th class="text-left">Jabatan</th>
                                             <th class="text-left">Departemen</th>
                                             <th>Iuran</th>
+                                            <th>Tgl Berlaku</th>
                                             <th>Aksi</th>
                                         </tr>
                                     </thead>
@@ -70,6 +71,7 @@
                                             <td>{{ $d->nama_jabatan }}</td>
                                             <td>{{ $d->nama_dept }}</td>
                                             <td class="text-right">{{ rupiah($d->iuran) }}</td>
+                                            <td>{{ date("d-m-Y",strtotime($d->tgl_berlaku)) }}</td>
                                             <td>
                                                 <div class="btn-group" role="group" aria-label="Basic example">
                                                     @if (in_array($level,$insentif_edit))

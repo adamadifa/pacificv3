@@ -1657,6 +1657,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/bpjstk', [BpjstkController::class, 'index']);
     Route::get('/bpjstk/create', [BpjstkController::class, 'create']);
+    Route::post('/bpjstk/store', [BpjstkController::class, 'store']);
+    Route::post('/bpjstk/{kode_bpjs_tk}/update', [BpjstkController::class, 'update']);
+    Route::delete('/bpjstk/{kode_bpjs_tk}/delete', [BpjstkController::class, 'delete']);
+    Route::get('/bpjstk/{kode_bpjs_tk}/edit', [BpjstkController::class, 'edit']);
 
     //Pengajuan Izin
     Route::get('/pengajuanizin', [PengajuanizinController::class, 'index']);

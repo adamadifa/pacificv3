@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bpjstk;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
@@ -13,6 +14,10 @@ class BpjstkController extends Controller
     {
 
         $query = Bpjstk::query();
+        if (!empty($request->nama_karyawan_search)) {
+            $query->where('nama_karyawan', 'like', '%' . $request->nama_karyawan_search . '%');
+        }
+
         $query->select('bpjs_tenagakerja.*', 'nama_karyawan', 'nama_jabatan', 'nama_dept', 'id_kantor');
         $query->join('master_karyawan', 'bpjs_tenagakerja.nik', '=', 'master_karyawan.nik');
         $query->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
@@ -57,6 +62,43 @@ class BpjstkController extends Controller
             return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
         } catch (\Exception $e) {
             return Redirect::back()->with(['warning' => 'Data Gagal Di Simpan']);
+        }
+    }
+
+    public function delete($kode_bpjs_tk, Request $request)
+    {
+        $kode_bpjs_tk = Crypt::decrypt($kode_bpjs_tk);
+        try {
+            DB::table('bpjs_tenagakerja')->where('kode_bpjs_tk', $kode_bpjs_tk)->delete();
+            return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
+        }
+    }
+
+
+    public function edit($kode_bpjs_tk)
+    {
+        $karyawan = DB::table('master_karyawan')->orderBy('nama_karyawan')->get();
+        $kode_bpjs_tk = Crypt::decrypt($kode_bpjs_tk);
+        $bpjstk = DB::table('bpjs_tenagakerja')->where('kode_bpjs_tk', $kode_bpjs_tk)->first();
+        return view('bpjstk.edit', compact('karyawan', 'bpjstk'));
+    }
+
+    public function update($kode_bpjs_tk, Request $request)
+    {
+        $kode_bpjs_tk = Crypt::decrypt($kode_bpjs_tk);
+        $iuran = isset($request->iuran) ? str_replace(".", "", $request->iuran) : 0;
+        $data = [
+            'tgl_berlaku' => $request->tgl_berlaku,
+            'iuran' => $iuran
+        ];
+
+        try {
+            DB::table('bpjs_tenagakerja')->where('kode_bpjs_tk', $kode_bpjs_tk)->update($data);
+            return Redirect::back()->with(['success' => 'Data Berhasil Diupdate']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Data Gagal Diupdate']);
         }
     }
 }
