@@ -32,7 +32,7 @@
                         @endif
 
                         <div class="card-body">
-                            <form action="/bpjstk">
+                            <form action="/bpjskesehatan">
                                 <div class="row">
                                     @php
                                     $level_search = ["admin","manager hrd","manager accounting","direktur"];
