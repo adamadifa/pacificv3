@@ -11,6 +11,7 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\BarangpembelianController;
 use App\Http\Controllers\BelumsetorController;
 use App\Http\Controllers\BpbjController;
+use App\Http\Controllers\BpjskesehatanController;
 use App\Http\Controllers\BpjstkController;
 use App\Http\Controllers\CabangController;
 use App\Http\Controllers\CoaController;
@@ -1661,6 +1662,16 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/bpjstk/{kode_bpjs_tk}/update', [BpjstkController::class, 'update']);
     Route::delete('/bpjstk/{kode_bpjs_tk}/delete', [BpjstkController::class, 'delete']);
     Route::get('/bpjstk/{kode_bpjs_tk}/edit', [BpjstkController::class, 'edit']);
+
+
+    //BPJS Kesehatan
+
+    Route::get('/bpjskesehatan', [BpjskesehatanController::class, 'index']);
+    Route::get('/bpjskesehatan/create', [BpjskesehatanController::class, 'create']);
+    Route::post('/bpjskesehatan/store', [BpjstkBpjskesehatanControllerController::class, 'store']);
+    Route::post('/bpjskesehatan/{kode_bpjs_kes}/update', [BpjskesehatanController::class, 'update']);
+    Route::delete('/bpjskesehatan/{kode_bpjs_kes}/delete', [BpjskesehatanController::class, 'delete']);
+    Route::get('/bpjskesehatan/{kode_bpjs_kes}/edit', [BpjskesehatanController::class, 'edit']);
 
     //Pengajuan Izin
     Route::get('/pengajuanizin', [PengajuanizinController::class, 'index']);

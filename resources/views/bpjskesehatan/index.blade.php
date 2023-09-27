@@ -1,15 +1,15 @@
 @extends('layouts.midone')
-@section('titlepage','Data Master BPJS Tenaga Kerja')
+@section('titlepage','Data Master BPJS Kesehatan')
 @section('content')
 <div class="content-wrapper">
     <div class="content-header row">
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Data Master BPJS Tenaga Kerja</h2>
+                    <h2 class="content-header-title float-left mb-0">Data Master BPJS Kesehatan</h2>
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="/insentif">Data Master BPJS Tenaga Kerja</a>
+                            <li class="breadcrumb-item"><a href="/insentif">Data Master BPJS Kesehatan</a>
                             </li>
                         </ol>
                     </div>
@@ -124,12 +124,12 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($bpjstk as $d)
+                                        @foreach ($bpjskes as $d)
                                         <tr>
                                             <td class="text-center">
-                                                {{ $loop->iteration + $bpjstk->firstItem() - 1 }}
+                                                {{ $loop->iteration + $bpjskes->firstItem() - 1 }}
                                             </td>
-                                            <td class="text-center">{{ $d->kode_bpjs_tk }}</td>
+                                            <td class="text-center">{{ $d->kode_bpjs_kes }}</td>
                                             <td class="text-center">{{ $d->nik }}</td>
                                             <td>{{ $d->nama_karyawan }}</td>
                                             <td class="text-center">{{ $d->id_kantor }}</td>
@@ -140,10 +140,10 @@
                                             <td>
                                                 <div class="btn-group" role="group" aria-label="Basic example">
                                                     @if (in_array($level,$insentif_edit))
-                                                    <a class="ml-1 edit" kode_bpjs_tk="{{ Crypt::encrypt($d->kode_bpjs_tk) }}" href="#"><i class="feather icon-edit success"></i></a>
+                                                    <a class="ml-1 edit" kode_bpjs_kes="{{ Crypt::encrypt($d->kode_bpjs_kes) }}" href="#"><i class="feather icon-edit success"></i></a>
                                                     @endif
                                                     @if (in_array($level,$insentif_hapus))
-                                                    <form method="POST" class="deleteform" action="/bpjstk/{{Crypt::encrypt($d->kode_bpjs_tk)}}/delete">
+                                                    <form method="POST" class="deleteform" action="/bpjstk/{{Crypt::encrypt($d->kode_bpjs_kes)}}/delete">
                                                         @csrf
                                                         @method('DELETE')
                                                         <a href="#" class="delete-confirm ml-1">
@@ -157,7 +157,7 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                                {{ $bpjstk->links('vendor.pagination.vuexy') }}
+                                {{ $bpjskes->links('vendor.pagination.vuexy') }}
                             </div>
 
                             <!-- DataTable ends -->
@@ -177,7 +177,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel18">Tambah BPJS Tenaga Kerja</h4>
+                <h4 class="modal-title" id="myModalLabel18">Tambah BPJS Kesehatan</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -193,7 +193,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel18">Edit BPJS Tenaga Kerja</h4>
+                <h4 class="modal-title" id="myModalLabel18">Edit BPJS Kesehatan</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -221,13 +221,13 @@
         });
 
         $('.edit').click(function(e) {
-            var kode_bpjs_tk = $(this).attr("kode_bpjs_tk");
+            var kode_bpjs_kes = $(this).attr("kode_bpjs_kes");
             e.preventDefault();
             $('#mdleditbpjstk').modal({
                 backdrop: 'static'
                 , keyboard: false
             });
-            $("#loadeditbpjstk").load('/bpjstk/' + kode_bpjs_tk + '/edit');
+            $("#loadeditbpjstk").load('/bpjstk/' + kode_bpjs_kes + '/edit');
         });
 
 

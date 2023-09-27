@@ -185,6 +185,12 @@
                             <span class="menu-item" data-i18n="Second Level">BPJS TK</span>
                         </a>
                     </li>
+                    <li class="{{ request()->is(['bpjskesehatan', 'bpjskesehatan/*']) ? 'active' : '' }}">
+                        <a href="/bpjskesehatan">
+                            <i class="feather icon-dollar-sign"></i>
+                            <span class="menu-item" data-i18n="Second Level">BPJS Kesehatan</span>
+                        </a>
+                    </li>
                     @endif
                 </ul>
             </li>
