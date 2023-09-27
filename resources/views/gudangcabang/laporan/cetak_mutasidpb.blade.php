@@ -53,7 +53,7 @@
         <br>
     </b>
     <br>
-    <table style="width:120%">
+    <table style="width:180%">
         <tr>
             <td valign="top">
                 <table class="datatable3" border="1" style="width:100%">
@@ -110,17 +110,21 @@
                 <table class="datatable3" border="1" style="width:100%">
                     <thead>
                         <tr>
-                            <th bgcolor="#024a75" style="color:white; font-size:12;" colspan="8">MUTASI DPB</th>
+                            <th bgcolor="#024a75" style="color:white; font-size:12;" colspan="12">MUTASI DPB</th>
                         </tr>
                         <tr>
                             <th bgcolor="#024a75" style="color:white; font-size:12;">NO DPB</th>
                             <th bgcolor="#024a75" style="color:white; font-size:12;">SALESMAN</th>
                             <th bgcolor="#024a75" style="color:white; font-size:12;">TUJUAN</th>
                             <th bgcolor="#024a75" style="color:white; font-size:12;">NO KENDARAAN</th>
-                            <th bgcolor="#024a75" style="color:white; font-size:12;">TANGGAL PENGAMBILAN</th>
-                            <th bgcolor="#024a75" style="color:white; font-size:12;">JUMLAH PENGAMBILAN</th>
-                            <th bgcolor="#024a75" style="color:white; font-size:12;">TANGGAL PENGEMBALIAN</th>
-                            <th bgcolor="#024a75" style="color:white; font-size:12;">JUMLAH PENGEMBALIAN</th>
+                            <th bgcolor="#024a75" style="color:white; font-size:12; width:5%">TANGGAL PENGAMBILAN</th>
+                            <th bgcolor="#024a75" style="color:white; font-size:12; width:5%">JUMLAH PENGAMBILAN</th>
+                            <th bgcolor="#024a75" style="color:white; font-size:12; width:5%">TANGGAL PENGEMBALIAN</th>
+                            <th bgcolor="#024a75" style="color:white; font-size:12; width:5%">JUMLAH PENGEMBALIAN</th>
+                            <th bgcolor="#024a75" style="color:white; font-size:12;">SOPIR</th>
+                            <th bgcolor="#024a75" style="color:white; font-size:12;">HELPER 1</th>
+                            <th bgcolor="#024a75" style="color:white; font-size:12;">HELPER 2</th>
+                            <th bgcolor="#024a75" style="color:white; font-size:12;">HELPER 3</th>
 
                         </tr>
                     </thead>
@@ -141,7 +145,10 @@
                             <td style="text-align:right; background-color:#c7473a"><?php echo desimal($m->jml_pengambilan); ?></td>
                             <td><?php if(!empty($m->tgl_pengembalian)) {echo date("d-m-Y",strtotime($m->tgl_pengembalian)); } ?></td>
                             <td style="text-align:right; background-color:#28a745"><?php echo desimal($m->jml_pengembalian); ?></td>
-
+                            <td><?php echo $m->nama_driver; ?></td>
+                            <td><?php echo $m->nama_helper_1; ?></td>
+                            <td><?php echo $m->nama_helper_2; ?></td>
+                            <td><?php echo $m->nama_helper_3; ?></td>
                             <?php } ?>
                     </tbody>
                     <tfoot>

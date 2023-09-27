@@ -550,9 +550,17 @@ class LaporangudangcabangController extends Controller
             ->get();
 
         $dpbpengambilan = DB::table('detail_dpb')
-            ->selectRaw("detail_dpb.no_dpb,dpb.kode_cabang,dpb.id_karyawan,nama_karyawan,tujuan,no_kendaraan,tgl_pengambilan,jml_pengambilan,tgl_pengembalian,jml_pengembalian")
+            ->selectRaw("detail_dpb.no_dpb,dpb.kode_cabang,dpb.id_karyawan,nama_karyawan,tujuan,no_kendaraan,tgl_pengambilan,jml_pengambilan,tgl_pengembalian,jml_pengembalian,
+            driver.nama_driver_helper as nama_driver,
+            helper1.nama_driver_helper as nama_helper_1,
+            helper2.nama_driver_helper as nama_helper_2,
+            helper3.nama_driver_helper as nama_helper_3")
             ->join('dpb', 'detail_dpb.no_dpb', '=', 'dpb.no_dpb')
             ->join('karyawan', 'dpb.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->leftJoin('driver_helper as driver', 'dpb.id_driver', '=', 'driver.id_driver_helper')
+            ->leftJoin('driver_helper as helper1', 'dpb.id_helper', '=', 'helper1.id_driver_helper')
+            ->leftJoin('driver_helper as helper2', 'dpb.id_helper_2', '=', 'helper2.id_driver_helper')
+            ->leftJoin('driver_helper as helper3', 'dpb.id_helper_3', '=', 'helper3.id_driver_helper')
             ->whereBetween('tgl_pengambilan', [$dari, $sampai])
             ->where('dpb.kode_cabang', $kode_cabang)
             ->where('kode_produk', $kode_produk)

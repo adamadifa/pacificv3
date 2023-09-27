@@ -168,6 +168,9 @@
                 @php
                 $no = 1;
                 $totaljam1bulan = 173;
+                $total_gajipokok = 0;
+
+
                 @endphp
                 @foreach ($presensi as $d)
                 <?php
@@ -880,6 +883,12 @@
 
                 $totalhariall_shift_3 = $totalhari_shift_3 + $totalharilembur_shift_3;
                 $totalpremiall_shift_3 = $totalpremi_shift_3 + $totalpremilembur_shift_3;
+
+
+
+                //TOTAL
+                //Total Gaji Pokok
+                $total_gajipokok += $d->gaji_pokok;
                 ?>
                 <tr>
                     <td>{{ $loop->iteration }}</td>
@@ -1081,6 +1090,10 @@
                     </td>
                 </tr>
                 @endforeach
+                <tr bgcolor="#024a75" style="color:white; font-size:12;">
+                    <th colspan="13">TOTAL</th>
+                    <th style="text-align: right">{{ rupiah($total_gajipokok) }}</th>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -1092,7 +1105,8 @@
         $('.freeze-table').freezeTable({
             'scrollable': true
             , 'columnNum': 4
-        });
+            , 'shadow': true
+        , });
     });
 
 </script>
