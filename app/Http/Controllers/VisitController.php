@@ -127,7 +127,7 @@ class VisitController extends Controller
         $update = DB::table('visit')
             ->where('id', $request->id)
             ->update([
-                'kode_cabang' => $request->kode_cabang,
+                'kode_cabang' => Auth::user()->kode_cabang,
                 'tgl_visit' => $request->tgl_visit,
                 'hasil_konfirmasi' => $request->hasil_konfirmasi,
                 'no_fak_penj' => $request->no_fak_penj,
