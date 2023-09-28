@@ -108,7 +108,6 @@
                     <th colspan="2">OVERTIME 1</th>
                     <th colspan="2">OVERTIME 2</th>
                     <th colspan="2">OT LIBUR 1</th>
-                    <th colspan="2">OT LIBUR 2</th>
                     <th rowspan="2">TOTAL<br>OVERTIME</th>
                     <th colspan="2">PREMI SHIFT 2</th>
                     <th colspan="2">PREMI SHIFT 3</th>
@@ -153,8 +152,6 @@
                     <th>JUMLAH</th>
                     <th>JAM</th>
                     <th>JUMLAH</th>
-                    <th>JAM</th>
-                    <th>JUMLAH</th>
                     <th>HARI</th>
                     <th>JUMLAH</th>
                     <th>HARI</th>
@@ -168,7 +165,65 @@
                 @php
                 $no = 1;
                 $totaljam1bulan = 173;
+
                 $total_gajipokok = 0;
+                $total_tunjangan_jabatan = 0;
+                $total_tunjangan_masakerja = 0;
+                $total_tunjangan_tanggungjawab = 0;
+                $total_tunjangan_makan = 0;
+                $total_tunjangan_istri = 0;
+                $total_tunjangan_skillkhusus = 0;
+
+                $total_insentif_masakerja = 0;
+                $total_insentif_lembur = 0;
+                $total_insentif_penempatan = 0;
+                $total_insentif_kpi = 0;
+
+                $total_im_ruanglingkup = 0;
+                $total_im_penempatan = 0;
+                $total_im_kinerja = 0;
+
+                $total_upah = 0;
+                $total_insentif = 0;
+
+
+                $total_all_jamkerja = 0;
+                $total_all_upahperjam = 0;
+
+                $total_all_overtime_1 = 0;
+                $total_all_upah_ot_1 = 0;
+
+                $total_all_overtime_2 = 0;
+                $total_all_upah_ot_2 = 0;
+
+                $total_all_overtime_libur = 0;
+                $total_all_upah_overtime_libur = 0;
+
+
+                $total_all_upah_overtime = 0;
+
+                $total_all_hari_shift_2 = 0;
+                $total_all_premi_shift_2 = 0;
+
+                $total_all_hari_shift_3 = 0;
+                $total_all_premi_shift_3 = 0;
+
+                $total_all_bruto = 0;
+
+                $total_all_potongan_jam = 0;
+
+                $total_all_bpjskesehatan = 0;
+                $total_all_bpjstk = 0;
+                $total_all_denda = 0;
+
+                $total_all_pjp = 0;
+                $total_all_kasbon = 0;
+                $total_all_spip = 0;
+
+                $total_all_potongan = 0;
+                $total_all_bersih = 0;
+
+
 
 
                 @endphp
@@ -885,10 +940,123 @@
                 $totalpremiall_shift_3 = $totalpremi_shift_3 + $totalpremilembur_shift_3;
 
 
+                //UPAH
+                $upah = $d->gaji_pokok + $d->t_jabatan+$d->t_masakerja + $d->t_tanggungjawab + $d->t_makan + $d->t_istri + $d->t_skill;
+
+                //Upah Per Jam
+
+                $upah_perjam =$upah/173;
+
+
+                //INSENTIF
+                $jmlinsentif = $d->iu_masakerja + $d->iu_lembur+$d->iu_penempatan + $d->iu_kpi + $d->im_ruanglingkup + $d->im_penempatan + $d->im_kinerja;
+
+
+                //UPAH OVERTIME
+
+                if ($d->nama_jabatan=="SECURITY") {
+                    $upah_ot_1 = 8000 * $total_overtime_1;
+                }else{
+                    $upah_ot_1 = ($upah_perjam * 1.5) * $total_overtime_1;
+                }
+
+                if ($d->nama_jabatan=="SECURITY") {
+                    $upah_ot_2 = 8000 * $total_overtime_2;
+                }else{
+                    $upah_ot_2 = ($upah_perjam * 2) * $total_overtime_2;
+                }
+
+                if ($d->nama_jabatan=="SECURITY") {
+                    $upah_otl_1 = 13143 * $total_overtime_libur_1;
+                }else{
+                    $upah_otl_1 = floor(($upah_perjam * 2) * $total_overtime_libur_1);
+                }
+
+                if ($d->nama_jabatan=="SECURITY") {
+                    $upah_otl_2 = 0;
+                }else{
+                    $upah_otl_2 = ($upah_perjam * 2) * $total_overtime_libur_2;
+                }
+
+
+                $total_upah_overtime = $upah_ot_1 + $upah_ot_2 + $upah_otl_1 + $upah_otl_2;
+
+                $bruto = ($upah_perjam * $totaljamkerja) + $total_upah_overtime + $totalpremiall_shift_2 + $totalpremiall_shift_3;
+
+
+                $bpjskesehatan = $d->iuran_kes;
+                $bpjstenagakerja = $d->iuran_tk;
+
+                if($d->id_kantor=="PST" && $cekmasakerja >=3
+                || $d->id_kantor=="TSM" && $cekmasakerja >= 3
+                || $d->spip == 1){
+                    $spip = 5000;
+                }else{
+                    $spip = 0;
+                }
+
+                $potongan = ROUND($bpjskesehatan + $bpjstenagakerja + $totaldenda + $d->cicilan_pjp + $d->jml_kasbon + $spip,0);
+                $jmlbersih = $bruto - $potongan;
 
                 //TOTAL
                 //Total Gaji Pokok
                 $total_gajipokok += $d->gaji_pokok;
+                $total_tunjangan_jabatan += $d->gaji_pokok;
+                $total_tunjangan_jabatan += $d->t_jabatan;
+                $total_tunjangan_masakerja += $d->t_masakerja;
+                $total_tunjangan_tanggungjawab += $d->t_tanggungjawab;
+                $total_tunjangan_makan += $d->t_makan;
+                $total_tunjangan_istri += $d->t_istri;
+                $total_tunjangan_skillkhusus += $d->t_skill;
+
+                $total_insentif_masakerja += $d->iu_masakerja;
+                $total_insentif_lembur += $d->iu_lembur;
+                $total_insentif_penempatan += $d->iu_penempatan;
+                $total_insentif_kpi += $d->iu_kpi;
+
+                $total_im_ruanglingkup += $d->im_ruanglingkup;
+                $total_im_penempatan += $d->im_penempatan;
+                $total_im_kinerja += $d->im_kinerja;
+
+
+                $total_upah += $upah;
+                $total_insentif += $jmlinsentif;
+
+                $total_all_jamkerja += $totaljamkerja;
+                $total_all_upahperjam += $upah_perjam;
+
+                $total_all_overtime_1 += $total_overtime_1;
+                $total_all_upah_ot_1 += $upah_ot_1;
+
+                $total_all_overtime_2 += $total_overtime_2;
+                $total_all_upah_ot_2 += $upah_ot_2;
+
+                $total_all_overtime_libur += $total_overtime_libur_1;
+                $total_all_upah_overtime_libur += $upah_otl_1;
+
+                $total_all_upah_overtime += $total_upah_overtime;
+
+                $total_all_hari_shift_2 += $totalhariall_shift_2;
+                $total_all_premi_shift_2 += $totalpremiall_shift_2;
+
+                $total_all_hari_shift_3 += $totalhariall_shift_3;
+                $total_all_premi_shift_3 += $totalpremiall_shift_3;
+
+                $total_all_bruto += $bruto;
+
+                $total_all_potongan_jam += $totalpotonganjam;
+                $total_all_bpjskesehatan += $bpjskesehatan;
+                $total_all_bpjstk += $bpjstenagakerja;
+
+                $total_all_denda += $totaldenda;
+
+                $total_all_pjp += $d->cicilan_pjp;
+                $total_all_kasbon += $d->jml_kasbon;
+                $total_all_spip += $spip;
+
+                $total_all_potongan += $potongan;
+                $total_all_bersih += $jmlbersih;
+
                 ?>
                 <tr>
                     <td>{{ $loop->iteration }}</td>
@@ -941,50 +1109,26 @@
                     <td align="right">{{ !empty($d->im_penempatan) ? rupiah($d->im_penempatan) : "" }}</td>
                     <td align="right">{{ !empty($d->im_kinerja) ? rupiah($d->im_kinerja) : "" }}</td>
                     <td align="right">
-                        @php
-                        $upah = $d->gaji_pokok + $d->t_jabatan+$d->t_masakerja + $d->t_tanggungjawab + $d->t_makan + $d->t_istri + $d->t_skill;
-                        @endphp
                         {{ !empty($upah) ? rupiah($upah) : "" }}
                     </td>
                     <td align="right">
-                        @php
-                        $jmlinsentif = $d->iu_masakerja + $d->iu_lembur+$d->iu_penempatan + $d->iu_kpi + $d->im_ruanglingkup + $d->im_penempatan + $d->im_kinerja;
-                        @endphp
                         {{ !empty($jmlinsentif) ? rupiah($jmlinsentif) : "" }}
                     </td>
                     <td style="text-align:center; font-weight:bold">
                         {{ !empty($totaljamkerja) ? desimal($totaljamkerja) : '' }}
                     </td>
                     <td align="right">
-                        @php
-                        $upah_perjam =$upah/173;
-                        @endphp
                         {{ !empty($upah_perjam) ? rupiah($upah_perjam) : "" }}
                     </td>
                     <td style="text-align: center;">{{ !empty($total_overtime_1) ? $total_overtime_1 : '' }}</td>
 
                     <td align=" right">
-                        @php
-                        if ($d->nama_jabatan=="SECURITY") {
-                        $upah_ot_1 = 8000 * $total_overtime_1;
-                        }else{
-                        $upah_ot_1 = ($upah_perjam * 1.5) * $total_overtime_1;
-                        }
-                        @endphp
                         {{ !empty($upah_ot_1) ? rupiah($upah_ot_1) : "" }}
                         <br>
 
                     </td>
                     <td style="text-align: center;">{{ !empty($total_overtime_2) ? $total_overtime_2 : '' }}</td>
                     <td align="right">
-                        @php
-                        if ($d->nama_jabatan=="SECURITY") {
-                        $upah_ot_2 = 8000 * $total_overtime_2;
-                        }else{
-                        $upah_ot_2 = ($upah_perjam * 2) * $total_overtime_2;
-                        }
-                        @endphp
-
                         {{ !empty($upah_ot_2) ? rupiah($upah_ot_2) : "" }}
                     </td>
                     <td style="text-align: center;">
@@ -996,30 +1140,11 @@
                         {{ !empty($total_overtime_libur_1) ? $total_overtime_libur_1 : "" }}
                     </td>
                     <td align="right">
-                        @php
-                        if ($d->nama_jabatan=="SECURITY") {
-                        $upah_otl_1 = 13143 * $total_overtime_libur_1;
-                        }else{
-                        $upah_otl_1 = floor(($upah_perjam * 2) * $total_overtime_libur_1);
-                        }
-                        @endphp
                         {{ !empty($upah_otl_1) ? rupiah($upah_otl_1) : "" }}
                     </td>
-                    <td style="text-align: center;">{{ !empty($total_overtime_libur_2) ? rupiah($total_overtime_libur_2) : '' }}</td>
+
+
                     <td align="right">
-                        @php
-                        if ($d->nama_jabatan=="SECURITY") {
-                        $upah_otl_2 = 0;
-                        }else{
-                        $upah_otl_2 = ($upah_perjam * 2) * $total_overtime_libur_2;
-                        }
-                        @endphp
-                        {{ !empty($upah_otl_2) ? rupiah($upah_otl_2) : "" }}
-                    </td>
-                    <td align="right">
-                        @php
-                        $total_upah_overtime = $upah_ot_1 + $upah_ot_2 + $upah_otl_1 + $upah_otl_2;
-                        @endphp
                         {{ !empty($total_upah_overtime) ?rupiah($total_upah_overtime) : "" }}
                     </td>
                     <td align="center">{{ !empty($totalhariall_shift_2) ? $totalhariall_shift_2 : "" }}</td>
@@ -1027,13 +1152,7 @@
                     <td align="center">{{ !empty($totalhariall_shift_3) ? $totalhariall_shift_3 : "" }}</td>
                     <td align="right">{{ !empty($totalpremiall_shift_3) ? rupiah($totalpremiall_shift_3) : "" }}</td>
                     <td align="right">
-
-                        @php
-                        $bruto = ($upah_perjam * $totaljamkerja) + $total_upah_overtime + $totalpremiall_shift_2 + $totalpremiall_shift_3;
-                        @endphp
                         {{ !empty($bruto) ?  rupiah($bruto) : "" }}
-                        {{-- <br>
-                        {{ $bruto }} --}}
                     </td>
                     <td align="center">{{ !empty($totalpotonganjam) ? $totalpotonganjam : "" }}</td>
                     <td align="right">
@@ -1045,7 +1164,7 @@
                             // }
 
                             //$bpjskesehatan = round($bpjskesehatan,1,PHP_ROUND_HALF_UP);
-                            $bpjskesehatan = $d->iuran_kes;
+
                         ?>
 
                         {{ !empty($bpjskesehatan) ? rupiah($bpjskesehatan) : "" }}
@@ -1055,36 +1174,22 @@
                     <td align="right">
                         @php
                         //$bpjstenagakerja = $d->k_jht + $d->k_jp;
-                        $bpjstenagakerja = $d->iuran_tk;
+
                         @endphp
                         {{ !empty($bpjstenagakerja) ? rupiah($bpjstenagakerja) : "" }}
                     </td>
                     <td align="right">{{ !empty($totaldenda) ? rupiah($totaldenda) : "" }}</td>
+
                     <td align="right">{{ !empty($d->cicilan_pjp) ? rupiah($d->cicilan_pjp) : "" }}</td>
                     <td align="right">{{ !empty($d->jml_kasbon) ? rupiah($d->jml_kasbon) : "" }}</td>
                     <td align="right">
-                        <?php
-                            if($d->id_kantor=="PST" && $cekmasakerja >=3 || $d->id_kantor=="TSM" && $cekmasakerja >= 3 || $d->spip == 1){
-                                $spip = 5000;
-                            }else{
-                                $spip = 0;
-                            }
-                        ?>
                         {{ !empty($spip) ? rupiah($spip) : "" }}
 
                     </td>
                     <td align="right">
-                        @php
-                        $potongan = ROUND($bpjskesehatan + $bpjstenagakerja + $totaldenda + $d->cicilan_pjp + $d->jml_kasbon + $spip,0);
-                        @endphp
                         {{ !empty($potongan) ? desimal($potongan) : "" }}
                     </td>
                     <td align="right">
-                        @php
-                        $jmlbersih = $bruto - $potongan;
-
-                        @endphp
-
                         {{ !empty($jmlbersih) ? rupiah($jmlbersih) : "" }}
                         {{-- {{ $jmlbersih }} --}}
                     </td>
@@ -1093,6 +1198,58 @@
                 <tr bgcolor="#024a75" style="color:white; font-size:12;">
                     <th colspan="13">TOTAL</th>
                     <th style="text-align: right">{{ rupiah($total_gajipokok) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_tunjangan_jabatan) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_tunjangan_masakerja) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_tunjangan_tanggungjawab) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_tunjangan_makan) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_tunjangan_istri) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_tunjangan_skillkhusus) }}</th>
+
+                    <th style="text-align: right">{{ rupiah($total_insentif_masakerja) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_insentif_lembur) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_insentif_penempatan) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_insentif_kpi) }}</th>
+
+                    <th style="text-align: right">{{ rupiah($total_im_ruanglingkup) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_im_penempatan) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_im_kinerja) }}</th>
+
+                    <th style="text-align: right">{{ rupiah($total_upah) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_insentif) }}</th>
+
+                    <th style="text-align: center">{{ desimal($total_all_jamkerja) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_upahperjam) }}</th>
+
+                    <th style="text-align: right">{{ rupiah($total_all_overtime_1) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_upah_ot_1) }}</th>
+
+                    <th style="text-align: right">{{ rupiah($total_all_overtime_2) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_upah_ot_2) }}</th>
+
+                    <th style="text-align: right">{{ rupiah($total_all_overtime_libur) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_upah_overtime_libur) }}</th>
+
+                    <th style="text-align: right">{{ rupiah($total_all_upah_overtime) }}</th>
+
+                    <th style="text-align: right">{{ rupiah($total_all_hari_shift_2) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_premi_shift_2) }}</th>
+
+                    <th style="text-align: right">{{ rupiah($total_all_hari_shift_3) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_premi_shift_3) }}</th>
+
+                    <th style="text-align: right">{{ rupiah($total_all_bruto) }}</th>
+
+                    <th style="text-align: center">{{ desimal($total_all_potongan_jam) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_bpjskesehatan) }}</th>
+                    <th></th>
+                    <th style="text-align: right">{{ rupiah($total_all_bpjstk) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_denda) }}</th>
+
+                    <th style="text-align: right">{{ rupiah($total_all_pjp) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_kasbon) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_spip) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_potongan) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_bersih) }}</th>
                 </tr>
             </tbody>
         </table>

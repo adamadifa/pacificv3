@@ -55,7 +55,7 @@
             </div>
         </div>
     </div>
-    @if ($pelanggan->kategori_salesman=="TO")
+    @if ($pelanggan->kategori_salesman=="TO" || $pelanggan->kategori_salesman=="TOCANVASER")
     <div class="row mb-1">
         <div class="col-12">
             <div class="vs-checkbox-con vs-checkbox-primary">
