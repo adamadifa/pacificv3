@@ -94,7 +94,16 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <div class="form-group">
+                                                <select name="jenis_laporan_gaji" id="jenis_laporan_gaji" class="form-control">
+                                                    <option value="1">Detail</option>
+                                                    <option value="2">Rekap</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-lg-8 col-sm-12">
                                             <div class="form-group">

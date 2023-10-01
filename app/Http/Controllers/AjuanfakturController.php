@@ -135,6 +135,49 @@ class AjuanfakturController extends Controller
         $cabang = $cbg->getCabanggudang(Auth::user()->kode_cabang);
         return view('ajuanfaktur.index', compact('ajuanfaktur', 'cabang'));
     }
+
+
+    public function indexsalesman(Request $request)
+    {
+        $pelanggan = $request->nama_pelanggan;
+        $query = Ajuanfaktur::query();
+        if ($this->cabang != "PCF") {
+            $query->where('pelanggan.kode_cabang', $this->cabang);
+        }
+        $query->select('pengajuan_faktur.*', 'nama_pelanggan', 'nama_karyawan');
+        $query->join('pelanggan', 'pengajuan_faktur.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        $query->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
+        $query->leftJoin('users', 'pengajuan_faktur.id_approval', '=', 'users.id');
+        if (!empty($request->nama_pelanggan)) {
+            $query->where('nama_pelanggan', 'like', '%' . $pelanggan . '%');
+        }
+
+        if (!empty($request->dari) && !empty($request->sampai)) {
+            $query->whereBetween('tgl_pengajuan', [$request->dari, $request->sampai]);
+        }
+
+
+        if ($request->status == "pending") {
+            $status = 0;
+        } elseif ($request->status == "disetujui") {
+            $status = 1;
+        } elseif ($request->status == "ditolak") {
+            $status = 2;
+        }
+
+        if (!empty($request->status)) {
+            $query->where('pengajuan_faktur.status', $status);
+        }
+
+        $query->where('pelanggan.id_sales', Auth::user()->id_salesman);
+        $query->orderBy('no_pengajuan');
+
+        $ajuanfaktur = $query->get();
+
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabanggudang(Auth::user()->kode_cabang);
+        return view('ajuanfaktur.indexsalesman', compact('ajuanfaktur', 'cabang'));
+    }
     public function create($kode_pelanggan)
     {
         $kode_pelanggan = Crypt::decrypt($kode_pelanggan);
@@ -190,9 +233,18 @@ class AjuanfakturController extends Controller
                 'keterangan' => $keterangan
             ]);
 
-            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+            if (Auth::user()->level == "salesman") {
+                return redirect('/ajuanfaktur/salesman')->with(['success' => 'Data Berhasil Disimpan']);
+            } else {
+                return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+            }
         } catch (\Exception $e) {
-            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);
+            if (Auth::user()->level == "salesman") {
+                return redirect('/ajuanfaktur/salesman')->with(['warning' => 'Data Gagal Disimpan']);
+            } else {
+                return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);
+            }
+
             //throw $th;
         }
     }
@@ -331,5 +383,15 @@ class AjuanfakturController extends Controller
         } catch (\Exception $e) {
             return Redirect::back()->with(['error' => 'Data Gagal Disimpan']);
         }
+    }
+
+
+    public function createfromsales($kode_pelanggan)
+    {
+        $kode_pelanggan = Crypt::decrypt($kode_pelanggan);
+        $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)
+            ->leftJoin('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan')
+            ->first();
+        return view('ajuanfaktur.createfromsales', compact('pelanggan'));
     }
 }

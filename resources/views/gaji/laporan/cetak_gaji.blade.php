@@ -1001,7 +1001,6 @@
                 //TOTAL
                 //Total Gaji Pokok
                 $total_gajipokok += $d->gaji_pokok;
-                $total_tunjangan_jabatan += $d->gaji_pokok;
                 $total_tunjangan_jabatan += $d->t_jabatan;
                 $total_tunjangan_masakerja += $d->t_masakerja;
                 $total_tunjangan_tanggungjawab += $d->t_tanggungjawab;

@@ -63,7 +63,7 @@
 
 <input type="hidden" id="lokasi">
 
-<div class="row" style="margin-top:5px">
+<div class="row" style="margin-top:5px;">
     <div class="col">
         <div class="webcam-capture"></div>
     </div>

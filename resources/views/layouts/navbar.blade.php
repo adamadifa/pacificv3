@@ -219,6 +219,18 @@
                     <span class="menu-item">Data Retur</span>
                 </a>
             </li>
+            <li class="{{ request()->is(['limitkredit', 'limitkredit/*']) ? 'active' : '' }}">
+                <a href="/limitkredit/salesman">
+                    <i class="feather icon-credit-card danger"></i>
+                    <span class="menu-item">Limit Kredit</span>
+                </a>
+            </li>
+            <li class="{{ request()->is(['ajuanfaktur', 'ajuanfaktur/*']) ? 'active' : '' }}">
+                <a href="/ajuanfaktur/salesman">
+                    <i class="feather icon-file-text danger"></i>
+                    <span class="menu-item">Ajuan Faktur</span>
+                </a>
+            </li>
             <li class="{{ request()->is(['laporanpenjualan','laporanpenjualan/*','laporanretur','laporankasbesarpenjualan','laporankendaraan/*','laporaninsentif','laporankomisi'])? 'active': '' }}">
                 <a href="/laporanpenjualan/penjualan">
                     <i class="feather icon-file-text info"></i>

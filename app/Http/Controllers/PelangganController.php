@@ -592,7 +592,7 @@ class PelangganController extends Controller
     {
 
         $query = Pelanggan::query();
-        $query->select('pelanggan.*', 'karyawan.nama_karyawan', 'karyawan.kategori_salesman', 'limitpel', 'status_promo', DB::raw('IF(status_pelanggan=1,"Aktif","NonAktif") as status_pelanggan'));
+        $query->select('pelanggan.*', 'karyawan.nama_karyawan', 'karyawan.kategori_salesman', 'status_promo', DB::raw('IF(status_pelanggan=1,"Aktif","NonAktif") as status_pel'));
         $query->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
         $query->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang');
         // $query->where('status_pelanggan', '1');
@@ -633,7 +633,7 @@ class PelangganController extends Controller
                 limitpel = "' . $pelanggan->limitpel  . '"
                 jatuhtempo = "' . $pelanggan->jatuhtempo  . '"
                 limitpelanggan = "' . rupiah($pelanggan->limitpel)  . '"
-                status = "' . $pelanggan->status_pelanggan  . '"
+                status = "' . $pelanggan->status_pel  . '"
                 status_promo = "' . $pelanggan->status_promo . '"
 
 
@@ -674,7 +674,17 @@ class PelangganController extends Controller
         //dd($getcookie);
         $kode_pelanggan = Cookie::get('kodepelanggan') != null ? Crypt::decrypt(Cookie::get('kodepelanggan')) : Crypt::decrypt($request->kode_pelanggan);
 
-
+        $ajuanfaktur = DB::table('pengajuan_faktur')
+            ->where('kode_pelanggan', $kode_pelanggan)
+            ->orderBy('tgl_pengajuan', 'desc')
+            ->first();
+        $jmlfaktur = $ajuanfaktur != null ? $ajuanfaktur->jmlfaktur  : 1;
+        $sikluspembayaran = $ajuanfaktur != null ? $ajuanfaktur->sikluspembayaran : 0;
+        $fakturkredit = DB::table('penjualan')
+            ->where('kode_pelanggan', $kode_pelanggan)
+            ->where('status_lunas', 2)
+            ->where('jenistransaksi', 'kredit')
+            ->count();
         $latitude = $request->latitude;
         $longitude = $request->longitude;
         $tglskrg = date("d");
@@ -692,6 +702,8 @@ class PelangganController extends Controller
             $lastkode = $checkin->kode_checkin;
         }
         $kode_checkin  = buatkode($lastkode, $format, 4);
+
+
         DB::beginTransaction();
         try {
             $ceklat = DB::table('checkin')->where('kode_pelanggan', $kode_pelanggan)->count();
@@ -778,7 +790,7 @@ class PelangganController extends Controller
                 ->where('tgl_checkin', $hariini)
                 ->where('id_karyawan', Auth::user()->id)
                 ->count();
-            return view('pelanggan.getpelanggan', compact('pelanggan', 'penjualan', 'limitkredit',  'salesmancheckin'));
+            return view('pelanggan.getpelanggan', compact('pelanggan', 'penjualan', 'limitkredit',  'salesmancheckin', 'jmlfaktur', 'fakturkredit', 'sikluspembayaran'));
         } catch (\Exception $e) {
             DB::rollBack();
             echo $e;
@@ -807,6 +819,18 @@ class PelangganController extends Controller
         $penjualan = $query->paginate(5);
         $penjualan->appends($request->all());
 
+
+        $ajuanfaktur = DB::table('pengajuan_faktur')
+            ->where('kode_pelanggan', $kode_pelanggan)
+            ->orderBy('tgl_pengajuan', 'desc')
+            ->first();
+        $jmlfaktur = $ajuanfaktur != null ? $ajuanfaktur->jmlfaktur  : 1;
+        $sikluspembayaran = $ajuanfaktur != null ? $ajuanfaktur->sikluspembayaran : 0;
+        $fakturkredit = DB::table('penjualan')
+            ->where('kode_pelanggan', $kode_pelanggan)
+            ->where('status_lunas', 2)
+            ->where('jenistransaksi', 'kredit')
+            ->count();
 
         $limitkredit = DB::table('pengajuan_limitkredit_v3')
             ->select('no_pengajuan', 'tgl_pengajuan', 'jumlah', 'jumlah_rekomendasi', 'jatuhtempo', 'jatuhtempo_rekomendasi', 'skor', 'status', 'kacab', 'mm', 'gm', 'dirut')
@@ -845,7 +869,7 @@ class PelangganController extends Controller
             ->where('kode_pelanggan', $kode_pelanggan)
             ->count();
 
-        return view('pelanggan.getpelanggan', compact('pelanggan', 'penjualan', 'limitkredit', 'salesmancheckin'));
+        return view('pelanggan.getpelanggan', compact('pelanggan', 'penjualan', 'limitkredit', 'salesmancheckin', 'jmlfaktur', 'sikluspembayaran', 'fakturkredit'));
     }
 
     public function capturetoko($kode_pelanggan)

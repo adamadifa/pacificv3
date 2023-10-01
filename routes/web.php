@@ -358,6 +358,7 @@ Route::middleware(['auth'])->group(function () {
 
     //Limit Kredit
     Route::get('/limitkredit', [LimitkreditController::class, 'index']);
+    Route::get('/limitkredit/salesman', [LimitkreditController::class, 'indexsalesman']);
     Route::get('/limitkredit/{no_pengajuan}/cetak', [LimitkreditController::class, 'cetak']);
     Route::post('/limitkredit/create_uraiananalisa', [LimitkreditController::class, 'create_uraiananalisa']);
     Route::post('/limitkredit/store_uraiananalisa', [LimitkreditController::class, 'store_uraiananalisa']);
@@ -1326,6 +1327,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/hitungdiskon', [PenjualanController::class, 'hitungdiskon']);
     Route::get('/cekpenjtemp', [PenjualanController::class, 'cekpenjtemp']);
     Route::post('/cekpiutangpelanggan', [PenjualanController::class, 'cekpiutangpelanggan']);
+    Route::post('/cekfakturkredit', [PenjualanController::class, 'cekfakturkredit']);
     Route::post('/penjualan/store', [PenjualanController::class, 'store']);
     Route::post('/penjualan/previewfaktur', [PenjualanController::class, 'previewfaktur']);
     Route::get('/penjualan/cetakfaktur/{no_fak_penj}', [PenjualanController::class, 'cetakfaktur']);
@@ -1888,7 +1890,9 @@ Route::middleware(['auth'])->group(function () {
     //Route::get('/getnofakpenj', [PenjualanController::class, 'getnofakpenj']);
     //Ajuan Faktur
     Route::get('/ajuanfaktur', [AjuanfakturController::class, 'index']);
+    Route::get('/ajuanfaktur/salesman', [AjuanfakturController::class, 'indexsalesman']);
     Route::get('/ajuanfaktur/{kode_pelanggan}/create', [AjuanfakturController::class, 'create']);
+    Route::get('/ajuanfaktur/{kode_pelanggan}/createfromsales', [AjuanfakturController::class, 'createfromsales']);
     Route::get('/ajuanfaktur/{no_pengajuan}/edit', [AjuanfakturController::class, 'edit']);
     Route::post('/ajuanfaktur/{kode_pelanggan}/store', [AjuanfakturController::class, 'store']);
     Route::post('/ajuanfaktur/{no_pengajuan}/update', [AjuanfakturController::class, 'update']);

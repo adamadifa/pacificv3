@@ -43,7 +43,8 @@
                             <div class="btn-group">
                                 <a href="/pelanggan/{{\Crypt::encrypt($pelanggan->kode_pelanggan)}}/edit" class="btn btn-success  text-right mb-2" style="padding: 15px !important"><i class="feather icon-edit"></i></a>
                                 <a href="/pelanggan/{{ Crypt::encrypt($pelanggan->kode_pelanggan) }}/capturetoko" class="btn btn-primary  text-right mb-2" style="padding: 15px !important"><i class="feather icon-camera"></i></a>
-                                <a href="/limitkredit/{{\Crypt::encrypt($pelanggan->kode_pelanggan)}}/create" class="btn btn-warning  text-right mb-2" style="padding: 15px !important"><i class="feather icon-file-text"></i> Ajukan Limit</a>
+                                <a href="/limitkredit/{{\Crypt::encrypt($pelanggan->kode_pelanggan)}}/create" class="btn btn-warning  text-right mb-2" style="padding: 15px !important"><i class="feather icon-file-text"></i> </a>
+                                <a href="/ajuanfaktur/{{\Crypt::encrypt($pelanggan->kode_pelanggan)}}/createfromsales" class="btn btn-info  text-right mb-2" style="padding: 15px !important"><i class="feather icon-file-text"></i> </a>
                             </div>
                             <div>
                                 @if ($salesmancheckin != 0)
@@ -59,11 +60,11 @@
                         <div class="card">
                             <div class="card-content">
                                 @if ($pelanggan->foto != null)
-                                <img class="card-img-top img-fluid" style="height: 200px; object-fit:cover" id="foto" src="{{ url(Storage::url('pelanggan/'.$pelanggan->foto)) }}" alt="Card image cap">
+                                <img class="card-img-top img-fluid" style="height: 250px; object-fit:cover" id="foto" src="{{ url(Storage::url('pelanggan/'.$pelanggan->foto)) }}" alt="Card image cap">
                                 @else
                                 <img class="card-img-top img-fluid" id="foto" src="{{ asset('app-assets/images/slider/04.jpg') }}" alt="Card image cap">
                                 @endif
-                                <div class="card-img-overlay overflow-hidden overlay-primary overlay-lighten-1">
+                                <div class="card-img-overlay overflow-hidden overlay-primary overlay-darken-5">
 
                                     <h4 class="card-title text-white">{{ $pelanggan->kode_pelanggan }} <br> {{ strtoupper($pelanggan->nama_pelanggan) }}</h4>
                                     <p class="card-text text-white">
@@ -77,6 +78,10 @@
                                         @endif
                                         <input type="hidden" id="lokasitoko" value="{{ $pelanggan->latitude }},{{ $pelanggan->longitude }}">
                                         <input type="hidden" id="statuslocation" value="{{ $pelanggan->status_location }}">
+                                        <br>
+                                        Jumlah Faktur Kredit Maksimal : {{ $jmlfaktur }}<br>
+                                        Bayar Saat Turun Barang : {{ $sikluspembayaran == 1 ? "Ya" : "Tidak" }}<br>
+                                        Faktur Kredit Belum Lunas : {{ $fakturkredit }}
                                     </p>
 
                                 </div>
@@ -123,6 +128,18 @@
                 @else
                 @if (!empty(Cookie::get('kodepelanggan')))
                 @if (Crypt::decrypt(Cookie::get('kodepelanggan')) == $pelanggan->kode_pelanggan)
+                @if ($fakturkredit >= $jmlfaktur && empty($sikluspembayaran))
+                <div class="col-12">
+                    <div class="alert alert-warning">
+                        <h4 class="alert-heading">Peringatan</h4>
+                        <p>Tidak Dapat Melakukan Transaksi, Karena Pelanggan Masih Memiliki Faktur Kredit Belum Lunas, Silahkan Ajukan Penambahan Faktur Kredit !</p>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <a href="/retur/createv2" class="btn btn-danger btn-block"><i class="feather icon-refresh-cw mr-1"></i>Retur</a>
+                </div>
+
+                @else
                 @if ($getcbg == "BKI")
                 <div class="col-6">
                     <a href="/inputpenjualanv2" class="btn btn-success btn-block"><i class="feather icon-shopping-cart mr-1"></i>INC. PPN</a>
@@ -142,6 +159,8 @@
                     <a href="/retur/createv2" class="btn btn-danger btn-block"><i class="feather icon-refresh-cw mr-1"></i>Retur</a>
                 </div>
                 @endif
+                @endif
+
 
                 @else
                 <div class="col-12" id="checkinsection">

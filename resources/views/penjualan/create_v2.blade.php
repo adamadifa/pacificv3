@@ -6,7 +6,7 @@
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h2 class="content-header-title float-left mb-0">Input Penjualan V2d</h2>
+                    <h2 class="content-header-title float-left mb-0">Input Penjualan V2</h2>
                     <div class="breadcrumb-wrapper col-12">
                         <ol class="breadcrumb">
                             <li class="breadcrumb-item"><a href="/inputpenjualanv2">Input Penjualan</a>
@@ -24,6 +24,8 @@
         <form action="/penjualan/previewfaktur" method="POST" id="frmPenjualan">
             @csrf
             <input type="hidden" id="sisapiutang" name="sisapiutang">
+            <input type="hidden" id="sisafakturkredit" name="sisafakturkredit">
+            <input type="hidden" id="sikluspembayaran" name="sikluspembayaran">
             <input type="hidden" id="cektutuplaporan" name="cektutuplaporan">
             <input type="hidden" id="bruto" name="bruto">
             <input type="hidden" id="subtotal" name="subtotal">
@@ -111,6 +113,8 @@
                                         <p class="card-text" id="limitpelanggan"></p>
                                         <b>Piutang Pelanggan</b>
                                         <p class="card-text" id="piutangpelanggan"></p>
+                                        <b>Faktur Kredit Belum lunas</b>
+                                        <p class="card-text" id="fakturkreditbelumlunas"></p>
                                     </div>
                                 </div>
                             </div>
@@ -658,13 +662,48 @@
                 , cache: false
                 , success: function(respond) {
                     console.log(respond);
-                    if (respond > 0) {
-                        $("#ket").show();
-                    } else {
-                        $("#ket").hide();
+                    if (respond == 1) {
+
                     }
                     $("#sisapiutang").val(respond);
                     $("#piutangpelanggan").text(convertToRupiah(respond));
+
+                }
+            });
+        }
+
+
+        function cekfakturkredit(kode_pelanggan) {
+            $("#fakturkreditbelumlunas").text("Loading..");
+            $.ajax({
+                type: 'POST'
+                , url: '/cekfakturkredit'
+                , data: {
+                    _token: "{{ csrf_token() }}"
+                    , kode_pelanggan: kode_pelanggan
+                }
+                , cache: false
+                , success: function(respond) {
+                    console.log(respond);
+                    var msg = respond.split("|");
+                    if (msg[0] == "error") {
+                        swal({
+                            title: 'Oops'
+                            , text: 'Pelanggan Tersebut Tidak Bisa Melakukan Transaksi Karena Memilki Faktur Kredit Yang Belum Lunas, Maksimal Faktur Kredit : ' + msg[1] + ' !'
+                            , icon: 'warning'
+                            , showConfirmButton: false
+                        }).then(function() {
+                            $("#nama_pelanggan").val("");
+                            $("#kode_pelanggan").val("");
+                            $("#nama_karyawan").val("");
+                            $("#id_karyawan").val("");
+                        });
+                    }
+
+
+                    $("#sisafakturkredit").val(msg[2]);
+                    $("#sikluspembayaran").val(msg[3]);
+                    $("#fakturkreditbelumlunas").text(convertToRupiah(msg[2]));
 
                 }
             });
@@ -746,7 +785,7 @@
                     data: 'kode_cabang'
                     , name: 'kode_cabang'
                 }, {
-                    data: 'status_pelanggan'
+                    data: 'status_pel'
                     , name: 'status_pelanggan'
                 }
                 , {
@@ -762,6 +801,7 @@
         //Tampilkan Pelanggan Yang Dipilih
         $('.tabelpelanggan tbody').on('click', 'a', function() {
             var kode_pelanggan = $(this).attr("kode_pelanggan");
+            cekfakturkredit(kode_pelanggan);
             cekpiutang(kode_pelanggan);
             var nama_pelanggan = $(this).attr("nama_pelanggan");
             var id_karyawan = $(this).attr("id_karyawan");
@@ -779,6 +819,8 @@
             var jatuhtempo = $(this).attr("jatuhtempo");
             var status = $(this).attr("status");
             var status_promo = $(this).attr("status_promo");
+            var jmlfaktur = $(this).attr("jmlfaktur");
+
             if (status == 'NonAktif') {
                 swal({
                     title: 'Oops'
@@ -855,10 +897,24 @@
             var jenistransaksi = $("#jenistransaksi").val();
             var cektemp = $("#cektemp").val();
             var sisapiutang = $("#sisapiutang").val();
+            var limitpel = $("#limitpel").val();
             var keterangan = $("#keterangan").val();
-
+            var sikluspembayaran = $("#sikluspembayaran").val();
+            var subtotal = $("#subtotal").val();
+            var totalpiutang = parseInt(sisapiutang) + parseInt(subtotal);
+            //alert(limitpel);
             if (cektutuplaporan > 0) {
                 swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
+                return false;
+            } else if (parseInt(totalpiutang) >= parseInt(limitpel) && sikluspembayaran == 0) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Melebihi Limit, Silahkan Ajukan Penambahan Limit !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#no_fak_penj").focus();
+                });
                 return false;
             } else if (no_fak_penj == "") {
                 swal({

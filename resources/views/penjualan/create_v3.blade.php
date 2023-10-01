@@ -26,7 +26,7 @@
         <div class="content-header-left col-md-9 col-12 mb-2">
             <div class="row breadcrumbs-top">
                 <div class="col-12">
-                    <h4 class="content-header-title float-left mb-0">Input Penjualan</h4>
+                    <h4 class="content-header-title float-left mb-0">Input Penjualan Salesman</h4>
                 </div>
             </div>
         </div>
@@ -37,7 +37,8 @@
         @include('layouts.notification')
         <form action="/penjualan/store" method="POST" id="frmPenjualan">
             @csrf
-            <input type="hidden" id="sisapiutang" name="sisapiutang">
+            <input type="hidden" id="sisapiutang" name="sisapiutang" value="{{ $piutang->sisapiutang }}">
+            <input type="hidden" id="sikluspembayaran" name="sikluspembayaran" value="{{ $sikluspembayaran }}">
             <input type="hidden" id="cektutuplaporan" name="cektutuplaporan">
             <input type="hidden" id="bruto" name="bruto">
             <input type="hidden" id="subtotal" name="subtotal">
@@ -1004,9 +1005,26 @@ $hari_sampai = $besok[2];
             var cektemp = $("#cektemp").val();
             var kategori_salesman = $("#kategori_salesman").val();
             var ceknofak = $("#ceknofakval").val();
+            var sisapiutang = $("#sisapiutang").val();
+            var limitpel = $("#limitpel").val();
+            var subtotal = $("#subtotal").val();
+            var sikluspembayaran = $("#sikluspembayaran").val();
+            var totalpiutang = parseInt(sisapiutang) + parseInt(subtotal);
+
+            //alert(limitpel);
             // alert(nama_pelanggan);
             if (cektutuplaporan > 0) {
                 swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
+                return false;
+            } else if (parseInt(totalpiutang) >= parseInt(limitpel) && sikluspembayaran == 0) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Melebihi Limit, Silahkan Ajukan Penambahan Limit !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#no_fak_penj").focus();
+                });
                 return false;
             } else if (ceknofak > 0) {
                 swal({

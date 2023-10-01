@@ -69,27 +69,27 @@
                                     <div style="font-weight: 600; font-size:0.8rem !important">
                                         <span class="text-muted">{{ $d->no_pengajuan }}</span>
                                         <?php
-                                    $scoreakhir =  $d['skor'];
-                                    if ($scoreakhir <= 2) {
-                                        $rekomendasi = "TL";
-                                    } else if ($scoreakhir > 2 && $scoreakhir <= 4) {
-                                        $rekomendasi = "TD";
-                                    } else if ($scoreakhir > 4 && $scoreakhir <= 6) {
-                                        $rekomendasi = "B";
-                                    } else if ($scoreakhir > 6 && $scoreakhir <= 8.5) {
-                                        $rekomendasi = "LDP";
-                                    } else if ($scoreakhir > 8.5 && $scoreakhir <= 10) {
-                                        $rekomendasi = "L";
-                                    }
-                                    if ($scoreakhir <= 4) {
-                                        $bg = "danger";
-                                    } else if ($scoreakhir <= 6) {
-                                        $bg = "warning";
-                                    } else {
-                                        $bg = "success";
-                                    }
-                                    //echo $scoreakhir;
-                                    ?>
+                                            $scoreakhir =  $d['skor'];
+                                            if ($scoreakhir <= 2) {
+                                                $rekomendasi = "TL";
+                                            } else if ($scoreakhir > 2 && $scoreakhir <= 4) {
+                                                $rekomendasi = "TD";
+                                            } else if ($scoreakhir > 4 && $scoreakhir <= 6) {
+                                                $rekomendasi = "B";
+                                            } else if ($scoreakhir > 6 && $scoreakhir <= 8.5) {
+                                                $rekomendasi = "LDP";
+                                            } else if ($scoreakhir > 8.5 && $scoreakhir <= 10) {
+                                                $rekomendasi = "L";
+                                            }
+                                            if ($scoreakhir <= 4) {
+                                                $bg = "danger";
+                                            } else if ($scoreakhir <= 6) {
+                                                $bg = "warning";
+                                            } else {
+                                                $bg = "success";
+                                            }
+                                            //echo $scoreakhir;
+                                        ?>
                                         <span class="badge bg-<?php echo $bg; ?>">
                                             <?php echo $scoreakhir; ?>
                                         </span>

@@ -318,6 +318,12 @@ class PenjualanController extends Controller
             $salesman = Salesman::where('id_karyawan', $pelanggan->id_sales)->first();
             $no_fak_awal = $salesman->no_fak_awal;
 
+            $ajuanfaktur = DB::table('pengajuan_faktur')
+                ->where('kode_pelanggan', $kode_pelanggan)
+                ->orderBy('tgl_pengajuan', 'desc')
+                ->first();
+            $jmlfaktur = $ajuanfaktur != null ? $ajuanfaktur->jmlfaktur  : 1;
+            $sikluspembayaran = $ajuanfaktur != null ? $ajuanfaktur->sikluspembayaran : 0;
             // $cekpenjualan = DB::table('penjualan')
             //     ->where('id_karyawan', $pelanggan->id_sales)
             //     ->where('no_fak_auto', 1)->orderBy('no_fak_penj', 'desc')->first();
@@ -386,7 +392,7 @@ class PenjualanController extends Controller
                 ->where('penjualan.kode_pelanggan', $kode_pelanggan)
                 ->groupBy('penjualan.kode_pelanggan')
                 ->first();
-            return view('penjualan.create_v3', compact('pelanggan', 'piutang', 'no_fak_penj_auto', 'ceknofak'));
+            return view('penjualan.create_v3', compact('pelanggan', 'piutang', 'no_fak_penj_auto', 'ceknofak', 'sikluspembayaran'));
         } else {
             return view('penjualan.create_v2');
         }
@@ -1333,6 +1339,28 @@ class PenjualanController extends Controller
         }
 
         echo $piutang->sisapiutang;
+    }
+
+
+    public function cekfakturkredit(Request $request)
+    {
+        $kode_pelanggan = $request->kode_pelanggan;
+        $ajuanfaktur = DB::table('pengajuan_faktur')
+            ->where('kode_pelanggan', $kode_pelanggan)
+            ->orderBy('tgl_pengajuan', 'desc')
+            ->first();
+        $jmlfaktur = $ajuanfaktur != null ? $ajuanfaktur->jmlfaktur  : 1;
+        $sikluspembayaran = $ajuanfaktur != null ? $ajuanfaktur->sikluspembayaran : 0;
+        $fakturkredit = DB::table('penjualan')
+            ->where('kode_pelanggan', $kode_pelanggan)
+            ->where('status_lunas', 2)
+            ->where('jenistransaksi', 'kredit')
+            ->count();
+        if ($fakturkredit >= $jmlfaktur && empty($sikluspembayaran)) {
+            return "error|" . $jmlfaktur . "|" . $fakturkredit . "|" . $sikluspembayaran;
+        } else {
+            return "success|0|" . $fakturkredit . "|" . $sikluspembayaran;
+        }
     }
 
     public function store(Request $request)

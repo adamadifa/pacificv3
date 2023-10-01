@@ -140,6 +140,7 @@ class LaporanhrdController extends Controller
         $bulan = $request->bulan;
         $tahun = $request->tahun;
         $jenislaporan = $request->jenis_laporan;
+        $jenislaporan_gaji = $request->jenis_laporan_gaji;
         $kode_potongan = "GJ" . $bulan . $tahun;
         $level = Auth::user()->level;
         $show_for_hrd = config('global.show_for_hrd');
@@ -1116,7 +1117,12 @@ class LaporanhrdController extends Controller
                 // Mendefinisikan nama file ekspor "hasil-export.xls"
                 header("Content-Disposition: attachment; filename=Laporan Presensi Detail.xls");
             }
-            return view('gaji.laporan.cetak_gaji', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'sampai'));
+
+            if ($jenislaporan_gaji == 2) {
+                return view('gaji.laporan.cetak_gaji_rekap', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'sampai'));
+            } else {
+                return view('gaji.laporan.cetak_gaji', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'sampai'));
+            }
         } else {
             if (isset($_POST['export'])) {
                 echo "EXPORT";

@@ -236,6 +236,54 @@ class LimitkreditController extends Controller
         }
     }
 
+
+    public function indexsalesman(Request $request)
+    {
+        $pelanggan = $request->nama_pelanggan;
+        $query = Limitkredit::query();
+        if ($this->cabang != "PCF") {
+            $query->where('pelanggan.kode_cabang', $this->cabang);
+        }
+        $query->select('pengajuan_limitkredit_v3.*', 'nama_pelanggan', 'pelanggan.kode_cabang');
+        $query->orderBy('tgl_pengajuan', 'desc');
+        $query->orderBy('no_pengajuan', 'desc');
+        $query->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        $query->leftJoin('users', 'pengajuan_limitkredit_v3.id_approval', '=', 'users.id');
+        // if (empty($request->nama_pelanggan) && empty($request->dari) && empty($request->sampai) && empty($request->status)) {
+        //     $query->WhereRaw("MATCH(nama_pelanggan) AGAINST('" . $pelanggan .  "')");
+        // }
+        if (!empty($request->nama_pelanggan)) {
+            $query->where('nama_pelanggan', 'like', '%' . $pelanggan . '%');
+        }
+
+
+        if (!empty($request->dari) && !empty($request->sampai)) {
+            $query->whereBetween('tgl_pengajuan', [$request->dari, $request->sampai]);
+        }
+
+
+        if ($request->status == "pending") {
+            $status = 0;
+        } elseif ($request->status == "disetujui") {
+            $status = 1;
+        } elseif ($request->status == "ditolak") {
+            $status = 2;
+        }
+
+        if (!empty($request->status)) {
+            $query->where('pengajuan_limitkredit_v3.status', $status);
+        }
+
+        $query->where('pelanggan.id_sales', Auth::user()->id_salesman);
+
+        $limitkredit = $query->paginate(15);
+        $limitkredit->appends($request->all());
+
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabanggudang($this->cabang);
+        return view('limitkredit.indexsalesman', compact('limitkredit'));
+    }
+
     public function create($kode_pelanggan)
     {
         $kode_pelanggan = Crypt::decrypt($kode_pelanggan);
@@ -503,11 +551,19 @@ class LimitkreditController extends Controller
                     ]);
             }
             DB::commit();
-            return redirect('/limitkredit')->with(['success' => 'Data Pengajuan Limit Kredit Berhasil di Simpan']);
+            if (Auth::user()->level == "salesman") {
+                return redirect('/limitkredit/salesman')->with(['success' => 'Data Pengajuan Limit Kredit Berhasil di Simpan']);
+            } else {
+                return redirect('/limitkredit')->with(['success' => 'Data Pengajuan Limit Kredit Berhasil di Simpan']);
+            }
         } catch (\Exception $e) {
             //dd($e);
             DB::rollback();
-            return redirect('/limitkredit')->with(['warning' => $e]);
+            if (Auth::user()->level == "salesman") {
+                return redirect('/limitkredit/salesman')->with(['warning' => $e]);
+            } else {
+                return redirect('/limitkredit')->with(['warning' => $e]);
+            }
         }
     }
 
