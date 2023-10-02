@@ -86,9 +86,24 @@
                     <i class="feather icon-file mr-1"></i>Visit Pelanggan
                 </li>
             </a>
-            <a href="/visit/laporanVisit" style="color:#626262">
-                <li class="list-group-item {{ request()->is(['visit/laporanVisit']) ? 'active' : '' }}">
-                    <i class="feather icon-file mr-1"></i>Visit Pelanggan
+            <a href="/realisasi/laporanRealisasi" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['realisasi/laporanRealisasi']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Realisasi Program
+                </li>
+            </a>
+            <a href="/jaminan/laporanJaminan" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['jaminan/laporanJaminan']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Jaminan
+                </li>
+            </a>
+            <a href="/karyawan/laporanKaryawan" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['karyawan/laporanKaryawan']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Sumber Daya Manusia
+                </li>
+            </a>
+            <a href="/kendaraan/laporanKendaraan" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['kendaraan/laporanKendaraan']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Sumber Daya Kendaraan
                 </li>
             </a>
         </ul>
