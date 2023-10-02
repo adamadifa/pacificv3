@@ -39,6 +39,8 @@
             @csrf
             <input type="hidden" id="sisapiutang" name="sisapiutang" value="{{ $piutang->sisapiutang }}">
             <input type="hidden" id="sikluspembayaran" name="sikluspembayaran" value="{{ $sikluspembayaran }}">
+            <input type="hidden" id="sisafakturkredit" name="sisafakturkredit" value="{{ $fakturkredit }}">
+            <input type="hidden" id="jmlfaktur" name="jmlfaktur" value="{{ $jmlfaktur }}">
             <input type="hidden" id="cektutuplaporan" name="cektutuplaporan">
             <input type="hidden" id="bruto" name="bruto">
             <input type="hidden" id="subtotal" name="subtotal">
@@ -1009,12 +1011,25 @@ $hari_sampai = $besok[2];
             var limitpel = $("#limitpel").val();
             var subtotal = $("#subtotal").val();
             var sikluspembayaran = $("#sikluspembayaran").val();
+            var sisafakturkredit = $("#sisafakturkredit").val();
+            var jmlfaktur = $("#jmlfaktur").val();
             var totalpiutang = parseInt(sisapiutang) + parseInt(subtotal);
 
             //alert(limitpel);
             // alert(nama_pelanggan);
             if (cektutuplaporan > 0) {
                 swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
+                return false;
+            } else if (parseInt(sisafakturkredit) >= parseInt(jmlfaktur) && sikluspembayaran == 0 && jenistransaksi == 'kredit') {
+                swal({
+                    title: 'Oops'
+                    , text: 'Melebihi Limit Faktur Kredit, Silahkan Ajukan Penambahan Jumlah Faktur Kredit !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#no_fak_penj").focus();
+                });
+                $("#btnsimpan").prop('disabled', false);
                 return false;
             } else if (parseInt(totalpiutang) >= parseInt(limitpel) && sikluspembayaran == 0 && jenistransaksi == 'kredit') {
                 swal({
@@ -1025,6 +1040,7 @@ $hari_sampai = $besok[2];
                 }).then(function() {
                     $("#no_fak_penj").focus();
                 });
+                $("#btnsimpan").prop('disabled', false);
                 return false;
             } else if (ceknofak > 0) {
                 swal({

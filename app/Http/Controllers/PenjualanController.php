@@ -324,6 +324,11 @@ class PenjualanController extends Controller
                 ->first();
             $jmlfaktur = $ajuanfaktur != null ? $ajuanfaktur->jmlfaktur  : 1;
             $sikluspembayaran = $ajuanfaktur != null ? $ajuanfaktur->sikluspembayaran : 0;
+            $fakturkredit = DB::table('penjualan')
+                ->where('kode_pelanggan', $kode_pelanggan)
+                ->where('status_lunas', 2)
+                ->where('jenistransaksi', 'kredit')
+                ->count();
             // $cekpenjualan = DB::table('penjualan')
             //     ->where('id_karyawan', $pelanggan->id_sales)
             //     ->where('no_fak_auto', 1)->orderBy('no_fak_penj', 'desc')->first();
@@ -392,7 +397,7 @@ class PenjualanController extends Controller
                 ->where('penjualan.kode_pelanggan', $kode_pelanggan)
                 ->groupBy('penjualan.kode_pelanggan')
                 ->first();
-            return view('penjualan.create_v3', compact('pelanggan', 'piutang', 'no_fak_penj_auto', 'ceknofak', 'sikluspembayaran'));
+            return view('penjualan.create_v3', compact('pelanggan', 'piutang', 'no_fak_penj_auto', 'ceknofak', 'sikluspembayaran', 'jmlfaktur', 'fakturkredit'));
         } else {
             return view('penjualan.create_v2');
         }
