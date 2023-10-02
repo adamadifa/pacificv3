@@ -339,8 +339,8 @@ class KlaimController extends Controller
         $akun = getAkunkaskecil();
 
         $akunpsttsm = [
-            'PST' => '1-1111',
-            'TSM' => '1-1112'
+            'PST' => '1-1104',
+            'TSM' => '1-1104'
         ];
         $kode_akun = $akun[$kode_cabang];
         $jumlah = $ledger->jumlah;
@@ -390,7 +390,7 @@ class KlaimController extends Controller
                         'keterangan'      => $keterangan,
                         'jumlah'          => $jumlah,
                         'status_dk'       => 'K',
-                        'kode_akun'       => $kode_akun,
+                        'kode_akun'       => $psttsm,
                         'kode_cabang'     => $kode_cabang,
                         'order'           => 1,
                         'nobukti_bukubesar' => $nobukti_bukubesar

@@ -171,7 +171,8 @@ class LaporanhrdController extends Controller
             $sampai = $tahun . "-" . $bulan . "-20";
         }
 
-        $berlakugaji = $nexttahun . "-" . $nextbulan . "-01";
+        $berlakugaji = $sampai;
+        //dd($berlakugaji);
 
         $datalibur = ceklibur($dari, $sampai);
         $dataliburpenggantiminggu = cekliburpenggantiminggu($dari, $sampai);
@@ -1092,7 +1093,31 @@ class LaporanhrdController extends Controller
             }
         }
         $query->where('status_aktif', 1);
+        $query->where('tgl_masuk', '<=', $sampai);
+        $query->orWhere('status_aktif', 0);
+        $query->where('tgl_nonaktif', '>', $sampai);
+        $query->where('tgl_masuk', '<=', $sampai);
+        if (!empty($kode_dept)) {
+            $query->where('master_karyawan.kode_dept', $kode_dept);
+        }
+
+        if (!empty($id_kantor)) {
+            $query->where('master_karyawan.id_kantor', $id_kantor);
+        }
+
+        if (!empty($id_group)) {
+            $query->where('master_karyawan.grup', $id_group);
+        }
+
+        if (request()->is('laporanhrd/gaji/cetak')) {
+            if (!in_array($level, $level_show_all)) {
+                $query->whereNotIn('id_jabatan', $show_for_hrd);
+            }
+        }
+
+
         $query->orderByRaw('nik,nama_karyawan');
+
         $presensi = $query->get();
         //dd($presensi);
 
