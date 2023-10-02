@@ -37,7 +37,7 @@
         @include('layouts.notification')
         <form action="/penjualan/store" method="POST" id="frmPenjualan">
             @csrf
-            <input type="hidden" id="sisapiutang" name="sisapiutang" value="{{ $piutang->sisapiutang }}">
+            <input type="hidden" id="sisapiutang" name="sisapiutang" value="{{ $piutang->sisapiutang != null ?$piutang->sisapiutang : 0 }}">
             <input type="hidden" id="sikluspembayaran" name="sikluspembayaran" value="{{ $sikluspembayaran }}">
             <input type="hidden" id="sisafakturkredit" name="sisafakturkredit" value="{{ $fakturkredit }}">
             <input type="hidden" id="jmlfaktur" name="jmlfaktur" value="{{ $jmlfaktur }}">
