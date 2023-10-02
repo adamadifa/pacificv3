@@ -599,4 +599,39 @@ class KaryawanController extends Controller
             return Redirect::back()->with(['warning' => 'Data Lokasi Gagal Dibuka']);
         }
     }
+
+
+    public function laporanKaryawan()
+    {
+        $cabang = Auth::user()->kode_cabang;
+        if ($cabang == "PCF") {
+            $cabang = DB::table('cabang')->get();
+        } else {
+            $cabang = DB::table('cabang')->where('kode_cabang', $cabang)->get();
+        }
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        return view('karyawan.laporan.frm_laporanKaryawan', compact('cabang', 'bulan'));
+    }
+
+    public function cetakKaryawan(Request $request)
+    {
+        $cabang = $request->kode_cabang;
+        if ($cabang == '') {
+            $karyawan = DB::table('master_karyawan')
+                ->leftJoin('hrd_group', 'master_karyawan.grup', 'hrd_group.id')
+                ->leftJoin('hrd_jabatan', 'master_karyawan.id_jabatan', 'hrd_jabatan.id')
+                ->get();
+        } else {
+            $karyawan = DB::table('master_karyawan')
+                ->leftJoin('hrd_group', 'master_karyawan.grup', 'hrd_group.id')
+                ->leftJoin('hrd_jabatan', 'master_karyawan.id_jabatan', 'hrd_jabatan.id')
+                ->where('master_karyawan.id_kantor', $request->kode_cabang)
+                ->get();
+        }
+        if (isset($_POST['export'])) {
+            header("Content-type: application/vnd-ms-excel");
+            header("Content-Disposition: attachment; filename=Laporan karyawan Program.xls");
+        }
+        return view('karyawan.laporan.cetak_karyawan', compact('karyawan', 'cabang'));
+    }
 }

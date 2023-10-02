@@ -330,4 +330,36 @@ class KendaraanController extends Controller
             return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);
         }
     }
+
+
+    public function laporanKendaraan()
+    {
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
+        return view('kendaraan.laporan.frm.lap_kendaraan', compact('cabang'));
+    }
+
+    public function cetakLaporanKendaraan(Request $request)
+    {
+        $cabang = DB::table('cabang')
+            ->where('kode_cabang', $request->kode_cabang)->first();
+        $kendaraan = DB::select("SELECT kendaraan.no_polisi,kdr.merk,kdr.tipe,kdr.tipe_kendaraan,kdr.tahun_pembuatan,kdr.no_mesin,kdr.no_rangka,
+        kdr.jatuhtempo_pajak_satutahun,kdr.atas_nama,kdr.jatuhtempo_kir,kdr.nama_driver_helper,kdr.no_stnk,kdr.no_uji,kdr.sipa,kdr.kategori,kdr.ibm,kdr.jatuhtempo_pajak_limatahun
+        FROM kendaraan
+        LEFT JOIN(
+            SELECT no_polisi,merk,tipe,tipe_kendaraan,tahun_pembuatan,no_mesin,no_rangka,jatuhtempo_pajak_satutahun,atas_nama,jatuhtempo_kir,nama_driver_helper,no_stnk,no_uji,sipa,ibm,kendaraan.kategori,jatuhtempo_pajak_limatahun
+            FROM kendaraan
+            LEFT JOIN dpb ON dpb.no_kendaraan = kendaraan.no_polisi
+            LEFT JOIN driver_helper ON dpb.id_driver = driver_helper.id_driver_helper
+        ) kdr ON (kdr.no_polisi = kendaraan.no_polisi)
+        WHERE kendaraan.status = '1' AND kendaraan.kode_cabang = '$request->kode_cabang'
+        GROUP BY kendaraan.no_polisi
+        ");
+        if (isset($_POST['export'])) {
+            header("Content-type: application/vnd-ms-excel");
+            header("Content-Disposition: attachment; filename=Laporan Kendaraan.xls");
+        }
+
+        return view('kendaraan.laporan.cetak_kendaraan', compact('kendaraan', 'cabang'));
+    }
 }

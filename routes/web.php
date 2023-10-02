@@ -1905,6 +1905,17 @@ Route::middleware(['auth'])->group(function () {
     //LogAktivitas
 
     Route::get('/logaktivitas', [LogaktivitasController::class, 'index']);
+
+
+    Route::controller(KaryawanController::class)->group(function () {
+        Route::get('/karyawan/laporanKaryawan', 'laporanKaryawan')->name('karyawan.laporanKaryawan');
+        Route::post('/karyawan/cetakKaryawan', 'cetakKaryawan')->name('karyawan.cetakKaryawan');
+    });
+
+    Route::controller(KendaraanController::class)->group(function () {
+        Route::get('/kendaraan/laporanKendaraan', 'laporanKendaraan')->name('kendaraan.laporanKendaraan');
+        Route::post('/kendaraan/cetakLaporanKendaraan', 'cetakLaporanKendaraan')->name('kendaraan.cetakLaporanKendaraan');
+    });
 });
 
 

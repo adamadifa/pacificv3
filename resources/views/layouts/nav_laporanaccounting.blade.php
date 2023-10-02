@@ -75,3 +75,22 @@
     </div>
 </div>
 @endif
+<div class="card">
+    <div class="card-content">
+        <div class="card-body">
+            <h4 class="card-title">Laporan LPC</h4>
+        </div>
+        <ul class="list-group list-group-flush">
+            <a href="/visit/laporanVisit" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['visit/laporanVisit']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Visit Pelanggan
+                </li>
+            </a>
+            <a href="/visit/laporanVisit" style="color:#626262">
+                <li class="list-group-item {{ request()->is(['visit/laporanVisit']) ? 'active' : '' }}">
+                    <i class="feather icon-file mr-1"></i>Visit Pelanggan
+                </li>
+            </a>
+        </ul>
+    </div>
+</div>

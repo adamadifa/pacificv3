@@ -128,7 +128,7 @@
                 @else
                 @if (!empty(Cookie::get('kodepelanggan')))
                 @if (Crypt::decrypt(Cookie::get('kodepelanggan')) == $pelanggan->kode_pelanggan)
-                @if ($fakturkredit >= $jmlfaktur && empty($sikluspembayaran))
+                {{-- @if ($fakturkredit >= $jmlfaktur && empty($sikluspembayaran))
                 <div class="col-12">
                     <div class="alert alert-warning">
                         <h4 class="alert-heading">Peringatan</h4>
@@ -139,7 +139,7 @@
                     <a href="/retur/createv2" class="btn btn-danger btn-block"><i class="feather icon-refresh-cw mr-1"></i>Retur</a>
                 </div>
 
-                @else
+                @else --}}
                 @if ($getcbg == "BKI")
                 <div class="col-6">
                     <a href="/inputpenjualanv2" class="btn btn-success btn-block"><i class="feather icon-shopping-cart mr-1"></i>INC. PPN</a>
@@ -159,7 +159,7 @@
                     <a href="/retur/createv2" class="btn btn-danger btn-block"><i class="feather icon-refresh-cw mr-1"></i>Retur</a>
                 </div>
                 @endif
-                @endif
+                {{-- @endif --}}
 
 
                 @else
