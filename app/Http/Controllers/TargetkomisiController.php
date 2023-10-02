@@ -1921,15 +1921,23 @@ class TargetkomisiController extends Controller
 
 
         //dd($dari);
+
+        // echo $dari;
+        // die;
         if ($dari >= '2023-2-01' and $dari < '2023-6-01') {
+            // echo 1;
+            // die;
             return $this->cetakkomisimaret2023($cabang, $bulan, $tahun, $aturankomisi, $dari, $hariini, $sampai);
         } elseif ($dari >= '2023-6-01' and $dari < '2023-07-01') {
+            // echo 2;
+            // die;
             return $this->cetakkomisijuni2023($cabang, $bulan, $tahun, $aturankomisi, $dari, $hariini, $sampai);
-        } elseif ($dari >= '2023-7-01') {
-            // echo "test";
+        } elseif ($dari >= '2023-07-01') {
+            // echo 3;
             // die;
             return $this->cetakkomisijuli2023($cabang, $bulan, $tahun, $aturankomisi, $dari, $hariini, $sampai);
         }
+        die;
         $lastmonth = date('Y-m-d', strtotime(date($dari) . '- 1 month'));
         $lastdate = explode("-", $lastmonth);
         $bulanlast = $lastdate[1] + 0;
@@ -2641,14 +2649,24 @@ class TargetkomisiController extends Controller
         }
 
         if ($bulan == 7 && $tahun == 2022) {
+            echo 1;
+            die;
             return view('targetkomisi.laporan.cetak_komisi_juli', compact('komisi', 'cbg', 'nmbulan', 'tahun', 'produk', 'driver', 'helper', 'gudang', 'tunaikredit', 'bulan', 'cabang'));
         } elseif ($bulan == 8 && $tahun == 2022) {
+            echo 2;
+            die;
             return view('targetkomisi.laporan.cetak_komisi_agustus', compact('komisi', 'cbg', 'nmbulan', 'tahun', 'produk', 'driver', 'helper', 'gudang', 'tunaikredit', 'bulan', 'cabang'));
         } elseif ($bulan == 8 && $tahun == 2022) {
+            echo 3;
+            die;
             return view('targetkomisi.laporan.cetak_komisi_september', compact('komisi', 'cbg', 'nmbulan', 'tahun', 'produk', 'driver', 'helper', 'gudang', 'tunaikredit', 'bulan', 'cabang'));
         } elseif ($bulan < 7 && $tahun <= 2022) {
+            echo 4;
+            die;
             return view('targetkomisi.laporan.cetak_komisi_juni', compact('komisi', 'cbg', 'nmbulan', 'tahun', 'produk', 'driver', 'helper', 'gudang', 'tunaikredit', 'bulan', 'cabang'));
         } else {
+            echo 5;
+            die;
             return view('targetkomisi.laporan.cetak_komisi_lpu', compact('komisi', 'cbg', 'nmbulan', 'tahun', 'produk', 'driver', 'helper', 'gudang', 'tunaikredit', 'bulan', 'cabang', 'potongankp', 'komisiakhir'));
         }
     }
