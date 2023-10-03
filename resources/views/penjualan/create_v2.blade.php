@@ -662,7 +662,7 @@
                 , cache: false
                 , success: function(respond) {
                     console.log(respond);
-                    if (respond == 1) {
+                    if (respond > 0) {
                         $("#ket").show();
                     }
                     $("#sisapiutang").val(respond);
