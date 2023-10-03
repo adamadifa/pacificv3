@@ -663,7 +663,7 @@
                 , success: function(respond) {
                     console.log(respond);
                     if (respond == 1) {
-
+                        $("#ket").show();
                     }
                     $("#sisapiutang").val(respond);
                     $("#piutangpelanggan").text(convertToRupiah(respond));
