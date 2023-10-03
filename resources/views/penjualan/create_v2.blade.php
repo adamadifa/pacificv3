@@ -664,6 +664,8 @@
                     console.log(respond);
                     if (respond > 0) {
                         $("#ket").show();
+                    } else {
+                        $("#ket").hide();
                     }
                     $("#sisapiutang").val(respond);
                     $("#piutangpelanggan").text(convertToRupiah(respond));
