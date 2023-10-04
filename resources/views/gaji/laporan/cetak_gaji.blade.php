@@ -1129,14 +1129,14 @@
                     <td align="right">
                         {{ !empty($upah_perjam) ? desimal($upah_perjam) : "" }}
                     </td>
-                    <td style="text-align: center;">{{ !empty($total_overtime_1) ? $total_overtime_1 : '' }}</td>
+                    <td style="text-align: center;">{{ !empty($total_overtime_1) ? desimal($total_overtime_1) : '' }}</td>
 
                     <td align=" right">
                         {{ !empty($upah_ot_1) ? rupiah($upah_ot_1) : "" }}
                         <br>
 
                     </td>
-                    <td style="text-align: center;">{{ !empty($total_overtime_2) ? $total_overtime_2 : '' }}</td>
+                    <td style="text-align: center;">{{ !empty($total_overtime_2) ? desimal($total_overtime_2) : '' }}</td>
                     <td align="right">
                         {{ !empty($upah_ot_2) ? rupiah($upah_ot_2) : "" }}
                     </td>
@@ -1146,7 +1146,7 @@
                         $total_overtime_libur_1 = 7;
                         }
                         @endphp --}}
-                        {{ !empty($total_overtime_libur_1) ? $total_overtime_libur_1 : "" }}
+                        {{ !empty($total_overtime_libur_1) ? desimal($total_overtime_libur_1) : "" }}
                     </td>
                     <td align="right">
                         {{ !empty($upah_otl_1) ? rupiah($upah_otl_1) : "" }}
