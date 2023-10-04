@@ -1020,7 +1020,7 @@ class LaporanhrdController extends Controller
             DB::raw("(
                 SELECT nik,iu_masakerja,iu_lembur,iu_penempatan,iu_kpi,
                 im_ruanglingkup,im_penempatan,im_kinerja
-                FROM hrd_masterinsentif a WHERE tgl_berlaku = (SELECT MAX(tgl_berlaku) as tgl_berlaku FROM hrd_masterinsentif b WHERE a.nik = b.nik AND b.tgl_berlaku <= '$berlakugaji)
+                FROM hrd_masterinsentif a WHERE tgl_berlaku = (SELECT MAX(tgl_berlaku) as tgl_berlaku FROM hrd_masterinsentif b WHERE a.nik = b.nik AND b.tgl_berlaku <= '$berlakugaji')
             ) hrdinsentif"),
             function ($join) {
                 $join->on('master_karyawan.nik', '=', 'hrdinsentif.nik');
