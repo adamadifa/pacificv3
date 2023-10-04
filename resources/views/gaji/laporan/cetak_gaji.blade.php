@@ -928,7 +928,13 @@
                     $totalizinabsen += $izinabsen;
                     $totalizinsakit += $izinsakit;
                 }
-                $totaljamkerja = $totaljam1bulan - $totalterlambat - $totalkeluar - $totaldirumahkan - $totaltidakhadir - $totalpulangcepat - $totalizinabsen - $totalizinsakit;
+
+                if($d->nama_jabatan=="DIREKTUR"){
+                    $totaljamkerja = 173;
+                }else{
+                    $totaljamkerja = $totaljam1bulan - $totalterlambat - $totalkeluar - $totaldirumahkan - $totaltidakhadir - $totalpulangcepat - $totalizinabsen - $totalizinsakit;
+                }
+
 
 
                 $totalpotonganjam = $totalterlambat + $totalkeluar + $totaldirumahkan + $totaltidakhadir + $totalpulangcepat + $totalizinabsen + $totalizinsakit;
@@ -1117,7 +1123,7 @@
                         {{ !empty($totaljamkerja) ? desimal($totaljamkerja) : '' }}
                     </td>
                     <td align="right">
-                        {{ !empty($upah_perjam) ? rupiah($upah_perjam) : "" }}
+                        {{ !empty($upah_perjam) ? desimal($upah_perjam) : "" }}
                     </td>
                     <td style="text-align: center;">{{ !empty($total_overtime_1) ? $total_overtime_1 : '' }}</td>
 
