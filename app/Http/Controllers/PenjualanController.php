@@ -4341,7 +4341,13 @@ class PenjualanController extends Controller
             ->whereNotIn('penjualan.kode_pelanggan', $kode_pelanggan);
         $penjualan = $pj->get();
         $call = $pj->count();
-
+        if (isset($_POST['export'])) {
+            $time = date("H:i:s");
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Sales Perfomance.xls");
+        }
 
         return view('penjualan.laporan.cetak_salesperfomance', compact('sp', 'dari', 'sampai', 'cabang', 'salesman', 'jmlkunjungan', 'ec', 'penjualan', 'call'));
     }
