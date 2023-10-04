@@ -1163,7 +1163,7 @@
                     <td align="right">
                         {{ !empty($bruto) ?  rupiah($bruto) : "" }}
                     </td>
-                    <td align="center">{{ !empty($totalpotonganjam) ? $totalpotonganjam : "" }}</td>
+                    <td align="center">{{ !empty($totalpotonganjam) ? desimal($totalpotonganjam) : "" }}</td>
                     <td align="right">
                         <?php
                             // if($cekmasakerja <= 15){
