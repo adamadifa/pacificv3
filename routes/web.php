@@ -1670,7 +1670,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/bpjskesehatan', [BpjskesehatanController::class, 'index']);
     Route::get('/bpjskesehatan/create', [BpjskesehatanController::class, 'create']);
-    Route::post('/bpjskesehatan/store', [BpjstkBpjskesehatanControllerController::class, 'store']);
+    Route::post('/bpjskesehatan/store', [BpjskesehatanController::class, 'store']);
     Route::post('/bpjskesehatan/{kode_bpjs_kes}/update', [BpjskesehatanController::class, 'update']);
     Route::delete('/bpjskesehatan/{kode_bpjs_kes}/delete', [BpjskesehatanController::class, 'delete']);
     Route::get('/bpjskesehatan/{kode_bpjs_kes}/edit', [BpjskesehatanController::class, 'edit']);
