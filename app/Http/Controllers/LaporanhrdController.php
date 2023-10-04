@@ -1008,9 +1008,9 @@ class LaporanhrdController extends Controller
             DB::raw("(
                     SELECT nik,gaji_pokok,t_jabatan,t_masakerja,t_tanggungjawab,
                     t_makan,t_istri,t_skill
-                    FROM hrd_mastergaji
-                    WHERE kode_gaji IN (SELECT MAX(kode_gaji) as kode_gaji FROM hrd_mastergaji
-                    WHERE tgl_berlaku <= '$berlakugaji'  GROUP BY nik)
+                    FROM hrd_mastergaji a
+                    WHERE tgl_berlaku = (SELECT MAX(tgl_berlaku) as tgl_berlaku FROM hrd_mastergaji b WHERE a.kode_gaji = b.kode_gaji AND b.tgl_berlaku <= '$berlakugaji')
+                    GROUP BY nik
                 ) hrdgaji"),
             function ($join) {
                 $join->on('master_karyawan.nik', '=', 'hrdgaji.nik');
