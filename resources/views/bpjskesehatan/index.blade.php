@@ -217,7 +217,7 @@
                 backdrop: 'static'
                 , keyboard: false
             });
-            $("#loadinputbpjstk").load('/bpjstk/create');
+            $("#loadinputbpjstk").load('/bpjskesehatan/create');
         });
 
         $('.edit').click(function(e) {
