@@ -160,7 +160,7 @@ class PermintaanpengirimanController extends Controller
         } catch (\Exception $e) {
             ///dd($e);
             DB::rollback();
-            return redirect('/permintaanpengiriman')->with(['warning' => 'Data Gagal di Simpan Hubungi Tim IT']);
+            return redirect('/permintaanpengiriman')->with(['warning' => 'Data Gagal di Simpan Hubungi Tim IT' . $e->getMessage()]);
         }
     }
 
