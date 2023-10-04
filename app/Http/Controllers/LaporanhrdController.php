@@ -171,6 +171,7 @@ class LaporanhrdController extends Controller
             $sampai = $tahun . "-" . $bulan . "-20";
         }
 
+        $daribulangaji = $dari;
         $berlakugaji = $sampai;
         //dd($berlakugaji);
 
@@ -1095,7 +1096,7 @@ class LaporanhrdController extends Controller
         $query->where('status_aktif', 1);
         $query->where('tgl_masuk', '<=', $sampai);
         $query->orWhere('status_aktif', 0);
-        $query->where('tgl_nonaktif', '>', $dari);
+        $query->where('tgl_nonaktif', '>=', $daribulangaji);
         $query->where('tgl_masuk', '<=', $sampai);
         if (!empty($kode_dept)) {
             $query->where('master_karyawan.kode_dept', $kode_dept);
