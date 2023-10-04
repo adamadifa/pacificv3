@@ -936,8 +936,12 @@
                 }
 
 
+                if($d->nama_jabatan=="DIREKTUR"){
+                    $totalpotonganjam = 0;
+                }else{
+                    $totalpotonganjam = $totalterlambat + $totalkeluar + $totaldirumahkan + $totaltidakhadir + $totalpulangcepat + $totalizinabsen + $totalizinsakit;
+                }
 
-                $totalpotonganjam = $totalterlambat + $totalkeluar + $totaldirumahkan + $totaltidakhadir + $totalpulangcepat + $totalizinabsen + $totalizinsakit;
 
                 $totalhariall_shift_2 = $totalhari_shift_2 + $totalharilembur_shift_2;
                 $totalpremiall_shift_2 = $totalpremi_shift_2 + $totalpremilembur_shift_2;
