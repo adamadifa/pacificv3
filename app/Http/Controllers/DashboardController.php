@@ -93,6 +93,7 @@ class DashboardController extends Controller
             $no_pengajuanfaktur[] = $d->no_pengajuan;
         }
 
+
         if ($level == "direktur") {
             $jmlpengajuan = DB::table('pengajuan_limitkredit_v3')
                 ->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
@@ -142,7 +143,6 @@ class DashboardController extends Controller
         } else if ($level == "manager marketing") {
             $jmlpengajuan = DB::table('pengajuan_limitkredit_v3')
                 ->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
-                ->whereIn('no_pengajuan', $no_pengajuan)
                 ->whereNotNull('rsm')
                 ->whereNull('mm')
                 ->where('status', 0)
@@ -150,15 +150,15 @@ class DashboardController extends Controller
 
             $jmlpengajuanfaktur = DB::table('pengajuan_faktur')
                 ->join('pelanggan', 'pengajuan_faktur.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
-                ->whereIn('no_pengajuan', $no_pengajuan)
                 ->whereNotNull('rsm')
                 ->whereNull('mm')
                 ->where('status', 0)
                 ->count();
+            //dd($jmlpengajuanfaktur);
         } else if ($level == "general manager") {
             $jmlpengajuan = DB::table('pengajuan_limitkredit_v3')
                 ->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
-                ->whereIn('no_pengajuan', $no_pengajuan)
+
                 ->whereNotNull('mm')
                 ->whereNull('gm')
                 ->where('status', 0)
@@ -166,7 +166,7 @@ class DashboardController extends Controller
 
             $jmlpengajuanfaktur = DB::table('pengajuan_faktur')
                 ->join('pelanggan', 'pengajuan_faktur.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
-                ->whereIn('no_pengajuan', $no_pengajuan)
+
                 ->whereNotNull('mm')
                 ->whereNull('gm')
                 ->where('status', 0)
