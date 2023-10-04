@@ -1009,7 +1009,7 @@ class LaporanhrdController extends Controller
                 SELECT nik,gaji_pokok,t_jabatan,t_masakerja,t_tanggungjawab,
                 t_makan,t_istri,t_skill
                 FROM hrd_mastergaji a
-                WHERE tgl_berlaku = (SELECT MAX(tgl_berlaku) as tgl_berlaku FROM hrd_mastergaji b WHERE a.kode_gaji = b.kode_gaji AND tgl_berlaku <= '$berlakugaji')
+                WHERE tgl_berlaku = (SELECT MAX(tgl_berlaku) as tgl_berlaku FROM hrd_mastergaji b WHERE a.kode_gaji = b.kode_gaji AND b.tgl_berlaku <= '$berlakugaji')
                 GROUP BY nik)
                 ) hrdgaji"),
             function ($join) {
@@ -1021,7 +1021,7 @@ class LaporanhrdController extends Controller
             DB::raw("(
                 SELECT nik,iu_masakerja,iu_lembur,iu_penempatan,iu_kpi,
                 im_ruanglingkup,im_penempatan,im_kinerja
-                FROM hrd_masterinsentif a WHERE tgl_berlaku = (SELECT MAX(tgl_berlaku) as tgl_berlaku FROM hrd_masterinsentif b WHERE a.kode_insentif = b.kode_insentif AND tgl_berlaku <= '$berlakugaji')
+                FROM hrd_masterinsentif a WHERE tgl_berlaku = (SELECT MAX(tgl_berlaku) as tgl_berlaku FROM hrd_masterinsentif b WHERE a.kode_insentif = b.kode_insentif AND b.tgl_berlaku <= '$berlakugaji')
                 GROUP BY nik)
                 ) hrdinsentif"),
             function ($join) {
@@ -1032,7 +1032,7 @@ class LaporanhrdController extends Controller
         $query->leftJoin(
             DB::raw("(
                 SELECT nik,perusahaan,pekerja,keluarga,iuran as iuran_kes
-                FROM bpjs_kesehatan a WHERE tgl_berlaku = (SELECT MAX(tgl_berlaku) as tgl_berlaku FROM bpjs_kesehatan b WHERE a.kode_bpjs_kes = b.kode_bpjs_kes AND tgl_berlaku <= '$berlakugaji')
+                FROM bpjs_kesehatan a WHERE tgl_berlaku = (SELECT MAX(tgl_berlaku) as tgl_berlaku FROM bpjs_kesehatan b WHERE a.kode_bpjs_kes = b.kode_bpjs_kes AND b.tgl_berlaku <= '$berlakugaji')
                 GROUP BY nik)
                 ) bpjs_kesehatan"),
             function ($join) {
@@ -1043,7 +1043,7 @@ class LaporanhrdController extends Controller
         $query->leftJoin(
             DB::raw("(
                 SELECT nik,k_jht,k_jp,iuran as iuran_tk
-                FROM bpjs_tenagakerja a WHERE tgl_berlaku = (SELECT MAX(tgl_berlaku) as tgl_berlaku FROM bpjs_tenagakerja b WHERE a.kode_bpjs_tk = b.kode_bpjs_tk AND tgl_berlaku <= '$berlakugaji')
+                FROM bpjs_tenagakerja a WHERE tgl_berlaku = (SELECT MAX(tgl_berlaku) as tgl_berlaku FROM bpjs_tenagakerja b WHERE a.kode_bpjs_tk = b.kode_bpjs_tk AND b.tgl_berlaku <= '$berlakugaji')
                 GROUP BY nik)
 
                 ) bpjs_tenagakerja"),
