@@ -227,7 +227,7 @@
                 backdrop: 'static'
                 , keyboard: false
             });
-            $("#loadeditbpjstk").load('/bpjstk/' + kode_bpjs_kes + '/edit');
+            $("#loadeditbpjstk").load('/bpjskesehatan/' + kode_bpjs_kes + '/edit');
         });
 
 
