@@ -1009,7 +1009,7 @@ class LaporanhrdController extends Controller
                 SELECT nik,gaji_pokok,t_jabatan,t_masakerja,t_tanggungjawab,
                 t_makan,t_istri,t_skill
                 FROM hrd_mastergaji a
-                WHERE tgl_berlaku = (SELECT MAX(tgl_berlaku) as tgl_berlaku FROM hrd_mastergaji b WHERE a.nik = b.nik AND b.tgl_berlaku <= '$berlakugaji' GROUP BY nik)
+                WHERE tgl_berlaku = (SELECT MAX(tgl_berlaku) as tgl_berlaku FROM hrd_mastergaji b WHERE a.nik = b.nik AND b.tgl_berlaku <= '$berlakugaji')
                 ) hrdgaji"),
             function ($join) {
                 $join->on('master_karyawan.nik', '=', 'hrdgaji.nik');
