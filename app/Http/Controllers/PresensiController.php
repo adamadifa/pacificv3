@@ -479,6 +479,9 @@ class PresensiController extends Controller
         $specific_value = $pin;
 
 
+        echo $nextday;
+        die;
+
         //Mesin 1
         $url = 'https://developer.fingerspot.io/api/get_attlog';
         $data = '{"trans_id":"1", "cloud_id":"C2609075E3170B2C", "start_date":"' . $tanggal . '", "end_date":"' . $nextday . '"}';
