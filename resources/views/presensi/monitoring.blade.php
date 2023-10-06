@@ -624,6 +624,7 @@
                     _token: "{{ csrf_token() }}"
                     , pin: pin
                     , tanggal: tanggal
+                    , kode_jadwal: kode_jadwal
                 }
                 , cache: false
                 , success: function(respond) {
