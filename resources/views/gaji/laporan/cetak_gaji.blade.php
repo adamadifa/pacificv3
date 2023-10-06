@@ -781,12 +781,18 @@
                                 $grandtotaljam = 0;
                             }else if($status == "s"){
                                 if(!empty($sid)){
-                                    $grandtotaljam = 7;
+                                    $grandtotaljam = $jamdirumahkan;
+                                    if(!empty($cekwfh)){
+                                        $grandtotaljam = $grandtotaljam / 2 ;
+                                    }
                                 }else{
                                     $grandtotaljam = 0;
                                 }
                             }else if($status == "c"){
-                                $grandtotaljam = 7;
+                                $grandtotaljam = $jamdirumahkan;
+                                if(!empty($cekwfh)){
+                                    $grandtotaljam = $grandtotaljam / 2 ;
+                                }
                             }else{
                                 $grandtotaljam = 0;
                             }
