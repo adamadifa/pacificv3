@@ -148,7 +148,7 @@ class AjuanfakturController extends Controller
             }
         }
         $query->orderBy('no_pengajuan');
-        $ajuanfaktur = $query->paginate(10);
+        $ajuanfaktur = $query->paginate(30);
 
         $cbg = new Cabang();
         $cabang = $cbg->getCabanggudang(Auth::user()->kode_cabang);
