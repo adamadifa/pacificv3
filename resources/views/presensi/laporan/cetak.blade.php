@@ -594,11 +594,13 @@
                         if ($jam_out != "NA") {
                             if ($jam_out_tanggal < $jam_pulang_tanggal) { //Shift 3 Belum Di Set | Coba
                                 if($jam_out_tanggal > $jam_akhir_istirahat_tanggal && $jam_istirahat != "NA"){
-                                    $desimalmenit = ROUND(($menit * 100) / 60);
-                                    $grandtotaljam = $jam-1 . "." . $desimalmenit;
+                                    $desimalmenit = ROUND(($menit / 60),2);
+                                    //$desimalmenit = ROUND(($menit * 100) / 60);
+                                    $grandtotaljam = ($jam-1) + $desimalmenit;
                                 }else{
-                                    $desimalmenit = ROUND(($menit * 100) / 60);
-                                    $grandtotaljam = $jam . "." . $desimalmenit;
+                                    $desimalmenit = ROUND(($menit / 60),2);
+                                    $grandtotaljam = $jam + $desimalmenit;
+
                                 }
 
                                 $grandtotaljam = $grandtotaljam - $jt - $jk;
@@ -698,8 +700,8 @@
                         $izinabsen = 0;
                         $izinsakit = 0;
                         @endphp
-                        {{ $jam_masuk_tanggal }}___ {{ $jout }} <br>
-                        {{ $jam }} : {{ $menit }} <br>
+                        {{-- {{ $jam_masuk_tanggal }}___ {{ $jout }} <br>
+                        {{ $jam }} : {{ $menit }} <br> --}}
 
                         {{-- {{ var_dump($ceklibur); }} --}}
                         {{-- {{ $kode_izin_pulang }} {{ $izinpulangdirut }} --}}
