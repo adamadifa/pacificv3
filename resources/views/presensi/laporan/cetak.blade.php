@@ -698,7 +698,7 @@
                         $izinabsen = 0;
                         $izinsakit = 0;
                         @endphp
-                        {{ $jam }}
+                        {{ $jam_masuk_tanggal }}___ {{ $jout }} <br>
                         {{-- {{ var_dump($ceklibur); }} --}}
                         {{-- {{ $kode_izin_pulang }} {{ $izinpulangdirut }} --}}
                         {{-- {{ $totalpc }} --}}
