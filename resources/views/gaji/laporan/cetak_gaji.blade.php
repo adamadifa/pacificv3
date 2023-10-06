@@ -654,7 +654,7 @@
                         if (!empty($jam_in) and $kode_dept != 'MKT') {
                             if ($jam_in_presensi > $jam_masuk and empty($kode_izin_terlambat)) {
 
-                                if ($jamterlambat <= 1) {
+                                if ($jamterlambat < 1) {
                                     if($menitterlambat >= 5 AND $menitterlambat < 10){
                                         $denda = 5000;
                                         //echo "test5000|";
