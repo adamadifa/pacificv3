@@ -683,7 +683,7 @@
                         //Menghitung total Jam
                         if($jam_out_tanggal > $jam_awal_istirahat_tanggal && $jam_out_tanggal < $jam_akhir_istirahat_tanggal){ // Shift 3 Belum Di Set
                             // $jout = $jam_awal_istirahat_tanggal;
-                            $jout = $jam_out_tanggal;
+                            $jout = $jam_awal_istirahat_tanggal;
                         }else{
                             $jout = $jam_out_tanggal;
                         }
