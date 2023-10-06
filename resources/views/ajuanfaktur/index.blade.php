@@ -228,7 +228,7 @@
                         </table>
                     </div>
                     {{-- {{ $limitkredit->links('vendor.pagination.vuexy') }} --}}
-
+                    {{ $ajuanfaktur->links('vendor.pagination.vuexy') }}
                 </div>
             </div>
         </div>
