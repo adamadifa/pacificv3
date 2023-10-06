@@ -128,8 +128,27 @@ class AjuanfakturController extends Controller
                 $query->where('level', Auth::user()->level);
             }
         }
+
+        if ($this->level == "direktur") {
+            if ($request->status == "pending") {
+                $query->whereNotNull('mm');
+                $query->whereNull('dirut');
+                $query->where('pengajuan_faktur.status', 0);
+            } else if ($request->status == "disetujui") {
+                $query->whereNotNull('dirut');
+                $query->where('pengajuan_faktur.status', '!=', 2);
+                $query->orwhereNotNull('dirut');
+                $query->where('pengajuan_faktur.status', '=', 2);
+                $query->where('level', '!=', Auth::user()->level);
+            } else if ($request->status == "ditolak") {
+                $query->whereNotNull('gm');
+                $query->whereNotNull('dirut');
+                $query->where('pengajuan_faktur.status', 2);
+                $query->where('level', Auth::user()->level);
+            }
+        }
         $query->orderBy('no_pengajuan');
-        $ajuanfaktur = $query->get();
+        $ajuanfaktur = $query->paginate(10);
 
         $cbg = new Cabang();
         $cabang = $cbg->getCabanggudang(Auth::user()->kode_cabang);
