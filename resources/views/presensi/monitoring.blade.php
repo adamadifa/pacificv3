@@ -513,7 +513,7 @@
                                             <td>
                                                 @if ($level == "manager hrd" || $level=="admin" || Auth::user()->pic_presensi==1)
                                                 <a href="#" class="edit" nik="{{ $d->nik }}" kode_jadwal="{{ $d->kode_jadwal }}"><i class="feather icon-edit info"></i></a>
-                                                <a href="#" class="checkmesin" pin="{{ $d->pin }}" tanggal="{{ !empty(Request('tanggal')) ? Request('tanggal') : date('Y-m-d') }}"><i class="feather icon-monitor success"></i></a>
+                                                <a href="#" class="checkmesin" pin="{{ $d->pin }}" tanggal="{{ !empty(Request('tanggal')) ? Request('tanggal') : date('Y-m-d') }}" kode_jadwal="{{ $d->kode_jadwal }}"><i class="feather icon-monitor success"></i></a>
                                                 @endif
                                             </td>
                                         </tr>
