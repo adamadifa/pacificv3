@@ -149,7 +149,7 @@ class AjuanfakturController extends Controller
         }
         $query->orderBy('no_pengajuan');
         $ajuanfaktur = $query->paginate(30);
-
+        $ajuanfaktur->appends($request->all());
         $cbg = new Cabang();
         $cabang = $cbg->getCabanggudang(Auth::user()->kode_cabang);
         return view('ajuanfaktur.index', compact('ajuanfaktur', 'cabang'));
