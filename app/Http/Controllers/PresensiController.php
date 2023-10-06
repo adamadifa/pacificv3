@@ -471,8 +471,6 @@ class PresensiController extends Controller
         $tanggal = $request->tanggal;
         $pin = $request->pin;
         $kode_jadwal = $request->kode_jadwal;
-        echo $kode_jadwal;
-        die;
         if ($kode_jadwal == "JD004") {
             $nextday = date('Y-m-d', strtotime('+1 day', strtotime($tanggal)));
         } else {
@@ -480,9 +478,6 @@ class PresensiController extends Controller
         }
         $specific_value = $pin;
 
-
-        echo $nextday;
-        die;
 
         //Mesin 1
         $url = 'https://developer.fingerspot.io/api/get_attlog';

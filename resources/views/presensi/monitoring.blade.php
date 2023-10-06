@@ -612,6 +612,7 @@
             e.preventDefault();
             var pin = $(this).attr("pin");
             var tanggal = $(this).attr("tanggal");
+            var kode_jadwal = $(this).attr("kode_jadwal");
             $("#mdlcheckmesin").modal({
                 backdrop: 'static'
                 , keyboard: false
