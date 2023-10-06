@@ -699,6 +699,8 @@
                         $izinsakit = 0;
                         @endphp
                         {{ $jam_masuk_tanggal }}___ {{ $jout }} <br>
+                        {{ $jam }} : {{ $menit }} <br>
+
                         {{-- {{ var_dump($ceklibur); }} --}}
                         {{-- {{ $kode_izin_pulang }} {{ $izinpulangdirut }} --}}
                         {{-- {{ $totalpc }} --}}
