@@ -242,6 +242,7 @@
                     $total_overtime_libur_1 = 0;
                     $total_overtime_libur_2 = 0;
                     $izinsakit = 0;
+                    $jmlsid = 0;
                     $totalizinsakit = 0;
                     // $jmlharipremi1 = 0;
                     // $jmlharipremi2 = 0;
@@ -781,9 +782,16 @@
                                 $grandtotaljam = 0;
                             }else if($status == "s"){
                                 if(!empty($sid)){
+                                    $jmlsid += 1;
                                     $grandtotaljam = $jamdirumahkan;
+                                    $ceksid =1;
                                     if(!empty($cekwfh)){
+                                        $ceksid = 2;
                                         $grandtotaljam = $grandtotaljam / 2 ;
+                                    }
+                                    if($jmlsid > 5){
+                                        $grandtotaljam = $grandtotaljam - 1.25;
+                                        $ceksid = 3;
                                     }
                                 }else{
                                     $grandtotaljam = 0;
