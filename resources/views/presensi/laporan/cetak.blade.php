@@ -828,9 +828,13 @@
                         Alfa
                         @elseif($status=="s")
                         <span style="color:rgb(195, 63, 27)">SAKIT
-                            {{ $jmlsid }} {{ $ceksid }}
+                            {{-- {{ $jmlsid }} {{ $ceksid }} --}}
                             @if (!empty($sid))
-
+                            @if ($jmlsid > 5)
+                            @php
+                            $izinsakit = 1.25;
+                            @endphp
+                            @endif
                             <span style="color:green">- SID</span><br>
                             <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
                             @php
