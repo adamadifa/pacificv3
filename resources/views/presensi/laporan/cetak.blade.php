@@ -620,6 +620,7 @@
                                 $grandtotaljam = 0;
                             }else if($status == "s"){
                                 if(!empty($sid)){
+                                    $jmlsid += 1;
                                     $grandtotaljam = $jamdirumahkan;
                                     $ceksid =1;
                                     if(!empty($cekwfh)){
@@ -631,7 +632,7 @@
                                         $grandtotaljam = $grandtotaljam - 1.25;
                                         $ceksid = 3;
                                     }
-                                    $jmlsid += 1;
+
 
                                 }else{
                                     $grandtotaljam = 0;
