@@ -628,7 +628,7 @@
                                         $grandtotaljam = $grandtotaljam / 2 ;
                                     }
 
-                                    if($jmlsid > 5){
+                                    if($jmlsid > 5 && $d->nik == "21.10.460" && $bulan == 9 && $tahun = 2023){
                                         if($namahari != "Minggu"){
                                             if($namahari == "Sabtu"){
                                                 $grandtotaljam = $grandtotaljam - 1.25;
@@ -838,7 +838,7 @@
                         <span style="color:rgb(195, 63, 27)">SAKIT
                             {{-- {{ $jmlsid }} {{ $ceksid }} --}}
                             @if (!empty($sid))
-                            @if ($jmlsid > 5)
+                            @if ($jmlsid > 5 && $d->nik == "21.10.460" && $bulan == 9 && $tahun = 2023)
                             @php
                             if($namahari=="Sabtu"){
                             $izinsakit = 1.25;
@@ -855,9 +855,6 @@
 
                             <span style="color:green">- SID</span><br>
                             <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
-
-
-
                             @else
                             <br>
                             <?php

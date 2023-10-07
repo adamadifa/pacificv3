@@ -789,7 +789,7 @@
                                         $ceksid = 2;
                                         $grandtotaljam = $grandtotaljam / 2 ;
                                     }
-                                    if($jmlsid > 5){
+                                    if($jmlsid > 5 && $d->nik == "21.10.460" && $bulan == 9 && $tahun = 2023){
                                         if($namahari != "Minggu"){
                                             if($namahari == "Sabtu"){
                                                 $grandtotaljam = $grandtotaljam - 1.25;
@@ -901,7 +901,7 @@
                                         $izinsakit = 0;
                                     }
                                 }else{
-                                    if($jmlsid > 5){
+                                    if($jmlsid > 5 && $d->nik == "21.10.460" && $bulan == 9 && $tahun = 2023){
                                         if($namahari == "Sabtu"){
                                             $izinsakit = 1.25;
                                         }else{
