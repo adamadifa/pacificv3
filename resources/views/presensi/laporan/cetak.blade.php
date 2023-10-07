@@ -832,14 +832,7 @@
                             @if (!empty($sid))
                             @if ($jmlsid > 5)
                             @php
-                            if($namahari != "Minggu"){
-                            if($namahari=="Sabtu"){
                             $izinsakit = 1.25;
-                            }else{
-                            $izinsakit = 1,75;
-                            }
-                            }
-
                             @endphp
                             @else
                             @php
