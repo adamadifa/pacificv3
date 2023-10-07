@@ -716,10 +716,9 @@
                         @php
                         $izinabsen = 0;
                         $izinsakit = 0;
-                        $jmlsid = 0;
                         @endphp
 
-                        {{ $jmlsid }}
+
                         {{-- {{ $jam_masuk_tanggal }}___ {{ $jout }} <br>
                         {{ $jam }} : {{ $menit }} <br> --}}
 
@@ -826,11 +825,11 @@
                         @elseif($status=="s")
                         <span style="color:rgb(195, 63, 27)">SAKIT
                             @if (!empty($sid))
+                            {{ $jmlsid }}
                             <span style="color:green">- SID</span><br>
                             <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
                             @php
                             $izinsakit = 0;
-                            $jmlsid = 0;
                             @endphp
                             @else
                             <br>
