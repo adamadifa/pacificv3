@@ -158,7 +158,9 @@
                         $totalhari_shift_3 = 0;
                         $totalharilembur_shift_3 = 0;
                         $izinsakit = 0;
+                        $jmlsid = 0;
                         $totalizinsakit = 0;
+                        $totalsid = 0;
                         for($i=0; $i < count($rangetanggal); $i++){
                             $hari_ke = "hari_".$i+1;
                             $tgl_presensi =  $rangetanggal[$i];
@@ -622,6 +624,12 @@
                                     if(!empty($cekwfh)){
                                         $grandtotaljam = $grandtotaljam / 2 ;
                                     }
+
+                                    if($jmlsid > 5){
+                                        $grandtotaljam = $grandtotaljam - 1.25;
+                                    }
+                                    $jmlsid += 1;
+
                                 }else{
                                     $grandtotaljam = 0;
                                 }
@@ -708,6 +716,7 @@
                         @php
                         $izinabsen = 0;
                         $izinsakit = 0;
+                        $jmlsid = 0;
                         @endphp
                         {{-- {{ $jam_masuk_tanggal }}___ {{ $jout }} <br>
                         {{ $jam }} : {{ $menit }} <br> --}}
@@ -819,6 +828,7 @@
                             <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
                             @php
                             $izinsakit = 0;
+                            $jmlsid = 0;
                             @endphp
                             @else
                             <br>
