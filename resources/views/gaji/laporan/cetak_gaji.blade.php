@@ -908,7 +908,6 @@
                                             $izinsakit = 1.75;
                                         }
                                     }
-                                    $izinsakit = 0;
                                 }
                             }else{
                                 $izinsakit = 0;
