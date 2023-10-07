@@ -827,6 +827,7 @@
                         @elseif($status=="a")
                         Alfa
                         @elseif($status=="s")
+                        @if ($namahari != "Minggu")
                         <span style="color:rgb(195, 63, 27)">SAKIT
                             {{-- {{ $jmlsid }} {{ $ceksid }} --}}
                             @if (!empty($sid))
@@ -840,10 +841,10 @@
                             @endphp
                             @endif
 
-                            @if ($namahari != "Minggu")
+
                             <span style="color:green">- SID</span><br>
                             <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
-                            @endif
+
 
 
                             @else
@@ -872,6 +873,7 @@
 
                             @endphp
                         </span>
+                        @endif
                         @elseif($status=="i")
                         <span style="color:rgb(27, 5, 171);">IZIN</span><br>
                         <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
