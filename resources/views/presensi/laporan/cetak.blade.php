@@ -621,12 +621,15 @@
                             }else if($status == "s"){
                                 if(!empty($sid)){
                                     $grandtotaljam = $jamdirumahkan;
+                                    $ceksid =1;
                                     if(!empty($cekwfh)){
+                                        $ceksid = 2;
                                         $grandtotaljam = $grandtotaljam / 2 ;
                                     }
 
                                     if($jmlsid > 5){
                                         $grandtotaljam = $grandtotaljam - 1.25;
+                                        $ceksid = 3;
                                     }
                                     $jmlsid += 1;
 
@@ -824,8 +827,9 @@
                         Alfa
                         @elseif($status=="s")
                         <span style="color:rgb(195, 63, 27)">SAKIT
+                            {{ $jmlsid }} {{ $ceksid }}
                             @if (!empty($sid))
-                            {{ $jmlsid }}
+
                             <span style="color:green">- SID</span><br>
                             <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
                             @php
