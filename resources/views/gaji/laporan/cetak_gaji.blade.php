@@ -790,7 +790,14 @@
                                         $grandtotaljam = $grandtotaljam / 2 ;
                                     }
                                     if($jmlsid > 5){
-                                        $grandtotaljam = $grandtotaljam - 1.25;
+                                        if($namahari != "Minggu"){
+                                            if($namahari == "Sabtu"){
+                                                $grandtotaljam = $grandtotaljam - 1.25;
+                                            }else{
+                                                $grandtotaljam = $grandtotaljam - 1.75;
+                                            }
+                                        }
+
                                         $ceksid = 3;
                                     }
                                 }else{
@@ -876,25 +883,37 @@
                             $izinabsen = 0;
                             $izinsakit = 0;
                         }else if($status=="s"){
-                            if(empty($sid)){
-                                if(empty($izinabsendirut)){
-                                    if($namahari=="Sabtu"){
-                                    $izinsakit = 5;
-                                    }elseif($namahari=="Minggu"){
-                                        if(!empty($cekminggumasuk)){
-                                            $izinsakit = 7;
+                            if($namahari != "Minggu"){
+                                if(empty($sid)){
+                                    if(empty($izinabsendirut)){
+                                        if($namahari=="Sabtu"){
+                                        $izinsakit = 5;
+                                        }elseif($namahari=="Minggu"){
+                                            if(!empty($cekminggumasuk)){
+                                                $izinsakit = 7;
+                                            }else{
+                                                $izinsakit = 0;
+                                            }
                                         }else{
-                                            $izinsakit = 0;
+                                            $izinsakit = 7;
                                         }
                                     }else{
-                                        $izinsakit = 7;
+                                        $izinsakit = 0;
                                     }
                                 }else{
+                                    if($jmlsid > 5){
+                                        if($namahari == "Sabtu"){
+                                            $izinsakit = 1.25;
+                                        }else{
+                                            $izinsakit = 1.75;
+                                        }
+                                    }
                                     $izinsakit = 0;
                                 }
                             }else{
                                 $izinsakit = 0;
                             }
+
 
                             $izinabsen = 0;
                         }else if($status=="i"){
