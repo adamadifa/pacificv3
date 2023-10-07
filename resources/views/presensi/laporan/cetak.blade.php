@@ -832,16 +832,26 @@
                             @if (!empty($sid))
                             @if ($jmlsid > 5)
                             @php
+                            if($namahari != "Minggu"){
+                            if($namahari=="Sabtu"){
                             $izinsakit = 1.25;
+                            }else{
+                            $izinsakit = 1,75;
+                            }
+                            }
+
                             @endphp
                             @else
                             @php
                             $izinsakit = 0;
                             @endphp
                             @endif
-                            {{ $izinsakit }}
+
+                            @if ($namahari != "Minggu")
                             <span style="color:green">- SID</span><br>
                             <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
+                            @endif
+
 
                             @else
                             <br>
