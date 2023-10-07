@@ -718,6 +718,8 @@
                         $izinsakit = 0;
                         $jmlsid = 0;
                         @endphp
+
+                        {{ $jmlsid }}
                         {{-- {{ $jam_masuk_tanggal }}___ {{ $jout }} <br>
                         {{ $jam }} : {{ $menit }} <br> --}}
 
