@@ -885,6 +885,7 @@
                             @endphp
                         </span>
                         @endif
+                        {{ $izinsakit }}
                         @elseif($status=="i")
                         <span style="color:rgb(27, 5, 171);">IZIN</span><br>
                         <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
