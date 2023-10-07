@@ -629,7 +629,14 @@
                                     }
 
                                     if($jmlsid > 5){
-                                        $grandtotaljam = $grandtotaljam - 1.25;
+                                        if($namahari != "Minggu"){
+                                            if($namahari == "Sabtu"){
+                                                $grandtotaljam = $grandtotaljam - 1.25;
+                                            }else{
+                                                $grandtotaljam = $grandtotaljam - 1.75;
+                                            }
+                                        }
+
                                         $ceksid = 3;
                                     }
 
