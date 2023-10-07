@@ -907,6 +907,8 @@
                                         }else{
                                             $izinsakit = 1.75;
                                         }
+                                    }else{
+                                        $izinsakit = 0;
                                     }
                                 }
                             }else{
