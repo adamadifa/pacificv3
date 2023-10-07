@@ -835,6 +835,7 @@
                             $izinsakit = 1.25;
                             @endphp
                             @endif
+                            {{ $izinsakit }}
                             <span style="color:green">- SID</span><br>
                             <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
                             @php
