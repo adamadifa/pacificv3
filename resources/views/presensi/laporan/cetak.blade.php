@@ -501,7 +501,11 @@
 
                         //Jam terlambat dalam Desimal
 
-                        $jt = round($jamterlambat + $desimalterlambat,2,PHP_ROUND_HALF_DOWN);
+                        if(!empty($izinterlambatdirut)){
+                            $jk = 0;
+                        }else{
+                            $jt = round($jamterlambat + $desimalterlambat,2,PHP_ROUND_HALF_DOWN);
+                        }
                         if($jamkeluarkantor > 0){
                             if($keperluankeluar == "K"){
                                 $jk = 0;
@@ -730,7 +734,7 @@
                         $izinsakit = 0;
                         @endphp
 
-                        {{ $izinterlambatdirut }}
+
                         {{-- {{ $jam_masuk_tanggal }}___ {{ $jout }} <br>
                         {{ $jam }} : {{ $menit }} <br> --}}
 
