@@ -729,7 +729,7 @@
                         $izinsakit = 0;
                         @endphp
 
-                        {{ $izinabsendirut }}
+
                         {{-- {{ $jam_masuk_tanggal }}___ {{ $jout }} <br>
                         {{ $jam }} : {{ $menit }} <br> --}}
 

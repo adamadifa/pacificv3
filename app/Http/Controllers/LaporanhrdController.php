@@ -287,7 +287,8 @@ class LaporanhrdController extends Controller
                 '|',IFNULL(jam_kerja.lintashari,'NA'),
                 '|',IFNULL(izinpulang.direktur,'NA'),
                 '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                 ),NULL)) as hari_1,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[1]',CONCAT(
@@ -310,7 +311,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_2,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[2]',CONCAT(
@@ -333,7 +335,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_3,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[3]',CONCAT(
@@ -356,7 +359,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_4,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[4]',CONCAT(
@@ -379,7 +383,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_5,
 
 
@@ -403,7 +408,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_6,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[6]',CONCAT(
@@ -426,7 +432,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_7,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[7]',CONCAT(
@@ -449,7 +456,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_8,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[8]',CONCAT(
@@ -472,7 +480,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_9,
 
 
@@ -496,7 +505,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_10,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[10]',CONCAT(
@@ -519,7 +529,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_11,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[11]',CONCAT(
@@ -542,7 +553,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_12,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[12]',CONCAT(
@@ -565,7 +577,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_13,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[13]',CONCAT(
@@ -588,7 +601,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_14,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[14]',CONCAT(
@@ -611,7 +625,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_15,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[15]',CONCAT(
@@ -634,7 +649,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_16,
 
 
@@ -658,7 +674,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_17,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[17]',CONCAT(
@@ -681,7 +698,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_18,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[18]',CONCAT(
@@ -704,7 +722,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_19,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[19]',CONCAT(
@@ -727,7 +746,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_20,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[20]',CONCAT(
@@ -750,7 +770,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_21,
 
 
@@ -774,7 +795,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_22,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[22]',CONCAT(
@@ -797,7 +819,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_23,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[23]',CONCAT(
@@ -820,7 +843,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_24,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[24]',CONCAT(
@@ -843,7 +867,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_25,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[25]',CONCAT(
@@ -866,7 +891,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_26,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[26]',CONCAT(
@@ -889,7 +915,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_27,
 
 
@@ -913,7 +940,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_28,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[28]',CONCAT(
@@ -936,7 +964,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_29,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[29]',CONCAT(
@@ -959,7 +988,8 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_30,
 
 
@@ -984,12 +1014,14 @@ class LaporanhrdController extends Controller
                     '|',IFNULL(jam_kerja.lintashari,'NA'),
                     '|',IFNULL(izinpulang.direktur,'NA'),
                     '|',IFNULL(pengajuan_izin.direktur,'NA'),
-                    '|',IFNULL(pengajuan_izin.keperluan,'NA')
+                    '|',IFNULL(pengajuan_izin.keperluan,'NA'),
+'|',IFNULL(izinterlambat.direktur,'NA')
                     ),NULL)) as hari_31
             FROM
                 presensi
             LEFT JOIN pengajuan_izin ON presensi.kode_izin = pengajuan_izin.kode_izin
             LEFT JOIN pengajuan_izin as izinpulang ON presensi.kode_izin_pulang = izinpulang.kode_izin
+            LEFT JOIN pengajuan_izin as izinterlambat ON presensi.kode_izin_terlambat = izinterlambat.kode_izin
             LEFT JOIN jadwal_kerja ON presensi.kode_jadwal = jadwal_kerja.kode_jadwal
             LEFT JOIN jam_kerja ON presensi.kode_jam_kerja = jam_kerja.kode_jam_kerja
             WHERE tgl_presensi BETWEEN '$rangetanggal[0]' AND  '$rangetanggal[$lastrange]'
