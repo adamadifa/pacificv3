@@ -502,7 +502,7 @@
                         //Jam terlambat dalam Desimal
 
                         if(!empty($izinterlambatdirut)){
-                            $jk = 0;
+                            $jt = 0;
                         }else{
                             $jt = round($jamterlambat + $desimalterlambat,2,PHP_ROUND_HALF_DOWN);
                         }
