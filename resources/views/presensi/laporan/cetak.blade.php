@@ -315,6 +315,7 @@
                         $izinpulangdirut = $datapresensi[17] != "NA" ? $datapresensi[17] : ''; //Izin Pulang Persetujuan Dirut
                         $keperluankeluar = $datapresensi[19] != "NA" ? $datapresensi[19] : ''; //Izin Pulang Persetujuan Dirut
                         $izinabsendirut = $datapresensi[18] != "NA" ? $datapresensi[18] : ''; // Izin Absen Persetujuan Dirut
+                        $izinterlambatdirut = $datapresensi[20] != "NA" ? $datapresensi[20] : ''; // Izin Absen Persetujuan Dirut
 
                         if(!empty($lintashari)){ // Jika Jadwal Presesni Lintas Hari
                             $tgl_pulang = date('Y-m-d', strtotime('+1 day', strtotime($tgl_presensi)));
@@ -729,7 +730,7 @@
                         $izinsakit = 0;
                         @endphp
 
-
+                        {{ $izinterlambatdirut }}
                         {{-- {{ $jam_masuk_tanggal }}___ {{ $jout }} <br>
                         {{ $jam }} : {{ $menit }} <br> --}}
 
