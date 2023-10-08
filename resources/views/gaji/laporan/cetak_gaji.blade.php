@@ -456,6 +456,7 @@
                         $izinpulangdirut = $datapresensi[17] != "NA" ? $datapresensi[17] : ''; //Izin Pulang Persetujuan Dirut
                         $izinabsendirut = $datapresensi[18] != "NA" ? $datapresensi[18] : ''; // Izin Absen Persetujuan Dirut
                         $keperluankeluar = $datapresensi[19] != "NA" ? $datapresensi[19] : ''; // Izin Absen Persetujuan Dirut
+                        $izinterlambatdirut = $datapresensi[20] != "NA" ? $datapresensi[20] : ''; // Izin Absen Persetujuan Dirut
                         if(!empty($lintashari)){ // Jika Jadwal Presesni Lintas Hari
                             $tgl_pulang = date('Y-m-d', strtotime('+1 day', strtotime($tgl_presensi)));
                             // Tanggal Pulang adalah Tanggal Berikutnya
@@ -688,7 +689,7 @@
                         //Menghitung total Jam
                         if($jam_out_tanggal > $jam_awal_istirahat_tanggal && $jam_out_tanggal <= $jam_akhir_istirahat_tanggal){ // Shift 3 Belum Di Set
                             // $jout = $jam_awal_istirahat_tanggal;
-                            $jout = $jam_out_tanggal;
+                            $jout = $jam_awal_istirahat_tanggal;
                         }else{
                             $jout = $jam_out_tanggal;
                         }
