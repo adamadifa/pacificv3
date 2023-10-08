@@ -119,7 +119,7 @@
                     <select name="kode_jadwal" id="kode_jadwal" class="form-control">
                         <option value="">Pilih Jadwal</option>
                         @foreach ($jadwal as $d)
-                        <option {{ $cek != null ? $cek->kode_jadwal == $d->kode_jadwal ? 'selected' : '' : '' }} value="{{ $d->kode_jadwal }}">{{ $d->nama_jadwal }} - {{$d->kode_cabang}} {{ $d->kode_cabang }}</option>
+                        <option {{ $cek != null ? $cek->kode_jadwal == $d->kode_jadwal ? 'selected' : '' : '' }} value="{{ $d->kode_jadwal }}">{{ $d->nama_jadwal }} - {{ $d->kode_cabang }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -169,7 +169,7 @@
                     <select name="kode_jadwal" id="kode_jadwal" class="form-control">
                         <option value="">Pilih Jadwal</option>
                         @foreach ($jadwal as $d)
-                        <option {{ $cek != null ? $cek->kode_jadwal == $d->kode_jadwal ? 'selected' : '' : '' }} value="{{ $d->kode_jadwal }}">{{ $d->nama_jadwal }} - {{$d->kode_cabang}} - {{ $d->kode_cabang }}</option>
+                        <option {{ $cek != null ? $cek->kode_jadwal == $d->kode_jadwal ? 'selected' : '' : '' }} value="{{ $d->kode_jadwal }}">{{ $d->nama_jadwal }} - {{ $d->kode_cabang }}</option>
                         @endforeach
                     </select>
                 </div>
