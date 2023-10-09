@@ -501,7 +501,7 @@
 
                         //Jam terlambat dalam Desimal
 
-                        if($izinterlambatdirut==1){
+                        if(!empty($izinterlambatdirut)){
                             $jt = 0;
                         }else{
                             $jt = round($jamterlambat + $desimalterlambat,2,PHP_ROUND_HALF_DOWN);
@@ -678,7 +678,7 @@
 
                         if($jam_out != "NA" && $jam_out_tanggal < $jam_pulang_tanggal){
                             $pc = "Pulang Cepat";
-                            if($izinpulangdirut==1){
+                            if(!empty($izinpulangdirut)){
                                 $totalpc = 0;
                             }else{
                                 $totalpc = $total_jam + $jk - $grandtotaljam;
@@ -863,7 +863,7 @@
                             @else
                             <br>
                             <?php
-                                if($izinabsendirut==1){
+                                if(empty($izinabsendirut)){
                                     if($namahari=="Sabtu"){
                                     $izinsakit = 5;
                                     }elseif($namahari=="Minggu"){
@@ -897,7 +897,7 @@
                         <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
 
                         <?php
-                            if($izinabsendirut==1){
+                            if(empty($izinabsendirut)){
                                 if($namahari=="Sabtu"){
                                 $izinabsen = 5;
                                 }elseif($namahari=="Minggu"){
