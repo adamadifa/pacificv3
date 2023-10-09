@@ -638,7 +638,7 @@
 
                         //Jam terlambat dalam Desimal
 
-                        if(!empty($izinterlambatdirut)){
+                        if(!empty($izinterlambatdirut) && $izinterlambatdirut == 1){
                             $jt = 0;
                         }else{
                             $jt = round($jamterlambat + $desimalterlambat,2,PHP_ROUND_HALF_DOWN);
@@ -837,7 +837,7 @@
 
                         if($jam_out != "NA" && $jam_out_tanggal < $jam_pulang_tanggal){
                             $pc = "Pulang Cepat";
-                            if(!empty($izinpulangdirut)){
+                            if(!empty($izinpulangdirut) && $izinpulangdirut == 1){
                                 $totalpc = 0;
                                 $menitpc = 0;
                             }else{
@@ -890,7 +890,7 @@
                         }else if($status=="s"){
                             if($namahari != "Minggu"){
                                 if(empty($sid)){
-                                    if(empty($izinabsendirut)){
+                                    if(empty($izinabsendirut) || $izinabsendirut == 2){
                                         if($namahari=="Sabtu"){
                                         $izinsakit = 5;
                                         }elseif($namahari=="Minggu"){
@@ -923,7 +923,7 @@
 
                             $izinabsen = 0;
                         }else if($status=="i"){
-                            if(empty($izinabsendirut)){
+                            if(empty($izinabsendirut) || $izinabsendirut == 2){
                                 if($namahari=="Sabtu"){
                                 $izinabsen = 5;
                                 }elseif($namahari=="Minggu"){
