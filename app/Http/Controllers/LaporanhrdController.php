@@ -1126,6 +1126,7 @@ class LaporanhrdController extends Controller
             }
         }
         $query->where('status_aktif', 1);
+        $query->where('master_karyawan.nik', '10.08.119');
         $query->where('tgl_masuk', '<=', $sampai);
         $query->orWhere('status_aktif', 0);
         $query->where('tgl_nonaktif', '>=', $daribulangaji);
