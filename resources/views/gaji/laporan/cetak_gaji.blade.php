@@ -338,10 +338,10 @@
                             }
                         }
                         if ($kategori_lembur==1) {
-                            $overtime_1 = $jmljam_lembur > 1 ? 1 : $jmljam_lembur;
-                            $overtime_2 = $jmljam_lembur > 1 ? $jmljam_lembur -1 : 0;
-                            $total_overtime_1 += $overtime_1;
-                            $total_overtime_2 += $overtime_2;
+                            $overtime_libur_1 = !empty($ceklibur) && $d->nama_jabatan =="SECURITY" ? $jmljam_lembur * 2 : $jmljam_lembur;
+                            $overtime_libur_2 = 0;
+                            $total_overtime_libur_1 += $overtime_libur_1;
+                            $total_overtime_libur_2 += $overtime_libur_2;
                         }else if($kategori_lembur==2){
                             // $overtime_libur_1 = $jmljam_lembur >= 4 ? 4 : $jmljam_lembur;
                             // $overtime_libur_2 = $jmljam_lembur > 4 ? $jmljam_lembur-4 : 0;
