@@ -734,7 +734,7 @@
                         $izinsakit = 0;
                         @endphp
 
-                        {{ $desimalmenit }} ----- {{ $menit }}
+                        {{-- {{ $desimalmenit }} ----- {{ $menit }} --}}
                         {{-- {{ $jam_masuk_tanggal }}___ {{ $jout }} <br>
                         {{ $jam }} : {{ $menit }} <br> --}}
 
