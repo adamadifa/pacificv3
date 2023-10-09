@@ -455,6 +455,10 @@
                         }
 
                     }
+
+                    echo $tgl_presensi."-".$overtime_1;
+                    echo "<br>";
+
                     if($d->$hari_ke != NULL){
                         //$tidakhadir = 0; // Jika Karyawan Absen Maka $tidakhadir dihitung 0
 
