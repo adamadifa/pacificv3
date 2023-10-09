@@ -450,8 +450,8 @@
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="form-group" style="margin-bottom: 5px">
-                                                        {{-- <input type="hidden" name="jenistransaksi" id="jenistransaksi" value="{{ $faktur->jenistransaksi }}"> --}}
-                                                        <select class="form-control" name="jenistransaksi" id="jenistransaksi">
+                                                        <input type="hidden" name="jenistransaksi" id="jenistransaksi" value="{{ $faktur->jenistransaksi }}">
+                                                        <select class="form-control" name="jenistransaksi_edit" id="jenistransaksi_edit" disabled>
                                                             <option value="">Jenis Transaksi</option>
                                                             <option @if ($faktur->jenistransaksi=="tunai")
                                                                 selected

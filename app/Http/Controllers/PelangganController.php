@@ -617,6 +617,7 @@ class PelangganController extends Controller
 
         return DataTables::of($pelanggan)
             ->addColumn('action', function ($pelanggan) {
+                $limitpel = !empty($pelanggan->limitpel) ? $pelanggan->limitpel : 0;
                 return '<a href="#" class="btn btn-sm btn-primary"
                 kode_pelanggan="' . $pelanggan->kode_pelanggan . '"
                 nama_pelanggan="' . $pelanggan->nama_pelanggan . '"
@@ -630,7 +631,7 @@ class PelangganController extends Controller
                 longitude ="' . $pelanggan->longitude . '"
                 foto = "' . $pelanggan->foto  . '"
                 kode_cabang = "' . $pelanggan->kode_cabang  . '"
-                limitpel = "' . $pelanggan->limitpel  . '"
+                limitpel = "' . $limitpel  . '"
                 jatuhtempo = "' . $pelanggan->jatuhtempo  . '"
                 limitpelanggan = "' . rupiah($pelanggan->limitpel)  . '"
                 status = "' . $pelanggan->status_pel  . '"

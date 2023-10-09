@@ -83,7 +83,7 @@
                                             <input type="hidden" name="kode_pelanggan" id="kode_pelanggan" value="{{ $pelanggan != null ?  $pelanggan->kode_pelanggan : '' }}">
                                             <input type="hidden" id="kode_cabang" class="form-control" name="kode_cabang" value="{{ $pelanggan != null ?  $pelanggan->kode_cabang : ''  }}">
                                             <input type="hidden" id="jatuhtempo" class="form-control" name="jatuhtempo" value="{{ $pelanggan != null ?  $pelanggan->jatuhtempo : '' }}">
-                                            <input type="hidden" id="limitpel" class="form-control" name="limitpel" value="{{ $pelanggan != null ?  $pelanggan->limitpel : '' }}">
+                                            <input type="hidden" id="limitpel" class="form-control" name="limitpel" value="{{ $pelanggan != null && !empty($pelanggan->limitpel) ?  $pelanggan->limitpel : 0 }}">
                                             <x-inputtext label="Pelanggan" field="nama_pelanggan" icon="feather icon-user" value="{{$pelanggan != null ? $pelanggan->kode_pelanggan .'|'. $pelanggan->nama_pelanggan : ''}}" readonly />
                                         </div>
                                     </div>
@@ -1015,7 +1015,7 @@ $hari_sampai = $besok[2];
             var jmlfaktur = $("#jmlfaktur").val();
             var totalpiutang = parseInt(sisapiutang) + parseInt(subtotal);
 
-            //alert(limitpel);
+            alert(limitpel);
             // alert(nama_pelanggan);
             if (cektutuplaporan > 0) {
                 swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
