@@ -638,7 +638,7 @@
 
                         //Jam terlambat dalam Desimal
 
-                        if(!$izinterlambatdirut==1){
+                        if($izinterlambatdirut==1){
                             $jt = 0;
                         }else{
                             $jt = round($jamterlambat + $desimalterlambat,2,PHP_ROUND_HALF_DOWN);
@@ -837,7 +837,7 @@
 
                         if($jam_out != "NA" && $jam_out_tanggal < $jam_pulang_tanggal){
                             $pc = "Pulang Cepat";
-                            if(!$izinpulangdirut==1){
+                            if($izinpulangdirut==1){
                                 $totalpc = 0;
                                 $menitpc = 0;
                             }else{
