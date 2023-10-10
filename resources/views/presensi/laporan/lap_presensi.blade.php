@@ -34,7 +34,9 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <select name="id_kantor" id="id_kantor" class="form-control">
+                                                    @if (Auth::user()->level=="PST")
                                                     <option value="">Semua Kantor</option>
+                                                    @endif
                                                     @foreach ($cabang as $c)
                                                     <option {{ (Request('kode_cabang')==$c->kode_cabang ? 'selected':'')}} value="{{ $c->kode_cabang }}">{{ strtoupper($c->kode_cabang=="PST" ? "PUSAT" : $c->nama_cabang) }}</option>
                                                     @endforeach
