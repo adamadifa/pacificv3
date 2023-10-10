@@ -1015,7 +1015,7 @@ $hari_sampai = $besok[2];
             var jmlfaktur = $("#jmlfaktur").val();
             var totalpiutang = parseInt(sisapiutang) + parseInt(subtotal);
 
-            alert(limitpel);
+            //alert(limitpel);
             // alert(nama_pelanggan);
             if (cektutuplaporan > 0) {
                 swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
