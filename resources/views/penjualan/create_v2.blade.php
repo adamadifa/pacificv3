@@ -908,7 +908,17 @@
             if (cektutuplaporan > 0) {
                 swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
                 return false;
-            } else if (parseInt(totalpiutang) >= parseInt(limitpel) && jenistransaksi == 'kredit') {
+            } else if (parseInt(totalpiutang) >= parseInt(limitpel) && sikluspembayaran == 0 jenistransaksi == 'kredit') {
+                swal({
+                    title: 'Oops'
+                    , text: 'Melebihi Limit, Silahkan Ajukan Penambahan Limit !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#no_fak_penj").focus();
+                });
+                return false;
+            } else if (parseInt(subtotal) >= parseInt(limitpel) && sikluspembayaran == 1 jenistransaksi == 'kredit') {
                 swal({
                     title: 'Oops'
                     , text: 'Melebihi Limit, Silahkan Ajukan Penambahan Limit !'
