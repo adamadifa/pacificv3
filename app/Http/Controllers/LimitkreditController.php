@@ -353,7 +353,9 @@ class LimitkreditController extends Controller
             ->where('no_pengajuan', $no_pengajuan)
             ->orderBy('tgl_pengajuan', 'asc')
             ->first();
-        $komentar = DB::table('pengajuan_limitkredit_analisa_v3')->where('no_pengajuan', $no_pengajuan)->get();
+        $komentar = DB::table('pengajuan_limitkredit_analisa_v3')
+            ->leftJoin('users', 'pengajuan_limitkredit_analisa_v3.id_user', '=', 'users.id')
+            ->where('no_pengajuan', $no_pengajuan)->get();
         //return view('limitkredit.cetak', compact('limitkredit'));
 
         $pdf = PDF::loadview('limitkredit.cetak', compact('limitkredit', 'komentar'))->setPaper('a4');

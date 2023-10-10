@@ -240,7 +240,7 @@
         <td style="text-align: right">{{ rupiah($limitkredit->jumlah) }}</td>
         <td rowspan="4" valign="top">
             @foreach ($komentar as $d)
-            {{ $d->uraian_analisa }}<br>
+            {{ $d->name }} ({{ $d->level }}) - {{ $d->uraian_analisa }}<br>
             @endforeach
         </td>
     </tr>
