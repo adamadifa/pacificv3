@@ -1031,7 +1031,7 @@ $hari_sampai = $besok[2];
                 });
                 $("#btnsimpan").prop('disabled', false);
                 return false;
-            } else if (parseInt(totalpiutang) >= parseInt(limitpel) && sikluspembayaran == 0 && jenistransaksi == 'kredit') {
+            } else if (parseInt(totalpiutang) >= parseInt(limitpel) && jenistransaksi == 'kredit') {
                 swal({
                     title: 'Oops'
                     , text: 'Melebihi Limit, Silahkan Ajukan Penambahan Limit !'
