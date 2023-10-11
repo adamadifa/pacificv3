@@ -34,7 +34,7 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <select name="id_kantor" id="id_kantor" class="form-control">
-                                                    @if (Auth::user()->level=="PST")
+                                                    @if (Auth::user()->level=="PCF")
                                                     <option value="">Semua Kantor</option>
                                                     @endif
                                                     @foreach ($cabang as $c)
