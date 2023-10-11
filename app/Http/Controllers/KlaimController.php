@@ -234,8 +234,9 @@ class KlaimController extends Controller
         $tgl = explode("-", $tanggal);
         $bulan = $tgl[1];
         $tahun = substr($tgl[0], 2, 2);
-        if ($kode_cabang == 'GRT') {
-            $akun = "1-1119";
+        $kode_akun = getAkunkaskecil();
+        if ($kode_cabang == 'TSM' || $kode_cabang == 'PST') {
+            $akun = $kode_akun[$kode_cabang];
         } else {
             $akun = "1-1104";
         }
