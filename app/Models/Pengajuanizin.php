@@ -115,7 +115,7 @@ class Pengajuanizin extends Model
                 $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');
             }
 
-            if (Auth::user()->id == 164) {
+            if (Auth::user()->level == "manager hrd") {
                 $query->where('head_dept', 1);
             }
 
