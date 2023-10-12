@@ -48,7 +48,9 @@
                                         <div class="col-12">
                                             <div class="form-group">
                                                 <select name="kode_dept" id="kode_dept" class="form-control">
+                                                    @if (Auth::user()->level=="PCF")
                                                     <option value="">Semua Departemen</option>
+                                                    @endif
                                                 </select>
                                             </div>
                                         </div>
@@ -176,6 +178,7 @@
             });
         }
 
+        loaddepartemen();
 
         function loadgroup() {
             var id_kantor = $("#id_kantor").val();

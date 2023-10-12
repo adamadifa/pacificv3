@@ -88,8 +88,9 @@ class LaporanhrdController extends Controller
                 ->groupByRaw('master_karyawan.kode_dept,nama_dept')
                 ->get();
         }
-
-        echo "<option value=''>Semua Departemen</option>";
+        if (Auth::user()->level == "manager hrd" || Auth::user()->level == "direktur" || Auth::user()->level == "admin") {
+            echo "<option value=''>Semua Departemen</option>";
+        }
         foreach ($departemen as $d) {
             echo "<option value='$d->kode_dept'>$d->nama_dept</option>";
         }

@@ -140,6 +140,7 @@
             });
         }
 
+        loaddepartemen();
 
         function loadgroup() {
             var id_kantor = $("#id_kantor").val();
