@@ -456,13 +456,13 @@
                 }
 
                 if($d->status_komisi == 1){
-                    if ($ratioljt >= 0 and $ratioljt <= 0.20) {
+                    if ($ratioljt >= 0 and $ratioljt <= 0.50) {
                         $rewardljt = 500000;
-                    } else  if ($ratioljt > 0.20 and $ratioljt <= 0.40) {
+                    } else  if ($ratioljt > 0.50 and $ratioljt <= 1) {
                         $rewardljt = 375000;
-                    }else  if ($ratioljt > 0.40 and $ratioljt <= 0.60) {
+                    }else  if ($ratioljt > 1 and $ratioljt <= 1.50) {
                         $rewardljt = 250000;
-                    }else  if ($ratioljt > 0.60 and $ratioljt <= 0.80) {
+                    }else  if ($ratioljt > 1.50 and $ratioljt <= 2) {
                         $rewardljt = 125000;
                     } else {
                         $rewardljt = 0;
@@ -472,19 +472,22 @@
                 }
 
                 if($d->status_komisi == 1){
-
-                    if (round($totalpoin,2) >= 70 and round($totalpoin,2) <= 75) {
-                        $rewardpoin = 500000;
+                    if (round($totalpoin,2) >= 60 and round($totalpoin,2) <= 65) {
+                        $rewardpoin = 200000;
+                    }else if (round($totalpoin,2) > 65 and round($totalpoin,2) <= 70) {
+                        $rewardpoin = 400000;
+                    }else if (round($totalpoin,2) > 70 and round($totalpoin,2) <= 75) {
+                        $rewardpoin = 600000;
                     } else if (round($totalpoin,2) > 75 and round($totalpoin,2) <= 80) {
-                        $rewardpoin = 1000000;
+                        $rewardpoin = 1200000;
                     } else if (round($totalpoin,2) > 80 and round($totalpoin,2) <= 85) {
-                        $rewardpoin = 1500000;
+                        $rewardpoin = 1800000;
                     } else if (round($totalpoin,2) > 85 and round($totalpoin,2) <= 90) {
-                        $rewardpoin = 2000000;
+                        $rewardpoin = 2400000;
                     } else if (round($totalpoin,2) > 90 and round($totalpoin,2) <= 95) {
-                        $rewardpoin = 2500000;
-                    } else if (round($totalpoin,2) > 95 and round($totalpoin,2) <= 100) {
                         $rewardpoin = 3000000;
+                    } else if (round($totalpoin,2) > 95 and round($totalpoin,2) <= 100) {
+                        $rewardpoin = 3600000;
                     } else {
                         $rewardpoin = 0;
                     }
