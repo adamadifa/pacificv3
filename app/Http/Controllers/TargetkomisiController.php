@@ -1932,7 +1932,7 @@ class TargetkomisiController extends Controller
             // echo 2;
             // die;
             return $this->cetakkomisijuni2023($cabang, $bulan, $tahun, $aturankomisi, $dari, $hariini, $sampai);
-        } elseif ($dari >= '2023-07-01') {
+        } elseif ($dari >= '2023-07-01' and $dari < '2023-10-01') {
             // echo 3;
             // die;
             return $this->cetakkomisijuli2023($cabang, $bulan, $tahun, $aturankomisi, $dari, $hariini, $sampai);
