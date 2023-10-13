@@ -497,10 +497,10 @@ class LaporangudangcabangController extends Controller
             ->where('detail_mutasi_gudang_cabang.kode_produk', $kode_produk)
             ->where('mutasi_gudang_cabang.kode_cabang', $kode_cabang)
             ->where('mutasi_gudang_cabang.jenis_mutasi', 'TRANSIT IN')
-            ->orWhereBetween('tgl_mutasi_gudang_cabang', [$dari, $sampai])
-            ->where('detail_mutasi_gudang_cabang.kode_produk', $kode_produk)
-            ->where('mutasi_gudang_cabang.kode_cabang', $kode_cabang)
-            ->where('mutasi_gudang_cabang.jenis_mutasi', 'PL HUTANG KIRIM')
+            // ->orWhereBetween('tgl_mutasi_gudang_cabang', [$dari, $sampai])
+            // ->where('detail_mutasi_gudang_cabang.kode_produk', $kode_produk)
+            // ->where('mutasi_gudang_cabang.kode_cabang', $kode_cabang)
+            // ->where('mutasi_gudang_cabang.jenis_mutasi', 'PL HUTANG KIRIM')
             ->get();
 
         $reject = DB::table('detail_mutasi_gudang_cabang')
