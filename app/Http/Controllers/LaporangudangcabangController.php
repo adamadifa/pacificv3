@@ -466,6 +466,8 @@ class LaporangudangcabangController extends Controller
         // $sampai = date("Y-m-t", strtotime($dari));
 
         $sampai = $request->tanggal;
+        dd($sampai);
+
         $tgl = explode("-", $sampai);
         $bulan = $tgl[1];
         $tahun = $tgl[2];
