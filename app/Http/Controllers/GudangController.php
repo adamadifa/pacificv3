@@ -164,9 +164,6 @@ class GudangController extends Controller
                 WHERE saldomax.kode_cabang = mc.kode_cabang)
 
                 AND tgl_mutasi_gudang_cabang <= CURDATE() AND jenis_mutasi = 'PL HUTANG KIRIM'
-                OR tgl_mutasi_gudang_cabang >= (SELECT MAX(saldomax.tanggal)
-                FROM saldoawal_bj saldomax
-                WHERE saldomax.kode_cabang = mc.kode_cabang)
                 GROUP BY kode_cabang
             ) mutasi"),
             function ($join) {
