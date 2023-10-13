@@ -466,11 +466,12 @@ class LaporangudangcabangController extends Controller
         // $sampai = date("Y-m-t", strtotime($dari));
 
         $sampai = $request->tanggal;
-        dd($sampai);
+
 
         $tgl = explode("-", $sampai);
+        dd($tgl);
         $bulan = $tgl[1];
-        $tahun = $tgl[2];
+        $tahun = $tgl[0];
         $dari = $tahun . "-" . $bulan . "-01";
 
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
