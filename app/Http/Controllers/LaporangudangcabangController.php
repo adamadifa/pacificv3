@@ -460,10 +460,17 @@ class LaporangudangcabangController extends Controller
     {
         $kode_cabang = $request->kode_cabang;
         $kode_produk = $request->kode_produk;
-        $bulan = $request->bulan;
-        $tahun = $request->tahun;
+        // $bulan = $request->bulan;
+        // $tahun = $request->tahun;
+        //$dari = $tahun . "-" . $bulan . "-01";
+        // $sampai = date("Y-m-t", strtotime($dari));
+
+        $sampai = $request->tanggal;
+        $tgl = explode("-", $sampai);
+        $bulan = $tgl[1];
+        $tahun = $tgl[2];
         $dari = $tahun . "-" . $bulan . "-01";
-        $sampai = date("Y-m-t", strtotime($dari));
+
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
         $produk = Barang::where('kode_produk', $kode_produk)->first();
         $ceksaldo = DB::table('saldoawal_bj_detail')

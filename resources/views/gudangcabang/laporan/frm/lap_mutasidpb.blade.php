@@ -53,39 +53,13 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="row" id="pilihbulan">
+                                    <div class="row" id="pilihperiode">
                                         <div class="col-12">
-                                            {{-- <label for="" class="form-label mb-1">Omset Bulan</label> --}}
-                                            <div class="form-group">
-                                                <select class="form-control" id="bulan" name="bulan">
-                                                    <option value="">Bulan</option>
-                                                    <?php
-                                                    $bulanini = date("m");
-                                                    for ($i = 1; $i < count($bulan); $i++) {
-                                                    ?>
-                                                    <option <?php if ($bulanini == $i) {echo "selected";} ?> value="<?php echo $i; ?>"><?php echo $bulan[$i]; ?></option>
-                                                    <?php
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
+                                            <x-inputtext label="Tanggal" field="tanggal" icon="feather icon-calendar" datepicker />
                                         </div>
-                                    </div>
-                                    <div class="row" id="pilihtahun">
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <select class="form-control" id="tahun" name="tahun">
-                                                    <?php
-                                                    $tahunmulai = 2020;
-                                                    for ($thn = $tahunmulai; $thn <= date('Y'); $thn++) {
-                                                    ?>
-                                                    <option <?php if (date('Y') == $thn) { echo "Selected";} ?> value="<?php echo $thn; ?>"><?php echo $thn; ?></option>
-                                                    <?php
-                                                    }
-                                                    ?>
-                                                </select>
-                                            </div>
-                                        </div>
+                                        {{-- <div class="col-6">
+                                            <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker />
+                                        </div> --}}
                                     </div>
                                     <div class="row">
                                         <div class="col-lg-8 col-sm-12">
