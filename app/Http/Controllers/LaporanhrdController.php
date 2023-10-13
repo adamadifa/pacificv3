@@ -224,7 +224,7 @@ class LaporanhrdController extends Controller
 
         //dd($jmlrange);
 
-        $query->selectRaw('master_karyawan.*,nama_group,nama_dept,nama_jabatan,nama_cabang,klasifikasi,
+        $query->selectRaw('master_karyawan.*,nama_group,nama_dept,nama_jabatan,nama_cabang,klasifikasi,no_rekening,
                 iu_masakerja,iu_lembur,iu_penempatan,iu_kpi,
                 im_ruanglingkup, im_penempatan,im_kinerja,
                 gaji_pokok,
