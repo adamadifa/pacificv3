@@ -311,6 +311,9 @@ $isipcs_sp500 = $p->isipcsdus;
             @foreach ($rekapdpb as $d)
             <?php
                 $sab = $d['mg_ab'] + (ROUND($d['saldo_ab'] / 30, 2)) + (ROUND($d['mutasi_ab'] / 30, 2)) - $d['ab_ambil'] + $d['ab_kembali'];
+                $sab_cek = $d['mg_ab']."+". (ROUND($d['saldo_ab'] / 30, 2))."+".(ROUND($d['mutasi_ab'] / 30, 2))."+".$d['ab_ambil']."+".$d['ab_kembali'];
+
+
                 $sar = $d['mg_ar'] + (ROUND($d['saldo_ar'] / 240, 2)) + (ROUND($d['mutasi_ar'] / 240, 2)) - $d['ar_ambil'] + $d['ar_kembali'];
                 $sas = $d['mg_as'] + (ROUND($d['saldo_as'] / 36, 2)) + (ROUND($d['mutasi_as'] / 36, 2)) - $d['as_ambil'] + $d['as_kembali'];
                 $sbb = $d['mg_bb'] + (ROUND($d['saldo_bb'] / 20, 2)) + (ROUND($d['mutasi_bb'] / 20, 2)) - $d['bb_ambil'] + $d['bb_kembali'];
@@ -448,7 +451,10 @@ $isipcs_sp500 = $p->isipcsdus;
             ?>
             <tr>
                 <td><?php echo ucwords($d['nama_cabang']); ?></td>
-                <td><span class="badge <?php echo $colorab; ?>"><?php echo number_format(floor($sab), '0', ',', '.'); ?></span></td>
+                <td>
+                    {{ $sab_cek }}
+                    <span class="badge <?php echo $colorab; ?>"><?php echo number_format(floor($sab), '0', ',', '.'); ?></span>
+                </td>
                 <td><span class="badge <?php echo $colorar; ?>"><?php echo number_format(floor($sar), '0', ',', '.'); ?></span></td>
                 <td><span class="badge <?php echo $coloras; ?>"><?php echo number_format(floor($sas), '0', ',', '.'); ?></span></td>
                 <td><span class="badge <?php echo $colorbb; ?>"><?php echo number_format(floor($sbb), '0', ',', '.'); ?></span></td>

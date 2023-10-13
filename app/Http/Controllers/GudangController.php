@@ -124,46 +124,47 @@ class GudangController extends Controller
                 FROM detail_mutasi_gudang_cabang dmc
                 INNER JOIN mutasi_gudang_cabang mc ON dmc.no_mutasi_gudang_cabang = mc.no_mutasi_gudang_cabang
                 WHERE
+
                 tgl_mutasi_gudang_cabang >= (SELECT MAX(saldomax.tanggal)
                 FROM saldoawal_bj saldomax
                 WHERE saldomax.kode_cabang = mc.kode_cabang)
-
                 AND tgl_mutasi_gudang_cabang <= CURDATE() AND jenis_mutasi = 'SURAT JALAN'
+
                 OR  tgl_mutasi_gudang_cabang >= (SELECT MAX(saldomax.tanggal)
                 FROM saldoawal_bj saldomax
                 WHERE saldomax.kode_cabang = mc.kode_cabang)
-
                 AND tgl_mutasi_gudang_cabang <= CURDATE() AND jenis_mutasi = 'TRANSIT IN'
+
                 OR  tgl_mutasi_gudang_cabang >= (SELECT MAX(saldomax.tanggal)
                 FROM saldoawal_bj saldomax
                 WHERE saldomax.kode_cabang = mc.kode_cabang)
-
                 AND tgl_mutasi_gudang_cabang <= CURDATE() AND jenis_mutasi = 'TRANSIT OUT'
+
                 OR  tgl_mutasi_gudang_cabang >= (SELECT MAX(saldomax.tanggal)
                 FROM saldoawal_bj saldomax
                 WHERE saldomax.kode_cabang = mc.kode_cabang)
-
                 AND tgl_mutasi_gudang_cabang <= CURDATE() AND jenis_mutasi = 'REJECT GUDANG'
+
                 OR  tgl_mutasi_gudang_cabang >= (SELECT MAX(saldomax.tanggal)
                 FROM saldoawal_bj saldomax
                 WHERE saldomax.kode_cabang = mc.kode_cabang)
-
                 AND tgl_mutasi_gudang_cabang <= CURDATE() AND jenis_mutasi = 'REJECT PASAR'
+
                 OR  tgl_mutasi_gudang_cabang >= (SELECT MAX(saldomax.tanggal)
                 FROM saldoawal_bj saldomax
                 WHERE saldomax.kode_cabang = mc.kode_cabang)
-
                 AND tgl_mutasi_gudang_cabang <= CURDATE() AND jenis_mutasi = 'REPACK'
+
                 OR  tgl_mutasi_gudang_cabang >= (SELECT MAX(saldomax.tanggal)
                 FROM saldoawal_bj saldomax
                 WHERE saldomax.kode_cabang = mc.kode_cabang)
-
                 AND tgl_mutasi_gudang_cabang <= CURDATE() AND jenis_mutasi = 'PENYESUAIAN'
+
                 OR tgl_mutasi_gudang_cabang >= (SELECT MAX(saldomax.tanggal)
                 FROM saldoawal_bj saldomax
                 WHERE saldomax.kode_cabang = mc.kode_cabang)
-
                 AND tgl_mutasi_gudang_cabang <= CURDATE() AND jenis_mutasi = 'PL HUTANG KIRIM'
+
                 GROUP BY kode_cabang
             ) mutasi"),
             function ($join) {
