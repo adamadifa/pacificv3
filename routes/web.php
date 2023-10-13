@@ -108,6 +108,7 @@ use App\Http\Controllers\ProduksiController;
 use App\Http\Controllers\QrcodeController;
 use App\Http\Controllers\RatiokomisiController;
 use App\Http\Controllers\RealisasiController;
+use App\Http\Controllers\RekeningkaryawanController;
 use App\Http\Controllers\RepackrejectgudangjadiController;
 use App\Http\Controllers\ReturController;
 use App\Http\Controllers\SaldoawalBJController;
@@ -145,6 +146,7 @@ use App\Models\Penilaiankaryawan;
 use App\Models\Penjualan;
 use App\Models\Permintaanpengiriman;
 use App\Models\Pinjaman;
+use App\Models\Rekeningkaryawan;
 use App\Models\Saldoawalmutasibarangproduksi;
 use App\Models\Setcoacabang;
 use App\Models\Setoranpenjualan;
@@ -1534,6 +1536,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/karyawan/{nik}/show', [KaryawanController::class, 'show']);
     Route::post('/karyawan/getkaryawankontrak', [KaryawanController::class, 'getkaryawankontrak']);
     Route::get('/karyawan/habiskontrak', [KaryawanController::class, 'habiskontrak']);
+
+    //Rekening Karyawan
+    Route::get('/rekeningkaryawan', [RekeningkaryawanController::class, 'index']);
+    Route::get('/rekeningkaryawan/{nik}/edit', [RekeningkaryawanController::class, 'edit']);
+    Route::post('/rekeningkaryawan/{nik}/update', [RekeningkaryawanController::class, 'update']);
     //SAP
     Route::get('/homesap', [DashboardController::class, 'homesap']);
     Route::get('/salesperformance', [SapController::class, 'salesperfomance']);

@@ -160,6 +160,12 @@
                             <span class="menu-item">Data Karyawan</span>
                         </a>
                     </li>
+                    <li class="{{ request()->is(['rekeningkaryawan', 'rekeningkaryawan/*']) ? 'active' : '' }}">
+                        <a href="/rekeningkaryawan">
+                            <i class="feather icon-credit-card"></i>
+                            <span class="menu-item">Data Rekening</span>
+                        </a>
+                    </li>
                     @endif
                     @if (in_array($level,$gaji_menu) && Auth::user()->id != 176)
                     <li class="{{ request()->is(['gaji', 'gaji/*']) ? 'active' : '' }}">
