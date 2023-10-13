@@ -311,7 +311,7 @@ $isipcs_sp500 = $p->isipcsdus;
             @foreach ($rekapdpb as $d)
             <?php
                 $sab = $d['mg_ab'] + (ROUND($d['saldo_ab'] / 30, 2)) + (ROUND($d['mutasi_ab'] / 30, 2)) - $d['ab_ambil'] + $d['ab_kembali'];
-                $sab_cek = $d['mg_ab']."+". (ROUND($d['saldo_ab'] / 30, 2))."+".(ROUND($d['mutasi_ab'] / 30, 2))."+".$d['ab_ambil']."+".$d['ab_kembali'];
+                $sab_cek = $d['mg_ab']."+". (ROUND($d['saldo_ab'] / 30, 2))."+".(ROUND($d['mutasi_ab'] / 30, 2))."+".$d['ab_ambil']."+".$d['ab_kembali']."=".$sab;
 
 
                 $sar = $d['mg_ar'] + (ROUND($d['saldo_ar'] / 240, 2)) + (ROUND($d['mutasi_ar'] / 240, 2)) - $d['ar_ambil'] + $d['ar_kembali'];
@@ -452,7 +452,7 @@ $isipcs_sp500 = $p->isipcsdus;
             <tr>
                 <td><?php echo ucwords($d['nama_cabang']); ?></td>
                 <td>
-                    {{ $sab_cek }}
+                    {{-- {{ $sab_cek }} --}}
                     <span class="badge <?php echo $colorab; ?>"><?php echo number_format(floor($sab), '0', ',', '.'); ?></span>
                 </td>
                 <td><span class="badge <?php echo $colorar; ?>"><?php echo number_format(floor($sar), '0', ',', '.'); ?></span></td>
