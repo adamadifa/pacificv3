@@ -1213,7 +1213,7 @@ class GlobalProvider extends ServiceProvider
             ];
 
             //Acounting
-            $accounting_menu = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'manager ga', 'general affair', 'manager ga', 'manager hrd', 'kepala admin', 'kepala penjualan', 'rsm', 'manager marketing', 'manager audit', 'audit', 'admin pusat'];
+            $accounting_menu = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'manager ga', 'general affair', 'manager ga', 'manager hrd', 'kepala admin', 'kepala penjualan', 'rsm', 'manager marketing', 'manager audit', 'audit'];
             $coa_menu = ['admin', 'spv accounting', 'manager accounting'];
             $setcoacabang = ['admin', 'spv accounting', 'manager accounting'];
             $hpp_menu = ['admin', 'manager accounting', 'spv accounting'];
