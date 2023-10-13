@@ -469,7 +469,7 @@ class LaporangudangcabangController extends Controller
 
 
         $tgl = explode("-", $sampai);
-        dd($tgl);
+        // dd($tgl);
         $bulan = $tgl[1];
         $tahun = $tgl[0];
         $dari = $tahun . "-" . $bulan . "-01";
