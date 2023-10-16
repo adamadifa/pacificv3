@@ -1014,7 +1014,7 @@ $hari_sampai = $besok[2];
             var sisafakturkredit = $("#sisafakturkredit").val();
             var jmlfaktur = $("#jmlfaktur").val();
             var totalpiutang = parseInt(sisapiutang) + parseInt(subtotal);
-            alert(subtotal);
+            //alert(subtotal);
             //alert(limitpel);
             // alert(nama_pelanggan);
             if (cektutuplaporan > 0) {
