@@ -848,7 +848,7 @@ class GlobalProvider extends ServiceProvider
             $klaim_proses = ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'manager accounting', 'admin pajak 2', 'admin penjualan kasir dan kas kecil'];
 
             //Mutasi Bank
-            $mutasibank_view = ['admin', 'kepala admin', 'admin pusat', 'admin kas kecil', 'audit', 'manager audit', 'admin kas', 'manager accounting', 'admin kas dan penjualan', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil', 'admin pajak 2', 'admin penjualan kasir dan kas kecil'];
+            $mutasibank_view = ['admin', 'kepala admin', 'admin kas kecil', 'audit', 'manager audit', 'admin kas', 'manager accounting', 'admin kas dan penjualan', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil', 'admin pajak 2', 'admin penjualan kasir dan kas kecil'];
 
             $pinjaman_view = ['admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'spv produksi', 'manager accounting', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager hrd', 'staff keuangan', 'staff keuangan 3', 'admin pdqc', 'spv pdqc', 'manager audit', 'spv maintenance'];
 
