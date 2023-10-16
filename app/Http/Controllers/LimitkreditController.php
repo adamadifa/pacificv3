@@ -713,7 +713,7 @@ class LimitkreditController extends Controller
             ];
         }
 
-        if ($level == 'kepala cabang' || $level == 'kepala penjualan') {
+        if ($level == 'kepala cabang' || $level == 'kepala penjualan' || $level == 'kepala admin') {
             $lv = 'kacab';
             if ($jumlah <= 5000000) {
                 $status = 1;

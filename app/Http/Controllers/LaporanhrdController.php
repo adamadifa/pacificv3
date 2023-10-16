@@ -1153,7 +1153,9 @@ class LaporanhrdController extends Controller
         $query->orderByRaw('nik,nama_karyawan');
 
         $presensi = $query->get();
-        //dd($presensi);
+
+
+
 
 
         //dd(request()->is('laporanhrd/presensipsm/cetak'));
@@ -1178,7 +1180,10 @@ class LaporanhrdController extends Controller
             }
 
             if ($jenislaporan_gaji == 2) {
+
                 return view('gaji.laporan.cetak_gaji_rekap', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'sampai'));
+            } else if ($jenislaporan_gaji == 3) {
+                return view('gaji.laporan.cetak_slip', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'sampai'));
             } else {
                 return view('gaji.laporan.cetak_gaji', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'sampai'));
             }

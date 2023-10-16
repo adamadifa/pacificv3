@@ -100,6 +100,7 @@
                                                 <select name="jenis_laporan_gaji" id="jenis_laporan_gaji" class="form-control">
                                                     <option value="1">Detail</option>
                                                     <option value="2">Rekap</option>
+                                                    <option value="3">Slip</option>
                                                 </select>
                                             </div>
                                         </div>
