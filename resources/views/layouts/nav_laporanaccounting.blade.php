@@ -33,11 +33,7 @@
                 </li>
             </a>
             @endif
-            <a href="/visit/laporanVisit" style="color:#626262">
-                <li class="list-group-item {{ request()->is(['visit/laporanVisit']) ? 'active' : '' }}">
-                    <i class="feather icon-file mr-1"></i>Visit Pelanggan
-                </li>
-            </a>
+
         </ul>
     </div>
 </div>
@@ -75,6 +71,7 @@
     </div>
 </div>
 @endif
+@if (in_array($level, $lpc_menu))
 <div class="card">
     <div class="card-content">
         <div class="card-body">
@@ -109,3 +106,4 @@
         </ul>
     </div>
 </div>
+@endif

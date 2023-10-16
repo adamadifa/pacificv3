@@ -1014,7 +1014,7 @@ $hari_sampai = $besok[2];
             var sisafakturkredit = $("#sisafakturkredit").val();
             var jmlfaktur = $("#jmlfaktur").val();
             var totalpiutang = parseInt(sisapiutang) + parseInt(subtotal);
-
+            alert(subtotal);
             //alert(limitpel);
             // alert(nama_pelanggan);
             if (cektutuplaporan > 0) {
@@ -1031,10 +1031,10 @@ $hari_sampai = $besok[2];
                 });
                 $("#btnsimpan").prop('disabled', false);
                 return false;
-            } else if (parseInt(totalpiutang) >= parseInt(limitpel) && sikluspembayaran == 0 && jenistransaksi == 'kredit') {
+            } else if (parseInt(totalpiutang) > parseInt(limitpel) && sikluspembayaran == 0 && jenistransaksi == 'kredit') {
                 swal({
                     title: 'Oops'
-                    , text: 'Melebihi Limit, Silahkan Ajukan Penambahan Limit !'
+                    , text: 'Melebihi Limit, Silahkan Ajukan Penambahan Limit 1 !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
@@ -1042,10 +1042,10 @@ $hari_sampai = $besok[2];
                 });
                 $("#btnsimpan").prop('disabled', false);
                 return false;
-            } else if (parseInt(subtotal) >= parseInt(limitpel) && sikluspembayaran == 1 && jenistransaksi == 'kredit') {
+            } else if (parseInt(subtotal) > parseInt(limitpel) && sikluspembayaran == 1 && jenistransaksi == 'kredit') {
                 swal({
                     title: 'Oops'
-                    , text: 'Melebihi Limit, Silahkan Ajukan Penambahan Limit !'
+                    , text: 'Melebihi Limit, Silahkan Ajukan Penambahan Limit 2 !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
