@@ -747,7 +747,7 @@ class LimitkreditController extends Controller
             $field_time = 'time_mm';
         } else if ($level == "general manager") {
             $field_time = 'time_gm';
-        } else if ($level == "kepala cabang" || $level == "kepala penjualan") {
+        } else if ($level == "kepala cabang" || $level == "kepala penjualan" || $level == 'kepala admin') {
             $field_time = 'time_kacab';
         }
 
