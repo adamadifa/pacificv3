@@ -62,23 +62,22 @@
 
 
         .datatable4 {
-            border: 2px solid #D6DDE6;
+            border: 1px solid #D6DDE6;
             border-collapse: collapse;
-            font-size: 11px;
+            font-size: 10px;
         }
 
-        .datatable4>td {
-            border: 1px solid #000000;
+        .datatable4 td {
+            /* border: 1px solid #000000; */
             padding: 6px;
         }
 
-        .datatable4>th {
+        .datatable4 th {
             border: 2px solid #828282;
             font-weight: bold;
             text-align: left;
-            padding: 10px;
             text-align: center;
-            font-size: 14px;
+            font-size: 10px;
         }
 
         .freeze-table {
@@ -178,7 +177,7 @@
 
 
                 @endphp
-                @foreach ($presensi->chunk(5) as $set)
+                @foreach ($presensi->chunk(3) as $set)
 
                 <tr>
                     @foreach ($set as $d)
@@ -1098,14 +1097,148 @@
                 $total_all_bersih += $jmlbersih;
 
                 ?>
-                    <td>
+                    <td style="width: 35%">
                         <table class="datatable4" style="width: 100%">
                             <tr>
-                                <th colspan="2">SLIP GAJI BULAN </th>
+                                <th colspan="3">SLIP GAJI BULAN </th>
                             </tr>
                             <tr>
-                                <td>NIK</td>
+                                <td colspan="2">NIK</td>
                                 <td>{{ $d->nik }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Nama Karyawan</td>
+                                <td>{{ $d->nama_karyawan }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Departemen</td>
+                                <td>{{ $d->nama_dept }}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold; border-bottom: 2px black solid" colspan="3">PENERIMAAN</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Gaji Pokok</td>
+                                <td style="text-align: right">{{ !empty($d->gaji_pokok) ? rupiah($d->gaji_pokok) : "" }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Tnj. Jabatan</td>
+                                <td style="text-align: right">{{ !empty($d->t_jabatan) ? rupiah($d->t_jabatan) : "" }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Tnj. Tanggung Jawab</td>
+                                <td style="text-align: right">{{ !empty($d->t_tanggungjawab) ? rupiah($d->t_tanggungjawab) : "" }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Tnj. Makan</td>
+                                <td style="text-align: right">{{ !empty($d->t_makan) ? rupiah($d->t_makan) : "" }}</td>
+                            </tr>
+                            <tr style="border-bottom: 1px black solid">
+                                <td colspan="2">Tnj. Skill Khusus</td>
+                                <td style="text-align: right">{{ !empty($d->t_makan) ? rupiah($d->t_makan) : "" }}</td>
+                            </tr>
+                            <tr>
+                                <td style="" colspan="2">∑JAM KERJA BULAN INI</td>
+                                <td style="font-weight: bold; text-align:right">{{ !empty($totaljamkerja) ? desimal($totaljamkerja) : '' }}</td>
+                            </tr>
+                            <tr style="border-bottom: 1px black solid">
+                                <td colspan="2">UPAH PER JAM</td>
+                                <td style="font-weight: bold; text-align:right">{{ !empty($upah_perjam) ? desimal($upah_perjam) : "" }}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold; border-bottom: 2px black solid" colspan="3">UPAH BULAN INI</td>
+                            </tr>
+                            <tr>
+                                <td>Overtime 1</td>
+                                <td>{{ !empty($total_overtime_1) ? desimal($total_overtime_1) : '' }} JAM</td>
+                                <td style="text-align: right">{{ !empty($upah_ot_1) ? rupiah($upah_ot_1) : "" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Overtime 2</td>
+                                <td>{{ !empty($total_overtime_2) ? desimal($total_overtime_2) : '' }} JAM</td>
+                                <td style="text-align: right">{{ !empty($upah_ot_2) ? rupiah($upah_ot_2) : "" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Lembur Hari Libur</td>
+                                <td>{{ !empty($total_overtime_libur_1) ? desimal($total_overtime_libur_1) : '' }} JAM</td>
+                                <td style="text-align: right">{{ !empty($upah_otl_1) ? rupiah($upah_otl_1) : "" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Premi Shift 2</td>
+                                <td>{{ !empty($totalhariall_shift_2) ? $totalhariall_shift_2 : "" }} HARI</td>
+                                <td style="text-align: right">{{ !empty($totalpremiall_shift_2) ? rupiah($totalpremiall_shift_2) : "" }}</td>
+                            </tr>
+                            <tr>
+                                <td>Premi Shift 3</td>
+                                <td>{{ !empty($totalhariall_shift_3) ? $totalhariall_shift_3 : "" }} HARI</td>
+                                <td style="text-align: right">{{ !empty($totalpremiall_shift_3) ? rupiah($totalpremiall_shift_3) : "" }}</td>
+                            </tr>
+
+                            <tr style="border-bottom: 1px black solid">
+                                <td colspan="2" style="font-weight: bold">TOTAL PENERIMAAN</td>
+                                <td style="font-weight: bold; text-align:right"> {{ !empty($bruto) ?  rupiah($bruto) : "" }}</td>
+                            </tr>
+                            <tr style="border-bottom: 1px black solid">
+                                <td colspan="3" style="font-weight: bold; text-align:center">POTONGAN</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Absensi</td>
+                                <td style="text-align: right">{{ !empty($totalpotonganjam) ? desimal($totalpotonganjam) : "" }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Denda / Keterlambatan</td>
+                                <td style="text-align: right">{{ !empty($totaldenda) ? rupiah($totaldenda) : "" }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Softloan</td>
+                                <td style="text-align: right">{{ !empty($d->cicilan_pjp) ? rupiah($d->cicilan_pjp) : "" }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Pinj. Ke Perusahaan</td>
+                                <td style="text-align: right"></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Kasbon</td>
+                                <td style="text-align: right">{{ !empty($d->jml_kasbon) ? rupiah($d->jml_kasbon) : "" }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">BPJS Kesehatan</td>
+                                <td style="text-align: right"> {{ !empty($bpjskesehatan) ? rupiah($bpjskesehatan) : "" }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">BPJS Tenaga Kerja</td>
+                                <td style="text-align: right"> {{ !empty($bpjstenagakerja) ? rupiah($bpjstenagakerja) : "" }}</td>
+                            </tr>
+                            <tr style="border-bottom: 1px black solid">
+                                <td colspan="2">SPIP</td>
+                                <td style="text-align: right">{{ !empty($spip) ? rupiah($spip) : "" }}</td>
+                            </tr>
+                            <tr style="border-bottom: 2px black solid">
+                                <td colspan="2" style="font-weight: bold">TOTAL POTONGAN</td>
+                                <td style="font-weight: bold; text-align:right"> {{ !empty($potongan) ?  rupiah($potongan) : "" }}</td>
+                            </tr>
+                            <tr style="border-bottom: 2px black solid">
+                                <td colspan="2" style="font-weight: bold; font-size:12px">GAJI BERSIH</td>
+                                <td style="font-weight: bold; text-align:right; font-size:12px"> {{ !empty($jmlbersih) ?  rupiah($jmlbersih) : "" }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="font-weight: bold">INSENTIF</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Masa Kerja</td>
+                                <td style="text-align: right">{{ !empty($d->iu_masakerja) ? rupiah($d->iu_masakerja) : "" }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Lembur</td>
+                                <td style="text-align: right">{{ !empty($d->iu_lembur) ? rupiah($d->iu_lembur) : "" }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Penempatan</td>
+                                <td style="text-align: right">{{ !empty($d->iu_penempatan) ? rupiah($d->iu_penempatan) : "" }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">Penilaian</td>
+                                <td style="text-align: right">{{ !empty($d->iu_kpi) ? rupiah($d->iu_kpi) : "" }}</td>
                             </tr>
                         </table>
                     </td>
