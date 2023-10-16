@@ -235,11 +235,12 @@ class KlaimController extends Controller
         $bulan = $tgl[1];
         $tahun = substr($tgl[0], 2, 2);
         $kode_akun = getAkunkaskecil();
-        if ($kode_cabang == 'TSM' || $kode_cabang == 'PST') {
-            $akun = $kode_akun[$kode_cabang];
-        } else {
-            $akun = "1-1104";
-        }
+        // if ($kode_cabang == 'TSM' || $kode_cabang == 'PST') {
+        //     $akun = $kode_akun[$kode_cabang];
+        // } else {
+        //     $akun = "1-1104";
+        // }
+        $akun = "1-1104";
         $databank = DB::table('master_bank')->where('kode_bank', $bank)->first();
         $akunbank = $databank->kode_akun;
 
