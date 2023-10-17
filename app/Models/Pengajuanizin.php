@@ -115,10 +115,47 @@ class Pengajuanizin extends Model
                 $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');
             }
 
-            if (Auth::user()->level == "manager hrd") {
-                $query->where('head_dept', 1);
+            $query->where('head_dept', 1);
+
+            $query->orWhere('master_karyawan.kode_dept', 'HRD');
+            if (!empty($dari) && !empty($sampai)) {
+                $query->whereBetween('dari', [$dari, $sampai]);
+            }
+            if (request()->is('pengajuanizin')) {
+                $query->where('jenis_izin', 'TM');
+            } else if (request()->is('pengajuanizin/izinpulang')) {
+                $query->where('jenis_izin', 'PL');
+            } else if (request()->is('pengajuanizin/izinkeluar')) {
+                $query->where('jenis_izin', 'KL');
+            } else if (request()->is('pengajuanizin/izinterlambat')) {
+                $query->where('jenis_izin', 'TL');
+            } else if (request()->is('pengajuanizin/sakit')) {
+                $query->where('pengajuan_izin.status', 's');
+            } else if (request()->is('pengajuanizin/cuti')) {
+                $query->where('pengajuan_izin.status', 'c');
+            } else if (request()->is('pengajuanizin/koreksipresensi')) {
+                $query->where('pengajuan_izin.status', 'k');
+            } else if (request()->is('pengajuanizin/perjalanandinas')) {
+                $query->where('pengajuan_izin.status', 'p');
+            }
+            if (!empty($kode_dept_presensi)) {
+                $query->where('master_karyawan.kode_dept', $kode_dept_presensi);
+                if ($cabang == "PCF") {
+                    $query->where('master_karyawan.id_kantor', 'PST');
+                } else {
+                    $query->where('master_karyawan.id_kantor', $cabang);
+                }
             }
 
+            if (!empty(Auth::user()->pic_presensi)) {
+                if ($cabang != "PCF") {
+                    $query->where('master_karyawan.id_kantor', $cabang);
+                }
+            }
+
+            if (!empty($nama_karyawan)) {
+                $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');
+            }
 
             $query->orWhere('direktur', 1);
             if (!empty($dari) && !empty($sampai)) {
