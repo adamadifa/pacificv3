@@ -439,7 +439,7 @@ class GlobalProvider extends ServiceProvider
                     $qpi->where('head_dept', 1);
                     $qpi->where('master_karyawan.kode_dept', '!=', 'HRD');
                     $qpi->whereNull('hrd');
-                    $qpi->whereNull('head_dept');
+                    $qpi->orwhereNull('head_dept');
                     $qpi->where('master_karyawan.kode_dept', 'HRD');
                     $qpi->whereNull('hrd');
                     $qpi->orWhere('direktur', 1);
