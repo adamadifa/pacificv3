@@ -71,6 +71,14 @@ class LaporanhrdController extends Controller
                     ->leftJoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
                     ->groupByRaw('master_karyawan.kode_dept,nama_dept')
                     ->get();
+            } else if (Auth::user()->level == "emf") {
+                $departemen = DB::table('master_karyawan')
+                    ->select('master_karyawan.kode_dept', 'nama_dept')
+                    ->where('id_kantor', $id_kantor)
+                    ->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GAF', 'GDG', 'PDQ'])
+                    ->leftJoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
+                    ->groupByRaw('master_karyawan.kode_dept,nama_dept')
+                    ->get();
             } else {
                 $departemen = DB::table('master_karyawan')
                     ->select('master_karyawan.kode_dept', 'nama_dept')
