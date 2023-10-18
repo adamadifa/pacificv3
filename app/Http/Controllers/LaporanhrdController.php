@@ -75,7 +75,7 @@ class LaporanhrdController extends Controller
                 $departemen = DB::table('master_karyawan')
                     ->select('master_karyawan.kode_dept', 'nama_dept')
                     ->where('id_kantor', $id_kantor)
-                    ->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GAF', 'GDG', 'PDQ'])
+                    ->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GAF', 'GDG', 'PDQ', 'MTC', 'HRD'])
                     ->leftJoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
                     ->groupByRaw('master_karyawan.kode_dept,nama_dept')
                     ->get();
@@ -237,7 +237,7 @@ class LaporanhrdController extends Controller
                 im_ruanglingkup, im_penempatan,im_kinerja,
                 gaji_pokok,
                 t_jabatan,t_masakerja,t_tanggungjawab,t_makan,t_istri,t_skill,
-                cicilan_pjp,jml_kasbon,
+                cicilan_pjp,jml_kasbon,jml_nonpjp,
                 bpjs_kesehatan.perusahaan,bpjs_kesehatan.pekerja,bpjs_kesehatan.keluarga,iuran_kes,
                 bpjs_tenagakerja.k_jht,bpjs_tenagakerja.k_jp,iuran_tk,
                 hari_1,
@@ -1115,6 +1115,19 @@ class LaporanhrdController extends Controller
                 ) kasbon"),
             function ($join) {
                 $join->on('master_karyawan.nik', '=', 'kasbon.nik');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+                   SELECT nik, SUM(jumlah) as jml_nonpjp
+                   FROM pinjaman_nonpjp_historibayar
+                   INNER JOIN pinjaman_nonpjp ON pinjaman_nonpjp_historibayar.no_pinjaman_nonpjp = pinjaman_nonpjp.no_pinjaman_nonpjp
+                   WHERE kode_potongan = '$kode_potongan'
+                   GROUP BY nik
+                ) pinjamannonpjp"),
+            function ($join) {
+                $join->on('master_karyawan.nik', '=', 'pinjamannonpjp.nik');
             }
         );
         if (!empty($kode_dept)) {

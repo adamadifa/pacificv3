@@ -94,7 +94,7 @@
                 <tr bgcolor="#024a75" style="color:white; font-size:12;">
                     <th rowspan="2">No</th>
                     <th rowspan="2">Nik</th>
-                    <th rowspan="2">Nama karyawan</th>
+                    <th rowspan="2" style="width: 4%">Nama karyawan</th>
                     <th rowspan="2">No. Rekening</th>
                     <th rowspan="2">Grup</th>
                     <th colspan="9">DATA KARYAWAN</th>
@@ -118,6 +118,7 @@
                     <th rowspan="2" style="background-color: black;">DENDA<br>TERLAMBAT</th>
                     <th rowspan="2" style="background-color: black;">CICILAN<br>PJP</th>
                     <th rowspan="2" style="background-color: black;">KASBON</th>
+                    <th rowspan="2" style="background-color: black;">PINJ.<br> PERUSAHAAN</th>
                     <th rowspan="2" style="background-color: black;">SPIP</th>
                     <th rowspan="2" style="background-color: orange;">JUMLAH<br>POTONGAN</th>
                     <th rowspan="2" style="background-color: orange;">JUMLAH<br>BERSIH</th>
@@ -126,14 +127,14 @@
                 <tr>
 
                     <th>TANGGAL MASUK</th>
-                    <th>MASA KERJA</th>
+                    <th style="width: 3%">MASA KERJA</th>
                     <th>DEPARTEMEN</th>
-                    <th>JABATAN</th>
+                    <th style="width: 3%">JABATAN</th>
                     <th>KANTOR <br>CABANG</th>
                     <th>PERUSAHAAN</th>
                     <th>KLASIFIKASI</th>
                     <th>JENIS <br>KELAMIN</th>
-                    <th>STATUS</th>
+                    <th style="width: 3%">STATUS</th>
                     <th>JABATAN</th>
                     <th>MASA KERJA</th>
                     <th>TANGGUNG<br> JAWAB</th>
@@ -219,6 +220,7 @@
 
                 $total_all_pjp = 0;
                 $total_all_kasbon = 0;
+                $total_all_nonpjp = 0;
                 $total_all_spip = 0;
 
                 $total_all_potongan = 0;
@@ -1080,7 +1082,7 @@
                     $spip = 0;
                 }
 
-                $potongan = ROUND($bpjskesehatan + $bpjstenagakerja + $totaldenda + $d->cicilan_pjp + $d->jml_kasbon + $spip,0);
+                $potongan = ROUND($bpjskesehatan + $bpjstenagakerja + $totaldenda + $d->cicilan_pjp + $d->jml_kasbon + $d->jml_nonpjp + $spip,0);
                 $jmlbersih = $bruto - $potongan;
 
                 //TOTAL
@@ -1136,6 +1138,7 @@
 
                 $total_all_pjp += $d->cicilan_pjp;
                 $total_all_kasbon += $d->jml_kasbon;
+                $total_all_nonpjp += $d->jml_nonpjp;
                 $total_all_spip += $spip;
 
                 $total_all_potongan += $potongan;
@@ -1154,7 +1157,8 @@
                         $awal = date_create($d->tgl_masuk);
                         $akhir = date_create($sampai); // waktu sekarang
                         $diff = date_diff( $awal, $akhir );
-                        echo $diff->y . ' tahun, '.$diff->m.' bulan, '.$diff->d.' Hari'
+                        // echo $diff->y . ' tahun, '.$diff->m.' bulan, '.$diff->d.' Hari'
+                        echo $diff->y . ' tahun, '.$diff->m.' bulan';
                         @endphp
                     </td>
                     <td align="center">{{ $d->nama_dept }}</td>
@@ -1267,6 +1271,7 @@
 
                     <td align="right">{{ !empty($d->cicilan_pjp) ? rupiah($d->cicilan_pjp) : "" }}</td>
                     <td align="right">{{ !empty($d->jml_kasbon) ? rupiah($d->jml_kasbon) : "" }}</td>
+                    <td align="right">{{ !empty($d->jml_nonpjp) ? rupiah($d->jml_nonpjp) : "" }}</td>
                     <td align="right">
                         {{ !empty($spip) ? rupiah($spip) : "" }}
 
@@ -1332,6 +1337,7 @@
 
                     <th style="text-align: right">{{ rupiah($total_all_pjp) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_kasbon) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_nonpjp) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_spip) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_potongan) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_bersih) }}</th>
