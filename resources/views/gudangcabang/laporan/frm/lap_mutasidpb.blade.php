@@ -54,8 +54,11 @@
                                         </div>
                                     </div>
                                     <div class="row" id="pilihperiode">
-                                        <div class="col-12">
-                                            <x-inputtext label="Tanggal" field="tanggal" icon="feather icon-calendar" datepicker />
+                                        <div class="col-6">
+                                            <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker />
+                                        </div>
+                                        <div class="col-6">
+                                            <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker />
                                         </div>
                                         {{-- <div class="col-6">
                                             <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker />

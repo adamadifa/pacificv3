@@ -464,15 +464,15 @@ class LaporangudangcabangController extends Controller
         // $tahun = $request->tahun;
         //$dari = $tahun . "-" . $bulan . "-01";
         // $sampai = date("Y-m-t", strtotime($dari));
-
-        $sampai = $request->tanggal;
+        $dari = $request->dari;
+        $sampai = $request->sampai;
 
 
         $tgl = explode("-", $sampai);
         // dd($tgl);
         $bulan = $tgl[1];
         $tahun = $tgl[0];
-        $dari = $tahun . "-" . $bulan . "-01";
+        //$dari = $tahun . "-" . $bulan . "-01";
 
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
         $produk = Barang::where('kode_produk', $kode_produk)->first();
