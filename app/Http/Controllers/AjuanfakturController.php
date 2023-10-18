@@ -141,7 +141,7 @@ class AjuanfakturController extends Controller
                 $query->where('pengajuan_faktur.status', '=', 2);
                 $query->where('level', '!=', Auth::user()->level);
             } else if ($request->status == "ditolak") {
-                $query->whereNotNull('gm');
+                $query->whereNotNull('mm');
                 $query->whereNotNull('dirut');
                 $query->where('pengajuan_faktur.status', 2);
                 $query->where('level', Auth::user()->level);
