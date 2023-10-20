@@ -1286,6 +1286,17 @@
                 });
                 $("#btnsimpanbayar").prop('disabled', false);
                 return false;
+            } else if (jmlbayar > parseInt(sisabayar)) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Jumlah Bayar Melebihi Sisa Bayar  !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#bayar").focus();
+                });
+                $("#btnsimpanbayar").prop('disabled', false);
+                return false;
             } else {
                 return true;
             }
@@ -1378,6 +1389,17 @@
                 });
                 $("#btnsimpangiro").prop('disabled', false);
                 return false;
+            } else if (jmlbayar > parseInt(sisabayar)) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Jumlah Bayar Melebihi Sisa Bayar  !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#jumlah_giro").focus();
+                });
+                $("#btnsimpangiro").prop('disabled', false);
+                return false;
             } else {
                 return true;
             }
@@ -1450,6 +1472,17 @@
                 swal({
                     title: 'Oops'
                     , text: 'Jumlah  Harus Diisi  !'
+                    , icon: 'warning'
+                    , showConfirmButton: false
+                }).then(function() {
+                    $("#jumlah_transfer").focus();
+                });
+                $("#btnsimpantransfer").prop('disabled', false);
+                return false;
+            } else if (jmlbayar > parseInt(sisabayar)) {
+                swal({
+                    title: 'Oops'
+                    , text: 'Jumlah Bayar Melebihi Sisa Bayar  !'
                     , icon: 'warning'
                     , showConfirmButton: false
                 }).then(function() {
