@@ -1243,6 +1243,11 @@
                             <i class="feather icon-file"></i>
                             <span class="menu-item" data-i18n="Second Level">Laporan</span>
                         </a>
+                        @elseif($level=="audit")
+                        <a href="/visit/laporanVisit">
+                            <i class="feather icon-file"></i>
+                            <span class="menu-item" data-i18n="Second Level">Laporan</span>
+                        </a>
                         @else
                         <a href="/laporanaccounting/rekapbj">
                             <i class="feather icon-file"></i>
