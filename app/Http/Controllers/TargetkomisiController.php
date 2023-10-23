@@ -2888,7 +2888,7 @@ class TargetkomisiController extends Controller
         } else {
             $sampai = $sampai;
         }
-        dd($bulan);
+
         $cbg = Auth::user()->kode_cabang;
         $kode_cabang = $request->kode_cabang;
         $cabang = DB::table('cabang')->where('kode_cabang', $cbg)->first();
@@ -3158,14 +3158,16 @@ class TargetkomisiController extends Controller
             header("Content-Disposition: attachment; filename=Insentif $dari-$sampai.xls");
         }
         if ($bulan >= 10 && $tahun >= 2022) {
-            echo "1";
+            echo "A";
             return view('targetkomisi.laporan.cetak_insentif_oktober2022', compact('insentif', 'cabang', 'namabulan', 'bulan', 'tahun'));
         } elseif ($bulan == 9 && $tahun == 2022) {
+            echo "B";
             return view('targetkomisi.laporan.cetak_insentif_september2022', compact('insentif', 'cabang', 'namabulan', 'bulan', 'tahun'));
         } else if ($bulan >= 5 && $tahun == 2022) {
+            echo "C";
             return view('targetkomisi.laporan.cetak_insentif_mei2022', compact('insentif', 'cabang', 'namabulan', 'bulan', 'tahun'));
         } else {
-            echo "1";
+            echo "D";
             return view('targetkomisi.laporan.cetak_insentif', compact('insentif', 'cabang', 'namabulan', 'bulan', 'tahun'));
         }
     }
