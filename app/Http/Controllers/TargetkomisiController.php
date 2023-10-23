@@ -3157,7 +3157,7 @@ class TargetkomisiController extends Controller
             // Mendefinisikan nama file ekspor "hasil-export.xls"
             header("Content-Disposition: attachment; filename=Insentif $dari-$sampai.xls");
         }
-        if ($bulan >= 10 && $tahun >= 2022) {
+        if ($bulan >= 10 && $tahun == 2022) {
             echo "A";
             return view('targetkomisi.laporan.cetak_insentif_oktober2022', compact('insentif', 'cabang', 'namabulan', 'bulan', 'tahun'));
         } elseif ($bulan == 9 && $tahun == 2022) {
