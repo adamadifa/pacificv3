@@ -2888,6 +2888,7 @@ class TargetkomisiController extends Controller
         } else {
             $sampai = $sampai;
         }
+        dd($bulan);
         $cbg = Auth::user()->kode_cabang;
         $kode_cabang = $request->kode_cabang;
         $cabang = DB::table('cabang')->where('kode_cabang', $cbg)->first();
