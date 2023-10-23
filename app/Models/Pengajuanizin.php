@@ -114,8 +114,9 @@ class Pengajuanizin extends Model
             if (!empty($nama_karyawan)) {
                 $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');
             }
-
-            $query->where('head_dept', 1);
+            if (Auth::user()->id == 164) {
+                $query->where('head_dept', 1);
+            }
 
             $query->orWhere('master_karyawan.kode_dept', 'HRD');
             if (!empty($dari) && !empty($sampai)) {
