@@ -28,6 +28,7 @@ class LaporanpembelianController extends Controller
         $ppn = $request->ppn;
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $supplier = DB::table('supplier')->where('kode_supplier', $kode_supplier)->first();
         $departemen = DB::table('departemen')->where('kode_dept', $kode_dept)->first();
         $query = Detailpembelian::query();
@@ -82,6 +83,7 @@ class LaporanpembelianController extends Controller
         $kode_supplier = $request->kode_supplier;
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $supplier = DB::table('supplier')->where('kode_supplier', $kode_supplier)->first();
         $query = Detailkontrabon::query();
         $query->selectRaw("detail_kontrabon.no_kontrabon,detail_kontrabon.nobukti_pembelian,nama_supplier,tglbayar,date_format(historibayar_pembelian.log, '%d %M %Y %H:%i:%s') as log, date_format(historibayar_pembelian.date_updated, '%d %M %Y %H:%i:%s') as date_updated,
@@ -128,6 +130,7 @@ class LaporanpembelianController extends Controller
     {
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $query = Detailpembelian::query();
         $query->selectRaw('pembelian.kode_supplier,nama_supplier,
         (SUM( IF ( STATUS = "PMB", ((qty*harga)+penyesuaian), 0 ) )) - SUM(IFNULL(jml_jk,0)) as jumlah');
@@ -174,6 +177,7 @@ class LaporanpembelianController extends Controller
     {
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $jenis_barang = $request->jenis_barang;
         $sortby = $request->sortby;
 
@@ -239,6 +243,7 @@ class LaporanpembelianController extends Controller
     {
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $jenishutang = $request->jenishutang;
         $jenislaporan = $request->jenislaporan;
         $kode_supplier = $request->kode_supplier;
@@ -337,6 +342,7 @@ class LaporanpembelianController extends Controller
     public function cetak_auh(Request $request)
     {
         $sampai = $request->tgl_auh;
+        lockreport($sampai);
         $pmb = DB::select("SELECT * FROM
         (SELECT detail_pembelian.nobukti_pembelian,pembelian.kode_supplier,nama_supplier,
         (SUM( IF ( STATUS = 'PMB', ((qty*harga)+penyesuaian), 0 ) ) - SUM( IF ( STATUS = 'PNJ',(qty*harga), 0 ) ) )-IFNULL(jmlbayar,0)+IFNULL(jmlpenyesuaian,0) as sisahutang,
@@ -390,6 +396,7 @@ class LaporanpembelianController extends Controller
     {
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $jenis_barang = $request->jenis_barang;
         $query = Detailpembelian::query();
         $query->selectRaw("detail_pembelian.kode_barang,satuan,nama_barang,jenis_barang,SUM(qty) as totalqty,SUM((qty*harga)+penyesuaian) as totalharga,jml_jk");
@@ -451,6 +458,7 @@ class LaporanpembelianController extends Controller
 
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $kode_barang = $request->kode_barang;
         $kode_supplier = $request->kode_supplier;
 
@@ -512,6 +520,7 @@ class LaporanpembelianController extends Controller
     {
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $query = Jurnalkoreksi::query();
         $query->leftJoin('pembelian', 'jurnal_koreksi.nobukti_pembelian', '=', 'pembelian.nobukti_pembelian');
         $query->leftJoin('supplier', 'pembelian.kode_supplier', '=', 'supplier.kode_supplier');
@@ -537,6 +546,7 @@ class LaporanpembelianController extends Controller
     {
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $ppn = $request->ppn;
 
         $query = Detailpembelian::query();
@@ -663,6 +673,7 @@ class LaporanpembelianController extends Controller
     {
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $query = Detailkontrabon::query();
         $query->selectRaw("no_dokumen,nama_supplier,SUM(jmlbayar) as jumlah,ppn,norekening");
         $query->leftJoin('kontrabon', 'detail_kontrabon.no_kontrabon', '=', 'kontrabon.no_kontrabon');

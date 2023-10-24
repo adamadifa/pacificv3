@@ -53,8 +53,10 @@ class GiroController extends Controller
 
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('tglcair', [$request->dari, $request->sampai]);
+        } else {
+            $query->where('tglcair', '>=', startreport());
         }
-
+        lockreport($request->dari);
         if ($this->cabang != "PCF") {
             $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
             $cabang[] = "";

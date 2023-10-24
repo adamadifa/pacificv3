@@ -90,7 +90,10 @@ class PembelianController extends Controller
 
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('pembelian.tgl_pembelian', [$request->dari, $request->sampai]);
+        } else {
+            $query->where('pembelian.tgl_pembelian', '>=', startreport());
         }
+        lockreport($request->dari);
         if (!empty($request->nobukti_pembelian)) {
             $query->where('pembelian.nobukti_pembelian', $request->nobukti_pembelian);
         }
@@ -1383,6 +1386,7 @@ class PembelianController extends Controller
 
 
         $query->whereBetween('tgl_jatuhtempo', [$request->dari, $request->sampai]);
+        lockreport($request->dari);
         if (!empty($request->nobukti_pembelian)) {
             $query->where('pembelian.nobukti_pembelian', $request->nobukti_pembelian);
         }

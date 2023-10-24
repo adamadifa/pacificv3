@@ -27,6 +27,7 @@ class JurnalkoreksiController extends Controller
         $jurnalkoreksi = $query->paginate(15);
         $jurnalkoreksi->appends($request->all());
 
+        lockreport($request->dari);
         return view('jurnalkoreksi.index', compact('jurnalkoreksi'));
     }
 
