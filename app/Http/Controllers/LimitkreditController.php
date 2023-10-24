@@ -229,6 +229,7 @@ class LimitkreditController extends Controller
         $cabang = $cbg->getCabanggudang($this->cabang);
         $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB', 'BTN', 'BKI');
         $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
+        lockreport($request->dari);
         if (request()->is('sap/limitkredit')) {
             return view('sap.limitkredit', compact('limitkredit', 'cabang', 'wilayah_barat', 'wilayah_timur'));
         } else {

@@ -43,7 +43,11 @@ class PermintaanpengirimanController extends Controller
         );
         if (!empty($request->tanggal)) {
             $query->where('tgl_permintaan_pengiriman', $request->tanggal);
+        } else {
+            $query->where('tgl_permintaan_pengiriman', '>=', startreport());
         }
+
+        lockreport($request->tanggal);
 
         if (!empty($request->status) || $request->status === '0') {
             $query->where('status', $request->status);

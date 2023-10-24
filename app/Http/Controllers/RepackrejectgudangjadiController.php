@@ -18,7 +18,11 @@ class RepackrejectgudangjadiController extends Controller
         $query->select('no_mutasi_gudang', 'tgl_mutasi_gudang');
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('tgl_mutasi_gudang', [$request->dari, $request->sampai]);
+        } else {
+            $query->where('tgl_mutasi_gudang', '>=', startreport());
         }
+
+        lockreport($request->dari);
         $query->where('jenis_mutasi', $jenis_mutasi);
         $query->orderBy('tgl_mutasi_gudang', 'desc');
         $mutasi = $query->paginate(15);

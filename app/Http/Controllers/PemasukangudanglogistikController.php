@@ -16,12 +16,15 @@ class PemasukangudanglogistikController extends Controller
         $query = Pemasukangudanglogistik::query();
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('tgl_pemasukan', [$request->dari, $request->sampai]);
+        } else {
+            $query->where('tgl_pemasukan', '>=', startreport());
         }
 
         if (!empty($request->nobukti_pemasukan)) {
             $query->where('nobukti_pemasukan', $request->nobukti_pemasukan);
         }
 
+        lockreport($request->dari);
         $query->orderBy('tgl_pemasukan', 'desc');
         $pemasukan = $query->paginate(15);
         $pemasukan->appends($request->all());

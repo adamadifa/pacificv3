@@ -19,6 +19,9 @@ class OpnamemutasibarangproduksiController extends Controller
 
         if (!empty($request->tahun)) {
             $query->where('tahun', $request->tahun);
+            lockyear($request->tahun);
+        } else {
+            $query->where('tahun', '>=', startyear());
         }
         $query->orderBy('tahun', 'desc');
         $query->orderBy('bulan', 'asc');

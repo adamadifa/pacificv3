@@ -261,6 +261,7 @@ class KendaraanController extends Controller
     {
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $cabang = DB::table('cabang')->where('kode_cabang', $request->kode_cabang)->first();
         $kendaraan = DB::table('kendaraan')->where('no_polisi', $request->no_polisi)->first();
         $query = Dpb::query();

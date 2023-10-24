@@ -23,6 +23,7 @@ class OmanController extends Controller
         $query->leftJoin('permintaan_produksi', 'oman.no_order', '=', 'permintaan_produksi.no_order');
         if (!empty($request->tahun)) {
             $query->where('tahun', $request->tahun);
+            lockyear($request->tahun);
         } else {
             $query->where('tahun', $tahunsekarang);
         }

@@ -20,11 +20,14 @@ class PengeluaranproduksiController extends Controller
 
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('tgl_pengeluaran', [$request->dari, $request->sampai]);
+        } else {
+            $query->where('tgl_pengeluaran', '>=', startreport());
         }
         $query->orderBy('tgl_pengeluaran', 'desc');
         $query->orderBy('nobukti_pengeluaran', 'desc');
         $pengeluaranproduksi = $query->paginate(15);
         $pengeluaranproduksi->appends($request->all());
+        lockreport($request->dari);
         return view('pengeluaranproduksi.index', compact('pengeluaranproduksi'));
     }
 

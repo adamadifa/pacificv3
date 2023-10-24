@@ -647,12 +647,14 @@
                             </li>
                             @endif
                             @if (in_array($level, $inputpotongankomisi))
+                            <!--
                             <li class="{{ request()->is(['komisiapprove', 'komisiapprove/*']) ? 'active' : '' }}">
                                 <a href="/komisiapprove">
                                     <i class="feather icon-activity"></i>
                                     <span class="menu-item">Approve Komisi</span>
                                 </a>
                             </li>
+                            -->
                             @endif
                             @if (in_array($level, $ratiokomisi))
                             <li class="{{ request()->is(['ratiokomisi', 'ratiokomisi/*']) ? 'active' : '' }}">

@@ -16,11 +16,16 @@ class PemasukangudangbahanController extends Controller
         $query = Pemasukangudangbahan::query();
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('tgl_pemasukan', [$request->dari, $request->sampai]);
+        } else {
+            $query->where('tgl_pemasukan', '>=', startreport());
         }
+        lockreport($request->dari);
 
         if (!empty($request->nobukti_pemasukan)) {
             $query->where('nobukti_pemasukan', $request->nobukti_pemasukan);
         }
+
+
         $query->orderBy('tgl_pemasukan', 'desc');
         $query->orderBy('nobukti_pemasukan', 'desc');
         $pemasukan = $query->paginate(15);

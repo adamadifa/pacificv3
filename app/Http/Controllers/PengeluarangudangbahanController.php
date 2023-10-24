@@ -15,10 +15,13 @@ class PengeluarangudangbahanController extends Controller
     public function index(Request $request)
     {
         $query = Pengeluarangudangbahan::query();
+
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('tgl_pengeluaran', [$request->dari, $request->sampai]);
+        } else {
+            $query->where('tgl_pengeluaran', '>=', startreport());
         }
-
+        lockreport($request->dari);
         if (!empty($request->nobukti_pengeluaran)) {
             $query->where('nobukti_pengeluaran', $request->nobukti_pengeluaran);
         }

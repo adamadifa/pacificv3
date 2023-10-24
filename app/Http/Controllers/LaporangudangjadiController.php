@@ -20,6 +20,7 @@ class LaporangudangjadiController extends Controller
     {
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $kode_produk = $request->kode_produk;
         $mutasi = DB::table('detail_mutasi_gudang')
             ->selectRaw("detail_mutasi_gudang.no_mutasi_gudang,tgl_mutasi_gudang,jenis_mutasi,mutasi_gudang_jadi.keterangan,detail_mutasi_gudang.kode_produk,jumlah,kode_cabang,`inout`")
@@ -60,6 +61,7 @@ class LaporangudangjadiController extends Controller
     {
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $mutasi = DB::table('master_barang')
             ->selectRaw("master_barang.kode_produk,
                 nama_barang,
@@ -127,6 +129,7 @@ class LaporangudangjadiController extends Controller
     {
         $bulan = $request->bulan;
         $tahun = $request->tahun;
+        lockyear($tahun);
         $dari = $tahun . "-" . $bulan . "-01";
         $sampai = date("Y-m-t", strtotime($dari));
         $minggu1 = "'" . $tahun . "-" . $bulan . "-01'" . " AND '" . $tahun . "-" . $bulan . "-07'";
@@ -173,6 +176,7 @@ class LaporangudangjadiController extends Controller
     {
         $bulan = $request->bulan;
         $tahun = $request->tahun;
+        lockyear($tahun);
         $dari = $tahun . "-" . $bulan . "-01";
         $sampai = date("Y-m-t", strtotime($dari));
         $minggu1 = "'" . $tahun . "-" . $bulan . "-01'" . " AND '" . $tahun . "-" . $bulan . "-07'";
@@ -220,6 +224,7 @@ class LaporangudangjadiController extends Controller
     {
         $bulan = $request->bulan;
         $tahun = $request->tahun;
+        lockyear($tahun);
         $kode_cabang = $request->kode_cabang;
         $dari = $tahun . "-" . $bulan . "-01";
         $sampai = date("Y-m-t", strtotime($dari));
@@ -296,6 +301,7 @@ class LaporangudangjadiController extends Controller
     {
         $bulan = $request->bulan;
         $tahun = $request->tahun;
+        lockyear($tahun);
         $dari = $tahun . "-" . $bulan . "-01";
         $sampai = date("Y-m-t", strtotime($dari));
         $produk = Barang::orderBy('kode_produk')->get();
@@ -318,6 +324,7 @@ class LaporangudangjadiController extends Controller
     {
         $angkutan = $request->angkutan;
         $dari = $request->dari;
+        lockreport($dari);
         $sampai = $request->sampai;
         $query = Angkutan::query();
         $query->join('mutasi_gudang_jadi', 'angkutan.no_surat_jalan', '=', 'mutasi_gudang_jadi.no_dok');

@@ -46,8 +46,11 @@ class SuratjalanController extends Controller
         $query->where('mutasi_gudang_jadi.jenis_mutasi', 'SURAT JALAN');
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('tgl_mutasi_gudang', [$request->dari, $request->sampai]);
+        } else {
+            $query->where('tgl_mutasi_gudang', '>=', startreport());
         }
 
+        lockreport($request->dari);
         if (!empty($request->no_dok)) {
             $query->where('no_dok', $request->no_dok);
         }

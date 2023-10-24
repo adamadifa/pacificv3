@@ -44,6 +44,7 @@ class PenjualanController extends Controller
     {
 
         if (isset($request->print)) {
+            lockreport($request->dari);
             if (empty($request->dari) || empty($request->sampai)) {
                 return Redirect::back()->with(['danger' => 'Periode Harus Diisi']);
             }
@@ -289,6 +290,8 @@ class PenjualanController extends Controller
                 $salesman = Salesman::orderBy('nama_karyawan')->where('nama_karyawan', '!=', '-')->where('status_aktif_sales', 1)->get();
             }
             $cabang = Cabang::orderBy('kode_cabang')->get();
+
+
             if (Auth::user()->level == "salesman") {
                 return view('penjualan.indexsalesman', compact('penjualan', 'salesman', 'cabang'));
             } else {
@@ -3340,6 +3343,7 @@ class PenjualanController extends Controller
     {
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $cabang = DB::table('cabang')->where('kode_cabang', $request->kode_cabang)->first();
         $salesman = DB::table('karyawan')->where('id_karyawan', $request->id_karyawan)->first();
         $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $request->kode_pelanggan)->first();
@@ -4128,6 +4132,7 @@ class PenjualanController extends Controller
         $id_karyawan = $request->id_karyawan;
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $jenislaporan = $request->jenis_laporan;
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
         $salesman = Salesman::where('id_karyawan', $id_karyawan)->first();
@@ -4268,6 +4273,7 @@ class PenjualanController extends Controller
         $id_karyawan = $request->id_karyawan;
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
         $salesman = Salesman::where('id_karyawan', $id_karyawan)->first();
         $sp = DB::table('checkin')
@@ -4356,6 +4362,7 @@ class PenjualanController extends Controller
     {
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $cabang = DB::table('cabang')->where('kode_cabang', $request->kode_cabang)->first();
         $salesman = DB::table('karyawan')->where('id_karyawan', $request->id_karyawan)->first();
         $id_karyawan = $request->id_karyawan;
@@ -4470,7 +4477,9 @@ class PenjualanController extends Controller
     {
         $no_faktur = $request->no_faktur;
         $dari = $request->dari;
+        lockreport($dari);
         $sampai = $request->sampai;
+        lockreport($dari);
         $ljt = $request->ljt;
         $cabang = DB::table('cabang')->where('kode_cabang', $request->kode_cabang)->first();
         $salesman = DB::table('karyawan')->where('id_karyawan', $request->id_karyawan)->first();
@@ -4821,6 +4830,7 @@ class PenjualanController extends Controller
     public function cetaklaporanaup(Request $request)
     {
         $tgl_aup = $request->tgl_aup;
+        lockreport($tgl_aup);
         $cabang = DB::table('cabang')->where('kode_cabang', $request->kode_cabang)->first();
         $salesman = DB::table('karyawan')->where('id_karyawan', $request->id_karyawan)->first();
         $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $request->kode_pelanggan)->first();
@@ -5091,6 +5101,7 @@ class PenjualanController extends Controller
     public function cetaklaporanlebihsatufaktur(Request $request)
     {
         $tanggal = $request->tanggal;
+        lockreport($tanggal);
         $cabang = DB::table('cabang')->where('kode_cabang', $request->kode_cabang)->first();
         $salesman = DB::table('karyawan')->where('id_karyawan', $request->id_karyawan)->first();
 
@@ -5212,6 +5223,7 @@ class PenjualanController extends Controller
     {
         $cbg = $request->kode_cabang;
         $tahun = $request->tahun;
+        lockyear($tahun);
         $rekapwilayah = DB::table('penjualan')
             ->selectRaw("pelanggan.pasar,
                 SUM(IF(MONTH(tgltransaksi)=1,total,0)) as jan,
@@ -5257,6 +5269,7 @@ class PenjualanController extends Controller
         $produk = Barang::orderBy('kode_produk', 'asc')->get();
         $bulan = $request->bulan;
         $tahun = $request->tahun;
+        lockyear($tahun);
         $tahunlalu = $request->tahun - 1;
         $sumber = $request->sumber;
 
@@ -5830,6 +5843,7 @@ class PenjualanController extends Controller
     {
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $cabang = DB::table('cabang')->where('kode_cabang', $request->kode_cabang)->first();
         $salesman = DB::table('karyawan')->where('id_karyawan', $request->id_karyawan)->first();
         $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $request->kode_pelanggan)->first();
@@ -5892,6 +5906,7 @@ class PenjualanController extends Controller
     {
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $cabang = DB::table('cabang')->where('kode_cabang', $request->kode_cabang)->first();
         $date1 = date_create($dari);
         $date2 = date_create($sampai);
@@ -5957,6 +5972,7 @@ class PenjualanController extends Controller
     {
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $cabang = DB::table('cabang')->where('kode_cabang', $request->kode_cabang)->first();
         $salesman = DB::table('karyawan')->where('id_karyawan', $request->id_karyawan)->first();
         $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $request->kode_pelanggan)->first();
@@ -6019,6 +6035,7 @@ class PenjualanController extends Controller
     {
         $bulan = $request->bulan;
         $tahun = $request->tahun;
+        lockyear($tahun);
         $dari = $tahun . "-" . $bulan . "-01";
         $sampai = date("Y-m-t", strtotime($dari));
         $harganet = DB::table('penjualan')
@@ -6394,7 +6411,7 @@ class PenjualanController extends Controller
     {
         $dari = $request->dari;
         $tgl = explode("-", $dari);
-
+        lockreport($dari);
         $sampai = $request->sampai;
         $jenislaporan = $request->jenislaporan;
         $kode_cabang = $request->kode_cabang;
@@ -7589,6 +7606,7 @@ class PenjualanController extends Controller
     {
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $kode_cabang = $request->kode_cabang;
         $formatlaporan = $request->formatlaporan;
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
@@ -7795,6 +7813,7 @@ class PenjualanController extends Controller
         $id_karyawan = $request->id_karyawan;
         $bulan = $request->bulan;
         $tahun = $request->tahun;
+        lockyear($tahun);
         $dari = $tahun . "-" . $bulan . "-01";
         $sampai = date("Y-m-t", strtotime($dari));
 
@@ -7906,6 +7925,7 @@ class PenjualanController extends Controller
         $id_karyawan = $request->id_karyawan;
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $query = Penjualan::query();
         $query->selectRaw('penjualan.no_fak_penj,tgltransaksi,penjualan.kode_pelanggan,nama_pelanggan,nama_karyawan,penjualan.total, totalretur,totalbayar');
         $query->leftJoin(
@@ -8671,6 +8691,7 @@ class PenjualanController extends Controller
         $kode_cabang = $request->kode_cabang;
         $id_karyawan = $request->id_karyawan;
         $tanggal = $request->tanggal;
+        lockreport($tanggal);
         $query = Penjualan::query();
         $query->selectRaw("penjualan.no_fak_penj,nama_pelanggan,
         AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500,
@@ -9051,6 +9072,7 @@ class PenjualanController extends Controller
 
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $query = Penjualan::query();
         $query->selectRaw('penjualan.id_karyawan,nama_karyawan,karyawan.kode_cabang,COUNT(no_fak_penj) as totaltransaksi,
         SUM(IF(`level`="salesman",1,0)) as totaltransaksisfa,
@@ -9089,6 +9111,7 @@ class PenjualanController extends Controller
 
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $query = Pelanggan::query();
         $query->selectRaw('pelanggan.id_sales,nama_karyawan,
         karyawan.kode_cabang,

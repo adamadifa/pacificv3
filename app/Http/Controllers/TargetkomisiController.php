@@ -68,6 +68,7 @@ class TargetkomisiController extends Controller
         }
         if (!empty($request->tahun)) {
             $query->where('tahun', $request->tahun);
+            lockyear($request->tahun);
         } else {
             $query->where('tahun', $tahunini);
         }
@@ -465,6 +466,7 @@ class TargetkomisiController extends Controller
         $cabang = $request->kode_cabang;
         $bulan = $request->bulan;
         $tahun = $request->tahun;
+        lockyear($tahun);
         $aturankomisi = $request->aturankomisi;
         $dari = $tahun . "-" . $bulan . "-01";
         $hariini = date("Y-m-d");
@@ -2686,6 +2688,7 @@ class TargetkomisiController extends Controller
     {
         $cabang = $request->kode_cabang;
         $dari = $request->dari;
+        lockreport($dari);
         $sampai = $request->sampai;
         $tanggal = explode("-", $dari);
         $bulan = $tanggal[1];
@@ -2879,6 +2882,7 @@ class TargetkomisiController extends Controller
     {
         $bulan = $request->bulan;
         $tahun = $request->tahun;
+        lockyear($tahun);
         $namabulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         $dari = $tahun . "-" . $bulan . "-01";
         $hariini = date('Y-m-d');
@@ -3507,6 +3511,7 @@ class TargetkomisiController extends Controller
     {
         $bulan = $request->bulan;
         $tahun = $request->tahun;
+        lockyear($tahun);
         $dari = $tahun . "-" . $bulan . "-01";
         $hariini = date("Y-m-d");
         $tglkomisi = $tahun . "-" . $bulan . "-01";

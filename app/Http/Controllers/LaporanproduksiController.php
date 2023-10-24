@@ -21,6 +21,8 @@ class LaporanproduksiController extends Controller
         $kode_produk = $request->kode_produk;
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
+
         $saldoawal = DB::table('detail_mutasi_produksi')
             ->selectRaw("SUM(IF( `inout` = 'IN', jumlah, 0)) AS jml_in,
             SUM(IF( `inout` = 'OUT', jumlah, 0)) AS jml_out,
@@ -57,6 +59,7 @@ class LaporanproduksiController extends Controller
     {
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $mutasi = DB::table('master_barang')
             ->selectRaw("
             master_barang.kode_produk,
@@ -120,6 +123,7 @@ class LaporanproduksiController extends Controller
     {
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $kode_barang = $request->kode_barang;
         $query = Detailpemasukanproduksi::query();
         $query->selectRaw('detail_pemasukan_gp.*,pemasukan_gp.kode_dept,tgl_pemasukan,nama_barang,satuan');
@@ -152,6 +156,7 @@ class LaporanproduksiController extends Controller
     {
         $jenis_pengeluaran = $request->jenis_pengeluaran;
         $dari = $request->dari;
+        lockreport($dari);
         $sampai = $request->sampai;
         $kode_barang = $request->kode_barang;
 
@@ -189,7 +194,8 @@ class LaporanproduksiController extends Controller
     {
         $bulan = $request->bulan;
         $tahun = $request->tahun;
-
+        $dari = $tahun . "-" . $bulan . "-01";
+        lockreport($dari);
         $rekap = DB::table('master_barang_produksi')
             ->selectRaw("master_barang_produksi.kode_barang,
             master_barang_produksi.nama_barang,

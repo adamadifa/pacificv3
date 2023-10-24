@@ -59,7 +59,11 @@ class MutasigudangcabangController extends Controller
         $query->leftjoin('karyawan', 'dpb.id_karyawan', 'karyawan.id_karyawan');
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('mutasi_gudang_cabang.tgl_mutasi_gudang_cabang', [$request->dari, $request->sampai]);
+        } else {
+            $query->where('mutasi_gudang_cabang.tgl_mutasi_gudang_cabang', '>=', startreport());
         }
+
+        lockreport($request->dari);
         if (!empty($request->no_dpb)) {
             $query->where('mutasi_gudang_cabang.no_dpb', $request->no_dpb);
         }
@@ -94,7 +98,11 @@ class MutasigudangcabangController extends Controller
         $query->select('mutasi_gudang_cabang.*');
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('mutasi_gudang_cabang.tgl_mutasi_gudang_cabang', [$request->dari, $request->sampai]);
+        } else {
+            $query->where('mutasi_gudang_cabang.tgl_mutasi_gudang_cabang', '>=', startreport());
         }
+
+        lockreport($request->dari);
 
         $query->where('mutasi_gudang_cabang.kode_cabang', $request->kode_cabang);
 
@@ -120,7 +128,11 @@ class MutasigudangcabangController extends Controller
         $query->select('mutasi_gudang_cabang.*');
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('mutasi_gudang_cabang.tgl_mutasi_gudang_cabang', [$request->dari, $request->sampai]);
+        } else {
+            $query->where('mutasi_gudang_cabang.tgl_mutasi_gudang_cabang', '>=', startreport());
         }
+
+        lockreport($request->dari);
 
         $query->where('mutasi_gudang_cabang.kode_cabang', $request->kode_cabang);
 
@@ -146,7 +158,11 @@ class MutasigudangcabangController extends Controller
         $query->select('mutasi_gudang_cabang.*', 'no_dok');
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('mutasi_gudang_cabang.tgl_mutasi_gudang_cabang', [$request->dari, $request->sampai]);
+        } else {
+            $query->where('mutasi_gudang_cabang.tgl_mutasi_gudang_cabang', '>=', startreport());
         }
+
+        lockreport($request->dari);
 
         $query->where('mutasi_gudang_cabang.kode_cabang', $request->kode_cabang);
         $query->leftJoin('mutasi_gudang_jadi', 'mutasi_gudang_cabang.no_suratjalan', '=', 'mutasi_gudang_jadi.no_mutasi_gudang');
@@ -795,7 +811,11 @@ class MutasigudangcabangController extends Controller
         );
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('mutasi_gudang_cabang.tgl_mutasi_gudang_cabang', [$request->dari, $request->sampai]);
+        } else {
+            $query->where('mutasi_gudang_cabang.tgl_mutasi_gudang_cabang', '>=', startreport());
         }
+
+        lockreport($request->dari);
         $query->leftJoin(
             DB::raw("(
             SELECT
@@ -1117,8 +1137,10 @@ class MutasigudangcabangController extends Controller
         $query->select('mutasi_gudang_cabang.*');
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('mutasi_gudang_cabang.tgl_mutasi_gudang_cabang', [$request->dari, $request->sampai]);
+        } else {
+            $query->where('mutasi_gudang_cabang.tgl_mutasi_gudang_cabang', '>=', startreport());
         }
-
+        lockreport($request->dari);
         $query->where('mutasi_gudang_cabang.kode_cabang', $request->kode_cabang);
 
         $query->where('jenis_mutasi', $jm);

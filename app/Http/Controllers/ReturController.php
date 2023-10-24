@@ -86,6 +86,7 @@ class ReturController extends Controller
 
         $retur->appends($request->all());
 
+        lockreport($request->dari);
         if (Auth::user()->level == "salesman") {
             return view('retur.indexsalesman', compact('retur'));
         } else {
@@ -470,6 +471,7 @@ class ReturController extends Controller
     {
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $cabang = DB::table('cabang')->where('kode_cabang', $request->kode_cabang)->first();
         $salesman = DB::table('karyawan')->where('id_karyawan', $request->id_karyawan)->first();
         $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $request->kode_pelanggan)->first();

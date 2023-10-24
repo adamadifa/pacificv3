@@ -21,11 +21,15 @@ class PengeluarangudanglogistikController extends Controller
 
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('tgl_pengeluaran', [$request->dari, $request->sampai]);
+        } else {
+            $query->where('tgl_pengeluaran', '>=', startreport());
         }
 
         if (!empty($request->kode_dept)) {
             $query->where('kode_dept', $request->kode_dept);
         }
+
+        lockreport($request->dari);
         $query->select('pengeluaran.*', 'nama_dept');
         $query->join('departemen', 'pengeluaran.kode_dept', '=', 'departemen.kode_dept');
         $query->orderBy('tgl_pengeluaran', 'desc');

@@ -21,6 +21,7 @@ class LaporangudanglogistikController extends Controller
     {
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $kode_kategori = $request->kode_kategori;
         $kode_barang = $request->kode_barang;
 
@@ -89,7 +90,7 @@ class LaporangudanglogistikController extends Controller
         $kode_barang = $request->kode_barang;
         $dari = $request->dari;
         $sampai = $request->sampai;
-
+        lockreport($dari);
         $query = Detailpengeluarangudanglogistik::query();
         $query->selectRaw("tgl_pengeluaran,detail_pengeluaran.*,nama_dept,nama_barang,satuan,nama_cabang");
         $query->join('pengeluaran', 'detail_pengeluaran.nobukti_pengeluaran', '=', 'pengeluaran.nobukti_pengeluaran');
@@ -149,6 +150,7 @@ class LaporangudanglogistikController extends Controller
         $kode_kategori = $request->kode_kategori;
         $bulan = $request->bulan;
         $tahun = $request->tahun;
+        lockyear($tahun);
         $query  = Barangpembelian::query();
         $query->selectRaw("master_barang_pembelian.kode_barang,
         master_barang_pembelian.nama_barang,
@@ -244,6 +246,7 @@ class LaporangudanglogistikController extends Controller
     {
         $bulan = $request->bulan;
         $tahun = $request->tahun;
+        lockyear($tahun);
         $kode_kategori = $request->kode_kategori;
         $kategori = $kode_kategori;
         $kat = DB::table('kategori_barang_pembelian')->where('kode_kategori', $kode_kategori)->first();

@@ -21,6 +21,8 @@ class LaporangudangbahanController extends Controller
     {
         $dari = $request->dari;
         $sampai = $request->sampai;
+
+        lockreport($dari);
         $kode_barang = $request->kode_barang;
         $filter = $request->filter;
         $query = Detailpemasukangudangbahan::query();
@@ -59,6 +61,7 @@ class LaporangudangbahanController extends Controller
     {
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $kode_dept = $request->kode_dept;
         $kode_barang = $request->kode_barang;
         $unit = $request->unit;
@@ -107,6 +110,7 @@ class LaporangudangbahanController extends Controller
     {
         $bulan = $request->bulan;
         $tahun = $request->tahun;
+        lockyear($tahun);
         $kode_kategori = $request->kode_kategori;
         $persediaan = DB::table('master_barang_pembelian')
             ->selectRaw("master_barang_pembelian.kode_barang,
@@ -271,6 +275,7 @@ class LaporangudangbahanController extends Controller
         $kode_barang = $request->kode_barang;
         $bulan = $request->bulan;
         $tahun = $request->tahun;
+        lockyear($tahun);
         $dari = $tahun . "-" . $bulan . "-01";
         $ceknextbulan = DB::table('pengeluaran_gb')
             ->select('tgl_pengeluaran')
@@ -314,6 +319,7 @@ class LaporangudangbahanController extends Controller
     {
         $bulan = $request->bulan;
         $tahun = $request->tahun;
+        lockyear($tahun);
         $kode_kategori = $request->kode_kategori;
         $query = Barangpembelian::query();
 

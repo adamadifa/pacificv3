@@ -19,12 +19,16 @@ class SaldoawalmutasibarangproduksiController extends Controller
 
         if (!empty($request->tahun)) {
             $query->where('tahun', $request->tahun);
+            lockyear($request->tahun);
+        } else {
+            $query->where('tahun', '>=', startyear());
         }
         $query->orderBy('tahun', 'desc');
         $query->orderBy('bulan', 'asc');
         $saldoawal = $query->paginate(15);
         $saldoawal->appends($request->all());
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+
         return view('saldoawalmutasibarangproduksi.index', compact('bulan', 'saldoawal'));
     }
 

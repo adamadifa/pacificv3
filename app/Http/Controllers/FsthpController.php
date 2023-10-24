@@ -20,11 +20,14 @@ class FsthpController extends Controller
         $query->where('jenis_mutasi', 'FSTHP');
         if (!empty($request->tanggal)) {
             $query->where('tgl_mutasi_produksi', $request->tanggal);
+        } else {
+            $query->where('tgl_mutasi_produksi', '>=', startreport());
         }
         $query->orderBy('tgl_mutasi_produksi', 'desc');
         $query->orderBy('time_stamp', 'desc');
         $fsthp = $query->paginate(15);
         $fsthp->appends($request->all());
+        lockreport($request->tanggal);
         return view('fsthp.index', compact('fsthp'));
     }
     public function show(Request $request)

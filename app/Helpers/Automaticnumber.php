@@ -511,3 +511,38 @@ function hitungjarak($lat1, $lon1, $lat2, $lon2)
     $meters = $kilometers * 1000;
     return compact('meters');
 }
+
+
+function lockreport($tanggal)
+{
+    if ($tanggal < '2021-01-01' && !empty($tanggal)) {
+        echo "Data Belum Ada / Tidak Ditemukan";
+        die;
+    } else {
+        return "OK";
+    }
+}
+
+
+function startreport()
+{
+    $startreport = "2021-01-01";
+    return $startreport;
+}
+
+
+function startyear()
+{
+    $startyear = 2021;
+    return $startyear;
+}
+
+function lockyear($tahun)
+{
+    if ($tahun < startyear() && !empty($tahun)) {
+        echo "Data Belum Ada / Tidak Ditemukan";
+        die;
+    } else {
+        return "OK";
+    }
+}

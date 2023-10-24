@@ -18,11 +18,15 @@ class BpbjController extends Controller
         $query->where('jenis_mutasi', 'BPBJ');
         if (!empty($request->tanggal)) {
             $query->where('tgl_mutasi_produksi', $request->tanggal);
+        } else {
+            $query->where('tgl_mutasi_produksi', '>=', startreport());
         }
         $query->orderBy('tgl_mutasi_produksi', 'desc');
         $query->orderBy('time_stamp', 'desc');
         $bpbj = $query->paginate(15);
         $bpbj->appends($request->all());
+
+        lockreport($request->tanggal);
         return view('bpbj.index', compact('bpbj'));
     }
     public function show(Request $request)

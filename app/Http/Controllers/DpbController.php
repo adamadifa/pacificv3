@@ -48,8 +48,10 @@ class DpbController extends Controller
 
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('tgl_pengambilan', [$request->dari, $request->sampai]);
+        } else {
+            $query->where('tgl_pengambilan', '>=', startreport());
         }
-
+        lockreport($request->dari);
         $query->where('dpb.kode_cabang', $request->kode_cabang);
 
         if (!empty($request->id_karyawan)) {

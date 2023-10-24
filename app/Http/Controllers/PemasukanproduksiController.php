@@ -21,10 +21,13 @@ class PemasukanproduksiController extends Controller
 
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('tgl_pemasukan', [$request->dari, $request->sampai]);
+        } else {
+            $query->where('tgl_pemasukan', '>=', startreport());
         }
         $query->orderBy('tgl_pemasukan', 'desc');
         $pemasukanproduksi = $query->paginate(15);
         $pemasukanproduksi->appends($request->all());
+        lockreport($request->dari);
         return view('pemasukanproduksi.index', compact('pemasukanproduksi'));
     }
 

@@ -38,6 +38,7 @@ class LaporangudangcabangController extends Controller
         $kode_produk = $request->kode_produk;
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $gudang = $request->gudang;
         $tanggal = explode("-", $dari);
         $bulan      = $tanggal[1];
@@ -239,6 +240,7 @@ class LaporangudangcabangController extends Controller
         $kode_produk = $request->kode_produk;
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $tanggal = explode("-", $dari);
         $bulan      = $tanggal[1];
         $tahun      = $tanggal[0];
@@ -356,6 +358,7 @@ class LaporangudangcabangController extends Controller
         $kode_cabang = $request->kode_cabang;
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $tanggal = explode("-", $dari);
         $bulan = $tanggal[1];
         $tahun = $tanggal[0];
@@ -466,7 +469,7 @@ class LaporangudangcabangController extends Controller
         // $sampai = date("Y-m-t", strtotime($dari));
         $dari = $request->dari;
         $sampai = $request->sampai;
-
+        lockreport($dari);
 
         $tgl = explode("-", $sampai);
         // dd($tgl);
@@ -626,6 +629,7 @@ class LaporangudangcabangController extends Controller
         $jeniskonsolidasi = $request->jeniskonsolidasi;
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $id_karyawan = $request->id_karyawan;
 
         if ($dari < '2022-09-01') {
