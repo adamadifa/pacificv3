@@ -77,7 +77,7 @@
                     </li> --}}
                      <li class="dropdown dropdown-user nav-item"><a class="dropdown-toggle nav-link dropdown-user-link" href="#" data-toggle="dropdown">
                              <div class="user-nav d-sm-flex d-none"><span class="user-name text-bold-600">{{ Auth::user()->name }}</span><span class="user-status">
-                                     @if (Auth::user()->id==176 || Auth::user()->id == 164)
+                                     @if (Auth::user()->id==176 || Auth::user()->id == 164 || Auth::user()->id==185)
                                      SPV HRD
                                      @else
                                      {{ ucwords(Auth::user()->level) }}
