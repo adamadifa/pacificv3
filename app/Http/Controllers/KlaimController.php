@@ -51,6 +51,8 @@ class KlaimController extends Controller
         } else {
             $cabang = Cabang::orderBy('kode_cabang')->get();
         }
+
+        lockreport($request->dari);
         return view('klaim.index', compact('klaim', 'cabang'));
     }
 

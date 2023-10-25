@@ -50,6 +50,7 @@ class SetoranpusatController extends Controller
         $cabang = $cbg->getCabang($this->cabang);
         $bank = Bank::where('show_on_cabang', 1)->get();
         $kode_cabang = $this->cabang;
+        lockreport($request->dari);
         return view('setoranpusat.index', compact('cabang', 'bank', 'setoranpusat', 'kode_cabang'));
     }
 

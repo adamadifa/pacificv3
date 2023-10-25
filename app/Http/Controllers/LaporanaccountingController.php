@@ -40,6 +40,7 @@ class LaporanaccountingController extends Controller
     {
         $bulan = $request->bulan;
         $tahun = $request->tahun;
+        lockyear($tahun);
         $tgl1 = $tahun . "-" . $bulan . "-01";
         $tgl2 = date('Y-m-t', strtotime($tgl1));
         $rekaphpp = DB::select("SELECT mb.kode_produk,nama_barang,mb.isipcsdus,harga_hpp,
@@ -617,6 +618,7 @@ class LaporanaccountingController extends Controller
     {
         $bulan = $request->bulan;
         $tahun = $request->tahun;
+        lockyear($tahun);
         $dari =  $tahun . "-" . $bulan . "-01";
         $sampai = date("Y-m-t", strtotime($dari));
         $jenislaporan = $request->jenislaporan;
@@ -790,7 +792,7 @@ class LaporanaccountingController extends Controller
 
         $dari = $request->dari;
         $sampai = $request->sampai;
-
+        lockreport($dari);
         $dari_akun = $request->dari_akun;
         $sampai_akun = $request->sampai_akun;
         if (!empty($request->dari)) {
@@ -838,7 +840,7 @@ class LaporanaccountingController extends Controller
 
         $dari = $request->dari;
         $sampai = $request->sampai;
-
+        lockreport($dari);
         if (!empty($request->dari)) {
             $tanggal = explode("-", $request->dari);
             $bulan = $tanggal[1] + 0;
@@ -900,7 +902,7 @@ class LaporanaccountingController extends Controller
 
         $dari = $request->dari;
         $sampai = $request->sampai;
-
+        lockreport($dari);
         if (!empty($request->dari)) {
             $tanggal = explode("-", $request->dari);
             $bulan = $tanggal[1] + 0;
@@ -974,7 +976,7 @@ class LaporanaccountingController extends Controller
         $dari = $request->dari;
         $sampai = $request->sampai;
         $kode_dept = $request->kode_dept;
-
+        lockreport($dari);
         $query = Jurnalumum::query();
         $query->join('coa', 'jurnal_umum.kode_akun', '=', 'coa.kode_akun');
         $query->whereBetween('tanggal', [$dari, $sampai]);
@@ -1013,6 +1015,7 @@ class LaporanaccountingController extends Controller
     {
         $bulan = $request->bulan;
         $tahun = $request->tahun;
+        lockreport($tahun);
         $kode_cabang = $request->kode_cabang;
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
         $nama_cabang = $cabang != null ?  $cabang->nama_cabang : '';
@@ -1823,6 +1826,7 @@ class LaporanaccountingController extends Controller
         $tgl = explode("-", $dari);
         $bulan = $tgl[1];
         $tahun = $tgl[0];
+        lockyear($tahun);
         $qlogistik = Detailpengeluarangudanglogistik::query();
         $qlogistik->selectRaw("detail_pengeluaran.kode_barang,nama_barang,qty,CASE
         WHEN sa.hargasaldoawal IS NULL THEN gm.hargapemasukan

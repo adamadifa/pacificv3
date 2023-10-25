@@ -102,6 +102,7 @@ class SetoranpenjualanController extends Controller
 
         $query->where('setoran_penjualan.kode_cabang', $request->kode_cabang);
         $query->whereBetween('tgl_lhp', [$request->dari, $request->sampai]);
+
         if (!empty($request->id_karyawan)) {
             $query->where('setoran_penjualan.id_karyawan', $request->id_karyawan);
         }
@@ -112,6 +113,7 @@ class SetoranpenjualanController extends Controller
         $cbg = new Cabang();
         $cabang = $cbg->getCabang($this->cabang);
         $kode_cabang = $this->cabang;
+        lockreport($request->dari);
         return view('setoranpenjualan.index', compact('cabang', 'setoranpenjualan', 'kode_cabang'));
     }
 

@@ -91,6 +91,8 @@ class SetorantransferController extends Controller
         }
         $transfer = $query->paginate(15);
         $transfer->appends($request->all());
+
+        lockreport($request->dari);
         return view('setorantransfer.index', compact('transfer'));
     }
 

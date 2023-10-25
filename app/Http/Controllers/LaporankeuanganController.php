@@ -42,6 +42,7 @@ class LaporankeuanganController extends Controller
         $kode_cabang = $request->kode_cabang;
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $dari_kode_akun = $request->dari_kode_akun;
         $sampai_kode_akun = $request->sampai_kode_akun;
         $query = Kaskecil::query();
@@ -139,6 +140,7 @@ class LaporankeuanganController extends Controller
         $sampai_kode_akun = $request->sampai_kode_akun;
         $dari = $request->dari;
         $sampai = $request->sampai;
+        lockreport($dari);
         $management = config('global.show_for_hrd');
         $bank = Bank::where('kode_bank', $kode_bank)->first();
         if ($bank == null) {
@@ -243,7 +245,7 @@ class LaporankeuanganController extends Controller
         $kode_cabang = $request->kode_cabang;
         $dari = $request->dari;
         $sampai = $request->sampai;
-
+        lockreport($dari);
         $setoran_penjualan = DB::table('setoran_penjualan')
             ->select('setoran_penjualan.id_karyawan', 'nama_karyawan', 'tgl_lhp', 'lhp_tunai', 'lhp_tagihan')
             ->join('karyawan', 'setoran_penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
@@ -275,6 +277,7 @@ class LaporankeuanganController extends Controller
         $bulan = $request->bulan;
         $tahun = $request->tahun;
         $dari = $tahun . "-" . $bulan . "-01";
+        lockreport($dari);
         $sampai = date("Y-m-t", strtotime($dari));
 
         if ($bulan == 12) {
@@ -327,6 +330,7 @@ class LaporankeuanganController extends Controller
         $bulan = $request->bulan;
         $tahun = $request->tahun;
         $dari = $tahun . "-" . $bulan . "-01";
+        lockreport($dari);
         $sampai = date("Y-m-t", strtotime($dari));
 
         if ($bulan == 12) {
@@ -432,6 +436,7 @@ class LaporankeuanganController extends Controller
         $kode_cabang = $request->kode_cabang;
         $bulan = $request->bulan;
         $tahun = $request->tahun;
+        lockyear($tahun);
         $dari  = $tahun . "-" . $bulan . "-01";
         $darilast  = $tahun . "-" . $bulan - 1 . "-01";
         $sampailast = date("Y-m-t", strtotime($darilast));
@@ -515,6 +520,7 @@ class LaporankeuanganController extends Controller
         $kode_cabang = $request->kode_cabang;
         $bulan = $request->bulan;
         $tahun = $request->tahun;
+        lockyear($tahun);
         $dari = $tahun . "-" . $bulan . "-01";
         $sampai = date("Y-m-t", strtotime($dari));
         $showallsales = $request->showallsales;

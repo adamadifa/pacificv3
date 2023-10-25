@@ -61,6 +61,8 @@ class BelumsetorController extends Controller
 
 
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+
+        lockyear($request->tahun);
         return view('belumsetor.index', compact('bulan', 'belumsetor'));
     }
 

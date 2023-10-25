@@ -62,6 +62,8 @@ class LebihsetorController extends Controller
 
         // $cabang = Cabang::orderBy('kode_cabang')->get();
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+
+        lockyear($request->tahun);
         return view('lebihsetor.index', compact('bulan', 'lebihsetor'));
     }
 

@@ -61,6 +61,8 @@ class LedgerController extends Controller
         } else {
             $saldoawal = 0;
         }
+
+        lockreport($request->dari);
         return view('ledger.index', compact('bank', 'ledger', 'saldoawal'));
     }
 
@@ -488,6 +490,8 @@ class LedgerController extends Controller
 
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         $bank = Bank::orderBy('kode_bank')->get();
+
+        lockyear($request->tahun);
         return view('ledger.saldoawal', compact('bank', 'bulan', 'saldoawal'));
     }
 

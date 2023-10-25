@@ -39,7 +39,7 @@ class LogamtokertasController extends Controller
         } else {
             $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         }
-
+        lockreport($request->dari);
         return view('gantilogamtokertas.index', compact('cabang', 'logamtokertas'));
     }
 

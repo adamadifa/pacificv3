@@ -69,6 +69,8 @@ class KaskecilController extends Controller
         } else {
             $cabang = Cabang::orderBy('kode_cabang')->get();
         }
+
+        lockreport($request->dari);
         return view('kaskecil.index', compact('kaskecil', 'cabang', 'saldoawal'));
     }
 

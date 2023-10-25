@@ -81,6 +81,8 @@ class SetorangiroController extends Controller
         }
         $giro = $query->paginate(15);
         $giro->appends($request->all());
+
+        lockreport($request->dari);
         return view('setorangiro.index', compact('giro'));
     }
 

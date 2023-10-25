@@ -41,7 +41,11 @@ class KontrabonController extends Controller
 
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('tgl_kontrabon', [$request->dari, $request->sampai]);
+        } else {
+            $query->where('tgl_kontrabon', '>=', startreport());
         }
+
+        lockreport($request->dari);
         if (!empty($request->kode_supplier)) {
             $query->where('kontrabon.kode_supplier', $request->kode_supplier);
         }

@@ -33,6 +33,8 @@ class SaldoawalkasbesarController extends Controller
         if (!empty($request->bulan)) {
             $query->where('bulan', $request->bulan);
         }
+
+        lockyear($request->tahun);
         if ($this->cabang != "PCF") {
             if ($this->cabang == "GRT") {
                 $query->where('kode_cabang', 'TSM');
