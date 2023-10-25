@@ -402,6 +402,29 @@ class HargaController extends Controller
         // die;
 
         $cekpelanggan = DB::table('barang')->where('kode_pelanggan', $kode_pelanggan)->count();
+
+        $pelanggan_canvas_to = array(
+            'BDG-09667',
+            'BDG-05232',
+            'BDG-08770',
+            'BDG-04839',
+            'BDG-05252',
+            'BDG-05500',
+            'BDG-09417',
+            'BDG-07435',
+            'BDG-05419',
+            'BDG-05485',
+            'BDG-04935',
+            'BDG-07566',
+            'BDG-08579',
+            'BDG-07132',
+            'BDG-09190',
+            'BDG-09489',
+            'BDG-09637',
+            'BDG-09632',
+            'BDG-08101'
+        );
+
         if ($cekpelanggan > 0) {
             $barang = Harga::orderby('nama_barang', 'asc')
                 ->select('barang.*')
@@ -419,6 +442,15 @@ class HargaController extends Controller
             //     ->join('master_barang', 'barang_new.kode_produk', '=', 'master_barang.kode_produk')->where('barang_new.status_harga', 1)
             //     ->orderBy('barang_new.kode_produk', 'asc')
             //     ->get();
+        } else if (in_array($kode_pelanggan, $pelanggan_canvas_to)) {
+            $barang = Harga::orderby('nama_barang', 'asc')
+                ->select('barang.*')
+                ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')->where('status', 1)
+                ->where('show', 1)
+                ->where('kode_cabang', $kode_cabang)
+                ->where('kategori_harga', 'TO')
+                ->whereNull('status_promo_product')
+                ->get();
         } else {
             if (str_contains($pelanggan->nama_pelanggan, 'KPBN') || str_contains($pelanggan->nama_pelanggan, 'WSI')) {
                 $barang = Harga::orderby('nama_barang', 'asc')
@@ -560,6 +592,27 @@ class HargaController extends Controller
 
         // echo $kode_cabang . $kategori_salesman . $kode_pelanggan;
         // die;
+        $pelanggan_canvas_to = array(
+            'BDG-09667',
+            'BDG-05232',
+            'BDG-08770',
+            'BDG-04839',
+            'BDG-05252',
+            'BDG-05500',
+            'BDG-09417',
+            'BDG-07435',
+            'BDG-05419',
+            'BDG-05485',
+            'BDG-04935',
+            'BDG-07566',
+            'BDG-08579',
+            'BDG-07132',
+            'BDG-09190',
+            'BDG-09489',
+            'BDG-09637',
+            'BDG-09632',
+            'BDG-08101'
+        );
 
         $cekpelanggan = DB::table('barang')->where('kode_pelanggan', $kode_pelanggan)->count();
         if ($cekpelanggan > 0) {
@@ -579,6 +632,15 @@ class HargaController extends Controller
             //     ->join('master_barang', 'barang_new.kode_produk', '=', 'master_barang.kode_produk')->where('barang_new.status_harga', 1)
             //     ->orderBy('barang_new.kode_produk', 'asc')
             //     ->get();
+        } else if (in_array($kode_pelanggan, $pelanggan_canvas_to)) {
+            $barang = Harga::orderby('nama_barang', 'asc')
+                ->select('barang.*')
+                ->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk')->where('status', 1)
+                ->where('show', 1)
+                ->where('kode_cabang', $kode_cabang)
+                ->where('kategori_harga', 'TO')
+                ->whereNull('status_promo_product')
+                ->get();
         } else {
             if (str_contains($pelanggan->nama_pelanggan, 'KPBN') || str_contains($pelanggan->nama_pelanggan, 'WSI')) {
                 $barang = Harga::orderby('nama_barang', 'asc')
