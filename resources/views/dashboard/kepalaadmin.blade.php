@@ -54,7 +54,7 @@
                                             <select class="form-control" id="tahundppp">
                                                 <?php
                                                     $tahun = date("Y");
-                                                    for ($t = 2019; $t <= $tahun; $t++) { ?>
+                                                    for ($t = 2021; $t <= $tahun; $t++) { ?>
                                                 <option <?php if (date("Y") == $t) {
                                                                   echo "selected";
                                                                 } ?> value="<?php echo $t;  ?>"><?php echo $t; ?></option>
@@ -99,7 +99,7 @@
                                             <select class="form-control" id="tahunkendaraan">
                                                 <?php
                                                     $tahun = date("Y");
-                                                    for ($t = 2019; $t <= $tahun; $t++) { ?>
+                                                    for ($t = 2021; $t <= $tahun; $t++) { ?>
                                                 <option <?php if (date("Y") == $t) {
                                                                   echo "selected";
                                                                 } ?> value="<?php echo $t;  ?>"><?php echo $t; ?></option>
@@ -383,6 +383,14 @@
 @push('myscript')
 <script>
     $(function() {
+
+        $("#tanggal_aup").change(function(e) {
+            var tanggal_aup = $(this).val();
+            if (tanggal_aup < '2021-01-01') {
+                $("#tanggal_aup").val("2021-01-01");
+                alert("Periode Laporan Tersebut Tidak Ditemukan");
+            }
+        });
         $("#showpending").click(function(e) {
             $("#frmpending").submit();
         });
