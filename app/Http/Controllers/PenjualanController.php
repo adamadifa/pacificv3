@@ -8209,25 +8209,7 @@ class PenjualanController extends Controller
         // echo $kode_cabang . $kategori_salesman . $kode_pelanggan;
         // die;
         $pelanggan_canvas_to = array(
-            'BDG-09667',
-            'BDG-05232',
-            'BDG-08770',
-            'BDG-04839',
-            'BDG-05252',
-            'BDG-05500',
-            'BDG-09417',
-            'BDG-07435',
-            'BDG-05419',
-            'BDG-05485',
-            'BDG-04935',
-            'BDG-07566',
-            'BDG-08579',
-            'BDG-07132',
-            'BDG-09190',
-            'BDG-09489',
-            'BDG-09637',
-            'BDG-09632',
-            'BDG-08101'
+            'NOTFOUND'
         );
         $cekpelanggan = DB::table('barang')->where('kode_pelanggan', $kode_pelanggan)->count();
         if ($cekpelanggan > 0) {
@@ -8463,25 +8445,7 @@ class PenjualanController extends Controller
         // die;
 
         $pelanggan_canvas_to = array(
-            'BDG-09667',
-            'BDG-05232',
-            'BDG-08770',
-            'BDG-04839',
-            'BDG-05252',
-            'BDG-05500',
-            'BDG-09417',
-            'BDG-07435',
-            'BDG-05419',
-            'BDG-05485',
-            'BDG-04935',
-            'BDG-07566',
-            'BDG-08579',
-            'BDG-07132',
-            'BDG-09190',
-            'BDG-09489',
-            'BDG-09637',
-            'BDG-09632',
-            'BDG-08101'
+            'NOTFOUND'
         );
         $cekpelanggan = DB::table('barang')->where('kode_pelanggan', $kode_pelanggan)->count();
         if ($cekpelanggan > 0) {
