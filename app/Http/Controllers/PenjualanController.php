@@ -291,6 +291,7 @@ class PenjualanController extends Controller
             }
             $cabang = Cabang::orderBy('kode_cabang')->get();
 
+            lockreport($request->dari);
 
             if (Auth::user()->level == "salesman") {
                 return view('penjualan.indexsalesman', compact('penjualan', 'salesman', 'cabang'));
