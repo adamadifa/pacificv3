@@ -515,7 +515,7 @@ function hitungjarak($lat1, $lon1, $lat2, $lon2)
 
 function lockreport($tanggal)
 {
-    if ($tanggal < '2021-01-01' && !empty($tanggal)) {
+    if ($tanggal < '2019-01-01' && !empty($tanggal)) {
         echo "Data Belum Ada / Tidak Ditemukan";
         die;
     } else {
