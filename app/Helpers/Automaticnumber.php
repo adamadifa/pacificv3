@@ -526,14 +526,14 @@ function lockreport($tanggal)
 
 function startreport()
 {
-    $startreport = "2021-01-01";
+    $startreport = "2019-01-01";
     return $startreport;
 }
 
 
 function startyear()
 {
-    $startyear = 2021;
+    $startyear = 2019;
     return $startyear;
 }
 
