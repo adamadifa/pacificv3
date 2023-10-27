@@ -214,7 +214,7 @@
                                                 @endif
                                                 @endif
 
-                                                @if (array_search(strtolower($kat_jab_user),$approve) == 0)
+                                                @if (array_search(strtolower($kat_jab_user),$approve) == 0 && Auth::user()->level=="manager hrd")
                                                 @if (empty($d->$field_kategori))
                                                 <form method="POST" name="deleteform" class="deleteform" action="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/delete">
                                                     @csrf
