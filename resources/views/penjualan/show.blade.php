@@ -246,121 +246,123 @@
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="penjualan" aria-labelledby="penjualan-tab" role="tabpanel">
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Nama Barang</th>
-                                                <th style="text-align:center">Dus</th>
-                                                <th>Harga/Dus</th>
-                                                <th class="text-center">Pack</th>
-                                                <th>Harga/Pack</th>
-                                                <th class="text-center">Pcs</th>
-                                                <th>Harga/Pcs</th>
-                                                <th>Total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @php
-                                            $total = 0;
-                                            @endphp
-                                            @foreach ($detailpenjualan as $d)
-                                            @php
-                                            $jmldus = floor($d->jumlah / $d->isipcsdus);
-                                            $sisadus = $d->jumlah % $d->isipcsdus;
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Nama Barang</th>
+                                                    <th style="text-align:center">Dus</th>
+                                                    <th>Harga/Dus</th>
+                                                    <th class="text-center">Pack</th>
+                                                    <th>Harga/Pack</th>
+                                                    <th class="text-center">Pcs</th>
+                                                    <th>Harga/Pcs</th>
+                                                    <th>Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @php
+                                                $total = 0;
+                                                @endphp
+                                                @foreach ($detailpenjualan as $d)
+                                                @php
+                                                $jmldus = floor($d->jumlah / $d->isipcsdus);
+                                                $sisadus = $d->jumlah % $d->isipcsdus;
 
-                                            if ($d->isipack == 0) {
-                                            $jmlpack = 0;
-                                            $sisapack = $sisadus;
-                                            } else {
+                                                if ($d->isipack == 0) {
+                                                $jmlpack = 0;
+                                                $sisapack = $sisadus;
+                                                } else {
 
-                                            $jmlpack = floor($sisadus / $d->isipcs);
-                                            $sisapack = $sisadus % $d->isipcs;
-                                            }
+                                                $jmlpack = floor($sisadus / $d->isipcs);
+                                                $sisapack = $sisadus % $d->isipcs;
+                                                }
 
-                                            $jmlpcs = $sisapack;
-                                            $total += $d->subtotal;
-                                            @endphp
-                                            <tr @if ($d->promo ==1)
-                                                class="bg-warning"
-                                                @endif>
+                                                $jmlpcs = $sisapack;
+                                                $total += $d->subtotal;
+                                                @endphp
+                                                <tr @if ($d->promo ==1)
+                                                    class="bg-warning"
+                                                    @endif>
 
-                                                <td>{{ $d->nama_barang }}</td>
-                                                <td class="text-center">{{ $jmldus }}</td>
-                                                <td class="text-right">{{ rupiah($d->harga_dus) }}</td>
-                                                <td class="text-center">{{ $jmlpack }}</td>
-                                                <td class="text-right">{{ rupiah($d->harga_pack) }}</td>
-                                                <td class="text-center">{{ $jmlpcs }}</td>
-                                                <td class="text-right">{{ rupiah($d->harga_pcs) }}</td>
-                                                <td class="text-right">{{ rupiah($d->subtotal) }}</td>
-                                            </tr>
-                                            @endforeach
-                                            <tr style="font-weight: bold">
-                                                <td colspan="7">Subtotal</td>
-                                                <td class="text-right">{{ rupiah($total) }}</td>
-                                            </tr>
-                                            <tr style="font-weight: bold">
-                                                <td colspan="7">Potongan</td>
-                                                <td class="text-right">{{ rupiah($data->potongan) }}</td>
-                                            </tr>
-                                            <tr style="font-weight: bold">
-                                                <td colspan="7">Potongan Istimewa</td>
-                                                <td class="text-right">{{ rupiah($data->potistimewa) }}</td>
-                                            </tr>
-                                            <tr style="font-weight: bold">
-                                                <td colspan="7">Penyesuaian</td>
-                                                <td class="text-right">{{ rupiah($data->penyharga) }}</td>
-                                            </tr>
-                                            <tr style="font-weight: bold">
-                                                <td colspan="7">Total</td>
-                                                <td class="text-right">
-                                                    @php
-                                                    $totalnonppn = $data->subtotal - $data->potongan - $data->potistimewa - $data->penyharga;
-                                                    @endphp
-                                                    {{ rupiah($totalnonppn)  }}
-                                                </td>
-                                            </tr>
-                                            <tr style="font-weight: bold">
-                                                <td colspan="7">PPN</td>
-                                                <td class="text-right">
-                                                    {{ rupiah($data->ppn)  }}
-                                                </td>
-                                            </tr>
-                                            <tr style="font-weight: bold">
-                                                <td colspan="7">Grand Total</td>
-                                                <td class="text-right">
-                                                    {{ rupiah($data->total)  }}
-                                                </td>
-                                            </tr>
-                                            <tr style="font-weight: bold">
-                                                <td colspan="7">Retur</td>
-                                                <td class="text-right">{{ rupiah($data->totalretur) }}</td>
-                                            </tr>
-                                            <tr style="font-weight: bold">
-                                                <td colspan="7">Jumlah Bayar</td>
-                                                <td class="text-right">{{ rupiah($data->jmlbayar) }}</td>
-                                            </tr>
-                                            <tr style="font-weight: bold">
-                                                <td colspan="7">Sisa Bayar</td>
-                                                <td class="text-right">
-                                                    @php
-                                                    $sisabayar = $data->total - $data->totalretur - $data->jmlbayar;
-                                                    @endphp
-                                                    {{ rupiah($sisabayar) }}
-                                                </td>
-                                            </tr>
-                                            <tr style="font-weight: bold">
-                                                <td colspan="7">Keterangan</td>
-                                                <td class="text-right">
-                                                    @if ($sisabayar != 0)
-                                                    <span class="badge bg-danger">BELUM LUNAS</span>
-                                                    @else
-                                                    <span class="badge bg-success">LUNAS</span>
-                                                    @endif
-                                                </td>
-                                            </tr>
+                                                    <td>{{ $d->nama_barang }}</td>
+                                                    <td class="text-center">{{ $jmldus }}</td>
+                                                    <td class="text-right">{{ rupiah($d->harga_dus) }}</td>
+                                                    <td class="text-center">{{ $jmlpack }}</td>
+                                                    <td class="text-right">{{ rupiah($d->harga_pack) }}</td>
+                                                    <td class="text-center">{{ $jmlpcs }}</td>
+                                                    <td class="text-right">{{ rupiah($d->harga_pcs) }}</td>
+                                                    <td class="text-right">{{ rupiah($d->subtotal) }}</td>
+                                                </tr>
+                                                @endforeach
+                                                <tr style="font-weight: bold">
+                                                    <td colspan="7">Subtotal</td>
+                                                    <td class="text-right">{{ rupiah($total) }}</td>
+                                                </tr>
+                                                <tr style="font-weight: bold">
+                                                    <td colspan="7">Potongan</td>
+                                                    <td class="text-right">{{ rupiah($data->potongan) }}</td>
+                                                </tr>
+                                                <tr style="font-weight: bold">
+                                                    <td colspan="7">Potongan Istimewa</td>
+                                                    <td class="text-right">{{ rupiah($data->potistimewa) }}</td>
+                                                </tr>
+                                                <tr style="font-weight: bold">
+                                                    <td colspan="7">Penyesuaian</td>
+                                                    <td class="text-right">{{ rupiah($data->penyharga) }}</td>
+                                                </tr>
+                                                <tr style="font-weight: bold">
+                                                    <td colspan="7">Total</td>
+                                                    <td class="text-right">
+                                                        @php
+                                                        $totalnonppn = $data->subtotal - $data->potongan - $data->potistimewa - $data->penyharga;
+                                                        @endphp
+                                                        {{ rupiah($totalnonppn)  }}
+                                                    </td>
+                                                </tr>
+                                                <tr style="font-weight: bold">
+                                                    <td colspan="7">PPN</td>
+                                                    <td class="text-right">
+                                                        {{ rupiah($data->ppn)  }}
+                                                    </td>
+                                                </tr>
+                                                <tr style="font-weight: bold">
+                                                    <td colspan="7">Grand Total</td>
+                                                    <td class="text-right">
+                                                        {{ rupiah($data->total)  }}
+                                                    </td>
+                                                </tr>
+                                                <tr style="font-weight: bold">
+                                                    <td colspan="7">Retur</td>
+                                                    <td class="text-right">{{ rupiah($data->totalretur) }}</td>
+                                                </tr>
+                                                <tr style="font-weight: bold">
+                                                    <td colspan="7">Jumlah Bayar</td>
+                                                    <td class="text-right">{{ rupiah($data->jmlbayar) }}</td>
+                                                </tr>
+                                                <tr style="font-weight: bold">
+                                                    <td colspan="7">Sisa Bayar</td>
+                                                    <td class="text-right">
+                                                        @php
+                                                        $sisabayar = $data->total - $data->totalretur - $data->jmlbayar;
+                                                        @endphp
+                                                        {{ rupiah($sisabayar) }}
+                                                    </td>
+                                                </tr>
+                                                <tr style="font-weight: bold">
+                                                    <td colspan="7">Keterangan</td>
+                                                    <td class="text-right">
+                                                        @if ($sisabayar != 0)
+                                                        <span class="badge bg-danger">BELUM LUNAS</span>
+                                                        @else
+                                                        <span class="badge bg-success">LUNAS</span>
+                                                        @endif
+                                                    </td>
+                                                </tr>
 
-                                        </tbody>
-                                    </table>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                             <ul class="nav nav-tabs" role="tablist">
@@ -370,88 +372,90 @@
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="penjualan" aria-labelledby="penjualan-tab" role="tabpanel">
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Tanggal</th>
-                                                <th>Kode Produk</th>
-                                                <th>Nama Barang</th>
-                                                <th>Jenis Retur</th>
-                                                <th class="text-center">Dus</th>
-                                                <th>Harga/Dus</th>
-                                                <th class="text-center">Pack</th>
-                                                <th>Harga/Pack</th>
-                                                <th class="text-center">Pcs</th>
-                                                <th>Harga/Pcs</th>
-                                                <th>Total</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @php
-                                            $totalpf = 0;
-                                            $totalgb = 0;
-                                            $total = 0;
-                                            @endphp
-                                            @foreach ($retur as $d)
-                                            @php
-                                            $jmldus = floor($d->jumlah / $d->isipcsdus);
-                                            $sisadus = $d->jumlah % $d->isipcsdus;
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Tanggal</th>
+                                                    <th>Kode Produk</th>
+                                                    <th>Nama Barang</th>
+                                                    <th>Jenis Retur</th>
+                                                    <th class="text-center">Dus</th>
+                                                    <th>Harga/Dus</th>
+                                                    <th class="text-center">Pack</th>
+                                                    <th>Harga/Pack</th>
+                                                    <th class="text-center">Pcs</th>
+                                                    <th>Harga/Pcs</th>
+                                                    <th>Total</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @php
+                                                $totalpf = 0;
+                                                $totalgb = 0;
+                                                $total = 0;
+                                                @endphp
+                                                @foreach ($retur as $d)
+                                                @php
+                                                $jmldus = floor($d->jumlah / $d->isipcsdus);
+                                                $sisadus = $d->jumlah % $d->isipcsdus;
 
-                                            if ($d->isipack == 0) {
-                                            $jmlpack = 0;
-                                            $sisapack = $sisadus;
-                                            } else {
+                                                if ($d->isipack == 0) {
+                                                $jmlpack = 0;
+                                                $sisapack = $sisadus;
+                                                } else {
 
-                                            $jmlpack = floor($sisadus / $d->isipcs);
-                                            $sisapack = $sisadus % $d->isipcs;
-                                            }
+                                                $jmlpack = floor($sisadus / $d->isipcs);
+                                                $sisapack = $sisadus % $d->isipcs;
+                                                }
 
-                                            $jmlpcs = $sisapack;
-                                            if($d->jenis_retur=="pf"){
-                                            $totalpf += $d->subtotal;
-                                            }
+                                                $jmlpcs = $sisapack;
+                                                if($d->jenis_retur=="pf"){
+                                                $totalpf += $d->subtotal;
+                                                }
 
-                                            if($d->jenis_retur=="gb"){
-                                            $totalgb += $d->subtotal;
-                                            }
+                                                if($d->jenis_retur=="gb"){
+                                                $totalgb += $d->subtotal;
+                                                }
 
-                                            $total += $d->subtotal;
+                                                $total += $d->subtotal;
 
-                                            @endphp
-                                            <tr>
-                                                <td>{{ date("d-m-y",strtotime($d->tglretur)) }}</td>
-                                                <td>{{ $d->kode_produk }}</td>
-                                                <td>{{ $d->nama_barang }}</td>
-                                                <td class="text-center">
-                                                    @if ($d->jenis_retur=="pf")
-                                                    <span class="badge bg-danger">PF</span>
-                                                    @else
-                                                    <span class="badge bg-success">GB</span>
-                                                    @endif
-                                                </td>
-                                                <td class="text-center">{{ $jmldus }}</td>
-                                                <td class="text-right">{{ rupiah($d->harga_dus) }}</td>
-                                                <td class="text-center">{{ $jmlpack }}</td>
-                                                <td class="text-right">{{ rupiah($d->harga_pack) }}</td>
-                                                <td class="text-center">{{ $jmlpcs }}</td>
-                                                <td class="text-right">{{ rupiah($d->harga_pcs) }}</td>
-                                                <td class="text-right">{{ rupiah($d->subtotal) }}</td>
-                                            </tr>
-                                            @endforeach
-                                            <tr style="font-weight: bold">
-                                                <td colspan="10">Retur Potong Faktur</td>
-                                                <td class="text-right">{{ rupiah($totalpf) }}</td>
-                                            </tr>
-                                            <tr style="font-weight: bold">
-                                                <td colspan="10">Retur Potong Ganti Barang</td>
-                                                <td class="text-right">{{ rupiah($totalgb) }}</td>
-                                            </tr>
-                                            <tr style="font-weight: bold">
-                                                <td colspan="10">Total Retur</td>
-                                                <td class="text-right">{{ rupiah($total-$totalgb) }}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                                @endphp
+                                                <tr>
+                                                    <td>{{ date("d-m-y",strtotime($d->tglretur)) }}</td>
+                                                    <td>{{ $d->kode_produk }}</td>
+                                                    <td>{{ $d->nama_barang }}</td>
+                                                    <td class="text-center">
+                                                        @if ($d->jenis_retur=="pf")
+                                                        <span class="badge bg-danger">PF</span>
+                                                        @else
+                                                        <span class="badge bg-success">GB</span>
+                                                        @endif
+                                                    </td>
+                                                    <td class="text-center">{{ $jmldus }}</td>
+                                                    <td class="text-right">{{ rupiah($d->harga_dus) }}</td>
+                                                    <td class="text-center">{{ $jmlpack }}</td>
+                                                    <td class="text-right">{{ rupiah($d->harga_pack) }}</td>
+                                                    <td class="text-center">{{ $jmlpcs }}</td>
+                                                    <td class="text-right">{{ rupiah($d->harga_pcs) }}</td>
+                                                    <td class="text-right">{{ rupiah($d->subtotal) }}</td>
+                                                </tr>
+                                                @endforeach
+                                                <tr style="font-weight: bold">
+                                                    <td colspan="10">Retur Potong Faktur</td>
+                                                    <td class="text-right">{{ rupiah($totalpf) }}</td>
+                                                </tr>
+                                                <tr style="font-weight: bold">
+                                                    <td colspan="10">Retur Potong Ganti Barang</td>
+                                                    <td class="text-right">{{ rupiah($totalgb) }}</td>
+                                                </tr>
+                                                <tr style="font-weight: bold">
+                                                    <td colspan="10">Total Retur</td>
+                                                    <td class="text-right">{{ rupiah($total-$totalgb) }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                             <ul class="nav nav-tabs" role="tablist">
@@ -464,76 +468,77 @@
                                     @if ($data->status_lunas != 1)
                                     <a href="#" id="inputpembayaran" class="btn btn-primary mb-2" class="href"><i class="feather icon-plus"></i></a>
                                     @endif
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>No. Bukti</th>
+                                                    <th>Tanggal</th>
+                                                    <th>Jenis Bayar</th>
+                                                    <th>Jumlah</th>
+                                                    <th>Keterangan</th>
+                                                    <th>Penagih</th>
+                                                    <th>Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($historibayar as $d)
+                                                <tr>
+                                                    <td>{{ $d->nobukti }}</td>
+                                                    <td>{{ date("d-m-y",strtotime($d->tglbayar)) }}</td>
+                                                    <td>{{ ucwords($d->jenisbayar) }}</td>
+                                                    <td class="text-right">{{ rupiah($d->bayar) }}</td>
+                                                    <td>
+                                                        @if ($d->girotocash==1)
+                                                        <span class="badge bg-success">Penggantian Giro Ke Cash {{ $d->no_giro }}</span>
+                                                        @elseif($d->status_bayar=="voucher")
+                                                        @if ($d->ket_voucher == 1)
+                                                        <span class="badge bg-success">{{ $d->status_bayar }} Penghapusan Piutang</span>
+                                                        @elseif($d->ket_voucher==2)
+                                                        <span class="badge bg-success">{{ $d->status_bayar }} Diskon Program</span>
+                                                        @elseif($d->ket_voucher==3)
+                                                        <span class="badge bg-success">{{ $d->status_bayar }} Penyelesaian Piutang Oleh Salesman</span>
+                                                        @elseif($d->ket_voucher==4)
+                                                        <span class="badge bg-success">{{ $d->status_bayar }} Voucher Pengalihan Piutang Dgng Jd Piutang Kary </span>
+                                                        @elseif($d->ket_voucher==7)
+                                                        <span class="badge bg-success">{{ $d->status_bayar }} Voucher PPN KPBPB </span>
+                                                        @elseif($d->ket_voucher==8)
+                                                        <span class="badge bg-success">{{ $d->status_bayar }} Voucher PPN WAPU </span>
+                                                        @elseif($d->ket_voucher==9)
+                                                        <span class="badge bg-success">{{ $d->status_bayar }} Voucher PPH PASAL 22 </span>
+                                                        @else
+                                                        <span class="badge bg-success">{{ $d->status_bayar }} Lainnya </span>
+                                                        @endif
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if (empty($d->id_karyawan))
+                                                        {{ $data->nama_karyawan }}
+                                                        @else
+                                                        {{ ucwords(strtolower($d->nama_karyawan)) }}
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        @if ($d->jenisbayar=='titipan' || $d->status_bayar =='voucher')
+                                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                                            <a class="ml-1 editbayar" href="#" nobukti="{{ $d->nobukti; }}" kode_cabang="{{ $data->kode_cabang }}" no_fak_penj="{{ $data->no_fak_penj }}" sisabayar="{{ $sisabayar }}"><i class="feather icon-edit success"></i></a>
 
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>No. Bukti</th>
-                                                <th>Tanggal</th>
-                                                <th>Jenis Bayar</th>
-                                                <th>Jumlah</th>
-                                                <th>Keterangan</th>
-                                                <th>Penagih</th>
-                                                <th>Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($historibayar as $d)
-                                            <tr>
-                                                <td>{{ $d->nobukti }}</td>
-                                                <td>{{ date("d-m-y",strtotime($d->tglbayar)) }}</td>
-                                                <td>{{ ucwords($d->jenisbayar) }}</td>
-                                                <td class="text-right">{{ rupiah($d->bayar) }}</td>
-                                                <td>
-                                                    @if ($d->girotocash==1)
-                                                    <span class="badge bg-success">Penggantian Giro Ke Cash {{ $d->no_giro }}</span>
-                                                    @elseif($d->status_bayar=="voucher")
-                                                    @if ($d->ket_voucher == 1)
-                                                    <span class="badge bg-success">{{ $d->status_bayar }} Penghapusan Piutang</span>
-                                                    @elseif($d->ket_voucher==2)
-                                                    <span class="badge bg-success">{{ $d->status_bayar }} Diskon Program</span>
-                                                    @elseif($d->ket_voucher==3)
-                                                    <span class="badge bg-success">{{ $d->status_bayar }} Penyelesaian Piutang Oleh Salesman</span>
-                                                    @elseif($d->ket_voucher==4)
-                                                    <span class="badge bg-success">{{ $d->status_bayar }} Voucher Pengalihan Piutang Dgng Jd Piutang Kary </span>
-                                                    @elseif($d->ket_voucher==7)
-                                                    <span class="badge bg-success">{{ $d->status_bayar }} Voucher PPN KPBPB </span>
-                                                    @elseif($d->ket_voucher==8)
-                                                    <span class="badge bg-success">{{ $d->status_bayar }} Voucher PPN WAPU </span>
-                                                    @elseif($d->ket_voucher==9)
-                                                    <span class="badge bg-success">{{ $d->status_bayar }} Voucher PPH PASAL 22 </span>
-                                                    @else
-                                                    <span class="badge bg-success">{{ $d->status_bayar }} Lainnya </span>
-                                                    @endif
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if (empty($d->id_karyawan))
-                                                    {{ $data->nama_karyawan }}
-                                                    @else
-                                                    {{ ucwords(strtolower($d->nama_karyawan)) }}
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if ($d->jenisbayar=='titipan' || $d->status_bayar =='voucher')
-                                                    <div class="btn-group" role="group" aria-label="Basic example">
-                                                        <a class="ml-1 editbayar" href="#" nobukti="{{ $d->nobukti; }}" kode_cabang="{{ $data->kode_cabang }}" no_fak_penj="{{ $data->no_fak_penj }}" sisabayar="{{ $sisabayar }}"><i class="feather icon-edit success"></i></a>
+                                                            <form method="POST" class="deleteform" action="/pembayaran/{{ Crypt::encrypt($d->nobukti) }}/delete">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <a href=" #" tanggal="{{ $d->tglbayar }}" class="delete-confirm ml-1">
+                                                                    <i class="feather icon-trash danger"></i>
+                                                                </a>
+                                                            </form>
 
-                                                        <form method="POST" class="deleteform" action="/pembayaran/{{ Crypt::encrypt($d->nobukti) }}/delete">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <a href=" #" tanggal="{{ $d->tglbayar }}" class="delete-confirm ml-1">
-                                                                <i class="feather icon-trash danger"></i>
-                                                            </a>
-                                                        </form>
-
-                                                    </div>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                                        </div>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                             <ul class="nav nav-tabs" role="tablist">
@@ -546,67 +551,69 @@
                                     @if ($data->status_lunas != 1 && $data->jenisbayar != "transfer" )
                                     <a href="#" id="inputgiro" class="btn btn-primary mb-2" class="href"><i class="feather icon-plus"></i></a>
                                     @endif
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>No. Giro</th>
-                                                <th>Tanggal</th>
-                                                <th>Bank</th>
-                                                <th>Jumlah</th>
-                                                <th>Jatuh Tempo</th>
-                                                <th>Status</th>
-                                                <th>Ket</th>
-                                                <th>Penagih</th>
-                                                <th>Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($giro as $d)
-                                            <tr>
-                                                <td>{{ $d->no_giro }}</td>
-                                                <td>
-                                                    @if (!empty($d->tgl_giro))
-                                                    {{ date("d-m-Y",strtotime($d->tgl_giro)) }}
-                                                    @endif
-                                                </td>
-                                                <td>{{ $d->namabank }}</td>
-                                                <td class="text-right">{{ rupiah($d->jumlah) }}</td>
-                                                <td>
-                                                    {{ date("d-m-Y",strtotime($d->tglcair)) }}
-                                                </td>
-                                                <td>
-                                                    @if ($d->status==0)
-                                                    <span class="badge bg-warning"> <i class="fa fa-history"></i> Pending </span>
-                                                    @elseif($d->status==1)
-                                                    <span class="badge bg-success"> <i class="fa fa-check"></i> Diterima {{date("d-m-Y",strtotime( $d->tglbayar)) }} </span>
-                                                    @elseif($d->status==2)
-                                                    <span class="badge bg-danger"> <i class="fa fa-close"></i> Ditolak</span>
-                                                    @endif
-                                                </td>
-                                                <td>{{ $d->ket }}</td>
-                                                <td>{{ $d->nama_karyawan }}</td>
-                                                <td>
-                                                    @if ($d->status===0)
-                                                    <div class="btn-group" role="group" aria-label="Basic example">
-                                                        <a class="ml-1 editgiro" href="#" id_giro="{{ $d->id_giro; }}" kode_cabang="{{ $data->kode_cabang }}" sisabayar="{{ $sisabayar }}"><i class="feather icon-edit success"></i></a>
-                                                        {{-- @if (in_array($level,$harga_hapus)) --}}
-                                                        <form method="POST" class="deleteform" action="/pembayaran/{{ Crypt::encrypt($d->id_giro) }}/deletegiro">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <a href=" #" tanggal="{{ $d->tgl_giro }}" class="delete-confirm ml-1">
-                                                                <i class="feather icon-trash danger"></i>
-                                                            </a>
-                                                        </form>
-                                                        {{-- @endif --}}
-                                                    </div>
-                                                    @else
-                                                    <span class="badge bg-success">Keuangan</span>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>No. Giro</th>
+                                                    <th>Tanggal</th>
+                                                    <th>Bank</th>
+                                                    <th>Jumlah</th>
+                                                    <th>Jatuh Tempo</th>
+                                                    <th>Status</th>
+                                                    <th>Ket</th>
+                                                    <th>Penagih</th>
+                                                    <th>Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($giro as $d)
+                                                <tr>
+                                                    <td>{{ $d->no_giro }}</td>
+                                                    <td>
+                                                        @if (!empty($d->tgl_giro))
+                                                        {{ date("d-m-Y",strtotime($d->tgl_giro)) }}
+                                                        @endif
+                                                    </td>
+                                                    <td>{{ $d->namabank }}</td>
+                                                    <td class="text-right">{{ rupiah($d->jumlah) }}</td>
+                                                    <td>
+                                                        {{ date("d-m-Y",strtotime($d->tglcair)) }}
+                                                    </td>
+                                                    <td>
+                                                        @if ($d->status==0)
+                                                        <span class="badge bg-warning"> <i class="fa fa-history"></i> Pending </span>
+                                                        @elseif($d->status==1)
+                                                        <span class="badge bg-success"> <i class="fa fa-check"></i> Diterima {{date("d-m-Y",strtotime( $d->tglbayar)) }} </span>
+                                                        @elseif($d->status==2)
+                                                        <span class="badge bg-danger"> <i class="fa fa-close"></i> Ditolak</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>{{ $d->ket }}</td>
+                                                    <td>{{ $d->nama_karyawan }}</td>
+                                                    <td>
+                                                        @if ($d->status===0)
+                                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                                            <a class="ml-1 editgiro" href="#" id_giro="{{ $d->id_giro; }}" kode_cabang="{{ $data->kode_cabang }}" sisabayar="{{ $sisabayar }}"><i class="feather icon-edit success"></i></a>
+                                                            {{-- @if (in_array($level,$harga_hapus)) --}}
+                                                            <form method="POST" class="deleteform" action="/pembayaran/{{ Crypt::encrypt($d->id_giro) }}/deletegiro">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <a href=" #" tanggal="{{ $d->tgl_giro }}" class="delete-confirm ml-1">
+                                                                    <i class="feather icon-trash danger"></i>
+                                                                </a>
+                                                            </form>
+                                                            {{-- @endif --}}
+                                                        </div>
+                                                        @else
+                                                        <span class="badge bg-success">Keuangan</span>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                             <ul class="nav nav-tabs" role="tablist">
@@ -619,66 +626,68 @@
                                     @if ($data->status_lunas != 1)
                                     <a href="#" id="inputtransfer" class="btn btn-primary mb-2" class="href"><i class="feather icon-plus"></i></a>
                                     @endif
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>Tanggal</th>
-                                                <th>Bank</th>
-                                                <th>Jumlah</th>
-                                                <th>Jatuh Tempo</th>
-                                                <th>Status</th>
-                                                <th>Ket</th>
-                                                <th>Penagih</th>
-                                                <th>Aksi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($transfer as $d)
-                                            <tr>
-                                                <td>
-                                                    @if (!empty($d->tgl_transfer))
-                                                    {{ date("d-m-Y",strtotime($d->tgl_transfer)) }}
-                                                    @endif
-                                                </td>
-                                                <td>{{ $d->namabank }}</td>
-                                                <td class="text-right">{{ rupiah($d->jumlah) }}</td>
-                                                <td>
-                                                    {{ date("d-m-Y",strtotime($d->tglcair)) }}
-                                                </td>
-                                                <td>
-                                                    @if ($d->status==0)
-                                                    <span class="badge bg-warning"> <i class="fa fa-history"></i> Pending </span>
-                                                    @elseif($d->status==1)
-                                                    <span class="badge bg-success"> <i class="fa fa-check"></i> Diterima {{date("d-m-Y",strtotime( $d->tglbayar)) }} </span>
-                                                    @elseif($d->status==2)
-                                                    <span class="badge bg-danger"> <i class="fa fa-close"></i> Ditolak</span>
-                                                    @endif
-                                                </td>
-                                                <td>{{ $d->ket }}</td>
-                                                <td>{{ $d->nama_karyawan }}</td>
-                                                <td>
-                                                    @if ($d->status===0)
-                                                    <div class="btn-group" role="group" aria-label="Basic example">
-                                                        <a class="ml-1 edittransfer" href="#" id_transfer="{{ $d->id_transfer; }}" kode_cabang="{{ $data->kode_cabang }}" sisabayar="{{ $sisabayar}}"><i class="feather icon-edit success"></i></a>
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Tanggal</th>
+                                                    <th>Bank</th>
+                                                    <th>Jumlah</th>
+                                                    <th>Jatuh Tempo</th>
+                                                    <th>Status</th>
+                                                    <th>Ket</th>
+                                                    <th>Penagih</th>
+                                                    <th>Aksi</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($transfer as $d)
+                                                <tr>
+                                                    <td>
+                                                        @if (!empty($d->tgl_transfer))
+                                                        {{ date("d-m-Y",strtotime($d->tgl_transfer)) }}
+                                                        @endif
+                                                    </td>
+                                                    <td>{{ $d->namabank }}</td>
+                                                    <td class="text-right">{{ rupiah($d->jumlah) }}</td>
+                                                    <td>
+                                                        {{ date("d-m-Y",strtotime($d->tglcair)) }}
+                                                    </td>
+                                                    <td>
+                                                        @if ($d->status==0)
+                                                        <span class="badge bg-warning"> <i class="fa fa-history"></i> Pending </span>
+                                                        @elseif($d->status==1)
+                                                        <span class="badge bg-success"> <i class="fa fa-check"></i> Diterima {{date("d-m-Y",strtotime( $d->tglbayar)) }} </span>
+                                                        @elseif($d->status==2)
+                                                        <span class="badge bg-danger"> <i class="fa fa-close"></i> Ditolak</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>{{ $d->ket }}</td>
+                                                    <td>{{ $d->nama_karyawan }}</td>
+                                                    <td>
+                                                        @if ($d->status===0)
+                                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                                            <a class="ml-1 edittransfer" href="#" id_transfer="{{ $d->id_transfer; }}" kode_cabang="{{ $data->kode_cabang }}" sisabayar="{{ $sisabayar}}"><i class="feather icon-edit success"></i></a>
 
-                                                        <form method="POST" class="deleteform" action="/pembayaran/{{ Crypt::encrypt($d->id_transfer) }}/deletetransfer">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <a href=" #" tanggal="{{ $d->tgl_transfer }}" class="delete-confirm ml-1">
-                                                                <i class="feather icon-trash danger"></i>
-                                                            </a>
-                                                        </form>
+                                                            <form method="POST" class="deleteform" action="/pembayaran/{{ Crypt::encrypt($d->id_transfer) }}/deletetransfer">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <a href=" #" tanggal="{{ $d->tgl_transfer }}" class="delete-confirm ml-1">
+                                                                    <i class="feather icon-trash danger"></i>
+                                                                </a>
+                                                            </form>
 
-                                                    </div>
-                                                    @else
-                                                    <span class="badge bg-success">Keuangan</span>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
+                                                        </div>
+                                                        @else
+                                                        <span class="badge bg-success">Keuangan</span>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
 
-                                    </table>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
