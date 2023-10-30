@@ -7952,6 +7952,9 @@ class PenjualanController extends Controller
         );
         $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
         $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        if (!empty($request->id_karyawan)) {
+            $query->where('penjualan.id_karyawan', $id_karyawan);
+        }
         $query->whereBetween('tgltransaksi', [$dari, $sampai]);
         $query->where('jenistransaksi', 'tunai');
         $query->where('jenisbayar', 'transfer');
