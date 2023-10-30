@@ -31,16 +31,16 @@ class LimitkreditController extends Controller
     {
         $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB', 'BTN', 'BKI');
         $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
-        $ega = array('TSM', 'GRT');
+        $oki = array('BDG', 'PWK');
         $pelanggan = $request->nama_pelanggan;
         $query = Limitkredit::query();
         if ($this->cabang != "PCF") {
 
-            // if (Auth::user()->id == 7) {
-            //     $query->whereIn('pelanggan.kode_cabang', $ega);
-            // } else {
-            //     $query->where('pelanggan.kode_cabang', $this->cabang);
-            // }
+            if (Auth::user()->id == 27) {
+                $query->whereIn('pelanggan.kode_cabang', $oki);
+            } else {
+                $query->where('pelanggan.kode_cabang', $this->cabang);
+            }
 
             $query->where('pelanggan.kode_cabang', $this->cabang);
         } else {
