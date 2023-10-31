@@ -472,6 +472,8 @@ class TargetkomisiController extends Controller
         $hariini = date("Y-m-d");
         $tglkomisi = $tahun . "-" . $bulan . "-01";
         $sampai = date('Y-m-t', strtotime($dari));
+
+        dd($sampai);
         if ($hariini < $sampai) {
             $sampai = $hariini;
         } else {
