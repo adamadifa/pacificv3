@@ -50,6 +50,7 @@ class HargaController extends Controller
             }
         }
         $query->where('barang.status_harga', 1);
+        $query->orderBy('nama_barang');
         $harga = $query->paginate(15);
         $harga->appends($request->all());
         $cabang = Cabang::all();
