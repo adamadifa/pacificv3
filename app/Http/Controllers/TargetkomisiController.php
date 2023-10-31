@@ -4480,6 +4480,7 @@ class TargetkomisiController extends Controller
     public function cetakkomisioktober2023($cabang, $bulan, $tahun, $aturankomisi, $dari, $hariini, $sampai)
     {
         //$dari = '2023-06-31';
+        dd($sampai);
         $lastmonth = date('Y-m-d', strtotime(date($dari) . '- 1 month'));
         $enddate = date('Y-m-t', strtotime($dari));
         if (date("d", strtotime($enddate)) == 31) {
