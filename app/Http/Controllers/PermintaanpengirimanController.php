@@ -171,13 +171,16 @@ class PermintaanpengirimanController extends Controller
     public function buatnopermintaan(Request $request)
     {
         $tgl_permintaan_pengiriman = $request->tgl_permintaan_pengiriman;
+        $tgl = explode("-", $tgl_permintaan_pengiriman);
+        $format = $tgl[02] . "." . $tgl[1] . "." . $tgl[0];
+
         $kode_cabang = $request->kode_cabang;
         $kode = strlen($kode_cabang);
         $no_permintaan  = $kode + 4;
         $pp = DB::table('permintaan_pengiriman')
             ->selectRaw('LEFT(no_permintaan_pengiriman,' . $no_permintaan . ') as no_permintaan_pengiriman')
             ->whereRaw('MID(no_permintaan_pengiriman,3,' . $kode . ')="' . $kode_cabang . '"')
-            ->where('tgl_permintaan_pengiriman', $tgl_permintaan_pengiriman)
+            ->whereRaw('RIGHT(no_permintaan_pengiriman,10)="' . $format . '"')
             ->orderByRaw('LEFT(no_permintaan_pengiriman,' . $no_permintaan . ') DESC')
             ->first();
         $tanggal = explode("-", $tgl_permintaan_pengiriman);
