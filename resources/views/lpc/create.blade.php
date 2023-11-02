@@ -63,7 +63,7 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext label="00:00" field="jam_lpc" icon="feather icon-clock" />
+            <x-inputtext label="00:00" field="jam_lpc" required icon="feather icon-clock" />
         </div>
     </div>
     <div class="row">

@@ -26,7 +26,7 @@ class LaporangudangbahanController extends Controller
         $kode_barang = $request->kode_barang;
         $filter = $request->filter;
         $query = Detailpemasukangudangbahan::query();
-        $query->select('detail_pemasukan_gb.*', 'tgl_pemasukan', 'nama_barang');
+        $query->select('detail_pemasukan_gb.*', 'tgl_pemasukan', 'nama_barang', 'satuan');
         $query->join('pemasukan_gb', 'detail_pemasukan_gb.nobukti_pemasukan', '=', 'pemasukan_gb.nobukti_pemasukan');
         $query->join('master_barang_pembelian', 'detail_pemasukan_gb.kode_barang', '=', 'master_barang_pembelian.kode_barang');
         $query->whereBetween('tgl_pemasukan', [$dari, $sampai]);
