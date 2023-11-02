@@ -32,10 +32,10 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-lg-4 col-sm-12">
+                            <div class="col-lg-3 col-sm-12">
                                 <x-inputtext label="Nama Pelanggan" field="nama_pelanggan" icon="feather icon-user" value="{{ Request('nama_pelanggan') }}" />
                             </div>
-                            <div class="col-lg-4 col-sm-12">
+                            <div class="col-lg-3 col-sm-12">
                                 <div class="form-group">
                                     <select name="status" id="status" class="form-control">
                                         <option value="">Status Transfer</option>
@@ -45,7 +45,17 @@
                                     </select>
                                 </div>
                             </div>
-
+                            <div class="col-lg-3 col-sm-12">
+                                <div class="form-group  ">
+                                    <select name="kode_cabang" id="kode_cabang" class="form-control">
+                                        <option value="">Semua Cabang</option>
+                                        @foreach ($cabang as $c)
+                                        <option {{ (Request('kode_cabang')==$c->kode_cabang ? 'selected':'')}} value="{{
+                                        $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-lg-3 col-sm-12">
                                 <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search"></i> Cari Data </button>
                             </div>
@@ -69,7 +79,13 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @php
+                                $grandtotal = 0;
+                                @endphp
                                 @foreach ($transfer as $d)
+                                @php
+                                $grandtotal += $d->jumlah;
+                                @endphp
                                 <tr>
                                     <td>{{ date("d-m-Y",strtotime($d->tgl_transfer)) }}</td>
                                     <td>{{ ucwords(strtolower($d->nama_pelanggan)) }}</td>
@@ -100,10 +116,14 @@
                                     </td>
                                 </tr>
                                 @endforeach
+                                <tr>
+                                    <th colspan="5">TOTAL</th>
+                                    <th style="text-align: right">{{ rupiah($grandtotal) }}</th>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
-                    {{ $transfer->links('vendor.pagination.vuexy') }}
+                    {{-- {{ $transfer->links('vendor.pagination.vuexy') }} --}}
 
                 </div>
             </div>

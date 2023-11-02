@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cabang;
 use App\Models\Transfer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -79,9 +80,16 @@ class TransferController extends Controller
         if (Auth::user()->level == "salesman") {
             $query->where('penjualan.id_karyawan', Auth::user()->id_salesman);
         }
-        $transfer = $query->paginate(15);
-        $transfer->appends($request->all());
-        return view('transfer.index', compact('transfer'));
+
+        if (!empty($request->kode_cabang)) {
+            $query->where('karyawan.kode_cabang', $request->kode_cabang);
+        }
+
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang(Auth::user()->kode_cabang);
+        $transfer = $query->get();
+        //$transfer->appends($request->all());
+        return view('transfer.index', compact('transfer', 'cabang'));
     }
 
     public function detailfaktur(Request $request)
