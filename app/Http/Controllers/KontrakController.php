@@ -432,7 +432,10 @@ class KontrakController extends Controller
         try {
             DB::table('hrd_kontrak')->where('no_kontrak', $no_kontrak)->delete();
             $lastkontrak = DB::table('hrd_kontrak')->where('nik', $nik)->orderBy('dari', 'desc')->first();
-            DB::table('hrd_kontrak')->where('no_kontrak', $lastkontrak->no_kontrak)->update(['status_kontrak' => 1]);
+
+            if ($lastkontrak != null) {
+                DB::table('hrd_kontrak')->where('no_kontrak', $lastkontrak->no_kontrak)->update(['status_kontrak' => 1]);
+            }
             DB::table('hrd_mastergaji')->where('no_kontrak', $no_kontrak)->delete();
             DB::table('master_karyawan')->where('nik', $nik)->update([
                 'id_jabatan' => $old_id_jabatan,
