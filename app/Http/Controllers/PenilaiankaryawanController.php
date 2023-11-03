@@ -583,25 +583,24 @@ class PenilaiankaryawanController extends Controller
         $kode_penilaian = Crypt::decrypt($kode_penilaian);
         $kategori_jabatan = Crypt::decrypt($kategori_jabatan);
         $executor = Auth::user()->kategori_jabatan;
-        if ($executor == 1) {
-            $update = DB::table('hrd_penilaian')->where('kode_penilaian', $kode_penilaian)
-                ->update([
-                    $kategori_jabatan => Auth::user()->id,
-                    'status' => 1
-                ]);
-        } else {
-            $update = DB::table('hrd_penilaian')->where('kode_penilaian', $kode_penilaian)
-                ->update([
-                    $kategori_jabatan => Auth::user()->id,
-                    'status' => NULL
-                ]);
-        }
 
-
-        if ($update) {
+        try {
+            if ($executor == 1) {
+                $update = DB::table('hrd_penilaian')->where('kode_penilaian', $kode_penilaian)
+                    ->update([
+                        $kategori_jabatan => Auth::user()->id,
+                        'status' => 1
+                    ]);
+            } else {
+                $update = DB::table('hrd_penilaian')->where('kode_penilaian', $kode_penilaian)
+                    ->update([
+                        $kategori_jabatan => Auth::user()->id,
+                        'status' => NULL
+                    ]);
+            }
             return Redirect::back()->with(['success' => 'Data Berhasil Diupdate']);
-        } else {
-            return Redirect::back()->with(['warning' => 'Data Gagal Diupdate']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => $e]);
         }
     }
 
