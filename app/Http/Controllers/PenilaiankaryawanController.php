@@ -584,6 +584,7 @@ class PenilaiankaryawanController extends Controller
         $kategori_jabatan = Crypt::decrypt($kategori_jabatan);
         $executor = Auth::user()->kategori_jabatan;
 
+        dd($executor);
         try {
             if ($executor == 1) {
                 $update = DB::table('hrd_penilaian')->where('kode_penilaian', $kode_penilaian)
