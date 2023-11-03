@@ -444,7 +444,7 @@ class KontrakController extends Controller
             return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
         } catch (\Exception $e) {
             DB::rollBack();
-            return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
+            return Redirect::back()->with(['warning' => $e]);
         }
     }
 
