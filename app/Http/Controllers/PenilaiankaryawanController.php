@@ -513,7 +513,7 @@ class PenilaiankaryawanController extends Controller
         } catch (\Exception $e) {
             dd($e);
             DB::rollBack();
-            return redirect('/penilaiankaryawan/' . $id_kategori_jabatan . "/" . $id_perusahaan . "/list")->with(['warning' => 'Data Gagal Diupdate']);
+            return redirect('/penilaiankaryawan/' . $id_kategori_jabatan . "/" . $id_perusahaan . "/list")->with(['warning' => $e]);
         }
     }
 
