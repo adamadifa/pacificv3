@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use PDO;
 
 class PenilaiankaryawanController extends Controller
 {
@@ -581,10 +582,13 @@ class PenilaiankaryawanController extends Controller
     public function approve($kode_penilaian, $kategori_jabatan)
     {
         $kode_penilaian = Crypt::decrypt($kode_penilaian);
+
         $kategori_jabatan = Crypt::decrypt($kategori_jabatan);
         $executor = Auth::user()->kategori_jabatan;
 
-        dd($kategori_jabatan);
+        if (Auth::user()->level == "manager hrd") {
+            $kategori_jabatan = "hrd";
+        }
         try {
             if ($executor == 1) {
                 $update = DB::table('hrd_penilaian')->where('kode_penilaian', $kode_penilaian)
