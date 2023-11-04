@@ -87,7 +87,7 @@ $isipcs_sp500 = $p->isipcsdus;
                 {{-- <th>SPP</th> --}}
                 <th>SC</th>
                 <th>SP8</th>
-                <th>SP8-P</th>
+                <th>BR20</th>
                 <th>SP500</th>
             </tr>
         </thead>
