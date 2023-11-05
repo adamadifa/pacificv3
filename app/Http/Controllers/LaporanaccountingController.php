@@ -72,6 +72,10 @@ class LaporanaccountingController extends Controller
 		mutasi_btn,
         sa_bki,
 		mutasi_bki,
+
+        sa_tgr,
+		mutasi_tgr,
+
 		harga_tsm,
 		harga_bdg,
 		harga_skb,
@@ -86,6 +90,7 @@ class LaporanaccountingController extends Controller
 		harga_pwk,
 		harga_btn,
         harga_bki,
+        harga_tgr,
 		saldoawal_gd,
 		jmlfsthp_gd,
 		jmllainlain_in_gd,
@@ -112,7 +117,8 @@ class LaporanaccountingController extends Controller
 			SUM(IF(sa_bj.kode_cabang ='PST',jumlah,0)) as sa_pst,
 			SUM(IF(sa_bj.kode_cabang ='PWK',jumlah,0)) as sa_pwk,
 			SUM(IF(sa_bj.kode_cabang ='BTN',jumlah,0)) as sa_btn,
-			SUM(IF(sa_bj.kode_cabang ='BKI',jumlah,0)) as sa_bki
+			SUM(IF(sa_bj.kode_cabang ='BKI',jumlah,0)) as sa_bki,
+			SUM(IF(sa_bj.kode_cabang ='TGR',jumlah,0)) as sa_tgr
 			FROM saldoawal_bj_detail sa_bj_detail
 			INNER JOIN saldoawal_bj sa_bj ON sa_bj_detail.kode_saldoawal = sa_bj.kode_saldoawal
 			WHERE bulan = '$bulan' AND tahun='$tahun' AND status='GS'
@@ -134,7 +140,9 @@ class LaporanaccountingController extends Controller
 			(SUM(IF(mgc.kode_cabang='PST' AND inout_good = 'IN',jumlah,0)) - SUM(IF(mgc.kode_cabang='PST' AND inout_good = 'OUT',jumlah,0))) as mutasi_pst,
             (SUM(IF(mgc.kode_cabang='PWK' AND inout_good = 'IN',jumlah,0)) - SUM(IF(mgc.kode_cabang='PWK' AND inout_good = 'OUT',jumlah,0))) as mutasi_pwk,
             (SUM(IF(mgc.kode_cabang='BTN' AND inout_good = 'IN',jumlah,0)) - SUM(IF(mgc.kode_cabang='BTN' AND inout_good = 'OUT',jumlah,0))) as mutasi_btn,
-            (SUM(IF(mgc.kode_cabang='BKI' AND inout_good = 'IN',jumlah,0)) - SUM(IF(mgc.kode_cabang='BKI' AND inout_good = 'OUT',jumlah,0))) as mutasi_bki
+            (SUM(IF(mgc.kode_cabang='BKI' AND inout_good = 'IN',jumlah,0)) - SUM(IF(mgc.kode_cabang='BKI' AND inout_good = 'OUT',jumlah,0))) as mutasi_bki,
+
+            (SUM(IF(mgc.kode_cabang='TGR' AND inout_good = 'IN',jumlah,0)) - SUM(IF(mgc.kode_cabang='TGR' AND inout_good = 'OUT',jumlah,0))) as mutasi_tgr
 			FROM detail_mutasi_gudang_cabang dm
 			INNER JOIN mutasi_gudang_cabang mgc ON dm.no_mutasi_gudang_cabang = mgc.no_mutasi_gudang_cabang
 			WHERE tgl_mutasi_gudang_cabang BETWEEN '$tgl1' AND '$tgl2'
@@ -360,6 +368,21 @@ class LaporanaccountingController extends Controller
 			+ ROUND(IFNULL(repack_bki,0) / IFNULL(isipcsdus,0),2)
 			),9) as harga_bki,
 
+
+            ROUND((((ROUND(IFNULL(sa_tgr,0) / IFNULL(isipcsdus,0),2)) * IFNULL(harga_awal_tgr,0))
+			+ ((ROUND(IFNULL(pusat_tgr,0) / IFNULL(isipcsdus,0),2)) * IFNULL((SELECT harga_kirim_cabang),harga_awal_tgr))
+			+ ((ROUND(IFNULL(transit_in_tgr,0) / IFNULL(isipcsdus,0),2)) * IFNULL((SELECT harga_kirim_cabang),harga_awal_tgr))
+			+ ((ROUND(IFNULL(retur_tgr,0) / IFNULL(isipcsdus,0),2)) * IFNULL((SELECT harga_kirim_cabang),harga_awal_tgr))
+			+ ((ROUND(IFNULL(lainlain_tgr,0) / IFNULL(isipcsdus,0),2)) * IFNULL((SELECT harga_kirim_cabang),harga_awal_tgr))
+			+ ((ROUND(IFNULL(repack_tgr,0) / IFNULL(isipcsdus,0),2)) * IFNULL((SELECT harga_kirim_cabang),harga_awal_tgr))) /
+			(ROUND(IFNULL(sa_tgr,0) / IFNULL(isipcsdus,0),2)
+			+ ROUND(IFNULL(pusat_tgr,0) / IFNULL(isipcsdus,0),2)
+			+ ROUND(IFNULL(transit_in_tgr,0) / IFNULL(isipcsdus,0),2)
+			+ ROUND(IFNULL(retur_tgr,0) / IFNULL(isipcsdus,0),2)
+			+ ROUND(IFNULL(lainlain_tgr,0) / IFNULL(isipcsdus,0),2)
+			+ ROUND(IFNULL(repack_tgr,0) / IFNULL(isipcsdus,0),2)
+			),9) as harga_tgr,
+
 			saldoawal_gd,
 			jmlfsthp_gd,
 			jmllainlain_in_gd,
@@ -418,7 +441,8 @@ class LaporanaccountingController extends Controller
 			SUM(IF(lokasi='GRT',harga_awal,0)) as harga_awal_grt,
 			SUM(IF(lokasi='PWK',harga_awal,0)) as harga_awal_pwk,
 			SUM(IF(lokasi='BTN',harga_awal,0)) as harga_awal_btn,
-			SUM(IF(lokasi='BKI',harga_awal,0)) as harga_awal_bki
+			SUM(IF(lokasi='BKI',harga_awal,0)) as harga_awal_bki,
+			SUM(IF(lokasi='TGR',harga_awal,0)) as harga_awal_tgr
 			FROM harga_awal
 			WHERE bulan='$bulan' AND tahun='$tahun'
 			GROUP BY kode_produk
@@ -469,7 +493,8 @@ class LaporanaccountingController extends Controller
 			SUM(IF(kode_cabang='GRT',jumlah,0)) as sa_grt,
 			SUM(IF(kode_cabang='PWK',jumlah,0)) as sa_pwk,
 			SUM(IF(kode_cabang='BTN',jumlah,0)) as sa_btn,
-			SUM(IF(kode_cabang='BKI',jumlah,0)) as sa_bki
+			SUM(IF(kode_cabang='BKI',jumlah,0)) as sa_bki,
+			SUM(IF(kode_cabang='TGR',jumlah,0)) as sa_tgr
 			FROM saldoawal_bj_detail s_detail
 			INNER JOIN saldoawal_bj s ON s_detail.kode_saldoawal = s.kode_saldoawal
 			WHERE bulan ='$bulan' AND tahun ='$tahun' AND status='GS'
@@ -590,7 +615,16 @@ class LaporanaccountingController extends Controller
 				SUM(IF(jenis_mutasi = 'PENYESUAIAN' AND mc.kode_cabang='BKI' AND inout_good ='IN'
 				OR jenis_mutasi = 'HUTANG KIRIM' AND mc.kode_cabang='BKI' AND inout_good ='IN'
 				OR jenis_mutasi = 'PL TTR' AND mc.kode_cabang='BKI' AND inout_good ='IN',jumlah,0)) as lainlain_bki,
-				SUM(IF(jenis_mutasi = 'REPACK' AND mc.kode_cabang='BKI' ,jumlah,0)) as repack_bki
+				SUM(IF(jenis_mutasi = 'REPACK' AND mc.kode_cabang='BKI' ,jumlah,0)) as repack_bki,
+
+
+                SUM(IF(jenis_mutasi = 'SURAT JALAN' AND mc.kode_cabang='TGR' ,jumlah,0)) as pusat_tgr,
+				SUM(IF(jenis_mutasi = 'TRANSIT IN' AND mc.kode_cabang='TGR' ,jumlah,0)) as transit_in_tgr,
+				SUM(IF(jenis_mutasi = 'RETUR' AND mc.kode_cabang='TGR' ,jumlah,0)) as retur_tgr,
+				SUM(IF(jenis_mutasi = 'PENYESUAIAN' AND mc.kode_cabang='TGR' AND inout_good ='IN'
+				OR jenis_mutasi = 'HUTANG KIRIM' AND mc.kode_cabang='TGR' AND inout_good ='IN'
+				OR jenis_mutasi = 'PL TTR' AND mc.kode_cabang='TGR' AND inout_good ='IN',jumlah,0)) as lainlain_tgr,
+				SUM(IF(jenis_mutasi = 'REPACK' AND mc.kode_cabang='TGR' ,jumlah,0)) as repack_tgr
 
 			FROM detail_mutasi_gudang_cabang dmc
 			INNER JOIN mutasi_gudang_cabang mc ON dmc.no_mutasi_gudang_cabang = mc.no_mutasi_gudang_cabang

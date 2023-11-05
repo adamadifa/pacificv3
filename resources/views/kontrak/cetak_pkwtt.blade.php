@@ -193,6 +193,9 @@
                     Pihak kedua ditempatkan sebagai <b>{{ $kontrak->nama_jabatan }} {{ $kontrak->id_kantor == "PST" ? "KANTOR PUSAT TASIKMALAYA" : "CABANG ".strtoupper($kontrak->nama_cabang) }}</b> dan bersedia ditempatkan diluar departemen tersebut bila Perusahaan memerlukan
                 </li>
                 <li>
+                    @if (in_array($kontrak->id_jabatan,$management))
+                    Pihak kedua setuju menerima upah dengan rincian terlampir:
+                    @else
                     @php
                     $totalgaji = $kontrak->gaji_pokok + $kontrak->t_jabatan + $kontrak->t_masakerja + $kontrak->t_tanggungjawab + $kontrak->t_makan + $kontrak->t_istri + $kontrak->t_skill;
                     @endphp
@@ -231,6 +234,7 @@
                             <td>Rp. {{ rupiah($kontrak->t_skill) }},-</td>
                         </tr>
                     </table>
+                    @endif
                 </li>
             </ol>
         </p>
