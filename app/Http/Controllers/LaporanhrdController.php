@@ -297,7 +297,7 @@ class LaporanhrdController extends Controller
                 '|',IFNULL(izinpulang.direktur,'NA'),
                 '|',IFNULL(pengajuan_izin.direktur,'NA'),
                 '|',IFNULL(pengajuan_izin.keperluan,'NA'),
-1'|',IFNULL(izinterlambat.direktur,'NA')
+                '|',IFNULL(izinterlambat.direktur,'NA')
                 ),NULL)) as hari_1,
 
                 MAX(IF(tgl_presensi = '$rangetanggal[1]',CONCAT(
