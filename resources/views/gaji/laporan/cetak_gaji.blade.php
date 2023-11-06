@@ -1147,7 +1147,7 @@
                 ?>
                 <tr>
                     <td>{{ $loop->iteration }}</td>
-                    <td>{{ $d->nama_jabatan=="SECURITY" ? $d->nik_security : $d->nik }}</td>
+                    <td>'{{ $d->nama_jabatan=="SECURITY" ? $d->nik_security : $d->nik }}</td>
                     <td>{{ $d->nama_karyawan }}</td>
                     <td>{{ $d->no_rekening }}</td>
                     <td align="center">{{ $d->nama_group }}</td>
