@@ -180,7 +180,6 @@ class LaporanhrdController extends Controller
             $sampai = $tahun . "-" . $bulan . "-20";
         }
 
-        //dd($sampai);
         $daribulangaji = $dari;
         $berlakugaji = $sampai;
         //dd($berlakugaji);
@@ -233,7 +232,6 @@ class LaporanhrdController extends Controller
 
         //dd($jmlrange);
 
-        //dd($berlakugaji);
         $query->selectRaw('master_karyawan.*,nama_group,nama_dept,nama_jabatan,nama_cabang,klasifikasi,no_rekening,
                 iu_masakerja,iu_lembur,iu_penempatan,iu_kpi,
                 im_ruanglingkup, im_penempatan,im_kinerja,
