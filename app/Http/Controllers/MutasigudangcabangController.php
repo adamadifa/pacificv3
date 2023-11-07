@@ -1057,6 +1057,7 @@ class MutasigudangcabangController extends Controller
                     $join->on('master_barang.kode_produk', '=', 'dpb.kode_produk');
                 }
             )
+            ->where('master_barang.status', 1)
             ->orderBy('master_barang.nama_barang')
             ->get();
 
@@ -1116,6 +1117,7 @@ class MutasigudangcabangController extends Controller
                     $join->on('master_barang.kode_produk', '=', 'mutasi.kode_produk');
                 }
             )
+            ->where('master_barang.status', 1)
             ->orderBy('master_barang.nama_barang')
             ->get();
 
