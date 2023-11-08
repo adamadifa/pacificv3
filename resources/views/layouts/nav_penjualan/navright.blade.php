@@ -12,7 +12,7 @@
                 </li>
             </a>
             @endif
-            @if (Auth::user()->level != "staff keuangan 2" AND Auth::user()->level != "staff keuangan 3" AND Auth::user()->level != "admin pajak")
+            @if (Auth::user()->level != "staff keuangan 2" AND Auth::user()->level != "staff keuangan 3")
             <a href="/laporankasbesarpenjualan" style="color:#626262">
                 <li class="list-group-item {{ request()->is(['laporankasbesarpenjualan']) ? 'active' : '' }}">
                     <i class="feather icon-file mr-1"></i>Kas Besar
