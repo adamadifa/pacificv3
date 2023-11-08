@@ -342,7 +342,8 @@ class PenjualanController extends Controller
             // $nomor_awal = substr($salesman->no_fak_awal, 4);
             // $jmlchar = strlen($nomor_awal);
             $lastinput = DB::table('penjualan')->where('id_karyawan', $pelanggan->id_sales)->orderBy('tgltransaksi', 'desc')->first();
-            $lasttgl = $lastinput->tgltransaksi;
+            $lasttgl = $lastinput != null ? $lastinput->tgltransaksi : date("Y-m-d");
+
             $tahunini = date('Y');
             $hariini = strtotime(date("Y-m-d"));
             $lastmonth    = date('Y-m-d', strtotime("-2 day", $hariini));
