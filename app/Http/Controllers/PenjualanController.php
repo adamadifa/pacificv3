@@ -358,8 +358,8 @@ class PenjualanController extends Controller
 
 
             $kode_cabang = $salesman->kode_cabang;
-            $kode_faktur = substr($cekpenjualan->no_fak_penj, 3, 1);
-            $nomor_awal = substr($cekpenjualan->no_fak_penj, 4);
+            $kode_faktur = substr($lastnofak, 3, 1);
+            $nomor_awal = substr($lastnofak, 4);
             $jmlchar = strlen($nomor_awal);
             if ($salesman->kategori_salesman != 'TO') {
                 if ($cekpenjualan != null) {
