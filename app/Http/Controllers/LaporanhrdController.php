@@ -37,7 +37,7 @@ class LaporanhrdController extends Controller
         $departemen = DB::table('hrd_departemen')->orderBy('nama_dept')->get();
         $cbg = new Cabang();
         if (Auth::user()->kode_cabang == "PCF" || Auth::user()->kode_cabang == "PST") {
-            if (Auth::user()->level == "manager hrd" || Auth::user()->level == "admin") {
+            if (Auth::user()->level == "manager hrd" || Auth::user()->level == "admin" || Auth::user()->level == "manager accounting") {
                 $cabang = $cbg->getCabang("PST");
             } else {
                 $cabang = DB::table('cabang')->where('kode_cabang', 'PST')->get();
