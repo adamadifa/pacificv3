@@ -9260,21 +9260,27 @@ class PenjualanController extends Controller
     {
         $no_fak_penj = Crypt::decrypt($no_fak_penj);
         $penjualan = DB::table('penjualan')->where('no_fak_penj', $no_fak_penj)->first();
-
+        $tgltransaksi = $penjualan->tgltransaksi;
         $id_karyawan = $penjualan->id_karyawan;
         //$id_karyawan = "SBDG09";
         $salesman = DB::table('karyawan')->where('id_karyawan', $id_karyawan)->first();
-        $lastinput = DB::table('penjualan')->where('id_karyawan', $id_karyawan)
-            ->whereRaw('MID(no_fak_penj,4,2) != "PR"')
+
+
+
+        $cekpenjualantgl = DB::table('penjualan')
+            ->where('id_karyawan', $id_karyawan)
+            ->where('tgltransaksi', $tgltransaksi)
             ->orderBy('tgltransaksi', 'desc')->first();
 
-        $lasttgl = $lastinput->tgltransaksi;
+        $tgltrans = $cekpenjualantgl != null ? $cekpenjualantgl->tgltransaksi : date('Y-m-d', strtotime("-1 day", strtotime($tgltransaksi)));
+
+
         $startdate = date('Y-m-d', strtotime("-1 month", strtotime(date('Y-m-d'))));
         $enddate = date('Y-m-t');
 
         $cekpenjualan = DB::table('penjualan')
             ->where('id_karyawan', $id_karyawan)
-            ->whereBetween('tgltransaksi', [$startdate, $enddate])
+            ->where('tgltransaksi', $tgltrans)
             ->whereRaw('MID(no_fak_penj,4,2) != "PR"')
             ->orderBy('no_fak_penj', 'desc')
             ->first();
