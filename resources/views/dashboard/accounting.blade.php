@@ -69,7 +69,7 @@
                                     <select class="form-control" id="tahunpenjualan">
                                         <?php
                                                 $tahun = date("Y");
-                                                for ($t = 2021; $t <= $tahun; $t++) { ?>
+                                                for ($t = startyear(); $t <= $tahun; $t++) { ?>
                                         <option <?php if (date("Y") == $t) {
                                                               echo "selected";
                                                             } ?> value="<?php echo $t;  ?>"><?php echo $t; ?></option>
