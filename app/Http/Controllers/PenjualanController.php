@@ -9268,23 +9268,23 @@ class PenjualanController extends Controller
             ->whereRaw('MID(no_fak_penj,4,2) != "PR"')
             ->orderBy('tgltransaksi', 'desc')->first();
 
-
         $lasttgl = $lastinput->tgltransaksi;
-        $startdate = date('Y-m-d', strtotime("-2 month", strtotime(date('Y-m-d'))));
+        $startdate = date('Y-m-d', strtotime("-1 month", strtotime(date('Y-m-d'))));
         $enddate = date('Y-m-t');
 
         $cekpenjualan = DB::table('penjualan')
             ->where('id_karyawan', $id_karyawan)
             ->whereBetween('tgltransaksi', [$startdate, $enddate])
             ->whereRaw('MID(no_fak_penj,4,2) != "PR"')
-            ->orderBy('date_created', 'desc')
+            ->orderBy('no_fak_penj', 'desc')
             ->first();
 
 
         $lastnofak = $cekpenjualan != null ? $cekpenjualan->no_fak_penj : '';
 
 
-
+        // echo $lastnofak;
+        // die;
         $kode_cabang = $salesman->kode_cabang;
         $kode_faktur = substr($cekpenjualan->no_fak_penj, 3, 1);
         $nomor_awal = substr($cekpenjualan->no_fak_penj, 4);
