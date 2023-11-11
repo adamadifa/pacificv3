@@ -209,7 +209,7 @@
                                         <a href="/pinjaman/{{ Crypt::encrypt($d->no_pinjaman) }}/cetakformulir" target="_blank" class="ml-1"><i class="feather icon-printer text-primary"></i></a>
 
 
-                                        @if (empty($d->totalpembayaran) && Auth::user()->id == $d->id_user)
+                                        @if ($d->status == NULL && Auth::user()->id == $d->id_user)
                                         <a class="ml-1 edit" no_pinjaman="{{ $d->no_pinjaman }}" href="#"><i class="feather icon-edit success"></i></a>
                                         <form method="POST" class="deleteform" action="/pinjaman/{{Crypt::encrypt($d->no_pinjaman)}}/delete">
                                             @csrf
