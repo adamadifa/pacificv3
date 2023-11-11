@@ -1049,7 +1049,7 @@ class LaporanaccountingController extends Controller
     {
         $bulan = $request->bulan;
         $tahun = $request->tahun;
-        lockreport($tahun);
+        lockyear($tahun);
         $kode_cabang = $request->kode_cabang;
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
         $nama_cabang = $cabang != null ?  $cabang->nama_cabang : '';
