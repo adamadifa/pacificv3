@@ -259,7 +259,7 @@
                 }
                 $totalgmlast = 0;
 
-                $darilast = $thnlast."-".$blnlast."-01";
+                $darilast = $tahunlast."-".$bulanlast."-01";
                 $sampailast = date("Y-m-t",strtotime($darilast));
 
                 $darilast1 = $thnlast1."-".$blnlast1."-01";
