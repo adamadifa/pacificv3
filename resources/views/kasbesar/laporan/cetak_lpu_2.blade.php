@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Laporan Penerimaan Uang (LPU) {{ $cabang->nama_cabang }} {{ date("d-m-y") }}</title>
+    <title>Laporan Penerimaan Uang D (LPU) {{ $cabang->nama_cabang }} {{ date("d-m-y") }}</title>
     <style>
         body {
             font-family: 'Poppins'
@@ -276,7 +276,7 @@
                 ->where('omset_bulan',$bulanskrg)
                 ->where('omset_tahun',$tahunskrg)
 
-                ->orwhereRaw('IFNULL(hb.id_karyawan,giro.id_karyawan)="'.$d->id_karyawan.'"')
+                ->orwhereRaw('IFNULL(hb.id_karyawand,giro.id_karyawan)="'.$d->id_karyawan.'"')
                 ->whereRaw('MONTH(tgl_giro) ='.$blnlast1)
                 ->whereRaw('YEAR(tgl_giro) ='.$thnlast1)
                 ->whereRaw('MONTH(tglbayar) ='.$bulanskrg)

@@ -542,6 +542,7 @@ function startyear()
 
 function lockyear($tahun)
 {
+
     if ($tahun < startyear() && !empty($tahun)) {
         echo "Data Belum Ada / Tidak Ditemukan";
         die;
