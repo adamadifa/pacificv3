@@ -311,6 +311,12 @@
                 $thnlast1 = $tahunskrg;
                 }
                 $totalgmlast = 0;
+
+                $darilast = $tahunlast."-".$bulanlast."-01";
+                $sampailast = date("Y-m-t",strtotime($darilast));
+
+                $darilast1 = $thnlast1."-".$blnlast1."-01";
+                $sampailast1 = date("Y-m-t",strtotime($darilast1));
                 @endphp
 
                 @foreach ($salesman as $d)
@@ -330,8 +336,7 @@
                 ->where('omset_tahun',$tahunskrg)
 
                 ->orwhereRaw('IFNULL(hb.id_karyawan,giro.id_karyawan)="'.$d->id_karyawan.'"')
-                ->whereRaw('MONTH(tgl_giro) ='.$blnlast1)
-                ->whereRaw('YEAR(tgl_giro) ='.$thnlast1)
+                ->whereBetween('tgl_giro',[$darilast1,$sampailast])
                 ->whereRaw('MONTH(tglbayar) ='.$bulanskrg)
                 ->whereRaw('YEAR(tglbayar) ='.$tahunskrg)
                 ->groupByRaw('IFNULL(hb.id_karyawan,giro.id_karyawan)')
