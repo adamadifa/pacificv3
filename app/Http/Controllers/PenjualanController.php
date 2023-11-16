@@ -9270,9 +9270,10 @@ class PenjualanController extends Controller
         $cekpenjualantgl = DB::table('penjualan')
             ->where('id_karyawan', $id_karyawan)
             ->where('tgltransaksi', $tgltransaksi)
+            ->whereRaw('MID(no_fak_penj,4,2) != "PR"')
             ->orderBy('tgltransaksi', 'desc')->first();
 
-        $tgltrans = $cekpenjualantgl != null ? $cekpenjualantgl->tgltransaksi : date('Y-m-d', strtotime("-1 day", strtotime($tgltransaksi)));
+        $tgltrans = $cekpenjualantgl != null ? $tgltransaksi : date('Y-m-d', strtotime("-3 day", strtotime($tgltransaksi)));
 
 
         $startdate = date('Y-m-d', strtotime("-1 month", strtotime(date('Y-m-d'))));
@@ -9280,10 +9281,11 @@ class PenjualanController extends Controller
 
         $cekpenjualan = DB::table('penjualan')
             ->where('id_karyawan', $id_karyawan)
-            ->where('tgltransaksi', $tgltrans)
+            ->where('tgltransaksi', '>=', $tgltrans)
             ->whereRaw('MID(no_fak_penj,4,2) != "PR"')
             ->orderBy('no_fak_penj', 'desc')
             ->first();
+
 
 
         $lastnofak = $cekpenjualan != null ? $cekpenjualan->no_fak_penj : '';
@@ -9297,6 +9299,9 @@ class PenjualanController extends Controller
         $jmlchar = strlen($nomor_awal);
         $no_fak_penj_auto  =  buatkode($lastnofak, $kode_cabang . $kode_faktur, $jmlchar);
 
+
+        // echo $no_fak_penj_auto;
+        // die;
         try {
             DB::table('penjualan')->where('no_fak_penj', $no_fak_penj)
                 ->update([

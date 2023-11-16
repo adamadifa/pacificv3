@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak Laporan Penjualan {{ date("d-m-y") }}</title>
+    <title>Cetak Laporan Presensi {{ date("d-m-y") }}</title>
     <style>
         /* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -86,6 +86,8 @@
         @else
         SEMUA GRUP
         @endif
+        <br>
+        BULAN {{ strtoupper($namabulan[$bulan]) }} {{ $tahun }}
     </b>
     <br>
     <div class="freeze-table">
@@ -141,6 +143,7 @@
                         $totaldenda = 0;
                         $totalpremi = 0;
                         $totaldirumahkan = 0;
+                        $jmldirumahkan =0;
                         $minusdirumahkan = 0;
                         $totaltidakhadir = 0;
                         $totalpulangcepat = 0;
@@ -705,14 +708,18 @@
                         // echo "Jam Terlambat :".$jt."<br>";
                         // echo "___________________________- <br>";
 
-                        if(!empty($cekwfh)){
-                            if($cekmasakerja >= 3){
-                                $totaljamdirumahkan = ROUND(($jamdirumahkan / 2),2) - ($grandtotaljam -  ROUND(($jamdirumahkan / 2),2));
-                            }else{
-                                $totaljamdirumahkan = $jamdirumahkan;
-                            }
-                            $totaldirumahkan += $totaljamdirumahkan;
-                        }
+                        // if(!empty($cekwfh)){
+                        //     if($cekmasakerja >= 3){
+                        //         $totaljamdirumahkan = ROUND(($jamdirumahkan / 2),2) - ($grandtotaljam -  ROUND(($jamdirumahkan / 2),2));
+                        //         $grup_aida = ['AIDA A','AIDA B','AIDA C'];
+                        //         if($bulan == 10 && $tahun == 2023){
+
+                        //         }
+                        //     }else{
+                        //         $totaljamdirumahkan = $jamdirumahkan;
+                        //     }
+                        //     $totaldirumahkan += $totaljamdirumahkan;
+                        // }
 
                         if($status== "a"){
                             if($namahari=="Sabtu"){
@@ -966,12 +973,43 @@
                         }
                     }
 
+                    //Update 15/11/2023
                     if(!empty($cekwfh)){
-                        if($cekmasakerja >= 3){
-                            $totaljamdirumahkan = ROUND(($jamdirumahkan / 2),2);
+
+                        $search_items_next = array(
+                            'nik'=>$d->nik,
+                            'id_kantor' => $d->id_kantor,
+                            'tanggal_libur' => date('Y-m-d', strtotime('+1 day', strtotime($tgl_presensi)))
+                        );
+
+                        $cekliburnext = cektgllibur($datalibur,$search_items_next);
+                        if($namahari == "Jumat" && !empty($cekliburnext)){
+                            $tambahjamdirumahkan =  2;
                         }else{
-                            $totaljamdirumahkan = $jamdirumahkan;
+                            $tambahjamdirumahkan = 0;
                         }
+
+
+                        $jmldirumahkan += 1;
+                        if($cekmasakerja >= 3){
+                            $totaljamdirumahkan = ROUND(((50/100) * $jamdirumahkan),2) + $tambahjamdirumahkan;
+                            if($bulan==10 && $tahun == 2023){
+                                $group_aida = array('AIDA A','AIDA B','AIDA C');
+                                if(in_array($d->nama_group,$group_aida) ){
+                                    if($tgl_presensi >= '2023-10-09'){
+                                        $totaljamdirumahkan = ROUND(((75/100) * $jamdirumahkan),2) + $tambahjamdirumahkan;
+                                    }
+                                }else{
+                                    if($jmldirumahkan >= 12){
+                                        $totaljamdirumahkan = ROUND(((75/100) * $jamdirumahkan),2) + $tambahjamdirumahkan;
+                                    }
+                                }
+                            }
+                        }else{
+                            $totaljamdirumahkan = $jamdirumahkan + $tambahjamdirumahkan;
+                        }
+
+
                         $totaldirumahkan += $totaljamdirumahkan;
                     }
                 ?>
@@ -982,7 +1020,9 @@
                         {{-- {{ $cekmasakerja }} --}}
                         {{-- {{ $tidakhadir }} --}}
                         {{ !empty($ceklibur) ? $ceklibur[0]["keterangan"] : "" }}
-                        {{ !empty($cekwfh) ? "Dirumahkan" : "" }}
+                        @if (!empty($cekwfh))
+                        Dirumahkan {{ $namahari }} {{ $tambahjamdirumahkan }} {{ !empty($cekliburnext) }} {{ $jmldirumahkan }} <br> Total Jam : {{ $totaljamdirumahkan }}
+                        @endif
                         {{ !empty($cekwfhfull) ? "WFH" : "" }}
                         {{ !empty($cekliburpenggantiminggu) ? $cekliburpenggantiminggu[0]["keterangan"] : "" }}
 
