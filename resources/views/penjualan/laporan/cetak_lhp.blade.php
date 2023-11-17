@@ -122,7 +122,7 @@
                         <th>BB</th>
                         <th>DP</th>
                         <th>SC</th>
-                        <th>SP8P</th>
+                        <th>BR20</th>
                         <th>SP8</th>
                         <th>SP</th>
                         <th>SP500</th>
@@ -141,6 +141,7 @@
                 $totalSP8 =0;
                 $totalSP = 0;
                 $totalSP500 = 0;
+                $totalBR20 = 0;
                 $totaltunai = 0;
                 $totalkredit = 0;
                 $totaltagihan1 = 0;
@@ -175,6 +176,7 @@
                 $totalSP8 += $d->SP8;
                 $totalSP += $d->SP;
                 $totalSP500 += $d->SP500;
+                $totalBR20 += $d->BR20;
                 $totaltunai += $d->totaltunai;
                 $totalkredit += $d->totalkredit;
                 $totaltagihan1 += ($d->totalbayar + $d->totalgiro + $d->totaltransfer);
@@ -206,7 +208,7 @@
                         <?php if (!empty($d->SC)) { echo desimal($d->SC);} ?>
                     </td>
                     <td style="text-align:right; font-weight:bold">
-                        <?php if (!empty($d->SP8P)) { echo desimal($d->SP8P);} ?>
+                        <?php if (!empty($d->BR20)) { echo desimal($d->BR20);} ?>
                     </td>
                     <td style="text-align:right; font-weight:bold">
                         <?php if (!empty($d->SP8)) { echo desimal($d->SP8);} ?>
@@ -403,7 +405,7 @@
                     <th>{{ desimal($totalBB) }}</th>
                     <th>{{ desimal($totalDEP) }}</th>
                     <th>{{ desimal($totalSC) }}</th>
-                    <th>{{ desimal($totalSP8P) }}</th>
+                    <th>{{ desimal($totalBR20) }}</th>
                     <th>{{ desimal($totalSP8) }}</th>
                     <th>{{ desimal($totalSP) }}</th>
                     <th>{{ desimal($totalSP500) }}</th>

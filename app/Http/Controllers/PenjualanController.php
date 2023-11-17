@@ -3543,7 +3543,7 @@ class PenjualanController extends Controller
                 penjualan.kode_pelanggan,pelanggan.nama_pelanggan,
                 penjualan.id_karyawan,karyawan.nama_karyawan,
                 pelanggan.pasar,pelanggan.hari,
-                AB,AR,`AS`,BB,CG,CGG,DEP,DK,DS,SP,BBP,SPP,CG5,SC,SP8,SP8P,SP500,
+                AB,AR,`AS`,BB,CG,CGG,DEP,DK,DS,SP,BBP,SPP,CG5,SC,SP8,SP8P,SP500,BR20,
                 penjualan.subtotal as totalbruto,
                 (ifnull( r.totalpf, 0 ) - ifnull( r.totalgb, 0 ) ) AS totalretur,
                 penjualan.penyharga AS penyharga,
@@ -8728,7 +8728,7 @@ class PenjualanController extends Controller
         lockreport($tanggal);
         $query = Penjualan::query();
         $query->selectRaw("penjualan.no_fak_penj,nama_pelanggan,
-        AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500,
+        AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500,BR20,
         SUM(totaltunai) as totaltunai,
         SUM(IF(penjualan.jenistransaksi='kredit',total,0)) as totalkredit,
         totalbayar,totalgiro,totaltransfer,totalvoucher");
@@ -8753,7 +8753,8 @@ class PenjualanController extends Controller
                 SUM( IF ( kode_produk = 'SP8', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SP8,
                 SUM( IF ( kode_produk = 'SP8-P', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SP8P,
                 SUM( IF ( kode_produk = 'SP', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SP,
-                SUM( IF ( kode_produk = 'SP500', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SP500
+                SUM( IF ( kode_produk = 'SP500', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SP500,
+                SUM( IF ( kode_produk = 'BR20', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS BR20
             FROM
                 detailpenjualan
             INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
@@ -8837,7 +8838,7 @@ class PenjualanController extends Controller
         $query->where('karyawan.kode_cabang', $request->kode_cabang);
         $query->where('penjualan.id_karyawan', $request->id_karyawan);
         $query->orderBy('penjualan.no_fak_penj');
-        $query->groupByRaw('penjualan.no_fak_penj,nama_pelanggan,AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500,totalbayar,totalgiro,totaltransfer,totalvoucher');
+        $query->groupByRaw('penjualan.no_fak_penj,nama_pelanggan,AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500,BR20,totalbayar,totalgiro,totaltransfer,totalvoucher');
         $penjualan = $query->get();
 
         $no_fak_penj = [];
