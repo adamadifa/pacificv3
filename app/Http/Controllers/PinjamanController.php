@@ -341,16 +341,20 @@ class PinjamanController extends Controller
 
 
         //dd($data);
+
+
         DB::beginTransaction();
         try {
             DB::table('pinjaman')->insert($data);
+            $tahuncicilan = $tgl_cicilan[0]; //2023
             for ($i = 1; $i <= $angsuran; $i++) {
                 if ($bln > 12) {
                     $blncicilan = $bln - 12;
-                    $tahun = $tgl_cicilan[0] + 1;
+                    $tahuncicilan = $tahuncicilan + 1;
+                    $bln = 1;
                 } else {
                     $blncicilan = $bln;
-                    $tahun = $tgl_cicilan[0];
+                    $tahuncicilan = $tahuncicilan;
                 }
 
                 if ($i == $angsuran) {
@@ -364,7 +368,7 @@ class PinjamanController extends Controller
                         'no_pinjaman' => $no_pinjaman,
                         'cicilan_ke' => $i,
                         'bulan' => $blncicilan,
-                        'tahun' => $tahun,
+                        'tahun' => $tahuncicilan,
                         'jumlah' => $cicilan
                     ]);
 
