@@ -70,7 +70,7 @@
                 <th rowspan="2" style="width: 4%;">Salesman</th>
                 <th rowspan="2" style="width: 3%;">Pasar</th>
                 <th rowspan="2" style="width: 3%;">Hari</th>
-                <th colspan="10" style="background-color: #19c116;">Produk</th>
+                <th colspan="11" style="background-color: #19c116;">Produk</th>
                 <th rowspan="2" style="width: 3%; background-color: #ef6a0b;">Total Bruto</th>
                 <th rowspan="2" style="width: 3%; background-color: #ef6a0b;">Total Retur</th>
                 <th colspan="5" style="background-color: #a71033;">Potongan</th>
@@ -88,6 +88,7 @@
                 <th style="width: 1%;">AR</th>
                 <th style="width: 1%;">AS</th>
                 <th style="width: 1%;">BB</th>
+                <th style="width: 1%;">DEP</th>
 
                 <th style="width: 1%;">SP</th>
 
@@ -376,6 +377,7 @@
                 <td align="center">@php if (!empty($AR)) { echo desimal($AR); } @endphp </td>
                 <td align="center">@php if (!empty($AS)) { echo desimal($AS); } @endphp </td>
                 <td align="center">@php if (!empty($BB)) { echo desimal($BB); } @endphp </td>
+                <td align="center">@php if (!empty($DEP)) { echo desimal($DEP); } @endphp </td>
 
                 <td align="center">@php if (!empty($SP)) { echo desimal($SP); } @endphp </td>
 
@@ -406,6 +408,7 @@
                 <th align="right"><b>{{ desimal($totalAR)}}</b></th>
                 <th align="right"><b>{{ desimal($totalAS)}}</b></th>
                 <th align="right"><b>{{ desimal($totalBB)}}</b></th>
+                <th align="right"><b>{{ desimal($totalDEP)}}</b></th>
 
                 <th align="right"><b>{{ desimal($totalSP)}}</b></th>
 
