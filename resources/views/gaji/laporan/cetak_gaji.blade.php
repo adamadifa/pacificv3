@@ -237,6 +237,7 @@
                     $totaldenda = 0;
                     $totalpremi = 0;
                     $totaldirumahkan = 0;
+                    $jmldirumahkan =0;
                     $totaltidakhadir = 0;
                     $totalpulangcepat = 0;
                     $totalizinabsen = 0;
@@ -880,12 +881,45 @@
 
                         // echo $rangetanggal[$i]."-".$total_jam."+".$jk."+".$grandtotaljam."(".$cek.")----".$menitpc."<br>";
 
+
+                        //Update 20/11/2023
                         if(!empty($cekwfh)){
-                            if($cekmasakerja >= 3){
-                                $totaljamdirumahkan = ROUND(($jamdirumahkan / 2),2) - ($grandtotaljam -  ROUND(($jamdirumahkan / 2),2));
+
+                            $search_items_next = array(
+                                'nik'=>$d->nik,
+                                'id_kantor' => $d->id_kantor,
+                                'tanggal_libur' => date('Y-m-d', strtotime('+1 day', strtotime($tgl_presensi)))
+                            );
+
+                            $cekliburnext = cektgllibur($datalibur,$search_items_next);
+                            if($namahari == "Jumat" && !empty($cekliburnext)){
+                                $jamdirumahkan = 5;
+                                $tambahjamdirumahkan =  2;
                             }else{
-                                $totaljamdirumahkan = $jamdirumahkan;
+                                $tambahjamdirumahkan = 0;
                             }
+
+
+                            $jmldirumahkan += 1;
+                            if($cekmasakerja >= 3){
+                                $totaljamdirumahkan = ($jamdirumahkan + $tambahjamdirumahkan) - (ROUND(((50/100) * $jamdirumahkan),2) + $tambahjamdirumahkan);
+                                if($bulan==10 && $tahun == 2023){
+                                    $group_aida = array('AIDA A','AIDA B','AIDA C');
+                                    if(in_array($d->nama_group,$group_aida) ){
+                                        if($tgl_presensi >= '2023-10-09'){
+                                            $totaljamdirumahkan = ($jamdirumahkan + $tambahjamdirumahkan) -  (ROUND(((75/100) * $jamdirumahkan),2) + $tambahjamdirumahkan);
+                                        }
+                                    }else{
+                                        if($jmldirumahkan >= 12){
+                                            $totaljamdirumahkan = ($jamdirumahkan + $tambahjamdirumahkan) - (ROUND(((75/100) * $jamdirumahkan),2) + $tambahjamdirumahkan);
+                                        }
+                                    }
+                                }
+                            }else{
+                                $totaljamdirumahkan = 0;
+                            }
+
+
                             $totaldirumahkan += $totaljamdirumahkan;
                         }
 
@@ -987,12 +1021,45 @@
                             }
                         }
 
+                        //Update 20/11/2023
+
                         if(!empty($cekwfh)){
-                            if($cekmasakerja >= 3){
-                                $totaljamdirumahkan = ROUND(($jamdirumahkan / 2),2);
+
+                            $search_items_next = array(
+                                'nik'=>$d->nik,
+                                'id_kantor' => $d->id_kantor,
+                                'tanggal_libur' => date('Y-m-d', strtotime('+1 day', strtotime($tgl_presensi)))
+                            );
+
+                            $cekliburnext = cektgllibur($datalibur,$search_items_next);
+                            if($namahari == "Jumat" && !empty($cekliburnext)){
+                                $jamdirumahkan = 5;
+                                $tambahjamdirumahkan =  2;
                             }else{
-                                $totaljamdirumahkan = $jamdirumahkan;
+                                $tambahjamdirumahkan = 0;
                             }
+
+
+                            $jmldirumahkan += 1;
+                            if($cekmasakerja >= 3){
+                                $totaljamdirumahkan = ($jamdirumahkan + $tambahjamdirumahkan) - (ROUND(((50/100) * $jamdirumahkan),2) + $tambahjamdirumahkan);
+                                if($bulan==10 && $tahun == 2023){
+                                    $group_aida = array('AIDA A','AIDA B','AIDA C');
+                                    if(in_array($d->nama_group,$group_aida) ){
+                                        if($tgl_presensi >= '2023-10-09'){
+                                            $totaljamdirumahkan = ($jamdirumahkan + $tambahjamdirumahkan) -  (ROUND(((75/100) * $jamdirumahkan),2) + $tambahjamdirumahkan);
+                                        }
+                                    }else{
+                                        if($jmldirumahkan >= 12){
+                                            $totaljamdirumahkan = ($jamdirumahkan + $tambahjamdirumahkan) - (ROUND(((75/100) * $jamdirumahkan),2) + $tambahjamdirumahkan);
+                                        }
+                                    }
+                                }
+                            }else{
+                                $totaljamdirumahkan = 0;
+                            }
+
+
                             $totaldirumahkan += $totaljamdirumahkan;
                         }
                     }
