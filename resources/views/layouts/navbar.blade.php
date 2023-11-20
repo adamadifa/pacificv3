@@ -1299,7 +1299,7 @@
                             <i class="feather icon-edit"></i>
                             <span class="menu-item" data-i18n="Second Level">Penilaian karyawan</span>
                         </a>
-                        @elseif(Auth::user()->level=="staff keuangan")
+                        @elseif(Auth::user()->level=="staff keuangan" || Auth::user()->level=="spv accounting")
                         <a href="/penilaiankaryawan/8/MP/list">
                             <i class="feather icon-edit"></i>
                             <span class="menu-item" data-i18n="Second Level">Penilaian karyawan</span>

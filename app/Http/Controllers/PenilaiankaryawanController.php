@@ -36,6 +36,14 @@ class PenilaiankaryawanController extends Controller
 
                 if (Auth::user()->level == "manager accounting") {
                     $qkaryawan->whereIn('id_kategori_jabatan', [7, 8]);
+                } else  if (Auth::user()->level == "spv accounting") {
+                    $qkaryawan->whereIn('id_kategori_jabatan', [7, 8]);
+                    $qkaryawan->where('id_kantor', 'PST');
+                    $qkaryawan->where('kode_dept', 'AKT');
+                } else  if (Auth::user()->level == "staff keuangan") {
+                    $qkaryawan->whereIn('id_kategori_jabatan', [7, 8]);
+                    $qkaryawan->where('id_kantor', 'PST');
+                    $qkaryawan->where('kode_dept', 'KEU');
                 } else {
                     $qkaryawan->whereIn('id_kategori_jabatan', [7, 8, 9, 10, 5, 15]);
                     $qkaryawan->where('id_kantor', 'PST');
@@ -259,6 +267,16 @@ class PenilaiankaryawanController extends Controller
 
         if (!empty($request->dari_search) && !empty($request->sampai_search)) {
             $query->whereBetween('tanggal', [$request->dari_search, $request->sampai_search]);
+        }
+
+        if (Auth::user()->level == "spv accounting") {
+            $query->where('master_karyawan.id_kantor', 'PST');
+            $query->where('master_karyawan.kode_dept', 'AKT');
+        }
+
+        if (Auth::user()->level == "staff keuangan") {
+            $query->where('master_karyawan.id_kantor', 'PST');
+            $query->where('master_karyawan.kode_dept', 'KEU');
         }
         $query->orderByRaw('hrd_penilaian.status,tanggal,kode_penilaian');
         $penilaian = $query->paginate(15);
