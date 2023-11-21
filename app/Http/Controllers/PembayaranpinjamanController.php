@@ -277,6 +277,8 @@ class PembayaranpinjamanController extends Controller
         }
 
 
+        //dd($bulanpotongan . "-" . $tahunpotongan);
+
         $cek = DB::table('pinjaman_potongangaji')->count();
         $ceklast = DB::table('pinjaman_potongangaji')->where('bulan', $bulanlast)->where('tahun', $tahunlast)->count();
         if ($cek > 0 && $ceklast == 0) {
