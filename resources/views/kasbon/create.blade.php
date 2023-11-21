@@ -214,14 +214,15 @@
                 } else if (parseInt(tgl) >= 21 && parseInt(bulan) <= 10) {
                     var nextbulan = parseInt(bulan) + 2;
                     var nexttahun = parseInt(tahun);
-                } else if (parseInt(tgl) <= 18 && parseInt(bulan) > 10) {
+                } else if (parseInt(tgl) <= 18 && parseInt(bulan) <= 11) {
                     var nextbulan = parseInt(bulan) + 1;
                     var nexttahun = parseInt(tahun);
+                    alert('test');
+                } else if (parseInt(tgl) >= 21 && parseInt(bulan) == 11) {
+                    var nextbulan = 1;
+                    var nexttahun = parseInt(tahun) + 1;
                 } else if (parseInt(tgl) >= 21 && parseInt(bulan) == 12) {
                     var nextbulan = 2;
-                    var nexttahun = parseInt(tahun) + 1;
-                } else if (parseInt(tgl) >= 21 && parseInt(bulan) < 10) {
-                    var nextbulan = 1;
                     var nexttahun = parseInt(tahun) + 1;
                 }
 
