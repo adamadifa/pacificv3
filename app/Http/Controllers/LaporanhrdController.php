@@ -399,7 +399,7 @@ class LaporanhrdController extends Controller
         $query->where('status_aktif', 1);
         $query->where('tgl_masuk', '<=', $sampai);
         $query->orWhere('status_aktif', 0);
-        $query->where('tgl_nonaktif', '>=', $daribulangaji);
+        $query->where('tgl_off_gaji', '>=', $daribulangaji);
         $query->where('tgl_masuk', '<=', $sampai);
         if (!empty($kode_dept)) {
             $query->where('master_karyawan.kode_dept', $kode_dept);
