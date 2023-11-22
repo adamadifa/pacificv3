@@ -223,6 +223,11 @@
             <x-inputtext label="Tanggal Non Aktif" value="{{ $karyawan->tgl_nonaktif }}" field="tgl_nonaktif" icon="feather icon-calendar" datepicker />
         </div>
     </div>
+    <div class="row" id="tgloffgaji">
+        <div class="col-12">
+            <x-inputtext label="Tanggal Off Gaji" value="{{ $karyawan->tgl_off_gaji }}" field="tgl_off_gaji" icon="feather icon-calendar" datepicker />
+        </div>
+    </div>
     <div class="row">
         <div class="col-12">
             <div class="form-group">
@@ -240,8 +245,10 @@
             var status_aktif = $("#status_aktif").val();
             if (status_aktif == "1") {
                 $("#tglnonaktif").hide();
+                $("#tgloffgaji").hide();
             } else {
                 $("#tglnonaktif").show();
+                $("#tgloffgaji").show();
             }
         }
         $("#status_aktif").change(function(e) {

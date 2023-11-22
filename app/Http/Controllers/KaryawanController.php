@@ -261,6 +261,7 @@ class KaryawanController extends Controller
         $status_aktif = $request->status_aktif;
         $pin = $request->pin;
         $tgl_nonaktif = $request->tgl_nonaktif;
+        $tgl_off_gaji = $request->tgl_off_gaji;
         if (!empty($pin)) {
             $cek = DB::table('master_karyawan')->where('pin', $pin)->where('nik', '!=', $nik)->count();
         } else {
@@ -289,7 +290,8 @@ class KaryawanController extends Controller
             'status_karyawan' => $status_karyawan,
             'status_aktif' => $status_aktif,
             'pin' => $pin,
-            'tgl_nonaktif' => $tgl_nonaktif
+            'tgl_nonaktif' => $tgl_nonaktif,
+            'tgl_off_gaji' => $tgl_off_gaji
         ];
 
         $simpan = DB::table('master_karyawan')->where('nik', $nik)->update($data);
