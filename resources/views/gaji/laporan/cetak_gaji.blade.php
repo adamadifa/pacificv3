@@ -940,7 +940,11 @@
                                     }
                                 }
                             }
-                            $totaldirumahkan += $totaljamdirumahkan;
+                            if($status=="c"){
+                                $totaldirumahkan = 0;
+                            }else{
+                                $totaldirumahkan += $totaljamdirumahkan;
+                            }
                         }
 
                         if($status== "a"){
@@ -1097,7 +1101,11 @@
                             }
 
 
-                            $totaldirumahkan += $totaljamdirumahkan;
+                            if($status=="c"){
+                                $totaldirumahkan = 0;
+                            }else{
+                                $totaldirumahkan += $totaljamdirumahkan;
+                            }
                         }
                     }
                     $totalterlambat += $jt;
