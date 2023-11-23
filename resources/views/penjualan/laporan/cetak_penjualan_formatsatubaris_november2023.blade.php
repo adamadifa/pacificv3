@@ -417,16 +417,9 @@
                 <th align="right"><b>{{ desimal($totalSP8P)}}</b></th>
                 <th align="right"><b>{{ desimal($totalSP500)}}</b></th>
                 <th align="right"><b>{{ desimal($totalBR20)}}</b></th>
-                <th align="right"><b>{{ desimal($totalbruto)}}</b></th>
-                <th align="right"><b>{{ desimal($totalretur)}}</b></th>
-                <th align="right"><b>{{ desimal($totalpotaida)}}</b></th>
-                <th align="right"><b>{{ desimal($totalpotswan)}}</b></th>
-                <th align="right"><b>{{ desimal($totalpotstick)}}</b></th>
-                <th align="right"><b>{{ desimal($totalpotsp)}}</b></th>
-                <th align="right"><b>{{ desimal($totalpotongan)}}</b></th>
-                <th align="right"><b>{{ desimal($totalpotis)}}</b></th>
-                <th align="right"><b>{{ desimal($totalppn)}}</b></th>
-                <th align="right"><b>{{ desimal($totalnetto)}}</b></th>
+
+
+
             </tr>
         </tbody>
     </table>
