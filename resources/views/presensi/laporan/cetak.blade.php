@@ -975,6 +975,7 @@
                         @elseif($status=="c")
                         <span style="color:rgb(154, 56, 4);">CUTI</span><br>
                         <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
+                        {{ $totaldirumahkan }}
                         @php
                         $izinabsen = 0;
                         $izinsakit = 0;
