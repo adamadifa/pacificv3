@@ -33,6 +33,12 @@ class SalesmanController extends Controller
         $query = Salesman::query();
         if ($this->cabang != "PCF") {
             $query->where('karyawan.kode_cabang', $this->cabang);
+        } else {
+            $wilayah = Auth::user()->wilayah;
+            if (!empty($wilayah)) {
+                $wilayah_user = unserialize($wilayah);
+                $query->whereIn('karyawan.kode_cabang', $wilayah_user);
+            }
         }
         if (isset($request->submit)) {
             if ($request->nama != "") {
