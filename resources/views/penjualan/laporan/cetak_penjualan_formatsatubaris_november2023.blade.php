@@ -416,6 +416,7 @@
                 <th align="right"><b>{{ desimal($totalSP8)}}</b></th>
                 <th align="right"><b>{{ desimal($totalSP8P)}}</b></th>
                 <th align="right"><b>{{ desimal($totalSP500)}}</b></th>
+                <th align="right"><b>{{ desimal($totalBR20)}}</b></th>
                 <th align="right"><b>{{ desimal($totalbruto)}}</b></th>
                 <th align="right"><b>{{ desimal($totalretur)}}</b></th>
                 <th align="right"><b>{{ desimal($totalpotaida)}}</b></th>
