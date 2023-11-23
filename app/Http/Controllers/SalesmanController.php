@@ -48,7 +48,9 @@ class SalesmanController extends Controller
         $query->orderBy('id_karyawan', 'asc');
         $salesman = $query->paginate(15);
         $salesman->appends($request->all());
-        $cabang = Cabang::all();
+        $kode_cabang = Auth::user()->kode_cabang;
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($kode_cabang);
         return view('salesman.index', compact('salesman', 'cabang'));
     }
 
