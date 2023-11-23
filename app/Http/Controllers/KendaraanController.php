@@ -33,6 +33,12 @@ class KendaraanController extends Controller
         $query = Kendaraan::query();
         if ($this->cabang != "PCF") {
             $query->where('kode_cabang', $this->cabang);
+        } else {
+            $wilayah = Auth::user()->wilayah;
+            if (!empty($wilayah)) {
+                $wilayah_user = unserialize($wilayah);
+                $query->whereIn('kode_cabang', $wilayah_user);
+            }
         }
         if (isset($request->kode_cabang)) {
             $query->where('kode_cabang', $request->kode_cabang);
@@ -43,7 +49,9 @@ class KendaraanController extends Controller
         $query->select('*');
         $kendaraan = $query->paginate(15);
         $kendaraan->appends($request->all());
-        $cabang = Cabang::all();
+        $kode_cabang = Auth::user()->kode_cabang;
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($kode_cabang);
         return view('kendaraan.index', compact('kendaraan', 'cabang'));
     }
 
