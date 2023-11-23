@@ -401,33 +401,7 @@
             <tr style="background-color: #024a75; color:white">
                 <th colspan="8">TOTAL</th>
                 <th align="right"><b>{{ desimal($totalAB)}}</b></th>
-                <th align="right"><b>{{ desimal($totalAR)}}</b></th>
-                <th align="right"><b>{{ desimal($totalAS)}}</b></th>
-                <th align="right"><b>{{ desimal($totalBB)}}</b></th>
-                {{-- <th align="right"><b>{{ desimal($totalCG)}}</b></th>
-                <th align="right"><b>{{ desimal($totalCGG)}}</b></th> --}}
-                <th align="right"><b>{{ desimal($totalDEP)}}</b></th>
-                {{-- <th align="right"><b>{{ desimal($totalDK)}}</b></th>
-                <th align="right"><b>{{ desimal($totalDS)}}</b></th> --}}
-                <th align="right"><b>{{ desimal($totalSP)}}</b></th>
-                {{-- <th align="right"><b>{{ desimal($totalBBP)}}</b></th>
-                <th align="right"><b>{{ desimal($totalSPP)}}</b></th>
-                <th align="right"><b>{{ desimal($totalCG5)}}</b></th> --}}
-                <th align="right"><b>{{ desimal($totalSC)}}</b></th>
-                <th align="right"><b>{{ desimal($totalSP8)}}</b></th>
-                <th align="right"><b>{{ desimal($totalSP8P)}}</b></th>
-                <th align="right"><b>{{ desimal($totalSP500)}}</b></th>
-                <th align="right"><b>{{ desimal($totalBR20)}}</b></th>
-                <th align="right"><b>{{ desimal($totalbruto)}}</b></th>
-                <th align="right"><b>{{ desimal($totalretur)}}</b></th>
-                <th align="right"><b>{{ desimal($totalpotaida)}}</b></th>
-                <th align="right"><b>{{ desimal($totalpotswan)}}</b></th>
-                <th align="right"><b>{{ desimal($totalpotstick)}}</b></th>
-                <th align="right"><b>{{ desimal($totalpotsp)}}</b></th>
-                <th align="right"><b>{{ desimal($totalpotongan)}}</b></th>
-                <th align="right"><b>{{ desimal($totalpotis)}}</b></th>
-                <th align="right"><b>{{ desimal($totalppn)}}</b></th>
-                <th align="right"><b>{{ desimal($totalnetto)}}</b></th>
+
             </tr>
         </tbody>
     </table>
