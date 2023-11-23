@@ -35,6 +35,12 @@ class HargaController extends Controller
         $query = Harga::query();
         if ($this->cabang != "PCF") {
             $query->where('barang.kode_cabang', $this->cabang);
+        } else {
+            $wilayah = Auth::user()->wilayah;
+            if (!empty($wilayah)) {
+                $wilayah_user = unserialize($wilayah);
+                $query->whereIn('barang.kode_cabang', $wilayah_user);
+            }
         }
         if (isset($request->submit)) {
             if (!empty($request->kode_cabang)) {
@@ -53,7 +59,10 @@ class HargaController extends Controller
         $query->orderBy('nama_barang');
         $harga = $query->paginate(15);
         $harga->appends($request->all());
-        $cabang = Cabang::all();
+
+        $kode_cabang = Auth::user()->kode_cabang;
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($kode_cabang);
         $md = DB::table('barang')
             ->select('barang.kode_pelanggan', 'nama_pelanggan')
             ->join('pelanggan', 'barang.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
