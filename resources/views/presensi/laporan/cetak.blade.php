@@ -740,8 +740,25 @@
 
 
                             $jmldirumahkan += 1;
-                            if($cekmasakerja >= 3){
-                                $totaljamdirumahkan = ($jamdirumahkan + $tambahjamdirumahkan) - (ROUND(((50/100) * $jamdirumahkan),2) + $tambahjamdirumahkan);
+                            // if($cekmasakerja >= 3){
+                            //     $totaljamdirumahkan = ($jamdirumahkan + $tambahjamdirumahkan) - (ROUND(((50/100) * $jamdirumahkan),2) + $tambahjamdirumahkan);
+                            //     if($bulan==10 && $tahun == 2023){
+                            //         $group_aida = array('AIDA A','AIDA B','AIDA C');
+                            //         if(in_array($d->nama_group,$group_aida) ){
+                            //             if($tgl_presensi >= '2023-10-09'){
+                            //                 $totaljamdirumahkan = ($jamdirumahkan + $tambahjamdirumahkan) -  (ROUND(((75/100) * $jamdirumahkan),2) + $tambahjamdirumahkan);
+                            //             }
+                            //         }else{
+                            //             if($jmldirumahkan >= 12){
+                            //                 $totaljamdirumahkan = ($jamdirumahkan + $tambahjamdirumahkan) - (ROUND(((75/100) * $jamdirumahkan),2) + $tambahjamdirumahkan);
+                            //             }
+                            //         }
+                            //     }
+                            // }else{
+                            //     $totaljamdirumahkan = 0;
+                            // }
+
+                            $totaljamdirumahkan = ($jamdirumahkan + $tambahjamdirumahkan) - (ROUND(((50/100) * $jamdirumahkan),2) + $tambahjamdirumahkan);
                                 if($bulan==10 && $tahun == 2023){
                                     $group_aida = array('AIDA A','AIDA B','AIDA C');
                                     if(in_array($d->nama_group,$group_aida) ){
@@ -754,9 +771,6 @@
                                         }
                                     }
                                 }
-                            }else{
-                                $totaljamdirumahkan = 0;
-                            }
 
 
                             $totaldirumahkan += $totaljamdirumahkan;
@@ -1033,24 +1047,37 @@
 
 
                         $jmldirumahkan += 1;
-                        if($cekmasakerja >= 3){
-                            $totaljamdirumahkan = ($jamdirumahkan + $tambahjamdirumahkan) - (ROUND(((50/100) * $jamdirumahkan),2) + $tambahjamdirumahkan);
-                            if($bulan==10 && $tahun == 2023){
-                                $group_aida = array('AIDA A','AIDA B','AIDA C');
-                                if(in_array($d->nama_group,$group_aida) ){
-                                    if($tgl_presensi >= '2023-10-09'){
-                                        $totaljamdirumahkan = ($jamdirumahkan + $tambahjamdirumahkan) -  (ROUND(((75/100) * $jamdirumahkan),2) + $tambahjamdirumahkan);
-                                    }
-                                }else{
-                                    if($jmldirumahkan >= 12){
-                                        $totaljamdirumahkan = ($jamdirumahkan + $tambahjamdirumahkan) - (ROUND(((75/100) * $jamdirumahkan),2) + $tambahjamdirumahkan);
-                                    }
+                        // if($cekmasakerja >= 3){
+                        //     $totaljamdirumahkan = ($jamdirumahkan + $tambahjamdirumahkan) - (ROUND(((50/100) * $jamdirumahkan),2) + $tambahjamdirumahkan);
+                        //     if($bulan==10 && $tahun == 2023){
+                        //         $group_aida = array('AIDA A','AIDA B','AIDA C');
+                        //         if(in_array($d->nama_group,$group_aida) ){
+                        //             if($tgl_presensi >= '2023-10-09'){
+                        //                 $totaljamdirumahkan = ($jamdirumahkan + $tambahjamdirumahkan) -  (ROUND(((75/100) * $jamdirumahkan),2) + $tambahjamdirumahkan);
+                        //             }
+                        //         }else{
+                        //             if($jmldirumahkan >= 12){
+                        //                 $totaljamdirumahkan = ($jamdirumahkan + $tambahjamdirumahkan) - (ROUND(((75/100) * $jamdirumahkan),2) + $tambahjamdirumahkan);
+                        //             }
+                        //         }
+                        //     }
+                        // }else{
+                        //     $totaljamdirumahkan = 0;
+                        // }
+
+                        $totaljamdirumahkan = ($jamdirumahkan + $tambahjamdirumahkan) - (ROUND(((50/100) * $jamdirumahkan),2) + $tambahjamdirumahkan);
+                        if($bulan==10 && $tahun == 2023){
+                            $group_aida = array('AIDA A','AIDA B','AIDA C');
+                            if(in_array($d->nama_group,$group_aida) ){
+                                if($tgl_presensi >= '2023-10-09'){
+                                    $totaljamdirumahkan = ($jamdirumahkan + $tambahjamdirumahkan) -  (ROUND(((75/100) * $jamdirumahkan),2) + $tambahjamdirumahkan);
+                                }
+                            }else{
+                                if($jmldirumahkan >= 12){
+                                    $totaljamdirumahkan = ($jamdirumahkan + $tambahjamdirumahkan) - (ROUND(((75/100) * $jamdirumahkan),2) + $tambahjamdirumahkan);
                                 }
                             }
-                        }else{
-                            $totaljamdirumahkan = 0;
                         }
-
 
                         $totaldirumahkan += $totaljamdirumahkan;
                     }
