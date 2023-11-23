@@ -866,11 +866,15 @@
                                 //Menit Terlambat
                                 $menitpc = floor(($diffpc - ($jampc * (60 * 60)))/60);
 
-                                if($jampc > 5 || $jampc >= 1){
-                                    $totalpc = $total_jam + $jk - $grandtotaljam;
-                                }else{
-                                    $totalpc = 0;
-                                }
+
+                                //Toleransi Pulang Cepat
+                                // if($jampc > 5 || $jampc >= 1){
+                                //     $totalpc = $total_jam + $jk - $grandtotaljam;
+                                // }else{
+                                //     $totalpc = 0;
+                                // }
+
+                                $totalpc = $total_jam + $jk - $grandtotaljam;
                             }
 
                         }else{
