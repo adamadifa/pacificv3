@@ -53,12 +53,10 @@ class PelangganController extends Controller
         if (Auth::user()->level == "salesman") {
             $query->where('pelanggan.id_sales', Auth::user()->id_salesman);
         } else {
-            if (Auth::user()->id == 82) {
-                $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB', 'BTN');
-                $query->whereIn('pelanggan.kode_cabang', $wilayah_barat);
-            } else if (Auth::user()->id == 97) {
-                $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
-                $query->whereIn('pelanggan.kode_cabang', $wilayah_timur);
+
+            if (!empty($wilayah)) {
+                $wilayah_user = unserialize($wilayah);
+                $query->whereIn('pelanggan.kode_cabang', $wilayah_user);
             }
         }
 
