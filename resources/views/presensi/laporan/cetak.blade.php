@@ -801,7 +801,8 @@
                         {{ $jam }} : {{ $menit }} <br> --}}
 
                         {{-- {{ var_dump($ceklibur); }} --}}
-                        {{-- {{ $kode_izin_pulang }} {{ $izinpulangdirut }} --}}
+                        {{ $kode_izin_pulang }} {{ $izinpulangdirut }}
+                        <br>
                         {{-- {{ $totalpc }} --}}
                         {{-- <span>{{ var_dump($ceklibur) }}</span> --}}
                         {{-- <span>{{ $desimalterlambat }}</span> --}}
