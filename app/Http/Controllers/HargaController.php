@@ -622,7 +622,7 @@ class HargaController extends Controller
                     ->where('show', 1)
                     ->where('kode_cabang', $kode_cabang)
                     ->where('kategori_harga', $kategori_salesman)
-                    ->where('status_promo_product', 1)
+                    // ->where('status_promo_product', 1)
                     ->get();
             } else {
                 if ($kategori_salesman == "TOCANVASER") {
