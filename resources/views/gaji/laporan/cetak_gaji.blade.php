@@ -975,12 +975,14 @@
                                         $izinsakit = 0;
                                     }
                                 }else{
-                                    if($jmlsid > 5 && $d->nik == "21.10.460" && $bulan == 9 && $tahun = 2023){
-                                        if($namahari == "Sabtu"){
-                                            $izinsakit = 1.25;
-                                        }else{
-                                            $izinsakit = 1.75;
-                                        }
+                                    if($jmlsid > 5 && $d->nik == "21.10.460" && $bulan == 11 && $tahun = 2023){
+                                        // if($namahari == "Sabtu"){
+                                        //     $izinsakit = 1.25;
+                                        // }else{
+                                        //     $izinsakit = 1.75;
+                                        // }
+
+                                        $izinsakit = 5.25;
                                     }else{
                                         $izinsakit = 0;
                                     }
