@@ -878,9 +878,7 @@
 
                                 $totalpc = $total_jam + $jk - $grandtotaljam;
 
-                                if($totalpc <= 0.02){
-                                    $totalpc = 0;
-                                }
+
                             }
 
                         }else{
