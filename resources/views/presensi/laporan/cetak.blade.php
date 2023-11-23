@@ -774,6 +774,9 @@
 
 
                             $totaldirumahkan += $totaljamdirumahkan;
+                            if($status=="c"){
+                                $totaldirumahkan = 0;
+                            }
                         }
 
                         if($status== "a"){
@@ -1081,7 +1084,7 @@
                         {{-- {{ $tidakhadir }} --}}
                         {{ !empty($ceklibur) ? $ceklibur[0]["keterangan"] : "" }}
                         @if (!empty($cekwfh))
-                        Dirumahkan <br> Potongan Jam : {{ $totaljamdirumahkan }}
+                        Dirumahkan <br>
                         @endif
                         {{ !empty($cekwfhfull) ? "WFH" : "" }}
                         {{ !empty($cekliburpenggantiminggu) ? $cekliburpenggantiminggu[0]["keterangan"] : "" }}
