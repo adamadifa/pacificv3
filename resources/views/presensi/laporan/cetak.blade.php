@@ -911,9 +911,6 @@
                             @php
                             $izinsakit = 0;
                             @endphp
-                            @endif
-
-
                             <span style="color:green">- SID</span><br>
                             <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
                             @else
@@ -1074,6 +1071,9 @@
                         }
 
                         $totaldirumahkan += $totaljamdirumahkan;
+                        if($status=="c"){
+                            $totaldirumahkan = 0;
+                        }
                     }
                 ?>
                     <td style="background-color:{{ $colorcolumn }}; color:white;">
