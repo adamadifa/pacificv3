@@ -53,7 +53,7 @@ class PelangganController extends Controller
         if (Auth::user()->level == "salesman") {
             $query->where('pelanggan.id_sales', Auth::user()->id_salesman);
         } else {
-
+            $wilayah = Auth::user()->wilayah;
             if (!empty($wilayah)) {
                 $wilayah_user = unserialize($wilayah);
                 $query->whereIn('pelanggan.kode_cabang', $wilayah_user);
