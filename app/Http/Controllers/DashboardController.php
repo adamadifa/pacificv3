@@ -896,7 +896,7 @@ class DashboardController extends Controller
                 ->groupByRaw('karyawan.kode_cabang,nama_cabang')
                 ->get();
         } else {
-
+            $wilayah = Auth::user()->wilayah;
             if (!empty($wilayah)) {
                 $wilayah_user = unserialize($wilayah);
                 $penjualancabang = DB::table('penjualan')
@@ -930,11 +930,12 @@ class DashboardController extends Controller
             $query->where('status', 0);
 
 
-            if ($id_user == 82) {
-                $query->whereIn('pelanggan.kode_cabang', $wilayah_barat);
-            } else if ($id_user == 97) {
-                $query->whereIn('pelanggan.kode_cabang', $wilayah_timur);
+            $wilayah = Auth::user()->wilayah;
+            if (!empty($wilayah)) {
+                $wilayah_user = unserialize($wilayah);
+                $query->whereIn('pelanggan.kode_cabang', $wilayah_user);
             }
+
             $jmlpengajuan = $query->count();
             //dd($id_user);
             //dd($jmlpengajuan);
