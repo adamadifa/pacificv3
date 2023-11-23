@@ -1020,7 +1020,7 @@
                         $izinsakit = 0;
                         if(!empty($ceklibur) && $cekmasakerja >= 3 ||
                         !empty($cekliburpenggantiminggu) ||
-                        !empty($cekwfh) && $cekmasakerja >= 3 ||
+                        !empty($cekwfh)  ||
                         !empty($cekwfhfull) && $cekmasakerja >= 3 ){
                         $tidakhadir = 0;
                         }else{
