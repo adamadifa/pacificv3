@@ -243,13 +243,22 @@ class GudangController extends Controller
                 $join->on('cabang.kode_cabang', '=', 'mgudang.kode_cabang');
             }
         );
-        if (Auth::user()->id == 82) {
-            $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB');
-            $query->whereIn('cabang.kode_cabang', $wilayah_barat);
-        } else if (Auth::user()->id == 97) {
-            $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
-            $query->whereIn('cabang.kode_cabang', $wilayah_timur);
+        // if (Auth::user()->id == 82) {
+        //     $wilayah_barat = array('BDG', 'TSM', 'GRT', 'PWK', 'BGR', 'SKB');
+        //     $query->whereIn('cabang.kode_cabang', $wilayah_barat);
+        // } else if (Auth::user()->id == 97) {
+        //     $wilayah_timur = array('TGL', 'PWT', 'SBY', 'KLT', 'SMR');
+        //     $query->whereIn('cabang.kode_cabang', $wilayah_timur);
+        // }
+
+
+        $wilayah = Auth::user()->wilayah;
+        if (Auth::user()->level == "rsm") {
+            $wilayah_rsm = unserialize($wilayah);
+            $query->whereIn('cabang.kode_cabang', $wilayah_rsm);
         }
+
+
         $query->orderBy('cabang.urutan');
         $rekapdpb = $query->get();
         $barang = Barang::all();
