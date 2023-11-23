@@ -905,18 +905,6 @@
                         <span style="color:rgb(195, 63, 27)">SAKIT
                             {{-- {{ $jmlsid }} {{ $ceksid }} --}}
                             @if (!empty($sid))
-                            @if ( $d->nik == "21.10.460" )
-                            {{-- @php
-                            if($namahari=="Sabtu"){
-                            $izinsakit = 1.25;
-                            }else{
-                            $izinsakit = 1.75;
-                            }
-                            @endphp --}}
-                            @php
-                            $izinsakit = 5.25;
-                            @endphp
-                            @else
                             @php
                             $izinsakit = 0;
                             @endphp

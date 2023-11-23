@@ -975,17 +975,18 @@
                                         $izinsakit = 0;
                                     }
                                 }else{
-                                    if($d->nik == "21.10.460"){
-                                        // if($namahari == "Sabtu"){
-                                        //     $izinsakit = 1.25;
-                                        // }else{
-                                        //     $izinsakit = 1.75;
-                                        // }
+                                    // if($d->nik == "21.10.460"){
+                                    //     // if($namahari == "Sabtu"){
+                                    //     //     $izinsakit = 1.25;
+                                    //     // }else{
+                                    //     //     $izinsakit = 1.75;
+                                    //     // }
 
-                                        $izinsakit = 5.25;
-                                    }else{
-                                        $izinsakit = 0;
-                                    }
+                                    //     $izinsakit = 5.25;
+                                    // }else{
+                                    //     $izinsakit = 0;
+                                    // }
+                                    $izinsakit = 0;
                                 }
                             }else{
                                 $izinsakit = 0;
