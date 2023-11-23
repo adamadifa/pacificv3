@@ -685,9 +685,9 @@
                                 $totalpc = 0;
                             }else{
                                 $totalpc = $total_jam + $jk - $grandtotaljam;
-                                if($totalpc <= 0.02){
-                                    $totalpc = 0;
-                                }
+                                // if($totalpc <= 0.02){
+                                //     $totalpc = 0;
+                                // }
                             }
                         }else{
                             $pc = "";
@@ -801,8 +801,7 @@
                         {{ $jam }} : {{ $menit }} <br> --}}
 
                         {{-- {{ var_dump($ceklibur); }} --}}
-                        {{ $kode_izin_pulang }} {{ $izinpulangdirut }}
-                        <br>
+                        {{-- {{ $kode_izin_pulang }} {{ $izinpulangdirut }} --}}
                         {{-- {{ $totalpc }} --}}
                         {{-- <span>{{ var_dump($ceklibur) }}</span> --}}
                         {{-- <span>{{ $desimalterlambat }}</span> --}}
