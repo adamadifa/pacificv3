@@ -1053,7 +1053,7 @@ class GlobalProvider extends ServiceProvider
             ];
             $laporan_gudang_jadi = [
                 'admin', 'kepala gudang', 'admin gudang pusat', 'spv gudang pusat', 'direktur',
-                'manager accounting', 'spv accounting', 'manager marketing', 'rsm',
+                'manager accounting', 'spv accounting', 'manager marketing',
                 'general manager', 'audit', 'manager audit', 'emf', 'admin pembelian', 'manager pembelian', 'admin pdqc'
             ];
             $laporan_gudang_cabang = [
