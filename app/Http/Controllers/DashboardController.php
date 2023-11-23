@@ -897,35 +897,15 @@ class DashboardController extends Controller
                 ->get();
         } else {
 
-            if ($id_user == 82) {
+            if (!empty($wilayah)) {
+                $wilayah_user = unserialize($wilayah);
                 $penjualancabang = DB::table('penjualan')
                     ->selectRaw('nama_cabang,SUM(total) as totalpenjualan,COUNT(no_fak_penj) as jmlorder')
                     ->whereRaw('MONTH(tgltransaksi)="' . $bulanini . '"')
                     ->whereRaw('YEAR(tgltransaksi)="' . $tahunini . '"')
                     ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
                     ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
-                    ->whereIn('karyawan.kode_cabang', $wilayah_barat)
-                    ->orderBy('nama_cabang')
-                    ->groupByRaw('karyawan.kode_cabang,nama_cabang')
-                    ->get();
-            } else if ($id_user == 97) {
-                $penjualancabang = DB::table('penjualan')
-                    ->selectRaw('nama_cabang,SUM(total) as totalpenjualan,COUNT(no_fak_penj) as jmlorder')
-                    ->whereRaw('MONTH(tgltransaksi)="' . $bulanini . '"')
-                    ->whereRaw('YEAR(tgltransaksi)="' . $tahunini . '"')
-                    ->whereIn('karyawan.kode_cabang', $wilayah_timur)
-                    ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
-                    ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
-                    ->orderBy('nama_cabang')
-                    ->groupByRaw('karyawan.kode_cabang,nama_cabang')
-                    ->get();
-            } else {
-                $penjualancabang = DB::table('penjualan')
-                    ->selectRaw('nama_cabang,SUM(total) as totalpenjualan,COUNT(no_fak_penj) as jmlorder')
-                    ->whereRaw('MONTH(tgltransaksi)="' . $bulanini . '"')
-                    ->whereRaw('YEAR(tgltransaksi)="' . $tahunini . '"')
-                    ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
-                    ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
+                    ->whereIn('karyawan.kode_cabang', $wilayah_user)
                     ->orderBy('nama_cabang')
                     ->groupByRaw('karyawan.kode_cabang,nama_cabang')
                     ->get();
@@ -948,6 +928,8 @@ class DashboardController extends Controller
             $query->whereNotNull('kacab');
             $query->whereNull('rsm');
             $query->where('status', 0);
+
+
             if ($id_user == 82) {
                 $query->whereIn('pelanggan.kode_cabang', $wilayah_barat);
             } else if ($id_user == 97) {
