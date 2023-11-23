@@ -870,27 +870,16 @@ class DashboardController extends Controller
                 ->where('karyawan.kode_cabang', $kode_cabang)
                 ->first();
         } else {
-            if ($id_user == 82) {
+
+            $wilayah = Auth::user()->wilayah;
+            if (!empty($wilayah)) {
+                $wilayah_user = unserialize($wilayah);
                 $penjualan = DB::table('penjualan')
                     ->selectRaw('SUM(total) as totalpenjualan')
                     ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
                     ->whereRaw('MONTH(tgltransaksi)="' . $bulanini . '"')
                     ->whereRaw('YEAR(tgltransaksi)="' . $tahunini . '"')
-                    ->whereIn('karyawan.kode_cabang', $wilayah_barat)
-                    ->first();
-            } else if ($id_user == 97) {
-                $penjualan = DB::table('penjualan')
-                    ->selectRaw('SUM(total) as totalpenjualan')
-                    ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
-                    ->whereRaw('MONTH(tgltransaksi)="' . $bulanini . '"')
-                    ->whereRaw('YEAR(tgltransaksi)="' . $tahunini . '"')
-                    ->whereIn('karyawan.kode_cabang', $wilayah_timur)
-                    ->first();
-            } else {
-                $penjualan = DB::table('penjualan')
-                    ->selectRaw('SUM(total) as totalpenjualan')
-                    ->whereRaw('MONTH(tgltransaksi)="' . $bulanini . '"')
-                    ->whereRaw('YEAR(tgltransaksi)="' . $tahunini . '"')
+                    ->whereIn('karyawan.kode_cabang', $wilayah_user)
                     ->first();
             }
         }
