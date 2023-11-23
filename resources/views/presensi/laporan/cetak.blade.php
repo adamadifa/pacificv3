@@ -905,13 +905,16 @@
                         <span style="color:rgb(195, 63, 27)">SAKIT
                             {{-- {{ $jmlsid }} {{ $ceksid }} --}}
                             @if (!empty($sid))
-                            @if ($jmlsid > 5 && $d->nik == "21.10.460" && $bulan == 9 && $tahun = 2023)
-                            @php
+                            @if ( $d->nik == "21.10.460" )
+                            {{-- @php
                             if($namahari=="Sabtu"){
                             $izinsakit = 1.25;
                             }else{
                             $izinsakit = 1.75;
                             }
+                            @endphp --}}
+                            @php
+                            $izinsakit = 5.25;
                             @endphp
                             @else
                             @php
