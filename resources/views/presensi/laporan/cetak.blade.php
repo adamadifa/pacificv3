@@ -654,9 +654,9 @@
                                 }
                             }else if($status == "c"){
                                 $grandtotaljam = $jamdirumahkan;
-                                if(!empty($cekwfh)){
-                                    $grandtotaljam = $grandtotaljam / 2 ;
-                                }
+                                // if(!empty($cekwfh)){
+                                //     $grandtotaljam = $grandtotaljam / 2 ;
+                                // }
                             }else{
                                 $grandtotaljam = 0;
                             }
