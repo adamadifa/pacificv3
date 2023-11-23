@@ -173,10 +173,10 @@
                             // $end_kerja = date_create($tgl_presensi);
                             // $cekmasakerja =  diffInMonths($start_kerja, $end_kerja);
 
-                            $start_kerja = date_create($d->tgl_masuk);
-                            $end_kerja = date_create($tgl_presensi); // waktu sekarang
+                            $start_kerja = date_create($d->tgl_masuk); //Tanggal Masuk Kerja
+                            $end_kerja = date_create($tgl_presensi); // Tanggal Presensi
                             $diff = date_diff( $start_kerja, $end_kerja );
-                            $cekmasakerja = ($diff->y * 12 ) + $diff->m;
+                            $cekmasakerja = ($diff->y * 12 ) + $diff->m; // Hitung Masa Kerja
 
 
                             $tgllibur = "'".$tgl_presensi."'";
@@ -203,22 +203,21 @@
                             );
 
 
-                            $ceklibur = cektgllibur($datalibur, $search_items);
-                            $cekliburpenggantiminggu = cektgllibur($dataliburpenggantiminggu,$search_items);
-                            $cekminggumasuk = cektgllibur($dataminggumasuk,$search_items_minggumasuk);
-                            $cekwfh = cektgllibur($datawfh,$search_items);
-                            $cekwfhfull = cektgllibur($datawfhfull,$search_items);
-                            $ceklembur = cektgllibur($datalembur,$search_items_lembur);
+                            $ceklibur = cektgllibur($datalibur, $search_items); // Cek Libur Nasional
+                            $cekliburpenggantiminggu = cektgllibur($dataliburpenggantiminggu,$search_items); // Cek Libur Pengganti Minggu
+                            $cekminggumasuk = cektgllibur($dataminggumasuk,$search_items_minggumasuk); // Cek Minggu Masuk
+                            $cekwfh = cektgllibur($datawfh,$search_items); // Cek Dirumahkan
+                            $cekwfhfull = cektgllibur($datawfhfull,$search_items); // Cek WFH
+                            $ceklembur = cektgllibur($datalembur,$search_items_lembur); // Cek Lembur
 
                             //Menghitung Jumlah Jam Dirumahkan
-                            $namahari = hari($tgl_presensi);
+                            $namahari = hari($tgl_presensi); // Cek Nama Hari
+
                             if($namahari == "Sabtu"){
                                 $jamdirumahkan = 5;
                             }else{
                                 $jamdirumahkan = 7;
                             }
-
-
 
 
                             //Pewarnaan Kolom
@@ -340,6 +339,7 @@
 
                         $nama_jadwal = $datapresensi[2];
 
+                        // Cek Jika Absen Di Hari Minggu
                         if($namahari== "Minggu"){
                             if(!empty($cekminggumasuk)){
                                 if($d->nama_jabatan=="SPG" || $d->nama_jabatan=="SPB"){
@@ -773,9 +773,12 @@
                                 }
 
 
-                            $totaldirumahkan += $totaljamdirumahkan;
+
+
                             if($status=="c"){
                                 $totaldirumahkan = 0;
+                            }else{
+                                $totaldirumahkan += $totaljamdirumahkan;
                             }
                         }
 
@@ -1070,10 +1073,12 @@
                             }
                         }
 
-                        $totaldirumahkan += $totaljamdirumahkan;
                         if($status=="c"){
                             $totaldirumahkan = 0;
+                        }else{
+                            $totaldirumahkan += $totaljamdirumahkan;
                         }
+
                     }
                 ?>
                     <td style="background-color:{{ $colorcolumn }}; color:white;">
