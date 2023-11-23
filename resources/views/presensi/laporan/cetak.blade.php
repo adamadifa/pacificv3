@@ -1087,7 +1087,7 @@
                         {{-- {{ $cekmasakerja }} --}}
                         {{-- {{ var_dump($ceklembur); }} --}}
                         {{-- {{ $cekmasakerja }} --}}
-                        {{-- {{ $tidakhadir }} --}}
+                        {{ $tidakhadir }}
                         {{ !empty($ceklibur) ? $ceklibur[0]["keterangan"] : "" }}
                         @if (!empty($cekwfh))
                         Dirumahkan <br> Potongan Jam : {{ $totaljamdirumahkan }}
