@@ -252,12 +252,13 @@ class GudangController extends Controller
         // }
 
 
-        $wilayah = Auth::user()->wilayah;
-        if (Auth::user()->level == "rsm") {
-            $wilayah_rsm = unserialize($wilayah);
-            $query->whereIn('cabang.kode_cabang', $wilayah_rsm);
-        }
 
+
+        $wilayah = Auth::user()->wilayah;
+        if (!empty($wilayah)) {
+            $wilayah_user = unserialize($wilayah);
+            $query->whereIn('cabang.kode_cabang', $wilayah_user);
+        }
 
         $query->orderBy('cabang.urutan');
         $rekapdpb = $query->get();
