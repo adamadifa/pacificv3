@@ -61,7 +61,7 @@
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
                 <td rowspan="2" class="fixed-side" scope="col" style=" background-color:#024a75;color:white;">No</td>
                 <td rowspan="2" class="fixed-side" scope="col" style=" background-color:#024a75;color:white;">Nama Sales</td>
-                <td colspan="17" align="center">PRODUK</td>
+                <td colspan="18" align="center">PRODUK</td>
                 <td rowspan="2" bgcolor="#f5ae15">Penjualan Bruto</td>
 
                 <td rowspan="2" bgcolor="#f5ae15">Potongan</td>
@@ -94,6 +94,7 @@
                 <td>SAUS STICK PREMIUM</td>
                 <td>SAUS PREMIUM 8 PCS</td>
                 <td>SAUS PREMIUM 500</td>
+                <td>BUMBU TABUR</td>
                 <td style="background-color:#cc2727">PP</td>
                 <td style="background-color:#cc2727">DP</td>
                 <td style="background-color:#cc2727">PPS</td>
@@ -108,153 +109,158 @@
         <tbody>
             <?php
             $no = 1;
-            $totalAB 					= 0;
-            $totalAR 					= 0;
-            $totalASE 				= 0;
-            $totalBB 					= 0;
-            $totalBBP 					= 0;
-            $totalCG 					= 0;
-            $totalCGG 				= 0;
-            $totalCG5 				= 0;
-            $totalDB 					= 0;
-            $totalDEP 				= 0;
-            $totalDK 					= 0;
-            $totalDS 					= 0;
-            $totalSP 					= 0;
-            $totalSP8 					= 0;
-            $totalSP8P 					= 0;
-            $totalSC 					= 0;
-            $totalSP500					= 0;
+            $totalAB    = 0;
+            $totalAR    = 0;
+            $totalASE   = 0;
+            $totalBB    = 0;
+            $totalBBP   = 0;
+            $totalCG 	= 0;
+            $totalCGG   = 0;
+            $totalCG5 	= 0;
+            $totalDB 	= 0;
+            $totalDEP 	= 0;
+            $totalDK 	= 0;
+            $totalDS 	= 0;
+            $totalSP 	= 0;
+            $totalSP8 	= 0;
+            $totalSP8P 	= 0;
+            $totalSC 	= 0;
+            $totalSP500	= 0;
+            $totalBR20  = 0;
             $subtotalbruto 		= 0;
             $totalpotongan 		= 0;
             $totalpotistimewa	= 0;
             $totalpenyharga 	= 0;
-            $totalppn 	= 0;
-            $totaldpp 	= 0;
-            $totalnetto 			= 0;
-            $totalbayar				= 0;
+            $totalppn 	        = 0;
+            $totaldpp 	        = 0;
+            $totalnetto 		= 0;
+            $totalbayar			= 0;
             $totalpenghapusanpiutang = 0;
             $totaldiskonprogram = 0;
-            $totalpps = 0;
-            $totalpphk = 0;
-            $totalvsp = 0;
-            $totalkpbpb = 0;
-            $totalwapu= 0;
-            $totalpph22 = 0;
-            $totallainnya = 0;
+            $totalpps           = 0;
+            $totalpphk          = 0;
+            $totalvsp           = 0;
+            $totalkpbpb         = 0;
+            $totalwapu          = 0;
+            $totalpph22         = 0;
+            $totallainnya       = 0;
             $totalsapiutang 	= 0;
             $totalslpiutang 	= 0;
-            $totalretur = 0;
-            $grandtotalAB 					= 0;
-            $grandtotalAR 					= 0;
-            $grandtotalASE 					= 0;
-            $grandtotalBB 					= 0;
-            $grandtotalBBP 					= 0;
-            $grandtotalCG 					= 0;
-            $grandtotalCGG 					= 0;
-            $grandtotalCG5 					= 0;
-            $grandtotalDB 					= 0;
-            $grandtotalDEP 					= 0;
-            $grandtotalDK 					= 0;
-            $grandtotalDS 					= 0;
-            $grandtotalSP 					= 0;
-            $grandtotalSP8 					= 0;
-            $grandtotalSP8P 					= 0;
-            $grandtotalSC 					= 0;
-            $grandtotalSP500 					= 0;
-            $grandsubtotalbruto 		= 0;
-            $grandtotalpotongan 		= 0;
+            $totalretur         = 0;
+            $grandtotalAB 	    = 0;
+            $grandtotalAR 		= 0;
+            $grandtotalASE 	    = 0;
+            $grandtotalBB 		= 0;
+            $grandtotalBBP 		= 0;
+            $grandtotalCG 		= 0;
+            $grandtotalCGG 		= 0;
+            $grandtotalCG5 		= 0;
+            $grandtotalDB 		= 0;
+            $grandtotalDEP 		= 0;
+            $grandtotalDK 		= 0;
+            $grandtotalDS 		= 0;
+            $grandtotalSP 		= 0;
+            $grandtotalSP8 	    = 0;
+            $grandtotalSP8P 	= 0;
+            $grandtotalSC 		= 0;
+            $grandtotalSP500 	= 0;
+            $grandtotalBR20 	= 0;
+
+            $grandsubtotalbruto = 0;
+            $grandtotalpotongan = 0;
             $grandtotalpotistimewa	= 0;
-            $grandtotalpenyharga 		= 0;
-            $grandtotalppn 		= 0;
-            $grandtotalnetto 				= 0;
-            $grndtotalsapiutang 		= 0;
-            $grandtotalslpiutang 		= 0;
+            $grandtotalpenyharga 	= 0;
+            $grandtotalppn 		    = 0;
+            $grandtotalnetto 		= 0;
+            $grndtotalsapiutang 	= 0;
+            $grandtotalslpiutang 	= 0;
             $grandtotalretur 		= 0;
-            $grandtotalsapiutang  =0;
-            $grandtotalbayar = 0;
-            $grandtotalpenghapusanpiutang  = 0;
-            $grandtotaldiskonprogram  = 0;
-            $grandtotalpps  = 0;
-            $grandtotalpphk  = 0;
-            $grandtotalvsp = 0;
-            $grandtotalkpbpb = 0;
-            $grandtotalwapu = 0;
-            $grandtotalpph22 = 0;
-            $grandtotallainnya  = 0;
-            $grandtotaldpp = 0;
+            $grandtotalsapiutang    =0;
+            $grandtotalbayar        = 0;
+            $grandtotalpenghapusanpiutang   = 0;
+            $grandtotaldiskonprogram        = 0;
+            $grandtotalpps                  = 0;
+            $grandtotalpphk                 = 0;
+            $grandtotalvsp                  = 0;
+            $grandtotalkpbpb                = 0;
+            $grandtotalwapu                 = 0;
+            $grandtotalpph22                = 0;
+            $grandtotallainnya              = 0;
+            $grandtotaldpp                  = 0;
             foreach ($rekap as $key => $p) {
 
                 $rek  = @$rekap[$key + 1]->kode_cabang;
 
-                $totalAB = $totalAB + $p->AB;
-                $totalAR = $totalAR + $p->AR;
-                $totalASE = $totalASE + $p->ASE;
-                $totalBB = $totalBB + $p->BB;
-                $totalBBP = $totalBBP + $p->BBP;
-                $totalCG = $totalCG + $p->CG;
-                $totalCGG = $totalCGG + $p->CGG;
-                $totalCG5 = $totalCG5 + $p->CG5;
-                $totalDB 								= $totalDB + $p->DB;
-                $totalDEP 							= $totalDEP + $p->DEP;
-                $totalDK 								= $totalDK + $p->DK;
-                $totalDS 								= $totalDS + $p->DS;
-                $totalSP 								= $totalSP + $p->SP;
-                $totalSC 								= $totalSC + $p->SC;
-                $totalSP8 								= $totalSP8 + $p->SP8;
-                $totalSP8P 								= $totalSP8P + $p->SP8P;
-                $totalSP500 								= $totalSP500 + $p->SP500;
-                $subtotalbruto					= $subtotalbruto + $p->totalbruto;
-                $totalpotongan  				= $totalpotongan + $p->totalpotongan;
-                $totalretur 						= $totalretur + $p->totalretur;
-                $totalpotistimewa 			= $totalpotistimewa + $p->totalpotistimewa;
-                $totalpenyharga 				= $totalpenyharga + $p->totalpenyharga;
-                $totalppn 				= $totalppn + $p->totalppn;
-                $dpp = $p->totalbruto - $p->totalpotongan  - $p->totalpotistimewa - $p->totalpenyharga;
-                $totaldpp = $totaldpp + $dpp;
-                $netto 									= $p->totalbruto - $p->totalpotongan - $p->totalretur - $p->totalpotistimewa - $p->totalpenyharga + $p->totalppn;
-                $totalnetto  						= $totalnetto + $p->totalbruto - $p->totalpotongan - $p->totalretur - $p->totalpotistimewa - $p->totalpenyharga + $p->totalppn;
-                $totalbayar 						= $totalbayar + $p->totalbayar;
-                $totalpenghapusanpiutang = $totalpenghapusanpiutang += $p->penghapusanpiutang;
-                $totaldiskonprogram = $totaldiskonprogram += $p->diskonprogram;
-                $totalpps = $totalpps += $p->pps;
-                $totalpphk = $totalpphk += $p->pphk;
-                $totalvsp = $totalvsp += $p->vsp;
-                $totalkpbpb = $totalkpbpb += $p->kpbpb;
-                $totalwapu = $totalwapu += $p->wapu;
-                $totalpph22 = $totalpph22 += $p->pph22;
-                $totallainnya = $totallainnya += $p->lainnya;
-                $totalsapiutang 				= $totalsapiutang + $p->saldoawalpiutang;
-                $totalslpiutang 				= $totalslpiutang + $p->saldoakhirpiutang;
-                $grandtotalAB 					= $grandtotalAB + $p->AB;
-                $grandtotalAR 					= $grandtotalAR + $p->AR;
-                $grandtotalASE 					= $grandtotalASE + $p->ASE;
-                $grandtotalBB 					= $grandtotalBB + $p->BB;
-                $grandtotalBBP 					= $grandtotalBBP + $p->BBP;
-                $grandtotalCG 					= $grandtotalCG + $p->CG;
-                $grandtotalCGG					= $grandtotalCGG + $p->CGG;
-                $grandtotalCG5					= $grandtotalCG5 + $p->CG5;
-                $grandtotalDB 					= $grandtotalDB + $p->DB;
-                $grandtotalDEP 					= $grandtotalDEP + $p->DEP;
-                $grandtotalDK 					= $grandtotalDK + $p->DK;
-                $grandtotalDS 					= $grandtotalDS + $p->DS;
-                $grandtotalSP 					= $grandtotalSP + $p->SP;
-                $grandtotalSC 					= $grandtotalSC + $p->SC;
-                $grandtotalSP8 					= $grandtotalSP8 + $p->SP8;
-                $grandtotalSP8P 					= $grandtotalSP8P + $p->SP8P;
-                $grandtotalSP500 					= $grandtotalSP500 + $p->SP500;
+                $totalAB            = $totalAB + $p->AB;
+                $totalAR            = $totalAR + $p->AR;
+                $totalASE           = $totalASE + $p->ASE;
+                $totalBB            = $totalBB + $p->BB;
+                $totalBBP           = $totalBBP + $p->BBP;
+                $totalCG            = $totalCG + $p->CG;
+                $totalCGG           = $totalCGG + $p->CGG;
+                $totalCG5           = $totalCG5 + $p->CG5;
+                $totalDB 		    = $totalDB + $p->DB;
+                $totalDEP 	        = $totalDEP + $p->DEP;
+                $totalDK 		    = $totalDK + $p->DK;
+                $totalDS 		    = $totalDS + $p->DS;
+                $totalSP 		    = $totalSP + $p->SP;
+                $totalSC 		    = $totalSC + $p->SC;
+                $totalSP8 		    = $totalSP8 + $p->SP8;
+                $totalSP8P 		    = $totalSP8P + $p->SP8P;
+                $totalSP500 	    = $totalSP500 + $p->SP500;
+                $totalBR20   	    = $totalBR20 + $p->BR20;
+                $subtotalbruto		= $subtotalbruto + $p->totalbruto;
+                $totalpotongan  	= $totalpotongan + $p->totalpotongan;
+                $totalretur 		= $totalretur + $p->totalretur;
+                $totalpotistimewa 	= $totalpotistimewa + $p->totalpotistimewa;
+                $totalpenyharga 	= $totalpenyharga + $p->totalpenyharga;
+                $totalppn 			= $totalppn + $p->totalppn;
+                $dpp                = $p->totalbruto - $p->totalpotongan  - $p->totalpotistimewa - $p->totalpenyharga;
+                $totaldpp           = $totaldpp + $dpp;
+                $netto 				= $p->totalbruto - $p->totalpotongan - $p->totalretur - $p->totalpotistimewa - $p->totalpenyharga + $p->totalppn;
+                $totalnetto  	    = $totalnetto+$p->totalbruto-$p->totalpotongan -$p->totalretur-$p->totalpotistimewa-$p->totalpenyharga + $p->totalppn;
+                $totalbayar 		= $totalbayar + $p->totalbayar;
+                $totalpenghapusanpiutang    = $totalpenghapusanpiutang += $p->penghapusanpiutang;
+                $totaldiskonprogram         = $totaldiskonprogram += $p->diskonprogram;
+                $totalpps                   = $totalpps  += $p->pps;
+                $totalpphk                  = $totalpphk += $p->pphk;
+                $totalvsp                   = $totalvsp  += $p->vsp;
+                $totalkpbpb                 = $totalkpbpb += $p->kpbpb;
+                $totalwapu                  = $totalwapu += $p->wapu;
+                $totalpph22                 = $totalpph22 += $p->pph22;
+                $totallainnya               = $totallainnya += $p->lainnya;
+                $totalsapiutang             = $totalsapiutang + $p->saldoawalpiutang;
+                $totalslpiutang             = $totalslpiutang + $p->saldoakhirpiutang;
+                $grandtotalAB 	            = $grandtotalAB + $p->AB;
+                $grandtotalAR 	            = $grandtotalAR + $p->AR;
+                $grandtotalASE 	            = $grandtotalASE + $p->ASE;
+                $grandtotalBB 	            = $grandtotalBB + $p->BB;
+                $grandtotalBBP 	            = $grandtotalBBP + $p->BBP;
+                $grandtotalCG 	            = $grandtotalCG + $p->CG;
+                $grandtotalCGG	            = $grandtotalCGG + $p->CGG;
+                $grandtotalCG5	            = $grandtotalCG5 + $p->CG5;
+                $grandtotalDB 	            = $grandtotalDB + $p->DB;
+                $grandtotalDEP 	            = $grandtotalDEP + $p->DEP;
+                $grandtotalDK 	            = $grandtotalDK + $p->DK;
+                $grandtotalDS 	            = $grandtotalDS + $p->DS;
+                $grandtotalSP 	            = $grandtotalSP + $p->SP;
+                $grandtotalSC 	            = $grandtotalSC + $p->SC;
+                $grandtotalSP8 	            = $grandtotalSP8 + $p->SP8;
+                $grandtotalSP8P 		    = $grandtotalSP8P + $p->SP8P;
+                $grandtotalSP500 		    = $grandtotalSP500 + $p->SP500;
+                $grandtotalBR20 		    = $grandtotalBR20 + $p->BR20;
                 $grandsubtotalbruto			= $grandsubtotalbruto + $p->totalbruto;
                 $grandtotalpotongan  		= $grandtotalpotongan + $p->totalpotongan;
-                $grandtotalretur 				= $grandtotalretur + $p->totalretur;
-                $grandtotalpotistimewa 	= $grandtotalpotistimewa + $p->totalpotistimewa;
+                $grandtotalretur 			= $grandtotalretur + $p->totalretur;
+                $grandtotalpotistimewa 	    = $grandtotalpotistimewa + $p->totalpotistimewa;
                 $grandtotalpenyharga 		= $grandtotalpenyharga + $p->totalpenyharga;
-                $grandtotalppn 		= $grandtotalppn + $p->totalppn;
+                $grandtotalppn 		        = $grandtotalppn + $p->totalppn;
                 $grandtotalnetto  			= $grandtotalnetto + $p->totalbruto - $p->totalpotongan - $p->totalretur - $p->totalpotistimewa - $p->totalpenyharga + $p->totalppn;
                 $grandtotalsapiutang 		= $grandtotalsapiutang + $p->saldoawalpiutang;
                 $grandtotalslpiutang 		= $grandtotalslpiutang + $p->saldoakhirpiutang;
-                $grandtotalbayar 				= $grandtotalbayar + $p->totalbayar;
-                $gradtotalpenghapusanpiutang = $grandtotalpenghapusanpiutang += $p->penghapusanpiutang;
-                $grandtotaldiskonprogram = $grandtotaldiskonprogram += $p->diskonprogram;
+                $grandtotalbayar 			= $grandtotalbayar + $p->totalbayar;
+                $gradtotalpenghapusanpiutang    = $grandtotalpenghapusanpiutang += $p->penghapusanpiutang;
+                $grandtotaldiskonprogram        = $grandtotaldiskonprogram += $p->diskonprogram;
                 $grandtotalpps = $grandtotalpps += $p->pps;
                 $grandtotalpphk = $grandtotalpphk += $p->pphk;
                 $grandtotalvsp = $grandtotalvsp += $p->vsp;
@@ -289,6 +295,7 @@
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP8)) {echo rupiah($p->SP8);} ?></td>
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP8P)) {echo rupiah($p->SP8P);} ?></td>
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP500)) {echo rupiah($p->SP500);} ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->BR20)) {echo rupiah($p->BR20);} ?></td>
                 <td style="text-align:right; font-weight:bold">
                     <?php if (!empty($p->totalbruto)) {echo rupiah ($p->totalbruto);} ?>
                 </td>
@@ -377,6 +384,7 @@
             <td align="right" >' . rupiah($totalSP8) . '</td>
             <td align="right" >' . rupiah($totalSP8P) . '</td>
             <td align="right" >' . rupiah($totalSP500) . '</td>
+            <td align="right" >' . rupiah($totalBR20) . '</td>
             <td align="right" >' . rupiah($subtotalbruto) . '</td>
 
             <td align="right" >' . rupiah($totalpotongan) . '</td>
@@ -401,41 +409,42 @@
         </tr>';
                     $totalAB 						= 0;
                     $totalAR 						= 0;
-                    $totalASE 					= 0;
+                    $totalASE 					    = 0;
                     $totalBB 						= 0;
                     $totalBBP 						= 0;
                     $totalCG 						= 0;
-                    $totalCGG 					= 0;
-                    $totalCG5 					= 0;
+                    $totalCGG 					    = 0;
+                    $totalCG5 					    = 0;
                     $totalDB 						= 0;
-                    $totalDEP 					= 0;
+                    $totalDEP 					    = 0;
                     $totalDK 						= 0;
                     $totalDS 						= 0;
                     $totalSP 						= 0;
                     $totalSC 						= 0;
                     $totalSP8 						= 0;
                     $totalSP8P 						= 0;
-                    $totalSP500 						= 0;
-                    $subtotalbruto 			= 0;
-                    $totalretur 				= 0;
-                    $totalpotongan 			= 0;
-                    $totalpotistimewa 	= 0;
-                    $totalpenyharga 		= 0;
-                    $totalppn 		= 0;
-                    $totalnetto 				= 0;
-                    $totalbayar 				= 0;
-                    $totalpenghapusanpiutang = 0;
-                    $totaldiskonprogram = 0;
-                    $totalpps = 0;
-                    $totalpphk = 0;
-                    $totalvsp = 0;
-                    $totalkpbpb = 0;
-                    $totalwapu= 0;
-                    $totalpph22= 0;
-                    $totallainnya = 0;
-                    $totalsapiutang			= 0;
-                    $totalslpiutang 		= 0;
-                    $totaldpp =0;
+                    $totalSP500 					= 0;
+                    $totalBR20   					= 0;
+                    $subtotalbruto 			        = 0;
+                    $totalretur 				    = 0;
+                    $totalpotongan 			        = 0;
+                    $totalpotistimewa 	            = 0;
+                    $totalpenyharga 		        = 0;
+                    $totalppn 		                = 0;
+                    $totalnetto 				    = 0;
+                    $totalbayar 				    = 0;
+                    $totalpenghapusanpiutang        = 0;
+                    $totaldiskonprogram             = 0;
+                    $totalpps                       = 0;
+                    $totalpphk                      = 0;
+                    $totalvsp                       = 0;
+                    $totalkpbpb                     = 0;
+                    $totalwapu                      = 0;
+                    $totalpph22                     = 0;
+                    $totallainnya                   = 0;
+                    $totalsapiutang			        = 0;
+                    $totalslpiutang 		        = 0;
+                    $totaldpp                       =0;
                 }
                 $rek  = $p->kode_cabang;
                 $no++;
@@ -463,6 +472,7 @@
             <td align="right" >' . rupiah($grandtotalSP8) . '</td>
             <td align="right" >' . rupiah($grandtotalSP8P) . '</td>
             <td align="right" >' . rupiah($grandtotalSP500) . '</td>
+            <td align="right" >' . rupiah($grandtotalBR20) . '</td>
             <td align="right" >' . rupiah($grandsubtotalbruto) . '</td>
 
             <td align="right" >' . rupiah($grandtotalpotongan) . '</td>
@@ -489,7 +499,7 @@
         </tfoot>
     </table>
     <br>
-    <table class="datatable3" style="border:0px;">
+    {{-- <table class="datatable3" style="border:0px;">
 
         <?php
         $totalcabnetto 		= 0;
@@ -653,4 +663,4 @@
     </table>
 
 </body>
-</html>
+</html> --}}

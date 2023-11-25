@@ -61,7 +61,7 @@
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
                 <td rowspan="3">No</td>
                 <td rowspan="3">Nama Sales</td>
-                <td colspan="30">Produk</td>
+                <td colspan="32">Produk</td>
                 <td rowspan="3" bgcolor="#f5ae15">Total Retur</td>
                 <td rowspan="3" bgcolor="#f5ae15">Penyeseuaian</td>
                 <td rowspan="3" bgcolor="#f5ae15">Total Retur Netto</td>
@@ -82,9 +82,12 @@
                 <td colspan="2">SAUS PREMIUM PRORMO</td>
                 <td colspan="2">SAMBAL CABE 200</td>
                 <td colspan="2">SAUS PREMIUM 500</td>
+                <td colspan="2">BUMBU TABUR</td>
 
             </tr>
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
+                <td>Qty</td>
+                <td>Rp</td>
                 <td>Qty</td>
                 <td>Rp</td>
                 <td>Qty</td>
@@ -119,157 +122,165 @@
         </thead>
         <tbody>
             <?php
-          $no           = 1;
-          $qtytotalAB       = 0;
-          $qtytotalAR       = 0;
-          $qtytotalASE       = 0;
-          $qtytotalBB       = 0;
-          $qtytotalCG       = 0;
-          $qtytotalCGG       = 0;
-          $qtytotalDB       = 0;
-          $qtytotalDEP       = 0;
-          $qtytotalDK       = 0;
-          $qtytotalDS       = 0;
-          $qtytotalSP       = 0;
-          $qtytotalSPP       = 0;
-          $qtytotalSP8       = 0;
-          $qtytotalSC       = 0;
-          $qtytotalSP500       = 0;
+          $no                   = 1;
+          $qtytotalAB           = 0;
+          $qtytotalAR           = 0;
+          $qtytotalASE          = 0;
+          $qtytotalBB           = 0;
+          $qtytotalCG           = 0;
+          $qtytotalCGG          = 0;
+          $qtytotalDB           = 0;
+          $qtytotalDEP          = 0;
+          $qtytotalDK           = 0;
+          $qtytotalDS           = 0;
+          $qtytotalSP           = 0;
+          $qtytotalSPP          = 0;
+          $qtytotalSP8          = 0;
+          $qtytotalSC           = 0;
+          $qtytotalSP500        = 0;
+          $qtytotalBR20         = 0;
 
-          $grandtytotalAB     = 0;
-          $grandtytotalAR     = 0;
-          $grandtytotalASE     = 0;
-          $grandtytotalBB     = 0;
-          $grandtytotalCG     = 0;
-          $grandtytotalCGG     = 0;
-          $grandtytotalDB     = 0;
-          $grandtytotalDEP     = 0;
-          $grandtytotalDK     = 0;
-          $grandtytotalDS     = 0;
-          $grandtytotalSP     = 0;
-          $grandtytotalSPP     = 0;
-          $grandtytotalSP8     = 0;
-          $grandtytotalSC     = 0;
-          $grandtytotalSP500     = 0;
+          $grandtytotalAB       = 0;
+          $grandtytotalAR       = 0;
+          $grandtytotalASE      = 0;
+          $grandtytotalBB       = 0;
+          $grandtytotalCG       = 0;
+          $grandtytotalCGG      = 0;
+          $grandtytotalDB       = 0;
+          $grandtytotalDEP      = 0;
+          $grandtytotalDK       = 0;
+          $grandtytotalDS       = 0;
+          $grandtytotalSP       = 0;
+          $grandtytotalSPP      = 0;
+          $grandtytotalSP8      = 0;
+          $grandtytotalSC       = 0;
+          $grandtytotalSP500    = 0;
+          $grandtytotalBR20     = 0;
 
 
 
           $totalAB         = 0;
           $totalAR         = 0;
-          $totalASE         = 0;
+          $totalASE        = 0;
           $totalBB         = 0;
           $totalCG         = 0;
-          $totalCGG         = 0;
+          $totalCGG        = 0;
           $totalDB         = 0;
-          $totalDEP         = 0;
+          $totalDEP        = 0;
           $totalDK         = 0;
           $totalDS         = 0;
           $totalSP         = 0;
           $totalSPP        = 0;
           $totalSP8        = 0;
-          $totalSC        = 0;
-          $totalSP500        = 0;
+          $totalSC         = 0;
+          $totalSP500      = 0;
+          $totalBR20      = 0;
 
-          $grandtotalAB       = 0;
-          $grandtotalAR       = 0;
-          $grandtotalASE       = 0;
-          $grandtotalBB       = 0;
-          $grandtotalCG       = 0;
-          $grandtotalCGG       = 0;
-          $grandtotalDB       = 0;
-          $grandtotalDEP       = 0;
-          $grandtotalDK       = 0;
-          $grandtotalDS       = 0;
-          $grandtotalSP       = 0;
-          $grandtotalSPP       = 0;
-          $grandtotalSP8       = 0;
-          $grandtotalSC       = 0;
-          $grandtotalSP500       = 0;
+          $grandtotalAB    = 0;
+          $grandtotalAR    = 0;
+          $grandtotalASE   = 0;
+          $grandtotalBB    = 0;
+          $grandtotalCG    = 0;
+          $grandtotalCGG   = 0;
+          $grandtotalDB    = 0;
+          $grandtotalDEP   = 0;
+          $grandtotalDK    = 0;
+          $grandtotalDS    = 0;
+          $grandtotalSP    = 0;
+          $grandtotalSPP   = 0;
+          $grandtotalSP8   = 0;
+          $grandtotalSC    = 0;
+          $grandtotalSP500 = 0;
+          $grandtotalBR20 = 0;
 
 
-          $totalretur       = 0;
-          $totalpenyesuaian     = 0;
-          $totalreturnetto     = 0;
-          $grandtotalreturnetto   = 0;
-          $grandtotalretur    = 0;
-          $grandtotalpenyesuaian  = 0;
-          $grandtotalallreturnetto = 0;
+          $totalretur               = 0;
+          $totalpenyesuaian         = 0;
+          $totalreturnetto          = 0;
+          $grandtotalreturnetto     = 0;
+          $grandtotalretur          = 0;
+          $grandtotalpenyesuaian    = 0;
+          $grandtotalallreturnetto  = 0;
 
           foreach ($rekap as $key => $p) {
 
             $rek  = @$rekap[$key + 1]->kode_cabang;
-            $qtytotalAB       = $qtytotalAB + $p->JML_AB;
-            $qtytotalAR       = $qtytotalAR + $p->JML_AR;
-            $qtytotalASE       = $qtytotalASE + $p->JML_ASE;
-            $qtytotalBB       = $qtytotalBB + $p->JML_BB;
-            $qtytotalCG       = $qtytotalCG + $p->JML_CG;
-            $qtytotalCGG       = $qtytotalCGG + $p->JML_CGG;
-            $qtytotalDB       = $qtytotalDB + $p->JML_DB;
-            $qtytotalDEP       = $qtytotalDEP + $p->JML_DEP;
-            $qtytotalDK       = $qtytotalDK + $p->JML_DK;
-            $qtytotalDS       = $qtytotalDS + $p->JML_DS;
-            $qtytotalSP       = $qtytotalSP + $p->JML_SP;
-            $qtytotalSPP       = $qtytotalSPP + $p->JML_SPP;
-            $qtytotalSP8       = $qtytotalSP8 + $p->JML_SP8;
-            $qtytotalSC       = $qtytotalSC + $p->JML_SC;
-            $qtytotalSP500       = $qtytotalSP500 + $p->JML_SP500;
+            $qtytotalAB         = $qtytotalAB + $p->JML_AB;
+            $qtytotalAR         = $qtytotalAR + $p->JML_AR;
+            $qtytotalASE        = $qtytotalASE + $p->JML_ASE;
+            $qtytotalBB         = $qtytotalBB + $p->JML_BB;
+            $qtytotalCG         = $qtytotalCG + $p->JML_CG;
+            $qtytotalCGG        = $qtytotalCGG + $p->JML_CGG;
+            $qtytotalDB         = $qtytotalDB + $p->JML_DB;
+            $qtytotalDEP        = $qtytotalDEP + $p->JML_DEP;
+            $qtytotalDK         = $qtytotalDK + $p->JML_DK;
+            $qtytotalDS         = $qtytotalDS + $p->JML_DS;
+            $qtytotalSP         = $qtytotalSP + $p->JML_SP;
+            $qtytotalSPP        = $qtytotalSPP + $p->JML_SPP;
+            $qtytotalSP8        = $qtytotalSP8 + $p->JML_SP8;
+            $qtytotalSC         = $qtytotalSC + $p->JML_SC;
+            $qtytotalSP500      = $qtytotalSP500 + $p->JML_SP500;
+            $qtytotalBR20       = $qtytotalBR20 + $p->JML_BR20;
 
             $grandtytotalAB     = $grandtytotalAB + $p->JML_AB;
             $grandtytotalAR     = $grandtytotalAR + $p->JML_AR;
-            $grandtytotalASE     = $grandtytotalASE + $p->JML_ASE;
+            $grandtytotalASE    = $grandtytotalASE + $p->JML_ASE;
             $grandtytotalBB     = $grandtytotalBB + $p->JML_BB;
             $grandtytotalCG     = $grandtytotalCG + $p->JML_CG;
-            $grandtytotalCGG     = $grandtytotalCGG + $p->JML_CGG;
+            $grandtytotalCGG    = $grandtytotalCGG + $p->JML_CGG;
             $grandtytotalDB     = $grandtytotalDB + $p->JML_DB;
-            $grandtytotalDEP     = $grandtytotalDEP + $p->JML_DEP;
+            $grandtytotalDEP    = $grandtytotalDEP + $p->JML_DEP;
             $grandtytotalDK     = $grandtytotalDK + $p->JML_DK;
             $grandtytotalDS     = $grandtytotalDS + $p->JML_DS;
             $grandtytotalSP     = $grandtytotalSP + $p->JML_SP;
-            $grandtytotalSPP     = $grandtytotalSPP + $p->JML_SPP;
-            $grandtytotalSP8     = $grandtytotalSP8 + $p->JML_SP8;
+            $grandtytotalSPP    = $grandtytotalSPP + $p->JML_SPP;
+            $grandtytotalSP8    = $grandtytotalSP8 + $p->JML_SP8;
             $grandtytotalSC     = $grandtytotalSC + $p->JML_SC;
-            $grandtytotalSP500     = $grandtytotalSP500 + $p->JML_SP500;
+            $grandtytotalSP500  = $grandtytotalSP500 + $p->JML_SP500;
+            $grandtytotalBR20   = $grandtytotalBR20 + $p->JML_BR20;
 
 
             $totalAB         = $totalAB + $p->AB;
             $totalAR         = $totalAR + $p->AR;
-            $totalASE         = $totalASE + $p->ASE;
+            $totalASE        = $totalASE + $p->ASE;
             $totalBB         = $totalBB + $p->BB;
             $totalCG         = $totalCG + $p->CG;
             $totalCGG        = $totalCGG + $p->CGG;
             $totalDB         = $totalDB + $p->DB;
-            $totalDEP         = $totalDEP + $p->DEP;
+            $totalDEP        = $totalDEP + $p->DEP;
             $totalDK         = $totalDK + $p->DK;
             $totalDS         = $totalDS + $p->DS;
             $totalSP         = $totalSP + $p->SP;
-            $totalSPP         = $totalSPP + $p->SPP;
-            $totalSP8         = $totalSP8 + $p->SP8;
+            $totalSPP        = $totalSPP + $p->SPP;
+            $totalSP8        = $totalSP8 + $p->SP8;
             $totalSC         = $totalSC + $p->SC;
-            $totalSP500         = $totalSP500 + $p->SP500;
+            $totalSP500      = $totalSP500 + $p->SP500;
+            $totalBR20      = $totalBR20 + $p->BR20;
 
-            $grandtotalAB       = $grandtotalAB + $p->AB;
-            $grandtotalAR       = $grandtotalAR + $p->AR;
-            $grandtotalASE       = $grandtotalASE + $p->ASE;
-            $grandtotalBB       = $grandtotalBB + $p->BB;
-            $grandtotalCG       = $grandtotalCG + $p->CG;
-            $grandtotalCGG      = $grandtotalCGG + $p->CGG;
-            $grandtotalDB       = $grandtotalDB + $p->DB;
-            $grandtotalDEP       = $grandtotalDEP + $p->DEP;
-            $grandtotalDK       = $grandtotalDK + $p->DK;
-            $grandtotalDS       = $grandtotalDS + $p->DS;
-            $grandtotalSP       = $grandtotalSP + $p->SP;
-            $grandtotalSPP       = $grandtotalSPP + $p->SPP;
-            $grandtotalSP8       = $grandtotalSP8 + $p->SP8;
-            $grandtotalSC       = $grandtotalSC + $p->SC;
-            $grandtotalSP500       = $grandtotalSP500 + $p->SP500;
+            $grandtotalAB           = $grandtotalAB + $p->AB;
+            $grandtotalAR           = $grandtotalAR + $p->AR;
+            $grandtotalASE          = $grandtotalASE + $p->ASE;
+            $grandtotalBB           = $grandtotalBB + $p->BB;
+            $grandtotalCG           = $grandtotalCG + $p->CG;
+            $grandtotalCGG          = $grandtotalCGG + $p->CGG;
+            $grandtotalDB           = $grandtotalDB + $p->DB;
+            $grandtotalDEP          = $grandtotalDEP + $p->DEP;
+            $grandtotalDK           = $grandtotalDK + $p->DK;
+            $grandtotalDS           = $grandtotalDS + $p->DS;
+            $grandtotalSP           = $grandtotalSP + $p->SP;
+            $grandtotalSPP          = $grandtotalSPP + $p->SPP;
+            $grandtotalSP8          = $grandtotalSP8 + $p->SP8;
+            $grandtotalSC           = $grandtotalSC + $p->SC;
+            $grandtotalSP500        = $grandtotalSP500 + $p->SP500;
+            $grandtotalBR20         = $grandtotalBR20 + $p->BR20;
 
-            $totalretur        = $totalretur + $p->totalretur;
-            $grandtotalretur     = $grandtotalretur + $p->totalretur;
-            $totalpenyesuaian     = $totalpenyesuaian + $p->total_gb;
-            $grandtotalpenyesuaian   = $grandtotalpenyesuaian + $p->total_gb;
-            $totalreturnetto     = $p->totalretur - $p->total_gb;
-            $grandtotalreturnetto   = $grandtotalreturnetto + $totalreturnetto;
-            $grandtotalallreturnetto = $grandtotalallreturnetto + $totalreturnetto;
+            $totalretur                 = $totalretur + $p->totalretur;
+            $grandtotalretur            = $grandtotalretur + $p->totalretur;
+            $totalpenyesuaian           = $totalpenyesuaian + $p->total_gb;
+            $grandtotalpenyesuaian      = $grandtotalpenyesuaian + $p->total_gb;
+            $totalreturnetto            = $p->totalretur - $p->total_gb;
+            $grandtotalreturnetto       = $grandtotalreturnetto + $totalreturnetto;
+            $grandtotalallreturnetto    = $grandtotalallreturnetto + $totalreturnetto;
           ?>
             <tr>
                 <td><?php echo $no; ?></td>
@@ -321,7 +332,10 @@
         echo desimal($p->JML_SP500);} ?></td>
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP500)) {
         echo rupiah($p->SP500);} ?></td>
-
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_BR20)) {
+        echo desimal($p->JML_SP500);} ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->BR20)) {
+        echo rupiah($p->SP500);} ?></td>
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($p->totalretur)) {
                                                                 echo rupiah($p->totalretur);} ?></td>
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($p->total_gb)) {
@@ -365,6 +379,8 @@
             <td align="right" >' . rupiah($totalSC) . '</td>
             <td align="right" >' . desimal($qtytotalSP500) . '</td>
             <td align="right" >' . rupiah($totalSP500) . '</td>
+            <td align="right" >' . desimal($qtytotalBR20) . '</td>
+            <td align="right" >' . rupiah($totalBR20) . '</td>
             <td align="right" >' . rupiah($totalretur) . '</td>
             <td align="right" >' . rupiah($totalpenyesuaian) . '</td>
             <td align="right" >' . rupiah($grandtotalreturnetto) . '</td>
@@ -385,6 +401,7 @@
               $qtytotalSP8       = 0;
               $qtytotalSC       = 0;
               $qtytotalSP500       = 0;
+              $qtytotalBR20       = 0;
 
 
               $totalAB         = 0;
@@ -402,6 +419,7 @@
               $totalSP8         = 0;
               $totalSC         = 0;
               $totalSP500         = 0;
+              $totalBR20         = 0;
 
               $totalretur       = 0;
               $totalpenyesuaian     = 0;
@@ -445,6 +463,8 @@
                 <td align="right"><?php echo rupiah($grandtotalSC); ?></td>
                 <td align="right"><?php echo desimal($grandtytotalSP500); ?></td>
                 <td align="right"><?php echo rupiah($grandtotalSP500); ?></td>
+                <td align="right"><?php echo desimal($grandtytotalBR20); ?></td>
+                <td align="right"><?php echo rupiah($grandtotalBR20); ?></td>
                 <td align="right"><?php echo rupiah($grandtotalretur); ?></td>
                 <td align="right"><?php echo rupiah($grandtotalpenyesuaian); ?></td>
                 <td align="right"><?php echo rupiah($grandtotalallreturnetto); ?></td>
@@ -453,7 +473,7 @@
     </table>
     <br>
     <?php
-    $totalqtyretur  = $grandtytotalAB + $grandtytotalAR  + $grandtytotalASE  + $grandtytotalBB  + $grandtytotalCG + $grandtytotalCGG  + $grandtytotalDB + $grandtytotalDEP + $grandtytotalDK + $grandtytotalDS + $grandtytotalSP + $grandtytotalSPP + $grandtytotalSP8 + $grandtytotalSC + $grandtytotalSP500 ;
+    $totalqtyretur  = $grandtytotalAB + $grandtytotalAR  + $grandtytotalASE  + $grandtytotalBB  + $grandtytotalCG + $grandtytotalCGG  + $grandtytotalDB + $grandtytotalDEP + $grandtytotalDK + $grandtytotalDS + $grandtytotalSP + $grandtytotalSPP + $grandtytotalSP8 + $grandtytotalSC + $grandtytotalSP500 + $grandtytotalBR20 ;
     $average     = ($totalqtyretur !=0) ? $grandtotalpenyesuaian / $totalqtyretur : 0;
     $avgAB       = $grandtytotalAB * $average;
     $avgAR       = $grandtytotalAR * $average;
@@ -470,6 +490,7 @@
     $avgSP8      = $grandtytotalSP8 * $average;
     $avgSC      = $grandtytotalSC * $average;
     $avgSP500      = $grandtytotalSP500 * $average;
+    $avgBR20      = $grandtytotalBR20 * $average;
     ?>
     <table class="datatable3" style="width:120%">
         <thead>
@@ -490,6 +511,7 @@
                 <th>SAUS PREMIUM PROMO</th>
                 <th>SAMBAL CABE 200</th>
                 <th>SAUS PREMIUM 500</th>
+                <th>BUMBU TABUR</th>
             </tr>
         </thead>
         <tbody>
@@ -540,6 +562,13 @@
                 <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgSC)) {
                                                                         echo  rupiah($avgSC);
                                                                       } ?></td>
+
+                <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgSP500)) {
+    echo  rupiah($avgSP500);
+  } ?></td>
+                <td style="text-align:right; font-weight:bold" rowspan="3"><?php if (!empty($avgBR20)) {
+    echo  rupiah($avgBR20);
+  } ?></td>
 
             </tr>
             <tr>
