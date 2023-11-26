@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AjuanfakturController;
+use App\Http\Controllers\AjuanroutingController;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\AngkutanController;
 use App\Http\Controllers\Auth\LoginController;
@@ -1908,7 +1909,15 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/ajuanfaktur/{no_pengajuan}/delete', [AjuanfakturController::class, 'delete']);
 
 
-
+    //Ajuan Routing
+    Route::get('/ajuanrouting', [AjuanroutingController::class, 'index']);
+    Route::get('/ajuanrouting/{kode_pelanggan}/create', [AjuanroutingController::class, 'create']);
+    Route::post('/ajuanrouting/{kode_pelanggan}/store', [AjuanroutingController::class, 'store']);
+    Route::get('/ajuanrouting/{no_pengajuan}/edit', [AjuanroutingController::class, 'edit']);
+    Route::post('/ajuanrouting/{no_pengajuan}/update', [AjuanroutingController::class, 'update']);
+    Route::get('/ajuanrouting/{no_pengajuan}/approve', [AjuanroutingController::class, 'approve']);
+    Route::get('/ajuanrouting/{no_pengajuan}/decline', [AjuanroutingController::class, 'decline']);
+    Route::delete('/ajuanrouting/{no_pengajuan}/delete', [AjuanroutingController::class, 'delete']);
     //LogAktivitas
 
     Route::get('/logaktivitas', [LogaktivitasController::class, 'index']);

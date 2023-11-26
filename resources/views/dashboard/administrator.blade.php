@@ -9,12 +9,14 @@
         {{-- <a href="/cetakstruk" class="btn btn-primary">Cetak</a> --}}
         <section id="dashboard-analytics">
             <div class="row">
-                <div class="col-lg-4 col-md-12 col-sm-12">
+                <div class="col-lg-2 col-md-12 col-sm-12">
                     <div class="card bg-analytics text-white">
                         <div class="card-content">
                             <div class="card-body text-center">
-                                <img src="{{asset('app-assets/images/elements/decore-left.png')}}" class="img-left" alt="card-img-left">
-                                <img src="{{asset('app-assets/images/elements/decore-right.png')}}" class="img-right" alt="card-img-right">
+                                <img src="{{asset('app-assets/images/elements/decore-left.png')}}" class="img-left"
+                                    alt="card-img-left">
+                                <img src="{{asset('app-assets/images/elements/decore-right.png')}}" class="img-right"
+                                    alt="card-img-right">
                                 <div class="avatar avatar-xl bg-primary shadow mt-0">
                                     <div class="avatar-content">
                                         <i class="feather icon-award white font-large-1"></i>
@@ -26,7 +28,7 @@
                                         $name = explode(" ",Auth::user()->name);
                                         @endphp
                                         {{ $name[0] }} </h3>
-                                    <h4 class="text-white">{{ date('d F Y H:i:s') }} </h4>
+                                    <h6 class="text-white">{{ date('d F Y H:i:s') }} </h6>
                                     <p class="m-auto w-75">Level {{ ucwords(Auth::user()->level) }}</p>
                                 </div>
                             </div>
@@ -42,8 +44,10 @@
                                         <i class="feather icon-shopping-bag text-danger font-large-3"></i>
                                     </div>
                                 </div>
-                                <h1 class="text-bold-700"><a href="/limitkredit?status=pending">{{ $jmlpengajuan }}</a></h1>
-                                <p class="mb-0 line-ellipsis">Ajuan Limit Kredit {{ ucwords(Auth::user()->level) }}<br><br><br></p>
+                                <h1 class="text-bold-700"><a href="/limitkredit?status=pending">{{ $jmlpengajuan }}</a>
+                                </h1>
+                                <p class="mb-0 line-ellipsis">Ajuan Limit Kredit {{ ucwords(Auth::user()->level)
+                                    }}<br><br><br></p>
                             </div>
                         </div>
                     </div>
@@ -57,8 +61,27 @@
                                         <i class="feather icon-shopping-bag text-danger font-large-3"></i>
                                     </div>
                                 </div>
-                                <h1 class="text-bold-700"><a href="/ajuanfaktur?status=pending">{{ $jmlpengajuanfaktur }}</a></h1>
-                                <p class="mb-0 line-ellipsis">Ajuan Jumlah Faktur {{ ucwords(Auth::user()->level) }}<br><br><br></p>
+                                <h1 class="text-bold-700"><a href="/ajuanfaktur?status=pending">{{ $jmlpengajuanfaktur
+                                        }}</a></h1>
+                                <p class="mb-0 line-ellipsis">Ajuan Jumlah Faktur {{ ucwords(Auth::user()->level)
+                                    }}<br><br><br></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-12 col-sm-12">
+                    <div class="card text-center">
+                        <div class="card-content">
+                            <div class="card-body">
+                                <div class="avatar bg-rgba-danger p-50 m-0 mb-1 mt-2">
+                                    <div class="avatar-content">
+                                        <i class="feather icon-shopping-bag text-danger font-large-3"></i>
+                                    </div>
+                                </div>
+                                <h1 class="text-bold-700"><a href="/ajuanrouting?status=pending">{{ $jmlpengajuanrouting
+                                        }}</a></h1>
+                                <p class="mb-0 line-ellipsis">Ajuan Routing {{ ucwords(Auth::user()->level)
+                                    }}<br><br><br></p>
                             </div>
                         </div>
                     </div>
@@ -72,7 +95,8 @@
                                         <i class="feather icon-file-text text-info font-large-3"></i>
                                     </div>
                                 </div>
-                                <h1 class="text-bold-700"><a href="/penilaiankaryawan/3/MP/list">{{ $jmlpenilaiankar }}</a></h1>
+                                <h1 class="text-bold-700"><a href="/penilaiankaryawan/3/MP/list">{{ $jmlpenilaiankar
+                                        }}</a></h1>
                                 <p class="mb-0 line-ellipsis">Penilaian Karyawan<br><br><br></p>
                             </div>
                         </div>
@@ -109,9 +133,10 @@
                                     <div class="col-12">
                                         <select class="form-control" id="bulanpenjualan">
                                             <?php for ($a = 1; $a <= 12; $a++) { ?>
-                                            <option <?php if (date("m") == $a) {
-                                                              echo "selected";
-                                                            } ?> value="<?php echo $a;  ?>"><?php echo $bulan[$a]; ?></option>
+                                            <option <?php if (date("m")==$a) { echo "selected" ; } ?> value="
+                                                <?php echo $a;  ?>">
+                                                <?php echo $bulan[$a]; ?>
+                                            </option>
                                             <?php } ?>
                                         </select>
 
@@ -123,9 +148,10 @@
                                             <?php
                                                 $tahun = date("Y");
                                                 for ($t = startyear(); $t <= $tahun; $t++) { ?>
-                                            <option <?php if (date("Y") == $t) {
-                                                              echo "selected";
-                                                            } ?> value="<?php echo $t;  ?>"><?php echo $t; ?></option>
+                                            <option <?php if (date("Y")==$t) { echo "selected" ; } ?> value="
+                                                <?php echo $t;  ?>">
+                                                <?php echo $t; ?>
+                                            </option>
                                             <?php } ?>
                                         </select>
                                     </div>
@@ -133,7 +159,8 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-12">
-                                        <a href="#" id="tampilkanpenjualancashin" class="btn btn-primary"><i class="fa fa-eye"></i></a>
+                                        <a href="#" id="tampilkanpenjualancashin" class="btn btn-primary"><i
+                                                class="fa fa-eye"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -163,7 +190,8 @@
                                             @php
                                             $hariini = date("Y-m-d");
                                             @endphp
-                                            <x-inputtext label="Tanggal AUP" field="tanggal_aup" icon="feather icon-calendar" datepicker="true" value="{{ $hariini }}" />
+                                            <x-inputtext label="Tanggal AUP" field="tanggal_aup"
+                                                icon="feather icon-calendar" datepicker="true" value="{{ $hariini }}" />
                                         </div>
                                     </div>
                                     <div class="row mb-1">
@@ -176,7 +204,8 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <a href="#" id="tampilkanaup" class="btn btn-primary"><i class="fa fa-eye"></i></a>
+                                            <a href="#" id="tampilkanaup" class="btn btn-primary"><i
+                                                    class="fa fa-eye"></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -206,9 +235,10 @@
                                         <div class="col-12">
                                             <select class="form-control" id="bulandppp">
                                                 <?php for ($a = 1; $a <= 12; $a++) { ?>
-                                                <option <?php if (date("m") == $a) {
-                                                                  echo "selected";
-                                                                } ?> value="<?php echo $a;  ?>"><?php echo $bulan[$a]; ?></option>
+                                                <option <?php if (date("m")==$a) { echo "selected" ; } ?> value="
+                                                    <?php echo $a;  ?>">
+                                                    <?php echo $bulan[$a]; ?>
+                                                </option>
                                                 <?php } ?>
                                             </select>
 
@@ -220,9 +250,10 @@
                                                 <?php
                                                     $tahun = date("Y");
                                                     for ($t = startyear(); $t <= $tahun; $t++) { ?>
-                                                <option <?php if (date("Y") == $t) {
-                                                                  echo "selected";
-                                                                } ?> value="<?php echo $t;  ?>"><?php echo $t; ?></option>
+                                                <option <?php if (date("Y")==$t) { echo "selected" ; } ?> value="
+                                                    <?php echo $t;  ?>">
+                                                    <?php echo $t; ?>
+                                                </option>
                                                 <?php } ?>
                                             </select>
                                         </div>
@@ -238,7 +269,8 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <a href="#" id="tampilkandppp" class="btn btn-primary"><i class="fa fa-eye"></i></a>
+                                            <a href="#" id="tampilkandppp" class="btn btn-primary"><i
+                                                    class="fa fa-eye"></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -268,9 +300,10 @@
                                         <div class="col-12">
                                             <select class="form-control" id="bulankendaraan">
                                                 <?php for ($a = 1; $a <= 12; $a++) { ?>
-                                                <option <?php if (date("m") == $a) {
-                                                                  echo "selected";
-                                                                } ?> value="<?php echo $a;  ?>"><?php echo $bulan[$a]; ?></option>
+                                                <option <?php if (date("m")==$a) { echo "selected" ; } ?> value="
+                                                    <?php echo $a;  ?>">
+                                                    <?php echo $bulan[$a]; ?>
+                                                </option>
                                                 <?php } ?>
                                             </select>
 
@@ -282,9 +315,10 @@
                                                 <?php
                                                     $tahun = date("Y");
                                                     for ($t = startyear(); $t <= $tahun; $t++) { ?>
-                                                <option <?php if (date("Y") == $t) {
-                                                                  echo "selected";
-                                                                } ?> value="<?php echo $t;  ?>"><?php echo $t; ?></option>
+                                                <option <?php if (date("Y")==$t) { echo "selected" ; } ?> value="
+                                                    <?php echo $t;  ?>">
+                                                    <?php echo $t; ?>
+                                                </option>
                                                 <?php } ?>
                                             </select>
                                         </div>
@@ -292,7 +326,8 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <a href="#" id="tampilkankendaraan" class="btn btn-primary"><i class="fa fa-eye"></i></a>
+                                            <a href="#" id="tampilkankendaraan" class="btn btn-primary"><i
+                                                    class="fa fa-eye"></i></a>
                                         </div>
                                     </div>
                                 </div>
@@ -331,7 +366,8 @@
 
 <!-- Rekap Penjualan -->
 <!-- Rekap Penjualan -->
-<div class="modal fade text-left" id="mdlrekappenjualan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+<div class="modal fade text-left" id="mdlrekappenjualan" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" style="max-width: 1400px" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -358,7 +394,8 @@
     </div>
 </div>
 <!-- Rekap AUP -->
-<div class="modal fade text-left" id="mdlaup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
+<div class="modal fade text-left" id="mdlaup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -379,7 +416,8 @@
         </div>
     </div>
 </div>
-<div class="modal fade text-left" id="mdldppp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
+<div class="modal fade text-left" id="mdldppp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -401,7 +439,8 @@
     </div>
 </div>
 
-<div class="modal fade" id="mdlkendaraan" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle" aria-hidden="true">
+<div class="modal fade" id="mdlkendaraan" tabindex="-1" role="dialog" aria-labelledby="exampleModalScrollableTitle"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">

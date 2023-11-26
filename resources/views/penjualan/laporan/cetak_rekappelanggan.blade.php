@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,9 +32,9 @@
             text-align: center;
             font-size: 14px;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
         @if ($cabang!=null)
@@ -68,7 +69,7 @@
                 <td rowspan="2">Kode Pel.</td>
                 <td rowspan="2">Nama Pelanggan</td>
                 <td rowspan="2">Pasar</td>
-                <td colspan="17">Produk</td>
+                <td colspan="18">Produk</td>
                 <td rowspan="2">JML SKU</td>
             </tr>
             <tr>
@@ -89,6 +90,7 @@
                 <td>SC</td>
                 <td>SP8</td>
                 <td>SP500</td>
+                <td>BR20</td>
             </tr>
         </thead>
         <tbody>
@@ -111,6 +113,7 @@
 			$totalSC 	= 0;
 			$totalSP8 	= 0;
 			$totalSP500 	= 0;
+			$totalBR20 	= 0;
 
 			foreach ($rekappelanggan as $p) {
 
@@ -131,64 +134,112 @@
 				$totalSC 	= $totalSC + $p->SC;
 				$totalSP8 	= $totalSP8 + $p->SP8;
 				$totalSP500 = $totalSP500 + $p->SP500;
+				$totalBR20 = $totalBR20 + $p->BR20;
 
 			?>
             <tr>
-                <td><?php echo $no; ?></td>
-                <td><?php echo $p->kode_pelanggan; ?></td>
-                <td><?php echo $p->nama_pelanggan; ?></td>
-                <td><?php echo $p->pasar; ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->AB)) {
+                <td>
+                    <?php echo $no; ?>
+                </td>
+                <td>
+                    <?php echo $p->kode_pelanggan; ?>
+                </td>
+                <td>
+                    <?php echo $p->nama_pelanggan; ?>
+                </td>
+                <td>
+                    <?php echo $p->pasar; ?>
+                </td>
+                <td style="text-align:right; font-weight:bold">
+                    <?php if (!empty($p->AB)) {
 																		echo desimal($p->AB);
-																	} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->AR)) {
+																	} ?>
+                </td>
+                <td style="text-align:right; font-weight:bold">
+                    <?php if (!empty($p->AR)) {
 																		echo desimal($p->AR);
-																	} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->ASE)) {
+																	} ?>
+                </td>
+                <td style="text-align:right; font-weight:bold">
+                    <?php if (!empty($p->ASE)) {
 																		echo desimal($p->ASE);
-																	} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->BB)) {
+																	} ?>
+                </td>
+                <td style="text-align:right; font-weight:bold">
+                    <?php if (!empty($p->BB)) {
 																		echo desimal($p->BB);
-																	} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->CG)) {
+																	} ?>
+                </td>
+                <td style="text-align:right; font-weight:bold">
+                    <?php if (!empty($p->CG)) {
 																		echo desimal($p->CG);
-																	} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->CGG)) {
+																	} ?>
+                </td>
+                <td style="text-align:right; font-weight:bold">
+                    <?php if (!empty($p->CGG)) {
 																		echo desimal($p->CGG);
-																	} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->DB)) {
+																	} ?>
+                </td>
+                <td style="text-align:right; font-weight:bold">
+                    <?php if (!empty($p->DB)) {
 																		echo desimal($p->DB);
-																	} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->DEP)) {
+																	} ?>
+                </td>
+                <td style="text-align:right; font-weight:bold">
+                    <?php if (!empty($p->DEP)) {
 																		echo desimal($p->DEP);
-																	} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->DK)) {
+																	} ?>
+                </td>
+                <td style="text-align:right; font-weight:bold">
+                    <?php if (!empty($p->DK)) {
 																		echo desimal($p->DK);
-																	} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->DS)) {
+																	} ?>
+                </td>
+                <td style="text-align:right; font-weight:bold">
+                    <?php if (!empty($p->DS)) {
 																		echo desimal($p->DS);
-																	} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP)) {
+																	} ?>
+                </td>
+                <td style="text-align:right; font-weight:bold">
+                    <?php if (!empty($p->SP)) {
 																		echo desimal($p->SP);
-																	} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->BBP)) {
+																	} ?>
+                </td>
+                <td style="text-align:right; font-weight:bold">
+                    <?php if (!empty($p->BBP)) {
 																		echo desimal($p->BBP);
-																	} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SPP)) {
+																	} ?>
+                </td>
+                <td style="text-align:right; font-weight:bold">
+                    <?php if (!empty($p->SPP)) {
 																		echo desimal($p->SPP);
-																	} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->CG5)) {
+																	} ?>
+                </td>
+                <td style="text-align:right; font-weight:bold">
+                    <?php if (!empty($p->CG5)) {
 																		echo desimal($p->CG5);
-																	} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SC)) {
+																	} ?>
+                </td>
+                <td style="text-align:right; font-weight:bold">
+                    <?php if (!empty($p->SC)) {
 																		echo desimal($p->SC);
-																	} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP8)) {
+																	} ?>
+                </td>
+                <td style="text-align:right; font-weight:bold">
+                    <?php if (!empty($p->SP8)) {
 																		echo desimal($p->SP8);
-																	} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP500)) {
+																	} ?>
+                </td>
+                <td style="text-align:right; font-weight:bold">
+                    <?php if (!empty($p->SP500)) {
 																		echo desimal($p->SP500);
-																	} ?></td>
+																	} ?>
+                </td>
+                <td style="text-align:right; font-weight:bold">
+                    <?php if (!empty($p->BR20)) {
+																		echo desimal($p->BR20);
+																	} ?>
+                </td>
                 <td>{{ $p->jml_sku }}</td>
 
             </tr>
@@ -200,60 +251,102 @@
         <tfoot>
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
                 <td style="text-align:center; font-weight:bold" colspan="4">TOTAL</td>
-                <td align="right"><?php if (!empty($totalAB)) {
+                <td align="right">
+                    <?php if (!empty($totalAB)) {
 										echo desimal($totalAB);
-									} ?></td>
-                <td align="right"><?php if (!empty($totalAR)) {
+									} ?>
+                </td>
+                <td align="right">
+                    <?php if (!empty($totalAR)) {
 										echo desimal($totalAR);
-									} ?></td>
-                <td align="right"><?php if (!empty($totalASE)) {
+									} ?>
+                </td>
+                <td align="right">
+                    <?php if (!empty($totalASE)) {
 										echo desimal($totalASE);
-									} ?></td>
-                <td align="right"><?php if (!empty($totalBB)) {
+									} ?>
+                </td>
+                <td align="right">
+                    <?php if (!empty($totalBB)) {
 										echo desimal($totalBB);
-									} ?></td>
-                <td align="right"><?php if (!empty($totalCG)) {
+									} ?>
+                </td>
+                <td align="right">
+                    <?php if (!empty($totalCG)) {
 										echo desimal($totalCG);
-									} ?></td>
-                <td align="right"><?php if (!empty($totalCGG)) {
+									} ?>
+                </td>
+                <td align="right">
+                    <?php if (!empty($totalCGG)) {
 										echo desimal($totalCGG);
-									} ?></td>
-                <td align="right"><?php if (!empty($totalDB)) {
+									} ?>
+                </td>
+                <td align="right">
+                    <?php if (!empty($totalDB)) {
 										echo desimal($totalDB);
-									} ?></td>
-                <td align="right"><?php if (!empty($totalDEP)) {
+									} ?>
+                </td>
+                <td align="right">
+                    <?php if (!empty($totalDEP)) {
 										echo desimal($totalDEP);
-									} ?></td>
-                <td align="right"><?php if (!empty($totalDK)) {
+									} ?>
+                </td>
+                <td align="right">
+                    <?php if (!empty($totalDK)) {
 										echo desimal($totalDK);
-									} ?></td>
-                <td align="right"><?php if (!empty($totalDS)) {
+									} ?>
+                </td>
+                <td align="right">
+                    <?php if (!empty($totalDS)) {
 										echo desimal($totalDS);
-									} ?></td>
-                <td align="right"><?php if (!empty($totalSP)) {
+									} ?>
+                </td>
+                <td align="right">
+                    <?php if (!empty($totalSP)) {
 										echo desimal($totalSP);
-									} ?></td>
-                <td align="right"><?php if (!empty($totalBBP)) {
+									} ?>
+                </td>
+                <td align="right">
+                    <?php if (!empty($totalBBP)) {
 										echo desimal($totalBBP);
-									} ?></td>
-                <td align="right"><?php if (!empty($totalSPP)) {
+									} ?>
+                </td>
+                <td align="right">
+                    <?php if (!empty($totalSPP)) {
 										echo desimal($totalSPP);
-									} ?></td>
-                <td align="right"><?php if (!empty($totalCG5)) {
+									} ?>
+                </td>
+                <td align="right">
+                    <?php if (!empty($totalCG5)) {
 										echo desimal($totalCG5);
-									} ?></td>
-                <td align="right"><?php if (!empty($totalSC)) {
+									} ?>
+                </td>
+                <td align="right">
+                    <?php if (!empty($totalSC)) {
 										echo desimal($totalSC);
-									} ?></td>
-                <td align="right"><?php if (!empty($totalSP8)) {
+									} ?>
+                </td>
+                <td align="right">
+                    <?php if (!empty($totalSP8)) {
 										echo desimal($totalSP8);
-									} ?></td>
-                <td align="right"><?php if (!empty($totalSP500)) {
+									} ?>
+                </td>
+                <td align="right">
+                    <?php if (!empty($totalSP500)) {
                                     echo desimal($totalSP500);
-                                } ?></td>
+                                } ?>
+                </td>
+
+                <td align="right">
+                    <?php if (!empty($totalBR20)) {
+                                    echo desimal($totalBR20);
+                                } ?>
+                </td>
+
 
             </tr>
         </tfoot>
     </table>
 </body>
+
 </html>

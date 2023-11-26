@@ -83,7 +83,8 @@
                     {{-- {{ $jarak["meters"] }} --}}
                     @if(in_array($level,$pelanggan_tambah))
                     <div class="card-header">
-                        <a href="/pelanggan/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
+                        <a href="/pelanggan/create" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah
+                            Data</a>
                     </div>
                     @endif
                     <div class="card-body">
@@ -95,8 +96,9 @@
                                         <select name="kode_cabang" id="kode_cabang" class="form-control">
                                             <option value="">Semua Cabang</option>
                                             @foreach ($cabang as $c)
-                                            <option {{ (Request('kode_cabang')==$c->kode_cabang ? 'selected':'')}} value="{{
-                                            $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
+                                            <option {{ (Request('kode_cabang')==$c->kode_cabang ? 'selected':'')}}
+                                                value="{{
+                                                $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -116,32 +118,41 @@
                                     <div class="form-group">
                                         <select name="status_pelanggan" id="status_pelanggan" class="form-control">
                                             <option value="">Status</option>
-                                            <option {{ (Request('status_pelanggan')=='1' ? 'selected' :'')}} value="1">AKTIF
+                                            <option {{ (Request('status_pelanggan')=='1' ? 'selected' :'')}} value="1">
+                                                AKTIF
                                             </option>
-                                            <option {{ (Request('status_pelanggan')=='0' ? 'selected' :'')}} value="0">NON
+                                            <option {{ (Request('status_pelanggan')=='0' ? 'selected' :'')}} value="0">
+                                                NON
                                                 AKTIF</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-lg-2 col-sm-12">
-                                    <x-inputtext label="Kode Pelanggan" field="kode_pelanggan" icon="feather icon-credit-card" value="{{ Request('kode_pelanggan') }}" />
+                                    <x-inputtext label="Kode Pelanggan" field="kode_pelanggan"
+                                        icon="feather icon-credit-card" value="{{ Request('kode_pelanggan') }}" />
                                 </div>
                                 <div class="col-lg-3 col-sm-12">
-                                    <x-inputtext label="Nama Pelanggan" field="nama" icon="feather icon-user" value="{{ Request('nama') }}" />
+                                    <x-inputtext label="Nama Pelanggan" field="nama" icon="feather icon-user"
+                                        value="{{ Request('nama') }}" />
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-5">
-                                    <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker value="{{ Request('dari') }}" />
+                                    <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker
+                                        value="{{ Request('dari') }}" />
                                 </div>
                                 <div class="col-lg-5">
-                                    <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker value="{{ Request('sampai') }}" />
+                                    <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker
+                                        value="{{ Request('sampai') }}" />
                                 </div>
                                 <div class="col-lg-2">
                                     <div class="form-group">
-                                        <button type="submit" name="submit" value="1" class="btn btn-primary"><i class="fa fa-search"></i> </button>
-                                        <button type="submit" name="export" value="2" class="btn btn-success"><i class="fa fa-download"></i> </button>
-                                        <a href="#" id="shownonaktif" class="btn btn-danger"><i class="feather icon-slash"></i> </a>
+                                        <button type="submit" name="submit" value="1" class="btn btn-primary"><i
+                                                class="fa fa-search"></i> </button>
+                                        <button type="submit" name="export" value="2" class="btn btn-success"><i
+                                                class="fa fa-download"></i> </button>
+                                        <a href="#" id="shownonaktif" class="btn btn-danger"><i
+                                                class="feather icon-slash"></i> </a>
                                     </div>
                                 </div>
                             </div>
@@ -179,14 +190,18 @@
                                     @foreach ($pelanggan as $d)
                                     <tr>
                                         @if (Auth::user()->level != "salesman")
-                                        <td class="text-center">{{ $loop->iteration + $pelanggan->firstItem() - 1 }}</td>
+                                        <td class="text-center">{{ $loop->iteration + $pelanggan->firstItem() - 1 }}
+                                        </td>
                                         @endif
                                         <td>{{ $d->kode_pelanggan }}</td>
-                                        <td class="detail" @if($level=="salesman" ) data-href="/pelanggan/showpelanggan?kode_pelanggan={{ Crypt::encrypt($d->kode_pelanggan) }} @endif">{{ $d->nama_pelanggan }}</td>
+                                        <td class="detail" @if($level=="salesman" )
+                                            data-href="/pelanggan/showpelanggan?kode_pelanggan={{ Crypt::encrypt($d->kode_pelanggan) }} @endif">
+                                            {{ $d->nama_pelanggan }}</td>
                                         @if (Auth::user()->level != "salesman")
                                         <td>{{ (!empty($d->jatuhtempo) ? $d->jatuhtempo.' Hari' : '' )}} </td>
                                         <td>{{ $d->pasar }}</td>
-                                        <td class="text-right">{{ (!empty($d->limitpel) ? rupiah($d->limitpel) : '') }}</td>
+                                        <td class="text-right">{{ (!empty($d->limitpel) ? rupiah($d->limitpel) : '') }}
+                                        </td>
                                         @endif
 
                                         <td>
@@ -195,8 +210,11 @@
                                             $path = Storage::url('pelanggan/'.$d->foto);
                                             @endphp
                                             <ul class="list-unstyled users-list m-0  d-flex align-items-center">
-                                                <li data-toggle="tooltip" data-popup="tooltip-custom" data-placement="bottom" data-original-title="Vinnie Mostowy" class="avatar pull-up">
-                                                    <img class="media-object rounded-circle" src="{{ url($path)}}" alt="Avatar" height="30" width="30">
+                                                <li data-toggle="tooltip" data-popup="tooltip-custom"
+                                                    data-placement="bottom" data-original-title="Vinnie Mostowy"
+                                                    class="avatar pull-up">
+                                                    <img class="media-object rounded-circle" src="{{ url($path)}}"
+                                                        alt="Avatar" height="30" width="30">
                                                 </li>
                                             </ul>
                                             @endif
@@ -216,15 +234,22 @@
                                         <td>
                                             <div class="btn-group" role="group" aria-label="Basic example">
                                                 @if (in_array($level,$pelanggan_edit))
-                                                <a class="ml-1" href="/pelanggan/{{\Crypt::encrypt($d->kode_pelanggan)}}/edit"><i class="feather icon-edit success"></i></a>
+                                                <a class="ml-1"
+                                                    href="/pelanggan/{{\Crypt::encrypt($d->kode_pelanggan)}}/edit"><i
+                                                        class="feather icon-edit success"></i></a>
                                                 @endif
                                                 @if (Auth::user()->level != "salesman")
-                                                <a class="ml-1 detailpelanggan" href="pelanggan/{{ Crypt::encrypt($d->kode_pelanggan) }}/show"><i class=" feather icon-file-text info"></i></a>
+                                                <a class="ml-1 detailpelanggan"
+                                                    href="pelanggan/{{ Crypt::encrypt($d->kode_pelanggan) }}/show"><i
+                                                        class=" feather icon-file-text info"></i></a>
                                                 @else
-                                                <a class="ml-1" href="/pelanggan/{{ Crypt::encrypt($d->kode_pelanggan) }}/capturetoko"><i class="feather icon-camera info"></i></a>
+                                                <a class="ml-1"
+                                                    href="/pelanggan/{{ Crypt::encrypt($d->kode_pelanggan) }}/capturetoko"><i
+                                                        class="feather icon-camera info"></i></a>
                                                 @endif
                                                 @if (in_array($level,$pelanggan_hapus))
-                                                <form method="POST" name="deleteform" class="deleteform" action="/pelanggan/{{ Crypt::encrypt($d->kode_pelanggan) }}/delete">
+                                                <form method="POST" name="deleteform" class="deleteform"
+                                                    action="/pelanggan/{{ Crypt::encrypt($d->kode_pelanggan) }}/delete">
                                                     @csrf
                                                     @method('DELETE')
                                                     <a href="#" class="delete-confirm ml-1">
@@ -234,9 +259,17 @@
                                                 @endif
                                                 @if (Auth::user()->level != "salesman")
                                                 @if (in_array($level,$pelanggan_ajuanlimit))
-                                                <a class="ml-1" href="/limitkredit/{{\Crypt::encrypt($d->kode_pelanggan)}}/create"><i class="feather icon-external-link primary"></i></a>
+                                                <a class="ml-1"
+                                                    href="/limitkredit/{{\Crypt::encrypt($d->kode_pelanggan)}}/create"><i
+                                                        class="feather icon-external-link primary"></i></a>
 
-                                                <a class="ml-1 ajukanfaktur" kode_pelanggan="{{ Crypt::encrypt($d->kode_pelanggan) }}" href="#"><i class="feather icon-external-link warning"></i></a>
+                                                <a class="ml-1 ajukanfaktur"
+                                                    kode_pelanggan="{{ Crypt::encrypt($d->kode_pelanggan) }}"
+                                                    href="#"><i class="feather icon-external-link warning"></i></a>
+
+                                                <a class="ml-1 ajuanrouting"
+                                                    kode_pelanggan="{{ Crypt::encrypt($d->kode_pelanggan) }}"
+                                                    href="#"><i class="feather icon-external-link info"></i></a>
                                                 @endif
                                                 @endif
                                             </div>
@@ -256,7 +289,8 @@
         <!-- Data list view end -->
     </div>
 </div>
-<div class="modal fade text-left" id="mdlshownonaktif" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+<div class="modal fade text-left" id="mdlshownonaktif" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -272,7 +306,8 @@
     </div>
 </div>
 
-<div class="modal fade text-left" id="mdlajukanfaktur" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+<div class="modal fade text-left" id="mdlajukanfaktur" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -287,6 +322,22 @@
     </div>
 </div>
 
+
+<div class="modal fade text-left" id="mdlajuanrouting" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel18">Ajukan Routing </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="loadformajuanrouting">
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @push('myscript')
 <script>
@@ -297,6 +348,14 @@
             $("#mdlajukanfaktur").modal("show");
             // /alert(kode_pelanggan);
             $("#loadformajukanfaktur").load('/ajuanfaktur/' + kode_pelanggan + '/create');
+        });
+
+        $(".ajuanrouting").click(function(e) {
+            e.preventDefault();
+            var kode_pelanggan = $(this).attr("kode_pelanggan");
+            $("#mdlajuanrouting").modal("show");
+            // /alert(kode_pelanggan);
+            $("#loadformajuanrouting").load('/ajuanrouting/' + kode_pelanggan + '/create');
         });
 
         $("#shownonaktif").click(function(e) {

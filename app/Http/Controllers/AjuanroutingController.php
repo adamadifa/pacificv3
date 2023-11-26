@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Ajuanfaktur;
+use App\Models\Ajuanrouting;
 use App\Models\Cabang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,9 +11,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
 
-class AjuanfakturController extends Controller
+class AjuanroutingController extends Controller
 {
-
     protected $cabang;
     protected $level;
     public function __construct()
@@ -27,11 +26,12 @@ class AjuanfakturController extends Controller
         View::share('cabang', $this->cabang);
     }
 
+
     public function index(Request $request)
     {
         $wilayah = Auth::user()->wilayah;
         $pelanggan = $request->nama_pelanggan;
-        $query = Ajuanfaktur::query();
+        $query = Ajuanrouting::query();
         if ($this->cabang != "PCF") {
             $query->where('pelanggan.kode_cabang', $this->cabang);
         } else {
@@ -40,10 +40,10 @@ class AjuanfakturController extends Controller
                 $query->whereIn('pelanggan.kode_cabang', $wilayah_user);
             }
         }
-        $query->select('pengajuan_faktur.*', 'nama_pelanggan', 'nama_karyawan');
-        $query->join('pelanggan', 'pengajuan_faktur.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        $query->select('pengajuan_routing.*', 'nama_pelanggan', 'nama_karyawan');
+        $query->join('pelanggan', 'pengajuan_routing.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
         $query->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
-        $query->leftJoin('users', 'pengajuan_faktur.id_approval', '=', 'users.id');
+        $query->leftJoin('users', 'pengajuan_routing.id_approval', '=', 'users.id');
         if (!empty($request->nama_pelanggan)) {
             $query->where('nama_pelanggan', 'like', '%' . $pelanggan . '%');
         }
@@ -69,7 +69,7 @@ class AjuanfakturController extends Controller
             }
 
             if (!empty($request->status)) {
-                $query->where('pengajuan_faktur.status', $status);
+                $query->where('pengajuan_routing.status', $status);
             }
         }
         if ($this->level == "kepala penjualan") {
@@ -77,13 +77,13 @@ class AjuanfakturController extends Controller
                 $query->whereNull('kacab');
             } else if ($request->status == "disetujui") {
                 $query->whereNotNull('kacab');
-                $query->where('pengajuan_faktur.status', '!=', 2);
+                $query->where('pengajuan_routing.status', '!=', 2);
                 $query->orwhereNotNull('kacab');
-                $query->where('pengajuan_faktur.status', '=', 2);
+                $query->where('pengajuan_routing.status', '=', 2);
                 $query->where('level', '!=', Auth::user()->level);
             } else if ($request->status == "ditolak") {
                 $query->whereNotNull('kacab');
-                $query->where('pengajuan_faktur.status', 2);
+                $query->where('pengajuan_routing.status', 2);
                 $query->where('level', Auth::user()->level);
             }
             //$query->where('jumlah', '>', 2000000);
@@ -96,13 +96,13 @@ class AjuanfakturController extends Controller
                 $query->whereNull('rsm');
             } else if ($request->status == "disetujui") {
                 $query->whereNotNull('rsm');
-                $query->where('pengajuan_faktur.status', '!=', 2);
+                $query->where('pengajuan_routing.status', '!=', 2);
                 $query->orwhereNotNull('rsm');
-                $query->where('pengajuan_faktur.status', '=', 2);
+                $query->where('pengajuan_routing.status', '=', 2);
                 $query->where('level', '!=', Auth::user()->level);
             } else if ($request->status == "ditolak") {
                 $query->whereNotNull('rsm');
-                $query->where('pengajuan_faktur.status', 2);
+                $query->where('pengajuan_routing.status', 2);
                 $query->where('level', Auth::user()->level);
             }
         }
@@ -111,17 +111,17 @@ class AjuanfakturController extends Controller
             if ($request->status == "pending") {
                 $query->whereNotNull('rsm');
                 $query->whereNull('mm');
-                $query->where('pengajuan_faktur.status', 0);
+                $query->where('pengajuan_routing.status', 0);
                 $query->whereNotNull('rsm');
             } else if ($request->status == "disetujui") {
                 $query->whereNotNull('mm');
-                $query->where('pengajuan_faktur.status', '!=', 2);
+                $query->where('pengajuan_routing.status', '!=', 2);
                 $query->orwhereNotNull('mm');
-                $query->where('pengajuan_faktur.status', '=', 2);
+                $query->where('pengajuan_routing.status', '=', 2);
                 $query->where('level', '!=', Auth::user()->level);
             } else if ($request->status == "ditolak") {
                 $query->whereNotNull('mm');
-                $query->where('pengajuan_faktur.status', 2);
+                $query->where('pengajuan_routing.status', 2);
                 $query->where('level', Auth::user()->level);
             }
         }
@@ -130,87 +130,36 @@ class AjuanfakturController extends Controller
             if ($request->status == "pending") {
                 $query->whereNotNull('mm');
                 $query->whereNull('dirut');
-                $query->where('pengajuan_faktur.status', 0);
+                $query->where('pengajuan_routing.status', 0);
             } else if ($request->status == "disetujui") {
                 $query->whereNotNull('dirut');
-                $query->where('pengajuan_faktur.status', '!=', 2);
+                $query->where('pengajuan_routing.status', '!=', 2);
                 $query->orwhereNotNull('dirut');
-                $query->where('pengajuan_faktur.status', '=', 2);
+                $query->where('pengajuan_routing.status', '=', 2);
                 $query->where('level', '!=', Auth::user()->level);
             } else if ($request->status == "ditolak") {
                 $query->whereNotNull('mm');
                 $query->whereNotNull('dirut');
-                $query->where('pengajuan_faktur.status', 2);
+                $query->where('pengajuan_routing.status', 2);
                 $query->where('level', Auth::user()->level);
             }
         }
         $query->orderBy('no_pengajuan');
-        $ajuanfaktur = $query->paginate(30);
-        $ajuanfaktur->appends($request->all());
+        $ajuanrouting = $query->paginate(30);
+        $ajuanrouting->appends($request->all());
         $cbg = new Cabang();
         $cabang = $cbg->getCabanggudang(Auth::user()->kode_cabang);
-        return view('ajuanfaktur.index', compact('ajuanfaktur', 'cabang'));
+        return view('ajuanrouting.index', compact('ajuanrouting', 'cabang'));
     }
 
 
-    public function indexsalesman(Request $request)
-    {
-        $pelanggan = $request->nama_pelanggan;
-        $query = Ajuanfaktur::query();
-        if ($this->cabang != "PCF") {
-            $query->where('pelanggan.kode_cabang', $this->cabang);
-        }
-        $query->select('pengajuan_faktur.*', 'nama_pelanggan', 'nama_karyawan');
-        $query->join('pelanggan', 'pengajuan_faktur.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
-        $query->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
-        $query->leftJoin('users', 'pengajuan_faktur.id_approval', '=', 'users.id');
-        if (!empty($request->nama_pelanggan)) {
-            $query->where('nama_pelanggan', 'like', '%' . $pelanggan . '%');
-        }
-
-        if (!empty($request->dari) && !empty($request->sampai)) {
-            $query->whereBetween('tgl_pengajuan', [$request->dari, $request->sampai]);
-        }
-
-
-        if ($request->status == "pending") {
-            $status = 0;
-        } elseif ($request->status == "disetujui") {
-            $status = 1;
-        } elseif ($request->status == "ditolak") {
-            $status = 2;
-        }
-
-        if (!empty($request->status)) {
-            $query->where('pengajuan_faktur.status', $status);
-        }
-
-        $query->where('pelanggan.id_sales', Auth::user()->id_salesman);
-        $query->orderBy('no_pengajuan');
-
-        $ajuanfaktur = $query->get();
-
-        $cbg = new Cabang();
-        $cabang = $cbg->getCabanggudang(Auth::user()->kode_cabang);
-        return view('ajuanfaktur.indexsalesman', compact('ajuanfaktur', 'cabang'));
-    }
     public function create($kode_pelanggan)
     {
         $kode_pelanggan = Crypt::decrypt($kode_pelanggan);
         $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)
             ->leftJoin('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan')
             ->first();
-        return view('ajuanfaktur.create', compact('pelanggan'));
-    }
-
-    public function edit($no_pengajuan)
-    {
-        $no_pengajuan = Crypt::decrypt($no_pengajuan);
-        $ajuanfaktur = DB::table('pengajuan_faktur')->where('no_pengajuan', $no_pengajuan)
-            ->join('pelanggan', 'pengajuan_faktur.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
-            ->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan')
-            ->first();
-        return view('ajuanfaktur.edit', compact('ajuanfaktur'));
+        return view('ajuanrouting.create', compact('pelanggan'));
     }
 
     public function store($kode_pelanggan, Request $request)
@@ -219,13 +168,16 @@ class AjuanfakturController extends Controller
         $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)->first();
         $kode_cabang = $pelanggan->kode_cabang;
         $tgl_pengajuan = $request->tgl_pengajuan;
-        $jmlfaktur = $request->jmlfaktur;
+        $hari = "";
+        foreach ($request->hari as $d) {
+            $hari .= $d . ",";
+        }
         $keterangan = $request->keterangan;
-        $sikluspembayaran = $request->sikluspembayaran;
+
         $tgl = explode("-", $tgl_pengajuan);
         $tahun = $tgl[0];
         $thn = substr($tahun, 2, 2);
-        $lastajuan = DB::table('pengajuan_faktur')
+        $lastajuan = DB::table('pengajuan_routing')
             ->select('no_pengajuan')
             ->whereRaw('YEAR(tgl_pengajuan) = "' . $tahun . '"')
             ->whereRaw('MID(no_pengajuan,4,3) = "' . $kode_cabang . '"')
@@ -233,32 +185,31 @@ class AjuanfakturController extends Controller
             ->first();
 
         if ($lastajuan == null) {
-            $last_no_pengajuan = 'PJF' . $kode_cabang . $thn . '00000';
+            $last_no_pengajuan = 'PJR' . $kode_cabang . $thn . '00000';
         } else {
             $last_no_pengajuan = $lastajuan->no_pengajuan;
         }
-        $no_pengajuan = buatkode($last_no_pengajuan, 'PJF' . $kode_cabang . $thn, 5);
+        $no_pengajuan = buatkode($last_no_pengajuan, 'PJR' . $kode_cabang . $thn, 5);
 
         try {
-            DB::table('pengajuan_faktur')->insert([
+            DB::table('pengajuan_routing')->insert([
                 'no_pengajuan' => $no_pengajuan,
                 'tgl_pengajuan' => $tgl_pengajuan,
                 'kode_pelanggan' => $kode_pelanggan,
-                'jmlfaktur' => $jmlfaktur,
-                'sikluspembayaran' => $sikluspembayaran,
+                'hari' => $hari,
                 'keterangan' => $keterangan
             ]);
 
             if (Auth::user()->level == "salesman") {
-                return redirect('/ajuanfaktur/salesman')->with(['success' => 'Data Berhasil Disimpan']);
+                return redirect('/ajuanrouting/salesman')->with(['success' => 'Data Berhasil Disimpan']);
             } else {
-                return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+                return redirect('/ajuanrouting')->with(['success' => 'Data Berhasil Disimpan']);
             }
         } catch (\Exception $e) {
             if (Auth::user()->level == "salesman") {
-                return redirect('/ajuanfaktur/salesman')->with(['warning' => 'Data Gagal Disimpan']);
+                return redirect('/ajuanrouting/salesman')->with(['warning' => 'Data Gagal Disimpan']);
             } else {
-                return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);
+                return redirect('/ajuanrouting')->with(['warning' => 'Data Gagal Disimpan']);
             }
 
             //throw $th;
@@ -266,22 +217,36 @@ class AjuanfakturController extends Controller
     }
 
 
+    public function edit($no_pengajuan)
+    {
+        $no_pengajuan = Crypt::decrypt($no_pengajuan);
+        $ajuanrouting = DB::table('pengajuan_routing')->where('no_pengajuan', $no_pengajuan)
+            ->select('pengajuan_routing.*', 'nama_pelanggan', 'alamat_pelanggan', 'nama_karyawan')
+            ->join('pelanggan', 'pengajuan_routing.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+            ->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan')
+            ->first();
+        return view('ajuanrouting.edit', compact('ajuanrouting'));
+    }
+
+
     public function update($no_pengajuan, Request $request)
     {
         $no_pengajuan = Crypt::decrypt($no_pengajuan);
         $tgl_pengajuan = $request->tgl_pengajuan;
-        $jmlfaktur = $request->jmlfaktur;
+        $hari = "";
+        foreach ($request->hari as $d) {
+            $hari .= $d . ",";
+        }
         $keterangan = $request->keterangan;
-        $sikluspembayaran = $request->sikluspembayaran;
+
 
 
         try {
-            DB::table('pengajuan_faktur')
+            DB::table('pengajuan_routing')
                 ->where('no_pengajuan', $no_pengajuan)
                 ->update([
                     'tgl_pengajuan' => $tgl_pengajuan,
-                    'jmlfaktur' => $jmlfaktur,
-                    'sikluspembayaran' => $sikluspembayaran,
+                    'hari' => $hari,
                     'keterangan' => $keterangan
                 ]);
             return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
@@ -327,7 +292,7 @@ class AjuanfakturController extends Controller
         DB::beginTransaction();
         try {
 
-            DB::table('pengajuan_faktur')
+            DB::table('pengajuan_routing')
                 ->where('no_pengajuan', $no_pengajuan)
                 ->update($datastatus);
 
@@ -376,7 +341,7 @@ class AjuanfakturController extends Controller
         DB::beginTransaction();
         try {
 
-            DB::table('pengajuan_faktur')
+            DB::table('pengajuan_routing')
                 ->where('no_pengajuan', $no_pengajuan)
                 ->update($datastatus);
 
@@ -394,20 +359,10 @@ class AjuanfakturController extends Controller
     {
         $no_pengajuan = Crypt::decrypt($no_pengajuan);
         try {
-            DB::table('pengajuan_faktur')->where('no_pengajuan', $no_pengajuan)->delete();
+            DB::table('pengajuan_routing')->where('no_pengajuan', $no_pengajuan)->delete();
             return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
         } catch (\Exception $e) {
             return Redirect::back()->with(['error' => 'Data Gagal Disimpan']);
         }
-    }
-
-
-    public function createfromsales($kode_pelanggan)
-    {
-        $kode_pelanggan = Crypt::decrypt($kode_pelanggan);
-        $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)
-            ->leftJoin('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan')
-            ->first();
-        return view('ajuanfaktur.createfromsales', compact('pelanggan'));
     }
 }
