@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AjuanfakturController;
 use App\Http\Controllers\AjuanroutingController;
+use App\Http\Controllers\AjuantransferdanaController;
 use App\Http\Controllers\AnggotaController;
 use App\Http\Controllers\AngkutanController;
 use App\Http\Controllers\Auth\LoginController;
@@ -1918,6 +1919,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/ajuanrouting/{no_pengajuan}/approve', [AjuanroutingController::class, 'approve']);
     Route::get('/ajuanrouting/{no_pengajuan}/decline', [AjuanroutingController::class, 'decline']);
     Route::delete('/ajuanrouting/{no_pengajuan}/delete', [AjuanroutingController::class, 'delete']);
+
+
+
+
+    //Ajuan Transfer Dana View
+    Route::get('/ajuantransferdana', [AjuantransferdanaController::class, 'index']);
+
+
     //LogAktivitas
 
     Route::get('/logaktivitas', [LogaktivitasController::class, 'index']);

@@ -25,10 +25,12 @@
                     <form action="/ajuanfaktur">
                         <div class="row">
                             <div class="col-lg-6">
-                                <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker value="{{ Request('dari') }}" />
+                                <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker
+                                    value="{{ Request('dari') }}" />
                             </div>
                             <div class="col-lg-6">
-                                <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker value="{{ Request('sampai') }}" />
+                                <x-inputtext label="Sampai" field="sampai" icon="feather icon-calendar" datepicker
+                                    value="{{ Request('sampai') }}" />
                             </div>
                         </div>
                         <div class="row">
@@ -46,25 +48,31 @@
                             </div>
                             @endif
                             <div class="col-lg-3 col-sm-12">
-                                <x-inputtext label="Nama Pelanggan" field="nama_pelanggan" icon="feather icon-user" value="{{ Request('nama_pelanggan') }}" />
+                                <x-inputtext label="Nama Pelanggan" field="nama_pelanggan" icon="feather icon-user"
+                                    value="{{ Request('nama_pelanggan') }}" />
                             </div>
                             <div class="col-lg-3 col-sm-12">
                                 <div class="form-group">
                                     <select name="status" id="status" class="form-control">
                                         <option value="">Semua Status Pengajuan</option>
-                                        <option {{ (Request('status')=='pending' ? 'selected' :'')}} value="pending">BELUM DISETUJUI {{ Str::upper(Auth::user()->level)  }}</option>
-                                        <option {{ (Request('status')=='disetujui' ? 'selected' :'')}} value="disetujui">DISETUJUI {{ Str::upper(Auth::user()->level)  }}</option>
-                                        <option {{ (Request('status')=='ditolak' ? 'selected' :'')}} value="ditolak">DITOLAK {{ Str::upper(Auth::user()->level)  }}</option>
+                                        <option {{ (Request('status')=='pending' ? 'selected' :'')}} value="pending">
+                                            BELUM DISETUJUI {{ Str::upper(Auth::user()->level) }}</option>
+                                        <option {{ (Request('status')=='disetujui' ? 'selected' :'')}}
+                                            value="disetujui">DISETUJUI {{ Str::upper(Auth::user()->level) }}</option>
+                                        <option {{ (Request('status')=='ditolak' ? 'selected' :'')}} value="ditolak">
+                                            DITOLAK {{ Str::upper(Auth::user()->level) }}</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="col-lg-2 col-sm-12">
-                                <button type="submit" name="submit" value="1" class="btn btn-primary w-100"><i class="fa fa-search"></i> Cari Data </button>
+                                <button type="submit" name="submit" value="1" class="btn btn-primary w-100"><i
+                                        class="fa fa-search"></i> Cari Data </button>
                             </div>
                         </div>
                     </form>
                     @include('layouts.notification')
+
                     <div class="table-responsive mt-2">
                         <table class="table table-hover-animation ">
                             <thead class="thead-dark">
@@ -94,13 +102,15 @@
                                     <td>{{ $d->jmlfaktur }}</td>
                                     <td>
                                         @if ($d->sikluspembayaran ==1)
-                                        <span class="badge bg-success">Pembayaran Saat Turun Barang Order Selanjutnya</span>
+                                        <span class="badge bg-success">Pembayaran Saat Turun Barang Order
+                                            Selanjutnya</span>
                                         <br>
                                         @endif
                                         {{ $d->keterangan }}
                                     </td>
                                     <td>
-                                        <a href="/pelanggan/{{ Crypt::encrypt($d->kode_pelanggan) }}/show"><span class="badge bg-success">Lihat Histori</span></a>
+                                        <a href="/pelanggan/{{ Crypt::encrypt($d->kode_pelanggan) }}/show"><span
+                                                class="badge bg-success">Lihat Histori</span></a>
                                     </td>
                                     <td>
                                         @if (empty($d->kacab))
@@ -160,8 +170,11 @@
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             @if(in_array($level,$limitkredit_hapus))
                                             @if (empty($d->rsm))
-                                            <a class="ml-1 editajuan" href="#" no_pengajuan="{{ Crypt::encrypt($d->no_pengajuan)}}"><i class="feather icon-edit success"></i></a>
-                                            <form method="POST" name="deleteform" class="deleteform" action="/ajuanfaktur/{{ Crypt::encrypt($d->no_pengajuan) }}/delete">
+                                            <a class="ml-1 editajuan" href="#"
+                                                no_pengajuan="{{ Crypt::encrypt($d->no_pengajuan)}}"><i
+                                                    class="feather icon-edit success"></i></a>
+                                            <form method="POST" name="deleteform" class="deleteform"
+                                                action="/ajuanfaktur/{{ Crypt::encrypt($d->no_pengajuan) }}/delete">
                                                 @csrf
                                                 @method('DELETE')
                                                 <a href="#" class="delete-confirm ml-1">
@@ -175,50 +188,83 @@
                                             @if($level == "kepala penjualan" && empty($d->kacab) && $d->status==0
                                             || $level == "kepala admin" && empty($d->kacab) && $d->status==0
 
-                                            || $level == "kepala penjualan" && !empty($d->kacab) && empty($d->mm) && $d->status==2
-                                            || $level == "kepala admin" && !empty($d->kacab) && empty($d->mm) && $d->status==2
+                                            || $level == "kepala penjualan" && !empty($d->kacab) && empty($d->mm) &&
+                                            $d->status==2
+                                            || $level == "kepala admin" && !empty($d->kacab) && empty($d->mm) &&
+                                            $d->status==2
 
-                                            || $level == "kepala penjualan" && !empty($d->kacab) && empty($d->mm) && $d->status==1
-                                            || $level == "kepala admin" && !empty($d->kacab) && empty($d->mm) && $d->status==1
+                                            || $level == "kepala penjualan" && !empty($d->kacab) && empty($d->mm) &&
+                                            $d->status==1
+                                            || $level == "kepala admin" && !empty($d->kacab) && empty($d->mm) &&
+                                            $d->status==1
 
-                                            || $level == "kepala penjualan" && !empty($d->kacab) && empty($d->mm) && $d->status==0
-                                            || $level == "kepala admin" && !empty($d->kacab) && empty($d->mm) && $d->status==0)
+                                            || $level == "kepala penjualan" && !empty($d->kacab) && empty($d->mm) &&
+                                            $d->status==0
+                                            || $level == "kepala admin" && !empty($d->kacab) && empty($d->mm) &&
+                                            $d->status==0)
 
-                                            <a class="ml-1" href="/ajuanfaktur/{{ Crypt::encrypt($d->no_pengajuan) }}/approve"><i class=" fa fa-check success"></i></a>
-                                            <a class="ml-1" href="/ajuanfaktur/{{ Crypt::encrypt($d->no_pengajuan) }}/decline"><i class=" fa fa-close danger"></i></a>
+                                            <a class="ml-1"
+                                                href="/ajuanfaktur/{{ Crypt::encrypt($d->no_pengajuan) }}/approve"><i
+                                                    class=" fa fa-check success"></i></a>
+                                            <a class="ml-1"
+                                                href="/ajuanfaktur/{{ Crypt::encrypt($d->no_pengajuan) }}/decline"><i
+                                                    class=" fa fa-close danger"></i></a>
                                             @endif
 
 
                                             <!-- RSM -->
-                                            @if($level=="rsm" && !empty($d->kacab) && empty($d->rsm) && empty($d->mm) && $d->status==0
-                                            || $level == "rsm" && !empty($d->kacab) && !empty($d->rsm) && empty($d->mm) && $d->status==2
-                                            || $level == "rsm" && !empty($d->kacab) && !empty($d->rsm) && empty($d->mm) && $d->status==0)
-                                            <a class="ml-1" href="/ajuanfaktur/{{ Crypt::encrypt($d->no_pengajuan) }}/approve"><i class=" fa fa-check success"></i></a>
-                                            <a class="ml-1" href="/ajuanfaktur/{{ Crypt::encrypt($d->no_pengajuan) }}/decline"><i class=" fa fa-close danger"></i></a>
+                                            @if($level=="rsm" && !empty($d->kacab) && empty($d->rsm) && empty($d->mm) &&
+                                            $d->status==0
+                                            || $level == "rsm" && !empty($d->kacab) && !empty($d->rsm) && empty($d->mm)
+                                            && $d->status==2
+                                            || $level == "rsm" && !empty($d->kacab) && !empty($d->rsm) && empty($d->mm)
+                                            && $d->status==0)
+                                            <a class="ml-1"
+                                                href="/ajuanfaktur/{{ Crypt::encrypt($d->no_pengajuan) }}/approve"><i
+                                                    class=" fa fa-check success"></i></a>
+                                            <a class="ml-1"
+                                                href="/ajuanfaktur/{{ Crypt::encrypt($d->no_pengajuan) }}/decline"><i
+                                                    class=" fa fa-close danger"></i></a>
                                             @endif
 
                                             <!-- General Manager -->
 
-                                            @if ($level=="manager marketing" && !empty($d->rsm) && empty($d->mm) && empty($d->dirut) && $d->status==0
-                                            || $level =="manager marketing" && !empty($d->rsm) && !empty($d->mm) && empty($d->dirut) && $d->status==2
-                                            || $level =="manager marketing" && !empty($d->rsm) && !empty($d->mm) && empty($d->dirut) && $d->status==0
-                                            || $level =="manager marketing" && !empty($d->rsm) && !empty($d->mm) && empty($d->dirut) && $d->status!=2)
+                                            @if ($level=="manager marketing" && !empty($d->rsm) && empty($d->mm) &&
+                                            empty($d->dirut) && $d->status==0
+                                            || $level =="manager marketing" && !empty($d->rsm) && !empty($d->mm) &&
+                                            empty($d->dirut) && $d->status==2
+                                            || $level =="manager marketing" && !empty($d->rsm) && !empty($d->mm) &&
+                                            empty($d->dirut) && $d->status==0
+                                            || $level =="manager marketing" && !empty($d->rsm) && !empty($d->mm) &&
+                                            empty($d->dirut) && $d->status!=2)
 
 
-                                            <a class="ml-1" href="/ajuanfaktur/{{ Crypt::encrypt($d->no_pengajuan) }}/approve"><i class=" fa fa-check success"></i></a>
-                                            <a class="ml-1" href="/ajuanfaktur/{{ Crypt::encrypt($d->no_pengajuan) }}/decline"><i class=" fa fa-close danger"></i></a>
+                                            <a class="ml-1"
+                                                href="/ajuanfaktur/{{ Crypt::encrypt($d->no_pengajuan) }}/approve"><i
+                                                    class=" fa fa-check success"></i></a>
+                                            <a class="ml-1"
+                                                href="/ajuanfaktur/{{ Crypt::encrypt($d->no_pengajuan) }}/decline"><i
+                                                    class=" fa fa-close danger"></i></a>
 
 
 
                                             @endif
 
                                             <!-- Direktur -->
-                                            @if ($level=="direktur" && !empty($d->mm) && empty($d->dirut) && $d->status==0
-                                            || $level =="direktur" && !empty($d->mm) && !empty($d->dirut) && $d->status==2
-                                            || $level =="direktur" && !empty($d->mm) && !empty($d->dirut) && $d->status==0
-                                            || $level =="direktur" && !empty($d->mm) && !empty($d->dirut) && $d->status!=2)
-                                            <a class="ml-1" href="/ajuanfaktur/{{ Crypt::encrypt($d->no_pengajuan) }}/approve"><i class=" fa fa-check success"></i></a>
-                                            <a class="ml-1" href="/ajuanfaktur/{{ Crypt::encrypt($d->no_pengajuan) }}/decline"><i class=" fa fa-close danger"></i></a>
+                                            @if ($level=="direktur" && !empty($d->mm) && empty($d->dirut) &&
+                                            $d->status==0
+                                            || $level =="direktur" && !empty($d->mm) && !empty($d->dirut) &&
+                                            $d->status==2
+                                            || $level =="direktur" && !empty($d->mm) && !empty($d->dirut) &&
+                                            $d->status==0
+                                            || $level =="direktur" && !empty($d->mm) && !empty($d->dirut) &&
+                                            $d->status!=2)
+                                            <a class="ml-1"
+                                                href="/ajuanfaktur/{{ Crypt::encrypt($d->no_pengajuan) }}/approve"><i
+                                                    class=" fa fa-check success"></i></a>
+                                            <a class="ml-1"
+                                                href="/ajuanfaktur/{{ Crypt::encrypt($d->no_pengajuan) }}/decline"><i
+                                                    class=" fa fa-close danger"></i></a>
                                             @endif
                                         </div>
                                     </td>
@@ -234,7 +280,8 @@
         </div>
     </div>
 </div>
-<div class="modal fade text-left" id="mdlajukanfaktur" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+<div class="modal fade text-left" id="mdlajukanfaktur" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
+    aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">

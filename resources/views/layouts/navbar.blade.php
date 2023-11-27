@@ -1148,7 +1148,14 @@
                     </li>
                     @endif
 
-
+                    @if (in_array($level, $ajuantransferdana_view))
+                    <li class="{{ request()->is(['ajuantransferdana', 'ajuantransferdana/*']) ? 'active' : '' }}">
+                        <a href="/ajuantransferdana">
+                            <i class="feather icon-book"></i>
+                            <span class="menu-item" data-i18n="Second Level">Ajuan Transfer Dana</span>
+                        </a>
+                    </li>
+                    @endif
                     @if (in_array($level, $laporankeuangan_view))
                     <li class="{{ request()->is(['laporankeuangan', 'laporankeuangan/*']) ? 'active' : '' }}">
                         @if ($level == "kasir" || $level == "admin persediaan dan kasir" || $level == "admin penjualan
