@@ -179,7 +179,7 @@ class PinjamanController extends Controller
 
         $query->orderBy('no_pinjaman', 'desc');
 
-        dd($query->get());
+        //dd($query->get());
         $pinjaman = $query->paginate(15);
         $pinjaman->appends($request->all());
 
