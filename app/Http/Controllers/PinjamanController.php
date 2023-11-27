@@ -132,9 +132,9 @@ class PinjamanController extends Controller
             $query->where('id_perusahaan', 'PCF');
         }
 
-        if (!in_array($level, $level_show_all)) {
-            $query->whereNotIn('id_jabatan', $show_for_hrd);
-        }
+        // if (!in_array($level, $level_show_all)) {
+        //     $query->whereNotIn('id_jabatan', $show_for_hrd);
+        // }
 
 
         if ($level == "admin pdqc") {
