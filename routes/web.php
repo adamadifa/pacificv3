@@ -1925,6 +1925,7 @@ Route::middleware(['auth'])->group(function () {
 
     //Ajuan Transfer Dana View
     Route::get('/ajuantransferdana', [AjuantransferdanaController::class, 'index']);
+    Route::get('/ajuantransferdana/create', [AjuantransferdanaController::class, 'create']);
 
 
     //LogAktivitas

@@ -14,4 +14,9 @@ class AjuantransferdanaController extends Controller
         $cabang = $cbg->getCabanggudang(Auth::user()->kode_cabang);
         return view('ajuantransferdana.index', compact('cabang'));
     }
+
+    public function create()
+    {
+        return view('ajuantransferdana.create');
+    }
 }
