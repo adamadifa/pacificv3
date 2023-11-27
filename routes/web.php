@@ -1930,6 +1930,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/ajuantransferdana/{no_pengajuan}/edit', [AjuantransferdanaController::class, 'edit']);
     Route::post('/ajuantransferdana/{no_pengajuan}/update', [AjuantransferdanaController::class, 'update']);
     Route::get('/ajuantransferdana/{no_pengajuan}/prosesajuan', [AjuantransferdanaController::class, 'prosesajuan']);
+    Route::post('/ajuantransferdana/{no_pengajuan}/proses', [AjuantransferdanaController::class, 'proses']);
+    Route::get('/ajuantransferdana/{no_pengajuan}/batalkan', [AjuantransferdanaController::class, 'batalkan']);
 
 
     //LogAktivitas

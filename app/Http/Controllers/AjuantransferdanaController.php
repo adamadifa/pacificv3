@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 
 class AjuantransferdanaController extends Controller
 {
@@ -137,5 +138,37 @@ class AjuantransferdanaController extends Controller
         $cbg = new Cabang();
         $cabang = $cbg->getCabanggudang(Auth::user()->kode_cabang);
         return view('ajuantransferdana.prosesajuan', compact('cabang', 'ajuantransferdana'));
+    }
+
+
+    public function proses($no_pengajuan, Request $request)
+    {
+        $no_pengajuan = Crypt::decrypt($no_pengajuan);
+        $tgl_proses = $request->tgl_proses;
+        try {
+            DB::table('pengajuan_transfer_dana')->where('no_pengajuan', $no_pengajuan)
+                ->update([
+                    'tgl_proses' => $tgl_proses,
+                    'proses_by' => Auth::user()->id
+                ]);
+            return Redirect::back()->with(['success' => 'Data Berhasil di Proses']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Data Gagal di Proses']);
+        }
+    }
+
+    public function batalkan($no_pengajuan)
+    {
+        $no_pengajuan = Crypt::decrypt($no_pengajuan);
+        try {
+            DB::table('pengajuan_transfer_dana')->where('no_pengajuan', $no_pengajuan)
+                ->update([
+                    'tgl_proses' => NULL,
+                    'proses_by' => NULL
+                ]);
+            return Redirect::back()->with(['success' => 'Data Berhasil di Proses']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Data Gagal di Proses']);
+        }
     }
 }

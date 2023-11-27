@@ -94,24 +94,36 @@
                                             <td>{{ rupiah($d->jumlah) }}</td>
                                             <td>{{ $d->keterangan }}</td>
                                             <td>{{ $d->kode_cabang }}</td>
-                                            <td></td>
+                                            <td>
+                                                @if (empty($d->tgl_proses))
+                                                    <span class="badge bg-danger">Belum di Proses</span>
+                                                @else
+                                                    <span
+                                                        class="badge bg-success">{{ date('d-m-y', strtotime($d->tgl_proses)) }}</span>
+                                                @endif
+                                            </td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <a class="ml-1 editajuan" href="#"
-                                                        no_pengajuan="{{ Crypt::encrypt($d->no_pengajuan) }}"><i
-                                                            class="feather icon-edit success"></i></a>
-                                                    <form method="POST" name="deleteform" class="deleteform"
-                                                        action="/ajuanrouting/{{ Crypt::encrypt($d->no_pengajuan) }}/delete">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <a href="#" class="delete-confirm ml-1">
-                                                            <i class="feather icon-trash danger"></i>
-                                                        </a>
+                                                    @if (empty($d->tgl_proses))
+                                                        <a class="ml-1 editajuan" href="#"
+                                                            no_pengajuan="{{ Crypt::encrypt($d->no_pengajuan) }}"><i
+                                                                class="feather icon-edit success"></i></a>
+                                                        <form method="POST" name="deleteform" class="deleteform"
+                                                            action="/ajuanrouting/{{ Crypt::encrypt($d->no_pengajuan) }}/delete">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <a href="#" class="delete-confirm ml-1">
+                                                                <i class="feather icon-trash danger"></i>
+                                                            </a>
 
+                                                        </form>
                                                         <a class="ml-1 prosesajuan" href="#"
                                                             no_pengajuan="{{ Crypt::encrypt($d->no_pengajuan) }}"><i
                                                                 class="feather icon-external-link info"></i></a>
-                                                    </form>
+                                                    @endif
+                                                    <a
+                                                        href="/ajuantransferdana/{{ Crypt::encrypt($d->no_pengajuan) }}/batalkan"><span
+                                                            class="badge bg-danger">Batalkan</span></a>
                                                 </div>
                                             </td>
                                         </tr>
