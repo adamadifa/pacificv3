@@ -126,7 +126,7 @@ class PinjamanController extends Controller
         if ($level == "rsm") {
             $wilayah = Auth::user()->wilayah;
             $wilayah_user = unserialize($wilayah);
-            $query->whereIn('master_karyawan.id_kantord', $wilayah_user);
+            $query->whereIn('master_karyawan.id_kantor', $wilayah_user);
             $query->where('master_karyawan.kode_dept', 'MKT');
             $query->where('nama_jabatan', 'KEPALA PENJUALAN');
             $query->where('id_perusahaan', 'PCF');
@@ -178,6 +178,8 @@ class PinjamanController extends Controller
 
 
         $query->orderBy('no_pinjaman', 'desc');
+
+        dd($query->get());
         $pinjaman = $query->paginate(15);
         $pinjaman->appends($request->all());
 
