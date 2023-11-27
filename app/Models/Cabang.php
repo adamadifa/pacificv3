@@ -24,7 +24,7 @@ class Cabang extends Model
         $listcabang = array('BDG', 'PWK');
 
         $wilayah = Auth::user()->wilayah;
-        if (!empty($wilayah)) {
+        if (!empty($wilayah) && $cbg == "PCF") {
             $wilayah_user = unserialize($wilayah);
             $cabang = DB::table('cabang')->whereIn('kode_cabang', $wilayah_user)->get();
         } else {
@@ -132,23 +132,16 @@ class Cabang extends Model
         $egacabang = array('TSM', 'GRT');
         $srinurulcabang = array('BDG', 'BGR', 'TGL', 'PWT', 'TSM', 'SKB', 'PWK', 'BTN', 'PST');
         $wilayah = Auth::user()->wilayah;
-
-        if ($cbg == "PCF") {
-            if (!empty($wilayah)) {
-                $wilayah_user = unserialize($wilayah);
-                $cabang = DB::table('cabang')->whereIn('kode_cabang', $wilayah_user)->get();
-            } else {
-                $cabang = DB::table('cabang')->get();
-            }
+        if (!empty($wilayah)) {
+            $wilayah_user = unserialize($wilayah);
+            $cabang = DB::table('cabang')->whereIn('kode_cabang', $wilayah_user)->get();
         } else {
-            if (!empty($wilayah)) {
-                $wilayah_user = unserialize($wilayah);
-                $cabang = DB::table('cabang')->whereIn('kode_cabang', $wilayah_user)->get();
+            if ($cbg == "PCF") {
+                $cabang = DB::table('cabang')->get();
             } else {
                 $cabang = DB::table('cabang')->where('kode_cabang', $cbg)->orWhere('sub_cabang', $cbg)->get();
             }
         }
-
         return $cabang;
     }
 }
