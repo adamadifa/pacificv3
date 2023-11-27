@@ -22,8 +22,11 @@
             <div class="col-md-12 col-sm-12">
                 <div class="card">
                     <div class="card-header">
-                        <a href="#" class="btn btn-primary" id="tambahdata"><i class="fa fa-plus mr-1"></i> Tambah
-                            Data</a>
+                        @if (in_array($level, $ajuantransferdana_crud))
+                            <a href="#" class="btn btn-primary" id="tambahdata"><i class="fa fa-plus mr-1"></i> Tambah
+                                Data</a>
+                        @endif
+
                     </div>
                     <div class="card-body">
                         <form action="/ajuantransferdana">
@@ -104,26 +107,35 @@
                                             </td>
                                             <td>
                                                 <div class="btn-group">
-                                                    @if (empty($d->tgl_proses))
-                                                        <a class="ml-1 editajuan" href="#"
-                                                            no_pengajuan="{{ Crypt::encrypt($d->no_pengajuan) }}"><i
-                                                                class="feather icon-edit success"></i></a>
-                                                        <form method="POST" name="deleteform" class="deleteform"
-                                                            action="/ajuanrouting/{{ Crypt::encrypt($d->no_pengajuan) }}/delete">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <a href="#" class="delete-confirm ml-1">
-                                                                <i class="feather icon-trash danger"></i>
-                                                            </a>
 
-                                                        </form>
-                                                        <a class="ml-1 prosesajuan" href="#"
-                                                            no_pengajuan="{{ Crypt::encrypt($d->no_pengajuan) }}"><i
-                                                                class="feather icon-external-link info"></i></a>
+                                                    @if (empty($d->tgl_proses))
+                                                        @if (in_array($level, $ajuantransferdana_crud))
+                                                            <a class="ml-1 editajuan" href="#"
+                                                                no_pengajuan="{{ Crypt::encrypt($d->no_pengajuan) }}"><i
+                                                                    class="feather icon-edit success"></i></a>
+                                                            <form method="POST" name="deleteform" class="deleteform"
+                                                                action="/ajuanrouting/{{ Crypt::encrypt($d->no_pengajuan) }}/delete">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <a href="#" class="delete-confirm ml-1">
+                                                                    <i class="feather icon-trash danger"></i>
+                                                                </a>
+
+                                                            </form>
+                                                        @endif
+                                                        @if (in_array($level, $ajuantransferdana_proses))
+                                                            <a class="ml-1 prosesajuan" href="#"
+                                                                no_pengajuan="{{ Crypt::encrypt($d->no_pengajuan) }}"><i
+                                                                    class="feather icon-external-link info"></i></a>
+                                                        @endif
+                                                    @else
+                                                        @if (in_array($level, $ajuantransferdana_proses))
+                                                            <a href="/ajuantransferdana/{{ Crypt::encrypt($d->no_pengajuan) }}/batalkan"
+                                                                class="ml-1"><span
+                                                                    class="badge bg-danger">Batalkan</span></a>
+                                                        @endif
                                                     @endif
-                                                    <a
-                                                        href="/ajuantransferdana/{{ Crypt::encrypt($d->no_pengajuan) }}/batalkan"><span
-                                                            class="badge bg-danger">Batalkan</span></a>
+
                                                 </div>
                                             </td>
                                         </tr>

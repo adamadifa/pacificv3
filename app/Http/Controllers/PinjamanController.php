@@ -129,7 +129,7 @@ class PinjamanController extends Controller
             $query->whereIn('master_karyawan.id_kantor', $list_wilayah);
             $query->where('master_karyawan.kode_dept', 'MKT');
             $query->where('nama_jabatan', 'KEPALA PENJUALAN');
-            $query->where('id_perusahaan', 'PCF');
+            $query->where('id_perusahaand', 'PCF');
         }
 
         if (!in_array($level, $level_show_all)) {
