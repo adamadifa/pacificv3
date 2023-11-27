@@ -124,9 +124,9 @@ class PinjamanController extends Controller
         }
 
         if ($level == "rsm") {
-            $list_wilayah = Auth::user()->wilayah != null ? unserialize(Auth::user()->wilayah) : NULL;
-            $wilayah = $list_wilayah != null ? "'" . implode("', '", $list_wilayah) . "'" : '';
-            $query->whereIn('master_karyawan.id_kantor', $list_wilayah);
+            $wilayah = Auth::user()->wilayah;
+            $wilayah_user = unserialize($wilayah);
+            $query->whereIn('master_karyawan.id_kantor', $wilayah_user);
             $query->where('master_karyawan.kode_dept', 'MKT');
             $query->where('nama_jabatan', 'KEPALA PENJUALAN');
             $query->where('id_perusahaand', 'PCF');
