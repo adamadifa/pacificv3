@@ -153,7 +153,7 @@ class DashboardController extends Controller
 
 
             $queryrouting = Ajuanrouting::query();
-            $queryrouting->join('pelanggan', 'pengajuan_faktur.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+            $queryrouting->join('pelanggan', 'pengajuan_routing.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
             $queryrouting->whereIn('no_pengajuan', $no_pengajuan);
             $queryrouting->whereNotNull('kacab');
             $queryrouting->whereNull('rsm');
