@@ -13,36 +13,43 @@
     }
 </style>
 
-<form action="/ajuantransferdana/store" method="POST" id="frmAjuantransferdana">
+<form action="/ajuantransferdana/{{ Crypt::encrypt($ajuantransferdana->no_pengajuan) }}/update" method="POST"
+    id="frmAjuantransferdana">
     @csrf
     <div class="row">
         <div class="col-12">
-            <x-inputtext label="Tanggal Pengajuan" field="tgl_pengajuan" icon="feather icon-calendar" datepicker />
+            <x-inputtext label="Tanggal Pengajuan" value="{{ $ajuantransferdana->tgl_pengajuan }}" field="tgl_pengajuan"
+                icon="feather icon-calendar" datepicker />
         </div>
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext label="Nama" field="nama" icon="feather icon-user" />
+            <x-inputtext label="Nama" field="nama" value="{{ $ajuantransferdana->nama }}"
+                icon="feather icon-user" />
         </div>
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext label="Nama Bank" field="nama_bank" icon="feather icon-file" />
+            <x-inputtext label="Nama Bank" field="nama_bank" value="{{ $ajuantransferdana->nama_bank }}"
+                icon="feather icon-file" />
         </div>
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext label="No. Rekening" field="no_rekening" icon="feather icon-credit-card" />
+            <x-inputtext label="No. Rekening" value="{{ $ajuantransferdana->no_rekening }}" field="no_rekening"
+                icon="feather icon-credit-card" />
         </div>
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext label="Jumlah" field="jumlah" icon="feather icon-file" />
+            <x-inputtext label="Jumlah" value="{{ rupiah($ajuantransferdana->jumlah) }}" field="jumlah"
+                icon="feather icon-file" />
         </div>
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext label="Keterangan" field="keterangan" icon="feather icon-file" />
+            <x-inputtext label="Keterangan" field="keterangan" value="{{ $ajuantransferdana->keterangan }}"
+                icon="feather icon-file" />
         </div>
     </div>
     <div class="row">
@@ -52,7 +59,7 @@
                     <select name="kode_cabang" id="kode_cabang" class="form-control">
                         <option value="">Semua Cabang</option>
                         @foreach ($cabang as $c)
-                            <option {{ Request('kode_cabang') == $c->kode_cabang ? 'selected' : '' }}
+                            <option {{ $ajuantransferdana->kode_cabang == $c->kode_cabang ? 'selected' : '' }}
                                 value="{{ $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}
                             </option>
                         @endforeach
@@ -64,7 +71,7 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <button class="btn btn-primary w-100" type="submit"><i class="feather icon-send mr-1"></i>Submit</button>
+            <button class="btn btn-primary w-100" type="submit"><i class="feather icon-send mr-1"></i>Update</button>
         </div>
     </div>
 

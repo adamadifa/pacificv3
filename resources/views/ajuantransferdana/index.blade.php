@@ -26,7 +26,7 @@
                             Data</a>
                     </div>
                     <div class="card-body">
-                        <form action="/ajuanfaktur">
+                        <form action="/ajuantransferdana">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker
@@ -54,8 +54,8 @@
                                     </div>
                                 @endif
                                 <div class="col-lg-3 col-sm-12">
-                                    <x-inputtext label="Nama Pelanggan" field="nama_pelanggan" icon="feather icon-user"
-                                        value="{{ Request('nama_pelanggan') }}" />
+                                    <x-inputtext label="Nama" field="nama_penerima" icon="feather icon-user"
+                                        value="{{ Request('nama') }}" />
                                 </div>
 
 
@@ -77,11 +77,45 @@
                                         <th>Bank</th>
                                         <th>No. Rekening</th>
                                         <th>Jumlah</th>
+                                        <th>Keterangan</th>
+                                        <th>Cabang</th>
+                                        <th>Tgl Proses</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach ($ajuantransferdana as $d)
+                                        <tr>
+                                            <td>{{ $d->no_pengajuan }}</td>
+                                            <td>{{ date('d-m-Y', strtotime($d->tgl_pengajuan)) }}</td>
+                                            <td>{{ $d->nama }}</td>
+                                            <td>{{ $d->nama_bank }}</td>
+                                            <td>{{ $d->no_rekening }}</td>
+                                            <td>{{ rupiah($d->jumlah) }}</td>
+                                            <td>{{ $d->keterangan }}</td>
+                                            <td>{{ $d->kode_cabang }}</td>
+                                            <td></td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <a class="ml-1 editajuan" href="#"
+                                                        no_pengajuan="{{ Crypt::encrypt($d->no_pengajuan) }}"><i
+                                                            class="feather icon-edit success"></i></a>
+                                                    <form method="POST" name="deleteform" class="deleteform"
+                                                        action="/ajuanrouting/{{ Crypt::encrypt($d->no_pengajuan) }}/delete">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <a href="#" class="delete-confirm ml-1">
+                                                            <i class="feather icon-trash danger"></i>
+                                                        </a>
 
+                                                        <a class="ml-1 prosesajuan" href="#"
+                                                            no_pengajuan="{{ Crypt::encrypt($d->no_pengajuan) }}"><i
+                                                                class="feather icon-external-link info"></i></a>
+                                                    </form>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -116,9 +150,18 @@
             $(".editajuan").click(function(e) {
                 e.preventDefault();
                 var no_pengajuan = $(this).attr("no_pengajuan");
-                $("#mdlajuanrouting").modal("show");
+                $("#mdlajuantransferdana").modal("show");
                 // /alert(kode_pelanggan);
-                $("#loadformajuanrouting").load('/ajuanrouting/' + no_pengajuan + '/edit');
+                $("#loadformajuantransferdana").load('/ajuantransferdana/' + no_pengajuan + '/edit');
+            });
+
+
+            $(".prosesajuan").click(function(e) {
+                e.preventDefault();
+                var no_pengajuan = $(this).attr("no_pengajuan");
+                $("#mdlajuantransferdana").modal("show");
+                // /alert(kode_pelanggan);
+                $("#loadformajuantransferdana").load('/ajuantransferdana/' + no_pengajuan + '/prosesajuan');
             });
 
             $("#tambahdata").click(function(e) {

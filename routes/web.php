@@ -1926,6 +1926,10 @@ Route::middleware(['auth'])->group(function () {
     //Ajuan Transfer Dana View
     Route::get('/ajuantransferdana', [AjuantransferdanaController::class, 'index']);
     Route::get('/ajuantransferdana/create', [AjuantransferdanaController::class, 'create']);
+    Route::post('/ajuantransferdana/store', [AjuantransferdanaController::class, 'store']);
+    Route::get('/ajuantransferdana/{no_pengajuan}/edit', [AjuantransferdanaController::class, 'edit']);
+    Route::post('/ajuantransferdana/{no_pengajuan}/update', [AjuantransferdanaController::class, 'update']);
+    Route::get('/ajuantransferdana/{no_pengajuan}/prosesajuan', [AjuantransferdanaController::class, 'prosesajuan']);
 
 
     //LogAktivitas

@@ -132,16 +132,23 @@ class Cabang extends Model
         $egacabang = array('TSM', 'GRT');
         $srinurulcabang = array('BDG', 'BGR', 'TGL', 'PWT', 'TSM', 'SKB', 'PWK', 'BTN', 'PST');
         $wilayah = Auth::user()->wilayah;
-        if (!empty($wilayah)) {
-            $wilayah_user = unserialize($wilayah);
-            $cabang = DB::table('cabang')->whereIn('kode_cabang', $wilayah_user)->get();
-        } else {
-            if ($cbg == "PCF") {
+
+        if ($cbg == "PCF") {
+            if (!empty($wilayah)) {
+                $wilayah_user = unserialize($wilayah);
+                $cabang = DB::table('cabang')->whereIn('kode_cabang', $wilayah_user)->get();
+            } else {
                 $cabang = DB::table('cabang')->get();
+            }
+        } else {
+            if (!empty($wilayah)) {
+                $wilayah_user = unserialize($wilayah);
+                $cabang = DB::table('cabang')->whereIn('kode_cabang', $wilayah_user)->get();
             } else {
                 $cabang = DB::table('cabang')->where('kode_cabang', $cbg)->orWhere('sub_cabang', $cbg)->get();
             }
         }
+
         return $cabang;
     }
 }

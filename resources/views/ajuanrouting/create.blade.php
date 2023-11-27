@@ -143,27 +143,12 @@
     <div class="row">
         <div class="col-12">
             <div class="form-group">
-                <textarea name="keterangan" id="keterangan" class="form-control" cols="30" rows="5"
-                    placeholder="Keterangan"></textarea>
+                <textarea name="keterangan" id="keterangan" class="form-control" cols="30" rows="5" placeholder="Keterangan"></textarea>
             </div>
         </div>
     </div>
-    @if ($pelanggan->kategori_salesman=="TO" || $pelanggan->kategori_salesman=="TOCANVASER")
-    <div class="row mb-1">
-        <div class="col-12">
-            <div class="vs-checkbox-con vs-checkbox-primary">
 
-                <input type="checkbox" class="sikluspembayaran" name="sikluspembayaran" value="1">
-                <span class="vs-checkbox">
-                    <span class="vs-checkbox--check">
-                        <i class="vs-icon feather icon-check"></i>
-                    </span>
-                </span>
-                <span class="">Pembayaran Saat Turun Barang Order Selanjutnya</span>
-            </div>
-        </div>
-    </div>
-    @endif
+
 
     <div class="row">
         <div class="col-12">
@@ -172,7 +157,7 @@
     </div>
 
 </form>
-<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
+<script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
 <script>
     $(function() {
         $("#frmAjuanrouting").submit(function() {
@@ -180,10 +165,10 @@
             var jmlfaktur = $("#jmlfaktur").val();
             if (tgl_pengajuan == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Tanggal Pengajuan Harus Diisi!'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Tanggal Pengajuan Harus Diisi!',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#tgl_pengajuan").focus();
                 });
@@ -191,5 +176,4 @@
             }
         });
     });
-
 </script>
