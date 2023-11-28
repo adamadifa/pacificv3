@@ -24,7 +24,7 @@ class Cabang extends Model
         $listcabang = array('BDG', 'PWK');
 
         $wilayah = Auth::user()->wilayah;
-        if (!empty($wilayah) && $cbg == "PCF") {
+        if (!empty($wilayah)) {
             $wilayah_user = unserialize($wilayah);
             $cabang = DB::table('cabang')->whereIn('kode_cabang', $wilayah_user)->get();
         } else {
