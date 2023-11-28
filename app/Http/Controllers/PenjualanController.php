@@ -1496,12 +1496,14 @@ class PenjualanController extends Controller
             $penystick = $penystick;
         }
 
+        $totalnonppn = str_replace(".", "", $request->totalnonppn);
         $ppn = str_replace(".", "", $request->ppn); //ok
         if (empty($ppn)) {
             $ppn = 0;
         } else {
-            $ppn = $ppn;
+            $ppn = ROUND((11 / 100) * $totalnonppn);
         }
+
         $potongan = $potaida + $potswan + $potstick + $potsp + $potsambal;
         $potistimewa = $potisaida + $potisswan + $potisstick;
         $penyesuaian = $penyaida + $penyswan + $penystick;
@@ -1977,7 +1979,15 @@ class PenjualanController extends Controller
         $bruto = $request->bruto;
         $id_admin = Auth::user()->id;
         $keterangan = $request->keterangan;
-        $ppn = !empty($request->ppn) ? str_replace(".", "", $request->ppn) : 0;
+        $totalnonppn = str_replace(".", "", $request->totalnonppn);
+        $ppn = str_replace(".", "", $request->ppn);
+        if (empty($ppn)) {
+            $ppn = 0;
+        } else {
+            $ppn = ROUND((11 / 100) * $totalnonppn);
+        }
+
+        //dd($ppn);
         $no_po = $request->no_po;
         $potaida        = str_replace(".", "", $request->potaida);
         if (empty($potaida)) {
@@ -7641,14 +7651,16 @@ class PenjualanController extends Controller
             $penystick = $penystick;
         }
 
+
+        $totalnonppn = str_replace(".", "", $request->totalnonppn);
+
         $ppn = str_replace(".", "", $request->ppn);
         if (empty($ppn)) {
             $ppn = 0;
         } else {
-            $ppn = $ppn;
+            $ppn = ROUND((11 / 100) * $totalnonppn);
         }
 
-        $totalnonppn = str_replace(".", "", $request->totalnonppn);
         $potongan = $potaida + $potswan + $potstick + $potsp + $potsambal;
         $potistimewa = $potisaida + $potisswan + $potisstick;
         $penyesuaian = $penyaida + $penyswan + $penystick;
@@ -7656,7 +7668,7 @@ class PenjualanController extends Controller
         $kode_cabang = $request->kode_cabang;
         $tahunini  = date('y');
 
-
+        //dd($totalnonppn);
         $data = [
             'no_fak_penj' => $no_fak_penj,
             'kode_pelanggan' => $kode_pelanggan,
