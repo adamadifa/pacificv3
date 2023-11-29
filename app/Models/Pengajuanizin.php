@@ -369,7 +369,7 @@ class Pengajuanizin extends Model
         }
 
         if ($level == "manager produksi") {
-            $query->whereIn('master_karyawan.kode_dept', ['PRD', 'MTC']);
+            $query->whereIn('master_karyawan.kode_dept', ['PRD']);
             $query->where('nama_jabatan', '!=', 'MANAGER');
         }
 
