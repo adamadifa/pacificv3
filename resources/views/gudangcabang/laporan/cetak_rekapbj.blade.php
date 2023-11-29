@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Laporan Rekap Persediaan Gudang Cabang {{ date("d-m-y") }}</title>
+    <title>Laporan Rekap Persediaan Gudang Cabang {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -31,9 +32,9 @@
             text-align: center;
             font-size: 14px;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
         PACIFIC CABANG {{ $cabang->nama_cabang }}<br>
@@ -97,7 +98,7 @@
                 $sisamutasi = ($saldoawal_gs + $pusat + $transit_in + $retur + $lainlain_in + $repack + $penyesuaian_in) - ($penjualan + $promosi + $reject_pasar + $reject_mobil + $reject_gudang + $transit_out + $lainlain_out + $penyesuaian_out);
 
 
-                $realsaldoakhir = ($d->saldo_awal_gs + $d->pusat + $d->transit_in + $d->retur + $d->lainlain_in + $d->repack + $d->penyesuaian_in) -
+                $realsaldoakhir = (($d->saldo_awal_gs + $d->sisamutasi) + $d->pusat + $d->transit_in + $d->retur + $d->lainlain_in + $d->repack + $d->penyesuaian_in) -
                 ($d->penjualan + $d->promosi + $d->reject_pasar + $d->reject_mobil + $d->reject_gudang + $d->transit_out + $d->lainlain_out + $d->penyesuaian_out);
 
 
@@ -129,107 +130,111 @@
 			}
             ?>
             <tr>
-                <td><?php echo $d->kode_produk ?></td>
-                <td><?php echo $d->nama_barang ?></td>
-                <td align="right"><?php if(!empty($saldoawal_gs)){ echo desimal($saldoawal_gs);} ?></td>
-                <td align="right"><?php if(!empty($pusat)){ echo desimal($pusat);} ?></td>
+                <td><?php echo $d->kode_produk; ?></td>
+                <td><?php echo $d->nama_barang; ?></td>
+                <td align="right"><?php if (!empty($saldoawal_gs)) {
+                    echo desimal($saldoawal_gs);
+                } ?></td>
+                <td align="right"><?php if (!empty($pusat)) {
+                    echo desimal($pusat);
+                } ?></td>
                 <td align="right">
                     <?php
-                        if (!empty($transit_in)) {
-                            echo desimal($transit_in);
-                        }
-                        ?>
+                    if (!empty($transit_in)) {
+                        echo desimal($transit_in);
+                    }
+                    ?>
                 </td>
                 <td align="right">
                     <?php
-                        if (!empty($retur)) {
-                            echo desimal($retur);
-                        }
-                        ?>
+                    if (!empty($retur)) {
+                        echo desimal($retur);
+                    }
+                    ?>
                 </td>
                 <td align="right">
                     <?php
-                        if (!empty($lainlain_in)) {
-                            echo desimal($lainlain_in);
-                        }
-                        ?>
+                    if (!empty($lainlain_in)) {
+                        echo desimal($lainlain_in);
+                    }
+                    ?>
                 </td>
                 <td align="right">
                     <?php
-                        if (!empty($repack)) {
-                            echo desimal($repack);
-                        }
-                        ?>
+                    if (!empty($repack)) {
+                        echo desimal($repack);
+                    }
+                    ?>
                 </td>
                 <td align="right">
                     <?php
-                        if (!empty($penyesuaian_in)) {
-                            echo desimal($penyesuaian_in);
-                        }
-                        ?>
+                    if (!empty($penyesuaian_in)) {
+                        echo desimal($penyesuaian_in);
+                    }
+                    ?>
                 </td>
                 <td align="right">
                     <?php
-                        if (!empty($penjualan)) {
-                            echo desimal($penjualan);
-                        }
-                        ?>
+                    if (!empty($penjualan)) {
+                        echo desimal($penjualan);
+                    }
+                    ?>
                 </td>
                 <td align="right">
                     <?php
-                        if (!empty($promosi)) {
-                            echo desimal($promosi);
-                        }
-                        ?>
+                    if (!empty($promosi)) {
+                        echo desimal($promosi);
+                    }
+                    ?>
                 </td>
                 <td align="right">
                     <?php
-                        if (!empty($reject_pasar)) {
-                            echo desimal($reject_pasar);
-                        }
-                        ?>
+                    if (!empty($reject_pasar)) {
+                        echo desimal($reject_pasar);
+                    }
+                    ?>
                 </td>
                 <td align="right">
                     <?php
-                        if (!empty($reject_mobil)) {
-                            echo desimal($reject_mobil);
-                        }
-                        ?>
+                    if (!empty($reject_mobil)) {
+                        echo desimal($reject_mobil);
+                    }
+                    ?>
                 </td>
                 <td align="right">
                     <?php
-                        if (!empty($reject_gudang)) {
-                            echo desimal($reject_gudang);
-                        }
-                        ?>
+                    if (!empty($reject_gudang)) {
+                        echo desimal($reject_gudang);
+                    }
+                    ?>
                 </td>
                 <td align="right">
                     <?php
-                        if (!empty($transit_out)) {
-                            echo desimal($transit_out);
-                        }
-                        ?>
+                    if (!empty($transit_out)) {
+                        echo desimal($transit_out);
+                    }
+                    ?>
                 </td>
                 <td align="right">
                     <?php
-                        if (!empty($lainlain_out)) {
-                            echo desimal($lainlain_out);
-                        }
-                        ?>
+                    if (!empty($lainlain_out)) {
+                        echo desimal($lainlain_out);
+                    }
+                    ?>
                 </td>
                 <td align="right">
                     <?php
-                        if (!empty($penyesuaian_out)) {
-                            echo desimal($penyesuaian_out);
-                        }
-                        ?>
+                    if (!empty($penyesuaian_out)) {
+                        echo desimal($penyesuaian_out);
+                    }
+                    ?>
                 </td>
                 <td align="right">
                     <?php
-                        if (!empty($sisamutasi)) {
-                            echo desimal($sisamutasi);
-                        }
-                        ?>
+                    if (!empty($sisamutasi)) {
+                        echo desimal($sisamutasi);
+                    }
+                    ?>
                 </td>
                 <td align="right">{{ !empty($jmldus) ? $jmldus : '' }}</td>
                 <td align="right">{{ !empty($jmlpack) ? $jmlpack : '' }}</td>
@@ -327,32 +332,32 @@
                 <td align="center"><?php echo $no; ?></td>
                 <td><?php echo $d->nama_barang; ?></td>
                 <td align="right"><?php if (!empty($sabs)) {
-										echo desimal($sabs);
-									} ?></td>
+                    echo desimal($sabs);
+                } ?></td>
                 <td align="right"><?php if (!empty($rejectpasar)) {
-										echo desimal($rejectpasar);
-									} ?></td>
+                    echo desimal($rejectpasar);
+                } ?></td>
                 <td align="right"><?php if (!empty($rejectmobil)) {
-										echo desimal($rejectmobil);
-									} ?></td>
+                    echo desimal($rejectmobil);
+                } ?></td>
                 <td align="right"><?php if (!empty($rejectgd)) {
-										echo desimal($rejectgd);
-									} ?></td>
+                    echo desimal($rejectgd);
+                } ?></td>
                 <td align="right"><?php if (!empty($penybad_in)) {
-										echo desimal($penybad_in);
-									} ?></td>
+                    echo desimal($penybad_in);
+                } ?></td>
                 <td align="right"><?php if (!empty($kirimpusat)) {
-										echo desimal($kirimpusat);
-									} ?></td>
+                    echo desimal($kirimpusat);
+                } ?></td>
                 <td align="right"><?php if (!empty($repack)) {
-										echo desimal($repack);
-									} ?></td>
+                    echo desimal($repack);
+                } ?></td>
                 <td align="right"><?php if (!empty($penybad_out)) {
-										echo desimal($penybad_out);
-									} ?></td>
+                    echo desimal($penybad_out);
+                } ?></td>
                 <td align="right"><?php if (!empty($sisamutasibad)) {
-										echo desimal($sisamutasibad);
-									} ?></td>
+                    echo desimal($sisamutasibad);
+                } ?></td>
                 <td align="right">{{ !empty($jmldus) ? $jmldus : '' }}</td>
                 <td align="right">{{ !empty($jmlpack) ? $jmlpack : '' }}</td>
                 <td align="right">{{ !empty($jmlpcs) ? $jmlpcs : '' }}</td>
@@ -364,4 +369,5 @@
         </tbody>
     </table>
 </body>
+
 </html>
