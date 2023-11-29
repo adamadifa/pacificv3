@@ -34,6 +34,7 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="form-group">
+                                                    {{ Auth::user()->pic_presensi }}
                                                     <select name="id_kantor" id="id_kantor" class="form-control">
                                                         @if (Auth::user()->kode_cabang == 'PCF' && empty(Auth::user()->pic_presensi))
                                                             <option value="">Semua Kantor</option>
