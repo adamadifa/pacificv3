@@ -26,7 +26,9 @@ class LaporanhrdController extends Controller
         } else {
             $cabang = $cbg->getCabang(Auth::user()->kode_cabang);
         }
-        return view('presensi.laporan.lap_presensi', compact('bulan', 'departemen', 'cabang'));
+
+        $show_all = config('global.show_all');
+        return view('presensi.laporan.lap_presensi', compact('bulan', 'departemen', 'cabang', 'show_all'));
     }
 
 
@@ -520,7 +522,8 @@ class LaporanhrdController extends Controller
         } else {
             $cabang = $cbg->getCabang(Auth::user()->kode_cabang);
         }
-        return view('presensi.laporan.lap_presensipsm', compact('bulan', 'departemen', 'cabang'));
+        $show_all = config('global.show_all');
+        return view('presensi.laporan.lap_presensipsm', compact('bulan', 'departemen', 'cabang', 'show_all'));
     }
 
     public function getterlambat(Request $request)

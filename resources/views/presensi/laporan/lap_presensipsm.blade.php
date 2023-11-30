@@ -35,7 +35,7 @@
                                             <div class="col-12">
                                                 <div class="form-group">
                                                     <select name="id_kantor" id="id_kantor" class="form-control">
-                                                        @if (Auth::user()->kode_cabang == 'PCF' && empty(Auth::user()->pic_presensi))
+                                                        @if ((Auth::user()->kode_cabang == 'PCF' && empty(Auth::user()->pic_presensi)) || in_array($level, $show_all))
                                                             <option value="">Semua Kantor</option>
                                                         @endif
                                                         @foreach ($cabang as $c)
