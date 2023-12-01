@@ -146,7 +146,9 @@
         <tr style="font-size:14px;">
             <?php
             $bruto_AB_tunai = $harganet->bruto_AB_tunai + ($harganet->bruto_AB_tunai / $harganet->totalbrutotunai) * $harganet->totalppntunai;
+            
             $bruto_AB_kredit = $harganet->bruto_AB_kredit + ($harganet->bruto_AB_kredit / $harganet->totalbrutokredit) * $harganet->totalppnkredit;
+            
             $bruto_AB = $bruto_AB_tunai + $bruto_AB_kredit;
             
             $bruto_AR_tunai = $harganet->bruto_AR_tunai + ($harganet->bruto_AR_tunai / $harganet->totalbrutotunai) * $harganet->totalppntunai;

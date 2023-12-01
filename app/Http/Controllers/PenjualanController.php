@@ -6156,7 +6156,7 @@ class PenjualanController extends Controller
             SUM(qty_SC) as qty_SC,
             SUM(qty_SP8) as qty_SP8,
             SUM(qty_SP500) as qty_SP500,
-            SUM(qty_SP500) as qty_BR20,
+            SUM(qty_BR20) as qty_BR20,
 
 
             SUM(qtydus_AB) as qtydus_AB,
@@ -6432,7 +6432,7 @@ class PenjualanController extends Controller
 		SUM(IF(b.kode_produk = 'SC' AND promo !=1 OR b.kode_produk = 'SC' AND promo IS NULL,dp.jumlah,0)) as   qty_SC,
 		SUM(IF(b.kode_produk = 'SP8' AND promo !=1 OR b.kode_produk = 'SP8' AND promo IS NULL,dp.jumlah,0)) as   qty_SP8,
 		SUM(IF(b.kode_produk = 'SP500' AND promo !=1 OR b.kode_produk = 'SP500' AND promo IS NULL,dp.jumlah,0)) as   qty_SP500,
-        SUM(IF(b.kode_produk = 'BR20' AND promo !=1 OR b.kode_produk = 'BR20' AND promo IS NULL,dp.jumlah,0)) as qty_BR20,
+        SUM(IF(b.kode_produk = 'BR20' AND promo != 1 OR b.kode_produk = 'BR20' AND promo IS NULL,dp.jumlah,0)) as qty_BR20,
 
 		SUM(IF(b.kode_produk = 'AB' AND promo !=1 OR b.kode_produk = 'AB' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_AB,
 		SUM(IF(b.kode_produk = 'AR' AND promo !=1 OR b.kode_produk = 'AR' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_AR,
