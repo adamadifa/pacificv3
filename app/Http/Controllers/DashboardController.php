@@ -929,6 +929,13 @@ class DashboardController extends Controller
                     ->whereRaw('YEAR(tgltransaksi)="' . $tahunini . '"')
                     ->whereIn('karyawan.kode_cabang', $wilayah_user)
                     ->first();
+            } else {
+                $penjualan = DB::table('penjualan')
+                    ->selectRaw('SUM(total) as totalpenjualan')
+                    ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+                    ->whereRaw('MONTH(tgltransaksi)="' . $bulanini . '"')
+                    ->whereRaw('YEAR(tgltransaksi)="' . $tahunini . '"')
+                    ->first();
             }
         }
 
@@ -954,6 +961,17 @@ class DashboardController extends Controller
                     ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
                     ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
                     ->whereIn('karyawan.kode_cabang', $wilayah_user)
+                    ->orderBy('nama_cabang')
+                    ->groupByRaw('karyawan.kode_cabang,nama_cabang')
+                    ->get();
+            } else {
+                $penjualancabang = DB::table('penjualan')
+                    ->selectRaw('nama_cabang,SUM(total) as totalpenjualan,COUNT(no_fak_penj) as jmlorder')
+                    ->whereRaw('MONTH(tgltransaksi)="' . $bulanini . '"')
+                    ->whereRaw('YEAR(tgltransaksi)="' . $tahunini . '"')
+                    ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+                    ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
+
                     ->orderBy('nama_cabang')
                     ->groupByRaw('karyawan.kode_cabang,nama_cabang')
                     ->get();
