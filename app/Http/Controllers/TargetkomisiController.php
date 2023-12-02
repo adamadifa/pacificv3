@@ -2663,7 +2663,7 @@ class TargetkomisiController extends Controller
             echo 2;
             die;
             return view('targetkomisi.laporan.cetak_komisi_agustus', compact('komisi', 'cbg', 'nmbulan', 'tahun', 'produk', 'driver', 'helper', 'gudang', 'tunaikredit', 'bulan', 'cabang'));
-        } elseif ($bulan == 8 && $tahun == 2022) {
+        } elseif ($bulan == 9 && $tahun == 2022) {
             echo 3;
             die;
             return view('targetkomisi.laporan.cetak_komisi_september', compact('komisi', 'cbg', 'nmbulan', 'tahun', 'produk', 'driver', 'helper', 'gudang', 'tunaikredit', 'bulan', 'cabang'));
@@ -4997,6 +4997,7 @@ class TargetkomisiController extends Controller
             $query->where('kode_cabang', $cabang);
         }
         $query->where('nama_karyawan', '!=', '');
+        $query->where('status_komisi', 1);
         $komisi = $query->get();
 
         $nmbulan  = $namabulan[$bulan];
