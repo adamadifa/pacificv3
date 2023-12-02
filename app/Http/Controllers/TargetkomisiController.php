@@ -4997,7 +4997,7 @@ class TargetkomisiController extends Controller
             $query->where('kode_cabang', $cabang);
         }
         $query->where('nama_karyawan', '!=', '');
-        $query->where('status_komisi', 1);
+
         $komisi = $query->get();
 
         $nmbulan  = $namabulan[$bulan];
