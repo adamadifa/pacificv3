@@ -25,8 +25,11 @@ class Cabang extends Model
 
         $wilayah = Auth::user()->wilayah;
         if (!empty($wilayah)) {
-            $wilayah_user = unserialize($wilayah);
-            $cabang = DB::table('cabang')->whereIn('kode_cabang', $wilayah_user)->get();
+
+            if (Auth::user()->kode_cabang != "PST") {
+                $wilayah_user = unserialize($wilayah);
+                $cabang = DB::table('cabang')->whereIn('kode_cabang', $wilayah_user)->get();
+            }
         } else {
             // if ($cbg != "PCF" && $cbg != "PST") {
             //     if ($cbg == "GRT") {
