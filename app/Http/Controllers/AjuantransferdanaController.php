@@ -144,14 +144,58 @@ class AjuantransferdanaController extends Controller
     public function proses($no_pengajuan, Request $request)
     {
         $no_pengajuan = Crypt::decrypt($no_pengajuan);
+        $ajuantransfer = DB::table('pengajuan_transfer_dana')->where('no_pengajuan', $no_pengajuan)->first();
         $tgl_proses = $request->tgl_proses;
+        $uang_kertas = $ajuantransfer->jumlah;
+        $kode_cabang = $ajuantransfer->kode_cabang;
+        $tanggal = explode("-", $tgl_proses);
+        $bulan = $tanggal[1];
+        $tahun = $tanggal[0];
+        $tahunini = date("y");
+        $setoranpusat = DB::table('setoran_pusat')
+            ->select('kode_setoranpusat')
+            ->whereRaw('LEFT(kode_setoranpusat,4)="SB' . $tahunini . '"')
+            ->orderBy('kode_setoranpusat', 'desc')
+            ->first();
+        $last_kode_setoranpusat = $setoranpusat != null ? $setoranpusat->kode_setoranpusat : '';
+        $kode_setoranpusat   = buatkode($last_kode_setoranpusat, 'SB' . $tahunini, 5);
+        $data = [
+            'kode_setoranpusat' => $kode_setoranpusat,
+            'tgl_setoranpusat'  => $tgl_proses,
+            'kode_cabang' => $kode_cabang,
+            'bank' => 'KAS',
+            'uang_kertas' => $uang_kertas,
+            'uang_logam' => 0,
+            'keterangan' => 'Transfer Ke Pihak Ke 3',
+            'status' => '0',
+            'no_pengajuan' => $no_pengajuan
+        ];
+        if ($bulan == 12) {
+            $bulan = 1;
+            $tahun = $tahun + 1;
+        } else {
+            $bulan = $bulan + 1;
+            $tahun = $tahun;
+        }
+        $ceksaldo = DB::table('saldoawal_kasbesar')->where('bulan', $bulan)->where('tahun', $tahun)->where('kode_cabang', $kode_cabang)->count();
+        DB::beginTransaction();
         try {
-            DB::table('pengajuan_transfer_dana')->where('no_pengajuan', $no_pengajuan)
-                ->update([
-                    'tgl_proses' => $tgl_proses,
-                    'proses_by' => Auth::user()->id
-                ]);
-            return Redirect::back()->with(['success' => 'Data Berhasil di Proses']);
+
+            if (empty($ceksaldo)) {
+                //Simpan Pengajuan Transfer Dana
+                DB::table('pengajuan_transfer_dana')->where('no_pengajuan', $no_pengajuan)
+                    ->update([
+                        'tgl_proses' => $tgl_proses,
+                        'proses_by' => Auth::user()->id
+                    ]);
+                // Simpan Setoran Pusat
+                DB::table('setoran_pusat')->insert($data);
+                DB::commit();
+                return Redirect::back()->with(['success' => 'Data Berhasil di Proses']);
+            } else {
+                DB::rollBack();
+                return Redirect::back()->with(['warning' => 'Periode Laporan Sudah Ditutup']);
+            }
         } catch (\Exception $e) {
             return Redirect::back()->with(['warning' => 'Data Gagal di Proses']);
         }
