@@ -451,6 +451,8 @@ class SapController extends Controller
                     Storage::put($file, $image_base64);
                 }
                 $path_image = Storage::url('uploads/smactivity/' . $fileName);
+
+                dd($path_image);
                 $pesan = [
                     'api_key' => 'B2TSubtfeWwb3eDHdIyoa0qRXJVgq8',
                     'sender' => '6289670444321',
