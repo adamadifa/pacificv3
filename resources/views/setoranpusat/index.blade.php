@@ -143,21 +143,22 @@
                                                                 </form>
                                                             @endif
                                                         @endif
-                                                        @if (in_array($level, $setoranpusat_terimasetoran))
-                                                            @if (empty($d->no_ref))
-                                                                @if ($d->status == 0)
-                                                                    <a href="#"
-                                                                        kodesetoranpusat="{{ $d->kode_setoranpusat }}"
-                                                                        class="success terimasetoran ml-1"><i
-                                                                            class="feather icon-external-link"></i></a>
-                                                                @else
-                                                                    <a href="/setoranpusat/{{ Crypt::encrypt($d->kode_setoranpusat) }}/batalkansetoran"
-                                                                        class="danger batalkansetoran ml-1"><i
-                                                                            class="fa fa-close"></i></a>
-                                                                @endif
+
+                                                    </div>
+                                                    @if (in_array($level, $setoranpusat_terimasetoran))
+                                                        @if (empty($d->no_ref))
+                                                            @if ($d->status == 0)
+                                                                <a href="#"
+                                                                    kodesetoranpusat="{{ $d->kode_setoranpusat }}"
+                                                                    class="success terimasetoran ml-1"><i
+                                                                        class="feather icon-external-link"></i></a>
+                                                            @else
+                                                                <a href="/setoranpusat/{{ Crypt::encrypt($d->kode_setoranpusat) }}/batalkansetoran"
+                                                                    class="danger batalkansetoran ml-1"><i
+                                                                        class="fa fa-close"></i></a>
                                                             @endif
                                                         @endif
-                                                    </div>
+                                                    @endif
                                                 @endif
                                             </td>
                                         </tr>
