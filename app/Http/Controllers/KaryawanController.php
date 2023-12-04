@@ -579,7 +579,7 @@ class KaryawanController extends Controller
         $nik = Crypt::decrypt($nik);
         try {
             DB::table('master_karyawan')->where('nik', $nik)->update([
-                'lock_location' => 1
+                'lock_location' => 0
             ]);
             return Redirect::back()->with(['success' => 'Data Lokasi Di Kunci']);
         } catch (\Exception $e) {
@@ -596,7 +596,7 @@ class KaryawanController extends Controller
         $nik = Crypt::decrypt($nik);
         try {
             DB::table('master_karyawan')->where('nik', $nik)->update([
-                'lock_location' => null
+                'lock_location' => 1
             ]);
             return Redirect::back()->with(['success' => 'Data Lokasi Di Buka']);
         } catch (\Throwable $th) {
