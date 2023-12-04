@@ -455,7 +455,9 @@ class SapController extends Controller
                     'api_key' => 'B2TSubtfeWwb3eDHdIyoa0qRXJVgq8',
                     'sender' => '6289670444321',
                     'number' => '120363184988285981@g.us',
-                    'message' => 'Test SFA Activity'
+                    'media_type' => 'image',
+                    'caption' => $activity,
+                    'url' => 'https://png.pngtree.com/png-vector/20230531/ourlarge/pngtree-boy-s-face-outline-coloring-page-vector-png-image_6787401.png'
                 ];
 
                 $curl = curl_init();
