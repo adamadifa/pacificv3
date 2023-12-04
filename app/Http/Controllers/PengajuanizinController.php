@@ -630,7 +630,7 @@ class PengajuanizinController extends Controller
             ->where('id_kantor', $id_kantor)
             ->orderBy("kode_izin", "desc")
             ->first();
-
+        dd($izin);
         $last_kodeizin = $izin != null ? $izin->kode_izin : '';
         $kode_izin  = buatkode($last_kodeizin, "IZ" . $id_kantor . $tahun . $bulan, 3);
 
