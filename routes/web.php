@@ -391,6 +391,10 @@ Route::middleware(['auth'])->group(function () {
     //Laporan Sales Perfomance
     Route::get('/laporanpenjualan/salesperfomance', [PenjualanController::class, 'laporansalesperfomance']);
     Route::post('/laporanpenjualan/salesperfomance/cetak', [PenjualanController::class, 'cetaksalesperfomance']);
+
+    //Laporan SMM Activity
+    Route::get('/laporanpenjualan/smmactivity', [PenjualanController::class, 'smmactivity']);
+    Route::post('/laporanpenjualan/smmactivity/cetak', [PenjualanController::class, 'cetaksmmactivity']);
     //Laporan Kartu Piutang
     Route::get('/laporanpenjualan/kartupiutang', [PenjualanController::class, 'laporankartupiutang']);
     Route::post('/laporanpenjualan/kartupiutang/cetak', [PenjualanController::class, 'cetaklaporankartupiutang']);
