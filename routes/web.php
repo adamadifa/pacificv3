@@ -284,6 +284,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboardga', [DashboardController::class, 'dashboardga']);
     Route::get('/dashboardsfa', [DashboardController::class, 'dashboardsfa']);
     Route::get('/dashboardsfakp', [DashboardController::class, 'dashboardsfakp']);
+    Route::get('/dashboardsfarsm', [DashboardController::class, 'dashboardsfarsm']);
 
     //Dashboard
     Route::post('/rekapcashin', [PenjualanController::class, 'rekapcashin']);

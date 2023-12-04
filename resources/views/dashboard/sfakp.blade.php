@@ -7,14 +7,12 @@
         <div class="content-body">
             <!-- Dashboard Analytics Start -->
             <section>
-                <ul class="nav nav-tabs" role="tablist">
-                    @include('dashboard.nav_sfa')
-                </ul>
+                @include('dashboard.nav_sfa')
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="row">
                             <div class="col-12">
-                                <form action="/dashboardsfakp">
+                                <form action="#">
                                     <div class="row">
                                         <div class="col-4">
                                             <x-inputtext field="tanggal" value="{{ Request('tanggal') }}"

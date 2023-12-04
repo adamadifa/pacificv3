@@ -1267,8 +1267,7 @@ class DashboardController extends Controller
         $tanggal = $request->tanggal;
         $kode_cabang = $request->kode_cabang;
 
-        $cbg = new Cabang();
-        $cabang = $cbg->getCabang(Auth::user()->kode_cabang);
+        $rsm = DB::table('users')->where('level', 'rsm');
 
         if (!empty($kode_cabang)) {
             $lok_cabang = DB::table('cabang')->where('kode_cabang', $kode_cabang)->first();
@@ -1285,7 +1284,7 @@ class DashboardController extends Controller
             ->where('level', 'rsm')
             ->orderBy('tanggal')
             ->get();
-        return view('dashboard.sfakp', compact('cabang', 'smactivity', 'lokasi'));
+        return view('dashboard.sfarsm', compact('rsm', 'smactivity', 'lokasi'));
     }
 
 
