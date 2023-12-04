@@ -1239,8 +1239,9 @@ class DashboardController extends Controller
     {
         $tanggal = $request->tanggal;
         $kode_cabang = $request->kode_cabang;
+
         $cbg = new Cabang();
-        $cabang = $cbg->getCabang($kode_cabang);
+        $cabang = $cbg->getCabang(Auth::user()->kode_cabang);
 
         if (!empty($kode_cabang)) {
             $lok_cabang = DB::table('cabang')->where('kode_cabang', $kode_cabang)->first();
