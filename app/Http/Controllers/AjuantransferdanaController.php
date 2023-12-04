@@ -15,6 +15,7 @@ class AjuantransferdanaController extends Controller
     public function index(Request $request)
     {
 
+        $kode_cabang = Auth::user()->kode_cabang;
         $query = Ajuantransferdana::query();
         $query->select('*');
         if (!empty($request->nama)) {
@@ -28,6 +29,9 @@ class AjuantransferdanaController extends Controller
             $query->whereBetween('tgl_pengajuan', [$request->dari, $request->sampai]);
         }
 
+        if ($kode_cabang != "PCF") {
+            $query->where('kode_cabang', $kode_cabang);
+        }
         $ajuantransferdana = $query->get();
         $cbg = new Cabang();
         $cabang = $cbg->getCabanggudang(Auth::user()->kode_cabang);
