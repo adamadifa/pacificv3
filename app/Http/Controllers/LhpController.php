@@ -375,7 +375,7 @@ class LhpController extends Controller
         $tanggal = $lhp->tanggal;
         $query = Penjualan::query();
         $query->selectRaw("penjualan.no_fak_penj,nama_pelanggan,
-        AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500,BR20
+        AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500,BR20,
         SUM(totaltunai) as totaltunai,
         SUM(IF(penjualan.jenistransaksi='kredit',total,0)) as totalkredit,
         totalbayar,totalgiro,totaltransfer,totalvoucher");
