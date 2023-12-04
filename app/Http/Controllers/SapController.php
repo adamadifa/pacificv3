@@ -457,7 +457,7 @@ class SapController extends Controller
                     'number' => '120363184988285981@g.us',
                     'media_type' => 'image',
                     'caption' => $activity,
-                    'url' => $path_image
+                    'url' => 'http://194.31.53.51/storage/uploads/smactivity/2312040004.png'
                 ];
 
                 $curl = curl_init();
