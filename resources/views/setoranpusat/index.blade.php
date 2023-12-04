@@ -120,8 +120,9 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                @if (empty($d->no_pengajuan))
-                                                    <div class="btn-group" role="group" aria-label="Basic example">
+
+                                                <div class="btn-group" role="group" aria-label="Basic example">
+                                                    @if (empty($d->no_pengajuan))
                                                         @if (in_array($level, $setoranpusat_edit))
                                                             @if (empty($d->no_ref))
                                                                 <a class="ml-1 edit" status="{{ $d->status }}"
@@ -143,8 +144,7 @@
                                                                 </form>
                                                             @endif
                                                         @endif
-
-                                                    </div>
+                                                    @endif
                                                     @if (in_array($level, $setoranpusat_terimasetoran))
                                                         @if (empty($d->no_ref))
                                                             @if ($d->status == 0)
@@ -159,7 +159,8 @@
                                                             @endif
                                                         @endif
                                                     @endif
-                                                @endif
+                                                </div>
+
                                             </td>
                                         </tr>
                                     @endforeach
