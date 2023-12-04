@@ -1255,10 +1255,39 @@ class DashboardController extends Controller
             ->leftJoin('users', 'activity_sm.id_user', '=', 'users.id')
             ->where('users.kode_cabang', $kode_cabang)
             ->whereRaw('DATE(tanggal)="' . $tanggal . '"')
+            ->where('level', 'kepala penjualan')
             ->orderBy('tanggal')
             ->get();
         return view('dashboard.sfakp', compact('cabang', 'smactivity', 'lokasi'));
     }
+
+
+    public function dashboardsfarsm(Request $request)
+    {
+        $tanggal = $request->tanggal;
+        $kode_cabang = $request->kode_cabang;
+
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang(Auth::user()->kode_cabang);
+
+        if (!empty($kode_cabang)) {
+            $lok_cabang = DB::table('cabang')->where('kode_cabang', $kode_cabang)->first();
+        } else {
+            $lok_cabang = DB::table('cabang')->where('kode_cabang', 'PST')->first();
+        }
+        $lokasi = explode(",", $lok_cabang->lokasi_cabang);
+
+        $smactivity = DB::table('activity_sm')
+            ->select('activity_sm.*')
+            ->leftJoin('users', 'activity_sm.id_user', '=', 'users.id')
+            ->where('users.kode_cabang', $kode_cabang)
+            ->whereRaw('DATE(tanggal)="' . $tanggal . '"')
+            ->where('level', 'rsm')
+            ->orderBy('tanggal')
+            ->get();
+        return view('dashboard.sfakp', compact('cabang', 'smactivity', 'lokasi'));
+    }
+
 
 
     public function showsmactivity($kode_act_sm)

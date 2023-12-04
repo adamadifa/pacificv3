@@ -241,6 +241,7 @@ class KaryawanController extends Controller
     public function update($nik, Request $request)
     {
         $nik = Crypt::decrypt($nik);
+        $nik_baru = $request->nik_baru;
         $no_ktp = $request->no_ktp;
         $nama_karyawan = $request->nama_karyawan;
         $tgl_masuk = $request->tgl_masuk;
@@ -271,6 +272,7 @@ class KaryawanController extends Controller
             return Redirect::back()->with(['warning' => 'Pin Sudah Terdaftar']);
         }
         $data = [
+            'nik' => $nik_baru,
             'no_ktp' => $no_ktp,
             'nama_karyawan' => $nama_karyawan,
             'tgl_masuk' => $tgl_masuk,

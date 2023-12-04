@@ -13,32 +13,35 @@
     .col-3 {
         padding-right: 1px !important;
     }
-
 </style>
 <form action="/karyawan/{{ Crypt::encrypt($karyawan->nik) }}/update" method="post" id="frmSupplier">
     @csrf
     <div class="row" sty>
         <div class="col-12">
-            <x-inputtext label="NIK" field="nik" icon="feather icon-credit-card" value="{{ $karyawan->nik }}" readonly />
+            <x-inputtext label="NIK" field="nik_baru" icon="feather icon-credit-card" value="{{ $karyawan->nik }}" />
 
         </div>
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext label="No. KTP" field="no_ktp" icon="feather icon-credit-card" value="{{ $karyawan->no_ktp }}" />
+            <x-inputtext label="No. KTP" field="no_ktp" icon="feather icon-credit-card"
+                value="{{ $karyawan->no_ktp }}" />
         </div>
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext label="Nama Karyawan" field="nama_karyawan" icon="feather icon-user" value="{{ $karyawan->nama_karyawan }}" />
+            <x-inputtext label="Nama Karyawan" field="nama_karyawan" icon="feather icon-user"
+                value="{{ $karyawan->nama_karyawan }}" />
         </div>
     </div>
     <div class="row">
         <div class="col-5">
-            <x-inputtext label="Tempat Lahir" field="tempat_lahir" icon="feather icon-map-pin" value="{{ $karyawan->tempat_lahir }}" />
+            <x-inputtext label="Tempat Lahir" field="tempat_lahir" icon="feather icon-map-pin"
+                value="{{ $karyawan->tempat_lahir }}" />
         </div>
         <div class="col-7">
-            <x-inputtext label="Tanggal Lahir" field="tgl_lahir" icon="feather icon-calendar" value="{{ $karyawan->tgl_lahir }}" datepicker />
+            <x-inputtext label="Tanggal Lahir" field="tgl_lahir" icon="feather icon-calendar"
+                value="{{ $karyawan->tgl_lahir }}" datepicker />
         </div>
     </div>
     <div class="row">
@@ -54,8 +57,8 @@
             <div class="form-group">
                 <select name="jenis_kelamin" id="jenis_kelamin" class="form-control">
                     <option value="">Jenis Kelamin</option>
-                    <option value="1" {{ $karyawan->jenis_kelamin == "1" ? 'selected' : '' }}>Laki Laki</option>
-                    <option value="2" {{ $karyawan->jenis_kelamin == "2" ? 'selected' : '' }}>Perempuan</option>
+                    <option value="1" {{ $karyawan->jenis_kelamin == '1' ? 'selected' : '' }}>Laki Laki</option>
+                    <option value="2" {{ $karyawan->jenis_kelamin == '2' ? 'selected' : '' }}>Perempuan</option>
                 </select>
                 <small class="danger"></small>
             </div>
@@ -86,17 +89,17 @@
             <div class="form-group">
                 <select name="pendidikan_terakhir" id="pendidikan_terakhir" class="form-control">
                     <option value="">Pendidikan Terakhir</option>
-                    <option value="SD" {{ $karyawan->pendidikan_terakhir == "SD" ? 'selected' : '' }}>SD</option>
-                    <option value="SMP" {{ $karyawan->pendidikan_terakhir == "SMP" ? 'selected' : '' }}>SMP</option>
-                    <option value="SMA" {{ $karyawan->pendidikan_terakhir == "SMA" ? 'selected' : '' }}>SMA</option>
-                    <option value="SMK" {{ $karyawan->pendidikan_terakhir == "SMK" ? 'selected' : '' }}>SMK</option>
-                    <option value="D1" {{ $karyawan->pendidikan_terakhir == "D1" ? 'selected' : '' }}>D1</option>
-                    <option value="D2" {{ $karyawan->pendidikan_terakhir == "D2" ? 'selected' : '' }}>D2</option>
-                    <option value="D3" {{ $karyawan->pendidikan_terakhir == "D3" ? 'selected' : '' }}>D3</option>
-                    <option value="D4" {{ $karyawan->pendidikan_terakhir == "D4" ? 'selected' : '' }}>D4</option>
-                    <option value="S1" {{ $karyawan->pendidikan_terakhir == "S1" ? 'selected' : '' }}>S1</option>
-                    <option value="S2" {{ $karyawan->pendidikan_terakhir == "S2" ? 'selected' : '' }}>S2</option>
-                    <option value="S3" {{ $karyawan->pendidikan_terakhir == "S3" ? 'selected' : '' }}>S3</option>
+                    <option value="SD" {{ $karyawan->pendidikan_terakhir == 'SD' ? 'selected' : '' }}>SD</option>
+                    <option value="SMP" {{ $karyawan->pendidikan_terakhir == 'SMP' ? 'selected' : '' }}>SMP</option>
+                    <option value="SMA" {{ $karyawan->pendidikan_terakhir == 'SMA' ? 'selected' : '' }}>SMA</option>
+                    <option value="SMK" {{ $karyawan->pendidikan_terakhir == 'SMK' ? 'selected' : '' }}>SMK</option>
+                    <option value="D1" {{ $karyawan->pendidikan_terakhir == 'D1' ? 'selected' : '' }}>D1</option>
+                    <option value="D2" {{ $karyawan->pendidikan_terakhir == 'D2' ? 'selected' : '' }}>D2</option>
+                    <option value="D3" {{ $karyawan->pendidikan_terakhir == 'D3' ? 'selected' : '' }}>D3</option>
+                    <option value="D4" {{ $karyawan->pendidikan_terakhir == 'D4' ? 'selected' : '' }}>D4</option>
+                    <option value="S1" {{ $karyawan->pendidikan_terakhir == 'S1' ? 'selected' : '' }}>S1</option>
+                    <option value="S2" {{ $karyawan->pendidikan_terakhir == 'S2' ? 'selected' : '' }}>S2</option>
+                    <option value="S3" {{ $karyawan->pendidikan_terakhir == 'S3' ? 'selected' : '' }}>S3</option>
                 </select>
                 <small class="danger"></small>
             </div>
@@ -107,8 +110,9 @@
             <div class="form-group">
                 <select name="id_perusahaan" id="id_perusahaan" class="form-control">
                     <option value="">Perusahaan</option>
-                    <option value="MP" {{ $karyawan->id_perusahaan == "MP" ? 'selected' : '' }}>MAKMUR PERMATA</option>
-                    <option value="PCF" {{ $karyawan->id_perusahaan == "PCF" ? 'selected' : '' }}>PACIFIC</option>
+                    <option value="MP" {{ $karyawan->id_perusahaan == 'MP' ? 'selected' : '' }}>MAKMUR PERMATA
+                    </option>
+                    <option value="PCF" {{ $karyawan->id_perusahaan == 'PCF' ? 'selected' : '' }}>PACIFIC</option>
                 </select>
                 <small class="danger"></small>
             </div>
@@ -120,7 +124,8 @@
                 <select name="id_kantor" id="id_kantor" class="form-control">
                     <option value="">Kantor Cabang / Pusat</option>
                     @foreach ($cabang as $d)
-                    <option {{ $karyawan->id_kantor == $d->kode_cabang ? 'selected' : '' }} value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
+                        <option {{ $karyawan->id_kantor == $d->kode_cabang ? 'selected' : '' }}
+                            value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
                     @endforeach
                 </select>
                 <small class="danger"></small>
@@ -133,7 +138,8 @@
                 <select name="kode_dept" id="kode_dept" class="form-control">
                     <option value="">Departemen</option>
                     @foreach ($departemen as $d)
-                    <option {{ $karyawan->kode_dept == $d->kode_dept ? 'selected' : '' }} value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
+                        <option {{ $karyawan->kode_dept == $d->kode_dept ? 'selected' : '' }}
+                            value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
                     @endforeach
                 </select>
                 <small class="danger"></small>
@@ -146,7 +152,8 @@
                 <select name="id_jabatan" id="id_jabatan" class="form-control">
                     <option value="">Jabatan</option>
                     @foreach ($jabatan as $d)
-                    <option {{ $karyawan->id_jabatan == $d->id ? 'selected' : '' }} value="{{ $d->id }}">{{ $d->nama_jabatan }}</option>
+                        <option {{ $karyawan->id_jabatan == $d->id ? 'selected' : '' }} value="{{ $d->id }}">
+                            {{ $d->nama_jabatan }}</option>
                     @endforeach
                 </select>
                 <small class="danger"></small>
@@ -159,7 +166,8 @@
                 <select name="grup" id="grup" class="form-control">
                     <option value="">Grup</option>
                     @foreach ($group as $d)
-                    <option {{ $karyawan->grup == $d->id ? 'selected' : '' }} value="{{ $d->id }}">{{ $d->nama_group }}</option>
+                        <option {{ $karyawan->grup == $d->id ? 'selected' : '' }} value="{{ $d->id }}">
+                            {{ $d->nama_group }}</option>
                     @endforeach
                 </select>
                 <small class="danger"></small>
@@ -171,9 +179,11 @@
             <div class="form-group">
                 <select name="klasifikasi" id="klasifikasi" class="form-control">
                     <option value="">Klasifikasi</option>
-                    <option value="TKL" {{ $karyawan->klasifikasi == "TKL" ? 'selected' : '' }}>TKL</option>
-                    <option value="ADMINISTRASI" {{ $karyawan->klasifikasi == "ADMINISTRASI" ? 'selected' : '' }}>ADMINISTRASI</option>
-                    <option value="PENJUALAN" {{ $karyawan->klasifikasi == "PENJUALAN" ? 'selected' : '' }}>PENJUALAN</option>
+                    <option value="TKL" {{ $karyawan->klasifikasi == 'TKL' ? 'selected' : '' }}>TKL</option>
+                    <option value="ADMINISTRASI" {{ $karyawan->klasifikasi == 'ADMINISTRASI' ? 'selected' : '' }}>
+                        ADMINISTRASI</option>
+                    <option value="PENJUALAN" {{ $karyawan->klasifikasi == 'PENJUALAN' ? 'selected' : '' }}>PENJUALAN
+                    </option>
 
                 </select>
                 <small class="danger"></small>
@@ -182,7 +192,8 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext label="Tanggal Masuk" value="{{ $karyawan->tgl_masuk }}" field="tgl_masuk" icon="feather icon-calendar" datepicker />
+            <x-inputtext label="Tanggal Masuk" value="{{ $karyawan->tgl_masuk }}" field="tgl_masuk"
+                icon="feather icon-calendar" datepicker />
         </div>
     </div>
     <div class="row">
@@ -190,8 +201,8 @@
             <div class="form-group">
                 <select name="status_karyawan" id="status_karyawan" class="form-control">
                     <option value="">Status Karyawan</option>
-                    <option value="K" {{ $karyawan->status_karyawan == "K" ? 'selected' : '' }}>Kontrak</option>
-                    <option value="T" {{ $karyawan->status_karyawan == "T" ? 'selected' : '' }}>Tetap</option>
+                    <option value="K" {{ $karyawan->status_karyawan == 'K' ? 'selected' : '' }}>Kontrak</option>
+                    <option value="T" {{ $karyawan->status_karyawan == 'T' ? 'selected' : '' }}>Tetap</option>
                 </select>
                 <small class="danger"></small>
             </div>
@@ -199,10 +210,12 @@
     </div>
     <div class="row">
         <div class="col-12">
-            @if ($level != "admin")
-            <x-inputtext label="PIN" readonly value="{{ $karyawan->pin }}" field="pin" icon="feather icon-credit-card" />
+            @if ($level != 'admin')
+                <x-inputtext label="PIN" readonly value="{{ $karyawan->pin }}" field="pin"
+                    icon="feather icon-credit-card" />
             @else
-            <x-inputtext label="PIN" value="{{ $karyawan->pin }}" field="pin" icon="feather icon-credit-card" />
+                <x-inputtext label="PIN" value="{{ $karyawan->pin }}" field="pin"
+                    icon="feather icon-credit-card" />
             @endif
         </div>
     </div>
@@ -211,8 +224,8 @@
             <div class="form-group">
                 <select name="status_aktif" id="status_aktif" class="form-control">
                     <option value="">Aktif / NonAktif</option>
-                    <option value="1" {{ $karyawan->status_aktif == 1 ? 'selected' :'' }}>Aktif</option>
-                    <option value="0" {{ $karyawan->status_aktif == 0 ? 'selected' :'' }}>Non Aktif</option>
+                    <option value="1" {{ $karyawan->status_aktif == 1 ? 'selected' : '' }}>Aktif</option>
+                    <option value="0" {{ $karyawan->status_aktif == 0 ? 'selected' : '' }}>Non Aktif</option>
                 </select>
                 <small class="danger"></small>
             </div>
@@ -220,24 +233,27 @@
     </div>
     <div class="row" id="tglnonaktif">
         <div class="col-12">
-            <x-inputtext label="Tanggal Non Aktif" value="{{ $karyawan->tgl_nonaktif }}" field="tgl_nonaktif" icon="feather icon-calendar" datepicker />
+            <x-inputtext label="Tanggal Non Aktif" value="{{ $karyawan->tgl_nonaktif }}" field="tgl_nonaktif"
+                icon="feather icon-calendar" datepicker />
         </div>
     </div>
     <div class="row" id="tgloffgaji">
         <div class="col-12">
-            <x-inputtext label="Tanggal Off Gaji" value="{{ $karyawan->tgl_off_gaji }}" field="tgl_off_gaji" icon="feather icon-calendar" datepicker />
+            <x-inputtext label="Tanggal Off Gaji" value="{{ $karyawan->tgl_off_gaji }}" field="tgl_off_gaji"
+                icon="feather icon-calendar" datepicker />
         </div>
     </div>
     <div class="row">
         <div class="col-12">
             <div class="form-group">
-                <button class="btn btn-primary btn-block" type="submit"><i class="feather icon-send mr-1"></i>Simpan</button>
+                <button class="btn btn-primary btn-block" type="submit"><i
+                        class="feather icon-send mr-1"></i>Simpan</button>
             </div>
         </div>
     </div>
 </form>
 
-<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
+<script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
 <script>
     $(function() {
 
@@ -277,8 +293,8 @@
         const form = document.querySelector('#frmSupplier');
         const checkNik = () => {
             let valid = false;
-            const min = 3
-                , max = 25;
+            const min = 3,
+                max = 25;
             const nik = nikEl.value.trim();
 
             if (!isRequired(nik)) {
@@ -562,27 +578,32 @@
 
 
             // validate forms
-            let isNikValid = checkNik()
-                , isNoKtpValid = checkNoKtp()
-                , isNamakaryawanValid = checkNamakaryawan()
-                , isTempatlahirValid = checkTempatlahir()
-                , isTgllahirValid = checkTgllahir()
-                , isAlamatValid = checkAlamat()
-                , isJeniskelaminValid = checkJeniskelamin()
-                , isNohpValid = checkNohp()
-                , isStatuskawinValid = checkStatuskawin()
+            let isNikValid = checkNik(),
+                isNoKtpValid = checkNoKtp(),
+                isNamakaryawanValid = checkNamakaryawan(),
+                isTempatlahirValid = checkTempatlahir(),
+                isTgllahirValid = checkTgllahir(),
+                isAlamatValid = checkAlamat(),
+                isJeniskelaminValid = checkJeniskelamin(),
+                isNohpValid = checkNohp(),
+                isStatuskawinValid = checkStatuskawin()
 
-                , isIdperusahaanValid = checkPerusahan()
-                , isIdkantorValid = checkKantor()
-                , isKodedeptValid = checkDepartemen()
-                , isGrupValid = checkGrup()
-                , isIdJabatan = checkJabatan()
-                , isTglmasukValid = checkTglmasuk()
-                , isKlasifikasiValid = checkKlasifikasi()
-                , isStatuskaryawanValid = checkStatuskaryawan()
-                , isStatusaktifValid = checkStatusaktif();
+                ,
+                isIdperusahaanValid = checkPerusahan(),
+                isIdkantorValid = checkKantor(),
+                isKodedeptValid = checkDepartemen(),
+                isGrupValid = checkGrup(),
+                isIdJabatan = checkJabatan(),
+                isTglmasukValid = checkTglmasuk(),
+                isKlasifikasiValid = checkKlasifikasi(),
+                isStatuskaryawanValid = checkStatuskaryawan(),
+                isStatusaktifValid = checkStatusaktif();
 
-            let isFormValid = isNikValid && isNoKtpValid && isNamakaryawanValid && isTempatlahirValid && isTgllahirValid && isAlamatValid && isJeniskelaminValid && isNohpValid && isStatuskawinValid && isIdperusahaanValid && isIdkantorValid && isKodedeptValid && isGrupValid && isIdJabatan && isTglmasukValid && isKlasifikasiValid && isStatuskaryawanValid && isStatusaktifValid;
+            let isFormValid = isNikValid && isNoKtpValid && isNamakaryawanValid && isTempatlahirValid &&
+                isTgllahirValid && isAlamatValid && isJeniskelaminValid && isNohpValid &&
+                isStatuskawinValid && isIdperusahaanValid && isIdkantorValid && isKodedeptValid &&
+                isGrupValid && isIdJabatan && isTglmasukValid && isKlasifikasiValid &&
+                isStatuskaryawanValid && isStatusaktifValid;
 
             // submit to the server if the form is valid
             if (isFormValid) {
@@ -668,5 +689,4 @@
             }
         }));
     });
-
 </script>
