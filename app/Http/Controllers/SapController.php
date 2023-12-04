@@ -451,7 +451,7 @@ class SapController extends Controller
                     Storage::put($file, $image_base64);
                 }
 
-                $data = [
+                $pesan = [
                     'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
                     'sender' => '6289670444321',
                     'number' => '120363184988285981@g.us',
@@ -469,7 +469,7 @@ class SapController extends Controller
                     CURLOPT_FOLLOWLOCATION => true,
                     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
                     CURLOPT_CUSTOMREQUEST => 'POST',
-                    CURLOPT_POSTFIELDS => json_encode($data),
+                    CURLOPT_POSTFIELDS => json_encode($pesan),
                     CURLOPT_HTTPHEADER => array(
                         'Content-Type: application/json'
                     ),
