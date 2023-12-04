@@ -20,7 +20,7 @@
                                         </div>
                                         <div class="col-3">
                                             <div class="form-group">
-                                                <select name="kode_cabang" id="kode_cabang" class="form-control">
+                                                <select name="id_rsm" id="id_rsm" class="form-control">
                                                     <option value="">Pilih RSM</option>
                                                     @foreach ($rsm as $d)
                                                         <option {{ Request('id_rsm') == $d->id ? 'selected' : '' }}
