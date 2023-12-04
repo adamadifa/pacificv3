@@ -452,7 +452,7 @@ class SapController extends Controller
                 }
 
                 $pesan = [
-                    'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
+                    'api_key' => 'B2TSubtfeWwb3eDHdIyoa0qRXJVgq8',
                     'sender' => '6289670444321',
                     'number' => '120363184988285981@g.us',
                     'message' => 'Test SFA Activity'
