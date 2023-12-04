@@ -360,7 +360,7 @@ class SapController extends Controller
     public function getsmactivity(Request $request)
     {
         $id = Auth::user()->id;
-        $kode_cabang = Auth::user()->kode_cabang;
+        $kode_cabang = Auth::user()->kode_cabang == "PCF" ? "PST" : Auth::user()->kode_cabang;
         $cabang = DB::table('cabang')->where('kode_cabang', $kode_cabang)->first();
         $lokasi = explode(",", $cabang->lokasi_cabang);
         $tanggal = explode("-", $request->tanggal);

@@ -1265,9 +1265,9 @@ class DashboardController extends Controller
     public function dashboardsfarsm(Request $request)
     {
         $tanggal = $request->tanggal;
-        $kode_cabang = $request->kode_cabang;
+        $id_rsm = $request->id_rsm;
 
-        $rsm = DB::table('users')->where('level', 'rsm');
+        $rsm = DB::table('users')->where('level', 'rsm')->get();
 
         if (!empty($kode_cabang)) {
             $lok_cabang = DB::table('cabang')->where('kode_cabang', $kode_cabang)->first();
@@ -1279,7 +1279,7 @@ class DashboardController extends Controller
         $smactivity = DB::table('activity_sm')
             ->select('activity_sm.*')
             ->leftJoin('users', 'activity_sm.id_user', '=', 'users.id')
-            ->where('users.kode_cabang', $kode_cabang)
+            ->where('users.id', $id_rsm)
             ->whereRaw('DATE(tanggal)="' . $tanggal . '"')
             ->where('level', 'rsm')
             ->orderBy('tanggal')
