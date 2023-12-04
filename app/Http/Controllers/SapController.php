@@ -450,14 +450,14 @@ class SapController extends Controller
                 if (isset($request->image)) {
                     Storage::put($file, $image_base64);
                 }
-
+                $path_image = Storage::url('uploads/smactivity/' . $fileName);
                 $pesan = [
                     'api_key' => 'B2TSubtfeWwb3eDHdIyoa0qRXJVgq8',
                     'sender' => '6289670444321',
                     'number' => '120363184988285981@g.us',
                     'media_type' => 'image',
                     'caption' => $activity,
-                    'url' => 'https://png.pngtree.com/png-vector/20230531/ourlarge/pngtree-boy-s-face-outline-coloring-page-vector-png-image_6787401.png'
+                    'url' => $path_image
                 ];
 
                 $curl = curl_init();
