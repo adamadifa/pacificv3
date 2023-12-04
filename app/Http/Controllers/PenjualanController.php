@@ -1408,7 +1408,7 @@ class PenjualanController extends Controller
         $jenistransaksi = $request->jenistransaksi; //ok
         $jenisbayartunai = $request->jenisbayartunai;
         $jenisbayar = $jenisbayartunai == "transfer" ? $jenisbayartunai : $request->jenisbayar; //ok
-        $subtotal = $request->subtotal; //ok
+        // $subtotal = $request->subtotal; //ok
         $jatuhtempo = $request->jatuhtempo; //ok
         $bruto = $request->bruto; //ok
         $nama_pelanggan = $request->nama_pelanggan; //nama_pelanggan
@@ -1518,7 +1518,7 @@ class PenjualanController extends Controller
             ->first();
         $lastnobukti = $bayar != null ? $bayar->nobukti : '';
         $nobukti  = buatkode($lastnobukti, $kode_cabang . $tahunini . "-", 6);
-
+        $subtotal = $bruto - $potongan - $potistimewa - $penyesuaian + $ppn;
 
 
         $totalpiutang  = $sisapiutang + $subtotal;
