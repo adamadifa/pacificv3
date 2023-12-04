@@ -623,7 +623,7 @@ class PengajuanizinController extends Controller
         $tahun = substr($tgl[0], 2, 2);
         $bulan = $tgl[1];
         $izin = DB::table("pengajuan_izin")
-            ->join('karyawan', 'pengajuan_izin.nik', '=', 'master_karyawan.nik')
+            ->join('master_karyawan', 'pengajuan_izin.nik', '=', 'master_karyawan.nik')
             ->whereRaw('YEAR(dari)="' . $tgl[0] . '"')
             ->whereRaw('MONTH(dari)="' . $tgl[1] . '"')
             ->whereRaw('LENGTH(kode_izin)=12')
