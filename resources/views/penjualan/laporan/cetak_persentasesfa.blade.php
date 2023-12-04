@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,28 +32,28 @@
             text-align: center;
             font-size: 14px;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
-        @if ($cabang!=null)
-        @if ($cabang->kode_cabang=="PST")
-        PACIFIC PUSAT
+        @if ($cabang != null)
+            @if ($cabang->kode_cabang == 'PST')
+                PACIFIC PUSAT
+            @else
+                PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
+            @endif
         @else
-        PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
-        @endif
-        @else
-        PACIFC ALL CABANG
+            PACIFC ALL CABANG
         @endif
         <br>
         LAPORAN DATA PERSENTASE PENGINPUTAN SFA<br>
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
         <br>
         @if ($salesman != null)
-        SALESMAN {{ strtoupper($salesman->nama_karyawan) }}
+            SALESMAN {{ strtoupper($salesman->nama_karyawan) }}
         @else
-        SEMUA SALESMAN
+            SEMUA SALESMAN
         @endif
         <br />
     </b>
@@ -71,27 +72,28 @@
         <tbody>
 
             @foreach ($persentasesfa as $key => $d)
-            @php
-            $kode_cabang = @$persentasesfa[$key + 1]->kode_cabang;
-            @endphp
-            <tr>
-                <td>{{ $loop->iteration }}</td>
-                <td>{{ $d->id_karyawan }}</td>
-                <td>{{ $d->nama_karyawan }}</td>
-                <td>{{ $d->kode_cabang }}</td>
-                <td style="text-align:center">{{ rupiah($d->totaltransaksi) }}</td>
-                <td style="text-align: center">{{ rupiah($d->totaltransaksisfa) }}</td>
-                <td style="text-align: center">{{ rupiah($d->persentase)  }}%</td>
-            </tr>
-            @if ($kode_cabang != $d->kode_cabang)
-            <tr bgcolor="#024a75" style="color:white; font-size:12;">
-                <th colspan="7"></th>
-            </tr>
-            @endif
+                @php
+                    $kode_cabang = @$persentasesfa[$key + 1]->kode_cabang;
+                @endphp
+                <tr>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $d->id_karyawan }}</td>
+                    <td>{{ $d->nama_karyawan }}</td>
+                    <td>{{ $d->kode_cabang }}</td>
+                    <td style="text-align:center">{{ rupiah($d->totaltransaksi) }}</td>
+                    <td style="text-align: center">{{ rupiah($d->totaltransaksisfa) }}</td>
+                    <td style="text-align: center">{{ rupiah($d->persentase) }}%</td>
+                </tr>
+                @if ($kode_cabang != $d->kode_cabang)
+                    <tr bgcolor="#024a75" style="color:white; font-size:12;">
+                        <th colspan="7"></th>
+                    </tr>
+                @endif
             @endforeach
         </tbody>
 
 
     </table>
 </body>
+
 </html>

@@ -9468,4 +9468,33 @@ class PenjualanController extends Controller
             return Redirect::back()->with(['warning' => 'No. Faktur Gagal Dibuat']);
         }
     }
+
+
+    public function smmactivity()
+    {
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
+        return view('penjualan.laporan.frm.lap_smmactivity', compact('cabang'));
+    }
+
+
+    public function cetaksmmactivity(Request $request)
+    {
+        $kode_cabang = $request->kode_cabang;
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $lok_cabang = DB::table('cabang')->where('kode_cabang', $kode_cabang)->first();
+        $lokasi = explode(",", $lok_cabang->lokasi_cabang);
+
+        $smmactivity = DB::table('activity_sm')
+            ->select('activity_sm.*')
+            ->leftJoin('users', 'activity_sm.id_user', '=', 'users.id')
+            ->where('users.kode_cabang', $kode_cabang)
+            ->whereRaw('DATE(tanggal)>="' . $dari . '" AND DATE(tanggal) <="' . $sampai . '"')
+            ->where('level', 'kepala penjualan')
+            ->orderBy('tanggal')
+            ->get();
+        $cabang = DB::table('cabang')->where('kode_cabang', $kode_cabang)->first();
+        return view('penjualan.laporan.cetak_smmactivity', compact('smmactivity', 'cabang', 'dari', 'sampai', 'lokasi'));
+    }
 }
