@@ -452,14 +452,14 @@ class SapController extends Controller
                 }
                 $path_image = Storage::url('uploads/smactivity/' . $fileName);
 
-                dd($path_image);
+
                 $pesan = [
                     'api_key' => 'B2TSubtfeWwb3eDHdIyoa0qRXJVgq8',
                     'sender' => '6289670444321',
                     'number' => '120363184988285981@g.us',
                     'media_type' => 'image',
                     'caption' => $activity,
-                    'url' => 'http://194.31.53.51/storage/uploads/smactivity/2312040004.png'
+                    'url' => 'https://sfa.pacific-tasikmalaya.com/storage/uploads/smactivity/' . $fileName
                 ];
 
                 $curl = curl_init();
