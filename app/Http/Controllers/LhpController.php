@@ -375,7 +375,7 @@ class LhpController extends Controller
         $tanggal = $lhp->tanggal;
         $query = Penjualan::query();
         $query->selectRaw("penjualan.no_fak_penj,nama_pelanggan,
-        AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500,
+        AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500,BR20
         SUM(totaltunai) as totaltunai,
         SUM(IF(penjualan.jenistransaksi='kredit',total,0)) as totalkredit,
         totalbayar,totalgiro,totaltransfer,totalvoucher");
@@ -400,7 +400,8 @@ class LhpController extends Controller
                 SUM( IF ( kode_produk = 'SP8', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SP8,
                 SUM( IF ( kode_produk = 'SP8-P', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SP8P,
                 SUM( IF ( kode_produk = 'SP', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SP,
-                SUM( IF ( kode_produk = 'SP500', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SP500
+                SUM( IF ( kode_produk = 'SP500', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS SP500,
+                SUM( IF ( kode_produk = 'BR20', detailpenjualan.jumlah/isipcsdus, NULL ) ) AS BR20
             FROM
                 detailpenjualan
             INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
@@ -485,7 +486,7 @@ class LhpController extends Controller
         $query->where('penjualan.id_karyawan', $id_karyawan);
         $query->where('penjualan.kode_lhp', $kode_lhp);
         $query->orderBy('penjualan.no_fak_penj');
-        $query->groupByRaw('penjualan.no_fak_penj,nama_pelanggan,AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500,totalbayar,totalgiro,totaltransfer,totalvoucher');
+        $query->groupByRaw('penjualan.no_fak_penj,nama_pelanggan,AB,AR,ASE,BB,DEP,SC,SP8P,SP8,SP,SP500,BR20,totalbayar,totalgiro,totaltransfer,totalvoucher');
         $penjualan = $query->get();
 
         $no_fak_penj = [];
