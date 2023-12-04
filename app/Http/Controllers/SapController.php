@@ -451,6 +451,13 @@ class SapController extends Controller
                     Storage::put($file, $image_base64);
                 }
 
+                $data = [
+                    'api_key' => 'NHoqE4TUf6YLQhJJQAGSUjj4wOMyzh',
+                    'sender' => '6289670444321',
+                    'number' => '120363184988285981@g.us',
+                    'message' => 'Test SFA Activity'
+                ];
+
                 $curl = curl_init();
 
                 curl_setopt_array($curl, array(
@@ -469,7 +476,6 @@ class SapController extends Controller
                 ));
 
                 $response = curl_exec($curl);
-
                 curl_close($curl);
                 echo "success|Data Berhasil Disimpan";
             }
