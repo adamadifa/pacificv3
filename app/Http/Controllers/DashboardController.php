@@ -1240,9 +1240,8 @@ class DashboardController extends Controller
 
         $tanggal = $request->tanggal;
         $kode_cabang = $request->kode_cabang;
-
-
-        $cabang = DB::table('cabang')->get();
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($kode_cabang);
 
 
 
