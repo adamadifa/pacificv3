@@ -602,8 +602,7 @@ class PengajuanizinController extends Controller
     public function store(Request $request)
     {
         $nik = $request->nik;
-        $karyawan = DB::table('master_karyawan')->where('nik', $nik)->first();
-        $id_kantor = $karyawan->id_kantor;
+
         // $dari = $request->jenis_izin == "PL" || $request->jenis_izin == "KL" || $request->jenis_izin == "TL" ? date("Y-m-d") : $request->dari;
         $dari = $request->dari;
         // $sampai =  $request->jenis_izin == "PL" || $request->jenis_izin == "KL" || $request->jenis_izin == "TL" ? date("Y-m-d") : $request->sampai;
@@ -626,13 +625,12 @@ class PengajuanizinController extends Controller
             ->join('master_karyawan', 'pengajuan_izin.nik', '=', 'master_karyawan.nik')
             ->whereRaw('YEAR(dari)="' . $tgl[0] . '"')
             ->whereRaw('MONTH(dari)="' . $tgl[1] . '"')
-            ->whereRaw('LENGTH(kode_izin)=12')
-            ->where('id_kantor', $id_kantor)
+            ->whereRaw('LENGTH(kode_izin)=10')
             ->orderBy("kode_izin", "desc")
             ->first();
 
         $last_kodeizin = $izin != null ? $izin->kode_izin : '';
-        $kode_izin  = buatkode($last_kodeizin, "IZ" . $id_kantor . $tahun . $bulan, 3);
+        $kode_izin  = buatkode($last_kodeizin, "IZ"  . $tahun . $bulan, 4);
 
 
         if ($request->hasFile('sid')) {
@@ -708,8 +706,7 @@ class PengajuanizinController extends Controller
     public function storekoreksipresensi(Request $request)
     {
         $nik = $request->nik;
-        $karyawan = DB::table('master_karyawan')->where('nik', $nik)->first();
-        $id_kantor = $karyawan->id_kantor;
+
         $status = "k";
         $tgl_presensi = $request->tgl_presensi;
         $jam_masuk = $request->jam_masuk;
@@ -726,13 +723,12 @@ class PengajuanizinController extends Controller
             ->join('master_karyawan', 'pengajuan_izin.nik', '=', 'master_karyawan.nik')
             ->whereRaw('YEAR(dari)="' . $tgl[0] . '"')
             ->whereRaw('MONTH(dari)="' . $tgl[1] . '"')
-            ->whereRaw('LENGTH(kode_izin)=12')
-            ->where('id_kantor', $id_kantor)
+            ->whereRaw('LENGTH(kode_izin)=10')
             ->orderBy("kode_izin", "desc")
             ->first();
 
         $last_kodeizin = $izin != null ? $izin->kode_izin : '';
-        $kode_izin  = buatkode($last_kodeizin, "IZ" . $id_kantor . $tahun . $bulan, 3);
+        $kode_izin  = buatkode($last_kodeizin, "IZ"  . $tahun . $bulan, 4);
         $data = [
             'kode_izin' => $kode_izin,
             'nik' => $nik,
