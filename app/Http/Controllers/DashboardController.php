@@ -1237,13 +1237,10 @@ class DashboardController extends Controller
 
     public function dashboardsfakp(Request $request)
     {
-
         $tanggal = $request->tanggal;
         $kode_cabang = $request->kode_cabang;
         $cbg = new Cabang();
         $cabang = $cbg->getCabang($kode_cabang);
-
-
 
         if (!empty($kode_cabang)) {
             $lok_cabang = DB::table('cabang')->where('kode_cabang', $kode_cabang)->first();
@@ -1251,7 +1248,6 @@ class DashboardController extends Controller
             $lok_cabang = DB::table('cabang')->where('kode_cabang', 'PST')->first();
         }
         $lokasi = explode(",", $lok_cabang->lokasi_cabang);
-
 
         $smactivity = DB::table('activity_sm')
             ->select('activity_sm.*')
