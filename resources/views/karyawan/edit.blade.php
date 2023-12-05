@@ -271,7 +271,7 @@
             loadstatusaktif();
         });
 
-        const nikEl = document.querySelector('#nik');
+        const nikEl = document.querySelector('#nik_baru');
         const noktpEl = document.querySelector('#no_ktp');
         const namakaryawanEl = document.querySelector('#nama_karyawan');
         const tempatlahirEl = document.querySelector('#tempat_lahir');
