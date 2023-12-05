@@ -1101,6 +1101,7 @@
                             </td>
                         @endif
                         @php
+                            echo $izinsakit;
                             $totalterlambat += $jt;
                             $totalkeluar += $jk;
                             $totaldenda += $denda;
