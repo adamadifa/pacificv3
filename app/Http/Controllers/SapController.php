@@ -461,7 +461,7 @@ class SapController extends Controller
                     'sender' => '6289670444321',
                     'number' => $id_group_wa,
                     'media_type' => 'image',
-                    'caption' => '*' . $nama . ': (' . $cekuser->kode_cabang . ')*' . $activity,
+                    'caption' => '*' . $nama . ': (' . $cekuser->kode_cabang . ')* ' . $activity,
                     'url' => 'https://sfa.pacific-tasikmalaya.com/storage/uploads/smactivity/' . $fileName
                 ];
 
