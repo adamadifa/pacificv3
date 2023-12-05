@@ -231,6 +231,10 @@ class GlobalProvider extends ServiceProvider
                     $qpi->where('nama_jabatan', '!=', 'MANAGER');
                 }
 
+                if ($level == "rom") {
+                    $qpi->where('nama_jabatan', 'KEPALA ADMIN');
+                }
+
                 //EMF
 
                 if ($level == "emf") {
