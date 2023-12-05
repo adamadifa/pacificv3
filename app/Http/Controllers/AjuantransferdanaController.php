@@ -208,14 +208,18 @@ class AjuantransferdanaController extends Controller
     public function batalkan($no_pengajuan)
     {
         $no_pengajuan = Crypt::decrypt($no_pengajuan);
+        DB::beginTransaction();
         try {
             DB::table('pengajuan_transfer_dana')->where('no_pengajuan', $no_pengajuan)
                 ->update([
                     'tgl_proses' => NULL,
                     'proses_by' => NULL
                 ]);
+            DB::table('setoran_pusat')->where('no_pengajuan', $no_pengajuan)->delete();
+            DB::commit();
             return Redirect::back()->with(['success' => 'Data Berhasil di Proses']);
         } catch (\Exception $e) {
+            DB::rollBack();
             return Redirect::back()->with(['warning' => 'Data Gagal di Proses']);
         }
     }
