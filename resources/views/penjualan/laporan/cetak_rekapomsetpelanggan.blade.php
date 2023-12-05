@@ -65,7 +65,7 @@
                 <th rowspan="2">TOTAL OMSET</th>
                 <th rowspan="2">RATA RATA OMSET</th>
                 <th colspan="2">RATA RATA OMSET KATEGORI PRODUK</th>
-                <th>SALESMAN</th>
+                <th rowspan="2">SALESMAN</th>
             </tr>
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
                 <th>AIDA</th>
