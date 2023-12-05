@@ -9497,4 +9497,30 @@ class PenjualanController extends Controller
         $cabang = DB::table('cabang')->where('kode_cabang', $kode_cabang)->first();
         return view('penjualan.laporan.cetak_smmactivity', compact('smmactivity', 'cabang', 'dari', 'sampai', 'lokasi'));
     }
+
+    public function rsmactivity()
+    {
+        $rsm = DB::table('users')->where('level', 'rsm')->get();
+        return view('penjualan.laporan.frm.lap_rsmactivity', compact('rsm'));
+    }
+
+    public function cetakrsmactivity(Request $request)
+    {
+        $id_rsm = $request->id_rsm;
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $kode_cabang = Auth::user()->kode_cabang == "PCF" ? "PST" : Auth::user()->kode_cabang;
+        $lok_cabang = DB::table('cabang')->where('kode_cabang', $kode_cabang)->first();
+        $lokasi = explode(",", $lok_cabang->lokasi_cabang);
+
+        $rsmactivity = DB::table('activity_sm')
+            ->select('activity_sm.*')
+            ->leftJoin('users', 'activity_sm.id_user', '=', 'users.id')
+            ->where('users.id', $id_rsm)
+            ->whereRaw('DATE(tanggal)>="' . $dari . '" AND DATE(tanggal) <="' . $sampai . '"')
+            ->orderBy('tanggal')
+            ->get();
+        $rsm = DB::table('users')->where('id', $id_rsm)->first();
+        return view('penjualan.laporan.cetak_rsmactivity', compact('rsmactivity', 'rsm', 'dari', 'sampai', 'lokasi'));
+    }
 }

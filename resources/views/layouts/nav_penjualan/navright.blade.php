@@ -159,12 +159,23 @@
                             <i class="feather icon-file mr-1"></i>Persentase Lokasi & No. HP
                         </li>
                     </a>
-                    <a href="/laporanpenjualan/smmactivity" style="color:#626262">
-                        <li
-                            class="list-group-item {{ request()->is(['laporanpenjualan/smmactivity']) ? 'active' : '' }}">
-                            <i class="feather icon-file mr-1"></i>SMM Activity
-                        </li>
-                    </a>
+
+                    @if (in_array($level, $smmactivity))
+                        <a href="/laporanpenjualan/smmactivity" style="color:#626262">
+                            <li
+                                class="list-group-item {{ request()->is(['laporanpenjualan/smmactivity']) ? 'active' : '' }}">
+                                <i class="feather icon-file mr-1"></i>SMM Activity
+                            </li>
+                        </a>
+                    @endif
+                    @if (in_array($level, $rsmactivity))
+                        <a href="/laporanpenjualan/rsmactivity" style="color:#626262">
+                            <li
+                                class="list-group-item {{ request()->is(['laporanpenjualan/rsmactivity']) ? 'active' : '' }}">
+                                <i class="feather icon-file mr-1"></i>RSM Activity
+                            </li>
+                        </a>
+                    @endif
                 @endif
             </ul>
         </div>

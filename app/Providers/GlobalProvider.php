@@ -1296,6 +1296,8 @@ class GlobalProvider extends ServiceProvider
 
             $monitoring_sku = ['salesman'];
 
+            $smmactivity = ['admin', 'manager accounting', 'manager marketing', 'direktur', 'rsm'];
+            $rsmactivity = ['admin', 'manager accounting', 'manager marketing', 'direktur'];
             $shareddata = [
 
                 'operator_pusat' => $operator_pusat,
@@ -1711,7 +1713,10 @@ class GlobalProvider extends ServiceProvider
                 'pi' => $pi,
                 'lap_hrd' => $lap_hrd,
                 'lap_gaji' => $lap_gaji,
-                'monitoring_sku' => $monitoring_sku
+                'monitoring_sku' => $monitoring_sku,
+
+                'smmactivity' => $smmactivity,
+                'rsmactivity' => $rsmactivity
 
             ];
             View::share($shareddata);
