@@ -392,6 +392,7 @@ class SapController extends Controller
     public function storesmactivity(Request $request)
     {
         $id = Auth::user()->id;
+        $id_group_wa = Auth::user()->id_group_wa;
         $cekuser = DB::table('users')->where('id', $id)->first();
         $nama = $cekuser->name;
         $lokasi = $request->lokasi;
@@ -458,7 +459,7 @@ class SapController extends Controller
                 $pesan = [
                     'api_key' => 'B2TSubtfeWwb3eDHdIyoa0qRXJVgq8',
                     'sender' => '6289670444321',
-                    'number' => '120363184988285981@g.us',
+                    'number' => $id_group_wa,
                     'media_type' => 'image',
                     'caption' => '*' . $nama . ': (' . $cekuser->kode_cabang . ')*' . $activity,
                     'url' => 'https://sfa.pacific-tasikmalaya.com/storage/uploads/smactivity/' . $fileName
