@@ -864,18 +864,24 @@ class GlobalProvider extends ServiceProvider
             $pinjaman_view = ['admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'spv produksi', 'manager accounting', 'rom', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager hrd', 'staff keuangan', 'staff keuangan 3', 'admin pdqc', 'spv pdqc', 'manager audit', 'spv maintenance'];
 
 
-            $pembayaranpinjaman_view = ['admin', 'manager hrd', 'manager accounting', 'rom', 'staff keuangan', 'staff keuangan 3'];
+            $pembayaranpinjaman_view = ['admin', 'manager hrd', 'manager accounting', 'staff keuangan', 'staff keuangan 3'];
             $inputbayarpinjaman = ['admin', 'manager hrd', 'manager accounting', 'rom'];
             $lap_pinjaman = ['admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'spv produksi', 'manager accounting', 'rom', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager hrd', 'direktur', 'staff keuangan', 'staff keuangan 3'];
 
-            $piutangkaryawan_view = ['admin', 'manager accounting', 'rom', 'manager hrd'];
-            $pembayaranpiutangkaryawan_view = ['admin', 'manager accounting', 'rom', 'manager hrd'];
-            $inputbayarpiutangkaryawan = ['admin', 'manager accounting', 'rom', 'manager hrd'];
+            $piutangkaryawan_view = ['admin', 'manager accounting', 'manager hrd'];
+            $pembayaranpiutangkaryawan_view = ['admin', 'manager accounting', 'manager hrd'];
+            $inputbayarpiutangkaryawan = ['admin', 'manager accounting', 'manager hrd'];
 
-            $lap_kasbon = ['admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'spv produksi', 'manager accounting', 'rom', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager hrd', 'direktur', 'staff keuangan', 'staff keuangan 3'];
+            $lap_kasbon = [
+                'admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi',
+                'spv produksi', 'manager accounting', 'rom', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager hrd', 'direktur', 'staff keuangan', 'staff keuangan 3'
+            ];
 
-            $kasbon_view = ['admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'spv produksi', 'manager accounting', 'rom', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager hrd', 'staff keuangan', 'staff keuangan 3', 'admin pdqc', 'spv pdqc', 'manager audit', 'spv maintenance'];
-            $pembayarankasbon_view = ['admin', 'manager hrd', 'manager accounting', 'rom', 'staff keuangan', 'staff keuangan 3'];
+            $kasbon_view = [
+                'admin', 'kepala admin', 'kepala penjualan',
+                'manager pembelian', 'kepala gudang', 'manager produksi', 'spv produksi', 'manager accounting', 'rom', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager hrd', 'staff keuangan', 'staff keuangan 3', 'admin pdqc', 'spv pdqc', 'manager audit', 'spv maintenance'
+            ];
+            $pembayarankasbon_view = ['admin', 'manager hrd', 'manager accounting', 'staff keuangan', 'staff keuangan 3'];
             //Ledger
             $ledger_menu  = ['admin', 'staff keuangan', 'spv accounting'];
             $ledger_view = ['admin', 'staff keuangan', 'spv accounting'];

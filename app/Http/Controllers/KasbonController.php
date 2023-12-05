@@ -107,6 +107,11 @@ class KasbonController extends Controller
             $query->where('master_karyawan.kode_dept', 'GAF');
         }
 
+
+        if ($level == "rom") {
+            $query->where('nama_jabatan', 'KEPALA ADMIN');
+        }
+
         if ($level == "emf") {
             $query->whereIn('master_karyawan.kode_dept', ['PMB', 'PRD', 'GAF', 'GDG', 'HRD', 'PDQ']);
         }
