@@ -5941,7 +5941,7 @@ class PenjualanController extends Controller
         $selisih = date_diff($date1, $date2);
         $periode = $selisih->m + 1;
         $query = Penjualan::query();
-        $query->selectRaw("penjualan.kode_pelanggan,nama_pelanggan,pasar,
+        $query->selectRaw("penjualan.kode_pelanggan,nama_pelanggan,pasar,nama_karyawan,
         SUM(bruto) as bruto,
         SUM(brutoswan) as brutoswan,
         SUM(brutoaida) as brutoaida,
@@ -5954,7 +5954,7 @@ class PenjualanController extends Controller
             DB::raw("(
                 SELECT no_fak_penj,
 						SUM(IF(master_barang.jenis_produk = 'SWAN',detailpenjualan.subtotal,0)) as brutoswan,
-						SUM(IF(master_barang.jenis_produk = 'AIDA',detailpenjualan.subtotal,0)) as brutoaida,
+						SUM(IF(master_barang.jenis_produk = 'AIDA' OR master_barang.jenis_produk='BUMBU',detailpenjualan.subtotal,0)) as brutoaida,
 						SUM(detailpenjualan.subtotal) as bruto
 						FROM detailpenjualan
 						INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
