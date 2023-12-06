@@ -771,7 +771,7 @@
                                             <!-- Jika Punya SID-->
                                             @if (!empty($sid))
                                                 @php
-                                                    echo 'Z';
+                                                    //echo 'Z';
                                                     $izinsakit = 0;
                                                 @endphp
                                                 SID
@@ -821,7 +821,7 @@
                                         @endphp
                                     @endif
 
-                                    {{ $izinsakit }}
+                                    {{-- {{ $izinsakit }} --}}
                                     <!-- Jika Karyawan Izin Absen-->
                                 @elseif($status == 'i')
                                     I
