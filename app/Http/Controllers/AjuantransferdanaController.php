@@ -225,4 +225,15 @@ class AjuantransferdanaController extends Controller
             return Redirect::back()->with(['warning' => 'Data Gagal di Proses']);
         }
     }
+
+    public function delete($no_pengajuan)
+    {
+        $no_pengajuan = Crypt::decrypt($no_pengajuan);
+        try {
+            DB::table('pengajuan_transfer_dana')->where('no_pengajuan', $no_pengajuan)->delete();
+            return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['error' => 'Data Gagal Disimpan']);
+        }
+    }
 }
