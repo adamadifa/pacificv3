@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -54,9 +55,9 @@
             text-align: center;
             font-size: 14px;
         }
-
     </style>
 </head>
+
 <body class="A4">
 
     <!-- Each sheet element should have the class "sheet" -->
@@ -67,10 +68,12 @@
         <table border=0>
             <tr>
                 <td style="width: 10%">
-                    @if ($penilaian->id_perusahaan=="MP")
-                    <img src="{{ asset('app-assets/images/logo/mp.png') }}" width="80" height="80" alt="">
+                    @if ($penilaian->id_perusahaan == 'MP')
+                        <img src="{{ asset('app-assets/images/logo/mp.png') }}" width="80" height="80"
+                            alt="">
                     @else
-                    <img src="{{ asset('app-assets/images/logo/pcf.png') }}" width="80" height="80" alt="">
+                        <img src="{{ asset('app-assets/images/logo/pcf.png') }}" width="80" height="80"
+                            alt="">
                     @endif
                 </td>
                 <td style="font-weight: bold; text-align:center; width:55%">
@@ -103,7 +106,7 @@
             </tr>
             <tr>
                 <td>Departemen / Posisi</td>
-                <td>{{ $karyawan->nama_dept  }} / {{ $karyawan->nama_jabatan }}</td>
+                <td>{{ $karyawan->nama_dept }} / {{ $karyawan->nama_jabatan }}</td>
             </tr>
         </table>
         <br>
@@ -124,18 +127,18 @@
             </thead>
             <tbody>
                 @foreach ($kategori_penilaian as $d)
-                <tr>
-                    <td rowspan="2">{{ $loop->iteration }}</td>
-                    <td style="background-color: rgb(41, 155, 212)">{{ $d->jenis_penilaian }}</td>
-                    <td style="text-align: center" rowspan="2">{!! $d->nilai == 0 ? "&#10004" : "" !!}</td>
-                    <td style="text-align: center" rowspan="2">{!! $d->nilai == 1 ? "&#10004" : "" !!}</td>
-                </tr>
-                <tr>
-                    <td>
-                        <input type="hidden" name="id_penilaian[]" value="{{ $d->id }}">
-                        {{ $d->penilaian }}
-                    </td>
-                </tr>
+                    <tr>
+                        <td rowspan="2">{{ $loop->iteration }}</td>
+                        <td style="background-color: rgb(41, 155, 212)">{{ $d->jenis_penilaian }}</td>
+                        <td style="text-align: center" rowspan="2">{!! $d->nilai == 0 ? '&#10004' : '' !!}</td>
+                        <td style="text-align: center" rowspan="2">{!! $d->nilai == 1 ? '&#10004' : '' !!}</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="hidden" name="id_penilaian[]" value="{{ $d->id }}">
+                            {{ $d->penilaian }}
+                        </td>
+                    </tr>
                 @endforeach
 
             </tbody>
@@ -179,10 +182,10 @@
             </thead>
             <tbody>
                 <tr>
-                    <td align="center">{!! $penilaian->masa_kontrak_kerja == "Tidak Diperpanjang" ? "&#10004" : "" !!}</td>
-                    <td align="center">{!! $penilaian->masa_kontrak_kerja == "3 Bulan" ? "&#10004" : "" !!}</td>
-                    <td align="center">{!! $penilaian->masa_kontrak_kerja == "6 Bulan" ? "&#10004" : "" !!}</td>
-                    <td align="center">{!! $penilaian->masa_kontrak_kerja == "Karyawan Tetap" ? "&#10004" : "" !!}</td>
+                    <td align="center">{!! $penilaian->masa_kontrak_kerja == 'Tidak Diperpanjang' ? '&#10004' : '' !!}</td>
+                    <td align="center">{!! $penilaian->masa_kontrak_kerja == '3 Bulan' ? '&#10004' : '' !!}</td>
+                    <td align="center">{!! $penilaian->masa_kontrak_kerja == '6 Bulan' ? '&#10004' : '' !!}</td>
+                    <td align="center">{!! $penilaian->masa_kontrak_kerja == 'Karyawan Tetap' ? '&#10004' : '' !!}</td>
 
                 </tr>
             </tbody>
@@ -267,15 +270,20 @@
                         <tr>
                             <td style="height: 120px; vertical-align:top; text-align:center">
                                 <div style="display: flex; justify-content:space-between">
-                                    <div style="width:30px; height:20px; border-style:solid; border-width:1px; padding:10px; text-align:center">
-                                        Y <?php echo $y ?></div>
-                                    <div style="width:30px; height:20px; border-style:solid; border-width:1px; padding:10px; text-align:center">T <?php echo $t ?> </div>
+                                    <div
+                                        style="width:30px; height:20px; border-style:solid; border-width:1px; padding:10px; text-align:center">
+                                        Y <?php echo $y; ?></div>
+                                    <div
+                                        style="width:30px; height:20px; border-style:solid; border-width:1px; padding:10px; text-align:center">
+                                        T <?php echo $t; ?> </div>
                                 </div>
                                 <br>
                                 {!! !empty($karyawan->$level) ? QrCode::size(80)->generate('sahretech.com') : '' !!}
                                 <br>
                                 @php
-                                $cekapproval = DB::table('users')->where('id',$karyawan->$level)->first();
+                                    $cekapproval = DB::table('users')
+                                        ->where('id', $karyawan->$level)
+                                        ->first();
                                 @endphp
                                 <br>
                                 <b><?php echo $cekapproval != null ? $cekapproval->name : ''; ?></b>
@@ -283,7 +291,7 @@
                         </tr>
                         <tr>
                             <td style="text-align:center; font-weight:bold">
-                                <?php echo ucwords($approve[$i]) ?>
+                                <?php echo ucwords($approve[$i]); ?>
                             </td>
                         </tr>
                     </table>
@@ -299,17 +307,19 @@
             <tr>
                 <td style="height:200px; width:50%; vertical-align:top">
                     @foreach ($histori_kontrak as $d)
-                    <b>Kontrak Ke {{ $loop->iteration }} </b> : {{ DateToIndo2($d->dari) }} s/d {{ DateToIndo2($d->sampai) }} <br>
+                        <b>Kontrak Ke {{ $loop->iteration }} </b> : {{ DateToIndo2($d->dari) }} s/d
+                        {{ DateToIndo2($d->sampai) }} <br>
                     @endforeach
                 </td>
                 <td style="height:200px; width:50%; vertical-align:top">
                     <b>Pemutihan :</b><br>
                     @foreach ($historipemutihan as $d)
-                    <b>{{ $loop->iteration }} </b> : {{ DateToIndo2($d->tgl_pembayaran) }} <br>
+                        <b>{{ $loop->iteration }} </b> : {{ DateToIndo2($d->tgl_pembayaran) }} <br>
                     @endforeach
                 </td>
             </tr>
         </table>
     </section>
 </body>
+
 </html>
