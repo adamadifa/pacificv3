@@ -32,7 +32,7 @@ class AjuantransferdanaController extends Controller
         if ($kode_cabang != "PCF") {
             $query->where('kode_cabang', $kode_cabang);
         }
-        $query->orderBy('tgl_pengajuan');
+        $query->orderBy('tgl_pengajuan', 'desc');
         $ajuantransferdana = $query->get();
         $cbg = new Cabang();
         $cabang = $cbg->getCabanggudang(Auth::user()->kode_cabang);
