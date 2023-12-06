@@ -66,7 +66,7 @@
     <br>
 </body>
 <div class="freeze-table">
-    <table class="datatable3" style="width: 350%">
+    <table class="datatable3" style="width: 200%">
         <thead bgcolor="#024a75" style="color:white; font-size:12;">
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
                 <th rowspan="2" class="fixed-side" style="width:1%">No</th>
