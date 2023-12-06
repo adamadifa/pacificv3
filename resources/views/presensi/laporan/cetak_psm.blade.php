@@ -66,7 +66,7 @@
     <br>
 </body>
 <div class="freeze-table">
-    <table class="datatable3" style="width: 200%">
+    <table class="datatable3" style="width: 350%">
         <thead bgcolor="#024a75" style="color:white; font-size:12;">
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
                 <th rowspan="2" class="fixed-side" style="width:1%">No</th>
@@ -668,63 +668,6 @@
                                     $totalpc = 0;
                                 }
 
-                                //Perhitungan Ketika Dirumahkan
-                                if (!empty($cekwfh)) {
-                                    //Cek Jika Besok Libur
-                                    $search_items_next = [
-                                        'nik' => $d->nik,
-                                        'id_kantor' => $d->id_kantor,
-                                        'tanggal_libur' => date('Y-m-d', strtotime('+1 day', strtotime($tgl_presensi))),
-                                    ];
-
-                                    $cekliburnext = cektgllibur($datalibur, $search_items_next);
-                                    if ($namahari == 'Jumat' && !empty($cekliburnext)) {
-                                        $jamdirumahkan = 5;
-                                        $tambahjamdirumahkan = 2;
-                                    } else {
-                                        $tambahjamdirumahkan = 0;
-                                    }
-
-                                    $jmldirumahkan += 1;
-                                    // if($cekmasakerja >= 3){
-                                    //     $totaljamdirumahkan = ($jamdirumahkan + $tambahjamdirumahkan) - (ROUND(((50/100) * $jamdirumahkan),2) + $tambahjamdirumahkan);
-                                    //     if($bulan==10 && $tahun == 2023){
-                                    //         $group_aida = array('AIDA A','AIDA B','AIDA C');
-                                    //         if(in_array($d->nama_group,$group_aida) ){
-                                    //             if($tgl_presensi >= '2023-10-09'){
-                                    //                 $totaljamdirumahkan = ($jamdirumahkan + $tambahjamdirumahkan) -  (ROUND(((75/100) * $jamdirumahkan),2) + $tambahjamdirumahkan);
-                                    //             }
-                                    //         }else{
-                                    //             if($jmldirumahkan >= 12){
-                                    //                 $totaljamdirumahkan = ($jamdirumahkan + $tambahjamdirumahkan) - (ROUND(((75/100) * $jamdirumahkan),2) + $tambahjamdirumahkan);
-                                    //             }
-                                    //         }
-                                    //     }
-                                    // }else{
-                                    //     $totaljamdirumahkan = 0;
-                                    // }
-
-                                    $totaljamdirumahkan = $jamdirumahkan + $tambahjamdirumahkan - (ROUND((50 / 100) * $jamdirumahkan, 2) + $tambahjamdirumahkan);
-                                    // if ($bulan == 10 && $tahun == 2023) {
-                                    //     $group_aida = ['AIDA A', 'AIDA B', 'AIDA C'];
-                                    //     if (in_array($d->nama_group, $group_aida)) {
-                                    //         if ($tgl_presensi >= '2023-10-09') {
-                                    //             $totaljamdirumahkan = $jamdirumahkan + $tambahjamdirumahkan - (ROUND((75 / 100) * $jamdirumahkan, 2) + $tambahjamdirumahkan);
-                                    //         }
-                                    //     } else {
-                                    //         if ($jmldirumahkan >= 12) {
-                                    //             $totaljamdirumahkan = $jamdirumahkan + $tambahjamdirumahkan - (ROUND((75 / 100) * $jamdirumahkan, 2) + $tambahjamdirumahkan);
-                                    //         }
-                                    //     }
-                                    // }
-
-                                    if ($status == 'c') {
-                                        $totaldirumahkan = 0;
-                                    } else {
-                                        $totaldirumahkan += $totaljamdirumahkan;
-                                    }
-                                }
-
                                 //Menghitung Jumlah Tidak Hadir
                                 if ($status == 'a') {
                                     if ($namahari == 'Sabtu') {
@@ -739,25 +682,21 @@
                             @endphp
                             <td style="background-color: {{ $colorcolumn }}; color:{{ $colortext }};">
                                 <!-- Jika Status Hadir-->
+
                                 @if ($status == 'h')
                                     @php
                                         $izinabsen = 0;
                                         $izinsakit = 0;
-                                    @endphp
-                                    @if ($nama_jadwal == 'SHIFT 2')
-                                        @php
+                                        if ($nama_jadwal == 'SHIFT 2') {
                                             $kodeshift = 'S';
-                                        @endphp
-                                    @elseif ($nama_jadwal == 'SHIFT 3')
-                                        @php
+                                        } elseif ($nama_jadwal == 'SHIFT 3') {
                                             $kodeshift = 'M';
-                                        @endphp
-                                    @else
-                                        @php
+                                        } else {
                                             $kodeshift = 'P';
-                                        @endphp
-                                    @endif
+                                        }
+                                    @endphp
                                     {{ $kodeshift }}{{ $grandtotaljam < $total_jam ? $grandtotaljam : '' }}
+
                                     <!-- Menghitung Lembur-->
                                     @if (!empty($ceklembur))
                                         @php
@@ -822,45 +761,56 @@
                                     @endif
                                     <!-- jika ALfa-->
                                 @elseif ($status == 'a')
-                                    A
+                                    Alfa
                                     <!-- Jika Sakit-->
                                 @elseif($status == 's')
                                     <!-- Jika Hari != Minggu -->
                                     @if ($namahari != 'Minggu')
                                         <span style="color:rgb(195, 63, 27)">
+                                            SAKIT
                                             <!-- Jika Punya SID-->
                                             @if (!empty($sid))
                                                 @php
+                                                    echo 'Z';
                                                     $izinsakit = 0;
                                                 @endphp
-                                                {{-- <span style="color:green">- SID</span><br>
-                                                <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span> --}}
-                                                SID
+                                                <span style="color:green">- SID</span><br>
+                                                <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
                                             @else
                                                 <br>
                                                 @if (empty($izinabsendirut) || $izinabsendirut == 2)
+                                                    @php
+                                                        echo 'A';
+                                                    @endphp
                                                     @if ($namahari == 'Sabtu')
                                                         @php
                                                             $izinsakit = 5;
+                                                            echo 'B';
                                                         @endphp
                                                     @elseif($namahari == 'Minggu')
                                                         @if (!empty($cekminggumasuk))
                                                             @php
                                                                 $izinsakit = 7;
+                                                                echo 'C';
                                                             @endphp
                                                         @else
                                                             @php
                                                                 $izinsakit = 0;
+                                                                echo 'D';
                                                             @endphp
                                                         @endif
+                                                    @else
+                                                        @php
+                                                            $izinsakit = 7;
+                                                        @endphp
                                                     @endif
                                                 @else
                                                     @php
+                                                        echo 'E';
                                                         $izinsakit = 0;
                                                     @endphp
                                                 @endif
-                                                SKT
-                                                {{-- <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span> --}}
+                                                <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
                                             @endif
                                             @php
                                                 $izinabsen = 0;
@@ -871,11 +821,12 @@
                                             $izinsakit = 0;
                                         @endphp
                                     @endif
+
+                                    {{ $izinsakit }}
                                     <!-- Jika Karyawan Izin Absen-->
                                 @elseif($status == 'i')
-                                    I
-                                    {{-- <span style="color:rgb(27, 5, 171);">IZIN</span><br>
-                                    <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span> --}}
+                                    <span style="color:rgb(27, 5, 171);">IZIN</span><br>
+                                    <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
                                     @if (empty($izinabsendirut) || $izinabsendirut == 2)
                                         <!-- Jika Tidak Disetujui Oleh Direktur-->
                                         @if ($namahari == 'Sabtu')
@@ -903,16 +854,15 @@
                                     @endphp
                                     <!-- Jika Cuti-->
                                 @elseif($status == 'c')
-                                    C
-                                    {{-- <span style="color:rgb(154, 56, 4);">CUTI</span><br>
-                                    <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span> --}}
+                                    <span style="color:rgb(154, 56, 4);">CUTI</span><br>
+                                    <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
                                     @php
                                         $izinabsen = 0;
                                         $izinsakit = 0;
                                     @endphp
                                 @endif
 
-                                {{-- <!-- Jika Memiliki Premi -->
+                                <!-- Jika Memiliki Premi -->
                                 @if (!empty($premi))
                                     <span style="color: blue">Premi : {{ rupiah($premi) }}</span>
                                 @endif
@@ -920,7 +870,7 @@
                                 @if (!empty($premilembur))
                                     <br>
                                     <span style="color: blue">Premi Lembur : {{ rupiah($premilembur) }}</span>
-                                @endif --}}
+                                @endif
                             </td>
                         @else
                             @php
@@ -992,18 +942,15 @@
 
                                     $jmldirumahkan += 1;
                                     $totaljamdirumahkan = $jamdirumahkan + $tambahjamdirumahkan - (ROUND((50 / 100) * $jamdirumahkan, 2) + $tambahjamdirumahkan);
+                                    $totaldirumahkan += $totaljamdirumahkan;
                                 @endphp
                             @endif
                             <td style="background-color:{{ $colorcolumn }}; color:white;">
-                                {{-- {{ !empty($ceklibur) ? $ceklibur[0]['keterangan'] : '' }}
+                                {{ !empty($ceklibur) ? $ceklibur[0]['keterangan'] : '' }}
                                 {{ !empty($cekwfh) ? 'Dirumahkan' : '' }}
                                 {{ !empty($cekwfhfull) ? 'WFH' : '' }}
-                                {{ !empty($cekliburpenggantiminggu) ? $cekliburpenggantiminggu[0]['keterangan'] : '' }} --}}
+                                {{ !empty($cekliburpenggantiminggu) ? $cekliburpenggantiminggu[0]['keterangan'] : '' }}
 
-                                {{ !empty($ceklibur) ? 'P' : '' }}
-                                {{ !empty($cekwfh) ? 'P' . $totaljamdirumahkan : '' }}
-                                {{ !empty($cekwfhfull) ? 'P' : '' }}
-                                {{ !empty($cekliburpenggantiminggu) ? '' : '' }}
                                 <!-- Jika Lembur -->
                                 @if (!empty($ceklembur))
                                     @php
@@ -1067,6 +1014,7 @@
                             </td>
                         @endif
                         @php
+
                             $totalterlambat += $jt;
                             $totalkeluar += $jk;
                             $totaldenda += $denda;
