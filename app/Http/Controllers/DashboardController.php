@@ -44,7 +44,12 @@ class DashboardController extends Controller
             return $this->dashboardkepalapenjualan();
         } else if (Auth::user()->level == "kepala admin" || Auth::user()->level == "admin pusat") {
             return $this->dashboardkepalaadmin();
-        } else if (Auth::user()->level == "manager accounting" || Auth::user()->level == "audit" || Auth::user()->level == "spv accounting" || Auth::user()->level == "admin pajak 2" || Auth::user()->level == "manager audit") {
+        } else if (
+            Auth::user()->level == "manager accounting" || Auth::user()->level == "audit"
+            || Auth::user()->level == "spv accounting" || Auth::user()->level == "admin pajak 2"
+            || Auth::user()->level == "manager audit"
+            || Auth::user()->level == "rom"
+        ) {
             return $this->dashboardaccounting();
         } else if (Auth::user()->level == "staff keuangan") {
             return $this->dashboardstaffkeuangan();
@@ -1287,7 +1292,27 @@ class DashboardController extends Controller
         return view('dashboard.sfarsm', compact('rsm', 'smactivity', 'lokasi'));
     }
 
+    public function dashboardsfagm(Request $request)
+    {
+        $tanggal = $request->tanggal;
 
+
+        if (!empty($kode_cabang)) {
+            $lok_cabang = DB::table('cabang')->where('kode_cabang', $kode_cabang)->first();
+        } else {
+            $lok_cabang = DB::table('cabang')->where('kode_cabang', 'PST')->first();
+        }
+        $lokasi = explode(",", $lok_cabang->lokasi_cabang);
+
+        $gmactivity = DB::table('activity_sm')
+            ->select('activity_sm.*')
+            ->leftJoin('users', 'activity_sm.id_user', '=', 'users.id')
+            ->whereRaw('DATE(tanggal)="' . $tanggal . '"')
+            ->where('level', 'manager marketing')
+            ->orderBy('tanggal')
+            ->get();
+        return view('dashboard.sfa_gm', compact('gmactivity', 'lokasi'));
+    }
 
     public function showsmactivity($kode_act_sm)
     {

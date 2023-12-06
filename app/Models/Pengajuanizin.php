@@ -508,6 +508,10 @@ class Pengajuanizin extends Model
             $query->where('master_karyawan.kode_dept', 'ADT');
         }
 
+        if ($level == "rom") {
+            $query->where('nama_jabatan', 'KEPALA ADMIN');
+        }
+
         if ($level == "rsm") {
             $list_wilayah = Auth::user()->wilayah != null ? unserialize(Auth::user()->wilayah) : NULL;
             $wilayah = $list_wilayah != null ? "'" . implode("', '", $list_wilayah) . "'" : '';

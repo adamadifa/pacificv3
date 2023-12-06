@@ -285,6 +285,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboardsfa', [DashboardController::class, 'dashboardsfa']);
     Route::get('/dashboardsfakp', [DashboardController::class, 'dashboardsfakp']);
     Route::get('/dashboardsfarsm', [DashboardController::class, 'dashboardsfarsm']);
+    Route::get('/dashboardsfagm', [DashboardController::class, 'dashboardsfagm']);
 
     //Dashboard
     Route::post('/rekapcashin', [PenjualanController::class, 'rekapcashin']);
@@ -395,6 +396,10 @@ Route::middleware(['auth'])->group(function () {
     //Laporan SMM Activity
     Route::get('/laporanpenjualan/smmactivity', [PenjualanController::class, 'smmactivity']);
     Route::post('/laporanpenjualan/smmactivity/cetak', [PenjualanController::class, 'cetaksmmactivity']);
+
+    //Laporan RSM Activity
+    Route::get('/laporanpenjualan/rsmactivity', [PenjualanController::class, 'rsmactivity']);
+    Route::post('/laporanpenjualan/rsmactivity/cetak', [PenjualanController::class, 'cetakrsmactivity']);
     //Laporan Kartu Piutang
     Route::get('/laporanpenjualan/kartupiutang', [PenjualanController::class, 'laporankartupiutang']);
     Route::post('/laporanpenjualan/kartupiutang/cetak', [PenjualanController::class, 'cetaklaporankartupiutang']);

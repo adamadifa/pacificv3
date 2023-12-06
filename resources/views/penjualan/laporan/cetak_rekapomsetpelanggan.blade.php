@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,24 +32,24 @@
             text-align: center;
             font-size: 14px;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
-        @if ($cabang!=null)
-        @if ($cabang->kode_cabang=="PST")
-        PACIFIC PUSAT
+        @if ($cabang != null)
+            @if ($cabang->kode_cabang == 'PST')
+                PACIFIC PUSAT
+            @else
+                PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
+            @endif
         @else
-        PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
-        @endif
-        @else
-        PACIFC ALL CABANG
+            PACIFC ALL CABANG
         @endif
         <br>
         LAPORAN REKAP OMSET PELANGGAN<br>
         @if ($karyawan != null)
-        SALESMAN : {{ $karyawan->nama_karyawan }}<br>
+            SALESMAN : {{ $karyawan->nama_karyawan }}<br>
         @endif
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
         <br>
@@ -64,7 +65,7 @@
                 <th rowspan="2">TOTAL OMSET</th>
                 <th rowspan="2">RATA RATA OMSET</th>
                 <th colspan="2">RATA RATA OMSET KATEGORI PRODUK</th>
-
+                <th rowspan="2">SALESMAN</th>
             </tr>
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
                 <th>AIDA</th>
@@ -93,6 +94,7 @@
                 <td align="right"><?php echo rupiah($r->netpenjualan / $periode); ?></td>
                 <td align="right"><?php echo rupiah($r->netaida / $periode); ?></td>
                 <td align="right"><?php echo rupiah($r->netswan / $periode); ?></td>
+                <td>{{ $r->nama_karyawan }}</td>
             </tr>
             <?php $no++;} ?>
             <tr>
@@ -106,4 +108,5 @@
         </tbody>
     </table>
 </body>
+
 </html>

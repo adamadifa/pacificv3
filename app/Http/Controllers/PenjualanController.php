@@ -5941,7 +5941,7 @@ class PenjualanController extends Controller
         $selisih = date_diff($date1, $date2);
         $periode = $selisih->m + 1;
         $query = Penjualan::query();
-        $query->selectRaw("penjualan.kode_pelanggan,nama_pelanggan,pasar,
+        $query->selectRaw("penjualan.kode_pelanggan,nama_pelanggan,pasar,nama_karyawan,
         SUM(bruto) as bruto,
         SUM(brutoswan) as brutoswan,
         SUM(brutoaida) as brutoaida,
@@ -5954,7 +5954,7 @@ class PenjualanController extends Controller
             DB::raw("(
                 SELECT no_fak_penj,
 						SUM(IF(master_barang.jenis_produk = 'SWAN',detailpenjualan.subtotal,0)) as brutoswan,
-						SUM(IF(master_barang.jenis_produk = 'AIDA',detailpenjualan.subtotal,0)) as brutoaida,
+						SUM(IF(master_barang.jenis_produk = 'AIDA' OR master_barang.jenis_produk='BUMBU',detailpenjualan.subtotal,0)) as brutoaida,
 						SUM(detailpenjualan.subtotal) as bruto
 						FROM detailpenjualan
 						INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
@@ -5974,7 +5974,7 @@ class PenjualanController extends Controller
         if (!empty($request->id_karyawan)) {
             $query->where('penjualan.id_karyawan', $request->id_karyawan);
         }
-        $query->groupByRaw('penjualan.kode_pelanggan,nama_pelanggan,pasar');
+        $query->groupByRaw('penjualan.kode_pelanggan,nama_pelanggan,pasar,nama_karyawan');
         $query->orderBy('nama_pelanggan');
         $rekapomsetpelanggan = $query->get();
 
@@ -9496,5 +9496,31 @@ class PenjualanController extends Controller
             ->get();
         $cabang = DB::table('cabang')->where('kode_cabang', $kode_cabang)->first();
         return view('penjualan.laporan.cetak_smmactivity', compact('smmactivity', 'cabang', 'dari', 'sampai', 'lokasi'));
+    }
+
+    public function rsmactivity()
+    {
+        $rsm = DB::table('users')->where('level', 'rsm')->get();
+        return view('penjualan.laporan.frm.lap_rsmactivity', compact('rsm'));
+    }
+
+    public function cetakrsmactivity(Request $request)
+    {
+        $id_rsm = $request->id_rsm;
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $kode_cabang = Auth::user()->kode_cabang == "PCF" ? "PST" : Auth::user()->kode_cabang;
+        $lok_cabang = DB::table('cabang')->where('kode_cabang', $kode_cabang)->first();
+        $lokasi = explode(",", $lok_cabang->lokasi_cabang);
+
+        $rsmactivity = DB::table('activity_sm')
+            ->select('activity_sm.*')
+            ->leftJoin('users', 'activity_sm.id_user', '=', 'users.id')
+            ->where('users.id', $id_rsm)
+            ->whereRaw('DATE(tanggal)>="' . $dari . '" AND DATE(tanggal) <="' . $sampai . '"')
+            ->orderBy('tanggal')
+            ->get();
+        $rsm = DB::table('users')->where('id', $id_rsm)->first();
+        return view('penjualan.laporan.cetak_rsmactivity', compact('rsmactivity', 'rsm', 'dari', 'sampai', 'lokasi'));
     }
 }
