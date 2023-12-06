@@ -31,6 +31,7 @@ class AjuantransferdanaController extends Controller
 
         if ($kode_cabang != "PCF") {
             $query->where('kode_cabang', $kode_cabang);
+            $query->where('validasi_manager', 1);
         }
         $query->orderBy('tgl_pengajuan', 'desc');
         $ajuantransferdana = $query->get();
@@ -234,6 +235,34 @@ class AjuantransferdanaController extends Controller
             return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
         } catch (\Exception $e) {
             return Redirect::back()->with(['error' => 'Data Gagal Disimpan']);
+        }
+    }
+
+    public function validasimanager($no_pengajuan)
+    {
+        $no_pengajuan = Crypt::decrypt($no_pengajuan);
+        try {
+            DB::table('pengajuan_transfer_dana')->where('no_pengajuan', $no_pengajuan)->update([
+                'validasi_manager' => 1
+            ]);
+
+            return Redirect::back()->with(['success' => 'Data Berhasil di Validasi']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['waraning' => 'Data Gagal Di Validasi']);
+        }
+    }
+
+    public function batalkanvalidasimanager($no_pengajuan)
+    {
+        $no_pengajuan = Crypt::decrypt($no_pengajuan);
+        try {
+            DB::table('pengajuan_transfer_dana')->where('no_pengajuan', $no_pengajuan)->update([
+                'validasi_manager' => 0
+            ]);
+
+            return Redirect::back()->with(['success' => 'Validasi Berhasil di Batalkan']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['waraning' => 'Validasi Gagal Di Batalkan']);
         }
     }
 }

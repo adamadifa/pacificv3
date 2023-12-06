@@ -82,21 +82,35 @@
                                         <th>Jumlah</th>
                                         <th>Keterangan</th>
                                         <th>Cabang</th>
+                                        <th>Validasi</th>
                                         <th>Tgl Proses</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
+                                @php
+                                    $total = 0;
+                                @endphp
                                 <tbody>
                                     @foreach ($ajuantransferdana as $d)
+                                        @php
+                                            $total += $d->jumlah;
+                                        @endphp
                                         <tr>
                                             <td>{{ $d->no_pengajuan }}</td>
                                             <td>{{ date('d-m-Y', strtotime($d->tgl_pengajuan)) }}</td>
                                             <td>{{ $d->nama }}</td>
                                             <td>{{ $d->nama_bank }}</td>
                                             <td>{{ $d->no_rekening }}</td>
-                                            <td>{{ rupiah($d->jumlah) }}</td>
+                                            <td style="text-align: right">{{ rupiah($d->jumlah) }}</td>
                                             <td>{{ $d->keterangan }}</td>
                                             <td>{{ $d->kode_cabang }}</td>
+                                            <td>
+                                                @if (empty($d->validasi_manager))
+                                                    <span class="badge bg-danger">Belum di Validasi</span>
+                                                @else
+                                                    <span class="badge bg-success">Sudah di Validasi</span>
+                                                @endif
+                                            </td>
                                             <td>
                                                 @if (empty($d->tgl_proses))
                                                     <span class="badge bg-danger">Belum di Proses</span>
@@ -128,6 +142,20 @@
                                                                 no_pengajuan="{{ Crypt::encrypt($d->no_pengajuan) }}"><i
                                                                     class="feather icon-external-link info"></i></a>
                                                         @endif
+
+                                                        @if (in_array($level, $ajuantransferdana_validasi))
+                                                            @if ($d->validasi_manager == 0)
+                                                                <a class="ml-1"
+                                                                    href="/ajuantransferdana/{{ Crypt::encrypt($d->no_pengajuan) }}/validasimanager"
+                                                                    no_pengajuan="{{ Crypt::encrypt($d->no_pengajuan) }}"><i
+                                                                        class="feather icon-check success"></i></a>
+                                                            @else
+                                                                <a class="ml-1"
+                                                                    href="/ajuantransferdana/{{ Crypt::encrypt($d->no_pengajuan) }}/batalkanvalidasimanager"
+                                                                    no_pengajuan="{{ Crypt::encrypt($d->no_pengajuan) }}"><i
+                                                                        class="fa fa-close danger"></i></a>
+                                                            @endif
+                                                        @endif
                                                     @else
                                                         @if (in_array($level, $ajuantransferdana_proses))
                                                             <a href="/ajuantransferdana/{{ Crypt::encrypt($d->no_pengajuan) }}/batalkan"
@@ -140,6 +168,10 @@
                                             </td>
                                         </tr>
                                     @endforeach
+                                    <tr>
+                                        <th colspan="5">TOTAL</th>
+                                        <th style="text-align: right">{{ rupiah($total) }}</th>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
