@@ -283,7 +283,9 @@
                                                                 class="danger ml-1"><i class="fa fa-close"></i></a>
                                                             <?php
                                                 }
-                                                if(Auth::user()->level != 'spv pdqc' && Auth::user()->level!="spv produksi"  && Auth::user()->level!="spv maintenance"){
+                                                // &&
+                                                // Auth::user()->level != 'spv maintenance'
+                                                if(Auth::user()->level != 'spv pdqc' && Auth::user()->level!="spv produksi"  ){
                                                 if($cekindex == 0){
                                                 ?>
                                                             <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/{{ Crypt::encrypt($field_kategori) }}/approve"
