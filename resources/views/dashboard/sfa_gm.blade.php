@@ -81,7 +81,7 @@
                                                 <td>
                                                     @if (!empty($d->foto))
                                                         @php
-                                                            $path = Storage::url('uploads/gmactivity/' . $d->foto);
+                                                            $path = Storage::url('uploads/smactivity/' . $d->foto);
                                                         @endphp
                                                         <ul class="list-unstyled users-list m-0  d-flex align-items-center showactivity"
                                                             kode_act_sm="{{ $d->kode_act_sm }}">
@@ -135,7 +135,7 @@
             $(".showactivity").click(function(e) {
                 var kode_act_sm = $(this).attr("kode_act_sm");
                 $("#mdlshowactivity").modal("show");
-                $("#loadshowactivity").load('/gmactivity/' + kode_act_sm + "/show");
+                $("#loadshowactivity").load('/smactivity/' + kode_act_sm + "/show");
             });
         });
     </script>
