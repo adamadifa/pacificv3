@@ -32,7 +32,7 @@ class AjuantransferdanaController extends Controller
         if ($kode_cabang != "PCF") {
             $query->where('kode_cabang', $kode_cabang);
         }
-        $query->orderBy('tgl_pengajuan');
+        $query->orderBy('tgl_pengajuan', 'desc');
         $ajuantransferdana = $query->get();
         $cbg = new Cabang();
         $cabang = $cbg->getCabanggudang(Auth::user()->kode_cabang);
@@ -223,6 +223,17 @@ class AjuantransferdanaController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             return Redirect::back()->with(['warning' => 'Data Gagal di Proses']);
+        }
+    }
+
+    public function delete($no_pengajuan)
+    {
+        $no_pengajuan = Crypt::decrypt($no_pengajuan);
+        try {
+            DB::table('pengajuan_transfer_dana')->where('no_pengajuan', $no_pengajuan)->delete();
+            return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['error' => 'Data Gagal Disimpan']);
         }
     }
 }

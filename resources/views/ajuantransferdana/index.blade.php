@@ -114,7 +114,7 @@
                                                                 no_pengajuan="{{ Crypt::encrypt($d->no_pengajuan) }}"><i
                                                                     class="feather icon-edit success"></i></a>
                                                             <form method="POST" name="deleteform" class="deleteform"
-                                                                action="/ajuanrouting/{{ Crypt::encrypt($d->no_pengajuan) }}/delete">
+                                                                action="/ajuantransferdana/{{ Crypt::encrypt($d->no_pengajuan) }}/delete">
                                                                 @csrf
                                                                 @method('DELETE')
                                                                 <a href="#" class="delete-confirm ml-1">
