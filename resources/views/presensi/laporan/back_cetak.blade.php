@@ -203,6 +203,7 @@
                             $jamdirumahkan = 7;
                         }
 
+                        //---1---
                         if (!empty($cekwfh)) {
                             if ($cekmasakerja > 3) {
                                 $totaljamdirumahkan = ROUND(($jamdirumahkan / 2), 2);
@@ -211,6 +212,7 @@
                             }
                             $totaldirumahkan += $totaljamdirumahkan;
                         }
+
 
 
                         //Pewarnaan Kolom
