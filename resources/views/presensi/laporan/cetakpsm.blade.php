@@ -761,42 +761,41 @@
                                     @endif
                                     <!-- jika ALfa-->
                                 @elseif ($status == 'a')
-                                    Alfa
+                                    A
                                     <!-- Jika Sakit-->
                                 @elseif($status == 's')
                                     <!-- Jika Hari != Minggu -->
                                     @if ($namahari != 'Minggu')
                                         <span style="color:rgb(195, 63, 27)">
-                                            SAKIT
+
                                             <!-- Jika Punya SID-->
                                             @if (!empty($sid))
                                                 @php
                                                     echo 'Z';
                                                     $izinsakit = 0;
                                                 @endphp
-                                                <span style="color:green">- SID</span><br>
-                                                <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
+                                                SID
                                             @else
                                                 <br>
                                                 @if (empty($izinabsendirut) || $izinabsendirut == 2)
                                                     @php
-                                                        echo 'A';
+                                                        //echo 'A';
                                                     @endphp
                                                     @if ($namahari == 'Sabtu')
                                                         @php
                                                             $izinsakit = 5;
-                                                            echo 'B';
+                                                            //echo 'B';
                                                         @endphp
                                                     @elseif($namahari == 'Minggu')
                                                         @if (!empty($cekminggumasuk))
                                                             @php
                                                                 $izinsakit = 7;
-                                                                echo 'C';
+                                                                //echo 'C';
                                                             @endphp
                                                         @else
                                                             @php
                                                                 $izinsakit = 0;
-                                                                echo 'D';
+                                                                //echo 'D';
                                                             @endphp
                                                         @endif
                                                     @else
@@ -806,11 +805,11 @@
                                                     @endif
                                                 @else
                                                     @php
-                                                        echo 'E';
+                                                        //echo 'E';
                                                         $izinsakit = 0;
                                                     @endphp
                                                 @endif
-                                                <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
+                                                SKT
                                             @endif
                                             @php
                                                 $izinabsen = 0;
@@ -825,8 +824,7 @@
                                     {{ $izinsakit }}
                                     <!-- Jika Karyawan Izin Absen-->
                                 @elseif($status == 'i')
-                                    <span style="color:rgb(27, 5, 171);">IZIN</span><br>
-                                    <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
+                                    I
                                     @if (empty($izinabsendirut) || $izinabsendirut == 2)
                                         <!-- Jika Tidak Disetujui Oleh Direktur-->
                                         @if ($namahari == 'Sabtu')
@@ -854,8 +852,9 @@
                                     @endphp
                                     <!-- Jika Cuti-->
                                 @elseif($status == 'c')
-                                    <span style="color:rgb(154, 56, 4);">CUTI</span><br>
-                                    <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span>
+                                    C
+                                    {{-- <span style="color:rgb(154, 56, 4);">CUTI</span><br>
+                                    <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span> --}}
                                     @php
                                         $izinabsen = 0;
                                         $izinsakit = 0;
