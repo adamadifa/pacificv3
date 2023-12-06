@@ -27,8 +27,8 @@
                 <input type="hidden" id="sisafakturkredit" name="sisafakturkredit">
                 <input type="hidden" id="sikluspembayaran" name="sikluspembayaran">
                 <input type="hidden" id="cektutuplaporan" name="cektutuplaporan">
-                <input type="text" id="bruto" name="bruto">
-                <input type="text" id="subtotal" name="subtotal">
+                <input type="hidden" id="bruto" name="bruto">
+                <input type="hidden" id="subtotal" name="subtotal">
                 <input type="hidden" id="cektemp" name="cektemp" value="0">
 
                 {{-- @if (request()->is(['inputpenjualanppn']))
