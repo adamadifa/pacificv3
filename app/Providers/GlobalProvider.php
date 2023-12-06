@@ -862,8 +862,9 @@ class GlobalProvider extends ServiceProvider
             $mutasibank_view = ['admin', 'kepala admin', 'admin kas kecil', 'audit', 'manager audit', 'admin kas', 'manager accounting', 'rom', 'admin kas dan penjualan', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil', 'admin pajak 2', 'admin penjualan kasir dan kas kecil'];
 
             $ajuantransferdana_view = ['admin', 'kepala admin', 'staff keuangan 3', 'manager accounting', 'rom', 'kasir', 'admin kas dan penjualan', 'admin penjualan dan kas kecil'];
-            $ajuantransferdana_crud = ['admin', 'staff keuangan 3', 'manager accounting', 'rom'];
+            $ajuantransferdana_crud = ['admin', 'staff keuangan 3', 'rom'];
             $ajuantransferdana_proses = ['admin', 'kepala admin', 'kasir', 'admin kas dan penjualan', 'admin penjualan dan kas kecil'];
+            $ajuantransferdana_validasi = ['admin', 'manager accounting'];
 
             $pinjaman_view = ['admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'spv produksi', 'manager accounting', 'rom', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager hrd', 'staff keuangan', 'staff keuangan 3', 'admin pdqc', 'spv pdqc', 'manager audit', 'spv maintenance'];
 
@@ -1466,6 +1467,7 @@ class GlobalProvider extends ServiceProvider
                 'ajuantransferdana_view' => $ajuantransferdana_view,
                 'ajuantransferdana_crud' => $ajuantransferdana_crud,
                 'ajuantransferdana_proses' => $ajuantransferdana_proses,
+                'ajuantransferdana_validasi' => $ajuantransferdana_validasi,
 
                 //Pinjaman
                 'pinjaman_view' => $pinjaman_view,

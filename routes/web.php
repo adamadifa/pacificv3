@@ -1928,6 +1928,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/ajuanrouting/{no_pengajuan}/update', [AjuanroutingController::class, 'update']);
     Route::get('/ajuanrouting/{no_pengajuan}/approve', [AjuanroutingController::class, 'approve']);
     Route::get('/ajuanrouting/{no_pengajuan}/decline', [AjuanroutingController::class, 'decline']);
+
     Route::delete('/ajuanrouting/{no_pengajuan}/delete', [AjuanroutingController::class, 'delete']);
 
 
@@ -1943,7 +1944,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/ajuantransferdana/{no_pengajuan}/proses', [AjuantransferdanaController::class, 'proses']);
     Route::get('/ajuantransferdana/{no_pengajuan}/batalkan', [AjuantransferdanaController::class, 'batalkan']);
     Route::delete('/ajuantransferdana/{no_pengajuan}/delete', [AjuantransferdanaController::class, 'delete']);
-
+    Route::get('/ajuantransferdana/{no_pengajuan}/validasimanager', [AjuantransferdanaController::class, 'validasimanager']);
+    Route::get('/ajuantransferdana/{no_pengajuan}/batalkanvalidasimanager', [AjuantransferdanaController::class, 'batalkanvalidasimanager']);
 
     //LogAktivitas
 
