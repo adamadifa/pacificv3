@@ -18,7 +18,7 @@ class AjuantransferdanaController extends Controller
         $kode_cabang = Auth::user()->kode_cabang;
         $query = Ajuantransferdana::query();
         $query->select('*');
-        if (!empty($request->nama)) {
+        if (!empty($request->nama_penerima)) {
             $query->where('nama', 'like', '%' . $request->nama . '%');
         }
 
