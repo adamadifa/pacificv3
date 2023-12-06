@@ -87,6 +87,7 @@ class AjuantransferdanaController extends Controller
 
             return redirect('/ajuantransferdana')->with(['success' => 'Data Berhasil Disimpan']);
         } catch (\Exception $e) {
+            dd($e);
             return redirect('/ajuantransferdana')->with(['warning' => 'Data Gagal Disimpan']);
         }
     }
