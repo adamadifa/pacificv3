@@ -21,4 +21,10 @@
                 GM</a>
         </li>
     @endif
+    @if ($level == 'manager marketing' || $level == 'direktur' || $level == 'admin')
+        <li class="nav-item">
+            <a class="nav-link {{ request()->is(['sap/rekapactivity']) ? 'active' : '' }}"
+                href="/sap/rekapactivity">Rekap Activity</a>
+        </li>
+    @endif
 </ul>
