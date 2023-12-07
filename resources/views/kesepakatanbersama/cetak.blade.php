@@ -56,12 +56,12 @@
             border: 0px solid #000000;
             padding: 3px;
         }
-
     </style>
 </head>
 
 <!-- Set "A5", "A4" or "A3" for class name -->
 <!-- Set also "landscape" if you need -->
+
 <body class="A4">
 
     <!-- Each sheet element should have the class "sheet" -->
@@ -71,7 +71,8 @@
         <table style="width: 100%">
             <tr>
                 <td>
-                    <img src="{{ asset('app-assets/images/logo/pcf.png') }}" alt="" style="width: 70px; height:80px">
+                    <img src="{{ asset('app-assets/images/logo/pcf.png') }}" alt=""
+                        style="width: 70px; height:80px">
                 </td>
                 <td style="text-align: center">
                     <h3 style="font-family:'Cambria'; line-height:0px">CV PACIFIC & CV MAKMUR PERMATA</h3>
@@ -81,7 +82,8 @@
                     <span style="font-size: 11px">e-mail : pacific.tasikmalaya@gmail.com</span>
                 </td>
                 <td>
-                    <img src="{{ asset('app-assets/images/logo/mp.png') }}" alt="" style="width: 80px; height:80px">
+                    <img src="{{ asset('app-assets/images/logo/mp.png') }}" alt=""
+                        style="width: 80px; height:80px">
                 </td>
             </tr>
         </table>
@@ -89,9 +91,9 @@
         <h3 style="text-align:center"><u>KESEPAKATAN BERSAMA</u></h3>
         <p>Yang bertandatangan dibawah ini :</p>
         @php
-        $pihak_satu = explode("-",$approve->pihak_satu);
-        $nama_pihaksatu = $pihak_satu[0];
-        $jabatan_pihaksatu = $pihak_satu[1];
+            $pihak_satu = explode('-', $approve->pihak_satu);
+            $nama_pihaksatu = $pihak_satu[0];
+            $jabatan_pihaksatu = $pihak_satu[1];
         @endphp
         <table>
             <tr>
@@ -114,7 +116,8 @@
             </tr>
         </table>
         <p style="text-indent:1cm; text-align:justify">
-            Untuk selanjutnya disebut PIHAK PERTAMA ( I ) dan bertindak atas nama CV. Makmur Permata dan CV Pacific yang beralamat di Jl. Perintis Kemerdekaan No. 160 Tasikmalaya.
+            Untuk selanjutnya disebut PIHAK PERTAMA ( I ) dan bertindak atas nama CV. Makmur Permata dan CV Pacific yang
+            beralamat di Jl. Perintis Kemerdekaan No. 160 Tasikmalaya.
         </p>
         <table>
             <tr>
@@ -141,10 +144,10 @@
                 <td>:</td>
                 <td>
                     @php
-                    $awal = date_create($kb->tgl_masuk);
-                    $akhir = date_create($kb->tgl_kb); // waktu sekarang
-                    $diff = date_diff( $awal, $akhir );
-                    echo $diff->y . ' tahun, '.$diff->m.' bulan, '.$diff->d.' Hari'
+                        $awal = date_create($kb->tgl_masuk);
+                        $akhir = date_create($kb->tgl_kb); // waktu sekarang
+                        $diff = date_diff($awal, $akhir);
+                        echo $diff->y . ' tahun, ' . $diff->m . ' bulan, ' . $diff->d . ' Hari';
                     @endphp
 
 
@@ -165,17 +168,20 @@
         </table>
         <p style="text-indent:1cm; text-align:justify">
             Untuk selanjutnya disebut PIHAK KEDUA ( II) atau pekerja.<br>
-            Pada tanggal {{ DateToIndo2($kontrak->sampai)}} PIHAK PERTAMA ( I ) dan PIHAK KEDUA ( II ) bertempat di CV Makmur Permata Tasikmalaya telah mengadakan perundingan atau musyawarah mufakat yang mendalam secara kekeluargaan dengan menghasilkan kesepakatan sebagai berikut :
+            Pada tanggal {{ DateToIndo2($kontrak->sampai) }} PIHAK PERTAMA ( I ) dan PIHAK KEDUA ( II ) bertempat di CV
+            Makmur Permata Tasikmalaya telah mengadakan perundingan atau musyawarah mufakat yang mendalam secara
+            kekeluargaan dengan menghasilkan kesepakatan sebagai berikut :
             <br>
-            <ol>
-                <li>
-                    PIHAK PERTAMA (I) dan PIHAK KEDUA (II) telah sepakat terkait kontrak kerja yang diputihkan mulai tanggal
-                    {{ DateToIndo2($kontrak->sampai)}}
-                </li>
-                <li>
-                    PIHAK PERTAMA ( I ) bersedia untuk memberikan kompensasi atau kebijakan kepada PIHAK KEDUA ( II ) yang besarnya sebagai berikut :
-                </li>
-            </ol>
+        <ol>
+            <li>
+                PIHAK PERTAMA (I) dan PIHAK KEDUA (II) telah sepakat terkait kontrak kerja yang diputihkan mulai tanggal
+                {{ DateToIndo2($kontrak->sampai) }}
+            </li>
+            <li>
+                PIHAK PERTAMA ( I ) bersedia untuk memberikan kompensasi atau kebijakan kepada PIHAK KEDUA ( II ) yang
+                besarnya sebagai berikut :
+            </li>
+        </ol>
         </p>
         <table class="datatable3">
             <tr>
@@ -184,14 +190,14 @@
                     Perhitungan Besaran Uang Masa Kerja <br>
                     Masa Kerja :
                     @php
-                    $tanggal = $cekjmk != null ? $cekjmk->tgl_pembayaran : $kontrak->dari;
-                    $nextmonth = date('Y-m-d', strtotime('+1 month', strtotime($tanggal)));
+                        $tanggal = $cekjmk != null ? $cekjmk->tgl_pembayaran : $kontrak->dari;
+                        $nextmonth = date('Y-m-d', strtotime('+1 month', strtotime($tanggal)));
                     @endphp
                     @php
-                    $awalmasakerja = date_create($nextmonth);
-                    $akhirmasakerja = date_create($kontrak->sampai); // waktu sekarang
-                    $diffmasakerja = date_diff( $awalmasakerja, $akhirmasakerja );
-                    echo $diffmasakerja->y . ' tahun, '.$diffmasakerja->m.' bulan, '.$diffmasakerja->d.' Hari'
+                        $awalmasakerja = date_create($nextmonth);
+                        $akhirmasakerja = date_create($kontrak->sampai); // waktu sekarang
+                        $diffmasakerja = date_diff($awalmasakerja, $akhirmasakerja);
+                        echo $diffmasakerja->y . ' tahun, ' . $diffmasakerja->m . ' bulan, ' . $diffmasakerja->d . ' Hari';
                     @endphp
                 </th>
             </tr>
@@ -235,52 +241,52 @@
                         <tr>
                             <?php
                             $masakerja = $diffmasakerja->y;
-                            if($masakerja >= 3 && $masakerja < 6){
-                                $jmlkali=2;
-                            }else if($masakerja >= 6 && $masakerja < 9 ){
-                                $jmlkali =3;
-                            }else if($masakerja >= 9 && $masakerja < 12 ){
-                                $jmlkali =4;
-                            }else if($masakerja >= 12 && $masakerja < 15 ){
-                                $jmlkali =5;
-                            }else if($masakerja >= 15 && $masakerja < 18 ){
-                                $jmlkali =6;
-                            }else if($masakerja >= 18 && $masakerja < 21 ){
-                                $jmlkali =7;
-                            }else if($masakerja >= 21 && $masakerja < 24 ){
-                                $jmlkali =8;
-                            }else if($masakerja >= 24 ){
-                                $jmlkali =10;
-                            }else{
+                            if ($masakerja >= 3 && $masakerja < 6) {
+                                $jmlkali = 2;
+                            } elseif ($masakerja >= 6 && $masakerja < 9) {
+                                $jmlkali = 3;
+                            } elseif ($masakerja >= 9 && $masakerja < 12) {
+                                $jmlkali = 4;
+                            } elseif ($masakerja >= 12 && $masakerja < 15) {
+                                $jmlkali = 5;
+                            } elseif ($masakerja >= 15 && $masakerja < 18) {
+                                $jmlkali = 6;
+                            } elseif ($masakerja >= 18 && $masakerja < 21) {
+                                $jmlkali = 7;
+                            } elseif ($masakerja >= 21 && $masakerja < 24) {
+                                $jmlkali = 8;
+                            } elseif ($masakerja >= 24) {
+                                $jmlkali = 10;
+                            } else {
                                 $jmlkali = 0.5;
                             }
-
-                            if($masakerja <= 2){
-                                $totalupah = $kb->gaji_pokok ;
-                            }else{
+                            
+                            if ($masakerja <= 2) {
+                                $totalupah = $kb->gaji_pokok;
+                            } else {
                                 $totalupah = $kb->gaji_pokok + $kb->t_tanggungjawab + $kb->t_makan + $kb->t_skill + $kb->t_jabatan;
                             }
-
+                            
                             $grandtotalupah = $kb->gaji_pokok + $kb->t_tanggungjawab + $kb->t_makan + $kb->t_skill + $kb->t_jabatan;
-
+                            
                             ?>
                             @if ($cekjmk != null)
-                            @if ($diffmasakerja->y == 1 AND $diffmasakerja->m >=3)
-                            @php
-                            $persentasejmk = 25;
-                            @endphp
+                                @if ($diffmasakerja->y == 1 and $diffmasakerja->m >= 3)
+                                    @php
+                                        $persentasejmk = 25;
+                                    @endphp
+                                @else
+                                    @php
+                                        $persentasejmk = 15;
+                                    @endphp
+                                @endif
                             @else
-                            @php
-                            $persentasejmk = 15;
-                            @endphp
-                            @endif
-                            @else
-                            @php
-                            $persentasejmk = 25;
-                            @endphp
+                                @php
+                                    $persentasejmk = 25;
+                                @endphp
                             @endif
                             @php
-                            $totalpemutihan = ($persentasejmk/100) * $totalupah;
+                                $totalpemutihan = ($persentasejmk / 100) * $totalupah;
                             @endphp
                             <td style="width: 2px">1.</td>
                             <td>Jasa Masa Kerja </td>
@@ -300,7 +306,7 @@
                             <td style="border-bottom:1px solid black">Rp.</td>
                             <td style="border-bottom:1px solid black; text-align:right">
                                 @php
-                                $uph = (0/100) * ($jmlkali * $totalupah);
+                                    $uph = (0 / 100) * ($jmlkali * $totalupah);
                                 @endphp
                                 {{ rupiah($uph) }}
                             </td>
@@ -310,36 +316,37 @@
                             <td>Rp.</td>
                             <td style="text-align:right; font-weight:bold">
                                 @php
-                                $jml_ujmk = (($persentasejmk/100) * $totalupah) + $uph;
+                                    $jml_ujmk = ($persentasejmk / 100) * $totalupah + $uph;
                                 @endphp
                                 {{ rupiah($jml_ujmk) }}
                             </td>
                         </tr>
                         @php
-                        $totalpotongan = 0;
+                            $totalpotongan = 0;
                         @endphp
                         @foreach ($potongan as $d)
-                        @php
-                        $totalpotongan += $d->jumlah;
-                        @endphp
-                        <tr>
-                            <td>{{ $loop->iteration }}.</td>
-                            <td colspan="4">{{ $d->keterangan }}</td>
-                            <td>Rp.</td>
-                            <td style="text-align: right">{{ rupiah($d->jumlah)  }}</td>
-                        </tr>
+                            @php
+                                $totalpotongan += $d->jumlah;
+                            @endphp
+                            <tr>
+                                <td>{{ $loop->iteration }}.</td>
+                                <td colspan="4">{{ $d->keterangan }}</td>
+                                <td>Rp.</td>
+                                <td style="text-align: right">{{ rupiah($d->jumlah) }}</td>
+                            </tr>
                         @endforeach
                         <tr style="font-weight:bold">
                             <td colspan="5" style="border-bottom:1px solid black">Jumlah Potongan</td>
                             <td style="border-bottom:1px solid black">Rp.</td>
-                            <td style="border-bottom:1px solid black; text-align:right">{{ rupiah($totalpotongan) }}</td>
+                            <td style="border-bottom:1px solid black; text-align:right">{{ rupiah($totalpotongan) }}
+                            </td>
                         </tr>
                         <tr style="font-weight:bold">
                             <td colspan="5">Jumlah Uang Yang Diterima Karyawan</td>
                             <td>Rp.</td>
                             <td style="text-align:right">
                                 @php
-                                $totalditerima = $jml_ujmk - $totalpotongan;
+                                    $totalditerima = $jml_ujmk - $totalpotongan;
                                 @endphp
                                 {{ rupiah($totalditerima) }}
                             </td>
@@ -362,19 +369,21 @@
             </tr>
         </table>
         <p>
-            <ol start="3">
-                <li>
-                    PIHAK KEDUA ( II ) dapat menerima dengan baik kompensasi atau kebijakan dari PIHAK PERTAMA (I) seperti tersebut di atas.
-                </li>
-                <li>
-                    Dengan ditandatanganinya kesepakatan bersama ini oleh kedua belah pihak, PIHAK PERTAMA ( I ) dan PIHAK KEDUA ( II ) menyatakan permasalahan telah selesai dan tidak ada saling menuntut apapun dikemudian hari.
-                </li>
-            </ol>
-            Demikian Kesepakatan Bersama ini dibuat dan ditandatangani oleh kedua belah pihak.
+        <ol start="3">
+            <li>
+                PIHAK KEDUA ( II ) dapat menerima dengan baik kompensasi atau kebijakan dari PIHAK PERTAMA (I) seperti
+                tersebut di atas.
+            </li>
+            <li>
+                Dengan ditandatanganinya kesepakatan bersama ini oleh kedua belah pihak, PIHAK PERTAMA ( I ) dan PIHAK
+                KEDUA ( II ) menyatakan permasalahan telah selesai dan tidak ada saling menuntut apapun dikemudian hari.
+            </li>
+        </ol>
+        Demikian Kesepakatan Bersama ini dibuat dan ditandatangani oleh kedua belah pihak.
         </p>
         <table class="datatable4">
             <tr>
-                <td colspan="4" style="text-align: center">Tasikmalaya, {{ DateToIndo2($kontrak->sampai)}}</td>
+                <td colspan="4" style="text-align: center">Tasikmalaya, {{ DateToIndo2($kontrak->sampai) }}</td>
             </tr>
             <tr>
                 <td style="text-align:center">PIHAK KEDUA</td>
