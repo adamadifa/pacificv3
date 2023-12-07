@@ -490,4 +490,68 @@ class SapController extends Controller
             dd($e);
         }
     }
+
+    public function rekapactivity(Request $request)
+    {
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+
+        $i = 1;
+        $select_date = "";
+        $field_date = "";
+
+        while (strtotime($dari) <= strtotime($sampai)) {
+            $rangetanggal[] = $dari;
+            $select_date .= "SUM(IF(DATE(tanggal)='" . $dari . "',1,0)) as tgl_" . $i . ",";
+            $field_date .= "tgl_" . $i . ",";
+            $i++;
+            $dari = date("Y-m-d", strtotime("+1 day", strtotime($dari)));
+        }
+
+        $jmlrange = count($rangetanggal);
+        $range = $jmlrange - 1;
+        // if (isset($request->dari)) {
+        //     dd($rangetanggal);
+        // }
+        $rekapsmm = DB::table('users')
+            ->selectRaw("
+            $field_date
+            users.id,name,users.kode_cabang")
+            ->leftJoin(
+                DB::raw("(
+                SELECT
+                $select_date
+                id_user
+                FROM activity_sm
+                WHERE DATE(tanggal) >= '$rangetanggal[0]' AND DATE(tanggal) <= '$rangetanggal[$range]'
+                GROUP BY activity_sm.id_user
+                ) activity"),
+                function ($join) {
+                    $join->on('users.id', '=', 'activity.id_user');
+                }
+            )
+            ->where('level', 'kepala penjualan')
+            ->get();
+
+        $rekaprsm = DB::table('users')
+            ->selectRaw("
+            $field_date
+            users.id,name,users.kode_cabang")
+            ->leftJoin(
+                DB::raw("(
+                SELECT
+                $select_date
+                id_user
+                FROM activity_sm
+                WHERE DATE(tanggal) >= '$rangetanggal[0]' AND DATE(tanggal) <= '$rangetanggal[$range]'
+                GROUP BY activity_sm.id_user
+                ) activity"),
+                function ($join) {
+                    $join->on('users.id', '=', 'activity.id_user');
+                }
+            )
+            ->where('level', 'rsm')
+            ->get();
+        return view('sap.rekapactivity', compact('rekapsmm', 'jmlrange', 'rangetanggal', 'rekaprsm'));
+    }
 }
