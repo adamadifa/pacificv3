@@ -132,7 +132,7 @@
                                                     <td
                                                         style="background-color: {{ !empty($d->$field) ? 'green;color:white' : '' }}">
                                                         <a style="text-decoration: none; color:white"
-                                                            href="/dashboardsfakp?tanggal={{ $h }}&kode_cabang={{ $d->kode_cabang }}">
+                                                            href="/dashboardsfarsm?tanggal={{ $h }}&kode_cabang={{ $d->kode_cabang }}">
                                                             {{ !empty($d->$field) ? $d->$field : '' }}
                                                         </a>
                                                     </td>
