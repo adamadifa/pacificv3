@@ -472,6 +472,7 @@ class PelangganController extends Controller
         $kode_pelanggan = Crypt::decrypt($kode_pelanggan);
         $pelanggan = Pelanggan::where('kode_pelanggan', $kode_pelanggan)->first();
         $hari = "";
+
         foreach ($request->hari as $d) {
             $hari .= $d . ",";
         }

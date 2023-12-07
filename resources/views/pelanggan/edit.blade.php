@@ -157,7 +157,7 @@
                                                     {{ old('hari') == 'Minggu' ? 'selected' : '' }}
                                                     @endisset value="Minggu">Minggu</option>
                                                 </select> --}}
-                                                    <ul class="list-unstyled mb-0">
+                                                    <ul class="list-unstyled mb-0" style="display: none">
                                                         <li class="d-inline-block mr-2">
                                                             <fieldset>
                                                                 <div class="vs-checkbox-con vs-checkbox-success">
