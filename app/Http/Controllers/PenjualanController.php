@@ -977,7 +977,7 @@ class PenjualanController extends Controller
         $jenistransaksi = $request->jenistransaksi;
         $id_user = Auth::user()->id;
         $detail = DB::table('detailpenjualan_temp')
-            ->select('detailpenjualan_temp.kode_barang', 'promo', 'isipcsdus', 'kategori', 'jumlah')
+            ->select('detailpenjualan_temp.kode_barang', 'promo', 'isipcsdus', 'kategori', 'jumlah', 'kode_produk')
             ->join('barang', 'detailpenjualan_temp.kode_barang', '=', 'barang.kode_barang')
             ->where('id_admin', $id_user)
             ->whereNull('promo')
@@ -995,7 +995,7 @@ class PenjualanController extends Controller
                 $jmldusswan   = $jmldusswan + $jmldus;
             }
 
-            if ($d->kategori == "AIDA") {
+            if ($d->kategori == "AIDA" && $d->kode_produk != "BR20") {
                 $jmldusaida   = $jmldusaida + $jmldus;
             }
 
@@ -1086,7 +1086,7 @@ class PenjualanController extends Controller
         $no_fak_penj = $request->no_fak_penj;
         $jenistransaksi = $request->jenistransaksi;
         $detail = DB::table('detailpenjualan_edit')
-            ->select('detailpenjualan_edit.kode_barang', 'promo', 'isipcsdus', 'kategori', 'jumlah')
+            ->select('detailpenjualan_edit.kode_barang', 'promo', 'isipcsdus', 'kategori', 'jumlah', 'kode_produk')
             ->join('barang', 'detailpenjualan_edit.kode_barang', '=', 'barang.kode_barang')
             ->where('no_fak_penj', $no_fak_penj)
             ->whereNull('promo')
@@ -1102,7 +1102,7 @@ class PenjualanController extends Controller
                 $jmldusswan   = $jmldusswan + $jmldus;
             }
 
-            if ($d->kategori == "AIDA") {
+            if ($d->kategori == "AIDA" && $d->kode_produk != "BR20") {
                 $jmldusaida   = $jmldusaida + $jmldus;
             }
 
@@ -1183,7 +1183,7 @@ class PenjualanController extends Controller
         $no_fak_penj = $request->no_fak_penj;
         $jenistransaksi = $request->jenistransaksi;
         $detail = DB::table('detailpenjualan_edit')
-            ->select('detailpenjualan_edit.kode_barang', 'promo', 'isipcsdus', 'kategori', 'jumlah')
+            ->select('detailpenjualan_edit.kode_barang', 'promo', 'isipcsdus', 'kategori', 'jumlah', 'kode_produk')
             ->join('barang', 'detailpenjualan_edit.kode_barang', '=', 'barang.kode_barang')
             ->where('no_fak_penj', $no_fak_penj)
             ->whereNull('promo')
@@ -1199,7 +1199,7 @@ class PenjualanController extends Controller
                 $jmldusswan   = $jmldusswan + $jmldus;
             }
 
-            if ($d->kategori == "AIDA") {
+            if ($d->kategori == "AIDA" && $d->kode_produk != "BR20") {
                 $jmldusaida   = $jmldusaida + $jmldus;
             }
 
