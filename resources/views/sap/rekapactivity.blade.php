@@ -75,7 +75,7 @@
                                                     @endphp
                                                     <td
                                                         style="background-color: {{ !empty($d->$field) ? 'green;color:white' : '' }}">
-                                                        <a style="text-decoration: none; color:white"
+                                                        <a style="text-decoration: none; color:white" target="_blank"
                                                             href="/dashboardsfakp?tanggal={{ $h }}&kode_cabang={{ $d->kode_cabang }}">
                                                             {{ !empty($d->$field) ? $d->$field : '' }}
                                                         </a>
@@ -131,7 +131,7 @@
                                                     @endphp
                                                     <td
                                                         style="background-color: {{ !empty($d->$field) ? 'green;color:white' : '' }}">
-                                                        <a style="text-decoration: none; color:white"
+                                                        <a style="text-decoration: none; color:white" target="_blank"
                                                             href="/dashboardsfarsm?tanggal={{ $h }}&kode_cabang={{ $d->kode_cabang }}">
                                                             {{ !empty($d->$field) ? $d->$field : '' }}
                                                         </a>
