@@ -157,7 +157,8 @@
                                                     {{ old('hari') == 'Minggu' ? 'selected' : '' }}
                                                     @endisset value="Minggu">Minggu</option>
                                                 </select> --}}
-                                                    <ul class="list-unstyled mb-0" style="display: none">
+                                                    <ul class="list-unstyled mb-0"
+                                                        @if ($level == 'salesman') style="display: none" @endif>
                                                         <li class="d-inline-block mr-2">
                                                             <fieldset>
                                                                 <div class="vs-checkbox-con vs-checkbox-success">
