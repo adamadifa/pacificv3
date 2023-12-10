@@ -790,6 +790,7 @@ class Pengajuanizin extends Model
             $query->where('id_kantor', 'PST');
         }
 
+        $query->orderBy('status_approved', 'asc');
         $query->orderBy('dari', 'desc');
         $pengajuan_izin = $query;
         return $pengajuan_izin;
