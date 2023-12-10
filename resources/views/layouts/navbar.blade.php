@@ -1206,7 +1206,7 @@
                                         $level == 'admin persediaan dan kasir' ||
                                         $level ==
                                             "admin penjualan
-                                                        dan kasir")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        dan kasir")
                                     <a href="/laporankeuangan/saldokasbesar">
                                         <i class="feather icon-file-text"></i>
                                         <span class="menu-item" data-i18n="Second Level">Laporan</span>
@@ -1629,6 +1629,75 @@
                             <a href="/laporanmaintenance/rekapbahanbakar">
                                 <i class="feather icon-file"></i>
                                 <span class="menu-item">Laporan</span>
+                            </a>
+                        </li>
+                    @endif
+                </ul>
+            </li>
+        @endif
+        @if (in_array($level, $om_menu))
+            <li class=" nav-item">
+                <a href="#"><i class="feather icon-users"></i><span class="menu-title">OM Worksheet</span></a>
+                <ul class="menu-content">
+                    @if (in_array($level, $maintenance_pembelian))
+                        <li class="#">
+                            <a href="#">
+                                <i class="feather icon-clipboard"></i>
+                                <span class="menu-item">OMAN</span>
+                            </a>
+                        </li>
+                        <li class="#">
+                            <a href="#">
+                                <i class="feather icon-monitor"></i>
+                                <span class="menu-item">Monitoring Program</span>
+                            </a>
+                        </li>
+                        <li class="#">
+                            <a href="#">
+                                <i class="feather icon-clipboard"></i>
+                                <span class="menu-item">Kebutuhan Cabang</span>
+                            </a>
+                        </li>
+                        <li class="#">
+                            <a href="#">
+                                <i class="feather icon-clipboard"></i>
+                                <span class="menu-item">Cost Ratio</span>
+                            </a>
+                        </li>
+                        <li class="#">
+                            <a href="#">
+                                <i class="feather icon-clipboard"></i>
+                                <span class="menu-item">Komisi Sales</span>
+                            </a>
+                        </li>
+                        <li class="#">
+                            <a href="#">
+                                <i class="feather icon-clipboard"></i>
+                                <span class="menu-item">Komisi Driver & Helper</span>
+                            </a>
+                        </li>
+                        <li class="#">
+                            <a href="#">
+                                <i class="feather icon-clipboard"></i>
+                                <span class="menu-item">Ajuan Limit Kredit</span>
+                            </a>
+                        </li>
+                        <li class="#">
+                            <a href="#">
+                                <i class="feather icon-clipboard"></i>
+                                <span class="menu-item">Monitoring Retur</span>
+                            </a>
+                        </li>
+                        <li class="#">
+                            <a href="#">
+                                <i class="feather icon-clipboard"></i>
+                                <span class="menu-item">Product Expired</span>
+                            </a>
+                        </li>
+                        <li class="#">
+                            <a href="#">
+                                <i class="feather icon-clipboard"></i>
+                                <span class="menu-item">Evaluasi Sharing</span>
                             </a>
                         </li>
                     @endif
