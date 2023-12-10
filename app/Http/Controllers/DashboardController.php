@@ -1057,7 +1057,7 @@ class DashboardController extends Controller
     public function dashboardsfa(Request $request)
     {
 
-        $tanggal = $request->tanggal;
+        $tanggal = isset($request->tanggal) ? $request->tanggal : date('Y-m-d');
         $id_karyawan = $request->id_karyawan;
         $rekap = DB::select("SELECT * FROM (
             SELECT tgl_checkin,tgltransaksi,
@@ -1242,7 +1242,7 @@ class DashboardController extends Controller
 
     public function dashboardsfakp(Request $request)
     {
-        $tanggal = $request->tanggal;
+        $tanggal = isset($request->tanggal) ? $request->tanggal : date('Y-m-d');
         $kode_cabang = $request->kode_cabang;
 
         $cbg = new Cabang();
@@ -1269,7 +1269,7 @@ class DashboardController extends Controller
 
     public function dashboardsfarsm(Request $request)
     {
-        $tanggal = $request->tanggal;
+        $tanggal = isset($request->tanggal) ? $request->tanggal : date('Y-m-d');
         $id_rsm = $request->id_rsm;
 
         $rsm = DB::table('users')->where('level', 'rsm')->get();
@@ -1294,7 +1294,7 @@ class DashboardController extends Controller
 
     public function dashboardsfagm(Request $request)
     {
-        $tanggal = $request->tanggal;
+        $tanggal = isset($request->tanggal) ? $request->tanggal : date('Y-m-d');
 
 
         if (!empty($kode_cabang)) {

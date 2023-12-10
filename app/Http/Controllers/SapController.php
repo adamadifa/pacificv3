@@ -552,6 +552,29 @@ class SapController extends Controller
             )
             ->where('level', 'rsm')
             ->get();
-        return view('sap.rekapactivity', compact('rekapsmm', 'jmlrange', 'rangetanggal', 'rekaprsm'));
+
+        $rekapwilayah = DB::table('kategori_wilayah')
+            ->selectRaw("
+            $field_date
+            kode_wilayah,nama_wilayah")
+
+            ->leftJoin(
+                DB::raw("(
+                SELECT
+                $select_date
+                kategori_wilayah
+                FROM activity_sm
+                INNER JOIN users ON activity_sm.id_user = users.id
+                INNER JOIN cabang ON users.kode_cabang = cabang.kode_cabang
+                WHERE DATE(tanggal) >= '$rangetanggal[0]' AND DATE(tanggal) <= '$rangetanggal[$range]'
+                GROUP BY cabang.kategori_wilayah
+                ) activity"),
+                function ($join) {
+                    $join->on('kategori_wilayah.kode_wilayah', '=', 'activity.kategori_wilayah');
+                }
+            )
+
+            ->get();
+        return view('sap.rekapactivity', compact('rekapsmm', 'jmlrange', 'rangetanggal', 'rekaprsm', 'rekapwilayah'));
     }
 }

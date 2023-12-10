@@ -150,6 +150,59 @@
 
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="{{ 2 + $jmlrange }}">Rekap Activity Wilayah</th>
+                                        </tr>
+                                        <tr>
+                                            <th rowspan="2">No</th>
+                                            <th rowspan="2">Wilayah</th>
+
+                                            <th colspan="{{ $jmlrange }}" style="text-align: center">Tanggal</th>
+                                        </tr>
+                                        <tr>
+                                            @foreach ($rangetanggal as $d)
+                                                <th style="width:2%">{{ date('d', strtotime($d)) }}</th>
+                                            @endforeach
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($rekapwilayah as $d)
+                                            <tr>
+                                                <td>{{ $loop->iteration }}</td>
+                                                <td>{{ $d->nama_wilayah }}</td>
+                                                @php
+                                                    $i = 1;
+                                                @endphp
+                                                @foreach ($rangetanggal as $h)
+                                                    @php
+                                                        $field = 'tgl_' . $i;
+                                                    @endphp
+                                                    <td
+                                                        style="background-color: {{ !empty($d->$field) ? 'green;color:white' : '' }}">
+                                                        <a style="text-decoration: none; color:white" target="_blank"
+                                                            href="#">
+                                                            {{ !empty($d->$field) ? $d->$field : '' }}
+                                                        </a>
+                                                    </td>
+
+                                                    @php
+                                                        $i++;
+                                                    @endphp
+                                                @endforeach
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
         </div>
     </div>
