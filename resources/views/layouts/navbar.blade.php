@@ -1206,7 +1206,7 @@
                                         $level == 'admin persediaan dan kasir' ||
                                         $level ==
                                             "admin penjualan
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        dan kasir")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        dan kasir")
                                     <a href="/laporankeuangan/saldokasbesar">
                                         <i class="feather icon-file-text"></i>
                                         <span class="menu-item" data-i18n="Second Level">Laporan</span>
@@ -1639,7 +1639,7 @@
             <li class=" nav-item">
                 <a href="#"><i class="feather icon-users"></i><span class="menu-title">OM Worksheet</span></a>
                 <ul class="menu-content">
-                    @if (in_array($level, $maintenance_pembelian))
+                    @if (in_array($level, $om_menu))
                         <li class="#">
                             <a href="#">
                                 <i class="feather icon-clipboard"></i>
