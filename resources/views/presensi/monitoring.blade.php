@@ -571,6 +571,50 @@
                                                             $grandtotaljam = 0;
                                                         }
                                                     }
+
+                                                    //Menghitung Premi
+                                                    if ($nama_jadwal == 'SHIFT 2' && $grandtotaljam >= 5) {
+                                                        $premi = 5000;
+                                                        $premi_shift_2 = 5000;
+                                                        $totalpremi_shift_2 += $premi_shift_2;
+                                                        $totalhari_shift_2 += 1;
+                                                    } elseif ($nama_jadwal == 'SHIFT 3' && $grandtotaljam >= 5) {
+                                                        $premi = 6000;
+                                                        $premi_shift_3 = 6000;
+                                                        $totalpremi_shift_3 += $premi_shift_3;
+                                                        $totalhari_shift_3 += 1;
+                                                    } else {
+                                                        $premi = 0;
+                                                    }
+
+                                                    //Menghitung Total Jam Pulang Cepat
+
+                                                    if ($jam_out != 'NA' && $jam_out_tanggal < $jam_pulang_tanggal) {
+                                                        $pc = 'Pulang Cepat';
+                                                        if (!empty($izinpulangdirut) && $izinpulangdirut == 1) {
+                                                            $totalpc = 0;
+                                                        } else {
+                                                            $totalpc = $total_jam + $jk - $grandtotaljam;
+                                                            // if($totalpc <= 0.02){
+                                                            //     $totalpc = 0;
+                                                            // }
+                                                        }
+                                                    } else {
+                                                        $pc = '';
+                                                        $totalpc = 0;
+                                                    }
+
+                                                    //Menghitung Jumlah Tidak Hadir
+                                                    if ($status == 'a') {
+                                                        if ($namahari == 'Sabtu') {
+                                                            $tidakhadir = 5;
+                                                        } else {
+                                                            $tidakhadir = 7;
+                                                        }
+                                                    } else {
+                                                        $tidakhadir = 0; // Jika Karyawan Absen Maka $tidakhadir dihitung 0
+                                                    }
+
                                                 @endphp
                                                 <tr>
                                                     <td class="text-center">
@@ -601,7 +645,7 @@
                                                             (Izin)
                                                         @endif
                                                     </td>
-                                                    <td>
+                                                    <td style="color:{{ $jam_out_presensi < $jam_pulang ? 'red' : '' }}">
                                                         {!! $jam_out != 'NA'
                                                             ? '<a href="#" class="showpresensi" id="' .
                                                                 $d->id .
@@ -609,6 +653,13 @@
                                                                 date('d-m-y H:i', strtotime($jam_out)) .
                                                                 '</a>'
                                                             : '<span class="danger">Belum Absen</span>' !!}
+                                                        @if (!empty($pc))
+                                                            (PC)
+                                                        @endif
+                                                        @if (!empty($d->kode_izin_pulang))
+                                                            (Izin)
+                                                        @endif
+
                                                     </td>
                                                     <td>
                                                         @if ($status == 'h')
