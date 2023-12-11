@@ -757,52 +757,51 @@
                                     } else {
                                         $grandtotaljam = 0;
                                     }
-
-                                    //Menghitung Premi
-                                    if ($nama_jadwal == 'SHIFT 2' && $grandtotaljam >= 5) {
-                                        // Jika Shift 2 dan Total Jam Kerja Lebih dari 5 Jam
-                                        $premi = 5000;
-                                        $premi_shift_2 = 5000;
-                                        $totalpremi_shift_2 += $premi_shift_2;
-                                        $totalhari_shift_2 += 1;
-                                    } elseif ($nama_jadwal == 'SHIFT 3' && $grandtotaljam >= 5) {
-                                        // Jika Shift 3 dan Total Jam Kerja Lebih dari 5 Jam
-                                        $premi = 6000;
-                                        $premi_shift_3 = 6000;
-                                        $totalpremi_shift_3 += $premi_shift_3;
-                                        $totalhari_shift_3 += 1;
-                                    } else {
-                                        $premi = 0;
-                                    }
-
-                                    //Menghitung Total Jam Pulang Cepat
-
-                                    if ($jam_out != 'NA' && $jam_out_tanggal < $jam_pulang_tanggal) {
-                                        $pc = 'Pulang Cepat';
-                                        if (!empty($izinpulangdirut) && $izinpulangdirut == 1) {
-                                            $totalpc = 0;
-                                        } else {
-                                            $totalpc = $total_jam + $jk - $grandtotaljam;
-                                            // if($totalpc <= 0.02){
-                                            //     $totalpc = 0;
-                                            // }
-                                        }
-                                    } else {
-                                        $pc = '';
-                                        $totalpc = 0;
-                                    }
-
-                                    //Menghitung Jumlah Tidak Hadir
-                                    if ($status == 'a') {
-                                        if ($namahari == 'Sabtu') {
-                                            $tidakhadir = 5;
-                                        } else {
-                                            $tidakhadir = 7;
-                                        }
-                                    } else {
-                                        $tidakhadir = 0; // Jika Karyawan Absen Maka $tidakhadir dihitung 0
-                                    }
                                 }
+
+                                //Menghitung Premi
+                                if ($nama_jadwal == 'SHIFT 2' && $grandtotaljam >= 5) {
+                                    $premi = 5000;
+                                    $premi_shift_2 = 5000;
+                                    $totalpremi_shift_2 += $premi_shift_2;
+                                    $totalhari_shift_2 += 1;
+                                } elseif ($nama_jadwal == 'SHIFT 3' && $grandtotaljam >= 5) {
+                                    $premi = 6000;
+                                    $premi_shift_3 = 6000;
+                                    $totalpremi_shift_3 += $premi_shift_3;
+                                    $totalhari_shift_3 += 1;
+                                } else {
+                                    $premi = 0;
+                                }
+
+                                //Menghitung Total Jam Pulang Cepat
+
+                                if ($jam_out != 'NA' && $jam_out_tanggal < $jam_pulang_tanggal) {
+                                    $pc = 'Pulang Cepat';
+                                    if (!empty($izinpulangdirut) && $izinpulangdirut == 1) {
+                                        $totalpc = 0;
+                                    } else {
+                                        $totalpc = $total_jam + $jk - $grandtotaljam;
+                                        // if($totalpc <= 0.02){
+                                        //     $totalpc = 0;
+                                        // }
+                                    }
+                                } else {
+                                    $pc = '';
+                                    $totalpc = 0;
+                                }
+
+                                //Menghitung Jumlah Tidak Hadir
+                                if ($status == 'a') {
+                                    if ($namahari == 'Sabtu') {
+                                        $tidakhadir = 5;
+                                    } else {
+                                        $tidakhadir = 7;
+                                    }
+                                } else {
+                                    $tidakhadir = 0; // Jika Karyawan Absen Maka $tidakhadir dihitung 0
+                                }
+
                             @endphp
                             @if ($status == 'h')
                                 @php
@@ -939,6 +938,7 @@
                                 $totalpc = 0;
                                 $izinabsen = 0;
                                 $izinsakit = 0;
+
                             @endphp
                             @if (
                                 (!empty($ceklibur) && $cekmasakerja >= 3) ||
@@ -972,42 +972,41 @@
                                     @endphp
                                 @endif
                                 <!-- Jika Tidak Ada Presensi dan Dirumahkan-->
-                                @if (!empty($cekwfh))
-                                    @php
-                                        //Cek Jika Besok Libur
-                                        $search_items_next = [
-                                            'nik' => $d->nik,
-                                            'id_kantor' => $d->id_kantor,
-                                            'tanggal_libur' => date('Y-m-d', strtotime('+1 day', strtotime($tgl_presensi))),
-                                        ];
+                            @endif
+                            @if (!empty($cekwfh))
+                                @php
+                                    //Cek Jika Besok Libur
+                                    $search_items_next = [
+                                        'nik' => $d->nik,
+                                        'id_kantor' => $d->id_kantor,
+                                        'tanggal_libur' => date('Y-m-d', strtotime('+1 day', strtotime($tgl_presensi))),
+                                    ];
 
-                                        $cekliburnext = cektgllibur($datalibur, $search_items_next);
-                                        if ($namahari == 'Jumat' && !empty($cekliburnext)) {
-                                            $jamdirumahkan = 5;
-                                            $tambahjamdirumahkan = 2;
-                                        } else {
-                                            $tambahjamdirumahkan = 0;
-                                        }
+                                    $cekliburnext = cektgllibur($datalibur, $search_items_next);
+                                    if ($namahari == 'Jumat' && !empty($cekliburnext)) {
+                                        $jamdirumahkan = 5;
+                                        $tambahjamdirumahkan = 2;
+                                    } else {
+                                        $tambahjamdirumahkan = 0;
+                                    }
 
-                                        $jmldirumahkan += 1;
-                                        $totaljamdirumahkan = $jamdirumahkan + $tambahjamdirumahkan - (ROUND((50 / 100) * $jamdirumahkan, 2) + $tambahjamdirumahkan);
-                                        $totaldirumahkan += $totaljamdirumahkan;
-                                    @endphp
-                                @endif
+                                    $jmldirumahkan += 1;
+                                    $totaljamdirumahkan = $jamdirumahkan + $tambahjamdirumahkan - (ROUND((50 / 100) * $jamdirumahkan, 2) + $tambahjamdirumahkan);
+                                    $totaldirumahkan += $totaljamdirumahkan;
+                                @endphp
                             @endif
                         @endif
-                        {{-- @php
+                        @php
 
                             $totalterlambat += $jt;
                             $totalkeluar += $jk;
                             $totaldenda += $denda;
-                            $totalpremi += !empty($premi) ? $premi : 0;
+                            $totalpremi += $premi;
                             $totaltidakhadir += $tidakhadir;
                             $totalpulangcepat += $totalpc;
                             $totalizinabsen += $izinabsen;
                             $totalizinsakit += $izinsakit;
-                        @endphp --}}
-
+                        @endphp
                         <!-- Total Jam Kerja 1 Bulan -->
                         @if ($d->nama_jabatan == 'DIREKTUR')
                             @php
@@ -1075,13 +1074,62 @@
                             $potongan = ROUND($bpjskesehatan + $bpjstenagakerja + $totaldenda + $d->cicilan_pjp + $d->jml_kasbon + $d->jml_nonpjp + $spip, 0); // Potongan Upah
                             $jmlbersih = $bruto - $potongan; // Jumlah Upah Bersih
 
-                            //Total
-                            //Total Shift 2
-                            $totalhariall_shift_2 = $totalhari_shift_2 + $totalharilembur_shift_2;
-                            $totalpremiall_shift_2 = $totalpremi_shift_2 + $totalpremilembur_shift_2;
-                            //Total Shift 3
-                            $totalhariall_shift_3 = $totalhari_shift_3 + $totalharilembur_shift_3;
-                            $totalpremiall_shift_3 = $totalpremi_shift_3 + $totalpremilembur_shift_3;
+                            //Total Gaji Pokok
+                            $total_gajipokok += $d->gaji_pokok;
+                            $total_tunjangan_jabatan += $d->t_jabatan;
+                            $total_tunjangan_masakerja += $d->t_masakerja;
+                            $total_tunjangan_tanggungjawab += $d->t_tanggungjawab;
+                            $total_tunjangan_makan += $d->t_makan;
+                            $total_tunjangan_istri += $d->t_istri;
+                            $total_tunjangan_skillkhusus += $d->t_skill;
+
+                            $total_insentif_masakerja += $d->iu_masakerja;
+                            $total_insentif_lembur += $d->iu_lembur;
+                            $total_insentif_penempatan += $d->iu_penempatan;
+                            $total_insentif_kpi += $d->iu_kpi;
+
+                            $total_im_ruanglingkup += $d->im_ruanglingkup;
+                            $total_im_penempatan += $d->im_penempatan;
+                            $total_im_kinerja += $d->im_kinerja;
+
+                            $total_upah += $upah;
+                            $total_insentif += $jmlinsentif;
+
+                            $total_all_jamkerja += $totaljamkerja;
+                            $total_all_upahperjam += $upah_perjam;
+
+                            $total_all_overtime_1 += $total_overtime_1;
+                            $total_all_upah_ot_1 += $upah_ot_1;
+
+                            $total_all_overtime_2 += $total_overtime_2;
+                            $total_all_upah_ot_2 += $upah_ot_2;
+
+                            $total_all_overtime_libur += $total_overtime_libur_1;
+                            $total_all_upah_overtime_libur += $upah_otl_1;
+
+                            $total_all_upah_overtime += $total_upah_overtime;
+
+                            $total_all_hari_shift_2 += $totalhariall_shift_2;
+                            $total_all_premi_shift_2 += $totalpremiall_shift_2;
+
+                            $total_all_hari_shift_3 += $totalhariall_shift_3;
+                            $total_all_premi_shift_3 += $totalpremiall_shift_3;
+
+                            $total_all_bruto += $bruto;
+
+                            $total_all_potongan_jam += $totalpotonganjam;
+                            $total_all_bpjskesehatan += $bpjskesehatan;
+                            $total_all_bpjstk += $bpjstenagakerja;
+
+                            $total_all_denda += $totaldenda;
+
+                            $total_all_pjp += $d->cicilan_pjp;
+                            $total_all_kasbon += $d->jml_kasbon;
+                            $total_all_nonpjp += $d->jml_nonpjp;
+                            $total_all_spip += $spip;
+
+                            $total_all_potongan += $potongan;
+                            $total_all_bersih += $jmlbersih;
 
                         @endphp
                     @endfor
@@ -1089,8 +1137,184 @@
 
                     <tr>
                         <td>{{ $loop->iteration }}</td>
+                        <td>'{{ $d->nama_jabatan == 'SECURITY' ? $d->nik_security : $d->nik }}</td>
+                        <td>{{ $d->nama_karyawan }}</td>
+                        <td>{{ $d->no_rekening }}</td>
+                        <td align="center">{{ $d->nama_group }}</td>
+                        <td align="center">{{ date('d-m-Y', strtotime($d->tgl_masuk)) }}</td>
+                        <td align="center">
+                            @php
+                                $awal = date_create($d->tgl_masuk);
+                                $akhir = date_create($sampai); // waktu sekarang
+                                $diff = date_diff($awal, $akhir);
+                                // echo $diff->y . ' tahun, '.$diff->m.' bulan, '.$diff->d.' Hari'
+                                echo $diff->y . ' tahun, ' . $diff->m . ' bulan';
+                            @endphp
+                        </td>
+                        <td align="center">{{ $d->nama_dept }}</td>
+                        <td align="center">{{ $d->nama_jabatan }}</td>
+                        <td align="center">{{ $d->id_kantor == 'PST' ? 'PUSAT' : strtoupper($d->nama_cabang) }}</td>
+                        <td align="center">{{ $d->id_perusahaan }}</td>
+                        <td align="center">{{ $d->klasifikasi }}</td>
+                        <td align="center">
+                            {{ strtoupper($d->jenis_kelamin == '1' ? 'Laki-Laki' : 'Perempuan') }}
+                        </td>
+                        <td align="center">
+
+                            @if ($d->status_kawin == 1)
+                                BELUM MENIKAH
+                            @elseif($d->status_kawin == 2)
+                                MENIKAH
+                            @elseif($d->status_kawin == 3)
+                                CERAI HIDUP
+                            @elseif($d->status_kawin == 4)
+                                DUDA
+                            @elseif($d->status_kawin == 5)
+                                JANDA
+                            @endif
+                        </td>
+                        <td align="right">{{ !empty($d->gaji_pokok) ? rupiah($d->gaji_pokok) : '' }}</td>
+                        <td align="right">{{ !empty($d->t_jabatan) ? rupiah($d->t_jabatan) : '' }}</td>
+                        <td align="right">{{ !empty($d->t_masakerja) ? rupiah($d->t_masakerja) : '' }}</td>
+                        <td align="right">{{ !empty($d->t_tanggungjawab) ? rupiah($d->t_tanggungjawab) : '' }}</td>
+                        <td align="right">{{ !empty($d->t_makan) ? rupiah($d->t_makan) : '' }}</td>
+                        <td align="right">{{ !empty($d->t_istri) ? rupiah($d->t_istri) : '' }}</td>
+                        <td align="right">{{ !empty($d->t_skill) ? rupiah($d->t_skill) : '' }}</td>
+                        <td align="right">{{ !empty($d->iu_masakerja) ? rupiah($d->iu_masakerja) : '' }}</td>
+                        <td align="right">{{ !empty($d->iu_lembur) ? rupiah($d->iu_lembur) : '' }}</td>
+                        <td align="right">{{ !empty($d->iu_penempatan) ? rupiah($d->iu_penempatan) : '' }}</td>
+                        <td align="right">{{ !empty($d->iu_kpi) ? rupiah($d->iu_kpi) : '' }}</td>
+                        <td align="right">{{ !empty($d->im_ruanglingkup) ? rupiah($d->im_ruanglingkup) : '' }}</td>
+                        <td align="right">{{ !empty($d->im_penempatan) ? rupiah($d->im_penempatan) : '' }}</td>
+                        <td align="right">{{ !empty($d->im_kinerja) ? rupiah($d->im_kinerja) : '' }}</td>
+                        <td align="right">
+                            {{ !empty($upah) ? rupiah($upah) : '' }}
+                        </td>
+                        <td align="right">
+                            {{ !empty($jmlinsentif) ? rupiah($jmlinsentif) : '' }}
+                        </td>
+                        <td style="text-align:center; font-weight:bold">
+                            {{ !empty($totaljamkerja) ? desimal($totaljamkerja) : '' }}
+                        </td>
+                        <td align="right">
+                            {{ !empty($upah_perjam) ? desimal($upah_perjam) : '' }}
+                        </td>
+                        <td style="text-align: center;">
+                            {{ !empty($total_overtime_1) ? desimal($total_overtime_1) : '' }}</td>
+
+                        <td align=" right">
+                            {{ !empty($upah_ot_1) ? rupiah($upah_ot_1) : '' }}
+                            <br>
+
+                        </td>
+                        <td style="text-align: center;">
+                            {{ !empty($total_overtime_2) ? desimal($total_overtime_2) : '' }}</td>
+                        <td align="right">
+                            {{ !empty($upah_ot_2) ? rupiah($upah_ot_2) : '' }}
+                        </td>
+                        <td style="text-align: center;">
+
+                            {{ !empty($total_overtime_libur_1) ? desimal($total_overtime_libur_1) : '' }}
+                        </td>
+                        <td align="right">
+                            {{ !empty($upah_otl_1) ? rupiah($upah_otl_1) : '' }}
+                        </td>
+
+
+                        <td align="right">
+                            {{ !empty($total_upah_overtime) ? rupiah($total_upah_overtime) : '' }}
+                        </td>
+                        <td align="center">{{ !empty($totalhariall_shift_2) ? $totalhariall_shift_2 : '' }}</td>
+                        <td align="right">{{ !empty($totalpremiall_shift_2) ? rupiah($totalpremiall_shift_2) : '' }}
+                        </td>
+                        <td align="center">{{ !empty($totalhariall_shift_3) ? $totalhariall_shift_3 : '' }}</td>
+                        <td align="right">{{ !empty($totalpremiall_shift_3) ? rupiah($totalpremiall_shift_3) : '' }}
+                        </td>
+                        <td align="right">
+                            {{ !empty($bruto) ? rupiah($bruto) : '' }}
+                        </td>
+                        <td align="center">{{ !empty($totalpotonganjam) ? desimal($totalpotonganjam) : '' }}</td>
+                        <td align="right">
+                            {{ !empty($bpjskesehatan) ? rupiah($bpjskesehatan) : '' }}
+                        </td>
+                        <td></td>
+                        <td align="right">
+                            {{ !empty($bpjstenagakerja) ? rupiah($bpjstenagakerja) : '' }}
+                        </td>
+                        <td align="right">{{ !empty($totaldenda) ? rupiah($totaldenda) : '' }}</td>
+
+                        <td align="right">{{ !empty($d->cicilan_pjp) ? rupiah($d->cicilan_pjp) : '' }}</td>
+                        <td align="right">{{ !empty($d->jml_kasbon) ? rupiah($d->jml_kasbon) : '' }}</td>
+                        <td align="right">{{ !empty($d->jml_nonpjp) ? rupiah($d->jml_nonpjp) : '' }}</td>
+                        <td align="right">
+                            {{ !empty($spip) ? rupiah($spip) : '' }}
+
+                        </td>
+                        <td align="right">
+                            {{ !empty($potongan) ? desimal($potongan) : '' }}
+                        </td>
+                        <td align="right">
+                            {{ !empty($jmlbersih) ? rupiah($jmlbersih) : '' }}
+                        </td>
                     </tr>
                 @endforeach
+                <tr bgcolor="#024a75" style="color:white; font-size:12;">
+                    <th colspan="14">TOTAL</th>
+                    <th style="text-align: right">{{ rupiah($total_gajipokok) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_tunjangan_jabatan) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_tunjangan_masakerja) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_tunjangan_tanggungjawab) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_tunjangan_makan) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_tunjangan_istri) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_tunjangan_skillkhusus) }}</th>
+
+                    <th style="text-align: right">{{ rupiah($total_insentif_masakerja) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_insentif_lembur) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_insentif_penempatan) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_insentif_kpi) }}</th>
+
+                    <th style="text-align: right">{{ rupiah($total_im_ruanglingkup) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_im_penempatan) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_im_kinerja) }}</th>
+
+                    <th style="text-align: right">{{ rupiah($total_upah) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_insentif) }}</th>
+
+                    <th style="text-align: center">{{ desimal($total_all_jamkerja) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_upahperjam) }}</th>
+
+                    <th style="text-align: right">{{ rupiah($total_all_overtime_1) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_upah_ot_1) }}</th>
+
+                    <th style="text-align: right">{{ rupiah($total_all_overtime_2) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_upah_ot_2) }}</th>
+
+                    <th style="text-align: right">{{ rupiah($total_all_overtime_libur) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_upah_overtime_libur) }}</th>
+
+                    <th style="text-align: right">{{ rupiah($total_all_upah_overtime) }}</th>
+
+                    <th style="text-align: right">{{ rupiah($total_all_hari_shift_2) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_premi_shift_2) }}</th>
+
+                    <th style="text-align: right">{{ rupiah($total_all_hari_shift_3) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_premi_shift_3) }}</th>
+
+                    <th style="text-align: right">{{ rupiah($total_all_bruto) }}</th>
+
+                    <th style="text-align: center">{{ desimal($total_all_potongan_jam) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_bpjskesehatan) }}</th>
+                    <th></th>
+                    <th style="text-align: right">{{ rupiah($total_all_bpjstk) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_denda) }}</th>
+
+                    <th style="text-align: right">{{ rupiah($total_all_pjp) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_kasbon) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_nonpjp) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_spip) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_potongan) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_bersih) }}</th>
+                </tr>
             </tbody>
         </table>
     </div>
