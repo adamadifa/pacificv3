@@ -64,9 +64,51 @@ class PresensiController extends Controller
         $tanggal = !empty($request->tanggal) ? $request->tanggal : date('Y-m-d');
         // $tanggal = date("Y-m-d");
         $query = Karyawan::query();
-        $query->select('master_karyawan.nik', 'nama_karyawan', 'tgl_masuk', 'master_karyawan.kode_dept', 'nama_dept', 'jenis_kelamin', 'nama_jabatan', 'id_perusahaan', 'id_kantor', 'klasifikasi', 'status_karyawan', 'presensi.kode_jadwal', 'nama_jadwal', 'jam_kerja.jam_masuk', 'jam_kerja.jam_pulang', 'jam_in', 'jam_out', 'presensi.status as status_presensi', 'presensi.kode_izin', 'kode_izin_terlambat', 'tgl_presensi', 'pengajuan_izin.status as status_izin', 'pengajuan_izin.jenis_izin', 'pengajuan_izin.jam_keluar', 'pengajuan_izin.jam_masuk as jam_masuk_kk', 'total_jam', 'kode_izin_pulang', 'jam_istirahat', 'jam_awal_istirahat', 'sid', 'jadwal_kerja.kode_cabang as jadwalcabang', 'lokasi_in', 'lokasi_out', 'presensi.id', 'pin', 'lintashari', 'keperluan');
+        $query->select(
+            'master_karyawan.nik',
+            'nama_karyawan',
+            'tgl_masuk',
+            'master_karyawan.kode_dept',
+            'nama_dept',
+            'jenis_kelamin',
+            'nama_jabatan',
+            'id_perusahaan',
+            'id_kantor',
+            'klasifikasi',
+            'status_karyawan',
+            'presensi.kode_jadwal',
+            'nama_jadwal',
+            'jam_kerja.jam_masuk',
+            'jam_kerja.jam_pulang',
+            'jam_in',
+            'jam_out',
+            'presensi.status as status_presensi',
+            'presensi.kode_izin',
+            'kode_izin_terlambat',
+            'tgl_presensi',
+            'pengajuan_izin.status as status_izin',
+            'pengajuan_izin.jenis_izin',
+            'pengajuan_izin.jam_keluar',
+            'pengajuan_izin.jam_masuk as jam_masuk_kk',
+            'total_jam',
+            'kode_izin_pulang',
+            'jam_istirahat',
+            'jam_awal_istirahat',
+            'pengajuan_izin.sid',
+            'jadwal_kerja.kode_cabang as jadwalcabang',
+            'lokasi_in',
+            'lokasi_out',
+            'presensi.id',
+            'pin',
+            'lintashari',
+            'pengajuan_izin.keperluan',
+            'izinpulang.direktur as izinpulangdirut',
+            'izinterlambat.direktur as izinterlambatdirut',
+            'pengajuan_izin.direktur as izinabsendirut'
+        );
         $query->leftjoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
         $query->leftjoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
+
 
         $query->leftJoin(
             DB::raw("(
@@ -81,6 +123,8 @@ class PresensiController extends Controller
             }
         );
         $query->leftjoin('pengajuan_izin', 'presensi.kode_izin', '=', 'pengajuan_izin.kode_izin');
+        $query->leftjoin('pengajuan_izin as izinpulang', 'presensi.kode_izin_pulang', '=', 'izinpulang.kode_izin');
+        $query->leftjoin('pengajuan_izin as izinterlambat', 'presensi.kode_izin_terlambat', '=', 'izinterlambat.kode_izin');
 
         $query->leftjoin('jadwal_kerja', 'presensi.kode_jadwal', '=', 'jadwal_kerja.kode_jadwal');
         $query->leftjoin('jam_kerja', 'presensi.kode_jam_kerja', '=', 'jam_kerja.kode_jam_kerja');
