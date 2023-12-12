@@ -566,13 +566,13 @@
                                                     if ($nama_jadwal == 'SHIFT 2' && $grandtotaljam >= 5) {
                                                         $premi = 5000;
                                                         $premi_shift_2 = 5000;
-                                                        $totalpremi_shift_2 += $premi_shift_2;
-                                                        $totalhari_shift_2 += 1;
+                                                        //$totalpremi_shift_2 += $premi_shift_2;
+                                                        //$totalhari_shift_2 += 1;
                                                     } elseif ($nama_jadwal == 'SHIFT 3' && $grandtotaljam >= 5) {
                                                         $premi = 6000;
                                                         $premi_shift_3 = 6000;
-                                                        $totalpremi_shift_3 += $premi_shift_3;
-                                                        $totalhari_shift_3 += 1;
+                                                        //$totalpremi_shift_3 += $premi_shift_3;
+                                                        //$totalhari_shift_3 += 1;
                                                     } else {
                                                         $premi = 0;
                                                     }
