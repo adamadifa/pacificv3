@@ -37,7 +37,9 @@ class HariliburController extends Controller
         if (!empty($request->kode_cabang_search)) {
             $query->where('id_kantor', $request->kode_cabang_search);
         }
-
+        if (!empty($request->kode_dept_search)) {
+            $query->where('kode_dept', $request->kode_dept_search);
+        }
         if (Auth::user()->kode_cabang != "PCF" && Auth::user()->kode_cabang != "PST") {
             $query->where('id_kantor', Auth::user()->kode_cabang);
         } else {
