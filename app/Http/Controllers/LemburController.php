@@ -326,18 +326,20 @@ class LemburController extends Controller
     {
         $lemburkaryawan = DB::table('lembur_karyawan')
             ->select(
-                'kode_lembur',
+                'lembur_karyawan.kode_lembur',
                 'lembur_karyawan.nik',
                 'nama_karyawan',
-                'kode_dept',
+                'master_karyawan.kode_dept',
                 'nama_jabatan',
                 'nama_group',
-                'grup'
+                'grup',
+                'hrd'
             )
+            ->join('lembur', 'lembur_karyawan.kode_lembur', '=', 'lembur.kode_lembur')
             ->join('master_karyawan', 'lembur_karyawan.nik', '=', 'master_karyawan.nik')
             ->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
             ->join('hrd_group', 'master_karyawan.grup', '=', 'hrd_group.id')
-            ->where('kode_lembur', $kode_lembur)
+            ->where('lembur_karyawan.kode_lembur', $kode_lembur)
             ->orderByRaw('grup,nama_karyawan')
             ->get();
 
