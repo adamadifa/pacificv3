@@ -1962,6 +1962,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/kendaraan/laporanKendaraan', 'laporanKendaraan')->name('kendaraan.laporanKendaraan');
         Route::post('/kendaraan/cetakLaporanKendaraan', 'cetakLaporanKendaraan')->name('kendaraan.cetakLaporanKendaraan');
     });
+
+    //Worksheet OM
+
+    Route::get('/worksheetom/oman', [OmancabangController::class, 'index']);
+    Route::get('/worksheetom/komisisalesman', [TargetkomisiController::class, 'laporankomisi']);
+    Route::get('/worksheetom/komisidriverhelper', [TargetkomisiController::class, 'laporankomisidriverhelper']);
 });
 
 
