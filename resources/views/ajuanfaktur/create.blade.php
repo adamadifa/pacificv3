@@ -11,7 +11,6 @@
     .form-label-group {
         margin-bottom: 5px !important;
     }
-
 </style>
 
 <form action="/ajuanfaktur/{{ Crypt::encrypt($pelanggan->kode_pelanggan) }}/store" method="POST" id="frmAjuanfaktur">
@@ -55,21 +54,21 @@
             </div>
         </div>
     </div>
-    @if ($pelanggan->kategori_salesman=="TO" || $pelanggan->kategori_salesman=="TOCANVASER")
-    <div class="row mb-1">
-        <div class="col-12">
-            <div class="vs-checkbox-con vs-checkbox-primary">
+    @if ($pelanggan->kategori_salesman == 'TO' || $pelanggan->kategori_salesman == 'TOCANVASER')
+        <div class="row mb-1">
+            <div class="col-12">
+                <div class="vs-checkbox-con vs-checkbox-primary">
 
-                <input type="checkbox" class="sikluspembayaran" name="sikluspembayaran" value="1">
-                <span class="vs-checkbox">
-                    <span class="vs-checkbox--check">
-                        <i class="vs-icon feather icon-check"></i>
+                    <input type="checkbox" class="sikluspembayaran" name="sikluspembayaran" value="1">
+                    <span class="vs-checkbox">
+                        <span class="vs-checkbox--check">
+                            <i class="vs-icon feather icon-check"></i>
+                        </span>
                     </span>
-                </span>
-                <span class="">Pembayaran Saat Turun Barang Order Selanjutnya</span>
+                    <span class="">Pembayaran Saat Turun Barang Order Selanjutnya</span>
+                </div>
             </div>
         </div>
-    </div>
     @endif
 
     <div class="row">
@@ -79,7 +78,7 @@
     </div>
 
 </form>
-<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
+<script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
 <script>
     $(function() {
         $("#frmAjuanfaktur").submit(function() {
@@ -87,20 +86,20 @@
             var jmlfaktur = $("#jmlfaktur").val();
             if (tgl_pengajuan == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Tanggal Pengajuan Harus Diisi!'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Tanggal Pengajuan Harus Diisi!',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#tgl_pengajuan").focus();
                 });
                 return false;
             } else if (jmlfaktur == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Jumlah Faktur Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Jumlah Faktur Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#jmlfaktur").focus();
                 });
@@ -108,5 +107,4 @@
             }
         });
     });
-
 </script>
