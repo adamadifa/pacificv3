@@ -1206,7 +1206,7 @@
                                         $level == 'admin persediaan dan kasir' ||
                                         $level ==
                                             "admin penjualan
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        dan kasir")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        dan kasir")
                                     <a href="/laporankeuangan/saldokasbesar">
                                         <i class="feather icon-file-text"></i>
                                         <span class="menu-item" data-i18n="Second Level">Laporan</span>
@@ -1640,10 +1640,29 @@
                 <a href="#"><i class="feather icon-users"></i><span class="menu-title">OM Worksheet</span></a>
                 <ul class="menu-content">
                     @if (in_array($level, $om_menu))
-                        <li class="#">
-                            <a href="#">
+                        <li class="{{ request()->is(['worksheetom/oman']) ? 'active' : '' }}">
+                            <a href="/worksheetom/oman">
                                 <i class="feather icon-clipboard"></i>
                                 <span class="menu-item">OMAN</span>
+                            </a>
+                        </li>
+                        <li class="{{ request()->is(['worksheetom/komisisalesman']) ? 'active' : '' }}">
+                            <a href="/worksheetom/komisisalesman">
+                                <i class="feather icon-clipboard"></i>
+                                <span class="menu-item">Komisi Salesman</span>
+                            </a>
+                        </li>
+                        <li class="{{ request()->is(['worksheetom/komisidriverhelper']) ? 'active' : '' }}">
+                            <a href="/worksheetom/komisisalesman">
+                                <i class="feather icon-clipboard"></i>
+                                <span class="menu-item">Komisi Driver & Helper</span>
+                            </a>
+                        </li>
+
+                        <li class="{{ request()->is(['worksheetom/costratio']) ? 'active' : '' }}">
+                            <a href="/worksheetom/costratio">
+                                <i class="feather icon-clipboard"></i>
+                                <span class="menu-item">Cost Ratio</span>
                             </a>
                         </li>
                         <li class="#">
@@ -1658,24 +1677,8 @@
                                 <span class="menu-item">Kebutuhan Cabang</span>
                             </a>
                         </li>
-                        <li class="#">
-                            <a href="#">
-                                <i class="feather icon-clipboard"></i>
-                                <span class="menu-item">Cost Ratio</span>
-                            </a>
-                        </li>
-                        <li class="#">
-                            <a href="#">
-                                <i class="feather icon-clipboard"></i>
-                                <span class="menu-item">Komisi Sales</span>
-                            </a>
-                        </li>
-                        <li class="#">
-                            <a href="#">
-                                <i class="feather icon-clipboard"></i>
-                                <span class="menu-item">Komisi Driver & Helper</span>
-                            </a>
-                        </li>
+
+
                         <li class="#">
                             <a href="#">
                                 <i class="feather icon-clipboard"></i>
