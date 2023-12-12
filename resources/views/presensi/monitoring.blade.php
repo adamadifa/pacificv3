@@ -187,7 +187,9 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-
+                                            @php
+                                                $jmlsid = 0;
+                                            @endphp
                                             @foreach ($karyawan as $d)
                                                 @php
                                                     $kode_dept = $d->kode_dept;
@@ -546,18 +548,6 @@
                                                                 if (!empty($cekwfh)) {
                                                                     $ceksid = 2;
                                                                     $grandtotaljam = $grandtotaljam / 2;
-                                                                }
-
-                                                                if ($jmlsid > 5 && $d->nik == '21.10.460' && $bulan == 9 && ($tahun = 2023)) {
-                                                                    if ($namahari != 'Minggu') {
-                                                                        if ($namahari == 'Sabtu') {
-                                                                            $grandtotaljam = $grandtotaljam - 1.25;
-                                                                        } else {
-                                                                            $grandtotaljam = $grandtotaljam - 1.75;
-                                                                        }
-                                                                    }
-
-                                                                    $ceksid = 3;
                                                                 }
                                                             } else {
                                                                 $grandtotaljam = 0;
