@@ -286,18 +286,20 @@ class HariliburController extends Controller
     {
         $liburkaryawan = DB::table('harilibur_karyawan')
             ->select(
-                'kode_libur',
+                'harilibur_karyawan.kode_libur',
                 'harilibur_karyawan.nik',
                 'nama_karyawan',
-                'kode_dept',
+                'master_karyawan.kode_dept',
                 'nama_jabatan',
                 'nama_group',
-                'grup'
+                'grup',
+                'hrd'
             )
+            ->join('harilibur', 'harilibur_karyawan.kode_libur', '=', 'harilibur.kode_libur')
             ->join('master_karyawan', 'harilibur_karyawan.nik', '=', 'master_karyawan.nik')
             ->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
             ->join('hrd_group', 'master_karyawan.grup', '=', 'hrd_group.id')
-            ->where('kode_libur', $kode_libur)
+            ->where('harilibur_karyawan.kode_libur', $kode_libur)
             ->orderByRaw('grup,nama_karyawan')
             ->get();
 
