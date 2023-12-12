@@ -340,9 +340,9 @@ class KaryawanController extends Controller
         $bulanini = date("m");
         $tahunini = date("Y");
         $bulandepan = date("m") + 1 > 12 ? (date("m") + 1) - 12 : date("m") + 1;
-        $tahun2 = $bulandepan > 12 ? $tahunini + 1 : $tahunini;
+        $tahun2 = date("m") + 1  > 12 ? $tahunini + 1 : $tahunini;
         $duabulan = date("m") + 2 > 12 ? (date("m") + 2) - 12 : date("m") + 2;
-        $tahun3 = $duabulan > 12 ? $tahunini + 1 : $tahunini;
+        $tahun3 = date("m") + 2 > 12 ? $tahunini + 1 : $tahunini;
         $qkontrak_lewat = Kontrak::query();
         $qkontrak_lewat->selectRaw('hrd_kontrak.nik, nama_karyawan, IFNULL(jb.nama_jabatan,jb2.nama_jabatan) as nama_jabatan, IFNULL(hrd_kontrak.kode_dept,master_karyawan.kode_dept) as kode_dept, sampai, IFNULL(hrd_kontrak.id_perusahaan,master_karyawan.id_perusahaan) as id_perusahaan, IFNULL(hrd_kontrak.id_kantor,master_karyawan.id_kantor) as id_kantor');
         $qkontrak_lewat->join('master_karyawan', 'hrd_kontrak.nik', '=', 'master_karyawan.nik');
