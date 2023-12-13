@@ -1968,6 +1968,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/worksheetom/oman', [OmancabangController::class, 'index']);
     Route::get('/worksheetom/komisisalesman', [TargetkomisiController::class, 'laporankomisi']);
     Route::get('/worksheetom/komisidriverhelper', [TargetkomisiController::class, 'laporankomisidriverhelper']);
+    Route::get('/worksheetom/costratio', [LaporanaccountingController::class, 'costratio']);
 });
 
 

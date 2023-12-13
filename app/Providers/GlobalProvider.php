@@ -859,9 +859,15 @@ class GlobalProvider extends ServiceProvider
             $klaim_proses = ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'manager accounting', 'rom', 'admin pajak 2', 'admin penjualan kasir dan kas kecil'];
 
             //Mutasi Bank
-            $mutasibank_view = ['admin', 'kepala admin', 'admin kas kecil', 'audit', 'manager audit', 'admin kas', 'manager accounting', 'rom', 'admin kas dan penjualan', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil', 'admin pajak 2', 'admin penjualan kasir dan kas kecil'];
+            $mutasibank_view = [
+                'admin', 'kepala admin', 'admin kas kecil', 'audit', 'manager audit', 'admin kas', 'manager accounting', 'rom', 'admin kas dan penjualan', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil', 'admin pajak 2',
+                'admin penjualan kasir dan kas kecil'
+            ];
 
-            $ajuantransferdana_view = ['admin', 'kepala admin', 'staff keuangan 3', 'manager accounting', 'rom', 'kasir', 'admin kas dan penjualan', 'admin penjualan dan kas kecil'];
+            $ajuantransferdana_view = [
+                'admin', 'kepala admin', 'staff keuangan 3', 'manager accounting', 'rom', 'kasir',
+                'admin kas dan penjualan', 'admin penjualan dan kas kecil', 'admin penjualan kasir dan kas kecil', 'admin penjualan dan kasir'
+            ];
             $ajuantransferdana_crud = ['admin', 'staff keuangan 3', 'rom'];
             $ajuantransferdana_proses = ['admin', 'kepala admin', 'kasir', 'admin kas dan penjualan', 'admin penjualan dan kas kecil'];
             $ajuantransferdana_validasi = ['admin', 'manager accounting'];

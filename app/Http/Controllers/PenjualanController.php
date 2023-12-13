@@ -7911,6 +7911,7 @@ class PenjualanController extends Controller
         $update =  DB::table('detailpenjualan_edit')
             ->where('kode_barang', $kode_barang)
             ->where('no_fak_penj', $no_fak_penj)
+            ->where('promo', $promo)
             ->update($data);
 
         if ($update) {

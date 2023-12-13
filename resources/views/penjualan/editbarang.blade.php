@@ -1,80 +1,94 @@
 @php
-$isipcsdus = $barang->isipcsdus;
-$isipack = $barang->isipack;
-$isipcs = $barang->isipcs;
-$jumlah = $barang->jumlah;
-$jumlah_dus = floor($jumlah / $isipcsdus);
-if ($jumlah != 0) {
-$sisadus = $jumlah % $isipcsdus;
-} else {
-$sisadus = 0;
-}
-if ($isipack == 0) {
-$jumlah_pack = 0;
-$sisapack = $sisadus;
-} else {
-$jumlah_pack = floor($sisadus / $isipcs);
-$sisapack = $sisadus % $isipcs;
-}
+    $isipcsdus = $barang->isipcsdus;
+    $isipack = $barang->isipack;
+    $isipcs = $barang->isipcs;
+    $jumlah = $barang->jumlah;
+    $jumlah_dus = floor($jumlah / $isipcsdus);
+    if ($jumlah != 0) {
+        $sisadus = $jumlah % $isipcsdus;
+    } else {
+        $sisadus = 0;
+    }
+    if ($isipack == 0) {
+        $jumlah_pack = 0;
+        $sisapack = $sisadus;
+    } else {
+        $jumlah_pack = floor($sisadus / $isipcs);
+        $sisapack = $sisadus % $isipcs;
+    }
 
-$jumlah_pcs = $sisapack;
+    $jumlah_pcs = $sisapack;
 @endphp
 <form action="#" id="frmeditbarangtemp">
-    <input type="hidden" id="harga_dus_old" value="{{ rupiah($barang->promo == 1 ? $barang->harga_dus_old : $barang->harga_dus) }}">
-    <input type="hidden" id="harga_pack_old" value="{{ rupiah($barang->promo == 1 ? $barang->harga_pack_old :  $barang->harga_pack) }}">
-    <input type="hidden" id="harga_pcs_old" value="{{ rupiah( $barang->promo == 1 ? $barang->harga_pcs_old : $barang->harga_pcs) }}">
+    <input type="hidden" id="harga_dus_old"
+        value="{{ rupiah($barang->promo == 1 ? $barang->harga_dus_old : $barang->harga_dus) }}">
+    <input type="hidden" id="harga_pack_old"
+        value="{{ rupiah($barang->promo == 1 ? $barang->harga_pack_old : $barang->harga_pack) }}">
+    <input type="hidden" id="harga_pcs_old"
+        value="{{ rupiah($barang->promo == 1 ? $barang->harga_pcs_old : $barang->harga_pcs) }}">
     <div class="row">
         <div class="col-12">
-            <x-inputtext label="Kode Barang" field="kode_barang" value="{{ $barang->kode_barang }}" icon="feather icon-credit-card" readonly />
+            <x-inputtext label="Kode Barang" field="kode_barang" value="{{ $barang->kode_barang }}"
+                icon="feather icon-credit-card" readonly />
             <input type="hidden" id="isipcsdus" value="{{ $isipcsdus }}">
             <input type="hidden" id="isipcs" value="{{ $isipcs }}">
         </div>
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext label="Nama Barang" field="nama_barang" value="{{ $barang->nama_barang }}" icon="feather icon-file" readonly />
+            <x-inputtext label="Nama Barang" field="nama_barang" value="{{ $barang->nama_barang }}"
+                icon="feather icon-file" readonly />
         </div>
     </div>
     <div class="row">
         <div class="col-4">
-            <x-inputtext label="Dus" field="jml_dus" value="{{ rupiah($jumlah_dus) }}" icon="feather icon-file" right />
+            <x-inputtext label="Dus" field="jml_dus" value="{{ rupiah($jumlah_dus) }}" icon="feather icon-file"
+                right />
         </div>
         <div class="col-8">
-            <x-inputtext label="Dus" field="harga_dus" value="{{ rupiah($barang->harga_dus) }}" icon="feather icon-tag" right />
+            <x-inputtext label="Dus" field="harga_dus" value="{{ rupiah($barang->harga_dus) }}"
+                icon="feather icon-tag" right />
         </div>
     </div>
     @if ($barang->harga_pack != 0)
-    <div class="row">
-        <div class="col-4">
-            <x-inputtext label="Pack" field="jml_pack" value="{{ rupiah($jumlah_pack) }}" icon="feather icon-file" right />
+        <div class="row">
+            <div class="col-4">
+                <x-inputtext label="Pack" field="jml_pack" value="{{ rupiah($jumlah_pack) }}" icon="feather icon-file"
+                    right />
+            </div>
+            <div class="col-8">
+                <x-inputtext label="Harga / Pack" field="harga_pack" value="{{ rupiah($barang->harga_pack) }}"
+                    icon="feather icon-tag" right />
+            </div>
         </div>
-        <div class="col-8">
-            <x-inputtext label="Harga / Pack" field="harga_pack" value="{{ rupiah($barang->harga_pack) }}" icon="feather icon-tag" right />
-        </div>
-    </div>
     @else
-    <div class="row">
-        <div class="col-4">
-            <x-inputtext label="Pack" field="jml_pack" value="{{ rupiah($jumlah_pack) }}" icon="feather icon-file" right readonly />
+        <div class="row">
+            <div class="col-4">
+                <x-inputtext label="Pack" field="jml_pack" value="{{ rupiah($jumlah_pack) }}"
+                    icon="feather icon-file" right readonly />
+            </div>
+            <div class="col-8">
+                <x-inputtext label="Harga / Pack" field="harga_pack" value="{{ rupiah($barang->harga_pack) }}"
+                    icon="feather icon-tag" right readonly />
+            </div>
         </div>
-        <div class="col-8">
-            <x-inputtext label="Harga / Pack" field="harga_pack" value="{{ rupiah($barang->harga_pack) }}" icon="feather icon-tag" right readonly />
-        </div>
-    </div>
     @endif
 
     <div class="row">
         <div class="col-4">
-            <x-inputtext label="Pcs" field="jml_pcs" value="{{ rupiah($jumlah_pcs) }}" icon="feather icon-file" right />
+            <x-inputtext label="Pcs" field="jml_pcs" value="{{ rupiah($jumlah_pcs) }}" icon="feather icon-file"
+                right />
         </div>
         <div class="col-8">
-            <x-inputtext label="Harga / Pcs" field="harga_pcs" value="{{ rupiah($barang->harga_pcs) }}" icon="feather icon-tag" right />
+            <x-inputtext label="Harga / Pcs" field="harga_pcs" value="{{ rupiah($barang->harga_pcs) }}"
+                icon="feather icon-tag" right />
         </div>
     </div>
     <div class="row mb-1">
         <div class="col-12">
             <div class="vs-checkbox-con vs-checkbox-primary">
-                <input type="checkbox" class="promo" {{ $barang->promo == 1 ? 'checked' : '' }} id="promo" name="promo" value="1">
+                <input type="checkbox" class="promo" {{ $barang->promo == 1 ? 'checked' : '' }} id="promo"
+                    name="promo" value="1">
                 <span class="vs-checkbox">
                     <span class="vs-checkbox--check">
                         <i class="vs-icon feather icon-check"></i>
@@ -86,7 +100,8 @@ $jumlah_pcs = $sisapack;
     </div>
     <div class="row">
         <div class="col-12">
-            <button class="btn btn-primary btn-block" id="updatebarangtemp"><i class="feather icon-send mr-1"></i> Simpan</button>
+            <button class="btn btn-primary btn-block" id="updatebarangtemp"><i class="feather icon-send mr-1"></i>
+                Simpan</button>
         </div>
     </div>
 
@@ -96,14 +111,14 @@ $jumlah_pcs = $sisapack;
         function showtemp() {
             var no_fak_penj = $("#no_fak_penj").val();
             $.ajax({
-                type: 'POST'
-                , url: '/penjualan/showbarangv2'
-                , cache: false
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , no_fak_penj: no_fak_penj
-                }
-                , success: function(respond) {
+                type: 'POST',
+                url: '/penjualan/showbarangv2',
+                cache: false,
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_fak_penj: no_fak_penj
+                },
+                success: function(respond) {
                     $("#loadbarangtemp").html(respond);
                     hitungdiskon();
                 }
@@ -141,10 +156,10 @@ $jumlah_pcs = $sisapack;
 
             if (jumlah == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Qty Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Qty Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#jml_dus").focus();
                 });
@@ -152,27 +167,27 @@ $jumlah_pcs = $sisapack;
             } else {
                 //Simpan Barang Temp
                 $.ajax({
-                    type: 'POST'
-                    , url: '/penjualan/updatebarang'
-                    , data: {
-                        _token: "{{ csrf_token() }}"
-                        , no_fak_penj: no_fak_penj
-                        , kode_barang: kode_barang
-                        , hargadus: hargadus
-                        , hargapack: hargapack
-                        , hargapcs: hargapcs
-                        , jumlah: jumlah
-                        , subtotal: subtotal
-                        , promo: promo
-                    }
-                    , cache: false
-                    , success: function(respond) {
+                    type: 'POST',
+                    url: '/penjualan/updatebarang',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        no_fak_penj: no_fak_penj,
+                        kode_barang: kode_barang,
+                        hargadus: hargadus,
+                        hargapack: hargapack,
+                        hargapcs: hargapcs,
+                        jumlah: jumlah,
+                        subtotal: subtotal,
+                        promo: promo
+                    },
+                    cache: false,
+                    success: function(respond) {
                         if (respond == 0) {
                             swal({
-                                title: 'Success'
-                                , text: 'Item Berhasil Diupdate !'
-                                , icon: 'success'
-                                , showConfirmButton: false
+                                title: 'Success',
+                                text: 'Item Berhasil Diupdate !',
+                                icon: 'success',
+                                showConfirmButton: false
                             }).then(function() {
                                 $("#kode_barang").val("");
                                 $("#nama_barang").val("");
@@ -194,10 +209,10 @@ $jumlah_pcs = $sisapack;
                             });
                         } else {
                             swal({
-                                title: 'Oops'
-                                , text: respond
-                                , icon: 'warning'
-                                , showConfirmButton: false
+                                title: 'Oops',
+                                text: respond,
+                                icon: 'warning',
+                                showConfirmButton: false
                             }).then(function() {
 
                                 $("#jml_dus").focus();
@@ -217,10 +232,10 @@ $jumlah_pcs = $sisapack;
             if ($("#frmeditbarangtemp").find("#promo").is(":checked")) {
                 if (kode_barang == "") {
                     swal({
-                        title: 'Oops'
-                        , text: 'Barang Harus Dipilih !'
-                        , icon: 'warning'
-                        , showConfirmButton: false
+                        title: 'Oops',
+                        text: 'Barang Harus Dipilih !',
+                        icon: 'warning',
+                        showConfirmButton: false
                     }).then(function() {
                         $("#nama_barang").focus();
                     });
@@ -245,7 +260,8 @@ $jumlah_pcs = $sisapack;
             }
         });
 
-        $("#frmeditbarangtemp").find("#harga_dus, #harga_pack, #harga_pcs, #jml_dus, #jml_pack, #jml_pcs").maskMoney();
+        $("#frmeditbarangtemp").find("#harga_dus, #harga_pack, #harga_pcs, #jml_dus, #jml_pack, #jml_pcs")
+            .maskMoney();
 
         //Hitung Diskon
 
@@ -281,15 +297,15 @@ $jumlah_pcs = $sisapack;
             $("#btnsimpan").prop('disabled', true);
             $("#btnsimpan").html('<i class="fa fa-spinner mr-1"></i><i>Loading...</i>');
             $.ajax({
-                type: 'POST'
-                , url: '/hitungdiskonpenjualanv2'
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , no_fak_penj: no_fak_penj
-                    , jenistransaksi: jenistransaksi
-                }
-                , cache: false
-                , success: function(respond) {
+                type: 'POST',
+                url: '/hitungdiskonpenjualanv2',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_fak_penj: no_fak_penj,
+                    jenistransaksi: jenistransaksi
+                },
+                cache: false,
+                success: function(respond) {
 
                     $("#btnsimpan").prop('disabled', false);
                     $("#btnsimpan").html('<i class="feather icon-send mr-1"></i> Simpan');
@@ -426,5 +442,4 @@ $jumlah_pcs = $sisapack;
             $("#subtotal").val(totalwithppn);
         }
     });
-
 </script>

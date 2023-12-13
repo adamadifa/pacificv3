@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cost Ratio {{ date("d-m-y") }}</title>
+    <title>Cost Ratio {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -80,772 +81,304 @@
             background: #eee;
             visibility: visible;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
         COST RATIO<br>
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }} <br>
     </b>
     <br>
-    <table class="datatable3" style="width:90%" border="1">
-        <thead>
-            <tr>
-                <th style="background-color:rgb(0, 52, 93); color:white">No</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">Kode Akun</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">Nama Akun</th>
-                <th style="background-color: rgb(0, 77, 0); color:white">TASIKMALAYA</th>
-                <th style="background-color: rgb(0, 77, 0); color:white">BANDUNG</th>
-                <th style="background-color: rgb(0, 77, 0); color:white">SUKABUMI</th>
-                <th style="background-color: rgb(0, 77, 0); color:white">TEGAL</th>
-                <th style="background-color: rgb(0, 77, 0); color:white">BOGOR</th>
-                <th style="background-color: rgb(0, 77, 0); color:white">PURWOKERTO</th>
-                <th style="background-color: rgb(0, 77, 0); color:white">PCF PST</th>
-                <th style="background-color: rgb(0, 77, 0); color:white">GARUT</th>
-                <th style="background-color: rgb(0, 77, 0); color:white">SURABAYA</th>
-                <th style="background-color: rgb(0, 77, 0); color:white">SEMARANG</th>
-                <th style="background-color: rgb(0, 77, 0); color:white">YOGYAKARTA</th>
-                <th style="background-color: rgb(0, 77, 0); color:white">PURWAKARTA</th>
-                <th style="background-color: rgb(0, 77, 0); color:white">BANTEN</th>
-                <th style="background-color: rgb(0, 77, 0); color:white">BEKASI</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">Jumlah</th>
-            </tr>
-        </thead>
-        <tbody>
+</body>
+<table class="datatable3" style="width:100%" border="1">
+    <thead>
+        <tr>
+            <th style="background-color:rgb(0, 52, 93); color:white">No</th>
+            <th style="background-color:rgb(0, 52, 93); color:white">Kode Akun</th>
+            <th style="background-color:rgb(0, 52, 93); color:white">Nama Akun</th>
+            @foreach ($cbg as $c)
+                <th style="background-color: rgb(0, 77, 0); color:white">{{ strtoupper($c->nama_cabang) }}</th>
+            @endforeach
+            <th style="background-color:rgb(0, 52, 93); color:white">Jumlah</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach ($cbg as $e)
             @php
-            $totaltsm =0;
-            $totalbdg = 0;
-            $totalskb = 0;
-            $totaltgl = 0;
-            $totalbgr = 0;
-            $totalpwt = 0;
-            $totalpst =0;
-            $totalgrt = 0;
-            $totalsby = 0;
-            $totalsmr = 0;
-            $totalklt = 0;
-            $totalpwk = 0;
-            $totalbtn = 0;
-            $totalbki = 0;
-            $grandtotal = 0;
+                $fieldtotal_cabang = strtolower($e->kode_cabang);
+                ${"total$fieldtotal_cabang"} = 0;
             @endphp
-            @foreach ($biaya as $d)
+        @endforeach
+        @php
+            $grandtotal = 0;
+        @endphp
+        @foreach ($biaya as $d)
+            @foreach ($cbg as $g)
+                @php
+                    $fieldtotal_cabang = strtolower($g->kode_cabang);
+                    ${"total$fieldtotal_cabang"} += $d->$fieldtotal_cabang;
+                @endphp
+            @endforeach
             @php
-            $totaltsm += $d->tsm;
-            $totalbdg += $d->bdg;
-            $totalskb += $d->skb;
-            $totaltgl += $d->tgl;
-            $totalbgr += $d->bgr;
-            $totalpwt += $d->pwt;
-            $totalpst += $d->pst;
-            $totalgrt += $d->grt;
-            $totalsby += $d->sby;
-            $totalsmr += $d->smr;
-            $totalklt += $d->klt;
-            $totalpwk += $d->pwk;
-            $totalbtn += $d->btn;
-            $totalbki += $d->bki;
-            $grandtotal += $d->total;
+                $grandtotal += $d->total;
             @endphp
             <tr>
                 <td>{{ $loop->iteration }}</td>
-                <td style="text-align: center">'{{$d->kode_akun }}</td>
+                <td style="text-align: center">'{{ $d->kode_akun }}</td>
                 <td>
                     @php
-                    if($d->kode_akun == 1){
-                    $nama_akun = 'Sewa Gedung';
-                    }elseif($d->kode_akun==2){
-                    $nama_akun = 'Ratio BS';
-                    }else{
-                    $nama_akun = $d->nama_akun;
-                    }
+                        if ($d->kode_akun == 1) {
+                            $nama_akun = 'Sewa Gedung';
+                        } elseif ($d->kode_akun == 2) {
+                            $nama_akun = 'Ratio BS';
+                        } else {
+                            $nama_akun = $d->nama_akun;
+                        }
 
-                    echo $nama_akun;
+                        echo $nama_akun;
                     @endphp
                 </td>
-                <td style="text-align:right">{{ !empty($d->tsm) ?  rupiah($d->tsm) : '' }}</td>
-                <td style="text-align:right">{{ !empty($d->bdg) ?  rupiah($d->bdg) : '' }}</td>
-                <td style="text-align:right">{{ !empty($d->skb) ?  rupiah($d->skb) : '' }}</td>
-                <td style="text-align:right">{{ !empty($d->tgl) ?  rupiah($d->tgl) : '' }}</td>
-                <td style="text-align:right">{{ !empty($d->bgr) ?  rupiah($d->bgr) : '' }}</td>
-                <td style="text-align:right">{{ !empty($d->pwt) ?  rupiah($d->pwt) : '' }}</td>
-                <td style="text-align:right">{{ !empty($d->pst) ?  rupiah($d->pst) : '' }}</td>
-                <td style="text-align:right">{{ !empty($d->grt) ?  rupiah($d->grt) : '' }}</td>
-                <td style="text-align:right">{{ !empty($d->sby) ?  rupiah($d->sby) : '' }}</td>
-                <td style="text-align:right">{{ !empty($d->smr) ?  rupiah($d->smr) : '' }}</td>
-                <td style="text-align:right">{{ !empty($d->klt) ?  rupiah($d->klt) : '' }}</td>
-                <td style="text-align:right">{{ !empty($d->pwk) ?  rupiah($d->pwk) : '' }}</td>
-                <td style="text-align:right">{{ !empty($d->btn) ?  rupiah($d->btn) : '' }}</td>
-                <td style="text-align:right">{{ !empty($d->bki) ?  rupiah($d->bki) : '' }}</td>
-                <td style="text-align:right">{{ !empty($d->total) ?  rupiah($d->total) : '' }}</td>
+                @foreach ($cbg as $b)
+                    @php
+                        $field_cabang = strtolower($b->kode_cabang);
+                    @endphp
+                    <td style="text-align:right">{{ !empty($d->$field_cabang) ? rupiah($d->$field_cabang) : '' }}</td>
+                @endforeach
+                <td style="text-align:right">{{ !empty($d->total) ? rupiah($d->total) : '' }}</td>
             </tr>
+        @endforeach
+        <tr>
+            <td></td>
+            <td style="text-align: center"></td>
+            <td>
+                Logistik
+            </td>
+            @foreach ($cbg as $c)
+                @php
+                    $field_cabang = strtolower($c->kode_cabang);
+                @endphp
+                <td style="text-align:right">
+                    {{ !empty($logistik->$field_cabang) ? rupiah($logistik->$field_cabang) : '' }}
+                </td>
             @endforeach
-            {{-- <tr>
-                <td></td>
-                <td style="text-align: center"></td>
-                <td>
-                    Potongan Penjualan
+            <td style="text-align:right">
+                {{ !empty($logistik->total) ? rupiah($logistik->total) : '' }}
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="text-align: center"></td>
+            <td>
+                Penggunaan Bahan Kemasan
+            </td>
+            @foreach ($cbg as $c)
+                @php
+                    $field_cabang = strtolower($c->kode_cabang);
+                @endphp
+                <td style="text-align:right">
+                    {{ !empty($bahan->$field_cabang) ? rupiah($bahan->$field_cabang) : '' }}
                 </td>
-                <td style="text-align:right">{{ !empty($potongan->tsm) ?  rupiah($potongan->tsm) : '' }}</td>
-            <td style="text-align:right">{{ !empty($potongan->bdg) ?  rupiah($potongan->bdg) : '' }}</td>
-            <td style="text-align:right">{{ !empty($potongan->skb) ?  rupiah($potongan->skb) : '' }}</td>
-            <td style="text-align:right">{{ !empty($potongan->tgl) ?  rupiah($potongan->tgl) : '' }}</td>
-            <td style="text-align:right">{{ !empty($potongan->bgr) ?  rupiah($potongan->bgr) : '' }}</td>
-            <td style="text-align:right">{{ !empty($potongan->pwt) ?  rupiah($potongan->pwt) : '' }}</td>
-            <td style="text-align:right">{{ !empty($potongan->pst) ?  rupiah($potongan->pst) : '' }}</td>
-            <td style="text-align:right">{{ !empty($potongan->grt) ?  rupiah($potongan->grt) : '' }}</td>
-            <td style="text-align:right">{{ !empty($potongan->sby) ?  rupiah($potongan->sby) : '' }}</td>
-            <td style="text-align:right">{{ !empty($potongan->smr) ?  rupiah($potongan->smr) : '' }}</td>
-            <td style="text-align:right">{{ !empty($potongan->klt) ?  rupiah($potongan->klt) : '' }}</td>
-            <td style="text-align:right">{{ !empty($potongan->pwk) ?  rupiah($potongan->pwk) : '' }}</td>
-            <td style="text-align:right">{{ !empty($potongan->btn) ?  rupiah($potongan->btn) : '' }}</td>
-            <td style="text-align:right">{{ !empty($potongan->total) ?  rupiah($potongan->total) : '' }}</td>
-            </tr> --}}
-            {{-- <tr>
-                <td></td>
-                <td style="text-align: center"></td>
-                <td>
-                    Logistik
-                </td>
-                <td style="text-align:right"><a href="/detailcrlogistik/{{ $dari }}/{{ $sampai }}/tsm">{{ !empty($logistik->tsm) ?  rupiah($logistik->tsm) : '' }}</a></td>
-            <td style="text-align:right"><a href="/detailcrlogistik/{{ $dari }}/{{ $sampai }}/bdg"> {{ !empty($logistik->bdg) ?  rupiah($logistik->bdg) : '' }}</a></td>
-            <td style="text-align:right"><a href="/detailcrlogistik/{{ $dari }}/{{ $sampai }}/skb"> {{ !empty($logistik->skb) ?  rupiah($logistik->skb) : '' }}</a></td>
-            <td style="text-align:right"><a href="/detailcrlogistik/{{ $dari }}/{{ $sampai }}/tgl"> {{ !empty($logistik->tgl) ?  rupiah($logistik->tgl) : '' }}</a></td>
-            <td style="text-align:right"><a href="/detailcrlogistik/{{ $dari }}/{{ $sampai }}/bgr"> {{ !empty($logistik->bgr) ?  rupiah($logistik->bgr) : '' }}</a></td>
-            <td style="text-align:right"><a href="/detailcrlogistik/{{ $dari }}/{{ $sampai }}/pwt"> {{ !empty($logistik->pwt) ?  rupiah($logistik->pwt) : '' }}</a></td>
-            <td style="text-align:right"><a href="/detailcrlogistik/{{ $dari }}/{{ $sampai }}/pst"> {{ !empty($logistik->pst) ?  rupiah($logistik->pst) : '' }}</a></td>
-            <td style="text-align:right"><a href="/detailcrlogistik/{{ $dari }}/{{ $sampai }}/grt"> {{ !empty($logistik->grt) ?  rupiah($logistik->grt) : '' }}</a></td>
-            <td style="text-align:right"><a href="/detailcrlogistik/{{ $dari }}/{{ $sampai }}/sby"> {{ !empty($logistik->sby) ?  rupiah($logistik->sby) : '' }}</a></td>
-            <td style="text-align:right"><a href="/detailcrlogistik/{{ $dari }}/{{ $sampai }}/smr"> {{ !empty($logistik->smr) ?  rupiah($logistik->smr) : '' }}</a></td>
-            <td style="text-align:right"><a href="/detailcrlogistik/{{ $dari }}/{{ $sampai }}/klt"> {{ !empty($logistik->klt) ?  rupiah($logistik->klt) : '' }}</a></td>
-            <td style="text-align:right"><a href="/detailcrlogistik/{{ $dari }}/{{ $sampai }}/pwk"> {{ !empty($logistik->pwk) ?  rupiah($logistik->pwk) : '' }}</a></td>
-            <td style="text-align:right">{{ !empty($logistik->total) ?  rupiah($logistik->total) : '' }}</td>
-            </tr> --}}
-            <tr>
-                <td></td>
-                <td style="text-align: center"></td>
-                <td>
-                    Logistik
-                </td>
-                <td style="text-align:right">{{ !empty($logistik->tsm) ?  rupiah($logistik->tsm) : '' }}</td>
-                <td style="text-align:right"> {{ !empty($logistik->bdg) ?  rupiah($logistik->bdg) : '' }}</td>
-                <td style="text-align:right"> {{ !empty($logistik->skb) ?  rupiah($logistik->skb) : '' }}</td>
-                <td style="text-align:right"> {{ !empty($logistik->tgl) ?  rupiah($logistik->tgl) : '' }}</td>
-                <td style="text-align:right"> {{ !empty($logistik->bgr) ?  rupiah($logistik->bgr) : '' }}</td>
-                <td style="text-align:right"> {{ !empty($logistik->pwt) ?  rupiah($logistik->pwt) : '' }}</td>
-                <td style="text-align:right"> {{ !empty($logistik->pst) ?  rupiah($logistik->pst) : '' }}</td>
-                <td style="text-align:right"> {{ !empty($logistik->grt) ?  rupiah($logistik->grt) : '' }}</td>
-                <td style="text-align:right"> {{ !empty($logistik->sby) ?  rupiah($logistik->sby) : '' }}</td>
-                <td style="text-align:right"> {{ !empty($logistik->smr) ?  rupiah($logistik->smr) : '' }}</td>
-                <td style="text-align:right"> {{ !empty($logistik->klt) ?  rupiah($logistik->klt) : '' }}</td>
-                <td style="text-align:right"> {{ !empty($logistik->pwk) ?  rupiah($logistik->pwk) : '' }}</td>
-                <td style="text-align:right"> {{ !empty($logistik->btn) ?  rupiah($logistik->btn) : '' }}</td>
-                <td style="text-align:right"> {{ !empty($logistik->bki) ?  rupiah($logistik->bki) : '' }}</td>
-                <td style="text-align:right">{{ !empty($logistik->total) ?  rupiah($logistik->total) : '' }}</td>
-            </tr>
-            {{-- <tr>
-                <td></td>
-                <td style="text-align: center"></td>
-                <td>
-                    Penggunaan Bahan Kemasan
-                </td>
-                <td style="text-align:right"><a href="/detailcrbahan/{{ $dari }}/{{ $sampai }}/tsm">{{ !empty($bahan->tsm) ?  rupiah($bahan->tsm) : '' }}</a></td>
-            <td style="text-align:right"><a href="/detailcrbahan/{{ $dari }}/{{ $sampai }}/bdg">{{ !empty($bahan->bdg) ?  rupiah($bahan->bdg) : '' }}</a></td>
-            <td style="text-align:right"><a href="/detailcrbahan/{{ $dari }}/{{ $sampai }}/skb">{{ !empty($bahan->skb) ?  rupiah($bahan->skb) : '' }}</a></td>
-            <td style="text-align:right"><a href="/detailcrbahan/{{ $dari }}/{{ $sampai }}/tgl">{{ !empty($bahan->tgl) ?  rupiah($bahan->tgl) : '' }}</a></td>
-            <td style="text-align:right"><a href="/detailcrbahan/{{ $dari }}/{{ $sampai }}/bgr">{{ !empty($bahan->bgr) ?  rupiah($bahan->bgr) : '' }}</a></td>
-            <td style="text-align:right"><a href="/detailcrbahan/{{ $dari }}/{{ $sampai }}/pwt">{{ !empty($bahan->pwt) ?  rupiah($bahan->pwt) : '' }}</a></td>
-            <td style="text-align:right"><a href="/detailcrbahan/{{ $dari }}/{{ $sampai }}/pst">{{ !empty($bahan->pst) ?  rupiah($bahan->pst) : '' }}</a></td>
-            <td style="text-align:right"><a href="/detailcrbahan/{{ $dari }}/{{ $sampai }}/grt">{{ !empty($bahan->grt) ?  rupiah($bahan->grt) : '' }}</a></td>
-            <td style="text-align:right"><a href="/detailcrbahan/{{ $dari }}/{{ $sampai }}/sby">{{ !empty($bahan->sby) ?  rupiah($bahan->sby) : '' }}</a></td>
-            <td style="text-align:right"><a href="/detailcrbahan/{{ $dari }}/{{ $sampai }}/smr">{{ !empty($bahan->smr) ?  rupiah($bahan->smr) : '' }}</a></td>
-            <td style="text-align:right"><a href="/detailcrbahan/{{ $dari }}/{{ $sampai }}/klt">{{ !empty($bahan->klt) ?  rupiah($bahan->klt) : '' }}</a></td>
-            <td style="text-align:right"><a href="/detailcrbahan/{{ $dari }}/{{ $sampai }}/pwk">{{ !empty($bahan->pwk) ?  rupiah($bahan->pwk) : '' }}</a></td>
-            <td style="text-align:right">{{ !empty($bahan->total) ?  rupiah($bahan->total) : '' }}</td>
-            </tr> --}}
-
-            <tr>
-                <td></td>
-                <td style="text-align: center"></td>
-                <td>
-                    Penggunaan Bahan Kemasan
-                </td>
-                <td style="text-align:right">{{ !empty($bahan->tsm) ?  rupiah($bahan->tsm) : '' }}</td>
-                <td style="text-align:right">{{ !empty($bahan->bdg) ?  rupiah($bahan->bdg) : '' }}</td>
-                <td style="text-align:right">{{ !empty($bahan->skb) ?  rupiah($bahan->skb) : '' }}</td>
-                <td style="text-align:right">{{ !empty($bahan->tgl) ?  rupiah($bahan->tgl) : '' }}</td>
-                <td style="text-align:right">{{ !empty($bahan->bgr) ?  rupiah($bahan->bgr) : '' }}</td>
-                <td style="text-align:right">{{ !empty($bahan->pwt) ?  rupiah($bahan->pwt) : '' }}</td>
-                <td style="text-align:right">{{ !empty($bahan->pst) ?  rupiah($bahan->pst) : '' }}</td>
-                <td style="text-align:right">{{ !empty($bahan->grt) ?  rupiah($bahan->grt) : '' }}</td>
-                <td style="text-align:right">{{ !empty($bahan->sby) ?  rupiah($bahan->sby) : '' }}</td>
-                <td style="text-align:right">{{ !empty($bahan->smr) ?  rupiah($bahan->smr) : '' }}</td>
-                <td style="text-align:right">{{ !empty($bahan->klt) ?  rupiah($bahan->klt) : '' }}</td>
-                <td style="text-align:right">{{ !empty($bahan->pwk) ?  rupiah($bahan->pwk) : '' }}</td>
-                <td style="text-align:right">{{ !empty($bahan->btn) ?  rupiah($bahan->btn) : '' }}</td>
-                <td style="text-align:right">{{ !empty($bahan->bki) ?  rupiah($bahan->bki) : '' }}</td>
-                <td style="text-align:right">{{ !empty($bahan->total) ?  rupiah($bahan->total) : '' }}</td>
-            </tr>
+            @endforeach
+            <td style="text-align:right">
+                {{ !empty($bahan->total) ? rupiah($bahan->total) : '' }}
+            </td>
+        </tr>
+        @foreach ($cbg as $f)
             @php
-            $totaltsm += ($logistik->tsm + $bahan->tsm);
-            $totalbdg += ($logistik->bdg + $bahan->bdg);
-            $totalskb += ($logistik->skb + $bahan->skb);
-            $totaltgl += ($logistik->tgl + $bahan->tgl);
-            $totalbgr += ($logistik->bgr + $bahan->bgr);
-            $totalpwt += ($logistik->pwt + $bahan->pwt);
-            $totalpst += ($logistik->pst + $bahan->pst);
-            $totalgrt += ($logistik->grt + $bahan->grt);
-            $totalsby += ($logistik->sby + $bahan->sby);
-            $totalsmr += ($logistik->smr + $bahan->smr);
-            $totalklt += ($logistik->klt + $bahan->klt);
-            $totalpwk += ($logistik->pwk + $bahan->pwk);
-            $totalbtn += ($logistik->btn + $bahan->btn);
-            $totalbki += ($logistik->bki + $bahan->bki);
-            $grandtotal += ($logistik->total + $bahan->total);
+                $kode_cbg = strtolower($f->kode_cabang);
+                ${"total$kode_cbg"} += $logistik->$kode_cbg + $bahan->$kode_cbg;
             @endphp
-        </tbody>
-        <tfoot>
-            <tr>
-                <th style="background-color:rgb(0, 52, 93); color:white" colspan="3">TOTAL</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totaltsm ) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalbdg ) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalskb ) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totaltgl ) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalbgr ) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalpwt ) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalpst ) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalgrt ) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalsby ) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalsmr ) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalklt ) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalpwk ) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalbtn ) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalbki ) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($grandtotal) }}</th>
-            </tr>
+        @endforeach
+        @php
+            $grandtotal += $logistik->total + $bahan->total;
+        @endphp
+    </tbody>
+    <tfoot>
+        <tr>
+            <th style="background-color:rgb(0, 52, 93); color:white" colspan="3">TOTAL</th>
+            @foreach ($cbg as $f)
+                @php
+                    $kode_cbg = strtolower($f->kode_cabang);
+                @endphp
+                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">
+                    {{ rupiah(${"total$kode_cbg"}) }}
+                </th>
+            @endforeach
+            <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">
+                {{ rupiah($grandtotal) }}
+            </th>
+        </tr>
+        <!-- Penjualan SWAN -->
+        @foreach ($cbg as $c)
             @php
-            $swan_tsm = $penjualan->netswanTSM - $retur->returswanTSM;
-            $swan_bdg = $penjualan->netswanBDG - $retur->returswanBDG;
-            $swan_skb = $penjualan->netswanSKB - $retur->returswanSKB;
-            $swan_tgl = $penjualan->netswanTGL - $retur->returswanTGL;
-            $swan_bgr = $penjualan->netswanBGR - $retur->returswanBGR;
-            $swan_pwt = $penjualan->netswanPWT - $retur->returswanPWT;
-            $swan_pst = $penjualan->netswanPST - $retur->returswanPST;
-            $swan_grt = $penjualan->netswanGRT - $retur->returswanGRT;
-            $swan_sby = $penjualan->netswanSBY - $retur->returswanSBY;
-            $swan_smr = $penjualan->netswanSMR - $retur->returswanSMR;
-            $swan_klt = $penjualan->netswanKLT - $retur->returswanKLT;
-            $swan_pwk = $penjualan->netswanPWK - $retur->returswanPWK;
-            $swan_btn = $penjualan->netswanBTN - $retur->returswanBTN;
-            $swan_bki = $penjualan->netswanBKI - $retur->returswanBKI;
+                $kode_cbg = strtolower($c->kode_cabang);
 
-            $aida_tsm = $penjualan->netaidaTSM - $retur->returaidaTSM;
-            $aida_bdg = $penjualan->netaidaBDG - $retur->returaidaBDG;
-            $aida_skb = $penjualan->netaidaSKB - $retur->returaidaSKB;
-            $aida_tgl = $penjualan->netaidaTGL - $retur->returaidaTGL;
-            $aida_bgr = $penjualan->netaidaBGR - $retur->returaidaBGR;
-            $aida_pwt = $penjualan->netaidaPWT - $retur->returaidaPWT;
-            $aida_pst = $penjualan->netaidaPST - $retur->returaidaPST;
-            $aida_grt = $penjualan->netaidaGRT - $retur->returaidaGRT;
-            $aida_sby = $penjualan->netaidaSBY - $retur->returaidaSBY;
-            $aida_smr = $penjualan->netaidaSMR - $retur->returaidaSMR;
-            $aida_klt = $penjualan->netaidaKLT - $retur->returaidaKLT;
-            $aida_pwk = $penjualan->netaidaPWK - $retur->returaidaPWK;
-            $aida_btn = $penjualan->netaidaBTN - $retur->returaidaBTN;
-            $aida_bki = $penjualan->netaidaBKI - $retur->returaidaBKI;
+                //SWAN
+                $swan_cbg = 'netswan' . $c->kode_cabang;
+                $returswan_cbg = 'returswan' . $c->kode_cabang;
+                ${"swan_$kode_cbg"} = $penjualan->$swan_cbg - $retur->$returswan_cbg;
+                ${"cr_swan_biaya_$kode_cbg"} = ${"swan_$kode_cbg"} != 0 ? ROUND((${"total$kode_cbg"} / ${"swan_$kode_cbg"}) * 100) : 0;
 
+                //AIDA
+                $aida_cbg = 'netaida' . $c->kode_cabang;
+                $returaida_cbg = 'returaida' . $c->kode_cabang;
+                ${"aida_$kode_cbg"} = $penjualan->$aida_cbg - $retur->$returaida_cbg;
+                ${"cr_aida_biaya_$kode_cbg"} = ${"aida_$kode_cbg"} != 0 ? ROUND((${"total$kode_cbg"} / ${"aida_$kode_cbg"}) * 100) : 0;
 
+                //PPN
+                $ppn_cbg = 'ppn_' . $kode_cbg;
+                ${"ppn_$kode_cbg"} = $ppn->$ppn_cbg;
 
-            $ppn_tsm = $ppn->tsm;
-            $ppn_bdg = $ppn->bdg;
-            $ppn_skb = $ppn->skb;
-            $ppn_tgl = $ppn->tgl;
-            $ppn_bgr = $ppn->bgr;
-            $ppn_pwt = $ppn->pwt;
-            $ppn_pst = $ppn->pst;
-            $ppn_grt = $ppn->grt;
-            $ppn_sby = $ppn->sby;
-            $ppn_smr = $ppn->smr;
-            $ppn_klt = $ppn->klt;
-            $ppn_pwk = $ppn->pwk;
-            $ppn_btn = $ppn->btn;
-            $ppn_bki = $ppn->bki;
+                //Penjualan
+                ${"penjualan_$kode_cbg"} = ${"swan_$kode_cbg"} + ${"aida_$kode_cbg"} + ${"ppn_$kode_cbg"};
+                ${"cr_penjualan_biaya_$kode_cbg"} = ${"penjualan_$kode_cbg"} != 0 ? ROUND((${"total$kode_cbg"} / ${"penjualan_$kode_cbg"}) * 100) : 0;
 
+                //Piutang
+                $piutang_cbg = 'piutang_' . strtoupper($kode_cbg);
+                ${'piutang_' . $kode_cbg} = $piutang->$piutang_cbg;
+                ${"cr_swan_piutang_$kode_cbg"} = ${"swan_$kode_cbg"} != 0 ? ROUND((${'piutang_' . $kode_cbg} / ${"swan_$kode_cbg"}) * 100) : 0;
 
-            $penjualan_tsm = $swan_tsm + $aida_tsm + $ppn_tsm;
-            $penjualan_bdg = $swan_bdg + $aida_bdg + $ppn_bdg;
-            $penjualan_skb = $swan_skb + $aida_skb + $ppn_skb;
-            $penjualan_tgl = $swan_tgl + $aida_tgl + $ppn_tgl;
-            $penjualan_bgr = $swan_bgr + $aida_bgr + $ppn_bgr;
-            $penjualan_pwt = $swan_pwt + $aida_pwt + $ppn_pwt;
-            $penjualan_pst = $swan_pst + $aida_pst + $ppn_pst;
-            $penjualan_grt = $swan_grt + $aida_grt + $ppn_grt;
-            $penjualan_sby = $swan_sby + $aida_sby + $ppn_sby;
-            $penjualan_smr = $swan_smr + $aida_smr + $ppn_smr;
-            $penjualan_klt = $swan_klt + $aida_klt + $ppn_klt;
-            $penjualan_pwk = $swan_pwk + $aida_pwk + $ppn_pwk;
-            $penjualan_btn = $swan_btn + $aida_btn + $ppn_btn;
-            $penjualan_bki = $swan_bki + $aida_bki + $ppn_bki;
-
+            @endphp
+        @endforeach
+        @php
+            //Swan
             $totalswan = $penjualan->totalswan - $retur->totalreturswan;
+            $cr_swan_biaya_total = $totalswan != 0 ? ROUND(($grandtotal / $totalswan) * 100) : 0;
+
+            //Aida
             $totalaida = $penjualan->totalaida - $retur->totalreturaida;
+            $cr_aida_biaya_total = $totalaida != 0 ? ROUND(($grandtotal / $totalaida) * 100) : 0;
+
             $totalppn = $ppn->total;
             $totalpenjualan = $totalswan + $totalaida + $totalppn;
+            $cr_penjualan_biaya_total = $totalpenjualan != 0 ? ROUND(($grandtotal / $totalpenjualan) * 100) : 0;
 
-            $cr_swan_biaya_tsm = $swan_tsm != 0 ? ROUND((($totaltsm)/$swan_tsm)*100) : 0;
-            $cr_swan_biaya_bdg = $swan_bdg != 0 ? ROUND((($totalbdg)/$swan_bdg)*100) : 0;
-            $cr_swan_biaya_skb = $swan_skb != 0 ? ROUND((($totalskb)/$swan_skb)*100) : 0;
-            $cr_swan_biaya_tgl = $swan_tgl != 0 ? ROUND((($totaltgl)/$swan_tgl)*100) : 0;
-            $cr_swan_biaya_bgr = $swan_bgr != 0 ? ROUND((($totalbgr)/$swan_bgr)*100) : 0;
-            $cr_swan_biaya_pwt = $swan_pwt != 0 ? ROUND((($totalpwt)/$swan_pwt)*100) : 0;
-            $cr_swan_biaya_pst = $swan_pst != 0 ? ROUND((($totalpst)/$swan_pst)*100) : 0;
-            $cr_swan_biaya_grt = $swan_grt != 0 ? ROUND((($totalgrt)/$swan_grt)*100) : 0;
-            $cr_swan_biaya_sby = $swan_sby != 0 ? ROUND((($totalsby)/$swan_sby)*100) : 0;
-            $cr_swan_biaya_smr = $swan_smr != 0 ? ROUND((($totalsmr)/$swan_smr)*100) : 0;
-            $cr_swan_biaya_klt = $swan_klt != 0 ? ROUND((($totalklt)/$swan_klt)*100) : 0;
-            $cr_swan_biaya_pwk = $swan_pwk != 0 ? ROUND((($totalpwk)/$swan_pwk)*100) : 0;
-            $cr_swan_biaya_btn = $swan_btn != 0 ? ROUND((($totalbtn)/$swan_btn)*100) : 0;
-            $cr_swan_biaya_bki = $swan_bki != 0 ? ROUND((($totalbtn)/$swan_bki)*100) : 0;
-            $cr_swan_biaya_total = $totalswan != 0 ? ROUND((($grandtotal)/$totalswan)*100) : 0;
-
-            $cr_aida_biaya_tsm = $aida_tsm != 0 ? ROUND((($totaltsm)/$aida_tsm)*100) : 0;
-            $cr_aida_biaya_bdg = $aida_bdg != 0 ? ROUND((($totalbdg)/$aida_bdg)*100) : 0;
-            $cr_aida_biaya_skb = $aida_skb != 0 ? ROUND((($totalskb)/$aida_skb)*100) : 0;
-            $cr_aida_biaya_tgl = $aida_tgl != 0 ? ROUND((($totaltgl)/$aida_tgl)*100) : 0;
-            $cr_aida_biaya_bgr = $aida_bgr != 0 ? ROUND((($totalbgr)/$aida_bgr)*100) : 0;
-            $cr_aida_biaya_pwt = $aida_pwt != 0 ? ROUND((($totalpwt)/$aida_pwt)*100) : 0;
-            $cr_aida_biaya_pst = $aida_pst != 0 ? ROUND((($totalpst)/$aida_pst)*100) : 0;
-            $cr_aida_biaya_grt = $aida_grt != 0 ? ROUND((($totalgrt)/$aida_grt)*100) : 0;
-            $cr_aida_biaya_sby = $aida_sby != 0 ? ROUND((($totalsby)/$aida_sby)*100) : 0;
-            $cr_aida_biaya_smr = $aida_smr != 0 ? ROUND((($totalsmr)/$aida_smr)*100) : 0;
-            $cr_aida_biaya_klt = $aida_klt != 0 ? ROUND((($totalklt)/$aida_klt)*100) : 0;
-            $cr_aida_biaya_pwk = $aida_pwk != 0 ? ROUND((($totalpwk)/$aida_pwk)*100) : 0;
-            $cr_aida_biaya_btn = $aida_btn != 0 ? ROUND((($totalbtn)/$aida_btn)*100) : 0;
-            $cr_aida_biaya_bki = $aida_bki != 0 ? ROUND((($totalbtn)/$aida_bki)*100) : 0;
-            $cr_aida_biaya_total = $totalaida != 0 ? ROUND(($grandtotal/$totalaida)*100) : 0;
-
-            $cr_penjualan_biaya_tsm = $penjualan_tsm != 0 ? ROUND(($totaltsm/$penjualan_tsm)*100) : 0;
-            $cr_penjualan_biaya_bdg = $penjualan_bdg != 0 ? ROUND(($totalbdg/$penjualan_bdg)*100) : 0;
-            $cr_penjualan_biaya_skb = $penjualan_skb != 0 ? ROUND(($totalskb/$penjualan_skb)*100) : 0;
-            $cr_penjualan_biaya_tgl = $penjualan_tgl != 0 ? ROUND(($totaltgl/$penjualan_tgl)*100) : 0;
-            $cr_penjualan_biaya_bgr = $penjualan_bgr != 0 ? ROUND(($totalbgr/$penjualan_bgr)*100) : 0;
-            $cr_penjualan_biaya_pwt = $penjualan_pwt != 0 ? ROUND(($totalpwt/$penjualan_pwt)*100) : 0;
-            $cr_penjualan_biaya_pst = $penjualan_pst != 0 ? ROUND(($totalpst/$penjualan_pst)*100) : 0;
-            $cr_penjualan_biaya_grt = $penjualan_grt != 0 ? ROUND(($totalgrt/$penjualan_grt)*100) : 0;
-            $cr_penjualan_biaya_sby = $penjualan_sby != 0 ? ROUND(($totalsby/$penjualan_sby)*100) : 0;
-            $cr_penjualan_biaya_smr = $penjualan_smr != 0 ? ROUND(($totalsmr/$penjualan_smr)*100) : 0;
-            $cr_penjualan_biaya_klt = $penjualan_klt != 0 ? ROUND(($totalklt/$penjualan_klt)*100) : 0;
-            $cr_penjualan_biaya_pwk = $penjualan_pwk != 0 ? ROUND(($totalpwk/$penjualan_pwk)*100) : 0;
-            $cr_penjualan_biaya_btn = $penjualan_btn != 0 ? ROUND(($totalbtn/$penjualan_btn)*100) : 0;
-            $cr_penjualan_biaya_bki = $penjualan_bki != 0 ? ROUND(($totalbtn/$penjualan_bki)*100) : 0;
-            $cr_penjualan_biaya_total = $totalpenjualan != 0 ? ROUND(($grandtotal/$totalpenjualan)*100) : 0;
-
-            @endphp
-            <tr>
-                <th style="background-color:rgb(0, 52, 93); color:white" colspan="2" rowspan="4">PENJUALAN</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">SWAN</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($swan_tsm) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($swan_bdg) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($swan_skb) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($swan_tgl) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($swan_bgr) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($swan_pwt) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($swan_pst) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($swan_grt) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($swan_sby) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($swan_smr) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($swan_klt) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($swan_pwk) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($swan_btn) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($swan_bki) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalswan) }}</th>
-            </tr>
-            <tr>
-                <th style="background-color:rgb(0, 52, 93); color:white">COST RATIO(%)</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_swan_biaya_tsm }}%</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_swan_biaya_bdg }}%</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_swan_biaya_skb }}%</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_swan_biaya_tgl }}%</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_swan_biaya_bgr }}%</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_swan_biaya_pwt }}%</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_swan_biaya_pst }}%</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_swan_biaya_grt }}%</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_swan_biaya_sby }}%</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_swan_biaya_smr }}%</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_swan_biaya_klt }}%</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_swan_biaya_pwk }}%</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_swan_biaya_btn }}%</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_swan_biaya_bki }}%</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_swan_biaya_total }}%</th>
-            </tr>
-            <tr>
-                <th style="background-color:rgb(93, 0, 0); color:white">AIDA</th>
-                <th style="background-color:rgb(93, 0, 0); color:white; text-align:right">{{ rupiah($aida_tsm) }}</th>
-                <th style="background-color:rgb(93, 0, 0); color:white; text-align:right">{{ rupiah($aida_bdg) }}</th>
-                <th style="background-color:rgb(93, 0, 0); color:white; text-align:right">{{ rupiah($aida_skb) }}</th>
-                <th style="background-color:rgb(93, 0, 0); color:white; text-align:right">{{ rupiah($aida_tgl) }}</th>
-                <th style="background-color:rgb(93, 0, 0); color:white; text-align:right">{{ rupiah($aida_bgr) }}</th>
-                <th style="background-color:rgb(93, 0, 0); color:white; text-align:right">{{ rupiah($aida_pwt) }}</th>
-                <th style="background-color:rgb(93, 0, 0); color:white; text-align:right">{{ rupiah($aida_pst) }}</th>
-                <th style="background-color:rgb(93, 0, 0); color:white; text-align:right">{{ rupiah($aida_grt) }}</th>
-                <th style="background-color:rgb(93, 0, 0); color:white; text-align:right">{{ rupiah($aida_sby) }}</th>
-                <th style="background-color:rgb(93, 0, 0); color:white; text-align:right">{{ rupiah($aida_smr) }}</th>
-                <th style="background-color:rgb(93, 0, 0); color:white; text-align:right">{{ rupiah($aida_klt) }}</th>
-                <th style="background-color:rgb(93, 0, 0); color:white; text-align:right">{{ rupiah($aida_pwk) }}</th>
-                <th style="background-color:rgb(93, 0, 0); color:white; text-align:right">{{ rupiah($aida_btn) }}</th>
-                <th style="background-color:rgb(93, 0, 0); color:white; text-align:right">{{ rupiah($aida_bki) }}</th>
-                <th style="background-color:rgb(93, 0, 0); color:white; text-align:right">{{ rupiah($totalaida) }}</th>
-            </tr>
-            <tr>
-                <th style="background-color:rgb(93, 0, 0); color:white">COST RATIO</th>
-                <th style="background-color:rgb(93, 0, 0); color:white;">{{ $cr_aida_biaya_tsm }}%</th>
-                <th style="background-color:rgb(93, 0, 0); color:white;">{{ $cr_aida_biaya_bdg }}%</th>
-                <th style="background-color:rgb(93, 0, 0); color:white;">{{ $cr_aida_biaya_skb }}%</th>
-                <th style="background-color:rgb(93, 0, 0); color:white;">{{ $cr_aida_biaya_tgl }}%</th>
-                <th style="background-color:rgb(93, 0, 0); color:white;">{{ $cr_aida_biaya_bgr }}%</th>
-                <th style="background-color:rgb(93, 0, 0); color:white;">{{ $cr_aida_biaya_pwt }}%</th>
-                <th style="background-color:rgb(93, 0, 0); color:white;">{{ $cr_aida_biaya_pst }}%</th>
-                <th style="background-color:rgb(93, 0, 0); color:white;">{{ $cr_aida_biaya_grt }}%</th>
-                <th style="background-color:rgb(93, 0, 0); color:white;">{{ $cr_aida_biaya_sby }}%</th>
-                <th style="background-color:rgb(93, 0, 0); color:white;">{{ $cr_aida_biaya_smr }}%</th>
-                <th style="background-color:rgb(93, 0, 0); color:white;">{{ $cr_aida_biaya_klt }}%</th>
-                <th style="background-color:rgb(93, 0, 0); color:white;">{{ $cr_aida_biaya_pwk }}%</th>
-                <th style="background-color:rgb(93, 0, 0); color:white;">{{ $cr_aida_biaya_btn }}%</th>
-                <th style="background-color:rgb(93, 0, 0); color:white;">{{ $cr_aida_biaya_bki }}%</th>
-                <th style="background-color:rgb(93, 0, 0); color:white;">{{ $cr_aida_biaya_total }}%</th>
-            </tr>
-            <tr>
-                <th style="background-color:rgb(0, 52, 93); color:white" colspan="3">TOTAL PPN</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($ppn_tsm) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($ppn_bdg) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($ppn_skb) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($ppn_tgl) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($ppn_bgr) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($ppn_pwt) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($ppn_pst) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($ppn_grt) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($ppn_sby) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($ppn_smr) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($ppn_klt) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($ppn_pwk) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($ppn_btn) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($ppn_bki) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalppn) }}</th>
-            </tr>
-            <tr>
-                <th style="background-color:rgb(0, 52, 93); color:white" colspan="3">TOTAL PENJUALAN + PPN</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($penjualan_tsm) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($penjualan_bdg) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($penjualan_skb) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($penjualan_tgl) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($penjualan_bgr) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($penjualan_pwt) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($penjualan_pst) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($penjualan_grt) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($penjualan_sby) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($penjualan_smr) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($penjualan_klt) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($penjualan_pwk) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($penjualan_btn) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($penjualan_bki) }}</th>
-                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">{{ rupiah($totalpenjualan) }}</th>
-            </tr>
-            <tr>
-                <th style="background-color:rgb(0, 52, 93); color:white" colspan="3">COST RATIO(%)</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_penjualan_biaya_tsm }}%</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_penjualan_biaya_bdg }}%</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_penjualan_biaya_skb }}%</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_penjualan_biaya_tgl }}%</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_penjualan_biaya_bgr }}%</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_penjualan_biaya_pwt }}%</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_penjualan_biaya_pst }}%</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_penjualan_biaya_grt }}%</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_penjualan_biaya_sby }}%</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_penjualan_biaya_smr }}%</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_penjualan_biaya_klt }}%</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_penjualan_biaya_pwk }}%</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_penjualan_biaya_btn }}%</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_penjualan_biaya_bki }}%</th>
-                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_penjualan_biaya_total }}%</th>
-            </tr>
-            <tr>
-                <th style="background-color:rgb(210, 59, 4); color:white" colspan="3">PIUTANG > 1 BULAN</th>
-                <th style="background-color:rgb(210, 59, 4); color:white; text-align:right">{{ rupiah($piutang->TSM) }}</th>
-                <th style="background-color:rgb(210, 59, 4); color:white; text-align:right">{{ rupiah($piutang->BDG) }}</th>
-                <th style="background-color:rgb(210, 59, 4); color:white; text-align:right">{{ rupiah($piutang->SKB) }}</th>
-                <th style="background-color:rgb(210, 59, 4); color:white; text-align:right">{{ rupiah($piutang->TGL) }}</th>
-                <th style="background-color:rgb(210, 59, 4); color:white; text-align:right">{{ rupiah($piutang->BGR) }}</th>
-                <th style="background-color:rgb(210, 59, 4); color:white; text-align:right">{{ rupiah($piutang->PWT) }}</th>
-                <th style="background-color:rgb(210, 59, 4); color:white; text-align:right">{{ rupiah($piutang->PST) }}</th>
-                <th style="background-color:rgb(210, 59, 4); color:white; text-align:right">{{ rupiah($piutang->GRT) }}</th>
-                <th style="background-color:rgb(210, 59, 4); color:white; text-align:right">{{ rupiah($piutang->SBY) }}</th>
-                <th style="background-color:rgb(210, 59, 4); color:white; text-align:right">{{ rupiah($piutang->SMR) }}</th>
-                <th style="background-color:rgb(210, 59, 4); color:white; text-align:right">{{ rupiah($piutang->KLT) }}</th>
-                <th style="background-color:rgb(210, 59, 4); color:white; text-align:right">{{ rupiah($piutang->PWK) }}</th>
-                <th style="background-color:rgb(210, 59, 4); color:white; text-align:right">{{ rupiah($piutang->BTN) }}</th>
-                <th style="background-color:rgb(210, 59, 4); color:white; text-align:right">{{ rupiah($piutang->BKI) }}</th>
-                <th style="background-color:rgb(210, 59, 4); color:white; text-align:right">{{ rupiah($piutang->totalpiutang) }}</th>
-
-            </tr>
-            @php
-            $piutang_tsm = $piutang->TSM;
-            $piutang_bdg = $piutang->BDG;
-            $piutang_skb = $piutang->SKB;
-            $piutang_tgl = $piutang->TGL;
-            $piutang_bgr = $piutang->BGR;
-            $piutang_pwt = $piutang->PWT;
-            $piutang_pst = $piutang->PST;
-            $piutang_grt = $piutang->GRT;
-            $piutang_sby = $piutang->SBY;
-            $piutang_smr = $piutang->SMR;
-            $piutang_klt = $piutang->KLT;
-            $piutang_pwk = $piutang->PWK;
-            $piutang_btn = $piutang->BTN;
-            $piutang_bki = $piutang->BKI;
             $totalpiutang = $piutang->totalpiutang;
+            $cr_swan_piutang_total = $totalswan != 0 ? ROUND(($totalpiutang / $totalswan) * 100) : 0;
+        @endphp
+        <tr>
+            <th style="background-color:rgb(0, 52, 93); color:white" colspan="2" rowspan="4">PENJUALAN</th>
+            <th style="background-color:rgb(0, 52, 93); color:white">SWAN</th>
+            @foreach ($cbg as $f)
+                @php
+                    $kode_cbg = strtolower($f->kode_cabang);
+                @endphp
+                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">
+                    {{ rupiah(${"swan_$kode_cbg"}) }}
+                </th>
+            @endforeach
+            <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">
+                {{ rupiah($totalswan) }}
+            </th>
+        </tr>
+        <tr>
+            <th style="background-color:rgb(0, 52, 93); color:white">COST RATIO(%)</th>
+            @foreach ($cbg as $f)
+                @php
+                    $kode_cbg = strtolower($f->kode_cabang);
+                @endphp
+                <th style="background-color:rgb(0, 52, 93); color:white">
+                    {{ rupiah(${"cr_swan_biaya_$kode_cbg"}) }}%
+                </th>
+            @endforeach
+            <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_swan_biaya_total }}%</th>
+        </tr>
+        <tr>
+            <th style="background-color:rgb(93, 0, 0); color:white">AIDA</th>
+            @foreach ($cbg as $f)
+                @php
+                    $kode_cbg = strtolower($f->kode_cabang);
+                @endphp
+                <th style="background-color:rgb(93, 0, 0); color:white; text-align:right">
+                    {{ rupiah(${"aida_$kode_cbg"}) }}
+                </th>
+            @endforeach
+            <th style="background-color:rgb(93, 0, 0); color:white; text-align:right">
+                {{ rupiah($totalaida) }}
+            </th>
+        </tr>
+        <tr>
+            <th style="background-color:rgb(93, 0, 0); color:white;">COST RATIO(%)</th>
+            @foreach ($cbg as $f)
+                @php
+                    $kode_cbg = strtolower($f->kode_cabang);
+                @endphp
+                <th style="background-color:rgb(93, 0, 0); color:white;">
+                    {{ rupiah(${"cr_aida_biaya_$kode_cbg"}) }}%
+                </th>
+            @endforeach
+            <th style="background-color:rgb(93, 0, 0); color:white;">{{ $cr_swan_biaya_total }}%</th>
+        </tr>
+        <tr>
+            <th style="background-color:rgb(0, 52, 93); color:white" colspan="3">TOTAL PPN</th>
+            @foreach ($cbg as $f)
+                @php
+                    $kode_cbg = strtolower($f->kode_cabang);
+                @endphp
+                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">
+                    {{ rupiah(${"ppn_$kode_cbg"}) }}
+                </th>
+            @endforeach
+            <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">
+                {{ rupiah($totalppn) }}
+            </th>
+        </tr>
+        <tr>
+            <th style="background-color:rgb(0, 52, 93); color:white" colspan="3">TOTAL PENJUALAN + PPN</th>
+            @foreach ($cbg as $f)
+                @php
+                    $kode_cbg = strtolower($f->kode_cabang);
+                @endphp
+                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">
+                    {{ rupiah(${"penjualan_$kode_cbg"}) }}
+                </th>
+            @endforeach
+            <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">
+                {{ rupiah($totalpenjualan) }}
+            </th>
+        </tr>
+        <tr>
+            <th style="background-color:rgb(0, 52, 93); color:white" colspan="3">COST RATIO(%)</th>
+            @foreach ($cbg as $f)
+                @php
+                    $kode_cbg = strtolower($f->kode_cabang);
+                @endphp
+                <th style="background-color:rgb(0, 52, 93); color:white;">
+                    {{ rupiah(${"cr_penjualan_biaya_$kode_cbg"}) }}%
+                </th>
+            @endforeach
+            <th style="background-color:rgb(0, 52, 93); color:white;">
+                {{ rupiah($cr_penjualan_biaya_total) }}%
+            </th>
+        </tr>
+        <tr>
+            <th style="background-color:rgb(210, 59, 4); color:white" colspan="3">PIUTANG > 1 BULAN</th>
+            @foreach ($cbg as $f)
+                @php
+                    $kode_cbg = strtolower($f->kode_cabang);
+                @endphp
+                <th style="background-color:rgb(210, 59, 4); color:white; text-align:right">
+                    {{ rupiah(${"piutang_$kode_cbg"}) }}
+                </th>
+            @endforeach
+            <th style="background-color:rgb(210, 59, 4); color:white; text-align:right">
+                {{ rupiah($totalpiutang) }}
+            </th>
+        </tr>
+        <tr>
+            <th style="background-color:rgba(145, 2, 59, 0.961); color:white" colspan="3">COST RATIO SWAN</th>
+            @foreach ($cbg as $f)
+                @php
+                    $kode_cbg = strtolower($f->kode_cabang);
+                @endphp
+                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">
+                    {{ ${"cr_swan_piutang_$kode_cbg"} }}%
+                </th>
+            @endforeach
+            <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_swan_piutang_total }}%</th>
+        </tr>
+    </tfoot>
+</table>
 
-            $cr_swan_piutang_tsm = $swan_tsm != 0 ? ROUND(($piutang_tsm/$swan_tsm)*100) : 0;
-            $cr_swan_piutang_bdg = $swan_bdg != 0 ? ROUND(($piutang_bdg/$swan_bdg)*100) : 0;
-            $cr_swan_piutang_skb = $swan_skb != 0 ? ROUND(($piutang_skb/$swan_skb)*100) : 0;
-            $cr_swan_piutang_tgl = $swan_tgl != 0 ? ROUND(($piutang_tgl/$swan_tgl)*100) : 0;
-            $cr_swan_piutang_bgr = $swan_bgr != 0 ? ROUND(($piutang_bgr/$swan_bgr)*100) : 0;
-            $cr_swan_piutang_pwt = $swan_pwt != 0 ? ROUND(($piutang_pwt/$swan_pwt)*100) : 0;
-            $cr_swan_piutang_pst = $swan_pst != 0 ? ROUND(($piutang_pst/$swan_pst)*100) : 0;
-            $cr_swan_piutang_grt = $swan_grt != 0 ? ROUND(($piutang_grt/$swan_grt)*100) : 0;
-            $cr_swan_piutang_sby = $swan_sby != 0 ? ROUND(($piutang_sby/$swan_sby)*100) : 0;
-            $cr_swan_piutang_smr = $swan_smr != 0 ? ROUND(($piutang_smr/$swan_smr)*100) : 0;
-            $cr_swan_piutang_klt = $swan_klt != 0 ? ROUND(($piutang_klt/$swan_klt)*100) : 0;
-            $cr_swan_piutang_pwk = $swan_pwk != 0 ? ROUND(($piutang_pwk/$swan_pwk)*100) : 0;
-            $cr_swan_piutang_btn = $swan_btn != 0 ? ROUND(($piutang_btn/$swan_btn)*100) : 0;
-            $cr_swan_piutang_bki = $swan_bki != 0 ? ROUND(($piutang_bki/$swan_bki)*100) : 0;
-            $cr_swan_piutang_total = $totalswan != 0 ? ROUND(($totalpiutang/$totalswan)*100) : 0;
-
-            $cr_aida_piutang_tsm = $aida_tsm != 0 ? ROUND(($piutang_tsm/$aida_tsm)*100) : 0;
-            $cr_aida_piutang_bdg = $aida_bdg != 0 ? ROUND(($piutang_bdg/$aida_bdg)*100) : 0;
-            $cr_aida_piutang_skb = $aida_skb != 0 ? ROUND(($piutang_skb/$aida_skb)*100) : 0;
-            $cr_aida_piutang_tgl = $aida_tgl != 0 ? ROUND(($piutang_tgl/$aida_tgl)*100) : 0;
-            $cr_aida_piutang_bgr = $aida_bgr != 0 ? ROUND(($piutang_bgr/$aida_bgr)*100) : 0;
-            $cr_aida_piutang_pwt = $aida_pwt != 0 ? ROUND(($piutang_pwt/$aida_pwt)*100) : 0;
-            $cr_aida_piutang_pst = $aida_pst != 0 ? ROUND(($piutang_pst/$aida_pst)*100) : 0;
-            $cr_aida_piutang_grt = $aida_grt != 0 ? ROUND(($piutang_grt/$aida_grt)*100) : 0;
-            $cr_aida_piutang_sby = $aida_sby != 0 ? ROUND(($piutang_sby/$aida_sby)*100) : 0;
-            $cr_aida_piutang_smr = $aida_smr != 0 ? ROUND(($piutang_smr/$aida_smr)*100) : 0;
-            $cr_aida_piutang_klt = $aida_klt != 0 ? ROUND(($piutang_klt/$aida_klt)*100) : 0;
-            $cr_aida_piutang_pwk = $aida_pwk != 0 ? ROUND(($piutang_pwk/$aida_pwk)*100) : 0;
-            $cr_aida_piutang_btn = $aida_btn != 0 ? ROUND(($piutang_btn/$aida_btn)*100) : 0;
-            $cr_aida_piutang_bki = $aida_bki != 0 ? ROUND(($piutang_bki/$aida_bki)*100) : 0;
-            $cr_aida_piutang_total = $totalaida != 0 ? ROUND(($totalpiutang/$totalaida)*100) : 0;
-
-            $cr_penjualan_piutang_tsm = $penjualan_tsm != 0 ? ROUND(($piutang_tsm/$penjualan_tsm)*100) : 0;
-            $cr_penjualan_piutang_bdg = $penjualan_bdg != 0 ? ROUND(($piutang_bdg/$penjualan_bdg)*100) : 0;
-            $cr_penjualan_piutang_skb = $penjualan_skb != 0 ? ROUND(($piutang_skb/$penjualan_skb)*100) : 0;
-            $cr_penjualan_piutang_tgl = $penjualan_tgl != 0 ? ROUND(($piutang_tgl/$penjualan_tgl)*100) : 0;
-            $cr_penjualan_piutang_bgr = $penjualan_bgr != 0 ? ROUND(($piutang_bgr/$penjualan_bgr)*100) : 0;
-            $cr_penjualan_piutang_pwt = $penjualan_pwt != 0 ? ROUND(($piutang_pwt/$penjualan_pwt)*100) : 0;
-            $cr_penjualan_piutang_pst = $penjualan_pst != 0 ? ROUND(($piutang_pst/$penjualan_pst)*100) : 0;
-            $cr_penjualan_piutang_grt = $penjualan_grt != 0 ? ROUND(($piutang_grt/$penjualan_grt)*100) : 0;
-            $cr_penjualan_piutang_sby = $penjualan_sby != 0 ? ROUND(($piutang_sby/$penjualan_sby)*100) : 0;
-            $cr_penjualan_piutang_smr = $penjualan_smr != 0 ? ROUND(($piutang_smr/$penjualan_smr)*100) : 0;
-            $cr_penjualan_piutang_klt = $penjualan_klt != 0 ? ROUND(($piutang_klt/$penjualan_klt)*100) : 0;
-            $cr_penjualan_piutang_pwk = $penjualan_pwk != 0 ? ROUND(($piutang_pwk/$penjualan_pwk)*100) : 0;
-            $cr_penjualan_piutang_btn = $penjualan_btn != 0 ? ROUND(($piutang_btn/$penjualan_btn)*100) : 0;
-            $cr_penjualan_piutang_bki = $penjualan_bki != 0 ? ROUND(($piutang_bki/$penjualan_bki)*100) : 0;
-            $cr_penjualan_piutang_total = $totalpenjualan != 0 ? ROUND(($totalpiutang/$totalpenjualan)*100) : 0;
-            @endphp
-            <tr>
-                <th style="background-color:rgb(210, 59, 4); color:white" colspan="3">COST RATIO SWAN</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_swan_piutang_tsm }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_swan_piutang_bdg }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_swan_piutang_skb }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_swan_piutang_tgl }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_swan_piutang_bgr }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_swan_piutang_pwt }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_swan_piutang_pst }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_swan_piutang_grt }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_swan_piutang_sby }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_swan_piutang_smr }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_swan_piutang_klt }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_swan_piutang_pwk }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_swan_piutang_btn }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_swan_piutang_bki }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_swan_piutang_total }}%</th>
-            </tr>
-            <tr>
-                <th style="background-color:rgb(210, 59, 4); color:white" colspan="3">COST RATIO AIDA</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_aida_piutang_tsm }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_aida_piutang_bdg }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_aida_piutang_skb }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_aida_piutang_tgl }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_aida_piutang_bgr }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_aida_piutang_pwt }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_aida_piutang_pst }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_aida_piutang_grt }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_aida_piutang_sby }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_aida_piutang_smr }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_aida_piutang_klt }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_aida_piutang_pwk }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_aida_piutang_btn }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_aida_piutang_bki }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_aida_piutang_total }}%</th>
-            </tr>
-            <tr>
-                <th style="background-color:rgb(210, 59, 4); color:white" colspan="3">COST RATIO SWAN + AIDA</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_penjualan_piutang_tsm }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_penjualan_piutang_bdg }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_penjualan_piutang_skb }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_penjualan_piutang_tgl }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_penjualan_piutang_bgr }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_penjualan_piutang_pwt }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_penjualan_piutang_pst }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_penjualan_piutang_grt }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_penjualan_piutang_sby }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_penjualan_piutang_smr }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_penjualan_piutang_klt }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_penjualan_piutang_pwk }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_penjualan_piutang_btn }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_penjualan_piutang_bki }}%</th>
-                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_penjualan_piutang_total }}%</th>
-            </tr>
-            @php
-            $biaya_piutang_tsm = $totaltsm + $piutang_tsm;
-            $biaya_piutang_bdg = $totalbdg + $piutang_bdg;
-            $biaya_piutang_skb = $totalskb + $piutang_skb;
-            $biaya_piutang_tgl = $totaltgl + $piutang_tgl;
-            $biaya_piutang_bgr = $totalbgr + $piutang_bgr;
-            $biaya_piutang_pwt = $totalpwt + $piutang_pwt;
-            $biaya_piutang_pst = $totalpst + $piutang_pst;
-            $biaya_piutang_grt = $totalgrt + $piutang_grt;
-            $biaya_piutang_sby = $totalsby + $piutang_sby;
-            $biaya_piutang_smr = $totalsmr + $piutang_smr;
-            $biaya_piutang_klt = $totalklt + $piutang_klt;
-            $biaya_piutang_pwk = $totalpwk + $piutang_pwk;
-            $biaya_piutang_btn = $totalbtn + $piutang_btn;
-            $biaya_piutang_bki = $totalbtn + $piutang_bki;
-            $total_biaya_piutang = $grandtotal + $totalpiutang;
-
-            $cr_swan_biayapiutang_tsm = $swan_tsm != 0 ? ROUND(($biaya_piutang_tsm/$swan_tsm)*100) : 0;
-            $cr_swan_biayapiutang_bdg = $swan_bdg != 0 ? ROUND(($biaya_piutang_bdg/$swan_bdg)*100) : 0;
-            $cr_swan_biayapiutang_skb = $swan_skb != 0 ? ROUND(($biaya_piutang_skb/$swan_skb)*100) : 0;
-            $cr_swan_biayapiutang_tgl = $swan_tgl != 0 ? ROUND(($biaya_piutang_tgl/$swan_tgl)*100) : 0;
-            $cr_swan_biayapiutang_bgr = $swan_bgr != 0 ? ROUND(($biaya_piutang_bgr/$swan_bgr)*100) : 0;
-            $cr_swan_biayapiutang_pwt = $swan_pwt != 0 ? ROUND(($biaya_piutang_pwt/$swan_pwt)*100) : 0;
-            $cr_swan_biayapiutang_pst = $swan_pst != 0 ? ROUND(($biaya_piutang_pst/$swan_pst)*100) : 0;
-            $cr_swan_biayapiutang_grt = $swan_grt != 0 ? ROUND(($biaya_piutang_grt/$swan_grt)*100) : 0;
-            $cr_swan_biayapiutang_sby = $swan_sby != 0 ? ROUND(($biaya_piutang_sby/$swan_sby)*100) : 0;
-            $cr_swan_biayapiutang_smr = $swan_smr != 0 ? ROUND(($biaya_piutang_smr/$swan_smr)*100) : 0;
-            $cr_swan_biayapiutang_klt = $swan_klt != 0 ? ROUND(($biaya_piutang_klt/$swan_klt)*100) : 0;
-            $cr_swan_biayapiutang_pwk = $swan_pwk != 0 ? ROUND(($biaya_piutang_pwk/$swan_pwk)*100) : 0;
-            $cr_swan_biayapiutang_btn = $swan_btn != 0 ? ROUND(($biaya_piutang_btn/$swan_btn)*100) : 0;
-            $cr_swan_biayapiutang_bki = $swan_bki != 0 ? ROUND(($biaya_piutang_bki/$swan_bki)*100) : 0;
-            $cr_swan_biayapiutang_total = $totalswan != 0 ? ROUND(($total_biaya_piutang/$totalswan)*100) : 0;
-
-            $cr_aida_biayapiutang_tsm = $aida_tsm != 0 ? ROUND(($biaya_piutang_tsm/$aida_tsm)*100) : 0;
-            $cr_aida_biayapiutang_bdg = $aida_bdg != 0 ? ROUND(($biaya_piutang_bdg/$aida_bdg)*100) : 0;
-            $cr_aida_biayapiutang_skb = $aida_skb != 0 ? ROUND(($biaya_piutang_skb/$aida_skb)*100) : 0;
-            $cr_aida_biayapiutang_tgl = $aida_tgl != 0 ? ROUND(($biaya_piutang_tgl/$aida_tgl)*100) : 0;
-            $cr_aida_biayapiutang_bgr = $aida_bgr != 0 ? ROUND(($biaya_piutang_bgr/$aida_bgr)*100) : 0;
-            $cr_aida_biayapiutang_pwt = $aida_pwt != 0 ? ROUND(($biaya_piutang_pwt/$aida_pwt)*100) : 0;
-            $cr_aida_biayapiutang_pst = $aida_pst != 0 ? ROUND(($biaya_piutang_pst/$aida_pst)*100) : 0;
-            $cr_aida_biayapiutang_grt = $aida_grt != 0 ? ROUND(($biaya_piutang_grt/$aida_grt)*100) : 0;
-            $cr_aida_biayapiutang_sby = $aida_sby != 0 ? ROUND(($biaya_piutang_sby/$aida_sby)*100) : 0;
-            $cr_aida_biayapiutang_smr = $aida_smr != 0 ? ROUND(($biaya_piutang_smr/$aida_smr)*100) : 0;
-            $cr_aida_biayapiutang_klt = $aida_klt != 0 ? ROUND(($biaya_piutang_klt/$aida_klt)*100) : 0;
-            $cr_aida_biayapiutang_pwk = $aida_pwk != 0 ? ROUND(($biaya_piutang_pwk/$aida_pwk)*100) : 0;
-            $cr_aida_biayapiutang_btn = $aida_btn != 0 ? ROUND(($biaya_piutang_btn/$aida_btn)*100) : 0;
-            $cr_aida_biayapiutang_bki = $aida_bki != 0 ? ROUND(($biaya_piutang_bki/$aida_bki)*100) : 0;
-            $cr_aida_biayapiutang_total = $totalaida != 0 ? ROUND(($total_biaya_piutang/$totalaida)*100) : 0;
-
-            $cr_penjualan_biayapiutang_tsm = $penjualan_tsm != 0 ? ROUND(($biaya_piutang_tsm/$penjualan_tsm)*100) : 0;
-            $cr_penjualan_biayapiutang_bdg = $penjualan_bdg != 0 ? ROUND(($biaya_piutang_bdg/$penjualan_bdg)*100) : 0;
-            $cr_penjualan_biayapiutang_skb = $penjualan_skb != 0 ? ROUND(($biaya_piutang_skb/$penjualan_skb)*100) : 0;
-            $cr_penjualan_biayapiutang_tgl = $penjualan_tgl != 0 ? ROUND(($biaya_piutang_tgl/$penjualan_tgl)*100) : 0;
-            $cr_penjualan_biayapiutang_bgr = $penjualan_bgr != 0 ? ROUND(($biaya_piutang_bgr/$penjualan_bgr)*100) : 0;
-            $cr_penjualan_biayapiutang_pwt = $penjualan_pwt != 0 ? ROUND(($biaya_piutang_pwt/$penjualan_pwt)*100) : 0;
-            $cr_penjualan_biayapiutang_pst = $penjualan_pst != 0 ? ROUND(($biaya_piutang_pst/$penjualan_pst)*100) : 0;
-            $cr_penjualan_biayapiutang_grt = $penjualan_grt != 0 ? ROUND(($biaya_piutang_grt/$penjualan_grt)*100) : 0;
-            $cr_penjualan_biayapiutang_sby = $penjualan_sby != 0 ? ROUND(($biaya_piutang_sby/$penjualan_sby)*100) : 0;
-            $cr_penjualan_biayapiutang_smr = $penjualan_smr != 0 ? ROUND(($biaya_piutang_smr/$penjualan_smr)*100) : 0;
-            $cr_penjualan_biayapiutang_klt = $penjualan_klt != 0 ? ROUND(($biaya_piutang_klt/$penjualan_klt)*100) : 0;
-            $cr_penjualan_biayapiutang_pwk = $penjualan_pwk != 0 ? ROUND(($biaya_piutang_pwk/$penjualan_pwk)*100) : 0;
-            $cr_penjualan_biayapiutang_btn = $penjualan_btn != 0 ? ROUND(($biaya_piutang_btn/$penjualan_btn)*100) : 0;
-            $cr_penjualan_biayapiutang_bki = $penjualan_bki != 0 ? ROUND(($biaya_piutang_bki/$penjualan_bki)*100) : 0;
-            $cr_penjualan_biayapiutang_total = $totalpenjualan != 0 ? ROUND(($total_biaya_piutang/$totalpenjualan)*100) : 0;
-
-            @endphp
-            <tr>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white" colspan="3">BIAYA + PIUTANG</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white; text-align:right">{{ rupiah($biaya_piutang_tsm) }}</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white; text-align:right">{{ rupiah($biaya_piutang_bdg) }}</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white; text-align:right">{{ rupiah($biaya_piutang_skb) }}</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white; text-align:right">{{ rupiah($biaya_piutang_tgl) }}</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white; text-align:right">{{ rupiah($biaya_piutang_bgr) }}</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white; text-align:right">{{ rupiah($biaya_piutang_pwt) }}</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white; text-align:right">{{ rupiah($biaya_piutang_pst) }}</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white; text-align:right">{{ rupiah($biaya_piutang_grt) }}</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white; text-align:right">{{ rupiah($biaya_piutang_sby) }}</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white; text-align:right">{{ rupiah($biaya_piutang_smr) }}</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white; text-align:right">{{ rupiah($biaya_piutang_klt) }}</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white; text-align:right">{{ rupiah($biaya_piutang_pwk) }}</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white; text-align:right">{{ rupiah($biaya_piutang_btn) }}</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white; text-align:right">{{ rupiah($biaya_piutang_bki) }}</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white; text-align:right">{{ rupiah($total_biaya_piutang) }}</th>
-            </tr>
-            <tr>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white" colspan="3">COST RATIO SWAN</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_swan_biayapiutang_tsm }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_swan_biayapiutang_bdg }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_swan_biayapiutang_skb }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_swan_biayapiutang_tgl }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_swan_biayapiutang_bgr }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_swan_biayapiutang_pwt }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_swan_biayapiutang_pst }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_swan_biayapiutang_grt }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_swan_biayapiutang_sby }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_swan_biayapiutang_smr }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_swan_biayapiutang_klt }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_swan_biayapiutang_pwk }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_swan_biayapiutang_btn }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_swan_biayapiutang_bki }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_swan_biayapiutang_total }}%</th>
-            </tr>
-            <tr>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white" colspan="3">COST RATIO AIDA</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_aida_biayapiutang_tsm }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_aida_biayapiutang_bdg }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_aida_biayapiutang_skb }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_aida_biayapiutang_tgl }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_aida_biayapiutang_bgr }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_aida_biayapiutang_pwt }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_aida_biayapiutang_pst }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_aida_biayapiutang_grt }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_aida_biayapiutang_sby }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_aida_biayapiutang_smr }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_aida_biayapiutang_klt }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_aida_biayapiutang_pwk }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_aida_biayapiutang_btn }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_aida_biayapiutang_bki }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_aida_biayapiutang_total }}%</th>
-            </tr>
-            <tr>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white" colspan="3">COST RATIO SWAN + AIDA</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_penjualan_biayapiutang_tsm }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_penjualan_biayapiutang_bdg }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_penjualan_biayapiutang_skb }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_penjualan_biayapiutang_tgl }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_penjualan_biayapiutang_bgr }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_penjualan_biayapiutang_pwt }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_penjualan_biayapiutang_pst }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_penjualan_biayapiutang_grt }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_penjualan_biayapiutang_sby }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_penjualan_biayapiutang_smr }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_penjualan_biayapiutang_klt }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_penjualan_biayapiutang_pwk }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_penjualan_biayapiutang_btn }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_penjualan_biayapiutang_bki }}%</th>
-                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_penjualan_biayapiutang_total }}%</th>
-            </tr>
-        </tfoot>
-    </table>
-</body>
 </html>
