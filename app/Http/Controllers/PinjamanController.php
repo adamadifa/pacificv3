@@ -757,6 +757,7 @@ class PinjamanController extends Controller
                 DB::table('ledger_bank')->where('no_ref', $no_pinjaman)->delete();
                 $lastledger = DB::table('ledger_bank')
                     ->select('no_bukti')
+                    ->whereRaw('LENGTH(no_bukti)=12')
                     ->whereRaw('LEFT(no_bukti,7) ="LR' . $cabang . $tahun . '"')
                     ->orderBy('no_bukti', 'desc')
                     ->first();
@@ -765,7 +766,7 @@ class PinjamanController extends Controller
                 } else {
                     $last_no_bukti = $lastledger->no_bukti;
                 }
-                $no_bukti = buatkode($last_no_bukti, 'LR' . $cabang . $tahun, 4);
+                $no_bukti = buatkode($last_no_bukti, 'LR' . $cabang . $tahun, 5);
 
                 DB::table('ledger_bank')
                     ->insert([
