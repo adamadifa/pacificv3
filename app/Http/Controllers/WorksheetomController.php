@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Harga;
 use App\Models\Retur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -83,6 +84,11 @@ class WorksheetomController extends Controller
 
     public function showmonitoringretur(Request $request)
     {
+        $retur = DB::table('retur')
+            ->join('penjualan', 'retur.no_fak_penj', '=', 'penjualan.no_fak_penj')
+            ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->where('no_retur_penj', $request->no_retur_penj)
+            ->first();
         $detail = DB::table('detailretur')
             ->select('detailretur.*', 'kode_produk', 'nama_barang', 'isipcsdus', 'isipack', 'isipcs')
             ->join('barang', 'detailretur.kode_barang', '=', 'barang.kode_barang')
@@ -90,5 +96,13 @@ class WorksheetomController extends Controller
             ->get();
 
         return view('worksheetom.show_monitoring_retur', compact('detail'));
+    }
+
+
+    public function storepelunasanretur(Request $request)
+    {
+        $id_user = Auth::user()->id;
+        $barang = Harga::where('kode_barang', $request->kode_barang)->first();
+        $cek = DB::table('detailretur_pelunasan')->where('kode_barang', $request->kode_barang)->where('no_retur_penj', $request->no_retur_penj)->count();
     }
 }

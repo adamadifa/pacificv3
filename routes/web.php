@@ -1974,6 +1974,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/worksheetom/limitkredit', [LimitkreditController::class, 'index']);
     Route::get('/worksheetom/monitoringretur', [WorksheetomController::class, 'monitoringretur']);
     Route::post('/worksheetom/showmonitoringretur', [WorksheetomController::class, 'showmonitoringretur']);
+    Route::post('/worksheetom/storepelunasanretur', [WorksheetomController::class, 'storepelunasanretur']);
 });
 
 
