@@ -371,6 +371,7 @@ class KontrabonController extends Controller
 
         $ceklastnobukti = substr($lastno_bukti, 7, 5);
 
+        dd($ceklastnobukti);
         if ($ceklastnobukti >= 9999) {
             $no_bukti = buatkode($lastno_bukti, 'LR' . $cbg . $tahun, 5);
         } else {
