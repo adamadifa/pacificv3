@@ -1052,37 +1052,34 @@ class LaporanaccountingController extends Controller
         lockyear($tahun);
         $kode_cabang = $request->kode_cabang;
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
-        $nama_cabang = $cabang != null ?  $cabang->nama_cabang : '';
+        $nama_cabang = $cabang != null ? $cabang->nama_cabang : '';
         if ($bulan < 10) {
-            $bulan2 = "0" . $bulan;
+            $bln = "0" . $bulan;
         } else {
-            $bulan2 = $bulan;
+            $bln = $bulan;
         }
-        $dari = $tahun . "-" . $bulan2 . "-01";
+        $dari = $tahun . "-" . $bln . "-01";
         $sampai = date("Y-m-t", strtotime($dari));
-        $query = Costratio::query();
-        if (!empty($request->kode_cabang)) {
-            $query->selectRaw("costratio_biaya.kode_akun,nama_akun,SUM(jumlah) as total");
-            $query->where('costratio_biaya.kode_cabang', $request->kode_cabang);
+
+        if (!empty($kode_cabang)) {
+            $cbg = DB::table('cabang')->where('kode_cabang', $kode_cabang)->orderBy('kode_cabang')->get();
         } else {
-            $query->selectRaw("costratio_biaya.kode_akun,nama_akun,
-            SUM(IF(kode_cabang='BDG',jumlah,0)) as bdg,
-            SUM(IF(kode_cabang='BGR',jumlah,0)) as bgr,
-            SUM(IF(kode_cabang='GRT',jumlah,0)) as grt,
-            SUM(IF(kode_cabang='KLT',jumlah,0)) as klt,
-            SUM(IF(kode_cabang='PST',jumlah,0)) as pst,
-            SUM(IF(kode_cabang='PWT',jumlah,0)) as pwt,
-            SUM(IF(kode_cabang='SBY',jumlah,0)) as sby,
-            SUM(IF(kode_cabang='SKB',jumlah,0)) as skb,
-            SUM(IF(kode_cabang='SMR',jumlah,0)) as smr,
-            SUM(IF(kode_cabang='TGL',jumlah,0)) as tgl,
-            SUM(IF(kode_cabang='TSM',jumlah,0)) as tsm,
-            SUM(IF(kode_cabang='PWK',jumlah,0)) as pwk,
-            SUM(IF(kode_cabang='BTN',jumlah,0)) as btn,
-            SUM(IF(kode_cabang='BKI',jumlah,0)) as bki,
-            SUM(jumlah) as total");
+            $cbg = DB::table('cabang')->orderBy('kode_cabang')->get();
         }
 
+        //Looping BIaya Per Cabang
+        $select_biaya_cabang = "";
+        foreach ($cbg as $c) {
+            $kode_cbg = strtolower($c->kode_cabang);
+            $select_biaya_cabang .= "SUM(IF(kode_cabang='$c->kode_cabang',jumlah,0)) as " . $kode_cbg . ",";
+        }
+
+        // Data Biaya
+        $query = Costratio::query();
+        $query->selectRaw("
+            $select_biaya_cabang
+            costratio_biaya.kode_akun,nama_akun,
+            SUM(jumlah) as total");
         $query->leftjoin('coa', 'costratio_biaya.kode_akun', '=', 'coa.kode_akun');
         $query->whereBetween('tgl_transaksi', [$dari, $sampai]);
         $query->orderBy('costratio_biaya.kode_akun');
@@ -1090,315 +1087,101 @@ class LaporanaccountingController extends Controller
         $query->get();
         $biaya = $query->get();
 
-        // $qpotongan = Penjualan::query();
-        // if (!empty($request->kode_cabang)) {
-        //     $qpotongan->selectRaw("SUM(potongan + potistimewa + penyharga) as total");
-        //     $qpotongan->where('karyawan.kode_cabang', $request->kode_cabang);
-        // } else {
-        //     $qpotongan->selectRaw("
-        //     SUM(IF(karyawan.kode_cabang='BDG',potongan + potistimewa + penyharga,0)) as bdg,
-        //     SUM(IF(karyawan.kode_cabang='BGR',potongan + potistimewa + penyharga,0)) as bgr,
-        //     SUM(IF(karyawan.kode_cabang='GRT',potongan + potistimewa + penyharga,0)) as grt,
-        //     SUM(IF(karyawan.kode_cabang='KLT',potongan + potistimewa + penyharga,0)) as klt,
-        //     SUM(IF(karyawan.kode_cabang='PST',potongan + potistimewa + penyharga,0)) as pst,
-        //     SUM(IF(karyawan.kode_cabang='PWT',potongan + potistimewa + penyharga,0)) as pwt,
-        //     SUM(IF(karyawan.kode_cabang='SBY',potongan + potistimewa + penyharga,0)) as sby,
-        //     SUM(IF(karyawan.kode_cabang='SKB',potongan + potistimewa + penyharga,0)) as skb,
-        //     SUM(IF(karyawan.kode_cabang='SMR',potongan + potistimewa + penyharga,0)) as smr,
-        //     SUM(IF(karyawan.kode_cabang='TGL',potongan + potistimewa + penyharga,0)) as tgl,
-        //     SUM(IF(karyawan.kode_cabang='TSM',potongan + potistimewa + penyharga,0)) as tsm,
-        //     SUM(IF(karyawan.kode_cabang='PWK',potongan + potistimewa + penyharga,0)) as pwk,
-        //     SUM(IF(karyawan.kode_cabang='BTN',potongan + potistimewa + penyharga,0)) as btn,
-        //     SUM(potongan + potistimewa + penyharga) as total
-        // ");
-        // }
-        // $qpotongan->leftJoin('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
-        // $qpotongan->whereBetween('tgltransaksi', [$dari, $sampai]);
-        // $potongan = $qpotongan->first();
 
-        //dd($potongan);
-
-        $qppn = Penjualan::query();
-        if (!empty($request->kode_cabang)) {
-            $qppn->selectRaw("SUM(ppn) as total");
-            $qppn->where('karyawan.kode_cabang', $request->kode_cabang);
-        } else {
-            $qppn->selectRaw("
-            SUM(IF(karyawan.kode_cabang='BDG',ppn,0)) as bdg,
-            SUM(IF(karyawan.kode_cabang='BGR',ppn,0)) as bgr,
-            SUM(IF(karyawan.kode_cabang='GRT',ppn,0)) as grt,
-            SUM(IF(karyawan.kode_cabang='KLT',ppn,0)) as klt,
-            SUM(IF(karyawan.kode_cabang='PST',ppn,0)) as pst,
-            SUM(IF(karyawan.kode_cabang='PWT',ppn,0)) as pwt,
-            SUM(IF(karyawan.kode_cabang='SBY',ppn,0)) as sby,
-            SUM(IF(karyawan.kode_cabang='SKB',ppn,0)) as skb,
-            SUM(IF(karyawan.kode_cabang='SMR',ppn,0)) as smr,
-            SUM(IF(karyawan.kode_cabang='TGL',ppn,0)) as tgl,
-            SUM(IF(karyawan.kode_cabang='TSM',ppn,0)) as tsm,
-            SUM(IF(karyawan.kode_cabang='PWK',ppn,0)) as pwk,
-            SUM(IF(karyawan.kode_cabang='BTN',ppn,0)) as btn,
-            SUM(IF(karyawan.kode_cabang='BKI',ppn,0)) as bki,
-            SUM(ppn) as total
-        ");
+        // Data Logistik
+        $select_logistik_cabang = "";
+        foreach ($cbg as $c) {
+            $kode_cbg = strtolower($c->kode_cabang);
+            $select_logistik_cabang .= "
+            SUM(IF(kode_cabang='$c->kode_cabang',qty *
+            CASE
+            WHEN sa.hargasaldoawal IS NULL THEN gm.hargapemasukan
+            WHEN gm.hargapemasukan IS NULL THEN sa.hargasaldoawal
+            ELSE
+            (sa.totalsa + gm.totalpemasukan) / (sa.qtysaldoawal + gm.qtypemasukan)
+            END ,0)) as " . $kode_cbg . ",";
         }
-        $qppn->leftJoin('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
-        $qppn->whereBetween('tgltransaksi', [$dari, $sampai]);
-        $ppn = $qppn->first();
+        $qlogistik = Detailpengeluarangudanglogistik::query();
+        $qlogistik->selectRaw("
+            $select_logistik_cabang
+            SUM(IF(kode_cabang IS NOT NULL,qty *
+            CASE
+            WHEN sa.hargasaldoawal IS NULL THEN gm.hargapemasukan
+            WHEN gm.hargapemasukan IS NULL THEN sa.hargasaldoawal
+            ELSE
+            (sa.totalsa + gm.totalpemasukan) / (sa.qtysaldoawal + gm.qtypemasukan)
+            END ,0)) as total
+        ");
+        $qlogistik->join('pengeluaran', 'detail_pengeluaran.nobukti_pengeluaran', '=', 'pengeluaran.nobukti_pengeluaran');
+        $qlogistik->join('master_barang_pembelian', 'detail_pengeluaran.kode_barang', '=', 'master_barang_pembelian.kode_barang');
 
+        $qlogistik->leftJoin(
+            DB::raw("(
+                SELECT saldoawal_gl_detail.kode_barang,SUM(saldoawal_gl_detail.harga) AS hargasaldoawal,SUM( qty ) AS qtysaldoawal,SUM(saldoawal_gl_detail.harga*qty) AS
+                totalsa FROM saldoawal_gl_detail
+                INNER JOIN saldoawal_gl ON saldoawal_gl.kode_saldoawal_gl=saldoawal_gl_detail.kode_saldoawal_gl
+                WHERE bulan = '$bulan' AND tahun = '$tahun'
+                GROUP BY saldoawal_gl_detail.kode_barang
+            ) sa"),
+            function ($join) {
+                $join->on('detail_pengeluaran.kode_barang', '=', 'sa.kode_barang');
+            }
+        );
 
+        $qlogistik->leftJoin(
+            DB::raw("(
+                SELECT detail_pemasukan.kode_barang,SUM( penyesuaian ) AS penyesuaian,SUM( qty ) AS qtypemasukan,SUM( harga ) AS hargapemasukan,SUM(detail_pemasukan.harga * qty) AS totalpemasukan FROM
+                detail_pemasukan
+                INNER JOIN pemasukan ON detail_pemasukan.nobukti_pemasukan = pemasukan.nobukti_pemasukan
+                WHERE MONTH(tgl_pemasukan) = '$bln' AND YEAR(tgl_pemasukan) = '$tahun'
+                GROUP BY detail_pemasukan.kode_barang
+            ) gm"),
+            function ($join) {
+                $join->on('detail_pengeluaran.kode_barang', '=', 'gm.kode_barang');
+            }
+        );
+
+        $qlogistik->where('master_barang_pembelian.kode_kategori', 'K001');
+        $qlogistik->whereBetween('tgl_pengeluaran', [$dari, $sampai]);
+        $logistik = $qlogistik->first();
+
+        //Data Bahan
+        $select_bahan_cabang = "";
+        foreach ($cbg as $c) {
+            $nama_cbg = strtolower(ucwords($c->nama_cabang));
+            $kode_cbg = strtolower($c->kode_cabang);
+            $select_bahan_cabang .= "
+            SUM(IF(unit='$nama_cbg',
+            CASE
+            WHEN satuan = 'KG' THEN qty_berat * 1000
+            WHEN satuan = 'Liter' THEN qty_berat * 1000 * IFNULL((SELECT harga FROM harga_minyak WHERE bulan ='$bulan' AND tahun = '$tahun'),0)
+            ELSE qty_unit
+            END
+            *
+            CASE
+            WHEN satuan ='KG' THEN (harga +totalharga + IF(qtypengganti2=0,(qtypengganti2*1000) * 0,( (qtypengganti2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000))))) + IF(qtylainnya2=0,(qtylainnya2*1000) * 0,( (qtylainnya2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000)))))) / ( (qtyberatsa*1000) + (qtypemb2 * 1000) + (qtylainnya2*1000) + (qtypengganti2*1000))
+            ELSE
+            (harga + totalharga + IF(qtylainnya1=0,qtylainnya1*0,qtylainnya1 * IF(qtylainnya1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1 ))) + IF(qtypengganti1=0,qtypengganti1*0,qtypengganti1 * IF(qtypengganti1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1 )))) / (qtyunitsa + qtypemb1 + qtylainnya1 + qtypengganti1)
+            END,0)
+            ) as " . $kode_cbg . ",";
+        }
         $qbahan = Detailpengeluarangudangbahan::query();
-        if (!empty($kode_cabang)) {
-            $qbahan->selectRaw("SUM(
+        $qbahan->selectRaw("
+            $select_bahan_cabang
+            SUM(
                 CASE
-                    WHEN satuan = 'KG' THEN qty_berat * 1000
-                    WHEN satuan = 'Liter' THEN qty_berat * 1000 * IFNULL((SELECT harga FROM harga_minyak WHERE bulan ='$bulan' AND tahun = '$tahun'),0)
-                    ELSE qty_unit
+                WHEN satuan = 'KG' THEN qty_berat * 1000
+                WHEN satuan = 'Liter' THEN qty_berat * 1000 * IFNULL((SELECT harga FROM harga_minyak WHERE bulan ='$bulan' AND tahun = '$tahun'),0)
+                ELSE qty_unit
                 END
                 *
                 CASE
-                    WHEN satuan ='KG' THEN (harga +totalharga + IF(qtypengganti2=0,(qtypengganti2*1000) * 0,( (qtypengganti2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000))))) + IF(qtylainnya2=0,(qtylainnya2*1000) * 0,( (qtylainnya2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000)))))) /  ( (qtyberatsa*1000) + (qtypemb2 * 1000) + (qtylainnya2*1000) + (qtypengganti2*1000))
+                WHEN satuan ='KG' THEN (harga +totalharga + IF(qtypengganti2=0,(qtypengganti2*1000) * 0,( (qtypengganti2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000))))) + IF(qtylainnya2=0,(qtylainnya2*1000) * 0,( (qtylainnya2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000)))))) / ( (qtyberatsa*1000) + (qtypemb2 * 1000) + (qtylainnya2*1000) + (qtypengganti2*1000))
                 ELSE
-                (harga + totalharga + IF(qtylainnya1=0,qtylainnya1*0,qtylainnya1 * IF(qtylainnya1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  ))) + IF(qtypengganti1=0,qtypengganti1*0,qtypengganti1 * IF(qtypengganti1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  )))) / (qtyunitsa + qtypemb1 + qtylainnya1 + qtypengganti1)
+                (harga + totalharga + IF(qtylainnya1=0,qtylainnya1*0,qtylainnya1 * IF(qtylainnya1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1 ))) + IF(qtypengganti1=0,qtypengganti1*0,qtypengganti1 * IF(qtypengganti1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1 )))) / (qtyunitsa + qtypemb1 + qtylainnya1 + qtypengganti1)
                 END
-
-                ) as total");
-            $qbahan->where('pengeluaran_gb.unit', $nama_cabang);
-        } else {
-            $qbahan->selectRaw("SUM(IF(unit='Tasikmalaya',
-            CASE
-                WHEN satuan = 'KG' THEN qty_berat * 1000
-                WHEN satuan = 'Liter' THEN qty_berat * 1000 * IFNULL((SELECT harga FROM harga_minyak WHERE bulan ='$bulan' AND tahun = '$tahun'),0)
-                ELSE qty_unit
-            END
-            *
-            CASE
-                WHEN satuan ='KG' THEN (harga +totalharga + IF(qtypengganti2=0,(qtypengganti2*1000) * 0,( (qtypengganti2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000))))) + IF(qtylainnya2=0,(qtylainnya2*1000) * 0,( (qtylainnya2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000)))))) /  ( (qtyberatsa*1000) + (qtypemb2 * 1000) + (qtylainnya2*1000) + (qtypengganti2*1000))
-            ELSE
-            (harga + totalharga + IF(qtylainnya1=0,qtylainnya1*0,qtylainnya1 * IF(qtylainnya1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  ))) + IF(qtypengganti1=0,qtypengganti1*0,qtypengganti1 * IF(qtypengganti1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  )))) / (qtyunitsa + qtypemb1 + qtylainnya1 + qtypengganti1)
-            END,0)
-
-            ) as tsm,
-
-            SUM(IF(unit='Bandung',
-            CASE
-                WHEN satuan = 'KG' THEN qty_berat * 1000
-                WHEN satuan = 'Liter' THEN qty_berat * 1000 * IFNULL((SELECT harga FROM harga_minyak WHERE bulan ='$bulan' AND tahun = '$tahun'),0)
-                ELSE qty_unit
-            END
-            *
-            CASE
-                WHEN satuan ='KG' THEN (harga +totalharga + IF(qtypengganti2=0,(qtypengganti2*1000) * 0,( (qtypengganti2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000))))) + IF(qtylainnya2=0,(qtylainnya2*1000) * 0,( (qtylainnya2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000)))))) /  ( (qtyberatsa*1000) + (qtypemb2 * 1000) + (qtylainnya2*1000) + (qtypengganti2*1000))
-            ELSE
-            (harga + totalharga + IF(qtylainnya1=0,qtylainnya1*0,qtylainnya1 * IF(qtylainnya1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  ))) + IF(qtypengganti1=0,qtypengganti1*0,qtypengganti1 * IF(qtypengganti1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  )))) / (qtyunitsa + qtypemb1 + qtylainnya1 + qtypengganti1)
-            END,0)
-
-            ) as bdg,
-
-            SUM(IF(unit='Tegal',
-            CASE
-                WHEN satuan = 'KG' THEN qty_berat * 1000
-                WHEN satuan = 'Liter' THEN qty_berat * 1000 * IFNULL((SELECT harga FROM harga_minyak WHERE bulan ='$bulan' AND tahun = '$tahun'),0)
-                ELSE qty_unit
-            END
-            *
-            CASE
-                WHEN satuan ='KG' THEN (harga +totalharga + IF(qtypengganti2=0,(qtypengganti2*1000) * 0,( (qtypengganti2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000))))) + IF(qtylainnya2=0,(qtylainnya2*1000) * 0,( (qtylainnya2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000)))))) /  ( (qtyberatsa*1000) + (qtypemb2 * 1000) + (qtylainnya2*1000) + (qtypengganti2*1000))
-            ELSE
-            (harga + totalharga + IF(qtylainnya1=0,qtylainnya1*0,qtylainnya1 * IF(qtylainnya1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  ))) + IF(qtypengganti1=0,qtypengganti1*0,qtypengganti1 * IF(qtypengganti1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  )))) / (qtyunitsa + qtypemb1 + qtylainnya1 + qtypengganti1)
-            END,0)
-
-            ) as tgl,
-
-
-            SUM(IF(unit='Bogor',
-            CASE
-                WHEN satuan = 'KG' THEN qty_berat * 1000
-                WHEN satuan = 'Liter' THEN qty_berat * 1000 * IFNULL((SELECT harga FROM harga_minyak WHERE bulan ='$bulan' AND tahun = '$tahun'),0)
-                ELSE qty_unit
-            END
-            *
-            CASE
-                WHEN satuan ='KG' THEN (harga +totalharga + IF(qtypengganti2=0,(qtypengganti2*1000) * 0,( (qtypengganti2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000))))) + IF(qtylainnya2=0,(qtylainnya2*1000) * 0,( (qtylainnya2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000)))))) /  ( (qtyberatsa*1000) + (qtypemb2 * 1000) + (qtylainnya2*1000) + (qtypengganti2*1000))
-            ELSE
-            (harga + totalharga + IF(qtylainnya1=0,qtylainnya1*0,qtylainnya1 * IF(qtylainnya1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  ))) + IF(qtypengganti1=0,qtypengganti1*0,qtypengganti1 * IF(qtypengganti1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  )))) / (qtyunitsa + qtypemb1 + qtylainnya1 + qtypengganti1)
-            END,0)
-
-            ) as bgr,
-
-
-            SUM(IF(unit='Garut',
-            CASE
-                WHEN satuan = 'KG' THEN qty_berat * 1000
-                WHEN satuan = 'Liter' THEN qty_berat * 1000 * IFNULL((SELECT harga FROM harga_minyak WHERE bulan ='$bulan' AND tahun = '$tahun'),0)
-                ELSE qty_unit
-            END
-            *
-            CASE
-                WHEN satuan ='KG' THEN (harga +totalharga + IF(qtypengganti2=0,(qtypengganti2*1000) * 0,( (qtypengganti2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000))))) + IF(qtylainnya2=0,(qtylainnya2*1000) * 0,( (qtylainnya2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000)))))) /  ( (qtyberatsa*1000) + (qtypemb2 * 1000) + (qtylainnya2*1000) + (qtypengganti2*1000))
-            ELSE
-            (harga + totalharga + IF(qtylainnya1=0,qtylainnya1*0,qtylainnya1 * IF(qtylainnya1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  ))) + IF(qtypengganti1=0,qtypengganti1*0,qtypengganti1 * IF(qtypengganti1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  )))) / (qtyunitsa + qtypemb1 + qtylainnya1 + qtypengganti1)
-            END,0)
-
-            ) as grt,
-
-
-            SUM(IF(unit='Yogyakarta',
-            CASE
-                WHEN satuan = 'KG' THEN qty_berat * 1000
-                WHEN satuan = 'Liter' THEN qty_berat * 1000 * IFNULL((SELECT harga FROM harga_minyak WHERE bulan ='$bulan' AND tahun = '$tahun'),0)
-                ELSE qty_unit
-            END
-            *
-            CASE
-                WHEN satuan ='KG' THEN (harga +totalharga + IF(qtypengganti2=0,(qtypengganti2*1000) * 0,( (qtypengganti2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000))))) + IF(qtylainnya2=0,(qtylainnya2*1000) * 0,( (qtylainnya2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000)))))) /  ( (qtyberatsa*1000) + (qtypemb2 * 1000) + (qtylainnya2*1000) + (qtypengganti2*1000))
-            ELSE
-            (harga + totalharga + IF(qtylainnya1=0,qtylainnya1*0,qtylainnya1 * IF(qtylainnya1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  ))) + IF(qtypengganti1=0,qtypengganti1*0,qtypengganti1 * IF(qtypengganti1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  )))) / (qtyunitsa + qtypemb1 + qtylainnya1 + qtypengganti1)
-            END,0)
-
-            ) as klt,
-
-
-            SUM(IF(unit='PCF PUSAT',
-            CASE
-                WHEN satuan = 'KG' THEN qty_berat * 1000
-                WHEN satuan = 'Liter' THEN qty_berat * 1000 * IFNULL((SELECT harga FROM harga_minyak WHERE bulan ='$bulan' AND tahun = '$tahun'),0)
-                ELSE qty_unit
-            END
-            *
-            CASE
-                WHEN satuan ='KG' THEN (harga +totalharga + IF(qtypengganti2=0,(qtypengganti2*1000) * 0,( (qtypengganti2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000))))) + IF(qtylainnya2=0,(qtylainnya2*1000) * 0,( (qtylainnya2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000)))))) /  ( (qtyberatsa*1000) + (qtypemb2 * 1000) + (qtylainnya2*1000) + (qtypengganti2*1000))
-            ELSE
-            (harga + totalharga + IF(qtylainnya1=0,qtylainnya1*0,qtylainnya1 * IF(qtylainnya1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  ))) + IF(qtypengganti1=0,qtypengganti1*0,qtypengganti1 * IF(qtypengganti1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  )))) / (qtyunitsa + qtypemb1 + qtylainnya1 + qtypengganti1)
-            END,0)
-
-            ) as pst,
-
-            SUM(IF(unit='Purwakarta',
-            CASE
-                WHEN satuan = 'KG' THEN qty_berat * 1000
-                WHEN satuan = 'Liter' THEN qty_berat * 1000 * IFNULL((SELECT harga FROM harga_minyak WHERE bulan ='$bulan' AND tahun = '$tahun'),0)
-                ELSE qty_unit
-            END
-            *
-            CASE
-                WHEN satuan ='KG' THEN (harga +totalharga + IF(qtypengganti2=0,(qtypengganti2*1000) * 0,( (qtypengganti2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000))))) + IF(qtylainnya2=0,(qtylainnya2*1000) * 0,( (qtylainnya2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000)))))) /  ( (qtyberatsa*1000) + (qtypemb2 * 1000) + (qtylainnya2*1000) + (qtypengganti2*1000))
-            ELSE
-            (harga + totalharga + IF(qtylainnya1=0,qtylainnya1*0,qtylainnya1 * IF(qtylainnya1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  ))) + IF(qtypengganti1=0,qtypengganti1*0,qtypengganti1 * IF(qtypengganti1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  )))) / (qtyunitsa + qtypemb1 + qtylainnya1 + qtypengganti1)
-            END,0)
-
-            ) as pwk,
-
-
-            SUM(IF(unit='Purwokerto',
-            CASE
-                WHEN satuan = 'KG' THEN qty_berat * 1000
-                WHEN satuan = 'Liter' THEN qty_berat * 1000 * IFNULL((SELECT harga FROM harga_minyak WHERE bulan ='$bulan' AND tahun = '$tahun'),0)
-                ELSE qty_unit
-            END
-            *
-            CASE
-                WHEN satuan ='KG' THEN (harga +totalharga + IF(qtypengganti2=0,(qtypengganti2*1000) * 0,( (qtypengganti2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000))))) + IF(qtylainnya2=0,(qtylainnya2*1000) * 0,( (qtylainnya2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000)))))) /  ( (qtyberatsa*1000) + (qtypemb2 * 1000) + (qtylainnya2*1000) + (qtypengganti2*1000))
-            ELSE
-            (harga + totalharga + IF(qtylainnya1=0,qtylainnya1*0,qtylainnya1 * IF(qtylainnya1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  ))) + IF(qtypengganti1=0,qtypengganti1*0,qtypengganti1 * IF(qtypengganti1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  )))) / (qtyunitsa + qtypemb1 + qtylainnya1 + qtypengganti1)
-            END,0)
-
-            ) as pwt,
-
-            SUM(IF(unit='Surabaya',
-            CASE
-                WHEN satuan = 'KG' THEN qty_berat * 1000
-                WHEN satuan = 'Liter' THEN qty_berat * 1000 * IFNULL((SELECT harga FROM harga_minyak WHERE bulan ='$bulan' AND tahun = '$tahun'),0)
-                ELSE qty_unit
-            END
-            *
-            CASE
-                WHEN satuan ='KG' THEN (harga +totalharga + IF(qtypengganti2=0,(qtypengganti2*1000) * 0,( (qtypengganti2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000))))) + IF(qtylainnya2=0,(qtylainnya2*1000) * 0,( (qtylainnya2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000)))))) /  ( (qtyberatsa*1000) + (qtypemb2 * 1000) + (qtylainnya2*1000) + (qtypengganti2*1000))
-            ELSE
-            (harga + totalharga + IF(qtylainnya1=0,qtylainnya1*0,qtylainnya1 * IF(qtylainnya1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  ))) + IF(qtypengganti1=0,qtypengganti1*0,qtypengganti1 * IF(qtypengganti1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  )))) / (qtyunitsa + qtypemb1 + qtylainnya1 + qtypengganti1)
-            END,0)
-
-            ) as sby,
-
-
-            SUM(IF(unit='Sukabumi',
-            CASE
-                WHEN satuan = 'KG' THEN qty_berat * 1000
-                WHEN satuan = 'Liter' THEN qty_berat * 1000 * IFNULL((SELECT harga FROM harga_minyak WHERE bulan ='$bulan' AND tahun = '$tahun'),0)
-                ELSE qty_unit
-            END
-            *
-            CASE
-                WHEN satuan ='KG' THEN (harga +totalharga + IF(qtypengganti2=0,(qtypengganti2*1000) * 0,( (qtypengganti2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000))))) + IF(qtylainnya2=0,(qtylainnya2*1000) * 0,( (qtylainnya2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000)))))) /  ( (qtyberatsa*1000) + (qtypemb2 * 1000) + (qtylainnya2*1000) + (qtypengganti2*1000))
-            ELSE
-            (harga + totalharga + IF(qtylainnya1=0,qtylainnya1*0,qtylainnya1 * IF(qtylainnya1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  ))) + IF(qtypengganti1=0,qtypengganti1*0,qtypengganti1 * IF(qtypengganti1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  )))) / (qtyunitsa + qtypemb1 + qtylainnya1 + qtypengganti1)
-            END,0)
-
-            ) as skb,
-
-
-
-            SUM(IF(unit='Semarang',
-            CASE
-                WHEN satuan = 'KG' THEN qty_berat * 1000
-                WHEN satuan = 'Liter' THEN qty_berat * 1000 * IFNULL((SELECT harga FROM harga_minyak WHERE bulan ='$bulan' AND tahun = '$tahun'),0)
-                ELSE qty_unit
-            END
-            *
-            CASE
-                WHEN satuan ='KG' THEN (harga +totalharga + IF(qtypengganti2=0,(qtypengganti2*1000) * 0,( (qtypengganti2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000))))) + IF(qtylainnya2=0,(qtylainnya2*1000) * 0,( (qtylainnya2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000)))))) /  ( (qtyberatsa*1000) + (qtypemb2 * 1000) + (qtylainnya2*1000) + (qtypengganti2*1000))
-            ELSE
-            (harga + totalharga + IF(qtylainnya1=0,qtylainnya1*0,qtylainnya1 * IF(qtylainnya1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  ))) + IF(qtypengganti1=0,qtypengganti1*0,qtypengganti1 * IF(qtypengganti1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  )))) / (qtyunitsa + qtypemb1 + qtylainnya1 + qtypengganti1)
-            END,0)
-
-            ) as smr,
-
-            SUM(IF(unit='Banten',
-            CASE
-                WHEN satuan = 'KG' THEN qty_berat * 1000
-                WHEN satuan = 'Liter' THEN qty_berat * 1000 * IFNULL((SELECT harga FROM harga_minyak WHERE bulan ='$bulan' AND tahun = '$tahun'),0)
-                ELSE qty_unit
-            END
-            *
-            CASE
-                WHEN satuan ='KG' THEN (harga +totalharga + IF(qtypengganti2=0,(qtypengganti2*1000) * 0,( (qtypengganti2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000))))) + IF(qtylainnya2=0,(qtylainnya2*1000) * 0,( (qtylainnya2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000)))))) /  ( (qtyberatsa*1000) + (qtypemb2 * 1000) + (qtylainnya2*1000) + (qtypengganti2*1000))
-            ELSE
-            (harga + totalharga + IF(qtylainnya1=0,qtylainnya1*0,qtylainnya1 * IF(qtylainnya1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  ))) + IF(qtypengganti1=0,qtypengganti1*0,qtypengganti1 * IF(qtypengganti1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  )))) / (qtyunitsa + qtypemb1 + qtylainnya1 + qtypengganti1)
-            END,0)
-
-            ) as btn,
-
-
-            SUM(IF(unit='Bekasi',
-            CASE
-                WHEN satuan = 'KG' THEN qty_berat * 1000
-                WHEN satuan = 'Liter' THEN qty_berat * 1000 * IFNULL((SELECT harga FROM harga_minyak WHERE bulan ='$bulan' AND tahun = '$tahun'),0)
-                ELSE qty_unit
-            END
-            *
-            CASE
-                WHEN satuan ='KG' THEN (harga +totalharga + IF(qtypengganti2=0,(qtypengganti2*1000) * 0,( (qtypengganti2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000))))) + IF(qtylainnya2=0,(qtylainnya2*1000) * 0,( (qtylainnya2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000)))))) /  ( (qtyberatsa*1000) + (qtypemb2 * 1000) + (qtylainnya2*1000) + (qtypengganti2*1000))
-            ELSE
-            (harga + totalharga + IF(qtylainnya1=0,qtylainnya1*0,qtylainnya1 * IF(qtylainnya1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  ))) + IF(qtypengganti1=0,qtypengganti1*0,qtypengganti1 * IF(qtypengganti1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  )))) / (qtyunitsa + qtypemb1 + qtylainnya1 + qtypengganti1)
-            END,0)
-
-            ) as btn,
-
-            SUM(
-            CASE
-                WHEN satuan = 'KG' THEN qty_berat * 1000
-                WHEN satuan = 'Liter' THEN qty_berat * 1000 * IFNULL((SELECT harga FROM harga_minyak WHERE bulan ='$bulan' AND tahun = '$tahun'),0)
-                ELSE qty_unit
-            END
-            *
-            CASE
-                WHEN satuan ='KG' THEN (harga +totalharga + IF(qtypengganti2=0,(qtypengganti2*1000) * 0,( (qtypengganti2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000))))) + IF(qtylainnya2=0,(qtylainnya2*1000) * 0,( (qtylainnya2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000)))))) /  ( (qtyberatsa*1000) + (qtypemb2 * 1000) + (qtylainnya2*1000) + (qtypengganti2*1000))
-            ELSE
-            (harga + totalharga + IF(qtylainnya1=0,qtylainnya1*0,qtylainnya1 * IF(qtylainnya1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  ))) + IF(qtypengganti1=0,qtypengganti1*0,qtypengganti1 * IF(qtypengganti1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1  )))) / (qtyunitsa + qtypemb1 + qtylainnya1 + qtypengganti1)
-            END
-
             ) as total
-            ");
-        }
+        ");
         $qbahan->join('master_barang_pembelian', 'detail_pengeluaran_gb.kode_barang', '=', 'master_barang_pembelian.kode_barang');
         $qbahan->join('pengeluaran_gb', 'detail_pengeluaran_gb.nobukti_pengeluaran', '=', 'pengeluaran_gb.nobukti_pengeluaran');
         $qbahan->leftJoin(
@@ -1416,7 +1199,7 @@ class LaporanaccountingController extends Controller
                 FROM
                 detail_pemasukan_gb
                 INNER JOIN pemasukan_gb ON detail_pemasukan_gb.nobukti_pemasukan = pemasukan_gb.nobukti_pemasukan
-                WHERE MONTH(tgl_pemasukan) = '$bulan2' AND YEAR(tgl_pemasukan) = '$tahun'
+                WHERE MONTH(tgl_pemasukan) = '$bln' AND YEAR(tgl_pemasukan) = '$tahun'
                 GROUP BY detail_pemasukan_gb.kode_barang
             ) gm"),
             function ($join) {
@@ -1429,7 +1212,7 @@ class LaporanaccountingController extends Controller
                 SELECT SUM((qty*harga)+penyesuaian) as totalharga,kode_barang
                 FROM detail_pembelian
                 INNER JOIN pembelian ON detail_pembelian.nobukti_pembelian = pembelian.nobukti_pembelian
-                WHERE MONTH(tgl_pembelian) = '$bulan2' AND YEAR(tgl_pembelian) = '$tahun'
+                WHERE MONTH(tgl_pembelian) = '$bln' AND YEAR(tgl_pembelian) = '$tahun'
                 GROUP BY kode_barang
             ) dp"),
             function ($join) {
@@ -1467,232 +1250,30 @@ class LaporanaccountingController extends Controller
         $qbahan->where('pengeluaran_gb.kode_dept', 'Cabang');
         $bahan = $qbahan->first();
 
-        //dd($bahan);
 
-        $qlogistik = Detailpengeluarangudanglogistik::query();
-        if (!empty($kode_cabang)) {
-            $qlogistik->selectRaw("SUM(qty *
-            CASE
-                WHEN sa.hargasaldoawal IS NULL THEN gm.hargapemasukan
-                WHEN gm.hargapemasukan IS NULL THEN sa.hargasaldoawal
-                ELSE
-                (sa.totalsa + gm.totalpemasukan) / (sa.qtysaldoawal + gm.qtypemasukan)
-                END) as total");
-
-            $qlogistik->where('detail_pengeluaran.kode_cabang', $kode_cabang);
-        } else {
-            $qlogistik->selectRaw("SUM(IF(kode_cabang='TSM',qty *
-        CASE
-            WHEN sa.hargasaldoawal IS NULL THEN gm.hargapemasukan
-            WHEN gm.hargapemasukan IS NULL THEN sa.hargasaldoawal
-            ELSE
-            (sa.totalsa + gm.totalpemasukan) / (sa.qtysaldoawal + gm.qtypemasukan)
-            END ,0)) as tsm,
-
-            SUM(IF(kode_cabang='BDG',qty *
-        CASE
-            WHEN sa.hargasaldoawal IS NULL THEN gm.hargapemasukan
-            WHEN gm.hargapemasukan IS NULL THEN sa.hargasaldoawal
-            ELSE
-            (sa.totalsa + gm.totalpemasukan) / (sa.qtysaldoawal + gm.qtypemasukan)
-            END ,0)) as bdg,
-
-            SUM(IF(kode_cabang='TGL',qty *
-        CASE
-            WHEN sa.hargasaldoawal IS NULL THEN gm.hargapemasukan
-            WHEN gm.hargapemasukan IS NULL THEN sa.hargasaldoawal
-            ELSE
-            (sa.totalsa + gm.totalpemasukan) / (sa.qtysaldoawal + gm.qtypemasukan)
-            END ,0)) as tgl,
-
-            SUM(IF(kode_cabang='SKB',qty *
-        CASE
-            WHEN sa.hargasaldoawal IS NULL THEN gm.hargapemasukan
-            WHEN gm.hargapemasukan IS NULL THEN sa.hargasaldoawal
-            ELSE
-            (sa.totalsa + gm.totalpemasukan) / (sa.qtysaldoawal + gm.qtypemasukan)
-            END ,0)) as skb,
-
-            SUM(IF(kode_cabang='BGR',qty *
-        CASE
-            WHEN sa.hargasaldoawal IS NULL THEN gm.hargapemasukan
-            WHEN gm.hargapemasukan IS NULL THEN sa.hargasaldoawal
-            ELSE
-            (sa.totalsa + gm.totalpemasukan) / (sa.qtysaldoawal + gm.qtypemasukan)
-            END ,0)) as bgr,
-
-            SUM(IF(kode_cabang='PWT',qty *
-        CASE
-            WHEN sa.hargasaldoawal IS NULL THEN gm.hargapemasukan
-            WHEN gm.hargapemasukan IS NULL THEN sa.hargasaldoawal
-            ELSE
-            (sa.totalsa + gm.totalpemasukan) / (sa.qtysaldoawal + gm.qtypemasukan)
-            END ,0)) as pwt,
-
-            SUM(IF(kode_cabang='PST',qty *
-        CASE
-            WHEN sa.hargasaldoawal IS NULL THEN gm.hargapemasukan
-            WHEN gm.hargapemasukan IS NULL THEN sa.hargasaldoawal
-            ELSE
-            (sa.totalsa + gm.totalpemasukan) / (sa.qtysaldoawal + gm.qtypemasukan)
-            END ,0)) as pst,
-
-            SUM(IF(kode_cabang='GRT',qty *
-        CASE
-            WHEN sa.hargasaldoawal IS NULL THEN gm.hargapemasukan
-            WHEN gm.hargapemasukan IS NULL THEN sa.hargasaldoawal
-            ELSE
-            (sa.totalsa + gm.totalpemasukan) / (sa.qtysaldoawal + gm.qtypemasukan)
-            END ,0)) as grt,
-
-            SUM(IF(kode_cabang='SBY',qty *
-        CASE
-            WHEN sa.hargasaldoawal IS NULL THEN gm.hargapemasukan
-            WHEN gm.hargapemasukan IS NULL THEN sa.hargasaldoawal
-            ELSE
-            (sa.totalsa + gm.totalpemasukan) / (sa.qtysaldoawal + gm.qtypemasukan)
-            END ,0)) as sby,
-
-            SUM(IF(kode_cabang='SMR',qty *
-        CASE
-            WHEN sa.hargasaldoawal IS NULL THEN gm.hargapemasukan
-            WHEN gm.hargapemasukan IS NULL THEN sa.hargasaldoawal
-            ELSE
-            (sa.totalsa + gm.totalpemasukan) / (sa.qtysaldoawal + gm.qtypemasukan)
-            END ,0)) as smr,
-
-            SUM(IF(kode_cabang='KLT',qty *
-        CASE
-            WHEN sa.hargasaldoawal IS NULL THEN gm.hargapemasukan
-            WHEN gm.hargapemasukan IS NULL THEN sa.hargasaldoawal
-            ELSE
-            (sa.totalsa + gm.totalpemasukan) / (sa.qtysaldoawal + gm.qtypemasukan)
-            END ,0)) as klt,
-
-            SUM(IF(kode_cabang='PWK',qty *
-        CASE
-            WHEN sa.hargasaldoawal IS NULL THEN gm.hargapemasukan
-            WHEN gm.hargapemasukan IS NULL THEN sa.hargasaldoawal
-            ELSE
-            (sa.totalsa + gm.totalpemasukan) / (sa.qtysaldoawal + gm.qtypemasukan)
-            END ,0)) as pwk,
-
-        SUM(IF(kode_cabang='BTN',qty *
-        CASE
-            WHEN sa.hargasaldoawal IS NULL THEN gm.hargapemasukan
-            WHEN gm.hargapemasukan IS NULL THEN sa.hargasaldoawal
-            ELSE
-            (sa.totalsa + gm.totalpemasukan) / (sa.qtysaldoawal + gm.qtypemasukan)
-            END ,0)) as btn,
-
-        SUM(IF(kode_cabang='BKI',qty *
-        CASE
-            WHEN sa.hargasaldoawal IS NULL THEN gm.hargapemasukan
-            WHEN gm.hargapemasukan IS NULL THEN sa.hargasaldoawal
-            ELSE
-            (sa.totalsa + gm.totalpemasukan) / (sa.qtysaldoawal + gm.qtypemasukan)
-            END ,0)) as bki,
-
-
-
-            SUM(IF(kode_cabang IS NOT NULL,qty *
-        CASE
-            WHEN sa.hargasaldoawal IS NULL THEN gm.hargapemasukan
-            WHEN gm.hargapemasukan IS NULL THEN sa.hargasaldoawal
-            ELSE
-            (sa.totalsa + gm.totalpemasukan) / (sa.qtysaldoawal + gm.qtypemasukan)
-            END ,0)) as total");
+        //Data Penjualan
+        $select_penjualan_cabang = "";
+        foreach ($cbg as $c) {
+            $kode_cbg = $c->kode_cabang;
+            $select_penjualan_cabang .= "
+                SUM(IF(karyawan.kode_cabang ='$kode_cbg',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0) ,0)) as netswan" . $kode_cbg . ",
+                SUM(IF(karyawan.kode_cabang ='$kode_cbg',brutoaida-potaida - potisaida-penyaida,0)) as netaida" . $kode_cbg . ",";
         }
-        $qlogistik->join('pengeluaran', 'detail_pengeluaran.nobukti_pengeluaran', '=', 'pengeluaran.nobukti_pengeluaran');
-        $qlogistik->join('master_barang_pembelian', 'detail_pengeluaran.kode_barang', '=', 'master_barang_pembelian.kode_barang');
-
-        $qlogistik->leftJoin(
-            DB::raw("(
-                SELECT saldoawal_gl_detail.kode_barang,SUM(saldoawal_gl_detail.harga) AS hargasaldoawal,SUM( qty ) AS qtysaldoawal,SUM(saldoawal_gl_detail.harga*qty) AS
-                totalsa FROM saldoawal_gl_detail
-                INNER JOIN saldoawal_gl ON saldoawal_gl.kode_saldoawal_gl=saldoawal_gl_detail.kode_saldoawal_gl
-                WHERE bulan = '$bulan' AND tahun = '$tahun'
-                GROUP BY saldoawal_gl_detail.kode_barang
-            ) sa"),
-            function ($join) {
-                $join->on('detail_pengeluaran.kode_barang', '=', 'sa.kode_barang');
-            }
-        );
-
-        $qlogistik->leftJoin(
-            DB::raw("(
-                SELECT detail_pemasukan.kode_barang,SUM( penyesuaian ) AS penyesuaian,SUM( qty ) AS qtypemasukan,SUM( harga ) AS hargapemasukan,SUM(detail_pemasukan.harga * qty) AS totalpemasukan FROM
-                detail_pemasukan
-                INNER JOIN pemasukan ON detail_pemasukan.nobukti_pemasukan = pemasukan.nobukti_pemasukan
-                WHERE MONTH(tgl_pemasukan) = '$bulan2' AND YEAR(tgl_pemasukan) = '$tahun'
-                GROUP BY detail_pemasukan.kode_barang
-            ) gm"),
-            function ($join) {
-                $join->on('detail_pengeluaran.kode_barang', '=', 'gm.kode_barang');
-            }
-        );
-
-        $qlogistik->where('master_barang_pembelian.kode_kategori', 'K001');
-        $qlogistik->whereBetween('tgl_pengeluaran', [$dari, $sampai]);
-        $logistik = $qlogistik->first();
-        //dd($logistik);
-
         $qpenjualan = Penjualan::query();
-        if (!empty($kode_cabang)) {
-            $qpenjualan->selectRaw("
+        $qpenjualan = $qpenjualan->selectRaw("
+            $select_penjualan_cabang
             SUM(brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0)) as totalswan,
             SUM(brutoaida-potaida - potisaida-penyaida) as totalaida
-            ");
-            $qpenjualan->where('karyawan.kode_cabang', $kode_cabang);
-        } else {
-            $qpenjualan->selectRaw("
-            SUM(IF(karyawan.kode_cabang ='TSM',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0) ,0)) as netswanTSM,
-            SUM(IF(karyawan.kode_cabang ='TSM',brutoaida-potaida - potisaida-penyaida,0)) as netaidaTSM,
-            SUM(IF(karyawan.kode_cabang ='BDG',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanBDG,
-            SUM(IF(karyawan.kode_cabang ='BDG',brutoaida-potaida - potisaida-penyaida,0)) as netaidaBDG,
-            SUM(IF(karyawan.kode_cabang ='SKB',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanSKB,
-            SUM(IF(karyawan.kode_cabang ='SKB',brutoaida-potaida - potisaida-penyaida,0)) as netaidaSKB,
-            SUM(IF(karyawan.kode_cabang ='TGL',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanTGL,
-            SUM(IF(karyawan.kode_cabang ='TGL',brutoaida-potaida - potisaida-penyaida,0)) as netaidaTGL,
-            SUM(IF(karyawan.kode_cabang ='BGR',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanBGR,
-            SUM(IF(karyawan.kode_cabang ='BGR',brutoaida-potaida - potisaida-penyaida,0)) as netaidaBGR,
-            SUM(IF(karyawan.kode_cabang ='PWT',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanPWT,
-            SUM(IF(karyawan.kode_cabang ='PWT',brutoaida-potaida - potisaida-penyaida,0)) as netaidaPWT,
-            SUM(IF(karyawan.kode_cabang ='PST',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanPST,
-            SUM(IF(karyawan.kode_cabang ='PST',brutoaida-potaida - potisaida-penyaida,0)) as netaidaPST,
-            SUM(IF(karyawan.kode_cabang ='GRT',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanGRT,
-            SUM(IF(karyawan.kode_cabang ='GRT',brutoaida-potaida - potisaida-penyaida,0)) as netaidaGRT,
-            SUM(IF(karyawan.kode_cabang ='SBY',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanSBY,
-            SUM(IF(karyawan.kode_cabang ='SBY',brutoaida-potaida - potisaida-penyaida,0)) as netaidaSBY,
-            SUM(IF(karyawan.kode_cabang ='SMR',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanSMR,
-            SUM(IF(karyawan.kode_cabang ='SMR',brutoaida-potaida - potisaida-penyaida,0)) as netaidaSMR,
-            SUM(IF(karyawan.kode_cabang ='KLT',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanKLT,
-            SUM(IF(karyawan.kode_cabang ='KLT',brutoaida-potaida - potisaida-penyaida,0)) as netaidaKLT,
-
-            SUM(IF(karyawan.kode_cabang ='PWK',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanPWK,
-            SUM(IF(karyawan.kode_cabang ='PWK',brutoaida-potaida - potisaida-penyaida,0)) as netaidaPWK,
-
-            SUM(IF(karyawan.kode_cabang ='BTN',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanBTN,
-            SUM(IF(karyawan.kode_cabang ='BTN',brutoaida-potaida - potisaida-penyaida,0)) as netaidaBTN,
-
-
-            SUM(IF(karyawan.kode_cabang ='BKI',brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0),0)) as netswanBKI,
-            SUM(IF(karyawan.kode_cabang ='BKI',brutoaida-potaida - potisaida-penyaida,0)) as netaidaBKI,
-
-            SUM(brutoswan-IFNULL(potswan,0)-IFNULL(potisswan,0) - IFNULL(potisstick,0) - IFNULL(potstick,0) - IFNULL(penyswan,0) - IFNULL(penystick,0) - IFNULL(potsp,0)- IFNULL(potsambal,0)) as totalswan,
-            SUM(brutoaida-potaida - potisaida-penyaida) as totalaida
-            ");
-        }
-
+        ");
         $qpenjualan->leftJoin(
             DB::raw("(
-                SELECT no_fak_penj,
-                SUM(IF(master_barang.jenis_produk = 'SWAN',detailpenjualan.subtotal,0)) as brutoswan,
-                SUM(IF(master_barang.jenis_produk = 'AIDA',detailpenjualan.subtotal,0)) as brutoaida
-                FROM detailpenjualan
-                INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
-                INNER JOIN master_barang ON barang.kode_produk = master_barang.kode_produk
-                GROUP BY no_fak_penj
+            SELECT no_fak_penj,
+            SUM(IF(master_barang.jenis_produk = 'SWAN',detailpenjualan.subtotal,0)) as brutoswan,
+            SUM(IF(master_barang.jenis_produk = 'AIDA',detailpenjualan.subtotal,0)) as brutoaida
+            FROM detailpenjualan
+            INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
+            INNER JOIN master_barang ON barang.kode_produk = master_barang.kode_produk
+            GROUP BY no_fak_penj
             ) dp"),
             function ($join) {
                 $join->on('penjualan.no_fak_penj', '=', 'dp.no_fak_penj');
@@ -1702,48 +1283,21 @@ class LaporanaccountingController extends Controller
         $qpenjualan->whereBetween('tgltransaksi', [$dari, $sampai]);
         $penjualan = $qpenjualan->first();
 
-        $qretur = Detailretur::query();
-        if (!empty($kode_cabang)) {
-            $qretur->selectRaw("
-            SUM(IF(master_barang.jenis_produk = 'SWAN',detailretur.subtotal,0)) as totalreturswan,
-            SUM(IF(master_barang.jenis_produk = 'AIDA',detailretur.subtotal,0)) as totalreturaida
-            ");
-            $qretur->where('karyawan.kode_cabang', $kode_cabang);
-        } else {
-            $qretur->selectRaw("
-            SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='TSM',detailretur.subtotal,0)) as returswanTSM,
-            SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='TSM',detailretur.subtotal,0)) as returaidaTSM,
-            SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='BDG',detailretur.subtotal,0)) as returswanBDG,
-            SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='BDG',detailretur.subtotal,0)) as returaidaBDG,
-            SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='SKB',detailretur.subtotal,0)) as returswanSKB,
-            SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='SKB',detailretur.subtotal,0)) as returaidaSKB,
-            SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='TGL',detailretur.subtotal,0)) as returswanTGL,
-            SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='TGL',detailretur.subtotal,0)) as returaidaTGL,
-            SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='BGR',detailretur.subtotal,0)) as returswanBGR,
-            SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='BGR',detailretur.subtotal,0)) as returaidaBGR,
-            SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='PST',detailretur.subtotal,0)) as returswanPST,
-            SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='PST',detailretur.subtotal,0)) as returaidaPST,
-            SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='GRT',detailretur.subtotal,0)) as returswanGRT,
-            SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='GRT',detailretur.subtotal,0)) as returaidaGRT,
-            SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='SBY',detailretur.subtotal,0)) as returswanSBY,
-            SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='SBY',detailretur.subtotal,0)) as returaidaSBY,
-            SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='SMR',detailretur.subtotal,0)) as returswanSMR,
-            SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='SMR',detailretur.subtotal,0)) as returaidaSMR,
-            SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='PWT',detailretur.subtotal,0)) as returswanPWT,
-            SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='PWT',detailretur.subtotal,0)) as returaidaPWT,
-            SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='KLT',detailretur.subtotal,0)) as returswanKLT,
-            SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='KLT',detailretur.subtotal,0)) as returaidaKLT,
-            SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='PWK',detailretur.subtotal,0)) as returswanPWK,
-            SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='PWK',detailretur.subtotal,0)) as returaidaPWK,
-            SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='BTN',detailretur.subtotal,0)) as returswanBTN,
-            SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='BTN',detailretur.subtotal,0)) as returaidaBTN,
-            SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='BKI',detailretur.subtotal,0)) as returswanBKI,
-            SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='BKI',detailretur.subtotal,0)) as returaidaBKI,
-            SUM(IF(master_barang.jenis_produk = 'SWAN',detailretur.subtotal,0)) as totalreturswan,
-            SUM(IF(master_barang.jenis_produk = 'AIDA',detailretur.subtotal,0)) as totalreturaida
-            ");
-        }
 
+        //Data Retur
+        $select_retur_cabang = "";
+        foreach ($cbg as $c) {
+            $kode_cbg = $c->kode_cabang;
+            $select_retur_cabang .= "
+            SUM(IF(master_barang.jenis_produk = 'SWAN' AND karyawan.kode_cabang ='$kode_cbg',detailretur.subtotal,0)) as returswan" . $kode_cbg . ",
+            SUM(IF(master_barang.jenis_produk = 'AIDA' AND karyawan.kode_cabang ='$kode_cbg',detailretur.subtotal,0)) as returaida" . $kode_cbg . ",";
+        }
+        $qretur = Detailretur::query();
+        $qretur->selectRaw("
+            $select_retur_cabang
+            SUM(IF(master_barang.jenis_produk = 'SWAN',detailretur.subtotal,0)) as totalreturswan,
+            SUM(IF(master_barang.jenis_produk = 'AIDA',detailretur.subtotal,0)) as totalreturaida
+        ");
         $qretur->join('barang', 'detailretur.kode_barang', '=', 'barang.kode_barang');
         $qretur->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk');
         $qretur->join('retur', 'detailretur.no_retur_penj', '=', 'retur.no_retur_penj');
@@ -1753,77 +1307,76 @@ class LaporanaccountingController extends Controller
         $qretur->where('jenis_retur', 'pf');
         $retur = $qretur->first();
 
-
-        $qpiutang = Penjualan::query();
-        if (!empty($kode_cabang)) {
-            $qpiutang->selectRaw("
-            SUM(ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0)) as totalpiutang
-            ");
-            $qpiutang->where('cabangbarunew', $kode_cabang);
-        } else {
-            $qpiutang->selectRaw("
-            SUM(CASE WHEN cabangbarunew = 'TSM' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS TSM,
-            SUM(CASE WHEN cabangbarunew = 'BDG' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS BDG,
-            SUM(CASE WHEN cabangbarunew = 'SKB' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS SKB,
-            SUM(CASE WHEN cabangbarunew = 'TGL' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS TGL,
-            SUM(CASE WHEN cabangbarunew = 'BGR' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS BGR,
-            SUM(CASE WHEN cabangbarunew = 'PWT' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS PWT,
-            SUM(CASE WHEN cabangbarunew = 'PST' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS PST,
-            SUM(CASE WHEN cabangbarunew = 'GRT' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS GRT,
-            SUM(CASE WHEN cabangbarunew = 'SBY' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS SBY,
-            SUM(CASE WHEN cabangbarunew = 'SMR' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS SMR,
-            SUM(CASE WHEN cabangbarunew = 'KLT' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS KLT,
-            SUM(CASE WHEN cabangbarunew =  'PWK' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS PWK,
-            SUM(CASE WHEN cabangbarunew =  'BTN' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS BTN,
-            SUM(CASE WHEN cabangbarunew =  'BKI' THEN ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0) END) AS BKI,
-            SUM(ifnull(penjualan.total, 0) - ifnull(retur.total, 0) - ifnull(hblalu.jmlbayar, 0)) as totalpiutang
-        ");
+        //PPN
+        $select_ppn_cabang = "";
+        foreach ($cbg as $c) {
+            $kode_cbg = strtolower($c->kode_cabang);
+            $select_ppn_cabang .= "SUM(IF(karyawan.kode_cabang='$c->kode_cabang',ppn,0)) as ppn_" . $kode_cbg . ",";
         }
+        $qppn = Penjualan::query();
+        $qppn->selectRaw("
+            $select_ppn_cabang
+            SUM(ppn) as total
+        ");
+        $qppn->leftJoin('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $qppn->whereBetween('tgltransaksi', [$dari, $sampai]);
+        $ppn = $qppn->first();
 
+        //Piutang
+        $select_piutang_cabang = "";
+        foreach ($cbg as $c) {
+            $kode_cbg = $c->kode_cabang;
+            $select_piutang_cabang .= "
+            SUM(IF(cabangbarunew='$kode_cbg',IFNULL(spf.jumlah,0) + IF(tgltransaksi BETWEEN '$dari' AND '$sampai',penjualan.total,0) - IFNULL(totalretur,0) - IFNULL(totalbayar,0) ,0)) as piutang_" . $kode_cbg . ",";
+        }
+        $qpiutang = Penjualan::query();
+        $qpiutang->selectRaw("
+            $select_piutang_cabang
+            SUM(IFNULL(spf.jumlah,0) + IF(tgltransaksi BETWEEN '$dari' AND '$sampai',penjualan.total,0) - IFNULL(totalretur,0) - IFNULL(totalbayar,0)) as totalpiutang
+        ");
         $qpiutang->leftJoin(
             DB::raw("(
-                SELECT pj.no_fak_penj,
-                IF(salesbaru IS NULL,pj.id_karyawan,salesbaru) as salesbarunew, karyawan.nama_karyawan as nama_sales,
-                IF(cabangbaru IS NULL,karyawan.kode_cabang,cabangbaru) as cabangbarunew
-                FROM penjualan pj
-                INNER JOIN karyawan ON pj.id_karyawan = karyawan.id_karyawan
-                LEFT JOIN (
-                    SELECT MAX(id_move) as id_move,no_fak_penj,move_faktur.id_karyawan as salesbaru,karyawan.kode_cabang as cabangbaru
-                    FROM move_faktur
-                    INNER JOIN karyawan ON move_faktur.id_karyawan = karyawan.id_karyawan
-                    WHERE tgl_move <= '$sampai'
-                    GROUP BY no_fak_penj,move_faktur.id_karyawan,karyawan.kode_cabang
-                ) move_fak ON (pj.no_fak_penj = move_fak.no_fak_penj)
+                SELECT spf.no_fak_penj, jumlah
+                FROM saldoawal_piutang_faktur spf WHERE bulan = '$bulan' AND tahun = '$tahun'
+            ) spf"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'spf.no_fak_penj');
+            }
+        );
+        $qpiutang->leftJoin(
+            DB::raw("(
+                SELECT
+                    pj.no_fak_penj,IF( salesbaru IS NULL, pj.id_karyawan, salesbaru ) AS salesbarunew,karyawan.nama_karyawan AS nama_sales,
+                    IF( cabangbaru IS NULL, karyawan.kode_cabang, cabangbaru ) AS cabangbarunew
+		        FROM
+				    penjualan pj
+		        INNER JOIN karyawan ON pj.id_karyawan = karyawan.id_karyawan
+		        LEFT JOIN (
+				    SELECT
+						id_move,
+						no_fak_penj,
+						move_faktur.id_karyawan AS salesbaru,
+						karyawan.kode_cabang AS cabangbaru
+				    FROM
+						move_faktur
+				    INNER JOIN karyawan ON move_faktur.id_karyawan = karyawan.id_karyawan
+				    WHERE id_move IN ( SELECT max( id_move ) FROM move_faktur WHERE tgl_move <= '$sampai' GROUP BY no_fak_penj )
+	            ) move_fak ON ( pj.no_fak_penj = move_fak.no_fak_penj )
             ) pjmove"),
             function ($join) {
                 $join->on('penjualan.no_fak_penj', '=', 'pjmove.no_fak_penj');
             }
         );
-        $qpiutang->leftJoin(
-            DB::raw("(
-                SELECT
-                    historibayar.no_fak_penj AS no_fak_penj,
-                    sum(historibayar.bayar) AS jmlbayar
-                FROM
-                    historibayar
-                WHERE
-                    historibayar.tglbayar <= '$sampai'
-                GROUP BY
-                    historibayar.no_fak_penj
-            ) hblalu"),
-            function ($join) {
-                $join->on('penjualan.no_fak_penj', '=', 'hblalu.no_fak_penj');
-            }
-        );
+
         $qpiutang->leftJoin(
             DB::raw("(
                 SELECT
                     retur.no_fak_penj AS no_fak_penj,
-                    sum(retur.total) AS total
+                    SUM(IFNULL( subtotal_pf, 0 ) - IFNULL( subtotal_gb, 0 )) AS totalretur
                 FROM
                     retur
                 WHERE
-                    retur.tglretur <= '$sampai'
+                    tglretur BETWEEN '$dari' AND '$sampai'
                 GROUP BY
                     retur.no_fak_penj
             ) retur"),
@@ -1832,26 +1385,37 @@ class LaporanaccountingController extends Controller
             }
         );
 
-        $qpiutang->where('penjualan.jenisbayar', '!=', 'tunai');
-        $qpiutang->where('tgltransaksi', '<=', $sampai);
-        $qpiutang->whereRaw('ifnull(penjualan.total, 0) - ifnull(retur.total, 0) <> ifnull(hblalu.jmlbayar, 0)');
+        $qpiutang->leftJoin(
+            DB::raw("(
+                SELECT no_fak_penj, sum( historibayar.bayar ) AS totalbayar
+		        FROM historibayar
+		        WHERE tglbayar BETWEEN '$dari' AND '$sampai' GROUP BY no_fak_penj
+            ) hb"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'hb.no_fak_penj');
+            }
+        );
+
+        $qpiutang->whereNotNull('spf.jumlah');
         $qpiutang->whereRaw('to_days("' . $sampai . '") - to_days(penjualan.tgltransaksi) > 31');
-        $qpiutang->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $qpiutang->orwhereBetween('tgltransaksi', [$dari, $sampai]);
+        $qpiutang->whereRaw('to_days("' . $sampai . '") - to_days(penjualan.tgltransaksi) > 31');
         $piutang = $qpiutang->first();
 
-
-        if (isset($_POST['export'])) {
-            // Fungsi header dengan mengirimkan raw data excel
-            header("Content-type: application/vnd-ms-excel");
-            // Mendefinisikan nama file ekspor "hasil-export.xls"
-            header("Content-Disposition: attachment; filename=Laporan Cost Ratio.xls");
-        }
-        if (!empty($request->kode_cabang)) {
-            $cabang = Cabang::where('kode_cabang', $request->kode_cabang)->first();
-            return view('laporanaccounting.laporan.cetak_costratio_cabang', compact('dari', 'sampai', 'biaya', 'penjualan', 'retur', 'piutang', 'cabang', 'ppn', 'logistik', 'bahan'));
-        } else {
-            return view('laporanaccounting.laporan.cetak_costratio', compact('dari', 'sampai', 'biaya', 'penjualan', 'retur', 'piutang', 'logistik', 'bahan', 'ppn'));
-        }
+        //dd($piutang);
+        return view('laporanaccounting.laporan.cetak_costratio', compact(
+            'dari',
+            'sampai',
+            'cbg',
+            'biaya',
+            'logistik',
+            'bahan',
+            'penjualan',
+            'retur',
+            'ppn',
+            'piutang',
+            'kode_cabang'
+        ));
     }
 
     public function cetak_costratio_detaillogistik($dari, $sampai, $kode_cabang)

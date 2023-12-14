@@ -6,7 +6,6 @@
     .form-label-group {
         margin-bottom: 5px !important;
     }
-
 </style>
 <form action="#" id="frmeditbarangtemp">
     <input type="hidden" id="harga_dus_old">
@@ -20,7 +19,13 @@
                 <select name="kode_barang" id="kode_barang_pilih" class="form-control">
                     <option value="">Pilih Barang</option>
                     @foreach ($barang as $d)
-                    <option value="{{ $d->kode_barang }}" kode_barang="{{ $d->kode_barang }}" nama_barang="{{ $d->nama_barang }}" isipcsdus="{{ $d->isipcsdus }}" isipcs="{{ $d->isipcs }}" harga_dus="{{ rupiah($d->harga_dus-$pengurangharga) }}" harga_pack="{{ rupiah($d->harga_pack) }}" harga_pcs="{{ rupiah($d->harga_pcs) }}">{{ $d->status_promo_product == 1 ? $d->nama_barang ."(PROMO)" : $d->nama_barang }} ({{ $d->kategori_harga }})</option>
+                        <option value="{{ $d->kode_barang }}" kode_barang="{{ $d->kode_barang }}"
+                            nama_barang="{{ $d->nama_barang }}" isipcsdus="{{ $d->isipcsdus }}"
+                            isipcs="{{ $d->isipcs }}" harga_dus="{{ rupiah($d->harga_dus - $pengurangharga) }}"
+                            harga_pack="{{ rupiah($d->harga_pack) }}" harga_pcs="{{ rupiah($d->harga_pcs) }}">
+                            {{ $d->status_promo_product == 1 ? $d->nama_barang . '(PROMO)' : $d->nama_barang }}
+                            ({{ $d->kategori_harga }})
+                        </option>
                     @endforeach
                 </select>
             </div>
@@ -68,7 +73,8 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <a class="btn btn-primary btn-block text-white" id="tambahitem"><i class="feather icon-plus text-white mr-1"></i> Tambahkan</a>
+            <a class="btn btn-primary btn-block text-white" id="tambahitem"><i
+                    class="feather icon-plus text-white mr-1"></i> Tambahkan</a>
         </div>
     </div>
 
@@ -84,19 +90,20 @@
         //         }
         //     });
         // }
-        $("#frmeditbarangtemp").find("#harga_dus, #harga_pack, #harga_pcs, #jml_dus, #jml_pack, #jml_pcs").maskMoney();
+        $("#frmeditbarangtemp").find("#harga_dus, #harga_pack, #harga_pcs, #jml_dus, #jml_pack, #jml_pcs")
+            .maskMoney();
 
         function showtemp() {
             var no_fak_penj = $("#no_fak_penj").val();
             $.ajax({
-                type: 'POST'
-                , url: '/penjualan/showbarangv2'
-                , cache: false
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , no_fak_penj: no_fak_penj
-                }
-                , success: function(respond) {
+                type: 'POST',
+                url: '/penjualan/showbarangv2',
+                cache: false,
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_fak_penj: no_fak_penj
+                },
+                success: function(respond) {
                     $("#loadbarangtemp").html(respond);
                     hitungdiskon();
                 }
@@ -115,15 +122,15 @@
             $("#btnsimpan").prop('disabled', true);
             $("#btnsimpan").html('<i class="fa fa-spinner mr-1"></i><i>Loading...</i>');
             $.ajax({
-                type: 'POST'
-                , url: '/hitungdiskonpenjualanv2'
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , no_fak_penj: no_fak_penj
-                    , jenistransaksi: jenistransaksi
-                }
-                , cache: false
-                , success: function(respond) {
+                type: 'POST',
+                url: '/hitungdiskonpenjualanv2',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_fak_penj: no_fak_penj,
+                    jenistransaksi: jenistransaksi
+                },
+                cache: false,
+                success: function(respond) {
 
                     $("#btnsimpan").prop('disabled', false);
                     $("#btnsimpan").html('<i class="feather icon-send mr-1"></i> Simpan');
@@ -316,20 +323,20 @@
 
             if (kode_barang == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Barang Harus Dipilih !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Barang Harus Dipilih !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#nama_barang").focus();
                 });
                 return false;
             } else if (jumlah == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Qty Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Qty Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#jml_dus").focus();
                 });
@@ -337,27 +344,27 @@
             } else {
                 //Simpan Barang Temp
                 $.ajax({
-                    type: 'POST'
-                    , url: '/penjualan/storebarang'
-                    , data: {
-                        _token: "{{ csrf_token() }}"
-                        , no_fak_penj: no_fak_penj
-                        , kode_barang: kode_barang
-                        , hargadus: hargadus
-                        , hargapack: hargapack
-                        , hargapcs: hargapcs
-                        , jumlah: jumlah
-                        , subtotal: subtotal
-                        , promo: promo
-                    }
-                    , cache: false
-                    , success: function(respond) {
+                    type: 'POST',
+                    url: '/penjualan/storebarang',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        no_fak_penj: no_fak_penj,
+                        kode_barang: kode_barang,
+                        hargadus: hargadus,
+                        hargapack: hargapack,
+                        hargapcs: hargapcs,
+                        jumlah: jumlah,
+                        subtotal: subtotal,
+                        promo: promo
+                    },
+                    cache: false,
+                    success: function(respond) {
                         if (respond == 0) {
                             swal({
-                                title: 'Success'
-                                , text: 'Item Berhasil Disimpan !'
-                                , icon: 'success'
-                                , showConfirmButton: false
+                                title: 'Success',
+                                text: 'Item Berhasil Disimpan !',
+                                icon: 'success',
+                                showConfirmButton: false
                             }).then(function() {
                                 // $('#mdlinputbarang').modal({
                                 //     backdrop: 'static'
@@ -386,10 +393,10 @@
 
                         } else if (respond == 1) {
                             swal({
-                                title: 'Oops'
-                                , text: 'Item Sudah Ada !'
-                                , icon: 'warning'
-                                , showConfirmButton: false
+                                title: 'Oops',
+                                text: 'Item Sudah Ada !',
+                                icon: 'warning',
+                                showConfirmButton: false
                             }).then(function() {
                                 $("#kode_barang_pilih").val("");
                                 $("#nama_barang").val("");
@@ -410,10 +417,10 @@
                             });
                         } else {
                             swal({
-                                title: 'Oops'
-                                , text: respond
-                                , icon: 'warning'
-                                , showConfirmButton: false
+                                title: 'Oops',
+                                text: respond,
+                                icon: 'warning',
+                                showConfirmButton: false
                             }).then(function() {
 
                                 $("#jml_dus").focus();
@@ -482,10 +489,10 @@
             if ($('#promo').is(":checked")) {
                 if (kode_barang == "") {
                     swal({
-                        title: 'Oops'
-                        , text: 'Barang Harus Dipilih !'
-                        , icon: 'warning'
-                        , showConfirmButton: false
+                        title: 'Oops',
+                        text: 'Barang Harus Dipilih !',
+                        icon: 'warning',
+                        showConfirmButton: false
                     }).then(function() {
                         $("#nama_barang").focus();
                     });
@@ -515,5 +522,4 @@
             }
         });
     });
-
 </script>
