@@ -91,7 +91,7 @@
     </b>
     <br>
 </body>
-<table class="datatable3" style="width:100%" border="1">
+<table class="datatable3" @if (empty($kode_cabang)) style="width:100%" @endif border="1">
     <thead>
         <tr>
             <th style="background-color:rgb(0, 52, 93); color:white">No</th>
@@ -100,7 +100,9 @@
             @foreach ($cbg as $c)
                 <th style="background-color: rgb(0, 77, 0); color:white">{{ strtoupper($c->nama_cabang) }}</th>
             @endforeach
-            <th style="background-color:rgb(0, 52, 93); color:white">Jumlah</th>
+            @if (empty($kode_cabang))
+                <th style="background-color:rgb(0, 52, 93); color:white">Jumlah</th>
+            @endif
         </tr>
     </thead>
     <tbody>
@@ -145,7 +147,9 @@
                     @endphp
                     <td style="text-align:right">{{ !empty($d->$field_cabang) ? rupiah($d->$field_cabang) : '' }}</td>
                 @endforeach
-                <td style="text-align:right">{{ !empty($d->total) ? rupiah($d->total) : '' }}</td>
+                @if (empty($kode_cabang))
+                    <td style="text-align:right">{{ !empty($d->total) ? rupiah($d->total) : '' }}</td>
+                @endif
             </tr>
         @endforeach
         <tr>
@@ -162,9 +166,11 @@
                     {{ !empty($logistik->$field_cabang) ? rupiah($logistik->$field_cabang) : '' }}
                 </td>
             @endforeach
-            <td style="text-align:right">
-                {{ !empty($logistik->total) ? rupiah($logistik->total) : '' }}
-            </td>
+            @if (empty($kode_cabang))
+                <td style="text-align:right">
+                    {{ !empty($logistik->total) ? rupiah($logistik->total) : '' }}
+                </td>
+            @endif
         </tr>
         <tr>
             <td></td>
@@ -180,9 +186,11 @@
                     {{ !empty($bahan->$field_cabang) ? rupiah($bahan->$field_cabang) : '' }}
                 </td>
             @endforeach
-            <td style="text-align:right">
-                {{ !empty($bahan->total) ? rupiah($bahan->total) : '' }}
-            </td>
+            @if (empty($kode_cabang))
+                <td style="text-align:right">
+                    {{ !empty($bahan->total) ? rupiah($bahan->total) : '' }}
+                </td>
+            @endif
         </tr>
         @foreach ($cbg as $f)
             @php
@@ -205,9 +213,12 @@
                     {{ rupiah(${"total$kode_cbg"}) }}
                 </th>
             @endforeach
-            <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">
-                {{ rupiah($grandtotal) }}
-            </th>
+            @if (empty($kode_cabang))
+                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">
+                    {{ rupiah($grandtotal) }}
+                </th>
+            @endif
+
         </tr>
         <!-- Penjualan SWAN -->
         @foreach ($cbg as $c)
@@ -238,7 +249,14 @@
                 $piutang_cbg = 'piutang_' . strtoupper($kode_cbg);
                 ${'piutang_' . $kode_cbg} = $piutang->$piutang_cbg;
                 ${"cr_swan_piutang_$kode_cbg"} = ${"swan_$kode_cbg"} != 0 ? ROUND((${'piutang_' . $kode_cbg} / ${"swan_$kode_cbg"}) * 100) : 0;
+                ${"cr_aida_piutang_$kode_cbg"} = ${"aida_$kode_cbg"} != 0 ? ROUND((${'piutang_' . $kode_cbg} / ${"aida_$kode_cbg"}) * 100) : 0;
+                ${"cr_penjualan_piutang_$kode_cbg"} = ${"penjualan_$kode_cbg"} != 0 ? ROUND((${'piutang_' . $kode_cbg} / ${"penjualan_$kode_cbg"}) * 100) : 0;
 
+                //Biaya + Piutang
+                ${'biaya_piutang_' . $kode_cbg} = ${"total$kode_cbg"} + ${'piutang_' . $kode_cbg};
+                ${"cr_swan_biayapiutang_$kode_cbg"} = ${"swan_$kode_cbg"} != 0 ? ROUND((${'biaya_piutang_' . $kode_cbg} / ${"swan_$kode_cbg"}) * 100) : 0;
+                ${"cr_aida_biayapiutang_$kode_cbg"} = ${"aida_$kode_cbg"} != 0 ? ROUND((${'biaya_piutang_' . $kode_cbg} / ${"aida_$kode_cbg"}) * 100) : 0;
+                ${"cr_penjualan_biayapiutang_$kode_cbg"} = ${"penjualan_$kode_cbg"} != 0 ? ROUND((${'biaya_piutang_' . $kode_cbg} / ${"penjualan_$kode_cbg"}) * 100) : 0;
             @endphp
         @endforeach
         @php
@@ -256,6 +274,13 @@
 
             $totalpiutang = $piutang->totalpiutang;
             $cr_swan_piutang_total = $totalswan != 0 ? ROUND(($totalpiutang / $totalswan) * 100) : 0;
+            $cr_aida_piutang_total = $totalaida != 0 ? ROUND(($totalpiutang / $totalaida) * 100) : 0;
+            $cr_penjualan_piutang_total = $totalpenjualan != 0 ? ROUND(($totalpiutang / $totalpenjualan) * 100) : 0;
+
+            $total_biaya_piutang = $grandtotal + $totalpiutang;
+            $cr_swan_biayapiutang_total = $totalswan != 0 ? ROUND(($total_biaya_piutang / $totalswan) * 100) : 0;
+            $cr_aida_biayapiutang_total = $totalaida != 0 ? ROUND(($total_biaya_piutang / $totalaida) * 100) : 0;
+            $cr_penjualan_biayapiutang_total = $totalpenjualan != 0 ? ROUND(($total_biaya_piutang / $totalpenjualan) * 100) : 0;
         @endphp
         <tr>
             <th style="background-color:rgb(0, 52, 93); color:white" colspan="2" rowspan="4">PENJUALAN</th>
@@ -268,9 +293,11 @@
                     {{ rupiah(${"swan_$kode_cbg"}) }}
                 </th>
             @endforeach
-            <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">
-                {{ rupiah($totalswan) }}
-            </th>
+            @if (empty($kode_cabang))
+                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">
+                    {{ rupiah($totalswan) }}
+                </th>
+            @endif
         </tr>
         <tr>
             <th style="background-color:rgb(0, 52, 93); color:white">COST RATIO(%)</th>
@@ -282,7 +309,10 @@
                     {{ rupiah(${"cr_swan_biaya_$kode_cbg"}) }}%
                 </th>
             @endforeach
-            <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_swan_biaya_total }}%</th>
+            @if (empty($kode_cabang))
+                <th style="background-color:rgb(0, 52, 93); color:white">{{ $cr_swan_biaya_total }}%</th>
+            @endif
+
         </tr>
         <tr>
             <th style="background-color:rgb(93, 0, 0); color:white">AIDA</th>
@@ -294,9 +324,11 @@
                     {{ rupiah(${"aida_$kode_cbg"}) }}
                 </th>
             @endforeach
-            <th style="background-color:rgb(93, 0, 0); color:white; text-align:right">
-                {{ rupiah($totalaida) }}
-            </th>
+            @if (empty($kode_cabang))
+                <th style="background-color:rgb(93, 0, 0); color:white; text-align:right">
+                    {{ rupiah($totalaida) }}
+                </th>
+            @endif
         </tr>
         <tr>
             <th style="background-color:rgb(93, 0, 0); color:white;">COST RATIO(%)</th>
@@ -308,7 +340,9 @@
                     {{ rupiah(${"cr_aida_biaya_$kode_cbg"}) }}%
                 </th>
             @endforeach
-            <th style="background-color:rgb(93, 0, 0); color:white;">{{ $cr_swan_biaya_total }}%</th>
+            @if (empty($kode_cabang))
+                <th style="background-color:rgb(93, 0, 0); color:white;">{{ $cr_swan_biaya_total }}%</th>
+            @endif
         </tr>
         <tr>
             <th style="background-color:rgb(0, 52, 93); color:white" colspan="3">TOTAL PPN</th>
@@ -320,9 +354,11 @@
                     {{ rupiah(${"ppn_$kode_cbg"}) }}
                 </th>
             @endforeach
-            <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">
-                {{ rupiah($totalppn) }}
-            </th>
+            @if (empty($kode_cabang))
+                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">
+                    {{ rupiah($totalppn) }}
+                </th>
+            @endif
         </tr>
         <tr>
             <th style="background-color:rgb(0, 52, 93); color:white" colspan="3">TOTAL PENJUALAN + PPN</th>
@@ -334,9 +370,11 @@
                     {{ rupiah(${"penjualan_$kode_cbg"}) }}
                 </th>
             @endforeach
-            <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">
-                {{ rupiah($totalpenjualan) }}
-            </th>
+            @if (empty($kode_cabang))
+                <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">
+                    {{ rupiah($totalpenjualan) }}
+                </th>
+            @endif
         </tr>
         <tr>
             <th style="background-color:rgb(0, 52, 93); color:white" colspan="3">COST RATIO(%)</th>
@@ -348,9 +386,11 @@
                     {{ rupiah(${"cr_penjualan_biaya_$kode_cbg"}) }}%
                 </th>
             @endforeach
-            <th style="background-color:rgb(0, 52, 93); color:white;">
-                {{ rupiah($cr_penjualan_biaya_total) }}%
-            </th>
+            @if (empty($kode_cabang))
+                <th style="background-color:rgb(0, 52, 93); color:white;">
+                    {{ rupiah($cr_penjualan_biaya_total) }}%
+                </th>
+            @endif
         </tr>
         <tr>
             <th style="background-color:rgb(210, 59, 4); color:white" colspan="3">PIUTANG > 1 BULAN</th>
@@ -362,9 +402,67 @@
                     {{ rupiah(${"piutang_$kode_cbg"}) }}
                 </th>
             @endforeach
-            <th style="background-color:rgb(210, 59, 4); color:white; text-align:right">
-                {{ rupiah($totalpiutang) }}
-            </th>
+            @if (empty($kode_cabang))
+                <th style="background-color:rgb(210, 59, 4); color:white; text-align:right">
+                    {{ rupiah($totalpiutang) }}
+                </th>
+            @endif
+        </tr>
+        <tr>
+            <th style="background-color:rgb(210, 59, 4); color:white" colspan="3">COST RATIO SWAN</th>
+            @foreach ($cbg as $f)
+                @php
+                    $kode_cbg = strtolower($f->kode_cabang);
+                @endphp
+                <th style="background-color:rgb(210, 59, 4); color:white">
+                    {{ ${"cr_swan_piutang_$kode_cbg"} }}%
+                </th>
+            @endforeach
+            @if (empty($kode_cabang))
+                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_swan_piutang_total }}%</th>
+            @endif
+        </tr>
+        <tr>
+            <th style="background-color:rgb(210, 59, 4); color:white" colspan="3">COST RATIO AIDA</th>
+            @foreach ($cbg as $f)
+                @php
+                    $kode_cbg = strtolower($f->kode_cabang);
+                @endphp
+                <th style="background-color:rgb(210, 59, 4); color:white"> {{ ${"cr_aida_piutang_$kode_cbg"} }}%</th>
+            @endforeach
+            @if (empty($kode_cabang))
+                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_aida_piutang_total }}%</th>
+            @endif
+        </tr>
+        <tr>
+            <th style="background-color:rgb(210, 59, 4); color:white" colspan="3">COST RATIO SWAN + AIDA</th>
+            @foreach ($cbg as $f)
+                @php
+                    $kode_cbg = strtolower($f->kode_cabang);
+                @endphp
+                <th style="background-color:rgb(210, 59, 4); color:white"> {{ ${"cr_penjualan_piutang_$kode_cbg"} }}%
+                </th>
+            @endforeach
+            @if (empty($kode_cabang))
+                <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_penjualan_piutang_total }}%</th>
+            @endif
+        </tr>
+        <tr>
+            <th style="background-color:rgba(145, 2, 59, 0.961); color:white" colspan="3">BIAYA + PIUTANG</th>
+            @foreach ($cbg as $f)
+                @php
+                    $kode_cbg = strtolower($f->kode_cabang);
+                @endphp
+                <th style="background-color:rgba(145, 2, 59, 0.961); color:white; text-align:right">
+                    {{ rupiah(${"biaya_piutang_$kode_cbg"}) }}
+                </th>
+            @endforeach
+            @if (empty($kode_cabang))
+                <th style="background-color:rgba(145, 2, 59, 0.961); color:white; text-align:right">
+                    {{ rupiah($total_biaya_piutang) }}
+                </th>
+            @endif
+
         </tr>
         <tr>
             <th style="background-color:rgba(145, 2, 59, 0.961); color:white" colspan="3">COST RATIO SWAN</th>
@@ -373,10 +471,44 @@
                     $kode_cbg = strtolower($f->kode_cabang);
                 @endphp
                 <th style="background-color:rgba(145, 2, 59, 0.961); color:white">
-                    {{ ${"cr_swan_piutang_$kode_cbg"} }}%
+                    {{ rupiah(${"cr_swan_biayapiutang_$kode_cbg"}) }}%
                 </th>
             @endforeach
-            <th style="background-color:rgb(210, 59, 4); color:white">{{ $cr_swan_piutang_total }}%</th>
+            @if (empty($kode_cabang))
+                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_swan_biayapiutang_total }}%
+                </th>
+            @endif
+        </tr>
+        <tr>
+            <th style="background-color:rgba(145, 2, 59, 0.961); color:white" colspan="3">COST RATIO AIDA</th>
+            @foreach ($cbg as $f)
+                @php
+                    $kode_cbg = strtolower($f->kode_cabang);
+                @endphp
+                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">
+                    {{ rupiah(${"cr_aida_biayapiutang_$kode_cbg"}) }}%
+                </th>
+            @endforeach
+            @if (empty($kode_cabang))
+                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">{{ $cr_aida_biayapiutang_total }}%
+                </th>
+            @endif
+        </tr>
+        <tr>
+            <th style="background-color:rgba(145, 2, 59, 0.961); color:white" colspan="3">COST RATIO SWAN + AIDA</th>
+            @foreach ($cbg as $f)
+                @php
+                    $kode_cbg = strtolower($f->kode_cabang);
+                @endphp
+                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">
+                    {{ rupiah(${"cr_penjualan_biayapiutang_$kode_cbg"}) }}%
+                </th>
+            @endforeach
+            @if (empty($kode_cabang))
+                <th style="background-color:rgba(145, 2, 59, 0.961); color:white">
+                    {{ $cr_penjualan_biayapiutang_total }}%
+                </th>
+            @endif
         </tr>
     </tfoot>
 </table>

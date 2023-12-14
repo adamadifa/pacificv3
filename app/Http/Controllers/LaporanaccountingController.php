@@ -1061,7 +1061,11 @@ class LaporanaccountingController extends Controller
         $dari = $tahun . "-" . $bln . "-01";
         $sampai = date("Y-m-t", strtotime($dari));
 
-        $cbg = DB::table('cabang')->orderBy('kode_cabang')->get();
+        if (!empty($kode_cabang)) {
+            $cbg = DB::table('cabang')->where('kode_cabang', $kode_cabang)->orderBy('kode_cabang')->get();
+        } else {
+            $cbg = DB::table('cabang')->orderBy('kode_cabang')->get();
+        }
 
         //Looping BIaya Per Cabang
         $select_biaya_cabang = "";
@@ -1409,7 +1413,8 @@ class LaporanaccountingController extends Controller
             'penjualan',
             'retur',
             'ppn',
-            'piutang'
+            'piutang',
+            'kode_cabang'
         ));
     }
 
