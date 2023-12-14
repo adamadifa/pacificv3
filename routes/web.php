@@ -139,6 +139,7 @@ use App\Http\Controllers\TutuplaporanController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VisitController;
 use App\Http\Controllers\WhatsappController;
+use App\Http\Controllers\WorksheetomController;
 use App\Models\Barangpembelian;
 use App\Models\Harilibur;
 use App\Models\Logamtokertas;
@@ -1415,6 +1416,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/cekreturtemp', [ReturController::class, 'cekreturtemp']);
     Route::post('/retur/updatedetailtemp', [ReturController::class, 'updatedetailtemp']);
     Route::post('/retur/show', [ReturController::class, 'show']);
+
     Route::delete('/retur/{no_retur_penj}/delete', [ReturController::class, 'delete']);
     Route::post('/retur/deletebarangtemp', [ReturController::class, 'deletebarangtemp']);
     Route::post('/loadtotalreturtemp', [ReturController::class, 'loadtotalreturtemp']);
@@ -1969,6 +1971,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/worksheetom/komisisalesman', [TargetkomisiController::class, 'laporankomisi']);
     Route::get('/worksheetom/komisidriverhelper', [TargetkomisiController::class, 'laporankomisidriverhelper']);
     Route::get('/worksheetom/costratio', [LaporanaccountingController::class, 'costratio']);
+    Route::get('/worksheetom/limitkredit', [LimitkreditController::class, 'index']);
+    Route::get('/worksheetom/monitoringretur', [WorksheetomController::class, 'monitoringretur']);
+    Route::post('/worksheetom/showmonitoringretur', [WorksheetomController::class, 'showmonitoringretur']);
 });
 
 
