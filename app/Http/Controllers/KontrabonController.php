@@ -362,16 +362,13 @@ class KontrabonController extends Controller
         ];
 
         $cbg = "PST";
-        $ledger = DB::table('ledger_bank')->select('no_bukti')
-            ->whereRaw('LENGTH(no_bukti)=12')
-            ->whereRaw('LEFT(no_bukti,7)="LR' . $cbg . $tahun . '"')
-            ->orderBy('no_bukti', 'desc')->first();
+        $ledger = DB::table('ledger_bank')->select('no_bukti')->whereRaw('LEFT(no_bukti,7)="LR' . $cbg . $tahun . '"')->orderBy('no_bukti', 'desc')->first();
         if ($ledger != null) {
             $lastno_bukti = $ledger->no_bukti;
         } else {
             $lastno_bukti = "";
         }
-        $no_bukti = buatkode($lastno_bukti, 'LR' . $cbg . $tahun, 5);
+        $no_bukti = buatkode($lastno_bukti, 'LR' . $cbg . $tahun, 4);
 
         $bukubesar = DB::table('buku_besar')->whereRaw('LEFT(no_bukti,6)="GJ' . $bulan . $tahun . '"')
             ->orderBy('no_bukti', 'desc')
