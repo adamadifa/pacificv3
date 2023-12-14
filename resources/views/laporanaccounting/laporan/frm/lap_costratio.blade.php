@@ -75,7 +75,7 @@
                                                 <div class="form-group">
                                                     <select class="form-control" id="tahun" name="tahun">
                                                         <?php
-                                                    $tahunmulai = 2020;
+                                                    $tahunmulai = startyear();
                                                     for ($thn = $tahunmulai; $thn <= date('Y'); $thn++) {
                                                     ?>
                                                         <option <?php if (date('Y') == $thn) {
