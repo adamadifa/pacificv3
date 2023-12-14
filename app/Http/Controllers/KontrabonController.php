@@ -370,8 +370,10 @@ class KontrabonController extends Controller
         }
 
         $ceklastnobukti = substr($lastno_bukti, 7, 4);
-        dd($ceklastnobukti);
+
+
         $no_bukti = buatkode($lastno_bukti, 'LR' . $cbg . $tahun, 4);
+
 
         $bukubesar = DB::table('buku_besar')->whereRaw('LEFT(no_bukti,6)="GJ' . $bulan . $tahun . '"')
             ->orderBy('no_bukti', 'desc')
