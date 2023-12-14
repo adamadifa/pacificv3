@@ -20,13 +20,9 @@
         <div class="content-body">
             <input type="hidden" id="cektutuplaporan">
             <div class="card">
-                <div class="card-header">
-                    @if ($level != 'salesman')
-                        <a href="/retur/createv2" class="btn btn-primary"><i class="fa fa-plus mr-1"></i> Tambah Data</a>
-                    @endif
-                </div>
+
                 <div class="card-body">
-                    <form action="/retur">
+                    <form action="/worksheetom/monitoringretur">
                         <div class="row">
                             <div class="col-lg-6 col-sm-6">
                                 <x-inputtext label="Dari" field="dari" icon="feather icon-calendar" datepicker
@@ -120,16 +116,8 @@
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             <a class="ml-1 detailretur" href="#"
                                                 no_retur_penj="{{ $d->no_retur_penj }}"><i
-                                                    class=" feather icon-file-text info"></i></a>
-                                            <form method="POST" name="deleteform" class="deleteform"
-                                                action="/retur/{{ Crypt::encrypt($d->no_retur_penj) }}/delete">
-                                                @csrf
-                                                @method('DELETE')
-                                                <a href="#" tanggal="{{ $d->tglretur }}"
-                                                    class="delete-confirm ml-1">
-                                                    <i class="feather icon-trash danger"></i>
-                                                </a>
-                                            </form>
+                                                    class=" feather icon-file-text info"></i>
+                                            </a>
                                         </div>
 
                                     </td>
@@ -211,7 +199,7 @@
             function loaddetailretur(no_retur_penj) {
                 $.ajax({
                     type: 'POST',
-                    url: '/retur/show',
+                    url: '/worksheetom/showmonitoringretur',
                     data: {
                         _token: "{{ csrf_token() }}",
                         no_retur_penj: no_retur_penj

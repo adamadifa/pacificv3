@@ -110,16 +110,21 @@
             @php
                 $fieldtotal_cabang = strtolower($e->kode_cabang);
                 ${"total$fieldtotal_cabang"} = 0;
+                ${"total_kategori_$fieldtotal_cabang"} = 0;
             @endphp
         @endforeach
         @php
             $grandtotal = 0;
         @endphp
-        @foreach ($biaya as $d)
+        @foreach ($biaya as $key => $d)
+            @php
+                $kode_kategori = @$biaya[$key + 1]->kode_kategori;
+            @endphp
             @foreach ($cbg as $g)
                 @php
                     $fieldtotal_cabang = strtolower($g->kode_cabang);
                     ${"total$fieldtotal_cabang"} += $d->$fieldtotal_cabang;
+                    ${"total_kategori_$fieldtotal_cabang"} += $d->$fieldtotal_cabang;
                 @endphp
             @endforeach
             @php
@@ -130,14 +135,14 @@
                 <td style="text-align: center">'{{ $d->kode_akun }}</td>
                 <td>
                     @php
-                        if ($d->kode_akun == 1) {
-                            $nama_akun = 'Sewa Gedung';
-                        } elseif ($d->kode_akun == 2) {
-                            $nama_akun = 'Ratio BS';
-                        } else {
-                            $nama_akun = $d->nama_akun;
-                        }
-
+                        // if ($d->kode_akun == 1) {
+                        //     $nama_akun = 'Sewa Gedung';
+                        // } elseif ($d->kode_akun == 2) {
+                        //     $nama_akun = 'Ratio BS';
+                        // } else {
+                        //     $nama_akun = $d->nama_akun;
+                        // }
+                        $nama_akun = $d->nama_akun;
                         echo $nama_akun;
                     @endphp
                 </td>
@@ -151,55 +156,100 @@
                     <td style="text-align:right">{{ !empty($d->total) ? rupiah($d->total) : '' }}</td>
                 @endif
             </tr>
+            @if ($kode_kategori != $d->kode_kategori)
+                @if ($d->kode_kategori == 'C02')
+                    <tr>
+                        <td></td>
+                        <td style="text-align: center"></td>
+                        <td>
+                            Logistik
+                        </td>
+                        @foreach ($cbg as $c)
+                            @php
+                                $field_cabang = strtolower($c->kode_cabang);
+                            @endphp
+                            <td style="text-align:right">
+                                {{ !empty($logistik->$field_cabang) ? rupiah($logistik->$field_cabang) : '' }}
+                            </td>
+                        @endforeach
+                        @if (empty($kode_cabang))
+                            <td style="text-align:right">
+                                {{ !empty($logistik->total) ? rupiah($logistik->total) : '' }}
+                            </td>
+                        @endif
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td style="text-align: center"></td>
+                        <td>
+                            Penggunaan Bahan Kemasan
+                        </td>
+                        @foreach ($cbg as $c)
+                            @php
+                                $field_cabang = strtolower($c->kode_cabang);
+                            @endphp
+                            <td style="text-align:right">
+                                {{ !empty($bahan->$field_cabang) ? rupiah($bahan->$field_cabang) : '' }}
+                            </td>
+                        @endforeach
+                        @if (empty($kode_cabang))
+                            <td style="text-align:right">
+                                {{ !empty($bahan->total) ? rupiah($bahan->total) : '' }}
+                            </td>
+                        @endif
+                    </tr>
+                @endif
+                <tr>
+                    <th colspan="3" style="background-color:rgb(0, 52, 93); color:white">TOTAL
+                        {{ strtoupper($d->nama_kategori) }}</th>
+                    @php
+                        $total_kategori = 0;
+                    @endphp
+                    @foreach ($cbg as $f)
+                        @php
+                            $kode_cbg = strtolower($f->kode_cabang);
+                        @endphp
+                        <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">
+                            @if ($d->kode_kategori == 'C02')
+                                @php
+                                    $total_kategori += ${"total_kategori_$kode_cbg"} + $logistik->$kode_cbg + $bahan->$kode_cbg;
+                                @endphp
+                                {{ rupiah(${"total_kategori_$kode_cbg"} + $logistik->$kode_cbg + $bahan->$kode_cbg) }}
+                            @else
+                                @php
+                                    $total_kategori += ${"total_kategori_$kode_cbg"};
+                                @endphp
+                                {{ rupiah(${"total_kategori_$kode_cbg"}) }}
+                            @endif
+
+                        </th>
+
+                        @php
+                            ${"total_kategori_$kode_cbg"} = 0;
+                        @endphp
+                    @endforeach
+                    @if (empty($kode_cabang))
+                        <th style="background-color:rgb(0, 52, 93); color:white; text-align:right">
+                            {{ rupiah($total_kategori) }}
+                        </th>
+                    @endif
+
+                </tr>
+            @endif
         @endforeach
-        <tr>
-            <td></td>
-            <td style="text-align: center"></td>
-            <td>
-                Logistik
-            </td>
-            @foreach ($cbg as $c)
-                @php
-                    $field_cabang = strtolower($c->kode_cabang);
-                @endphp
-                <td style="text-align:right">
-                    {{ !empty($logistik->$field_cabang) ? rupiah($logistik->$field_cabang) : '' }}
-                </td>
-            @endforeach
-            @if (empty($kode_cabang))
-                <td style="text-align:right">
-                    {{ !empty($logistik->total) ? rupiah($logistik->total) : '' }}
-                </td>
-            @endif
-        </tr>
-        <tr>
-            <td></td>
-            <td style="text-align: center"></td>
-            <td>
-                Penggunaan Bahan Kemasan
-            </td>
-            @foreach ($cbg as $c)
-                @php
-                    $field_cabang = strtolower($c->kode_cabang);
-                @endphp
-                <td style="text-align:right">
-                    {{ !empty($bahan->$field_cabang) ? rupiah($bahan->$field_cabang) : '' }}
-                </td>
-            @endforeach
-            @if (empty($kode_cabang))
-                <td style="text-align:right">
-                    {{ !empty($bahan->total) ? rupiah($bahan->total) : '' }}
-                </td>
-            @endif
-        </tr>
+
         @foreach ($cbg as $f)
             @php
                 $kode_cbg = strtolower($f->kode_cabang);
-                ${"total$kode_cbg"} += $logistik->$kode_cbg + $bahan->$kode_cbg;
+                if ($kat == 'C02' || empty($kat)) {
+                    ${"total$kode_cbg"} += $logistik->$kode_cbg + $bahan->$kode_cbg;
+                }
             @endphp
         @endforeach
         @php
+
             $grandtotal += $logistik->total + $bahan->total;
+
         @endphp
     </tbody>
     <tfoot>

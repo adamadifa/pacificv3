@@ -1206,7 +1206,7 @@
                                         $level == 'admin persediaan dan kasir' ||
                                         $level ==
                                             "admin penjualan
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        dan kasir")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        dan kasir")
                                     <a href="/laporankeuangan/saldokasbesar">
                                         <i class="feather icon-file-text"></i>
                                         <span class="menu-item" data-i18n="Second Level">Laporan</span>
@@ -1665,6 +1665,18 @@
                                 <span class="menu-item">Cost Ratio</span>
                             </a>
                         </li>
+                        <li class="{{ request()->is(['worksheetom/limitkredit']) ? 'active' : '' }}">
+                            <a href="/worksheetom/limitkredit">
+                                <i class="feather icon-clipboard"></i>
+                                <span class="menu-item">Ajuan Limit Kredit</span>
+                            </a>
+                        </li>
+                        <li class="{{ request()->is(['worksheetom/monitoringretur']) ? 'active' : '' }}">
+                            <a href="/worksheetom/monitoringretur">
+                                <i class="feather icon-clipboard"></i>
+                                <span class="menu-item">Monitoring Retur</span>
+                            </a>
+                        </li>
                         <li class="#">
                             <a href="#">
                                 <i class="feather icon-monitor"></i>
@@ -1678,19 +1690,6 @@
                             </a>
                         </li>
 
-
-                        <li class="#">
-                            <a href="#">
-                                <i class="feather icon-clipboard"></i>
-                                <span class="menu-item">Ajuan Limit Kredit</span>
-                            </a>
-                        </li>
-                        <li class="#">
-                            <a href="#">
-                                <i class="feather icon-clipboard"></i>
-                                <span class="menu-item">Monitoring Retur</span>
-                            </a>
-                        </li>
                         <li class="#">
                             <a href="#">
                                 <i class="feather icon-clipboard"></i>

@@ -49,6 +49,21 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <select name="kode_kategori" id="kode_kategori" class="form-control">
+                                                        <option value="">Semua Kategori</option>
+                                                        @foreach ($kategori as $k)
+                                                            <option
+                                                                {{ Request('kode_kategori') == $k->kode_kategori ? 'selected' : '' }}
+                                                                value="{{ $k->kode_kategori }}">
+                                                                {{ strtoupper($k->nama_kategori) }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div class="row" id="pilihbulan">
                                             <div class="col-12">
                                                 {{-- <label for="" class="form-label mb-1">Omset Bulan</label> --}}

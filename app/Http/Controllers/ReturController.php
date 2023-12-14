@@ -418,6 +418,8 @@ class ReturController extends Controller
         }
     }
 
+
+
     public function delete($no_retur_penj)
     {
         $no_retur_penj = Crypt::decrypt($no_retur_penj);

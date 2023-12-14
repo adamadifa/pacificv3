@@ -7,7 +7,8 @@
                 <select name="kode_cabang" id="kode_cabang" class="form-control">
                     <option value="">Pilih Cabang</option>
                     @foreach ($cabang as $c)
-                    <option {{ (Request('kode_cabang')==$c->kode_cabang ? 'selected':'')}} value="{{ $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
+                        <option {{ Request('kode_cabang') == $c->kode_cabang ? 'selected' : '' }}
+                            value="{{ $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
                     @endforeach
                 </select>
             </div>
@@ -15,7 +16,8 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext field="tgl_mutasi_gudang_cabang" label="Tanggal {{ ucwords(strtolower($textjm)) }}" icon="feather icon-calendar" datepicker />
+            <x-inputtext field="tgl_mutasi_gudang_cabang" label="Tanggal {{ ucwords(strtolower($textjm)) }}"
+                icon="feather icon-calendar" datepicker />
         </div>
     </div>
     <div class="row">
@@ -41,25 +43,26 @@
                 </thead>
                 <tbody>
                     @foreach ($produk as $d)
-                    <input type="hidden" name="isipcsdus[]" value="{{ $d->isipcsdus }}">
-                    <input type="hidden" name="isipcs[]" value="{{ $d->isipcs }}">
-                    <input type="hidden" name="kode_produk[]" value="{{ $d->kode_produk }}">
-                    <tr>
-                        <td>{{ $d->kode_produk }}</td>
-                        <td>{{ $d->nama_barang }}</td>
-                        <td style="width: 12%">
-                            <input type="text" class="form-control" name="jmldus[]">
-                        </td>
-                        <td>{{ $d->satuan }}</td>
-                        <td style="width:12%">
-                            <input type="{{ !empty($d->isipack) ? 'text' : 'hidden' }}" class="form-control" name="jmlpack[]">
-                        </td>
-                        <td>PACK</td>
-                        <td style="width: 12%">
-                            <input type="text" class="form-control" name="jmlpcs[]">
-                        </td>
-                        <td>PCS</td>
-                    </tr>
+                        <input type="hidden" name="isipcsdus[]" value="{{ $d->isipcsdus }}">
+                        <input type="hidden" name="isipcs[]" value="{{ $d->isipcs }}">
+                        <input type="hidden" name="kode_produk[]" value="{{ $d->kode_produk }}">
+                        <tr>
+                            <td>{{ $d->kode_produk }}</td>
+                            <td>{{ $d->nama_barang }}</td>
+                            <td style="width: 12%">
+                                <input type="text" class="form-control" name="jmldus[]">
+                            </td>
+                            <td>{{ $d->satuan }}</td>
+                            <td style="width:12%">
+                                <input type="{{ !empty($d->isipack) ? 'text' : 'hidden' }}" class="form-control"
+                                    name="jmlpack[]">
+                            </td>
+                            <td>PACK</td>
+                            <td style="width: 12%">
+                                <input type="text" class="form-control" name="jmlpcs[]">
+                            </td>
+                            <td>PCS</td>
+                        </tr>
                     @endforeach
                 </tbody>
             </table>
@@ -68,12 +71,13 @@
     <div class="row">
         <div class="col-12">
             <div class="form-group">
-                <button type="submit" name="submit" class="btn btn-primary btn-block"><i class="fa fa-send mr-1"></i>Submit</button>
+                <button type="submit" name="submit" class="btn btn-primary btn-block"><i
+                        class="fa fa-send mr-1"></i>Submit</button>
             </div>
         </div>
     </div>
 </form>
-<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
+<script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
 <script>
     $(function() {
         $("#frmDpb").submit(function() {
@@ -81,20 +85,20 @@
             var tgl_mutasi_gudang_cabang = $("#frmDpb").find("#tgl_mutasi_gudang_cabang").val();
             if (kode_cabang == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Cabang Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Cabang Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#frmDpb").find("#kode_cabang").focus();
                 });
                 return false;
             } else if (tgl_mutasi_gudang_cabang == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Tanggal Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Tanggal Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#frmDpb").find("#tgl_mutasi_gudang_cabang").focus();
                 });
@@ -102,5 +106,4 @@
             }
         });
     });
-
 </script>

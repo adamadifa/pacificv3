@@ -1040,9 +1040,9 @@ class LaporanaccountingController extends Controller
             $cabang = $cbg->getCabanggudang($this->cabang);
         }
 
-
+        $kategori = DB::table('kategori_cost_ratio')->get();
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
-        return view('laporanaccounting.laporan.frm.lap_costratio', compact('bulan', 'cabang'));
+        return view('laporanaccounting.laporan.frm.lap_costratio', compact('bulan', 'cabang', 'kategori'));
     }
 
     public function cetak_costratio(Request $request)
@@ -1060,6 +1060,8 @@ class LaporanaccountingController extends Controller
         }
         $dari = $tahun . "-" . $bln . "-01";
         $sampai = date("Y-m-t", strtotime($dari));
+        $kode_kategori = $request->kode_kategori;
+
 
         if (!empty($kode_cabang)) {
             $cbg = DB::table('cabang')->where('kode_cabang', $kode_cabang)->orderBy('kode_cabang')->get();
@@ -1079,12 +1081,17 @@ class LaporanaccountingController extends Controller
         $query->selectRaw("
             $select_biaya_cabang
             costratio_biaya.kode_akun,nama_akun,
-            SUM(jumlah) as total");
+            SUM(jumlah) as total,coa.kode_kategori,nama_kategori");
         $query->leftjoin('coa', 'costratio_biaya.kode_akun', '=', 'coa.kode_akun');
+        $query->leftjoin('kategori_cost_ratio', 'coa.kode_kategori', '=', 'kategori_cost_ratio.kode_kategori');
         $query->whereBetween('tgl_transaksi', [$dari, $sampai]);
-        $query->orderBy('costratio_biaya.kode_akun');
-        $query->groupByRaw('costratio_biaya.kode_akun,nama_akun');
-        $query->get();
+        if (!empty($kode_kategori)) {
+            $query->where('coa.kode_kategori', $kode_kategori);
+        }
+        $query->orderBy('coa.kode_kategori', 'asc');
+        $query->orderBy('costratio_biaya.kode_akun', 'asc');
+
+        $query->groupByRaw('costratio_biaya.kode_akun,nama_akun,coa.kode_kategori,nama_kategori');
         $biaya = $query->get();
 
 
@@ -1401,7 +1408,13 @@ class LaporanaccountingController extends Controller
         $qpiutang->orwhereBetween('tgltransaksi', [$dari, $sampai]);
         $qpiutang->whereRaw('to_days("' . $sampai . '") - to_days(penjualan.tgltransaksi) > 31');
         $piutang = $qpiutang->first();
-
+        if (isset($_POST['export'])) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Cost Ratio.xls");
+        }
+        $kat = $kode_kategori;
         //dd($piutang);
         return view('laporanaccounting.laporan.cetak_costratio', compact(
             'dari',
@@ -1414,7 +1427,8 @@ class LaporanaccountingController extends Controller
             'retur',
             'ppn',
             'piutang',
-            'kode_cabang'
+            'kode_cabang',
+            'kat'
         ));
     }
 
