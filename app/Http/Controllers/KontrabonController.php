@@ -369,10 +369,15 @@ class KontrabonController extends Controller
             $lastno_bukti = "";
         }
 
-        $ceklastnobukti = substr($lastno_bukti, 7, 4);
+        $ceklastnobukti = substr($lastno_bukti, 7, 5);
+
+        if ($ceklastnobukti >= 9999) {
+            $no_bukti = buatkode($lastno_bukti, 'LR' . $cbg . $tahun, 5);
+        } else {
+            $no_bukti = buatkode($lastno_bukti, 'LR' . $cbg . $tahun, 4);
+        }
 
 
-        $no_bukti = buatkode($lastno_bukti, 'LR' . $cbg . $tahun, 4);
 
 
         $bukubesar = DB::table('buku_besar')->whereRaw('LEFT(no_bukti,6)="GJ' . $bulan . $tahun . '"')
