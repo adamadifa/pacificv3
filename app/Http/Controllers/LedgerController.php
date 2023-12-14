@@ -155,13 +155,15 @@ class LedgerController extends Controller
                 $bulan = $tanggal[1];
                 $tahun = substr($tanggal[0], 2, 2);
 
-                $ledger = DB::table('ledger_bank')->select('no_bukti')->whereRaw('LEFT(no_bukti,7)="LR' . $kode_cabang . $tahun . '"')->orderBy('no_bukti', 'desc')->first();
+                $ledger = DB::table('ledger_bank')->select('no_bukti')->whereRaw('LEFT(no_bukti,7)="LR' . $kode_cabang . $tahun . '"')
+                    ->whereRaw('LENGTH(no_bukti)=12')
+                    ->orderBy('no_bukti', 'desc')->first();
                 if ($ledger != null) {
                     $lastno_bukti = $ledger->no_bukti;
                 } else {
                     $lastno_bukti = "";
                 }
-                $no_bukti = buatkode($lastno_bukti, 'LR' . $kode_cabang . $tahun, 4);
+                $no_bukti = buatkode($lastno_bukti, 'LR' . $kode_cabang . $tahun, 5);
 
 
                 $bukubesar = DB::table('buku_besar')->whereRaw('LEFT(no_bukti,6)="GJ' . $bulan . $tahun . '"')
