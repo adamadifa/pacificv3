@@ -1061,7 +1061,7 @@ class LaporanaccountingController extends Controller
         $dari = $tahun . "-" . $bln . "-01";
         $sampai = date("Y-m-t", strtotime($dari));
         $kode_kategori = $request->kode_kategori;
-
+        $format = $request->format;
 
         if (!empty($kode_cabang)) {
             $cbg = DB::table('cabang')->where('kode_cabang', $kode_cabang)->orderBy('kode_cabang')->get();
@@ -1088,7 +1088,10 @@ class LaporanaccountingController extends Controller
         if (!empty($kode_kategori)) {
             $query->where('coa.kode_kategori', $kode_kategori);
         }
-        $query->orderBy('coa.kode_kategori', 'asc');
+        if ($format == 2) {
+            # code...
+            $query->orderBy('coa.kode_kategori', 'asc');
+        }
         $query->orderBy('costratio_biaya.kode_akun', 'asc');
 
         $query->groupByRaw('costratio_biaya.kode_akun,nama_akun,coa.kode_kategori,nama_kategori');
@@ -1416,20 +1419,42 @@ class LaporanaccountingController extends Controller
         }
         $kat = $kode_kategori;
         //dd($piutang);
-        return view('laporanaccounting.laporan.cetak_costratio', compact(
-            'dari',
-            'sampai',
-            'cbg',
-            'biaya',
-            'logistik',
-            'bahan',
-            'penjualan',
-            'retur',
-            'ppn',
-            'piutang',
-            'kode_cabang',
-            'kat'
-        ));
+        //dd($format);
+        if ($format == 1) {
+            // echo 1;
+            // die;
+            return view('laporanaccounting.laporan.cetak_costratio_1', compact(
+                'dari',
+                'sampai',
+                'cbg',
+                'biaya',
+                'logistik',
+                'bahan',
+                'penjualan',
+                'retur',
+                'ppn',
+                'piutang',
+                'kode_cabang',
+                'kat'
+            ));
+        } else {
+            // echo 2;
+            // die;
+            return view('laporanaccounting.laporan.cetak_costratio', compact(
+                'dari',
+                'sampai',
+                'cbg',
+                'biaya',
+                'logistik',
+                'bahan',
+                'penjualan',
+                'retur',
+                'ppn',
+                'piutang',
+                'kode_cabang',
+                'kat'
+            ));
+        }
     }
 
     public function cetak_costratio_detaillogistik($dari, $sampai, $kode_cabang)
