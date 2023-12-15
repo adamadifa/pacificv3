@@ -105,6 +105,14 @@
                                             </div>
                                         </div>
                                         <div class="row">
+                                            <div class="col-12">
+                                                <select name="format" id="format" class="form-control">
+                                                    <option value="1">Format 1</option>
+                                                    <option value="2">Format 2</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row">
                                             <div class="col-lg-8 col-sm-12">
                                                 <div class="form-group">
                                                     <button type="submit" name="submit"
