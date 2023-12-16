@@ -110,9 +110,9 @@ class HariliburController extends Controller
                     ->count();
             }
 
-            if ($cek > 0) {
-                return Redirect::back()->with(['warning' => 'Tanggal Libur Sudah Diinputkan Sebelumnya']);
-            }
+            // if ($cek > 0) {
+            //     return Redirect::back()->with(['warning' => 'Tanggal Libur Sudah Diinputkan Sebelumnya']);
+            // }
             DB::table('harilibur')->insert($data);
             return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
         } catch (\Exception $e) {
