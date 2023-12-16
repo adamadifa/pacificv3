@@ -238,19 +238,34 @@ class SetoranpusatController extends Controller
         $cabang = $setoranpusat->kode_cabang;
         $tgl_setoranpusat = $setoranpusat->tgl_setoranpusat;
         $jmlbayar = $setoranpusat->uang_kertas + $setoranpusat->uang_logam;
-
-        $lastledger = DB::table('ledger_bank')
-            ->select('no_bukti')
-            ->whereRaw('LEFT(no_bukti,7) ="LR' . $cabang . $tahun . '"')
-            ->orderBy('no_bukti', 'desc')
-            ->first();
-        if ($lastledger == null) {
-            $last_no_bukti = 'LR' . $cabang . $tahun . '0000';
+        if ($cabang == "PST") {
+            $lastledger = DB::table('ledger_bank')
+                ->select('no_bukti')
+                ->whereRaw('LEFT(no_bukti,7) ="LR' . $cabang . $tahun . '"')
+                ->whereRaw('LENGTH(no_bukti)=12')
+                ->orderBy('no_bukti', 'desc')
+                ->first();
+            if ($lastledger == null) {
+                $last_no_bukti = 'LR' . $cabang . $tahun . '0000';
+            } else {
+                $last_no_bukti = $lastledger->no_bukti;
+            }
+            $no_bukti = buatkode($last_no_bukti, 'LR' . $cabang . $tahun, 5);
         } else {
-            $last_no_bukti = $lastledger->no_bukti;
+            $lastledger = DB::table('ledger_bank')
+                ->select('no_bukti')
+                ->whereRaw('LEFT(no_bukti,7) ="LR' . $cabang . $tahun . '"')
+                ->orderBy('no_bukti', 'desc')
+                ->first();
+            if ($lastledger == null) {
+                $last_no_bukti = 'LR' . $cabang . $tahun . '0000';
+            } else {
+                $last_no_bukti = $lastledger->no_bukti;
+            }
+            $no_bukti = buatkode($last_no_bukti, 'LR' . $cabang . $tahun, 4);
         }
 
-        $no_bukti = buatkode($last_no_bukti, 'LR' . $cabang . $tahun, 4);
+
 
         //Buku Besar
         $lastbukubesar = DB::table('buku_besar')

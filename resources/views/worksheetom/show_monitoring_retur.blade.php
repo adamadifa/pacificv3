@@ -115,6 +115,7 @@
                     <th rowspan="2">Nama Barang</th>
                     <th colspan="3" style="text-align: center">Retur</th>
                     <th rowspan="2">No. DPB</th>
+                    <th rowspan="2">#</th>
                 </tr>
                 <tr>
                     <th class="text-center">Dus</th>
@@ -225,18 +226,20 @@
                                 showConfirmButton: false
                             }).then(function() {
                                 // loadbarangtemp();
+                                loadpelunasan();
                                 $("#kode_barang").val("");
                                 $("#jml_dus").val("");
                                 $("#jml_pack").val("");
                                 $("#jml_pcs").val("");
                                 $("#no_dpb_val").val("");
+                                $("#no_dpb").val("");
                             });
 
 
                         } else if (respond == 1) {
                             swal({
                                 title: 'Oops',
-                                text: 'Item Sudah Ada !',
+                                text: 'Jumlah Pelunasan Melebihi Jumlah Retur !',
                                 icon: 'warning',
                                 showConfirmButton: false
                             }).then(function() {
@@ -244,6 +247,8 @@
                                 $("#jml_dus").val("");
                                 $("#jml_pack").val("");
                                 $("#jml_pcs").val("");
+                                $("#no_dpb_val").val("");
+                                $("#no_dpb").val("");
                             });
                         } else {
                             swal({
@@ -269,5 +274,24 @@
             $("#isipcsdus").val(isipcsdus);
             $("#isipcs").val(isipcs);
         });
+
+
+        function loadpelunasan() {
+            var no_retur_penj = "{{ $retur->no_retur_penj }}";
+            $.ajax({
+                type: 'POST',
+                url: '/worksheetom/showpelunasanretur',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_retur_penj: no_retur_penj,
+                },
+                cache: false,
+                success: function(respond) {
+                    $("#loadpelunasanretur").html(respond);
+                }
+            });
+        }
+
+        loadpelunasan();
     });
 </script>
