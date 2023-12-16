@@ -95,14 +95,49 @@ class WorksheetomController extends Controller
             ->where('no_retur_penj', $request->no_retur_penj)
             ->get();
 
-        return view('worksheetom.show_monitoring_retur', compact('detail'));
+        return view('worksheetom.show_monitoring_retur', compact('detail', 'retur'));
     }
 
 
     public function storepelunasanretur(Request $request)
     {
         $id_user = Auth::user()->id;
+        $no_retur_penj = $request->no_retur_penj;
         $barang = Harga::where('kode_barang', $request->kode_barang)->first();
-        $cek = DB::table('detailretur_pelunasan')->where('kode_barang', $request->kode_barang)->where('no_retur_penj', $request->no_retur_penj)->count();
+        $jumlah = $request->jumlah;
+        $cek_retur = DB::table('detailretur')->where('kode_barang', $request->kode_barang)->where('no_retur_penj', $request->no_retur_penj)->first();
+        $cek_pelunasan = DB::table('detailretur_pelunasan')->where('kode_barang', $request->kode_barang)->where('no_retur_penj', $request->no_retur_penj)->first();
+
+        $jmlretur = $cek_retur != null ? $cek_retur->jumlah : 0;
+        $jmlpelunasan = $cek_pelunasan != null ? $cek_pelunasan->jumlah : 0;
+
+        if (($jmlpelunasan + $jumlah) > $jmlretur) {
+            echo 1;
+        } else {
+            try {
+                DB::table('detailretur_pelunasan')
+                    ->insert([
+                        'no_retur_penj' => $no_retur_penj,
+                        'kode_barang' => $request->kode_barang,
+                        'jumlah' => $request->jumlah,
+                        'no_dpb' => $request->no_dpb,
+                        'id_admin' => $id_user
+                    ]);
+                echo 0;
+            } catch (\Exception $e) {
+                echo 2;
+            }
+        }
+    }
+
+    public function showpelunasanretur(Request $request)
+    {
+        $no_retur_penj = $request->no_retur_penj;
+        $pelunasanretur = DB::table('detailretur_pelunasan')
+            ->select('detailretur_pelunasan.*', 'kode_produk', 'nama_barang', 'isipcsdus', 'isipack', 'isipcs', 'no_dpb')
+            ->join('barang', 'detailretur_pelunasan.kode_barang', '=', 'barang.kode_barang')
+            ->where('detailretur_pelunasan.no_retur_penj', $no_retur_penj)
+            ->get();
+        return view('worksheetom.show_pelunasan_retur', compact('pelunasanretur'));
     }
 }

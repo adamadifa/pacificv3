@@ -1975,6 +1975,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/worksheetom/monitoringretur', [WorksheetomController::class, 'monitoringretur']);
     Route::post('/worksheetom/showmonitoringretur', [WorksheetomController::class, 'showmonitoringretur']);
     Route::post('/worksheetom/storepelunasanretur', [WorksheetomController::class, 'storepelunasanretur']);
+    Route::post('/worksheetom/showpelunasanretur', [WorksheetomController::class, 'showpelunasanretur']);
 });
 
 
