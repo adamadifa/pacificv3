@@ -11,53 +11,23 @@
                     <th rowspan="2">Kode Produk</th>
                     <th rowspan="2">Nama Barang</th>
                     <th colspan="3" style="text-align: center">Retur</th>
-                    <th colspan="3" style="text-align: center">Pelunasan</th>
+                    <th colspan="3" style="text-align: center" class="bg-success">Pelunasan</th>
+                    <th colspan="3" style="text-align: center" class="bg-danger">Sisa</th>
+                    <th rowspan="2">Status</th>
                 </tr>
                 <tr>
                     <th class="text-center">Dus</th>
                     <th class="text-center">Pack</th>
                     <th class="text-center">Pcs</th>
-                    <th class="text-center">Dus</th>
-                    <th class="text-center">Pack</th>
-                    <th class="text-center">Pcs</th>
+                    <th class="text-center bg-success">Dus</th>
+                    <th class="text-center bg-success">Pack</th>
+                    <th class="text-center bg-success">Pcs</th>
+                    <th class="text-center bg-danger">Dus</th>
+                    <th class="text-center bg-danger">Pack</th>
+                    <th class="text-center bg-danger">Pcs</th>
                 </tr>
             </thead>
-            <tbody>
-                @php
-                    $totalpf = 0;
-                    $totalgb = 0;
-                    $total = 0;
-                @endphp
-                @foreach ($detail as $d)
-                    @php
-                        $jmldus = floor($d->jumlah / $d->isipcsdus);
-                        $sisadus = $d->jumlah % $d->isipcsdus;
-
-                        if ($d->isipack == 0) {
-                            $jmlpack = 0;
-                            $sisapack = $sisadus;
-                        } else {
-                            $jmlpack = floor($sisadus / $d->isipcs);
-                            $sisapack = $sisadus % $d->isipcs;
-                        }
-
-                        $jmlpcs = $sisapack;
-
-                        $total += $d->subtotal;
-
-                    @endphp
-                    <tr>
-
-                        <td>{{ $d->kode_produk }}</td>
-                        <td>{{ $d->nama_barang }}</td>
-                        <td class="text-center">{{ $jmldus }}</td>
-                        <td class="text-center">{{ $jmlpack }}</td>
-                        <td class="text-center">{{ $jmlpcs }}</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                @endforeach
+            <tbody id="loadretur">
 
             </tbody>
         </table>
@@ -128,6 +98,7 @@
         </table>
     </div>
 </div>
+
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="{{ asset('app-assets/vendors/js/forms/select/select2.full.min.js') }}"></script>
 <script src="{{ asset('app-assets/js/scripts/forms/select/form-select2.js') }}"></script>
@@ -287,11 +258,29 @@
                 },
                 cache: false,
                 success: function(respond) {
+                    loaddetailretur();
                     $("#loadpelunasanretur").html(respond);
                 }
             });
         }
 
+        function loaddetailretur() {
+            var no_retur_penj = "{{ $retur->no_retur_penj }}";
+            $.ajax({
+                type: 'POST',
+                url: '/worksheetom/showdetailretur',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    no_retur_penj: no_retur_penj
+                },
+                cache: false,
+                success: function(respond) {
+                    $("#no_retur_penj").text(no_retur_penj);
+                    $("#loadretur").html(respond);
+                }
+            });
+        }
         loadpelunasan();
+        loaddetailretur();
     });
 </script>

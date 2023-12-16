@@ -1976,6 +1976,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/worksheetom/showmonitoringretur', [WorksheetomController::class, 'showmonitoringretur']);
     Route::post('/worksheetom/storepelunasanretur', [WorksheetomController::class, 'storepelunasanretur']);
     Route::post('/worksheetom/showpelunasanretur', [WorksheetomController::class, 'showpelunasanretur']);
+    Route::post('/worksheetom/deletepelunasanretur', [WorksheetomController::class, 'deletepelunasanretur']);
+    Route::post('/worksheetom/showdetailretur', [WorksheetomController::class, 'showdetailretur']);
 });
 
 

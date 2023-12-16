@@ -84,6 +84,7 @@
                                 @endif
                                 <th>Jenis</th>
                                 <th>Total</th>
+                                <th>Status</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -113,6 +114,13 @@
                                     </td>
                                     <td class="text-right">{{ rupiah($d->subtotal_pf) }}</td>
                                     <td>
+                                        @if ($d->sisa == 0)
+                                            <span class="badge bg-success">Lunas</span>
+                                        @else
+                                            <span class="badge bg-danger">Belum Lunas</span>
+                                        @endif
+                                    </td>
+                                    <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             <a class="ml-1 detailretur" href="#"
                                                 no_retur_penj="{{ $d->no_retur_penj }}"><i
@@ -139,12 +147,19 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel18">Detail Retur <span id="no_retur_penj"></span></h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+
                 </div>
                 <div class="modal-body">
                     <div id="loaddetailretur"></div>
+                    <div class="row">
+                        <div class="col-12">
+                            <a class="btn btn-primary w-100" href="#" id="refresh">
+                                <i class="i feather icon-refresh-ccw mr-1"></i>
+                                Update
+
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -154,6 +169,10 @@
 @push('myscript')
     <script>
         $(function() {
+            $("#refresh").click(function() {
+                location.reload();
+            });
+
             function cektutuplaporan(tanggal) {
                 $.ajax({
                     type: "POST",

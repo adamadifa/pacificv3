@@ -27,12 +27,39 @@ class WorksheetomController extends Controller
     {
         $pelanggan = '"' . $request->nama_pelanggan . '"';
         $query = Retur::query();
-        $query->select('retur.*', 'nama_pelanggan', 'nama_karyawan', 'karyawan.kode_cabang');
+        $query->select('retur.*', 'nama_pelanggan', 'nama_karyawan', 'karyawan.kode_cabang', DB::raw('IFNULL(jmlretur,0) - IFNULL(jmlpelunasan,0) as sisa'));
         $query->orderBy('tglretur', 'desc');
         $query->orderBy('no_retur_penj', 'asc');
         $query->join('penjualan', 'retur.no_fak_penj', '=', 'penjualan.no_fak_penj');
         $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
         $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $query->leftJoin(
+            DB::raw("(
+            SELECT
+                no_retur_penj,
+                SUM(jumlah) as jmlretur
+            FROM
+                detailretur
+            GROUP BY no_retur_penj
+        ) detailretur"),
+            function ($join) {
+                $join->on('retur.no_retur_penj', '=', 'detailretur.no_retur_penj');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+            SELECT
+                no_retur_penj,
+                SUM(jumlah) as jmlpelunasan
+            FROM
+                detailretur_pelunasan
+            GROUP BY no_retur_penj
+        ) pelunasan"),
+            function ($join) {
+                $join->on('retur.no_retur_penj', '=', 'pelunasan.no_retur_penj');
+            }
+        );
         if (empty($request->no_fak_penj) && empty($request->nama_pelanggan) && empty($request->dari) && empty($request->sampai)) {
             $query->WhereRaw("MATCH(nama_pelanggan) AGAINST('" . $pelanggan .  "')");
         }
@@ -89,13 +116,30 @@ class WorksheetomController extends Controller
             ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
             ->where('no_retur_penj', $request->no_retur_penj)
             ->first();
+
         $detail = DB::table('detailretur')
-            ->select('detailretur.*', 'kode_produk', 'nama_barang', 'isipcsdus', 'isipack', 'isipcs')
+            ->select('detailretur.*', 'kode_produk', 'nama_barang', 'isipcsdus', 'isipack', 'isipcs', DB::raw('IFNULL(jumlahpelunasan,0) as jumlahpelunasan'))
             ->join('barang', 'detailretur.kode_barang', '=', 'barang.kode_barang')
+            ->leftJoin(
+                DB::raw("(
+                SELECT
+                    kode_barang,
+                    SUM(jumlah) as jumlahpelunasan
+                FROM
+                    detailretur_pelunasan
+                WHERE no_retur_penj ='$request->no_retur_penj'
+                GROUP BY kode_barang
+            ) pelunasan"),
+                function ($join) {
+                    $join->on('detailretur.kode_barang', '=', 'pelunasan.kode_barang');
+                }
+            )
+
             ->where('no_retur_penj', $request->no_retur_penj)
             ->get();
 
-        return view('worksheetom.show_monitoring_retur', compact('detail', 'retur'));
+        //dd($detail);
+        return view('worksheetom.show_monitoring_retur', compact('retur', 'detail'));
     }
 
 
@@ -138,6 +182,51 @@ class WorksheetomController extends Controller
             ->join('barang', 'detailretur_pelunasan.kode_barang', '=', 'barang.kode_barang')
             ->where('detailretur_pelunasan.no_retur_penj', $no_retur_penj)
             ->get();
-        return view('worksheetom.show_pelunasan_retur', compact('pelunasanretur'));
+        return view('worksheetom.show_pelunasan_retur', compact('pelunasanretur', 'no_retur_penj'));
+    }
+
+
+    public function deletepelunasanretur(Request $request)
+    {
+        $no_retur_penj = $request->no_retur_penj;
+        $kode_barang = $request->kode_barang;
+        $no_dpb = $request->no_dpb;
+
+        try {
+            DB::table('detailretur_pelunasan')
+                ->where('no_retur_penj', $no_retur_penj)
+                ->where('kode_barang', $kode_barang)
+                ->where('no_dpb', $no_dpb)
+                ->delete();
+            echo 0;
+        } catch (\Exception $e) {
+            dd($e);
+        }
+    }
+
+
+    public function showdetailretur(Request $request)
+    {
+        $detail = DB::table('detailretur')
+            ->select('detailretur.*', 'kode_produk', 'nama_barang', 'isipcsdus', 'isipack', 'isipcs', DB::raw('IFNULL(jumlahpelunasan,0) as jumlahpelunasan'))
+            ->join('barang', 'detailretur.kode_barang', '=', 'barang.kode_barang')
+            ->leftJoin(
+                DB::raw("(
+                SELECT
+                    kode_barang,
+                    SUM(jumlah) as jumlahpelunasan
+                FROM
+                    detailretur_pelunasan
+                WHERE no_retur_penj ='$request->no_retur_penj'
+                GROUP BY kode_barang
+            ) pelunasan"),
+                function ($join) {
+                    $join->on('detailretur.kode_barang', '=', 'pelunasan.kode_barang');
+                }
+            )
+
+            ->where('no_retur_penj', $request->no_retur_penj)
+            ->get();
+        return view('worksheetom.showdetailretur', compact('detail'));
     }
 }
