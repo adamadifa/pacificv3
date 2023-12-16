@@ -108,7 +108,8 @@ class KaryawanController extends Controller
                 '08.05.042',
                 '12.09.182',
                 '05.01.055',
-                '13.03.202'
+                '13.03.202',
+                '16.01.069'
             ];
 
             $query->whereIn('nik', $listkaryawan);
