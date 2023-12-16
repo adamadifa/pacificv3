@@ -109,7 +109,6 @@ class KaryawanController extends Controller
                 '12.09.182',
                 '05.01.055',
                 '13.03.202',
-                '16.01.069',
                 '17.08.287'
             ];
 
