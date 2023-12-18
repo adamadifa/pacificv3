@@ -246,13 +246,27 @@ class KlaimController extends Controller
         $databank = DB::table('master_bank')->where('kode_bank', $bank)->first();
         $akunbank = $databank->kode_akun;
 
-        $ledger = DB::table('ledger_bank')->select('no_bukti')->whereRaw('LEFT(no_bukti,7)="LR' . $kode_cabang . $tahun . '"')->orderBy('no_bukti', 'desc')->first();
-        if ($ledger != null) {
-            $lastno_bukti = $ledger->no_bukti;
+        if ($kode_cabang == "PST") {
+            $ledger = DB::table('ledger_bank')->select('no_bukti')
+                ->whereRaw('LEFT(no_bukti,7)="LR' . $kode_cabang . $tahun . '"')
+                ->whereRaw('LENGTH(no_bukti)=12')
+                ->orderBy('no_bukti', 'desc')->first();
+            if ($ledger != null) {
+                $lastno_bukti = $ledger->no_bukti;
+            } else {
+                $lastno_bukti = "";
+            }
+            $no_bukti = buatkode($lastno_bukti, 'LR' . $kode_cabang . $tahun, 5);
         } else {
-            $lastno_bukti = "";
+            $ledger = DB::table('ledger_bank')->select('no_bukti')->whereRaw('LEFT(no_bukti,7)="LR' . $kode_cabang . $tahun . '"')->orderBy('no_bukti', 'desc')->first();
+            if ($ledger != null) {
+                $lastno_bukti = $ledger->no_bukti;
+            } else {
+                $lastno_bukti = "";
+            }
+            $no_bukti = buatkode($lastno_bukti, 'LR' . $kode_cabang . $tahun, 4);
         }
-        $no_bukti = buatkode($lastno_bukti, 'LR' . $kode_cabang . $tahun, 4);
+
 
         $bukubesar = DB::table('buku_besar')->whereRaw('LEFT(no_bukti,6)="GJ' . $bulan . $tahun . '"')
             ->orderBy('no_bukti', 'desc')
