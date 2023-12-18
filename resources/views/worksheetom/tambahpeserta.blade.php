@@ -152,6 +152,7 @@
                                 $("#kode_pelanggan").val("");
                                 $("#kode_pelanggan_val").val("");
                             });
+                            loadpeserta();
                         } else {
                             swal({
                                 title: 'Oops',

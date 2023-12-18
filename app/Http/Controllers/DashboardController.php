@@ -754,10 +754,13 @@ class DashboardController extends Controller
     {
         $bulanini = date("m");
         $tahunini = date("Y");
+
+
+
         $bulandepan = date("m") + 1 > 12 ? (date("m") + 1) - 12 : date("m") + 1;
-        $tahun2 = $bulandepan > 12 ? $tahunini + 1 : $tahunini;
+        $tahun2 = date("m") + 1 > 12 ? $tahunini + 1 : $tahunini;
         $duabulan = date("m") + 2 > 12 ? (date("m") + 2) - 12 : date("m") + 2;
-        $tahun3 = $duabulan > 12 ? $tahunini + 1 : $tahunini;
+        $tahun3 = date("m") + 2 > 12 ? $tahunini + 1 : $tahunini;
 
         $qkir_sudahlewat = DB::table('kendaraan')
             ->whereRaw('MONTH(jatuhtempo_kir)<' . $bulanini)
