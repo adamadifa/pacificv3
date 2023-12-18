@@ -314,12 +314,48 @@ class WorksheetomController extends Controller
 
     public function getpeserta($kode_program)
     {
+
+        $program = DB::table('program')->where('kode_program', $kode_program)->first();
+        $dari = $program->dari;
+        $sampai = $program->sampai;
+        $list_product = unserialize($program->kode_produk);
+        $produk = "";
+        $jmlproduk = count($list_product);
+        $i = 0;
+        foreach ($list_product as $p) {
+            if ($i == $jmlproduk - 1) {
+                $produk .= "'" . $p . "'";
+            } else {
+                $produk .= "'" . $p . "',";
+            }
+            $i++;
+        }
+
+
         $peserta = DB::table('program_peserta')
+            ->select('program_peserta.*', 'nama_pelanggan', 'pelanggan.kode_cabang', 'nama_karyawan', 'jmldus')
             ->join('pelanggan', 'program_peserta.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
             ->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan')
+            ->leftJoin(
+                DB::raw("(
+                SELECT
+                    penjualan.kode_pelanggan,
+                    SUM(floor(jumlah/isipcsdus)) as jmldus
+                FROM
+                    detailpenjualan
+                INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
+                INNER JOIN penjualan ON detailpenjualan.no_fak_penj = penjualan.no_fak_penj
+                WHERE tgltransaksi BETWEEN '$dari' AND '$sampai'
+                AND kode_produk IN ($produk)
+                GROUP BY penjualan.kode_pelanggan
+            ) detailpenjualan"),
+                function ($join) {
+                    $join->on('program_peserta.kode_pelanggan', '=', 'detailpenjualan.kode_pelanggan');
+                }
+            )
             ->where('kode_program', $kode_program)
             ->orderBy('nama_pelanggan')
             ->get();
-        return view('worksheetom.getpeserta', compact('peserta'));
+        return view('worksheetom.getpeserta', compact('peserta', 'program'));
     }
 }
