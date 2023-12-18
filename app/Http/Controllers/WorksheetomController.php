@@ -7,6 +7,7 @@ use App\Models\Retur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
 
 class WorksheetomController extends Controller
@@ -228,5 +229,97 @@ class WorksheetomController extends Controller
             ->where('no_retur_penj', $request->no_retur_penj)
             ->get();
         return view('worksheetom.showdetailretur', compact('detail'));
+    }
+
+
+    //Monitoring Program
+
+    public function monitoringprogram()
+    {
+        $program = DB::table('program')
+            ->join('program_reward', 'program.kode_reward', '=', 'program_reward.kode_reward')
+            ->orderBy('tanggal', 'desc')
+            ->get();
+        return view('worksheetom.monitoring_program', compact('program'));
+    }
+
+    public function createprogram()
+    {
+        $reward = DB::table('program_reward')->get();
+        $produk = DB::table('master_barang')->where('status', 1)->get();
+        return view('worksheetom.create_program', compact('reward', 'produk'));
+    }
+
+    public function storeprogram(Request $request)
+    {
+        $tanggal = $request->tanggal;
+        $thn = date('y', strtotime($tanggal));
+        $tahun = date('Y', strtotime($tanggal));
+        $lastprogram = DB::table('program')
+            ->whereRaw('YEAR(tanggal)="' . $tahun . '"')
+            ->orderBy('kode_program', 'desc')
+            ->first();
+        $format = 'PR' . $thn;
+        $last_kode = $lastprogram != null ? $lastprogram->kode_program : '';
+        $kode_program = buatkode($last_kode, $format, 5);
+        $nama_program = $request->nama_program;
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $kode_produk = serialize($request->kode_produk);
+        $kode_reward = $request->kode_reward;
+        $jml_target = str_replace(".", "", $request->jml_target);
+        try {
+            DB::table('program')->insert([
+                'kode_program' => $kode_program,
+                'tanggal' => $tanggal,
+                'nama_program' => $nama_program,
+                'dari' => $dari,
+                'sampai' => $sampai,
+                'kode_produk' => $kode_produk,
+                'kode_reward' => $kode_reward,
+                'jml_target' => $jml_target
+            ]);
+
+            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);
+        }
+    }
+
+    public function tambahpeserta($kode_program)
+    {
+        $program = DB::table('program')
+            ->join('program_reward', 'program.kode_reward', '=', 'program_reward.kode_reward')
+            ->where('kode_program', $kode_program)
+            ->first();
+
+        return view('worksheetom.tambahpeserta', compact('program'));
+    }
+
+    public function storepeserta(Request $request)
+    {
+        $kode_program = $request->kode_program;
+        $kode_pelanggan = $request->kode_pelanggan;
+
+        try {
+            DB::table('program_peserta')->insert([
+                'kode_program' => $kode_program,
+                'kode_pelanggan' => $kode_pelanggan
+            ]);
+            echo 0;
+        } catch (\Exception $e) {
+            echo 1;
+        }
+    }
+
+    public function getpeserta($kode_program)
+    {
+        $peserta = DB::table('program_peserta')
+            ->join('pelanggan', 'program_peserta.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+            ->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan')
+            ->where('kode_program', $kode_program)
+            ->orderBy('nama_pelanggan')
+            ->get();
+        return view('worksheetom.getpeserta', compact('peserta'));
     }
 }
