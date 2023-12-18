@@ -1111,4 +1111,46 @@ class PelangganController extends Controller
             dd($e);
         }
     }
+
+
+    public function getautocompletepelanggan(Request $request)
+    {
+        $search = $request->search;
+        if ($search == '') {
+            $query = Pelanggan::query();
+            $query->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
+            if ($this->cabang != "PCF") {
+                $query->where('pelanggan.kode_cabang', $this->cabang);
+            }
+            $query->orderBy('nama_pelanggan', 'asc');
+            $query->limit(10);
+            $autocomplate = $query->get();
+        } else {
+            $query = Pelanggan::query();
+            $query->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
+            if ($this->cabang != "PCF") {
+                $query->where('kode_pelanggan', 'like', '%' . $search . '%');
+                $query->where('pelanggan.kode_cabang', $this->cabang);
+                $query->orWhere('nama_pelanggan', 'like', '%' . $search . '%');
+                $query->where('pelanggan.kode_cabang', $this->cabang);
+            } else {
+                $query->where('kode_pelanggan', 'like', '%' . $search . '%');
+                $query->orWhere('nama_pelanggan', 'like', '%' . $search . '%');
+            }
+            $query->orderBy('nama_pelanggan', 'asc');
+            $query->limit(10);
+            $autocomplate = $query->get();
+        }
+
+
+        //dd($autocomplate);
+        $response = array();
+        foreach ($autocomplate as $autocomplate) {
+            $label = $autocomplate->kode_pelanggan . " - " . $autocomplate->nama_pelanggan . " - " . $autocomplate->kode_cabang . " - " . $autocomplate->nama_karyawan;
+            $response[] = array("value" => $autocomplate->nama_pelanggan, "label" => $label, 'val' => $autocomplate->kode_pelanggan);
+        }
+
+        echo json_encode($response);
+        exit;
+    }
 }

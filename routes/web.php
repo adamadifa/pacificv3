@@ -238,6 +238,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('getautocompleteharga', [HargaController::class, 'getautocompleteharga']);
     Route::post('getautocompletedpb', [DpbController::class, 'getautocompletedpb']);
+    Route::post('getautocompletepelanggan', [PelangganController::class, 'getautocompletepelanggan']);
     Route::post('getautocompletefpb', [FpbController::class, 'getautocompletefpb']);
     Route::post('getautocompletesj', [SuratjalanController::class, 'getautocompletesj']);
     Route::post('getautocompletehargaretur', [HargaController::class, 'getautocompletehargaretur']);
@@ -1978,6 +1979,16 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/worksheetom/showpelunasanretur', [WorksheetomController::class, 'showpelunasanretur']);
     Route::post('/worksheetom/deletepelunasanretur', [WorksheetomController::class, 'deletepelunasanretur']);
     Route::post('/worksheetom/showdetailretur', [WorksheetomController::class, 'showdetailretur']);
+
+
+    //Monitoring Program
+    Route::get('/worksheetom/monitoringprogram', [WorksheetomController::class, 'monitoringprogram']);
+    Route::get('/worksheetom/createprogram', [WorksheetomController::class, 'createprogram']);
+    Route::post('/worksheetom/storeprogram', [WorksheetomController::class, 'storeprogram']);
+    Route::post('/worksheetom/storeprogram', [WorksheetomController::class, 'storeprogram']);
+    Route::get('/worksheetom/{kode_program}/tambahpeserta', [WorksheetomController::class, 'tambahpeserta']);
+    Route::post('/worksheetom/storepeserta', [WorksheetomController::class, 'storepeserta']);
+    Route::get('/worksheetom/{kode_program}/getpeserta', [WorksheetomController::class, 'getpeserta']);
 });
 
 
