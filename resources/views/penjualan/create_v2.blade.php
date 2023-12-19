@@ -25,7 +25,7 @@
                 @csrf
                 <input type="hidden" id="sisapiutang" name="sisapiutang">
                 <input type="hidden" id="sisafakturkredit" name="sisafakturkredit">
-                <input type="text" id="sikluspembayaran" name="sikluspembayaran">
+                <input type="hidden" id="sikluspembayaran" name="sikluspembayaran">
                 <input type="hidden" id="cektutuplaporan" name="cektutuplaporan">
                 <input type="hidden" id="bruto" name="bruto">
                 <input type="hidden" id="subtotal" name="subtotal">
