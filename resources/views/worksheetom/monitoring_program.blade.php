@@ -26,15 +26,15 @@
                         Data</a>
                 </div>
                 <div class="card-body">
-                    <form action="/worksheetom/monitoringretur">
+                    <form action="{{ URL::current() }}">
                         <div class="row">
                             <div class="col-lg-5 col-sm-12">
                                 <x-inputtext label="Dari" field="periode_dari" icon="feather icon-calendar" datepicker
-                                    value="{{ Request('dari') }}" />
+                                    value="{{ Request('periode_dari') }}" />
                             </div>
                             <div class="col-lg-5 col-sm-12">
                                 <x-inputtext label="Sampai" field="periode_sampai" icon="feather icon-calendar" datepicker
-                                    value="{{ Request('sampai') }}" />
+                                    value="{{ Request('periode_sampai') }}" />
                             </div>
                             <div class="col-lg-2 col-sm-2">
                                 <div class="form-group">
@@ -81,15 +81,27 @@
                                     <td>
                                         <div class="btn-group" role="group" aria-label="Basic example">
                                             <a class="ml-1 tambahpeserta" href="#"
-                                                kode_program="{{ $d->kode_program }}"><i
-                                                    class=" feather icon-users info"></i>
+                                                kode_program="{{ $d->kode_program }}">
+                                                <i class=" feather icon-users info"></i>
                                             </a>
+                                            <a class="ml-1 edit" href="#" kode_program="{{ $d->kode_program }}">
+                                                <i class="feather icon-edit success"></i>
+                                            </a>
+                                            <form method="POST" name="deleteform" class="deleteform"
+                                                action="/worksheetom/{{ Crypt::encrypt($d->kode_program) }}/deleteprogram">
+                                                @csrf
+                                                @method('DELETE')
+                                                <a href="#" class="delete-confirm ml-1">
+                                                    <i class="feather icon-trash danger"></i>
+                                                </a>
+                                            </form>
                                         </div>
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+                    {{ $program->links('vendor.pagination.vuexy') }}
                 </div>
             </div>
         </div>
@@ -127,6 +139,23 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade text-left" id="mdleditprogram" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel18">Edit Program </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="loadeditprogram"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('myscript')
@@ -141,6 +170,33 @@
                 $("#loadcreateretur").load('/worksheetom/createprogram')
             });
 
+            $('.delete-confirm').click(function(event) {
+                var form = $(this).closest("form");
+                var name = $(this).data("name");
+                event.preventDefault();
+                swal({
+                        title: `Are you sure you want to delete this record?`,
+                        text: "If you delete this, it will be gone forever.",
+                        icon: "warning",
+                        buttons: true,
+                        dangerMode: true,
+                    })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            form.submit();
+                        }
+                    });
+            });
+
+            $(".edit").click(function(e) {
+                e.preventDefault();
+                var kode_program = $(this).attr('kode_program');
+                $('#mdleditprogram').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+                $("#loadeditprogram").load('/worksheetom/' + kode_program + '/editprogram')
+            });
             $(".tambahpeserta").click(function(e) {
                 e.preventDefault();
                 var kode_program = $(this).attr('kode_program');

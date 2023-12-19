@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Evaluasisharing;
 use App\Models\Harga;
+use App\Models\Program;
 use App\Models\Retur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
@@ -234,12 +237,17 @@ class WorksheetomController extends Controller
 
     //Monitoring Program
 
-    public function monitoringprogram()
+    public function monitoringprogram(Request $request)
     {
-        $program = DB::table('program')
-            ->join('program_reward', 'program.kode_reward', '=', 'program_reward.kode_reward')
-            ->orderBy('tanggal', 'desc')
-            ->get();
+        $query = Program::query();
+        $query->join('program_reward', 'program.kode_reward', '=', 'program_reward.kode_reward');
+        if (!empty($request->periode_dari) && !empty($request->periode_sampai)) {
+            $query->whereBetween('tanggal', [$request->periode_dari, $request->periode_sampai]);
+        }
+        $query->orderBy('tanggal', 'desc');
+        $query->get();
+        $program = $query->paginate(15);
+        $program->appends($request->all());
         return view('worksheetom.monitoring_program', compact('program'));
     }
 
@@ -248,6 +256,14 @@ class WorksheetomController extends Controller
         $reward = DB::table('program_reward')->get();
         $produk = DB::table('master_barang')->where('status', 1)->get();
         return view('worksheetom.create_program', compact('reward', 'produk'));
+    }
+
+    public function editprogram($kode_program)
+    {
+        $reward = DB::table('program_reward')->get();
+        $produk = DB::table('master_barang')->where('status', 1)->get();
+        $program = DB::table('program')->where('kode_program', $kode_program)->first();
+        return view('worksheetom.edit_program', compact('reward', 'produk', 'program'));
     }
 
     public function storeprogram(Request $request)
@@ -286,6 +302,33 @@ class WorksheetomController extends Controller
         }
     }
 
+    public function updateprogram(Request $request, $kode_program)
+    {
+        $tanggal = $request->tanggal;
+        $nama_program = $request->nama_program;
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $kode_produk = serialize($request->kode_produk);
+        $kode_reward = $request->kode_reward;
+        $jml_target = str_replace(".", "", $request->jml_target);
+        try {
+            DB::table('program')
+                ->where('kode_program', $kode_program)
+                ->update([
+                    'tanggal' => $tanggal,
+                    'nama_program' => $nama_program,
+                    'dari' => $dari,
+                    'sampai' => $sampai,
+                    'kode_produk' => $kode_produk,
+                    'kode_reward' => $kode_reward,
+                    'jml_target' => $jml_target
+                ]);
+
+            return Redirect::back()->with(['success' => 'Data Berhasil Di Update']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Data Gagal Di Update']);
+        }
+    }
     public function tambahpeserta($kode_program)
     {
         $program = DB::table('program')
@@ -357,5 +400,88 @@ class WorksheetomController extends Controller
             ->orderBy('nama_pelanggan')
             ->get();
         return view('worksheetom.getpeserta', compact('peserta', 'program'));
+    }
+
+    public function deletepeserta(Request $request)
+    {
+        $kode_program = $request->kode_program;
+        $kode_pelanggan = $request->kode_pelanggan;
+        try {
+            DB::table('program_peserta')->where('kode_program', $kode_program)
+                ->where('kode_pelanggan', $kode_pelanggan)
+                ->delete();
+            echo 0;
+        } catch (\Exception $e) {
+            echo 1;
+        }
+    }
+
+    public function deleteprogram($kode_program)
+    {
+        $kode_program = Crypt::decrypt($kode_program);
+        try {
+            DB::table('program')->where('kode_program', $kode_program)->delete();
+            return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
+        }
+    }
+
+    public function evaluasisharing(Request $request)
+    {
+        $query = Evaluasisharing::query();
+        $query->select('evaluasi_sharing.*');
+        if ($this->cabang != "PCF") {
+            $query->where('kode_cabang', $this->cabang);
+        }
+        $evaluasi = $query->paginate(15);
+        $evaluasi->appends(request()->all());
+        return view('worksheetom.evaluasi_sharing', compact('evaluasi'));
+    }
+
+    public function createevaluasi()
+    {
+        $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
+        return view('worksheetom.create_evaluasi', compact('cabang'));
+    }
+
+
+    public function storeevaluasi(Request $request)
+    {
+        $tanggal = $request->tanggal;
+        $thn = date('y', strtotime($tanggal));
+        $tahun = date('Y', strtotime($tanggal));
+        $lastevaluasi = DB::table('evaluasi_sharing')
+            ->whereRaw('YEAR(tanggal)="' . $tahun . '"')
+            ->orderBy('kode_evaluasi', 'desc')
+            ->first();
+        $format = 'EV' . $thn;
+        $last_kode = $lastevaluasi != null ? $lastevaluasi->kode_evaluasi : '';
+        $kode_evaluasi = buatkode($last_kode, $format, 5);
+        $jam = $request->jam;
+        $peserta = $request->peserta;
+        $tempat = $request->tempat;
+        $kode_cabang = $request->kode_cabang;
+
+        try {
+            DB::table('evaluasi_sharing')->insert([
+                'kode_evaluasi' => $kode_evaluasi,
+                'tanggal' => $tanggal,
+                'jam' => $jam,
+                'peserta' => $peserta,
+                'tempat' => $tempat,
+                'kode_cabang' => $kode_cabang
+            ]);
+            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);
+        }
+    }
+
+
+    public function detailevaluasi($kode_evaluasi)
+    {
+        $evaluasi = DB::table('evaluasi_sharing')->where('kode_evaluasi', $kode_evaluasi)->first();
+        return view('worksheetom.detail_evaluasi', compact('evaluasi'));
     }
 }

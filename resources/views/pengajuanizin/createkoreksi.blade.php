@@ -1,4 +1,5 @@
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css"
+    rel="stylesheet">
 <form method="POST" action="/pengajuanizin/storekoreksipresensi" id="frmKoreksipresensi" enctype="multipart/form-data">
     @csrf
     <div class="row">
@@ -7,7 +8,7 @@
                 <select name="nik" id="nik" class="form-control">
                     <option value="">Pilih Karyawan</option>
                     @foreach ($karyawan as $d)
-                    <option value="{{ $d->nik }}">{{ $d->nama_karyawan }}</option>
+                        <option value="{{ $d->nik }}">{{ $d->nama_karyawan }}</option>
                     @endforeach
                 </select>
             </div>
@@ -24,7 +25,7 @@
                 <select name="kode_jadwal" id="kode_jadwal" class="form-control">
                     <option value="">Pilih Jadwal</option>
                     @foreach ($jadwal as $d)
-                    <option value="{{ $d->kode_jadwal }}">{{ $d->nama_jadwal }} {{ $d->kode_cabang }}</option>
+                        <option value="{{ $d->kode_jadwal }}">{{ $d->nama_jadwal }} {{ $d->kode_cabang }}</option>
                     @endforeach
                 </select>
                 <input type="hidden" name="kode_jadwal_old" id="kode_jadwal_old">
@@ -55,8 +56,10 @@
         </div>
     </div>
 </form>
-<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+<script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js">
+</script>
 <script>
     $(function() {
 
@@ -77,15 +80,15 @@
             var start = new Date(hariini);
             var end = new Date(tgl_presensi);
             $.ajax({
-                url: '/pengajuanizin/getpresensihariini'
-                , type: 'POST'
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , tgl_presensi: tgl_presensi
-                    , nik: nik
-                }
-                , cache: false
-                , success: function(respond) {
+                url: '/pengajuanizin/getpresensihariini',
+                type: 'POST',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    tgl_presensi: tgl_presensi,
+                    nik: nik
+                },
+                cache: false,
+                success: function(respond) {
                     var data = respond.split("|");
                     $("#jam_masuk").val(data[0]);
                     $("#jam_masuk_old").val(data[0]);
@@ -159,60 +162,60 @@
 
             if (nik == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Nik Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Nik Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#nik").focus();
                 });
                 return false;
             } else if (tgl_presensi == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Tanggal Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Tanggal Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#tgl_presensi").focus();
                 });
                 return false;
             } else if (kode_jadwal == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Jadwal Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Jadwal Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#kode_jadwal").focus();
                 });
                 return false;
             } else if (jam_masuk == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Jam Masuk Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Jam Masuk Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#jam_masuk").focus();
                 });
                 return false;
             } else if (jam_pulang == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Jam Pulang Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Jam Pulang Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#jam_pulang").focus();
                 });
                 return false;
             } else if (keterangan == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Keterangan Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Keterangan Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#keterangan").focus();
                 });
@@ -220,5 +223,4 @@
             }
         });
     });
-
 </script>
