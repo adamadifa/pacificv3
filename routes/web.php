@@ -1984,11 +1984,24 @@ Route::middleware(['auth'])->group(function () {
     //Monitoring Program
     Route::get('/worksheetom/monitoringprogram', [WorksheetomController::class, 'monitoringprogram']);
     Route::get('/worksheetom/createprogram', [WorksheetomController::class, 'createprogram']);
+    Route::get('/worksheetom/{kode_program}/editprogram', [WorksheetomController::class, 'editprogram']);
+    Route::post('/worksheetom/{kode_program}/updateprogram', [WorksheetomController::class, 'updateprogram']);
     Route::post('/worksheetom/storeprogram', [WorksheetomController::class, 'storeprogram']);
     Route::post('/worksheetom/storeprogram', [WorksheetomController::class, 'storeprogram']);
     Route::get('/worksheetom/{kode_program}/tambahpeserta', [WorksheetomController::class, 'tambahpeserta']);
     Route::post('/worksheetom/storepeserta', [WorksheetomController::class, 'storepeserta']);
     Route::get('/worksheetom/{kode_program}/getpeserta', [WorksheetomController::class, 'getpeserta']);
+    Route::post('/worksheetom/deletepeserta', [WorksheetomController::class, 'deletepeserta']);
+    Route::delete('/worksheetom/{kode_program}/deleteprogram', [WorksheetomController::class, 'deleteprogram']);
+
+
+
+    //Evaluasi Sharing
+    Route::get('/worksheetom/evaluasisharing', [WorksheetomController::class, 'evaluasisharing']);
+    Route::get('/worksheetom/createevaluasi', [WorksheetomController::class, 'createevaluasi']);
+    Route::post('/worksheetom/storeevaluasi', [WorksheetomController::class, 'storeevaluasi']);
+    Route::get('/worksheetom/{kode_evaluasi}/detailevaluasi', [WorksheetomController::class, 'detailevaluasi']);
+    Route::post('/worksheetom/storedetailevaluasi', [WorksheetomController::class, 'storedetailevaluasi']);
 });
 
 
