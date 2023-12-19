@@ -1358,6 +1358,7 @@ class PenjualanController extends Controller
         $kode_pelanggan = $request->kode_pelanggan;
         $ajuanfaktur = DB::table('pengajuan_faktur')
             ->where('kode_pelanggan', $kode_pelanggan)
+            ->where('status', 1)
             ->orderBy('tgl_pengajuan', 'desc')
             ->first();
         $jmlfaktur = $ajuanfaktur != null ? $ajuanfaktur->jmlfaktur  : 1;
