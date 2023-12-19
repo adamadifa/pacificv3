@@ -98,14 +98,26 @@
                     <th>PIC</th>
                     <th>Due Date</th>
                     <th>Status</th>
+                    <th>#</th>
                 </tr>
             </thead>
+            <tbody id="load_detailevaluasi"></tbody>
         </table>
     </div>
 </div>
 <script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
 <script>
     $(function() {
+
+        function loaddetailevaluasi() {
+            var kode_evaluasi = "{{ $evaluasi->kode_evaluasi }}";
+            $("#load_detailevaluasi").load('/worksheetom/' + kode_evaluasi + '/getdetailevaluasi');
+        }
+
+        loaddetailevaluasi();
+
+
+
         $("#btnTambah").click(function(e) {
             var agenda = $("#agenda").val();
             var hasil_pembahasan = $("#hasil_pembahasan").val();
@@ -175,7 +187,38 @@
                     },
                     cache: false,
                     success: function(respond) {
-
+                        if (respond == 0) {
+                            swal({
+                                title: 'Berhasil',
+                                text: 'Peserta Berhasil DItambahkan !',
+                                icon: 'success',
+                                showConfirmButton: false
+                            }).then(function() {
+                                $("#agenda").focus();
+                                $("#agenda").val("");
+                                $("#hasil_pembahasan").val("");
+                                $("#action_plan").val("");
+                                $("#due_date").val("");
+                                $("#pic").val("");
+                                $("#status").val("");
+                                loaddetailevaluasi();
+                            });
+                        } else {
+                            swal({
+                                title: 'Oops',
+                                text: 'Peserta Gagal DItambahkan !',
+                                icon: 'warning',
+                                showConfirmButton: false
+                            }).then(function() {
+                                $("#agenda").focus();
+                                $("#agenda").val("");
+                                $("#hasil_pembahasan").val("");
+                                $("#action_plan").val("");
+                                $("#due_date").val("");
+                                $("#pic").val("");
+                                $("#status").val("");
+                            });
+                        }
                     }
                 });
             }

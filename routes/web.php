@@ -2002,6 +2002,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/worksheetom/storeevaluasi', [WorksheetomController::class, 'storeevaluasi']);
     Route::get('/worksheetom/{kode_evaluasi}/detailevaluasi', [WorksheetomController::class, 'detailevaluasi']);
     Route::post('/worksheetom/storedetailevaluasi', [WorksheetomController::class, 'storedetailevaluasi']);
+    Route::get('/worksheetom/{kode_evaluasi}/getdetailevaluasi', [WorksheetomController::class, 'getdetailevaluasi']);
+    Route::post('/worksheetom/deleteagenda', [WorksheetomController::class, 'deleteagenda']);
 });
 
 

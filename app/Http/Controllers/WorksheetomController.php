@@ -484,4 +484,56 @@ class WorksheetomController extends Controller
         $evaluasi = DB::table('evaluasi_sharing')->where('kode_evaluasi', $kode_evaluasi)->first();
         return view('worksheetom.detail_evaluasi', compact('evaluasi'));
     }
+
+
+    public function storedetailevaluasi(Request $request)
+    {
+        $kode_evaluasi = $request->kode_evaluasi;
+        $agenda = $request->agenda;
+        $hasil_pembahasan = $request->hasil_pembahasan;
+        $action_plan = $request->action_plan;
+        $due_date = $request->due_date;
+        $pic = $request->pic;
+        $status = $request->status;
+
+        $lastagenda = DB::table('evaluasi_sharing_detail')
+            ->where('kode_evaluasi', $kode_evaluasi)
+            ->orderBy('kode_agenda', 'desc')
+            ->first();
+        $format = $kode_evaluasi;
+        $last_kode = $lastagenda != null ? $lastagenda->kode_agenda : '';
+        $kode_agenda = buatkode($last_kode, $format, 3);
+        try {
+            DB::table('evaluasi_sharing_detail')->insert([
+                'kode_agenda' => $kode_agenda,
+                'kode_evaluasi' => $kode_evaluasi,
+                'agenda' => $agenda,
+                'hasil_pembahasan' => $hasil_pembahasan,
+                'action_plan' => $action_plan,
+                'due_date' => $due_date,
+                'pic' => $pic,
+                'status' => $status
+            ]);
+            echo 0;
+        } catch (\Exception $e) {
+            echo 1;
+        }
+    }
+
+
+    public function getdetailevaluasi($kode_evaluasi)
+    {
+        $detailevaluasi = DB::table('evaluasi_sharing_detail')->where('kode_evaluasi', $kode_evaluasi)->get();
+        return view('worksheetom.getdetail_evaluasi', compact('detailevaluasi', 'kode_evaluasi'));
+    }
+
+    public function deleteagenda(Request $request)
+    {
+        try {
+            DB::table('evaluasi_sharing_detail')->where('kode_agenda', $request->kode_agenda)->delete();
+            echo 0;
+        } catch (\Exception $e) {
+            echo 1;
+        }
+    }
 }
