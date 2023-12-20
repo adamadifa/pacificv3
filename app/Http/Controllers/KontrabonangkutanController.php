@@ -195,7 +195,11 @@ class KontrabonangkutanController extends Controller
         $bulan = $tanggal[1];
         $bank = DB::table('master_bank')->where('kode_bank', $kode_bank)->first();
         $kode_akun_bank = $bank->kode_akun;
-        $ledger = DB::table('ledger_bank')->select('no_bukti')->whereRaw('LEFT(no_bukti,7)="LR' . $cbg . $tahun . '"')->orderBy('no_bukti', 'desc')->first();
+
+        $ledger = DB::table('ledger_bank')->select('no_bukti')
+            ->whereRaw('LEFT(no_bukti,7)="LR' . $cbg . $tahun . '"')
+            ->whereRaw('LENGTH(no_bukti)=12')
+            ->orderBy('no_bukti', 'desc')->first();
         if ($ledger != null) {
             $lastno_bukti = $ledger->no_bukti;
         } else {
