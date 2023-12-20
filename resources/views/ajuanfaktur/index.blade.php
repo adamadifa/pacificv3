@@ -40,7 +40,8 @@
                                             <select name="kode_cabang" id="kode_cabang" class="form-control">
                                                 <option value="">Semua Cabang</option>
                                                 @foreach ($cabang as $c)
-                                                    <option {{ Request('kode_cabang') == $c->kode_cabang ? 'selected' : '' }}
+                                                    <option
+                                                        {{ Request('kode_cabang') == $c->kode_cabang ? 'selected' : '' }}
                                                         value="{{ $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}
                                                     </option>
                                                 @endforeach
@@ -167,7 +168,7 @@
                                             <td>
                                                 <div class="btn-group" role="group" aria-label="Basic example">
                                                     @if (in_array($level, $limitkredit_hapus))
-                                                        @if (empty($d->rsm))
+                                                        @if (empty($d->rsm) || in_array($level, ['admin', 'direktur']))
                                                             <a class="ml-1 editajuan" href="#"
                                                                 no_pengajuan="{{ Crypt::encrypt($d->no_pengajuan) }}"><i
                                                                     class="feather icon-edit success"></i></a>
