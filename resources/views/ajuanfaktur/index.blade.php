@@ -172,6 +172,8 @@
                                                             <a class="ml-1 editajuan" href="#"
                                                                 no_pengajuan="{{ Crypt::encrypt($d->no_pengajuan) }}"><i
                                                                     class="feather icon-edit success"></i></a>
+                                                        @endif
+                                                        @if (empty($d->rsm))
                                                             <form method="POST" name="deleteform" class="deleteform"
                                                                 action="/ajuanfaktur/{{ Crypt::encrypt($d->no_pengajuan) }}/delete">
                                                                 @csrf
