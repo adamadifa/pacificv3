@@ -246,7 +246,8 @@ class AjuanfakturController extends Controller
                 'kode_pelanggan' => $kode_pelanggan,
                 'jmlfaktur' => $jmlfaktur,
                 'sikluspembayaran' => $sikluspembayaran,
-                'keterangan' => $keterangan
+                'keterangan' => $keterangan,
+                'status' => 0
             ]);
 
             if (Auth::user()->level == "salesman") {
