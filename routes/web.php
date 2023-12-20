@@ -2000,10 +2000,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/worksheetom/evaluasisharing', [WorksheetomController::class, 'evaluasisharing']);
     Route::get('/worksheetom/createevaluasi', [WorksheetomController::class, 'createevaluasi']);
     Route::post('/worksheetom/storeevaluasi', [WorksheetomController::class, 'storeevaluasi']);
+    Route::post('/worksheetom/storeevaluasi', [WorksheetomController::class, 'storeevaluasi']);
     Route::get('/worksheetom/{kode_evaluasi}/detailevaluasi', [WorksheetomController::class, 'detailevaluasi']);
+    Route::post('/worksheetom/{kode_evaluasi}/updateevaluasi', [WorksheetomController::class, 'updateevaluasi']);
+    Route::get('/worksheetom/{kode_evaluasi}/editevaluasi', [WorksheetomController::class, 'editevaluasi']);
     Route::post('/worksheetom/storedetailevaluasi', [WorksheetomController::class, 'storedetailevaluasi']);
     Route::get('/worksheetom/{kode_evaluasi}/getdetailevaluasi', [WorksheetomController::class, 'getdetailevaluasi']);
     Route::post('/worksheetom/deleteagenda', [WorksheetomController::class, 'deleteagenda']);
+    Route::post('/worksheetom/deleteagenda', [WorksheetomController::class, 'deleteagenda']);
+    Route::delete('/worksheetom/{kode_evaluasi}/deleteevaluasi', [WorksheetomController::class, 'deleteevaluasi']);
 });
 
 

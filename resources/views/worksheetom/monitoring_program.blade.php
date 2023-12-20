@@ -84,17 +84,20 @@
                                                 kode_program="{{ $d->kode_program }}">
                                                 <i class=" feather icon-users info"></i>
                                             </a>
-                                            <a class="ml-1 edit" href="#" kode_program="{{ $d->kode_program }}">
-                                                <i class="feather icon-edit success"></i>
-                                            </a>
-                                            <form method="POST" name="deleteform" class="deleteform"
-                                                action="/worksheetom/{{ Crypt::encrypt($d->kode_program) }}/deleteprogram">
-                                                @csrf
-                                                @method('DELETE')
-                                                <a href="#" class="delete-confirm ml-1">
-                                                    <i class="feather icon-trash danger"></i>
+                                            @if ($level == 'admin')
+                                                <a class="ml-1 edit" href="#" kode_program="{{ $d->kode_program }}">
+                                                    <i class="feather icon-edit success"></i>
                                                 </a>
-                                            </form>
+                                                <form method="POST" name="deleteform" class="deleteform"
+                                                    action="/worksheetom/{{ Crypt::encrypt($d->kode_program) }}/deleteprogram">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <a href="#" class="delete-confirm ml-1">
+                                                        <i class="feather icon-trash danger"></i>
+                                                    </a>
+                                                </form>
+                                            @endif
+
                                         </div>
                                     </td>
                                 </tr>
