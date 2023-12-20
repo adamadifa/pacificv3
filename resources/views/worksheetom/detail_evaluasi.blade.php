@@ -19,12 +19,17 @@
                         <th>Tempat</th>
                         <td>{{ $evaluasi->tempat }}</td>
                     </tr>
+                    <tr>
+                        <th>Peserta</th>
+                        <td>{!! $evaluasi->peserta !!}</td>
+                    </tr>
                 </table>
             </div>
         </div>
         <div class="row">
             <div class="col-12">
-                <button class="btn btn-danger w-100"><i class="feather icon-refresh-ccw mr-1"></i> Reset</button>
+                <button class="btn btn-danger w-100" id="resetBtn"><i class="feather icon-refresh-ccw mr-1"></i>
+                    Reset</button>
             </div>
         </div>
     </div>
@@ -32,6 +37,7 @@
         <div class="row">
             <div class="col-12">
                 <div class="form-group">
+                    <input type="hidden" id="kode_agenda">
                     <x-inputtext label="Agenda" field="agenda" icon="feather icon-file" />
                 </div>
             </div>
@@ -78,10 +84,16 @@
                 </div>
             </div>
         </div>
-        <div class="row mt-1">
+        <div class="row mt-1" id="Addbtn">
             <div class="col-12">
                 <button class="btn btn-primary w-100" id="btnTambah"><i class="feather icon-plus mr-1"></i>
                     Tambahkan</button>
+            </div>
+        </div>
+        <div class="row mt-1" id="Updatebtn">
+            <div class="col-12">
+                <button class="btn btn-info w-100" id="btnUpdate"><i class="feather icon-refresh-ccw mr-1"></i>
+                    Update</button>
             </div>
         </div>
     </div>
@@ -109,6 +121,8 @@
 <script>
     $(function() {
 
+        $("#Updatebtn").hide();
+
         function loaddetailevaluasi() {
             var kode_evaluasi = "{{ $evaluasi->kode_evaluasi }}";
             $("#load_detailevaluasi").load('/worksheetom/' + kode_evaluasi + '/getdetailevaluasi');
@@ -116,9 +130,22 @@
 
         loaddetailevaluasi();
 
+        $("#resetBtn").click(function(e) {
+            e.preventDefault();
+            $("#Addbtn").show();
+            $("#Updatebtn").hide();
+            $("#agenda").focus();
+            $("#kode_agenda").val("");
+            $("#agenda").val("");
+            $("#hasil_pembahasan").val("");
+            $("#action_plan").val("");
+            $("#due_date").val("");
+            $("#pic").val("");
+            $("#status").val("");
+        });
 
-
-        $("#btnTambah").click(function(e) {
+        $("#btnTambah,#btnUpdate").click(function(e) {
+            var kode_agenda = $("#kode_agenda").val();
             var agenda = $("#agenda").val();
             var hasil_pembahasan = $("#hasil_pembahasan").val();
             var action_plan = $("#action_plan").val();
@@ -177,6 +204,7 @@
                     url: '/worksheetom/storedetailevaluasi',
                     data: {
                         _token: "{{ csrf_token() }}",
+                        kode_agenda: kode_agenda,
                         kode_evaluasi: "{{ $evaluasi->kode_evaluasi }}",
                         agenda: agenda,
                         hasil_pembahasan: hasil_pembahasan,
@@ -195,6 +223,7 @@
                                 showConfirmButton: false
                             }).then(function() {
                                 $("#agenda").focus();
+                                $("#kode_agenda").val("");
                                 $("#agenda").val("");
                                 $("#hasil_pembahasan").val("");
                                 $("#action_plan").val("");
@@ -202,6 +231,8 @@
                                 $("#pic").val("");
                                 $("#status").val("");
                                 loaddetailevaluasi();
+                                $("#Addbtn").show();
+                                $("#Updatebtn").hide();
                             });
                         } else {
                             swal({
@@ -212,6 +243,7 @@
                             }).then(function() {
                                 $("#agenda").focus();
                                 $("#agenda").val("");
+                                $("#kode_agenda").val("");
                                 $("#hasil_pembahasan").val("");
                                 $("#action_plan").val("");
                                 $("#due_date").val("");
@@ -223,5 +255,9 @@
                 });
             }
         });
+
+
+
+
     });
 </script>

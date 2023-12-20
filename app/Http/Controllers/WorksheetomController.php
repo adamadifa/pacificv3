@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Evaluasisharing;
 use App\Models\Harga;
 use App\Models\Program;
+use App\Models\Programpeserta;
 use App\Models\Retur;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -374,13 +375,12 @@ class WorksheetomController extends Controller
             $i++;
         }
 
-
-        $peserta = DB::table('program_peserta')
-            ->select('program_peserta.*', 'nama_pelanggan', 'pelanggan.kode_cabang', 'nama_karyawan', 'jmldus')
-            ->join('pelanggan', 'program_peserta.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
-            ->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan')
-            ->leftJoin(
-                DB::raw("(
+        $query = Programpeserta::query();
+        $query->select('program_peserta.*', 'nama_pelanggan', 'pelanggan.kode_cabang', 'nama_karyawan', 'jmldus');
+        $query->join('pelanggan', 'program_peserta.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        $query->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
+        $query->leftJoin(
+            DB::raw("(
                 SELECT
                     penjualan.kode_pelanggan,
                     SUM(floor(jumlah/isipcsdus)) as jmldus
@@ -392,13 +392,16 @@ class WorksheetomController extends Controller
                 AND kode_produk IN ($produk)
                 GROUP BY penjualan.kode_pelanggan
             ) detailpenjualan"),
-                function ($join) {
-                    $join->on('program_peserta.kode_pelanggan', '=', 'detailpenjualan.kode_pelanggan');
-                }
-            )
-            ->where('kode_program', $kode_program)
-            ->orderBy('nama_pelanggan')
-            ->get();
+            function ($join) {
+                $join->on('program_peserta.kode_pelanggan', '=', 'detailpenjualan.kode_pelanggan');
+            }
+        );
+        if (Auth::user()->kode_cabang != "PCF") {
+            $query->where('pelanggan.kode_cabang', Auth::user()->kode_cabang);
+        }
+        $query->where('kode_program', $kode_program);
+        $query->orderBy('nama_pelanggan');
+        $peserta = $query->get();
         return view('worksheetom.getpeserta', compact('peserta', 'program'));
     }
 
@@ -434,9 +437,18 @@ class WorksheetomController extends Controller
         if ($this->cabang != "PCF") {
             $query->where('kode_cabang', $this->cabang);
         }
+        if (!empty($request->kode_cabang)) {
+            $query->where('evaluasi_sharing.kode_cabang', $request->kode_cabang);
+        }
+
+        if (!empty($request->periode_dari) && !empty($request->periode_sampai)) {
+            $query->whereBetween('tanggal', [$request->periode_dari, $request->periode_sampai]);
+        }
         $evaluasi = $query->paginate(15);
         $evaluasi->appends(request()->all());
-        return view('worksheetom.evaluasi_sharing', compact('evaluasi'));
+
+        $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
+        return view('worksheetom.evaluasi_sharing', compact('evaluasi', 'cabang'));
     }
 
     public function createevaluasi()
@@ -488,6 +500,7 @@ class WorksheetomController extends Controller
 
     public function storedetailevaluasi(Request $request)
     {
+        $kode_agenda_edit = $request->kode_agenda;
         $kode_evaluasi = $request->kode_evaluasi;
         $agenda = $request->agenda;
         $hasil_pembahasan = $request->hasil_pembahasan;
@@ -504,16 +517,31 @@ class WorksheetomController extends Controller
         $last_kode = $lastagenda != null ? $lastagenda->kode_agenda : '';
         $kode_agenda = buatkode($last_kode, $format, 3);
         try {
-            DB::table('evaluasi_sharing_detail')->insert([
-                'kode_agenda' => $kode_agenda,
-                'kode_evaluasi' => $kode_evaluasi,
-                'agenda' => $agenda,
-                'hasil_pembahasan' => $hasil_pembahasan,
-                'action_plan' => $action_plan,
-                'due_date' => $due_date,
-                'pic' => $pic,
-                'status' => $status
-            ]);
+
+            if (!empty($kode_agenda_edit)) {
+                DB::table('evaluasi_sharing_detail')
+                    ->where('kode_agenda', $kode_agenda_edit)
+                    ->update([
+                        'agenda' => $agenda,
+                        'hasil_pembahasan' => $hasil_pembahasan,
+                        'action_plan' => $action_plan,
+                        'due_date' => $due_date,
+                        'pic' => $pic,
+                        'status' => $status
+                    ]);
+            } else {
+                DB::table('evaluasi_sharing_detail')->insert([
+                    'kode_agenda' => $kode_agenda,
+                    'kode_evaluasi' => $kode_evaluasi,
+                    'agenda' => $agenda,
+                    'hasil_pembahasan' => $hasil_pembahasan,
+                    'action_plan' => $action_plan,
+                    'due_date' => $due_date,
+                    'pic' => $pic,
+                    'status' => $status
+                ]);
+            }
+
             echo 0;
         } catch (\Exception $e) {
             echo 1;
@@ -534,6 +562,51 @@ class WorksheetomController extends Controller
             echo 0;
         } catch (\Exception $e) {
             echo 1;
+        }
+    }
+
+
+    public function editevaluasi($kode_evaluasi)
+    {
+        $evaluasi = DB::table('evaluasi_sharing')->where('kode_evaluasi', $kode_evaluasi)->first();
+        $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
+        return view('worksheetom.edit_evaluasi', compact('cabang', 'evaluasi'));
+    }
+
+
+    public function updateevaluasi(Request $request, $kode_evaluasi)
+    {
+        $tanggal = $request->tanggal;
+        $jam = $request->jam;
+        $peserta = $request->peserta;
+        $tempat = $request->tempat;
+        $kode_cabang = $request->kode_cabang;
+
+        try {
+            DB::table('evaluasi_sharing')
+                ->where('kode_evaluasi', $kode_evaluasi)
+                ->update([
+                    'tanggal' => $tanggal,
+                    'jam' => $jam,
+                    'peserta' => $peserta,
+                    'tempat' => $tempat,
+                    'kode_cabang' => $kode_cabang
+                ]);
+            return Redirect::back()->with(['success' => 'Data Berhasil Di Update']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Data Gagal Di Update']);
+        }
+    }
+
+
+    public function deleteevaluasi($kode_evaluasi)
+    {
+        $kode_evaluasi = Crypt::decrypt($kode_evaluasi);
+        try {
+            DB::table('evaluasi_sharing')->where('kode_evaluasi', $kode_evaluasi)->delete();
+            return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
         }
     }
 }
