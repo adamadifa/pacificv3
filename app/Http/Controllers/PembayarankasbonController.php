@@ -115,10 +115,10 @@ class PembayarankasbonController extends Controller
 
             foreach ($rencana as $d) {
                 $historibayar = DB::table("kasbon_historibayar")
-                    ->whereRaw('YEAR(tgl_bayar)="' . $tahun . '"')
+                    ->whereRaw('YEAR(tgl_bayar)="' . $tahunpotongan . '"')
                     ->orderBy("no_bukti", "desc")
                     ->first();
-                $thn = substr($tahun, 2, 2);
+                $thn = substr($tahunpotongan, 2, 2);
                 $last_nobukti = $historibayar != null ? $historibayar->no_bukti : '';
                 $no_bukti  = buatkode($last_nobukti, "KB" . $thn, 4);
 
