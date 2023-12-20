@@ -3,22 +3,26 @@
     @csrf
     <div class="row">
         <div class="col-12">
-            <x-inputtext label="Tanggal" field="tgl_ledger" value="{{ $ledger->tgl_ledger }}" icon="feather icon-calendar" datepicker />
+            <x-inputtext label="Tanggal" field="tgl_ledger" value="{{ $ledger->tgl_ledger }}" icon="feather icon-calendar"
+                datepicker />
         </div>
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext label="Pelanggan" field="pelanggan" value="{{ $ledger->pelanggan }}" icon="feather icon-file" />
+            <x-inputtext label="Pelanggan" field="pelanggan" value="{{ $ledger->pelanggan }}"
+                icon="feather icon-file" />
         </div>
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext label="Keterangan" field="keterangan" value="{{ $ledger->keterangan }}" icon="feather icon-file" />
+            <x-inputtext label="Keterangan" field="keterangan" value="{{ $ledger->keterangan }}"
+                icon="feather icon-file" />
         </div>
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext label="Jumlah" value="{{ rupiah($ledger->jumlah) }}" field="jumlah" icon="feather icon-file" right />
+            <x-inputtext label="Jumlah" value="{{ rupiah($ledger->jumlah) }}" field="jumlah" icon="feather icon-file"
+                right />
         </div>
     </div>
     <div class="row">
@@ -27,7 +31,8 @@
                 <select name="kode_akun" id="kode_akun" class="form-control">
                     <option value="">Pilih Akun</option>
                     @foreach ($coa as $d)
-                    <option {{ $ledger->kode_akun == $d->kode_akun ? 'selected' : '' }} value="{{ $d->kode_akun }}">{{ $d->kode_akun }} {{ $d->nama_akun }}</option>
+                        <option {{ $ledger->kode_akun == $d->kode_akun ? 'selected' : '' }} value="{{ $d->kode_akun }}">
+                            {{ $d->kode_akun }} {{ $d->nama_akun }}</option>
                     @endforeach
                 </select>
             </div>
@@ -40,7 +45,8 @@
                     <li class="d-inline-block mr-2">
                         <fieldset>
                             <div class="vs-radio-con vs-radio-danger">
-                                <input type="radio" {{ $ledger->status_dk=="D" ? 'checked' : '' }} name="status_dk" value="D">
+                                <input type="radio" {{ $ledger->status_dk == 'D' ? 'checked' : '' }} name="status_dk"
+                                    value="D">
                                 <span class="vs-radio">
                                     <span class="vs-radio--border"></span>
                                     <span class="vs-radio--circle"></span>
@@ -52,7 +58,8 @@
                     <li class="d-inline-block mr-2">
                         <fieldset>
                             <div class="vs-radio-con vs-radio-success">
-                                <input type="radio" name="status_dk" value="K" {{ $ledger->status_dk=="K" ? 'checked' : '' }}>
+                                <input type="radio" name="status_dk" value="K"
+                                    {{ $ledger->status_dk == 'K' ? 'checked' : '' }}>
                                 <span class="vs-radio">
                                     <span class="vs-radio--border"></span>
                                     <span class="vs-radio--circle"></span>
@@ -72,7 +79,8 @@
                     <li class="d-inline-block mr-2">
                         <fieldset>
                             <div class="vs-radio-con vs-radio-primary">
-                                <input type="radio" class="peruntukan" name="peruntukan" value="PC" {{ $ledger->peruntukan=="PC" ? 'checked' : '' }}>
+                                <input type="radio" class="peruntukan" name="peruntukan" value="PC"
+                                    {{ $ledger->peruntukan == 'PC' ? 'checked' : '' }}>
                                 <span class="vs-radio">
                                     <span class="vs-radio--border"></span>
                                     <span class="vs-radio--circle"></span>
@@ -84,7 +92,8 @@
                     <li class="d-inline-block mr-2">
                         <fieldset>
                             <div class="vs-radio-con vs-radio-primary">
-                                <input type="radio" class="peruntukan" name="peruntukan" value="MP" {{ $ledger->peruntukan=="MP" ? 'checked' : '' }}>
+                                <input type="radio" class="peruntukan" name="peruntukan" value="MP"
+                                    {{ $ledger->peruntukan == 'MP' ? 'checked' : '' }}>
                                 <span class="vs-radio">
                                     <span class="vs-radio--border"></span>
                                     <span class="vs-radio--circle"></span>
@@ -103,7 +112,8 @@
                 <select name="kode_cabang" id="kode_cabang" class="form-control ">
                     <option value="">Pilih Cabang</option>
                     @foreach ($cabang as $d)
-                    <option {{ $ledger->ket_peruntukan == $d->kode_cabang ? 'selected' : '' }} value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
+                        <option {{ $ledger->ket_peruntukan == $d->kode_cabang ? 'selected' : '' }}
+                            value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
                     @endforeach
                 </select>
             </div>
@@ -118,9 +128,9 @@
         </div>
     </div>
 </form>
-<script src="{{asset('app-assets/vendors/js/forms/select/select2.full.min.js')}}"></script>
-<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
-<script src="{{asset('app-assets/js/scripts/forms/select/form-select2.js')}}"></script>
+<script src="{{ asset('app-assets/vendors/js/forms/select/select2.full.min.js') }}"></script>
+<script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
+<script src="{{ asset('app-assets/js/scripts/forms/select/form-select2.js') }}"></script>
 <script>
     $(function() {
         $("#kode_akun").selectize();
@@ -128,15 +138,15 @@
         function cektutuplaporan() {
             var tanggal = $("#tgl_ledger").val();
             $.ajax({
-                type: "POST"
-                , url: "/cektutuplaporan"
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , tanggal: tanggal
-                    , jenislaporan: "ledger"
-                }
-                , cache: false
-                , success: function(respond) {
+                type: "POST",
+                url: "/cektutuplaporan",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    tanggal: tanggal,
+                    jenislaporan: "ledger"
+                },
+                cache: false,
+                success: function(respond) {
                     console.log(respond);
                     $("#cektutuplaporan").val(respond);
                 }
@@ -180,10 +190,10 @@
             //alert(peruntukan);
             if (cektutuplaporan > 0) {
                 swal({
-                    title: 'Oops'
-                    , text: 'Laporan Sudah Ditutup !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Laporan Sudah Ditutup !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#tgl_ledger").focus();
                 });
@@ -191,60 +201,60 @@
                 return false;
             } else if (tgl_ledger == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Tanggal Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Tanggal Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $('#tgl_ledger').focus();
                 });
                 return false;
             } else if (pelanggan == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Pelanggan Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Pelanggan Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#pelanggan").focus();
                 });
                 return false;
             } else if (keterangan == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Keterangan Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Keterangan Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#keterangan").focus();
                 });
                 return false;
             } else if (jumlah == "" || jumlah == 0) {
                 swal({
-                    title: 'Oops'
-                    , text: 'Jumlah Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Jumlah Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#jumlah").focus();
                 });
                 return false;
             } else if (kode_akun == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Kode Akun Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Kode Akun Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#kode_akun").focus();
                 });
                 return false;
             } else if (peruntukan == "PC" && kode_cabang == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Kode Cabang Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Kode Cabang Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#kode_cabang").focus();
                 });
@@ -252,5 +262,4 @@
             }
         });
     });
-
 </script>
