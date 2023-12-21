@@ -439,7 +439,7 @@ function pihakpertamacabang($cabang, $perusahaan)
 
     $kepalapenjualan = [
         'PWT' => 'Aria Permana Wiguna',
-        'BTN' => 'Bagus Eka Winarno',
+        'TGR' => 'Bagus Eka Winarno',
         'BDG' => 'Oki Rahmat Effendy',
         'SKB' => 'Agus Hanafi',
         'TGL' => 'Iwan Santoso',
@@ -450,7 +450,8 @@ function pihakpertamacabang($cabang, $perusahaan)
         'GRT' => 'Purnomo Raya',
         'BKI' => 'Yohanes Dewangkorojati',
         'PWK' => 'Oki Rahmat Effendy',
-        'TSM' => 'Aceng Saepul Anwar'
+        'TSM' => 'Aceng Saepul Anwar',
+        'BTN' => 'Robi Andes'
     ];
 
     if ($perusahaan == "MP") {
