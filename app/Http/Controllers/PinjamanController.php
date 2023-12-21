@@ -151,7 +151,8 @@ class PinjamanController extends Controller
                 '08.05.042',
                 '12.09.182',
                 '05.01.055',
-                '13.03.202'
+                '13.03.202',
+                '17.08.287'
             ];
 
             $query->whereIn('pinjaman.nik', $listkaryawan);
