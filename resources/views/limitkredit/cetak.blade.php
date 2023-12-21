@@ -68,7 +68,6 @@
         height: 170px;
         margin-right: 10px;
     }
-
 </style>
 <table style="width:60%" class="datatable3">
     <tr>
@@ -150,22 +149,22 @@
         <tr>
             <td>Status Pelanggan</td>
             <td>
-                @if ($limitkredit->status_outlet==1)
-                New Outlet
+                @if ($limitkredit->status_outlet == 1)
+                    New Outlet
                 @else
-                Existing Outlet
+                    Existing Outlet
                 @endif
             </td>
         </tr>
         <tr>
             <td>Cara Pembayaran</td>
             <td>
-                @if ($limitkredit->cara_pembayaran==1)
-                Bank Transfer
-                @elseif($limitkredit->cara_pembayaran==2)
-                Advance Cash
+                @if ($limitkredit->cara_pembayaran == 1)
+                    Bank Transfer
+                @elseif($limitkredit->cara_pembayaran == 2)
+                    Advance Cash
                 @else
-                Cheque / Bilyet Giro
+                    Cheque / Bilyet Giro
                 @endif
             </td>
         </tr>
@@ -177,10 +176,13 @@
             <td>Terakhir Top UP</td>
             <td>
                 @php
-                $k = "<"; $l=">" ; @endphp @if ($limitkredit->lama_topup >= 31)
+                    $k = '<';
+                $l = '>'; @endphp @if ($limitkredit->lama_topup >= 31)
                     {{ $l }} 1 Bulan
-                    @else
-                    {{ $k }} 1 Bulan @endif </td>
+                @else
+                    {{ $k }} 1 Bulan
+                @endif
+            </td>
         </tr>
         <tr>
             <td>Lama Usaha</td>
@@ -214,10 +216,10 @@
         <tr>
             <td>Type Outlet</td>
             <td>
-                @if ($limitkredit->type_outlet==1)
-                Grosir
+                @if ($limitkredit->type_outlet == 1)
+                    Grosir
                 @else
-                Retail
+                    Retail
                 @endif
             </td>
         </tr>
@@ -240,7 +242,7 @@
         <td style="text-align: right">{{ rupiah($limitkredit->jumlah) }}</td>
         <td rowspan="4" valign="top">
             @foreach ($komentar as $d)
-            {{ $d->name }} ({{ $d->level }}) - {{ $d->uraian_analisa }}<br>
+                {{ $d->name }} ({{ $d->level }}) - {{ $d->uraian_analisa }}<br>
             @endforeach
         </td>
     </tr>
@@ -248,13 +250,13 @@
         <td>Level Otorisasi</td>
         <td>
             @if ($limitkredit->jumlah > 15000000)
-            Direktur
+                Direktur
             @elseif($limitkredit->jumlah > 10000000)
-            General Manager
-            @elseif($limitkredit->jumlah >5000000)
-            RSM
+                General Manager
+            @elseif($limitkredit->jumlah > 5000000)
+                RSM
             @elseif($limitkredit->jumlah > 2000000)
-            Kepala Penjualan
+                Kepala Penjualan
             @endif
         </td>
     </tr>
@@ -266,17 +268,17 @@
         <td>Rekomendasi</td>
         <td>
             <?php
-            $scoreakhir =  $limitkredit->skor;
+            $scoreakhir = $limitkredit->skor;
             if ($scoreakhir <= 2) {
-            $rekomendasi = "Tidak Layak";
-            } else if ($scoreakhir > 2 && $scoreakhir <= 4) {
-            $rekomendasi = "Tidak Disarankan";
-            } else if ($scoreakhir > 4 && $scoreakhir <= 6.75) {
-            $rekomendasi = "Beresiko";
-            } else if ($scoreakhir > 6.75 && $scoreakhir <= 8.5) {
-            $rekomendasi = "Layak Dengan Pertimbangan";
-            } else if ($scoreakhir > 8.5 && $scoreakhir <= 10) {
-            $rekomendasi = "Layak";
+                $rekomendasi = 'Tidak Layak';
+            } elseif ($scoreakhir > 2 && $scoreakhir <= 4) {
+                $rekomendasi = 'Tidak Disarankan';
+            } elseif ($scoreakhir > 4 && $scoreakhir <= 6.75) {
+                $rekomendasi = 'Beresiko';
+            } elseif ($scoreakhir > 6.75 && $scoreakhir <= 8.5) {
+                $rekomendasi = 'Layak Dengan Pertimbangan';
+            } elseif ($scoreakhir > 8.5 && $scoreakhir <= 10) {
+                $rekomendasi = 'Layak';
             }
             echo $rekomendasi;
             ?>
@@ -302,11 +304,11 @@
     <tr>
         <td></td>
         <td></td>
-        <td>{{ $limitkredit->time_kacab}}</td>
-        <td>{{ $limitkredit->time_kacab}}</td>
-        <td>{{ $limitkredit->time_mm}}</td>
-        <td>{{ $limitkredit->time_gm}}</td>
-        <td>{{ $limitkredit->time_dirut}}</td>
+        <td>{{ $limitkredit->time_kacab }}</td>
+        <td>{{ $limitkredit->time_kacab }}</td>
+        <td>{{ $limitkredit->time_mm }}</td>
+        <td>{{ $limitkredit->time_gm }}</td>
+        <td>{{ $limitkredit->time_dirut }}</td>
     </tr>
     <tr style="text-align: center;">
         <td>Salesman</td>

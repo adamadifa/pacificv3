@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Evaluasisharing;
 use App\Models\Harga;
+use App\Models\Kebutuhancabang;
 use App\Models\Program;
 use App\Models\Programpeserta;
 use App\Models\Retur;
@@ -604,6 +605,110 @@ class WorksheetomController extends Controller
         $kode_evaluasi = Crypt::decrypt($kode_evaluasi);
         try {
             DB::table('evaluasi_sharing')->where('kode_evaluasi', $kode_evaluasi)->delete();
+            return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
+        }
+    }
+
+
+    public function kebutuhancabang(Request $request)
+    {
+
+        $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
+        $query = Kebutuhancabang::query();
+        $query->select('kebutuhan_cabang.*', 'jenis_kebutuhan');
+        $query->join('kebutuhan_cabang_jenis', 'kebutuhan_cabang.kode_jenis_kebutuhan', '=', 'kebutuhan_cabang_jenis.kode_jenis_kebutuhan');
+        if (!empty($request->kode_cabang)) {
+            $query->where('kode_cabang', $request->kode_cabang);
+        }
+
+        if (!empty($request->kode_jenis_kebutuhan)) {
+            $query->where('kebutuhan_cabang.kode_jenis_kebutuhan', $request->kode_jenis_kebutuhan);
+        }
+
+        if (Auth::user()->kode_cabang != "PCF") {
+            $query->where('kode_cabang', Auth::user()->kode_cabang);
+        }
+        $kc = $query->paginate(15);
+        $kc->appends(request()->all());
+
+        $jenis_kebutuhan = DB::table('kebutuhan_cabang_jenis')->orderBy('kode_jenis_kebutuhan')->get();
+        return view('worksheetom.kebutuhan_cabang', compact('cabang', 'kc', 'jenis_kebutuhan'));
+    }
+
+    public function createkebutuhancabang()
+    {
+        $jenis_kebutuhan = DB::table('kebutuhan_cabang_jenis')->orderBy('kode_jenis_kebutuhan')->get();
+        $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
+        return view('worksheetom.create_kebutuhancabang', compact('jenis_kebutuhan', 'cabang'));
+    }
+
+    public function storekebutuhancabang(Request $request)
+    {
+        $kode_cabang = $request->kode_cabang;
+        $lastkebutuhan = DB::table('kebutuhan_cabang')
+            ->where('kode_cabang', $kode_cabang)
+            ->orderBy('kode_kebutuhan', 'desc')
+            ->first();
+        $format = 'KB' . $kode_cabang;
+        $last_kode = $lastkebutuhan != null ? $lastkebutuhan->kode_kebutuhan : '';
+        $kode_kebutuhan = buatkode($last_kode, $format, 5);
+
+        $kode_jenis_kebutuhan = $request->kode_jenis_kebutuhan;
+        $uraian_kebutuhan = $request->uraian_kebutuhan;
+        $periode_akhir = $request->periode_akhir;
+
+        try {
+            DB::table('kebutuhan_cabang')->insert([
+                'kode_kebutuhan' => $kode_kebutuhan,
+                'kode_cabang' => $kode_cabang,
+                'kode_jenis_kebutuhan' => $kode_jenis_kebutuhan,
+                'uraian_kebutuhan' => $uraian_kebutuhan,
+                'periode_akhir' => $periode_akhir
+            ]);
+            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);
+        }
+    }
+
+    public function editkebutuhancabang($kode_kebutuhan)
+    {
+        $jenis_kebutuhan = DB::table('kebutuhan_cabang_jenis')->orderBy('kode_jenis_kebutuhan')->get();
+        $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
+        $kc = DB::table('kebutuhan_cabang')->where('kode_kebutuhan', $kode_kebutuhan)->first();
+        return view('worksheetom.edit_kebutuhancabang', compact('jenis_kebutuhan', 'cabang', 'kc'));
+    }
+
+
+    public function updatekebutuhancabang($kode_kebutuhan, Request $request)
+    {
+        $kode_cabang = $request->kode_cabang;
+        $kode_jenis_kebutuhan = $request->kode_jenis_kebutuhan;
+        $uraian_kebutuhan = $request->uraian_kebutuhan;
+        $periode_akhir = $request->periode_akhir;
+
+        try {
+            DB::table('kebutuhan_cabang')
+                ->where('kode_kebutuhan', $kode_kebutuhan)
+                ->update([
+                    'kode_cabang' => $kode_cabang,
+                    'kode_jenis_kebutuhan' => $kode_jenis_kebutuhan,
+                    'uraian_kebutuhan' => $uraian_kebutuhan,
+                    'periode_akhir' => $periode_akhir
+                ]);
+            return Redirect::back()->with(['success' => 'Data Berhasil Di Update']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Data Gagal Di Update']);
+        }
+    }
+
+    public function deletekebutuhancabang($kode_kebutuhan)
+    {
+        $kode_kebutuhan = Crypt::decrypt($kode_kebutuhan);
+        try {
+            DB::table('kebutuhan_cabang')->where('kode_kebutuhan', $kode_kebutuhan)->delete();
             return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
         } catch (\Exception $e) {
             return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);

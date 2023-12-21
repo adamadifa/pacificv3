@@ -253,6 +253,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/omancabang/{no_order}/edit', [OmancabangController::class, 'edit']);
     Route::post('/omancabang/{no_order}/update', [OmancabangController::class, 'update']);
     Route::delete('/omancabang/{no_order}/delete', [OmancabangController::class, 'delete']);
+    Route::get('/omancabang/{no_order}/cetak', [OmancabangController::class, 'cetak']);
     Route::post('/getomancabang', [OmancabangController::class, 'getomancabang']);
 
     Route::get('/oman', [OmanController::class, 'index']);
@@ -2009,6 +2010,16 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/worksheetom/deleteagenda', [WorksheetomController::class, 'deleteagenda']);
     Route::post('/worksheetom/deleteagenda', [WorksheetomController::class, 'deleteagenda']);
     Route::delete('/worksheetom/{kode_evaluasi}/deleteevaluasi', [WorksheetomController::class, 'deleteevaluasi']);
+
+
+
+    //Kebutuhan Cabang
+    Route::get('/worksheetom/kebutuhancabang', [WorksheetomController::class, 'kebutuhancabang']);
+    Route::get('/worksheetom/createkebutuhancabang', [WorksheetomController::class, 'createkebutuhancabang']);
+    Route::post('/worksheetom/storekebutuhancabang', [WorksheetomController::class, 'storekebutuhancabang']);
+    Route::get('/worksheetom/{kode_kebutuhan}/editkebutuhancabang', [WorksheetomController::class, 'editkebutuhancabang']);
+    Route::post('/worksheetom/{kode_kebutuhan}/updatekebutuhancabang', [WorksheetomController::class, 'updatekebutuhancabang']);
+    Route::delete('/worksheetom/{kode_kebutuhan}/deletekebutuhancabang', [WorksheetomController::class, 'deletekebutuhancabang']);
 });
 
 

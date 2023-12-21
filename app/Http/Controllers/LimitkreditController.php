@@ -36,12 +36,13 @@ class LimitkreditController extends Controller
         $query = Limitkredit::query();
         if ($this->cabang != "PCF") {
 
-            if (Auth::user()->id == 27) {
-                $query->whereIn('pelanggan.kode_cabang', $oki);
+            $wilayah = Auth::user()->wilayah;
+            if (!empty($wilayah)) {
+                $wilayah_user = unserialize($wilayah);
+                $query->whereIn('pelanggan.kode_cabang', $wilayah_user);
             } else {
                 $query->where('pelanggan.kode_cabang', $this->cabang);
             }
-
             //$query->where('pelanggan.kode_cabang', $this->cabang);
         } else {
 
@@ -51,11 +52,40 @@ class LimitkreditController extends Controller
                 $query->whereIn('pelanggan.kode_cabang', $wilayah_user);
             }
         }
-        $query->select('pengajuan_limitkredit_v3.*', 'nama_pelanggan', 'pelanggan.kode_cabang');
-        $query->orderBy('tgl_pengajuan', 'desc');
-        $query->orderBy('no_pengajuan', 'desc');
+        $query->select(
+            'pengajuan_limitkredit_v3.*',
+            'nama_pelanggan',
+            'alamat_pelanggan',
+            'pelanggan.kode_cabang',
+            'latitude',
+            'longitude',
+            'nama_karyawan',
+            'cara_pembayaran',
+            'lama_usaha',
+
+            'kepemilikan',
+            'omset_toko',
+            'type_outlet',
+            'analisa'
+        );
         $query->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        $query->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
         $query->leftJoin('users', 'pengajuan_limitkredit_v3.id_approval', '=', 'users.id');
+        $query->leftJoin(
+            DB::raw("(
+            SELECT
+                no_pengajuan,
+                GROUP_CONCAT( uraian_analisa ) as analisa
+            FROM
+                pengajuan_limitkredit_analisa_v3
+            GROUP BY
+                no_pengajuan
+            ) analisa"),
+            function ($join) {
+                $join->on('pengajuan_limitkredit_v3.no_pengajuan', '=', 'analisa.no_pengajuan');
+            }
+        );
+
         // if (empty($request->nama_pelanggan) && empty($request->dari) && empty($request->sampai) && empty($request->status)) {
         //     $query->WhereRaw("MATCH(nama_pelanggan) AGAINST('" . $pelanggan .  "')");
         // }
@@ -222,9 +252,17 @@ class LimitkreditController extends Controller
         }
 
 
+        if (isset($request->cetak)) {
+            $query->orderBy('tgl_pengajuan', 'asc');
+            $query->orderBy('no_pengajuan', 'asc');
+            $limitkredit = $query->get();
+        } else {
+            $query->orderBy('tgl_pengajuan', 'desc');
+            $query->orderBy('no_pengajuan', 'desc');
+            $limitkredit = $query->paginate(15);
+            $limitkredit->appends($request->all());
+        }
 
-        $limitkredit = $query->paginate(15);
-        $limitkredit->appends($request->all());
 
         $cbg = new Cabang();
         $cabang = $cbg->getCabanggudang($this->cabang);
@@ -234,7 +272,12 @@ class LimitkreditController extends Controller
         if (request()->is('sap/limitkredit')) {
             return view('sap.limitkredit', compact('limitkredit', 'cabang', 'wilayah_barat', 'wilayah_timur'));
         } else {
-            return view('limitkredit.index', compact('limitkredit', 'cabang', 'wilayah_barat', 'wilayah_timur'));
+
+            if (isset($request->cetak)) {
+                return view('limitkredit.cetak_limitkredit', compact('limitkredit', 'cabang', 'wilayah_barat', 'wilayah_timur'));
+            } else {
+                return view('limitkredit.index', compact('limitkredit', 'cabang', 'wilayah_barat', 'wilayah_timur'));
+            }
         }
     }
 
