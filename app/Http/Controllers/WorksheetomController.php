@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cabang;
+use App\Models\Detailretur;
 use App\Models\Evaluasisharing;
 use App\Models\Harga;
 use App\Models\Kebutuhancabang;
@@ -31,6 +33,11 @@ class WorksheetomController extends Controller
     }
     public function monitoringretur(Request $request)
     {
+
+        if (isset($request->cetak)) {
+            return $this->cetakmonitoringretur($request);
+        }
+
         $pelanggan = '"' . $request->nama_pelanggan . '"';
         $query = Retur::query();
         $query->select('retur.*', 'nama_pelanggan', 'nama_karyawan', 'karyawan.kode_cabang', DB::raw('IFNULL(jmlretur,0) - IFNULL(jmlpelunasan,0) as sisa'));
@@ -96,7 +103,7 @@ class WorksheetomController extends Controller
         //         $query->whereIn('karyawan.kode_cabang', $cabang);
         //     }
         // }
-
+        $query->where('jenis_retur', 'gb');
         if ($this->cabang != "PCF") {
             $cbg = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
             $cabang[] = "";
@@ -104,6 +111,10 @@ class WorksheetomController extends Controller
                 $cabang[] = $c->kode_cabang;
             }
             $query->whereIn('karyawan.kode_cabang', $cabang);
+        } else {
+            if (!empty($request->kode_cabang)) {
+                $query->where('karyawan.kode_cabang', $request->kode_cabang);
+            }
         }
 
 
@@ -111,8 +122,87 @@ class WorksheetomController extends Controller
 
         $retur->appends($request->all());
 
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabanggudang($this->cabang);
         lockreport($request->dari);
-        return view('worksheetom.monitoring_retur', compact('retur'));
+        return view('worksheetom.monitoring_retur', compact('retur', 'cabang'));
+    }
+
+
+
+    public function cetakmonitoringretur($request)
+    {
+
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $pelanggan = '"' . $request->nama_pelanggan . '"';
+        $query = Detailretur::query();
+        $query->select(
+            'detailretur.*',
+            'penjualan.kode_pelanggan',
+            'nama_pelanggan',
+            'pasar',
+            'hari',
+            'tglretur',
+            'kode_produk',
+            'nama_barang',
+            'isipcsdus',
+            'isipack',
+            'isipcs',
+            DB::raw('IFNULL(jumlahpelunasan,0) as jumlahpelunasan')
+        );
+        $query->join('retur', 'detailretur.no_retur_penj', '=', 'retur.no_retur_penj');
+        $query->join('penjualan', 'retur.no_fak_penj', '=', 'penjualan.no_fak_penj');
+        $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        $query->join('barang', 'detailretur.kode_barang', '=', 'barang.kode_barang');
+        $query->leftJoin(
+            DB::raw("(
+                SELECT
+                    kode_barang,
+                    SUM(jumlah) as jumlahpelunasan
+                FROM
+                    detailretur_pelunasan
+                WHERE no_retur_penj ='$request->no_retur_penj'
+                GROUP BY kode_barang
+            ) pelunasan"),
+            function ($join) {
+                $join->on('detailretur.kode_barang', '=', 'pelunasan.kode_barang');
+            }
+        );
+
+        if (empty($request->no_fak_penj) && empty($request->nama_pelanggan) && empty($request->dari) && empty($request->sampai)) {
+            $query->WhereRaw("MATCH(nama_pelanggan) AGAINST('" . $pelanggan .  "')");
+        }
+        if (!empty($request->nama_pelanggan)) {
+            $query->WhereRaw("MATCH(nama_pelanggan) AGAINST('" . $pelanggan .  "')");
+        }
+
+        if (!empty($request->no_fak_penj)) {
+            $query->where('retur.no_fak_penj', $request->no_fak_penj);
+        }
+
+        if (!empty($request->jenis_retur)) {
+            $query->where('jenis_retur', $request->jenis_retur);
+        }
+
+        if (!empty($request->dari) && !empty($request->sampai)) {
+            $query->whereBetween('tglretur', [$request->dari, $request->sampai]);
+        }
+        if (Auth::user()->kode_cabang != "PCF") {
+            $query->where('karyawan.kode_cabang', Auth::user()->kode_cabang);
+        } else {
+            if (!empty($request->kode_cabang)) {
+                $query->where('karyawan.kode_cabang', $request->kode_cabang);
+            }
+        }
+        $query->where('jenis_retur', 'gb');
+        $query->orderBy('tglretur');
+        $query->orderBy('no_retur_penj');
+        $retur = $query->get();
+
+
+        return view('worksheetom.cetak_monitoringretur', compact('retur'));
     }
 
     public function showmonitoringretur(Request $request)
@@ -431,6 +521,56 @@ class WorksheetomController extends Controller
         }
     }
 
+    public function cetakprogram($kode_program)
+    {
+        $kode_program = Crypt::decrypt($kode_program);
+        $program = DB::table('program')
+            ->join('program_reward', 'program.kode_reward', '=', 'program_reward.kode_reward')
+            ->where('kode_program', $kode_program)->first();
+        $dari = $program->dari;
+        $sampai = $program->sampai;
+        $list_product = unserialize($program->kode_produk);
+        $produk = "";
+        $jmlproduk = count($list_product);
+        $i = 0;
+        foreach ($list_product as $p) {
+            if ($i == $jmlproduk - 1) {
+                $produk .= "'" . $p . "'";
+            } else {
+                $produk .= "'" . $p . "',";
+            }
+            $i++;
+        }
+        $query = Programpeserta::query();
+        $query->select('program_peserta.*', 'nama_pelanggan', 'pelanggan.kode_cabang', 'nama_karyawan', 'jmldus');
+        $query->join('pelanggan', 'program_peserta.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        $query->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
+        $query->leftJoin(
+            DB::raw("(
+                SELECT
+                    penjualan.kode_pelanggan,
+                    SUM(floor(jumlah/isipcsdus)) as jmldus
+                FROM
+                    detailpenjualan
+                INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
+                INNER JOIN penjualan ON detailpenjualan.no_fak_penj = penjualan.no_fak_penj
+                WHERE tgltransaksi BETWEEN '$dari' AND '$sampai'
+                AND kode_produk IN ($produk)
+                GROUP BY penjualan.kode_pelanggan
+            ) detailpenjualan"),
+            function ($join) {
+                $join->on('program_peserta.kode_pelanggan', '=', 'detailpenjualan.kode_pelanggan');
+            }
+        );
+        if (Auth::user()->kode_cabang != "PCF") {
+            $query->where('pelanggan.kode_cabang', Auth::user()->kode_cabang);
+        }
+        $query->where('kode_program', $kode_program);
+        $query->orderBy('nama_pelanggan');
+        $peserta = $query->get();
+        return view('worksheetom.cetak_program', compact('peserta', 'program'));
+    }
+
     public function evaluasisharing(Request $request)
     {
         $query = Evaluasisharing::query();
@@ -713,5 +853,107 @@ class WorksheetomController extends Controller
         } catch (\Exception $e) {
             return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
         }
+    }
+
+
+    public function rekapbuffermaxsell()
+    {
+        $cbg = new Cabang();
+        if (Auth::user()->kode_cabang == "PCF" && Auth::user()->kode_cabang == "PST") {
+            $cabang = DB::table('cabang')->get();
+        } else {
+            $cabang = $cbg->getCabanggudang($this->cabang);
+        }
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        return view('worksheetom.rekapbuffermaxsell', compact('cabang', 'bulan'));
+    }
+
+
+    public function cetakrekapbuffermaxsell(Request $request)
+    {
+        $kode_cabang = $request->kode_cabang;
+        $bulan = $request->bulan < 10 ? "0" . $request->bulan : $request->bulan;
+        $tahun = $request->tahun;
+        $dari = $tahun . "-" . $bulan . "-01";
+        $sampai = date('Y-m-t', strtotime($dari));
+
+        $produk = DB::table('master_barang')
+            ->where('status', 1)
+            ->orderBy('kode_produk')->get();
+
+        $select_buffer = "";
+        $select_limitstok = "";
+        $select_penjualan = "";
+        $select_field = "";
+        $jml_produk = 1;
+        foreach ($produk as $d) {
+            $select_buffer .= "SUM(IF(kode_produk='$d->kode_produk',jumlah,0)) as `buffer_" . $d->kode_produk . "`,";
+            $select_limitstok .= "SUM(IF(kode_produk='$d->kode_produk',jumlah,0)) as `limit_" . $d->kode_produk . "`,";
+            $select_penjualan .= "SUM(IF(kode_produk='$d->kode_produk',ROUND((jumlah/isipcsdus),3),0)) as `sellout_" . $d->kode_produk . "`,";
+            $select_field .= "CONCAT(IFNULL(buffer_" . $d->kode_produk . ",0),'|',IFNULL(limit_" . $d->kode_produk . ",0),'|',IFNULL(sellout_" . $d->kode_produk . ",0)) as `data_" . $d->kode_produk . "`,";
+
+            $jml_produk++;
+        }
+
+        $query = Cabang::query();
+        $query->selectRaw("
+            $select_field
+            cabang.kode_cabang,nama_cabang");
+        $query->leftJoin(
+            DB::raw("(
+                SELECT
+                    $select_buffer
+                    kode_cabang
+                FROM
+                    detail_bufferstok
+                INNER JOIN buffer_stok ON detail_bufferstok.kode_bufferstok = buffer_stok.kode_bufferstok
+                GROUP BY kode_cabang
+                ) bufferstok"),
+            function ($join) {
+                $join->on('cabang.kode_cabang', '=', 'bufferstok.kode_cabang');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+                SELECT
+                    $select_limitstok
+                    kode_cabang
+                FROM
+                    limit_stok_detail
+                INNER JOIN limit_stok ON limit_stok_detail.kode_limit_stok = limit_stok.kode_limit_stok
+                GROUP BY kode_cabang
+                ) limitstok"),
+            function ($join) {
+                $join->on('cabang.kode_cabang', '=', 'limitstok.kode_cabang');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+                SELECT
+                    $select_penjualan
+                    karyawan.kode_cabang
+                FROM
+                    detailpenjualan
+                    INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
+                    INNER JOIN penjualan ON detailpenjualan.no_fak_penj = penjualan.no_fak_penj
+                    INNER JOIN karyawan ON penjualan.id_karyawan = karyawan.id_karyawan
+                    WHERE tgltransaksi BETWEEN '$dari' AND '$sampai'
+                GROUP BY kode_cabang
+                ) penjualan"),
+            function ($join) {
+                $join->on('cabang.kode_cabang', '=', 'penjualan.kode_cabang');
+            }
+        );
+
+        if (!empty($kode_cabang)) {
+            $query->where('cabang.kode_cabang', $kode_cabang);
+        }
+        $rekap = $query->get();
+
+        $bln = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        $namabulan = $bln[$request->bulan];
+        return view('worksheetom.cetak_rekapbuffermaxsell', compact('rekap', 'produk', 'jml_produk', 'namabulan', 'tahun'));
     }
 }

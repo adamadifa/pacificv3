@@ -84,6 +84,11 @@
                                                 kode_program="{{ $d->kode_program }}">
                                                 <i class=" feather icon-users info"></i>
                                             </a>
+                                            <a class="ml-1"
+                                                href="/worksheetom/{{ Crypt::encrypt($d->kode_program) }}/cetakprogram"
+                                                target="_blank">
+                                                <i class=" feather icon-printer info"></i>
+                                            </a>
                                             @if ($level == 'admin')
                                                 <a class="ml-1 edit" href="#" kode_program="{{ $d->kode_program }}">
                                                     <i class="feather icon-edit success"></i>
@@ -143,8 +148,8 @@
         </div>
     </div>
 
-    <div class="modal fade text-left" id="mdleditprogram" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
-        aria-hidden="true">
+    <div class="modal fade text-left" id="mdleditprogram" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel18" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">

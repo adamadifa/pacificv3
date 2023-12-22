@@ -34,6 +34,20 @@
                             </div>
                         </div>
                         <div class="row">
+                            @if (Auth::user()->kode_cabang == 'PCF')
+                                <div class="col-lg-3 col-sm-12">
+                                    <div class="form-group  ">
+                                        <select name="kode_cabang" id="kode_cabang" class="form-control">
+                                            <option value="">Semua Cabang</option>
+                                            @foreach ($cabang as $c)
+                                                <option {{ Request('kode_cabang') == $c->kode_cabang ? 'selected' : '' }}
+                                                    value="{{ $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            @endif
                             <div class="col-lg-3 col-sm-12">
                                 <x-inputtext label="No Faktur" field="no_fak_penj" icon="feather icon-credit-card"
                                     value="{{ Request('no_fak_penj') }}" />
@@ -42,23 +56,20 @@
                                 <x-inputtext label="Nama Pelanggan" field="nama_pelanggan" icon="feather icon-user"
                                     value="{{ Request('nama_pelanggan') }}" />
                             </div>
-                            <div class="col-lg-3 col-sm-10">
-                                <div class="form-group">
-                                    <select name="jenis_retur" id="status" class="form-control">
-                                        <option value="">Jenis Retur</option>
-                                        <option {{ Request('jenis_retur') == 'BG' ? 'selected' : '' }} value="GB">Ganti
-                                            Barang</option>
-                                        <option {{ Request('jenis_retur') == 'PF' ? 'selected' : '' }} value="PF">Potong
-                                            Faktur</option>
-                                    </select>
-                                </div>
-                            </div>
+
 
                             <div class="col-lg-2 col-sm-2">
                                 <div class="form-group">
                                     @if ($level != 'salesman')
-                                        <button type="submit" name="submit" value="1" class="btn btn-primary"><i
-                                                class="fa fa-search"></i> Cari Data </button>
+                                        <div class="btn-group">
+                                            <button type="submit" name="submit" value="1" class="btn btn-primary">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                            <button type="submit" name="cetak" formtarget="_blank" value="1"
+                                                class="btn btn-success">
+                                                <i class="feather icon-printer"></i>
+                                            </button>
+                                        </div>
                                     @else
                                         <button type="submit" name="submit" value="1" class="btn btn-primary"><i
                                                 class="fa fa-search"></i></button>
@@ -147,7 +158,9 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title" id="myModalLabel18">Detail Retur <span id="no_retur_penj"></span></h4>
-
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
                 <div class="modal-body">
                     <div id="loaddetailretur"></div>

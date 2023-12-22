@@ -1206,7 +1206,7 @@
                                         $level == 'admin persediaan dan kasir' ||
                                         $level ==
                                             "admin penjualan
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        dan kasir")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        dan kasir")
                                     <a href="/laporankeuangan/saldokasbesar">
                                         <i class="feather icon-file-text"></i>
                                         <span class="menu-item" data-i18n="Second Level">Laporan</span>
@@ -1671,6 +1671,12 @@
                                 <span class="menu-item">Ajuan Limit Kredit</span>
                             </a>
                         </li>
+                        <li class="{{ request()->is(['worksheetom/visitpelanggan']) ? 'active' : '' }}">
+                            <a href="/worksheetom/visitpelanggan">
+                                <i class="feather icon-clipboard"></i>
+                                <span class="menu-item">Visit Pelanggan</span>
+                            </a>
+                        </li>
                         <li class="{{ request()->is(['worksheetom/monitoringretur']) ? 'active' : '' }}">
                             <a href="/worksheetom/monitoringretur">
                                 <i class="feather icon-clipboard"></i>
@@ -1700,6 +1706,26 @@
                             <a href="/worksheetom/evaluasisharing">
                                 <i class="feather icon-clipboard"></i>
                                 <span class="menu-item">Evaluasi Sharing</span>
+                            </a>
+                        </li>
+                        <li class="{{ request()->is(['worksheetom/rekapbuffermaxsell']) ? 'active' : '' }}">
+                            <a href="/worksheetom/rekapbuffermaxsell">
+                                <i class="feather icon-clipboard"></i>
+                                <span class="menu-item">Buffer,Max & Sellout</span>
+                            </a>
+                        </li>
+
+                        <li class="{{ request()->is(['bbm']) ? 'active' : '' }}">
+                            <a href="/bbm">
+                                <i class="feather icon-clipboard"></i>
+                                <span class="menu-item">BBM</span>
+                            </a>
+                        </li>
+
+                        <li class="{{ request()->is(['ratioBS/laporanRatioBS']) ? 'active' : '' }}">
+                            <a href="/ratioBS/laporanRatioBS">
+                                <i class="feather icon-clipboard"></i>
+                                <span class="menu-item">Ratio BS</span>
                             </a>
                         </li>
                     @endif
