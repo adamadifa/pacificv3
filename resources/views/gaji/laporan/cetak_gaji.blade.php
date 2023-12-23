@@ -888,8 +888,8 @@
                                         @endif
                                     @endif
                                     @php
-                                        $overtime_libur_1 = $jmljam_lembur >= 4 ? 4 : $jmljam_lembur;
-                                        $overtime_libur_2 = $jmljam_lembur > 4 ? $jmljam_lembur - 4 : 0;
+                                        $overtime_libur_1 = $jmljam_lembur;
+                                        $overtime_libur_2 = 0;
                                         $total_overtime_libur_1 += $overtime_libur_1;
                                         $total_overtime_libur_2 += $overtime_libur_2;
                                     @endphp
