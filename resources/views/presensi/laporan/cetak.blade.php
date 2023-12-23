@@ -898,6 +898,7 @@
                                     @php
                                         $izinsakit = 0;
                                     @endphp
+                                    {{ $izinabsen }}
                                     <!-- Jika Cuti-->
                                 @elseif($status == 'c')
                                     <span style="color:rgb(154, 56, 4);">CUTI</span><br>
