@@ -841,6 +841,10 @@
                                                     $izinabsen = 0;
                                                 @endphp
                                             @endif
+                                        @else
+                                            @php
+                                                $izinabsen = 7;
+                                            @endphp
                                         @endif
                                     @else
                                         @php
