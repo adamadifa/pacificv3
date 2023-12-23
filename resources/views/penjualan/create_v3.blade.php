@@ -1131,6 +1131,17 @@
                     });
                     $("#btnsimpan").prop('disabled', false);
                     return false;
+                } else if (parseInt(subtotal) >= parseInt(limitpel) && sikluspembayaran == 1 &&
+                    jenistransaksi == 'kredit') {
+                    swal({
+                        title: 'Oops',
+                        text: 'Melebihi Limit, Silahkan Ajukan Penambahan Limit !',
+                        icon: 'warning',
+                        showConfirmButton: false
+                    }).then(function() {
+                        $("#no_fak_penj").focus();
+                    });
+                    return false;
                 } else if (ceknofak > 0) {
                     swal({
                         title: 'Oops',
