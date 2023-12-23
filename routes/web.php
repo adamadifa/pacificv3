@@ -140,6 +140,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VisitController;
 use App\Http\Controllers\WhatsappController;
 use App\Http\Controllers\WorksheetomController;
+use App\Http\Controllers\BBMController;
+use App\Http\Controllers\RatioBsController;
 use App\Models\Barangpembelian;
 use App\Models\Harilibur;
 use App\Models\Logamtokertas;
@@ -253,6 +255,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/omancabang/{no_order}/edit', [OmancabangController::class, 'edit']);
     Route::post('/omancabang/{no_order}/update', [OmancabangController::class, 'update']);
     Route::delete('/omancabang/{no_order}/delete', [OmancabangController::class, 'delete']);
+    Route::get('/omancabang/{no_order}/cetak', [OmancabangController::class, 'cetak']);
     Route::post('/getomancabang', [OmancabangController::class, 'getomancabang']);
 
     Route::get('/oman', [OmanController::class, 'index']);
@@ -1575,6 +1578,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/getsmactivity', [SapController::class, 'getsmactivity']);
     Route::get('/smactivity/{kode_act_sm}/show', [DashboardController::class, 'showsmactivity']);
     Route::get('/sap/rekapactivity', [SapController::class, 'rekapactivity']);
+    Route::get('/sap/rekapactivityharian', [SapController::class, 'rekapactivityharian']);
     //Kesepakatan Bersama
     Route::get('/kesepakatanbersama', [KesepakatanbersamaController::class, 'index']);
     Route::post('/kesepakatanbersama/store', [KesepakatanbersamaController::class, 'store']);
@@ -1993,6 +1997,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/worksheetom/{kode_program}/getpeserta', [WorksheetomController::class, 'getpeserta']);
     Route::post('/worksheetom/deletepeserta', [WorksheetomController::class, 'deletepeserta']);
     Route::delete('/worksheetom/{kode_program}/deleteprogram', [WorksheetomController::class, 'deleteprogram']);
+    Route::get('/worksheetom/{kode_program}/cetakprogram', [WorksheetomController::class, 'cetakprogram']);
 
 
 
@@ -2009,6 +2014,43 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/worksheetom/deleteagenda', [WorksheetomController::class, 'deleteagenda']);
     Route::post('/worksheetom/deleteagenda', [WorksheetomController::class, 'deleteagenda']);
     Route::delete('/worksheetom/{kode_evaluasi}/deleteevaluasi', [WorksheetomController::class, 'deleteevaluasi']);
+
+
+
+    //Kebutuhan Cabang
+    Route::get('/worksheetom/kebutuhancabang', [WorksheetomController::class, 'kebutuhancabang']);
+    Route::get('/worksheetom/createkebutuhancabang', [WorksheetomController::class, 'createkebutuhancabang']);
+    Route::post('/worksheetom/storekebutuhancabang', [WorksheetomController::class, 'storekebutuhancabang']);
+    Route::get('/worksheetom/{kode_kebutuhan}/editkebutuhancabang', [WorksheetomController::class, 'editkebutuhancabang']);
+    Route::post('/worksheetom/{kode_kebutuhan}/updatekebutuhancabang', [WorksheetomController::class, 'updatekebutuhancabang']);
+    Route::delete('/worksheetom/{kode_kebutuhan}/deletekebutuhancabang', [WorksheetomController::class, 'deletekebutuhancabang']);
+
+
+    //Rekap Buffer Max Sell Out
+
+    Route::get('/worksheetom/rekapbuffermaxsell', [WorksheetomController::class, 'rekapbuffermaxsell']);
+    Route::post('/worksheetom/cetakrekapbuffermaxsell', [WorksheetomController::class, 'cetakrekapbuffermaxsell']);
+
+    //Visit Pelanggan
+    Route::get('/worksheetom/visitpelanggan', [VisitController::class, 'index']);
+
+    Route::controller(BBMController::class)->group(function () {
+        Route::get('/bbm', 'index')->name('bbm');
+        Route::post('/bbm/show', 'show')->name('bbm.show');
+        Route::get('/bbm/create', 'create')->name('bbm.create');
+        Route::post('/bbm/store', 'store')->name('bbm.store');
+        Route::post('/bbm/delete', 'delete')->name('bbm.delete');
+        Route::post('/bbm/update', 'update')->name('bbm.update');
+        Route::post('/bbm/edit', 'edit')->name('bbm.edit');
+        Route::get('/bbm/laporanBBM', 'laporanBBM')->name('bbm.laporanBBM');
+        Route::post('/bbm/cetakBBM', 'cetakBBM')->name('bbm.cetakBBM');
+    });
+
+    Route::controller(RatioBSController::class)->group(function () {
+
+        Route::get('/ratioBS/laporanRatioBS', 'laporanRatioBS')->name('bbm.laporanRatioBS');
+        Route::post('/ratioBS/cetakRatioBS', 'cetakRatioBS')->name('bbm.cetakRatioBS');
+    });
 });
 
 

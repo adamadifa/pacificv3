@@ -577,4 +577,31 @@ class SapController extends Controller
             ->get();
         return view('sap.rekapactivity', compact('rekapsmm', 'jmlrange', 'rangetanggal', 'rekaprsm', 'rekapwilayah'));
     }
+
+
+    public function rekapactivityharian(Request $request)
+    {
+
+        $aktifitas = DB::table('users')
+            ->select('users.id', 'name', 'aktifitas')
+            ->leftJoin(
+                DB::raw("(
+            SELECT
+            id_user,GROUP_CONCAT(aktifitas separator '|') as aktifitas
+            FROM activity_sm
+            WHERE DATE(tanggal) = '$request->tanggal'
+            GROUP BY id_user
+            ) activity"),
+                function ($join) {
+                    $join->on('users.id', '=', 'activity.id_user');
+                }
+            )
+            ->join('cabang', 'users.kode_cabang', '=', 'cabang.kode_cabang')
+            ->where('kategori_wilayah', $request->kode_wilayah)
+            ->whereIn('level', ['rsm', 'kepala penjualan'])
+            ->get();
+
+        $kategori_wilayah = DB::table('kategori_wilayah')->get();
+        return view('sap.rekapactivityharian', compact('aktifitas', 'kategori_wilayah'));
+    }
 }

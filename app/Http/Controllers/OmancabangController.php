@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Barang;
 use App\Models\Cabang;
+use App\Models\Detailomancabang;
 use App\Models\Omancabang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,34 +29,72 @@ class OmancabangController extends Controller
     }
     public function index(Request $request)
     {
-        $bulansekarang = date("m");
-        $tahunsekarang = date("Y");
-        $query = Omancabang::query();
-        if (!empty($request->bulan)) {
-            $query->where('bulan', $request->bulan);
-        } else {
-            $query->where('bulan', $bulansekarang);
-        }
-
-        if (!empty($request->tahun)) {
+        if (isset($request->cetak)) {
+            $jmlbulan = 12;
+            $bulan = $request->bulan;
+            $tahun = $request->tahun;
+            $sampaibulan = !empty($bulan) ? $bulan : $jmlbulan;
+            $select_month = "";
+            for ($i = 1; $i <= $sampaibulan; $i++) {
+                $select_month .= "SUM(IF(bulan=$i,jumlah,0)) as bulan_" . $i . ",";
+            }
+            $query = Detailomancabang::query();
+            $query->selectRaw("
+            $select_month
+            detail_oman_cabang.kode_produk,nama_barang");
+            $query->join('master_barang', 'detail_oman_cabang.kode_produk', '=', 'master_barang.kode_produk');
+            $query->join('oman_cabang', 'detail_oman_cabang.no_order', '=', 'oman_cabang.no_order');
             $query->where('tahun', $request->tahun);
+            if (Auth::user()->kode_cabang != "PCF") {
+                $query->where('oman_cabang.kode_cabang', Auth::user()->kode_cabang);
+            } else {
+                if (!empty($request->kode_cabang)) {
+                    $query->where('oman_cabag.kode_cabang', $request->kode_cabang);
+                }
+            }
+            $query->groupbyRaw('detail_oman_cabang.kode_produk,nama_barang');
+            $rekap = $query->get();
+            $kode_cabang = !empty($request->kode_cabang) ? $request->kode_cabang : Auth::user()->kode_cabang;
+            $nama_bulan = array("JAN", "FEB", "MAR", "APR", "MEI", "JUN", "JUL", "AGS", "SEP", "OKT", "NOV", "DES");
+            return view('omancabang.cetak_rekap', compact('rekap', 'tahun', 'sampaibulan', 'nama_bulan', 'kode_cabang'));
         } else {
-            $query->where('tahun', $tahunsekarang);
-        }
+            $bulansekarang = date("m");
+            $tahunsekarang = date("Y");
+            $query = Omancabang::query();
+            if (!empty($request->bulan)) {
+                $query->where('bulan', $request->bulan);
+            } else {
+                if (Auth::user()->kode_cabang == "PCF") {
+                    $query->where('bulan', $bulansekarang);
+                }
+            }
 
-        if (!empty($request->kode_cabang)) {
-            $query->where('kode_cabang', $request->kode_cabang);
-        }
+            if (!empty($request->tahun)) {
+                $query->where('tahun', $request->tahun);
+            } else {
+                $query->where('tahun', $tahunsekarang);
+            }
 
-        $oman_cabang = $query->paginate(12);
-        $oman_cabang->appends($request->all());
-        if ($this->cabang !== "PCF") {
-            $cabang = Cabang::where('kode_cabang', $this->cabang)->get();
-        } else {
-            $cabang = Cabang::orderBy('kode_cabang')->get();
+            if (!empty($request->kode_cabang)) {
+                $query->where('kode_cabang', $request->kode_cabang);
+            }
+
+            if ($this->cabang != "PCF") {
+                $query->where('kode_cabang', $this->cabang);
+            }
+            $query->orderBy('bulan');
+            $oman_cabang = $query->paginate(12);
+            $oman_cabang->appends($request->all());
+            if ($this->cabang != "PCF") {
+                $cabang = Cabang::where('kode_cabang', $this->cabang)->get();
+            } else {
+                $cabang = Cabang::orderBy('kode_cabang')->get();
+            }
+            $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+
+
+            return view('omancabang.index', compact('oman_cabang', 'cabang', 'bulan'));
         }
-        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
-        return view('omancabang.index', compact('oman_cabang', 'cabang', 'bulan'));
     }
 
     public function create()
@@ -65,7 +104,7 @@ class OmancabangController extends Controller
         } else {
             $cabang = Cabang::orderBy('kode_cabang')->get();
         }
-        $produk = Barang::orderBy('kode_produk')->get();
+        $produk = Barang::orderBy('kode_produk')->where('status', 1)->get();
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('omancabang.create', compact('cabang', 'produk', 'bulan'));
     }
@@ -100,6 +139,7 @@ class OmancabangController extends Controller
                     $join->on('master_barang.kode_produk', '=', 'oman.kode_produk');
                 }
             )
+            ->where('master_barang.status', 1)
             ->get();
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('omancabang.edit', compact('cabang', 'produk', 'bulan', 'dataoman', 'm1', 'm2', 'm3', 'm4'));
@@ -284,5 +324,38 @@ class OmancabangController extends Controller
             ->get();
 
         return view('omancabang.getomancabang', compact('produk'));
+    }
+
+
+
+    public function cetak($no_order)
+    {
+        $no_order = Crypt::decrypt($no_order);
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        $dataoman = DB::table('oman_cabang')->where('no_order', $no_order)->first();
+        $m1 = DB::table('detail_oman_cabang')->where('no_order', $no_order)->where('mingguke', 1)->first();
+        $m2 = DB::table('detail_oman_cabang')->where('no_order', $no_order)->where('mingguke', 2)->first();
+        $m3 = DB::table('detail_oman_cabang')->where('no_order', $no_order)->where('mingguke', 3)->first();
+        $m4 = DB::table('detail_oman_cabang')->where('no_order', $no_order)->where('mingguke', 4)->first();
+        $cabang = Cabang::orderBy('kode_cabang')->get();
+        $produk = DB::table('master_barang')
+            ->select('master_barang.kode_produk', 'nama_barang', 'mingguke_1', 'mingguke_2', 'mingguke_3', 'mingguke_4')
+            ->leftJoin(
+                DB::raw("(
+                    SELECT kode_produk,
+                    SUM(IF(mingguke='1',jumlah,0)) as mingguke_1,
+                    SUM(IF(mingguke='2',jumlah,0)) as mingguke_2,
+                    SUM(IF(mingguke='3',jumlah,0)) as mingguke_3,
+                    SUM(IF(mingguke='4',jumlah,0)) as mingguke_4
+                    FROM detail_oman_cabang
+                    WHERE no_order = '$no_order'
+                    GROUP BY kode_produk
+            ) oman"),
+                function ($join) {
+                    $join->on('master_barang.kode_produk', '=', 'oman.kode_produk');
+                }
+            )
+            ->get();
+        return view('omancabang.cetak', compact('dataoman', 'produk', 'm1', 'm2', 'm3', 'm4', 'bulan'));
     }
 }
