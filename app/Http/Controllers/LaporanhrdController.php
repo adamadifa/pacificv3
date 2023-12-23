@@ -191,8 +191,8 @@ class LaporanhrdController extends Controller
         $dataminggumasuk = cekminggumasuk($dari, $sampai);
         $datawfh = cekwfh($dari, $sampai);
         $datawfhfull = cekwfhfull($dari, $sampai);
-        $datalembur = ceklembur($dari, $sampai);
-
+        $datalembur = ceklembur($dari, $sampai, 1);
+        $datalemburharilibur = ceklembur($dari, $sampai, 2);
 
         // echo json_encode($datalembur);
         // die;
@@ -438,9 +438,9 @@ class LaporanhrdController extends Controller
                 header("Content-type: application/vnd-ms-excel");
                 // Mendefinisikan nama file ekspor "hasil-export.xls"
                 header("Content-Disposition: attachment; filename=Laporan Presensi Format P/S/M.xls");
-                return view('presensi.laporan.cetak_psmexcel', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur'));
+                return view('presensi.laporan.cetak_psmexcel', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'datalemburharilibur'));
             } else {
-                return view('presensi.laporan.cetakpsm', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur'));
+                return view('presensi.laporan.cetakpsm', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'datalemburharilibur'));
             }
         } else if (request()->is('laporanhrd/gaji/cetak')) {
             if (isset($_POST['export'])) {
@@ -453,11 +453,11 @@ class LaporanhrdController extends Controller
 
             if ($jenislaporan_gaji == 2) {
 
-                return view('gaji.laporan.cetak_gaji_rekap', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'sampai'));
+                return view('gaji.laporan.cetak_gaji_rekap', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'datalemburharilibur', 'sampai'));
             } else if ($jenislaporan_gaji == 3) {
-                return view('gaji.laporan.cetak_slip', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'sampai'));
+                return view('gaji.laporan.cetak_slip', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'datalemburharilibur', 'sampai'));
             } else {
-                return view('gaji.laporan.cetak_gaji', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'sampai'));
+                return view('gaji.laporan.cetak_gaji', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'datalemburharilibur', 'sampai'));
             }
         } else {
             if (isset($_POST['export'])) {
@@ -467,7 +467,7 @@ class LaporanhrdController extends Controller
                 // Mendefinisikan nama file ekspor "hasil-export.xls"
                 header("Content-Disposition: attachment; filename=Laporan Presensi Detail.xls");
             }
-            return view('presensi.laporan.cetak', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur'));
+            return view('presensi.laporan.cetak', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'datalemburharilibur'));
         }
     }
 
