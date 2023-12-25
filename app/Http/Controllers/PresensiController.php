@@ -308,7 +308,7 @@ class PresensiController extends Controller
         $dataminggumasuk = cekminggumasuk($tanggal, $tanggal);
         $datawfh = cekwfh($tanggal, $tanggal);
         $datawfhfull = cekwfhfull($tanggal, $tanggal);
-        $datalembur = ceklembur($tanggal, $tanggal);
+        $datalembur = ceklembur($tanggal, $tanggal, 1);
         return view('presensi.monitoring', compact(
             'karyawan',
             'departemen',
@@ -643,7 +643,7 @@ class PresensiController extends Controller
         $dataminggumasuk = cekminggumasuk($dari, $sampai);
         $datawfh = cekwfh($dari, $sampai);
         $datawfhfull = cekwfhfull($dari, $sampai);
-        $datalembur = ceklembur($dari, $sampai);
+        $datalembur = ceklembur($dari, $sampai, 1);
 
         return view('presensi.presensikaryawan', compact(
             'karyawan',

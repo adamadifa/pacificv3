@@ -346,7 +346,7 @@ function cekwfhfull($dari, $sampai)
 }
 
 
-function ceklembur($dari, $sampai)
+function ceklembur($dari, $sampai, $kategori)
 {
     $no = 1;
     $lembur = [];
@@ -362,7 +362,9 @@ function ceklembur($dari, $sampai)
         istirahat,
         IFNULL(lembur_karyawan.nik,"ALL") as nik')
         ->leftJoin('lembur_karyawan', 'lembur.kode_lembur', '=', 'lembur_karyawan.kode_lembur')
-        ->whereBetween('tanggal', [$dari, $sampai])->get();
+        ->whereBetween('tanggal', [$dari, $sampai])
+        ->where('kategori', $kategori)
+        ->get();
 
     foreach ($ceklembur as $d) {
         $lembur[] = [

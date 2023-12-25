@@ -60,18 +60,14 @@
                                                     <div class="form-group">
                                                         <select name="kategori_search" id="kategori_search"
                                                             class="form-control">
-                                                            <option value="">Semua Kategori Libur</option>
+                                                            <option value="">Semua Kategori </option>
                                                             <option value="1"
                                                                 {{ Request('kategori_search') == 1 ? 'selected' : '' }}>
-                                                                Libur
-                                                                Nasional</option>
+                                                                REGULER</option>
                                                             <option value="2"
                                                                 {{ Request('kategori_search') == 2 ? 'selected' : '' }}>
-                                                                Libur
-                                                                Pengganti Minggu</option>
-                                                            <option value="3"
-                                                                {{ Request('kategori_search') == 3 ? 'selected' : '' }}>WFH
-                                                            </option>
+                                                                LEMBUR HARI LIBUR</option>
+
                                                         </select>
                                                     </div>
                                                 </div>
