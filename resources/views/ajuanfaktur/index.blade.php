@@ -144,7 +144,7 @@
                                                 @endif
                                             </td>
                                             <td>
-                                                {{ $d->mm }}
+                                                {{-- {{ $d->mm }} --}}
                                                 @if (empty($d->mm))
                                                     <i class="fa fa-history warning"></i>
                                                 @elseif(
