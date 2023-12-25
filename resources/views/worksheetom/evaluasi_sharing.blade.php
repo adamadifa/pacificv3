@@ -92,6 +92,10 @@
                                                         kode_evaluasi="{{ $d->kode_evaluasi }}">
                                                         <i class=" feather icon-file-text info"></i>
                                                     </a>
+                                                    <a href="/worksheetom/{{ Crypt::encrypt($d->kode_evaluasi) }}/cetakevaluasi"
+                                                        class="ml-1" target="_blank">
+                                                        <i class="feather icon-printer info"></i>
+                                                    </a>
                                                     <form method="POST" name="deleteform" class="deleteform"
                                                         action="/worksheetom/{{ Crypt::encrypt($d->kode_evaluasi) }}/deleteevaluasi">
                                                         @csrf

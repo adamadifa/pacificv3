@@ -129,6 +129,7 @@
                                                 @endif
                                             </td>
                                             <td>
+
                                                 @if (empty($d->rsm))
                                                     <i class="fa fa-history warning"></i>
                                                 @elseif(
@@ -143,6 +144,7 @@
                                                 @endif
                                             </td>
                                             <td>
+                                                {{ $d->mm }}
                                                 @if (empty($d->mm))
                                                     <i class="fa fa-history warning"></i>
                                                 @elseif(

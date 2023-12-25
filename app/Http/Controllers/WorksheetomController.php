@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cabang;
+use App\Models\Detailbuffer;
+use App\Models\Detaillimitstok;
 use App\Models\Detailretur;
 use App\Models\Evaluasisharing;
 use App\Models\Harga;
@@ -751,10 +753,18 @@ class WorksheetomController extends Controller
         }
     }
 
+    public function cetakevaluasi($kode_evaluasi)
+    {
+        $kode_evaluasi = Crypt::decrypt($kode_evaluasi);
+        $evaluasi = DB::table('evaluasi_sharing')->where('kode_evaluasi', $kode_evaluasi)->first();
+        $detailevaluasi = DB::table('evaluasi_sharing_detail')->where('kode_evaluasi', $kode_evaluasi)->get();
+        return view('worksheetom.cetak_evaluasi', compact('evaluasi', 'detailevaluasi'));
+    }
+
 
     public function kebutuhancabang(Request $request)
     {
-
+        $kode_cabang = $request->kode_cabang;
         $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         $query = Kebutuhancabang::query();
         $query->select('kebutuhan_cabang.*', 'jenis_kebutuhan');
@@ -774,7 +784,13 @@ class WorksheetomController extends Controller
         $kc->appends(request()->all());
 
         $jenis_kebutuhan = DB::table('kebutuhan_cabang_jenis')->orderBy('kode_jenis_kebutuhan')->get();
-        return view('worksheetom.kebutuhan_cabang', compact('cabang', 'kc', 'jenis_kebutuhan'));
+
+
+        if (isset($request->cetak)) {
+            return view('worksheetom.cetak_kebutuhan_cabang', compact('cabang', 'kc', 'jenis_kebutuhan', 'kode_cabang'));
+        } else {
+            return view('worksheetom.kebutuhan_cabang', compact('cabang', 'kc', 'jenis_kebutuhan'));
+        }
     }
 
     public function createkebutuhancabang()
@@ -955,5 +971,134 @@ class WorksheetomController extends Controller
         $bln = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         $namabulan = $bln[$request->bulan];
         return view('worksheetom.cetak_rekapbuffermaxsell', compact('rekap', 'produk', 'jml_produk', 'namabulan', 'tahun'));
+    }
+
+
+    public function bufferlimit(Request $request)
+    {
+        $cabang = DB::table('cabang')->get();
+        return view('worksheetom.bufferlimit', compact('cabang'));
+    }
+
+
+    public function getbufferlimit(Request $request)
+    {
+        $kode_cabang = $request->kode_cabang;
+        $detail = DB::table('master_barang')
+            ->select('master_barang.kode_produk', 'nama_barang', 'jmlbufferstok', 'jmllimitstok')
+            ->leftJoin(
+                DB::raw("(
+                SELECT
+                    kode_produk,
+                    jumlah as jmlbufferstok
+                FROM
+                    detail_bufferstok
+                INNER JOIN buffer_stok ON detail_bufferstok.kode_bufferstok = buffer_stok.kode_bufferstok
+                WHERE kode_cabang = '$request->kode_cabang'
+            ) bufferstok"),
+                function ($join) {
+                    $join->on('master_barang.kode_produk', '=', 'bufferstok.kode_produk');
+                }
+            )
+
+            ->leftJoin(
+                DB::raw("(
+                SELECT
+                    kode_produk,
+                    jumlah as jmllimitstok
+                FROM
+                limit_stok_detail
+                INNER JOIN limit_stok ON limit_stok_detail.kode_limit_stok = limit_stok.kode_limit_stok
+                WHERE kode_cabang = '$request->kode_cabang'
+            ) limitstok"),
+                function ($join) {
+                    $join->on('master_barang.kode_produk', '=', 'limitstok.kode_produk');
+                }
+            )
+            ->where('status', 1)
+            ->orderBy('kode_produk')
+            ->get();
+
+        return view('worksheetom.getbufferlimit', compact('detail'));
+    }
+
+
+    public function storebufferlimit(Request $request)
+    {
+        $kode_cabang = $request->kode_cabang;
+        $kode_produk = $request->kode_produk;
+        $buffer_stok = $request->bufferstok;
+        $limit_stok = $request->limitstok;
+        $kode_bufferstok = "BF" . $kode_cabang;
+        $kode_limit_stok = "MX" . $kode_cabang;
+        $detail_buffer = [];
+        $detail_limit = [];
+        for ($i = 0; $i < count($kode_produk); $i++) {
+            $bufferstok = !empty($buffer_stok[$i]) ? $buffer_stok[$i] : 0;
+            $limitstok = !empty($limit_stok[$i]) ? $limit_stok[$i] : 0;
+
+            //echo $bufferstok . "<br>";
+            if (!empty($bufferstok)) {
+                $detail_buffer[]   = [
+                    'kode_bufferstok' => $kode_bufferstok,
+                    'kode_produk' => $kode_produk[$i],
+                    'jumlah' => $bufferstok
+                ];
+            }
+
+            if (!empty($limitstok)) {
+                $detail_limit[]   = [
+                    'kode_limit_stok' => $kode_limit_stok,
+                    'kode_produk' => $kode_produk[$i],
+                    'jumlah' => $bufferstok
+                ];
+            }
+        }
+
+
+
+        // dd($kode_produk);
+        DB::beginTransaction();
+        try {
+
+
+
+
+            if (!empty($detail_buffer)) {
+                DB::table('buffer_stok')->where('kode_bufferstok', $kode_bufferstok)->delete();
+                DB::table('buffer_stok')->insert([
+                    'kode_bufferstok' => $kode_bufferstok,
+                    'kode_cabang' => $kode_cabang,
+                    'id_admin' => Auth::user()->id
+                ]);
+                $chunks_buffer = array_chunk($detail_buffer, 5);
+                foreach ($chunks_buffer as $chunk_buffer) {
+                    Detailbuffer::insert($chunk_buffer);
+                }
+            }
+
+            if (!empty($detail_limit)) {
+                DB::table('limit_stok')->where('kode_limit_stok', $kode_limit_stok)->delete();
+                DB::table('limit_stok')->insert([
+                    'kode_limit_stok' => $kode_limit_stok,
+                    'kode_cabang' => $kode_cabang,
+                    'id_admin' => Auth::user()->id
+                ]);
+                $chunks_limit = array_chunk($detail_limit, 5);
+                foreach ($chunks_limit as $chunk_limit) {
+                    Detaillimitstok::insert($chunk_limit);
+                }
+            }
+
+
+            DB::commit();
+
+            return Redirect::back()->with(['success' => 'Data Berhasil Di Udpate']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            dd($e);
+            return Redirect::back()->with(['warning' => 'Data Gagal Di Udpate']);
+        }
     }
 }

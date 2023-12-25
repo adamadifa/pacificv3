@@ -1317,6 +1317,8 @@ class GlobalProvider extends ServiceProvider
             $rsmactivity = ['admin', 'manager accounting', 'rom', 'manager marketing', 'direktur'];
 
             $om_menu = ['admin', 'direktur', 'manager accounting', 'rom', 'kepala admin'];
+
+            $bufferlimit = ['admin'];
             $shareddata = [
 
                 'operator_pusat' => $operator_pusat,
@@ -1738,7 +1740,8 @@ class GlobalProvider extends ServiceProvider
                 'smmactivity' => $smmactivity,
                 'rsmactivity' => $rsmactivity,
 
-                'om_menu' => $om_menu
+                'om_menu' => $om_menu,
+                'bufferlimit' => $bufferlimit
 
             ];
             View::share($shareddata);
