@@ -205,6 +205,14 @@
                                 </a>
                             </li>
                         @endif
+                        @if (in_array($level, $bufferlimit))
+                            <li class="{{ request()->is(['bufferlimit', 'bufferlimit/*']) ? 'active' : '' }}">
+                                <a href="/bufferlimit">
+                                    <i class="feather icon-dollar-sign"></i>
+                                    <span class="menu-item" data-i18n="Second Level">Buffer & Max Stok</span>
+                                </a>
+                            </li>
+                        @endif
                     </ul>
                 </li>
             @endif
@@ -1206,7 +1214,7 @@
                                         $level == 'admin persediaan dan kasir' ||
                                         $level ==
                                             "admin penjualan
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        dan kasir")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        dan kasir")
                                     <a href="/laporankeuangan/saldokasbesar">
                                         <i class="feather icon-file-text"></i>
                                         <span class="menu-item" data-i18n="Second Level">Laporan</span>

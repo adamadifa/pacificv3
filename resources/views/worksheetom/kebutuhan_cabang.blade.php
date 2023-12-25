@@ -61,9 +61,14 @@
                                         </dvi>
                                     @endif
                                     <div class="col-lg-2 col-sm-2">
-                                        <div class="form-group">
-                                            <button type="submit" name="submit" value="1" class="btn btn-primary"><i
-                                                    class="fa fa-search"></i> Cari </button>
+                                        <div class="btn-group">
+                                            <button type="submit" name="submit" value="1" class="btn btn-primary">
+                                                <i class="fa fa-search"></i>
+                                            </button>
+                                            <button type="submit" name="cetak" value="1" formtarget="_blank"
+                                                class="btn btn-success">
+                                                <i class="feather icon-printer"></i>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>

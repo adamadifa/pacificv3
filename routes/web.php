@@ -2014,6 +2014,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/worksheetom/deleteagenda', [WorksheetomController::class, 'deleteagenda']);
     Route::post('/worksheetom/deleteagenda', [WorksheetomController::class, 'deleteagenda']);
     Route::delete('/worksheetom/{kode_evaluasi}/deleteevaluasi', [WorksheetomController::class, 'deleteevaluasi']);
+    Route::get('/worksheetom/{kode_evaluasi}/cetakevaluasi', [WorksheetomController::class, 'cetakevaluasi']);
 
 
 
@@ -2028,6 +2029,9 @@ Route::middleware(['auth'])->group(function () {
 
     //Rekap Buffer Max Sell Out
 
+    Route::get('/bufferlimit', [WorksheetomController::class, 'bufferlimit']);
+    Route::post('/worksheetom/getbufferlimit', [WorksheetomController::class, 'getbufferlimit']);
+    Route::post('/worksheetom/storebufferlimit', [WorksheetomController::class, 'storebufferlimit']);
     Route::get('/worksheetom/rekapbuffermaxsell', [WorksheetomController::class, 'rekapbuffermaxsell']);
     Route::post('/worksheetom/cetakrekapbuffermaxsell', [WorksheetomController::class, 'cetakrekapbuffermaxsell']);
 
