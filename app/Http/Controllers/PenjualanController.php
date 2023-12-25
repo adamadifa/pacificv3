@@ -1976,7 +1976,7 @@ class PenjualanController extends Controller
         $sisapiutang = $request->sisapiutang;
         $jenistransaksi = $request->jenistransaksi;
         $jenisbayar = $request->jenisbayartunai == "transfer" && $jenistransaksi == "tunai" ? $request->jenisbayartunai : $request->jenisbayar;
-        $subtotal = $request->subtotal;
+        //$subtotal = $request->subtotal;
         $jatuhtempo = $request->jatuhtempo;
         $bruto = $request->bruto;
         $id_admin = Auth::user()->id;
@@ -2084,7 +2084,7 @@ class PenjualanController extends Controller
             ->first();
         $lastnobukti = $bayar != null ? $bayar->nobukti : '';
         $nobukti  = buatkode($lastnobukti, $kode_cabang . $tahunini . "-", 6);
-
+        $subtotal = $bruto - $potongan - $potistimewa - $penyesuaian + $ppn;
 
 
         $totalpiutang  = $sisapiutang + $subtotal;
