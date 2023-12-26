@@ -23,7 +23,8 @@ class CoaController extends Controller
         $kode_akun = Crypt::decrypt($kode_akun);
         $akun = DB::table('coa')->where('kode_akun', $kode_akun)->first();
         $coa = Coa::orderBy('kode_akun')->get();
-        return view('coa.edit', compact('akun', 'coa'));
+        $kategori = DB::table('kategori_cost_ratio')->orderBy('kode_kategori')->get();
+        return view('coa.edit', compact('akun', 'coa', 'kategori'));
     }
 
     public function store(Request $request)
@@ -31,13 +32,15 @@ class CoaController extends Controller
         $kode_akun = $request->kode_akun;
         $nama_akun = $request->nama_akun;
         $sub_akun = $request->sub_akun;
+        $kode_kategori = $request->kode_kategori;
         $cek_subakun = DB::table('coa')->where('kode_akun', $sub_akun)->first();
         $level = $cek_subakun->level + 1;
         $data = [
             'kode_akun' => $kode_akun,
             'nama_akun' => $nama_akun,
             'sub_akun' => $sub_akun,
-            'level' => $level
+            'level' => $level,
+            'kode_kategori' => $kode_kategori
         ];
 
         $simpan = DB::table('coa')->insert($data);
@@ -61,7 +64,8 @@ class CoaController extends Controller
     public function create()
     {
         $coa = Coa::orderBy('kode_akun')->get();
-        return view('coa.create', compact('coa'));
+        $kategori = DB::table('kategori_cost_ratio')->orderBy('kode_kategori')->get();
+        return view('coa.create', compact('coa', 'kategori'));
     }
 
     public function update($kode_akun, Request $request)
@@ -69,9 +73,15 @@ class CoaController extends Controller
         $kode_akun = Crypt::decrypt($kode_akun);
         $nama_akun = $request->nama_akun;
         $sub_akun = $request->sub_akun;
+        $kode_kategori = $request->kode_kategori;
         $cek_subakun = DB::table('coa')->where('kode_akun', $sub_akun)->first();
         $level = $cek_subakun->level + 1;
-        $update = DB::table('coa')->where('kode_akun', $kode_akun)->update(['nama_akun' => $nama_akun, 'sub_akun' => $sub_akun, 'level' => $level]);
+        $update = DB::table('coa')->where('kode_akun', $kode_akun)->update([
+            'nama_akun' => $nama_akun,
+            'sub_akun' => $sub_akun,
+            'level' => $level,
+            'kode_kategori' => $kode_kategori
+        ]);
         if ($update) {
             return Redirect::back()->with(['success' => 'Data Berhasil Diupdate']);
         } else {
