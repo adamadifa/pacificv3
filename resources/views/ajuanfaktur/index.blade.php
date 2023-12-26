@@ -84,8 +84,9 @@
                                         <th style="width: 10%">Tanggal</th>
                                         <th>Kode Pelanggan</th>
                                         <th>Pelanggan</th>
+                                        <th>Limit</th>
                                         <th>Jml Faktur</th>
-                                        <th style="width:30%">Keterangan</th>
+                                        <th style="width:20%">Keterangan</th>
                                         <th>Histori</th>
                                         <th>KP</th>
                                         <th>RSM</th>
@@ -101,6 +102,7 @@
                                             <td>{{ date('d-m-Y', strtotime($d->tgl_pengajuan)) }}</td>
                                             <td>{{ $d->kode_pelanggan }}</td>
                                             <td>{{ $d->nama_pelanggan }}</td>
+                                            <td>{{ rupiah($d->limitpel) }}</td>
                                             <td>{{ $d->jmlfaktur }}</td>
                                             <td>
                                                 @if ($d->sikluspembayaran == 1)
