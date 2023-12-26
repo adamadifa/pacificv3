@@ -40,7 +40,7 @@ class AjuanfakturController extends Controller
                 $query->whereIn('pelanggan.kode_cabang', $wilayah_user);
             }
         }
-        $query->select('pengajuan_faktur.*', 'nama_pelanggan', 'nama_karyawan');
+        $query->select('pengajuan_faktur.*', 'nama_pelanggan', 'nama_karyawan', 'limitpel');
         $query->join('pelanggan', 'pengajuan_faktur.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
         $query->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
         $query->leftJoin('users', 'pengajuan_faktur.id_approval', '=', 'users.id');
