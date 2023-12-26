@@ -2050,7 +2050,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/bbm/cetakBBM', 'cetakBBM')->name('bbm.cetakBBM');
     });
 
-    Route::controller(RatioBSController::class)->group(function () {
+    Route::controller(RatioBsController::class)->group(function () {
 
         Route::get('/ratioBS/laporanRatioBS', 'laporanRatioBS')->name('bbm.laporanRatioBS');
         Route::post('/ratioBS/cetakRatioBS', 'cetakRatioBS')->name('bbm.cetakRatioBS');
