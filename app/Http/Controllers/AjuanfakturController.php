@@ -217,6 +217,7 @@ class AjuanfakturController extends Controller
     {
         $kode_pelanggan = Crypt::decrypt($kode_pelanggan);
         $pelanggan = DB::table('pelanggan')->where('kode_pelanggan', $kode_pelanggan)->first();
+        $limitpel = $pelanggan->limitpel;
         $kode_cabang = $pelanggan->kode_cabang;
         $tgl_pengajuan = $request->tgl_pengajuan;
         $jmlfaktur = $request->jmlfaktur;
@@ -240,15 +241,33 @@ class AjuanfakturController extends Controller
         $no_pengajuan = buatkode($last_no_pengajuan, 'PJF' . $kode_cabang . $thn, 5);
 
         try {
-            DB::table('pengajuan_faktur')->insert([
-                'no_pengajuan' => $no_pengajuan,
-                'tgl_pengajuan' => $tgl_pengajuan,
-                'kode_pelanggan' => $kode_pelanggan,
-                'jmlfaktur' => $jmlfaktur,
-                'sikluspembayaran' => $sikluspembayaran,
-                'keterangan' => $keterangan,
-                'status' => 0
-            ]);
+            if ($limitpel <= 10000000 && $sikluspembayaran == 1 && $jmlfaktur <= 2) {
+                $data = [
+                    'no_pengajuan' => $no_pengajuan,
+                    'tgl_pengajuan' => $tgl_pengajuan,
+                    'kode_pelanggan' => $kode_pelanggan,
+                    'jmlfaktur' => $jmlfaktur,
+                    'sikluspembayaran' => $sikluspembayaran,
+                    'keterangan' => $keterangan,
+                    'kacab' => 1,
+                    'rsm' => 1,
+                    'mm' => 1,
+                    'dirut' => 1,
+                    'status' => 1
+                ];
+            } else {
+                $data = [
+                    'no_pengajuan' => $no_pengajuan,
+                    'tgl_pengajuan' => $tgl_pengajuan,
+                    'kode_pelanggan' => $kode_pelanggan,
+                    'jmlfaktur' => $jmlfaktur,
+                    'sikluspembayaran' => $sikluspembayaran,
+                    'keterangan' => $keterangan,
+                    'status' => 0
+                ];
+            }
+
+            DB::table('pengajuan_faktur')->insert($data);
 
             if (Auth::user()->level == "salesman") {
                 return redirect('/ajuanfaktur/salesman')->with(['success' => 'Data Berhasil Disimpan']);
