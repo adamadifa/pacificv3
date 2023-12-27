@@ -1,4 +1,5 @@
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css"
+    rel="stylesheet">
 <form method="POST" action="/pengajuanizin/store" id="frmPengajuanizin" enctype="multipart/form-data">
     @csrf
     <div class="row">
@@ -7,7 +8,7 @@
                 <select name="nik" id="nik" class="form-control">
                     <option value="">Pilih Karyawan</option>
                     @foreach ($karyawan as $d)
-                    <option value="{{ $d->nik }}">{{ $d->nama_karyawan }}</option>
+                        <option value="{{ $d->nik }}">{{ $d->nama_karyawan }}</option>
                     @endforeach
                 </select>
             </div>
@@ -38,9 +39,24 @@
             </div>
         </div>
     </div>
+    <div class="row mb-1">
+        <div class="col-12">
+            <div class="vs-checkbox-con vs-checkbox-primary">
+                <input type="checkbox" name="izin_atasan" value="1">
+                <span class="vs-checkbox">
+                    <span class="vs-checkbox--check">
+                        <i class="vs-icon feather icon-check"></i>
+                    </span>
+                </span>
+                <span class="">Sudah Izin Ke Atasan</span>
+            </div>
+        </div>
+    </div>
 </form>
-<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+<script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js">
+</script>
 <script>
     $(function() {
         $("#nik").selectize();
@@ -52,30 +68,30 @@
             var jam_terlambat = $("#jam_terlambat").val();
             if (nik == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Nik Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Nik Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#nik").focus();
                 });
                 return false;
             } else if (dari == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Tanggal Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Tanggal Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#frmPengajuanizin").find("#dari").focus();
                 });
                 return false;
             } else if (jam_terlambat == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Jam Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Jam Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#jam_terlambat").focus();
                 });
@@ -83,10 +99,10 @@
                 return false;
             } else if (keterangan == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Keterangan Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Keterangan Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#keterangan").focus();
                 });
@@ -95,5 +111,4 @@
             }
         });
     });
-
 </script>

@@ -55,6 +55,19 @@
             </div>
         </div>
     </div>
+    <div class="row mb-1">
+        <div class="col-12">
+            <div class="vs-checkbox-con vs-checkbox-primary">
+                <input type="checkbox" name="izin_atasan" value="1">
+                <span class="vs-checkbox">
+                    <span class="vs-checkbox--check">
+                        <i class="vs-icon feather icon-check"></i>
+                    </span>
+                </span>
+                <span class="">Sudah Izin Ke Atasan</span>
+            </div>
+        </div>
+    </div>
 </form>
 <script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
 <script
