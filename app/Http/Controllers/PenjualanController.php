@@ -1525,7 +1525,7 @@ class PenjualanController extends Controller
 
         $totalpiutang  = $sisapiutang + $subtotal;
         if ($jenistransaksi == "tunai") {
-            $total = $subtotal + $voucher;
+            // $total = $subtotal + $voucher;
             if ($jenisbayartunai == "tunai") {
                 $status_lunas = "1";
             } else {
@@ -1655,7 +1655,7 @@ class PenjualanController extends Controller
                             'tglbayar' => $tgltransaksi,
                             'jenistransaksi' => $jenistransaksi,
                             'jenisbayar' => $jenisbayar,
-                            'bayar' => $subtotal,
+                            'bayar' => $subtotal - $voucher,
                             'id_admin' => $id_admin,
                             'id_karyawan' => $id_karyawan
                         ]);
@@ -2089,7 +2089,7 @@ class PenjualanController extends Controller
 
         $totalpiutang  = $sisapiutang + $subtotal;
         if ($jenistransaksi == "tunai" && $jenisbayar == "tunai") {
-            $total = $subtotal + $voucher;
+            // $total = $subtotal + $voucher;
             $status_lunas = "1";
         } else {
             $status_lunas = "2";
@@ -2258,7 +2258,7 @@ class PenjualanController extends Controller
                         'tglbayar' => $tgltransaksi,
                         'jenistransaksi' => $jenistransaksi,
                         'jenisbayar' => $jenisbayar,
-                        'bayar' => $subtotal - $totalretur,
+                        'bayar' => $subtotal - $voucher - $totalretur,
                         'id_admin' => $id_admin,
                         'id_karyawan' => $id_karyawan
                     ]);
