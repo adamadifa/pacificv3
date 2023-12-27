@@ -575,13 +575,13 @@
                                                         <div class="form-group tunai" style="margin-bottom: 5px">
                                                             <div class="position-relative has-icon-left">
                                                                 <input type="hidden" id="voucher_old"
-                                                                    value="@if ($cekvouchertunai != null) {{ rupiah($cekvouchertunai->bayar) }} @endif"
+                                                                    value="@if ($cekvouchertunai != null) {{ $cekvouchertunai->bayar }} @endif"
                                                                     class="form-control text-right money"
                                                                     name="voucher_old" placeholder="Voucher">
                                                                 <input type="text" id="voucher"
                                                                     class="form-control text-right money" name="voucher"
                                                                     placeholder="Voucher"
-                                                                    value="@if ($cekvouchertunai != null) {{ rupiah($cekvouchertunai->bayar) }} @endif">
+                                                                    value="@if ($cekvouchertunai != null) {{ $cekvouchertunai->bayar }} @endif">
                                                                 <div class="form-control-position" style="top:5px">
                                                                     <i class="feather icon-tag"></i>
                                                                 </div>
