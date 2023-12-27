@@ -1525,7 +1525,8 @@ class PenjualanController extends Controller
 
         $totalpiutang  = $sisapiutang + $subtotal;
         if ($jenistransaksi == "tunai") {
-            // $total = $subtotal + $voucher;
+            //$total = $subtotal + $voucher;
+            $total = $subtotal;
             if ($jenisbayartunai == "tunai") {
                 $status_lunas = "1";
             } else {
