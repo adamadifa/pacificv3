@@ -1519,7 +1519,7 @@
                     $("#jenisbayar").val("tunai");
                     $(".tunai").show();
                     $(".kredit").hide();
-                    $("#voucher").val(convertToRupiah(voucher));
+                    //$("#voucher").val(convertToRupiah(voucher));
                 } else if (jenistransaksi == "kredit") {
                     $("#jenisbayar").val("titipan");
                     $(".tunai").hide();
