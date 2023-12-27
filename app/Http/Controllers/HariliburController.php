@@ -233,6 +233,7 @@ class HariliburController extends Controller
         );
 
         $query->where('id_kantor', $id_kantor);
+        $query->where('status_aktif', 1);
         if (!empty($kode_dept)) {
             $query->where('kode_dept', $kode_dept);
         }
