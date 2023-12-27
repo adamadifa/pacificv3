@@ -148,8 +148,9 @@ class LaporanhrdController extends Controller
         $kode_dept = $request->kode_dept;
         $id_kantor = $request->id_kantor;
         $id_group = $request->id_group;
-        $bulan = $request->bulan;
-        $tahun = $request->tahun;
+        $bulan = $request->bulan; //01
+        $bl = $bulan;
+        $tahun = $request->tahun; //2024
         $jenislaporan = $request->jenis_laporan;
         $jenislaporan_gaji = $request->jenis_laporan_gaji;
         $kode_potongan = "GJ" . $bulan . $tahun;
@@ -158,7 +159,7 @@ class LaporanhrdController extends Controller
         $level_show_all = config('global.show_all');
         if ($bulan == 1) {
             $lastbulan = 12;
-            $lasttahun = $tahun - 1;
+            $lasttahun = $tahun - 1; //2023
         } else {
             $lastbulan = $bulan - 1;
             $lasttahun = $tahun;
@@ -181,6 +182,8 @@ class LaporanhrdController extends Controller
             $dari = $lasttahun . "-" . $lastbulan . "-21";
             $sampai = $tahun . "-" . $bulan . "-20";
         }
+
+
 
         $daribulangaji = $dari;
         $berlakugaji = $sampai;
@@ -242,6 +245,8 @@ class LaporanhrdController extends Controller
             $dari = date("Y-m-d", strtotime("+1 day", strtotime($dari)));
         }
 
+
+        // dd($bulan);
         //dd($rangetanggal);
         $jmlrange = count($rangetanggal);
         $lastrange = $jmlrange - 1;
