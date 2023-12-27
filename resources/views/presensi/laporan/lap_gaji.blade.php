@@ -91,7 +91,7 @@
                                                     <select class="form-control" id="tahun" name="tahun">
                                                         <?php
                                                     $tahunmulai = 2020;
-                                                    for ($thn = $tahunmulai; $thn <= date('Y'); $thn++) {
+                                                    for ($thn = $tahunmulai; $thn <= date('Y') +1; $thn++) {
                                                     ?>
                                                         <option <?php if (date('Y') == $thn) {
                                                             echo 'Selected';
