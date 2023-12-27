@@ -1,4 +1,5 @@
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css"
+    rel="stylesheet">
 <form method="POST" action="/pengajuanizin/store" id="frmPengajuanizin" enctype="multipart/form-data">
     @csrf
     <div class="row">
@@ -7,7 +8,7 @@
                 <select name="nik" id="nik" class="form-control">
                     <option value="">Pilih Karyawan</option>
                     @foreach ($karyawan as $d)
-                    <option value="{{ $d->nik }}">{{ $d->nama_karyawan }}</option>
+                        <option value="{{ $d->nik }}">{{ $d->nama_karyawan }}</option>
                     @endforeach
                 </select>
             </div>
@@ -19,7 +20,7 @@
                 <select name="jenis_cuti" id="jenis_cuti" class="form-control">
                     <option value="">Jenis Cuti</option>
                     @foreach ($mastercuti as $d)
-                    <option value="{{ $d->kode_cuti }}">{{ $d->nama_cuti }}</option>
+                        <option value="{{ $d->kode_cuti }}">{{ $d->nama_cuti }}</option>
                     @endforeach
                 </select>
             </div>
@@ -31,7 +32,8 @@
                 <select name="kat_cuti_khusus" id="kat_cuti_khusus" class="form-control">
                     <option value="">Kategori Cuti</option>
                     @foreach ($mastercutikhusus as $d)
-                    <option value="{{ $d->kode_cuti_khusus }}" jmlhari="{{ $d->jmlhari }}">{{ $d->nama_cuti_khusus }}</option>
+                        <option value="{{ $d->kode_cuti_khusus }}" jmlhari="{{ $d->jmlhari }}">
+                            {{ $d->nama_cuti_khusus }}</option>
                     @endforeach
                 </select>
             </div>
@@ -65,6 +67,19 @@
             <x-inputtext field="keterangan" label="Keterangan" icon="feather icon-file-text" />
         </div>
     </div>
+    <div class="row mb-1">
+        <div class="col-12">
+            <div class="vs-checkbox-con vs-checkbox-primary">
+                <input type="checkbox" name="izin_atasan" value="1">
+                <span class="vs-checkbox">
+                    <span class="vs-checkbox--check">
+                        <i class="vs-icon feather icon-check"></i>
+                    </span>
+                </span>
+                <span class="">Sudah Izin Ke Atasan</span>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-12">
             <div class="form-group">
@@ -73,8 +88,10 @@
         </div>
     </div>
 </form>
-<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js"></script>
+<script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js">
+</script>
 <script>
     $(function() {
         $("#nik").selectize();
@@ -130,20 +147,20 @@
             var kat_cuti_khusus = $("#kat_cuti_khusus").val();
             if (nik == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Nik Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Nik Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#nik").focus();
                 });
                 return false;
             } else if (jenis_cuti == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Jenis Cuti Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Jenis Cuti Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#jenis_cuti").focus();
                 });
@@ -151,10 +168,10 @@
                 return false;
             } else if (jenis_cuti == "C03" && kat_cuti_khusus == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Kategori Cuti Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Kategori Cuti Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#jenis_cuti").focus();
                 });
@@ -162,20 +179,20 @@
                 return false;
             } else if (dari == "" || sampai == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Tanggal Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Tanggal Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#frmPengajuanizin").find("#dari").focus();
                 });
                 return false;
             } else if (keterangan == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Keterangan Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Keterangan Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#keterangan").focus();
                 });
@@ -184,5 +201,4 @@
             }
         });
     });
-
 </script>
