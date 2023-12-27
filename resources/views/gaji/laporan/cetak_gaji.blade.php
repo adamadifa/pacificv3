@@ -90,7 +90,7 @@
     </b>
     <br>
     <div class="freeze-table">
-        <table class="datatable3" style="width: 280%">
+        <table class="datatable3" style="width: 300%">
             <thead bgcolor="#024a75" style="color:white; font-size:12;">
                 <tr bgcolor="#024a75" style="color:white; font-size:12;">
                     <th rowspan="2">No</th>

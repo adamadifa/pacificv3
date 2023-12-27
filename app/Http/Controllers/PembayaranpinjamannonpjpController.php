@@ -36,12 +36,12 @@ class PembayaranpinjamannonpjpController extends Controller
         $jumlah = str_replace(".", "", $request->jumlah);
         $id_user = Auth::user()->id;
         $historibayar = DB::table("pinjaman_nonpjp_historibayar")
-            ->whereRaw('YEAR(tgl_bayar)="' . $tahun . '"')
+            ->whereRaw('YEAR(tgl_bayar)="' . $tahunpotongan . '"')
             ->orderBy("no_bukti", "desc")
             ->first();
         $tahun = substr($tahun, 2, 2);
         $last_nobukti = $historibayar != null ? $historibayar->no_bukti : '';
-        $no_bukti  = buatkode($last_nobukti, "PK" . $tahun, 4);
+        $no_bukti  = buatkode($last_nobukti, "PK" . substr($tahunpotongan, 2, 2), 4);
 
         $cek = DB::table('pinjaman_nonpjp_historibayar')
             ->where('no_pinjaman_nonpjp', $no_pinjaman_nonpjp)

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\sendActivityJob;
 use App\Models\Cabang;
 use App\Models\Pelanggan;
 use Illuminate\Http\Request;
@@ -455,35 +456,35 @@ class SapController extends Controller
                 }
                 $path_image = Storage::url('uploads/smactivity/' . $fileName);
 
+                dispatch(new sendActivityJob($id_group_wa, $nama, $cekuser->kode_cabang, $activity, $fileName, $cekuser->level));
+                // $pesan = [
+                //     'api_key' => 'B2TSubtfeWwb3eDHdIyoa0qRXJVgq8',
+                //     'sender' => '6289670444321',
+                //     'number' => $id_group_wa,
+                //     'media_type' => 'image',
+                //     'caption' => '*' . $nama . ': (' . $cekuser->kode_cabang . ')* ' . $activity,
+                //     'url' => 'https://sfa.pacific-tasikmalaya.com/storage/uploads/smactivity/' . $fileName
+                // ];
 
-                $pesan = [
-                    'api_key' => 'B2TSubtfeWwb3eDHdIyoa0qRXJVgq8',
-                    'sender' => '6289670444321',
-                    'number' => $id_group_wa,
-                    'media_type' => 'image',
-                    'caption' => '*' . $nama . ': (' . $cekuser->kode_cabang . ')* ' . $activity,
-                    'url' => 'https://sfa.pacific-tasikmalaya.com/storage/uploads/smactivity/' . $fileName
-                ];
+                // $curl = curl_init();
 
-                $curl = curl_init();
+                // curl_setopt_array($curl, array(
+                //     CURLOPT_URL => 'https://wa.pedasalami.com/send-media',
+                //     CURLOPT_RETURNTRANSFER => true,
+                //     CURLOPT_ENCODING => '',
+                //     CURLOPT_MAXREDIRS => 10,
+                //     CURLOPT_TIMEOUT => 0,
+                //     CURLOPT_FOLLOWLOCATION => true,
+                //     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                //     CURLOPT_CUSTOMREQUEST => 'POST',
+                //     CURLOPT_POSTFIELDS => json_encode($pesan),
+                //     CURLOPT_HTTPHEADER => array(
+                //         'Content-Type: application/json'
+                //     ),
+                // ));
 
-                curl_setopt_array($curl, array(
-                    CURLOPT_URL => 'https://wa.pedasalami.com/send-media',
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_ENCODING => '',
-                    CURLOPT_MAXREDIRS => 10,
-                    CURLOPT_TIMEOUT => 0,
-                    CURLOPT_FOLLOWLOCATION => true,
-                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                    CURLOPT_CUSTOMREQUEST => 'POST',
-                    CURLOPT_POSTFIELDS => json_encode($pesan),
-                    CURLOPT_HTTPHEADER => array(
-                        'Content-Type: application/json'
-                    ),
-                ));
-
-                $response = curl_exec($curl);
-                curl_close($curl);
+                // $response = curl_exec($curl);
+                // curl_close($curl);
                 echo "success|Data Berhasil Disimpan";
             }
         } catch (\Exception $e) {

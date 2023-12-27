@@ -61,7 +61,7 @@
             SEMUA GRUP
         @endif
         <br>
-        BULAN {{ strtoupper($namabulan[$bulan]) }} {{ $tahun }}
+        BULAN {{ strtoupper($namabulan[$bulan * 1]) }} {{ $tahun }}
     </b>
     <br>
 
