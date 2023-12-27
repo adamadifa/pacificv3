@@ -41,7 +41,7 @@ class PembayaranpinjamannonpjpController extends Controller
             ->first();
         $tahun = substr($tahun, 2, 2);
         $last_nobukti = $historibayar != null ? $historibayar->no_bukti : '';
-        $no_bukti  = buatkode($last_nobukti, "PK" . $tahun, 4);
+        $no_bukti  = buatkode($last_nobukti, "PK" . $tahunpotongan, 4);
 
         $cek = DB::table('pinjaman_nonpjp_historibayar')
             ->where('no_pinjaman_nonpjp', $no_pinjaman_nonpjp)
