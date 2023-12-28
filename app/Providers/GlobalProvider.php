@@ -582,7 +582,7 @@ class GlobalProvider extends ServiceProvider
             ];
             $pelanggan_edit = [
                 'admin', 'kepala penjualan', 'kepala admin', 'admin pusat', 'admin penjualan', 'admin penjualan dan persediaan', 'manager accounting', 'rom', 'admin kas dan penjualan', 'salesman', 'audit', 'manager audit', 'admin penjualan dan kas kecil',
-                'admin penjualan dan kasir', 'admin penjualan kasir dan kas kecil', 'admin garut'
+                'admin penjualan dan kasir', 'admin penjualan kasir dan kas kecil', 'admin garut', 'direktur'
             ];
             $pelanggan_hapus = [
                 'admin', 'kepala penjualan', 'kepala admin', 'admin pusat', 'admin penjualan', 'admin penjualan dan persediaan', 'manager accounting', 'rom', 'admin kas dan penjualan', 'salesman', 'audit', 'manager audit', 'admin penjualan dan kas kecil',
