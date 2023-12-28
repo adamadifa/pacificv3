@@ -16,11 +16,23 @@ class GudangController extends Controller
         $select_mutasi = "";
         $select_dpb = "";
         $select_mutasi_gudang = "";
+
+        $field_saldo = "";
+        $field_mutasi = "";
+        $field_dpb = "";
+        $field_mutasi_gudang = "";
+
         $barang = DB::table('master_barang')
             ->where('status', 1)
             ->orderBy('kode_produk')
             ->get();
         foreach ($barang as $d) {
+
+            $field_saldo .= "saldo_" . strtolower($d->kode_produk) . ",";
+            $field_mutasi .= "mutasi_" . strtolower($d->kode_produk) . ",";
+            $field_dpb .= strtolower($d->kode_produk) . "_ambil," . strtolower($d->kode_produk) . "_kembali,";
+            $field_mutasi_gudang = "mg_" . strtolower($d->kode_produk) . ",";
+
             $select_saldo .= "SUM(IF(kode_produk='$d->kode_produk',jumlah,0)) as saldo_" . strtolower($d->kode_produk) . ",";
             $select_mutasi .= "IFNULL(SUM(IF(inout_good ='IN' AND kode_produk ='$d->kode_produk',jumlah,0)),0) - IFNULL(SUM(IF(inout_good ='OUT' AND kode_produk ='$d->kode_produk',jumlah,0)),0) as mutasi_" . strtolower($d->kode_produk) . ",";
             $select_dpb .= "ROUND(SUM(IF(kode_produk ='$d->kode_produk',jml_pengambilan,0)),2) as " . strtolower($d->kode_produk) . "_ambil,
@@ -28,10 +40,21 @@ class GudangController extends Controller
             $select_mutasi_gudang .= "SUM(IF(kode_produk='$d->kode_produk',jumlah,0)) as mg_" . strtolower($d->kode_produk) . ",";
         }
         $query = Cabang::query();
+        $query->selectRaw(
+            "
+            $field_saldo
+            $field_mutasi
+            $field_dpb
+            $field_mutasi_gudang
+            cabang.kode_cabang,
+            nama_cabang"
+        );
         $query->leftJoin(
             DB::raw("(
-            $select_saldo,
-            SELECT kode_cabang
+
+            SELECT
+            $select_saldo
+            kode_cabang
             FROM saldoawal_bj_detail detailsaldo
             INNER JOIN saldoawal_bj saldo ON detailsaldo.kode_saldoawal = saldo.kode_saldoawal
             WHERE status='GS' AND tanggal =
@@ -46,8 +69,10 @@ class GudangController extends Controller
         );
         $query->leftJoin(
             DB::raw("(
+
+            SELECT
             $select_mutasi
-            SELECT kode_cabang
+            kode_cabang
             FROM detail_mutasi_gudang_cabang dmc
             INNER JOIN mutasi_gudang_cabang mc ON dmc.no_mutasi_gudang_cabang = mc.no_mutasi_gudang_cabang
             WHERE tgl_mutasi_gudang_cabang >= (SELECT MAX(saldomax.tanggal)
@@ -119,7 +144,14 @@ class GudangController extends Controller
                 $join->on('cabang.kode_cabang', '=', 'mgudang.kode_cabang');
             }
         );
+        $wilayah = Auth::user()->wilayah;
+        if (!empty($wilayah)) {
+            $wilayah_user = unserialize($wilayah);
+            $query->whereIn('cabang.kode_cabang', $wilayah_user);
+        }
 
+        $query->orderBy('cabang.urutan');
+        $rekapdpb = $query->get();
 
 
 
