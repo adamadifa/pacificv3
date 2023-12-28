@@ -16,6 +16,7 @@ class GudangController extends Controller
         $select_mutasi = "";
         $select_dpb = "";
         $select_mutasi_gudang = "";
+        $select_saldo_gudang = "";
 
         $field_saldo = "";
         $field_mutasi = "";
@@ -38,6 +39,8 @@ class GudangController extends Controller
             $select_dpb .= "ROUND(SUM(IF(kode_produk ='$d->kode_produk',jml_pengambilan,0)),2) as " . strtolower($d->kode_produk) . "_ambil,
             ROUND(SUM(IF(kode_produk ='$d->kode_produk',jml_pengembalian,0)),2) as " . strtolower($d->kode_produk) . "_kembali,";
             $select_mutasi_gudang .= "SUM(IF(kode_produk='$d->kode_produk',jumlah,0)) as mg_" . strtolower($d->kode_produk) . ",";
+            $select_saldo_gudang .= "SUM(IF(`inout`='IN'  AND detail_mutasi_gudang.kode_produk = '$d->kode_produk',jumlah,0)) -
+            SUM(IF(`inout`='OUT' AND detail_mutasi_gudang.kode_produk = '$d->kode_produk',jumlah,0)) as saldo_" . $d->kode_produk . ",";
         }
         $query = Cabang::query();
         $query->selectRaw(
@@ -158,7 +161,7 @@ class GudangController extends Controller
 
         // $barang = Barang::all();
         $sampai = date("Y-m-d");
-        $rekapgudang = DB::table('master_barang')
+        $rekapgudang = DB::table('detail_mutasi_gudang')
             ->select(
                 'master_barang.kode_produk',
                 'nama_barang',
