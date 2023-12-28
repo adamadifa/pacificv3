@@ -156,7 +156,7 @@ class GudangController extends Controller
 
 
 
-        $barang = Barang::all();
+        // $barang = Barang::all();
         $sampai = date("Y-m-d");
         $rekapgudang = DB::table('master_barang')
             ->select(
