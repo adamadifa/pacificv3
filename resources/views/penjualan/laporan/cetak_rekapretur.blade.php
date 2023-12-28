@@ -378,7 +378,7 @@
                     echo rupiah($p->SP500);
                 } ?></td>
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($p->JML_BR20)) {
-                    echo desimal($p->JML_SP500);
+                    echo desimal($p->JML_BR20);
                 } ?></td>
                 <td style="text-align:right; font-weight:bold"><?php if (!empty($p->BR20)) {
                     echo rupiah($p->BR20);
