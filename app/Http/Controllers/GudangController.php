@@ -31,13 +31,13 @@ class GudangController extends Controller
 
             $field_saldo .= "saldo_" . strtolower($d->kode_produk) . ",";
             $field_mutasi .= "mutasi_" . strtolower($d->kode_produk) . ",";
-            $field_dpb .= strtolower($d->kode_produk) . "_ambil," . strtolower($d->kode_produk) . "_kembali,";
+            $field_dpb .= "ambil_" . strtolower($d->kode_produk) . "," . "kembali_" . strtolower($d->kode_produk) . ",";
             $field_mutasi_gudang = "mg_" . strtolower($d->kode_produk) . ",";
 
             $select_saldo .= "SUM(IF(kode_produk='$d->kode_produk',jumlah,0)) as saldo_" . strtolower($d->kode_produk) . ",";
             $select_mutasi .= "IFNULL(SUM(IF(inout_good ='IN' AND kode_produk ='$d->kode_produk',jumlah,0)),0) - IFNULL(SUM(IF(inout_good ='OUT' AND kode_produk ='$d->kode_produk',jumlah,0)),0) as mutasi_" . strtolower($d->kode_produk) . ",";
-            $select_dpb .= "ROUND(SUM(IF(kode_produk ='$d->kode_produk',jml_pengambilan,0)),2) as " . strtolower($d->kode_produk) . "_ambil,
-            ROUND(SUM(IF(kode_produk ='$d->kode_produk',jml_pengembalian,0)),2) as " . strtolower($d->kode_produk) . "_kembali,";
+            $select_dpb .= "ROUND(SUM(IF(kode_produk ='$d->kode_produk',jml_pengambilan,0)),2) as ambil_" . strtolower($d->kode_produk) . ",
+            ROUND(SUM(IF(kode_produk ='$d->kode_produk',jml_pengembalian,0)),2) as kembali_" . strtolower($d->kode_produk) . ",";
             $select_mutasi_gudang .= "SUM(IF(kode_produk='$d->kode_produk',jumlah,0)) as mg_" . strtolower($d->kode_produk) . ",";
             $select_saldo_gudang .= "SUM(IF(`inout`='IN'  AND detail_mutasi_gudang.kode_produk = '$d->kode_produk',jumlah,0)) -
             SUM(IF(`inout`='OUT' AND detail_mutasi_gudang.kode_produk = '$d->kode_produk',jumlah,0)) as saldo_" . $d->kode_produk . ",";
@@ -161,22 +161,12 @@ class GudangController extends Controller
 
         // $barang = Barang::all();
         $sampai = date("Y-m-d");
-        $rekapgudang = DB::table('master_barang')
-            ->select(
-                'master_barang.kode_produk',
-                'nama_barang',
-                'isipcsdus',
-                'isipack',
-                'isipcs',
-                DB::raw("SUM(IF(`inout`='IN'  AND detail_mutasi_gudang.kode_produk = master_barang.kode_produk
-        AND mutasi_gudang_jadi.tgl_mutasi_gudang <= '$sampai',jumlah,0)) -
-        SUM(IF(`inout`='OUT' AND detail_mutasi_gudang.kode_produk = master_barang.kode_produk
-        AND mutasi_gudang_jadi.tgl_mutasi_gudang <= '$sampai',jumlah,0)) as saldoakhir")
-            )
-            ->leftJoin('detail_mutasi_gudang', 'detail_mutasi_gudang.kode_produk', '=', 'master_barang.kode_produk')
+        $rekapgudang = DB::table('detail_mutasi_gudang')
+            ->selectRaw("$select_saldo_gudang
+             'Gudang' as lokasi")
             ->leftJoin('mutasi_gudang_jadi', 'detail_mutasi_gudang.no_mutasi_gudang', '=', 'mutasi_gudang_jadi.no_mutasi_gudang')
-            ->groupBy('master_barang.kode_produk', 'nama_barang', 'isipcsdus', 'isipcs', 'isipack')
-            ->get();
+            ->where('mutasi_gudang_jadi.tgl_mutasi_gudang', '<=', $sampai)
+            ->first();
 
 
 
