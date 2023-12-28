@@ -161,7 +161,7 @@ class GudangController extends Controller
 
         // $barang = Barang::all();
         $sampai = date("Y-m-d");
-        $rekapgudang = DB::table('detail_mutasi_gudang')
+        $rekapgudang = DB::table('master_barang')
             ->select(
                 'master_barang.kode_produk',
                 'nama_barang',
