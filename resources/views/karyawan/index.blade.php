@@ -488,7 +488,7 @@
                                                             @endif
 
 
-                                                            @if (Auth::user()->id == 57 || Auth::user()->id == 1)
+                                                            @if (Auth::user()->id == 57 || Auth::user()->id == 1 || Auth::user()->id == 90)
                                                                 <a href="#" nik="{{ Crypt::encrypt($d->nik) }}"
                                                                     class="ajukanpinjamannonpjp"><i
                                                                         class="feather icon-external-link success ml-1"></i></a>

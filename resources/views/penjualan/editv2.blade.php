@@ -96,7 +96,12 @@
                                                 <input type="hidden" name="kategori_salesman"
                                                     value="{{ $faktur->kategori_salesman }}" id="kategori_salesman">
                                                 <x-inputtext label="Salesman"
-                                                    value='{{ $faktur->id_karyawan . ' | ' . $faktur->nama_karyawan . ' | ' . $faktur->kategori_salesman }}'
+                                                    value='{{ $faktur->id_karyawan .
+                                                        '
+                                                                                                    | ' .
+                                                        $faktur->nama_karyawan .
+                                                        ' | ' .
+                                                        $faktur->kategori_salesman }}'
                                                     field="nama_karyawan" icon="feather icon-users" readonly />
                                             </div>
                                         </div>
@@ -160,7 +165,8 @@
                                         </div>
                                         <div>
                                             <h2 class="text-bold-700" style="font-size: 6rem; padding:2rem"
-                                                id="grandtotal">0,00</h2>
+                                                id="grandtotal">
+                                                0,00</h2>
 
                                         </div>
                                     </div>
@@ -563,7 +569,8 @@
                                                         </div>
                                                         <input type="hidden" id="jenisbayar" name="jenisbayar">
                                                         <div class="form-group tunai" style="margin-bottom: 5px">
-                                                            {{-- <input type="hidden" name="jenisbayartunai" id="jenisbayartunai" value="{{ $faktur->jenisbayar }}"> --}}
+                                                            {{-- <input type="hidden" name="jenisbayartunai"
+                                                            id="jenisbayartunai" value="{{ $faktur->jenisbayar }}"> --}}
                                                             <select class="form-control" name="jenisbayartunai"
                                                                 id="jenisbayartunai">
                                                                 <option @if ($faktur->jenisbayar == 'tunai') selected @endif
@@ -610,7 +617,10 @@
                                                             </div>
                                                             {{-- <div class="form-group" style="margin-bottom: 5px">
                                                         <div class="position-relative has-icon-left">
-                                                            <input type="text" id="ppn" class="form-control text-right money" style="font-weight: bold" readonly name="ppn" placeholder="PPN (11%)">
+                                                            <input type="text" id="ppn"
+                                                                class="form-control text-right money"
+                                                                style="font-weight: bold" readonly name="ppn"
+                                                                placeholder="PPN (11%)">
                                                             <div class="form-control-position" style="top:5px">
                                                                 <i class="feather icon-percent"></i>
                                                             </div>
