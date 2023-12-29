@@ -8,7 +8,7 @@
 @endforeach
 <div class="table-responsive">
 
-    <table class="table table-hover-animation">
+    <table class="table table-hover-animation" id="report">
         <thead>
             <tr>
                 <th>Nama Cabang</th>
@@ -25,7 +25,7 @@
             @endforeach
             @foreach ($rekapgudang as $g)
             @endforeach
-            <tr>
+            <tr class="master">
                 <td>Gudang Pusat</td>
                 @foreach ($barang as $d)
                     @php
@@ -42,10 +42,15 @@
                     </td>
                 @endforeach
             </tr>
+            <tr>
+                <td></td>
+                @foreach ($barang as $d)
+                    <td></td>
+                @endforeach
+            </tr>
             @foreach ($rekapdpb as $r)
-                <tr>
+                <tr class="master">
                     <td><?php echo ucwords($r->nama_cabang); ?></td>
-
                     @foreach ($barang as $d)
                         @php
                             $kode_produk = strtolower($d->kode_produk);
@@ -66,9 +71,30 @@
                         </td>
                     @endforeach
                 </tr>
+                <tr class="bg-info text-white bufferstok">
+                    <td style="font-weight: bold">Buffer Stok</td>
+                    @foreach ($barang as $d)
+                        <td>{{ rupiah($r->{"buffer_$d->kode_produk"}) }}</td>
+                    @endforeach
+                </tr>
+                <tr class="bg-warning text-white limitstok">
+                    <td style="font-weight: bold">Max Stok</td>
+                    @foreach ($barang as $d)
+                        <td>{{ rupiah($r->{"maxstok_$d->kode_produk"}) }}</td>
+                    @endforeach
+                </tr>
             @endforeach
 
 
         </tbody>
     </table>
 </div>
+<script>
+    $("#report tr:not(.master)").hide();
+    $("#report tr:first-child").show();
+    $("#report tr.master").click(function() {
+        $(this).next("tr").toggle();
+        $(this).next("tr").next("tr").toggle();
+
+    });
+</script>
