@@ -77,7 +77,7 @@
                         <td>{{ rupiah($r->{"buffer_$d->kode_produk"}) }}</td>
                     @endforeach
                 </tr>
-                <tr class="bg-warning text-white limitstok">
+                <tr class="bg-primary text-white limitstok">
                     <td style="font-weight: bold">Max Stok</td>
                     @foreach ($barang as $d)
                         <td>{{ rupiah($r->{"maxstok_$d->kode_produk"}) }}</td>
