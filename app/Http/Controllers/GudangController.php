@@ -17,11 +17,15 @@ class GudangController extends Controller
         $select_dpb = "";
         $select_mutasi_gudang = "";
         $select_saldo_gudang = "";
-
+        $select_buffer = "";
+        $select_maxstok = "";
         $field_saldo = "";
         $field_mutasi = "";
         $field_dpb = "";
         $field_mutasi_gudang = "";
+        $field_buffer = "";
+        $field_maxstok = "";
+
 
         $barang = DB::table('master_barang')
             ->where('status', 1)
@@ -32,7 +36,9 @@ class GudangController extends Controller
             $field_saldo .= "saldo_" . strtolower($d->kode_produk) . ",";
             $field_mutasi .= "mutasi_" . strtolower($d->kode_produk) . ",";
             $field_dpb .= "ambil_" . strtolower($d->kode_produk) . "," . "kembali_" . strtolower($d->kode_produk) . ",";
-            $field_mutasi_gudang = "mg_" . strtolower($d->kode_produk) . ",";
+            $field_mutasi_gudang .= "mg_" . strtolower($d->kode_produk) . ",";
+            $field_buffer .= "buffer_" . $d->kode_produk . ",";
+            $field_maxstok .= "maxstok_" . $d->kode_produk . ",";
 
             $select_saldo .= "SUM(IF(kode_produk='$d->kode_produk',jumlah,0)) as saldo_" . strtolower($d->kode_produk) . ",";
             $select_mutasi .= "IFNULL(SUM(IF(inout_good ='IN' AND kode_produk ='$d->kode_produk',jumlah,0)),0) - IFNULL(SUM(IF(inout_good ='OUT' AND kode_produk ='$d->kode_produk',jumlah,0)),0) as mutasi_" . strtolower($d->kode_produk) . ",";
@@ -41,6 +47,8 @@ class GudangController extends Controller
             $select_mutasi_gudang .= "SUM(IF(kode_produk='$d->kode_produk',jumlah,0)) as mg_" . strtolower($d->kode_produk) . ",";
             $select_saldo_gudang .= "SUM(IF(`inout`='IN'  AND detail_mutasi_gudang.kode_produk = '$d->kode_produk',jumlah,0)) -
             SUM(IF(`inout`='OUT' AND detail_mutasi_gudang.kode_produk = '$d->kode_produk',jumlah,0)) as saldo_" . $d->kode_produk . ",";
+            $select_buffer .= "SUM(IF(kode_produk='$d->kode_produk',jumlah,0)) as buffer_" . $d->kode_produk . ",";
+            $select_maxstok .= "SUM(IF(kode_produk='$d->kode_produk',jumlah,0)) as maxstok_" . $d->kode_produk . ",";
         }
         $query = Cabang::query();
         $query->selectRaw(
@@ -49,6 +57,8 @@ class GudangController extends Controller
             $field_mutasi
             $field_dpb
             $field_mutasi_gudang
+            $field_buffer
+            $field_maxstok
             cabang.kode_cabang,
             nama_cabang"
         );
@@ -145,6 +155,33 @@ class GudangController extends Controller
             AND tgl_mutasi_gudang < CURDATE() GROUP BY kode_cabang ) mgudang"),
             function ($join) {
                 $join->on('cabang.kode_cabang', '=', 'mgudang.kode_cabang');
+            }
+        );
+
+
+        $query->leftJoin(
+            DB::raw("(
+            SELECT
+            $select_buffer
+            kode_cabang
+            FROM detail_bufferstok
+            INNER JOIN buffer_stok  ON detail_bufferstok.kode_bufferstok = buffer_stok.kode_bufferstok
+            GROUP BY kode_cabang ) bufferstok"),
+            function ($join) {
+                $join->on('cabang.kode_cabang', '=', 'bufferstok.kode_cabang');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+            SELECT
+            $select_maxstok
+            kode_cabang
+            FROM limit_stok_detail
+            INNER JOIN limit_stok  ON limit_stok_detail.kode_limit_stok = limit_stok.kode_limit_stok
+            GROUP BY kode_cabang ) limitstok"),
+            function ($join) {
+                $join->on('cabang.kode_cabang', '=', 'limitstok.kode_cabang');
             }
         );
         $wilayah = Auth::user()->wilayah;

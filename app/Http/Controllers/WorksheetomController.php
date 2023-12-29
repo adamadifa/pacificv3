@@ -1050,7 +1050,7 @@ class WorksheetomController extends Controller
                 $detail_limit[]   = [
                     'kode_limit_stok' => $kode_limit_stok,
                     'kode_produk' => $kode_produk[$i],
-                    'jumlah' => $bufferstok
+                    'jumlah' => $limitstok
                 ];
             }
         }
