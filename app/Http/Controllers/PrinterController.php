@@ -230,7 +230,9 @@ class PrinterController extends Controller
             /* Tax and total */
             $printer->text($potongan->getAsString(32));
             $printer->text($total->getAsString(32));
-            $printer->text($ppn->getAsString(32));
+            if (!empty($faktur->ppn)) {
+                $printer->text($ppn->getAsString(32));
+            }
             $printer->text($retur->getAsString(32));
             // $printer->selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
             $printer->feed();
@@ -344,7 +346,9 @@ class PrinterController extends Controller
             /* Tax and total */
             $printer->text($potongan->getAsString(32));
             $printer->text($total->getAsString(32));
-            $printer->text($ppn->getAsString(32));
+            if (!empty($faktur->ppn)) {
+                $printer->text($ppn->getAsString(32));
+            }
             $printer->text($retur->getAsString(32));
             // $printer->selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
             $printer->feed();
