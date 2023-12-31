@@ -2000,6 +2000,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/worksheetom/{kode_program}/cetakprogram', [WorksheetomController::class, 'cetakprogram']);
 
 
+    //Monitoring Produk Expired
+    Route::get('/worksheetom/produkexpired', [WorksheetomController::class, 'produkexpired']);
+    Route::get('/worksheetom/createprodukexpired', [WorksheetomController::class, 'createprodukexpired']);
 
     //Evaluasi Sharing
     Route::get('/worksheetom/evaluasisharing', [WorksheetomController::class, 'evaluasisharing']);
