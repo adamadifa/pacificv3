@@ -1050,7 +1050,7 @@ class WorksheetomController extends Controller
                 $detail_limit[]   = [
                     'kode_limit_stok' => $kode_limit_stok,
                     'kode_produk' => $kode_produk[$i],
-                    'jumlah' => $bufferstok
+                    'jumlah' => $limitstok
                 ];
             }
         }
@@ -1100,5 +1100,16 @@ class WorksheetomController extends Controller
             dd($e);
             return Redirect::back()->with(['warning' => 'Data Gagal Di Udpate']);
         }
+    }
+
+
+    public function produkexpired()
+    {
+        return view('worksheetom.produk_expired');
+    }
+
+    public function createprodukexpired()
+    {
+        return view('worksheetom.create_produkexpired');
     }
 }
