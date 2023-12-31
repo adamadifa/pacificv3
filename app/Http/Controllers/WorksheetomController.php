@@ -1101,4 +1101,15 @@ class WorksheetomController extends Controller
             return Redirect::back()->with(['warning' => 'Data Gagal Di Udpate']);
         }
     }
+
+
+    public function produkexpired()
+    {
+        return view('worksheetom.produk_expired');
+    }
+
+    public function createprodukexpired()
+    {
+        return view('worksheetom.create_produkexpired');
+    }
 }
