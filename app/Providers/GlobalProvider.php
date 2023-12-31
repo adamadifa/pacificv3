@@ -509,7 +509,7 @@ class GlobalProvider extends ServiceProvider
                 $kode_dept_presensi = null;
             }
 
-            $cabangpkp = ['TSM', 'BDG', 'PWT', 'BGR'];
+            $cabangpkp = [];
 
             if ($level == "salesman") {
 
