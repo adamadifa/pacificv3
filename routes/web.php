@@ -141,7 +141,7 @@ use App\Http\Controllers\VisitController;
 use App\Http\Controllers\WhatsappController;
 use App\Http\Controllers\WorksheetomController;
 use App\Http\Controllers\BBMController;
-use App\Http\Controllers\RatiobsController;
+
 use App\Models\Barangpembelian;
 use App\Models\Harilibur;
 use App\Models\Logamtokertas;
