@@ -2039,7 +2039,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/worksheetom/cetakrekapbuffermaxsell', [WorksheetomController::class, 'cetakrekapbuffermaxsell']);
 
     Route::get('/worksheetom/laporanratiobs', [WorksheetomController::class, 'laporanratiobs']);
-    Route::get('/worksheetom/cetakratiobs', [WorksheetomController::class, 'cetakratiobs']);
+    Route::post('/worksheetom/cetakratiobs', [WorksheetomController::class, 'cetakratiobs']);
 
     //Visit Pelanggan
     Route::get('/worksheetom/visitpelanggan', [VisitController::class, 'index']);
