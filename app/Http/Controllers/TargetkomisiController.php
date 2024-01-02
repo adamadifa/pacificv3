@@ -4600,7 +4600,7 @@ class TargetkomisiController extends Controller
                 GROUP BY id_sales
             ) pelangganaktif"),
             function ($join) {
-                $join->on('karyawan.id_karyawan', '=', 'pelangganaktif.id_sales');
+                $join->on('karyawan.id_karyawan', '=', 'pelangganaktif.salesbarunew');
             }
         );
 
