@@ -135,6 +135,8 @@ function getAkunpiutangcabang($kode_cabang)
         $akun = "1-1493";
     } else if ($kode_cabang == "BKI") {
         $akun = "1-1494";
+    } else if ($kode_cabang == "TGR") {
+        $akun = "1-1495";
     } else {
         $akun = "99";
     }
@@ -160,7 +162,8 @@ function getAkunkaskecil()
         'GRT' => '1-1119',
         'PWK' => '1-1120',
         'BTN' => '1-1121',
-        'BKI' => '1-1122'
+        'BKI' => '1-1122',
+        'TGR' => '1-1123'
     ];
 
     return $akun;
