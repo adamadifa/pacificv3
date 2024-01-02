@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
 use Carbon\Carbon;
+
 class RatioBSController extends Controller
 {
     protected $cabang;
@@ -43,7 +44,6 @@ class RatioBSController extends Controller
             header("Content-type: application/vnd-ms-excel");
             header("Content-Disposition: attachment; filename=Laporan Ratio BS.xls");
         }
-        return view('ratiobs.laporan.cetak_ratioBS', compact( 'bulan', 'tahun', 'cabang'));
+        return view('ratiobs.laporan.cetak_ratioBS', compact('bulan', 'tahun', 'cabang'));
     }
-
 }
