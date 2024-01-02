@@ -1116,6 +1116,12 @@ class WorksheetomController extends Controller
 
     public function laporanratiobs()
     {
-        echo 2;
+        if ($this->cabang == "PCF") {
+            $cabang = DB::table('cabang')->get();
+        } else {
+            $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->get();
+        }
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        return view('ratiobs.laporan.frm_laporanRatioBS', compact('cabang', 'bulan'));
     }
 }
