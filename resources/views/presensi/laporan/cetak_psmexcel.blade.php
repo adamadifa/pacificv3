@@ -394,7 +394,7 @@
                                 $jam_keluar = $datapresensi[9] != 'NA' ? date('H:i', strtotime($datapresensi[9])) : ''; // Jam Keluar Kantor
                                 $jam_masuk_kk = $datapresensi[10] != 'NA' ? date('H:i', strtotime($datapresensi[10])) : ''; //Jam masuk Keluar Kantor
 
-                                $total_jam = $datapresensi[11] != 'NA' ? $datapresensi[11] : 0; // Total Jam Kerja Dalam 1 Hari
+                                $total_jam = $namahari != 'Sabtu' ? ($datapresensi[11] != 'NA' ? $datapresensi[11] : 0) : 5;
 
                                 //Pengajuan Izin
                                 $sid = $datapresensi[12] != 'NA' ? $datapresensi[12] : ''; //SID
