@@ -4574,9 +4574,28 @@ class TargetkomisiController extends Controller
 
         $query->leftJoin(
             DB::raw("(
-                SELECT id_sales, COUNT(DISTINCT(penjualan.kode_pelanggan)) as jmlpelanggan
+                SELECT salesbarunew, COUNT(DISTINCT(penjualan.kode_pelanggan)) as jmlpelanggan
                 FROM penjualan
                 INNER JOIN pelanggan ON penjualan.kode_pelanggan = pelanggan.kode_pelanggan
+                LEFT JOIN (
+                    SELECT
+                        pj.no_fak_penj,IF( salesbaru IS NULL, pj.id_karyawan, salesbaru ) AS salesbarunew,karyawan.nama_karyawan AS nama_sales,
+                        IF( cabangbaru IS NULL, karyawan.kode_cabang, cabangbaru ) AS cabangbarunew
+                    FROM
+                        penjualan pj
+                    INNER JOIN karyawan ON pj.id_karyawan = karyawan.id_karyawan
+                    LEFT JOIN (
+                        SELECT
+                            id_move,
+                            no_fak_penj,
+                            move_faktur.id_karyawan AS salesbaru,
+                            karyawan.kode_cabang AS cabangbaru
+                        FROM
+                            move_faktur
+                        INNER JOIN karyawan ON move_faktur.id_karyawan = karyawan.id_karyawan
+                        WHERE id_move IN ( SELECT max( id_move ) FROM move_faktur WHERE tgl_move <= '$sampai' GROUP BY no_fak_penj )
+                        ) move_fak ON ( pj.no_fak_penj = move_fak.no_fak_penj )
+                ) pjmove ON ( penjualan.no_fak_penj = pjmove.no_fak_penj )
                 WHERE tgltransaksi BETWEEN '$startdate' AND '$enddate' AND nama_pelanggan != 'BATAL'
                 GROUP BY id_sales
             ) pelangganaktif"),
