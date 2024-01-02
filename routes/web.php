@@ -141,7 +141,7 @@ use App\Http\Controllers\VisitController;
 use App\Http\Controllers\WhatsappController;
 use App\Http\Controllers\WorksheetomController;
 use App\Http\Controllers\BBMController;
-use App\Http\Controllers\RatioBsController;
+use App\Http\Controllers\RatiobsController;
 use App\Models\Barangpembelian;
 use App\Models\Harilibur;
 use App\Models\Logamtokertas;
@@ -2053,7 +2053,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/bbm/cetakBBM', 'cetakBBM')->name('bbm.cetakBBM');
     });
 
-    Route::get('/ratioBS/laporanRatioBS', [RatioBsController::class, 'laporanRatioBS']);
+    //Route::get('/ratioBS/laporanRatioBS', [RatiobsController::class, 'laporanRatioBS']);
+    Route::get('/ratiobs', [RatiobsController::class, 'index']);
     // Route::controller(RatioBsController::class)->group(function () {
 
     //     Route::get('/ratioBS/laporanRatioBS', 'laporanRatioBS')->name('bbm.laporanRatioBS');
