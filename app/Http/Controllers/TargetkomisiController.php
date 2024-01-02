@@ -4574,7 +4574,7 @@ class TargetkomisiController extends Controller
 
         $query->leftJoin(
             DB::raw("(
-                SELECT salesbarunew, COUNT(DISTINCT(penjualan.kode_pelanggan)) as jmlpelanggan
+                SELECT salesbarunewf, COUNT(DISTINCT(penjualan.kode_pelanggan)) as jmlpelanggan
                 FROM penjualan
                 INNER JOIN pelanggan ON penjualan.kode_pelanggan = pelanggan.kode_pelanggan
                 LEFT JOIN (
@@ -4596,6 +4596,8 @@ class TargetkomisiController extends Controller
                         WHERE id_move IN ( SELECT max( id_move ) FROM move_faktur WHERE tgl_move <= '$sampai' GROUP BY no_fak_penj )
                         ) move_fak ON ( pj.no_fak_penj = move_fak.no_fak_penj )
                 ) pjmove ON ( penjualan.no_fak_penj = pjmove.no_fak_penj )
+
+
                 WHERE tgltransaksi BETWEEN '$startdate' AND '$enddate' AND nama_pelanggan != 'BATAL'
                 GROUP BY salesbarunew
             ) pelangganaktif"),
