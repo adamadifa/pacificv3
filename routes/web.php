@@ -2053,13 +2053,8 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/bbm/cetakBBM', 'cetakBBM')->name('bbm.cetakBBM');
     });
 
-    //Route::get('/ratioBS/laporanRatioBS', [RatiobsController::class, 'laporanRatioBS']);
-    Route::get('/ratiobs', [RatiobsController::class, 'index']);
-    // Route::controller(RatioBsController::class)->group(function () {
 
-    //     Route::get('/ratioBS/laporanRatioBS', 'laporanRatioBS')->name('bbm.laporanRatioBS');
-    //     Route::post('/ratioBS/cetakRatioBS', 'cetakRatioBS')->name('bbm.cetakRatioBS');
-    // });
+    Route::get('/lapratiobs', [BBMController::class, 'ratiobs']);
 });
 
 
