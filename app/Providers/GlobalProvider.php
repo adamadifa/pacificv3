@@ -866,7 +866,8 @@ class GlobalProvider extends ServiceProvider
 
             $ajuantransferdana_view = [
                 'admin', 'kepala admin', 'staff keuangan 3', 'manager accounting', 'rom', 'kasir',
-                'admin kas dan penjualan', 'admin penjualan dan kas kecil', 'admin penjualan kasir dan kas kecil', 'admin penjualan dan kasir'
+                'admin kas dan penjualan',
+                'admin penjualan dan kas kecil', 'admin penjualan kasir dan kas kecil', 'admin penjualan dan kasir', 'admin persediaan dan kasir'
             ];
             $ajuantransferdana_crud = ['admin', 'staff keuangan 3', 'rom'];
             $ajuantransferdana_proses = ['admin', 'kepala admin', 'kasir', 'admin kas dan penjualan', 'admin penjualan dan kas kecil'];
