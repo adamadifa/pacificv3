@@ -2039,6 +2039,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/worksheetom/cetakrekapbuffermaxsell', [WorksheetomController::class, 'cetakrekapbuffermaxsell']);
 
     Route::get('/worksheetom/laporanratiobs', [WorksheetomController::class, 'laporanratiobs']);
+    Route::get('/worksheetom/cetakratiobs', [WorksheetomController::class, 'cetakratiobs']);
 
     //Visit Pelanggan
     Route::get('/worksheetom/visitpelanggan', [VisitController::class, 'index']);
@@ -2054,9 +2055,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/bbm/laporanBBM', 'laporanBBM')->name('bbm.laporanBBM');
         Route::post('/bbm/cetakBBM', 'cetakBBM')->name('bbm.cetakBBM');
     });
-
-
-    Route::get('/lapratiobs', [BBMController::class, 'ratiobs']);
 });
 
 
