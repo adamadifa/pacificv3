@@ -2038,6 +2038,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/worksheetom/rekapbuffermaxsell', [WorksheetomController::class, 'rekapbuffermaxsell']);
     Route::post('/worksheetom/cetakrekapbuffermaxsell', [WorksheetomController::class, 'cetakrekapbuffermaxsell']);
 
+    Route::get('/worksheetom/laporanratiobs', [WorksheetomController::class, 'laporanratiobs']);
+
     //Visit Pelanggan
     Route::get('/worksheetom/visitpelanggan', [VisitController::class, 'index']);
 

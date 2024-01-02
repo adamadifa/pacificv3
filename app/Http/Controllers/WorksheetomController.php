@@ -1112,4 +1112,10 @@ class WorksheetomController extends Controller
     {
         return view('worksheetom.create_produkexpired');
     }
+
+
+    public function laporanratiobs()
+    {
+        echo 2;
+    }
 }
