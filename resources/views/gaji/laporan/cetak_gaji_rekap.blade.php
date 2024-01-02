@@ -1294,388 +1294,390 @@
                             $totalizinsakit += $izinsakit;
                         @endphp
                         <!-- Total Jam Kerja 1 Bulan -->
-                        @if ($d->nama_jabatan == 'DIREKTUR')
-                            @php
-                                $totaljamkerja = 173;
-                                $totalpotonganjam = 0;
-                            @endphp
-                        @else
-                            @php
-                                $totaljamkerja = $totaljam1bulan - $totalterlambat - $totalkeluar - $totaldirumahkan - $totaltidakhadir - $totalpulangcepat - $totalizinabsen - $totalizinsakit;
-                                $totalpotonganjam = $totalterlambat + $totalkeluar + $totaldirumahkan + $totaltidakhadir + $totalpulangcepat + $totalizinabsen + $totalizinsakit;
-                            @endphp
-                        @endif
 
-                        @php
-                            //Total Shift 2
-                            $totalhariall_shift_2 = $totalhari_shift_2 + $totalharilembur_shift_2 + $totalharilembur_harilibur_shift_2;
-                            $totalpremiall_shift_2 = $totalpremi_shift_2 + $totalpremilembur_shift_2 + $totalpremilembur_harilibur_shift_2;
-                            //Total Shift 3
-                            $totalhariall_shift_3 = $totalhari_shift_3 + $totalharilembur_shift_3 + $totalharilembur_harilibur_shift_3;
-                            $totalpremiall_shift_3 = $totalpremi_shift_3 + $totalpremilembur_shift_3 + $totalpremilembur_harilibur_shift_3;
 
-                            //UPAH
-                            $upah = $d->gaji_pokok + $d->t_jabatan + $d->t_masakerja + $d->t_tanggungjawab + $d->t_makan + $d->t_istri + $d->t_skill;
-
-                            //Upah Per Jam
-                            $upah_perjam = $upah / 173;
-
-                            //Insentif
-                            $jmlinsentif = $d->iu_masakerja + $d->iu_lembur + $d->iu_penempatan + $d->iu_kpi + $d->im_ruanglingkup + $d->im_penempatan + $d->im_kinerja;
-                        @endphp
-
-                        @if ($d->nama_jabatan == 'SECURITY')
-                            @php
-                                $upah_ot_1 = 8000 * $total_overtime_1;
-                                $upah_ot_2 = 8000 * $total_overtime_2;
-                                $upah_otl_1 = 13143 * $total_overtime_libur_1;
-                                $upah_otl_2 = 0;
-                            @endphp
-                        @else
-                            @php
-                                $upah_ot_1 = $upah_perjam * 1.5 * $total_overtime_1;
-                                $upah_ot_2 = $upah_perjam * 2 * $total_overtime_2;
-                                $upah_otl_1 = floor($upah_perjam * 2 * $total_overtime_libur_1);
-                                $upah_otl_2 = $upah_perjam * 2 * $total_overtime_libur_2;
-                            @endphp
-                        @endif
-
-                        @php
-                            $total_upah_overtime = $upah_ot_1 + $upah_ot_2 + $upah_otl_1 + $upah_otl_2; // Total Upah Overtime
-                            $bruto = $upah_perjam * $totaljamkerja + $total_upah_overtime + $totalpremiall_shift_2 + $totalpremiall_shift_3; // Total Upah Bruto
-                            $bpjskesehatan = $d->iuran_kes; // BPJS Kesehatan
-                            $bpjstenagakerja = $d->iuran_tk; // BPJS Tenaga Kerja
-                        @endphp
-                        <!-- Perhitungan SPIP-->
-                        @if (($d->id_kantor == 'PST' && $cekmasakerja >= 3) || ($d->id_kantor == 'TSM' && $cekmasakerja >= 3) || $d->spip == 1)
-                            @php
-                                $spip = 5000;
-                            @endphp
-                        @else
-                            @php
-                                $spip = 0;
-                            @endphp
-                        @endif
-                        @php
-                            $potongan = ROUND($bpjskesehatan + $bpjstenagakerja + $totaldenda + $d->cicilan_pjp + $d->jml_kasbon + $d->jml_nonpjp + $spip, 0); // Potongan Upah
-                            $jmlbersih = $bruto - $potongan; // Jumlah Upah Bersih
-
-                            //TOTAL
-                            //Total Gaji Pokok
-                            $total_gajipokok += $d->gaji_pokok;
-                            $total_gajipokok_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->gaji_pokok : 0;
-                            $total_gajipokok_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->gaji_pokok : 0;
-                            $total_gajipokok_tkl += $d->klasifikasi == 'TKL' ? $d->gaji_pokok : 0;
-                            $total_gajipokok_tktl += $d->klasifikasi == 'TKTL' ? $d->gaji_pokok : 0;
-                            $total_gajipokok_mp += $d->id_perusahaan == 'MP' ? $d->gaji_pokok : 0;
-                            $total_gajipokok_pcf += $d->id_perusahaan == 'PCF' ? $d->gaji_pokok : 0;
-
-                            $total_tunjangan_jabatan += $d->t_jabatan;
-                            $total_t_jabatan_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->t_jabatan : 0;
-                            $total_t_jabatan_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->t_jabatan : 0;
-                            $total_t_jabatan_tkl += $d->klasifikasi == 'TKL' ? $d->t_jabatan : 0;
-                            $total_t_jabatan_tktl += $d->klasifikasi == 'TKTL' ? $d->t_jabatan : 0;
-                            $total_t_jabatan_mp += $d->id_perusahaan == 'MP' ? $d->t_jabatan : 0;
-                            $total_t_jabatan_pcf += $d->id_perusahaan == 'PCF' ? $d->t_jabatan : 0;
-
-                            $total_tunjangan_masakerja += $d->t_masakerja;
-                            $total_t_masakerja_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->t_masakerja : 0;
-                            $total_t_masakerja_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->t_masakerja : 0;
-                            $total_t_masakerja_tkl += $d->klasifikasi == 'TKL' ? $d->t_masakerja : 0;
-                            $total_t_masakerja_tktl += $d->klasifikasi == 'TKTL' ? $d->t_masakerja : 0;
-                            $total_t_masakerja_mp += $d->id_perusahaan == 'MP' ? $d->t_masakerja : 0;
-                            $total_t_masakerja_pcf += $d->id_perusahaan == 'PCF' ? $d->t_masakerja : 0;
-
-                            $total_tunjangan_tanggungjawab += $d->t_tanggungjawab;
-                            $total_t_tanggungjawab_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->t_tanggungjawab : 0;
-                            $total_t_tanggungjawab_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->t_tanggungjawab : 0;
-                            $total_t_tanggungjawab_tkl += $d->klasifikasi == 'TKL' ? $d->t_tanggungjawab : 0;
-                            $total_t_tanggungjawab_tktl += $d->klasifikasi == 'TKTL' ? $d->t_tanggungjawab : 0;
-                            $total_t_tanggungjawab_mp += $d->id_perusahaan == 'MP' ? $d->t_tanggungjawab : 0;
-                            $total_t_tanggungjawab_pcf += $d->id_perusahaan == 'PCF' ? $d->t_tanggungjawab : 0;
-
-                            $total_tunjangan_makan += $d->t_makan;
-                            $total_t_makan_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->t_makan : 0;
-                            $total_t_makan_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->t_makan : 0;
-                            $total_t_makan_tkl += $d->klasifikasi == 'TKL' ? $d->t_makan : 0;
-                            $total_t_makan_tktl += $d->klasifikasi == 'TKTL' ? $d->t_makan : 0;
-
-                            $total_t_makan_mp += $d->id_perusahaan == 'MP' ? $d->t_makan : 0;
-                            $total_t_makan_pcf += $d->id_perusahaan == 'PCF' ? $d->t_makan : 0;
-
-                            $total_tunjangan_istri += $d->t_istri;
-                            $total_t_istri_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->t_istri : 0;
-                            $total_t_istri_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->t_istri : 0;
-                            $total_t_istri_tkl += $d->klasifikasi == 'TKL' ? $d->t_istri : 0;
-                            $total_t_istri_tktl += $d->klasifikasi == 'TKTL' ? $d->t_istri : 0;
-                            $total_t_istri_mp += $d->id_perusahaan == 'MP' ? $d->t_istri : 0;
-                            $total_t_istri_pcf += $d->id_perusahaan == 'PCF' ? $d->t_istri : 0;
-
-                            $total_tunjangan_skillkhusus += $d->t_skill;
-                            $total_t_skillkhusus_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->t_skill : 0;
-                            $total_t_skillkhusus_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->t_skill : 0;
-                            $total_t_skillkhusus_tkl += $d->klasifikasi == 'TKL' ? $d->t_skill : 0;
-                            $total_t_skillkhusus_tktl += $d->klasifikasi == 'TKTL' ? $d->t_skill : 0;
-                            $total_t_skillkhusus_mp += $d->id_perusahaan == 'MP' ? $d->t_skill : 0;
-                            $total_t_skillkhusus_pcf += $d->id_perusahaan == 'PCF' ? $d->t_skill : 0;
-
-                            $total_insentif_masakerja += $d->iu_masakerja;
-                            $total_i_masakerja_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->iu_masakerja : 0;
-                            $total_i_masakerja_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->iu_masakerja : 0;
-                            $total_i_masakerja_tkl += $d->klasifikasi == 'TKL' ? $d->iu_masakerja : 0;
-                            $total_i_masakerja_tktl += $d->klasifikasi == 'TKTL' ? $d->iu_masakerja : 0;
-                            $total_i_masakerja_mp += $d->id_perusahaan == 'MP' ? $d->iu_masakerja : 0;
-                            $total_i_masakerja_pcf += $d->id_perusahaan == 'PCF' ? $d->iu_masakerja : 0;
-
-                            $total_insentif_lembur += $d->iu_lembur;
-                            $total_i_lembur_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->iu_lembur : 0;
-                            $total_i_lembur_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->iu_lembur : 0;
-                            $total_i_lembur_tkl += $d->klasifikasi == 'TKL' ? $d->iu_lembur : 0;
-                            $total_i_lembur_tktl += $d->klasifikasi == 'TKTL' ? $d->iu_lembur : 0;
-                            $total_i_lembur_mp += $d->id_perusahaan == 'MP' ? $d->iu_lembur : 0;
-                            $total_i_lembur_pcf += $d->id_perusahaan == 'PCF' ? $d->iu_lembur : 0;
-
-                            $total_insentif_penempatan += $d->iu_penempatan;
-                            $total_i_penempatan_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->iu_penempatan : 0;
-                            $total_i_penempatan_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->iu_penempatan : 0;
-                            $total_i_penempatan_tkl += $d->klasifikasi == 'TKL' ? $d->iu_penempatan : 0;
-                            $total_i_penempatan_tktl += $d->klasifikasi == 'TKTL' ? $d->iu_penempatan : 0;
-                            $total_i_penempatan_mp += $d->id_perusahaan == 'MP' ? $d->iu_penempatan : 0;
-                            $total_i_penempatan_pcf += $d->id_perusahaan == 'PCF' ? $d->iu_penempatan : 0;
-
-                            $total_insentif_kpi += $d->iu_kpi;
-                            $total_i_kpi_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->iu_kpi : 0;
-                            $total_i_kpi_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->iu_kpi : 0;
-                            $total_i_kpi_tkl += $d->klasifikasi == 'TKL' ? $d->iu_kpi : 0;
-                            $total_i_kpi_tktl += $d->klasifikasi == 'TKTL' ? $d->iu_kpi : 0;
-                            $total_i_kpi_mp += $d->id_perusahaan == 'MP' ? $d->iu_kpi : 0;
-                            $total_i_kpi_pcf += $d->id_perusahaan == 'PCF' ? $d->iu_kpi : 0;
-
-                            $total_im_ruanglingkup += $d->im_ruanglingkup;
-                            $total_im_ruanglingkup_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->im_ruanglingkup : 0;
-                            $total_im_ruanglingkup_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->im_ruanglingkup : 0;
-                            $total_im_ruanglingkup_tkl += $d->klasifikasi == 'TKL' ? $d->im_ruanglingkup : 0;
-                            $total_im_ruanglingkup_tktl += $d->klasifikasi == 'TKTL' ? $d->im_ruanglingkup : 0;
-                            $total_im_ruanglingkup_mp += $d->id_perusahaan == 'MP' ? $d->im_ruanglingkup : 0;
-                            $total_im_ruanglingkup_pcf += $d->id_perusahaan == 'PCF' ? $d->im_ruanglingkup : 0;
-
-                            $total_im_penempatan += $d->im_penempatan;
-                            $total_im_penempatan_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->im_penempatan : 0;
-                            $total_im_penempatan_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->im_penempatan : 0;
-                            $total_im_penempatan_tkl += $d->klasifikasi == 'TKL' ? $d->im_penempatan : 0;
-                            $total_im_penempatan_tktl += $d->klasifikasi == 'TKTL' ? $d->im_penempatan : 0;
-                            $total_im_penempatan_mp += $d->id_perusahaan == 'MP' ? $d->im_penempatan : 0;
-                            $total_im_penempatan_pcf += $d->id_perusahaan == 'PCF' ? $d->im_penempatan : 0;
-
-                            $total_im_kinerja += $d->im_kinerja;
-                            $total_im_kinerja_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->im_kinerja : 0;
-                            $total_im_kinerja_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->im_kinerja : 0;
-                            $total_im_kinerja_tkl += $d->klasifikasi == 'TKL' ? $d->im_kinerja : 0;
-                            $total_im_kinerja_tktl += $d->klasifikasi == 'TKTL' ? $d->im_kinerja : 0;
-                            $total_im_kinerja_mp += $d->id_perusahaan == 'MP' ? $d->im_kinerja : 0;
-                            $total_im_kinerja_pcf += $d->id_perusahaan == 'PCF' ? $d->im_kinerja : 0;
-
-                            $total_upah += $upah;
-                            $total_upah_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $upah : 0;
-                            $total_upah_penjualan += $d->klasifikasi == 'PENJUALAN' ? $upah : 0;
-                            $total_upah_tkl += $d->klasifikasi == 'TKL' ? $upah : 0;
-                            $total_upah_tktl += $d->klasifikasi == 'TKTL' ? $upah : 0;
-                            $total_upah_mp += $d->id_perusahaan == 'MP' ? $upah : 0;
-                            $total_upah_pcf += $d->id_perusahaan == 'PCF' ? $upah : 0;
-
-                            $total_insentif += $jmlinsentif;
-                            $total_insentif_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $jmlinsentif : 0;
-                            $total_insentif_penjualan += $d->klasifikasi == 'PENJUALAN' ? $jmlinsentif : 0;
-                            $total_insentif_tkl += $d->klasifikasi == 'TKL' ? $jmlinsentif : 0;
-                            $total_insentif_tktl += $d->klasifikasi == 'TKTL' ? $jmlinsentif : 0;
-                            $total_insentif_mp += $d->id_perusahaan == 'MP' ? $jmlinsentif : 0;
-                            $total_insentif_pcf += $d->id_perusahaan == 'PCF' ? $jmlinsentif : 0;
-
-                            $total_all_jamkerja += $totaljamkerja;
-                            $total_jamkerja_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $totaljamkerja : 0;
-                            $total_jamkerja_penjualan += $d->klasifikasi == 'PENJUALAN' ? $totaljamkerja : 0;
-                            $total_jamkerja_tkl += $d->klasifikasi == 'TKL' ? $totaljamkerja : 0;
-                            $total_jamkerja_tktl += $d->klasifikasi == 'TKTL' ? $totaljamkerja : 0;
-                            $total_jamkerja_mp += $d->id_perusahaan == 'MP' ? $totaljamkerja : 0;
-                            $total_jamkerja_pcf += $d->id_perusahaan == 'PCF' ? $totaljamkerja : 0;
-
-                            $total_all_upahperjam += $upah_perjam;
-                            $total_upahperjam_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $upah_perjam : 0;
-                            $total_upahperjam_penjualan += $d->klasifikasi == 'PENJUALAN' ? $upah_perjam : 0;
-                            $total_upahperjam_tkl += $d->klasifikasi == 'TKL' ? $upah_perjam : 0;
-                            $total_upahperjam_tktl += $d->klasifikasi == 'TKTL' ? $upah_perjam : 0;
-                            $total_upahperjam_mp += $d->id_perusahaan == 'MP' ? $upah_perjam : 0;
-                            $total_upahperjam_pcf += $d->id_perusahaan == 'PCF' ? $upah_perjam : 0;
-
-                            $total_all_overtime_1 += $total_overtime_1;
-                            $total_overtime_1_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $total_overtime_1 : 0;
-                            $total_overtime_1_penjualan += $d->klasifikasi == 'PENJUALAN' ? $total_overtime_1 : 0;
-                            $total_overtime_1_tkl += $d->klasifikasi == 'TKL' ? $total_overtime_1 : 0;
-                            $total_overtime_1_tktl += $d->klasifikasi == 'TKTL' ? $total_overtime_1 : 0;
-                            $total_overtime_1_mp += $d->id_perusahaan == 'MP' ? $total_overtime_1 : 0;
-                            $total_overtime_1_pcf += $d->id_perusahaan == 'PCF' ? $total_overtime_1 : 0;
-
-                            $total_all_upah_ot_1 += $upah_ot_1;
-                            $total_upah_ot_1_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $upah_ot_1 : 0;
-                            $total_upah_ot_1_penjualan += $d->klasifikasi == 'PENJUALAN' ? $upah_ot_1 : 0;
-                            $total_upah_ot_1_tkl += $d->klasifikasi == 'TKL' ? $upah_ot_1 : 0;
-                            $total_upah_ot_1_tktl += $d->klasifikasi == 'TKTL' ? $upah_ot_1 : 0;
-                            $total_upah_ot_1_mp += $d->id_perusahaan == 'MP' ? $upah_ot_1 : 0;
-                            $total_upah_ot_1_pcf += $d->id_perusahaan == 'PCF' ? $upah_ot_1 : 0;
-
-                            $total_all_overtime_2 += $total_overtime_2;
-                            $total_overtime_2_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $total_overtime_2 : 0;
-                            $total_overtime_2_penjualan += $d->klasifikasi == 'PENJUALAN' ? $total_overtime_2 : 0;
-                            $total_overtime_2_tkl += $d->klasifikasi == 'TKL' ? $total_overtime_2 : 0;
-                            $total_overtime_2_tktl += $d->klasifikasi == 'TKTL' ? $total_overtime_2 : 0;
-                            $total_overtime_2_mp += $d->id_perusahaan == 'MP' ? $total_overtime_2 : 0;
-                            $total_overtime_2_pcf += $d->id_perusahaan == 'PCF' ? $total_overtime_2 : 0;
-
-                            $total_all_upah_ot_2 += $upah_ot_2;
-                            $total_upah_ot_2_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $upah_ot_2 : 0;
-                            $total_upah_ot_2_penjualan += $d->klasifikasi == 'PENJUALAN' ? $upah_ot_2 : 0;
-                            $total_upah_ot_2_tkl += $d->klasifikasi == 'TKL' ? $upah_ot_2 : 0;
-                            $total_upah_ot_2_tktl += $d->klasifikasi == 'TKTL' ? $upah_ot_2 : 0;
-                            $total_upah_ot_2_mp += $d->id_perusahaan == 'MP' ? $upah_ot_2 : 0;
-                            $total_upah_ot_2_pcf += $d->id_perusahaan == 'PCF' ? $upah_ot_2 : 0;
-
-                            $total_all_overtime_libur += $total_overtime_libur_1;
-                            $total_overtime_libur_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $total_overtime_libur_1 : 0;
-                            $total_overtime_libur_penjualan += $d->klasifikasi == 'PENJUALAN' ? $total_overtime_libur_1 : 0;
-                            $total_overtime_libur_tkl += $d->klasifikasi == 'TKL' ? $total_overtime_libur_1 : 0;
-                            $total_overtime_libur_tktl += $d->klasifikasi == 'TKTL' ? $total_overtime_libur_1 : 0;
-                            $total_overtime_libur_mp += $d->id_perusahaan == 'MP' ? $total_overtime_libur_1 : 0;
-                            $total_overtime_libur_pcf += $d->id_perusahaan == 'PCF' ? $total_overtime_libur_1 : 0;
-
-                            $total_all_upah_overtime_libur += $upah_otl_1;
-                            $total_upah_overtime_libur_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $upah_otl_1 : 0;
-                            $total_upah_overtime_libur_penjualan += $d->klasifikasi == 'PENJUALAN' ? $upah_otl_1 : 0;
-                            $total_upah_overtime_libur_tkl += $d->klasifikasi == 'TKL' ? $upah_otl_1 : 0;
-                            $total_upah_overtime_libur_tktl += $d->klasifikasi == 'TKTL' ? $upah_otl_1 : 0;
-                            $total_upah_overtime_libur_mp += $d->id_perusahaan == 'MP' ? $upah_otl_1 : 0;
-                            $total_upah_overtime_libur_mp += $d->id_perusahaan == 'PCF' ? $upah_otl_1 : 0;
-
-                            $total_all_upah_overtime += $total_upah_overtime;
-                            $total_all_upah_otl_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $total_upah_overtime : 0;
-                            $total_all_upah_otl_penjualan += $d->klasifikasi == 'PENJUALAN' ? $total_upah_overtime : 0;
-                            $total_all_upah_otl_tkl += $d->klasifikasi == 'TKL' ? $total_upah_overtime : 0;
-                            $total_all_upah_otl_tktl += $d->klasifikasi == 'TKTL' ? $total_upah_overtime : 0;
-                            $total_all_upah_otl_mp += $d->id_perusahaan == 'MP' ? $total_upah_overtime : 0;
-                            $total_all_upah_otl_pcf += $d->id_perusahaan == 'PCF' ? $total_upah_overtime : 0;
-
-                            $total_all_hari_shift_2 += $totalhariall_shift_2;
-                            $total_all_hari_shift_2_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $totalhariall_shift_2 : 0;
-                            $total_all_hari_shift_2_penjualan += $d->klasifikasi == 'PENJUALAN' ? $totalhariall_shift_2 : 0;
-                            $total_all_hari_shift_2_tkl += $d->klasifikasi == 'TKL' ? $totalhariall_shift_2 : 0;
-                            $total_all_hari_shift_2_tktl += $d->klasifikasi == 'TKTL' ? $totalhariall_shift_2 : 0;
-                            $total_all_hari_shift_2_mp += $d->id_perusahaan == 'MP' ? $totalhariall_shift_2 : 0;
-                            $total_all_hari_shift_2_pcf += $d->id_perusahaan == 'PCF' ? $totalhariall_shift_2 : 0;
-
-                            $total_all_premi_shift_2 += $totalpremiall_shift_2;
-                            $total_all_premi_shift_2_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $totalpremiall_shift_2 : 0;
-                            $total_all_premi_shift_2_penjualan += $d->klasifikasi == 'PENJUALAN' ? $totalpremiall_shift_2 : 0;
-                            $total_all_premi_shift_2_tkl += $d->klasifikasi == 'TKL' ? $totalpremiall_shift_2 : 0;
-                            $total_all_premi_shift_2_tktl += $d->klasifikasi == 'TKTL' ? $totalpremiall_shift_2 : 0;
-                            $total_all_premi_shift_2_mp += $d->id_perusahaan == 'MP' ? $totalpremiall_shift_2 : 0;
-                            $total_all_premi_shift_2_pcf += $d->id_perusahaan == 'PCF' ? $totalpremiall_shift_2 : 0;
-
-                            $total_all_hari_shift_3 += $totalhariall_shift_3;
-                            $total_all_hari_shift_3_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $totalhariall_shift_3 : 0;
-                            $total_all_hari_shift_3_penjualan += $d->klasifikasi == 'PENJUALAN' ? $totalhariall_shift_3 : 0;
-                            $total_all_hari_shift_3_tkl += $d->klasifikasi == 'TKL' ? $totalhariall_shift_3 : 0;
-                            $total_all_hari_shift_3_tktl += $d->klasifikasi == 'TKTL' ? $totalhariall_shift_3 : 0;
-                            $total_all_hari_shift_3_mp += $d->id_perusahaan == 'MP' ? $totalhariall_shift_3 : 0;
-                            $total_all_hari_shift_3_pcf += $d->id_perusahaan == 'PCF' ? $totalhariall_shift_3 : 0;
-
-                            $total_all_premi_shift_3 += $totalpremiall_shift_3;
-                            $total_all_premi_shift_3_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $totalpremiall_shift_3 : 0;
-                            $total_all_premi_shift_3_penjualan += $d->klasifikasi == 'PENJUALAN' ? $totalpremiall_shift_3 : 0;
-                            $total_all_premi_shift_3_tkl += $d->klasifikasi == 'TKL' ? $totalpremiall_shift_3 : 0;
-                            $total_all_premi_shift_3_tktl += $d->klasifikasi == 'TKTL' ? $totalpremiall_shift_3 : 0;
-                            $total_all_premi_shift_3_mp += $d->id_perusahaan == 'MP' ? $totalpremiall_shift_3 : 0;
-                            $total_all_premi_shift_3_pcf += $d->id_perusahaan == 'PCF' ? $totalpremiall_shift_3 : 0;
-
-                            $total_all_bruto += $bruto;
-                            $total_all_bruto_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $bruto : 0;
-                            $total_all_bruto_penjualan += $d->klasifikasi == 'PENJUALAN' ? $bruto : 0;
-                            $total_all_bruto_tkl += $d->klasifikasi == 'TKL' ? $bruto : 0;
-                            $total_all_bruto_tktl += $d->klasifikasi == 'TKTL' ? $bruto : 0;
-                            $total_all_bruto_mp += $d->id_perusahaan == 'MP' ? $bruto : 0;
-                            $total_all_bruto_pcf += $d->id_perusahaan == 'PCF' ? $bruto : 0;
-
-                            $total_all_potongan_jam += $totalpotonganjam;
-                            $total_all_potonganjam_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $totalpotonganjam : 0;
-                            $total_all_potonganjam_penjualan += $d->klasifikasi == 'PENJUALAN' ? $totalpotonganjam : 0;
-                            $total_all_potonganjam_tkl += $d->klasifikasi == 'TKL' ? $totalpotonganjam : 0;
-                            $total_all_potonganjam_tktl += $d->klasifikasi == 'TKTL' ? $totalpotonganjam : 0;
-                            $total_all_potonganjam_mp += $d->id_perusahaan == 'MP' ? $totalpotonganjam : 0;
-                            $total_all_potonganjam_pcf += $d->id_perusahaan == 'PCF' ? $totalpotonganjam : 0;
-
-                            $total_all_bpjskesehatan += $bpjskesehatan;
-                            $total_all_bpjskesehatan_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $bpjskesehatan : 0;
-                            $total_all_bpjskesehatan_penjualan += $d->klasifikasi == 'PENJUALAN' ? $bpjskesehatan : 0;
-                            $total_all_bpjskesehatan_tkl += $d->klasifikasi == 'TKL' ? $bpjskesehatan : 0;
-                            $total_all_bpjskesehatan_tktl += $d->klasifikasi == 'TKTL' ? $bpjskesehatan : 0;
-                            $total_all_bpjskesehatan_mp += $d->id_perusahaan == 'MP' ? $bpjskesehatan : 0;
-                            $total_all_bpjskesehatan_pcf += $d->id_perusahaan == 'PCF' ? $bpjskesehatan : 0;
-
-                            $total_all_bpjstk += $bpjstenagakerja;
-                            $total_all_bpjstk_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $bpjstenagakerja : 0;
-                            $total_all_bpjstk_penjualan += $d->klasifikasi == 'PENJUALAN' ? $bpjstenagakerja : 0;
-                            $total_all_bpjstk_tkl += $d->klasifikasi == 'TKL' ? $bpjstenagakerja : 0;
-                            $total_all_bpjstk_tktl += $d->klasifikasi == 'TKTL' ? $bpjstenagakerja : 0;
-                            $total_all_bpjstk_mp += $d->id_perusahaan == 'MP' ? $bpjstenagakerja : 0;
-                            $total_all_bpjstk_pcf += $d->id_perusahaan == 'PCF' ? $bpjstenagakerja : 0;
-
-                            $total_all_denda += $totaldenda;
-                            $total_all_denda_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $totaldenda : 0;
-                            $total_all_denda_penjualan += $d->klasifikasi == 'PENJUALAN' ? $totaldenda : 0;
-                            $total_all_denda_tkl += $d->klasifikasi == 'TKL' ? $totaldenda : 0;
-                            $total_all_denda_tktl += $d->klasifikasi == 'TKTL' ? $totaldenda : 0;
-                            $total_all_denda_mp += $d->id_perusahaan == 'MP' ? $totaldenda : 0;
-                            $total_all_denda_pcf += $d->id_perusahaan == 'PCF' ? $totaldenda : 0;
-
-                            $total_all_pjp += $d->cicilan_pjp;
-                            $total_all_pjp_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->cicilan_pjp : 0;
-                            $total_all_pjp_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->cicilan_pjp : 0;
-                            $total_all_pjp_tkl += $d->klasifikasi == 'TKL' ? $d->cicilan_pjp : 0;
-                            $total_all_pjp_tktl += $d->klasifikasi == 'TKTL' ? $d->cicilan_pjp : 0;
-                            $total_all_pjp_mp += $d->id_perusahaan == 'MP' ? $d->cicilan_pjp : 0;
-                            $total_all_pjp_pcf += $d->id_perusahaan == 'PCF' ? $d->cicilan_pjp : 0;
-
-                            $total_all_kasbon += $d->jml_kasbon;
-                            $total_all_kasbon_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->jml_kasbon : 0;
-                            $total_all_kasbon_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->jml_kasbon : 0;
-                            $total_all_kasbon_tkl += $d->klasifikasi == 'TKL' ? $d->jml_kasbon : 0;
-                            $total_all_kasbon_tktl += $d->klasifikasi == 'TKTL' ? $d->jml_kasbon : 0;
-                            $total_all_kasbon_mp += $d->id_perusahaan == 'MP' ? $d->jml_kasbon : 0;
-                            $total_all_kasbon_pcf += $d->id_perusahaan == 'PCF' ? $d->jml_kasbon : 0;
-
-                            $total_all_spip += $spip;
-                            $total_all_spip_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $spip : 0;
-                            $total_all_spip_penjualan += $d->klasifikasi == 'PENJUALAN' ? $spip : 0;
-                            $total_all_spip_tkl += $d->klasifikasi == 'TKL' ? $spip : 0;
-                            $total_all_spip_tktl += $d->klasifikasi == 'TKTL' ? $spip : 0;
-                            $total_all_spip_mp += $d->id_perusahaan == 'MP' ? $spip : 0;
-                            $total_all_spip_pcf += $d->id_perusahaan == 'PCF' ? $spip : 0;
-
-                            $total_all_potongan += $potongan;
-                            $total_all_potongan_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $potongan : 0;
-                            $total_all_potongan_penjualan += $d->klasifikasi == 'PENJUALAN' ? $potongan : 0;
-                            $total_all_potongan_tkl += $d->klasifikasi == 'TKL' ? $potongan : 0;
-                            $total_all_potongan_tktl += $d->klasifikasi == 'TKTL' ? $potongan : 0;
-                            $total_all_potongan_mp += $d->id_perusahaan == 'MP' ? $potongan : 0;
-                            $total_all_potongan_pcf += $d->id_perusahaan == 'PCF' ? $potongan : 0;
-
-                            $total_all_bersih += $jmlbersih;
-                            $total_all_bersih_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $jmlbersih : 0;
-                            $total_all_bersih_penjualan += $d->klasifikasi == 'PENJUALAN' ? $jmlbersih : 0;
-                            $total_all_bersih_tkl += $d->klasifikasi == 'TKL' ? $jmlbersih : 0;
-                            $total_all_bersih_tktl += $d->klasifikasi == 'TKTL' ? $jmlbersih : 0;
-                            $total_all_bersih_mp += $d->id_perusahaan == 'MP' ? $jmlbersih : 0;
-                            $total_all_bersih_pcf += $d->id_perusahaan == 'PCF' ? $jmlbersih : 0;
-                        @endphp
                     @endfor
+                    @if ($d->nama_jabatan == 'DIREKTUR')
+                        @php
+                            $totaljamkerja = 173;
+                            $totalpotonganjam = 0;
+                        @endphp
+                    @else
+                        @php
+                            $totaljamkerja = $totaljam1bulan - $totalterlambat - $totalkeluar - $totaldirumahkan - $totaltidakhadir - $totalpulangcepat - $totalizinabsen - $totalizinsakit;
+                            $totalpotonganjam = $totalterlambat + $totalkeluar + $totaldirumahkan + $totaltidakhadir + $totalpulangcepat + $totalizinabsen + $totalizinsakit;
+                        @endphp
+                    @endif
+
+                    @php
+                        //Total Shift 2
+                        $totalhariall_shift_2 = $totalhari_shift_2 + $totalharilembur_shift_2 + $totalharilembur_harilibur_shift_2;
+                        $totalpremiall_shift_2 = $totalpremi_shift_2 + $totalpremilembur_shift_2 + $totalpremilembur_harilibur_shift_2;
+                        //Total Shift 3
+                        $totalhariall_shift_3 = $totalhari_shift_3 + $totalharilembur_shift_3 + $totalharilembur_harilibur_shift_3;
+                        $totalpremiall_shift_3 = $totalpremi_shift_3 + $totalpremilembur_shift_3 + $totalpremilembur_harilibur_shift_3;
+
+                        //UPAH
+                        $upah = $d->gaji_pokok + $d->t_jabatan + $d->t_masakerja + $d->t_tanggungjawab + $d->t_makan + $d->t_istri + $d->t_skill;
+
+                        //Upah Per Jam
+                        $upah_perjam = $upah / 173;
+
+                        //Insentif
+                        $jmlinsentif = $d->iu_masakerja + $d->iu_lembur + $d->iu_penempatan + $d->iu_kpi + $d->im_ruanglingkup + $d->im_penempatan + $d->im_kinerja;
+                    @endphp
+
+                    @if ($d->nama_jabatan == 'SECURITY')
+                        @php
+                            $upah_ot_1 = 8000 * $total_overtime_1;
+                            $upah_ot_2 = 8000 * $total_overtime_2;
+                            $upah_otl_1 = 13143 * $total_overtime_libur_1;
+                            $upah_otl_2 = 0;
+                        @endphp
+                    @else
+                        @php
+                            $upah_ot_1 = $upah_perjam * 1.5 * $total_overtime_1;
+                            $upah_ot_2 = $upah_perjam * 2 * $total_overtime_2;
+                            $upah_otl_1 = floor($upah_perjam * 2 * $total_overtime_libur_1);
+                            $upah_otl_2 = $upah_perjam * 2 * $total_overtime_libur_2;
+                        @endphp
+                    @endif
+
+                    @php
+                        $total_upah_overtime = $upah_ot_1 + $upah_ot_2 + $upah_otl_1 + $upah_otl_2; // Total Upah Overtime
+                        $bruto = $upah_perjam * $totaljamkerja + $total_upah_overtime + $totalpremiall_shift_2 + $totalpremiall_shift_3; // Total Upah Bruto
+                        $bpjskesehatan = $d->iuran_kes; // BPJS Kesehatan
+                        $bpjstenagakerja = $d->iuran_tk; // BPJS Tenaga Kerja
+                    @endphp
+                    <!-- Perhitungan SPIP-->
+                    @if (($d->id_kantor == 'PST' && $cekmasakerja >= 3) || ($d->id_kantor == 'TSM' && $cekmasakerja >= 3) || $d->spip == 1)
+                        @php
+                            $spip = 5000;
+                        @endphp
+                    @else
+                        @php
+                            $spip = 0;
+                        @endphp
+                    @endif
+                    @php
+                        $potongan = ROUND($bpjskesehatan + $bpjstenagakerja + $totaldenda + $d->cicilan_pjp + $d->jml_kasbon + $d->jml_nonpjp + $spip, 0); // Potongan Upah
+                        $jmlbersih = $bruto - $potongan; // Jumlah Upah Bersih
+
+                        //TOTAL
+                        //Total Gaji Pokok
+                        $total_gajipokok += $d->gaji_pokok;
+                        $total_gajipokok_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->gaji_pokok : 0;
+                        $total_gajipokok_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->gaji_pokok : 0;
+                        $total_gajipokok_tkl += $d->klasifikasi == 'TKL' ? $d->gaji_pokok : 0;
+                        $total_gajipokok_tktl += $d->klasifikasi == 'TKTL' ? $d->gaji_pokok : 0;
+                        $total_gajipokok_mp += $d->id_perusahaan == 'MP' ? $d->gaji_pokok : 0;
+                        $total_gajipokok_pcf += $d->id_perusahaan == 'PCF' ? $d->gaji_pokok : 0;
+
+                        $total_tunjangan_jabatan += $d->t_jabatan;
+                        $total_t_jabatan_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->t_jabatan : 0;
+                        $total_t_jabatan_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->t_jabatan : 0;
+                        $total_t_jabatan_tkl += $d->klasifikasi == 'TKL' ? $d->t_jabatan : 0;
+                        $total_t_jabatan_tktl += $d->klasifikasi == 'TKTL' ? $d->t_jabatan : 0;
+                        $total_t_jabatan_mp += $d->id_perusahaan == 'MP' ? $d->t_jabatan : 0;
+                        $total_t_jabatan_pcf += $d->id_perusahaan == 'PCF' ? $d->t_jabatan : 0;
+
+                        $total_tunjangan_masakerja += $d->t_masakerja;
+                        $total_t_masakerja_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->t_masakerja : 0;
+                        $total_t_masakerja_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->t_masakerja : 0;
+                        $total_t_masakerja_tkl += $d->klasifikasi == 'TKL' ? $d->t_masakerja : 0;
+                        $total_t_masakerja_tktl += $d->klasifikasi == 'TKTL' ? $d->t_masakerja : 0;
+                        $total_t_masakerja_mp += $d->id_perusahaan == 'MP' ? $d->t_masakerja : 0;
+                        $total_t_masakerja_pcf += $d->id_perusahaan == 'PCF' ? $d->t_masakerja : 0;
+
+                        $total_tunjangan_tanggungjawab += $d->t_tanggungjawab;
+                        $total_t_tanggungjawab_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->t_tanggungjawab : 0;
+                        $total_t_tanggungjawab_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->t_tanggungjawab : 0;
+                        $total_t_tanggungjawab_tkl += $d->klasifikasi == 'TKL' ? $d->t_tanggungjawab : 0;
+                        $total_t_tanggungjawab_tktl += $d->klasifikasi == 'TKTL' ? $d->t_tanggungjawab : 0;
+                        $total_t_tanggungjawab_mp += $d->id_perusahaan == 'MP' ? $d->t_tanggungjawab : 0;
+                        $total_t_tanggungjawab_pcf += $d->id_perusahaan == 'PCF' ? $d->t_tanggungjawab : 0;
+
+                        $total_tunjangan_makan += $d->t_makan;
+                        $total_t_makan_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->t_makan : 0;
+                        $total_t_makan_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->t_makan : 0;
+                        $total_t_makan_tkl += $d->klasifikasi == 'TKL' ? $d->t_makan : 0;
+                        $total_t_makan_tktl += $d->klasifikasi == 'TKTL' ? $d->t_makan : 0;
+
+                        $total_t_makan_mp += $d->id_perusahaan == 'MP' ? $d->t_makan : 0;
+                        $total_t_makan_pcf += $d->id_perusahaan == 'PCF' ? $d->t_makan : 0;
+
+                        $total_tunjangan_istri += $d->t_istri;
+                        $total_t_istri_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->t_istri : 0;
+                        $total_t_istri_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->t_istri : 0;
+                        $total_t_istri_tkl += $d->klasifikasi == 'TKL' ? $d->t_istri : 0;
+                        $total_t_istri_tktl += $d->klasifikasi == 'TKTL' ? $d->t_istri : 0;
+                        $total_t_istri_mp += $d->id_perusahaan == 'MP' ? $d->t_istri : 0;
+                        $total_t_istri_pcf += $d->id_perusahaan == 'PCF' ? $d->t_istri : 0;
+
+                        $total_tunjangan_skillkhusus += $d->t_skill;
+                        $total_t_skillkhusus_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->t_skill : 0;
+                        $total_t_skillkhusus_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->t_skill : 0;
+                        $total_t_skillkhusus_tkl += $d->klasifikasi == 'TKL' ? $d->t_skill : 0;
+                        $total_t_skillkhusus_tktl += $d->klasifikasi == 'TKTL' ? $d->t_skill : 0;
+                        $total_t_skillkhusus_mp += $d->id_perusahaan == 'MP' ? $d->t_skill : 0;
+                        $total_t_skillkhusus_pcf += $d->id_perusahaan == 'PCF' ? $d->t_skill : 0;
+
+                        $total_insentif_masakerja += $d->iu_masakerja;
+                        $total_i_masakerja_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->iu_masakerja : 0;
+                        $total_i_masakerja_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->iu_masakerja : 0;
+                        $total_i_masakerja_tkl += $d->klasifikasi == 'TKL' ? $d->iu_masakerja : 0;
+                        $total_i_masakerja_tktl += $d->klasifikasi == 'TKTL' ? $d->iu_masakerja : 0;
+                        $total_i_masakerja_mp += $d->id_perusahaan == 'MP' ? $d->iu_masakerja : 0;
+                        $total_i_masakerja_pcf += $d->id_perusahaan == 'PCF' ? $d->iu_masakerja : 0;
+
+                        $total_insentif_lembur += $d->iu_lembur;
+                        $total_i_lembur_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->iu_lembur : 0;
+                        $total_i_lembur_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->iu_lembur : 0;
+                        $total_i_lembur_tkl += $d->klasifikasi == 'TKL' ? $d->iu_lembur : 0;
+                        $total_i_lembur_tktl += $d->klasifikasi == 'TKTL' ? $d->iu_lembur : 0;
+                        $total_i_lembur_mp += $d->id_perusahaan == 'MP' ? $d->iu_lembur : 0;
+                        $total_i_lembur_pcf += $d->id_perusahaan == 'PCF' ? $d->iu_lembur : 0;
+
+                        $total_insentif_penempatan += $d->iu_penempatan;
+                        $total_i_penempatan_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->iu_penempatan : 0;
+                        $total_i_penempatan_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->iu_penempatan : 0;
+                        $total_i_penempatan_tkl += $d->klasifikasi == 'TKL' ? $d->iu_penempatan : 0;
+                        $total_i_penempatan_tktl += $d->klasifikasi == 'TKTL' ? $d->iu_penempatan : 0;
+                        $total_i_penempatan_mp += $d->id_perusahaan == 'MP' ? $d->iu_penempatan : 0;
+                        $total_i_penempatan_pcf += $d->id_perusahaan == 'PCF' ? $d->iu_penempatan : 0;
+
+                        $total_insentif_kpi += $d->iu_kpi;
+                        $total_i_kpi_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->iu_kpi : 0;
+                        $total_i_kpi_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->iu_kpi : 0;
+                        $total_i_kpi_tkl += $d->klasifikasi == 'TKL' ? $d->iu_kpi : 0;
+                        $total_i_kpi_tktl += $d->klasifikasi == 'TKTL' ? $d->iu_kpi : 0;
+                        $total_i_kpi_mp += $d->id_perusahaan == 'MP' ? $d->iu_kpi : 0;
+                        $total_i_kpi_pcf += $d->id_perusahaan == 'PCF' ? $d->iu_kpi : 0;
+
+                        $total_im_ruanglingkup += $d->im_ruanglingkup;
+                        $total_im_ruanglingkup_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->im_ruanglingkup : 0;
+                        $total_im_ruanglingkup_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->im_ruanglingkup : 0;
+                        $total_im_ruanglingkup_tkl += $d->klasifikasi == 'TKL' ? $d->im_ruanglingkup : 0;
+                        $total_im_ruanglingkup_tktl += $d->klasifikasi == 'TKTL' ? $d->im_ruanglingkup : 0;
+                        $total_im_ruanglingkup_mp += $d->id_perusahaan == 'MP' ? $d->im_ruanglingkup : 0;
+                        $total_im_ruanglingkup_pcf += $d->id_perusahaan == 'PCF' ? $d->im_ruanglingkup : 0;
+
+                        $total_im_penempatan += $d->im_penempatan;
+                        $total_im_penempatan_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->im_penempatan : 0;
+                        $total_im_penempatan_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->im_penempatan : 0;
+                        $total_im_penempatan_tkl += $d->klasifikasi == 'TKL' ? $d->im_penempatan : 0;
+                        $total_im_penempatan_tktl += $d->klasifikasi == 'TKTL' ? $d->im_penempatan : 0;
+                        $total_im_penempatan_mp += $d->id_perusahaan == 'MP' ? $d->im_penempatan : 0;
+                        $total_im_penempatan_pcf += $d->id_perusahaan == 'PCF' ? $d->im_penempatan : 0;
+
+                        $total_im_kinerja += $d->im_kinerja;
+                        $total_im_kinerja_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->im_kinerja : 0;
+                        $total_im_kinerja_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->im_kinerja : 0;
+                        $total_im_kinerja_tkl += $d->klasifikasi == 'TKL' ? $d->im_kinerja : 0;
+                        $total_im_kinerja_tktl += $d->klasifikasi == 'TKTL' ? $d->im_kinerja : 0;
+                        $total_im_kinerja_mp += $d->id_perusahaan == 'MP' ? $d->im_kinerja : 0;
+                        $total_im_kinerja_pcf += $d->id_perusahaan == 'PCF' ? $d->im_kinerja : 0;
+
+                        $total_upah += $upah;
+                        $total_upah_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $upah : 0;
+                        $total_upah_penjualan += $d->klasifikasi == 'PENJUALAN' ? $upah : 0;
+                        $total_upah_tkl += $d->klasifikasi == 'TKL' ? $upah : 0;
+                        $total_upah_tktl += $d->klasifikasi == 'TKTL' ? $upah : 0;
+                        $total_upah_mp += $d->id_perusahaan == 'MP' ? $upah : 0;
+                        $total_upah_pcf += $d->id_perusahaan == 'PCF' ? $upah : 0;
+
+                        $total_insentif += $jmlinsentif;
+                        $total_insentif_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $jmlinsentif : 0;
+                        $total_insentif_penjualan += $d->klasifikasi == 'PENJUALAN' ? $jmlinsentif : 0;
+                        $total_insentif_tkl += $d->klasifikasi == 'TKL' ? $jmlinsentif : 0;
+                        $total_insentif_tktl += $d->klasifikasi == 'TKTL' ? $jmlinsentif : 0;
+                        $total_insentif_mp += $d->id_perusahaan == 'MP' ? $jmlinsentif : 0;
+                        $total_insentif_pcf += $d->id_perusahaan == 'PCF' ? $jmlinsentif : 0;
+
+                        $total_all_jamkerja += $totaljamkerja;
+                        $total_jamkerja_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $totaljamkerja : 0;
+                        $total_jamkerja_penjualan += $d->klasifikasi == 'PENJUALAN' ? $totaljamkerja : 0;
+                        $total_jamkerja_tkl += $d->klasifikasi == 'TKL' ? $totaljamkerja : 0;
+                        $total_jamkerja_tktl += $d->klasifikasi == 'TKTL' ? $totaljamkerja : 0;
+                        $total_jamkerja_mp += $d->id_perusahaan == 'MP' ? $totaljamkerja : 0;
+                        $total_jamkerja_pcf += $d->id_perusahaan == 'PCF' ? $totaljamkerja : 0;
+
+                        $total_all_upahperjam += $upah_perjam;
+                        $total_upahperjam_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $upah_perjam : 0;
+                        $total_upahperjam_penjualan += $d->klasifikasi == 'PENJUALAN' ? $upah_perjam : 0;
+                        $total_upahperjam_tkl += $d->klasifikasi == 'TKL' ? $upah_perjam : 0;
+                        $total_upahperjam_tktl += $d->klasifikasi == 'TKTL' ? $upah_perjam : 0;
+                        $total_upahperjam_mp += $d->id_perusahaan == 'MP' ? $upah_perjam : 0;
+                        $total_upahperjam_pcf += $d->id_perusahaan == 'PCF' ? $upah_perjam : 0;
+
+                        $total_all_overtime_1 += $total_overtime_1;
+                        $total_overtime_1_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $total_overtime_1 : 0;
+                        $total_overtime_1_penjualan += $d->klasifikasi == 'PENJUALAN' ? $total_overtime_1 : 0;
+                        $total_overtime_1_tkl += $d->klasifikasi == 'TKL' ? $total_overtime_1 : 0;
+                        $total_overtime_1_tktl += $d->klasifikasi == 'TKTL' ? $total_overtime_1 : 0;
+                        $total_overtime_1_mp += $d->id_perusahaan == 'MP' ? $total_overtime_1 : 0;
+                        $total_overtime_1_pcf += $d->id_perusahaan == 'PCF' ? $total_overtime_1 : 0;
+
+                        $total_all_upah_ot_1 += $upah_ot_1;
+                        $total_upah_ot_1_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $upah_ot_1 : 0;
+                        $total_upah_ot_1_penjualan += $d->klasifikasi == 'PENJUALAN' ? $upah_ot_1 : 0;
+                        $total_upah_ot_1_tkl += $d->klasifikasi == 'TKL' ? $upah_ot_1 : 0;
+                        $total_upah_ot_1_tktl += $d->klasifikasi == 'TKTL' ? $upah_ot_1 : 0;
+                        $total_upah_ot_1_mp += $d->id_perusahaan == 'MP' ? $upah_ot_1 : 0;
+                        $total_upah_ot_1_pcf += $d->id_perusahaan == 'PCF' ? $upah_ot_1 : 0;
+
+                        $total_all_overtime_2 += $total_overtime_2;
+                        $total_overtime_2_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $total_overtime_2 : 0;
+                        $total_overtime_2_penjualan += $d->klasifikasi == 'PENJUALAN' ? $total_overtime_2 : 0;
+                        $total_overtime_2_tkl += $d->klasifikasi == 'TKL' ? $total_overtime_2 : 0;
+                        $total_overtime_2_tktl += $d->klasifikasi == 'TKTL' ? $total_overtime_2 : 0;
+                        $total_overtime_2_mp += $d->id_perusahaan == 'MP' ? $total_overtime_2 : 0;
+                        $total_overtime_2_pcf += $d->id_perusahaan == 'PCF' ? $total_overtime_2 : 0;
+
+                        $total_all_upah_ot_2 += $upah_ot_2;
+                        $total_upah_ot_2_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $upah_ot_2 : 0;
+                        $total_upah_ot_2_penjualan += $d->klasifikasi == 'PENJUALAN' ? $upah_ot_2 : 0;
+                        $total_upah_ot_2_tkl += $d->klasifikasi == 'TKL' ? $upah_ot_2 : 0;
+                        $total_upah_ot_2_tktl += $d->klasifikasi == 'TKTL' ? $upah_ot_2 : 0;
+                        $total_upah_ot_2_mp += $d->id_perusahaan == 'MP' ? $upah_ot_2 : 0;
+                        $total_upah_ot_2_pcf += $d->id_perusahaan == 'PCF' ? $upah_ot_2 : 0;
+
+                        $total_all_overtime_libur += $total_overtime_libur_1;
+                        $total_overtime_libur_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $total_overtime_libur_1 : 0;
+                        $total_overtime_libur_penjualan += $d->klasifikasi == 'PENJUALAN' ? $total_overtime_libur_1 : 0;
+                        $total_overtime_libur_tkl += $d->klasifikasi == 'TKL' ? $total_overtime_libur_1 : 0;
+                        $total_overtime_libur_tktl += $d->klasifikasi == 'TKTL' ? $total_overtime_libur_1 : 0;
+                        $total_overtime_libur_mp += $d->id_perusahaan == 'MP' ? $total_overtime_libur_1 : 0;
+                        $total_overtime_libur_pcf += $d->id_perusahaan == 'PCF' ? $total_overtime_libur_1 : 0;
+
+                        $total_all_upah_overtime_libur += $upah_otl_1;
+                        $total_upah_overtime_libur_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $upah_otl_1 : 0;
+                        $total_upah_overtime_libur_penjualan += $d->klasifikasi == 'PENJUALAN' ? $upah_otl_1 : 0;
+                        $total_upah_overtime_libur_tkl += $d->klasifikasi == 'TKL' ? $upah_otl_1 : 0;
+                        $total_upah_overtime_libur_tktl += $d->klasifikasi == 'TKTL' ? $upah_otl_1 : 0;
+                        $total_upah_overtime_libur_mp += $d->id_perusahaan == 'MP' ? $upah_otl_1 : 0;
+                        $total_upah_overtime_libur_mp += $d->id_perusahaan == 'PCF' ? $upah_otl_1 : 0;
+
+                        $total_all_upah_overtime += $total_upah_overtime;
+                        $total_all_upah_otl_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $total_upah_overtime : 0;
+                        $total_all_upah_otl_penjualan += $d->klasifikasi == 'PENJUALAN' ? $total_upah_overtime : 0;
+                        $total_all_upah_otl_tkl += $d->klasifikasi == 'TKL' ? $total_upah_overtime : 0;
+                        $total_all_upah_otl_tktl += $d->klasifikasi == 'TKTL' ? $total_upah_overtime : 0;
+                        $total_all_upah_otl_mp += $d->id_perusahaan == 'MP' ? $total_upah_overtime : 0;
+                        $total_all_upah_otl_pcf += $d->id_perusahaan == 'PCF' ? $total_upah_overtime : 0;
+
+                        $total_all_hari_shift_2 += $totalhariall_shift_2;
+                        $total_all_hari_shift_2_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $totalhariall_shift_2 : 0;
+                        $total_all_hari_shift_2_penjualan += $d->klasifikasi == 'PENJUALAN' ? $totalhariall_shift_2 : 0;
+                        $total_all_hari_shift_2_tkl += $d->klasifikasi == 'TKL' ? $totalhariall_shift_2 : 0;
+                        $total_all_hari_shift_2_tktl += $d->klasifikasi == 'TKTL' ? $totalhariall_shift_2 : 0;
+                        $total_all_hari_shift_2_mp += $d->id_perusahaan == 'MP' ? $totalhariall_shift_2 : 0;
+                        $total_all_hari_shift_2_pcf += $d->id_perusahaan == 'PCF' ? $totalhariall_shift_2 : 0;
+
+                        $total_all_premi_shift_2 += $totalpremiall_shift_2;
+                        $total_all_premi_shift_2_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $totalpremiall_shift_2 : 0;
+                        $total_all_premi_shift_2_penjualan += $d->klasifikasi == 'PENJUALAN' ? $totalpremiall_shift_2 : 0;
+                        $total_all_premi_shift_2_tkl += $d->klasifikasi == 'TKL' ? $totalpremiall_shift_2 : 0;
+                        $total_all_premi_shift_2_tktl += $d->klasifikasi == 'TKTL' ? $totalpremiall_shift_2 : 0;
+                        $total_all_premi_shift_2_mp += $d->id_perusahaan == 'MP' ? $totalpremiall_shift_2 : 0;
+                        $total_all_premi_shift_2_pcf += $d->id_perusahaan == 'PCF' ? $totalpremiall_shift_2 : 0;
+
+                        $total_all_hari_shift_3 += $totalhariall_shift_3;
+                        $total_all_hari_shift_3_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $totalhariall_shift_3 : 0;
+                        $total_all_hari_shift_3_penjualan += $d->klasifikasi == 'PENJUALAN' ? $totalhariall_shift_3 : 0;
+                        $total_all_hari_shift_3_tkl += $d->klasifikasi == 'TKL' ? $totalhariall_shift_3 : 0;
+                        $total_all_hari_shift_3_tktl += $d->klasifikasi == 'TKTL' ? $totalhariall_shift_3 : 0;
+                        $total_all_hari_shift_3_mp += $d->id_perusahaan == 'MP' ? $totalhariall_shift_3 : 0;
+                        $total_all_hari_shift_3_pcf += $d->id_perusahaan == 'PCF' ? $totalhariall_shift_3 : 0;
+
+                        $total_all_premi_shift_3 += $totalpremiall_shift_3;
+                        $total_all_premi_shift_3_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $totalpremiall_shift_3 : 0;
+                        $total_all_premi_shift_3_penjualan += $d->klasifikasi == 'PENJUALAN' ? $totalpremiall_shift_3 : 0;
+                        $total_all_premi_shift_3_tkl += $d->klasifikasi == 'TKL' ? $totalpremiall_shift_3 : 0;
+                        $total_all_premi_shift_3_tktl += $d->klasifikasi == 'TKTL' ? $totalpremiall_shift_3 : 0;
+                        $total_all_premi_shift_3_mp += $d->id_perusahaan == 'MP' ? $totalpremiall_shift_3 : 0;
+                        $total_all_premi_shift_3_pcf += $d->id_perusahaan == 'PCF' ? $totalpremiall_shift_3 : 0;
+
+                        $total_all_bruto += $bruto;
+                        $total_all_bruto_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $bruto : 0;
+                        $total_all_bruto_penjualan += $d->klasifikasi == 'PENJUALAN' ? $bruto : 0;
+                        $total_all_bruto_tkl += $d->klasifikasi == 'TKL' ? $bruto : 0;
+                        $total_all_bruto_tktl += $d->klasifikasi == 'TKTL' ? $bruto : 0;
+                        $total_all_bruto_mp += $d->id_perusahaan == 'MP' ? $bruto : 0;
+                        $total_all_bruto_pcf += $d->id_perusahaan == 'PCF' ? $bruto : 0;
+
+                        $total_all_potongan_jam += $totalpotonganjam;
+                        $total_all_potonganjam_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $totalpotonganjam : 0;
+                        $total_all_potonganjam_penjualan += $d->klasifikasi == 'PENJUALAN' ? $totalpotonganjam : 0;
+                        $total_all_potonganjam_tkl += $d->klasifikasi == 'TKL' ? $totalpotonganjam : 0;
+                        $total_all_potonganjam_tktl += $d->klasifikasi == 'TKTL' ? $totalpotonganjam : 0;
+                        $total_all_potonganjam_mp += $d->id_perusahaan == 'MP' ? $totalpotonganjam : 0;
+                        $total_all_potonganjam_pcf += $d->id_perusahaan == 'PCF' ? $totalpotonganjam : 0;
+
+                        $total_all_bpjskesehatan += $bpjskesehatan;
+                        $total_all_bpjskesehatan_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $bpjskesehatan : 0;
+                        $total_all_bpjskesehatan_penjualan += $d->klasifikasi == 'PENJUALAN' ? $bpjskesehatan : 0;
+                        $total_all_bpjskesehatan_tkl += $d->klasifikasi == 'TKL' ? $bpjskesehatan : 0;
+                        $total_all_bpjskesehatan_tktl += $d->klasifikasi == 'TKTL' ? $bpjskesehatan : 0;
+                        $total_all_bpjskesehatan_mp += $d->id_perusahaan == 'MP' ? $bpjskesehatan : 0;
+                        $total_all_bpjskesehatan_pcf += $d->id_perusahaan == 'PCF' ? $bpjskesehatan : 0;
+
+                        $total_all_bpjstk += $bpjstenagakerja;
+                        $total_all_bpjstk_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $bpjstenagakerja : 0;
+                        $total_all_bpjstk_penjualan += $d->klasifikasi == 'PENJUALAN' ? $bpjstenagakerja : 0;
+                        $total_all_bpjstk_tkl += $d->klasifikasi == 'TKL' ? $bpjstenagakerja : 0;
+                        $total_all_bpjstk_tktl += $d->klasifikasi == 'TKTL' ? $bpjstenagakerja : 0;
+                        $total_all_bpjstk_mp += $d->id_perusahaan == 'MP' ? $bpjstenagakerja : 0;
+                        $total_all_bpjstk_pcf += $d->id_perusahaan == 'PCF' ? $bpjstenagakerja : 0;
+
+                        $total_all_denda += $totaldenda;
+                        $total_all_denda_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $totaldenda : 0;
+                        $total_all_denda_penjualan += $d->klasifikasi == 'PENJUALAN' ? $totaldenda : 0;
+                        $total_all_denda_tkl += $d->klasifikasi == 'TKL' ? $totaldenda : 0;
+                        $total_all_denda_tktl += $d->klasifikasi == 'TKTL' ? $totaldenda : 0;
+                        $total_all_denda_mp += $d->id_perusahaan == 'MP' ? $totaldenda : 0;
+                        $total_all_denda_pcf += $d->id_perusahaan == 'PCF' ? $totaldenda : 0;
+
+                        $total_all_pjp += $d->cicilan_pjp;
+                        $total_all_pjp_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->cicilan_pjp : 0;
+                        $total_all_pjp_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->cicilan_pjp : 0;
+                        $total_all_pjp_tkl += $d->klasifikasi == 'TKL' ? $d->cicilan_pjp : 0;
+                        $total_all_pjp_tktl += $d->klasifikasi == 'TKTL' ? $d->cicilan_pjp : 0;
+                        $total_all_pjp_mp += $d->id_perusahaan == 'MP' ? $d->cicilan_pjp : 0;
+                        $total_all_pjp_pcf += $d->id_perusahaan == 'PCF' ? $d->cicilan_pjp : 0;
+
+                        $total_all_kasbon += $d->jml_kasbon;
+                        $total_all_kasbon_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->jml_kasbon : 0;
+                        $total_all_kasbon_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->jml_kasbon : 0;
+                        $total_all_kasbon_tkl += $d->klasifikasi == 'TKL' ? $d->jml_kasbon : 0;
+                        $total_all_kasbon_tktl += $d->klasifikasi == 'TKTL' ? $d->jml_kasbon : 0;
+                        $total_all_kasbon_mp += $d->id_perusahaan == 'MP' ? $d->jml_kasbon : 0;
+                        $total_all_kasbon_pcf += $d->id_perusahaan == 'PCF' ? $d->jml_kasbon : 0;
+
+                        $total_all_spip += $spip;
+                        $total_all_spip_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $spip : 0;
+                        $total_all_spip_penjualan += $d->klasifikasi == 'PENJUALAN' ? $spip : 0;
+                        $total_all_spip_tkl += $d->klasifikasi == 'TKL' ? $spip : 0;
+                        $total_all_spip_tktl += $d->klasifikasi == 'TKTL' ? $spip : 0;
+                        $total_all_spip_mp += $d->id_perusahaan == 'MP' ? $spip : 0;
+                        $total_all_spip_pcf += $d->id_perusahaan == 'PCF' ? $spip : 0;
+
+                        $total_all_potongan += $potongan;
+                        $total_all_potongan_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $potongan : 0;
+                        $total_all_potongan_penjualan += $d->klasifikasi == 'PENJUALAN' ? $potongan : 0;
+                        $total_all_potongan_tkl += $d->klasifikasi == 'TKL' ? $potongan : 0;
+                        $total_all_potongan_tktl += $d->klasifikasi == 'TKTL' ? $potongan : 0;
+                        $total_all_potongan_mp += $d->id_perusahaan == 'MP' ? $potongan : 0;
+                        $total_all_potongan_pcf += $d->id_perusahaan == 'PCF' ? $potongan : 0;
+
+                        $total_all_bersih += $jmlbersih;
+                        $total_all_bersih_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $jmlbersih : 0;
+                        $total_all_bersih_penjualan += $d->klasifikasi == 'PENJUALAN' ? $jmlbersih : 0;
+                        $total_all_bersih_tkl += $d->klasifikasi == 'TKL' ? $jmlbersih : 0;
+                        $total_all_bersih_tktl += $d->klasifikasi == 'TKTL' ? $jmlbersih : 0;
+                        $total_all_bersih_mp += $d->id_perusahaan == 'MP' ? $jmlbersih : 0;
+                        $total_all_bersih_pcf += $d->id_perusahaan == 'PCF' ? $jmlbersih : 0;
+                    @endphp
                 @endforeach
                 <tr>
                     <td>ADMINISTRASI</td>
