@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\View;
 use Carbon\Carbon;
+
 class BBMController extends Controller
 {
     protected $cabang;
@@ -66,7 +67,7 @@ class BBMController extends Controller
     {
 
         $bln = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
-        return view('bbm.create',compact('bln'));
+        return view('bbm.create', compact('bln'));
     }
 
     public function store(Request $request)
@@ -78,9 +79,9 @@ class BBMController extends Controller
                 'tanggal' => $request->tanggal,
                 'id_driver' => $request->id_driver,
                 'tujuan' => $request->tujuan,
-                'saldo_awal' => str_replace(".","",$request->saldo_awal),
-                'saldo_akhir' => str_replace(".","",$request->saldo_akhir),
-                'jumlah_liter' => str_replace(".","",$request->jumlah_liter),
+                'saldo_awal' => str_replace(".", "", $request->saldo_awal),
+                'saldo_akhir' => str_replace(".", "", $request->saldo_akhir),
+                'jumlah_liter' => str_replace(".", "", $request->jumlah_liter),
                 'keterangan' => $request->keterangan,
                 'no_polisi' => $request->no_polisi,
             ]);
@@ -112,9 +113,9 @@ class BBMController extends Controller
                 'tanggal' => $request->tanggal,
                 'id_driver' => $request->id_driver,
                 'tujuan' => $request->tujuan,
-                'saldo_awal' => str_replace(".","",$request->saldo_awal),
-                'saldo_akhir' => str_replace(".","",$request->saldo_akhir),
-                'jumlah_liter' => str_replace(".","",$request->jumlah_liter),
+                'saldo_awal' => str_replace(".", "", $request->saldo_awal),
+                'saldo_akhir' => str_replace(".", "", $request->saldo_akhir),
+                'jumlah_liter' => str_replace(".", "", $request->jumlah_liter),
                 'keterangan' => $request->keterangan,
                 'no_polisi' => $request->no_polisi,
             ]);
@@ -147,26 +148,32 @@ class BBMController extends Controller
         $thn = $tanggal->year;
 
         $saldoawal = DB::table('bbm')
-        ->selectRaw("SUM(saldo_awal) AS saldo_awal")
-        ->whereRaw("MONTH(tanggal) = '$bln'")
-        ->whereRaw("YEAR(tanggal) = '$thn'")
-        ->where('bbm.kode_cabang', $cabang)
-        ->where('bbm.no_polisi', $no_polisi)
-        ->groupBy('saldo_awal')
-        ->orderBy('bbm.tanggal','DESC')
-        ->first();
+            ->selectRaw("SUM(saldo_awal) AS saldo_awal")
+            ->whereRaw("MONTH(tanggal) = '$bln'")
+            ->whereRaw("YEAR(tanggal) = '$thn'")
+            ->where('bbm.kode_cabang', $cabang)
+            ->where('bbm.no_polisi', $no_polisi)
+            ->groupBy('saldo_awal')
+            ->orderBy('bbm.tanggal', 'DESC')
+            ->first();
         $bbm = DB::table('bbm')
-        ->leftJoin('kendaraan', 'bbm.no_polisi', 'kendaraan.no_polisi')
-        ->leftJoin('driver_helper', 'bbm.id_driver', 'driver_helper.id_driver_helper')
-        ->whereRaw("MONTH(tanggal) = '$bulan'")
-        ->whereRaw("YEAR(tanggal) = '$tahun'")
-        ->where('bbm.no_polisi', $no_polisi)
-        ->where('bbm.kode_cabang', $cabang)
-        ->get();
+            ->leftJoin('kendaraan', 'bbm.no_polisi', 'kendaraan.no_polisi')
+            ->leftJoin('driver_helper', 'bbm.id_driver', 'driver_helper.id_driver_helper')
+            ->whereRaw("MONTH(tanggal) = '$bulan'")
+            ->whereRaw("YEAR(tanggal) = '$tahun'")
+            ->where('bbm.no_polisi', $no_polisi)
+            ->where('bbm.kode_cabang', $cabang)
+            ->get();
         if (isset($_POST['export'])) {
             header("Content-type: application/vnd-ms-excel");
             header("Content-Disposition: attachment; filename=Laporan BBM.xls");
         }
-        return view('bbm.laporan.cetak_bbm', compact('bbm', 'bulan', 'tahun', 'cabang','saldoawal'));
+        return view('bbm.laporan.cetak_bbm', compact('bbm', 'bulan', 'tahun', 'cabang', 'saldoawal'));
+    }
+
+
+    public function ratiobs()
+    {
+        return 1;
     }
 }

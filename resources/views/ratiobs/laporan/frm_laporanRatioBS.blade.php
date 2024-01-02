@@ -25,7 +25,7 @@
                         <div class="col-lg-7 col-sm-12">
                             <div class="card">
                                 <div class="card-body">
-                                    <form action="/ratioBS/cetakRatioBS" method="POST" id="frmLaporan" target="_blank">
+                                    <form action="/worksheetom/cetakratiobs" method="POST" id="frmLaporan" target="_blank">
                                         @csrf
                                         <div class="row">
                                             <div class="col-12">

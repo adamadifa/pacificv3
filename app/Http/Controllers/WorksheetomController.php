@@ -1112,4 +1112,30 @@ class WorksheetomController extends Controller
     {
         return view('worksheetom.create_produkexpired');
     }
+
+
+    public function laporanratiobs()
+    {
+        if ($this->cabang == "PCF") {
+            $cabang = DB::table('cabang')->get();
+        } else {
+            $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->get();
+        }
+        $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        return view('ratiobs.laporan.frm_laporanRatioBS', compact('cabang', 'bulan'));
+    }
+
+
+    public function cetakratiobs(Request $request)
+    {
+        $cabang = $request->kode_cabang;
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+
+        if (isset($_POST['export'])) {
+            header("Content-type: application/vnd-ms-excel");
+            header("Content-Disposition: attachment; filename=Laporan Ratio BS.xls");
+        }
+        return view('ratiobs.laporan.cetak_ratioBS', compact('bulan', 'tahun', 'cabang'));
+    }
 }

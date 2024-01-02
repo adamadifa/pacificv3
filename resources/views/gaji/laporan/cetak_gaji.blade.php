@@ -1051,132 +1051,132 @@
                             $totalizinsakit += $izinsakit;
                         @endphp
                         <!-- Total Jam Kerja 1 Bulan -->
-                        @if ($d->nama_jabatan == 'DIREKTUR')
-                            @php
-                                $totaljamkerja = 173;
-                                $totalpotonganjam = 0;
-                            @endphp
-                        @else
-                            @php
-                                $totaljamkerja = $totaljam1bulan - $totalterlambat - $totalkeluar - $totaldirumahkan - $totaltidakhadir - $totalpulangcepat - $totalizinabsen - $totalizinsakit;
-                                $totalpotonganjam = $totalterlambat + $totalkeluar + $totaldirumahkan + $totaltidakhadir + $totalpulangcepat + $totalizinabsen + $totalizinsakit;
-                            @endphp
-                        @endif
 
-                        @php
-                            //Total Shift 2
-                            $totalhariall_shift_2 = $totalhari_shift_2 + $totalharilembur_shift_2 + $totalharilembur_harilibur_shift_2;
-                            $totalpremiall_shift_2 = $totalpremi_shift_2 + $totalpremilembur_shift_2 + $totalpremilembur_harilibur_shift_2;
-                            //Total Shift 3
-                            $totalhariall_shift_3 = $totalhari_shift_3 + $totalharilembur_shift_3 + $totalharilembur_harilibur_shift_3;
-                            $totalpremiall_shift_3 = $totalpremi_shift_3 + $totalpremilembur_shift_3 + $totalpremilembur_harilibur_shift_3;
-
-                            //UPAH
-                            $upah = $d->gaji_pokok + $d->t_jabatan + $d->t_masakerja + $d->t_tanggungjawab + $d->t_makan + $d->t_istri + $d->t_skill;
-
-                            //Upah Per Jam
-                            $upah_perjam = $upah / 173;
-
-                            //Insentif
-                            $jmlinsentif = $d->iu_masakerja + $d->iu_lembur + $d->iu_penempatan + $d->iu_kpi + $d->im_ruanglingkup + $d->im_penempatan + $d->im_kinerja;
-                        @endphp
-
-                        @if ($d->nama_jabatan == 'SECURITY')
-                            @php
-                                $upah_ot_1 = 8000 * $total_overtime_1;
-                                $upah_ot_2 = 8000 * $total_overtime_2;
-                                $upah_otl_1 = 13143 * $total_overtime_libur_1;
-                                $upah_otl_2 = 0;
-                            @endphp
-                        @else
-                            @php
-                                $upah_ot_1 = $upah_perjam * 1.5 * $total_overtime_1;
-                                $upah_ot_2 = $upah_perjam * 2 * $total_overtime_2;
-                                $upah_otl_1 = floor($upah_perjam * 2 * $total_overtime_libur_1);
-                                $upah_otl_2 = $upah_perjam * 2 * $total_overtime_libur_2;
-                            @endphp
-                        @endif
-
-                        @php
-                            $total_upah_overtime = $upah_ot_1 + $upah_ot_2 + $upah_otl_1 + $upah_otl_2; // Total Upah Overtime
-                            $bruto = $upah_perjam * $totaljamkerja + $total_upah_overtime + $totalpremiall_shift_2 + $totalpremiall_shift_3; // Total Upah Bruto
-                            $bpjskesehatan = $d->iuran_kes; // BPJS Kesehatan
-                            $bpjstenagakerja = $d->iuran_tk; // BPJS Tenaga Kerja
-                        @endphp
-                        <!-- Perhitungan SPIP-->
-                        @if (($d->id_kantor == 'PST' && $cekmasakerja >= 3) || ($d->id_kantor == 'TSM' && $cekmasakerja >= 3) || $d->spip == 1)
-                            @php
-                                $spip = 5000;
-                            @endphp
-                        @else
-                            @php
-                                $spip = 0;
-                            @endphp
-                        @endif
-                        @php
-                            $potongan = ROUND($bpjskesehatan + $bpjstenagakerja + $totaldenda + $d->cicilan_pjp + $d->jml_kasbon + $d->jml_nonpjp + $spip, 0); // Potongan Upah
-                            $jmlbersih = $bruto - $potongan; // Jumlah Upah Bersih
-
-                            //Total Gaji Pokok
-                            $total_gajipokok += $d->gaji_pokok;
-                            $total_tunjangan_jabatan += $d->t_jabatan;
-                            $total_tunjangan_masakerja += $d->t_masakerja;
-                            $total_tunjangan_tanggungjawab += $d->t_tanggungjawab;
-                            $total_tunjangan_makan += $d->t_makan;
-                            $total_tunjangan_istri += $d->t_istri;
-                            $total_tunjangan_skillkhusus += $d->t_skill;
-
-                            $total_insentif_masakerja += $d->iu_masakerja;
-                            $total_insentif_lembur += $d->iu_lembur;
-                            $total_insentif_penempatan += $d->iu_penempatan;
-                            $total_insentif_kpi += $d->iu_kpi;
-
-                            $total_im_ruanglingkup += $d->im_ruanglingkup;
-                            $total_im_penempatan += $d->im_penempatan;
-                            $total_im_kinerja += $d->im_kinerja;
-
-                            $total_upah += $upah;
-                            $total_insentif += $jmlinsentif;
-
-                            $total_all_jamkerja += $totaljamkerja;
-                            $total_all_upahperjam += $upah_perjam;
-
-                            $total_all_overtime_1 += $total_overtime_1;
-                            $total_all_upah_ot_1 += $upah_ot_1;
-
-                            $total_all_overtime_2 += $total_overtime_2;
-                            $total_all_upah_ot_2 += $upah_ot_2;
-
-                            $total_all_overtime_libur += $total_overtime_libur_1;
-                            $total_all_upah_overtime_libur += $upah_otl_1;
-
-                            $total_all_upah_overtime += $total_upah_overtime;
-
-                            $total_all_hari_shift_2 += $totalhariall_shift_2;
-                            $total_all_premi_shift_2 += $totalpremiall_shift_2;
-
-                            $total_all_hari_shift_3 += $totalhariall_shift_3;
-                            $total_all_premi_shift_3 += $totalpremiall_shift_3;
-
-                            $total_all_bruto += $bruto;
-
-                            $total_all_potongan_jam += $totalpotonganjam;
-                            $total_all_bpjskesehatan += $bpjskesehatan;
-                            $total_all_bpjstk += $bpjstenagakerja;
-
-                            $total_all_denda += $totaldenda;
-
-                            $total_all_pjp += $d->cicilan_pjp;
-                            $total_all_kasbon += $d->jml_kasbon;
-                            $total_all_nonpjp += $d->jml_nonpjp;
-                            $total_all_spip += $spip;
-
-                            $total_all_potongan += $potongan;
-                            $total_all_bersih += $jmlbersih;
-
-                        @endphp
                     @endfor
+                    @if ($d->nama_jabatan == 'DIREKTUR')
+                        @php
+                            $totaljamkerja = 173;
+                            $totalpotonganjam = 0;
+                        @endphp
+                    @else
+                        @php
+                            $totaljamkerja = $totaljam1bulan - $totalterlambat - $totalkeluar - $totaldirumahkan - $totaltidakhadir - $totalpulangcepat - $totalizinabsen - $totalizinsakit;
+                            $totalpotonganjam = $totalterlambat + $totalkeluar + $totaldirumahkan + $totaltidakhadir + $totalpulangcepat + $totalizinabsen + $totalizinsakit;
+                        @endphp
+                    @endif
 
+                    @php
+                        //Total Shift 2
+                        $totalhariall_shift_2 = $totalhari_shift_2 + $totalharilembur_shift_2 + $totalharilembur_harilibur_shift_2;
+                        $totalpremiall_shift_2 = $totalpremi_shift_2 + $totalpremilembur_shift_2 + $totalpremilembur_harilibur_shift_2;
+                        //Total Shift 3
+                        $totalhariall_shift_3 = $totalhari_shift_3 + $totalharilembur_shift_3 + $totalharilembur_harilibur_shift_3;
+                        $totalpremiall_shift_3 = $totalpremi_shift_3 + $totalpremilembur_shift_3 + $totalpremilembur_harilibur_shift_3;
+
+                        //UPAH
+                        $upah = $d->gaji_pokok + $d->t_jabatan + $d->t_masakerja + $d->t_tanggungjawab + $d->t_makan + $d->t_istri + $d->t_skill;
+
+                        //Upah Per Jam
+                        $upah_perjam = $upah / 173;
+
+                        //Insentif
+                        $jmlinsentif = $d->iu_masakerja + $d->iu_lembur + $d->iu_penempatan + $d->iu_kpi + $d->im_ruanglingkup + $d->im_penempatan + $d->im_kinerja;
+                    @endphp
+
+                    @if ($d->nama_jabatan == 'SECURITY')
+                        @php
+                            $upah_ot_1 = 8000 * $total_overtime_1;
+                            $upah_ot_2 = 8000 * $total_overtime_2;
+                            $upah_otl_1 = 13143 * $total_overtime_libur_1;
+                            $upah_otl_2 = 0;
+                        @endphp
+                    @else
+                        @php
+                            $upah_ot_1 = $upah_perjam * 1.5 * $total_overtime_1;
+                            $upah_ot_2 = $upah_perjam * 2 * $total_overtime_2;
+                            $upah_otl_1 = floor($upah_perjam * 2 * $total_overtime_libur_1);
+                            $upah_otl_2 = $upah_perjam * 2 * $total_overtime_libur_2;
+                        @endphp
+                    @endif
+
+                    @php
+                        $total_upah_overtime = $upah_ot_1 + $upah_ot_2 + $upah_otl_1 + $upah_otl_2; // Total Upah Overtime
+                        $bruto = $upah_perjam * $totaljamkerja + $total_upah_overtime + $totalpremiall_shift_2 + $totalpremiall_shift_3; // Total Upah Bruto
+                        $bpjskesehatan = $d->iuran_kes; // BPJS Kesehatan
+                        $bpjstenagakerja = $d->iuran_tk; // BPJS Tenaga Kerja
+                    @endphp
+                    <!-- Perhitungan SPIP-->
+                    @if (($d->id_kantor == 'PST' && $cekmasakerja >= 3) || ($d->id_kantor == 'TSM' && $cekmasakerja >= 3) || $d->spip == 1)
+                        @php
+                            $spip = 5000;
+                        @endphp
+                    @else
+                        @php
+                            $spip = 0;
+                        @endphp
+                    @endif
+                    @php
+                        $potongan = ROUND($bpjskesehatan + $bpjstenagakerja + $totaldenda + $d->cicilan_pjp + $d->jml_kasbon + $d->jml_nonpjp + $spip, 0); // Potongan Upah
+                        $jmlbersih = $bruto - $potongan; // Jumlah Upah Bersih
+
+                        //Total Gaji Pokok
+                        $total_gajipokok += $d->gaji_pokok;
+                        $total_tunjangan_jabatan += $d->t_jabatan;
+                        $total_tunjangan_masakerja += $d->t_masakerja;
+                        $total_tunjangan_tanggungjawab += $d->t_tanggungjawab;
+                        $total_tunjangan_makan += $d->t_makan;
+                        $total_tunjangan_istri += $d->t_istri;
+                        $total_tunjangan_skillkhusus += $d->t_skill;
+
+                        $total_insentif_masakerja += $d->iu_masakerja;
+                        $total_insentif_lembur += $d->iu_lembur;
+                        $total_insentif_penempatan += $d->iu_penempatan;
+                        $total_insentif_kpi += $d->iu_kpi;
+
+                        $total_im_ruanglingkup += $d->im_ruanglingkup;
+                        $total_im_penempatan += $d->im_penempatan;
+                        $total_im_kinerja += $d->im_kinerja;
+
+                        $total_upah += $upah;
+                        $total_insentif += $jmlinsentif;
+
+                        $total_all_jamkerja += $totaljamkerja;
+                        $total_all_upahperjam += $upah_perjam;
+
+                        $total_all_overtime_1 += $total_overtime_1;
+                        $total_all_upah_ot_1 += $upah_ot_1;
+
+                        $total_all_overtime_2 += $total_overtime_2;
+                        $total_all_upah_ot_2 += $upah_ot_2;
+
+                        $total_all_overtime_libur += $total_overtime_libur_1;
+                        $total_all_upah_overtime_libur += $upah_otl_1;
+
+                        $total_all_upah_overtime += $total_upah_overtime;
+
+                        $total_all_hari_shift_2 += $totalhariall_shift_2;
+                        $total_all_premi_shift_2 += $totalpremiall_shift_2;
+
+                        $total_all_hari_shift_3 += $totalhariall_shift_3;
+                        $total_all_premi_shift_3 += $totalpremiall_shift_3;
+
+                        $total_all_bruto += $bruto;
+
+                        $total_all_potongan_jam += $totalpotonganjam;
+                        $total_all_bpjskesehatan += $bpjskesehatan;
+                        $total_all_bpjstk += $bpjstenagakerja;
+
+                        $total_all_denda += $totaldenda;
+
+                        $total_all_pjp += $d->cicilan_pjp;
+                        $total_all_kasbon += $d->jml_kasbon;
+                        $total_all_nonpjp += $d->jml_nonpjp;
+                        $total_all_spip += $spip;
+
+                        $total_all_potongan += $potongan;
+                        $total_all_bersih += $jmlbersih;
+
+                    @endphp
 
                     <tr>
                         <td>{{ $loop->iteration }}</td>

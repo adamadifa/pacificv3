@@ -141,7 +141,7 @@ use App\Http\Controllers\VisitController;
 use App\Http\Controllers\WhatsappController;
 use App\Http\Controllers\WorksheetomController;
 use App\Http\Controllers\BBMController;
-use App\Http\Controllers\RatioBsController;
+
 use App\Models\Barangpembelian;
 use App\Models\Harilibur;
 use App\Models\Logamtokertas;
@@ -2038,6 +2038,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/worksheetom/rekapbuffermaxsell', [WorksheetomController::class, 'rekapbuffermaxsell']);
     Route::post('/worksheetom/cetakrekapbuffermaxsell', [WorksheetomController::class, 'cetakrekapbuffermaxsell']);
 
+    Route::get('/worksheetom/laporanratiobs', [WorksheetomController::class, 'laporanratiobs']);
+    Route::post('/worksheetom/cetakratiobs', [WorksheetomController::class, 'cetakratiobs']);
+
     //Visit Pelanggan
     Route::get('/worksheetom/visitpelanggan', [VisitController::class, 'index']);
 
@@ -2051,12 +2054,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/bbm/edit', 'edit')->name('bbm.edit');
         Route::get('/bbm/laporanBBM', 'laporanBBM')->name('bbm.laporanBBM');
         Route::post('/bbm/cetakBBM', 'cetakBBM')->name('bbm.cetakBBM');
-    });
-
-    Route::controller(RatioBsController::class)->group(function () {
-
-        Route::get('/ratioBS/laporanRatioBS', 'laporanRatioBS')->name('bbm.laporanRatioBS');
-        Route::post('/ratioBS/cetakRatioBS', 'cetakRatioBS')->name('bbm.cetakRatioBS');
     });
 });
 
