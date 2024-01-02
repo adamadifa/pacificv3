@@ -435,6 +435,88 @@
                             }
                         @endphp
                         <!-- Jika Ada Data Presensi-->
+                        <!-- Menghitung Lembur Reguler-->
+                        @if (!empty($ceklembur))
+                            @php
+                                $tgl_lembur_dari = $ceklembur[0]['tanggal_dari'];
+                                $tgl_lembur_sampai = $ceklembur[0]['tanggal_sampai'];
+                                $jamlembur_dari = date('H:i', strtotime($tgl_lembur_dari));
+                                $jmljam_lbr = hitungjamdesimal($tgl_lembur_dari, $tgl_lembur_sampai);
+                                $istirahatlbr = $ceklembur[0]['istirahat'] == 1 ? 1 : 0;
+                                $jmljam_lembur = $jmljam_lbr > 7 ? 7 : $jmljam_lbr - $istirahatlbr;
+                                $kategori_lembur = $ceklembur[0]['kategori'];
+                            @endphp
+                            @if (empty($ceklibur) && empty($cekliburpenggantiminggu) && empty($cekwfhfull) && $namahari != 'Minggu')
+                                @if ($jamlembur_dari >= '22:00' && $jmljam_lbr >= 5)
+                                    @php
+                                        $premilembur = 6000;
+                                        $premilembur_shift_3 = 6000;
+                                        $totalpremilembur_shift_3 += $premilembur_shift_3;
+                                        $totalharilembur_shift_3 += 1;
+                                    @endphp
+                                @elseif($jamlembur_dari >= '15:00' && $jmljam_lbr >= 5)
+                                    @php
+                                        $premilembur = 5000;
+                                        $premilembur_shift_2 = 5000;
+                                        $totalpremilembur_shift_2 += $premilembur_shift_2;
+                                        $totalharilembur_shift_2 += 1;
+                                    @endphp
+                                @endif
+                            @endif
+
+                            <!--Kategori Lembur 1-->
+                            @php
+                                $overtime_1 = $jmljam_lembur > 1 ? 1 : $jmljam_lembur;
+                                $overtime_1 = round($overtime_1, 2, PHP_ROUND_HALF_DOWN);
+                                $overtime_2 = $jmljam_lembur > 1 ? $jmljam_lembur - 1 : 0;
+                                $overtime_2 = round($overtime_2, 2, PHP_ROUND_HALF_DOWN);
+                                $total_overtime_1 += $overtime_1;
+                                $total_overtime_2 += $overtime_2;
+                            @endphp
+                        @else
+                            @php
+                                $premilembur = 0;
+                            @endphp
+                        @endif
+                        <!-- Menghitung Lembur Hari Libur -->
+                        @if (!empty($ceklemburharilibur))
+                            @php
+                                $tgl_lembur_dari = $ceklemburharilibur[0]['tanggal_dari'];
+                                $tgl_lembur_sampai = $ceklemburharilibur[0]['tanggal_sampai'];
+                                $jamlembur_dari = date('H:i', strtotime($tgl_lembur_dari));
+                                $jmljam_lbr = hitungjamdesimal($tgl_lembur_dari, $tgl_lembur_sampai);
+                                $istirahatlbr = $ceklemburharilibur[0]['istirahat'] == 1 ? 1 : 0;
+                                $jmljam_lembur = $jmljam_lbr > 7 ? 7 : $jmljam_lbr - $istirahatlbr;
+                                $kategori_lembur = $ceklemburharilibur[0]['kategori'];
+                            @endphp
+                            @if (empty($ceklibur) && empty($cekliburpenggantiminggu) && empty($cekwfhfull) && $namahari != 'Minggu')
+                                @if ($jamlembur_dari >= '22:00' && $jmljam_lbr >= 5)
+                                    @php
+                                        $premilembur_harilibur = 6000;
+                                        $premilembur_harilibur_shift_3 = 6000;
+                                        $totalpremilembur_harilibur_shift_3 += $premilembur_harilibur_shift_3;
+                                        $totalharilembur_harilibur_shift_3 += 1;
+                                    @endphp
+                                @elseif($jamlembur_dari >= '15:00' && $jmljam_lbr >= 5)
+                                    @php
+                                        $premilembur_harilibur = 5000;
+                                        $premilembur_harilibur_shift_2 = 5000;
+                                        $totalpremilembur_harilibur_shift_2 += $premilembur_harilibur_shift_2;
+                                        $totalharilembur_harilibur_shift_2 += 1;
+                                    @endphp
+                                @endif
+                            @endif
+                            @php
+                                $overtime_libur_1 = $jmljam_lembur;
+                                $overtime_libur_2 = 0;
+                                $total_overtime_libur_1 += $overtime_libur_1;
+                                $total_overtime_libur_2 += $overtime_libur_2;
+                            @endphp
+                        @else
+                            @php
+                                $premilembur_harilibur = 0;
+                            @endphp
+                        @endif
                         @if ($d->$hari_ke != null)
                             @php
                                 $datapresensi = explode('|', $d->$hari_ke); // Split Data Presensi Per Tanggal
@@ -816,88 +898,6 @@
                                     $izinabsen = 0;
                                     $izinsakit = 0;
                                 @endphp
-                                <!-- Menghitung Lembur Reguler-->
-                                @if (!empty($ceklembur))
-                                    @php
-                                        $tgl_lembur_dari = $ceklembur[0]['tanggal_dari'];
-                                        $tgl_lembur_sampai = $ceklembur[0]['tanggal_sampai'];
-                                        $jamlembur_dari = date('H:i', strtotime($tgl_lembur_dari));
-                                        $jmljam_lbr = hitungjamdesimal($tgl_lembur_dari, $tgl_lembur_sampai);
-                                        $istirahatlbr = $ceklembur[0]['istirahat'] == 1 ? 1 : 0;
-                                        $jmljam_lembur = $jmljam_lbr > 7 ? 7 : $jmljam_lbr - $istirahatlbr;
-                                        $kategori_lembur = $ceklembur[0]['kategori'];
-                                    @endphp
-                                    @if (empty($ceklibur) && empty($cekliburpenggantiminggu) && empty($cekwfhfull) && $namahari != 'Minggu')
-                                        @if ($jamlembur_dari >= '22:00' && $jmljam_lbr >= 5)
-                                            @php
-                                                $premilembur = 6000;
-                                                $premilembur_shift_3 = 6000;
-                                                $totalpremilembur_shift_3 += $premilembur_shift_3;
-                                                $totalharilembur_shift_3 += 1;
-                                            @endphp
-                                        @elseif($jamlembur_dari >= '15:00' && $jmljam_lbr >= 5)
-                                            @php
-                                                $premilembur = 5000;
-                                                $premilembur_shift_2 = 5000;
-                                                $totalpremilembur_shift_2 += $premilembur_shift_2;
-                                                $totalharilembur_shift_2 += 1;
-                                            @endphp
-                                        @endif
-                                    @endif
-
-                                    <!--Kategori Lembur 1-->
-                                    @php
-                                        $overtime_1 = $jmljam_lembur > 1 ? 1 : $jmljam_lembur;
-                                        $overtime_1 = round($overtime_1, 2, PHP_ROUND_HALF_DOWN);
-                                        $overtime_2 = $jmljam_lembur > 1 ? $jmljam_lembur - 1 : 0;
-                                        $overtime_2 = round($overtime_2, 2, PHP_ROUND_HALF_DOWN);
-                                        $total_overtime_1 += $overtime_1;
-                                        $total_overtime_2 += $overtime_2;
-                                    @endphp
-                                @else
-                                    @php
-                                        $premilembur = 0;
-                                    @endphp
-                                @endif
-                                <!-- Menghitung Lembur Hari Libur -->
-                                @if (!empty($ceklemburharilibur))
-                                    @php
-                                        $tgl_lembur_dari = $ceklemburharilibur[0]['tanggal_dari'];
-                                        $tgl_lembur_sampai = $ceklemburharilibur[0]['tanggal_sampai'];
-                                        $jamlembur_dari = date('H:i', strtotime($tgl_lembur_dari));
-                                        $jmljam_lbr = hitungjamdesimal($tgl_lembur_dari, $tgl_lembur_sampai);
-                                        $istirahatlbr = $ceklemburharilibur[0]['istirahat'] == 1 ? 1 : 0;
-                                        $jmljam_lembur = $jmljam_lbr > 7 ? 7 : $jmljam_lbr - $istirahatlbr;
-                                        $kategori_lembur = $ceklemburharilibur[0]['kategori'];
-                                    @endphp
-                                    @if (empty($ceklibur) && empty($cekliburpenggantiminggu) && empty($cekwfhfull) && $namahari != 'Minggu')
-                                        @if ($jamlembur_dari >= '22:00' && $jmljam_lbr >= 5)
-                                            @php
-                                                $premilembur_harilibur = 6000;
-                                                $premilembur_harilibur_shift_3 = 6000;
-                                                $totalpremilembur_harilibur_shift_3 += $premilembur_harilibur_shift_3;
-                                                $totalharilembur_harilibur_shift_3 += 1;
-                                            @endphp
-                                        @elseif($jamlembur_dari >= '15:00' && $jmljam_lbr >= 5)
-                                            @php
-                                                $premilembur_harilibur = 5000;
-                                                $premilembur_harilibur_shift_2 = 5000;
-                                                $totalpremilembur_harilibur_shift_2 += $premilembur_harilibur_shift_2;
-                                                $totalharilembur_harilibur_shift_2 += 1;
-                                            @endphp
-                                        @endif
-                                    @endif
-                                    @php
-                                        $overtime_libur_1 = $jmljam_lembur;
-                                        $overtime_libur_2 = 0;
-                                        $total_overtime_libur_1 += $overtime_libur_1;
-                                        $total_overtime_libur_2 += $overtime_libur_2;
-                                    @endphp
-                                @else
-                                    @php
-                                        $premilembur_harilibur = 0;
-                                    @endphp
-                                @endif
                             @elseif($status == 's')
                                 @if ($namahari != 'Minggu')
                                     @if (!empty($sid))
