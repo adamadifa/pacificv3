@@ -4597,7 +4597,7 @@ class TargetkomisiController extends Controller
                         ) move_fak ON ( pj.no_fak_penj = move_fak.no_fak_penj )
                 ) pjmove ON ( penjualan.no_fak_penj = pjmove.no_fak_penj )
                 WHERE tgltransaksi BETWEEN '$startdate' AND '$enddate' AND nama_pelanggan != 'BATAL'
-                GROUP BY id_sales
+                GROUP BY salesbarunew
             ) pelangganaktif"),
             function ($join) {
                 $join->on('karyawan.id_karyawan', '=', 'pelangganaktif.salesbarunew');
