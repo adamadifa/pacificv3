@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <title>RawBT Integration Demo</title>
@@ -43,7 +44,6 @@
             content: '\1F855';
             margin-right: 4px;
         }
-
     </style>
     <script>
         // for php demo call
@@ -59,10 +59,10 @@
                 b.text(b.attr('data-old'));
             })
         }
-
     </script>
 
 </head>
+
 <body>
     <img src="resources/rawbtlogo.png" alt="black & white picture">
     <h1>RawBT Integration Demo</h1>
@@ -76,4 +76,5 @@
 
     <p><a href="https://rawbt.ru/">Visit RawBT site</a></p>
 </body>
+
 </html>

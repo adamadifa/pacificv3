@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak Laporan Penjualan {{ date('d-m-y') }}</title>
+    <title>Cetak Laporan Gaji {{ date('d-m-y') }}</title>
     <style>
         /* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -1113,7 +1113,7 @@
                                         $jmljam_lembur = $jmljam_lbr > 7 ? 7 : $jmljam_lbr - $istirahatlbr;
                                         $kategori_lembur = $ceklemburharilibur[0]['kategori'];
                                     @endphp
-                                    @if (empty($ceklibur) && empty($cekliburpenggantiminggu) && empty($cekwfhfull) && $namahari != 'Minggu')
+                                    @if (empty($ceklibur) && empty($cekliburpenggantiminggu) && empty($cekwfhfull))
                                         @if ($jamlembur_dari >= '22:00' && $jmljam_lbr >= 5)
                                             @php
                                                 $premilembur_harilibur = 6000;
@@ -1311,11 +1311,11 @@
 
                     @php
                         //Total Shift 2
-                        $totalhariall_shift_2 = $totalhari_shift_2 + $totalharilembur_shift_2 + $totalharilembur_harilibur_shift_2;
-                        $totalpremiall_shift_2 = $totalpremi_shift_2 + $totalpremilembur_shift_2 + $totalpremilembur_harilibur_shift_2;
+                        $totalhariall_shift_2 = $totalhari_shift_2 + $totalharilembur_harilibur_shift_2;
+                        $totalpremiall_shift_2 = $totalpremi_shift_2 + $totalpremilembur_harilibur_shift_2;
                         //Total Shift 3
-                        $totalhariall_shift_3 = $totalhari_shift_3 + $totalharilembur_shift_3 + $totalharilembur_harilibur_shift_3;
-                        $totalpremiall_shift_3 = $totalpremi_shift_3 + $totalpremilembur_shift_3 + $totalpremilembur_harilibur_shift_3;
+                        $totalhariall_shift_3 = $totalhari_shift_3 + $totalharilembur_harilibur_shift_3;
+                        $totalpremiall_shift_3 = $totalpremi_shift_3 + $totalpremilembur_harilibur_shift_3;
 
                         //UPAH
                         $upah = $d->gaji_pokok + $d->t_jabatan + $d->t_masakerja + $d->t_tanggungjawab + $d->t_makan + $d->t_istri + $d->t_skill;
