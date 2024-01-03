@@ -814,15 +814,15 @@
                                         @if (empty($ceklibur) && empty($cekliburpenggantiminggu) && empty($cekwfhfull) && $namahari != 'Minggu')
                                             @if ($jamlembur_dari >= '22:00' && $jmljam_lbr >= 5)
                                                 @php
-                                                    $premilembur_harilibur = 6000;
-                                                    $premilembur_harilibur_shift_3 = 6000;
+                                                    $premilembur_harilibur = 6000 * 2;
+                                                    $premilembur_harilibur_shift_3 = 6000 * 2;
                                                     $totalpremilembur_harilibur_shift_3 += $premilembur_harilibur_shift_3;
                                                     $totalharilembur_harilibur_shift_3 += 1;
                                                 @endphp
                                             @elseif($jamlembur_dari >= '15:00' && $jmljam_lbr >= 5)
                                                 @php
-                                                    $premilembur_harilibur = 5000;
-                                                    $premilembur_harilibur_shift_2 = 5000;
+                                                    $premilembur_harilibur = 5000 * 2;
+                                                    $premilembur_harilibur_shift_2 = 5000 * 2;
                                                     $totalpremilembur_harilibur_shift_2 += $premilembur_harilibur_shift_2;
                                                     $totalharilembur_harilibur_shift_2 += 1;
                                                 @endphp
