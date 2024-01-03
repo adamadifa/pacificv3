@@ -1103,11 +1103,11 @@
                         $totaljamkerja = $totaljam1bulan - $totalterlambat - $totalkeluar - $totaldirumahkan - $totaltidakhadir - $totalpulangcepat - $totalizinabsen - $totalizinsakit;
 
                         //Total Shift 2
-                        $totalhariall_shift_2 = $totalhari_shift_2 + $totalharilembur_shift_2 + $totalharilembur_harilibur_shift_2;
-                        $totalpremiall_shift_2 = $totalpremi_shift_2 + $totalpremilembur_shift_2 + $totalpremilembur_harilibur_shift_2;
+                        $totalhariall_shift_2 = $totalhari_shift_2 + $totalharilembur_harilibur_shift_2;
+                        $totalpremiall_shift_2 = $totalpremi_shift_2 + $totalpremilembur_harilibur_shift_2;
                         //Total Shift 3
-                        $totalhariall_shift_3 = $totalhari_shift_3 + $totalharilembur_shift_3 + $totalharilembur_harilibur_shift_3;
-                        $totalpremiall_shift_3 = $totalpremi_shift_3 + $totalpremilembur_shift_3 + $totalpremilembur_harilibur_shift_3;
+                        $totalhariall_shift_3 = $totalhari_shift_3 + $totalharilembur_harilibur_shift_3;
+                        $totalpremiall_shift_3 = $totalpremi_shift_3 + $totalpremilembur_harilibur_shift_3;
                     @endphp
                     <td style="font-size: 16px; text-align:center; font-weight:bold">{{ $totaljam1bulan }}</td>
                     <td style="text-align: center; color:red; font-size:16px">
