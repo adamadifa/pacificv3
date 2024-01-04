@@ -205,7 +205,7 @@ class KontrabonangkutanController extends Controller
         } else {
             $lastno_bukti = "";
         }
-        $no_bukti = buatkode($lastno_bukti, 'LR' . $cbg . $tahun, 4);
+        $no_bukti = buatkode($lastno_bukti, 'LR' . $cbg . $tahun, 5);
 
         $bukubesar = DB::table('buku_besar')->whereRaw('LEFT(no_bukti,6)="GJ' . $bulan . $tahun . '"')
             ->orderBy('no_bukti', 'desc')
