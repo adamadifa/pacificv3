@@ -220,8 +220,7 @@ class KontrabonangkutanController extends Controller
             $last_no_bukti_bukubesar = "";
         }
 
-        // echo $last_no_bukti_bukubesar;
-
+        
 
         $nobukti_bukubesar_angkutan = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $tahun, 6);
         $nobukti_bukubesar_bank_angkutan = buatkode($nobukti_bukubesar_angkutan, 'GJ' . $bulan . $tahun, 6);
