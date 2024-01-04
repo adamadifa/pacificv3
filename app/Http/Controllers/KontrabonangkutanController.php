@@ -210,7 +210,7 @@ class KontrabonangkutanController extends Controller
         $no_bukti = buatkode($lastno_bukti, 'LR' . $cbg . $tahun, 5);
 
 
-        dd($lastno_bukti."-".$no_bukti);
+        
         $bukubesar = DB::table('buku_besar')->whereRaw('LEFT(no_bukti,6)="GJ' . $bulan . $tahun . '"')
             ->orderBy('no_bukti', 'desc')
             ->first();
@@ -220,7 +220,8 @@ class KontrabonangkutanController extends Controller
             $last_no_bukti_bukubesar = "";
         }
 
-        
+        // echo $last_no_bukti_bukubesar;
+
 
         $nobukti_bukubesar_angkutan = buatkode($last_no_bukti_bukubesar, 'GJ' . $bulan . $tahun, 6);
         $nobukti_bukubesar_bank_angkutan = buatkode($nobukti_bukubesar_angkutan, 'GJ' . $bulan . $tahun, 6);
