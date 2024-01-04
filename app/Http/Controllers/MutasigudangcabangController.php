@@ -966,6 +966,7 @@ class MutasigudangcabangController extends Controller
         jumlah AS sabulanlalu,
         sisamutasi,
         buffer,
+        max_stok,
         totalpengembalian,totalpengambilan,
         IFNULL( jumlah, 0 ) + IFNULL( sisamutasi, 0 )  AS saldoakhir")
             ->leftJoin(
@@ -1037,6 +1038,18 @@ class MutasigudangcabangController extends Controller
                 ) bf"),
                 function ($join) {
                     $join->on('master_barang.kode_produk', '=', 'bf.kode_produk');
+                }
+            )
+
+            ->leftJoin(
+                DB::raw("(
+                SELECT kode_produk,jumlah as max_stok
+                FROM limit_stok_detail
+                INNER JOIN limit_stok ON limit_stok_detail.kode_limit_stok = limit_stok.kode_limit_stok
+                WHERE kode_cabang='$cabang'
+                ) ms"),
+                function ($join) {
+                    $join->on('master_barang.kode_produk', '=', 'ms.kode_produk');
                 }
             )
 

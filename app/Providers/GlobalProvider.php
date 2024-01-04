@@ -1319,7 +1319,7 @@ class GlobalProvider extends ServiceProvider
 
             $om_menu = ['admin', 'direktur', 'manager accounting', 'rom', 'kepala admin'];
 
-            $bufferlimit = ['admin'];
+            $bufferlimit = ['admin','kepala admin'];
             $shareddata = [
 
                 'operator_pusat' => $operator_pusat,
