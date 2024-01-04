@@ -304,7 +304,7 @@ class KontrabonangkutanController extends Controller
 
             if (!empty($jmlhutang)) {
 
-                $no_bukti_hutang = buatkode($no_bukti, 'LR' . $cbg . $tahun, 4);
+                $no_bukti_hutang = buatkode($no_bukti, 'LR' . $cbg . $tahun, 5);
                 $data = array(
                     'no_bukti'            => $no_bukti_hutang,
                     'tgl_ledger'          => $tgl_ledger,
