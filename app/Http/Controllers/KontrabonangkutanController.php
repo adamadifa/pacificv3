@@ -205,8 +205,12 @@ class KontrabonangkutanController extends Controller
         } else {
             $lastno_bukti = "";
         }
-        $no_bukti = buatkode($lastno_bukti, 'LR' . $cbg . $tahun, 4);
 
+        
+        $no_bukti = buatkode($lastno_bukti, 'LR' . $cbg . $tahun, 5);
+
+
+        
         $bukubesar = DB::table('buku_besar')->whereRaw('LEFT(no_bukti,6)="GJ' . $bulan . $tahun . '"')
             ->orderBy('no_bukti', 'desc')
             ->first();
@@ -300,7 +304,7 @@ class KontrabonangkutanController extends Controller
 
             if (!empty($jmlhutang)) {
 
-                $no_bukti_hutang = buatkode($no_bukti, 'LR' . $cbg . $tahun, 4);
+                $no_bukti_hutang = buatkode($no_bukti, 'LR' . $cbg . $tahun, 5);
                 $data = array(
                     'no_bukti'            => $no_bukti_hutang,
                     'tgl_ledger'          => $tgl_ledger,
