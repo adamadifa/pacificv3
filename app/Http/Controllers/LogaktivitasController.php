@@ -14,7 +14,8 @@ class LogaktivitasController extends Controller
         $query = Logaktivitas::query();
         $query->join('users', 'log_aktivitas.id_user', '=', 'users.id');
         $query->where('id_user', $request->id_user);
-        $query->whereRaw('DATE(datetime)="' . $request->tanggal . '"');
+        $query->whereRaw('DATE(datetime)>="' . $request->dari . '"');
+        $query->whereRaw('DATE(datetime)<="' . $request->sampai . '"');
         $log = $query->get();
         $cabang = Cabang::orderBy('nama_cabang')->get();
         return view('logaktivitas.index', compact('cabang', 'log'));
