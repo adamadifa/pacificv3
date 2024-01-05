@@ -139,16 +139,14 @@
                                                             </form>
                                                         @endif
                                                     @endif
+
+
+
                                                     @if (in_array($level, $ticket_approve))
-                                                        @if ($d->status != 1 && $d->status != 2)
-                                                            <a href="/ticket/{{ Crypt::encrypt($d->kode_pengajuan) }}/approve"
-                                                                class="ml-1"><i class="fa fa-check success"></i></a>
-                                                        @else
-                                                            @if ($d->status != 2)
-                                                                <a href="/ticket/{{ Crypt::encrypt($d->kode_pengajuan) }}/batalapprove"
-                                                                    class="ml-1"><i class="fa fa-close danger"></i></a>
-                                                            @endif
-                                                        @endif
+                                                        <a href="#" class="approve"
+                                                            kode_pengajuan = "{{ $d->kode_pengajuan }}">
+                                                            <i class="feather icon-external-link success"></i>
+                                                        </a>
                                                     @endif
                                                     @if (in_array($level, $ticket_done))
                                                         @if ($d->status != 2)
@@ -187,6 +185,23 @@
                 </div>
                 <div class="modal-body">
                     <div id="loadinput"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade text-left" id="mdlapprove" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel18">Aproove Permintaan</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="loadapproveticket">
+
                 </div>
             </div>
         </div>
@@ -235,7 +250,27 @@
             });
 
 
+            $(".approve").click(function(e) {
+                e.preventDefault();
+                var kode_pengajuan = $(this).attr('kode_pengajuan');
+                $('#mdlapprove').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
 
+                $.ajax({
+                    type: 'POST',
+                    url: '/ticket/approveform',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        kode_pengajuan: kode_pengajuan
+                    },
+                    cache: false,
+                    success: function(respond) {
+                        $("#loadapproveticket").html(respond);
+                    }
+                });
+            });
         });
     </script>
 @endpush
