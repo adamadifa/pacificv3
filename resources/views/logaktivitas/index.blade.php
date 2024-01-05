@@ -36,7 +36,7 @@
                                 </div>
                                 @if (Auth::user()->kode_cabang == 'PCF')
 
-                                    <div class="col-lg-3 col-sm-12">
+                                    <div class="col-lg-2 col-sm-12">
                                         <div class="form-group  ">
                                             <select name="kode_cabang" id="kode_cabang" class="form-control">
                                                 <option value="">Semua Cabang</option>
@@ -53,14 +53,14 @@
                                     <input type="hidden" name="kode_cabang" id="kode_cabang"
                                         value="{{ Auth::user()->kode_cabang }}">
                                 @endif
-                                <div class="col-lg-3 col-sm-12">
+                                <div class="col-lg-2 col-sm-12">
                                     <div class="form-group">
                                         <select name="id_user" id="id_user" class="form-control">
                                             <option value="">Pilih User</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-lg-3 col-sm-12">
+                                <div class="col-lg-2 col-sm-12">
                                     <button type="submit" name="submit" value="1" class="btn btn-primary"><i
                                             class="fa fa-search mr-2"></i> Search</button>
                                 </div>
