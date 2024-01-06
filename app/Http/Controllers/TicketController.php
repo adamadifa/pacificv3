@@ -32,7 +32,7 @@ class TicketController extends Controller
             }
         }
 
-        if (Auth::user()->level != "admin" && Auth::user()->level != "manager accounting") {
+        if (Auth::user()->level != "admin" && Auth::user()->level != "manager accounting" && Auth::user()->level != "direktur") {
             $query->where('id_user', Auth::user()->id);
         }
 
@@ -48,6 +48,11 @@ class TicketController extends Controller
         return view('ticket.create');
     }
 
+
+    public function approveform(Request $request){
+        $kode_pengajuan = $request->kode_pengajuan;
+        return view('ticket.approveform');
+    }
     public function store(Request $request)
     {
         $keterangan = $request->keterangan;
