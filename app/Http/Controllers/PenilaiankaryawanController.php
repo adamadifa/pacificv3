@@ -600,9 +600,9 @@ class PenilaiankaryawanController extends Controller
     public function approve($kode_penilaian, $kategori_jabatan)
     {
         $kode_penilaian = Crypt::decrypt($kode_penilaian);
-
         $kategori_jabatan = Crypt::decrypt($kategori_jabatan);
         $executor = Auth::user()->kategori_jabatan;
+
 
         if (Auth::user()->level == "manager hrd") {
             $kategori_jabatan = "hrd";
@@ -617,7 +617,7 @@ class PenilaiankaryawanController extends Controller
             } else {
                 $update = DB::table('hrd_penilaian')->where('kode_penilaian', $kode_penilaian)
                     ->update([
-                        $kategori_jabatan => Auth::user()->id,
+                        $kategori_jabatan => $kategori_jabatan == "hrd" ? 90 :  Auth::user()->id,
                         'status' => NULL
                     ]);
             }

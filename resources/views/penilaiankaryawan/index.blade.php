@@ -163,56 +163,58 @@
                                                 </td>
                                                 <td>{{ $d->nama_dept }}</td>
                                                 <td>{{ $d->nama_jabatan }}</td>
-                                                <?php
-                                        for($i=0; $i<count($approve); $i++){
-                                        $level = strtolower($inisial[$approve[$i]]);
-                                        if($i < count($approve) - 1){
-                                            $test = $i +1;
-                                            $nextlevel = strtolower($inisial[$approve[$i + 1]]);
-                                        }else{
-                                            $nextlevel = strtolower($inisial[$approve[$i]]);
-                                            $test = 0;
-                                        }
 
-                                        //echo $test;
-                                        ?>
-                                                <td>
-                                                    <?php
-                                                    if ($i == 0 && $d->status == 2 && !empty($d->$level) && empty($d->$nextlevel)) {
-                                                        //Jika Index 0 dan Stataus ==2 dan Level Tidak Kosong dan Level Selanjutnya Kosong Maka X
-                                                        echo "<i class='fa fa-close danger'></i>";
-                                                    } elseif ($i == 0 && $d->status == 2 && !empty($d->$level) && !empty($d->$nextlevel)) {
-                                                        // Jika Index 0 dan Status == 2 dan LEvel Tidak Kosong dan Level Berikutnya Tidak Kosong Maka V
-                                                        echo "<i class='fa fa-check success'></i>";
-                                                    } elseif ($d->status == 2 && !empty($d->$level) && $level == 'dirut') {
-                                                        //Jika Status == 2 Level Tidak Kosong  dan Level == "DIRUT" maka X
-                                                        echo "<i class='fa fa-close danger'></i>";
-                                                    } elseif ($d->status == 2 && !empty($d->$level) && empty($d->$nextlevel)) {
-                                                        echo "<i class='fa fa-close danger'></i>";
-                                                    } elseif ($d->status == 2 && !empty($d->$level) && !empty($d->$nextlevel)) {
-                                                        echo "<i class='fa fa-check success'></i>";
-                                                    } elseif ($d->status == null && empty($d->$level)) {
-                                                        echo "<i class='fa fa-history warning'></i>";
-                                                    } elseif ($d->status == null && !empty($d->$level)) {
-                                                        echo "<i class='fa fa-check success'></i>";
-                                                    } elseif ($d->status == 1 && !empty($d->$level)) {
-                                                        echo "<i class='fa fa-check success'></i>";
-                                                    }
-                                                    ?>
-                                                </td>
-                                                <?php
-                                        }
-                                        ?>
+                                                @for ($i = 0; $i < count($approve); $i++)
+                                                    @php
+                                                        $level = strtolower($inisial[$approve[$i]]);
+                                                        if ($i < count($approve) - 1) {
+                                                            //$test = $i + 1;
+                                                            $nextlevel = strtolower($inisial[$approve[$i + 1]]);
+                                                        } else {
+                                                            $nextlevel = strtolower($inisial[$approve[$i]]);
+                                                            //$test = 0;
+                                                        }
+                                                    @endphp
+                                                    <td>
+                                                        @php
+                                                            if ($i == 0 && $d->status == 2 && !empty($d->$level) && empty($d->$nextlevel)) {
+                                                                //Jika Index 0 dan Stataus ==2 dan Level Tidak Kosong dan Level Selanjutnya Kosong Maka X
+                                                                echo "<i class='fa fa-close danger'></i>";
+                                                            } elseif ($i == 0 && $d->status == 2 && !empty($d->$level) && !empty($d->$nextlevel)) {
+                                                                // Jika Index 0 dan Status == 2 dan LEvel Tidak Kosong dan Level Berikutnya Tidak Kosong Maka V
+                                                                echo "<i class='fa fa-check success'></i>";
+                                                            } elseif ($d->status == 2 && !empty($d->$level) && $level == 'dirut') {
+                                                                //Jika Status == 2 Level Tidak Kosong  dan Level == "DIRUT" maka X
+                                                                echo "<i class='fa fa-close danger'></i>";
+                                                            } elseif ($d->status == 2 && !empty($d->$level) && empty($d->$nextlevel)) {
+                                                                echo "<i class='fa fa-close danger'></i>";
+                                                            } elseif ($d->status == 2 && !empty($d->$level) && !empty($d->$nextlevel)) {
+                                                                echo "<i class='fa fa-check success'></i>";
+                                                            } elseif ($d->status == null && empty($d->$level)) {
+                                                                echo "<i class='fa fa-history warning'></i>";
+                                                            } elseif ($d->status == null && !empty($d->$level)) {
+                                                                echo "<i class='fa fa-check success'></i>";
+                                                            } elseif ($d->status == 1 && !empty($d->$level)) {
+                                                                echo "<i class='fa fa-check success'></i>";
+                                                            }
+                                                        @endphp
+                                                    </td>
+                                                @endfor
+
+
                                                 <td align="center">
                                                     @if ($d->pemutihan == 1)
                                                         @if (!empty($d->dirut))
                                                             @if (!empty($d->no_kb))
                                                                 <a href="/kesepakatanbersama/{{ Crypt::encrypt($d->no_kb) }}/cetak"
-                                                                    target="_blank"><i
-                                                                        class="feather icon-printer primary"></i></a>
+                                                                    target="_blank">
+                                                                    <i class="feather icon-printer primary"></i>
+                                                                </a>
                                                             @else
                                                                 <a href="#" class="buatkb" nik="{{ $d->nik }}"
-                                                                    kode_penilaian="{{ $d->kode_penilaian }}">Buat KB</a>
+                                                                    kode_penilaian="{{ $d->kode_penilaian }}">
+                                                                    Buat KB
+                                                                </a>
                                                             @endif
                                                         @else
                                                             <i class="fa fa-check success"></i>
@@ -220,13 +222,15 @@
                                                     @endif
                                                 </td>
                                                 <td>
-
                                                     <div class="btn-group">
                                                         <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/cetak"
-                                                            target="_blank" class="info mr-1"><i
-                                                                class="feather icon-printer"></i></a>
+                                                            target="_blank" class="info mr-1">
+                                                            <i class="feather icon-printer"></i>
+                                                        </a>
+
                                                         @if (array_search(strtolower($kat_jab_user), $approve) == 0 ||
                                                                 Auth::user()->level == 'manager hrd' ||
+                                                                Auth::user()->level == 'spv recruitment' ||
                                                                 Auth::user()->level == 'direktur')
                                                             @if (empty($d->$field_kategori))
                                                                 <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/edit"
@@ -234,7 +238,9 @@
                                                             @endif
                                                         @endif
 
-                                                        @if (array_search(strtolower($kat_jab_user), $approve) == 0 || Auth::user()->level == 'manager hrd')
+                                                        @if (array_search(strtolower($kat_jab_user), $approve) == 0 ||
+                                                                Auth::user()->level == 'manager hrd' ||
+                                                                Auth::user()->level == 'spv recruitment')
                                                             @if (empty($d->$field_kategori))
                                                                 <form method="POST" name="deleteform" class="deleteform"
                                                                     action="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/delete">
@@ -248,66 +254,72 @@
                                                         @endif
 
                                                         @if (!empty($d->$field_kategori))
-                                                            <?php
-                                                if($cekindex < count($approve) -1) {
-                                                    $nextindex= $cekindex + 1;
-                                                    $ceklevel =  strtolower($inisial[$approve[$nextindex]]);
-                                                }else{
-                                                    $nextindex=$cekindex;
-                                                    $ceklevel =  strtolower($inisial[$approve[$nextindex]]);
-                                                }
+                                                            @if ($cekindex < count($approve) - 1)
+                                                                @php
+                                                                    $nextindex = $cekindex + 1;
+                                                                    $ceklevel = strtolower($inisial[$approve[$nextindex]]);
+                                                                @endphp
+                                                            @else
+                                                                @php
+                                                                    $nextindex = $cekindex;
+                                                                    $ceklevel = strtolower($inisial[$approve[$nextindex]]);
+                                                                @endphp
+                                                            @endif
 
-                                                // &&
-                                                // Auth::user()->level != 'spv maintenance'
-                                                if (empty($d->$ceklevel) || $field_kategori=="dirut") {
-                                                ?>
-                                                            @if (empty($d->no_kontrak))
-                                                                @if (Auth::user()->level != 'spv pdqc' && Auth::user()->level != 'spv produksi')
-                                                                    <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/{{ Crypt::encrypt($field_kategori) }}/batalkan"
-                                                                        class="warning ml-1">Batalkan</a>
+                                                            @if (empty($d->$ceklevel) || $field_kategori == 'dirut')
+                                                                @if (empty($d->no_kontrak))
+                                                                    @if (Auth::user()->level != 'spv pdqc' && Auth::user()->level != 'spv produksi')
+                                                                        <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/{{ Crypt::encrypt($field_kategori) }}/batalkan"
+                                                                            class="warning ml-1">Batalkan</a>
+                                                                    @endif
                                                                 @endif
                                                             @endif
-                                                            <?php } ?>
                                                         @else
-                                                            <?php
-                                                $lastindex = $cekindex - 1;
+                                                            @php
+                                                                $lastindex = $cekindex - 1;
+                                                            @endphp
+                                                            @if ($d->kode_dept == 'HRD' && Auth::user()->level == 'manager hrd')
+                                                                @php
+                                                                    $field_kategori = 'm';
+                                                                @endphp
+                                                                <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/{{ Crypt::encrypt($field_kategori) }}/approve"
+                                                                    class="success ml-1">
+                                                                    <i class="fa fa-check"></i>
+                                                                </a>
+                                                                <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/{{ Crypt::encrypt($field_kategori) }}/decline"
+                                                                    class="danger ml-1">
+                                                                    <i class="fa fa-close"></i>
+                                                                </a>
+                                                            @endif
 
-                                                if($d->kode_dept=="HRD" && Auth::user()->level=="manager hrd"){
-                                                //var_dump($field_kategori);
-                                                $field_kategori = "m";
-                                                ?>
-
-                                                            <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/{{ Crypt::encrypt($field_kategori) }}/approve"
-                                                                class="success ml-1"><i class="fa fa-check"></i></a>
-                                                            <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/{{ Crypt::encrypt($field_kategori) }}/decline"
-                                                                class="danger ml-1"><i class="fa fa-close"></i></a>
-                                                            <?php
-                                                }
-                                                // &&
-                                                // Auth::user()->level != 'spv maintenance'
-                                                if(Auth::user()->level != 'spv pdqc' && Auth::user()->level!="spv produksi"  ){
-                                                if($cekindex == 0){
-                                                ?>
-                                                            <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/{{ Crypt::encrypt($field_kategori) }}/approve"
-                                                                class="success ml-1"><i class="fa fa-check"></i></a>
-                                                            <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/{{ Crypt::encrypt($field_kategori) }}/decline"
-                                                                class="danger ml-1"><i class="fa fa-close"></i></a>
-                                                            <?php
-                                                }else{
-                                                    $ceklevel = strtolower($inisial[$approve[$lastindex]]);
-                                                    if(!empty($d->$ceklevel)){
-                                                ?>
-                                                            <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/{{ Crypt::encrypt($field_kategori) }}/approve"
-                                                                class="success ml-1"><i class="fa fa-check"></i></a>
-                                                            <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/{{ Crypt::encrypt($field_kategori) }}/decline"
-                                                                class="danger ml-1"><i class="fa fa-close"></i></a>
-                                                            <?php
-                                                    }else{
-                                                        echo "<span class='badge bg-warning ml-1'>Waiting</span>";
-                                                    }
-                                                }
-                                                }
-                                                ?>
+                                                            @if (Auth::user()->level != 'spv pdqc' && Auth::user()->level != 'spv produksi')
+                                                                @if ($cekindex == 0)
+                                                                    <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/{{ Crypt::encrypt($field_kategori) }}/approve"
+                                                                        class="success ml-1">
+                                                                        <i class="fa fa-check"></i>
+                                                                    </a>
+                                                                    <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/{{ Crypt::encrypt($field_kategori) }}/decline"
+                                                                        class="danger ml-1">
+                                                                        <i class="fa fa-close"></i>
+                                                                    </a>
+                                                                @else
+                                                                    @php
+                                                                        $ceklevel = strtolower($inisial[$approve[$lastindex]]);
+                                                                    @endphp
+                                                                    @if (!empty($d->$ceklevel))
+                                                                        <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/{{ Crypt::encrypt($field_kategori) }}/approve"
+                                                                            class="success ml-1">
+                                                                            <i class="fa fa-check"></i>
+                                                                        </a>
+                                                                        <a href="/penilaiankaryawan/{{ Crypt::encrypt($d->kode_penilaian) }}/{{ Crypt::encrypt($field_kategori) }}/decline"
+                                                                            class="danger ml-1">
+                                                                            <i class="fa fa-close"></i>
+                                                                        </a>
+                                                                    @else
+                                                                        <span class='badge bg-warning ml-1'>Waiting</span>
+                                                                    @endif
+                                                                @endif
+                                                            @endif
                                                         @endif
                                                         @if (Auth::user()->level == 'manager hrd' && !empty($d->dirut) && empty($d->pemutihan))
                                                             @if (empty($d->no_kontrak))
@@ -336,7 +348,6 @@
                                                     </div>
                                                 </td>
                                             </tr>
-
                                         @endforeach
                                     </tbody>
                                 </table>

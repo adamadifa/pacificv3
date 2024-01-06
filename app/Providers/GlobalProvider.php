@@ -535,13 +535,13 @@ class GlobalProvider extends ServiceProvider
             }
 
             //Aproval
-            $operator_pusat = ['manager', 'gm', 'manager hrd', 'direktur'];
+            $operator_pusat = ['manager', 'gm', 'manager hrd', 'spv recruitment', 'direktur'];
 
 
             //Dashboard
 
             $memo_menu = ['admin'];
-            $memo_tambah_hapus = ['admin', 'admin medsos', 'manager accounting', 'rom', 'manager hrd'];
+            $memo_tambah_hapus = ['admin', 'admin medsos', 'manager accounting', 'rom', 'manager hrd', 'spv recruitment'];
 
 
             $tracking_salesman = ['admin', 'manager marketing', 'direktur', 'manager accounting', 'rom', 'kepala admin', 'kepala penjualan', 'rsm'];
@@ -565,7 +565,7 @@ class GlobalProvider extends ServiceProvider
                 'kepala admin', 'admin pusat', 'manager marketing', 'rsm', 'direktur',
                 'manager pembelian', 'admin pembelian', 'admin penjualan dan kas kecil',
                 'admin penjualan dan kasir', 'admin penjualan kasir dan kas kecil', 'audit', 'manager audit', 'admin gudang logistik', 'admin gudang bahan', 'spv pdqc',
-                'manager ga', 'general affair', 'manager ga', 'admin garut', 'admin pajak 2', 'manager hrd', 'kepala gudang', 'manager produksi', 'spv produksi', 'emf', 'admin produksi', 'spv pdqc', 'admin pdqc', 'spv maintenance'
+                'manager ga', 'general affair', 'manager ga', 'admin garut', 'admin pajak 2', 'manager hrd', 'spv recruitment', 'kepala gudang', 'manager produksi', 'spv produksi', 'emf', 'admin produksi', 'spv pdqc', 'admin pdqc', 'spv maintenance'
             ];
 
             $pasar_menu = ['admin', 'admin penjualan', 'admin penjualan dan persediaan', 'manager accounting', 'rom', 'admin kas dan penjualan', 'audit', 'manager audit', 'kepala admin', 'admin penjualan dan kas kecil', 'direktur', 'manager accounting', 'rom', 'general manager', 'admin garut', 'admin pajak 2', 'admin pusat', 'kepala penjualan'];
@@ -612,23 +612,26 @@ class GlobalProvider extends ServiceProvider
             ];
 
             //Master Karyawan
-            $karyawan_view = ['admin', 'manager hrd', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'spv produksi', 'manager accounting', 'rom', 'manager ga', 'emf', 'manager marketing', 'rsm', 'direktur', 'spv pdqc', 'admin pdqc', 'manager audit', 'spv maintenance'];
-            $karyawan_pinjaman = ['admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'spv produksi', 'manager accounting', 'rom', 'manager ga', 'emf', 'manager marketing', 'rsm', 'direktur', 'spv pdqc', 'admin pdqc', 'manager audit', 'spv maintenance'];
+            $karyawan_view = ['admin', 'manager hrd', 'spv recruitment', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'spv produksi', 'manager accounting', 'rom', 'manager ga', 'emf', 'manager marketing', 'rsm', 'direktur', 'spv pdqc', 'admin pdqc', 'manager audit', 'spv maintenance'];
+            $karyawan_pinjaman = [
+                'admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'spv produksi',
+                'manager accounting', 'rom', 'manager ga', 'emf', 'manager marketing', 'rsm', 'direktur', 'spv pdqc', 'admin pdqc', 'manager audit', 'spv maintenance'
+            ];
 
 
 
-            $karyawan_tambah = ['admin', 'manager hrd'];
-            $karyawan_edit = ['admin', 'manager hrd'];
-            $karyawan_hapus = ['admin', 'manager hrd'];
+            $karyawan_tambah = ['admin', 'manager hrd', 'spv recruitment'];
+            $karyawan_edit = ['admin', 'manager hrd', 'spv recruitment'];
+            $karyawan_hapus = ['admin', 'manager hrd', 'spv recruitment'];
 
 
-            $gaji_tambah = ['admin', 'manager accounting', 'rom', 'manager hrd'];
-            $gaji_edit = ['admin', 'manager accounting', 'rom', 'manager hrd'];
-            $gaji_hapus = ['admin', 'manager accounting', 'rom', 'manager hrd'];
+            $gaji_tambah = ['admin', 'manager accounting', 'rom', 'manager hrd', 'spv recruitment'];
+            $gaji_edit = ['admin', 'manager accounting', 'rom', 'manager hrd', 'spv recruitment'];
+            $gaji_hapus = ['admin', 'manager accounting', 'rom', 'manager hrd', 'spv recruitment'];
 
-            $insentif_tambah = ['admin', 'manager accounting', 'rom', 'manager hrd'];
-            $insentif_edit = ['admin', 'manager accounting', 'rom', 'manager hrd'];
-            $insentif_hapus = ['admin', 'manager accounting', 'rom', 'manager hrd'];
+            $insentif_tambah = ['admin', 'manager accounting', 'rom', 'manager hrd', 'spv recruitment'];
+            $insentif_edit = ['admin', 'manager accounting', 'rom', 'manager hrd', 'spv recruitment'];
+            $insentif_hapus = ['admin', 'manager accounting', 'rom', 'manager hrd', 'spv recruitment'];
 
             //Supplier
             $supplier_menu = ['admin', 'manager pembelian', 'admin pembelian', 'manager accounting', 'rom', 'spv accounting', 'audit', 'manager audit', 'admin pajak 2'];
@@ -779,13 +782,17 @@ class GlobalProvider extends ServiceProvider
                 'admin', 'admin penjualan', 'admin penjualan dan persediaan', 'manager accounting', 'rom', 'admin kas dan penjualan', 'audit', 'manager audit', 'kepala admin', 'admin pusat', 'direktur', 'manager accounting', 'rom', 'spv accounting', 'general manager',
                 'manager marketing', 'rsm', 'kepala penjualan', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'admin kas kecil', 'audit', 'manager audit', 'kasir', 'audit', 'manager audit', 'admin garut', 'manager pembelian', 'admin pembelian',
                 'admin kas', 'manager accounting', 'rom', 'admin kas dan penjualan', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil',
-                'admin penjualan dan kasir', 'admin penjualan kasir dan kas kecil', 'kepala gudang', 'audit', 'manager audit', 'admin gudang pusat', 'spv gudang pusat', 'admin garut', 'admin pajak 2', 'manager produksi', 'spv produksi', 'emf', 'manager ga', 'manager hrd', 'admin pdqc', 'spv pdqc', 'spv maintenance'
+                'admin penjualan dan kasir', 'admin penjualan kasir dan kas kecil', 'kepala gudang', 'audit', 'manager audit', 'admin gudang pusat', 'spv gudang pusat', 'admin garut', 'admin pajak 2', 'manager produksi', 'spv produksi', 'emf', 'manager ga',
+                'manager hrd', 'admin pdqc', 'spv pdqc', 'spv maintenance'
             ];
             $laporankeuangan_view = [
                 'admin', 'direktur', 'general manager', 'manager marketing', 'rsm', 'manager accounting', 'rom', 'spv accounting',
-                'kepala penjualan', 'kepala admin', 'admin pusat', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'admin kas kecil', 'audit', 'manager audit',
+                'kepala penjualan', 'kepala admin', 'admin pusat', 'staff keuangan',
+                'staff keuangan 2', 'staff keuangan 3', 'admin kas kecil', 'audit', 'manager audit',
                 'kasir', 'audit', 'manager audit', 'admin garut', 'admin kas', 'manager accounting', 'rom', 'admin kas dan penjualan', 'admin persediaan dan kasir', 'admin persediaan dan kas kecil',
-                'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'admin penjualan kasir dan kas kecil', 'audit', 'manager audit', 'admin pajak 2', 'manager hrd', 'manager produksi', 'spv produksi'
+                'admin penjualan dan kas kecil', 'admin penjualan dan kasir',
+                'admin penjualan kasir dan kas kecil', 'audit', 'manager audit',
+                'admin pajak 2', 'manager hrd', 'manager produksi', 'spv produksi'
             ];
             $laporan_ledger = [
                 'admin', 'direktur',
@@ -873,27 +880,36 @@ class GlobalProvider extends ServiceProvider
             $ajuantransferdana_proses = ['admin', 'kepala admin', 'kasir', 'admin kas dan penjualan', 'admin penjualan dan kas kecil'];
             $ajuantransferdana_validasi = ['admin', 'manager accounting'];
 
-            $pinjaman_view = ['admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'spv produksi', 'manager accounting', 'rom', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager hrd', 'staff keuangan', 'staff keuangan 3', 'admin pdqc', 'spv pdqc', 'manager audit', 'spv maintenance'];
+            $pinjaman_view = [
+                'admin', 'kepala admin', 'kepala penjualan',
+                'manager pembelian', 'kepala gudang', 'manager produksi',
+                'spv produksi', 'manager accounting', 'rom', 'manager ga', 'emf',
+                'manager marketing', 'rsm', 'manager hrd',
+                'staff keuangan', 'staff keuangan 3', 'admin pdqc', 'spv pdqc', 'manager audit',
+                'spv maintenance'
+            ];
 
 
-            $pembayaranpinjaman_view = ['admin', 'manager hrd', 'manager accounting', 'staff keuangan', 'staff keuangan 3'];
-            $inputbayarpinjaman = ['admin', 'manager hrd', 'manager accounting', 'rom'];
-            $lap_pinjaman = ['admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'spv produksi', 'manager accounting', 'rom', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager hrd', 'direktur', 'staff keuangan', 'staff keuangan 3'];
+            $pembayaranpinjaman_view = ['admin', 'manager hrd', 'spv recruitment', 'manager accounting', 'staff keuangan', 'staff keuangan 3'];
+            $inputbayarpinjaman = ['admin', 'manager hrd', 'spv recruitment', 'manager accounting', 'rom'];
+            $lap_pinjaman = ['admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'spv produksi', 'manager accounting', 'rom', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager hrd', 'spv recruitment', 'direktur', 'staff keuangan', 'staff keuangan 3'];
 
             $piutangkaryawan_view = ['admin', 'manager accounting', 'manager hrd'];
-            $pembayaranpiutangkaryawan_view = ['admin', 'manager accounting', 'manager hrd'];
-            $inputbayarpiutangkaryawan = ['admin', 'manager accounting', 'manager hrd'];
+            $pembayaranpiutangkaryawan_view = ['admin', 'manager accounting', 'manager hrd', 'spv recruitment'];
+            $inputbayarpiutangkaryawan = ['admin', 'manager accounting', 'manager hrd', 'spv recruitment'];
 
             $lap_kasbon = [
                 'admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi',
-                'spv produksi', 'manager accounting', 'rom', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager hrd', 'direktur', 'staff keuangan', 'staff keuangan 3'
+                'spv produksi', 'manager accounting', 'rom', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager hrd', 'spv recruitment', 'direktur', 'staff keuangan', 'staff keuangan 3'
             ];
 
             $kasbon_view = [
                 'admin', 'kepala admin', 'kepala penjualan',
-                'manager pembelian', 'kepala gudang', 'manager produksi', 'spv produksi', 'manager accounting', 'rom', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager hrd', 'staff keuangan', 'staff keuangan 3', 'admin pdqc', 'spv pdqc', 'manager audit', 'spv maintenance'
+                'manager pembelian', 'kepala gudang', 'manager produksi', 'spv produksi',
+                'manager accounting', 'rom', 'manager ga', 'emf', 'manager marketing',
+                'rsm', 'manager hrd', 'staff keuangan', 'staff keuangan 3', 'admin pdqc', 'spv pdqc', 'manager audit', 'spv maintenance'
             ];
-            $pembayarankasbon_view = ['admin', 'manager hrd', 'manager accounting', 'staff keuangan', 'staff keuangan 3'];
+            $pembayarankasbon_view = ['admin', 'manager hrd', 'spv recruitment', 'manager accounting', 'staff keuangan', 'staff keuangan 3'];
             //Ledger
             $ledger_menu  = ['admin', 'staff keuangan', 'spv accounting'];
             $ledger_view = ['admin', 'staff keuangan', 'spv accounting'];
@@ -1242,7 +1258,7 @@ class GlobalProvider extends ServiceProvider
             ];
 
             //Acounting
-            $accounting_menu = ['admin', 'direktur', 'manager accounting', 'rom', 'spv accounting', 'manager ga', 'general affair', 'manager ga', 'manager hrd', 'kepala admin', 'kepala penjualan', 'rsm', 'manager marketing', 'manager audit', 'audit', 'admin pusat'];
+            $accounting_menu = ['admin', 'direktur', 'manager accounting', 'rom', 'spv accounting', 'manager ga', 'general affair', 'manager ga', 'manager hrd', 'spv recruitment', 'kepala admin', 'kepala penjualan', 'rsm', 'manager marketing', 'manager audit', 'audit', 'admin pusat'];
             $lpc_menu = ['admin', 'spv accounting', 'manager accounting', 'rom', 'kepala admin', 'manager audit', 'audit'];
             $coa_menu = ['admin', 'spv accounting', 'manager accounting', 'rom'];
             $setcoacabang = ['admin', 'spv accounting', 'manager accounting', 'rom'];
@@ -1250,30 +1266,41 @@ class GlobalProvider extends ServiceProvider
             $hpp_input = ['admin', 'manager accounting', 'rom', 'spv accounting'];
             $hargaawal_input = ['admin', 'manager accounting', 'rom', 'spv accounting'];
             $saldoawal_bukubesar_menu = ['admin', 'manager accounting', 'rom', 'spv accounting'];
-            $jurnalumum_menu = ['admin', 'manager accounting', 'rom', 'spv accounting', 'manager ga', 'general affair', 'manager ga', 'manager hrd', 'admin pusat'];
+            $jurnalumum_menu = ['admin', 'manager accounting', 'rom', 'spv accounting', 'manager ga', 'general affair', 'manager ga', 'manager hrd', 'spv recruitment', 'admin pusat'];
             $costratio_menu = ['admin', 'manager accounting', 'rom', 'spv accounting', 'kepala admin', 'kepala penjualan', 'admin pusat'];
-            $laporan_accounting = ['admin', 'direktur', 'manager accounting', 'rom', 'spv accounting', 'manager ga', 'general affair', 'manager ga', 'manager hrd', 'kepala admin', 'kepala penjualan', 'admin pusat', 'rsm', 'manager marketing', 'manager audit', 'audit'];
+            $laporan_accounting = ['admin', 'direktur', 'manager accounting', 'rom', 'spv accounting', 'manager ga', 'general affair', 'manager ga', 'manager hrd', 'spv recruitment', 'kepala admin', 'kepala penjualan', 'admin pusat', 'rsm', 'manager marketing', 'manager audit', 'audit'];
             $laporan_lk = ['admin', 'direktur', 'manager accounting', 'spv accounting'];
             $laporan_rekapbj_acc = ['admin', 'direktur', 'manager accounting', 'spv accounting'];
             $laporan_bukubesar = ['admin', 'direktur', 'manager accounting', 'rom', 'spv accounting'];
-            $laporan_jurnalumum = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'manager ga', 'general affair', 'manager ga', 'manager hrd', 'admin pusat'];
-            $laporan_costratio = ['admin', 'direktur', 'manager accounting', 'rom', 'spv accounting', 'manager hrd', 'kepala admin', 'kepala penjualan', 'admin pusat', 'rsm', 'manager marketing'];
+            $laporan_jurnalumum = ['admin', 'direktur', 'manager accounting', 'spv accounting', 'manager ga', 'general affair', 'manager ga', 'manager hrd', 'spv recruitment', 'admin pusat'];
+            $laporan_costratio = ['admin', 'direktur', 'manager accounting', 'rom', 'spv accounting', 'manager hrd', 'spv recruitment', 'kepala admin', 'kepala penjualan', 'admin pusat', 'rsm', 'manager marketing'];
 
 
             //HRD
             $hrd_menu = ['admin', '3', '2', '11', '1', '7', '6', '4'];
             $penilaian_karyawan = ['admin', '3', '2', '11', '1', '7', '6', '4'];
 
-            $kesepakatanbersama = ['admin', 'direktur', 'manager hrd'];
-            $kontrak_menu = ['admin', 'direktur', 'manager hrd'];
-            $pengajuan_izin_menu = ['admin', 'manager hrd', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'spv produksi', 'manager accounting', 'rom', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager audit', 'direktur', 'spv maintenance'];
-            $jadwal_kerja_menu = ['admin', 'manager hrd', 'spv produksi', 'general affair', 'admin maintenance', 'spv maintenance', 'spv pdqc', 'spv gudang pusat'];
+            $kesepakatanbersama = ['admin', 'direktur', 'manager hrd', 'spv recruitment'];
+            $kontrak_menu = ['admin', 'direktur', 'manager hrd', 'spv recruitment'];
+            $pengajuan_izin_menu = [
+                'admin', 'manager hrd',
+                'kepala admin',
+                'kepala penjualan', 'manager pembelian',
+                'kepala gudang', 'manager produksi', 'spv produksi',
+                'manager accounting', 'rom', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager audit', 'direktur', 'spv maintenance'
+            ];
+            $jadwal_kerja_menu = [
+                'admin', 'manager hrd',
+                'spv produksi', 'general affair',
+                'admin maintenance', 'spv maintenance',
+                'spv pdqc', 'spv gudang pusat'
+            ];
             $hari_libur_menu = ['admin', 'manager hrd'];
-            $pembayaran_jmk = ['admin', 'manager hrd'];
-            $pelanggaran_menu = ['admin', 'manager hrd'];
-            $gaji_menu = ['admin', 'direktur', 'manager accounting', 'manager hrd'];
-            $insentif_menu = ['admin', 'direktur', 'manager accounting', 'manager hrd'];
-            $bpjs_menu = ['admin', 'direktur', 'manager accounting', 'manager hrd'];
+            $pembayaran_jmk = ['admin', 'manager hrd', 'spv recruitment'];
+            $pelanggaran_menu = ['admin', 'manager hrd', 'spv recruitment'];
+            $gaji_menu = ['admin', 'direktur', 'manager accounting', 'manager hrd', 'spv recruitment'];
+            $insentif_menu = ['admin', 'direktur', 'manager accounting', 'manager hrd', 'spv recruitment'];
+            $bpjs_menu = ['admin', 'direktur', 'manager accounting', 'manager hrd', 'spv recruitment'];
             $monitoring_presensi = ['admin', 'manager hrd', 'manager audit'];
             $presensi_karyawan_menu = ['admin', 'manager hrd'];
             $lembur_menu = ['admin', 'manager hrd'];
@@ -1309,8 +1336,11 @@ class GlobalProvider extends ServiceProvider
             $ticket_approve = ['admin', 'manager accounting', 'rom'];
             $ticket_done = ['admin'];
 
-            $lap_hrd = ['admin', 'manager hrd', 'kepala gudang', 'manager accounting', 'rom', 'emf', 'spv maintenance'];
-            $lap_gaji = ['admin', 'manager hrd', 'manager accounting', 'rom', 'direktur'];
+            $lap_hrd = [
+                'admin', 'manager hrd',
+                'kepala gudang', 'manager accounting', 'rom', 'emf', 'spv maintenance'
+            ];
+            $lap_gaji = ['admin', 'manager hrd', 'spv recruitment', 'manager accounting', 'rom', 'direktur'];
 
             $monitoring_sku = ['salesman'];
 
@@ -1319,7 +1349,7 @@ class GlobalProvider extends ServiceProvider
 
             $om_menu = ['admin', 'direktur', 'manager accounting', 'rom', 'kepala admin'];
 
-            $bufferlimit = ['admin','kepala admin'];
+            $bufferlimit = ['admin', 'kepala admin'];
             $shareddata = [
 
                 'operator_pusat' => $operator_pusat,

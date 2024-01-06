@@ -195,37 +195,41 @@
                                                             <span class="badge bg-warning">K</span>
                                                         @endif
                                                     </td>
-                                                    <td>
+                                                    <td style="text-align: center">
                                                         @if ($level == 'manager hrd')
                                                             @if ($d->lock_location == 0)
-                                                                <a href="/karyawan/{{ Crypt::encrypt($d->nik) }}/unlocklocation"
-                                                                    class="ml-1">
+                                                                <a
+                                                                    href="/karyawan/{{ Crypt::encrypt($d->nik) }}/unlocklocation">
                                                                     <i class="feather icon-lock danger"></i>
                                                                 </a>
                                                             @else
-                                                                <a href="/karyawan/{{ Crypt::encrypt($d->nik) }}/locklocation"
-                                                                    class="ml-1">
+                                                                <a
+                                                                    href="/karyawan/{{ Crypt::encrypt($d->nik) }}/locklocation">
                                                                     <i class="feather icon-unlock success"></i>
                                                                 </a>
                                                             @endif
                                                         @else
                                                             @if ($d->kode_dept == 'MKT')
                                                                 @if ($d->lock_location == 0)
-                                                                    <a href="/karyawan/{{ Crypt::encrypt($d->nik) }}/unlocklocation"
-                                                                        class="ml-1">
+                                                                    <a
+                                                                        href="/karyawan/{{ Crypt::encrypt($d->nik) }}/unlocklocation">
                                                                         <i class="feather icon-lock danger"></i>
                                                                     </a>
                                                                 @else
-                                                                    <a href="/karyawan/{{ Crypt::encrypt($d->nik) }}/locklocation"
-                                                                        class="ml-1">
+                                                                    <a
+                                                                        href="/karyawan/{{ Crypt::encrypt($d->nik) }}/locklocation">
                                                                         <i class="feather icon-unlock success"></i>
                                                                     </a>
                                                                 @endif
                                                             @else
                                                                 @if ($d->lock_location == 0)
-                                                                    <i class="feather icon-lock danger"></i>
+                                                                    <a href="#">
+                                                                        <i class="feather icon-lock danger"></i>
+                                                                    </a>
                                                                 @else
-                                                                    <i class="feather icon-unlock success"></i>
+                                                                    <a href="">
+                                                                        <i class="feather icon-unlock success"></i>
+                                                                    </a>
                                                                 @endif
                                                             @endif
                                                         @endif
