@@ -164,7 +164,7 @@
                                     <span class="menu-item">Data Karyawan</span>
                                 </a>
                             </li>
-                            @if (in_array($level, $gaji_menu) && Auth::user()->id != 176)
+                            @if (in_array($level, $gaji_menu))
                                 <li
                                     class="{{ request()->is(['rekeningkaryawan', 'rekeningkaryawan/*']) ? 'active' : '' }}">
                                     <a href="/rekeningkaryawan">
@@ -174,7 +174,7 @@
                                 </li>
                             @endif
                         @endif
-                        @if (in_array($level, $gaji_menu) && Auth::user()->id != 176)
+                        @if (in_array($level, $gaji_menu))
                             <li class="{{ request()->is(['gaji', 'gaji/*']) ? 'active' : '' }}">
                                 <a href="/gaji">
                                     <i class="feather icon-dollar-sign"></i>
@@ -182,7 +182,7 @@
                                 </a>
                             </li>
                         @endif
-                        @if (in_array($level, $insentif_menu) && Auth::user()->id != 176)
+                        @if (in_array($level, $insentif_menu))
                             <li class="{{ request()->is(['insentif', 'insentif/*']) ? 'active' : '' }}">
                                 <a href="/insentif">
                                     <i class="feather icon-dollar-sign"></i>
@@ -191,7 +191,7 @@
                             </li>
                         @endif
 
-                        @if (in_array($level, $bpjs_menu) && Auth::user()->id != 176)
+                        @if (in_array($level, $bpjs_menu))
                             <li class="{{ request()->is(['bpjstk', 'bpjstk/*']) ? 'active' : '' }}">
                                 <a href="/bpjstk">
                                     <i class="feather icon-dollar-sign"></i>
@@ -1214,7 +1214,7 @@
                                         $level == 'admin persediaan dan kasir' ||
                                         $level ==
                                             "admin penjualan
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        dan kasir")
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        dan kasir")
                                     <a href="/laporankeuangan/saldokasbesar">
                                         <i class="feather icon-file-text"></i>
                                         <span class="menu-item" data-i18n="Second Level">Laporan</span>
@@ -1460,49 +1460,48 @@
                                 </a>
                             </li>
                         @endif
-                        @if (Auth::user()->id != '176')
-                            @if (in_array($level, $pengajuan_izin_menu) || Auth::user()->pic_presensi == 1)
-                                <li
-                                    class="{{ request()->is(['pengajuanizin', 'pengajuanizin/*']) ? 'active' : '' }}">
-                                    <a href="/pengajuanizin">
-                                        <i class="feather icon-file-text"></i>
-                                        <span class="menu-item" data-i18n="Second Level">Pengajuan</span>
-                                    </a>
-                                </li>
-                            @endif
-                        @endif
-                        @if (Auth::user()->id != '176')
-                            @if (in_array($level, $jadwal_kerja_menu))
-                                <li
-                                    class="{{ request()->is(['konfigurasijadwal', 'konfigurasijadwal/*']) ? 'active' : '' }}">
-                                    <a href="/konfigurasijadwal">
-                                        <i class="feather icon-calendar"></i>
-                                        <span class="menu-item" data-i18n="Second Level">Jadwal Kerja</span>
-                                    </a>
-                                </li>
-                            @endif
+
+                        @if (in_array($level, $pengajuan_izin_menu) || Auth::user()->pic_presensi == 1)
+                            <li class="{{ request()->is(['pengajuanizin', 'pengajuanizin/*']) ? 'active' : '' }}">
+                                <a href="/pengajuanizin">
+                                    <i class="feather icon-file-text"></i>
+                                    <span class="menu-item" data-i18n="Second Level">Pengajuan</span>
+                                </a>
+                            </li>
                         @endif
 
-                        @if (Auth::user()->id != '176')
-                            @if (in_array($level, $lembur_menu) || Auth::user()->pic_presensi == 1)
-                                <li class="{{ request()->is(['lembur', 'lembur/*']) ? 'active' : '' }}">
-                                    <a href="/lembur">
-                                        <i class="feather icon-calendar"></i>
-                                        <span class="menu-item" data-i18n="Second Level">Lembur</span>
-                                    </a>
-                                </li>
-                            @endif
+
+                        @if (in_array($level, $jadwal_kerja_menu))
+                            <li
+                                class="{{ request()->is(['konfigurasijadwal', 'konfigurasijadwal/*']) ? 'active' : '' }}">
+                                <a href="/konfigurasijadwal">
+                                    <i class="feather icon-calendar"></i>
+                                    <span class="menu-item" data-i18n="Second Level">Jadwal Kerja</span>
+                                </a>
+                            </li>
                         @endif
-                        @if (Auth::user()->id != '176')
-                            @if (in_array($level, $hari_libur_menu) || Auth::user()->pic_presensi == 1)
-                                <li class="{{ request()->is(['harilibur', 'harilibur/*']) ? 'active' : '' }}">
-                                    <a href="/harilibur">
-                                        <i class="feather icon-calendar"></i>
-                                        <span class="menu-item" data-i18n="Second Level">Hari Libur</span>
-                                    </a>
-                                </li>
-                            @endif
+
+
+
+                        @if (in_array($level, $lembur_menu) || Auth::user()->pic_presensi == 1)
+                            <li class="{{ request()->is(['lembur', 'lembur/*']) ? 'active' : '' }}">
+                                <a href="/lembur">
+                                    <i class="feather icon-calendar"></i>
+                                    <span class="menu-item" data-i18n="Second Level">Lembur</span>
+                                </a>
+                            </li>
                         @endif
+
+
+                        @if (in_array($level, $hari_libur_menu) || Auth::user()->pic_presensi == 1)
+                            <li class="{{ request()->is(['harilibur', 'harilibur/*']) ? 'active' : '' }}">
+                                <a href="/harilibur">
+                                    <i class="feather icon-calendar"></i>
+                                    <span class="menu-item" data-i18n="Second Level">Hari Libur</span>
+                                </a>
+                            </li>
+                        @endif
+
                         @if (in_array($level, $pembayaran_jmk))
                             <li class="{{ request()->is(['pembayaranjmk', 'pembayaranjmk/*']) ? 'active' : '' }}">
                                 <a href="/pembayaranjmk">
@@ -1519,37 +1518,37 @@
                                 </a>
                             </li>
                         @endif
-                        @if (Auth::user()->id != '176')
-                            @if (in_array($level, $monitoring_presensi) || Auth::user()->pic_presensi == 1)
-                                <li class="{{ request()->is(['presensi/monitoring']) ? 'active' : '' }}">
-                                    <a href="/presensi/monitoring">
-                                        <i class="feather icon-monitor"></i>
-                                        <span class="menu-item" data-i18n="Second Level">Monitoring Presensi</span>
-                                    </a>
-                                </li>
-                            @endif
+
+                        @if (in_array($level, $monitoring_presensi) || Auth::user()->pic_presensi == 1)
+                            <li class="{{ request()->is(['presensi/monitoring']) ? 'active' : '' }}">
+                                <a href="/presensi/monitoring">
+                                    <i class="feather icon-monitor"></i>
+                                    <span class="menu-item" data-i18n="Second Level">Monitoring Presensi</span>
+                                </a>
+                            </li>
                         @endif
-                        @if (Auth::user()->id != '176')
-                            @if (in_array($level, $presensi_karyawan_menu) || Auth::user()->pic_presensi == 1)
-                                <li class="{{ request()->is(['presensi/presensikaryawan']) ? 'active' : '' }}">
-                                    <a href="/presensi/presensikaryawan">
-                                        <i class="feather icon-monitor"></i>
-                                        <span class="menu-item" data-i18n="Second Level">Presensi Karyawan</span>
-                                    </a>
-                                </li>
-                            @endif
+
+
+                        @if (in_array($level, $presensi_karyawan_menu) || Auth::user()->pic_presensi == 1)
+                            <li class="{{ request()->is(['presensi/presensikaryawan']) ? 'active' : '' }}">
+                                <a href="/presensi/presensikaryawan">
+                                    <i class="feather icon-monitor"></i>
+                                    <span class="menu-item" data-i18n="Second Level">Presensi Karyawan</span>
+                                </a>
+                            </li>
                         @endif
-                        @if (Auth::user()->id != '176')
-                            @if (in_array($level, $lap_hrd) || Auth::user()->pic_presensi == 1)
-                                <li
-                                    class="{{ request()->is(['laporanhrd/presensi', 'laporanhrd/presensipsm', 'laporanhrd/rekapterlambat']) ? 'active' : '' }}">
-                                    <a href="/laporanhrd/presensi">
-                                        <i class="feather icon-file-text"></i>
-                                        <span class="menu-item" data-i18n="Second Level">Laporan</span>
-                                    </a>
-                            @endif
+
+
+                        @if (in_array($level, $lap_hrd) || Auth::user()->pic_presensi == 1)
+                            <li
+                                class="{{ request()->is(['laporanhrd/presensi', 'laporanhrd/presensipsm', 'laporanhrd/rekapterlambat']) ? 'active' : '' }}">
+                                <a href="/laporanhrd/presensi">
+                                    <i class="feather icon-file-text"></i>
+                                    <span class="menu-item" data-i18n="Second Level">Laporan</span>
+                                </a>
+                        @endif
                 </li>
-            @endif
+
         </ul>
         </li>
         @endif

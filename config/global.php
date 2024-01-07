@@ -7,9 +7,9 @@ return [
         'admin', 'manager hrd', 'kepala admin', 'kepala penjualan', 'manager pembelian',
         'kepala gudang', 'manager produksi', 'spv produksi', 'spv maintenance',
         'manager accounting', 'manager ga', 'emf', 'manager marketing', 'rsm',
-        'direktur', 'spv pdqc', 'admin pdqc', 'manager audit', 'spv recruitment'
+        'direktur', 'spv pdqc', 'admin pdqc', 'manager audit', 'spv recruitment', 'spv presensi'
     ],
-    'gajipage' => ['admin', 'direktur', 'manager accounting', 'manager hrd', 'spv recruitment'],
+    'gajipage' => ['admin', 'direktur', 'manager accounting', 'manager hrd', 'spv recruitment', 'spv presensi'],
     'pinjamanpage' => [
         'admin', 'kepala admin', 'kepala penjualan', 'manager pembelian', 'kepala gudang', 'manager produksi', 'spv produksi', 'spv maintenance', 'manager accounting', 'manager ga', 'emf', 'manager marketing', 'rsm', 'manager hrd',
         'staff keuangan', 'staff keuangan 3', 'spv pdqc', 'admin pdqc', 'manager audit', 'emf', 'rom'
