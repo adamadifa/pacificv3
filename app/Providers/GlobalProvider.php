@@ -121,7 +121,9 @@ class GlobalProvider extends ServiceProvider
                 $memo_data = $memo->get();
 
                 $ticket_pending = DB::table('ticket')->where('status', '!=', 2)->where('id_user', $id_user)->count();
-                $ticket_pending_approve = DB::table('ticket')->where('status', 0)->count();
+                $ticket_pending_gm = DB::table('ticket')->where('gm', 0)->count();
+                $ticket_pending_dirut = DB::table('ticket')->where('gm', 1)->count();
+                $ticket_pending_admin = DB::table('ticket')->where('dirut', 1)->where('status', 0)->count();
                 $ticket_pending_done = DB::table('ticket')->where('status', 1)->count();
 
 
@@ -501,7 +503,9 @@ class GlobalProvider extends ServiceProvider
                 $memo_unread =  null;
                 $memo_data =  null;
                 $ticket_pending =  null;
-                $ticket_pending_approve =  null;
+                $ticket_pending_gm =  null;
+                $ticket_pending_dirut =  null;
+                $ticket_pending_admin =  null;
                 $ticket_pending_done =  null;
                 $jmlpenilaiankar = null;
                 $users = null;
@@ -1335,8 +1339,8 @@ class GlobalProvider extends ServiceProvider
 
 
             $tutuplaporan = ['admin', 'manager accounting', 'rom'];
-            $ticket_hapus = ['manager accounting', 'rom'];
-            $ticket_approve = ['admin', 'manager accounting', 'rom'];
+            $ticket_hapus = ['manager accounting', 'rom', 'direktur'];
+            $ticket_approve = ['admin', 'manager accounting', 'rom', 'direktur'];
             $ticket_done = ['admin'];
 
             $lap_hrd = [
@@ -1366,7 +1370,9 @@ class GlobalProvider extends ServiceProvider
                 'memo_tambah_hapus' => $memo_tambah_hapus,
 
                 'ticket_pending' => $ticket_pending,
-                'ticket_pending_approve' => $ticket_pending_approve,
+                'ticket_pending_gm' => $ticket_pending_gm,
+                'ticket_pending_dirut' => $ticket_pending_dirut,
+                'ticket_pending_admin' => $ticket_pending_admin,
                 'ticket_pending_done' => $ticket_pending_done,
 
                 'jmlpenilaiankar' => $jmlpenilaiankar,

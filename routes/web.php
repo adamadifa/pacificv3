@@ -1511,6 +1511,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/ticket', [TicketController::class, 'index']);
     Route::get('/ticket/create', [TicketController::class, 'create']);
     Route::post('/ticket/store', [TicketController::class, 'store']);
+    Route::post('/ticket/approve', [TicketController::class, 'approve']);
     Route::delete('/ticket/{kode_pengajuan}/delete', [TicketController::class, 'delete']);
     Route::get('/ticket/{kode_pengajuan}/approve', [TicketController::class, 'approve']);
     Route::post('/ticket/approveform', [TicketController::class, 'approveform']);

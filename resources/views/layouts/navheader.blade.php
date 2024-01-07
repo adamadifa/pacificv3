@@ -30,10 +30,13 @@
                                  <i class="ficon" data-feather="tool"></i>
                                  @if ($level == 'manager accounting')
                                      <span
-                                         class="badge badge-pill badge-warning badge-up mr-1">{{ $ticket_pending_approve }}</span>
-                                 @elseif($level == 'admin')
+                                         class="badge badge-pill badge-warning badge-up mr-1">{{ $ticket_pending_gm }}</span>
+                                 @elseif($level == 'direktur')
                                      <span
-                                         class="badge badge-pill badge-info badge-up mr-1">{{ $ticket_pending_done }}</span>
+                                         class="badge badge-pill badge-info badge-up mr-1">{{ $ticket_pending_dirut }}</span>
+                                 @elseif($level == 'direktur')
+                                     <span
+                                         class="badge badge-pill badge-info badge-up mr-1">{{ $ticket_pending_admin }}</span>
                                  @else
                                      <span
                                          class="badge badge-pill badge-warning badge-up mr-1">{{ $ticket_pending }}</span>

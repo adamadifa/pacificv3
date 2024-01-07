@@ -1,4 +1,6 @@
-<form action="/ticket/approve">
+<form action="/ticket/approve" method="POST">
+    @csrf
+    <input type="hidden" value="{{ $kode_pengajuan }}" name="kode_pengajuan">
     <div class="row">
         <div class="col-12">
             <div class="form-group">

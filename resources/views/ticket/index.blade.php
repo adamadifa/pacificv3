@@ -140,23 +140,20 @@
                                                         @endif
                                                     @endif
 
-
-
                                                     @if (in_array($level, $ticket_approve))
-                                                        <a href="#" class="approve"
-                                                            kode_pengajuan = "{{ $d->kode_pengajuan }}">
-                                                            <i class="feather icon-external-link success"></i>
-                                                        </a>
-                                                    @endif
-                                                    @if (in_array($level, $ticket_done))
-                                                        @if ($d->status != 2)
-                                                            <a href="/ticket/{{ Crypt::encrypt($d->kode_pengajuan) }}/done"
-                                                                class="ml-1"><i class="fa fa-check success"></i></a>
-                                                        @else
-                                                            <a href="/ticket/{{ Crypt::encrypt($d->kode_pengajuan) }}/bataldone"
-                                                                class="ml-1"><i class="fa fa-close danger"></i></a>
+                                                        @if ($level == 'manager accounting' && empty($d->dirut))
+                                                            <a href="#" class="approve ml-1"
+                                                                kode_pengajuan = "{{ $d->kode_pengajuan }}">
+                                                                <i class="feather icon-external-link success"></i>
+                                                            </a>
+                                                        @elseif ($level == 'direktur' && empty($d->status))
+                                                            <a href="#" class="approve ml-1"
+                                                                kode_pengajuan = "{{ $d->kode_pengajuan }}">
+                                                                <i class="feather icon-external-link success"></i>
+                                                            </a>
                                                         @endif
                                                     @endif
+
                                                 </div>
                                             </td>
                                         </tr>

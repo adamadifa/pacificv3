@@ -36,6 +36,10 @@ class TicketController extends Controller
             $query->where('id_user', Auth::user()->id);
         }
 
+        if (Auth::user()->level == "direktur") {
+            $query->where('gm', 1);
+        }
+
         $query->orderBy('tanggal_pengajuan', 'desc');
         $query->orderBy('kode_pengajuan', 'desc');
         $ticket = $query->paginate(15);
@@ -49,10 +53,14 @@ class TicketController extends Controller
     }
 
 
-    public function approveform(Request $request){
+    public function approveform(Request $request)
+    {
         $kode_pengajuan = $request->kode_pengajuan;
-        return view('ticket.approveform');
+        return view('ticket.approveform', compact('kode_pengajuan'));
     }
+
+
+
     public function store(Request $request)
     {
         $keterangan = $request->keterangan;
@@ -92,10 +100,21 @@ class TicketController extends Controller
         }
     }
 
-    public function approve($kode_pengajuan)
+    public function approve(Request $request)
     {
-        $kode_pengajuan = Crypt::decrypt($kode_pengajuan);
-        $update = DB::table('ticket')->where('kode_pengajuan', $kode_pengajuan)->update(['status' => 1]);
+        $kode_pengajuan = $request->kode_pengajuan;
+
+        if (Auth::user()->level == "manager accounting" || Auth::user()->level == "rom") {
+            $update = DB::table('ticket')->where('kode_pengajuan', $kode_pengajuan)->update(['gm' => 1]);
+        }
+
+        if (Auth::user()->level == "direktur") {
+            $update = DB::table('ticket')->where('kode_pengajuan', $kode_pengajuan)->update(['dirut' => 1]);
+        }
+
+        if (Auth::user()->level == "admin") {
+            $update = DB::table('ticket')->where('kode_pengajuan', $kode_pengajuan)->update(['status' => 1]);
+        }
         if ($update) {
             return Redirect::back()->with(['success' => 'Data Berhasil di Approve']);
         } else {
