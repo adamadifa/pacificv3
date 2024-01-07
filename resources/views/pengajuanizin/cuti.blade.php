@@ -183,7 +183,7 @@
                                                     </div>
                                                 </div>
                                                 @php
-                                                    $level_search = ['admin', 'manager hrd', 'manager accounting', 'direktur'];
+                                                    $level_search = ['admin', 'manager hrd', 'spv presensi', 'manager accounting', 'direktur'];
                                                 @endphp
                                                 @if (Auth::user()->kode_cabang == 'PCF' && in_array($level, $level_search))
                                                     <div class="row">
@@ -349,7 +349,7 @@
                                                                     <div class="btn-group" role="group"
                                                                         aria-label="Basic example">
                                                                         {{-- Jika Level Bukan Manager HRD --}}
-                                                                        @if ($level != 'manager hrd' && $level != 'direktur')
+                                                                        @if ($level != 'manager hrd' && $level != 'direktur' && $level != 'spv presensi')
                                                                             {{-- Jika Bukan PIC atau PIC dan Level Kepala Admin --}}
                                                                             @if (empty(Auth::user()->pic_presensi) ||
                                                                                     (!empty(Auth::user()->pic_presensi) && $level == 'kepala admin' && $d->id_perusahaan == 'MP') ||
@@ -405,7 +405,7 @@
                                                                         @endif
 
 
-                                                                        @if ($level == 'manager hrd')
+                                                                        @if ($level == 'manager hrd' || $level == 'spv presensi')
                                                                             <a href="#" class="ket_hrd"
                                                                                 kode_izin="{{ $d->kode_izin }}"><i
                                                                                     class="feather icon-message-square ml-1 info"></i></a>

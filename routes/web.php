@@ -174,8 +174,10 @@ Route::get('/agent1', function () {
     return request()->userAgent();
 });
 
-
-
+Route::get('/cekmonitor', function () {
+    return 1;
+});
+Route::get('/presensi/cekmon', [PresensiController::class, 'monitoring']);
 
 Route::middleware(['guest'])->group(function () {
     // Route::get('/paneladmin', function () {

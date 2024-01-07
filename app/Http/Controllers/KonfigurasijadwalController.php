@@ -15,7 +15,7 @@ class KonfigurasijadwalController extends Controller
 
     public function index()
     {
-        $konfigurasijadwal = DB::table('konfigurasi_jadwalkerja')->orderBy('dari', 'desc')->get();
+        $konfigurasijadwal = DB::table('konfigurasi_jadwalkerja')->orderBy('dari', 'desc')->paginate(5);
         return view('konfigurasijadwal.index', compact('konfigurasijadwal'));
     }
     public function store(Request $request)

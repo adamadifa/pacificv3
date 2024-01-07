@@ -49,7 +49,7 @@
                                 <form action="/presensi/monitoring">
                                     <div class="row">
                                         @php
-                                            $level_search = ['admin', 'manager hrd', 'manager accounting', 'direktur'];
+                                            $level_search = ['admin', 'manager hrd', 'spv presensi', 'manager accounting', 'direktur'];
                                         @endphp
                                         @if (Auth::user()->kode_cabang == 'PCF' && in_array($level, $level_search))
                                             <div class="col-3">

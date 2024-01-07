@@ -23,7 +23,7 @@ class Pengajuanizin extends Model
         $query->leftjoin('jadwal_kerja', 'pengajuan_izin.kode_jadwal', '=', 'jadwal_kerja.kode_jadwal');
 
 
-        if ($level != "emf" && $level != "direktur" && $level != "manager hrd") {
+        if ($level != "emf" && $level != "direktur" && $level != "manager hrd" && $level != "spv presensi") {
             if (Auth::user()->id != "57" && Auth::user()->id != "69" && Auth::user()->id != 20) {
                 if (!empty($dari) && !empty($sampai)) {
                     $query->whereBetween('dari', [$dari, $sampai]);
@@ -75,7 +75,7 @@ class Pengajuanizin extends Model
         }
 
 
-        if ($level == "manager hrd") {
+        if ($level == "manager hrd" || $level == "spv presensi") {
             if (!empty($dari) && !empty($sampai)) {
                 $query->whereBetween('dari', [$dari, $sampai]);
             }
@@ -114,7 +114,7 @@ class Pengajuanizin extends Model
             if (!empty($nama_karyawan)) {
                 $query->where('nama_karyawan', 'like', '%' . $nama_karyawan . '%');
             }
-            if (Auth::user()->id == 164) {
+            if (Auth::user()->id == 164 || Auth::user()->level == "spv presensi") {
                 $query->where('head_dept', 1);
             }
 

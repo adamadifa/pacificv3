@@ -150,7 +150,7 @@ class GlobalProvider extends ServiceProvider
                 $qpi->leftjoin('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept');
                 $qpi->leftjoin('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
 
-                if ($level != "emf"  && $level != "direktur" && $level != "manager hrd") {
+                if ($level != "emf"  && $level != "direktur" && $level != "manager hrd" && $level != "spv presensi") {
                     if (!empty($kode_dept_presensi)) {
                         $qpi->where('master_karyawan.kode_dept', $kode_dept_presensi);
                     }
@@ -426,7 +426,7 @@ class GlobalProvider extends ServiceProvider
                 }
 
 
-                if ($level == "manager hrd") {
+                if ($level == "manager hrd" || $level == "spv presensi") {
                     if (!empty($kode_dept_presensi)) {
                         $qpi->where('master_karyawan.kode_dept', $kode_dept_presensi);
                     }
@@ -441,10 +441,10 @@ class GlobalProvider extends ServiceProvider
                     //     $qpi->where('head_dept', 1);
                     // }
 
-                    if (Auth::user()->id == 164) {
+                    if (Auth::user()->id == 164 || Auth::user()->level == "spv presensi") {
                         $qpi->where('head_dept', 1);
                     }
-                    $qpi->where('master_karyawan.kode_dept', '!=', 'HRD');
+                    //$qpi->where('master_karyawan.kode_dept', '!=', 'HRD');
                     $qpi->whereNull('hrd');
                     $qpi->orwhereNull('head_dept');
                     $qpi->where('master_karyawan.kode_dept', 'HRD');

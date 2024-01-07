@@ -82,7 +82,7 @@ class PengajuanizinController extends Controller
         $kode_jadwal = $cekjadwal->kode_jadwal;
         if (isset($request->approve)) {
             try {
-                if ($level != "manager hrd" && $level != "direktur") {
+                if ($level != "manager hrd" && $level != "direktur" && $level != "spv presensi") {
                     DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
                         'head_dept' => 1
                     ]);
@@ -167,7 +167,7 @@ class PengajuanizinController extends Controller
 
         if (isset($request->decline)) {
             try {
-                if ($level != "manager hrd" && $level != "direktur") {
+                if ($level != "manager hrd" && $level != "direktur" && $level != "spv presensi") {
                     DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
                         'head_dept' => 2
                     ]);
@@ -210,7 +210,7 @@ class PengajuanizinController extends Controller
         try {
             $izin = DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->first();
             $jenis_izin = $izin->jenis_izin;
-            if ($level != "manager hrd" && $level != "direktur") {
+            if ($level != "manager hrd" && $level != "direktur" && $level != "spv presensi") {
                 DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
                     'head_dept' => NULL
                 ]);
@@ -269,7 +269,7 @@ class PengajuanizinController extends Controller
                 return Redirect::back()->with(['warning' => 'Karyawan Tersebut Belum Melakukan Presensi, Silahkan Lakukan Presensi Terlebih Dahulu, atau Input di Koreksi Presensi']);
             }
             try {
-                if ($level != "manager hrd" && $level != "direktur") {
+                if ($level != "manager hrd" && $level != "direktur" && $level != "spv presensi") {
                     DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
                         'head_dept' => 1
                     ]);
@@ -310,7 +310,7 @@ class PengajuanizinController extends Controller
 
         if (isset($request->decline)) {
             try {
-                if ($level != "manager hrd" && $level != "direktur") {
+                if ($level != "manager hrd" && $level != "direktur" && $level != "spv presensi") {
                     DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
                         'head_dept' => 2
                     ]);
@@ -355,7 +355,7 @@ class PengajuanizinController extends Controller
         $kode_izin = $data->kode_izin;
         $level = Auth::user()->level;
         try {
-            if ($level != "manager hrd" && $level != "direktur") {
+            if ($level != "manager hrd" && $level != "direktur" && $level != "spv presensi") {
                 DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
                     'head_dept' => null
                 ]);
@@ -405,7 +405,7 @@ class PengajuanizinController extends Controller
                 return Redirect::back()->with(['warning' => 'Karyawan Tersebut Belum Melakukan Presensi, Silahkan Lakukan Presensi Terlebih Dahulu, atau Input di Koreksi Presensi']);
             }
             try {
-                if ($level != "manager hrd" && $level != "direktur") {
+                if ($level != "manager hrd" && $level != "direktur" && $level != "spv presensi") {
                     DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
                         'head_dept' => 1
                     ]);
@@ -445,7 +445,7 @@ class PengajuanizinController extends Controller
 
         if (isset($request->decline)) {
             try {
-                if ($level != "manager hrd" && $level != "direktur") {
+                if ($level != "manager hrd" && $level != "direktur" && $level != "spv presensi") {
                     DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
                         'head_dept' => 2
                     ]);
@@ -484,7 +484,7 @@ class PengajuanizinController extends Controller
 
 
         try {
-            if ($level != "manager hrd" && $level != "direktur") {
+            if ($level != "manager hrd" && $level != "direktur" && $level != "spv presensi") {
                 DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
                     'head_dept' => NULL
                 ]);
@@ -783,7 +783,7 @@ class PengajuanizinController extends Controller
                 return Redirect::back()->with(['warning' => 'Karyawan Tersebut Belum Melakukan Presensi, Silahkan Lakukan Presensi Terlebih Dahulu, atau Input di Koreksi Presensi']);
             }
             try {
-                if ($level != "manager hrd" && $level != "direktur") {
+                if ($level != "manager hrd" && $level != "direktur" && $level != "spv presensi") {
                     DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
                         'head_dept' => 1
                     ]);
@@ -824,7 +824,7 @@ class PengajuanizinController extends Controller
 
         if (isset($request->decline)) {
             try {
-                if ($level != "manager hrd" && $level != "direktur") {
+                if ($level != "manager hrd" && $level != "direktur" && $level != "spv presensi") {
                     DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
                         'head_dept' => 2
                     ]);
@@ -862,7 +862,7 @@ class PengajuanizinController extends Controller
         $level = Auth::user()->level;
 
         try {
-            if ($level != "manager hrd" && $level != "direktur") {
+            if ($level != "manager hrd" && $level != "direktur" && $level != "spv presensi") {
                 DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
                     'head_dept' => NULL
                 ]);
@@ -963,7 +963,7 @@ class PengajuanizinController extends Controller
 
         if (isset($request->approve)) {
             try {
-                if ($level != "manager hrd" && $level != "direktur") {
+                if ($level != "manager hrd" && $level != "direktur" && $level != "spv presensi") {
                     DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
                         'head_dept' => 1
                     ]);
@@ -1032,7 +1032,7 @@ class PengajuanizinController extends Controller
 
         if (isset($request->decline)) {
             try {
-                if ($level != "manager hrd" && $level != "direktur") {
+                if ($level != "manager hrd" && $level != "direktur" && $level != "spv presensi") {
                     DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
                         'head_dept' => 2
                     ]);
@@ -1099,7 +1099,7 @@ class PengajuanizinController extends Controller
 
         if (isset($request->approve)) {
             try {
-                if ($level != "manager hrd" && $level != "direktur") {
+                if ($level != "manager hrd" && $level != "direktur" && $level != "spv presensi") {
                     DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
                         'head_dept' => 1
                     ]);
@@ -1137,7 +1137,7 @@ class PengajuanizinController extends Controller
 
         if (isset($request->decline)) {
             try {
-                if ($level != "manager hrd") {
+                if ($level != "manager hrd" && $level != "spv presensi") {
                     DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
                         'head_dept' => 2
                     ]);
@@ -1173,7 +1173,7 @@ class PengajuanizinController extends Controller
     {
         $level = Auth::user()->level;
         try {
-            if ($level != "manager hrd") {
+            if ($level != "manager hrd" && $level != "spv presensi") {
                 DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
                     'head_dept' => NULL
                 ]);
@@ -1211,7 +1211,7 @@ class PengajuanizinController extends Controller
         $hariini = hari($tgl_presensi);
 
         try {
-            if ($level != "manager hrd" && $level != "direktur") {
+            if ($level != "manager hrd" && $level != "direktur" && $level != "spv presensi") {
                 DB::table('pengajuan_izin')->where('kode_izin', $kode_izin)->update([
                     'head_dept' => NULL
                 ]);

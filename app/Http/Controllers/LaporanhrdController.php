@@ -18,7 +18,11 @@ class LaporanhrdController extends Controller
         $departemen = DB::table('hrd_departemen')->orderBy('nama_dept')->get();
         $cbg = new Cabang();
         if (Auth::user()->kode_cabang == "PCF" || Auth::user()->kode_cabang == "PST") {
-            if (Auth::user()->level == "manager hrd" || Auth::user()->level == "admin" || Auth::user()->level == "manager accounting") {
+            if (
+                Auth::user()->level == "manager hrd" || Auth::user()->level == "admin"
+                || Auth::user()->level == "manager accounting"
+                || Auth::user()->level == "spv presensi"
+            ) {
                 $cabang = $cbg->getCabang("PST");
             } else {
                 $cabang = DB::table('cabang')->where('kode_cabang', 'PST')->get();
@@ -39,7 +43,7 @@ class LaporanhrdController extends Controller
         $departemen = DB::table('hrd_departemen')->orderBy('nama_dept')->get();
         $cbg = new Cabang();
         if (Auth::user()->kode_cabang == "PCF" || Auth::user()->kode_cabang == "PST") {
-            if (Auth::user()->level == "manager hrd" || Auth::user()->level == "admin" || Auth::user()->level == "manager accounting") {
+            if (Auth::user()->level == "manager hrd" || Auth::user()->level == "admin" || Auth::user()->level == "spv presensi" || Auth::user()->level == "manager accounting") {
                 $cabang = $cbg->getCabang("PST");
             } else {
                 $cabang = DB::table('cabang')->where('kode_cabang', 'PST')->get();
@@ -66,7 +70,7 @@ class LaporanhrdController extends Controller
         $id_kantor = $request->id_kantor;
         $kode_dept = Auth::user()->kode_dept_presensi;
         if (Auth::user()->kode_cabang == "PCF" || Auth::user()->kode_cabang == "PST") {
-            if (Auth::user()->level == "manager hrd" || Auth::user()->level == "admin" || Auth::user()->level == "manager accounting") {
+            if (Auth::user()->level == "manager hrd" || Auth::user()->level == "admin" || Auth::user()->level == "spv presensi" || Auth::user()->level == "manager accounting") {
                 $departemen = DB::table('master_karyawan')
                     ->select('master_karyawan.kode_dept', 'nama_dept')
                     ->where('id_kantor', $id_kantor)
@@ -98,7 +102,7 @@ class LaporanhrdController extends Controller
                 ->groupByRaw('master_karyawan.kode_dept,nama_dept')
                 ->get();
         }
-        if (Auth::user()->level == "manager hrd" || Auth::user()->level == "direktur" || Auth::user()->level == "admin" || Auth::user()->level == "manager accounting") {
+        if (Auth::user()->level == "manager hrd" || Auth::user()->level == "direktur" || Auth::user()->level == "spv presensi" || Auth::user()->level == "admin" || Auth::user()->level == "manager accounting") {
             echo "<option value=''>Semua Departemen</option>";
         }
         foreach ($departemen as $d) {
@@ -482,7 +486,7 @@ class LaporanhrdController extends Controller
         $departemen = DB::table('hrd_departemen')->orderBy('nama_dept')->get();
         $cbg = new Cabang();
         if (Auth::user()->kode_cabang == "PCF" || Auth::user()->kode_cabang == "PST") {
-            if (Auth::user()->level == "manager hrd" || Auth::user()->level == "admin") {
+            if (Auth::user()->level == "manager hrd" || Auth::user()->level == "spv presensi" || Auth::user()->level == "admin") {
                 $cabang = $cbg->getCabang("PST");
             } else {
                 $cabang = DB::table('cabang')->where('kode_cabang', 'PST')->get();
@@ -519,7 +523,7 @@ class LaporanhrdController extends Controller
         $departemen = DB::table('hrd_departemen')->orderBy('nama_dept')->get();
         $cbg = new Cabang();
         if (Auth::user()->kode_cabang == "PCF" || Auth::user()->kode_cabang == "PST") {
-            if (Auth::user()->level == "manager hrd" || Auth::user()->level == "admin") {
+            if (Auth::user()->level == "manager hrd" || Auth::user()->level == "spv presensi" || Auth::user()->level == "admin") {
                 $cabang = $cbg->getCabang("PST");
             } else {
                 $cabang = DB::table('cabang')->where('kode_cabang', 'PST')->get();

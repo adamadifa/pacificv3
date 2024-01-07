@@ -43,7 +43,7 @@ class LemburController extends Controller
         if (Auth::user()->kode_cabang != "PCF" && Auth::user()->kode_cabang != "PST") {
             $query->where('id_kantor', Auth::user()->kode_cabang);
         } else {
-            $level_search = array("manager hrd", "admin");
+            $level_search = array("manager hrd", "admin", "spv presensi");
             if (in_array(Auth::user()->level, $level_search)) {
                 if (!empty($request->id_kantor_search)) {
                     $query->where('id_kantor', $request->id_kantor_search);
