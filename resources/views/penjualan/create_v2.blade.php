@@ -934,7 +934,7 @@
                         $("#pelanggan").focus();
                     });
                 } else {
-                    if (nama_pelanggan.includes('KPBN')) {
+                    if (nama_pelanggan.includes('KPBN') || nama_pelanggan.includes('RSB')) {
                         $("#harga_dus").prop('readonly', false);
                         $("#harga_pack").prop('readonly', false);
                         $("#harga_pcs").prop('readonly', false);

@@ -56,54 +56,53 @@
     </thead>
     <tbody>
         @foreach ($barang as $d)
-        <tr>
-            <td>{{ $d->kode_barang }}</td>
-            <td>{{ $d->kode_produk }}</td>
-            <td>{!! $d->status_promo_product == 1 ? $d->nama_barang."<span style='color:red'>(PROMO)</span>" : $d->nama_barang !!}</td>
-            <td class="text-right">{{ rupiah($d->harga_dus - $pengurangharga) }}</td>
-            <td class="text-right">{{ rupiah($d->harga_pack) }}</td>
-            <td class="text-right">{{ rupiah($d->harga_pcs) }}</td>
-            <td class="text-right">{{ $d->kategori_harga }}</td>
-            <td><a href="#" class="btn btn-sm btn-primary pilihbarang" kode_barang="{{ $d->kode_barang }}" nama_barang="{{ $d->nama_barang }}" isipcsdus="{{ $d->isipcsdus }}" isipcs="{{ $d->isipcs }}" harga_dus="{{ rupiah($d->harga_dus-$pengurangharga) }}" harga_pack="{{ rupiah($d->harga_pack) }}" harga_pcs="{{ rupiah($d->harga_pcs) }}">Pilih</a></td>
-        </tr>
+            <tr>
+                <td>{{ $d->kode_barang }}</td>
+                <td>{{ $d->kode_produk }}</td>
+                <td>{!! $d->status_promo_product == 1 ? $d->nama_barang . "<span style='color:red'>(PROMO)</span>" : $d->nama_barang !!}</td>
+                <td class="text-right">{{ rupiah($d->harga_dus - $pengurangharga) }}</td>
+                <td class="text-right">{{ rupiah($d->harga_pack) }}</td>
+                <td class="text-right">{{ rupiah($d->harga_pcs) }}</td>
+                <td class="text-right">{{ $d->kategori_harga }}</td>
+                <td><a href="#" class="btn btn-sm btn-primary pilihbarang" kode_barang="{{ $d->kode_barang }}"
+                        nama_barang="{{ $d->nama_barang }}" isipcsdus="{{ $d->isipcsdus }}" isipcs="{{ $d->isipcs }}"
+                        harga_dus="{{ rupiah($d->harga_dus - $pengurangharga) }}"
+                        harga_pack="{{ rupiah($d->harga_pack) }}" harga_pcs="{{ rupiah($d->harga_pcs) }}">Pilih</a>
+                </td>
+            </tr>
         @endforeach
     </tbody>
 </table>
 <script>
     $(function() {
         $("#mybarang").DataTable({
-            bAutoWidth: false
-            , columnDefs: [{
-                    width: 80
-                    , targets: 0
-                }
-                , {
-                    width: 80
-                    , targets: 1
-                }
-                , {
-                    width: 80
-                    , targets: 3
-                }
-                , {
-                    width: 80
-                    , targets: 4
-                }
-                , {
-                    width: 80
-                    , targets: 5
-                }, {
-                    width: 80
-                    , targets: 6
-                }, {
-                    width: 80
-                    , targets: 7
-                }
-            ]
-            , order: [
+            bAutoWidth: false,
+            columnDefs: [{
+                width: 80,
+                targets: 0
+            }, {
+                width: 80,
+                targets: 1
+            }, {
+                width: 80,
+                targets: 3
+            }, {
+                width: 80,
+                targets: 4
+            }, {
+                width: 80,
+                targets: 5
+            }, {
+                width: 80,
+                targets: 6
+            }, {
+                width: 80,
+                targets: 7
+            }],
+            order: [
                 [1, 'asc']
-            ]
-        , });
+            ],
+        });
 
 
 
@@ -125,7 +124,7 @@
             }
 
             var nama_pelanggan = $("#nama_pelanggan").val();
-            if (nama_pelanggan.includes('KPBN')) {
+            if (nama_pelanggan.includes('KPBN') || nama_pelanggan.includes('RSB')) {
                 $("#harga_dus").prop('readonly', false);
                 $("#harga_pack").prop('readonly', false);
                 $("#harga_pcs").prop('readonly', false);
@@ -150,7 +149,7 @@
                 $("#harga_pack").prop("readonly", true);
                 $("#jml_pack").prop("readonly", true);
             } else {
-                if (nama_pelanggan.includes('KPBN')) {
+                if (nama_pelanggan.includes('KPBN') || nama_pelanggan.includes('RSB')) {
                     $("#harga_pack").prop("readonly", false);
                     $("#jml_pack").prop("readonly", false);
                 } else {
@@ -163,5 +162,4 @@
             $("#mdlbarang").modal("hide");
         });
     });
-
 </script>
