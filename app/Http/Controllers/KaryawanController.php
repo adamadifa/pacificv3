@@ -57,6 +57,10 @@ class KaryawanController extends Controller
             $query->where('nama_jabatan', '!=', 'KEPALA ADMIN');
         }
 
+        if ($level == "rom") {
+            $query->where('nama_jabatan', 'KEPALA ADMIN');
+        }
+
         if ($level == "kepala penjualan") {
             if (Auth::user()->id == "27") {
                 $query->whereIn('master_karyawan.id_kantor', [$cabang, 'PWK']);

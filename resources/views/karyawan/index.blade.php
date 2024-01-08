@@ -447,7 +447,7 @@
                                                     @endif
                                                     @endif --}}
 
-                                                                @if (Auth::user()->id == 57 || Auth::user()->id == 20)
+                                                                @if (Auth::user()->id == 57 || Auth::user()->id == 20 || Auth::user()->level == 'rom')
                                                                     <a href="#" nik="{{ Crypt::encrypt($d->nik) }}"
                                                                         class="ajukanpinjaman"><i
                                                                             class="feather icon-external-link primary ml-1"></i></a>
