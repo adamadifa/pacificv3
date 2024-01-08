@@ -41,7 +41,7 @@
                                         value="{{ Request('sampai') }}" />
                                 </div>
                             </div>
-                            <div class="row">
+                            {{-- <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
                                         <select name="status" id="status" class="form-control">
@@ -52,7 +52,7 @@
                                         </select>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">

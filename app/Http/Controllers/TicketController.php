@@ -24,11 +24,11 @@ class TicketController extends Controller
 
         if (!empty($request->status)) {
             if ($request->status ==  "pending") {
-                $query->where('status', 0);
+                $query->where('ticket.status', 0);
             } else if ($request->status == "disetujui") {
-                $query->where('status', 1);
+                $query->where('ticket.status', 1);
             } else if ($request->status == "selesai") {
-                $query->where('status', 2);
+                $query->where('ticket.status', 2);
             }
         }
 
