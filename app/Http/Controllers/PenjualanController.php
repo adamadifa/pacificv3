@@ -4180,7 +4180,7 @@ class PenjualanController extends Controller
                 DB::raw("(
                         SELECT kode_pelanggan,hari
                         FROM pengajuan_routing WHERE no_pengajuan IN (SELECT MAX(no_pengajuan) as no_pengajuan FROM pengajuan_routing
-                        WHERE tgl_pengajuan <= '$sampai'  GROUP BY nik)
+                        WHERE tgl_pengajuan <= '$sampai'  GROUP BY kode_pelanggan)
                     ) ajuan_routing"),
                 function ($join) {
                     $join->on('pelanggan.kode_pelanggan', '=', 'ajuan_routing.kode_pelanggan');
