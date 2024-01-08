@@ -193,7 +193,7 @@ class HariliburController extends Controller
 
     public function getkaryawan($kode_libur, $id_kantor, $kode_dept)
     {
-        $level_access = array("manager hrd", "admin");
+        $level_access = array("manager hrd", "admin","spv presensi");
         $level = Auth::user()->level;
         if ($id_kantor == "PCF" || $id_kantor == "PST") {
             if (in_array($level, $level_access)) {
