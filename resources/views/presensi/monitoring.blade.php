@@ -679,7 +679,7 @@
                                                         {{-- {{ $jout }} - {{ $jam_masuk_tanggal }} - {{ $j_masuk_tanggal }} --}}
                                                     </td>
                                                     <td>
-                                                        @if ($level == 'manager hrd' || $level == 'admin' || Auth::user()->pic_presensi == 1)
+                                                        @if ($level == 'manager hrd' || $level == 'spv presensi' || $level == 'admin' || Auth::user()->pic_presensi == 1)
                                                             <a href="#" class="edit" nik="{{ $d->nik }}"
                                                                 kode_jadwal="{{ $d->kode_jadwal }}"><i
                                                                     class="feather icon-edit info"></i></a>

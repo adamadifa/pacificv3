@@ -44,7 +44,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <form action="{{ URL::current() }}">
-                                        @if (in_array($level, ['admin', 'manager hrd']))
+                                        @if (in_array($level, ['admin', 'manager hrd', 'spv presensi']))
 
                                             <div class="row">
                                                 <div class="col-2">
@@ -209,7 +209,7 @@
                                                     </td>
                                                     <td>
                                                         <div class="btn-group">
-                                                            @if ($level == 'manager hrd')
+                                                            @if ($level == 'manager hrd' || $level == 'spv presensi')
                                                                 @if (empty($d->hrd))
                                                                     <a href="#"
                                                                         kode_lembur="{{ Crypt::encrypt($d->kode_lembur) }}"
@@ -238,7 +238,7 @@
                                                             {{-- <a href="#" class="edit" kode_libur="{{ $d->kode_libur }}"><i class="feather icon-edit info"></i></a> --}}
 
 
-                                                            @if ($level == 'manager hrd' || $level == 'admin')
+                                                            @if ($level == 'manager hrd' || $level == 'admin' || $level == 'spv presensi')
                                                                 <a href="#" class="ket_hrd"
                                                                     kode_lembur="{{ $d->kode_lembur }}"><i
                                                                         class="feather icon-message-square ml-1 info"></i></a>
@@ -302,7 +302,7 @@
                             </div>
                         </div>
                         @if (Auth::user()->kode_cabang == 'PCF')
-                            @if ($level == 'manager hrd' || $level == 'admin')
+                            @if ($level == 'manager hrd' || $level == 'admin' || $level == 'spv presensi')
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="form-group">
@@ -325,7 +325,7 @@
                         @endif
 
                         @if (Auth::user()->kode_cabang == 'PCF')
-                            @if (Auth::user()->level == 'manager hrd' || Auth::user()->level == 'admin')
+                            @if (Auth::user()->level == 'manager hrd' || Auth::user()->level == 'admin' || Auth::user()->level == 'spv presensi')
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="form-group">
@@ -515,7 +515,8 @@
                         $("#jam_sampai").focus();
                     });
                     return false;
-                } else if (level == "manager hrd" && id_kantor == "" || level == "admin" && id_kantor ==
+                } else if (level == "manager hrd" && id_kantor == "" || level == "spv presensi" &&
+                    id_kantor == "" || level == "admin" && id_kantor ==
                     "") {
                     swal({
                         title: 'Oops',
@@ -526,7 +527,8 @@
                         $("#id_kantor").focus();
                     });
                     return false;
-                } else if (level == "manager hrd" && kode_dept == "" || level == "admin" && kode_dept ==
+                } else if (level == "manager hrd" && kode_dept == "" || level == "spv presensi" &&
+                    kode_dept == "" || level == "admin" && kode_dept ==
                     "") {
                     swal({
                         title: 'Oops',

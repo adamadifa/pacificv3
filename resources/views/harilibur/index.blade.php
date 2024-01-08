@@ -44,7 +44,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <form action="{{ URL::current() }}">
-                                        @if (in_array($level, ['admin', 'manager hrd']))
+                                        @if (in_array($level, ['admin', 'manager hrd', 'spv_presensi']))
 
                                             <div class="row">
                                                 <div class="col-2">
@@ -210,7 +210,7 @@
                                                     </td>
                                                     <td>
                                                         <div class="btn-group">
-                                                            @if ($level == 'manager hrd')
+                                                            @if ($level == 'manager hrd' || $level == 'spv presensi')
                                                                 @if (empty($d->hrd))
                                                                     <a href="#"
                                                                         kode_libur="{{ Crypt::encrypt($d->kode_libur) }}"
@@ -282,7 +282,7 @@
 
 
                         @if (Auth::user()->kode_cabang == 'PCF')
-                            @if ($level == 'manager hrd' || $level == 'admin')
+                            @if ($level == 'manager hrd' || $level == 'admin' || $level == 'spv presensi')
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="form-group">
@@ -305,7 +305,7 @@
                         @endif
 
                         @if (Auth::user()->kode_cabang == 'PCF')
-                            @if (Auth::user()->level == 'manager hrd' || Auth::user()->level == 'admin')
+                            @if (Auth::user()->level == 'manager hrd' || Auth::user()->level == 'admin' || Auth::user()->level == 'spv presensi')
                                 <div class="row">
                                     <div class="col-12">
                                         <div class="form-group">
