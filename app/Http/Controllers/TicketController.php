@@ -32,7 +32,7 @@ class TicketController extends Controller
             }
         }
 
-        if (Auth::user()->level != "admin" && Auth::user()->level != "manager accounting" && Auth::user()->level != "direktur") {
+        if (Auth::user()->level != "admin" && Auth::user()->level != "manager accounting" && Auth::user()->level != "direktur" && Auth::user()->level !="rom") {
             $query->where('id_user', Auth::user()->id);
         }
 

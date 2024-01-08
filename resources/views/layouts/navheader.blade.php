@@ -28,7 +28,7 @@
                          <li class="dropdown dropdown-notification nav-item">
                              <a class="nav-link nav-link-label" href="/ticket">
                                  <i class="ficon" data-feather="tool"></i>
-                                 @if ($level == 'manager accounting')
+                                 @if ($level == 'manager accounting' || $level == 'rom')
                                      <span
                                          class="badge badge-pill badge-warning badge-up mr-1">{{ $ticket_pending_gm }}</span>
                                  @elseif($level == 'direktur')
