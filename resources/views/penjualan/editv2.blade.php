@@ -34,6 +34,8 @@
                 @csrf
                 <input type="hidden" id="cektutuplaporan" name="cektutuplaporan">
                 <input type="hidden" id="sisapiutang" name="sisapiutang">
+                <input type="text" id="sisafakturkredit" name="sisafakturkredit">
+                <input type="text" id="sikluspembayaran" name="sikluspembayaran">
                 <input type="hidden" id="bruto" name="bruto">
                 <input type="hidden" id="subtotal" name="subtotal">
                 <input type="hidden" id="cekpajak" name="cekpajak" value="{{ $pajak }}">
@@ -86,19 +88,20 @@
                                                     class="form-control" name="jatuhtempo">
                                                 <x-inputtext label="Pelanggan" value="{{ $faktur->nama_pelanggan }}"
                                                     field="nama_pelanggan" icon="feather icon-user" readonly />
-                                                <input type="hidden" id="limitpel" class="form-control" name="limitpel">
+                                                <input type="hidden" id="limitpel" class="form-control" name="limitpel"
+                                                    value="{{ $faktur->limitpel }}">
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-12">
-                                                <input type="hidden" name="id_karyawan" value="{{ $faktur->id_karyawan }}"
-                                                    id="id_karyawan">
+                                                <input type="hidden" name="id_karyawan"
+                                                    value="{{ $faktur->id_karyawan }}" id="id_karyawan">
                                                 <input type="hidden" name="kategori_salesman"
                                                     value="{{ $faktur->kategori_salesman }}" id="kategori_salesman">
                                                 <x-inputtext label="Salesman"
                                                     value='{{ $faktur->id_karyawan .
                                                         '
-                                                                                                    | ' .
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | ' .
                                                         $faktur->nama_karyawan .
                                                         ' | ' .
                                                         $faktur->kategori_salesman }}'
@@ -146,6 +149,7 @@
                                             <p class="card-text" id="limitpelanggan">{{ rupiah($faktur->limitpel) }}</p>
                                             <b>Piutang Pelanggan</b>
                                             <p class="card-text" id="piutangpelanggan"></p>
+
                                         </div>
                                     </div>
                                 </div>
@@ -818,6 +822,7 @@
             //Cek Piutang Pelanggan
             cekpiutang($("#kode_pelanggan").val());
 
+
             function cekpiutang(kode_pelanggan) {
                 $("#piutangpelanggan").text("Loading..");
                 $.ajax({
@@ -836,6 +841,7 @@
                     }
                 });
             }
+
 
             //Cek Tutup Laporan
             function cektutuplaporan() {
@@ -985,8 +991,25 @@
                 var totalnonppn = $("#totalnonppn").val();
                 var total = parseInt(totalnonppn.replace(/\./g, ''));
                 var cekpajak = $("#cekpajak").val();
+                var subtotal = $("#subtotal").val();
+                var lastsubtotal = "{{ $faktur->total }}";
+                var sisapiutang = $("#sisapiutang").val();
+                var totalpiutang = parseInt(sisapiutang) - parseInt(lastsubtotal) + parseInt(subtotal);
+                var limitpel = $("#limitpel").val();
+                // alert(limitpel);
+                // return false;
                 if (cektutuplaporan > 0) {
                     swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
+                    return false;
+                } else if (parseInt(totalpiutang) >= parseInt(limitpel) && jenistransaksi == 'kredit') {
+                    swal({
+                        title: 'Oops',
+                        text: 'Melebihi Limit, Silahkan Ajukan Penambahan Limit !',
+                        icon: 'warning',
+                        showConfirmButton: false
+                    }).then(function() {
+                        $("#no_fak_penj").focus();
+                    });
                     return false;
                 } else if (no_fak_penj == "") {
                     swal({

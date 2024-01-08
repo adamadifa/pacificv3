@@ -4174,8 +4174,18 @@ class PenjualanController extends Controller
         }
         if ($jenislaporan == "detail") {
             $qpenjualan = Penjualan::query();
-            $qpenjualan->selectRaw('tgltransaksi,penjualan.kode_pelanggan,nama_pelanggan,hari');
+            $qpenjualan->selectRaw('tgltransaksi,penjualan.kode_pelanggan,nama_pelanggan,IFNULL(ajuan_routing.hari,pelanggan.hari) as hari');
             $qpenjualan->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+            $qpenjualan->leftJoin(
+                DB::raw("(
+                        SELECT kode_pelanggan,hari
+                        FROM pengajuan_routing WHERE no_pengajuan IN (SELECT MAX(no_pengajuan) as no_pengajuan FROM pengajuan_routing
+                        WHERE tgl_pengajuan <= '$sampai'  GROUP BY nik)
+                    ) ajuan_routing"),
+                function ($join) {
+                    $join->on('pelanggan.kode_pelanggan', '=', 'ajuan_routing.kode_pelanggan');
+                }
+            );
             $qpenjualan->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
             $qpenjualan->whereBetween('tgltransaksi', [$dari, $sampai]);
             $qpenjualan->where('nama_pelanggan', '!=', 'BATAL');

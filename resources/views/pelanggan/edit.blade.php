@@ -119,45 +119,59 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="form-group  @error('hari') error @enderror">
-                                                    {{-- <select name="hari" id="" class="form-control">
-                                                    <option value="">Hari</option>
-                                                    <option @isset($data->hari) @if (old('hari'))
+                                                    <select name="hari" id="" class="form-control">
+                                                        <option value="">Hari</option>
+                                                        <option
+                                                            @isset($data->hari) @if (old('hari'))
                                                         {{ old('hari') == 'Senin' ? 'selected' : '' }} @else
                                                 {{ $data->hari == 'Senin' ? 'selected' : '' }} @endif @else
                                                 {{ old('hari') == 'Senin' ? 'selected' : '' }}
-                                                @endisset value="Senin">Senin</option>
-                                                <option @isset($data->hari) @if (old('hari'))
+                                                @endisset
+                                                            value="Senin">Senin</option>
+                                                        <option
+                                                            @isset($data->hari) @if (old('hari'))
                                                     {{ old('hari') == 'Selasa' ? 'selected' : '' }} @else
                                                     {{ $data->hari == 'Selasa' ? 'selected' : '' }} @endif @else
                                                     {{ old('hari') == 'Selasa' ? 'selected' : '' }}
-                                                    @endisset value="Selasa">Selasa</option>
-                                                <option @isset($data->hari) @if (old('hari'))
+                                                    @endisset
+                                                            value="Selasa">Selasa</option>
+                                                        <option
+                                                            @isset($data->hari) @if (old('hari'))
                                                     {{ old('hari') == 'Rabu' ? 'selected' : '' }} @else
                                                     {{ $data->hari == 'Rabu' ? 'selected' : '' }} @endif @else
                                                     {{ old('hari') == 'Rabu' ? 'selected' : '' }}
-                                                    @endisset value="Rabu">Rabu</option>
-                                                <option @isset($data->hari) @if (old('hari'))
+                                                    @endisset
+                                                            value="Rabu">Rabu</option>
+                                                        <option
+                                                            @isset($data->hari) @if (old('hari'))
                                                     {{ old('hari') == 'Kamis' ? 'selected' : '' }} @else
                                                     {{ $data->hari == 'Kamis' ? 'selected' : '' }} @endif @else
                                                     {{ old('hari') == 'Kamis' ? 'selected' : '' }}
-                                                    @endisset value="Kamis">Kamis</option>
-                                                <option @isset($data->hari) @if (old('hari'))
+                                                    @endisset
+                                                            value="Kamis">Kamis</option>
+                                                        <option
+                                                            @isset($data->hari) @if (old('hari'))
                                                     {{ old('hari') == 'Jumat' ? 'selected' : '' }} @else
                                                     {{ $data->hari == 'Jumat' ? 'selected' : '' }} @endif @else
                                                     {{ old('hari') == 'Jumat' ? 'selected' : '' }}
-                                                    @endisset value="Jumat">Jumat</option>
-                                                <option @isset($data->hari) @if (old('hari'))
+                                                    @endisset
+                                                            value="Jumat">Jumat</option>
+                                                        <option
+                                                            @isset($data->hari) @if (old('hari'))
                                                     {{ old('hari') == 'Sabtu' ? 'selected' : '' }} @else
                                                     {{ $data->hari == 'Sabtu' ? 'selected' : '' }} @endif @else
                                                     {{ old('hari') == 'Sabtu' ? 'selected' : '' }}
-                                                    @endisset value="Sabtu">Sabtu</option>
-                                                <option @isset($data->hari) @if (old('hari'))
+                                                    @endisset
+                                                            value="Sabtu">Sabtu</option>
+                                                        <option
+                                                            @isset($data->hari) @if (old('hari'))
                                                     {{ old('hari') == 'Minggu' ? 'selected' : '' }} @else
                                                     {{ $data->hari == 'Minggu' ? 'selected' : '' }} @endif @else
                                                     {{ old('hari') == 'Minggu' ? 'selected' : '' }}
-                                                    @endisset value="Minggu">Minggu</option>
-                                                </select> --}}
-                                                    <ul class="list-unstyled mb-0"
+                                                    @endisset
+                                                            value="Minggu">Minggu</option>
+                                                    </select>
+                                                    {{-- <ul class="list-unstyled mb-0"
                                                         @if ($level == 'salesman') style="display: none" @endif>
                                                         <li class="d-inline-block mr-2">
                                                             <fieldset>
@@ -285,7 +299,7 @@
                                                                 </div>
                                                             </fieldset>
                                                         </li>
-                                                    </ul>
+                                                    </ul> --}}
                                                     @error('hari')
                                                         <div class="help-block">
                                                             <ul role="alert">

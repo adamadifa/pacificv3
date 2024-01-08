@@ -371,10 +371,12 @@ class PelangganController extends Controller
             $longitude = "";
         }
 
-        $hari = "";
-        foreach ($request->hari as $d) {
-            $hari .= $d . ",";
-        }
+        // $hari = "";
+        // foreach ($request->hari as $d) {
+        //     $hari .= $d . ",";
+        // }
+
+        $hari = $request->hari;
         $simpan = DB::table('pelanggan')->insert([
             'kode_pelanggan' => $kodepelanggan,
             'nik' => $request->nik,
@@ -471,12 +473,13 @@ class PelangganController extends Controller
     {
         $kode_pelanggan = Crypt::decrypt($kode_pelanggan);
         $pelanggan = Pelanggan::where('kode_pelanggan', $kode_pelanggan)->first();
-        $hari = "";
+        // $hari = "";
 
-        foreach ($request->hari as $d) {
-            $hari .= $d . ",";
-        }
+        // foreach ($request->hari as $d) {
+        //     $hari .= $d . ",";
+        // }
 
+        $hari = $request->hari;
 
         $file = $pelanggan->foto;
         $request->validate([
