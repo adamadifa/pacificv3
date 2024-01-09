@@ -103,7 +103,7 @@ class TargetkomisiController extends Controller
     public function getlisttarget(Request $request)
     {
         $listtarget = DB::table('karyawan')
-            ->selectRaw('karyawan.id_karyawan,nama_karyawan,ab,ar,ase,bb,cg,cgg,dep,ds,sp,cg5,sc,sp8,sp500')
+            ->selectRaw('karyawan.id_karyawan,nama_karyawan,ab,ar,ase,bb,cg,cgg,dep,ds,sp,cg5,sc,sp8,sp500,br20')
             ->leftJoin(
                 DB::raw("(
                 SELECT id_karyawan,
@@ -119,7 +119,8 @@ class TargetkomisiController extends Controller
                 SUM(IF(kode_produk='CG5',jumlah_target,0)) as cg5,
                 SUM(IF(kode_produk='SC',jumlah_target,0)) as sc,
                 SUM(IF(kode_produk='SP8',jumlah_target,0)) as sp8,
-                SUM(IF(kode_produk='SP500',jumlah_target,0)) as sp500
+                SUM(IF(kode_produk='SP500',jumlah_target,0)) as sp500,
+                SUM(IF(kode_produk='BR20',jumlah_target,0)) as br20
                 FROM komisi_target_qty_detail
                 WHERE kode_target = '$request->kode_target'
                 GROUP BY id_karyawan
