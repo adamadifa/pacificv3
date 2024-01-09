@@ -717,7 +717,7 @@ class GlobalProvider extends ServiceProvider
             $targetkomisiinput = ['admin', 'kepala penjualan', 'kepala admin', 'admin pusat', 'admin pajak 2'];
             $generatecashin = ['admin'];
             $ratiokomisi = ['admin', 'kepala admin', 'admin pusat', 'kepala penjualan', 'admin pajak 2'];
-            $laporan_komisi = ['admin', 'direktur', 'kepala admin', 'admin pusat', 'manager marketing', 'rsm', 'general manager', 'manager accounting', 'spv accounting', 'kepala penjualan', 'admin pajak 2'];
+            $laporan_komisi = ['admin', 'direktur', 'kepala admin', 'admin pusat', 'manager marketing', 'rsm', 'general manager', 'manager accounting', 'spv accounting', 'kepala penjualan', 'admin pajak 2', 'rom'];
             $inputpotongankomisi = ['manager marketing', 'manager accounting', 'rom', 'direktur', 'admin'];
 
             //-----------------------------Penjualan-------------------------------------------
