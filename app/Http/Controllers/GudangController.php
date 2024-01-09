@@ -19,12 +19,19 @@ class GudangController extends Controller
         $select_saldo_gudang = "";
         $select_buffer = "";
         $select_maxstok = "";
+        $select_penjualan = "";
+
+
         $field_saldo = "";
         $field_mutasi = "";
         $field_dpb = "";
         $field_mutasi_gudang = "";
         $field_buffer = "";
         $field_maxstok = "";
+        $field_penjualan ="";
+
+        $dari = date('Y-m')."-01";
+        $sampai = date('Y-m-t',strtotime($dari));
 
 
         $barang = DB::table('master_barang')
@@ -39,6 +46,7 @@ class GudangController extends Controller
             $field_mutasi_gudang .= "mg_" . strtolower($d->kode_produk) . ",";
             $field_buffer .= "buffer_" . $d->kode_produk . ",";
             $field_maxstok .= "maxstok_" . $d->kode_produk . ",";
+            $field_penjualan .= "sellout_" . $d->kode_produk . ",";
 
             $select_saldo .= "SUM(IF(kode_produk='$d->kode_produk',jumlah,0)) as saldo_" . strtolower($d->kode_produk) . ",";
             $select_mutasi .= "IFNULL(SUM(IF(inout_good ='IN' AND kode_produk ='$d->kode_produk',jumlah,0)),0) - IFNULL(SUM(IF(inout_good ='OUT' AND kode_produk ='$d->kode_produk',jumlah,0)),0) as mutasi_" . strtolower($d->kode_produk) . ",";
@@ -49,6 +57,7 @@ class GudangController extends Controller
             SUM(IF(`inout`='OUT' AND detail_mutasi_gudang.kode_produk = '$d->kode_produk',jumlah,0)) as saldo_" . $d->kode_produk . ",";
             $select_buffer .= "SUM(IF(kode_produk='$d->kode_produk',jumlah,0)) as buffer_" . $d->kode_produk . ",";
             $select_maxstok .= "SUM(IF(kode_produk='$d->kode_produk',jumlah,0)) as maxstok_" . $d->kode_produk . ",";
+            $select_penjualan .= "SUM(IF(kode_produk='$d->kode_produk',ROUND((jumlah/isipcsdus),3),0)) as `sellout_" . $d->kode_produk . "`,";
         }
         $query = Cabang::query();
         $query->selectRaw(
@@ -59,6 +68,7 @@ class GudangController extends Controller
             $field_mutasi_gudang
             $field_buffer
             $field_maxstok
+            $field_penjualan
             cabang.kode_cabang,
             nama_cabang"
         );
@@ -182,6 +192,24 @@ class GudangController extends Controller
             GROUP BY kode_cabang ) limitstok"),
             function ($join) {
                 $join->on('cabang.kode_cabang', '=', 'limitstok.kode_cabang');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+                SELECT
+                    $select_penjualan
+                    karyawan.kode_cabang
+                FROM
+                    detailpenjualan
+                    INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
+                    INNER JOIN penjualan ON detailpenjualan.no_fak_penj = penjualan.no_fak_penj
+                    INNER JOIN karyawan ON penjualan.id_karyawan = karyawan.id_karyawan
+                    WHERE tgltransaksi BETWEEN '$dari' AND '$sampai'
+                GROUP BY kode_cabang
+                ) penjualan"),
+            function ($join) {
+                $join->on('cabang.kode_cabang', '=', 'penjualan.kode_cabang');
             }
         );
         $wilayah = Auth::user()->wilayah;
