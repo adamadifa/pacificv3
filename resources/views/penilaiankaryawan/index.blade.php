@@ -278,7 +278,9 @@
                                                             @php
                                                                 $lastindex = $cekindex - 1;
                                                             @endphp
-                                                            @if ($d->kode_dept == 'HRD' && Auth::user()->level == 'manager hrd')
+                                                            @if (
+                                                                ($d->kode_dept == 'HRD' && Auth::user()->level == 'manager hrd') ||
+                                                                    ($d->kode_dept == 'HRD' && Auth::user()->level == 'spv recruitment'))
                                                                 @php
                                                                     $field_kategori = 'm';
                                                                 @endphp
@@ -321,7 +323,9 @@
                                                                 @endif
                                                             @endif
                                                         @endif
-                                                        @if (Auth::user()->level == 'manager hrd' && !empty($d->dirut) && empty($d->pemutihan))
+                                                        @if (
+                                                            (Auth::user()->level == 'manager hrd' && !empty($d->dirut) && empty($d->pemutihan)) ||
+                                                                (Auth::user()->level == 'spv recruitment' && !empty($d->dirut) && empty($d->pemutihan)))
                                                             @if (empty($d->no_kontrak))
                                                                 @if ($d->masa_kontrak_kerja == 'Tidak Diperpanjang')
                                                                     <span class="danger">Tidak Diperpanjang</span>
