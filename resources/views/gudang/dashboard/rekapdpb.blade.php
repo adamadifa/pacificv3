@@ -48,6 +48,18 @@
                     <td></td>
                 @endforeach
             </tr>
+            <tr>
+                <td></td>
+                @foreach ($barang as $d)
+                    <td></td>
+                @endforeach
+            </tr>
+            <tr>
+                <td></td>
+                @foreach ($barang as $d)
+                    <td></td>
+                @endforeach
+            </tr>
             @foreach ($rekapdpb as $r)
                 <tr class="master">
                     <td><?php echo ucwords($r->nama_cabang); ?></td>
