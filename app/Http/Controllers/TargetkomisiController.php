@@ -5132,6 +5132,9 @@ class TargetkomisiController extends Controller
             $field_qty_produk
             realisasi_cashin,
             realisasipenjvsavg,
+            realisasi_jmlpelanggantrans,
+            jmlkunjungan,
+            jmlsesuaijadwal,
             IFNULL(sisapiutangsaldo,0) + IFNULL(sisapiutang,0) as sisapiutang,
             karyawan.id_karyawan,nama_karyawan,kategori_salesman,status_komisi
         ");
@@ -5405,6 +5408,55 @@ class TargetkomisiController extends Controller
                 $join->on('karyawan.id_karyawan', '=', 'penjualanvsavg.id_karyawan');
             }
         );
+
+
+        //Realisasi OA
+        $query->join(
+            DB::raw("(
+                SELECT penjualan.id_karyawan,COUNT(DISTINCT kode_pelanggan) as realisasi_jmlpelanggantrans
+                FROM penjualan
+                WHERE tgltransaksi BETWEEN '$dari' AND '$sampai'
+                GROUP BY penjualan.id_karyawan
+            ) oa"),
+            function ($join) {
+                $join->on('karyawan.id_karyawan', '=', 'oa.id_karyawan');
+            }
+        );
+
+
+        //Realisasi Routing
+        $query->leftJoin(
+            DB::raw("(
+                SELECT
+                penjualan.id_karyawan,
+                COUNT(no_fak_penj) as jmlkunjungan,
+                COUNT(
+                CASE WHEN
+                DAYNAME(tgltransaksi)='Monday' AND IFNULL(ajuan_routing.hari,pelanggan.hari) like '%Senin%' OR
+                DAYNAME(tgltransaksi)='Tuesday' AND IFNULL(ajuan_routing.hari,pelanggan.hari) like '%Selasa%' OR
+                DAYNAME(tgltransaksi)='Wednesday' AND IFNULL(ajuan_routing.hari,pelanggan.hari) like '%Rabu%' OR
+                DAYNAME(tgltransaksi)='Thursday' AND IFNULL(ajuan_routing.hari,pelanggan.hari) like '%Kamis%' OR
+                DAYNAME(tgltransaksi)='Friday' AND IFNULL(ajuan_routing.hari,pelanggan.hari) like '%Jumat%' OR
+                DAYNAME(tgltransaksi)='Saturday' AND IFNULL(ajuan_routing.hari,pelanggan.hari) like '%Sabtu%' OR
+                DAYNAME(tgltransaksi)='Sunday' AND IFNULL(ajuan_routing.hari,pelanggan.hari) like '%Minggu%'  THEN  penjualan.no_fak_penj END ) as jmlsesuaijadwal
+                FROM
+                `penjualan`
+                INNER JOIN `pelanggan` ON `penjualan`.`kode_pelanggan` = `pelanggan`.`kode_pelanggan`
+                LEFT JOIN (
+                    SELECT kode_pelanggan,hari
+                    FROM pengajuan_routing WHERE no_pengajuan IN (SELECT MAX(no_pengajuan) as no_pengajuan FROM pengajuan_routing
+                    WHERE tgl_pengajuan <= '$sampai' AND status = 1  GROUP BY kode_pelanggan)
+                ) ajuan_routing ON (pelanggan.kode_pelanggan = ajuan_routing.kode_pelanggan)
+                INNER JOIN `karyawan` ON `penjualan`.`id_karyawan` = `karyawan`.`id_karyawan`
+                WHERE `tgltransaksi` BETWEEN '$dari' AND '$sampai' AND `nama_pelanggan` != 'BATAL'
+                GROUP BY
+                    penjualan.id_karyawan
+            ) kunjungan"),
+            function ($join) {
+                $join->on('karyawan.id_karyawan', '=', 'kunjungan.id_karyawan');
+            }
+        );
+
 
         if (Auth::user()->id == 27 || $cabang == "BDG" && Auth::user()->kode_cabang == "PCF") {
             $query->whereIn('kode_cabang', ['BDG', 'PWK']);
