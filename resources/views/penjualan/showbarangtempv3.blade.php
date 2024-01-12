@@ -1,63 +1,57 @@
 @php
-$total = 0;
+    $total = 0;
 @endphp
 @foreach ($detailtemp as $d)
-@php
-$isipcsdus = $d->isipcsdus;
-$isipack = $d->isipack;
-$isipcs = $d->isipcs;
-$jumlah = $d->jumlah;
-$jmldus = floor($jumlah / $isipcsdus);
-if ($jumlah != 0) {
-$sisadus = $jumlah % $isipcsdus;
-} else {
-$sisadus = 0;
-}
-if ($isipack == 0) {
-$jmlpack = 0;
-$sisapack = $sisadus;
-} else {
-$jmlpack = floor($sisadus / $isipcs);
-$sisapack = $sisadus % $isipcs;
-}
+    @php
+        $isipcsdus = $d->isipcsdus;
+        $isipack = $d->isipack;
+        $isipcs = $d->isipcs;
+        $jumlah = $d->jumlah;
+        $jmldus = floor($jumlah / $isipcsdus);
+        if ($jumlah != 0) {
+            $sisadus = $jumlah % $isipcsdus;
+        } else {
+            $sisadus = 0;
+        }
+        if ($isipack == 0) {
+            $jmlpack = 0;
+            $sisapack = $sisadus;
+        } else {
+            $jmlpack = floor($sisadus / $isipcs);
+            $sisapack = $sisadus % $isipcs;
+        }
 
-$jmlpcs = $sisapack;
-$total += $d->subtotal;
-@endphp
-<tr @if ($d->promo ==1)
-    class="bg-warning"
-    @endif>
-    <td colspan="7" style="font-weight: bold">{{ $d->nama_barang }}</td>
-    <td style="text-align: right">
-        <a href="#" class="info edit" kode_barang="{{ $d->kode_barang }}" promo="{{ $d->promo }}"><i class="feather icon-edit"></i></a>
-        <a href="#" class="danger hapus" kode_barang="{{ $d->kode_barang }}" promo="{{ $d->promo }}"><i class=" feather icon-trash"></i></a>
-    </td>
-</tr>
-@if (!empty($jmldus))
-<tr @if ($d->promo ==1)
-    class="bg-warning"
-    @endif>
-    <td colspan="7">{{ $jmldus }} Dus x {{ rupiah($d->harga_dus) }}</td>
-    <td style="font-weight: bold; text-align:right">{{ rupiah($jmldus * $d->harga_dus) }}</td>
-</tr>
-@endif
-@if (!empty($jmlpack))
-<tr @if ($d->promo ==1)
-    class="bg-warning"
-    @endif>
-    <td colspan="7">{{ $jmlpack }} Pack x {{ rupiah($d->harga_pack) }}</td>
-    <td style="font-weight: bold; text-align:right">{{ rupiah($jmlpack * $d->harga_pack) }}</td>
-</tr>
-@endif
+        $jmlpcs = $sisapack;
+        $total += $d->subtotal;
+    @endphp
+    <tr @if ($d->promo == 1) class="bg-warning" @endif>
+        <td colspan="7" style="font-weight: bold">{{ $d->nama_barang }}</td>
+        <td style="text-align: right">
+            <a href="#" class="info edit" kode_barang="{{ $d->kode_barang }}" promo="{{ $d->promo }}"><i
+                    class="feather icon-edit"></i></a>
+            <a href="#" class="danger hapus" kode_barang="{{ $d->kode_barang }}" promo="{{ $d->promo }}"><i
+                    class=" feather icon-trash"></i></a>
+        </td>
+    </tr>
+    @if (!empty($jmldus))
+        <tr @if ($d->promo == 1) class="bg-warning" @endif>
+            <td colspan="7">{{ $jmldus }} Dus x {{ rupiah($d->harga_dus) }}</td>
+            <td style="font-weight: bold; text-align:right">{{ rupiah($jmldus * $d->harga_dus) }}</td>
+        </tr>
+    @endif
+    @if (!empty($jmlpack))
+        <tr @if ($d->promo == 1) class="bg-warning" @endif>
+            <td colspan="7">{{ $jmlpack }} Pack x {{ rupiah($d->harga_pack) }}</td>
+            <td style="font-weight: bold; text-align:right">{{ rupiah($jmlpack * $d->harga_pack) }}</td>
+        </tr>
+    @endif
 
-@if (!empty($jmlpcs))
-<tr @if ($d->promo ==1)
-    class="bg-warning"
-    @endif>
-    <td colspan="7">{{ $jmlpcs }} Pcs x {{ rupiah($d->harga_pcs) }}</td>
-    <td style="font-weight: bold; text-align:right">{{ rupiah($jmlpcs * $d->harga_pcs) }}</td>
-</tr>
-@endif
+    @if (!empty($jmlpcs))
+        <tr @if ($d->promo == 1) class="bg-warning" @endif>
+            <td colspan="7">{{ $jmlpcs }} Pcs x {{ rupiah($d->harga_pcs) }}</td>
+            <td style="font-weight: bold; text-align:right">{{ rupiah($jmlpcs * $d->harga_pcs) }}</td>
+        </tr>
+    @endif
 @endforeach
 <tr style="font-weight: bold">
     <td colspan="7">TOTAL</td>
@@ -82,10 +76,10 @@ $total += $d->subtotal;
         function showtemp() {
             nonaktifbutton();
             $.ajax({
-                type: 'GET'
-                , url: '/penjualan/showbarangtempv2'
-                , cache: false
-                , success: function(respond) {
+                type: 'GET',
+                url: '/penjualan/showbarangtempv2',
+                cache: false,
+                success: function(respond) {
                     aktifbutton();
                     $("#loadbarangtemp").html(respond);
                     hitungdiskon();
@@ -98,30 +92,28 @@ $total += $d->subtotal;
             var promo = $(this).attr("promo");
             event.preventDefault();
             swal({
-                    title: `Anda Yakin Data ini Akan Dihapus ?`
-                    , text: "Jika dihapus Data Ini Akan Hilang Dari Keranjang"
-                    , icon: "warning"
-                    , buttons: true
-                    , dangerMode: true
-                , })
+                    title: `Anda Yakin Data ini Akan Dihapus ?`,
+                    text: "Jika dihapus Data Ini Akan Hilang Dari Keranjang",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
                 .then((willDelete) => {
                     if (willDelete) {
                         nonaktifbutton();
                         $.ajax({
-                            type: 'POST'
-                            , url: '/penjualan/deletebarangtemp'
-                            , data: {
-                                _token: "{{ csrf_token() }}"
-                                , kode_barang: kode_barang
-                                , promo: promo
-                            }
-                            , cache: false
-                            , success: function(respond) {
+                            type: 'POST',
+                            url: '/penjualan/deletebarangtemp',
+                            data: {
+                                _token: "{{ csrf_token() }}",
+                                kode_barang: kode_barang,
+                                promo: promo
+                            },
+                            cache: false,
+                            success: function(respond) {
                                 aktifbutton();
                                 swal(
-                                    'Deleted!'
-                                    , 'Data Berhasil Dihapus'
-                                    , 'success'
+                                    'Deleted!', 'Data Berhasil Dihapus', 'success'
                                 );
                                 showtemp();
                             }
@@ -136,21 +128,21 @@ $total += $d->subtotal;
             var promo = $(this).attr("promo");
             e.preventDefault();
             $.ajax({
-                type: 'POST'
-                , url: '/penjualan/editbarangtemp'
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , kode_barang: kode_barang
-                    , promo: promo
-                }
-                , cache: false
-                , success: function(respond) {
+                type: 'POST',
+                url: '/penjualan/editbarangtemp',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    kode_barang: kode_barang,
+                    promo: promo
+                },
+                cache: false,
+                success: function(respond) {
                     $("#loadeditbarang").html(respond);
                 }
             });
             $('#mdleditbarang').modal({
-                backdrop: 'static'
-                , keyboard: false
+                backdrop: 'static',
+                keyboard: false
             });
         });
 
@@ -185,14 +177,14 @@ $total += $d->subtotal;
             $("#btnsimpan").prop('disabled', true);
             $("#btnsimpan").html('<i class="fa fa-spinner mr-1"></i><i>Loading...</i>');
             $.ajax({
-                type: 'POST'
-                , url: '/hitungdiskon'
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , jenistransaksi: jenistransaksi
-                }
-                , cache: false
-                , success: function(respond) {
+                type: 'POST',
+                url: '/hitungdiskon',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    jenistransaksi: jenistransaksi
+                },
+                cache: false,
+                success: function(respond) {
 
                     $("#btnsimpan").prop('disabled', false);
                     $("#btnsimpan").html('<i class="feather icon-send mr-1"></i> Simpan');
@@ -222,9 +214,9 @@ $total += $d->subtotal;
         function cektemp() {
             nonaktifbutton();
             $.ajax({
-                type: 'GET'
-                , url: '/cekpenjtemp'
-                , success: function(respond) {
+                type: 'GET',
+                url: '/cekpenjtemp',
+                success: function(respond) {
                     aktifbutton();
                     $("#cektemp").val(respond);
                 }
@@ -343,5 +335,4 @@ $total += $d->subtotal;
         }
 
     });
-
 </script>

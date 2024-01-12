@@ -571,12 +571,33 @@ class PenjualanController extends Controller
     public function storebarangtempv2(Request $request)
     {
         $kode_barang = $request->kode_barang;
+        $barang  = DB::table('barang')->where('kode_barang', $kode_barang)->first();
+        $isipcsdus = $barang->isipcsdus;
+        $isipack = $barang->isipack;
+        $isipcs = $barang->isipcs;
         $harga_dus = $request->hargadus;
         $harga_pack = $request->hargapack;
         $harga_pcs = $request->hargapcs;
         $jumlah = $request->jumlah;
-        $subtotal = $request->subtotal;
+
         $id_admin = Auth::user()->id;
+
+        $jmldus = floor($jumlah / $isipcsdus);
+        if ($jumlah != 0) {
+            $sisadus = $jumlah % $isipcsdus;
+        } else {
+            $sisadus = 0;
+        }
+        if ($isipack == 0) {
+            $jmlpack = 0;
+            $sisapack = $sisadus;
+        } else {
+            $jmlpack = floor($sisadus / $isipcs);
+            $sisapack = $sisadus % $isipcs;
+        }
+
+        $jmlpcs = $sisapack;
+        $subtotal = ($jmldus * $harga_dus) + ($jmlpack * $harga_pack) + ($jmlpcs * $harga_pcs);
         $promo = !empty($request->promo) ? $request->promo : NULL;
         $data = [
             'kode_barang' => $kode_barang,
