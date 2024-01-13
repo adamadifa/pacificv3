@@ -5162,7 +5162,7 @@ class TargetkomisiController extends Controller
             DB::raw("(
             SELECT
                 $select_realisasi_qty
-                salesbarunewd
+                salesbarunew
                 FROM detailpenjualan
                 INNER JOIN penjualan ON detailpenjualan.no_fak_penj = penjualan.no_fak_penj
                 INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
