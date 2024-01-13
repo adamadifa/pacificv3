@@ -313,7 +313,7 @@
                         <td style="text-align: right">
                             <!-- Reward Cashin-->
                             @php
-                                $ratiocashin = 0.1;
+                                $ratiocashin = 0.05;
                                 if ($d->status_komisi == 1) {
                                     $reward_cashin = $d->realisasi_cashin * ($ratiocashin / 100);
                                 } else {

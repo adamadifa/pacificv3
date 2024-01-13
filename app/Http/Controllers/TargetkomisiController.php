@@ -5401,7 +5401,7 @@ class TargetkomisiController extends Controller
                 ) penjlalu ON (penjualan.kode_pelanggan = penjlalu.kode_pelanggan)
                 WHERE tgltransaksi BETWEEN '$dari' AND '$sampai' AND totalpenjualanbulanlalu IS NOT NULL
                 GROUP BY penjualan.kode_pelanggan,penjualan.id_karyawan,totalpenjualanbulanlalu
-                HAVING (SUM(total) > totalpenjualanbulanlalu) ) jmlpelanggan ON (karyawan.id_karyawan = jmlpelanggan.id_karyawan)
+                HAVING (SUM(total) >= totalpenjualanbulanlalu) ) jmlpelanggan ON (karyawan.id_karyawan = jmlpelanggan.id_karyawan)
                 GROUP BY karyawan.id_karyawan
             ) penjualanvsavg"),
             function ($join) {
