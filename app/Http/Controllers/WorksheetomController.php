@@ -1129,13 +1129,54 @@ class WorksheetomController extends Controller
     public function cetakratiobs(Request $request)
     {
         $cabang = $request->kode_cabang;
-        $bulan = $request->bulan;
+        $bulan = $request->bulan > 9 ? $request->bulan : "0".$request->bulan;
         $tahun = $request->tahun;
 
-        if (isset($_POST['export'])) {
-            header("Content-type: application/vnd-ms-excel");
-            header("Content-Disposition: attachment; filename=Laporan Ratio BS.xls");
+        $dari = $tahun."-".$bulan."-01";
+        $sampai = date('Y-m-t',strtotime($dari));
+
+        $produk = DB::table('master_barang')->where('status',1)
+        ->orderBy('kode_produk')
+        ->get();
+        $select_mutasi = "";
+        foreach($produk as $d){
+            $select_mutasi.="";
         }
-        return view('ratiobs.laporan.cetak_ratioBS', compact('bulan', 'tahun', 'cabang'));
+
+
+        $query = Cabang::query();
+        $query->selectRaw("cabang.kode_cabang,nama_cabang");
+        $query->leftJoin(
+            DB::raw("(
+                SUM(IF(dmc.kode_produk='AB' AND jenis_mutasi = 'RETUR',jumlah/isipcsdus,0)) as retur_AB,
+                SUM(IF(dmc.kode_produk='AB' AND jenis_mutasi = 'REJECT PASAR',jumlah,0)) as reject_pasar_AB,
+                SUM(IF(dmc.kode_produk='AB' AND jenis_mutasi = 'REJECT GUDANG',jumlah,0)) as reject_gudang_AB,
+                SUM(IF(dmc.kode_produk='AB' AND jenis_mutasi = 'REPACK',jumlah,0)) as repack_AB
+                FROM detail_mutasi_gudang_cabang dmc
+                INNER JOIN master_barang ON dmc.kode_produk = master_barang.kode_produk
+                INNER JOIN mutasi_gudang_cabang mc ON dmc.no_mutasi_gudang_cabang = mc.no_mutasi_gudang_cabang
+                WHERE tgl_mutasi_gudang_cabang BETWEEN '$dari' AND '$sampai'
+                GROUP BY kode_cabang 
+             ) mutasicabang"),
+            function ($join) {
+                $join->on('cabang.kode_cabang', '=', 'mutasicabang.kode_cabang');
+            }
+        );
+        $query->leftJoin(
+            DB::raw("(
+                SELECT karyawan.kode_cabang,
+                SUM(IF(kode_produk='AB',detailretur.subtotal,0)) as totalretur_AB
+                FROM detailretur
+                INNER JOIN barang ON detailretur.kode_barang = barang.kode_barang
+                INNER JOIN retur ON detailretur.no_retur_penj = retur.no_retur_penj
+                INNER JOIN penjualan ON retur.no_fak_penj = penjualan.no_fak_penj
+                INNER JOIN karyawan ON penjualan.id_karyawan = karyawan.id_karyawan
+                WHERE tglretur BETWEEN '$dari' AND '$sampai'
+                GROUP BY kode_cabang
+             ) hargeretur"),
+            function ($join) {
+                $join->on('cabang.kode_cabang', '=', 'hargeretur.kode_cabang');
+            }
+        );
     }
 }
