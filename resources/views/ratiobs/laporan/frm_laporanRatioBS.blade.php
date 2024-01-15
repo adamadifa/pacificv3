@@ -31,7 +31,9 @@
                                             <div class="col-12">
                                                 <div class="form-group">
                                                     <select name="kode_cabang" id="kode_cabang" class="form-control">
-                                                        <option value="">Semua Cabang</option>
+                                                        @if (Auth::user()->kode_cabang == 'PCF')
+                                                            <option value="">Semua Cabang</option>
+                                                        @endif
                                                         @foreach ($cabang as $d)
                                                             <option value="{{ $d->kode_cabang }}">
                                                                 {{ $d->nama_cabang }}</option>
