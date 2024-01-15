@@ -1195,6 +1195,9 @@ class WorksheetomController extends Controller
             }
         );
 
+        if(!empty($cabang)){
+            $query->where('cabang.kode_cabang',$cabang);
+        }
         $ratiobs = $query->get();
 
         return view('worksheetom.cetak_ratiobs',compact('ratiobs','produk'));
