@@ -13,7 +13,6 @@
     .col-3 {
         padding-right: 1px !important;
     }
-
 </style>
 <form action="/karyawan/store" method="post" id="frmSupplier">
     @csrf
@@ -120,7 +119,7 @@
                 <select name="id_kantor" id="id_kantor" class="form-control">
                     <option value="">Kantor Cabang / Pusat</option>
                     @foreach ($cabang as $d)
-                    <option value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
+                        <option value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
                     @endforeach
                 </select>
                 <small class="danger"></small>
@@ -133,7 +132,7 @@
                 <select name="kode_dept" id="kode_dept" class="form-control">
                     <option value="">Departemen</option>
                     @foreach ($departemen as $d)
-                    <option value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
+                        <option value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
                     @endforeach
                 </select>
                 <small class="danger"></small>
@@ -146,7 +145,7 @@
                 <select name="id_jabatan" id="id_jabatan" class="form-control">
                     <option value="">Jabatan</option>
                     @foreach ($jabatan as $d)
-                    <option value="{{ $d->id }}">{{ $d->nama_jabatan }}</option>
+                        <option value="{{ $d->id }}">{{ $d->nama_jabatan }}</option>
                     @endforeach
                 </select>
                 <small class="danger"></small>
@@ -159,7 +158,7 @@
                 <select name="grup" id="grup" class="form-control">
                     <option value="">Grup</option>
                     @foreach ($group as $d)
-                    <option value="{{ $d->id }}">{{ $d->nama_group }}</option>
+                        <option value="{{ $d->id }}">{{ $d->nama_group }}</option>
                     @endforeach
                 </select>
                 <small class="danger"></small>
@@ -200,13 +199,14 @@
     <div class="row">
         <div class="col-12">
             <div class="form-group">
-                <button class="btn btn-primary btn-block" type="submit"><i class="feather icon-send mr-1"></i>Simpan</button>
+                <button class="btn btn-primary btn-block" type="submit"><i
+                        class="feather icon-send mr-1"></i>Simpan</button>
             </div>
         </div>
     </div>
 </form>
 
-<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
+<script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
 <script>
     $(function() {
         const nikEl = document.querySelector('#nik');
@@ -230,8 +230,8 @@
         const form = document.querySelector('#frmSupplier');
         const checkNik = () => {
             let valid = false;
-            const min = 3
-                , max = 25;
+            const min = 3,
+                max = 25;
             const nik = nikEl.value.trim();
 
             if (!isRequired(nik)) {
@@ -502,26 +502,30 @@
 
 
             // validate forms
-            let isNikValid = checkNik()
-                , isNoKtpValid = checkNoKtp()
-                , isNamakaryawanValid = checkNamakaryawan()
-                , isTempatlahirValid = checkTempatlahir()
-                , isTgllahirValid = checkTgllahir()
-                , isAlamatValid = checkAlamat()
-                , isJeniskelaminValid = checkJeniskelamin()
-                , isNohpValid = checkNohp()
-                , isStatuskawinValid = checkStatuskawin()
-                , isPendidikanterakhirValid = checkPendidikanterakhir()
-                , isIdperusahaanValid = checkPerusahan()
-                , isIdkantorValid = checkKantor()
-                , isKodedeptValid = checkDepartemen()
-                , isGrupValid = checkGrup()
-                , isIdJabatan = checkJabatan()
-                , isTglmasukValid = checkTglmasuk()
-                , isKlasifikasiValid = checkKlasifikasi()
-                , isStatuskaryawanValid = checkStatuskaryawan();
+            let isNikValid = checkNik(),
+                isNoKtpValid = checkNoKtp(),
+                isNamakaryawanValid = checkNamakaryawan(),
+                isTempatlahirValid = checkTempatlahir(),
+                isTgllahirValid = checkTgllahir(),
+                isAlamatValid = checkAlamat(),
+                isJeniskelaminValid = checkJeniskelamin(),
+                isNohpValid = checkNohp(),
+                isStatuskawinValid = checkStatuskawin(),
+                isPendidikanterakhirValid = checkPendidikanterakhir(),
+                isIdperusahaanValid = checkPerusahan(),
+                isIdkantorValid = checkKantor(),
+                isKodedeptValid = checkDepartemen(),
+                isGrupValid = checkGrup(),
+                isIdJabatan = checkJabatan(),
+                isTglmasukValid = checkTglmasuk(),
+                isKlasifikasiValid = checkKlasifikasi(),
+                isStatuskaryawanValid = checkStatuskaryawan();
 
-            let isFormValid = isNikValid && isNoKtpValid && isNamakaryawanValid && isTempatlahirValid && isTgllahirValid && isAlamatValid && isJeniskelaminValid && isNohpValid && isStatuskawinValid && isPendidikanterakhirValid && isIdperusahaanValid && isIdkantorValid && isKodedeptValid && isGrupValid && isIdJabatan && isTglmasukValid && isKlasifikasiValid && isStatuskaryawanValid;
+            let isFormValid = isNikValid && isNoKtpValid && isNamakaryawanValid && isTempatlahirValid &&
+                isTgllahirValid && isAlamatValid && isJeniskelaminValid && isNohpValid &&
+                isStatuskawinValid && isPendidikanterakhirValid && isIdperusahaanValid &&
+                isIdkantorValid && isKodedeptValid && isGrupValid && isIdJabatan && isTglmasukValid &&
+                isKlasifikasiValid && isStatuskaryawanValid;
 
             // submit to the server if the form is valid
             if (isFormValid) {
@@ -604,5 +608,4 @@
             }
         }));
     });
-
 </script>

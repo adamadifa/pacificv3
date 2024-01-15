@@ -447,7 +447,7 @@ function pihakpertamacabang($cabang, $perusahaan)
         'TGR' => 'Bagus Eka Winarno',
         'BDG' => 'Oki Rahmat Effendy',
         'SKB' => 'Agus Hanafi',
-        'TGL' => 'Iwan Santoso',
+        'TGL' => 'Imam Syafangat',
         'SBY' => 'Stefanus Bayu',
         'SMR' => 'Muhammad Luthfi Amri',
         'KLT' => 'Nunuk Ratmiwati',

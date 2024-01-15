@@ -5466,6 +5466,13 @@ class TargetkomisiController extends Controller
         $query->where('nama_karyawan', '!=', '');
         $komisi = $query->get();
         $nmbulan  = $namabulan[$bulan];
+        if (isset($_POST['export'])) {
+            $time = date("H:i:s");
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Komisi $time.xls");
+        }
         return view('targetkomisi.laporan.cetak_komisi_januari2024', compact(
             'komisi',
             'cbg',
