@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -31,36 +32,38 @@
             text-align: center;
             font-size: 14px;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
-        @if ($cabang!=null)
-        @if ($cabang->kode_cabang=="PST")
-        PACIFIC PUSAT
+        @if ($cabang != null)
+            @if ($cabang->kode_cabang == 'PST')
+                PACIFIC PUSAT
+            @else
+                PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
+            @endif
         @else
-        PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}
-        @endif
-        @else
-        PACIFC ALL CABANG
+            PACIFC ALL CABANG
         @endif
         <br>
         REKAP PENJUALAN<br>
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
         <br>
         @if ($salesman != null)
-        SALESMAN {{ strtoupper($salesman->nama_karyawan) }}
+            SALESMAN {{ strtoupper($salesman->nama_karyawan) }}
         @else
-        SEMUA SALESMAN
+            SEMUA SALESMAN
         @endif
         <br />
     </b>
     <table class="datatable3" style="width:200%">
         <thead bgcolor="#024a75" style="color:white; font-size:12;">
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
-                <td rowspan="2" class="fixed-side" scope="col" style=" background-color:#024a75;color:white;">No</td>
-                <td rowspan="2" class="fixed-side" scope="col" style=" background-color:#024a75;color:white;">Nama Sales</td>
+                <td rowspan="2" class="fixed-side" scope="col" style=" background-color:#024a75;color:white;">No
+                </td>
+                <td rowspan="2" class="fixed-side" scope="col" style=" background-color:#024a75;color:white;">Nama
+                    Sales</td>
                 <td colspan="18" align="center">PRODUK</td>
                 <td rowspan="2" bgcolor="#f5ae15">Penjualan Bruto</td>
 
@@ -275,88 +278,164 @@
                 <td class="fixed-side" scope="col"><?php echo $no; ?></td>
                 <td class="fixed-side" scope="col"><?php echo $p->nama_karyawan; ?></td>
                 <td style="text-align:right; font-weight:bold">
-                    <?php if (!empty($p->AB)) {echo rupiah($p->AB);} ?>
+                    <?php if (!empty($p->AB)) {
+                        echo rupiah($p->AB);
+                    } ?>
                 </td>
                 <td style="text-align:right; font-weight:bold">
-                    <?php if (!empty($p->AR)) { echo rupiah($p->AR);} ?>
+                    <?php if (!empty($p->AR)) {
+                        echo rupiah($p->AR);
+                    } ?>
                 </td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->ASE)) {echo rupiah($p->ASE);} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->BB)) {echo rupiah($p->BB);} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->BBP)) {echo rupiah($p->BBP);} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->CG)) {echo rupiah($p->CG);} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->CGG)) {echo rupiah($p->CGG);} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->CG5)) {echo rupiah($p->CG5);} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->DB)) {echo rupiah($p->DB);} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->DEP)) {echo rupiah($p->DEP);} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->DK)) {echo rupiah($p->DK);} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->DS)) {echo rupiah($p->DS);} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP)) {echo rupiah($p->SP);} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SC)) {echo rupiah($p->SC);} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP8)) {echo rupiah($p->SP8);} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP8P)) {echo rupiah($p->SP8P);} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP500)) {echo rupiah($p->SP500);} ?></td>
-                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->BR20)) {echo rupiah($p->BR20);} ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->ASE)) {
+                    echo rupiah($p->ASE);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->BB)) {
+                    echo rupiah($p->BB);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->BBP)) {
+                    echo rupiah($p->BBP);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->CG)) {
+                    echo rupiah($p->CG);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->CGG)) {
+                    echo rupiah($p->CGG);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->CG5)) {
+                    echo rupiah($p->CG5);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->DB)) {
+                    echo rupiah($p->DB);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->DEP)) {
+                    echo rupiah($p->DEP);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->DK)) {
+                    echo rupiah($p->DK);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->DS)) {
+                    echo rupiah($p->DS);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP)) {
+                    echo rupiah($p->SP);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SC)) {
+                    echo rupiah($p->SC);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP8)) {
+                    echo rupiah($p->SP8);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP8P)) {
+                    echo rupiah($p->SP8P);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->SP500)) {
+                    echo rupiah($p->SP500);
+                } ?></td>
+                <td style="text-align:right; font-weight:bold"><?php if (!empty($p->BR20)) {
+                    echo rupiah($p->BR20);
+                } ?></td>
                 <td style="text-align:right; font-weight:bold">
-                    <?php if (!empty($p->totalbruto)) {echo rupiah ($p->totalbruto);} ?>
+                    <?php if (!empty($p->totalbruto)) {
+                        echo rupiah($p->totalbruto);
+                    } ?>
                 </td>
 
                 <td style="text-align:right; font-weight:bold">
-                    <?php if (!empty($p->totalpotongan)) {echo rupiah($p->totalpotongan);} ?>
+                    <?php if (!empty($p->totalpotongan)) {
+                        echo rupiah($p->totalpotongan);
+                    } ?>
                 </td>
                 <td style="text-align:right; font-weight:bold">
-                    <?php if (!empty($p->totalpotistimewa)) {echo rupiah($p->totalpotistimewa);} ?>
+                    <?php if (!empty($p->totalpotistimewa)) {
+                        echo rupiah($p->totalpotistimewa);
+                    } ?>
                 </td>
                 <td style="text-align:right; font-weight:bold">
-                    <?php if (!empty($p->totalpenyharga)) {echo rupiah($p->totalpenyharga);} ?>
+                    <?php if (!empty($p->totalpenyharga)) {
+                        echo rupiah($p->totalpenyharga);
+                    } ?>
                 </td>
                 <td style="text-align:right; font-weight:bold">
-                    <?php if (!empty($dpp)) {echo rupiah($dpp);} ?>
+                    <?php if (!empty($dpp)) {
+                        echo rupiah($dpp);
+                    } ?>
                 </td>
                 <td style="text-align:right; font-weight:bold">
-                    <?php if (!empty($p->totalppn)) {echo rupiah($p->totalppn);} ?>
+                    <?php if (!empty($p->totalppn)) {
+                        echo rupiah($p->totalppn);
+                    } ?>
                 </td>
                 <td style="text-align:right; font-weight:bold">
-                    <?php if (!empty($p->totalretur)) {echo rupiah($p->totalretur);} ?>
+                    <?php if (!empty($p->totalretur)) {
+                        echo rupiah($p->totalretur);
+                    } ?>
                 </td>
                 <td style="text-align:right; font-weight:bold">
-                    <?php if (!empty($netto)) {echo rupiah($netto);} ?>
+                    <?php if (!empty($netto)) {
+                        echo rupiah($netto);
+                    } ?>
                 </td>
 
                 <td style="text-align:right; font-weight:bold">
-                    <?php if (!empty($p->totalbayar)) {echo rupiah($p->totalbayar);} ?>
+                    <?php if (!empty($p->totalbayar)) {
+                        echo rupiah($p->totalbayar);
+                    } ?>
                 </td>
                 <td style="text-align:right; font-weight:bold">
-                    <?php if (!empty($p->penghapusanpiutang)) {echo rupiah($p->penghapusanpiutang);} ?>
+                    <?php if (!empty($p->penghapusanpiutang)) {
+                        echo rupiah($p->penghapusanpiutang);
+                    } ?>
                 </td>
                 <td style="text-align:right; font-weight:bold">
-                    <?php if (!empty($p->diskonprogram)) {echo rupiah($p->diskonprogram);} ?>
+                    <?php if (!empty($p->diskonprogram)) {
+                        echo rupiah($p->diskonprogram);
+                    } ?>
                 </td>
                 <td style="text-align:right; font-weight:bold">
-                    <?php if (!empty($p->pps)) {echo rupiah($p->pps);} ?>
+                    <?php if (!empty($p->pps)) {
+                        echo rupiah($p->pps);
+                    } ?>
                 </td>
                 <td style="text-align:right; font-weight:bold">
-                    <?php if (!empty($p->pphk)) {echo rupiah($p->pphk);} ?>
+                    <?php if (!empty($p->pphk)) {
+                        echo rupiah($p->pphk);
+                    } ?>
                 </td>
                 <td style="text-align:right; font-weight:bold">
-                    <?php if (!empty($p->vsp)) {echo rupiah($p->vsp);} ?>
+                    <?php if (!empty($p->vsp)) {
+                        echo rupiah($p->vsp);
+                    } ?>
                 </td>
                 <td style="text-align:right; font-weight:bold">
-                    <?php if (!empty($p->kpbpb)) {echo rupiah($p->kpbpb);} ?>
+                    <?php if (!empty($p->kpbpb)) {
+                        echo rupiah($p->kpbpb);
+                    } ?>
                 </td>
                 <td style="text-align:right; font-weight:bold">
-                    <?php if (!empty($p->wapu)) {echo rupiah($p->wapu);} ?>
+                    <?php if (!empty($p->wapu)) {
+                        echo rupiah($p->wapu);
+                    } ?>
                 </td>
                 <td style="text-align:right; font-weight:bold">
-                    <?php if (!empty($p->pph22)) {echo rupiah($p->pph22);} ?>
+                    <?php if (!empty($p->pph22)) {
+                        echo rupiah($p->pph22);
+                    } ?>
                 </td>
                 <td style="text-align:right; font-weight:bold">
-                    <?php if (!empty($p->lainnya)) {echo rupiah($p->lainnya);} ?>
+                    <?php if (!empty($p->lainnya)) {
+                        echo rupiah($p->lainnya);
+                    } ?>
                 </td>
                 <td style="text-align:right; font-weight:bold">
-                    <?php if (!empty($p->saldoawalpiutang)) {echo rupiah($p->saldoawalpiutang);} ?>
+                    <?php if (!empty($p->saldoawalpiutang)) {
+                        echo rupiah($p->saldoawalpiutang);
+                    } ?>
                 </td>
                 <td style="text-align:right; font-weight:bold">
-                    <?php if (!empty($p->saldoakhirpiutang)) {echo rupiah($p->saldoakhirpiutang);} ?>
+                    <?php if (!empty($p->saldoakhirpiutang)) {
+                        echo rupiah($p->saldoakhirpiutang);
+                    } ?>
                 </td>
 
             </tr>
@@ -453,48 +532,124 @@
         <tfoot>
             <?php
             echo '
-        <tr bgcolor="#024a75" style="color:white; font-weight:bold">
-            <td colspan="2" class="fixed-side" scope="col" style=" background-color:#024a75;color:white;">TOTAL </td>
-            <td align="right" >' . rupiah($grandtotalAB) . '</td>
-            <td align="right" >' . rupiah($grandtotalAR) . '</td>
-            <td align="right" >' . rupiah($grandtotalASE) . '</td>
-            <td align="right" >' . rupiah($grandtotalBB) . '</td>
-            <td align="right" >' . rupiah($grandtotalBBP) . '</td>
-            <td align="right" >' . rupiah($grandtotalCG) . '</td>
-            <td align="right" >' . rupiah($grandtotalCGG) . '</td>
-            <td align="right" >' . rupiah($grandtotalCG5) . '</td>
-            <td align="right" >' . rupiah($grandtotalDB) . '</td>
-            <td align="right" >' . rupiah($grandtotalDEP) . '</td>
-            <td align="right" >' . rupiah($grandtotalDK) . '</td>
-            <td align="right" >' . rupiah($grandtotalDS) . '</td>
-            <td align="right" >' . rupiah($grandtotalSP) . '</td>
-            <td align="right" >' . rupiah($grandtotalSC) . '</td>
-            <td align="right" >' . rupiah($grandtotalSP8) . '</td>
-            <td align="right" >' . rupiah($grandtotalSP8P) . '</td>
-            <td align="right" >' . rupiah($grandtotalSP500) . '</td>
-            <td align="right" >' . rupiah($grandtotalBR20) . '</td>
-            <td align="right" >' . rupiah($grandsubtotalbruto) . '</td>
-
-            <td align="right" >' . rupiah($grandtotalpotongan) . '</td>
-            <td align="right" >' . rupiah($grandtotalpotistimewa) . '</td>
-            <td align="right" >' . rupiah($grandtotalpenyharga) . '</td>
-            <td align="right" >' . rupiah($grandtotaldpp) . '</td>
-            <td align="right" >' . rupiah($grandtotalppn) . '</td>
-            <td align="right" >' . rupiah($grandtotalretur) . '</td>
-            <td align="right" >' . rupiah($grandtotalnetto) . '</td>
-            <td align="right" >' . rupiah($grandtotalbayar) . '</td>
-            <td align="right" >' . rupiah($grandtotalpenghapusanpiutang) . '</td>
-            <td align="right" >' . rupiah($grandtotaldiskonprogram) . '</td>
-            <td align="right" >' . rupiah($grandtotalpps) . '</td>
-            <td align="right" >' . rupiah($grandtotalpphk) . '</td>
-            <td align="right" >' . rupiah($grandtotalvsp) . '</td>
-            <td align="right" >' . rupiah($grandtotalkpbpb) . '</td>
-            <td align="right" >' . rupiah($grandtotalwapu) . '</td>
-            <td align="right" >' . rupiah($grandtotalpph22) . '</td>
-            <td align="right" >' . rupiah($grandtotallainnya) . '</td>
-            <td align="right" >' . rupiah($grandtotalsapiutang) . '</td>
-            <td align="right" >' . rupiah($grandtotalslpiutang) . '</td>
-        </tr>';
+                    <tr bgcolor="#024a75" style="color:white; font-weight:bold">
+                        <td colspan="2" class="fixed-side" scope="col" style=" background-color:#024a75;color:white;">TOTAL </td>
+                        <td align="right" >' .
+                rupiah($grandtotalAB) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalAR) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalASE) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalBB) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalBBP) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalCG) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalCGG) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalCG5) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalDB) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalDEP) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalDK) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalDS) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalSP) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalSC) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalSP8) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalSP8P) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalSP500) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalBR20) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandsubtotalbruto) .
+                '</td>
+            
+                        <td align="right" >' .
+                rupiah($grandtotalpotongan) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalpotistimewa) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalpenyharga) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotaldpp) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalppn) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalretur) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalnetto) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalbayar) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalpenghapusanpiutang) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotaldiskonprogram) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalpps) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalpphk) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalvsp) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalkpbpb) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalwapu) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalpph22) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotallainnya) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalsapiutang) .
+                '</td>
+                        <td align="right" >' .
+                rupiah($grandtotalslpiutang) .
+                '</td>
+                    </tr>';
             ?>
         </tfoot>
     </table>
@@ -502,22 +657,26 @@
     {{-- <table class="datatable3" style="border:0px;">
 
         <?php
-        $totalcabnetto 		= 0;
-        $totalallcabnetto 	= 0;
+        $totalcabnetto = 0;
+        $totalallcabnetto = 0;
         foreach ($rekap as $key => $r) {
-            $cab  = @$rekap[$key + 1]->kode_cabang;
-            $totalcabnetto 		= $totalcabnetto + $r->totalbruto - $r->totalpotongan - $r->totalretur - $r->totalpotistimewa - $r->totalpenyharga;
-            $totalallcabnetto 	= $totalallcabnetto + $r->totalbruto - $r->totalpotongan - $r->totalretur - $r->totalpotistimewa - $r->totalpenyharga;;
+            $cab = @$rekap[$key + 1]->kode_cabang;
+            $totalcabnetto = $totalcabnetto + $r->totalbruto - $r->totalpotongan - $r->totalretur - $r->totalpotistimewa - $r->totalpenyharga;
+            $totalallcabnetto = $totalallcabnetto + $r->totalbruto - $r->totalpotongan - $r->totalretur - $r->totalpotistimewa - $r->totalpenyharga;
             if ($cab != $r->kode_cabang) {
                 echo '
-                    <tr bgcolor="#024a75" style="color:white; font-weight:bold; border:0px">
-                        <td colspan="2" style="width:200px;border:0px">' . $r->kode_cabang . '</td>
-                        <td align="right" style="border:0px">' . rupiah($totalcabnetto) . '</td>
-                    </tr>
-                    ';
+                            <tr bgcolor="#024a75" style="color:white; font-weight:bold; border:0px">
+                                <td colspan="2" style="width:200px;border:0px">' .
+                    $r->kode_cabang .
+                    '</td>
+                                <td align="right" style="border:0px">' .
+                    rupiah($totalcabnetto) .
+                    '</td>
+                            </tr>
+                            ';
                 $totalcabnetto = 0;
             }
-            $cab  = $r->kode_cabang;
+            $cab = $r->kode_cabang;
         }
         ?>
         <tr bgcolor="#024a75" style="color:white; font-weight:bold">

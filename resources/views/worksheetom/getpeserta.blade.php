@@ -1,14 +1,27 @@
 @foreach ($peserta as $d)
     @php
         $sisa = $program->jml_target - $d->jmldus;
+        $bulanmulai = date('m', strtotime($d->tgl_mulai));
+        $tahunmulai = date('Y', strtotime($d->tgl_mulai));
+
+        $bulanakhir = $bulanmulai + $lama - 1 > 12 ? $bulanmulai + $lama - 1 - 12 : $bulanmulai + $lama - 1;
+        if ($bulanakhir < 9) {
+            $bulanakhir = '0' . $bulanakhir;
+        }
+        $tahunakhir = $bulanakhir < $bulanmulai ? $tahunmulai + 1 : $tahunmulai;
+
+        $tanggal_start_akhir = $tahunakhir . '-' . $bulanakhir . '-01';
+        $tanggal_end_akhir = date('Y-m-t', strtotime($tanggal_start_akhir));
+
     @endphp
     <tr>
+
         <td>{{ $d->kode_pelanggan }}</td>
         <td>{{ $d->nama_pelanggan }}</td>
         <td>{{ $d->kode_cabang }}</td>
         <td>{{ $d->nama_karyawan }}</td>
-        <td style="text-align: center">{{ rupiah($d->jmldus) }}</td>
-        <td style="text-align: center">{{ $sisa > 0 ? rupiah($sisa) : 0 }}</td>
+        <td>{{ date('d-m-Y', strtotime($d->tgl_mulai)) }}</td>
+        <td>{{ date('d-m-Y', strtotime($tanggal_end_akhir)) }}</td>
         <td>
             <a href="#" kode_program="{{ $d->kode_program }}" kode_pelanggan="{{ $d->kode_pelanggan }}"
                 class="hapus">

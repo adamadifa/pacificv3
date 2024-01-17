@@ -75,6 +75,12 @@
             <td>
                 {{ date('d-m-Y', strtotime($program->dari)) }} s/d
                 {{ date('d-m-Y', strtotime($program->sampai)) }}
+                @php
+                    $start_date = date_create($program->dari); //Tanggal Masuk Kerja
+                    $end_date = date_create($program->sampai); // Tanggal Presensi
+                    $diff = date_diff($start_date, $end_date); //Hitung Masa Kerja
+                    $lama = ROUND($diff->days / 30);
+                @endphp
             </td>
         </tr>
         <tr>
@@ -87,20 +93,49 @@
     <table class="datatable3" style="width:50%" border="1">
         <thead bgcolor="#024a75" style="color:white; font-size:12;">
             <tr bgcolor="#024a75" style="color:white; font-size:12;">
-                <th>No.</th>
-                <th>Kode Pelanggan</th>
-                <th>Nama Pelanggan</th>
-                <th>Cabang</th>
-                <th>Salesman</th>
-                <th>Realisasi</th>
-                <th>Sisa</th>
-                <th>Keterangan</th>
+                <th rowspan="2">No.</th>
+                <th rowspan="2">Kode Pelanggan</th>
+                <th rowspan="2">Nama Pelanggan</th>
+                <th rowspan="2">Cabang</th>
+                <th rowspan="2">Salesman</th>
+                <th rowspan="2">Start</th>
+                <th rowspan="2">End</th>
+                <th colspan="{{ $jmlbln }}">Bulan</th>
+            </tr>
+            <tr>
+
+                @for ($bl = $start_month; $bl <= $end_month; $bl++)
+                    {{-- {{ $bln }} --}}
+                    @if ($bl <= 12)
+                        @php
+                            $bln = $bl;
+                            $thn = $start_year;
+                        @endphp
+                    @else
+                        @php
+                            $bln = $bl - 12;
+                            $thn = $start_year + 1;
+                        @endphp
+                    @endif
+                    <th>{{ $bln }}</th>
+                @endfor
+
             </tr>
         </thead>
         <tbody>
             @foreach ($peserta as $d)
                 @php
-                    $sisa = $program->jml_target - $d->jmldus;
+                    $bulanmulai = date('m', strtotime($d->tgl_mulai));
+                    $tahunmulai = date('Y', strtotime($d->tgl_mulai));
+
+                    $bulanakhir = $bulanmulai + $lama - 1 > 12 ? $bulanmulai + $lama - 1 - 12 : $bulanmulai + $lama - 1;
+                    if ($bulanakhir < 9) {
+                        $bulanakhir = '0' . $bulanakhir;
+                    }
+                    $tahunakhir = $bulanakhir < $bulanmulai ? $tahunmulai + 1 : $tahunmulai;
+
+                    $tanggal_start_akhir = $tahunakhir . '-' . $bulanakhir . '-01';
+                    $tanggal_end_akhir = date('Y-m-t', strtotime($tanggal_start_akhir));
                 @endphp
                 <tr>
                     <td>{{ $loop->iteration }}</td>
@@ -108,9 +143,51 @@
                     <td>{{ $d->nama_pelanggan }}</td>
                     <td>{{ $d->kode_cabang }}</td>
                     <td>{{ $d->nama_karyawan }}</td>
-                    <td style="text-align: center">{{ rupiah($d->jmldus) }}</td>
-                    <td style="text-align: center">{{ $sisa > 0 ? rupiah($sisa) : 0 }}</td>
-                    <td style="text-align: center">{{ $sisa > 0 ? 'Belum Tercapai' : 'Tercapai' }}</td>
+                    <td>{{ date('d-m-Y', strtotime($d->tgl_mulai)) }}</td>
+                    <td>{{ date('d-m-Y', strtotime($tanggal_end_akhir)) }}</td>
+                    @for ($bl = $start_month; $bl <= $end_month; $bl++)
+                        {{-- {{ $bln }} --}}
+                        @if ($bl <= 12)
+                            @php
+                                $bln = $bl;
+                                $thn = $start_year;
+                            @endphp
+                        @else
+                            @php
+                                $bln = $bl - 12;
+                                $thn = $start_year + 1;
+                            @endphp
+                        @endif
+
+                        @if ($d->{"jml_$bln$thn"} >= $program->jml_target)
+                            @php
+                                $bgcolor = 'green';
+                            @endphp
+                        @else
+                            @php
+                                $bgcolor = '';
+                            @endphp
+                        @endif
+
+                        @php
+
+                            $tgl_mulai_perhitungan = $thn . '-' . $bln . '-01';
+
+                        @endphp
+                        @if ($tgl_mulai_perhitungan >= $d->tgl_mulai)
+                            <td align="center"
+                                style="background-color: {{ $bgcolor }}; color:{{ !empty($bgcolor) ? 'white' : '' }} ">
+                                {{-- {{ $bl }} {{ $thn }} --}}
+                                {{-- {{ 'jml_' . $bln . $thn }} --}}
+                                {{-- {{ $tgl_mulai_perhitungan }} {{ $test }} --}}
+
+                                {{ !empty($d->{"jml_$bln$thn"}) ? $d->{"jml_$bln$thn"} : '' }}
+
+                            </td>
+                        @else
+                            <td></td>
+                        @endif
+                    @endfor
                 </tr>
             @endforeach
         </tbody>

@@ -40,6 +40,14 @@
                 <td>
                     {{ date('d-m-Y', strtotime($program->dari)) }} s/d
                     {{ date('d-m-Y', strtotime($program->sampai)) }}
+
+                    @php
+                        $start_date = date_create($program->dari); //Tanggal Masuk Kerja
+                        $end_date = date_create($program->sampai); // Tanggal Presensi
+                        $diff = date_diff($start_date, $end_date); //Hitung Masa Kerja
+                        $lama = ROUND($diff->days / 30);
+                    @endphp
+                    ({{ $lama }} Bulan)
                 </td>
             </tr>
             <tr>
@@ -50,15 +58,18 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-9">
+    <div class="col-6">
         <div class="form-group">
             <x-inputtext field="kode_pelanggan" label="Ketikan Nama Pelanggan / Kode Pelangan " icon="fa fa-users" />
             <input type="hidden" id="kode_pelanggan_val" name="kode_pelanggan_val">
         </div>
     </div>
-    <div class="col-3">
+    <div class="col-4">
+        <x-inputtext field="tgl_mulai" label="Tanggal Mulai" icon="feather icon-calendar" datepicker />
+    </div>
+    <div class="col-2">
         <div class="form-group">
-            <button class=" btn btn-primary" id="tambahpeserta"><i class="feather icon-plus mr-1"></i> Tambah</a>
+            <button class=" btn btn-primary" id="tambahpeserta"><i class="fa fa-plus"></i></a>
         </div>
     </div>
 </div>
@@ -67,12 +78,13 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
+
                     <th>Kode Pelanggan</th>
                     <th>Nama Pelanggan</th>
                     <th>Cabang</th>
                     <th>Salesman</th>
-                    <th>Realisasi</th>
-                    <th>Sisa</th>
+                    <th>Start</th>
+                    <th>End</th>
                     <th>#</th>
                 </tr>
             </thead>
@@ -83,6 +95,7 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script src="{{ asset('app-assets/vendors/js/forms/select/select2.full.min.js') }}"></script>
 <script src="{{ asset('app-assets/js/scripts/forms/select/form-select2.js') }}"></script>
+<script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
 <script>
     $(function() {
         $("#kode_pelanggan").autocomplete({
@@ -119,6 +132,7 @@
         loadpeserta();
         $("#tambahpeserta").click(function(e) {
             e.preventDefault();
+            var tgl_mulai = $("#tgl_mulai").val();
             var kode_pelanggan = $("#kode_pelanggan_val").val();
             var kode_program = "{{ $program->kode_program }}";
             if (kode_pelanggan == "") {
@@ -137,6 +151,7 @@
                     cache: false,
                     data: {
                         _token: "{{ csrf_token() }}",
+                        tgl_mulai: tgl_mulai,
                         kode_program: kode_program,
                         kode_pelanggan: kode_pelanggan
                     },

@@ -435,11 +435,13 @@ class WorksheetomController extends Controller
 
     public function storepeserta(Request $request)
     {
+        $tgl_mulai = $request->tgl_mulai;
         $kode_program = $request->kode_program;
         $kode_pelanggan = $request->kode_pelanggan;
 
         try {
             DB::table('program_peserta')->insert([
+                'tgl_mulai' => $tgl_mulai,
                 'kode_program' => $kode_program,
                 'kode_pelanggan' => $kode_pelanggan
             ]);
@@ -455,6 +457,14 @@ class WorksheetomController extends Controller
         $program = DB::table('program')->where('kode_program', $kode_program)->first();
         $dari = $program->dari;
         $sampai = $program->sampai;
+
+        $start_date = date_create($program->dari); //Tanggal Masuk Kerja
+        $end_date = date_create($program->sampai); // Tanggal Presensi
+        $diff = date_diff($start_date, $end_date); //Hitung Masa Kerja
+        $lama = ROUND($diff->days / 30);
+
+
+
         $list_product = unserialize($program->kode_produk);
         $produk = "";
         $jmlproduk = count($list_product);
@@ -495,7 +505,7 @@ class WorksheetomController extends Controller
         $query->where('kode_program', $kode_program);
         $query->orderBy('nama_pelanggan');
         $peserta = $query->get();
-        return view('worksheetom.getpeserta', compact('peserta', 'program'));
+        return view('worksheetom.getpeserta', compact('peserta', 'program', 'lama'));
     }
 
     public function deletepeserta(Request $request)
@@ -531,6 +541,47 @@ class WorksheetomController extends Controller
             ->where('kode_program', $kode_program)->first();
         $dari = $program->dari;
         $sampai = $program->sampai;
+
+        $start_date = date_create($program->dari); //Tanggal Masuk Kerja
+        $end_date = date_create($program->sampai); // Tanggal Presensi
+        $diff = date_diff($start_date, $end_date); //Hitung Masa Kerja
+        $lama = ROUND($diff->days / 30);
+
+        $bulanmulai = date('m', strtotime($program->dari));
+        $tahunmulai = date('Y', strtotime($program->dari));
+
+
+        //Cek Last Program
+        $lastprogram = DB::table('program_peserta')
+            ->orderBy('tgl_mulai', 'desc')
+            ->first();
+
+        $last_tgl_mulai = $lastprogram->tgl_mulai;
+        $last_bulanmulai = date('m', strtotime($last_tgl_mulai));
+        $last_tahunmulai = date('Y', strtotime($last_tgl_mulai));
+
+        if ($last_tahunmulai > $tahunmulai) {
+            $bulanakhir = $last_bulanmulai + $lama - 1 + 12;
+            $blnakhir = $bulanakhir - 12;
+        } else {
+            $bulanakhir = $last_bulanmulai + $lama - 1;
+            $blnakhir = $bulanakhir;
+        }
+
+        if ($bulanakhir < 9) {
+            $bulanakhir = "0" . $bulanakhir;
+        }
+
+        if ($blnakhir < 9) {
+            $blnakhir = "0" . $blnakhir;
+        }
+
+
+        $last_tgl_akhir = $last_tahunmulai . "-" . $blnakhir . "-01";
+
+        $e_date = date('Y-m-t', strtotime($last_tgl_akhir));
+
+
         $list_product = unserialize($program->kode_produk);
         $produk = "";
         $jmlproduk = count($list_product);
@@ -543,34 +594,69 @@ class WorksheetomController extends Controller
             }
             $i++;
         }
+
+        $select_qty_bulan = "";
+        $field_qty_bulan = "";
+        $jmlbln = 1;
+
+        //dd($bulanakhir);
+        for ($bl = $bulanmulai; $bl <= $bulanakhir; $bl++) {
+
+            if ($bl <= 12) {
+                $bln = $bl;
+                $thn = $tahunmulai;
+            } else {
+                $bln = $bl - 12;
+                $thn = $tahunmulai + 1;
+            }
+
+            //echo $bl;
+            $select_qty_bulan .= "SUM(IF(MONTH(tgltransaksi)='$bln' AND YEAR(tgltransaksi)='$thn' AND kode_produk IN ($produk),(floor(jumlah/isipcsdus)),0)) as jml_" . $bln . $thn . ",";
+            $field_qty_bulan .= "jml_" . $bln . $thn . ",";
+            $jmlbln++;
+        }
+
+
         $query = Programpeserta::query();
-        $query->select('program_peserta.*', 'nama_pelanggan', 'pelanggan.kode_cabang', 'nama_karyawan', 'jmldus');
+        $query->selectRaw("
+        $field_qty_bulan
+        program_peserta.*,
+        nama_pelanggan, pelanggan.kode_cabang, nama_karyawan");
         $query->join('pelanggan', 'program_peserta.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
         $query->join('karyawan', 'pelanggan.id_sales', '=', 'karyawan.id_karyawan');
         $query->leftJoin(
             DB::raw("(
                 SELECT
-                    penjualan.kode_pelanggan,
-                    SUM(floor(jumlah/isipcsdus)) as jmldus
+                    $select_qty_bulan
+                    penjualan.kode_pelanggan
                 FROM
                     detailpenjualan
                 INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
                 INNER JOIN penjualan ON detailpenjualan.no_fak_penj = penjualan.no_fak_penj
-                WHERE tgltransaksi BETWEEN '$dari' AND '$sampai'
-                AND kode_produk IN ($produk)
+                WHERE tgltransaksi BETWEEN '$dari' AND '$e_date'
                 GROUP BY penjualan.kode_pelanggan
             ) detailpenjualan"),
             function ($join) {
                 $join->on('program_peserta.kode_pelanggan', '=', 'detailpenjualan.kode_pelanggan');
             }
         );
+
+
         if (Auth::user()->kode_cabang != "PCF") {
             $query->where('pelanggan.kode_cabang', Auth::user()->kode_cabang);
         }
         $query->where('kode_program', $kode_program);
         $query->orderBy('nama_pelanggan');
         $peserta = $query->get();
-        return view('worksheetom.cetak_program', compact('peserta', 'program'));
+
+
+        //dd($peserta);
+        $start_month = $bulanmulai;
+        $end_month = $bulanakhir;
+        $start_year = $tahunmulai;
+
+
+        return view('worksheetom.cetak_program', compact('peserta', 'program', 'start_month', 'end_month', 'jmlbln', 'start_year'));
     }
 
     public function evaluasisharing(Request $request)
