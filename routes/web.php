@@ -487,7 +487,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/laporankomisidriverhelper', [TargetkomisiController::class, 'laporankomisidriverhelper']);
     Route::post('/laporankomisidriverhelper/cetak', [TargetkomisiController::class, 'cetakkomisidriverhelper']);
     Route::get('/laporaninsentif', [TargetkomisiController::class, 'laporaninsentif']);
-    Route::post('/laporaninsentif/cetak', [TargetkomisiController::class, 'cetaklaporaninsentif']);
+    Route::post('/laporaninsentif/cetak', [TargetkomisiController::class, 'cetakinsentifomjanuari2024']);
     Route::post('/getrealisasitargetsales', [TargetkomisiController::class, 'getrealisasitargetsales']);
     Route::post('/limitkredit/penyesuaian_limit', [LimitkreditController::class, 'penyesuaian_limit']);
     Route::post('/limitkredit/updatelimit', [LimitkreditController::class, 'updatelimit']);

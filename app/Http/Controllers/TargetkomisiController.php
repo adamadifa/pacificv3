@@ -5486,4 +5486,68 @@ class TargetkomisiController extends Controller
             'kategori_komisi'
         ));
     }
+
+
+
+    public function cetakinsentifomjanuari2024(Request $request){
+
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        lockyear($tahun);
+        $namabulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
+        $dari = $tahun . "-" . $bulan . "-01";
+        $hariini = date('Y-m-d');
+        $sampai = date('Y-m-t', strtotime($dari));
+        if ($hariini < $sampai) {
+            $sampai = $hariini;
+        } else {
+            $sampai = $sampai;
+        }
+
+        $cbg = Auth::user()->kode_cabang;
+        $kode_cabang = $request->kode_cabang;
+        $cabang = DB::table('cabang')->where('kode_cabang', $cbg)->first();
+        $lastmonth = date('Y-m-d', strtotime(date($dari) . '- 1 month'));
+        $lastdate = explode("-", $lastmonth);
+        $bulanlast = $lastdate[1] + 0;
+        $tahunlast = $lastdate[0];
+        if ($bulanlast == 1) {
+            $blnlast1 = 12;
+            $thnlast1 = $tahun - 1;
+        } else {
+            $blnlast1 = $bulanlast - 1;
+            $thnlast1 = $tahun;
+        }
+
+        if ($bulan == 12) {
+            $bln = 1;
+            $thn = $tahun + 1;
+        } else {
+            $bln = $bulan + 1;
+            $thn = $tahun;
+        }
+
+        $query = Cabang::query();
+        $query->selectRaw("cabang.kode_cabang,nama_cabang, 
+        ROUND(jmlpengambilan/jmlkapasitas * 100) as ratio_kendaraan");
+        $query->join(
+            DB::raw("(
+                SElECT karyawan.kode_cabang,
+                SUM(floor(jml_pengambilan)) as jmlpengambilan,SUM(kapasitas) as jmlkapasitas
+                FROM detail_dpb
+                INNER JOIN dpb ON detail_dpb.no_dpb = dpb.no_dpb
+                INNER JOIN kendaraan ON dpb.no_kendaraan = kendaraan.no_polisi
+                INNER JOIN karyawan ON dpb.id_karyawan = karyawan.id_karyawan
+                WHERE tgl_pengambilan BETWEEN '$dari' AND '$sampai'
+                GROUP BY karyawan.kode_cabang
+            ) kendaraan"),
+            function ($join) {
+                $join->on('cabang.kode_cabang', '=', 'kendaraan.kode_cabang');
+            }
+        );
+        $insentif = $query->get();
+
+        return view('targetkomisi.laporan.cetak_insentif_januari_2024',compact('namabulan',
+        'cabang','bulan','tahun','cabang','insentif'));
+    }
 }
