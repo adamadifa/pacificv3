@@ -1215,13 +1215,77 @@ class WorksheetomController extends Controller
     public function cetakratiobs(Request $request)
     {
         $cabang = $request->kode_cabang;
-        $bulan = $request->bulan;
+        $bulan = $request->bulan > 9 ? $request->bulan : "0".$request->bulan;
         $tahun = $request->tahun;
 
-        if (isset($_POST['export'])) {
-            header("Content-type: application/vnd-ms-excel");
-            header("Content-Disposition: attachment; filename=Laporan Ratio BS.xls");
+        $dari = $tahun."-".$bulan."-01";
+        $sampai = date('Y-m-t',strtotime($dari));
+
+        $produk = DB::table('master_barang')->where('status',1)
+        ->orderBy('kode_produk');
+        $select_mutasi = "";
+        $field_mutasi = "";
+        $select_total_retur = "";
+        $field_total_retur = "";
+        foreach($produk->get() as $d){
+
+            $field_mutasi .= "retur_".$d->kode_produk.",reject_mobil_".$d->kode_produk.",reject_pasar_".$d->kode_produk.",reject_gudang_".$d->kode_produk.",repack_".$d->kode_produk.",";
+            $field_total_retur .="totalretur_".$d->kode_produk.",";
+
+            $select_mutasi.="
+                SUM(IF(dmc.kode_produk='$d->kode_produk' AND jenis_mutasi = 'RETUR',jumlah/isipcsdus,0)) as retur_".$d->kode_produk.",
+                SUM(IF(dmc.kode_produk='$d->kode_produk' AND jenis_mutasi = 'REJECT MOBIL',jumlah/isipcsdus,0)) as reject_mobil_".$d->kode_produk.",
+                SUM(IF(dmc.kode_produk='$d->kode_produk' AND jenis_mutasi = 'REJECT PASAR',jumlah/isipcsdus,0)) as reject_pasar_".$d->kode_produk.",
+                SUM(IF(dmc.kode_produk='$d->kode_produk' AND jenis_mutasi = 'REJECT GUDANG',jumlah/isipcsdus,0)) as reject_gudang_".$d->kode_produk.",
+                SUM(IF(dmc.kode_produk='$d->kode_produk' AND jenis_mutasi = 'REPACK',jumlah/isipcsdus,0)) as repack_".$d->kode_produk.",";
+
+            $select_total_retur.="SUM(IF(kode_produk='$d->kode_produk',detailretur.subtotal,0)) as totalretur_".$d->kode_produk.",";
         }
-        return view('ratiobs.laporan.cetak_ratioBS', compact('bulan', 'tahun', 'cabang'));
+
+
+        $query = Cabang::query();
+        $query->selectRaw("
+        $field_mutasi
+        $field_total_retur
+        cabang.kode_cabang,nama_cabang");
+        $query->leftJoin(
+            DB::raw("(
+                SELECT
+                $select_mutasi
+                kode_cabang
+                FROM detail_mutasi_gudang_cabang dmc
+                INNER JOIN master_barang ON dmc.kode_produk = master_barang.kode_produk
+                INNER JOIN mutasi_gudang_cabang mc ON dmc.no_mutasi_gudang_cabang = mc.no_mutasi_gudang_cabang
+                WHERE tgl_mutasi_gudang_cabang BETWEEN '$dari' AND '$sampai'
+                GROUP BY kode_cabang 
+             ) mutasicabang"),
+            function ($join) {
+                $join->on('cabang.kode_cabang', '=', 'mutasicabang.kode_cabang');
+            }
+        );
+        $query->leftJoin(
+            DB::raw("(
+                SELECT 
+                $select_total_retur
+                karyawan.kode_cabang
+                FROM detailretur
+                INNER JOIN barang ON detailretur.kode_barang = barang.kode_barang
+                INNER JOIN retur ON detailretur.no_retur_penj = retur.no_retur_penj
+                INNER JOIN penjualan ON retur.no_fak_penj = penjualan.no_fak_penj
+                INNER JOIN karyawan ON penjualan.id_karyawan = karyawan.id_karyawan
+                WHERE tglretur BETWEEN '$dari' AND '$sampai'
+                GROUP BY kode_cabang
+             ) hargeretur"),
+            function ($join) {
+                $join->on('cabang.kode_cabang', '=', 'hargeretur.kode_cabang');
+            }
+        );
+
+        if(!empty($cabang)){
+            $query->where('cabang.kode_cabang',$cabang);
+        }
+        $ratiobs = $query->get();
+
+        return view('worksheetom.cetak_ratiobs',compact('ratiobs','produk'));
     }
 }

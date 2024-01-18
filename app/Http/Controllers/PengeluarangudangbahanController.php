@@ -141,7 +141,7 @@ class PengeluarangudangbahanController extends Controller
         $sampai = date("Y-m-t", strtotime($dari));
         $kode_dept = $request->kode_dept;
         $unit = $request->unit;
-        $kode_cabang = $request->kode_cabang;
+        $kode_cabang="";
         $pengeluaran = DB::table('pengeluaran_gb')
             ->select('nobukti_pengeluaran')
             ->whereBetween('tgl_pengeluaran', [$dari, $sampai])
@@ -152,7 +152,10 @@ class PengeluarangudangbahanController extends Controller
         if ($kode_dept == "Produksi") {
             $u = $unit;
         } else if ($kode_dept == "Cabang") {
-            $u = $kode_cabang;
+            $cabang = explode("|",$request->kode_cabang);
+            $kode_cabang = $cabang[0];
+            $nama_cabang = $cabang[1];
+            $u = $nama_cabang;
         } else {
             $u = null;
         }
@@ -168,7 +171,8 @@ class PengeluarangudangbahanController extends Controller
                     'nobukti_pengeluaran' => $nobukti_pengeluaran,
                     'tgl_pengeluaran' => $tgl_pengeluaran,
                     'kode_dept' => $kode_dept,
-                    'unit' => $u
+                    'unit' => $u,
+                    'kode_cabang' => !empty($kode_cabang) ? $kode_cabang : NULL
                 ];
                 DB::table('pengeluaran_gb')->insert($data);
                 foreach ($detail as $d) {

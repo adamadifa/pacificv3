@@ -265,13 +265,13 @@ class AjuanroutingController extends Controller
 
         if ($level == 'kepala cabang' || $level == 'kepala penjualan') {
             $lv = 'kacab';
-            $status = null;
+            $status = 0;
         } else if ($level == 'rsm') {
             $lv = 'rsm';
-            $status = null;
+            $status = 0;
         } else if ($level == 'manager marketing') {
             $lv = 'mm';
-            $status = null;
+            $status = 0;
         } else if ($level == 'direktur') {
             $lv = 'dirut';
             $status = 1;
