@@ -106,40 +106,24 @@
     <br>
 
     @php
-        function getreward($realisasi, $jenis_reward)
+        function getreward($realisasi)
         {
             if ($realisasi >= 60 && $realisasi <= 65) {
-                if ($jenis_reward == 'kendaraan') {
-                    $reward = 25000;
-                }
+                $reward = 25000;
             } elseif ($realisasi > 65 && $realisasi <= 70) {
-                if ($jenis_reward == 'kendaraan') {
-                    $reward = 50000;
-                }
+                $reward = 50000;
             } elseif ($realisasi > 70 && $realisasi <= 75) {
-                if ($jenis_reward == 'kendaraan') {
-                    $reward = 75000;
-                }
+                $reward = 75000;
             } elseif ($realisasi > 75 && $realisasi <= 80) {
-                if ($jenis_reward == 'kendaraan') {
-                    $reward = 100000;
-                }
+                $reward = 100000;
             } elseif ($realisasi > 80 && $realisasi <= 85) {
-                if ($jenis_reward == 'kendaraan') {
-                    $reward = 125000;
-                }
+                $reward = 125000;
             } elseif ($realisasi > 85 && $realisasi <= 90) {
-                if ($jenis_reward == 'kendaraan') {
-                    $reward = 150000;
-                }
+                $reward = 150000;
             } elseif ($realisasi > 90 && $realisasi <= 95) {
-                if ($jenis_reward == 'kendaraan') {
-                    $reward = 175000;
-                }
+                $reward = 175000;
             } elseif ($realisasi > 95) {
-                if ($jenis_reward == 'kendaraan') {
-                    $reward = 200000;
-                }
+                $reward = 200000;
             } else {
                 $reward = 0;
             }
@@ -153,8 +137,24 @@
                 <th rowspan="2">NO</th>
                 <th rowspan="2">CABANG</th>
                 <th colspan="2">KENDARAAN</th>
+                <th colspan="2">PENJUALAN BERJALAN <br> VS PENJUALAN BULAN LALU</th>
+                <th colspan="2">ROUTING</th>
+                <th colspan="3">LPC H + 1</th>
+                <th colspan="2">CASHIN</th>
+                <th colspan="2">LJT</th>
             </tr>
             <tr>
+                <th>REALISASI</th>
+                <th>REWARD</th>
+                <th>REALISASI</th>
+                <th>REWARD</th>
+                <th>REALISASI</th>
+                <th>REWARD</th>
+                <th>LAMA</th>
+                <th>JAM</th>
+                <th>REWARD</th>
+                <th>REALISASI</th>
+                <th>REWARD</th>
                 <th>REALISASI</th>
                 <th>REWARD</th>
             </tr>
@@ -166,12 +166,50 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $d->nama_cabang }}</td>
                     <td align="center">{{ !empty($d->ratio_kendaraan) ? $d->ratio_kendaraan . '%' : '' }}</td>
-                    <td>
+                    <td align="right">
                         @php
-                            $rewardkendaraan = getreward($d->ratio_kendaraan, 'kendaraan');
+                            $rewardkendaraan = getreward($d->ratio_kendaraan);
                         @endphp
                         {{ rupiah($rewardkendaraan) }}
                     </td>
+                    <td align="center">{{ !empty($d->ratio_penjualan) ? $d->ratio_penjualan . '%' : '' }}</td>
+                    <td align="right">
+                        @php
+                            $rewardpenjualan = getreward($d->ratio_penjualan);
+                        @endphp
+                        {{ rupiah($rewardpenjualan) }}
+                    </td>
+                    <td align="center">{{ !empty($d->ratio_routing) ? $d->ratio_routing . '%' : '' }}</td>
+                    <td align="right">
+                        @php
+                            $reward_routing = getreward($d->ratio_routing);
+                        @endphp
+                        {{ rupiah($reward_routing) }}
+                    </td>
+                    <td align="center">{{ $d->lama_lpc }}</td>
+                    <td align="center">{{ $d->jam_lpc }}</td>
+                    <td align="right">
+                        @if (!empty($d->lama_lpc) && $d->lama_lpc <= 1 && $d->jam_lpc <= '13:00')
+                            @php
+                                $reward_lpc = 350000;
+                            @endphp
+                        @else
+                            @php
+                                $reward_lpc = 0;
+                            @endphp
+                        @endif
+                        {{ rupiah($reward_lpc) }}
+                    </td>
+                    <td style="text-align: right">
+                        {{ !empty($d->realisasi_cashin) ? rupiah($d->realisasi_cashin) : '' }}</td>
+                    <td style="text-align: right">
+                        @php
+                            $reward_cashin = (0.01 / 100) * $d->realisasi_cashin;
+                        @endphp
+                        {{ rupiah($reward_cashin) }}
+                    </td>
+                    <td style="text-align: right">
+                        {{ !empty($d->sisapiutang) ? rupiah($d->sisapiutang) : '' }}</td>
                 </tr>
             @endforeach
         </tbody>
