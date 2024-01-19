@@ -145,6 +145,7 @@
                 <th colspan="3">LJT</th>
                 <th colspan="3">COSTRATIO</th>
                 <th colspan="3">RATIO BS</th>
+                <th rowspan="2">TOTAL</th>
             </tr>
             <tr>
                 <th>JML PELANGGAN</th>
@@ -243,7 +244,7 @@
                     </td>
                     <td align="center">
                         @php
-                            $ratio_ljt = ROUND(!empty($d->realisasi_cashin) ? ($d->sisapiutang / $d->realisasi_cashin) * 100 : 0);
+                            $ratio_ljt = ROUND(!empty($d->realisasi_cashin) ? ($d->sisapiutang / $d->realisasi_cashin) * 100 : 0, 2);
                         @endphp
                         {{ $ratio_ljt }}%
                     </td>
@@ -288,7 +289,10 @@
                         @endphp
                         {{ rupiah($reward_costratio) }}
                     </td>
-                    <td>
+                    <td align="right">
+                        @php
+                            $totalharga = 0;
+                        @endphp
                         @foreach ($produk->get() as $p)
                             @php
                                 $jmlreject = $d->{"reject_pasar_$p->kode_produk"} + $d->{"reject_mobil_$p->kode_produk"} + $d->{"reject_gudang_$p->kode_produk"} - $d->{"repack_$p->kode_produk"};
@@ -297,7 +301,47 @@
                                 $totalharga += $total;
                             @endphp
                         @endforeach
-                        {{ $totalharga }}
+                        {{ rupiah($totalharga) }}
+                    </td>
+                    <td align="center">
+                        @php
+                            $ratio_bs = ROUND(!empty($d->realisasi_cashin) ? (ROUND($totalharga) / $d->realisasi_cashin) * 100 : 0, 2);
+                        @endphp
+                        {{ $ratio_bs }}%
+                    </td>
+                    <td align="right">
+                        @if ($ratio_bs <= 0.4)
+                            @php
+                                $reward_bs = 125000;
+                            @endphp
+                        @elseif ($ratio_bs > 0.4 && $ratio_bs <= 0.6)
+                            @php
+                                $reward_bs = 100000;
+                            @endphp
+                        @elseif ($ratio_bs > 0.4 && $ratio_bs <= 0.6)
+                            @php
+                                $reward_bs = 75000;
+                            @endphp
+                        @elseif ($ratio_bs > 0.6 && $ratio_bs <= 0.8)
+                            @php
+                                $reward_bs = 50000;
+                            @endphp
+                        @elseif ($ratio_bs > 0.6 && $ratio_bs <= 0.8)
+                            @php
+                                $reward_bs = 50000;
+                            @endphp
+                        @else
+                            @php
+                                $reward_bs = 25000;
+                            @endphp
+                        @endif
+                        {{ rupiah($reward_bs) }}
+                    </td>
+                    <td align="right">
+                        @php
+                            $totalreward = $reward_oa + $rewardkendaraan + $rewardpenjualan + $reward_routing + $reward_cashin + $reward_ljt + $reward_costratio + $reward_bs;
+                        @endphp
+                        {{ rupiah($totalreward) }}
                     </td>
                 </tr>
             @endforeach
