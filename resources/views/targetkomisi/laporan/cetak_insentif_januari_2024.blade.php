@@ -101,7 +101,7 @@
         @endif
         <br>
         LAPORAN INSENTIF KEPALA ADMIN<br>
-        {{ $namabulan[$bulan] }} {{ $tahun }}
+        {{ $namabulan[$bulan * 1] }} {{ $tahun }}
     </b>
     <br>
 
@@ -136,14 +136,20 @@
             <tr>
                 <th rowspan="2">NO</th>
                 <th rowspan="2">CABANG</th>
+                <th colspan="4">OA</th>
                 <th colspan="2">KENDARAAN</th>
                 <th colspan="2">PENJUALAN BERJALAN <br> VS PENJUALAN BULAN LALU</th>
                 <th colspan="2">ROUTING</th>
                 <th colspan="3">LPC H + 1</th>
                 <th colspan="2">CASHIN</th>
-                <th colspan="2">LJT</th>
+                <th colspan="3">LJT</th>
+                <th colspan="3">COSTRATIO</th>
             </tr>
             <tr>
+                <th>JML PELANGGAN</th>
+                <th>JML PELANGGAN <br> BERTRANSAKSI</th>
+                <th>RATIO</th>
+                <th>REWARD</th>
                 <th>REALISASI</th>
                 <th>REWARD</th>
                 <th>REALISASI</th>
@@ -156,6 +162,10 @@
                 <th>REALISASI</th>
                 <th>REWARD</th>
                 <th>REALISASI</th>
+                <th>RATIO</th>
+                <th>REWARD</th>
+                <th>REALISASI</th>
+                <th>RATIO</th>
                 <th>REWARD</th>
             </tr>
         </thead>
@@ -165,6 +175,22 @@
                 <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $d->nama_cabang }}</td>
+                    <td align="center">{{ !empty($d->jmlpelanggan) ? rupiah($d->jmlpelanggan) : '' }}</td>
+                    <td align="center">{{ !empty($d->jmltrans) ? rupiah($d->jmltrans) : '' }}</td>
+
+                    <td align="center">
+                        @php
+                            $ratio_oa = ROUND(!empty($d->jmlpelanggan) ? ($d->jmltrans / $d->jmlpelanggan) * 100 : 0);
+                        @endphp
+                        {{ $ratio_oa }} %
+                    </td>
+                    <td align="right">
+                        @php
+                            $reward_oa = getreward($ratio_oa);
+                        @endphp
+                        {{ rupiah($reward_oa) }}
+                    </td>
+
                     <td align="center">{{ !empty($d->ratio_kendaraan) ? $d->ratio_kendaraan . '%' : '' }}</td>
                     <td align="right">
                         @php
@@ -209,7 +235,55 @@
                         {{ rupiah($reward_cashin) }}
                     </td>
                     <td style="text-align: right">
-                        {{ !empty($d->sisapiutang) ? rupiah($d->sisapiutang) : '' }}</td>
+                        {{ !empty($d->sisapiutang) ? rupiah($d->sisapiutang) : '' }}
+                    </td>
+                    <td align="center">
+                        @php
+                            $ratio_ljt = ROUND(!empty($d->realisasi_cashin) ? ($d->sisapiutang / $d->realisasi_cashin) * 100 : 0);
+                        @endphp
+                        {{ $ratio_ljt }}%
+                    </td>
+                    <td align="right">
+                        @php
+                            if ($ratio_ljt < 0.5) {
+                                $reward_ljt = 200000;
+                            } elseif ($ratio_ljt > 0.5 && $ratio_ljt <= 1) {
+                                $reward_ljt = 150000;
+                            } elseif ($ratio_ljt > 1 && $ratio_ljt <= 1.5) {
+                                $reward_ljt = 100000;
+                            } elseif ($ratio_ljt > 1.5 && $ratio_ljt <= 2) {
+                                $reward_ljt = 50000;
+                            } else {
+                                $reward_ljt = 0;
+                            }
+                        @endphp
+                        {{ rupiah($reward_ljt) }}
+                    </td>
+                    <td align="right">
+                        {{ rupiah($d->totalbiaya) }}
+                    </td>
+                    <td align="center">
+                        @php
+                            $cost_ratio = ROUND(!empty($d->penjualanbulanberjalan) ? ($d->totalbiaya / $d->penjualanbulanberjalan) * 100 : 0);
+                        @endphp
+                        {{ $cost_ratio }} %
+                    </td>
+                    <td align="right">
+                        @php
+                            if ($cost_ratio < 0.2) {
+                                $reward_costratio = 125000;
+                            } elseif ($cost_ratio > 0.4 && $cost_ratio <= 0.6) {
+                                $reward_costratio = 100000;
+                            } elseif ($cost_ratio > 0.6 && $cost_ratio <= 0.8) {
+                                $reward_costratio = 75000;
+                            } elseif ($cost_ratio > 0.8 && $cost_ratio <= 1) {
+                                $reward_costratio = 50000;
+                            } else {
+                                $reward_costratio = 25000;
+                            }
+                        @endphp
+                        {{ rupiah($reward_costratio) }}
+                    </td>
                 </tr>
             @endforeach
         </tbody>

@@ -469,7 +469,7 @@ class TargetkomisiController extends Controller
         $tahun = $request->tahun;
         lockyear($tahun);
         $aturankomisi = $request->aturankomisi;
-        $dari = $tahun . "-" . $bulan . "-01";
+        $dari = $tahun . "-" . $bulan  . "-01";
         $hariini = date("Y-m-d");
         $tglkomisi = $tahun . "-" . $bulan . "-01";
         $sampai = date('Y-m-t', strtotime($dari));
@@ -4589,7 +4589,19 @@ class TargetkomisiController extends Controller
                 $join->on('karyawan.id_karyawan', '=', 'pelangganaktif.id_sales');
             }
         );
-
+        $query->leftJoin(
+            DB::raw("(
+                SELECT id_karyawan,
+                COUNT(DISTINCT(kode_pelanggan)) as jmltrans,
+                COUNT(no_fak_penj) as jmltranspenjualan
+                FROM penjualan
+                WHERE tgltransaksi BETWEEN '$dari' AND '$sampai'
+                GROUP BY id_karyawan
+            ) pelanggantrans"),
+            function ($join) {
+                $join->on('karyawan.id_karyawan', '=', 'pelanggantrans.id_karyawan');
+            }
+        );
         $query->leftJoin(
             DB::raw("(
                 SELECT karyawan.id_karyawan,
@@ -5492,11 +5504,15 @@ class TargetkomisiController extends Controller
     public function cetakinsentifomjanuari2024(Request $request)
     {
 
-        $bulan = $request->bulan;
+
+
+        $bulan = $request->bulan <= 9 ? "0" . $request->bulan :  $request->bulan;
         $tahun = $request->tahun;
         lockyear($tahun);
         $namabulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         $dari = $tahun . "-" . $bulan . "-01";
+
+
         $hariini = date('Y-m-d');
         $sampai = date('Y-m-t', strtotime($dari));
         if ($hariini < $sampai) {
@@ -5504,6 +5520,18 @@ class TargetkomisiController extends Controller
         } else {
             $sampai = $sampai;
         }
+
+        $lastmonth = date('Y-m-d', strtotime(date($dari) . '- 1 month'));
+        $enddate = date('Y-m-t', strtotime($dari));
+        // if (date("d", strtotime($enddate)) == 31) {
+        //     $enddate = date("Y-m", strtotime($enddate)) . "-30";
+        // }
+        //dd($lastdateofmonth);
+        $last3month = date('Y-m-d', strtotime('-3 month', strtotime($enddate)));
+        $date = explode("-", $last3month);
+        $startdate = $date[0] . "-" . $date[1] . "-01";
+
+        //dd($startdate . "-" . $enddate);
 
         $cbg = Auth::user()->kode_cabang;
         $kode_cabang = $request->kode_cabang;
@@ -5539,7 +5567,8 @@ class TargetkomisiController extends Controller
         ROUND(jmlsesuaijadwal/jmlkunjungan *100) as ratio_routing,
         lama_lpc,jam_lpc,
         (IFNULL(jml_belumsetorbulanlalu,0) + IFNULL(totalsetoran,0) + IFNULL(jml_gmlast,0) - IFNULL(jml_gmnow,0) - IFNULL(jml_belumsetorbulanini,0)) as realisasi_cashin,
-        IFNULL(sisapiutangsaldo,0) + IFNULL(sisapiutang,0) as sisapiutang");
+        IFNULL(sisapiutangsaldo,0) + IFNULL(sisapiutang,0) as sisapiutang,
+        IFNULL(jmlbiaya,0) + IFNULL(ROUND(jmllogistik),0)  + IFNULL(ROUND(jmlpenggunaanbahan),0) as totalbiaya,penjualanbulanberjalan,jmlpelanggan,jmltrans");
         $query->leftjoin(
             DB::raw("(
                 SElECT karyawan.kode_cabang,
@@ -5820,6 +5849,156 @@ class TargetkomisiController extends Controller
                 $join->on('cabang.kode_cabang', '=', 'spf.cabangbarunew');
             }
         );
+        $query->leftJoin(
+            DB::raw("(
+                SELECT costratio_biaya.kode_cabang,SUM(jumlah) as jmlbiaya
+                FROM costratio_biaya
+                WHERE tgl_transaksi BETWEEN '$dari' AND '$sampai'
+                GROUP BY costratio_biaya.kode_cabang
+            ) costratio"),
+            function ($join) {
+                $join->on('cabang.kode_cabang', '=', 'costratio.kode_cabang');
+            }
+        );
+        $query->leftJoin(
+            DB::raw("(
+                SELECT kode_cabang,
+                SUM(qty *
+                CASE
+                WHEN saldoawal.hargasaldoawal IS NULL THEN pemasukan.hargapemasukan
+                WHEN pemasukan.hargapemasukan IS NULL THEN saldoawal.hargasaldoawal
+                ELSE (saldoawal.totalsa + pemasukan.totalpemasukan) / (saldoawal.qtysaldoawal + pemasukan.qtypemasukan) END ) as jmllogistik
+                FROM
+                detail_pengeluaran
+                INNER JOIN pengeluaran ON detail_pengeluaran.nobukti_pengeluaran = pengeluaran.nobukti_pengeluaran
+                INNER JOIN master_barang_pembelian ON detail_pengeluaran.kode_barang = master_barang_pembelian.kode_barang
+                LEFT JOIN (
+                        SELECT saldoawal_gl_detail.kode_barang,SUM(saldoawal_gl_detail.harga) AS hargasaldoawal,SUM( qty ) AS qtysaldoawal,SUM(saldoawal_gl_detail.harga*qty) AS
+                        totalsa FROM saldoawal_gl_detail
+                        INNER JOIN saldoawal_gl ON saldoawal_gl.kode_saldoawal_gl=saldoawal_gl_detail.kode_saldoawal_gl
+                        WHERE bulan = '$bulan' AND tahun = '$tahun'
+                        GROUP BY saldoawal_gl_detail.kode_barang
+                ) saldoawal ON (detail_pengeluaran.kode_barang = saldoawal.kode_barang)
+
+                LEFT JOIN (
+                        SELECT detail_pemasukan.kode_barang,SUM( penyesuaian ) AS penyesuaian,SUM( qty ) AS qtypemasukan,SUM( harga ) AS hargapemasukan,SUM(detail_pemasukan.harga * qty) AS totalpemasukan FROM
+                        detail_pemasukan
+                        INNER JOIN pemasukan ON detail_pemasukan.nobukti_pemasukan = pemasukan.nobukti_pemasukan
+                        WHERE MONTH(tgl_pemasukan) = '$bulan' AND YEAR(tgl_pemasukan) = '$tahun'
+                        GROUP BY detail_pemasukan.kode_barang
+                ) pemasukan ON (detail_pengeluaran.kode_barang = pemasukan.kode_barang)
+                WHERE tgl_pengeluaran BETWEEN  '$dari' AND '$sampai' AND kode_cabang IS NOT NULL AND master_barang_pembelian.kode_kategori = 'K001'
+                GROUP BY detail_pengeluaran.kode_cabang
+            ) logistik"),
+            function ($join) {
+                $join->on('cabang.kode_cabang', '=', 'logistik.kode_cabang');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+                SELECT kode_cabang,
+                SUM(
+                    CASE
+                    WHEN satuan = 'KG' THEN qty_berat * 1000
+                    WHEN satuan = 'Liter' THEN qty_berat * 1000 * IFNULL((SELECT harga FROM harga_minyak WHERE bulan ='$bulan' AND tahun = '$tahun'),0)
+                    ELSE qty_unit
+                    END
+                    *
+                    CASE
+                    WHEN satuan ='KG' THEN (harga +totalharga + IF(qtypengganti2=0,(qtypengganti2*1000) * 0,( (qtypengganti2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000))))) + IF(qtylainnya2=0,(qtylainnya2*1000) * 0,( (qtylainnya2 *1000) * (IF(qtypemb2=0,(harga / (qtyberatsa *1000)),totalharga / (qtypemb2*1000)))))) / ( (qtyberatsa*1000) + (qtypemb2 * 1000) + (qtylainnya2*1000) + (qtypengganti2*1000))
+                    ELSE
+                    (harga + totalharga + IF(qtylainnya1=0,qtylainnya1*0,qtylainnya1 * IF(qtylainnya1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1 ))) + IF(qtypengganti1=0,qtypengganti1*0,qtypengganti1 * IF(qtypengganti1=0,0,IF(qtypemb1=0,harga/qtyunitsa,totalharga/qtypemb1 )))) / (qtyunitsa + qtypemb1 + qtylainnya1 + qtypengganti1)
+                    END
+                ) as jmlpenggunaanbahan
+                FROM detail_pengeluaran_gb
+                INNER JOIN pengeluaran_gb ON detail_pengeluaran_gb.nobukti_pengeluaran = pengeluaran_gb.nobukti_pengeluaran
+                INNER JOIN master_barang_pembelian ON detail_pengeluaran_gb.kode_barang = master_barang_pembelian.kode_barang
+                LEFT JOIN (
+                    SELECT
+                        detail_pemasukan_gb.kode_barang,
+                        SUM( IF( departemen = 'Pembelian' , qty_unit ,0 )) AS qtypemb1,
+                        SUM( IF( departemen = 'Lainnya' , qty_unit ,0 )) AS qtylainnya1,
+                        SUM( IF( departemen = 'Retur Pengganti' , qty_unit ,0 )) AS qtypengganti1,
+
+                        SUM( IF( departemen = 'Pembelian' , qty_berat ,0 )) AS qtypemb2,
+                        SUM( IF( departemen = 'Lainnya' , qty_berat ,0 )) AS qtylainnya2,
+                        SUM( IF( departemen = 'Retur Pengganti' , qty_berat ,0 )) AS qtypengganti2,
+                        SUM( (IF( departemen = 'Pembelian' , qty_berat ,0 )) + (IF( departemen = 'Lainnya' , qty_berat ,0 ))) AS pemasukanqtyberat
+                        FROM
+                        detail_pemasukan_gb
+                        INNER JOIN pemasukan_gb ON detail_pemasukan_gb.nobukti_pemasukan = pemasukan_gb.nobukti_pemasukan
+                        WHERE MONTH(tgl_pemasukan) = '$bulan' AND YEAR(tgl_pemasukan) = '$tahun'
+                        GROUP BY detail_pemasukan_gb.kode_barang
+                ) gm ON (detail_pengeluaran_gb.kode_barang = gm.kode_barang)
+
+
+                LEFT JOIN (
+                        SELECT SUM((qty*harga)+penyesuaian) as totalharga,kode_barang
+                        FROM detail_pembelian
+                        INNER JOIN pembelian ON detail_pembelian.nobukti_pembelian = pembelian.nobukti_pembelian
+                        WHERE MONTH(tgl_pembelian) = '$bulan' AND YEAR(tgl_pembelian) = '$tahun'
+                        GROUP BY kode_barang
+
+                ) dp ON (detail_pengeluaran_gb.kode_barang = dp.kode_barang)
+
+                LEFT JOIN (
+                        SELECT kode_barang,harga
+                        FROM saldoawal_harga_gb
+                        WHERE bulan = '$bulan' AND tahun = '$tahun'
+                        GROUP BY kode_barang,harga
+                ) hrgsa ON (detail_pengeluaran_gb.kode_barang = hrgsa.kode_barang)
+
+
+                LEFT JOIN (
+                        SELECT saldoawal_gb_detail.kode_barang,
+                        SUM( qty_unit ) AS qtyunitsa,
+                        SUM( qty_berat ) AS qtyberatsa
+                        FROM saldoawal_gb_detail
+                        INNER JOIN saldoawal_gb ON saldoawal_gb.kode_saldoawal_gb=saldoawal_gb_detail.kode_saldoawal_gb
+                        WHERE bulan = '12' AND tahun = '2023' GROUP BY saldoawal_gb_detail.kode_barang
+                ) sa ON (detail_pengeluaran_gb.kode_barang = sa.kode_barang)
+
+                WHERE tgl_pengeluaran BETWEEN '$dari' AND '$sampai' AND kode_cabang IS NOT NULL
+                GROUP BY kode_cabang
+            ) penggunaanbahan"),
+            function ($join) {
+                $join->on('cabang.kode_cabang', '=', 'penggunaanbahan.kode_cabang');
+            }
+        );
+
+        $query->leftJoin(
+            DB::raw("(
+                SELECT karyawan.kode_cabang, COUNT(DISTINCT(penjualan.kode_pelanggan)) as jmlpelanggan
+                FROM penjualan
+                INNER JOIN pelanggan ON penjualan.kode_pelanggan = pelanggan.kode_pelanggan
+                INNER JOIN karyawan ON penjualan.id_karyawan = karyawan.id_karyawan
+                WHERE tgltransaksi BETWEEN '$startdate' AND '$enddate' AND nama_pelanggan != 'BATAL'
+                GROUP BY karyawan.kode_cabang
+            ) pelangganaktif"),
+            function ($join) {
+                $join->on('cabang.kode_cabang', '=', 'pelangganaktif.kode_cabang');
+            }
+        );
+        $query->leftJoin(
+            DB::raw("(
+                SELECT karyawan.kode_cabang,
+                COUNT(DISTINCT(kode_pelanggan)) as jmltrans,
+                COUNT(no_fak_penj) as jmltranspenjualan
+                FROM penjualan
+                INNER JOIN karyawan ON penjualan.id_karyawan = karyawan.id_karyawan
+                WHERE tgltransaksi BETWEEN '$dari' AND '$sampai'
+                GROUP BY karyawan.kode_cabang
+            ) pelanggantrans"),
+            function ($join) {
+                $join->on('cabang.kode_cabang', '=', 'pelanggantrans.kode_cabang');
+            }
+        );
+
+        if (!empty($request->kode_cabang)) {
+            $query->where('cabang.kode_cabang', $kode_cabang);
+        }
+        $query->where('cabang.kode_cabang', '!=', 'PST');
         $insentif = $query->get();
 
         return view('targetkomisi.laporan.cetak_insentif_januari_2024', compact(

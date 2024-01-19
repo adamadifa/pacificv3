@@ -101,7 +101,7 @@
         @endif
         <br>
         LAPORAN INSENTIF KEPALA ADMIN<br>
-        {{ $namabulan[$bulan] }} {{ $tahun }}
+        {{ $namabulan[$bulan * 1] }} {{ $tahun }}
     </b>
     <br>
     <?php
