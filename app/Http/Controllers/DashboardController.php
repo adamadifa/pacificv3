@@ -123,7 +123,6 @@ class DashboardController extends Controller
 
             $jmlpengajuanfaktur = DB::table('pengajuan_faktur')
                 ->join('pelanggan', 'pengajuan_faktur.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
-                ->whereIn('no_pengajuan', $no_pengajuanfaktur)
                 ->whereNotNull('mm')
                 ->whereNull('dirut')
                 ->where('status', 0)
@@ -131,7 +130,6 @@ class DashboardController extends Controller
 
             $jmlpengajuanrouting = DB::table('pengajuan_routing')
                 ->join('pelanggan', 'pengajuan_routing.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
-                ->whereIn('no_pengajuan', $no_pengajuanrouting)
                 ->whereNotNull('mm')
                 ->whereNull('dirut')
                 ->where('status', 0)
@@ -153,7 +151,6 @@ class DashboardController extends Controller
 
             $queryfaktur = Ajuanfaktur::query();
             $queryfaktur->join('pelanggan', 'pengajuan_faktur.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
-            $queryfaktur->whereIn('no_pengajuan', $no_pengajuanfaktur);
             $queryfaktur->whereNotNull('kacab');
             $queryfaktur->whereNull('rsm');
             $queryfaktur->where('status', 0);
@@ -242,7 +239,6 @@ class DashboardController extends Controller
 
             $jmlpengajuanrouting = DB::table('pengajuan_routing')
                 ->join('pelanggan', 'pengajuan_routing.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
-                ->whereIn('no_pengajuan', $no_pengajuanrouting)
                 ->where('status', 0)
                 ->count();
         }
