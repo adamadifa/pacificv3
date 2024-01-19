@@ -102,6 +102,15 @@ class DashboardController extends Controller
         }
 
 
+        $pengajuanterakhirrouting = DB::table('pengajuan_routing')
+            ->select(DB::raw('MAX(no_pengajuan) as no_pengajuan'))
+            ->groupBy('kode_pelanggan')
+            ->get();
+        foreach ($pengajuanterakhirrouting as $d) {
+            $no_pengajuanrouting[] = $d->no_pengajuan;
+        }
+
+
         if ($level == "direktur") {
             $jmlpengajuan = DB::table('pengajuan_limitkredit_v3')
                 ->join('pelanggan', 'pengajuan_limitkredit_v3.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
@@ -122,7 +131,7 @@ class DashboardController extends Controller
 
             $jmlpengajuanrouting = DB::table('pengajuan_routing')
                 ->join('pelanggan', 'pengajuan_routing.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
-                ->whereIn('no_pengajuan', $no_pengajuanfaktur)
+                ->whereIn('no_pengajuan', $no_pengajuanrouting)
                 ->whereNotNull('mm')
                 ->whereNull('dirut')
                 ->where('status', 0)
@@ -144,7 +153,7 @@ class DashboardController extends Controller
 
             $queryfaktur = Ajuanfaktur::query();
             $queryfaktur->join('pelanggan', 'pengajuan_faktur.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
-            $queryfaktur->whereIn('no_pengajuan', $no_pengajuan);
+            $queryfaktur->whereIn('no_pengajuan', $no_pengajuanfaktur);
             $queryfaktur->whereNotNull('kacab');
             $queryfaktur->whereNull('rsm');
             $queryfaktur->where('status', 0);
@@ -159,7 +168,7 @@ class DashboardController extends Controller
 
             $queryrouting = Ajuanrouting::query();
             $queryrouting->join('pelanggan', 'pengajuan_routing.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
-            $queryrouting->whereIn('no_pengajuan', $no_pengajuan);
+            $queryrouting->whereIn('no_pengajuan', $no_pengajuanrouting);
             $queryrouting->whereNotNull('kacab');
             $queryrouting->whereNull('rsm');
             $queryrouting->where('status', 0);
@@ -233,7 +242,7 @@ class DashboardController extends Controller
 
             $jmlpengajuanrouting = DB::table('pengajuan_routing')
                 ->join('pelanggan', 'pengajuan_routing.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
-                ->whereIn('no_pengajuan', $no_pengajuan)
+                ->whereIn('no_pengajuan', $no_pengajuanrouting)
                 ->where('status', 0)
                 ->count();
         }

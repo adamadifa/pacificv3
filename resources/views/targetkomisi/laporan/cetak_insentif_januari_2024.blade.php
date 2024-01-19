@@ -144,6 +144,7 @@
                 <th colspan="2">CASHIN</th>
                 <th colspan="3">LJT</th>
                 <th colspan="3">COSTRATIO</th>
+                <th colspan="3">RATIO BS</th>
             </tr>
             <tr>
                 <th>JML PELANGGAN</th>
@@ -160,6 +161,9 @@
                 <th>JAM</th>
                 <th>REWARD</th>
                 <th>REALISASI</th>
+                <th>REWARD</th>
+                <th>REALISASI</th>
+                <th>RATIO</th>
                 <th>REWARD</th>
                 <th>REALISASI</th>
                 <th>RATIO</th>
@@ -283,6 +287,17 @@
                             }
                         @endphp
                         {{ rupiah($reward_costratio) }}
+                    </td>
+                    <td>
+                        @foreach ($produk->get() as $p)
+                            @php
+                                $jmlreject = $d->{"reject_pasar_$p->kode_produk"} + $d->{"reject_mobil_$p->kode_produk"} + $d->{"reject_gudang_$p->kode_produk"} - $d->{"repack_$p->kode_produk"};
+                                $harga = $d->{"reject_pasar_$p->kode_produk"} > 0 ? $d->{"totalretur_$p->kode_produk"} / $d->{"retur_$p->kode_produk"} : 0;
+                                $total = ROUND($jmlreject, 2) * $harga;
+                                $totalharga += $total;
+                            @endphp
+                        @endforeach
+                        {{ $totalharga }}
                     </td>
                 </tr>
             @endforeach
