@@ -490,8 +490,15 @@
                     </td>
                 @elseif($kontrak->id_kantor != 'PST' && $kontrak->id_perusahaan == 'MP' && !in_array($kontrak->id_jabatan, [9, 11]))
                     <td style="text-align:center">
+                        @php
+                            $pihakpertamacabang = pihakpertamacabang($kontrak->id_kantor, $kontrak->id_perusahaan);
+                        @endphp
                         <u>{{ pihakpertamacabang($kontrak->id_kantor, $kontrak->id_perusahaan) }}</u><br>
-                        Kepala Admin
+                        @if ($pihakpertamacabang == 'Eiko Fauzi Rustandi')
+                            ROM
+                        @else
+                            Kepala Admin
+                        @endif
                     </td>
                 @endif
 
