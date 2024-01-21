@@ -125,7 +125,8 @@ class DpbController extends Controller
             $cabang = DB::table('cabang')->where('kode_cabang', $this->cabang)->orWhere('sub_cabang', $this->cabang)->get();
         }
         $produk = Barang::orderBy('nama_barang')->where('status', 1)->get();
-        return view('dpb.create', compact('cabang', 'produk'));
+        $wilayah_bdg = DB::table('master_pasar')->where('kode_cabang', 'BDG')->get();
+        return view('dpb.create', compact('cabang', 'produk', 'wilayah_bdg'));
     }
 
     public function store(Request $request)

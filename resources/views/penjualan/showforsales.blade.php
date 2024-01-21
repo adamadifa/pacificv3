@@ -86,33 +86,36 @@
                             </div>
                         </div>
                     @else
-                        <div class="row mb-1">
-                            <div class="col d-flex justify-content-arround">
-                                <a href="/penjualan/{{ Crypt::encrypt($data->no_fak_penj) }}/editv2"
-                                    class="btn  btn-success mr-1">
-                                    <i class="feather icon-edit"></i>
-                                </a>
-                                {{-- <a href="#" class="btn btn-info btn-block" id="cetakfaktur">
+                        @if (($data->kategori_salesman == 'TO' && substr($data->no_fak_penj, 3, 2) == 'PR') || $data->kategori_salesman != 'TO')
+                            <div class="row mb-1">
+                                <div class="col d-flex justify-content-arround">
+                                    <a href="/penjualan/{{ Crypt::encrypt($data->no_fak_penj) }}/editv2"
+                                        class="btn  btn-success mr-1">
+                                        <i class="feather icon-edit"></i>
+                                    </a>
+                                    {{-- <a href="#" class="btn btn-info btn-block" id="cetakfaktur">
                             <i class="feather icon-printer mr-1"></i>
                             Cetak Faktur
                         </a> --}}
-                                <a href="#"
-                                    onclick="ajax_print('/cetak/{{ Crypt::encrypt($data->no_fak_penj) }}',this)"
-                                    class="btn btn-info btn-block">
-                                    <i class="feather icon-printer mr-1"></i>
-                                    Cetak Faktur
-                                </a>
-                                <form method="POST" class="deleteform"
-                                    action="/penjualan/{{ Crypt::encrypt($data->no_fak_penj) }}/delete">
-                                    @csrf
-                                    @method('DELETE')
-                                    <a href=" #" tanggal="{{ $data->tgltransaksi }}"
-                                        class="btn btn-danger  delete-confirm ml-1">
-                                        <i class="feather icon-trash"></i>
+                                    <a href="#"
+                                        onclick="ajax_print('/cetak/{{ Crypt::encrypt($data->no_fak_penj) }}',this)"
+                                        class="btn btn-info btn-block">
+                                        <i class="feather icon-printer mr-1"></i>
+                                        Cetak Faktur
                                     </a>
-                                </form>
+                                    <form method="POST" class="deleteform"
+                                        action="/penjualan/{{ Crypt::encrypt($data->no_fak_penj) }}/delete">
+                                        @csrf
+                                        @method('DELETE')
+                                        <a href=" #" tanggal="{{ $data->tgltransaksi }}"
+                                            class="btn btn-danger  delete-confirm ml-1">
+                                            <i class="feather icon-trash"></i>
+                                        </a>
+                                    </form>
+                                </div>
                             </div>
-                        </div>
+                        @endif
+
                     @endif
 
                     <div class="row">

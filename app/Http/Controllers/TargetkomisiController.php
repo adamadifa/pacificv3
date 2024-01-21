@@ -1929,23 +1929,23 @@ class TargetkomisiController extends Controller
         // echo $dari;
         // die;
         if ($dari >= '2023-2-01' and $dari < '2023-6-01') {
-            // echo 1;
-            // die;
+            echo 1;
+            die;
             return $this->cetakkomisimaret2023($cabang, $bulan, $tahun, $aturankomisi, $dari, $hariini, $sampai);
         } elseif ($dari >= '2023-6-01' and $dari < '2023-07-01') {
-            // echo 2;
-            // die;
+            echo 2;
+            die;
             return $this->cetakkomisijuni2023($cabang, $bulan, $tahun, $aturankomisi, $dari, $hariini, $sampai);
         } elseif ($dari >= '2023-07-01' and $dari < '2023-10-01') {
-            // echo 3;
-            // die;
+            echo 3;
+            die;
             return $this->cetakkomisijuli2023($cabang, $bulan, $tahun, $aturankomisi, $dari, $hariini, $sampai);
-        } elseif ($dari >= '2023-10-01' and $dari < '2023-12-01') {
-            // echo 3;
+        } elseif ($dari >= '2023-10-1' and $dari < '2023-12-1') {
+            // echo 4;
             // die;
             return $this->cetakkomisioktober2023($cabang, $bulan, $tahun, $aturankomisi, $dari, $hariini, $sampai);
         } elseif ($dari >= '2024-01-01') {
-            // echo 3;
+            // echo 5;
             // die;
             return $this->cetakkomisijanuari2024($cabang, $bulan, $tahun, $aturankomisi, $dari, $hariini, $sampai);
         }
@@ -4656,19 +4656,7 @@ class TargetkomisiController extends Controller
             }
         );
 
-        $query->leftJoin(
-            DB::raw("(
-                SELECT id_karyawan,
-                COUNT(DISTINCT(kode_pelanggan)) as jmltrans,
-                COUNT(no_fak_penj) as jmltranspenjualan
-                FROM penjualan
-                WHERE tgltransaksi BETWEEN '$dari' AND '$sampai'
-                GROUP BY id_karyawan
-            ) pelanggantrans"),
-            function ($join) {
-                $join->on('karyawan.id_karyawan', '=', 'pelanggantrans.id_karyawan');
-            }
-        );
+
         $query->join(
             DB::raw("(
                 SELECT  id_karyawan,

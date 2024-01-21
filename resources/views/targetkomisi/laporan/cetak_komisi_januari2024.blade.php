@@ -161,6 +161,13 @@
                 @php
                     $kebijakan = 100;
                 @endphp
+                @foreach ($kategori_komisi as $k)
+                    @php
+                        ${"total_target_$k->kode_kategori"} = 0;
+                        ${"total_realisasi_qty_$k->kode_kategori"} = 0;
+                    @endphp
+                @endforeach
+
                 @foreach ($komisi as $d)
                     @php
                         $realisasi_qty_kendaraan = 0;
@@ -180,7 +187,8 @@
                         @endphp
                         @foreach ($kategori_komisi as $k)
                             @php
-
+                                ${"total_target_$k->kode_kategori"} += $d->{"target_$k->kode_kategori"};
+                                ${"total_realisasi_qty_$k->kode_kategori"} += $d->{"realisasi_qty_$k->kode_kategori"};
                                 if (empty($d->{"target_$k->kode_kategori"})) {
                                     ${"ratio_$k->kode_kategori"} = 0;
                                 } else {
@@ -206,6 +214,7 @@
                                 {{ desimal(${"hasilpoin_$k->kode_kategori"}) }}
                             </td>
                         @endforeach
+
                         <td style="text-align: center">{{ desimal($totalpoin) }}</td>
                         <td style="text-align: right">
                             {{-- Reward Poin --}}
@@ -365,6 +374,28 @@
                         </td>
                     </tr>
                 @endforeach
+                <tr>
+                    <th colspan="4">TOTAL</th>
+                    @php
+                        $total_all_hasilpoin = 0;
+                    @endphp
+                    @foreach ($kategori_komisi as $k)
+                        @php
+                            ${"total_ratio_$k->kode_kategori"} = ${"total_realisasi_qty_$k->kode_kategori"} / ${"total_target_$k->kode_kategori"};
+                            if (${"total_ratio_$k->kode_kategori"} > 1) {
+                                ${"total_hasilpoin_$k->kode_kategori"} = $k->poin;
+                            } else {
+                                ${"total_hasilpoin_$k->kode_kategori"} = (${"total_realisasi_qty_$k->kode_kategori"} / ${"total_target_$k->kode_kategori"}) * $k->poin;
+                            }
+
+                            $total_all_hasilpoin += ${"total_hasilpoin_$k->kode_kategori"};
+                        @endphp
+                        <th>{{ desimal(${"total_target_$k->kode_kategori"}) }}</th>
+                        <th>{{ desimal(${"total_realisasi_qty_$k->kode_kategori"}) }}</th>
+                        <th>{{ desimal(${"total_hasilpoin_$k->kode_kategori"}) }}</th>
+                    @endforeach
+                    <th>{{ desimal($total_all_hasilpoin) }}</th>
+                </tr>
             </tbody>
         </table>
     </div>
