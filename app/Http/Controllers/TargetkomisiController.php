@@ -5582,12 +5582,17 @@ class TargetkomisiController extends Controller
         IFNULL(jmlbiaya,0) + IFNULL(ROUND(jmllogistik),0)  + IFNULL(ROUND(jmlpenggunaanbahan),0) as totalbiaya,penjualanbulanberjalan,jmlpelanggan,jmltrans");
         $query->leftjoin(
             DB::raw("(
-                SElECT karyawan.kode_cabang,
-                SUM(floor(jml_pengambilan)) as jmlpengambilan,SUM(kapasitas) as jmlkapasitas
-                FROM detail_dpb
-                INNER JOIN dpb ON detail_dpb.no_dpb = dpb.no_dpb
-                INNER JOIN kendaraan ON dpb.no_kendaraan = kendaraan.no_polisi
+                SELECT karyawan.kode_cabang,SUM(kapasitas) as jmlkapasitas , SUM(jmlpengambilan)  as jmlpengambilan
+                FROM dpb
                 INNER JOIN karyawan ON dpb.id_karyawan = karyawan.id_karyawan
+                INNER JOIN kendaraan ON dpb.no_kendaraan = kendaraan.no_polisi
+                LEFT JOIN (
+                    SElECT detail_dpb.no_dpb,
+                        SUM(floor(jml_pengambilan)) as jmlpengambilan
+                        FROM detail_dpb
+                        GROUP BY detail_dpb.no_dpb
+                )	pengambilan ON (dpb.no_dpb = pengambilan.no_dpb)
+
                 WHERE tgl_pengambilan BETWEEN '$dari' AND '$sampai'
                 GROUP BY karyawan.kode_cabang
             ) kendaraan"),
