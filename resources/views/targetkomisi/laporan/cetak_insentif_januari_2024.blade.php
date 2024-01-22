@@ -324,15 +324,11 @@
                             @php
                                 $reward_bs = 100000;
                             @endphp
-                        @elseif ($ratio_bs > 0.4 && $ratio_bs <= 0.6)
+                        @elseif ($ratio_bs > 0.6 && $ratio_bs <= 0.8)
                             @php
                                 $reward_bs = 75000;
                             @endphp
-                        @elseif ($ratio_bs > 0.6 && $ratio_bs <= 0.8)
-                            @php
-                                $reward_bs = 50000;
-                            @endphp
-                        @elseif ($ratio_bs > 0.6 && $ratio_bs <= 0.8)
+                        @elseif ($ratio_bs > 0.8 && $ratio_bs <= 1)
                             @php
                                 $reward_bs = 50000;
                             @endphp
