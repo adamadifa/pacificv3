@@ -381,11 +381,11 @@
                     @endphp
                     @foreach ($kategori_komisi as $k)
                         @php
-                            ${"total_ratio_$k->kode_kategori"} = ${"total_realisasi_qty_$k->kode_kategori"} / ${"total_target_$k->kode_kategori"};
+                            ${"total_ratio_$k->kode_kategori"} = !empty(${"total_target_$k->kode_kategori"}) ? ${"total_realisasi_qty_$k->kode_kategori"} / ${"total_target_$k->kode_kategori"} : 0;
                             if (${"total_ratio_$k->kode_kategori"} > 1) {
                                 ${"total_hasilpoin_$k->kode_kategori"} = $k->poin;
                             } else {
-                                ${"total_hasilpoin_$k->kode_kategori"} = (${"total_realisasi_qty_$k->kode_kategori"} / ${"total_target_$k->kode_kategori"}) * $k->poin;
+                                ${"total_hasilpoin_$k->kode_kategori"} = !empty(${"total_target_$k->kode_kategori"}) ? (${"total_realisasi_qty_$k->kode_kategori"} / ${"total_target_$k->kode_kategori"}) * $k->poin : 0;
                             }
 
                             $total_all_hasilpoin += ${"total_hasilpoin_$k->kode_kategori"};

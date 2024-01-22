@@ -5,9 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak Laporan Analisa Umur Piutang (AUP) {{ date("d-m-y") }}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <title>Cetak Laporan Analisa Umur Piutang (AUP) {{ date('d-m-y') }}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous">
+    </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -87,7 +90,6 @@
             background: #eee;
             visibility: visible;
         }
-
     </style>
 
 </head>
@@ -95,10 +97,10 @@
 <body>
 
     <b style="font-size:14px;">
-        @if ($cbg->kode_cabang=="PST")
-        PACIFIC PUSAT
+        @if ($cbg->kode_cabang == 'PST')
+            PACIFIC PUSAT
         @else
-        PACIFIC CABANG {{ strtoupper($cbg->nama_cabang) }}
+            PACIFIC CABANG {{ strtoupper($cbg->nama_cabang) }}
         @endif
         <br>
         LAPORAN KOMISI<br>
@@ -106,13 +108,13 @@
     </b>
     <br>
     @php
-    $poinBBDP = 40;
-    $poinDS = 10;
-    $poinSP = 15;
-    $poinAR = 12.5;
-    $poinASABCG5 = 10;
-    $poinSC = 12.5;
-    $kebijakan = 100;
+        $poinBBDP = 40;
+        $poinDS = 10;
+        $poinSP = 15;
+        $poinAR = 12.5;
+        $poinASABCG5 = 10;
+        $poinSC = 12.5;
+        $kebijakan = 100;
 
     @endphp
     <table class="datatable3" style="width:170%">
@@ -508,47 +510,53 @@
                 <td align="right" style="background-color: #ff9b0d;"><?php echo desimal($d->target_SC); ?></td>
                 <td align="right" style="background-color: #ff9b0d;"><?php echo desimal($realisasi_SC); ?></td>
                 <td align="right" style="background-color: #ff9b0d;"><?php echo desimal($hasilpoinSC); ?></td>
-                <td align="right" style="background-color: #ff570d;"><?php echo round($totalpoin,2); ?></td>
+                <td align="right" style="background-color: #ff570d;"><?php echo round($totalpoin, 2); ?></td>
                 <td align="right" style="background-color: #ff570d;"><?php echo desimal($rewardpoin); ?></td>
                 <td align="right" style="background-color: #9e9895;"><?php echo desimal($d->realisasi_cashin); ?></td>
                 <td align="center" style="background-color: #9e9895;"><?php echo $ratiocashin; ?>%</td>
 
                 <td align="right" style="background-color: #9e9895;"><?php echo desimal($rewardcashin); ?></td>
-                <td align="right" style="background-color: #e43a90;"><?php if ($d->sisapiutang > 0) {echo desimal($d->sisapiutang); } else {echo 0;} ?></td>
+                <td align="right" style="background-color: #e43a90;"><?php if ($d->sisapiutang > 0) {
+                    echo desimal($d->sisapiutang);
+                } else {
+                    echo 0;
+                } ?></td>
                 <td align="center" style="background-color: #e43a90;"><?php echo round($ratioljt, 2); ?></td>
                 <td align="right" style="background-color: #e43a90;"><?php echo desimal($rewardljt); ?></td>
                 <td align="right" style="background-color: #ff570d;"><?php echo desimal($totalreward); ?></td>
                 <td style="text-align: right">
-                    @if (in_array($level,$inputpotongankomisi))
-                    <a href="#" class="inputpotongan" id_karyawan="{{ $d->id_karyawan }}" nama_karyawan="{{ $d->nama_karyawan }}" style="color:red">
-                        {{ $d->potongankomisi != null ? desimal($d->potongankomisi) : 'Input Potongan' }}
-                    </a>
+                    @if (in_array($level, $inputpotongankomisi))
+                        <a href="#" class="inputpotongan" id_karyawan="{{ $d->id_karyawan }}"
+                            nama_karyawan="{{ $d->nama_karyawan }}" style="color:red">
+                            {{ $d->potongankomisi != null ? desimal($d->potongankomisi) : 'Input Potongan' }}
+                        </a>
                     @else
-                    &#128274;
+                        &#128274;
                     @endif
                 </td>
                 <td style="text-align: right">
                     @php
-                    $totalkomisi = $totalreward - $d->potongankomisi;
+                        $totalkomisi = $totalreward - $d->potongankomisi;
                     @endphp
                     {{ desimal($totalkomisi) }}
                 </td>
                 <td style="text-align: right">
-                    @if (in_array($level,$inputpotongankomisi))
-                    <a href="#" class="inputkomisiakhir" id_karyawan="{{ $d->id_karyawan }}" nama_karyawan="{{ $d->nama_karyawan }}" style="color:red">
-                        {{ $d->komisifix != null ? desimal($d->komisifix) : desimal($totalkomisi) }}
-                    </a>
+                    @if (in_array($level, $inputpotongankomisi))
+                        <a href="#" class="inputkomisiakhir" id_karyawan="{{ $d->id_karyawan }}"
+                            nama_karyawan="{{ $d->nama_karyawan }}" style="color:red">
+                            {{ $d->komisifix != null ? desimal($d->komisifix) : desimal($totalkomisi) }}
+                        </a>
                     @else
-                    &#128274;
+                        &#128274;
                     @endif
                 </td>
                 <td>
                     @if (!empty($d->potongankomisi))
-                    Potongan : {{ $d->ket_potongan }}
+                        Potongan : {{ $d->ket_potongan }}
                     @endif
 
                     @if (!empty($d->ket_komisifix))
-                    Disesuaikan Karena : {{ $d->ket_komisifix }}
+                        Disesuaikan Karena : {{ $d->ket_komisifix }}
                     @endif
                 </td>
             </tr>
@@ -711,7 +719,7 @@
                 <td align="right" style="background-color: #35ce35;"><?php echo desimal($totaltargetSC); ?></td>
                 <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalrealisasiSC); ?></td>
                 <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalhasilpoinSC); ?></td>
-                <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalallpoin ); ?></td>
+                <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalallpoin); ?></td>
                 <td align="right" style="background-color: #35ce35;"><?php echo desimal($rewardallpoin); ?></td>
                 <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalcashin); ?></td>
                 <td align="center" style="background-color: #35ce35;">0.05%</td>
@@ -721,30 +729,32 @@
                 <td align="right" style="background-color: #35ce35;"><?php echo desimal($rewardljtkp); ?></td>
                 <td align="right" style="background-color: #35ce35;"><?php echo desimal($totalrewardkp); ?></td>
                 <td style="text-align: right">
-                    @if (in_array($level,$inputpotongankomisi))
-                    <a href="#" class="inputpotongan" id_karyawan="KP{{ $cbg->kode_cabang }}" nama_karyawan="KEPALA PENJUALAN" style="color:red">
-                        {{ $potongankp != null && $potongankp->jumlah != null ? desimal($potongankp->jumlah) : 'Input Potongan' }}
-                    </a>
+                    @if (in_array($level, $inputpotongankomisi))
+                        <a href="#" class="inputpotongan" id_karyawan="KP{{ $cbg->kode_cabang }}"
+                            nama_karyawan="KEPALA PENJUALAN" style="color:red">
+                            {{ $potongankp != null && $potongankp->jumlah != null ? desimal($potongankp->jumlah) : 'Input Potongan' }}
+                        </a>
                     @else
-                    &#128274;
+                        &#128274;
                     @endif
                 </td>
                 <td style="text-align: right">
 
                     @php
-                    $potongankp = $potongankp != null ? $potongankp->jumlah : 0;
-                    $totalkomisikp = $totalrewardkp - $potongankp;
+                        $potongankp = $potongankp != null ? $potongankp->jumlah : 0;
+                        $totalkomisikp = $totalrewardkp - $potongankp;
                     @endphp
                     {{ desimal($totalkomisikp) }}
                 </td>
 
                 <td style="text-align: right">
-                    @if (in_array($level,$inputpotongankomisi))
-                    <a href="#" class="inputkomisiakhir" id_karyawan="KP{{ $cbg->kode_cabang }}" nama_karyawan="KEPALA PENJUALAN" style="color:red">
-                        {{$komisiakhir !=null && $komisiakhir->jumlah != null ? desimal($komisiakhir->jumlah) : desimal($totalkomisikp) }}
-                    </a>
+                    @if (in_array($level, $inputpotongankomisi))
+                        <a href="#" class="inputkomisiakhir" id_karyawan="KP{{ $cbg->kode_cabang }}"
+                            nama_karyawan="KEPALA PENJUALAN" style="color:red">
+                            {{ $komisiakhir != null && $komisiakhir->jumlah != null ? desimal($komisiakhir->jumlah) : desimal($totalkomisikp) }}
+                        </a>
                     @else
-                    &#128274;
+                        &#128274;
                     @endif
                 </td>
             </tr>
@@ -766,14 +776,14 @@
     <table style="width:100%">
         <tr>
             <td align="center">
-                Tasikmalaya, <?php echo DateToIndo2(date("Y-m-d")); ?>
-                @if (in_array($level,$inputpotongankomisi))
-                <div id="loadqrcodemm" style="margin-bottom:5px; margin-top:10px"></div>
+                Tasikmalaya, <?php echo DateToIndo2(date('Y-m-d')); ?>
+                @if (in_array($level, $inputpotongankomisi))
+                    <div id="loadqrcodemm" style="margin-bottom:5px; margin-top:10px"></div>
                 @endif
 
-                @if ($level=="manager marketing")
-                <a href="#" id="approvemm" class="btn btn-primary">Approve</a>
-                <a href="#" id="batalkanmm" class="btn btn-danger">Batalkan</a>
+                @if ($level == 'manager marketing')
+                    <a href="#" id="approvemm" class="btn btn-primary">Approve</a>
+                    <a href="#" id="batalkanmm" class="btn btn-danger">Batalkan</a>
                 @endif
                 <br>
                 <b>Herdy Budiawan</b><br>
@@ -781,13 +791,13 @@
             </td>
             <td align="center">
                 Diperiksa Oleh
-                @if (in_array($level,$inputpotongankomisi))
-                <div id="loadqrcodegm" style="margin-bottom:5px; margin-top:10px">
-                </div>
+                @if (in_array($level, $inputpotongankomisi))
+                    <div id="loadqrcodegm" style="margin-bottom:5px; margin-top:10px">
+                    </div>
                 @endif
-                @if ($level == "manager accounting")
-                <a href="#" id="approvegm" class="btn btn-primary">Approve</a>
-                <a href="#" id="batalkangm" class="btn btn-danger">Batalkan</a>
+                @if ($level == 'manager accounting')
+                    <a href="#" id="approvegm" class="btn btn-primary">Approve</a>
+                    <a href="#" id="batalkangm" class="btn btn-danger">Batalkan</a>
                 @endif
 
                 <br>
@@ -796,13 +806,13 @@
             </td>
             <td align="center">
                 Disetujui Oleh,
-                @if (in_array($level,$inputpotongankomisi))
-                <div id="loadqrcodedirut" style="margin-bottom:5px; margin-top:10px">
-                </div>
+                @if (in_array($level, $inputpotongankomisi))
+                    <div id="loadqrcodedirut" style="margin-bottom:5px; margin-top:10px">
+                    </div>
                 @endif
-                @if ($level == "direktur")
-                <a href="#" id="approvedirut" class="btn btn-primary">Approve</a>
-                <a href="#" id="batalkandirut" class="btn btn-danger">Batalkan</a>
+                @if ($level == 'direktur')
+                    <a href="#" id="approvedirut" class="btn btn-primary">Approve</a>
+                    <a href="#" id="batalkandirut" class="btn btn-danger">Batalkan</a>
                 @endif
                 <br>
                 <b>Jemmy Feldiana</b><br>
@@ -810,7 +820,8 @@
             </td>
         </tr>
     </table>
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -824,7 +835,8 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="mdlkomisiakhir" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="mdlkomisiakhir" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -838,7 +850,8 @@
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js"
+        integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
     <script>
         $(function() {
 
@@ -848,17 +861,17 @@
                 var kode_cabang = "{{ $cbg->kode_cabang }}";
                 var level = level;
                 $.ajax({
-                    type: 'POST'
-                    , url: '/getqrcode'
-                    , data: {
-                        _token: "{{ csrf_token() }}"
-                        , bulan: bulan
-                        , tahun: tahun
-                        , kode_cabang: kode_cabang
-                        , level: level
-                    }
-                    , cache: false
-                    , success: function(respond) {
+                    type: 'POST',
+                    url: '/getqrcode',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        bulan: bulan,
+                        tahun: tahun,
+                        kode_cabang: kode_cabang,
+                        level: level
+                    },
+                    cache: false,
+                    success: function(respond) {
                         if (level == "mm") {
                             $("#loadqrcodemm").html(respond);
                         }
@@ -881,17 +894,17 @@
                 var kode_cabang = "{{ $cbg->kode_cabang }}";
                 var level = level;
                 $.ajax({
-                    type: 'POST'
-                    , url: '/cekapprovekomisi'
-                    , data: {
-                        _token: "{{ csrf_token() }}"
-                        , bulan: bulan
-                        , tahun: tahun
-                        , kode_cabang: kode_cabang
-                        , level: level
-                    }
-                    , cache: false
-                    , success: function(respond) {
+                    type: 'POST',
+                    url: '/cekapprovekomisi',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        bulan: bulan,
+                        tahun: tahun,
+                        kode_cabang: kode_cabang,
+                        level: level
+                    },
+                    cache: false,
+                    success: function(respond) {
                         if (level == "mm") {
                             if (respond == 0) {
                                 $("#approvemm").show();
@@ -928,17 +941,17 @@
                 var kode_cabang = "{{ $cbg->kode_cabang }}";
                 var level = level;
                 $.ajax({
-                    type: 'POST'
-                    , url: '/cekbatal'
-                    , data: {
-                        _token: "{{ csrf_token() }}"
-                        , bulan: bulan
-                        , tahun: tahun
-                        , kode_cabang: kode_cabang
-                        , level: level
-                    }
-                    , cache: false
-                    , success: function(respond) {
+                    type: 'POST',
+                    url: '/cekbatal',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        bulan: bulan,
+                        tahun: tahun,
+                        kode_cabang: kode_cabang,
+                        level: level
+                    },
+                    cache: false,
+                    success: function(respond) {
                         if (level == "mm") {
                             if (respond == 1) {
                                 $("#batalkanmm").show();
@@ -988,17 +1001,17 @@
                 var kode_cabang = "{{ $cbg->kode_cabang }}";
                 var level = 'mm';
                 $.ajax({
-                    type: 'POST'
-                    , url: '/approvekomisi'
-                    , data: {
-                        _token: "{{ csrf_token() }}"
-                        , bulan: bulan
-                        , tahun: tahun
-                        , kode_cabang: kode_cabang
-                        , level: level
-                    }
-                    , cache: false
-                    , success: function(respond) {
+                    type: 'POST',
+                    url: '/approvekomisi',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        bulan: bulan,
+                        tahun: tahun,
+                        kode_cabang: kode_cabang,
+                        level: level
+                    },
+                    cache: false,
+                    success: function(respond) {
                         if (respond == 0) {
                             alert('Berhasil di Approve');
                         } else {
@@ -1019,17 +1032,17 @@
                 var kode_cabang = "{{ $cbg->kode_cabang }}";
                 var level = 'gm';
                 $.ajax({
-                    type: 'POST'
-                    , url: '/approvekomisi'
-                    , data: {
-                        _token: "{{ csrf_token() }}"
-                        , bulan: bulan
-                        , tahun: tahun
-                        , kode_cabang: kode_cabang
-                        , level: level
-                    }
-                    , cache: false
-                    , success: function(respond) {
+                    type: 'POST',
+                    url: '/approvekomisi',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        bulan: bulan,
+                        tahun: tahun,
+                        kode_cabang: kode_cabang,
+                        level: level
+                    },
+                    cache: false,
+                    success: function(respond) {
                         if (respond == 0) {
                             alert('Berhasil di Approve');
                         } else {
@@ -1050,17 +1063,17 @@
                 var kode_cabang = "{{ $cbg->kode_cabang }}";
                 var level = 'dirut';
                 $.ajax({
-                    type: 'POST'
-                    , url: '/approvekomisi'
-                    , data: {
-                        _token: "{{ csrf_token() }}"
-                        , bulan: bulan
-                        , tahun: tahun
-                        , kode_cabang: kode_cabang
-                        , level: level
-                    }
-                    , cache: false
-                    , success: function(respond) {
+                    type: 'POST',
+                    url: '/approvekomisi',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        bulan: bulan,
+                        tahun: tahun,
+                        kode_cabang: kode_cabang,
+                        level: level
+                    },
+                    cache: false,
+                    success: function(respond) {
                         if (respond == 0) {
                             alert('Berhasil di Approve');
                         } else {
@@ -1079,16 +1092,16 @@
                 var bulan = "{{ $bulan }}";
                 var tahun = "{{ $tahun }}";
                 $.ajax({
-                    type: 'POST'
-                    , url: '/inputpotongankomisi'
-                    , cache: false
-                    , data: {
-                        _token: "{{ csrf_token() }}"
-                        , id_karyawan: id_karyawan
-                        , bulan: bulan
-                        , tahun: tahun
-                    }
-                    , success: function(respond) {
+                    type: 'POST',
+                    url: '/inputpotongankomisi',
+                    cache: false,
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        id_karyawan: id_karyawan,
+                        bulan: bulan,
+                        tahun: tahun
+                    },
+                    success: function(respond) {
                         $("#loadinputpotongan").html(respond);
                         $("#exampleModal").modal("show");
                     }
@@ -1102,16 +1115,16 @@
                 var bulan = "{{ $bulan }}";
                 var tahun = "{{ $tahun }}";
                 $.ajax({
-                    type: 'POST'
-                    , url: '/inputkomisiakhir'
-                    , cache: false
-                    , data: {
-                        _token: "{{ csrf_token() }}"
-                        , id_karyawan: id_karyawan
-                        , bulan: bulan
-                        , tahun: tahun
-                    }
-                    , success: function(respond) {
+                    type: 'POST',
+                    url: '/inputkomisiakhir',
+                    cache: false,
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        id_karyawan: id_karyawan,
+                        bulan: bulan,
+                        tahun: tahun
+                    },
+                    success: function(respond) {
                         $("#loadkomisiakhir").html(respond);
                         $("#mdlkomisiakhir").modal("show");
                     }
@@ -1127,17 +1140,17 @@
                 var kode_cabang = "{{ $cbg->kode_cabang }}";
                 var level = 'mm';
                 $.ajax({
-                    type: 'POST'
-                    , url: '/cancelkomisi'
-                    , data: {
-                        _token: "{{ csrf_token() }}"
-                        , bulan: bulan
-                        , tahun: tahun
-                        , kode_cabang: kode_cabang
-                        , level: level
-                    }
-                    , cache: false
-                    , success: function(respond) {
+                    type: 'POST',
+                    url: '/cancelkomisi',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        bulan: bulan,
+                        tahun: tahun,
+                        kode_cabang: kode_cabang,
+                        level: level
+                    },
+                    cache: false,
+                    success: function(respond) {
                         if (respond == 0) {
                             alert('Berhasil di Batalkan');
                         } else {
@@ -1159,17 +1172,17 @@
                 var kode_cabang = "{{ $cbg->kode_cabang }}";
                 var level = 'gm';
                 $.ajax({
-                    type: 'POST'
-                    , url: '/cancelkomisi'
-                    , data: {
-                        _token: "{{ csrf_token() }}"
-                        , bulan: bulan
-                        , tahun: tahun
-                        , kode_cabang: kode_cabang
-                        , level: level
-                    }
-                    , cache: false
-                    , success: function(respond) {
+                    type: 'POST',
+                    url: '/cancelkomisi',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        bulan: bulan,
+                        tahun: tahun,
+                        kode_cabang: kode_cabang,
+                        level: level
+                    },
+                    cache: false,
+                    success: function(respond) {
                         if (respond == 0) {
                             alert('Berhasil di Batalkan');
                         } else {
@@ -1189,17 +1202,17 @@
                 var kode_cabang = "{{ $cbg->kode_cabang }}";
                 var level = 'dirut';
                 $.ajax({
-                    type: 'POST'
-                    , url: '/cancelkomisi'
-                    , data: {
-                        _token: "{{ csrf_token() }}"
-                        , bulan: bulan
-                        , tahun: tahun
-                        , kode_cabang: kode_cabang
-                        , level: level
-                    }
-                    , cache: false
-                    , success: function(respond) {
+                    type: 'POST',
+                    url: '/cancelkomisi',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        bulan: bulan,
+                        tahun: tahun,
+                        kode_cabang: kode_cabang,
+                        level: level
+                    },
+                    cache: false,
+                    success: function(respond) {
                         if (respond == 0) {
                             alert('Berhasil di Batalkan');
                         } else {
@@ -1213,7 +1226,7 @@
                 });
             });
         });
-
     </script>
 </body>
+
 </html>
