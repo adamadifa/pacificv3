@@ -987,9 +987,11 @@
                                 2. Jika Ada Libur Pengganti Minggu
                                 3. Jika Dirumahkan
                                 4. Jika WFH dan Masa Kerja Lebih dari 3 Tahun
+
+                                //22-01-2024 Dibuah Menjadi Semua Dibayar Saat Libur
                             -->
                             @if (
-                                (!empty($ceklibur) && $cekmasakerja >= 3) ||
+                                !empty($ceklibur) ||
                                     !empty($cekliburpenggantiminggu) ||
                                     !empty($cekwfh) ||
                                     (!empty($cekwfhfull) && $cekmasakerja >= 3))
