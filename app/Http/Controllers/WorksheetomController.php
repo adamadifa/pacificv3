@@ -1291,6 +1291,11 @@ class WorksheetomController extends Controller
 
 
     public function createvisitpelanggan($no_fak_penj){
-        return view('worksheetom.createvisitpelanggan');
+
+        $penjualan = DB::table('penjualan')
+        ->join('pelanggan','penjualan.kode_pelanggan','=','pelanggan.kode_pelanggan')
+        ->join('karyawan','penjualan.id_karyawan','=','karyawan.id_karyawan')
+        ->where('no_fak_penj',$no_fak_penj)->first();
+        return view('worksheetom.create_visitpelanggan',compact('penjualan'));
     }
 }

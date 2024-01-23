@@ -346,8 +346,7 @@
                     backdrop: 'static',
                     keyboard: false
                 });
-                $("#loadcreatevisitpelanggan").load('/worksheetom/' + no_fak_penj +
-                '/createvisitpelanggan');
+
             });
 
             $(".visitpelanggan").click(function(e) {
@@ -357,6 +356,8 @@
                     backdrop: 'static',
                     keyboard: false
                 });
+                $("#loadcreatevisitpelanggan").load('/worksheetom/' + no_fak_penj +
+                    '/createvisitpelanggan');
             });
 
             $(".ubahfakturpo").click(function(e) {
