@@ -1288,4 +1288,9 @@ class WorksheetomController extends Controller
 
         return view('worksheetom.cetak_ratiobs', compact('ratiobs', 'produk'));
     }
+
+
+    public function createvisitpelanggan($no_fak_penj){
+        return view('worksheetom.createvisitpelanggan');
+    }
 }

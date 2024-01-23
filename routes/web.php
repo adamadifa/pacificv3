@@ -2047,7 +2047,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/worksheetom/cetakratiobs', [WorksheetomController::class, 'cetakratiobs']);
 
     //Visit Pelanggan
-    Route::get('/worksheetom/visitpelanggan', [VisitController::class, 'index']);
+    Route::get('/worksheetom/{no_fak_penj}/createvisitpelanggan', [WorksheetomController::class, 'createvisitpelanggan']);
 
     Route::controller(BBMController::class)->group(function () {
         Route::get('/bbm', 'index')->name('bbm');
