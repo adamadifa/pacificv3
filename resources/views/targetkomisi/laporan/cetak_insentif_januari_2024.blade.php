@@ -275,13 +275,19 @@
                     </td>
                     <td align="right">
                         @php
-                            if ($cost_ratio < 0.2) {
+                            if ($cost_ratio < 6) {
+                                $reward_costratio = 200000;
+                            } elseif ($cost_ratio > 6 && $cost_ratio <= 7) {
+                                $reward_costratio = 175000;
+                            } elseif ($cost_ratio > 7 && $cost_ratio <= 8) {
+                                $reward_costratio = 150000;
+                            } elseif ($cost_ratio > 8 && $cost_ratio <= 9) {
                                 $reward_costratio = 125000;
-                            } elseif ($cost_ratio > 0.4 && $cost_ratio <= 0.6) {
+                            } elseif ($cost_ratio > 9 && $cost_ratio <= 10) {
                                 $reward_costratio = 100000;
-                            } elseif ($cost_ratio > 0.6 && $cost_ratio <= 0.8) {
+                            } elseif ($cost_ratio > 10 && $cost_ratio <= 11) {
                                 $reward_costratio = 75000;
-                            } elseif ($cost_ratio > 0.8 && $cost_ratio <= 1) {
+                            } elseif ($cost_ratio > 11 && $cost_ratio <= 12) {
                                 $reward_costratio = 50000;
                             } else {
                                 $reward_costratio = 25000;
@@ -318,15 +324,11 @@
                             @php
                                 $reward_bs = 100000;
                             @endphp
-                        @elseif ($ratio_bs > 0.4 && $ratio_bs <= 0.6)
+                        @elseif ($ratio_bs > 0.6 && $ratio_bs <= 0.8)
                             @php
                                 $reward_bs = 75000;
                             @endphp
-                        @elseif ($ratio_bs > 0.6 && $ratio_bs <= 0.8)
-                            @php
-                                $reward_bs = 50000;
-                            @endphp
-                        @elseif ($ratio_bs > 0.6 && $ratio_bs <= 0.8)
+                        @elseif ($ratio_bs > 0.8 && $ratio_bs <= 1)
                             @php
                                 $reward_bs = 50000;
                             @endphp

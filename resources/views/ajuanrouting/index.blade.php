@@ -84,6 +84,7 @@
                                         <th>Kode Pelanggan</th>
                                         <th>Pelanggan</th>
                                         <th>Hari</th>
+                                        <th style="width: 20%">Keterangan</th>
                                         <th>KP</th>
                                         <th>RSM</th>
                                         <th>GM</th>
@@ -99,6 +100,8 @@
                                             <td>{{ $d->kode_pelanggan }}</td>
                                             <td>{{ $d->nama_pelanggan }}</td>
                                             <td>{{ $d->hari }}</td>
+                                            <td>{{ $d->keterangan }}</td>
+
                                             <td>
                                                 @if (empty($d->kacab))
                                                     <i class="fa fa-history warning"></i>

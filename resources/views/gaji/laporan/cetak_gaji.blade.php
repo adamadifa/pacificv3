@@ -990,7 +990,7 @@
 
                             @endphp
                             @if (
-                                (!empty($ceklibur) && $cekmasakerja >= 3) ||
+                                !empty($ceklibur) ||
                                     !empty($cekliburpenggantiminggu) ||
                                     !empty($cekwfh) ||
                                     (!empty($cekwfhfull) && $cekmasakerja >= 3))

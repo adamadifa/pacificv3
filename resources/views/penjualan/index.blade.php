@@ -239,6 +239,9 @@
                                                         no_fak_penj="{{ $d->no_fak_penj }}"><i
                                                             class="feather icon-clipboard"></i></a>
                                                 @endif
+                                                <a href="#" class="info visitpelanggan ml-2"
+                                                    no_fak_penj="{{ $d->no_fak_penj }}"><i
+                                                        class="feather icon-external-link"></i></a>
                                                 {{-- @if (substr($d->no_fak_penj, 3, 2) == 'PR')
                                     <a href="#" class="warning ubahfakturpo ml-1" no_fak_penj="{{ $d->no_fak_penj }}"><i class="feather icon-external-link"></i></a>
                                     @endif --}}
@@ -312,6 +315,24 @@
             </div>
         </div>
     </div>
+
+
+    <div class="modal fade text-left" id="mdlvisitpelanggan" tabindex="-1" role="dialog"
+        aria-labelledby="myModalLabel18" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel18">Visit Pelanggan</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="loadcreatevisitpelanggan">
+
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('myscript')
@@ -325,6 +346,18 @@
                     backdrop: 'static',
                     keyboard: false
                 });
+
+            });
+
+            $(".visitpelanggan").click(function(e) {
+                var no_fak_penj = $(this).attr("no_fak_penj");
+                e.preventDefault();
+                $('#mdlvisitpelanggan').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+                $("#loadcreatevisitpelanggan").load('/worksheetom/' + no_fak_penj +
+                    '/createvisitpelanggan');
             });
 
             $(".ubahfakturpo").click(function(e) {
