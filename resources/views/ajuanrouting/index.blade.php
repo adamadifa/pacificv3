@@ -84,7 +84,7 @@
                                         <th>Kode Pelanggan</th>
                                         <th>Pelanggan</th>
                                         <th>Hari</th>
-                                        <th>Keterangan</th>
+                                        <th style="width: 20%">Keterangan</th>
                                         <th>KP</th>
                                         <th>RSM</th>
                                         <th>GM</th>
