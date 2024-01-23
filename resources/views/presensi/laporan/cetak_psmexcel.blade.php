@@ -932,7 +932,7 @@
                             4. Jika WFH dan Masa Kerja Lebih dari 3 Tahun
                         -->
                             @if (
-                                (!empty($ceklibur) && $cekmasakerja >= 3) ||
+                                !empty($ceklibur) ||
                                     !empty($cekliburpenggantiminggu) ||
                                     !empty($cekwfh) ||
                                     (!empty($cekwfhfull) && $cekmasakerja >= 3))
