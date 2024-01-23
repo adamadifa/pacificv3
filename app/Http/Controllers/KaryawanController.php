@@ -87,6 +87,7 @@ class KaryawanController extends Controller
 
         if ($level == "spv maintenance") {
             $query->where('master_karyawan.kode_dept', 'MTC');
+            $query->where('master_karyawan.nama_jabatan', '!=', 'ASST. MANAGER');
         }
 
         if ($level == "manager produksi") {
