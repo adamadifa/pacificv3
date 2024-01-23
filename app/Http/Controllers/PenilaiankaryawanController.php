@@ -40,6 +40,8 @@ class PenilaiankaryawanController extends Controller
                     $qkaryawan->whereIn('id_kategori_jabatan', [7, 8]);
                     $qkaryawan->where('id_kantor', 'PST');
                     $qkaryawan->where('kode_dept', 'AKT');
+                } else  if (Auth::user()->level == "rom") {
+                    $qkaryawan->whereIn('id_kategori_jabatan', [7, 8]);
                 } else  if (Auth::user()->level == "staff keuangan") {
                     $qkaryawan->whereIn('id_kategori_jabatan', [7, 8]);
                     $qkaryawan->where('id_kantor', 'PST');
