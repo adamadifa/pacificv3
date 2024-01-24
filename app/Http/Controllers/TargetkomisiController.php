@@ -6049,6 +6049,13 @@ class TargetkomisiController extends Controller
         $query->where('cabang.kode_cabang', '!=', 'PST');
         $insentif = $query->get();
 
+        if (isset($_POST['export'])) {
+            $time = date("H:i:s");
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Laporan Insentif OM $time.xls");
+        }
         return view('targetkomisi.laporan.cetak_insentif_januari_2024', compact(
             'namabulan',
             'cabang',
