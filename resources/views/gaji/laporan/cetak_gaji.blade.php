@@ -825,6 +825,7 @@
                                         $jmljam_lbr = hitungjamdesimal($tgl_lembur_dari, $tgl_lembur_sampai);
                                         $istirahatlbr = $ceklembur[0]['istirahat'] == 1 ? 1 : 0;
                                         $jmljam_lembur = $jmljam_lbr > 7 ? 7 : $jmljam_lbr - $istirahatlbr;
+                                        $jmljam_lembur = !empty($ceklibur) ? $jmljam_lembur * 2 : $jmljam_lembur;
                                         $kategori_lembur = $ceklembur[0]['kategori'];
                                     @endphp
                                     @if (empty($ceklibur) && empty($cekliburpenggantiminggu) && empty($cekwfhfull) && $namahari != 'Minggu')
@@ -1095,7 +1096,6 @@
                             $upah_ot_2 = 8000 * $total_overtime_2;
                             $upah_otl_1 = 13143 * $total_overtime_libur_1;
                             $upah_otl_2 = 0;
-
                         @endphp
                     @else
                         @php
