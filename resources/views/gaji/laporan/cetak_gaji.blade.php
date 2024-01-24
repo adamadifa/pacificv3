@@ -1093,8 +1093,14 @@
                         @php
                             $upah_ot_1 = 8000 * $total_overtime_1;
                             $upah_ot_2 = 8000 * $total_overtime_2;
-                            $upah_otl_1 = 13143 * $total_overtime_libur_1;
-                            $upah_otl_2 = 0;
+                            if (!empty($ceklibur)) {
+                                $upah_otl_1 = 13143 * 2 * $total_overtime_libur_1;
+                                $upah_otl_2 = 0;
+                            } else {
+                                $upah_otl_1 = 13143 * $total_overtime_libur_1;
+                                $upah_otl_2 = 0;
+                            }
+
                         @endphp
                     @else
                         @php
