@@ -85,7 +85,7 @@
                                                     <td class="text-right">{{ rupiah($d->im_ruanglingkup) }}</td>
                                                     <td class="text-right">{{ rupiah($d->im_penempatan) }}</td>
                                                     <td class="text-right">{{ rupiah($d->im_kinerja) }}</td>
-                                                    <td class="text-right">{{ rupiah($d->tgl_berlaku) }}</td>
+                                                    <td class="text-right">{{ $d->tgl_berlaku }}</td>
                                                     <td>
                                                         <div class="btn-group" role="group" aria-label="Basic example">
                                                             @if (in_array($level, $insentif_edit))
