@@ -30,13 +30,20 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <select name="kode_cabang" id="kode_cabang" class="form-control">
-                                            <option value="">Pilih Cabang</option>
-                                            @foreach ($cabang as $d)
-                                                <option {{ Request('kode_cabang') == $d->kode_cabang ? 'selected' : '' }}
-                                                    value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
-                                            @endforeach
-                                        </select>
+                                        @if (Auth::user()->kode_cabang != 'PCF')
+                                            <input type="hidden" name="kode_cabang" id="kode_cabang"
+                                                value="{{ Auth::user()->kode_cabang }}">
+                                        @else
+                                            <select name="kode_cabang" id="kode_cabang" class="form-control">
+                                                <option value="">Pilih Cabang</option>
+                                                @foreach ($cabang as $d)
+                                                    <option
+                                                        {{ Request('kode_cabang') == $d->kode_cabang ? 'selected' : '' }}
+                                                        value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
+                                                @endforeach
+                                            </select>
+                                        @endif
+
                                     </div>
                                 </div>
                             </div>
