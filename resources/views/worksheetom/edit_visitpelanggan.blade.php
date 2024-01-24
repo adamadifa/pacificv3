@@ -1,6 +1,7 @@
-<form action="/worksheetom/visitpelanggan/store" id="frmVisitpelanggan" method="POST">
-    <input type="hidden" name="no_fak_penj" value="{{ $penjualan->no_fak_penj }}">
-    <input type="hidden" name="kode_cabang" value="{{ $penjualan->kode_cabang }}">
+<form action="/worksheetom/{{ Crypt::encrypt($visitpelanggan->kode_visit) }}/updatevisitpelanggan" id="frmVisitpelanggan"
+    method="POST">
+    <input type="hidden" name="no_fak_penj" value="{{ $visitpelanggan->no_fak_penj }}">
+    <input type="hidden" name="kode_cabang" value="{{ $visitpelanggan->kode_cabang }}">
     @csrf
     <div class="row">
         <div class="col-6">
@@ -8,22 +9,22 @@
                 <tr>
                     <th>No. Faktur</th>
                     <td>:</td>
-                    <td>{{ $penjualan->no_fak_penj }}</td>
+                    <td>{{ $visitpelanggan->no_fak_penj }}</td>
                 </tr>
                 <tr>
                     <th>Tanggal Faktur</th>
                     <td>:</td>
-                    <td>{{ DateToIndo2($penjualan->tgltransaksi) }}</td>
+                    <td>{{ DateToIndo2($visitpelanggan->tgltransaksi) }}</td>
                 </tr>
                 <tr>
                     <th>Jenis Transaksi</th>
                     <td>:</td>
-                    <td>{{ strtoupper($penjualan->jenistransaksi) }}</td>
+                    <td>{{ strtoupper($visitpelanggan->jenistransaksi) }}</td>
                 </tr>
                 <tr>
                     <th>Nilai Faktur</th>
                     <td>:</td>
-                    <td>{{ rupiah($penjualan->total) }}</td>
+                    <td>{{ rupiah($visitpelanggan->total) }}</td>
                 </tr>
             </table>
         </div>
@@ -32,17 +33,17 @@
                 <tr>
                     <th>Kode Pelanggan</th>
                     <td>:</td>
-                    <td>{{ $penjualan->kode_pelanggan }}</td>
+                    <td>{{ $visitpelanggan->kode_pelanggan }}</td>
                 </tr>
                 <tr>
                     <th>Nama</th>
                     <td>:</td>
-                    <td>{{ $penjualan->nama_pelanggan }}</td>
+                    <td>{{ $visitpelanggan->nama_pelanggan }}</td>
                 </tr>
                 <tr>
                     <th>Alamat</th>
                     <td>:</td>
-                    <td>{{ $penjualan->alamat_pelanggan }} ({{ $penjualan->pasar }})</td>
+                    <td>{{ $visitpelanggan->alamat_pelanggan }} ({{ $visitpelanggan->pasar }})</td>
                 </tr>
             </table>
         </div>
@@ -50,21 +51,22 @@
     <div class="row">
         <div class="col-12">
             <div class="form-group">
-                <x-inputtext label="Tanggal Visit" icon="feather icon-calendar" field="tanggal_visit" datepicker />
+                <x-inputtext label="Tanggal Visit" icon="feather icon-calendar"
+                    value="{{ $visitpelanggan->tanggal_visit }}" field="tanggal_visit" datepicker />
             </div>
             <div class="form-group">
                 <textarea name="hasil_konfirmasi" id="hasil_konfirmasi" cols="30" rows="3" class="form-control"
-                    placeholder="Hasil Konfirmasi"></textarea>
+                    placeholder="Hasil Konfirmasi">{{ $visitpelanggan->hasil_konfirmasi }}</textarea>
             </div>
             <div class="form-group">
-                <textarea name="note" id="note" cols="30" rows="3" class="form-control" placeholder="Note"></textarea>
+                <textarea name="note" id="note" cols="30" rows="3" class="form-control" placeholder="Note">{{ $visitpelanggan->note }}</textarea>
             </div>
             <div class="form-group">
                 <textarea name="saran" id="saran" cols="30" rows="3" class="form-control"
-                    placeholder="Saran / Keluhan Produk"></textarea>
+                    placeholder="Saran / Keluhan Produk">{{ $visitpelanggan->saran }}</textarea>
             </div>
             <div class="form-group">
-                <textarea name="act_om" id="act_om" cols="30" rows="3" class="form-control" placeholder="Action OM"></textarea>
+                <textarea name="act_om" id="act_om" cols="30" rows="3" class="form-control" placeholder="Action OM">{{ $visitpelanggan->saran }}</textarea>
             </div>
         </div>
     </div>

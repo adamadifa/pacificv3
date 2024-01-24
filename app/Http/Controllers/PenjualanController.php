@@ -155,11 +155,11 @@ class PenjualanController extends Controller
             $sampai = !empty($request->sampai) ? $request->sampai : date("Y-m-d");
             $pelanggan = '"' . $request->nama_pelanggan . '"';
             $query = Penjualan::query();
-            $query->select('penjualan.*', 'nama_pelanggan', 'nama_karyawan', 'karyawan.kode_cabang');
+            $query->select('penjualan.*', 'nama_pelanggan', 'nama_karyawan', 'karyawan.kode_cabang', 'kode_visit');
             $query->orderBy('tgltransaksi', 'desc');
             $query->orderBy('no_fak_penj', 'asc');
             $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
-
+            $query->leftJoin('visitpelanggan', 'penjualan.no_fak_penj', '=', 'visitpelanggan.no_fak_penj');
             $query->leftJoin(
                 DB::raw("(
                     SELECT
@@ -3578,7 +3578,7 @@ class PenjualanController extends Controller
                 penjualan.kode_pelanggan,pelanggan.nama_pelanggan,
                 penjualan.id_karyawan,karyawan.nama_karyawan,
                 pelanggan.pasar,pelanggan.hari,
-                AB,AR,`AS`,BB,CG,CGG,DEP,DK,DS,SP,BBP,SPP,CG5,SC,SP8,SP8P,SP500,BR20,
+                AB,AR,`AS`,BB,CG,CGG,DEP,DK,DS,SP,BBP,SPP,CG5,SC,SP8,SP8P,SP500,BR20,P1000,
                 penjualan.subtotal as totalbruto,
                 (ifnull( r.totalpf, 0 ) - ifnull( r.totalgb, 0 ) ) AS totalretur,
                 penjualan.penyharga AS penyharga,
@@ -3615,7 +3615,8 @@ class PenjualanController extends Controller
                     SUM(IF(kode_produk = 'SP8',jumlah,0)) as SP8,
                     SUM(IF(kode_produk = 'SP8-P',jumlah,0)) as SP8P,
                     SUM(IF(kode_produk = 'SP500',jumlah,0)) as SP500,
-                    SUM(IF(kode_produk = 'BR20',jumlah,0)) as BR20
+                    SUM(IF(kode_produk = 'BR20',jumlah,0)) as BR20,
+                    SUM(IF(kode_produk = 'P1000',jumlah,0)) as P1000
                     FROM detailpenjualan dp
                     INNER JOIN barang b ON dp.kode_barang = b.kode_barang
                     GROUP BY dp.no_fak_penj

@@ -12,6 +12,7 @@ use App\Models\Kebutuhancabang;
 use App\Models\Program;
 use App\Models\Programpeserta;
 use App\Models\Retur;
+use App\Models\Visitpelanggan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
@@ -1290,12 +1291,134 @@ class WorksheetomController extends Controller
     }
 
 
-    public function createvisitpelanggan($no_fak_penj){
+    public function createvisitpelanggan($no_fak_penj)
+    {
 
         $penjualan = DB::table('penjualan')
-        ->join('pelanggan','penjualan.kode_pelanggan','=','pelanggan.kode_pelanggan')
-        ->join('karyawan','penjualan.id_karyawan','=','karyawan.id_karyawan')
-        ->where('no_fak_penj',$no_fak_penj)->first();
-        return view('worksheetom.create_visitpelanggan',compact('penjualan'));
+            ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+            ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->where('no_fak_penj', $no_fak_penj)->first();
+        return view('worksheetom.create_visitpelanggan', compact('penjualan'));
+    }
+
+
+    public function storevisitpelanggan(Request $request)
+    {
+        $no_fak_penj = $request->no_fak_penj;
+        $tanggal_visit = $request->tanggal_visit;
+        $hasil_konfirmasi = $request->hasil_konfirmasi;
+        $note = $request->note;
+        $saran = $request->saran;
+        $act_om = $request->act_om;
+        $kode_cabang = $request->kode_cabang;
+
+        $lastvisit = DB::table('visitpelanggan')
+            ->whereRaw('YEAR(tanggal_visit)="' . date('Y', strtotime($tanggal_visit)) . '"')
+            ->orderBy('kode_visit', 'desc')
+            ->first();
+
+        $lastkodevisit = $lastvisit != NULL ? $lastvisit->kode_visit : '';
+        $kode_visit = buatkode($lastkodevisit, "VST" . $kode_cabang . substr(date('Y', strtotime($tanggal_visit)), 2, 2), 5);
+
+        try {
+            DB::table('visitpelanggan')->insert([
+                'kode_visit' => $kode_visit,
+                'no_fak_penj' => $no_fak_penj,
+                'tanggal_visit' => $tanggal_visit,
+                'hasil_konfirmasi' => $hasil_konfirmasi,
+                'note' => $note,
+                'saran' => $saran,
+                'act_om' => $act_om,
+            ]);
+
+            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => $e->getMessage()]);
+        }
+    }
+
+
+    public function visitpelanggan(Request $request)
+    {
+        $query = Visitpelanggan::query();
+        $query->select('visitpelanggan.*', 'nama_pelanggan', 'pasar', 'nama_karyawan', 'tgltransaksi', 'total', 'jenistransaksi', 'karyawan.kode_cabang');
+        $query->join('penjualan', 'visitpelanggan.no_fak_penj', '=', 'penjualan.no_fak_penj');
+        $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
+        $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
+        if (Auth::user()->kode_cabang != "PCF") {
+            $query->where('karyawan.kode_cabang', Auth::user()->kode_cabang);
+        } else {
+            if (!empty($request->kode_cabang)) {
+                $query->where('karyawan.kode_cabang', $request->kode_cabang);
+            }
+        }
+        if (!empty($request->dari) && !empty($request->sampai)) {
+            $query->whereBetween('tanggal_visit', [$request->dari, $request->sampai]);
+        }
+
+
+        $visitpelanggan = $query->get();
+
+        $cbg = new Cabang();
+        $cabang = $cbg->getCabang($this->cabang);
+        if (isset($request->cetak)) {
+            return view('worksheetom.cetak_visitpelanggan', compact('visitpelanggan', 'cabang'));
+        } else {
+            return view('worksheetom.visitpelanggan', compact('visitpelanggan', 'cabang'));
+        }
+    }
+
+    public function editvisitpelanggan($kode_visit)
+    {
+
+        $visitpelanggan = DB::table('visitpelanggan')
+            ->join('penjualan', 'visitpelanggan.no_fak_penj', '=', 'penjualan.no_fak_penj')
+            ->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan')
+            ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+            ->where('kode_visit', $kode_visit)->first();
+        return view('worksheetom.edit_visitpelanggan', compact('visitpelanggan'));
+    }
+
+
+    public function updatevisitpelanggan($kode_visit, Request $request)
+    {
+        $no_fak_penj = $request->no_fak_penj;
+        $tanggal_visit = $request->tanggal_visit;
+        $hasil_konfirmasi = $request->hasil_konfirmasi;
+        $note = $request->note;
+        $saran = $request->saran;
+        $act_om = $request->act_om;
+        $kode_cabang = $request->kode_cabang;
+        $kode_visit = Crypt::decrypt($kode_visit);
+
+
+        try {
+            DB::table('visitpelanggan')
+                ->where('kode_visit', $kode_visit)
+                ->update([
+                    'kode_visit' => $kode_visit,
+                    'no_fak_penj' => $no_fak_penj,
+                    'tanggal_visit' => $tanggal_visit,
+                    'hasil_konfirmasi' => $hasil_konfirmasi,
+                    'note' => $note,
+                    'saran' => $saran,
+                    'act_om' => $act_om,
+                ]);
+
+            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => $e->getMessage()]);
+        }
+    }
+
+    public function deletevisitpelanggan($kode_visit)
+    {
+        $kode_visit = Crypt::decrypt($kode_visit);
+        try {
+            DB::table('visitpelanggan')->where('kode_visit', $kode_visit)->delete();
+            return Redirect::back()->with(['success' => 'Data Berhasil Dihapus']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => 'Data Gagal Dihapus']);
+        }
     }
 }

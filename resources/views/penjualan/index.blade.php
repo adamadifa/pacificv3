@@ -239,9 +239,15 @@
                                                         no_fak_penj="{{ $d->no_fak_penj }}"><i
                                                             class="feather icon-clipboard"></i></a>
                                                 @endif
-                                                <a href="#" class="info visitpelanggan ml-2"
-                                                    no_fak_penj="{{ $d->no_fak_penj }}"><i
-                                                        class="feather icon-external-link"></i></a>
+                                                @if (!empty($d->kode_visit))
+                                                    <i class="feather icon-check text-success ml-2"></i>
+                                                @else
+                                                    <a href="#" class="info visitpelanggan ml-2"
+                                                        no_fak_penj="{{ $d->no_fak_penj }}"><i
+                                                            class="feather icon-external-link"></i></a>
+                                                @endif
+
+
                                                 {{-- @if (substr($d->no_fak_penj, 3, 2) == 'PR')
                                     <a href="#" class="warning ubahfakturpo ml-1" no_fak_penj="{{ $d->no_fak_penj }}"><i class="feather icon-external-link"></i></a>
                                     @endif --}}

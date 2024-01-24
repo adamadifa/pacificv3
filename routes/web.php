@@ -2048,6 +2048,11 @@ Route::middleware(['auth'])->group(function () {
 
     //Visit Pelanggan
     Route::get('/worksheetom/{no_fak_penj}/createvisitpelanggan', [WorksheetomController::class, 'createvisitpelanggan']);
+    Route::get('/worksheetom/{kode_visit}/editvisitpelanggan', [WorksheetomController::class, 'editvisitpelanggan']);
+    Route::get('/worksheetom/visitpelanggan', [WorksheetomController::class, 'visitpelanggan']);
+    Route::post('/worksheetom/visitpelanggan/store', [WorksheetomController::class, 'storevisitpelanggan']);
+    Route::post('/worksheetom/{kode_visit}/updatevisitpelanggan', [WorksheetomController::class, 'updatevisitpelanggan']);
+    Route::delete('/worksheetom/{kode_visit}/deletevisitpelanggan', [WorksheetomController::class, 'deletevisitpelanggan']);
 
     Route::controller(BBMController::class)->group(function () {
         Route::get('/bbm', 'index')->name('bbm');
