@@ -305,6 +305,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
+                        <td></td>
                         <td style="text-align:right">
                             <?php if (!empty($d->totalbayar)) {
                                 echo rupiah($d->totalbayar);
@@ -348,6 +349,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
+                        <td></td>
                         <td style="text-align:right">
                             <?php if (!empty($d->totalgiro)) {
                                 echo rupiah($d->totalgiro);
@@ -365,6 +367,7 @@
                     <tr>
                         <td>{{ ucwords(strtolower($d->nama_pelanggan)) }}</td>
                         <td>{{ $d->no_fak_penj }}</td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
