@@ -459,10 +459,10 @@
                     <th>{{ desimal($totalDEP) }}</th>
                     <th>{{ desimal($totalSC) }}</th>
                     <th>{{ desimal($totalBR20) }}</th>
-                    <th>{{ desimal($totalP1000) }}</th>
                     <th>{{ desimal($totalSP8) }}</th>
                     <th>{{ desimal($totalSP) }}</th>
                     <th>{{ desimal($totalSP500) }}</th>
+                    <th>{{ desimal($totalP1000) }}</th>
                     <th>{{ desimal($totaltunai) }}</th>
                     <th>{{ desimal($totalkredit) }}</th>
                     <th>{{ rupiah($totaltitipan1 + $totaltitipan2) }}</th>
