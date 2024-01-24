@@ -1133,7 +1133,7 @@
                                         $total_overtime_libur_2 += $overtime_libur_2;
                                     @endphp
                                     <span style="color:rgb(255, 255, 255)">OTL 1 :
-                                        {{ $overtime_libur_1 }} {{ var_dump($ceklibur) }}</span>
+                                        {{ $overtime_libur_1 }} TEST {{ var_dump($ceklibur) }}</span>
                                     <br>
                                     <span style="color:rgb(255, 255, 255)">OTL 2 :
                                         {{ $overtime_libur_2 }}</span>
