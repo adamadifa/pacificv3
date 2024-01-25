@@ -230,6 +230,7 @@ class LaporanhrdController extends Controller
         //dd($sampai);
         $select_date = "";
         $field_date = "";
+
         $i = 1;
         while (strtotime($dari) <= strtotime($sampai)) {
             $rangetanggal[] = $dari;
@@ -431,6 +432,14 @@ class LaporanhrdController extends Controller
         if (request()->is('laporanhrd/gaji/cetak')) {
             if (!in_array($level, $level_show_all)) {
                 $query->whereNotIn('id_jabatan', $show_for_hrd);
+            } else {
+                if (!empty($request->manajemen)) {
+                    if ($request->manajemen == 1) {
+                        $query->WhereIn('id_jabatan', $show_for_hrd);
+                    } else if ($request->manajemen == 2) {
+                        $query->whereNotIn('id_jabatan', $show_for_hrd);
+                    }
+                }
             }
         }
         $query->where('status_aktif', 1);
@@ -453,10 +462,20 @@ class LaporanhrdController extends Controller
         if (request()->is('laporanhrd/gaji/cetak')) {
             if (!in_array($level, $level_show_all)) {
                 $query->whereNotIn('id_jabatan', $show_for_hrd);
+            } else {
+                if (!empty($request->manajemen)) {
+                    if ($request->manajemen == 1) {
+                        $query->WhereIn('id_jabatan', $show_for_hrd);
+                    } else if ($request->manajemen == 2) {
+                        $query->whereNotIn('id_jabatan', $show_for_hrd);
+                    }
+                }
             }
         }
 
-
+        if (!empty($request->manajemen && $request->manajemen == 1)) {
+            $query->orderBy('id_jabatan');
+        }
         $query->orderByRaw('nik,nama_karyawan');
 
         $presensi = $query->get();
