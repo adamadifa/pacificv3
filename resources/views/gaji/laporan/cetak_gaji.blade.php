@@ -871,6 +871,7 @@
                                         $jmljam_lbr = hitungjamdesimal($tgl_lembur_dari, $tgl_lembur_sampai);
                                         $istirahatlbr = $ceklemburharilibur[0]['istirahat'] == 1 ? 1 : 0;
                                         $jmljam_lembur = $jmljam_lbr > 7 ? 7 : $jmljam_lbr - $istirahatlbr;
+                                        $jmljam_lembur = !empty($ceklibur) ? $jmljam_lembur * 2 : $jmljam_lembur;
                                         $kategori_lembur = $ceklemburharilibur[0]['kategori'];
                                     @endphp
                                     @if (empty($ceklibur) && empty($cekliburpenggantiminggu) && empty($cekwfhfull))

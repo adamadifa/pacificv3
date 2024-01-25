@@ -11,7 +11,6 @@
     .form-label-group {
         margin-bottom: 5px !important;
     }
-
 </style>
 
 <form method="POST" action="/pinjamannonpjp/store" id="frmPinjaman">
@@ -41,7 +40,7 @@
                 </tr>
                 <tr>
                     <th>Perusahaan</th>
-                    <td>{{ $karyawan->id_perusahaan=="MP" ? "Makmur Permata" : "CV.Pacific Tasikmalaya" }}</td>
+                    <td>{{ $karyawan->id_perusahaan == 'MP' ? 'Makmur Permata' : 'CV.Pacific Tasikmalaya' }}</td>
                 </tr>
                 <tr>
                     <th>Kantor</th>
@@ -51,18 +50,19 @@
                     <th>Masa Kerja</th>
                     <td>
                         @php
-                        $awal = date_create($karyawan->tgl_masuk);
-                        $akhir = date_create(date('Y-m-d')); // waktu sekarang
-                        $diff = date_diff( $awal, $akhir );
-                        echo $diff->y . ' tahun, '.$diff->m.' bulan, '.$diff->d.' Hari'
+                            $awal = date_create($karyawan->tgl_masuk);
+                            $akhir = date_create(date('Y-m-d')); // waktu sekarang
+                            $diff = date_diff($awal, $akhir);
+                            echo $diff->y . ' tahun, ' . $diff->m . ' bulan, ' . $diff->d . ' Hari';
                         @endphp
                     </td>
                 </tr>
                 <tr>
                     <th>Status</th>
                     <td>
-                        <input type="hidden" name="status_karyawan" id="status_karyawan" value="{{ $karyawan->status_karyawan }}">
-                        {{ $karyawan->status_karyawan=="T" ? "Karyawan Tetap" : "Karyawan Kontrak" }}
+                        <input type="hidden" name="status_karyawan" id="status_karyawan"
+                            value="{{ $karyawan->status_karyawan }}">
+                        {{ $karyawan->status_karyawan == 'T' ? 'Karyawan Tetap' : 'Karyawan Kontrak' }}
                     </td>
                 </tr>
 
@@ -74,7 +74,8 @@
                     <label for="" class="form-label">Tanggal Pinjaman</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Tanggal Pinjaman" value="" field="tgl_pinjaman" icon="feather icon-calendar" datepicker />
+                    <x-inputtext label="Tanggal Pinjaman" value="" field="tgl_pinjaman"
+                        icon="feather icon-calendar" datepicker />
                 </div>
             </div>
             <div class="row">
@@ -82,13 +83,28 @@
                     <label for="" class="form-label">Jumlah Pinjaman</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Jumlah Pinjaman" value="" field="jml_pinjaman" icon="feather icon-file" right />
+                    <x-inputtext label="Jumlah Pinjaman" value="" field="jml_pinjaman" icon="feather icon-file"
+                        right />
+                </div>
+            </div>
+            <div class="row mb-1">
+                <div class="col-12">
+                    <div class="vs-checkbox-con vs-checkbox-primary">
+                        <input type="checkbox" class="manajemen" name="voucmanajemenher" value="1">
+                        <span class="vs-checkbox">
+                            <span class="vs-checkbox--check">
+                                <i class="vs-icon feather icon-check"></i>
+                            </span>
+                        </span>
+                        <span class="">Checklist Jika Hanya Bisa Dilihat Oleh Keuangan ?</span>
+                    </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
-                        <button href="#" class="btn btn-primary btn-block" id="btnSubmit"><i class="feather icon-send mr-1"></i>Submit</button>
+                        <button href="#" class="btn btn-primary btn-block" id="btnSubmit"><i
+                                class="feather icon-send mr-1"></i>Submit</button>
                     </div>
                 </div>
             </div>
@@ -98,7 +114,7 @@
 
     </div>
 </form>
-<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
+<script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
 <script>
     $(function() {
         $("#frmPinjaman").submit(function(e) {
@@ -106,20 +122,20 @@
             var tgl_pinjaman = $("#tgl_pinjaman").val();
             if (tgl_pinjaman == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Tanggal Pinjaman Tidak Boleh Kosong !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Tanggal Pinjaman Tidak Boleh Kosong !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#tgl_pinjaman").focus();
                 });
                 return false;
             } else if (jmlpinjaman == "" || jmlpinjaman == 0) {
                 swal({
-                    title: 'Oops'
-                    , text: 'Jumlah Pinjaman Tidak Boleh Kosong !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Jumlah Pinjaman Tidak Boleh Kosong !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#jml_pinjaman").focus();
                 });
