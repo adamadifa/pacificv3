@@ -1191,7 +1191,12 @@
 
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>'{{ $d->nama_jabatan == 'SECURITY' ? $d->nik_security : $d->nik }}</td>
+                        <td>
+                            <a href="/laporanhrd/gaji/{{ Crypt::encrypt($d->nik) }}/{{ $bulan }}/{{ $tahun }}/slip"
+                                target="_blank">
+                                '{{ $d->nama_jabatan == 'SECURITY' ? $d->nik_security : $d->nik }}
+                            </a>
+                        </td>
                         <td>{{ $d->nama_karyawan }}</td>
                         <td>{{ $d->no_rekening }}</td>
                         <td align="center">{{ $d->nama_group }}</td>
