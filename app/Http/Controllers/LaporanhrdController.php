@@ -290,7 +290,7 @@ class LaporanhrdController extends Controller
                 im_ruanglingkup, im_penempatan,im_kinerja,
                 gaji_pokok,
                 t_jabatan,t_masakerja,t_tanggungjawab,t_makan,t_istri,t_skill,
-                cicilan_pjp,jml_kasbon,jml_nonpjp,
+                cicilan_pjp,jml_kasbon,jml_nonpjp,jml_pengurang,
                 bpjs_kesehatan.perusahaan,bpjs_kesehatan.pekerja,bpjs_kesehatan.keluarga,iuran_kes,
                 bpjs_tenagakerja.k_jht,bpjs_tenagakerja.k_jp,iuran_tk
             ");
@@ -390,6 +390,19 @@ class LaporanhrdController extends Controller
                 $join->on('master_karyawan.nik', '=', 'kasbon.nik');
             }
         );
+
+        $query->leftJoin(
+            DB::raw("(
+                   SELECT nik, SUM(jumlah) as jml_pengurang
+                   FROM pengurang_gaji
+                   WHERE kode_gaji = '$kode_potongan'
+                   GROUP BY nik
+                ) penguranggaji"),
+            function ($join) {
+                $join->on('master_karyawan.nik', '=', 'penguranggaji.nik');
+            }
+        );
+
 
         $query->leftJoin(
             DB::raw("(

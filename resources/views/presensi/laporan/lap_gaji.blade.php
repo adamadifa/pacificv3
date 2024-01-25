@@ -104,6 +104,21 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        @if (Auth::user()->level == 'manager accounting' || Auth::user()->level == 'admin')
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <select name="jenis_laporan_gaji" id="jenis_laporan_gaji"
+                                                            class="form-control">
+                                                            <option value="">Semua</option>
+                                                            <option value="1">Manajemen</option>
+                                                            <option value="2">Non Manajemen</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="form-group">
