@@ -90,7 +90,7 @@
             <div class="row mb-1">
                 <div class="col-12">
                     <div class="vs-checkbox-con vs-checkbox-primary">
-                        <input type="checkbox" class="manajemen" name="voucmanajemenher" value="1">
+                        <input type="checkbox" class="manajemen" name="manajemen" value="1">
                         <span class="vs-checkbox">
                             <span class="vs-checkbox--check">
                                 <i class="vs-icon feather icon-check"></i>

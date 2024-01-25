@@ -20,6 +20,7 @@ class PinjamannonpjpController extends Controller
         $query->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id');
         $query->leftjoin('cabang', 'master_karyawan.id_kantor', '=', 'cabang.kode_cabang');
         $query->where('nik', $nik);
+
         $karyawan = $query->first();
 
         return view('pinjamannonpjp.create', compact('karyawan'));
@@ -35,6 +36,7 @@ class PinjamannonpjpController extends Controller
         $nik = $request->nik;
         $tgl = explode("-", $tanggal);
         $tahun = substr($tgl[0], 2, 2);
+        $manajemen = $request->manajemen;
         $pinjaman = DB::table("pinjaman_nonpjp")
             ->whereRaw('YEAR(tgl_pinjaman)="' . $tgl[0] . '"')
             ->orderBy("no_pinjaman_nonpjp", "desc")
@@ -49,6 +51,7 @@ class PinjamannonpjpController extends Controller
                 'nik' => $nik,
                 'tgl_pinjaman' => $tgl_pinjaman,
                 'jumlah_pinjaman' => $jumlah_pinjaman,
+                'manajemen' => $manajemen,
                 'id_user' => Auth::user()->id
             ]);
 
