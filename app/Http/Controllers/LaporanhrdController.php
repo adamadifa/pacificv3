@@ -511,6 +511,8 @@ class LaporanhrdController extends Controller
                 return view('gaji.laporan.cetak_gaji_rekap', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'datalemburharilibur', 'sampai'));
             } else if ($jenislaporan_gaji == 3) {
                 return view('gaji.laporan.cetak_slip', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'datalemburharilibur', 'sampai'));
+            } else if ($jenislaporan_gaji == 4) {
+                return view('gaji.laporan.cetak_rekening', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'datalemburharilibur', 'sampai'));
             } else {
                 return view('gaji.laporan.cetak_gaji', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'datalemburharilibur', 'sampai'));
             }

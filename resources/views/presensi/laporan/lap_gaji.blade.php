@@ -125,6 +125,7 @@
                                                         class="form-control">
                                                         <option value="1">Detail</option>
                                                         <option value="2">Rekap</option>
+                                                        <option value="4">Rekening</option>
 
                                                     </select>
                                                 </div>
