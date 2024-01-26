@@ -1697,10 +1697,7 @@
                         $total_all_bersih_mp += $d->id_perusahaan == 'MP' ? $jmlbersih : 0;
                         $total_all_bersih_pcf += $d->id_perusahaan == 'PCF' ? $jmlbersih : 0;
                     @endphp
-                    <tr>
-                        <td>{{ $d->nik }}</td>
-                        <td>{{ $d->nama_karyawan }}</td>
-                    </tr>
+
                 @endforeach
                 <tr>
                     <td>ADMINISTRASI</td>
