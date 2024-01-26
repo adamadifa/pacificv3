@@ -1280,10 +1280,7 @@
 
 
 
-            <table class="datatable3">
 
-
-            </table>
         @endforeach
     </div>
 </body>
