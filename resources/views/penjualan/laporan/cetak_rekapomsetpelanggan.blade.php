@@ -94,9 +94,7 @@
             <tr>
                 <th colspan="4" align="right">TOTAL</th>
                 <th style="text-align:right"><?php echo rupiah($totalomset); ?></th>
-                <th style="text-align:right"><?php echo rupiah($totalratarataomset); ?></th>
-                <th style="text-align:right"><?php echo rupiah($totalratarataaida); ?></th>
-                <th style="text-align:right"><?php echo rupiah($totalratarataswan); ?></th>
+
 
             </tr>
         </tbody>
