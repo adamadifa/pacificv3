@@ -5986,9 +5986,10 @@ class PenjualanController extends Controller
         SUM(bruto) as bruto,
         SUM(brutoswan) as brutoswan,
         SUM(brutoaida) as brutoaida,
+
         SUM(brutoswan) - SUM(potswan + potisswan  + potstick + potisstick ) -SUM(penyswan+penystick) - SUM(potsp) as netswan,
         SUM(brutoaida) - SUM(potaida + potisaida) - SUM(penyaida)  as netaida,
-        (SUM(brutoswan) - SUM(potswan + potisswan  + potstick + potisstick ) -SUM(penyswan+penystick) - SUM(potsp)) + (SUM(brutoaida) - SUM(potaida + potisaida) - SUM(penyaida) ) as netpenjualan");
+        (SUM(brutoswan) - SUM(potswan + potisswan  + potstick + potisstick ) -SUM(penyswan+penystick) - SUM(potsp)) + (SUM(brutoaida) - SUM(potaida + potisaida) - SUM(penyaida) ) + SUM(ppn) as netpenjualan");
         $query->join('pelanggan', 'penjualan.kode_pelanggan', '=', 'pelanggan.kode_pelanggan');
         $query->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan');
         $query->leftJoin(

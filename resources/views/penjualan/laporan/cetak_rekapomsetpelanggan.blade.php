@@ -63,14 +63,10 @@
                 <th rowspan="2">NAMA PELANGGAN</th>
                 <th rowspan="2">PASAR</th>
                 <th rowspan="2">TOTAL OMSET</th>
-                <th rowspan="2">RATA RATA OMSET</th>
-                <th colspan="2">RATA RATA OMSET KATEGORI PRODUK</th>
+
                 <th rowspan="2">SALESMAN</th>
             </tr>
-            <tr bgcolor="#024a75" style="color:white; font-size:12;">
-                <th>AIDA</th>
-                <th>SWAN</th>
-            </tr>
+
         </thead>
         <tbody style="font-size:14px">
             <?php
@@ -91,9 +87,7 @@
 
                 <td><?php echo $r->pasar; ?></td>
                 <td align="right"><?php echo rupiah($r->netpenjualan); ?></td>
-                <td align="right"><?php echo rupiah($r->netpenjualan / $periode); ?></td>
-                <td align="right"><?php echo rupiah($r->netaida / $periode); ?></td>
-                <td align="right"><?php echo rupiah($r->netswan / $periode); ?></td>
+
                 <td>{{ $r->nama_karyawan }}</td>
             </tr>
             <?php $no++;} ?>
