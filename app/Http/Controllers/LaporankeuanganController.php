@@ -648,6 +648,9 @@ class LaporankeuanganController extends Controller
             $query->where('master_karyawan.kode_dept', $request->kode_dept);
         }
 
+        if (Auth::user()->level != "manager accounting" && Auth::user()->level != 'admin') {
+            $query->whereNull('manajemen');
+        }
         $pinjaman = $query->get();
 
         $departemen = DB::table('hrd_departemen')->where('kode_dept', $kode_dept)->first();
@@ -1114,6 +1117,10 @@ class LaporankeuanganController extends Controller
 
         if (!empty($request->kode_dept)) {
             $query->where('master_karyawan.kode_dept', $request->kode_dept);
+        }
+
+        if (Auth::user()->level != "manager accounting" && Auth::user()->level != 'admin') {
+            $query->whereNull('manajemen');
         }
 
         $query->groupByRaw('pinjaman_nonpjp.nik,nama_karyawan');

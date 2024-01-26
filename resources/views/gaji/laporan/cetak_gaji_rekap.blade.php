@@ -115,6 +115,7 @@
                     <th rowspan="2" style="background-color: black;">CICILAN<br>PJP</th>
                     <th rowspan="2" style="background-color: black;">KASBON</th>
                     <th rowspan="2" style="background-color: black;">SPIP</th>
+                    <th rowspan="2" style="background-color: black;">PENGURANG</th>
                     <th rowspan="2" style="background-color: orange;">JUMLAH<br>POTONGAN</th>
                     <th rowspan="2" style="background-color: orange;">JUMLAH<br>BERSIH</th>
 
@@ -462,6 +463,14 @@
                     $total_all_spip_tktl = 0;
                     $total_all_spip_mp = 0;
                     $total_all_spip_pcf = 0;
+
+                    $total_all_pengurang = 0;
+                    $total_all_pengurang_administrasi = 0;
+                    $total_all_pengurang_penjualan = 0;
+                    $total_all_pengurang_tkl = 0;
+                    $total_all_pengurang_tktl = 0;
+                    $total_all_pengurang_mp = 0;
+                    $total_all_pengurang_pcf = 0;
 
                     $total_all_potongan = 0;
                     $total_all_potongan_administrasi = 0;
@@ -1362,7 +1371,7 @@
                         @endphp
                     @endif
                     @php
-                        $potongan = ROUND($bpjskesehatan + $bpjstenagakerja + $totaldenda + $d->cicilan_pjp + $d->jml_kasbon + $d->jml_nonpjp + $spip, 0); // Potongan Upah
+                        $potongan = ROUND($bpjskesehatan + $bpjstenagakerja + $totaldenda + $d->cicilan_pjp + $d->jml_kasbon + $d->jml_nonpjp + $d->jml_pengurang + $spip, 0); // Potongan Upah
                         $jmlbersih = $bruto - $potongan; // Jumlah Upah Bersih
 
                         //TOTAL
@@ -1656,6 +1665,14 @@
                         $total_all_kasbon_mp += $d->id_perusahaan == 'MP' ? $d->jml_kasbon : 0;
                         $total_all_kasbon_pcf += $d->id_perusahaan == 'PCF' ? $d->jml_kasbon : 0;
 
+                        $total_all_pengurang += $d->jml_pengurang;
+                        $total_all_pengurang_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->jml_pengurang : 0;
+                        $total_all_pengurang_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->jml_pengurang : 0;
+                        $total_all_pengurang_tkl += $d->klasifikasi == 'TKL' ? $d->jml_pengurang : 0;
+                        $total_all_pengurang_tktl += $d->klasifikasi == 'TKTL' ? $d->jml_pengurang : 0;
+                        $total_all_pengurang_mp += $d->id_perusahaan == 'MP' ? $d->jml_pengurang : 0;
+                        $total_all_pengurang_pcf += $d->id_perusahaan == 'PCF' ? $d->jml_pengurang : 0;
+
                         $total_all_spip += $spip;
                         $total_all_spip_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $spip : 0;
                         $total_all_spip_penjualan += $d->klasifikasi == 'PENJUALAN' ? $spip : 0;
@@ -1721,6 +1738,7 @@
                     <td style="text-align:right">{{ rupiah($total_all_pjp_administrasi) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_kasbon_administrasi) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_spip_administrasi) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_all_pengurang_administrasi) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_potongan_administrasi) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_bersih_administrasi) }}</td>
                 </tr>
@@ -1764,6 +1782,7 @@
                     <td style="text-align:right">{{ rupiah($total_all_pjp_penjualan) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_kasbon_penjualan) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_spip_penjualan) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_all_pengurang_penjualan) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_potongan_penjualan) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_bersih_penjualan) }}</td>
                 </tr>
@@ -1807,6 +1826,7 @@
                     <td style="text-align:right">{{ rupiah($total_all_pjp_tkl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_kasbon_tkl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_spip_tkl) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_all_pengurang_tkl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_potongan_tkl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_bersih_tkl) }}</td>
                 </tr>
@@ -1850,6 +1870,7 @@
                     <td style="text-align:right">{{ rupiah($total_all_pjp_tktl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_kasbon_tktl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_spip_tktl) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_all_pengurang_tktl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_potongan_tktl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_bersih_tktl) }}</td>
                 </tr>
@@ -1930,6 +1951,8 @@
 
                         $total_all_spip_rekap = $total_all_spip_administrasi + $total_all_spip_penjualan + $total_all_spip_tkl + $total_all_spip_tktl;
 
+                        $total_all_pengurang_rekap = $total_all_pengurang_administrasi + $total_all_pengurang_penjualan + $total_all_pengurang_tkl + $total_all_pengurang_tktl;
+
                         $total_all_potongan_rekap = $total_all_potongan_administrasi + $total_all_potongan_penjualan + $total_all_potongan_tkl + $total_all_potongan_tktl;
 
                         $total_all_bersih_rekap = $total_all_bersih_administrasi + $total_all_bersih_penjualan + $total_all_bersih_tkl + $total_all_bersih_tktl;
@@ -1972,6 +1995,7 @@
                     <th style="text-align: right">{{ rupiah($total_all_pjp_rekap) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_kasbon_rekap) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_spip_rekap) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_pengurang_rekap) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_potongan_rekap) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_bersih_rekap) }}</th>
                 </tr>
@@ -2004,6 +2028,7 @@
                     <th rowspan="2" style="background-color: black;">CICILAN<br>PJP</th>
                     <th rowspan="2" style="background-color: black;">KASBON</th>
                     <th rowspan="2" style="background-color: black;">SPIP</th>
+                    <th rowspan="2" style="background-color: black;">PENGURANG</th>
                     <th rowspan="2" style="background-color: orange;">JUMLAH<br>POTONGAN</th>
                     <th rowspan="2" style="background-color: orange;">JUMLAH<br>BERSIH</th>
 
@@ -2078,6 +2103,7 @@
                     <td style="text-align:right">{{ rupiah($total_all_pjp_mp) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_kasbon_mp) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_spip_mp) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_all_pengurang_mp) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_potongan_mp) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_bersih_mp) }}</td>
                 </tr>
@@ -2121,6 +2147,7 @@
                     <td style="text-align:right">{{ rupiah($total_all_pjp_pcf) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_kasbon_pcf) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_spip_pcf) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_all_pengurang_pcf) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_potongan_pcf) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_bersih_pcf) }}</td>
                 </tr>
@@ -2202,6 +2229,8 @@
 
                         $total_all_spip_perusahaan = $total_all_spip_mp + $total_all_spip_pcf;
 
+                        $total_all_pengurang_perusahaan = $total_all_pengurang_mp + $total_all_pengurang_pcf;
+
                         $total_all_potongan_perusahaan = $total_all_potongan_mp + $total_all_potongan_pcf;
 
                         $total_all_bersih_perusahaan = $total_all_bersih_mp + $total_all_bersih_pcf;
@@ -2244,7 +2273,9 @@
                     <th style="text-align: right">{{ rupiah($total_all_denda_perusahaan) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_pjp_perusahaan) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_kasbon_perusahaan) }}</th>
+
                     <th style="text-align: right">{{ rupiah($total_all_spip_perusahaan) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_pengurang_perusahaan) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_potongan_perusahaan) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_bersih_perusahaan) }}</th>
 

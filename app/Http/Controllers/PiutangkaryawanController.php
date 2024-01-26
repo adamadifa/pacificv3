@@ -63,6 +63,10 @@ class PiutangkaryawanController extends Controller
             $query->where('nama_karyawan', 'like', '%' . $request->nama_karyawan . '%');
         }
 
+        if (Auth::user()->level != "manager accounting" && Auth::user()->level != 'admin') {
+            $query->whereNull('manajemen');
+        }
+
         $query->orderBy('no_pinjaman_nonpjp', 'desc');
         $pinjaman = $query->paginate(15);
         $pinjaman->appends($request->all());

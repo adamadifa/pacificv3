@@ -121,6 +121,7 @@
                     <th rowspan="2" style="background-color: black;">KASBON</th>
                     <th rowspan="2" style="background-color: black;">PINJ.<br> PERUSAHAAN</th>
                     <th rowspan="2" style="background-color: black;">SPIP</th>
+                    <th rowspan="2" style="background-color: black;">PENGURANG</th>
                     <th rowspan="2" style="background-color: orange;">JUMLAH<br>POTONGAN</th>
                     <th rowspan="2" style="background-color: orange;">JUMLAH<br>BERSIH</th>
 
@@ -229,6 +230,7 @@
                     $total_all_kasbon = 0; // Total ALl Kasbon
                     $total_all_nonpjp = 0; // Total All Non PJP
                     $total_all_spip = 0; // Total ALl SPIP
+                    $total_all_pengurang = 0; // Total ALl Pengurang
 
                     $total_all_potongan = 0; // Total All Potongan
 
@@ -1124,7 +1126,7 @@
                         @endphp
                     @endif
                     @php
-                        $potongan = ROUND($bpjskesehatan + $bpjstenagakerja + $totaldenda + $d->cicilan_pjp + $d->jml_kasbon + $d->jml_nonpjp + $spip, 0); // Potongan Upah
+                        $potongan = ROUND($bpjskesehatan + $bpjstenagakerja + $totaldenda + $d->cicilan_pjp + $d->jml_kasbon + $d->jml_nonpjp + $d->jml_pengurang + $spip, 0); // Potongan Upah
                         $jmlbersih = $bruto - $potongan; // Jumlah Upah Bersih
 
                         //Total Gaji Pokok
@@ -1178,6 +1180,7 @@
 
                         $total_all_pjp += $d->cicilan_pjp;
                         $total_all_kasbon += $d->jml_kasbon;
+                        $total_all_pengurang += $d->jml_pengurang;
                         $total_all_nonpjp += $d->jml_nonpjp;
                         $total_all_spip += $spip;
 
@@ -1188,7 +1191,12 @@
 
                     <tr>
                         <td>{{ $loop->iteration }}</td>
-                        <td>'{{ $d->nama_jabatan == 'SECURITY' ? $d->nik_security : $d->nik }}</td>
+                        <td>
+                            <a href="/laporanhrd/gaji/{{ Crypt::encrypt($d->nik) }}/{{ $bulan }}/{{ $tahun }}/slip"
+                                target="_blank">
+                                '{{ $d->nama_jabatan == 'SECURITY' ? $d->nik_security : $d->nik }}
+                            </a>
+                        </td>
                         <td>{{ $d->nama_karyawan }}</td>
                         <td>{{ $d->no_rekening }}</td>
                         <td align="center">{{ $d->nama_group }}</td>
@@ -1301,6 +1309,7 @@
                             {{ !empty($spip) ? rupiah($spip) : '' }}
 
                         </td>
+                        <td align="right">{{ !empty($d->jml_pengurang) ? rupiah($d->jml_pengurang) : '' }}</td>
                         <td align="right">
                             {{ !empty($potongan) ? desimal($potongan) : '' }}
                         </td>
@@ -1363,6 +1372,7 @@
                     <th style="text-align: right">{{ rupiah($total_all_kasbon) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_nonpjp) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_spip) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_pengurang) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_potongan) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_bersih) }}</th>
                 </tr>

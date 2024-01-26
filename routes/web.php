@@ -1833,6 +1833,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/cancelcheckdenda', [LaporanhrdController::class, 'cancelcheckdenda']);
     Route::get('/laporanhrd/gaji', [LaporanhrdController::class, 'gaji']);
     Route::post('/laporanhrd/gaji/cetak', [LaporanhrdController::class, 'cetakpresensi']);
+    Route::get('/laporanhrd/gaji/{nik}/{bulan}/{tahun}/slip', [LaporanhrdController::class, 'slip']);
 
     //Lembur
 

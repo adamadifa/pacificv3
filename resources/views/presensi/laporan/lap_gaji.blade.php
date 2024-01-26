@@ -104,6 +104,20 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        @if (Auth::user()->level == 'manager accounting' || Auth::user()->level == 'admin')
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="form-group">
+                                                        <select name="manajemen" id="manajemen" class="form-control">
+                                                            <option value="">Semua</option>
+                                                            <option value="1">Manajemen</option>
+                                                            <option value="2">Non Manajemen</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endif
+
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="form-group">
@@ -111,7 +125,7 @@
                                                         class="form-control">
                                                         <option value="1">Detail</option>
                                                         <option value="2">Rekap</option>
-                                                        <option value="3">Slip</option>
+
                                                     </select>
                                                 </div>
                                             </div>
