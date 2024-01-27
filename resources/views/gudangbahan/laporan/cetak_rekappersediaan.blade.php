@@ -260,7 +260,8 @@
         if($qtysaldoakhir == 0){
           $hargasaldoakhir     = 0;
         }else{
-          $hargasaldoakhir     = ($jumlahsaldoawal + $jumlahpembelian + $jumlahlainnya + $jumlahpengganti) / ($qtysaldoawal + $qtypembelian + $qtypengganti + $qtylainnya);
+          $qty_awal = $qtysaldoawal + $qtypembelian + $qtypengganti + $qtylainnya;
+          $hargasaldoakhir     = !empty($qty_awal) ? ($jumlahsaldoawal + $jumlahpembelian + $jumlahlainnya + $jumlahpengganti) / ($qtysaldoawal + $qtypembelian + $qtypengganti + $qtylainnya) : 0;
         }
         $jumlahsaldoakhir      = $qtysaldoakhir * $hargasaldoakhir;
 
@@ -411,7 +412,8 @@
         if($qtysaldoakhir == 0){
           $hargasaldoakhir     = 0;
         }else{
-          $hargasaldoakhir     = ($jumlahsaldoawal + $jumlahpembelian + $jumlahlainnya + $jumlahpengganti) / ($qtysaldoawal + $qtypembelian + $qtypengganti + $qtylainnya);
+         $qty_awal = $qtysaldoawal + $qtypembelian + $qtypengganti + $qtylainnya;
+          $hargasaldoakhir     =  !empty($qty_awal) ? ($jumlahsaldoawal + $jumlahpembelian + $jumlahlainnya + $jumlahpengganti) / ($qtysaldoawal + $qtypembelian + $qtypengganti + $qtylainnya) : 0;
         }
         $jumlahsaldoakhir      = $qtysaldoakhir * $hargasaldoakhir;
 
@@ -568,7 +570,8 @@
         if($qtysaldoakhir == 0){
           $hargasaldoakhir     = 0;
         }else{
-          $hargasaldoakhir     = ($jumlahsaldoawal + $jumlahpembelian + $jumlahlainnya + $jumlahpengganti) / ($qtysaldoawal + $qtypembelian + $qtypengganti + $qtylainnya);
+          $qty_awal = $qtysaldoawal + $qtypembelian + $qtypengganti + $qtylainnya;
+          $hargasaldoakhir     = !empty($qty_awal) ? ($jumlahsaldoawal + $jumlahpembelian + $jumlahlainnya + $jumlahpengganti) / ($qtysaldoawal + $qtypembelian + $qtypengganti + $qtylainnya) : 0;
         }
         $jumlahsaldoakhir      = $qtysaldoakhir * $hargasaldoakhir;
 
