@@ -1697,7 +1697,98 @@
                         $total_all_bersih_mp += $d->id_perusahaan == 'MP' ? $jmlbersih : 0;
                         $total_all_bersih_pcf += $d->id_perusahaan == 'PCF' ? $jmlbersih : 0;
                     @endphp
+                    <tr>
+                        <td>
+                            <a href="/laporanhrd/gaji/{{ Crypt::encrypt($d->nik) }}/{{ $bulan }}/{{ $tahun }}/slip"
+                                target="_blank">
+                                '{{ $d->nama_jabatan == 'SECURITY' ? $d->nik_security : $d->nik }}
+                            </a>
+                        </td>
+                        <td align="right">{{ !empty($d->gaji_pokok) ? rupiah($d->gaji_pokok) : '' }}</td>
+                        <td align="right">{{ !empty($d->t_jabatan) ? rupiah($d->t_jabatan) : '' }}</td>
+                        <td align="right">{{ !empty($d->t_masakerja) ? rupiah($d->t_masakerja) : '' }}</td>
+                        <td align="right">{{ !empty($d->t_tanggungjawab) ? rupiah($d->t_tanggungjawab) : '' }}</td>
+                        <td align="right">{{ !empty($d->t_makan) ? rupiah($d->t_makan) : '' }}</td>
+                        <td align="right">{{ !empty($d->t_istri) ? rupiah($d->t_istri) : '' }}</td>
+                        <td align="right">{{ !empty($d->t_skill) ? rupiah($d->t_skill) : '' }}</td>
+                        <td align="right">{{ !empty($d->iu_masakerja) ? rupiah($d->iu_masakerja) : '' }}</td>
+                        <td align="right">{{ !empty($d->iu_lembur) ? rupiah($d->iu_lembur) : '' }}</td>
+                        <td align="right">{{ !empty($d->iu_penempatan) ? rupiah($d->iu_penempatan) : '' }}</td>
+                        <td align="right">{{ !empty($d->iu_kpi) ? rupiah($d->iu_kpi) : '' }}</td>
+                        <td align="right">{{ !empty($d->im_ruanglingkup) ? rupiah($d->im_ruanglingkup) : '' }}</td>
+                        <td align="right">{{ !empty($d->im_penempatan) ? rupiah($d->im_penempatan) : '' }}</td>
+                        <td align="right">{{ !empty($d->im_kinerja) ? rupiah($d->im_kinerja) : '' }}</td>
+                        <td align="right">
+                            {{ !empty($upah) ? rupiah($upah) : '' }}
+                        </td>
+                        <td align="right">
+                            {{ !empty($jmlinsentif) ? rupiah($jmlinsentif) : '' }}
+                        </td>
+                        <td style="text-align:center; font-weight:bold">
+                            {{ !empty($totaljamkerja) ? desimal($totaljamkerja) : '' }}
+                        </td>
+                        <td align="right">
+                            {{ !empty($upah_perjam) ? desimal($upah_perjam) : '' }}
+                        </td>
+                        <td style="text-align: center;">
+                            {{ !empty($total_overtime_1) ? desimal($total_overtime_1) : '' }}</td>
 
+                        <td align=" right">
+                            {{ !empty($upah_ot_1) ? rupiah($upah_ot_1) : '' }}
+                            <br>
+
+                        </td>
+                        <td style="text-align: center;">
+                            {{ !empty($total_overtime_2) ? desimal($total_overtime_2) : '' }}</td>
+                        <td align="right">
+                            {{ !empty($upah_ot_2) ? rupiah($upah_ot_2) : '' }}
+                        </td>
+                        <td style="text-align: center;">
+
+                            {{ !empty($total_overtime_libur_1) ? desimal($total_overtime_libur_1) : '' }}
+                        </td>
+                        <td align="right">
+                            {{ !empty($upah_otl_1) ? rupiah($upah_otl_1) : '' }}
+                        </td>
+
+
+                        <td align="right">
+                            {{ !empty($total_upah_overtime) ? rupiah($total_upah_overtime) : '' }}
+                        </td>
+                        <td align="center">{{ !empty($totalhariall_shift_2) ? $totalhariall_shift_2 : '' }}</td>
+                        <td align="right">{{ !empty($totalpremiall_shift_2) ? rupiah($totalpremiall_shift_2) : '' }}
+                        </td>
+                        <td align="center">{{ !empty($totalhariall_shift_3) ? $totalhariall_shift_3 : '' }}</td>
+                        <td align="right">{{ !empty($totalpremiall_shift_3) ? rupiah($totalpremiall_shift_3) : '' }}
+                        </td>
+                        <td align="right">
+                            {{ !empty($bruto) ? rupiah($bruto) : '' }}
+                        </td>
+                        <td align="center">{{ !empty($totalpotonganjam) ? desimal($totalpotonganjam) : '' }}</td>
+                        <td align="right">
+                            {{ !empty($bpjskesehatan) ? rupiah($bpjskesehatan) : '' }}
+                        </td>
+                        <td></td>
+                        <td align="right">
+                            {{ !empty($bpjstenagakerja) ? rupiah($bpjstenagakerja) : '' }}
+                        </td>
+                        <td align="right">{{ !empty($totaldenda) ? rupiah($totaldenda) : '' }}</td>
+
+                        <td align="right">{{ !empty($d->cicilan_pjp) ? rupiah($d->cicilan_pjp) : '' }}</td>
+                        <td align="right">{{ !empty($d->jml_kasbon) ? rupiah($d->jml_kasbon) : '' }}</td>
+                        {{-- <td align="right">{{ !empty($d->jml_nonpjp) ? rupiah($d->jml_nonpjp) : '' }}</td> --}}
+                        <td align="right">
+                            {{ !empty($spip) ? rupiah($spip) : '' }}
+
+                        </td>
+                        <td align="right">{{ !empty($d->jml_pengurang) ? rupiah($d->jml_pengurang) : '' }}</td>
+                        <td align="right">
+                            {{ !empty($potongan) ? desimal($potongan) : '' }}
+                        </td>
+                        <td align="right">
+                            {{ !empty($jmlbersih) ? rupiah($jmlbersih) : '' }}
+                        </td>
+                    </tr>
                 @endforeach
                 <tr>
                     <td>ADMINISTRASI</td>

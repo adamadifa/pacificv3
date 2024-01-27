@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Rekap Persediaan Barang Gudang Bahan {{ date("d-m-y") }}</title>
+    <title>Rekap Persediaan Barang Gudang Bahan {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -35,18 +36,18 @@
         tr:nth-child(even) {
             background-color: #d6d6d6c2;
         }
-
     </style>
 
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
         REKAP PERSEDIAAN GUDANG BAHAN<br>
-        BULAN {{$namabulan[$bulan]}} TAHUN {{$tahun}}
+        BULAN {{ $namabulan[$bulan] }} TAHUN {{ $tahun }}
         <br>
         @if ($kategori != null)
-        {{ $kategori->kategori }}
+            {{ $kategori->kategori }}
         @endif
     </b>
     <br>
@@ -210,7 +211,8 @@
         if($qtyproduksi == 0){
           $hargaproduksi       = 0;
         }else{
-          $hargaproduksi     = ($jumlahsaldoawal + $jumlahpembelian + $jumlahlainnya + $jumlahpengganti) / ($qtysaldoawal + $qtypembelian + $qtypengganti + $qtylainnya);
+         $qty_awal = $qtysaldoawal + $qtypembelian + $qtypengganti + $qtylainnya;
+          $hargaproduksi     = !empty($qty_awal) ?  ($jumlahsaldoawal + $jumlahpembelian + $jumlahlainnya + $jumlahpengganti) / ($qtysaldoawal + $qtypembelian + $qtypengganti + $qtylainnya) : 0;
         }
         $jumlahproduksi      = $qtyproduksi * $hargaproduksi;
 
@@ -360,7 +362,8 @@
         if($qtyproduksi == 0){
           $hargaproduksi       = 0;
         }else{
-          $hargaproduksi     = ($jumlahsaldoawal + $jumlahpembelian + $jumlahlainnya + $jumlahpengganti) / ($qtysaldoawal + $qtypembelian + $qtypengganti + $qtylainnya);
+            $qty_awal = $qtysaldoawal + $qtypembelian + $qtypengganti + $qtylainnya;
+          $hargaproduksi     = !empty($qty_awal)  ? ($jumlahsaldoawal + $jumlahpembelian + $jumlahlainnya + $jumlahpengganti) / ($qtysaldoawal + $qtypembelian + $qtypengganti + $qtylainnya) : 0;
         }
         $jumlahproduksi      = $qtyproduksi * $hargaproduksi;
 
@@ -516,7 +519,8 @@
         if($qtyproduksi == 0){
           $hargaproduksi       = 0;
         }else{
-          $hargaproduksi     = ($jumlahsaldoawal + $jumlahpembelian + $jumlahlainnya + $jumlahpengganti) / ($qtysaldoawal + $qtypembelian + $qtypengganti + $qtylainnya);
+            $qty_awal = $qtysaldoawal + $qtypembelian + $qtypengganti + $qtylainnya;
+          $hargaproduksi     = !empty($qty_awal) ? ($jumlahsaldoawal + $jumlahpembelian + $jumlahlainnya + $jumlahpengganti) / ($qtysaldoawal + $qtypembelian + $qtypengganti + $qtylainnya) : 0;
         }
         $jumlahproduksi      = $qtyproduksi * $hargaproduksi;
 
@@ -634,253 +638,330 @@
                 <td><?php echo $d->kode_barang; ?></td>
                 <td><?php echo $d->nama_barang; ?></td>
                 <td><?php echo $d->satuan; ?></td>
-                <td align="right"><?php if($qtysaldoawal != 0){ echo desimal($qtysaldoawal); } ?></td>
-                <td align="right"><?php if($qtysaldoawal != 0){ echo desimal($hargasaldoawal); } ?></td>
-                <td align="right"><?php if($qtysaldoawal != 0){ echo desimal($jumlahsaldoawal); } ?></td>
-                <td align="right"><?php if($qtypembelian != 0){ echo desimal($qtypembelian); } ?></td>
-                <td align="right"><?php if($qtypembelian != 0){ echo desimal($hargapembelian); } ?></td>
-                <td align="right"><?php if($qtypembelian != 0){ echo desimal($jumlahpembelian); } ?></td>
-                <td align="right"><?php if($qtylainnya != 0){ echo desimal($qtylainnya); } ?></td>
-                <td align="right"><?php if($qtylainnya != 0){ echo desimal($hargalainnya); } ?></td>
-                <td align="right"><?php if($qtylainnya != 0){ echo desimal($jumlahlainnya); } ?></td>
-                <td align="right"><?php if($qtypengganti != 0){ echo desimal($qtypengganti); } ?></td>
-                <td align="right"><?php if($qtypengganti != 0){ echo desimal($hargapengganti); } ?></td>
-                <td align="right"><?php if($qtypengganti != 0){ echo desimal($jumlahpengganti); } ?></td>
-                <td align="right"><?php if($qtyproduksi != 0){ echo desimal($qtyproduksi); } ?></td>
-                <td align="right"><?php if($qtyproduksi != 0){ echo desimal($hargaproduksi); } ?></td>
-                <td align="right"><?php if($qtyproduksi != 0){ echo desimal($jumlahproduksi); } ?></td>
-                <td align="right"><?php if($qtyseasoning != 0){ echo desimal($qtyseasoning); } ?></td>
-                <td align="right"><?php if($qtyseasoning != 0){ echo desimal($hargaseasoning); } ?></td>
-                <td align="right"><?php if($qtyseasoning != 0){ echo desimal($jumlahseasoning); } ?></td>
-                <td align="right"><?php if($qtypdqc != 0){ echo desimal($qtypdqc); } ?></td>
-                <td align="right"><?php if($qtypdqc != 0){ echo desimal($hargapdqc); } ?></td>
-                <td align="right"><?php if($qtypdqc != 0){ echo desimal($jumlahpdqc); } ?></td>
-                <td align="right"><?php if($qtysusut != 0){ echo desimal($qtysusut); } ?></td>
-                <td align="right"><?php if($qtysusut != 0){ echo desimal($hargasusut); } ?></td>
-                <td align="right"><?php if($qtysusut != 0){ echo desimal($jumlahsusut); } ?></td>
-                <td align="right"><?php if($qtycabang != 0){ echo desimal($qtycabang); } ?></td>
-                <td align="right"><?php if($qtycabang != 0){ echo desimal($hargacabang); } ?></td>
-                <td align="right"><?php if($qtycabang != 0){ echo desimal($jumlahcabang); } ?></td>
-                <td align="right"><?php if($qtylain != 0){ echo desimal($qtylain); } ?></td>
-                <td align="right"><?php if($qtylain != 0){ echo desimal($hargalain); } ?></td>
-                <td align="right"><?php if($qtylain != 0){ echo desimal($jumlahlain); } ?></td>
-                <td align="right"><?php if($qtysaldoakhir != 0){ echo desimal($qtysaldoakhir); } ?></td>
-                <td align="right"><?php if($qtysaldoakhir != 0){ echo desimal($hargasaldoakhir); } ?></td>
-                <td align="right"><?php if($qtysaldoakhir != 0){ echo desimal($jumlahsaldoakhir); } ?></td>
-                <td align="right"><?php if($qtyopname != 0){ echo desimal($qtyopname); } ?></td>
-                <td align="right"><?php if($qtyopname != 0){ echo desimal($hargaopname); } ?></td>
-                <td align="right"><?php if($qtyopname != 0){ echo desimal($jumlahopname); } ?></td>
-                <td align="right"><?php if($qtyopname-$qtysaldoakhir != 0){ echo desimal($qtyopname-$qtysaldoakhir); } ?></td>
-                <td align="right"><?php if($jumlahopname-$jumlahsaldoakhir != 0){ echo desimal($jumlahopname-$jumlahsaldoakhir); } ?></td>
+                <td align="right"><?php if ($qtysaldoawal != 0) {
+                    echo desimal($qtysaldoawal);
+                } ?></td>
+                <td align="right"><?php if ($qtysaldoawal != 0) {
+                    echo desimal($hargasaldoawal);
+                } ?></td>
+                <td align="right"><?php if ($qtysaldoawal != 0) {
+                    echo desimal($jumlahsaldoawal);
+                } ?></td>
+                <td align="right"><?php if ($qtypembelian != 0) {
+                    echo desimal($qtypembelian);
+                } ?></td>
+                <td align="right"><?php if ($qtypembelian != 0) {
+                    echo desimal($hargapembelian);
+                } ?></td>
+                <td align="right"><?php if ($qtypembelian != 0) {
+                    echo desimal($jumlahpembelian);
+                } ?></td>
+                <td align="right"><?php if ($qtylainnya != 0) {
+                    echo desimal($qtylainnya);
+                } ?></td>
+                <td align="right"><?php if ($qtylainnya != 0) {
+                    echo desimal($hargalainnya);
+                } ?></td>
+                <td align="right"><?php if ($qtylainnya != 0) {
+                    echo desimal($jumlahlainnya);
+                } ?></td>
+                <td align="right"><?php if ($qtypengganti != 0) {
+                    echo desimal($qtypengganti);
+                } ?></td>
+                <td align="right"><?php if ($qtypengganti != 0) {
+                    echo desimal($hargapengganti);
+                } ?></td>
+                <td align="right"><?php if ($qtypengganti != 0) {
+                    echo desimal($jumlahpengganti);
+                } ?></td>
+                <td align="right"><?php if ($qtyproduksi != 0) {
+                    echo desimal($qtyproduksi);
+                } ?></td>
+                <td align="right"><?php if ($qtyproduksi != 0) {
+                    echo desimal($hargaproduksi);
+                } ?></td>
+                <td align="right"><?php if ($qtyproduksi != 0) {
+                    echo desimal($jumlahproduksi);
+                } ?></td>
+                <td align="right"><?php if ($qtyseasoning != 0) {
+                    echo desimal($qtyseasoning);
+                } ?></td>
+                <td align="right"><?php if ($qtyseasoning != 0) {
+                    echo desimal($hargaseasoning);
+                } ?></td>
+                <td align="right"><?php if ($qtyseasoning != 0) {
+                    echo desimal($jumlahseasoning);
+                } ?></td>
+                <td align="right"><?php if ($qtypdqc != 0) {
+                    echo desimal($qtypdqc);
+                } ?></td>
+                <td align="right"><?php if ($qtypdqc != 0) {
+                    echo desimal($hargapdqc);
+                } ?></td>
+                <td align="right"><?php if ($qtypdqc != 0) {
+                    echo desimal($jumlahpdqc);
+                } ?></td>
+                <td align="right"><?php if ($qtysusut != 0) {
+                    echo desimal($qtysusut);
+                } ?></td>
+                <td align="right"><?php if ($qtysusut != 0) {
+                    echo desimal($hargasusut);
+                } ?></td>
+                <td align="right"><?php if ($qtysusut != 0) {
+                    echo desimal($jumlahsusut);
+                } ?></td>
+                <td align="right"><?php if ($qtycabang != 0) {
+                    echo desimal($qtycabang);
+                } ?></td>
+                <td align="right"><?php if ($qtycabang != 0) {
+                    echo desimal($hargacabang);
+                } ?></td>
+                <td align="right"><?php if ($qtycabang != 0) {
+                    echo desimal($jumlahcabang);
+                } ?></td>
+                <td align="right"><?php if ($qtylain != 0) {
+                    echo desimal($qtylain);
+                } ?></td>
+                <td align="right"><?php if ($qtylain != 0) {
+                    echo desimal($hargalain);
+                } ?></td>
+                <td align="right"><?php if ($qtylain != 0) {
+                    echo desimal($jumlahlain);
+                } ?></td>
+                <td align="right"><?php if ($qtysaldoakhir != 0) {
+                    echo desimal($qtysaldoakhir);
+                } ?></td>
+                <td align="right"><?php if ($qtysaldoakhir != 0) {
+                    echo desimal($hargasaldoakhir);
+                } ?></td>
+                <td align="right"><?php if ($qtysaldoakhir != 0) {
+                    echo desimal($jumlahsaldoakhir);
+                } ?></td>
+                <td align="right"><?php if ($qtyopname != 0) {
+                    echo desimal($qtyopname);
+                } ?></td>
+                <td align="right"><?php if ($qtyopname != 0) {
+                    echo desimal($hargaopname);
+                } ?></td>
+                <td align="right"><?php if ($qtyopname != 0) {
+                    echo desimal($jumlahopname);
+                } ?></td>
+                <td align="right"><?php if ($qtyopname - $qtysaldoakhir != 0) {
+                    echo desimal($qtyopname - $qtysaldoakhir);
+                } ?></td>
+                <td align="right"><?php if ($jumlahopname - $jumlahsaldoakhir != 0) {
+                    echo desimal($jumlahopname - $jumlahsaldoakhir);
+                } ?></td>
             </tr>
 
             <?php if ($jenis_barang != $d->jenis_barang && $d->satuan == "KG") { ?>
             <tr bgcolor="#024a75">
-                <th colspan="4" bgcolor="#024a75" style="color:white; font-size:14;">Subtotal <?php echo $d->jenis_barang;?></th>
+                <th colspan="4" bgcolor="#024a75" style="color:white; font-size:14;">Subtotal <?php echo $d->jenis_barang; ?>
+                </th>
 
                 <th bgcolor="#024a75" align="center" style="color:white; font-size:14;">
                     <?php if (!empty($totalqtysaldoawal)) {
-            echo desimal($totalqtysaldoawal);
-          } else {
-            echo "0";
-          }
-          ?>
+                        echo desimal($totalqtysaldoawal);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th bgcolor="#024a75"></th>
                 <th bgcolor="#024a75" align="center" style="color:white; font-size:14;">
                     <?php if (!empty($totaljumlahsaldoawal)) {
-            echo desimal($totaljumlahsaldoawal);
-          } else {
-            echo "0";
-          }
-          ?>
+                        echo desimal($totaljumlahsaldoawal);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th bgcolor="#024a75" align="center" style="color:white; font-size:14;">
                     <?php if (!empty($totalqtypembelian)) {
-            echo desimal($totalqtypembelian);
-          } else {
-            echo "0";
-          }
-          ?>
+                        echo desimal($totalqtypembelian);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th bgcolor="#024a75"></th>
                 <th bgcolor="#024a75" align="center" style="color:white; font-size:14;">
                     <?php if (!empty($totaljumlahpembelian)) {
-            echo desimal($totaljumlahpembelian);
-          } else {
-            echo "0";
-          }
-          ?>
+                        echo desimal($totaljumlahpembelian);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th bgcolor="#024a75" align="center" style="color:white; font-size:14;">
                     <?php if (!empty($totalqtylainnya)) {
-            echo desimal($totalqtylainnya);
-          } else {
-            echo "0";
-          }
-          ?>
+                        echo desimal($totalqtylainnya);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th bgcolor="#024a75"></th>
                 <th bgcolor="#024a75" align="center" style="color:white; font-size:14;">
                     <?php if (!empty($totaljumlahlainnya)) {
-            echo desimal($totaljumlahlainnya);
-          } else {
-            echo "0";
-          }
-          ?>
+                        echo desimal($totaljumlahlainnya);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th bgcolor="#024a75" align="center" style="color:white; font-size:14;">
                     <?php if (!empty($totalqtypengganti)) {
-            echo desimal($totalqtypengganti);
-          } else {
-            echo "0";
-          }
-          ?>
+                        echo desimal($totalqtypengganti);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th bgcolor="#024a75"></th>
                 <th bgcolor="#024a75" align="center" style="color:white; font-size:14;">
                     <?php if (!empty($totaljumlahpengganti)) {
-            echo desimal($totaljumlahpengganti);
-          } else {
-            echo "0";
-          }
-          ?>
+                        echo desimal($totaljumlahpengganti);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th bgcolor="#024a75" align="center" style="color:white; font-size:14;">
                     <?php if (!empty($totalqtyproduksi)) {
-            echo desimal($totalqtyproduksi);
-          } else {
-            echo "0";
-          }
-          ?>
+                        echo desimal($totalqtyproduksi);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th bgcolor="#024a75"></th>
                 <th bgcolor="#024a75" align="center" style="color:white; font-size:14;">
                     <?php if (!empty($totaljumlahproduksi)) {
-            echo desimal($totaljumlahproduksi);
-          } else {
-            echo "0";
-          }
-          ?>
+                        echo desimal($totaljumlahproduksi);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th bgcolor="#024a75" align="center" style="color:white; font-size:14;">
                     <?php if (!empty($totalqtyseasoning)) {
-            echo desimal($totalqtyseasoning);
-          } else {
-            echo "0";
-          }
-          ?>
+                        echo desimal($totalqtyseasoning);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th bgcolor="#024a75"></th>
                 <th bgcolor="#024a75" align="center" style="color:white; font-size:14;">
                     <?php if (!empty($totaljumlahseasoning)) {
-            echo desimal($totaljumlahseasoning);
-          } else {
-            echo "0";
-          }
-          ?>
+                        echo desimal($totaljumlahseasoning);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th bgcolor="#024a75" align="center" style="color:white; font-size:14;">
                     <?php if (!empty($totalqtypdqc)) {
-            echo desimal($totalqtypdqc);
-          } else {
-            echo "0";
-          }
-          ?>
+                        echo desimal($totalqtypdqc);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th bgcolor="#024a75"></th>
                 <th bgcolor="#024a75" align="center" style="color:white; font-size:14;">
                     <?php if (!empty($totaljumlahpdqc)) {
-            echo desimal($totaljumlahpdqc);
-          } else {
-            echo "0";
-          }
-          ?>
+                        echo desimal($totaljumlahpdqc);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th bgcolor="#024a75" align="center" style="color:white; font-size:14;">
                     <?php if (!empty($totalqtysusut)) {
-            echo desimal($totalqtysusut);
-          } else {
-            echo "0";
-          }
-          ?>
+                        echo desimal($totalqtysusut);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th bgcolor="#024a75"></th>
                 <th bgcolor="#024a75" align="center" style="color:white; font-size:14;">
                     <?php if (!empty($totaljumlahsusut)) {
-            echo desimal($totaljumlahsusut);
-          } else {
-            echo "0";
-          }
-          ?>
+                        echo desimal($totaljumlahsusut);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th bgcolor="#024a75" align="center" style="color:white; font-size:14;">
                     <?php if (!empty($totalqtycabang)) {
-            echo desimal($totalqtycabang);
-          } else {
-            echo "0";
-          }
-          ?>
+                        echo desimal($totalqtycabang);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th bgcolor="#024a75"></th>
                 <th bgcolor="#024a75" align="center" style="color:white; font-size:14;">
                     <?php if (!empty($totaljumlahcabang)) {
-            echo desimal($totaljumlahcabang);
-          } else {
-            echo "0";
-          }
-          ?>
+                        echo desimal($totaljumlahcabang);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th bgcolor="#024a75" align="center" style="color:white; font-size:14;">
                     <?php if (!empty($totalqtylain)) {
-            echo desimal($totalqtylain);
-          } else {
-            echo "0";
-          }
-          ?>
+                        echo desimal($totalqtylain);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th bgcolor="#024a75"></th>
                 <th bgcolor="#024a75" align="center" style="color:white; font-size:14;">
                     <?php if (!empty($totaljumlahlain)) {
-            echo desimal($totaljumlahlain);
-          } else {
-            echo "0";
-          }
-          ?>
+                        echo desimal($totaljumlahlain);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th bgcolor="#024a75" align="center" style="color:white; font-size:14;">
                     <?php if (!empty($totalqtysaldoakhir)) {
-            echo desimal($totalqtysaldoakhir);
-          } else {
-            echo "0";
-          }
-          ?>
+                        echo desimal($totalqtysaldoakhir);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th bgcolor="#024a75"></th>
                 <th bgcolor="#024a75" align="center" style="color:white; font-size:14;">
                     <?php if (!empty($totaljumlahsaldoakhir)) {
-            echo desimal($totaljumlahsaldoakhir);
-          } else {
-            echo "0";
-          }
-          ?>
+                        echo desimal($totaljumlahsaldoakhir);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th bgcolor="#024a75" align="center" style="color:white; font-size:14;">
                     <?php if (!empty($totalqtyopname)) {
-            echo desimal($totalqtyopname);
-          } else {
-            echo "0";
-          }
-          ?>
+                        echo desimal($totalqtyopname);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th bgcolor="#024a75"></th>
                 <th bgcolor="#024a75" align="center" style="color:white; font-size:14;">
                     <?php if (!empty($totaljumlahopname)) {
-            echo desimal($totaljumlahopname);
-          } else {
-            echo "0";
-          }
-          ?>
+                        echo desimal($totaljumlahopname);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th bgcolor="#024a75"></th>
                 <th bgcolor="#024a75"></th>
@@ -917,207 +998,207 @@
 
                 <th align="center" style="background:red; color:white; font-size:14;">
                     <?php if (!empty($grandtotalqtysaldoawal)) {
-          echo desimal($grandtotalqtysaldoawal);
-        } else {
-          echo "0";
-        }
-        ?>
+                        echo desimal($grandtotalqtysaldoawal);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th style="background:red;"></th>
                 <th align="center" style="background:red; color:white; font-size:14;">
                     <?php if (!empty($grandtotaljmlsaldoawal)) {
-          echo desimal($grandtotaljmlsaldoawal);
-        } else {
-          echo "0";
-        }
-        ?>
+                        echo desimal($grandtotaljmlsaldoawal);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th align="center" style="background:red; color:white; font-size:14;">
                     <?php if (!empty($grandtotalqtypemberlian)) {
-          echo desimal($grandtotalqtypemberlian);
-        } else {
-          echo "0";
-        }
-        ?>
+                        echo desimal($grandtotalqtypemberlian);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th style="background:red;"></th>
                 <th align="center" style="background:red; color:white; font-size:14;">
                     <?php if (!empty($grandtotaljmlpemberlian)) {
-          echo desimal($grandtotaljmlpemberlian);
-        } else {
-          echo "0";
-        }
-        ?>
+                        echo desimal($grandtotaljmlpemberlian);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th align="center" style="background:red; color:white; font-size:14;">
                     <?php if (!empty($grandtotalqtylainnya)) {
-          echo desimal($grandtotalqtylainnya);
-        } else {
-          echo "0";
-        }
-        ?>
+                        echo desimal($grandtotalqtylainnya);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th style="background:red;"></th>
                 <th align="center" style="background:red; color:white; font-size:14;">
                     <?php if (!empty($grandtotaljmllainnya)) {
-          echo desimal($grandtotaljmllainnya);
-        } else {
-          echo "0";
-        }
-        ?>
+                        echo desimal($grandtotaljmllainnya);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th align="center" style="background:red;color:white; font-size:14;">
                     <?php if (!empty($grandtotalqtypengganti)) {
-          echo desimal($grandtotalqtypengganti);
-        } else {
-          echo "0";
-        }
-        ?>
+                        echo desimal($grandtotalqtypengganti);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th align="center" style="background:red;color:white; font-size:14;"></th>
                 <th align="center" style="background:red;color:white; font-size:14;">
                     <?php if (!empty($grandtotaljmlpengganti)) {
-          echo desimal($grandtotaljmlpengganti);
-        } else {
-          echo "0";
-        }
-        ?>
+                        echo desimal($grandtotaljmlpengganti);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th align="center" style="background:red; color:white; font-size:14;">
                     <?php if (!empty($grandtotalqtyproduksi)) {
-          echo desimal($grandtotalqtyproduksi);
-        } else {
-          echo "0";
-        }
-        ?>
+                        echo desimal($grandtotalqtyproduksi);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th style="background:red;"></th>
                 <th align="center" style="background:red; color:white; font-size:14;">
                     <?php if (!empty($grandtotaljmlproduksi)) {
-          echo desimal($grandtotaljmlproduksi);
-        } else {
-          echo "0";
-        }
-        ?>
+                        echo desimal($grandtotaljmlproduksi);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th align="center" style="background:red; color:white; font-size:14;">
                     <?php if (!empty($grandtotalqtyseasoning)) {
-          echo desimal($grandtotalqtyseasoning);
-        } else {
-          echo "0";
-        }
-        ?>
+                        echo desimal($grandtotalqtyseasoning);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th style="background:red;"></th>
                 <th align="center" style="background:red; color:white; font-size:14;">
                     <?php if (!empty($grandtotaljmlseasoning)) {
-          echo desimal($grandtotaljmlseasoning);
-        } else {
-          echo "0";
-        }
-        ?>
+                        echo desimal($grandtotaljmlseasoning);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th align="center" style="background:red; color:white; font-size:14;">
                     <?php if (!empty($grandtotalqtypdqc)) {
-          echo desimal($grandtotalqtypdqc);
-        } else {
-          echo "0";
-        }
-        ?>
+                        echo desimal($grandtotalqtypdqc);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th style="background:red;"></th>
                 <th align="center" style="background:red; color:white; font-size:14;">
                     <?php if (!empty($grandtotaljmlpdqc)) {
-          echo desimal($grandtotaljmlpdqc);
-        } else {
-          echo "0";
-        }
-        ?>
+                        echo desimal($grandtotaljmlpdqc);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th align="center" style="background:red; color:white; font-size:14;">
                     <?php if (!empty($grandtotalqtysusut)) {
-          echo desimal($grandtotalqtysusut);
-        } else {
-          echo "0";
-        }
-        ?>
+                        echo desimal($grandtotalqtysusut);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th style="background:red;"></th>
                 <th align="center" style="background:red; color:white; font-size:14;">
                     <?php if (!empty($grandtotaljmlsusut)) {
-          echo desimal($grandtotaljmlsusut);
-        } else {
-          echo "0";
-        }
-        ?>
+                        echo desimal($grandtotaljmlsusut);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th align="center" style="background:red; color:white; font-size:14;">
                     <?php if (!empty($grandtotalqtycabang)) {
-          echo desimal($grandtotalqtycabang);
-        } else {
-          echo "0";
-        }
-        ?>
+                        echo desimal($grandtotalqtycabang);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th style="background:red;"></th>
                 <th align="center" style="background:red; color:white; font-size:14;">
                     <?php if (!empty($grandtotaljmlcabang)) {
-          echo desimal($grandtotaljmlcabang);
-        } else {
-          echo "0";
-        }
-        ?>
+                        echo desimal($grandtotaljmlcabang);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th align="center" style="background:red; color:white; font-size:14;">
                     <?php if (!empty($grandtotalqtylain)) {
-          echo desimal($grandtotalqtylain);
-        } else {
-          echo "0";
-        }
-        ?>
+                        echo desimal($grandtotalqtylain);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th style="background:red;"></th>
                 <th align="center" style="background:red; color:white; font-size:14;">
                     <?php if (!empty($grandtotaljmllain)) {
-          echo desimal($grandtotaljmllain);
-        } else {
-          echo "0";
-        }
-        ?>
+                        echo desimal($grandtotaljmllain);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th align="center" style="background:red; color:white; font-size:14;">
                     <?php if (!empty($grandtotalqtysaldoakhir)) {
-          echo desimal($grandtotalqtysaldoakhir);
-        } else {
-          echo "0";
-        }
-        ?>
+                        echo desimal($grandtotalqtysaldoakhir);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th style="background:red;"></th>
                 <th align="center" style="background:red; color:white; font-size:14;">
                     <?php if (!empty($grandtotaljmlsaldoakhir)) {
-          echo desimal($grandtotaljmlsaldoakhir);
-        } else {
-          echo "0";
-        }
-        ?>
+                        echo desimal($grandtotaljmlsaldoakhir);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th align="center" style="background:red; color:white; font-size:14;">
                     <?php if (!empty($grandtotalqtyopname)) {
-          echo desimal($grandtotalqtyopname);
-        } else {
-          echo "0";
-        }
-        ?>
+                        echo desimal($grandtotalqtyopname);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th style="background:red;"></th>
                 <th align="center" style="background:red; color:white; font-size:14;">
                     <?php if (!empty($grandtotaljmlopname)) {
-          echo desimal($grandtotaljmlopname);
-        } else {
-          echo "0";
-        }
-        ?>
+                        echo desimal($grandtotaljmlopname);
+                    } else {
+                        echo '0';
+                    }
+                    ?>
                 </th>
                 <th style="background:red;"></th>
                 <th style="background:red;"></th>
@@ -1127,4 +1208,5 @@
 
 
 </body>
+
 </html>
