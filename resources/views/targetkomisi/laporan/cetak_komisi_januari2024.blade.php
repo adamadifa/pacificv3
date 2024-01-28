@@ -160,6 +160,18 @@
             <tbody>
                 @php
                     $kebijakan = 100;
+                    $jmlsales = 0;
+                    $total_all_reward_qty = 0;
+                    $total_all_realisasi_qty_kendaraan = 0;
+                    $total_all_reward_qty_kendaraan = 0;
+                    $total_all_reward_pelanggantrans = 0;
+                    $total_all_realisasipenjvsavg = 0;
+                    $total_all_reward_penjvsavg = 0;
+                    $total_all_realisasi_cashin = 0;
+                    $total_all_reward_cashin = 0;
+                    $total_all_reward_routing = 0;
+                    $total_all_realisasi_ljt = 0;
+                    $total_all_reward_ljt = 0;
                 @endphp
                 @foreach ($kategori_komisi as $k)
                     @php
@@ -171,6 +183,7 @@
                 @foreach ($komisi as $d)
                     @php
                         $realisasi_qty_kendaraan = 0;
+                        $jmlsales += 1;
                     @endphp
                     @foreach ($produk as $p)
                         @php
@@ -263,7 +276,7 @@
                             @endif
                             {{ rupiah($reward_qty) }}
                         </td>
-                        <td style="text-align: center">{{ desimal($realisasi_qty_kendaraan) }}</td>
+                        <td style="text-align: center">{{ rupiah($realisasi_qty_kendaraan) }}</td>
                         <td style="text-align: right">
                             @php
                                 if ($d->status_komisi == 1) {
@@ -373,9 +386,82 @@
                             {{ rupiah($totalreward) }}
                         </td>
                     </tr>
+                    @php
+                        $total_all_reward_qty += $reward_qty;
+                        $total_all_realisasi_qty_kendaraan += $realisasi_qty_kendaraan;
+                        $total_all_reward_qty_kendaraan += $reward_kendaraan;
+                        $total_all_reward_pelanggantrans += $reward_pelanggantrans;
+                        $total_all_realisasipenjvsavg += $d->realisasipenjvsavg;
+                        $total_all_reward_penjvsavg += $reward_penjvsavg;
+                        $total_all_reward_cashin += $reward_cashin;
+                        $total_all_reward_routing += $reward_routing;
+                        $total_all_realisasi_cashin += $d->realisasi_cashin;
+                        $total_all_realisasi_ljt += $d->sisapiutang;
+                        $total_all_reward_ljt += $rewardljt;
+                    @endphp
                 @endforeach
+                @php
+                    $reward_qty_spv = $total_all_reward_qty / $jmlsales;
+                    $rewawrd_kendaraan_spv = $total_all_reward_qty_kendaraan / $jmlsales;
+                    $reward_oa_spv = $total_all_reward_pelanggantrans / $jmlsales;
+                    $reward_penjvsavg_spv = $total_all_reward_penjvsavg / $jmlsales;
+                    $reward_cashin_spv = $total_all_reward_cashin / $jmlsales;
+                    $reward_routing_spv = $total_all_reward_routing / $jmlsales;
+                    $reward_ljt_spv = $total_all_reward_ljt / $jmlsales;
+                    $total_reward_spv = $reward_qty_spv + $rewawrd_kendaraan_spv + $reward_oa_spv + $reward_penjvsavg_spv + $reward_cashin_spv + $reward_routing_spv + $reward_ljt_spv;
+
+                    $reward_qty_kp = $reward_qty_spv + (50 / 100) * $reward_qty_spv;
+                    $rewawrd_kendaraan_kp = $rewawrd_kendaraan_spv + (50 / 100) * $rewawrd_kendaraan_spv;
+                    $reward_oa_kp = $reward_oa_spv + (50 / 100) * $reward_oa_spv;
+                    $reward_penjvsavg_kp = $reward_penjvsavg_spv + (50 / 100) * $reward_penjvsavg_spv;
+                    $reward_cashin_kp = $reward_cashin_spv + (50 / 100) * $reward_cashin_spv;
+                    $reward_routing_kp = $reward_routing_spv + (50 / 100) * $reward_routing_spv;
+                    $reward_ljt_kp = $reward_ljt_spv + (50 / 100) * $reward_ljt_spv;
+                    $total_reward_kp = $reward_qty_kp + $rewawrd_kendaraan_kp + $reward_oa_kp + $reward_penjvsavg_kp + $reward_cashin_kp + $reward_routing_kp + $reward_ljt_kp;
+                @endphp
+                @if ($cbg->kode_cabang == 'BDG')
+                    <tr>
+                        <th colspan="4">SUPERVISOR</th>
+                        @php
+                            $total_all_hasilpoin = 0;
+                        @endphp
+                        @foreach ($kategori_komisi as $k)
+                            @php
+                                ${"total_ratio_$k->kode_kategori"} = !empty(${"total_target_$k->kode_kategori"}) ? ${"total_realisasi_qty_$k->kode_kategori"} / ${"total_target_$k->kode_kategori"} : 0;
+                                if (${"total_ratio_$k->kode_kategori"} > 1) {
+                                    ${"total_hasilpoin_$k->kode_kategori"} = $k->poin;
+                                } else {
+                                    ${"total_hasilpoin_$k->kode_kategori"} = !empty(${"total_target_$k->kode_kategori"}) ? (${"total_realisasi_qty_$k->kode_kategori"} / ${"total_target_$k->kode_kategori"}) * $k->poin : 0;
+                                }
+
+                                $total_all_hasilpoin += ${"total_hasilpoin_$k->kode_kategori"};
+                            @endphp
+                            <th>{{ desimal(${"total_target_$k->kode_kategori"}) }}</th>
+                            <th>{{ desimal(${"total_realisasi_qty_$k->kode_kategori"}) }}</th>
+                            <th>{{ desimal(${"total_hasilpoin_$k->kode_kategori"}) }}</th>
+                        @endforeach
+
+                        <th>{{ desimal($total_all_hasilpoin) }}</th>
+                        <th style="text-align: right">{{ rupiah($reward_qty_spv) }} </th>
+                        <th>{{ desimal($total_all_realisasi_qty_kendaraan) }}</th>
+                        <th style="text-align: right">{{ rupiah($rewawrd_kendaraan_spv) }} </th>
+                        <th></th>
+                        <th style="text-align: right">{{ rupiah($reward_oa_spv) }} </th>
+                        <th>{{ desimal($total_all_realisasipenjvsavg) }}</th>
+                        <th style="text-align: right">{{ rupiah($reward_penjvsavg_spv) }} </th>
+                        <th></th>
+                        <th style="text-align: right">{{ rupiah($reward_routing_spv) }} </th>
+                        <th style="text-align: right">{{ rupiah($total_all_realisasi_cashin) }}</th>
+                        <th style="text-align: right">{{ rupiah($reward_cashin_spv) }}</th>
+                        <th style="text-align: right">{{ rupiah($total_all_realisasi_ljt) }}</th>
+                        <th></th>
+                        <th style="text-align: right">{{ rupiah($reward_ljt_spv) }}</th>
+                        <th style="text-align: right">{{ rupiah($total_reward_spv) }}</th>
+                    </tr>
+                @endif
+
                 <tr>
-                    <th colspan="4">TOTAL</th>
+                    <th colspan="4">SMM</th>
                     @php
                         $total_all_hasilpoin = 0;
                     @endphp
@@ -395,6 +481,21 @@
                         <th>{{ desimal(${"total_hasilpoin_$k->kode_kategori"}) }}</th>
                     @endforeach
                     <th>{{ desimal($total_all_hasilpoin) }}</th>
+                    <th style="text-align: right">{{ rupiah($reward_qty_kp) }} </th>
+                    <th>{{ desimal($total_all_realisasi_qty_kendaraan) }}</th>
+                    <th style="text-align: right">{{ rupiah($rewawrd_kendaraan_kp) }} </th>
+                    <th></th>
+                    <th style="text-align: right">{{ rupiah($reward_oa_kp) }} </th>
+                    <th>{{ desimal($total_all_realisasipenjvsavg) }}</th>
+                    <th style="text-align: right">{{ rupiah($reward_penjvsavg_kp) }} </th>
+                    <th></th>
+                    <th style="text-align: right">{{ rupiah($reward_routing_kp) }} </th>
+                    <th style="text-align: right">{{ rupiah($total_all_realisasi_cashin) }}</th>
+                    <th style="text-align: right">{{ rupiah($reward_cashin_kp) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_realisasi_ljt) }}</th>
+                    <th></th>
+                    <th style="text-align: right">{{ rupiah($reward_ljt_kp) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_reward_kp) }}</th>
                 </tr>
             </tbody>
         </table>
