@@ -232,15 +232,7 @@
                         <td style="text-align: right">
                             {{-- Reward Poin --}}
                             @if ($d->status_komisi == 1)
-                                @if ($totalpoin >= 60 && $totalpoin <= 65)
-                                    @php
-                                        $reward_qty = 200000;
-                                    @endphp
-                                @elseif ($totalpoin > 65 && $totalpoin <= 70)
-                                    @php
-                                        $reward_qty = 400000;
-                                    @endphp
-                                @elseif ($totalpoin > 70 && $totalpoin <= 75)
+                                @if ($totalpoin > 70 && $totalpoin <= 75)
                                     @php
                                         $reward_qty = 600000;
                                     @endphp
@@ -410,13 +402,13 @@
                     $reward_ljt_spv = $total_all_reward_ljt / $jmlsales;
                     $total_reward_spv = $reward_qty_spv + $rewawrd_kendaraan_spv + $reward_oa_spv + $reward_penjvsavg_spv + $reward_cashin_spv + $reward_routing_spv + $reward_ljt_spv;
 
-                    $reward_qty_kp = $reward_qty_spv + (50 / 100) * $reward_qty_spv;
-                    $rewawrd_kendaraan_kp = $rewawrd_kendaraan_spv + (50 / 100) * $rewawrd_kendaraan_spv;
-                    $reward_oa_kp = $reward_oa_spv + (50 / 100) * $reward_oa_spv;
-                    $reward_penjvsavg_kp = $reward_penjvsavg_spv + (50 / 100) * $reward_penjvsavg_spv;
-                    $reward_cashin_kp = $reward_cashin_spv + (50 / 100) * $reward_cashin_spv;
-                    $reward_routing_kp = $reward_routing_spv + (50 / 100) * $reward_routing_spv;
-                    $reward_ljt_kp = $reward_ljt_spv + (50 / 100) * $reward_ljt_spv;
+                    $reward_qty_kp = $reward_qty_spv * 2;
+                    $rewawrd_kendaraan_kp = $rewawrd_kendaraan_spv * 2;
+                    $reward_oa_kp = $reward_oa_spv * 2;
+                    $reward_penjvsavg_kp = $reward_penjvsavg_spv * 2;
+                    $reward_cashin_kp = $reward_cashin_spv * 2;
+                    $reward_routing_kp = $reward_routing_spv * 2;
+                    $reward_ljt_kp = $reward_ljt_spv * 2;
                     $total_reward_kp = $reward_qty_kp + $rewawrd_kendaraan_kp + $reward_oa_kp + $reward_penjvsavg_kp + $reward_cashin_kp + $reward_routing_kp + $reward_ljt_kp;
                 @endphp
                 @if ($cbg->kode_cabang == 'BDG')
