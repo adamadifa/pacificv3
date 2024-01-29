@@ -180,6 +180,8 @@
                 <select name="klasifikasi" id="klasifikasi" class="form-control">
                     <option value="">Klasifikasi</option>
                     <option value="TKL" {{ $karyawan->klasifikasi == 'TKL' ? 'selected' : '' }}>TKL</option>
+                    <option value="TKTL" {{ $karyawan->klasifikasi == 'TKTL' ? 'selected' : '' }}>TKTL
+                    </option>
                     <option value="ADMINISTRASI" {{ $karyawan->klasifikasi == 'ADMINISTRASI' ? 'selected' : '' }}>
                         ADMINISTRASI</option>
                     <option value="PENJUALAN" {{ $karyawan->klasifikasi == 'PENJUALAN' ? 'selected' : '' }}>PENJUALAN

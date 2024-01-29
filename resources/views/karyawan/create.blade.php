@@ -171,6 +171,7 @@
                 <select name="klasifikasi" id="klasifikasi" class="form-control">
                     <option value="">Klasifikasi</option>
                     <option value="TKL">TKL</option>
+                    <option value="TKTL">TKTL</option>
                     <option value="ADMINISTRASI">ADMINISTRASI</option>
                     <option value="PENJUALAN">PENJUALAN</option>
 
