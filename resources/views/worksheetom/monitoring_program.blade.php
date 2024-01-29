@@ -89,7 +89,7 @@
                                                 target="_blank">
                                                 <i class=" feather icon-printer info"></i>
                                             </a>
-                                            @if ($level == 'admin')
+                                            @if ($level == 'admin' || Auth::user()->level == 74)
                                                 <a class="ml-1 edit" href="#" kode_program="{{ $d->kode_program }}">
                                                     <i class="feather icon-edit success"></i>
                                                 </a>
