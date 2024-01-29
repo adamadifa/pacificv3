@@ -1697,7 +1697,7 @@
                         $total_all_bersih_mp += $d->id_perusahaan == 'MP' ? $jmlbersih : 0;
                         $total_all_bersih_pcf += $d->id_perusahaan == 'PCF' ? $jmlbersih : 0;
                     @endphp
-                    <tr>
+                    {{-- <tr>
                         <td>
                             <a href="/laporanhrd/gaji/{{ Crypt::encrypt($d->nik) }}/{{ $bulan }}/{{ $tahun }}/slip"
                                 target="_blank">
@@ -1776,7 +1776,7 @@
 
                         <td align="right">{{ !empty($d->cicilan_pjp) ? rupiah($d->cicilan_pjp) : '' }}</td>
                         <td align="right">{{ !empty($d->jml_kasbon) ? rupiah($d->jml_kasbon) : '' }}</td>
-                        {{-- <td align="right">{{ !empty($d->jml_nonpjp) ? rupiah($d->jml_nonpjp) : '' }}</td> --}}
+                        <td align="right">{{ !empty($d->jml_nonpjp) ? rupiah($d->jml_nonpjp) : '' }}</td>
                         <td align="right">
                             {{ !empty($spip) ? rupiah($spip) : '' }}
 
@@ -1788,7 +1788,7 @@
                         <td align="right">
                             {{ !empty($jmlbersih) ? rupiah($jmlbersih) : '' }}
                         </td>
-                    </tr>
+                    </tr> --}}
                 @endforeach
                 <tr>
                     <td>ADMINISTRASI</td>
