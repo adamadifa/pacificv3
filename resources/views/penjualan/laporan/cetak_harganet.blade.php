@@ -105,10 +105,14 @@
             if ($p->kode_produk == 'BR20') {
                 $isipcs_br20 = $p->isipcsdus;
             }
+
+            if ($p->kode_produk == 'P1000') {
+                $isipcs_p1000 = $p->isipcsdus;
+            }
         }
         $penyharga = $harganet->penyharga;
 
-        $totalqty = $harganet->qty_AB / $isipcs_ab + $harganet->qty_AR / $isipcs_ar + $harganet->qty_AS / $isipcs_as + $harganet->qty_BB / $isipcs_bb + $harganet->qty_BBP / $isipcs_bbp + $harganet->qty_CG / $isipcs_cg + $harganet->qty_CGG / $isipcs_cgg + $harganet->qty_CG5 / $isipcs_cg5 + $harganet->qty_DEP / $isipcs_dep + $harganet->qty_DS / $isipcs_ds + $harganet->qty_SP / $isipcs_sp + $harganet->qty_SPP / $isipcs_sp + $harganet->qty_SC / $isipcs_sp + $harganet->qty_SP8 / $isipcs_sp + $harganet->qty_SP500 / $isipcs_sp500 + $harganet->qty_BR20 / $isipcs_br20;
+        $totalqty = $harganet->qty_AB / $isipcs_ab + $harganet->qty_AR / $isipcs_ar + $harganet->qty_AS / $isipcs_as + $harganet->qty_BB / $isipcs_bb + $harganet->qty_BBP / $isipcs_bbp + $harganet->qty_CG / $isipcs_cg + $harganet->qty_CGG / $isipcs_cgg + $harganet->qty_CG5 / $isipcs_cg5 + $harganet->qty_DEP / $isipcs_dep + $harganet->qty_DS / $isipcs_ds + $harganet->qty_SP / $isipcs_sp + $harganet->qty_SPP / $isipcs_sp + $harganet->qty_SC / $isipcs_sp + $harganet->qty_SP8 / $isipcs_sp + $harganet->qty_SP500 / $isipcs_sp500 + $harganet->qty_BR20 / $isipcs_br20 + $harganet->qty_P1000 / $isipcs_p1000;
 
         $ratiopeny = $totalqty != 0 ? $penyharga / $totalqty : 0;
         $ratiopeny = $ratiopeny >= 1 ? ROUND($ratiopeny) : 0;
@@ -119,7 +123,7 @@
     <table class="datatable3">
         <tr>
             <th rowspan="2">KETERANGAN</th>
-            <th colspan="14">NAMA PRODUK</th>
+            <th colspan="16">NAMA PRODUK</th>
 
         </tr>
         <tr>
@@ -139,6 +143,7 @@
             <th>SP8</th>
             <th>SP500</th>
             <th>BR20</th>
+            <th>PP1000</th>
         </tr>
 
 
@@ -206,6 +211,10 @@
             $bruto_BR20_tunai = $harganet->bruto_BR20_tunai + ($harganet->bruto_BR20_tunai / $harganet->totalbrutotunai) * $harganet->totalppntunai;
             $bruto_BR20_kredit = $harganet->bruto_BR20_kredit + ($harganet->bruto_BR20_kredit / $harganet->totalbrutokredit) * $harganet->totalppnkredit;
             $bruto_BR20 = $bruto_BR20_tunai + $bruto_BR20_kredit;
+            
+            $bruto_P1000_tunai = $harganet->bruto_P1000_tunai + ($harganet->bruto_P1000_tunai / $harganet->totalbrutotunai) * $harganet->totalppntunai;
+            $bruto_P1000_kredit = $harganet->bruto_P1000_kredit + ($harganet->bruto_P1000_kredit / $harganet->totalbrutokredit) * $harganet->totalppnkredit;
+            $bruto_P1000 = $bruto_P1000_tunai + $bruto_P1000_kredit;
             ?>
             <td>PENJUALAN BRUTO</td>
             <td align="right"><?php echo number_format($bruto_AB, '0', '', '.'); ?></td>
@@ -223,6 +232,7 @@
             <td align="right"><?php echo number_format($bruto_SP8, '0', '', '.'); ?></td>
             <td align="right"><?php echo number_format($bruto_SP500, '0', '', '.'); ?></td>
             <td align="right"><?php echo number_format($bruto_BR20, '0', '', '.'); ?></td>
+            <td align="right"><?php echo number_format($bruto_P1000, '0', '', '.'); ?></td>
 
         </tr>
 
@@ -244,6 +254,7 @@
             <td align="right"><?php echo number_format($harganet->diskon_SP8, '0', '', '.'); ?></td>
             <td align="right"><?php echo number_format($harganet->diskon_SP500, '0', '', '.'); ?></td>
             <td align="right"><?php echo number_format($harganet->diskon_BR20, '0', '', '.'); ?></td>
+            <td align="right"><?php echo number_format($harganet->diskon_P1000, '0', '', '.'); ?></td>
 
         </tr>
         <tr style="font-size:14px;">
@@ -263,6 +274,7 @@
             $peny_SP8 = $ratiopeny != 0 ? $harganet->qty_SP8 / $isipcs_sp8 / $ratiopeny : 0;
             $peny_SP500 = $ratiopeny != 0 ? $harganet->qty_SP500 / $isipcs_sp500 / $ratiopeny : 0;
             $peny_BR20 = $ratiopeny != 0 ? $harganet->qty_BR20 / $isipcs_br20 / $ratiopeny : 0;
+            $peny_P1000 = $ratiopeny != 0 ? $harganet->qty_P1000 / $isipcs_p1000 / $ratiopeny : 0;
             ?>
             <td>PENYESUAIAN HARGA</td>
             <td align="right"><?php echo number_format($peny_AB, '2', ',', '.'); ?></td>
@@ -280,6 +292,7 @@
             <td align="right"><?php echo number_format($peny_SP8, '2', ',', '.'); ?></td>
             <td align="right"><?php echo number_format($peny_SP500, '2', ',', '.'); ?></td>
             <td align="right"><?php echo number_format($peny_BR20, '2', ',', '.'); ?></td>
+            <td align="right"><?php echo number_format($peny_P1000, '2', ',', '.'); ?></td>
 
         </tr>
         <tr style="font-size:14px;">
@@ -300,6 +313,7 @@
             <td align="right"><?php echo number_format($harganet->qty_SP8 / $isipcs_sp8, '2', ',', '.'); ?></td>
             <td align="right"><?php echo number_format($harganet->qty_SP500 / $isipcs_sp500, '2', ',', '.'); ?></td>
             <td align="right"><?php echo number_format($harganet->qty_BR20 / $isipcs_br20, '2', ',', '.'); ?></td>
+            <td align="right"><?php echo number_format($harganet->qty_P1000 / $isipcs_p1000, '2', ',', '.'); ?></td>
         </tr>
         <tr style="font-size:14px; background-color: black; color:white">
             <td>HARGA NET TANPA RETUR</td>
@@ -369,7 +383,9 @@
                 echo number_format(($bruto_BR20 - $peny_BR20 - $harganet->diskon_BR20) / ($harganet->qty_BR20 / $isipcs_br20), '0', '', '.');
             } ?></td>
 
-
+            <td align="right"><?php if ($harganet->qty_P1000 != 0) {
+                echo number_format(($bruto_P1000 - $peny_P1000 - $harganet->diskon_P1000) / ($harganet->qty_P1000 / $isipcs_p1000), '0', '', '.');
+            } ?></td>
         </tr>
         <tr style="font-size:14px;">
             <td>RETUR</td>
@@ -388,6 +404,7 @@
             <td align="right"><?php echo number_format($retur->retur_SP8, '0', '', '.'); ?></td>
             <td align="right"><?php echo number_format($retur->retur_SP500, '0', '', '.'); ?></td>
             <td align="right"><?php echo number_format($retur->retur_BR20, '0', '', '.'); ?></td>
+            <td align="right"><?php echo number_format($retur->retur_P1000, '0', '', '.'); ?></td>
         </tr>
         <tr style="font-size:14px;">
             <td>PENY RETUR</td>
@@ -406,6 +423,7 @@
             <td align="right"><?php echo number_format($retur->returpeny_SP8, '0', '', '.'); ?></td>
             <td align="right"><?php echo number_format($retur->returpeny_SP500, '0', '', '.'); ?></td>
             <td align="right"><?php echo number_format($retur->returpeny_BR20, '0', '', '.'); ?></td>
+            <td align="right"><?php echo number_format($retur->returpeny_P1000, '0', '', '.'); ?></td>
         </tr>
 
         <tr style="font-size:14px;">
@@ -425,6 +443,7 @@
             $netretur_SP8 = $retur->retur_SP8 - $retur->returpeny_SP8;
             $netretur_SP500 = $retur->retur_SP500 - $retur->returpeny_SP500;
             $netretur_BR20 = $retur->retur_BR20 - $retur->returpeny_BR20;
+            $netretur_P1000 = $retur->retur_P1000 - $retur->returpeny_P1000;
             ?>
             <td>RETUR NET</td>
             <td align="right"><?php echo number_format($netretur_AB, '0', '', '.'); ?></td>
@@ -442,6 +461,7 @@
             <td align="right"><?php echo number_format($netretur_SP8, '0', '', '.'); ?></td>
             <td align="right"><?php echo number_format($netretur_SP500, '0', '', '.'); ?></td>
             <td align="right"><?php echo number_format($netretur_BR20, '0', '', '.'); ?></td>
+            <td align="right"><?php echo number_format($netretur_P1000, '0', '', '.'); ?></td>
         </tr>
 
         <tr style="font-size:14px; background-color:black; color:white">
@@ -463,6 +483,7 @@
             $netjual_SP500 = $harganet->qty_SP500 != 0 ? ($bruto_SP500 - $harganet->diskon_SP500 - $peny_SP500 - $netretur_SP500) / ($harganet->qty_SP500 / $isipcs_sp500) : 0;
             
             $netjual_BR20 = $harganet->qty_BR20 != 0 ? ($bruto_BR20 - $harganet->diskon_BR20 - $peny_BR20 - $netretur_BR20) / ($harganet->qty_BR20 / $isipcs_br20) : 0;
+            $netjual_P1000 = $harganet->qty_P1000 != 0 ? ($bruto_P1000 - $harganet->diskon_P1000 - $peny_P1000 - $netretur_P1000) / ($harganet->qty_P1000 / $isipcs_p1000) : 0;
             ?>
             <td>HARGA JUAL NET</td>
             <td align="right"><?php echo number_format($netjual_AB, '0', '', '.'); ?></td>
@@ -480,6 +501,7 @@
             <td align="right"><?php echo number_format($netjual_SP8, '0', '', '.'); ?></td>
             <td align="right"><?php echo number_format($netjual_SP500, '0', '', '.'); ?></td>
             <td align="right"><?php echo number_format($netjual_BR20, '0', '', '.'); ?></td>
+            <td align="right"><?php echo number_format($netjual_P1000, '0', '', '.'); ?></td>
         </tr>
 
         <tr style="font-size:14px; background-color:black; color:white">
@@ -501,6 +523,7 @@
             $exclude_SP500 = $harganet->qty_SP500 != 0 ? ($bruto_SP500 - $peny_SP500 - $retur->retur_SP500) / ($harganet->qty_SP500 / $isipcs_sp500) : 0;
             
             $exclude_BR20 = $harganet->qty_BR20 != 0 ? ($bruto_BR20 - $peny_BR20 - $retur->retur_BR20) / ($harganet->qty_BR20 / $isipcs_br20) : 0;
+            $exclude_P1000 = $harganet->qty_P1000 != 0 ? ($bruto_P1000 - $peny_P1000 - $retur->retur_P1000) / ($harganet->qty_P1000 / $isipcs_p1000) : 0;
             ?>
             <td>HARGA NET (EXLUDE DISKON)</td>
             <td align="right"><?php echo number_format($exclude_AB, '0', '', '.'); ?></td>
@@ -518,6 +541,7 @@
             <td align="right"><?php echo number_format($exclude_SP8, '0', '', '.'); ?></td>
             <td align="right"><?php echo number_format($exclude_SP500, '0', '', '.'); ?></td>
             <td align="right"><?php echo number_format($exclude_BR20, '0', '', '.'); ?></td>
+            <td align="right"><?php echo number_format($exclude_P1000, '0', '', '.'); ?></td>
         </tr>
         <tr style="font-size:14px; background-color:black; color:white">
 
@@ -537,6 +561,7 @@
             <td align="right"><?php echo number_format($exclude_SP8 - ($harganet->qty_SP8 != 0 ? $harganet->diskon_SP8 / ($harganet->qty_SP8 / $isipcs_sp8) : 0), '0', '', '.'); ?></td>
             <td align="right"><?php echo number_format($exclude_SP500 - ($harganet->qty_SP500 != 0 ? $harganet->diskon_SP500 / ($harganet->qty_SP500 / $isipcs_sp500) : 0), '0', '', '.'); ?></td>
             <td align="right"><?php echo number_format($exclude_BR20 - ($harganet->qty_BR20 != 0 ? $harganet->diskon_BR20 / ($harganet->qty_BR20 / $isipcs_br20) : 0), '0', '', '.'); ?></td>
+            <td align="right"><?php echo number_format($exclude_P1000 - ($harganet->qty_P1000 != 0 ? $harganet->diskon_P1000 / ($harganet->qty_P1000 / $isipcs_p1000) : 0), '0', '', '.'); ?></td>
         </tr>
     </table>
 </body>
