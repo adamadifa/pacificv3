@@ -5510,10 +5510,12 @@ class TargetkomisiController extends Controller
         }
 
         $lastmonth = date('Y-m-d', strtotime(date($dari) . '- 1 month'));
-        $enddate = date('Y-m-t', strtotime($dari));
+        $enddate = date('Y-m-t', strtotime($lastmonth));
         // if (date("d", strtotime($enddate)) == 31) {
         //     $enddate = date("Y-m", strtotime($enddate)) . "-30";
         // }
+
+
         //dd($lastdateofmonth);
         $last3month = date('Y-m-d', strtotime('-3 month', strtotime($enddate)));
         $date = explode("-", $last3month);
