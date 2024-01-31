@@ -1312,6 +1312,7 @@ class WorksheetomController extends Controller
         $act_om = $request->act_om;
         $kode_cabang = $request->kode_cabang;
 
+        dd($request);
         $lastvisit = DB::table('visitpelanggan')
             ->whereRaw('YEAR(tanggal_visit)="' . date('Y', strtotime($tanggal_visit)) . '"')
             ->orderBy('kode_visit', 'desc')
