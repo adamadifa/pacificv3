@@ -5860,6 +5860,7 @@ class TargetkomisiController extends Controller
                     datediff( '$sampai', penjualan.tgltransaksi ) > 30
                     AND penjualan.id_karyawan NOT IN ('SGRT01','SGRT02')
                     AND bulan = '$bulan' AND tahun = '$tahun'
+                    AND penjualan.no_fak_penj NOT IN ('BTNA000933','BTNC000540','BTNC000659')
                 GROUP BY
                 cabangbarunew
             ) spf"),
