@@ -12,8 +12,8 @@
                 <select name="kode_cabang" id="kode_cabang" class="form-control">
                     <option value="">Pilih Cabang</option>
                     @foreach ($cabang as $c)
-                    <option {{ (Request('kode_cabang')==$c->kode_cabang ? 'selected':'')}} value="{{
-                                            $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
+                        <option {{ Request('kode_cabang') == $c->kode_cabang ? 'selected' : '' }}
+                            value="{{ $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
                     @endforeach
                 </select>
             </div>
@@ -25,8 +25,11 @@
                 <select name="kode_bank" id="kode_bank" class="form-control">
                     <option value="">Pilih Bank</option>
                     @foreach ($bank as $d)
-                    <option {{ Request('kode_bank')==$d->kode_bank ? 'selected' :'' }} value="{{ $d->kode_bank }}">{{ $d->nama_bank }}</option>
+                        <option {{ Request('kode_bank') == $d->kode_bank ? 'selected' : '' }}
+                            value="{{ $d->kode_bank }}">
+                            {{ $d->nama_bank }}</option>
                     @endforeach
+                    <option value="LAINNYA">LAINNYA</option>
                 </select>
             </div>
         </div>
@@ -65,23 +68,23 @@
         </div>
     </div>
 </form>
-<script src="{{asset('app-assets/vendors/js/forms/select/select2.full.min.js')}}"></script>
-<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
-<script src="{{asset('app-assets/js/scripts/forms/select/form-select2.js')}}"></script>
+<script src="{{ asset('app-assets/vendors/js/forms/select/select2.full.min.js') }}"></script>
+<script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
+<script src="{{ asset('app-assets/js/scripts/forms/select/form-select2.js') }}"></script>
 <script>
     $(function() {
         function cektutuplaporan() {
             var tanggal = $("#tgl_setoranpusat").val();
             $.ajax({
-                type: "POST"
-                , url: "/cektutuplaporan"
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , tanggal: tanggal
-                    , jenislaporan: "penjualan"
-                }
-                , cache: false
-                , success: function(respond) {
+                type: "POST",
+                url: "/cektutuplaporan",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    tanggal: tanggal,
+                    jenislaporan: "penjualan"
+                },
+                cache: false,
+                success: function(respond) {
                     console.log(respond);
                     $("#frmSetoranpusat").find("#cektutuplaporan").val(respond);
                 }
@@ -145,10 +148,10 @@
             var cektutuplaporan = $("#frmSetoranpusat").find("#cektutuplaporan").val();
             if (cektutuplaporan > 0) {
                 swal({
-                    title: 'Oops'
-                    , text: 'Periode Laporan Sudah Ditutup !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Periode Laporan Sudah Ditutup !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#tgl_setoranpusat").focus();
                 });
@@ -156,10 +159,10 @@
                 return false;
             } else if (tgl_setoranpusat == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Tanggal Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Tanggal Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#tgl_setoranpusat").focus();
                 });
@@ -167,10 +170,10 @@
                 return false;
             } else if (kode_cabang == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Kode Cabang Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Kode Cabang Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#kode_cabang").focus();
                 });
@@ -178,10 +181,10 @@
                 return false;
             } else if (kode_bank == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Bank Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Bank Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#kode_bank").focus();
                 });
@@ -189,10 +192,10 @@
                 return false;
             } else if (totalsetoran == "" || totalsetoran == 0) {
                 swal({
-                    title: 'Oops'
-                    , text: 'Setoran Tidak Boleh Kosong !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Setoran Tidak Boleh Kosong !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#uang_kertas").focus();
                 });
@@ -200,10 +203,10 @@
                 return false;
             } else if (keterangan == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Keterangan Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Keterangan Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#keterangan").focus();
                 });
@@ -214,5 +217,4 @@
 
 
     });
-
 </script>

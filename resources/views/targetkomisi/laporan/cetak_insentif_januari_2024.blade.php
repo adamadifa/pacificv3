@@ -269,7 +269,11 @@
                     </td>
                     <td align="center">
                         @php
-                            $cost_ratio = ROUND(!empty($d->penjualanbulanberjalan) ? ($d->totalbiaya / $d->penjualanbulanberjalan) * 100 : 0);
+                            if ($d->kode_cabang == 'TSM') {
+                                $cost_ratio = ROUND(!empty($d->penjualanbulanberjalan) ? ($d->totalbiaya / $d->penjualanbulanberjalan) * 100 : 0) + 4;
+                            } else {
+                                $cost_ratio = ROUND(!empty($d->penjualanbulanberjalan) ? ($d->totalbiaya / $d->penjualanbulanberjalan) * 100 : 0);
+                            }
                         @endphp
                         {{ $cost_ratio }} %
                     </td>
