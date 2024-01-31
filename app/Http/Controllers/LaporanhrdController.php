@@ -498,22 +498,43 @@ class LaporanhrdController extends Controller
                 return view('presensi.laporan.cetakpsm', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'datalemburharilibur'));
             }
         } else if (request()->is('laporanhrd/gaji/cetak')) {
-            if (isset($_POST['export'])) {
-                echo "EXPORT";
-                // Fungsi header dengan mengirimkan raw data excel
-                header("Content-type: application/vnd-ms-excel");
-                // Mendefinisikan nama file ekspor "hasil-export.xls"
-                header("Content-Disposition: attachment; filename=Laporan Presensi Detail.xls");
-            }
+
 
             if ($jenislaporan_gaji == 2) {
-
+                if (isset($_POST['export'])) {
+                    echo "EXPORT";
+                    // Fungsi header dengan mengirimkan raw data excel
+                    header("Content-type: application/vnd-ms-excel");
+                    // Mendefinisikan nama file ekspor "hasil-export.xls"
+                    header("Content-Disposition: attachment; filename=Rekap Gaji Detail.xls");
+                }
                 return view('gaji.laporan.cetak_gaji_rekap', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'datalemburharilibur', 'sampai'));
             } else if ($jenislaporan_gaji == 3) {
+                if (isset($_POST['export'])) {
+                    echo "EXPORT";
+                    // Fungsi header dengan mengirimkan raw data excel
+                    header("Content-type: application/vnd-ms-excel");
+                    // Mendefinisikan nama file ekspor "hasil-export.xls"
+                    header("Content-Disposition: attachment; filename=Slip Detail.xls");
+                }
                 return view('gaji.laporan.cetak_slip', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'datalemburharilibur', 'sampai'));
             } else if ($jenislaporan_gaji == 4) {
+                if (isset($_POST['export'])) {
+                    echo "EXPORT";
+                    // Fungsi header dengan mengirimkan raw data excel
+                    header("Content-type: application/vnd-ms-excel");
+                    // Mendefinisikan nama file ekspor "hasil-export.xls"
+                    header("Content-Disposition: attachment; filename=Rekening Gaji.xls");
+                }
                 return view('gaji.laporan.cetak_rekening', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'datalemburharilibur', 'sampai'));
             } else {
+                if (isset($_POST['export'])) {
+                    echo "EXPORT";
+                    // Fungsi header dengan mengirimkan raw data excel
+                    header("Content-type: application/vnd-ms-excel");
+                    // Mendefinisikan nama file ekspor "hasil-export.xls"
+                    header("Content-Disposition: attachment; filename=Laporan Gaji .xls");
+                }
                 return view('gaji.laporan.cetak_gaji', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'datalemburharilibur', 'sampai'));
             }
         } else {

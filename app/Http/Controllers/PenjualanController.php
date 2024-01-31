@@ -4886,6 +4886,86 @@ class PenjualanController extends Controller
         }
     }
 
+
+    public function cetaklaporankartupiutangv2(Request $request)
+    {
+        $no_faktur = $request->no_faktur;
+        $dari = $request->dari;
+        $sampai = $request->sampai;
+        $ljt = $request->ljt;
+        $bulan = "";
+        $tahun = "";
+        $qpiutang = Penjualan::query();
+        $qpiutang->selectRaw("");
+        $qpiutang->leftJoin(
+            DB::raw("(
+                SELECT spf.no_fak_penj, jumlah
+                FROM saldoawal_piutang_faktur spf WHERE bulan = '$bulan' AND tahun = '$tahun'
+            ) spf"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'spf.no_fak_penj');
+            }
+        );
+        $qpiutang->leftJoin(
+            DB::raw("(
+                SELECT
+                    pj.no_fak_penj,IF( salesbaru IS NULL, pj.id_karyawan, salesbaru ) AS salesbarunew,karyawan.nama_karyawan AS nama_sales,
+                    IF( cabangbaru IS NULL, karyawan.kode_cabang, cabangbaru ) AS cabangbarunew
+		        FROM
+				    penjualan pj
+		        INNER JOIN karyawan ON pj.id_karyawan = karyawan.id_karyawan
+		        LEFT JOIN (
+				    SELECT
+						id_move,
+						no_fak_penj,
+						move_faktur.id_karyawan AS salesbaru,
+						karyawan.kode_cabang AS cabangbaru
+				    FROM
+						move_faktur
+				    INNER JOIN karyawan ON move_faktur.id_karyawan = karyawan.id_karyawan
+				    WHERE id_move IN ( SELECT max( id_move ) FROM move_faktur WHERE tgl_move <= '$sampai' GROUP BY no_fak_penj )
+	            ) move_fak ON ( pj.no_fak_penj = move_fak.no_fak_penj )
+            ) pjmove"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'pjmove.no_fak_penj');
+            }
+        );
+
+        $qpiutang->leftJoin(
+            DB::raw("(
+                SELECT
+                    retur.no_fak_penj AS no_fak_penj,
+                    SUM(IFNULL( subtotal_pf, 0 ) - IFNULL( subtotal_gb, 0 )) AS totalretur
+                FROM
+                    retur
+                WHERE
+                    tglretur BETWEEN '$dari' AND '$sampai'
+                GROUP BY
+                    retur.no_fak_penj
+            ) retur"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'retur.no_fak_penj');
+            }
+        );
+
+        $qpiutang->leftJoin(
+            DB::raw("(
+                SELECT no_fak_penj, sum( historibayar.bayar ) AS totalbayar
+		        FROM historibayar
+		        WHERE tglbayar BETWEEN '$dari' AND '$sampai' GROUP BY no_fak_penj
+            ) hb"),
+            function ($join) {
+                $join->on('penjualan.no_fak_penj', '=', 'hb.no_fak_penj');
+            }
+        );
+
+        $qpiutang->whereNotNull('spf.jumlah');
+        $qpiutang->whereRaw('to_days("' . $sampai . '") - to_days(penjualan.tgltransaksi) > 31');
+        $qpiutang->orwhereBetween('tgltransaksi', [$dari, $sampai]);
+        $qpiutang->whereRaw('to_days("' . $sampai . '") - to_days(penjualan.tgltransaksi) > 31');
+    }
+
+
     public function laporanaup()
     {
         $cbg = new Cabang();
@@ -6182,6 +6262,9 @@ class PenjualanController extends Controller
             SUM(bruto_BR20_tunai) as bruto_BR20_tunai,
             SUM(bruto_BR20_kredit) as bruto_BR20_kredit,
 
+            SUM(bruto_P1000) as bruto_P1000,
+            SUM(bruto_P1000_tunai) as bruto_P1000_tunai,
+            SUM(bruto_P1000_kredit) as bruto_P1000_kredit,
 
             SUM(qty_AB) as qty_AB,
             SUM(qty_AR) as qty_AR,
@@ -6199,6 +6282,7 @@ class PenjualanController extends Controller
             SUM(qty_SP8) as qty_SP8,
             SUM(qty_SP500) as qty_SP500,
             SUM(qty_BR20) as qty_BR20,
+            SUM(qty_P1000) as qty_P1000,
 
 
             SUM(qtydus_AB) as qtydus_AB,
@@ -6217,6 +6301,7 @@ class PenjualanController extends Controller
             SUM(qtydus_SP8) as qtydus_SP8,
             SUM(qtydus_SP500) as qtydus_SP500,
             SUM(qtydus_BR20) as qtydus_BR20,
+            SUM(qtydus_P1000) as qtydus_P1000,
 
             SUM(potaida) as  potonganAIDA,
             SUM(IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0)) as potonganSWAN,
@@ -6229,6 +6314,9 @@ class PenjualanController extends Controller
             + IFNULL(qtydus_CG5,0)
             + IFNULL(qtydus_BR20,0)
             ) as qtyAIDA,
+
+
+
             SUM(IFNULL(qtydus_BB,0)
             + IFNULL(qtydus_BBP,0)
             + IFNULL(qtydus_DEP,0)
@@ -6263,7 +6351,10 @@ class PenjualanController extends Controller
                 + IFNULL(qtydus_SC,0)
                 + IFNULL(qtydus_SP8,0)
                 + IFNULL(qtydus_SP500,0)
+                + IFNULL(qtydus_P1000,0)
             ),0)) as diskonswan,
+
+            
 
             SUM(IFNULL((IFNULL(potaida,0) /
             (IFNULL(qtydus_AB,0)
@@ -6338,32 +6429,143 @@ class PenjualanController extends Controller
 
 
 
-            SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0) ) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0) + IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) * qtydus_BB,0)) as diskon_BB,
+            SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0) ) / 
+            (IFNULL(qtydus_BB,0) + 
+            IFNULL(qtydus_BBP,0) + 
+            IFNULL(qtydus_DEP,0) + 
+            IFNULL(qtydus_DS,0) + 
+            IFNULL(qtydus_SP,0) + 
+            IFNULL(qtydus_SPP,0) + 
+            IFNULL(qtydus_SC,0) + 
+            IFNULL(qtydus_SP8,0) + 
+            IFNULL(qtydus_SP500,0) + 
+            IFNULL(qtydus_P1000,0)
+            ) * qtydus_BB,0)) as diskon_BB,
 
 
-            SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) * qtydus_BBP,0)) as diskon_BBP,
+            SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / 
+            (IFNULL(qtydus_BB,0) + 
+            IFNULL(qtydus_BBP,0) + 
+            IFNULL(qtydus_DEP,0) + 
+            IFNULL(qtydus_DS,0) + 
+            IFNULL(qtydus_SP,0)+ 
+            IFNULL(qtydus_SPP,0) + 
+            IFNULL(qtydus_SC,0) + 
+            IFNULL(qtydus_SP8,0) + 
+            IFNULL(qtydus_SP500,0) + 
+            IFNULL(qtydus_P1000,0)
+            ) * qtydus_BBP,0)) as diskon_BBP,
 
 
-            SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) * qtydus_DEP,0)) as diskon_DEP,
+            SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / 
+            (IFNULL(qtydus_BB,0) + 
+            IFNULL(qtydus_BBP,0) + 
+            IFNULL(qtydus_DEP,0) + 
+            IFNULL(qtydus_DS,0) + 
+            IFNULL(qtydus_SP,0)+ 
+            IFNULL(qtydus_SPP,0) + 
+            IFNULL(qtydus_SC,0) + 
+            IFNULL(qtydus_SP8,0) + 
+            IFNULL(qtydus_SP500,0) + 
+            IFNULL(qtydus_P1000,0)
+            ) * qtydus_DEP,0)) as diskon_DEP,
 
 
-            SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) * qtydus_DS,0)) as diskon_DS,
+            SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / 
+            (IFNULL(qtydus_BB,0) + 
+            IFNULL(qtydus_BBP,0) + 
+            IFNULL(qtydus_DEP,0) + 
+            IFNULL(qtydus_DS,0) + 
+            IFNULL(qtydus_SP,0)+ 
+            IFNULL(qtydus_SPP,0) + 
+            IFNULL(qtydus_SC,0) + 
+            IFNULL(qtydus_SP8,0) + 
+            IFNULL(qtydus_SP500,0) + 
+            IFNULL(qtydus_P1000,0)
+            ) * qtydus_DS,0)) as diskon_DS,
 
 
-            SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) * qtydus_SP,0)) as diskon_SP,
+            SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / 
+            (IFNULL(qtydus_BB,0) + 
+            IFNULL(qtydus_BBP,0) + 
+            IFNULL(qtydus_DEP,0) + 
+            IFNULL(qtydus_DS,0) + 
+            IFNULL(qtydus_SP,0)+ 
+            IFNULL(qtydus_SPP,0) + 
+            IFNULL(qtydus_SC,0) + 
+            IFNULL(qtydus_SP8,0) + 
+            IFNULL(qtydus_SP500,0) + 
+            IFNULL(qtydus_P1000,0)
+            ) * qtydus_SP,0)) as diskon_SP,
 
 
-            SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) * qtydus_SPP,0)) as diskon_SPP,
+            SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / 
+            (IFNULL(qtydus_BB,0) + 
+            IFNULL(qtydus_BBP,0) + 
+            IFNULL(qtydus_DEP,0) + 
+            IFNULL(qtydus_DS,0) + 
+            IFNULL(qtydus_SP,0)+ 
+            IFNULL(qtydus_SPP,0) + 
+            IFNULL(qtydus_SC,0) + 
+            IFNULL(qtydus_SP8,0) +
+            IFNULL(qtydus_SP500,0) + 
+            IFNULL(qtydus_P1000,0)
+             ) * qtydus_SPP,0)) as diskon_SPP,
 
 
-            SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + IFNULL(qtydus_SP500,0)) * qtydus_SC,0)) as diskon_SC,
+            SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / 
+            (IFNULL(qtydus_BB,0) + 
+            IFNULL(qtydus_BBP,0) + 
+            IFNULL(qtydus_DEP,0) + 
+            IFNULL(qtydus_DS,0) + 
+            IFNULL(qtydus_SP,0)+ 
+            IFNULL(qtydus_SPP,0) + 
+            IFNULL(qtydus_SC,0) + 
+            IFNULL(qtydus_SP8,0) + 
+            IFNULL(qtydus_SP500,0) + 
+            IFNULL(qtydus_P1000,0)
+            ) * qtydus_SC,0)) as diskon_SC,
 
 
-            SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + + IFNULL(qtydus_SP500,0)) * qtydus_SP8,0)) as diskon_SP8,
+            SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / 
+            (IFNULL(qtydus_BB,0) + 
+            IFNULL(qtydus_BBP,0) + 
+            IFNULL(qtydus_DEP,0) + 
+            IFNULL(qtydus_DS,0) + 
+            IFNULL(qtydus_SP,0)+ 
+            IFNULL(qtydus_SPP,0) + 
+            IFNULL(qtydus_SC,0) + 
+            IFNULL(qtydus_SP8,0)  + 
+            IFNULL(qtydus_SP500,0) + 
+            IFNULL(qtydus_P1000,0)
+            ) * qtydus_SP8,0)) as diskon_SP8,
 
-            SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / (IFNULL(qtydus_BB,0) + IFNULL(qtydus_BBP,0) + IFNULL(qtydus_DEP,0) + IFNULL(qtydus_DS,0) + IFNULL(qtydus_SP,0)+ IFNULL(qtydus_SPP,0) + IFNULL(qtydus_SC,0) + IFNULL(qtydus_SP8,0) + + IFNULL(qtydus_SP500,0)) * qtydus_SP500,0)) as diskon_SP500,
+            SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / 
+            (IFNULL(qtydus_BB,0) + 
+            IFNULL(qtydus_BBP,0) + 
+            IFNULL(qtydus_DEP,0) + 
+            IFNULL(qtydus_DS,0) + 
+            IFNULL(qtydus_SP,0)+ 
+            IFNULL(qtydus_SPP,0) + 
+            IFNULL(qtydus_SC,0) + 
+            IFNULL(qtydus_SP8,0) +
+            IFNULL(qtydus_SP500,0) + 
+            IFNULL(qtydus_P1000,0)
+             ) * qtydus_SP500,0)) as diskon_SP500,
 
 
+             SUM(IFNULL((IFNULL(potswan,0) + IFNULL(potstick,0) + IFNULL(potsp,0) + IFNULL(potsambal,0)) / 
+             (IFNULL(qtydus_BB,0) + 
+             IFNULL(qtydus_BBP,0) + 
+             IFNULL(qtydus_DEP,0) + 
+             IFNULL(qtydus_DS,0) + 
+             IFNULL(qtydus_SP,0)+ 
+             IFNULL(qtydus_SPP,0) + 
+             IFNULL(qtydus_SC,0) + 
+             IFNULL(qtydus_SP8,0) +
+             IFNULL(qtydus_SP500,0) + 
+             IFNULL(qtydus_P1000,0)
+              ) * qtydus_P1000,0)) as diskon_P1000,
 
             SUM(penyharga) as penyharga,
 
@@ -6382,121 +6584,128 @@ class PenjualanController extends Controller
             SUM(IFNULL(retur_SC,0)) as retur_SC,
             SUM(IFNULL(retur_SP8,0)) as retur_SP8,
             SUM(IFNULL(retur_SP500,0)) as retur_SP500,
-            SUM(IFNULL(retur_BR20,0)) as retur_BR20
+            SUM(IFNULL(retur_BR20,0)) as retur_BR20,
+            SUM(IFNULL(retur_P1000,0)) as retur_P1000
         ")
             ->leftJoin(
                 DB::raw("(
                 SELECT
-		dp.no_fak_penj,
-		SUM(IF(b.kode_produk = 'AB',dp.subtotal,0)) as bruto_AB,
-		SUM(IF(b.kode_produk = 'AB' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_AB_tunai,
-		SUM(IF(b.kode_produk = 'AB' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_AB_kredit,
+                dp.no_fak_penj,
+                SUM(IF(b.kode_produk = 'AB',dp.subtotal,0)) as bruto_AB,
+                SUM(IF(b.kode_produk = 'AB' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_AB_tunai,
+                SUM(IF(b.kode_produk = 'AB' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_AB_kredit,
 
-		SUM(IF(b.kode_produk = 'AR',dp.subtotal,0)) as bruto_AR,
-        SUM(IF(b.kode_produk = 'AR' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_AR_tunai,
-		SUM(IF(b.kode_produk = 'AR' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_AR_kredit,
+                SUM(IF(b.kode_produk = 'AR',dp.subtotal,0)) as bruto_AR,
+                SUM(IF(b.kode_produk = 'AR' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_AR_tunai,
+                SUM(IF(b.kode_produk = 'AR' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_AR_kredit,
 
-		SUM(IF(b.kode_produk = 'AS',dp.subtotal,0)) as bruto_AS,
-        SUM(IF(b.kode_produk = 'AS' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_AS_tunai,
-		SUM(IF(b.kode_produk = 'AS' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_AS_kredit,
-
-
-		SUM(IF(b.kode_produk = 'BB',dp.subtotal,0)) as bruto_BB,
-        SUM(IF(b.kode_produk = 'BB' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_BB_tunai,
-		SUM(IF(b.kode_produk = 'BB' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_BB_kredit,
-
-		SUM(IF(b.kode_produk = 'BBP',dp.subtotal,0)) as bruto_BBP,
-        SUM(IF(b.kode_produk = 'BBP' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_BBP_tunai,
-		SUM(IF(b.kode_produk = 'BBP' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_BBP_kredit,
+                SUM(IF(b.kode_produk = 'AS',dp.subtotal,0)) as bruto_AS,
+                SUM(IF(b.kode_produk = 'AS' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_AS_tunai,
+                SUM(IF(b.kode_produk = 'AS' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_AS_kredit,
 
 
-		SUM(IF(b.kode_produk = 'CG',dp.subtotal,0)) as bruto_CG,
-        SUM(IF(b.kode_produk = 'CG' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_CG_tunai,
-		SUM(IF(b.kode_produk = 'CG' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_CG_kredit,
+                SUM(IF(b.kode_produk = 'BB',dp.subtotal,0)) as bruto_BB,
+                SUM(IF(b.kode_produk = 'BB' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_BB_tunai,
+                SUM(IF(b.kode_produk = 'BB' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_BB_kredit,
 
-		SUM(IF(b.kode_produk = 'CGG',dp.subtotal,0)) as bruto_CGG,
-        SUM(IF(b.kode_produk = 'CGG' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_CGG_tunai,
-		SUM(IF(b.kode_produk = 'CGG' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_CGG_kredit,
-
-		SUM(IF(b.kode_produk = 'CG5',dp.subtotal,0)) as bruto_CG5,
-        SUM(IF(b.kode_produk = 'CG5' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_CG5_tunai,
-		SUM(IF(b.kode_produk = 'CG5' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_CG5_kredit,
-
-		SUM(IF(b.kode_produk = 'DEP',dp.subtotal,0)) as bruto_DEP,
-        SUM(IF(b.kode_produk = 'DEP' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_DEP_tunai,
-		SUM(IF(b.kode_produk = 'DEP' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_DEP_kredit,
-
-		SUM(IF(b.kode_produk = 'DS',dp.subtotal,0)) as bruto_DS,
-        SUM(IF(b.kode_produk = 'DS' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_DS_tunai,
-		SUM(IF(b.kode_produk = 'DS' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_DS_kredit,
-
-		SUM(IF(b.kode_produk = 'SP',dp.subtotal,0)) as bruto_SP,
-        SUM(IF(b.kode_produk = 'SP' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_SP_tunai,
-		SUM(IF(b.kode_produk = 'SP' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_SP_kredit,
-
-		SUM(IF(b.kode_produk = 'SPP',dp.subtotal,0)) as bruto_SPP,
-        SUM(IF(b.kode_produk = 'SPP' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_SPP_tunai,
-		SUM(IF(b.kode_produk = 'SPP' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_SPP_kredit,
+                SUM(IF(b.kode_produk = 'BBP',dp.subtotal,0)) as bruto_BBP,
+                SUM(IF(b.kode_produk = 'BBP' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_BBP_tunai,
+                SUM(IF(b.kode_produk = 'BBP' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_BBP_kredit,
 
 
-		SUM(IF(b.kode_produk = 'SC',dp.subtotal,0)) as bruto_SC,
-        SUM(IF(b.kode_produk = 'SC' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_SC_tunai,
-		SUM(IF(b.kode_produk = 'SC' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_SC_kredit,
+                SUM(IF(b.kode_produk = 'CG',dp.subtotal,0)) as bruto_CG,
+                SUM(IF(b.kode_produk = 'CG' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_CG_tunai,
+                SUM(IF(b.kode_produk = 'CG' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_CG_kredit,
+
+                SUM(IF(b.kode_produk = 'CGG',dp.subtotal,0)) as bruto_CGG,
+                SUM(IF(b.kode_produk = 'CGG' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_CGG_tunai,
+                SUM(IF(b.kode_produk = 'CGG' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_CGG_kredit,
+
+                SUM(IF(b.kode_produk = 'CG5',dp.subtotal,0)) as bruto_CG5,
+                SUM(IF(b.kode_produk = 'CG5' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_CG5_tunai,
+                SUM(IF(b.kode_produk = 'CG5' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_CG5_kredit,
+
+                SUM(IF(b.kode_produk = 'DEP',dp.subtotal,0)) as bruto_DEP,
+                SUM(IF(b.kode_produk = 'DEP' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_DEP_tunai,
+                SUM(IF(b.kode_produk = 'DEP' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_DEP_kredit,
+
+                SUM(IF(b.kode_produk = 'DS',dp.subtotal,0)) as bruto_DS,
+                SUM(IF(b.kode_produk = 'DS' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_DS_tunai,
+                SUM(IF(b.kode_produk = 'DS' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_DS_kredit,
+
+                SUM(IF(b.kode_produk = 'SP',dp.subtotal,0)) as bruto_SP,
+                SUM(IF(b.kode_produk = 'SP' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_SP_tunai,
+                SUM(IF(b.kode_produk = 'SP' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_SP_kredit,
+
+                SUM(IF(b.kode_produk = 'SPP',dp.subtotal,0)) as bruto_SPP,
+                SUM(IF(b.kode_produk = 'SPP' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_SPP_tunai,
+                SUM(IF(b.kode_produk = 'SPP' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_SPP_kredit,
 
 
-		SUM(IF(b.kode_produk = 'SP8',dp.subtotal,0)) as bruto_SP8,
-        SUM(IF(b.kode_produk = 'SP8' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_SP8_tunai,
-		SUM(IF(b.kode_produk = 'SP8' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_SP8_kredit,
+                SUM(IF(b.kode_produk = 'SC',dp.subtotal,0)) as bruto_SC,
+                SUM(IF(b.kode_produk = 'SC' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_SC_tunai,
+                SUM(IF(b.kode_produk = 'SC' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_SC_kredit,
 
 
-		SUM(IF(b.kode_produk = 'SP500',dp.subtotal,0)) as bruto_SP500,
-        SUM(IF(b.kode_produk = 'SP500' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_SP500_tunai,
-		SUM(IF(b.kode_produk = 'SP500' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_SP500_kredit,
+                SUM(IF(b.kode_produk = 'SP8',dp.subtotal,0)) as bruto_SP8,
+                SUM(IF(b.kode_produk = 'SP8' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_SP8_tunai,
+                SUM(IF(b.kode_produk = 'SP8' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_SP8_kredit,
 
 
-        SUM(IF(b.kode_produk = 'BR20',dp.subtotal,0)) as bruto_BR20,
-        SUM(IF(b.kode_produk = 'BR20' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_BR20_tunai,
-		SUM(IF(b.kode_produk = 'BR20' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_BR20_kredit,
+                SUM(IF(b.kode_produk = 'SP500',dp.subtotal,0)) as bruto_SP500,
+                SUM(IF(b.kode_produk = 'SP500' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_SP500_tunai,
+                SUM(IF(b.kode_produk = 'SP500' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_SP500_kredit,
 
 
-		SUM(IF(b.kode_produk = 'AB' AND promo !=1 OR b.kode_produk = 'AB' AND promo IS NULL,dp.jumlah,0)) as   qty_AB,
-		SUM(IF(b.kode_produk = 'AR' AND promo !=1 OR b.kode_produk = 'AR' AND promo IS NULL,dp.jumlah,0)) as   qty_AR,
-		SUM(IF(b.kode_produk = 'AS' AND promo !=1 OR b.kode_produk = 'AS' AND promo IS NULL,dp.jumlah,0)) as   qty_AS,
-		SUM(IF(b.kode_produk = 'BB' AND promo !=1 OR b.kode_produk = 'BB' AND promo IS NULL,dp.jumlah,0)) as   qty_BB,
-		SUM(IF(b.kode_produk = 'BBP' AND promo !=1 OR b.kode_produk = 'BBP' AND promo IS NULL,dp.jumlah,0)) as   qty_BBP,
-		SUM(IF(b.kode_produk = 'CG' AND promo !=1 OR b.kode_produk = 'CG' AND promo IS NULL,dp.jumlah,0)) as  qty_CG,
-		SUM(IF(b.kode_produk = 'CGG' AND promo !=1 OR b.kode_produk = 'CGG' AND promo IS NULL,dp.jumlah,0)) as   qty_CGG,
-		SUM(IF(b.kode_produk = 'CG5' AND promo !=1 OR b.kode_produk = 'CG5' AND promo IS NULL,dp.jumlah,0)) as   qty_CG5,
-		SUM(IF(b.kode_produk = 'DEP' AND promo !=1 OR b.kode_produk = 'DEP' AND promo IS NULL,dp.jumlah,0)) as   qty_DEP,
-		SUM(IF(b.kode_produk = 'DS' AND promo !=1 OR b.kode_produk = 'DS' AND promo IS NULL,dp.jumlah,0)) as   qty_DS,
-		SUM(IF(b.kode_produk = 'SP' AND promo !=1 OR b.kode_produk = 'SP' AND promo IS NULL,dp.jumlah,0)) as   qty_SP,
-		SUM(IF(b.kode_produk = 'SPP' AND promo !=1 OR b.kode_produk = 'SPP' AND promo IS NULL,dp.jumlah,0)) as   qty_SPP,
-		SUM(IF(b.kode_produk = 'SC' AND promo !=1 OR b.kode_produk = 'SC' AND promo IS NULL,dp.jumlah,0)) as   qty_SC,
-		SUM(IF(b.kode_produk = 'SP8' AND promo !=1 OR b.kode_produk = 'SP8' AND promo IS NULL,dp.jumlah,0)) as   qty_SP8,
-		SUM(IF(b.kode_produk = 'SP500' AND promo !=1 OR b.kode_produk = 'SP500' AND promo IS NULL,dp.jumlah,0)) as   qty_SP500,
-        SUM(IF(b.kode_produk = 'BR20' AND promo != 1 OR b.kode_produk = 'BR20' AND promo IS NULL,dp.jumlah,0)) as qty_BR20,
+                SUM(IF(b.kode_produk = 'BR20',dp.subtotal,0)) as bruto_BR20,
+                SUM(IF(b.kode_produk = 'BR20' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_BR20_tunai,
+                SUM(IF(b.kode_produk = 'BR20' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_BR20_kredit,
 
-		SUM(IF(b.kode_produk = 'AB' AND promo !=1 OR b.kode_produk = 'AB' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_AB,
-		SUM(IF(b.kode_produk = 'AR' AND promo !=1 OR b.kode_produk = 'AR' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_AR,
-		SUM(IF(b.kode_produk = 'AS' AND promo !=1 OR b.kode_produk = 'AS' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_AS,
-		SUM(IF(b.kode_produk = 'BB' AND promo !=1 OR b.kode_produk = 'BB' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_BB,
-		SUM(IF(b.kode_produk = 'BBP' AND promo !=1 OR b.kode_produk = 'BBP' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_BBP,
-		SUM(IF(b.kode_produk = 'CG' AND promo !=1 OR b.kode_produk = 'CG' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as  qtydus_CG,
-		SUM(IF(b.kode_produk = 'CGG' AND promo !=1 OR b.kode_produk = 'CGG' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_CGG,
-		SUM(IF(b.kode_produk = 'CG5' AND promo !=1 OR b.kode_produk = 'CG5' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_CG5,
-		SUM(IF(b.kode_produk = 'DEP' AND promo !=1 OR b.kode_produk = 'DEP' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_DEP,
-		SUM(IF(b.kode_produk = 'DS' AND promo !=1 OR b.kode_produk = 'DS' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_DS,
-		SUM(IF(b.kode_produk = 'SP' AND promo !=1 OR b.kode_produk = 'SP' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_SP,
-		SUM(IF(b.kode_produk = 'SPP' AND promo !=1 OR b.kode_produk = 'SPP' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_SPP,
-		SUM(IF(b.kode_produk = 'SC' AND promo !=1 OR b.kode_produk = 'SC' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_SC,
-		SUM(IF(b.kode_produk = 'SP8' AND promo !=1 OR b.kode_produk = 'SP8' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_SP8,
-        SUM(IF(b.kode_produk = 'SP500' AND promo !=1 OR b.kode_produk = 'SP500' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_SP500,
-        SUM(IF(b.kode_produk = 'BR20' AND promo !=1 OR b.kode_produk = 'BR20' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_BR20
-		FROM detailpenjualan dp
-		INNER JOIN barang b ON dp.kode_barang = b.kode_barang
-		INNER JOIN master_barang mb ON b.kode_produk = mb.kode_produk
-        INNER JOIN penjualan ON dp.no_fak_penj = penjualan.no_fak_penj
-		GROUP BY dp.no_fak_penj
+                SUM(IF(b.kode_produk = 'P1000',dp.subtotal,0)) as bruto_P1000,
+                SUM(IF(b.kode_produk = 'P1000' AND jenistransaksi='tunai',dp.subtotal,0)) as bruto_P1000_tunai,
+                SUM(IF(b.kode_produk = 'P1000' AND jenistransaksi='kredit',dp.subtotal,0)) as bruto_P1000_kredit,
+
+
+                SUM(IF(b.kode_produk = 'AB' AND promo !=1 OR b.kode_produk = 'AB' AND promo IS NULL,dp.jumlah,0)) as   qty_AB,
+                SUM(IF(b.kode_produk = 'AR' AND promo !=1 OR b.kode_produk = 'AR' AND promo IS NULL,dp.jumlah,0)) as   qty_AR,
+                SUM(IF(b.kode_produk = 'AS' AND promo !=1 OR b.kode_produk = 'AS' AND promo IS NULL,dp.jumlah,0)) as   qty_AS,
+                SUM(IF(b.kode_produk = 'BB' AND promo !=1 OR b.kode_produk = 'BB' AND promo IS NULL,dp.jumlah,0)) as   qty_BB,
+                SUM(IF(b.kode_produk = 'BBP' AND promo !=1 OR b.kode_produk = 'BBP' AND promo IS NULL,dp.jumlah,0)) as   qty_BBP,
+                SUM(IF(b.kode_produk = 'CG' AND promo !=1 OR b.kode_produk = 'CG' AND promo IS NULL,dp.jumlah,0)) as  qty_CG,
+                SUM(IF(b.kode_produk = 'CGG' AND promo !=1 OR b.kode_produk = 'CGG' AND promo IS NULL,dp.jumlah,0)) as   qty_CGG,
+                SUM(IF(b.kode_produk = 'CG5' AND promo !=1 OR b.kode_produk = 'CG5' AND promo IS NULL,dp.jumlah,0)) as   qty_CG5,
+                SUM(IF(b.kode_produk = 'DEP' AND promo !=1 OR b.kode_produk = 'DEP' AND promo IS NULL,dp.jumlah,0)) as   qty_DEP,
+                SUM(IF(b.kode_produk = 'DS' AND promo !=1 OR b.kode_produk = 'DS' AND promo IS NULL,dp.jumlah,0)) as   qty_DS,
+                SUM(IF(b.kode_produk = 'SP' AND promo !=1 OR b.kode_produk = 'SP' AND promo IS NULL,dp.jumlah,0)) as   qty_SP,
+                SUM(IF(b.kode_produk = 'SPP' AND promo !=1 OR b.kode_produk = 'SPP' AND promo IS NULL,dp.jumlah,0)) as   qty_SPP,
+                SUM(IF(b.kode_produk = 'SC' AND promo !=1 OR b.kode_produk = 'SC' AND promo IS NULL,dp.jumlah,0)) as   qty_SC,
+                SUM(IF(b.kode_produk = 'SP8' AND promo !=1 OR b.kode_produk = 'SP8' AND promo IS NULL,dp.jumlah,0)) as   qty_SP8,
+                SUM(IF(b.kode_produk = 'SP500' AND promo !=1 OR b.kode_produk = 'SP500' AND promo IS NULL,dp.jumlah,0)) as   qty_SP500,
+                SUM(IF(b.kode_produk = 'BR20' AND promo != 1 OR b.kode_produk = 'BR20' AND promo IS NULL,dp.jumlah,0)) as qty_BR20,
+                SUM(IF(b.kode_produk = 'P1000' AND promo != 1 OR b.kode_produk = 'P1000' AND promo IS NULL,dp.jumlah,0)) as qty_P1000,
+
+                SUM(IF(b.kode_produk = 'AB' AND promo !=1 OR b.kode_produk = 'AB' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_AB,
+                SUM(IF(b.kode_produk = 'AR' AND promo !=1 OR b.kode_produk = 'AR' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_AR,
+                SUM(IF(b.kode_produk = 'AS' AND promo !=1 OR b.kode_produk = 'AS' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_AS,
+                SUM(IF(b.kode_produk = 'BB' AND promo !=1 OR b.kode_produk = 'BB' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_BB,
+                SUM(IF(b.kode_produk = 'BBP' AND promo !=1 OR b.kode_produk = 'BBP' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_BBP,
+                SUM(IF(b.kode_produk = 'CG' AND promo !=1 OR b.kode_produk = 'CG' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as  qtydus_CG,
+                SUM(IF(b.kode_produk = 'CGG' AND promo !=1 OR b.kode_produk = 'CGG' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_CGG,
+                SUM(IF(b.kode_produk = 'CG5' AND promo !=1 OR b.kode_produk = 'CG5' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_CG5,
+                SUM(IF(b.kode_produk = 'DEP' AND promo !=1 OR b.kode_produk = 'DEP' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_DEP,
+                SUM(IF(b.kode_produk = 'DS' AND promo !=1 OR b.kode_produk = 'DS' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_DS,
+                SUM(IF(b.kode_produk = 'SP' AND promo !=1 OR b.kode_produk = 'SP' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_SP,
+                SUM(IF(b.kode_produk = 'SPP' AND promo !=1 OR b.kode_produk = 'SPP' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_SPP,
+                SUM(IF(b.kode_produk = 'SC' AND promo !=1 OR b.kode_produk = 'SC' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_SC,
+                SUM(IF(b.kode_produk = 'SP8' AND promo !=1 OR b.kode_produk = 'SP8' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_SP8,
+                SUM(IF(b.kode_produk = 'SP500' AND promo !=1 OR b.kode_produk = 'SP500' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_SP500,
+                SUM(IF(b.kode_produk = 'BR20' AND promo !=1 OR b.kode_produk = 'BR20' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_BR20,
+                SUM(IF(b.kode_produk = 'P1000' AND promo !=1 OR b.kode_produk = 'P1000' AND promo IS NULL,floor(dp.jumlah/mb.isipcsdus),0)) as   qtydus_P1000
+                FROM detailpenjualan dp
+                INNER JOIN barang b ON dp.kode_barang = b.kode_barang
+                INNER JOIN master_barang mb ON b.kode_produk = mb.kode_produk
+                INNER JOIN penjualan ON dp.no_fak_penj = penjualan.no_fak_penj
+                GROUP BY dp.no_fak_penj
             ) detail"),
                 function ($join) {
                     $join->on('penjualan.no_fak_penj', '=', 'detail.no_fak_penj');
@@ -6521,7 +6730,8 @@ class PenjualanController extends Controller
                 SUM(IF(b.kode_produk = 'SC',subtotal,0)) as   retur_SC,
                 SUM(IF(b.kode_produk = 'SP8',subtotal,0)) as   retur_SP8,
                 SUM(IF(b.kode_produk = 'SP500',subtotal,0)) as   retur_SP500,
-                SUM(IF(b.kode_produk = 'BR20',subtotal,0)) as   retur_BR20
+                SUM(IF(b.kode_produk = 'BR20',subtotal,0)) as   retur_BR20,
+                SUM(IF(b.kode_produk = 'P1000',subtotal,0)) as   retur_P1000
                 FROM detailretur
                 INNER JOIN retur ON detailretur.no_retur_penj = retur.no_retur_penj
                 INNER JOIN barang b ON detailretur.kode_barang = b.kode_barang
@@ -6555,6 +6765,7 @@ class PenjualanController extends Controller
 		SUM(IF(barang.kode_produk = 'SP8',subtotal,0)) as   retur_SP8,
 		SUM(IF(barang.kode_produk = 'SP500',subtotal,0)) as   retur_SP500,
 		SUM(IF(barang.kode_produk = 'BR20',subtotal,0)) as   retur_BR20,
+		SUM(IF(barang.kode_produk = 'P1000',subtotal,0)) as   retur_P1000,
 
 		SUM(IF(barang.kode_produk = 'AB' AND jenis_retur='GB',subtotal,0)) as   returpeny_AB,
 		SUM(IF(barang.kode_produk = 'AR' AND jenis_retur='GB',subtotal,0)) as   returpeny_AR,
@@ -6572,7 +6783,8 @@ class PenjualanController extends Controller
 		SUM(IF(barang.kode_produk = 'SC' AND jenis_retur='GB',subtotal,0)) as   returpeny_SC,
 		SUM(IF(barang.kode_produk = 'SP8' AND jenis_retur='GB',subtotal,0)) as   returpeny_SP8,
 		SUM(IF(barang.kode_produk = 'SP500' AND jenis_retur='GB',subtotal,0)) as   returpeny_SP500,
-		SUM(IF(barang.kode_produk = 'BR20' AND jenis_retur='GB',subtotal,0)) as   returpeny_BR20
+		SUM(IF(barang.kode_produk = 'BR20' AND jenis_retur='GB',subtotal,0)) as   returpeny_BR20,
+		SUM(IF(barang.kode_produk = 'P1000' AND jenis_retur='GB',subtotal,0)) as   returpeny_P1000
         ")
             ->join('retur', 'detailretur.no_retur_penj', '=', 'retur.no_retur_penj')
             ->join('barang', 'detailretur.kode_barang', '=', 'barang.kode_barang')
@@ -6745,6 +6957,7 @@ class PenjualanController extends Controller
             SP8P,
             SP500,
             BR20,
+            P1000,
             totalbruto,
             totalretur,
             totalpotongan, totalpotistimewa,
@@ -6762,7 +6975,7 @@ class PenjualanController extends Controller
             lainnya,
             IFNULL(saldoawalpiutang,0) - IFNULL(piutanglama,0) + IFNULL(piutangpindahanbulanlalu,0) as saldoawalpiutang,
             IFNULL(saldoawalpiutang,0) -  IFNULL(piutanglamanow,0) + IFNULL(piutangpindahan,0) - IFNULL(piutanglamaberjalan,0) +
-(IFNULL(totalbruto,0) - IFNULL(totalpotongan,0)-IFNULL(totalretur,0) - IFNULL(totalpotistimewa,0) - IFNULL(totalpenyharga,0) + IFNULL(totalppn,0))-IFNULL(totalbayarpiutang,0) as
+            (IFNULL(totalbruto,0) - IFNULL(totalpotongan,0)-IFNULL(totalretur,0) - IFNULL(totalpotistimewa,0) - IFNULL(totalpenyharga,0) + IFNULL(totalppn,0))-IFNULL(totalbayarpiutang,0) as
             saldoakhirpiutang");
             $query->leftJoin(
                 DB::raw("(
@@ -6785,7 +6998,8 @@ class PenjualanController extends Controller
                     SUM( IF ( kode_produk = 'SP', detailpenjualan.subtotal, NULL ) ) AS SP,
                     SUM( IF ( kode_produk = 'SP8-P', detailpenjualan.subtotal, NULL ) ) AS SP8P,
                     SUM( IF ( kode_produk = 'SP500', detailpenjualan.subtotal, NULL ) ) AS SP500,
-                    SUM( IF ( kode_produk = 'BR20', detailpenjualan.subtotal, NULL ) ) AS BR20
+                    SUM( IF ( kode_produk = 'BR20', detailpenjualan.subtotal, NULL ) ) AS BR20,
+                    SUM( IF ( kode_produk = 'P1000', detailpenjualan.subtotal, NULL ) ) AS P1000
                     FROM
                         detailpenjualan
                         INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang

@@ -625,7 +625,7 @@ class GlobalProvider extends ServiceProvider
 
 
             $karyawan_tambah = ['admin', 'manager hrd', 'spv presensi', 'spv recruitment'];
-            $karyawan_edit = ['admin', 'manager hrd', 'spv presensi', 'spv recruitment'];
+            $karyawan_edit = ['admin', 'manager hrd', 'spv presensi', 'spv recruitment', 'manager accounting'];
             $karyawan_hapus = ['admin', 'manager hrd', 'spv presensi', 'spv recruitment'];
 
 

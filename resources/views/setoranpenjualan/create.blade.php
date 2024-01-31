@@ -13,8 +13,8 @@
                 <select name="kode_cabang" id="kode_cabang" class="form-control">
                     <option value="">Pilih Cabang</option>
                     @foreach ($cabang as $c)
-                    <option {{ (Request('kode_cabang')==$c->kode_cabang ? 'selected':'')}} value="{{
-                                            $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
+                        <option {{ Request('kode_cabang') == $c->kode_cabang ? 'selected' : '' }}
+                            value="{{ $c->kode_cabang }}">{{ strtoupper($c->nama_cabang) }}</option>
                     @endforeach
                 </select>
             </div>
@@ -66,6 +66,7 @@
             <x-inputtext label="Setoran Uang Logam" field="setoran_logam" icon="feather icon-file" right />
         </div>
     </div>
+
     <div class="row">
         <div class="col-12">
             <input type="hidden" id="setoran_bg" name="setoran_bg">
@@ -116,9 +117,9 @@
         </div>
     </div>
 </form>
-<script src="{{asset('app-assets/vendors/js/forms/select/select2.full.min.js')}}"></script>
-<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
-<script src="{{asset('app-assets/js/scripts/forms/select/form-select2.js')}}"></script>
+<script src="{{ asset('app-assets/vendors/js/forms/select/select2.full.min.js') }}"></script>
+<script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
+<script src="{{ asset('app-assets/js/scripts/forms/select/form-select2.js') }}"></script>
 <script>
     $(function() {
         var kode_cabang = $("#kode_cabang").val();
@@ -127,15 +128,15 @@
         function cektutuplaporan() {
             var tanggal = $("#tgl_lhp").val();
             $.ajax({
-                type: "POST"
-                , url: "/cektutuplaporan"
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , tanggal: tanggal
-                    , jenislaporan: "penjualan"
-                }
-                , cache: false
-                , success: function(respond) {
+                type: "POST",
+                url: "/cektutuplaporan",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    tanggal: tanggal,
+                    jenislaporan: "penjualan"
+                },
+                cache: false,
+                success: function(respond) {
                     console.log(respond);
                     $("#frmSetoranpenjualan").find("#cektutuplaporan").val(respond);
                 }
@@ -146,15 +147,15 @@
 
         function loadsalesmancabang(kode_cabang) {
             $.ajax({
-                type: 'POST'
-                , url: '/salesman/getsalescab'
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , kode_cabang: kode_cabang
-                    , type: 1
-                }
-                , cache: false
-                , success: function(respond) {
+                type: 'POST',
+                url: '/salesman/getsalescab',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    kode_cabang: kode_cabang,
+                    type: 1
+                },
+                cache: false,
+                success: function(respond) {
                     $("#frmSetoranpenjualan").find('#id_karyawan').html(respond);
                 }
             });
@@ -187,15 +188,15 @@
             var tgl_lhp = $("#tgl_lhp").val();
             var id_karyawan = $("#frmSetoranpenjualan").find('#id_karyawan').val();
             $.ajax({
-                type: 'POST'
-                , url: '/setoranpenjualan/ceksetoran'
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , tgl_lhp: tgl_lhp
-                    , id_karyawan: id_karyawan
-                }
-                , cache: false
-                , success: function(respond) {
+                type: 'POST',
+                url: '/setoranpenjualan/ceksetoran',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    tgl_lhp: tgl_lhp,
+                    id_karyawan: id_karyawan
+                },
+                cache: false,
+                success: function(respond) {
                     $("#ceksetoran").val(respond);
                 }
             });
@@ -228,7 +229,8 @@
             if (setorantransfer == "") {
                 var setorantransfer = 0;
             }
-            var totalsetoran = parseInt(setorankertas) + parseInt(setoranlogam) + parseInt(setoranbg) + parseInt(setorantransfer);
+            var totalsetoran = parseInt(setorankertas) + parseInt(setoranlogam) + parseInt(setoranbg) +
+                parseInt(setorantransfer);
             $("#total_setoran").val(totalsetoran);
             $("#total_setoran_text").text(addCommas(totalsetoran));
         }
@@ -247,15 +249,15 @@
             var tgl_lhp = $("#tgl_lhp").val();
             var id_karyawan = $("#frmSetoranpenjualan").find('#id_karyawan').val();
             $.ajax({
-                type: 'POST'
-                , url: '/setoranpenjualan/getsetoranpenjualan'
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , tgl_lhp: tgl_lhp
-                    , id_karyawan: id_karyawan
-                }
-                , cache: false
-                , success: function(respond) {
+                type: 'POST',
+                url: '/setoranpenjualan/getsetoranpenjualan',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    tgl_lhp: tgl_lhp,
+                    id_karyawan: id_karyawan
+                },
+                cache: false,
+                success: function(respond) {
                     console.log(respond);
                     datasetoran = respond.split("|");
                     //LHP
@@ -302,10 +304,10 @@
             var cektutuplaporan = $("#frmSetoranpenjualan").find("#cektutuplaporan").val();
             if (cektutuplaporan > 0) {
                 swal({
-                    title: 'Oops'
-                    , text: 'Periode Laporan Sudah Ditutup !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Periode Laporan Sudah Ditutup !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#tgl_lhp").focus();
                 });
@@ -313,10 +315,10 @@
                 return false;
             } else if (tgl_lhp == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Tanggal Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Tanggal Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#tgl_lhp").focus();
                 });
@@ -324,10 +326,10 @@
                 return false;
             } else if (kode_cabang == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Cabang Harus Dipilih !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Cabang Harus Dipilih !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#kode_cabang").focus();
                 });
@@ -335,10 +337,10 @@
                 return false;
             } else if (id_karyawan == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Salesman Harus Dipilih !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Salesman Harus Dipilih !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#id_karyawan").focus();
                 });
@@ -346,10 +348,10 @@
                 return false;
             } else if (total_lhp == "" || total_lhp == 0) {
                 swal({
-                    title: 'Oops'
-                    , text: 'Tidak Ada Transaksi Untuk Salesman Ini Pada Tanggal Tersebut !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Tidak Ada Transaksi Untuk Salesman Ini Pada Tanggal Tersebut !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#tgl_lhp").focus();
                 });
@@ -357,10 +359,10 @@
                 return false;
             } else if (ceksetoran > 0) {
                 swal({
-                    title: 'Oops'
-                    , text: 'Data Sudah Ada !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Data Sudah Ada !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#tgl_lhp").focus();
                 });
@@ -369,5 +371,4 @@
             }
         });
     });
-
 </script>
