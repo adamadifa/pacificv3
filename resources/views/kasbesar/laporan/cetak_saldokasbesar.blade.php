@@ -126,7 +126,7 @@
                 $totalsetoranlainnya = 0;
                 $grandtotallhp = 0;
                 $grandtotalsetoranbank = 0;
-                $grandtotalsetoranlainnya = 0;
+                $grandtotalsetoranbanklainnya = 0;
                 $totalrinciankertas = $saldokasbesar != null ? $saldokasbesar->uang_kertas : 0;
                 $totalrincianlogam = $saldokasbesar != null ? $saldokasbesar->uang_logam : 0;
                 $totalrinciangiro = $saldokasbesar != null ? $saldokasbesar->giro : 0;
@@ -162,7 +162,7 @@
 
                 $pengeluaran = DB::table('setoran_pusat')
                 ->selectRaw("SUM(uang_logam) as setoranlogam,
-                SUM(IF(bank = 'LAINNYA',uang_kertas,0)) as setorankertas_lainnya,
+                SUM(IF(bank = 'LAINNYA',uang_kertas,0)) as setoranlainnya,
                 SUM(IF(bank != 'LAINNYA',uang_kertas,0)) as setorankertas,
                 SUM(giro) as setorangiro,
                 SUM(transfer) as setorantransfer")
@@ -216,13 +216,13 @@
 
                 if($pengeluaran != null){
                     $setoranbank_kertas = $pengeluaran->setorankertas;
-                    $setoran_lainnya = $pengeluaran->setorankertas_lainnya;
+                    $setoranbank_lainnya = $pengeluaran->setoranlainnya;
                     $setoranbank_logam = $pengeluaran->setoranlogam;
                     $setoranbank_transfer = $pengeluaran->setorantransfer;
                     $setoranbank_giro = $pengeluaran->setorangiro;
                 }else{
                     $setoranbank_kertas = 0;
-                    $setoran_lainnya = 0;
+                    $setoranbank_lainnya = 0;
                     $setoranbank_logam = 0;
                     $setoranbank_transfer = 0;
                     $setoranbank_giro = 0;
@@ -239,9 +239,9 @@
                 $lhptransfer = $setoran_transfer;
                 $lhplainnya = $setoran_lainnya;
                 $totallhp = $lhpkertas + $lhplogam + $lhpgiro + $lhptransfer + $lhplainnya;
-                $totalsetoranbank = $setoranbank_kertas + $setoranbank_logam + $setoranbank_transfer + $setoranbank_giro;
-                $totalsetoranlainnya = $setoran_lainnya;
-                $mutasi = $totallhp - $totalsetoranbank;
+                $totalsetoranbank = $setoranbank_kertas + $setoranbank_logam + $setoranbank_transfer + $setoranbank_giro ;
+                $totalsetoranbanklainnya =  $setoranbank_lainnya;
+                $mutasi = $totallhp - $totalsetoranbank - $totalsetoranbanklainnya;
                 $saldo += $mutasi;
 
                 $totallhpkertas += $lhpkertas;
@@ -252,14 +252,14 @@
                 $grandtotallhp += $totallhp;
 
                 $totalsetorankertas += $setoranbank_kertas;
-                $totalsetoranlainnya += $setoran_lainnya;
+                $totalsetoranlainnya += $setoranbank_lainnya;
                 $totalsetoranlogam += $setoranbank_logam;
                 $totalsetorantransfer += $setoranbank_transfer;
                 $totalsetorangiro += $setoranbank_giro;
                 $grandtotalsetoranbank += $totalsetoranbank;
-                $grandtotalsetoranlainnya += $totalsetoranlainnya;
+                $grandtotalsetoranbanklainnya += $totalsetoranbanklainnya;
 
-                $rinciankertas = ($lhpkertas - $setoranbank_kertas - $setoran_lainnya) + $gantilogamtokertas + $girotocash;
+                $rinciankertas = ($lhpkertas - $setoranbank_kertas - $setoranbank_lainnya) + $gantilogamtokertas + $girotocash;
                 $totalrinciankertas = $totalrinciankertas + $rinciankertas;
 
                 $rincianlogam = ($lhplogam - $setoranbank_logam) - $gantilogamtokertas;
@@ -348,7 +348,7 @@
                 <th style="text-align:right; color:rgb(255, 255, 255); font-weight:bold">
                     {{ !empty($grandtotalsetoranbank) ? rupiah($grandtotalsetoranbank) : '' }}</th>
                 <th style="text-align:right; color:rgb(255, 255, 255); font-weight:bold">
-                    {{ !empty($grandtotalsetoranlainnya) ? rupiah($grandtotalsetoranlainnya) : '' }}</th>
+                    {{ !empty($grandtotalsetoranbanklainnya) ? rupiah($grandtotalsetoranbanklainnya) : '' }}</th>
                 <th style="text-align:right; color:rgb(255, 255, 255); font-weight:bold">
                     {{ !empty($saldo) ? rupiah($saldo) : '' }}</th>
 

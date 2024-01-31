@@ -69,7 +69,7 @@ class SetoranpusatController extends Controller
         $kode_bank = $request->kode_bank;
         $uang_kertas = !empty($request->uang_kertas) ? str_replace(".", "", $request->uang_kertas) : 0;
         $uang_logam = !empty($request->uang_logam) ? str_replace(".", "", $request->uang_logam) : 0;
-        $uang_lainnya = !empty($request->uang_lainnya) ? str_replace(".", "", $request->uang_lainnya) : 0;
+        // $uang_lainnya = !empty($request->uang_lainnya) ? str_replace(".", "", $request->uang_lainnya) : 0;
         $keterangan = $request->keterangan;
         $tanggal = explode("-", $tgl_setoranpusat);
         $hari = $tanggal[2];
@@ -90,7 +90,7 @@ class SetoranpusatController extends Controller
             'bank' => $kode_bank,
             'uang_kertas' => $uang_kertas,
             'uang_logam' => $uang_logam,
-            'uang_lainnya' => $uang_lainnya,
+            // 'uang_lainnya' => $uang_lainnya,
             'keterangan' => $keterangan,
             'status' => '0'
         ];
