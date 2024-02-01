@@ -5582,7 +5582,7 @@ class TargetkomisiController extends Controller
         lama_lpc,jam_lpc,
         (IFNULL(jml_belumsetorbulanlalu,0) + IFNULL(totalsetoran,0) + IFNULL(jml_gmlast,0) - IFNULL(jml_gmnow,0) - IFNULL(jml_belumsetorbulanini,0)) as realisasi_cashin,
         IFNULL(sisapiutangsaldo,0) + IFNULL(sisapiutang,0) as sisapiutang,
-        IFNULL(jmlbiaya,0) + IFNULL(ROUND(jmllogistik),0)  + IFNULL(ROUND(jmlpenggunaanbahan),0) as totalbiaya,penjualanbulanberjalan,jmlpelanggan,jmltrans");
+        IFNULL(jmlbiaya,0) as totalbiaya,penjualanbulanberjalan,jmlpelanggan,jmltrans");
         $query->leftjoin(
             DB::raw("(
                 SELECT karyawan.kode_cabang,SUM(kapasitas) as jmlkapasitas , SUM(jmlpengambilan)  as jmlpengambilan
