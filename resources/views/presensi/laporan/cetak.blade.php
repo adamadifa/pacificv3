@@ -1030,7 +1030,6 @@
                                     //Cek Jika Besok Libur
                                     $search_items_next = [
                                         'nik' => $d->nik,
-                                        'id_kantor' => $d->id_kantor,
                                         'tanggal_libur' => date('Y-m-d', strtotime('+1 day', strtotime($tgl_presensi))),
                                     ];
 
