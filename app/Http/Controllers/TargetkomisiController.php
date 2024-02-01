@@ -5557,6 +5557,8 @@ class TargetkomisiController extends Controller
         $field_mutasi = "";
         $select_total_retur = "";
         $field_total_retur = "";
+
+        $bulan = $bulan * 1;
         foreach ($produk->get() as $d) {
 
             $field_mutasi .= "retur_" . $d->kode_produk . ",reject_mobil_" . $d->kode_produk . ",reject_pasar_" . $d->kode_produk . ",reject_gudang_" . $d->kode_produk . ",repack_" . $d->kode_produk . ",";
@@ -5582,7 +5584,7 @@ class TargetkomisiController extends Controller
         lama_lpc,jam_lpc,
         (IFNULL(jml_belumsetorbulanlalu,0) + IFNULL(totalsetoran,0) + IFNULL(jml_gmlast,0) - IFNULL(jml_gmnow,0) - IFNULL(jml_belumsetorbulanini,0)) as realisasi_cashin,
         IFNULL(sisapiutangsaldo,0) + IFNULL(sisapiutang,0) as sisapiutang,
-        IFNULL(jmlbiaya,0) as totalbiaya,penjualanbulanberjalan,jmlpelanggan,jmltrans");
+        IFNULL(jmlbiaya,0) + IFNULL(ROUND(jmllogistik),0)  + IFNULL(ROUND(jmlpenggunaanbahan),0) as totalbiaya,penjualanbulanberjalan,jmlpelanggan,jmltrans");
         $query->leftjoin(
             DB::raw("(
                 SELECT karyawan.kode_cabang,SUM(kapasitas) as jmlkapasitas , SUM(jmlpengambilan)  as jmlpengambilan
@@ -5976,7 +5978,7 @@ class TargetkomisiController extends Controller
                         SUM( qty_berat ) AS qtyberatsa
                         FROM saldoawal_gb_detail
                         INNER JOIN saldoawal_gb ON saldoawal_gb.kode_saldoawal_gb=saldoawal_gb_detail.kode_saldoawal_gb
-                        WHERE bulan = '12' AND tahun = '2023' GROUP BY saldoawal_gb_detail.kode_barang
+                        WHERE bulan = '$bulan' AND tahun = '$tahun' GROUP BY saldoawal_gb_detail.kode_barang
                 ) sa ON (detail_pengeluaran_gb.kode_barang = sa.kode_barang)
 
                 WHERE tgl_pengeluaran BETWEEN '$dari' AND '$sampai' AND kode_cabang IS NOT NULL
