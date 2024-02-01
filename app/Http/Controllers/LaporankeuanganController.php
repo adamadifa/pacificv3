@@ -114,7 +114,11 @@ class LaporankeuanganController extends Controller
                 $bank = DB::table('master_bank')->whereIn('kode_cabang', $list)->orderBy('kode_bank')->get();
             } else {
                 if (Auth::user()->id == 115) {
-                    $list = ['BNI CV', 'BNI TGL', 'BNI SKB', 'BNI SBY', 'BNI PWT', 'BNI PWK', 'BNI KLT', 'BNI BTN', 'BNI BGR', 'BNI SMR', 'BNI BDG', 'BNI BKI', 'BNI GRT'];
+                    $list = [
+                        'BNI CV', 'BNI TGL', 'BNI SKB', 'BNI SBY', 'BNI PWT', 'BNI PWK', 'BNI KLT', 'BNI BTN', 'BNI BGR', 'BNI SMR', 'BNI BDG', 'BNI BKI',
+                        'BNI GRT', '001', '002', '003', '004', '005', '006', '007', '008', '009', '010', '011', '012', '013', '014', '015', '016', '017', '018', '019', '020',
+                        '021', '022', '023', '024', '025', '027', '028'
+                    ];
                     $bank = DB::table('master_bank')->whereIn('kode_bank', $list)->orderBy('kode_bank')->get();
                 } else {
                     $bank = DB::table('master_bank')->where('kode_cabang', $this->cabang)->orderBy('kode_bank')->get();
