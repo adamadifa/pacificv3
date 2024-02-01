@@ -345,7 +345,7 @@
                     </td>
                     <td align="right">
                         @php
-                            $totalreward = $reward_oa + $rewardkendaraan + $rewardpenjualan + $reward_routing + $reward_cashin + $reward_ljt + $reward_costratio + $reward_bs;
+                            $totalreward = $reward_oa + $rewardkendaraan + $rewardpenjualan + $reward_routing + $reward_lpc + $reward_cashin + $reward_ljt + $reward_costratio + $reward_bs;
                         @endphp
                         {{ rupiah($totalreward) }}
                     </td>
