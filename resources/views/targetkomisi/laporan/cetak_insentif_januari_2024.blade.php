@@ -279,7 +279,7 @@
                     </td>
                     <td align="right">
                         @php
-                            if ($cost_ratio < 6) {
+                            if ($cost_ratio <= 6) {
                                 $reward_costratio = 200000;
                             } elseif ($cost_ratio > 6 && $cost_ratio <= 7) {
                                 $reward_costratio = 175000;
