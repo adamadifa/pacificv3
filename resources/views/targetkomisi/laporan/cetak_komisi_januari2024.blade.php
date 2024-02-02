@@ -310,7 +310,7 @@
                         <td style="text-align: right">
                             @php
                                 if ($d->status_komisi == 1) {
-                                    if ($persentaserouting >= 90 and $persentaserouting <= 95) {
+                                    if ($persentaserouting >= 90 && $persentaserouting < 95) {
                                         $reward_routing = 200000;
                                     } elseif ($persentaserouting > 95) {
                                         $reward_routing = 400000;
