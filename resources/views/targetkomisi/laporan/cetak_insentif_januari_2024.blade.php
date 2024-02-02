@@ -218,6 +218,8 @@
                                 $reward_routing = 100000;
                             } elseif ($d->ratio_routing > 95) {
                                 $reward_routing = 200000;
+                            } else {
+                                $reward_routing = 0;
                             }
                         @endphp
                         {{ rupiah($reward_routing) }}
