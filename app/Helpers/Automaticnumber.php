@@ -445,7 +445,7 @@ function pihakpertamacabang($cabang, $perusahaan)
     $kepalapenjualan = [
         'PWT' => 'Aria Permana Wiguna',
         'TGR' => 'Bagus Eka Winarno',
-        'BDG' => 'Oki Rahmat Effendy',
+        'BDG' => 'Alek Wijaya',
         'SKB' => 'Agus Hanafi',
         'TGL' => 'Imam Syafangat',
         'SBY' => 'Stefanus Bayu',
