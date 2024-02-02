@@ -1935,7 +1935,7 @@
                     <td style="text-align:right">{{ rupiah($total_all_denda_tkl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_pjp_tkl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_kasbon_tkl) }}</td>
-                    <td style="text-align:right">{{ rupiah($total_all_non_pjp_tkl) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_all_nonpjp_tkl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_spip_tkl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_pengurang_tkl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_potongan_tkl) }}</td>
