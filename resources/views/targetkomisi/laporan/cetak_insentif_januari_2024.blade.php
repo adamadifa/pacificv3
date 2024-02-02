@@ -213,7 +213,11 @@
                     <td align="center">{{ !empty($d->ratio_routing) ? $d->ratio_routing . '%' : '' }}</td>
                     <td align="right">
                         @php
-                            $reward_routing = getreward($d->ratio_routing);
+                            if ($d->ratio_routing >= 90 and $d->routing <= 95) {
+                                $reward_routing = 100000;
+                            } elseif ($d->ratio_routing > 95) {
+                                $reward_routing = 200000;
+                            }
                         @endphp
                         {{ rupiah($reward_routing) }}
                     </td>
