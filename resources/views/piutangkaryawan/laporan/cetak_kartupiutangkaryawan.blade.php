@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak Pinjaman {{ date("d-m-y") }}</title>
+    <title>Cetak Pinjaman {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -35,18 +36,18 @@
         .text-right: {
             text-align: right !important;
         }
-
     </style>
 </head>
+
 <body>
     <b style="font-size:14px;">
         @if ($kantor != null)
-        @if ($kantor->kode_cabang=="PST")
-        PACIFIC PUSAT
-        @else
-        PACIFIC CABANG {{ strtoupper($kantor->nama_cabang) }}
-        @endif
-        <br>
+            @if ($kantor->kode_cabang == 'PST')
+                PACIFIC PUSAT
+            @else
+                PACIFIC CABANG {{ strtoupper($kantor->nama_cabang) }}
+            @endif
+            <br>
         @endif
 
         LAPORAN PINJAMAN<br>
@@ -80,70 +81,74 @@
         <tbody>
 
             @php
-            $totalsaldoawal = 0;
-            $totalpenambahan = 0;
-            $totalpembayaran = 0;
-            $totalsaldoakhir = 0;
-            $totalpmbnow = 0;
-            $totalpotongkomisi = 0;
-            $totaltitipan = 0;
-            $totallainnya = 0;
-            $totalplnow = 0;
-            $no = 1;
+                $totalsaldoawal = 0;
+                $totalpenambahan = 0;
+                $totalpembayaran = 0;
+                $totalsaldoakhir = 0;
+                $totalpmbnow = 0;
+                $totalpotongkomisi = 0;
+                $totaltitipan = 0;
+                $totallainnya = 0;
+                $totalplnow = 0;
+                $no = 1;
             @endphp
 
             @foreach ($pinjaman as $d)
-            @php
-            $jumlah_pinjamanlast = $d->jumlah_pinjamanlast;
-            $jumlah_pelunasanlast = $d->total_pelunasanlast;
-            $jumlah_pembayaranlast = $d->total_pembayaranlast;
+                @php
+                    $jumlah_pinjamanlast = $d->jumlah_pinjamanlast;
+                    $jumlah_pelunasanlast = $d->total_pelunasanlast;
+                    $jumlah_pembayaranlast = $d->total_pembayaranlast;
 
-            $jumlah_pinjamannow = $d->jumlah_pinjamannow;
-            $jumlah_pembayarannow = $d->total_pembayarannow + $d->total_pembayaranpotongkomisi + $d->total_pembayarantitipan + $d->total_pembayaranlainnya ;
-            $jumlah_pembayaranpotongkomisi = $d->total_pembayaranpotongkomisi;
-            $jumlah_pembayarantitipan = $d->total_pembayarantitipan;
-            $jumlah_pembayaranlainnya = $d->total_pembayaranlainnya;
-            $jumlah_pelunasannow = $d->total_pelunasannow;
+                    $jumlah_pinjamannow = $d->jumlah_pinjamannow;
+                    $jumlah_pembayarannow = $d->total_pembayarannow + $d->total_pembayaranpotongkomisi + $d->total_pembayarantitipan + $d->total_pembayaranlainnya;
+                    $jumlah_pembayaranpotongkomisi = $d->total_pembayaranpotongkomisi;
+                    $jumlah_pembayarantitipan = $d->total_pembayarantitipan;
+                    $jumlah_pembayaranlainnya = $d->total_pembayaranlainnya;
+                    $jumlah_pelunasannow = $d->total_pelunasannow;
 
-            $saldoawal = $jumlah_pinjamanlast - $jumlah_pembayaranlast - $jumlah_pelunasanlast ;
+                    $saldoawal = $jumlah_pinjamanlast - $jumlah_pembayaranlast - $jumlah_pelunasanlast;
 
+                    $totalpembayarannow = $jumlah_pembayarannow + $jumlah_pelunasannow;
+                    $totalpmbnow += $d->total_pembayarannow;
+                    $totalplnow += $jumlah_pelunasannow;
 
-            $totalpembayarannow = $jumlah_pembayarannow + $jumlah_pelunasannow ;
-            $totalpmbnow += $jumlah_pembayarannow;
-            $totalplnow += $jumlah_pelunasannow;
+                    $totalpotongkomisi += $jumlah_pembayaranpotongkomisi;
+                    $totaltitipan += $jumlah_pembayarantitipan;
+                    $totallainnya += $jumlah_pembayaranlainnya;
 
-            $totalpotongkomisi += $jumlah_pembayaranpotongkomisi;
-            $totaltitipan += $jumlah_pembayarantitipan;
-            $totallainnya += $jumlah_pembayaranlainnya;
+                    $saldoakhir = $saldoawal + $jumlah_pinjamannow - $totalpembayarannow;
 
-            $saldoakhir = $saldoawal + $jumlah_pinjamannow - $totalpembayarannow ;
+                    $totalsaldoawal += $saldoawal;
+                    $totalsaldoakhir += $saldoakhir;
+                    $totalpembayaran += $totalpembayarannow;
+                    $totalpenambahan += $jumlah_pinjamannow;
 
-            $totalsaldoawal += $saldoawal;
-            $totalsaldoakhir += $saldoakhir;
-            $totalpembayaran += $totalpembayarannow;
-            $totalpenambahan += $jumlah_pinjamannow;
+                @endphp
+                @if (!empty($saldoawal) || !empty($jumlah_pinjamannow))
+                    <tr>
+                        <td>{{ $no }}</td>
+                        <td>{{ "'" . $d->nik }}</td>
+                        <td>{{ $d->nama_karyawan }}</td>
+                        <td style="text-align: right">{{ !empty($saldoawal) ? rupiah($saldoawal) : '' }}</td>
+                        <td style="text-align: right">
+                            {{ !empty($jumlah_pinjamannow) ? rupiah($jumlah_pinjamannow) : '' }}</td>
+                        <td></td>
+                        <td style="text-align: right">
+                            {{ !empty($d->total_pembayarannow) ? rupiah($d->total_pembayarannow) : '' }}</td>
+                        <td style="text-align: right">
+                            {{ !empty($jumlah_pembayaranpotongkomisi) ? rupiah($jumlah_pembayaranpotongkomisi) : '' }}
+                        </td>
+                        <td style="text-align: right">
+                            {{ !empty($jumlah_pembayarantitipan) ? rupiah($jumlah_pembayarantitipan) : '' }}</td>
+                        <td style="text-align: right">
+                            {{ !empty($jumlah_pembayaranlainnya) ? rupiah($jumlah_pembayaranlainnya) : '' }}</td>
 
-            @endphp
-            @if (!empty($saldoawal) || !empty($jumlah_pinjamannow))
-            <tr>
-                <td>{{ $no }}</td>
-                <td>{{ "'".$d->nik }}</td>
-                <td>{{ $d->nama_karyawan }}</td>
-                <td style="text-align: right">{{ !empty($saldoawal) ?  rupiah($saldoawal) : '' }}</td>
-                <td style="text-align: right">{{ !empty($jumlah_pinjamannow) ?  rupiah($jumlah_pinjamannow) : '' }}</td>
-                <td></td>
-                <td style="text-align: right">{{ !empty($d->total_pembayarannow) ?  rupiah($d->total_pembayarannow) : '' }}</td>
-                <td style="text-align: right">{{ !empty($jumlah_pembayaranpotongkomisi) ?  rupiah($jumlah_pembayaranpotongkomisi) : '' }}</td>
-                <td style="text-align: right">{{ !empty($jumlah_pembayarantitipan) ?  rupiah($jumlah_pembayarantitipan) : '' }}</td>
-                <td style="text-align: right">{{ !empty($jumlah_pembayaranlainnya) ?  rupiah($jumlah_pembayaranlainnya) : '' }}</td>
-
-                <td style="text-align: right">{{ !empty($saldoakhir) ?  rupiah($saldoakhir) : '' }}</td>
-            </tr>
-            @php
-            $no++;
-            @endphp
-            @endif
-
+                        <td style="text-align: right">{{ !empty($saldoakhir) ? rupiah($saldoakhir) : '' }}</td>
+                    </tr>
+                    @php
+                        $no++;
+                    @endphp
+                @endif
             @endforeach
             <tr bgcolor=" #024a75" style=" color:white; font-size:12;">
                 <th colspan="3">TOTAL</th>
