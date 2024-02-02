@@ -213,7 +213,7 @@
                     <td align="center">{{ !empty($d->ratio_routing) ? $d->ratio_routing . '%' : '' }}</td>
                     <td align="right">
                         @php
-                            if ($d->ratio_routing >= 90 and $d->ratio_routing <= 95) {
+                            if ($d->ratio_routing >= 90 && $d->ratio_routing <= 95) {
                                 $reward_routing = 100000;
                             } elseif ($d->ratio_routing > 95) {
                                 $reward_routing = 200000;
