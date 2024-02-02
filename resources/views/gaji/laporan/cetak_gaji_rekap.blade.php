@@ -114,6 +114,7 @@
                     <th rowspan="2" style="background-color: black;">DENDA<br>TERLAMBAT</th>
                     <th rowspan="2" style="background-color: black;">CICILAN<br>PJP</th>
                     <th rowspan="2" style="background-color: black;">KASBON</th>
+                    <th rowspan="2" style="background-color: black;">PINJ. PERUSAHAAN</th>
                     <th rowspan="2" style="background-color: black;">SPIP</th>
                     <th rowspan="2" style="background-color: black;">PENGURANG</th>
                     <th rowspan="2" style="background-color: orange;">JUMLAH<br>POTONGAN</th>
@@ -455,6 +456,14 @@
                     $total_all_kasbon_tktl = 0;
                     $total_all_kasbon_mp = 0;
                     $total_all_kasbon_pcf = 0;
+
+                    $total_all_nonpjp = 0;
+                    $total_all_nonpjp_administrasi = 0;
+                    $total_all_nonpjp_penjualan = 0;
+                    $total_all_nonpjp_tkl = 0;
+                    $total_all_nonpjp_tktl = 0;
+                    $total_all_nonpjp_mp = 0;
+                    $total_all_nonpjp_pcf = 0;
 
                     $total_all_spip = 0;
                     $total_all_spip_administrasi = 0;
@@ -1664,6 +1673,14 @@
                         $total_all_kasbon_mp += $d->id_perusahaan == 'MP' ? $d->jml_kasbon : 0;
                         $total_all_kasbon_pcf += $d->id_perusahaan == 'PCF' ? $d->jml_kasbon : 0;
 
+                        $total_all_nonpjp += $d->jml_nonpjp;
+                        $total_all_nonpjp_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->jml_nonpjp : 0;
+                        $total_all_nonpjp_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->jml_nonpjp : 0;
+                        $total_all_nonpjp_tkl += $d->klasifikasi == 'TKL' ? $d->jml_nonpjp : 0;
+                        $total_all_nonpjp_tktl += $d->klasifikasi == 'TKTL' ? $d->jml_nonpjp : 0;
+                        $total_all_nonpjp_mp += $d->id_perusahaan == 'MP' ? $d->jml_nonpjp : 0;
+                        $total_all_nonpjp_pcf += $d->id_perusahaan == 'PCF' ? $d->jml_nonpjp : 0;
+
                         $total_all_pengurang += $d->jml_pengurang;
                         $total_all_pengurang_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->jml_pengurang : 0;
                         $total_all_pengurang_penjualan += $d->klasifikasi == 'PENJUALAN' ? $d->jml_pengurang : 0;
@@ -1828,6 +1845,7 @@
                     <td style="text-align:right">{{ rupiah($total_all_denda_administrasi) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_pjp_administrasi) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_kasbon_administrasi) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_all_nonpjp_administrasi) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_spip_administrasi) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_pengurang_administrasi) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_potongan_administrasi) }}</td>
@@ -1872,6 +1890,7 @@
                     <td style="text-align:right">{{ rupiah($total_all_denda_penjualan) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_pjp_penjualan) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_kasbon_penjualan) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_all_nonpjp_penjualan) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_spip_penjualan) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_pengurang_penjualan) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_potongan_penjualan) }}</td>
@@ -1916,6 +1935,7 @@
                     <td style="text-align:right">{{ rupiah($total_all_denda_tkl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_pjp_tkl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_kasbon_tkl) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_all_non_pjp_tkl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_spip_tkl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_pengurang_tkl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_potongan_tkl) }}</td>
@@ -1960,6 +1980,7 @@
                     <td style="text-align:right">{{ rupiah($total_all_denda_tktl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_pjp_tktl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_kasbon_tktl) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_all_nonpjp_tktl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_spip_tktl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_pengurang_tktl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_potongan_tktl) }}</td>
@@ -2040,6 +2061,8 @@
 
                         $total_all_kasbon_rekap = $total_all_kasbon_administrasi + $total_all_kasbon_penjualan + $total_all_kasbon_tkl + $total_all_kasbon_tktl;
 
+                        $total_all_nonpjp_rekap = $total_all_nonpjp_administrasi + $total_all_nonpjp_penjualan + $total_all_nonpjp_tkl + $total_all_nonpjp_tktl;
+
                         $total_all_spip_rekap = $total_all_spip_administrasi + $total_all_spip_penjualan + $total_all_spip_tkl + $total_all_spip_tktl;
 
                         $total_all_pengurang_rekap = $total_all_pengurang_administrasi + $total_all_pengurang_penjualan + $total_all_pengurang_tkl + $total_all_pengurang_tktl;
@@ -2085,6 +2108,7 @@
                     <th style="text-align: right">{{ rupiah($total_all_denda_rekap) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_pjp_rekap) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_kasbon_rekap) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_nonpjp_rekap) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_spip_rekap) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_pengurang_rekap) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_potongan_rekap) }}</th>
@@ -2118,6 +2142,7 @@
                     <th rowspan="2" style="background-color: black;">DENDA<br>TERLAMBAT</th>
                     <th rowspan="2" style="background-color: black;">CICILAN<br>PJP</th>
                     <th rowspan="2" style="background-color: black;">KASBON</th>
+                    <th rowspan="2" style="background-color: black;">PINJ. PERUSAHAAN</th>
                     <th rowspan="2" style="background-color: black;">SPIP</th>
                     <th rowspan="2" style="background-color: black;">PENGURANG</th>
                     <th rowspan="2" style="background-color: orange;">JUMLAH<br>POTONGAN</th>
@@ -2193,6 +2218,7 @@
                     <td style="text-align:right">{{ rupiah($total_all_denda_mp) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_pjp_mp) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_kasbon_mp) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_all_nonpjp_mp) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_spip_mp) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_pengurang_mp) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_potongan_mp) }}</td>
@@ -2237,6 +2263,7 @@
                     <td style="text-align:right">{{ rupiah($total_all_denda_pcf) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_pjp_pcf) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_kasbon_pcf) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_all_nonpjp_pcf) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_spip_pcf) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_pengurang_pcf) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_potongan_pcf) }}</td>
@@ -2318,6 +2345,8 @@
 
                         $total_all_kasbon_perusahaan = $total_all_kasbon_mp + $total_all_kasbon_pcf;
 
+                        $total_all_nonpjp_perusahaan = $total_all_nonpjp_mp + $total_all_nonpjp_pcf;
+
                         $total_all_spip_perusahaan = $total_all_spip_mp + $total_all_spip_pcf;
 
                         $total_all_pengurang_perusahaan = $total_all_pengurang_mp + $total_all_pengurang_pcf;
@@ -2364,6 +2393,7 @@
                     <th style="text-align: right">{{ rupiah($total_all_denda_perusahaan) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_pjp_perusahaan) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_kasbon_perusahaan) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_nonpjp_perusahaan) }}</th>
 
                     <th style="text-align: right">{{ rupiah($total_all_spip_perusahaan) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_pengurang_perusahaan) }}</th>
