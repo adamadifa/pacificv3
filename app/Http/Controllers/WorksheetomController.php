@@ -1320,13 +1320,16 @@ class WorksheetomController extends Controller
 
 
         $lastvisit = DB::table('visitpelanggan')
+            ->join('penjualan', 'visitpelanggan.no_fak_penj', '=', 'penjualan.no_fak_penj')
+            ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
             ->whereRaw('YEAR(tanggal_visit)="' . date('Y', strtotime($tanggal_visit)) . '"')
+            ->where('kode_cabang', $kode_cabang)
             ->orderBy('kode_visit', 'desc')
             ->first();
 
         $lastkodevisit = $lastvisit != NULL ? $lastvisit->kode_visit : '';
         $kode_visit = buatkode($lastkodevisit, "VST" . $kode_cabang . substr(date('Y', strtotime($tanggal_visit)), 2, 2), 5);
-
+        dd($kode_visit);
         try {
             DB::table('visitpelanggan')->insert([
                 'kode_visit' => $kode_visit,
