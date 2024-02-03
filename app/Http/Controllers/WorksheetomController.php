@@ -1329,7 +1329,7 @@ class WorksheetomController extends Controller
 
         $lastkodevisit = $lastvisit != NULL ? $lastvisit->kode_visit : '';
         $kode_visit = buatkode($lastkodevisit, "VST" . $kode_cabang . substr(date('Y', strtotime($tanggal_visit)), 2, 2), 5);
-        dd($kode_visit);
+
         try {
             DB::table('visitpelanggan')->insert([
                 'kode_visit' => $kode_visit,
