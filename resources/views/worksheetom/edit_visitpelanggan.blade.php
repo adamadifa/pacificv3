@@ -66,7 +66,7 @@
                     placeholder="Saran / Keluhan Produk">{{ $visitpelanggan->saran }}</textarea>
             </div>
             <div class="form-group">
-                <textarea name="act_om" id="act_om" cols="30" rows="3" class="form-control" placeholder="Action OM">{{ $visitpelanggan->saran }}</textarea>
+                <textarea name="act_om" id="act_om" cols="30" rows="3" class="form-control" placeholder="Action OM">{{ $visitpelanggan->act_om }}</textarea>
             </div>
         </div>
     </div>
