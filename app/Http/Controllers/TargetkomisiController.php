@@ -5518,7 +5518,7 @@ class TargetkomisiController extends Controller
 
 
         //dd($lastdateofmonth);
-        $last3month = date('Y-m-d', strtotime('-3 month', strtotime($enddate)));
+        $last3month = date('Y-m-d', strtotime('-3 month', strtotime($sampai)));
         $date = explode("-", $last3month);
         $startdate = $date[0] . "-" . $date[1] . "-01";
 
