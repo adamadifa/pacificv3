@@ -1558,6 +1558,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/karyawan/{nik}/show', [KaryawanController::class, 'show']);
     Route::post('/karyawan/getkaryawankontrak', [KaryawanController::class, 'getkaryawankontrak']);
     Route::get('/karyawan/habiskontrak', [KaryawanController::class, 'habiskontrak']);
+    Route::get('/karyawan/{nik}/uploadktp', [KaryawanController::class, 'uploadktp']);
+    Route::post('/karyawan/{nik}/uploadktp', [KaryawanController::class, 'storeuploadktp']);
 
     //Rekening Karyawan
     Route::get('/rekeningkaryawan', [RekeningkaryawanController::class, 'index']);

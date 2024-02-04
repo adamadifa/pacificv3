@@ -238,6 +238,9 @@
                                                     <td>{{ $d->pin }}</td>
                                                     <td>
                                                         <div class="btn-group" role="group" aria-label="Basic example">
+                                                            <a href="#" class="uploadktp"
+                                                                nik="{{ Crypt::encrypt($d->nik) }}"><i
+                                                                    class="feather icon-upload info"></i></a>
                                                             {{-- <a href="#" class="info setjadwal" nik="{{ $d->nik }}" id_kantor="{{ $d->id_kantor }}"><i class="feather icon-watch"></i></a> --}}
                                                             @if (in_array($level, $karyawan_edit))
                                                                 <a class="ml-1 edit" nik="{{ Crypt::encrypt($d->nik) }}"
@@ -637,6 +640,23 @@
         </div>
     </div>
 
+    <div class="modal fade text-left" id="mdluploadktp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel18">Upload KTP</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="loaduploadktp"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 @push('myscript')
     <script>
@@ -651,6 +671,18 @@
             //     });
             //     $("#loadsetjadwal").load('/konfigurasijadwal/' + nik + '/setjadwal');
             // });
+
+            $('.uploadktp').click(function(e) {
+                e.preventDefault();
+                nik = $(this).attr("nik");
+                $('#mdluploadktp').modal({
+                    backdrop: 'static',
+                    keyboard: false
+                });
+                $("#loaduploadktp").load('/karyawan/' + nik + '/uploadktp');
+            });
+
+
             $(".setjadwal").click(function(e) {
                 e.preventDefault();
                 var nik = $(this).attr("nik");

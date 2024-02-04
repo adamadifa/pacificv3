@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 
 class KaryawanController extends Controller
 {
@@ -643,5 +644,42 @@ class KaryawanController extends Controller
             header("Content-Disposition: attachment; filename=Laporan karyawan Program.xls");
         }
         return view('karyawan.laporan.cetak_karyawan', compact('karyawan', 'cabang'));
+    }
+
+    public function uploadktp($nik)
+    {
+        $nik = Crypt::decrypt($nik);
+        $karyawan = DB::table('master_karyawan')->where('nik', $nik)
+            ->join('hrd_departemen', 'master_karyawan.kode_dept', '=', 'hrd_departemen.kode_dept')
+            ->join('hrd_jabatan', 'master_karyawan.id_jabatan', '=', 'hrd_jabatan.id')
+            ->first();
+        return view('karyawan.uploadktp', compact('karyawan'));
+    }
+
+
+    public function storeuploadktp(Request $request, $nik)
+    {
+        $nik = Crypt::decrypt($nik);
+        $nik_name = str_replace(".", "", $nik);
+        $karyawan = DB::table('master_karyawan')->where('nik', $nik)->first();
+        try {
+            if ($request->hasfile('ktp')) {
+                $ktp_name =  $nik_name . "." . $request->file('ktp')->getClientOriginalExtension();
+                $destination_path = "/public/ktp";
+                $ktp = $ktp_name;
+            }
+            $update = DB::table('master_karyawan')->where('nik', $nik)->update([
+                'ktp' => $ktp
+            ]);
+
+            if ($update) {
+                Storage::delete($destination_path . "/" . $karyawan->ktp);
+                $request->file('ktp')->storeAs($destination_path, $ktp);
+            }
+
+            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => $e->getMessage()]);
+        }
     }
 }
