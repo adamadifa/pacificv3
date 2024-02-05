@@ -40,6 +40,7 @@
                     <th>SP8</th>
                     <th>SP500</th>
                     <th>BR20</th>
+                    <th>P1000</th>
                 </tr>
             </thead>
             <tbody id="loadlisttarget">

@@ -184,7 +184,19 @@
                 class="form-control text-center settargetproduksales" value="{{ $d->br20 }}"
                 idkaryawan="{{ $d->id_karyawan }}" kodeproduk="BR20">
         </td>
+        <td style="width:7%">
+            @php
+                if ($d->br20 > 0) {
+                    $bgcolor = '#d1ff7a';
+                } else {
+                    $bgcolor = '';
+                }
+            @endphp
 
+            <input type="number" style="background-color:{{ $bgcolor }}"
+                class="form-control text-center settargetproduksales" value="{{ $d->p1000 }}"
+                idkaryawan="{{ $d->id_karyawan }}" kodeproduk="P1000">
+        </td>
     </tr>
 @endforeach
 
