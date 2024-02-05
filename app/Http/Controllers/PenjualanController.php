@@ -6146,6 +6146,7 @@ class PenjualanController extends Controller
         SUM( IF ( barang.kode_produk = 'SP500', detailpenjualan.jumlah/barang.isipcsdus, NULL ) ) AS SP500,
         SUM( IF ( barang.kode_produk = 'SP8', detailpenjualan.jumlah/barang.isipcsdus, NULL ) ) AS SP8,
         SUM( IF ( barang.kode_produk = 'BR20', detailpenjualan.jumlah/barang.isipcsdus, NULL ) ) AS BR20,
+        SUM( IF ( barang.kode_produk = 'P1000', detailpenjualan.jumlah/barang.isipcsdus, NULL ) ) AS P1000,
         COUNT(DISTINCT(kode_sku)) as jml_sku");
         $query->join('barang', 'detailpenjualan.kode_barang', '=', 'barang.kode_barang');
         $query->join('master_barang', 'barang.kode_produk', '=', 'master_barang.kode_produk');
