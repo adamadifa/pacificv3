@@ -3825,7 +3825,7 @@ class PenjualanController extends Controller
                 penjualan.kode_pelanggan,pelanggan.nama_pelanggan,
                 penjualan.id_karyawan,karyawan.nama_karyawan,
                 pelanggan.pasar,pelanggan.hari,
-                AB,AR,`AS`,BB,CG,CGG,DEP,DK,DS,SP,BBP,SPP,CG5,SC,SP8,SP8P,SP500,BR20,P1000
+                AB,AR,`AS`,BB,CG,CGG,DEP,DK,DS,SP,BBP,SPP,CG5,SC,SP8,SP8P,SP500,BR20,P1000,
                 penjualan.subtotal as totalbruto,
                 (ifnull( r.totalpf, 0 ) - ifnull( r.totalgb, 0 ) ) AS totalretur,
                 penjualan.penyharga AS penyharga,
