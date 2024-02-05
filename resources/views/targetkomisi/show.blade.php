@@ -33,6 +33,8 @@
     $totalsc = 0;
     $totalsp8 = 0;
     $totalsp500 = 0;
+    $totalbr20 = 0;
+    $totalp1000 = 0;
     $totalcashin = 0;
 
     $grandtotalab = 0;
@@ -45,6 +47,8 @@
     $grandtotalsc = 0;
     $grandtotalsp8 = 0;
     $grandtotalsp500 = 0;
+    $grandtotalbr20 = 0;
+    $grandtotalp1000 = 0;
     $grandtotalcashin = 0;
     foreach ($target as $key => $d) {
       $kode_cabang = @$target[$key + 1]->kode_cabang;
@@ -58,6 +62,8 @@
       $totalsc += $d->SC;
       $totalsp8 += $d->SP8;
       $totalsp500 += $d->SP500;
+      $totalbr20 += $d->BR20;
+      $totalp1000 += $d->P1000;
       $totalcashin += $d->jumlah_target_cashin;
 
       $grandtotalab += $d->AB;
@@ -70,6 +76,8 @@
       $grandtotalsc += $d->SC;
       $grandtotalsp8 += $d->SP8;
       $grandtotalsp500 += $d->SP500;
+      $grandtotalbr20 += $d->BR20;
+      $grandtotalp1000 += $d->P1000;
       $grandtotalcashin += $d->jumlah_target_cashin;
     ?>
         <tr>
@@ -114,6 +122,8 @@
             <td align="right"><?php echo number_format($d->SC, '0', '', '.'); ?></td>
             <td align="right"><?php echo number_format($d->SP8, '0', '', '.'); ?></td>
             <td align="right"><?php echo number_format($d->SP500, '0', '', '.'); ?></td>
+            <td align="right"><?php echo number_format($d->BR20, '0', '', '.'); ?></td>
+            <td align="right"><?php echo number_format($d->P1000, '0', '', '.'); ?></td>
             <?php } ?>
             <td align="right"><?php echo number_format($d->jumlah_target_cashin, '0', '', '.'); ?></td>
         </tr>
@@ -133,6 +143,8 @@
             <th style="text-align:right"><?php echo number_format($totalsc, '0', '', '.'); ?></th>
             <th style="text-align:right"><?php echo number_format($totalsp8, '0', '', '.'); ?></th>
             <th style="text-align:right"><?php echo number_format($totalsp500, '0', '', '.'); ?></th>
+            <th style="text-align:right"><?php echo number_format($totalbr20, '0', '', '.'); ?></th>
+            <th style="text-align:right"><?php echo number_format($totalp1000, '0', '', '.'); ?></th>
             <th style="text-align:right"><?php echo number_format($totalcashin, '0', '', '.'); ?></th>
         </tr>
         <?php
@@ -162,6 +174,8 @@
             <th style="text-align:right; color:white"><?php echo number_format($grandtotalsc, '0', '', '.'); ?></th>
             <th style="text-align:right; color:white"><?php echo number_format($grandtotalsp8, '0', '', '.'); ?></th>
             <th style="text-align:right; color:white"><?php echo number_format($grandtotalsp500, '0', '', '.'); ?></th>
+            <th style="text-align:right; color:white"><?php echo number_format($grandtotalbr20, '0', '', '.'); ?></th>
+            <th style="text-align:right; color:white"><?php echo number_format($grandtotalp1000, '0', '', '.'); ?></th>
             <th style="text-align:right; color:white"><?php echo number_format($grandtotalcashin, '0', '', '.'); ?></th>
         </tr>
     </tbody>
