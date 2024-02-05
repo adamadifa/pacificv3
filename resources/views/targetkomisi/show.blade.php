@@ -17,6 +17,8 @@
             <th>SC</th>
             <th>SP8</th>
             <th>SP500</th>
+            <th>BR20</th>
+            <th>P1000</th>
         </tr>
     </thead>
     <tbody>
@@ -77,16 +79,30 @@
 
         if (Auth::user()->kode_cabang=='PCF') {
         ?>
-            <td align="right"><a href="#" class="koreksitarget" kodetarget="<?php echo $kodetarget; ?>" kodeproduk="AB" id_karyawan="<?php echo $d->id_karyawan; ?>"><?php echo number_format($d->AB, '0', '', '.'); ?></a></td>
-            <td align="right"><a href="#" class="koreksitarget" kodetarget="<?php echo $kodetarget; ?>" kodeproduk="AR" id_karyawan="<?php echo $d->id_karyawan; ?>"><?php echo number_format($d->AR, '0', '', '.'); ?></a></td>
-            <td align="right"><a href="#" class="koreksitarget" kodetarget="<?php echo $kodetarget; ?>" kodeproduk="AS" id_karyawan="<?php echo $d->id_karyawan; ?>"><?php echo number_format($d->AS, '0', '', '.'); ?></a></td>
-            <td align="right"><a href="#" class="koreksitarget" kodetarget="<?php echo $kodetarget; ?>" kodeproduk="BB" id_karyawan="<?php echo $d->id_karyawan; ?>"><?php echo number_format($d->BB, '0', '', '.'); ?></a></td>
-            <td align="right"><a href="#" class="koreksitarget" kodetarget="<?php echo $kodetarget; ?>" kodeproduk="DEP" id_karyawan="<?php echo $d->id_karyawan; ?>"><?php echo number_format($d->DEP, '0', '', '.'); ?></a></td>
-            <td align="right"><a href="#" class="koreksitarget" kodetarget="<?php echo $kodetarget; ?>" kodeproduk="DS" id_karyawan="<?php echo $d->id_karyawan; ?>"><?php echo number_format($d->DS, '0', '', '.'); ?></a></td>
-            <td align="right"><a href="#" class="koreksitarget" kodetarget="<?php echo $kodetarget; ?>" kodeproduk="SP" id_karyawan="<?php echo $d->id_karyawan; ?>"><?php echo number_format($d->SP, '0', '', '.'); ?></a></td>
-            <td align="right"><a href="#" class="koreksitarget" kodetarget="<?php echo $kodetarget; ?>" kodeproduk="SC" id_karyawan="<?php echo $d->id_karyawan; ?>"><?php echo number_format($d->SC, '0', '', '.'); ?></a></td>
-            <td align="right"><a href="#" class="koreksitarget" kodetarget="<?php echo $kodetarget; ?>" kodeproduk="SP8" id_karyawan="<?php echo $d->id_karyawan; ?>"><?php echo number_format($d->SP8, '0', '', '.'); ?></a></td>
-            <td align="right"><a href="#" class="koreksitarget" kodetarget="<?php echo $kodetarget; ?>" kodeproduk="SP500" id_karyawan="<?php echo $d->id_karyawan; ?>"><?php echo number_format($d->SP500, '0', '', '.'); ?></a></td>
+            <td align="right"><a href="#" class="koreksitarget" kodetarget="<?php echo $kodetarget; ?>" kodeproduk="AB"
+                    id_karyawan="<?php echo $d->id_karyawan; ?>"><?php echo number_format($d->AB, '0', '', '.'); ?></a></td>
+            <td align="right"><a href="#" class="koreksitarget" kodetarget="<?php echo $kodetarget; ?>" kodeproduk="AR"
+                    id_karyawan="<?php echo $d->id_karyawan; ?>"><?php echo number_format($d->AR, '0', '', '.'); ?></a></td>
+            <td align="right"><a href="#" class="koreksitarget" kodetarget="<?php echo $kodetarget; ?>" kodeproduk="AS"
+                    id_karyawan="<?php echo $d->id_karyawan; ?>"><?php echo number_format($d->AS, '0', '', '.'); ?></a></td>
+            <td align="right"><a href="#" class="koreksitarget" kodetarget="<?php echo $kodetarget; ?>" kodeproduk="BB"
+                    id_karyawan="<?php echo $d->id_karyawan; ?>"><?php echo number_format($d->BB, '0', '', '.'); ?></a></td>
+            <td align="right"><a href="#" class="koreksitarget" kodetarget="<?php echo $kodetarget; ?>"
+                    kodeproduk="DEP" id_karyawan="<?php echo $d->id_karyawan; ?>"><?php echo number_format($d->DEP, '0', '', '.'); ?></a></td>
+            <td align="right"><a href="#" class="koreksitarget" kodetarget="<?php echo $kodetarget; ?>" kodeproduk="DS"
+                    id_karyawan="<?php echo $d->id_karyawan; ?>"><?php echo number_format($d->DS, '0', '', '.'); ?></a></td>
+            <td align="right"><a href="#" class="koreksitarget" kodetarget="<?php echo $kodetarget; ?>" kodeproduk="SP"
+                    id_karyawan="<?php echo $d->id_karyawan; ?>"><?php echo number_format($d->SP, '0', '', '.'); ?></a></td>
+            <td align="right"><a href="#" class="koreksitarget" kodetarget="<?php echo $kodetarget; ?>" kodeproduk="SC"
+                    id_karyawan="<?php echo $d->id_karyawan; ?>"><?php echo number_format($d->SC, '0', '', '.'); ?></a></td>
+            <td align="right"><a href="#" class="koreksitarget" kodetarget="<?php echo $kodetarget; ?>"
+                    kodeproduk="SP8" id_karyawan="<?php echo $d->id_karyawan; ?>"><?php echo number_format($d->SP8, '0', '', '.'); ?></a></td>
+            <td align="right"><a href="#" class="koreksitarget" kodetarget="<?php echo $kodetarget; ?>"
+                    kodeproduk="SP500" id_karyawan="<?php echo $d->id_karyawan; ?>"><?php echo number_format($d->SP500, '0', '', '.'); ?></a></td>
+            <td align="right"><a href="#" class="koreksitarget" kodetarget="<?php echo $kodetarget; ?>"
+                    kodeproduk="BR20" id_karyawan="<?php echo $d->id_karyawan; ?>"><?php echo number_format($d->BR20, '0', '', '.'); ?></a></td>
+            <td align="right"><a href="#" class="koreksitarget" kodetarget="<?php echo $kodetarget; ?>"
+                    kodeproduk="P1000" id_karyawan="<?php echo $d->id_karyawan; ?>"><?php echo number_format($d->P1000, '0', '', '.'); ?></a></td>
             <?php } else { ?>
             <td align="right"><?php echo number_format($d->AB, '0', '', '.'); ?></td>
             <td align="right"><?php echo number_format($d->AR, '0', '', '.'); ?></td>
@@ -106,7 +122,7 @@
       ?>
         <tr class="thead-dark">
 
-            <th colspan="2">TOTAL <?php echo $d->kode_cabang ?></th>
+            <th colspan="2">TOTAL <?php echo $d->kode_cabang; ?></th>
             <th style="text-align:right"><?php echo number_format($totalab, '0', '', '.'); ?></th>
             <th style="text-align:right"><?php echo number_format($totalar, '0', '', '.'); ?></th>
             <th style="text-align:right"><?php echo number_format($totalas, '0', '', '.'); ?></th>
@@ -150,7 +166,8 @@
         </tr>
     </tbody>
 </table>
-<div class="modal fade text-left" id="mdlkoreksitarget" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18" aria-hidden="true">
+<div class="modal fade text-left" id="mdlkoreksitarget" tabindex="-1" role="dialog"
+    aria-labelledby="myModalLabel18" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -171,16 +188,16 @@
 
         function loadkoreksitarget(kode_target, kode_produk, id_karyawan) {
             $.ajax({
-                type: 'POST'
-                , url: '/targetkomisi/loadkoreksitarget'
-                , data: {
-                    _token: "{{csrf_token()}}"
-                    , kode_target: kode_target
-                    , kode_produk: kode_produk
-                    , id_karyawan: id_karyawan
-                }
-                , cache: false
-                , success: function(respond) {
+                type: 'POST',
+                url: '/targetkomisi/loadkoreksitarget',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    kode_target: kode_target,
+                    kode_produk: kode_produk,
+                    id_karyawan: id_karyawan
+                },
+                cache: false,
+                success: function(respond) {
                     $("#loadkoreksitarget").html(respond);
                 }
             });
@@ -188,13 +205,13 @@
         }
         $(".koreksitarget").click(function(e) {
             e.preventDefault();
-            var kodetarget = "{{$kodetarget}}";
+            var kodetarget = "{{ $kodetarget }}";
             var kodeproduk = $(this).attr("kodeproduk");
             var id_karyawan = $(this).attr("id_karyawan");
             loadkoreksitarget(kodetarget, kodeproduk, id_karyawan);
             $('#mdlkoreksitarget').modal({
-                backdrop: 'static'
-                , keyboard: false
+                backdrop: 'static',
+                keyboard: false
             });
         });
 
@@ -202,5 +219,4 @@
             $('#mdlkoreksitarget').modal("hide");
         });
     });
-
 </script>
