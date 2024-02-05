@@ -3825,7 +3825,7 @@ class PenjualanController extends Controller
                 penjualan.kode_pelanggan,pelanggan.nama_pelanggan,
                 penjualan.id_karyawan,karyawan.nama_karyawan,
                 pelanggan.pasar,pelanggan.hari,
-                AB,AR,`AS`,BB,CG,CGG,DEP,DK,DS,SP,BBP,SPP,CG5,SC,SP8,SP8P,SP500,
+                AB,AR,`AS`,BB,CG,CGG,DEP,DK,DS,SP,BBP,SPP,CG5,SC,SP8,SP8P,SP500,BR20,P1000
                 penjualan.subtotal as totalbruto,
                 (ifnull( r.totalpf, 0 ) - ifnull( r.totalgb, 0 ) ) AS totalretur,
                 penjualan.penyharga AS penyharga,
@@ -3861,7 +3861,9 @@ class PenjualanController extends Controller
                     SUM(IF(kode_produk = 'SC',jumlah,0)) as SC,
                     SUM(IF(kode_produk = 'SP8',jumlah,0)) as SP8,
                     SUM(IF(kode_produk = 'SP8-P',jumlah,0)) as SP8P,
-                    SUM(IF(kode_produk = 'SP500',jumlah,0)) as SP500
+                    SUM(IF(kode_produk = 'SP500',jumlah,0)) as SP500,
+                    SUM(IF(kode_produk = 'BR20',jumlah,0)) as BR20,
+                    SUM(IF(kode_produk = 'P1000',jumlah,0)) as P1000
                     FROM detailpenjualan dp
                     INNER JOIN barang b ON dp.kode_barang = b.kode_barang
                     GROUP BY dp.no_fak_penj
@@ -3940,7 +3942,12 @@ class PenjualanController extends Controller
                     // Mendefinisikan nama file ekspor "hasil-export.xls"
                     header("Content-Disposition: attachment; filename=Laporan Penjualan Format Satu Baris $dari-$sampai-$time.xls");
                 }
-                return view('penjualan.laporan.cetak_penjualan_formatsatubaris', compact('penjualan', 'cabang', 'dari', 'sampai', 'salesman', 'pelanggan', 'barang'));
+                if ($dari >= "2023-11-01") {
+                    return view('penjualan.laporan.cetak_penjualan_formatsatubaris_november2023', compact('penjualan', 'cabang', 'dari', 'sampai', 'salesman', 'pelanggan', 'barang'));
+                } else {
+                    return view('penjualan.laporan.cetak_penjualan_formatsatubaris', compact('penjualan', 'cabang', 'dari', 'sampai', 'salesman', 'pelanggan', 'barang'));
+                }
+                //return view('penjualan.laporan.cetak_penjualan_formatsatubaris', compact('penjualan', 'cabang', 'dari', 'sampai', 'salesman', 'pelanggan', 'barang'));
             } else if ($jenislaporan == "komisi") {
                 $query = Penjualan::query();
                 $query->selectRaw('penjualan.no_fak_penj,
