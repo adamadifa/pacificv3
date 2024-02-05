@@ -3,7 +3,7 @@
         <tr>
             <th rowspan="2">ID Sales</th>
             <th rowspan="2">Nama Sales</th>
-            <th colspan="10">Target Quantity</th>
+            <th colspan="12">Target Quantity</th>
             <th rowspan="2">Cash IN</th>
         </tr>
         <tr>
