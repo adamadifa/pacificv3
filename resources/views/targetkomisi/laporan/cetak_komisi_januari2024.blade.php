@@ -303,9 +303,9 @@
                         </td>
                         <td style="text-align: center">
                             @php
-                                $persentaserouting = !empty($d->jmlkunjungan) ? ($d->jmlsesuaijadwal / $d->jmlkunjungan) * 100 : 0;
+                                $persentaserouting = ROUND(!empty($d->jmlkunjungan) ? ($d->jmlsesuaijadwal / $d->jmlkunjungan) * 100 : 0);
                             @endphp
-                            {{ ROUND($persentaserouting, 2) }}
+                            {{ rupiah($persentaserouting) }}
                         </td>
                         <td style="text-align: right">
                             @php
