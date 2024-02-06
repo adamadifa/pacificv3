@@ -179,7 +179,8 @@ class KaryawanController extends Controller
         $cabang = DB::table('cabang')->orderBy('kode_cabang')->get();
         $jabatan = DB::table('hrd_jabatan')->orderBy('nama_jabatan')->get();
         $group = DB::table('hrd_group')->orderBy('nama_group')->get();
-        return view('karyawan.create', compact('cabang', 'departemen', 'jabatan', 'group'));
+        $status_perkawinan = DB::table('hrd_status_perkawinan')->orderBy('kode_perkawinan')->get();
+        return view('karyawan.create', compact('cabang', 'departemen', 'jabatan', 'group', 'status_perkawinan'));
     }
 
     public function store(Request $request)

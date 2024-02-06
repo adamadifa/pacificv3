@@ -70,11 +70,10 @@
             <div class="form-group">
                 <select name="status_kawin" id="status_kawin" class="form-control">
                     <option value="">Status Perkawinan</option>
-                    <option value="1">Belum Menikah</option>
-                    <option value="2">Menikah</option>
-                    <option value="3">Cerai Hidup</option>
-                    <option value="4">Duda</option>
-                    <option value="5">Janda</option>
+                    @foreach ($status_perkawinan as $d)
+                        <option value="{{ $d->kode_perkawinan }}">{{ $d->kode_perkawinan }} -
+                            {{ $d->status_perkawinan }}</option>
+                    @endforeach
                 </select>
                 <small class="danger"></small>
             </div>
