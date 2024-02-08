@@ -1013,7 +1013,7 @@ class PenjualanController extends Controller
 
         foreach ($detail as $d) {
             $jmldus      = floor($d->jumlah / $d->isipcsdus);
-            if ($d->kategori == "SWAN") {
+            if ($d->kategori == "SWAN" && $d->kode_produk != "P1000") {
                 $jmldusswan   = $jmldusswan + $jmldus;
             }
 
@@ -1217,7 +1217,7 @@ class PenjualanController extends Controller
         $jmldussb = 0;
         foreach ($detail as $d) {
             $jmldus      = floor($d->jumlah / $d->isipcsdus);
-            if ($d->kategori == "SWAN") {
+            if ($d->kategori == "SWAN" && $d->kode_produk != "P1000") {
                 $jmldusswan   = $jmldusswan + $jmldus;
             }
 
