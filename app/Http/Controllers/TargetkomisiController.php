@@ -5462,11 +5462,13 @@ class TargetkomisiController extends Controller
         );
 
 
-        if (Auth::user()->id == 27 || $cabang == "BDG" && Auth::user()->kode_cabang == "PCF") {
-            $query->whereIn('kode_cabang', ['BDG', 'PWK']);
-        } else {
-            $query->where('kode_cabang', $cabang);
-        }
+        // if (Auth::user()->id == 27 || $cabang == "BDG" && Auth::user()->kode_cabang == "PCF") {
+        //     $query->whereIn('kode_cabang', ['BDG', 'PWK']);
+        // } else {
+        //     $query->where('kode_cabang', $cabang);
+        // }
+
+        $query->where('kode_cabang', $cabang);
         $query->where('nama_karyawan', '!=', '');
         $query->where('karyawan.id_karyawan', '!=', 'SBGR18');
         $komisi = $query->get();
