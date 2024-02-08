@@ -10,8 +10,8 @@
                     for ($i = 1; $i < count($bln); $i++) {
                     ?>
                     <option <?php if ($bl == $i) {
-                                echo "selected";
-                            } ?> value="<?php echo $i; ?>"><?php echo $bln[$i]; ?></option>
+                        echo 'selected';
+                    } ?> value="<?php echo $i; ?>"><?php echo $bln[$i]; ?></option>
                     <?php
                     }
                     ?>
@@ -30,8 +30,8 @@
                     for ($thn = $tahunmulai; $thn <= date('Y'); $thn++) {
                     ?>
                     <option <?php if ($tahun == $thn) {
-                                echo "selected";
-                            } ?> value="<?php echo $thn; ?>"><?php echo $thn; ?>
+                        echo 'selected';
+                    } ?> value="<?php echo $thn; ?>"><?php echo $thn; ?>
                     </option>
                     <?php
                     }
@@ -53,6 +53,7 @@
                     <option value="gudangpusat">Gudang Pusat</option>
                     <option value="gudangbahan">Gudang Bahan</option>
                     <option value="gudanglogistik">Gudang Logistik</option>
+                    <option value="costratio">Cost Ratio</option>
                 </select>
             </div>
         </div>
@@ -70,7 +71,7 @@
         </div>
     </div>
 </form>
-<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
+<script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
 <script>
     $(function() {
         $("#frmtutuplaporan").submit(function() {
@@ -80,40 +81,40 @@
             var tgl_penutupan = $("#tgl_penutupan").val();
             if (bulan == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Bulan Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Bulan Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#frmtutuplaporan").find("#bulan").focus();
                 });
                 return false;
             } else if (tahun == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Tahun Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Tahun Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#frmtutuplaporan").find("#tahun").focus();
                 });
                 return false;
             } else if (jenis_laporan == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Jenis Laporan Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Jenis Laporan Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("jenis_laporan").focus();
                 });
                 return false;
             } else if (tgl_penutupan == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Tanggal Penutupan Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Tanggal Penutupan Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("tgl_penutupan").focus();
                 });
@@ -121,5 +122,4 @@
             }
         });
     });
-
 </script>
