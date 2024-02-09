@@ -119,7 +119,7 @@
                                             <td>
 
                                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                                    @if (in_array($level, $targetkomisiinput))
+                                                    {{-- @if (in_array($level, $targetkomisiinput))
                                                         <a href="#" class="ml-1 btn btn-primary btn-sm settarget"
                                                             kodetarget="{{ $d->kode_target }}"><i
                                                                 class="feather icon-settings"></i> Input Qty</a>
@@ -128,11 +128,11 @@
                                                         <a href="/targetkomisi/{{ Crypt::encrypt($d->kode_target) }}/generatecashin"
                                                             class="ml-1 btn btn-warning btn-sm"><i
                                                                 class="feather icon-settings"></i> Generate Cashin</a>
-                                                    @endif
+                                                    @endif --}}
                                                     <a href="#" class="ml-1 detailtarget info"
                                                         kodetarget="{{ $d->kode_target }}"><i
                                                             class="feather icon-file-text"></i></a>
-                                                    @php
+                                                    {{-- @php
                                                         $kode_cabang = Auth::user()->kode_cabang;
                                                     @endphp
                                                     @if (($level == 'kepala penjualan' && $d->mm > 0) || ($level == 'admin pusat' && $d->mm > 0))
@@ -151,7 +151,7 @@
                                                             <a href="/targetkomisi/{{ Crypt::encrypt($d->kode_target) }}/{{ Crypt::encrypt($kode_cabang) }}/canceltarget"
                                                                 class="ml-1 danger"><i class="fa fa-close"></i></a>
                                                         @endif
-                                                    @endif
+                                                    @endif --}}
                                                 </div>
 
                                             </td>
@@ -205,8 +205,8 @@
     </div>
 
     <!-- Detail Target -->
-    <div class="modal fade text-left" id="mdldetailtarget" tabindex="-1" role="dialog"
-        aria-labelledby="myModalLabel18" aria-hidden="true">
+    <div class="modal fade text-left" id="mdldetailtarget" tabindex="-1" role="dialog" aria-labelledby="myModalLabel18"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" style="max-width: 950px" role="document">
             <div class="modal-content">
                 <div class="modal-header">
