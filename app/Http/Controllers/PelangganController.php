@@ -328,7 +328,6 @@ class PelangganController extends Controller
             'pasar' => 'required',
             'kode_cabang' => 'required',
             'id_karyawan' => 'required',
-            'status_pelanggan' => 'required',
             'foto' => 'mimes:png,jpg,jpeg|max:1024', // max 1MB
 
         ]);
@@ -377,42 +376,43 @@ class PelangganController extends Controller
         // }
 
         $hari = $request->hari;
-        $simpan = DB::table('pelanggan')->insert([
-            'kode_pelanggan' => $kodepelanggan,
-            'nik' => $request->nik,
-            'no_kk' => $request->no_kk,
-            'nama_pelanggan' => $request->nama_pelanggan,
-            'tgl_lahir' => $request->tgl_lahir,
-            'alamat_pelanggan' => $request->alamat_pelanggan,
-            'alamat_toko' => $request->alamat_toko,
-            'no_hp' => $request->no_hp,
-            'hari' => $hari,
-            'pasar' => $request->pasar,
-            'kode_cabang' => $request->kode_cabang,
-            'id_sales' => $request->id_karyawan,
-            'limitpel' => $request->limitpel,
-            'jatuhtempo' => $request->jatuhtempo,
-            'status_pelanggan' => $request->status_pelanggan,
-            'kepemilikan' => $request->kepemilikan,
-            'lama_usaha' => $request->lama_usaha,
-            'status_outlet' => $request->status_outlet,
-            'type_outlet' => $request->type_outlet,
-            'cara_pembayaran' => $request->cara_pembayaran,
-            'lama_langganan' => $request->lama_langganan,
-            'jaminan' => $request->jaminan,
-            'omset_toko' => $request->omset_toko,
-            'latitude' => $latitude,
-            'longitude' => $longitude,
-            'foto' => $foto
-        ]);
-
-        if ($simpan) {
+        try {
+            $simpan = DB::table('pelanggan')->insert([
+                'kode_pelanggan' => $kodepelanggan,
+                'nik' => $request->nik,
+                'no_kk' => $request->no_kk,
+                'nama_pelanggan' => $request->nama_pelanggan,
+                'tgl_lahir' => $request->tgl_lahir,
+                'alamat_pelanggan' => $request->alamat_pelanggan,
+                'alamat_toko' => $request->alamat_toko,
+                'no_hp' => $request->no_hp,
+                'hari' => $hari,
+                'pasar' => $request->pasar,
+                'kode_cabang' => $request->kode_cabang,
+                'id_sales' => $request->id_karyawan,
+                'limitpel' => $request->limitpel,
+                'jatuhtempo' => $request->jatuhtempo,
+                'status_pelanggan' => $request->status_pelanggan,
+                'kepemilikan' => $request->kepemilikan,
+                'lama_usaha' => $request->lama_usaha,
+                'status_outlet' => $request->status_outlet,
+                'type_outlet' => $request->type_outlet,
+                'cara_pembayaran' => $request->cara_pembayaran,
+                'lama_langganan' => $request->lama_langganan,
+                'jaminan' => $request->jaminan,
+                'omset_toko' => $request->omset_toko,
+                'latitude' => $latitude,
+                'longitude' => $longitude,
+                'foto' => $foto
+            ]);
             if (Auth::user()->level != "salesman") {
                 return redirect('/pelanggan')->with(['success' => 'Data Berhasil Disimpan']);
             } else {
                 return redirect('/pelanggansalesman')->with(['success' => 'Data Berhasil Disimpan']);
             }
-        } else {
+        } catch (\Exception $e) {
+
+            dd($e);
             if (Auth::user()->level != "salesman") {
                 return redirect('/pelanggan')->with(['warning' => 'Data Gagal Disimpan']);
             } else {
