@@ -305,7 +305,7 @@
                             @php
                                 $persentaserouting = !empty($d->jmlkunjungan) ? ($d->jmlsesuaijadwal / $d->jmlkunjungan) * 100 : 0;
                             @endphp
-                            {{ ROUND($persentaserouting, 2) }}
+                            {{ desimal($persentaserouting, 2) }}
                         </td>
                         <td style="text-align: right">
                             @php
