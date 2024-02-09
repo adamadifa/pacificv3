@@ -11,7 +11,6 @@
     .form-label-group {
         margin-bottom: 5px !important;
     }
-
 </style>
 
 <form method="POST" action="/pinjaman/store" id="frmPinjaman">
@@ -41,7 +40,7 @@
                 </tr>
                 <tr>
                     <th>Perusahaan</th>
-                    <td>{{ $karyawan->id_perusahaan=="MP" ? "Makmur Permata" : "CV.Pacific Tasikmalaya" }}</td>
+                    <td>{{ $karyawan->id_perusahaan == 'MP' ? 'Makmur Permata' : 'CV.Pacific Tasikmalaya' }}</td>
                 </tr>
                 <tr>
                     <th>Kantor</th>
@@ -51,33 +50,36 @@
                     <th>Masa Kerja</th>
                     <td>
                         @php
-                        $awal = date_create($karyawan->tgl_masuk);
-                        $akhir = date_create(date('Y-m-d')); // waktu sekarang
-                        $diff = date_diff( $awal, $akhir );
-                        echo $diff->y . ' tahun, '.$diff->m.' bulan, '.$diff->d.' Hari'
+                            $awal = date_create($karyawan->tgl_masuk);
+                            $akhir = date_create(date('Y-m-d')); // waktu sekarang
+                            $diff = date_diff($awal, $akhir);
+                            echo $diff->y . ' tahun, ' . $diff->m . ' bulan, ' . $diff->d . ' Hari';
                         @endphp
                     </td>
                 </tr>
                 <tr>
                     <th>Status</th>
                     <td>
-                        <input type="hidden" name="status_karyawan" id="status_karyawan" value="{{ $karyawan->status_karyawan }}">
-                        {{ $karyawan->status_karyawan=="T" ? "Karyawan Tetap" : "Karyawan Kontrak" }}
+                        <input type="hidden" name="status_karyawan" id="status_karyawan"
+                            value="{{ $karyawan->status_karyawan }}">
+                        {{ $karyawan->status_karyawan == 'T' ? 'Karyawan Tetap' : 'Karyawan Kontrak' }}
                     </td>
                 </tr>
-                @if ($karyawan->status_karyawan == "K")
-                <tr>
-                    <th>Akhir Kontrak</th>
-                    <td>
-                        <input type="hidden" name="akhir_kontrak" id="akhir_kontrak" value="{{ $kontrak->sampai }}">
-                        {{ $kontrak != null ? DateToIndo2($kontrak->sampai) : "" }}
-                    </td>
-                </tr>
+                @if ($karyawan->status_karyawan == 'K')
+                    <tr>
+                        <th>Akhir Kontrak</th>
+                        <td>
+                            <input type="hidden" name="akhir_kontrak" id="akhir_kontrak"
+                                value="{{ $kontrak->sampai }}">
+                            {{ $kontrak != null ? DateToIndo2($kontrak->sampai) : '' }}
+                        </td>
+                    </tr>
                 @endif
                 <tr>
                     <th>Gaji Pokok + Tunjangan</th>
                     <td style="text-align: right">
-                        <input type="hidden" name="gapok_tunjangan" id="gapok_tunjangan" value="{{ $gaji->gajitunjangan }}">
+                        <input type="hidden" name="gapok_tunjangan" id="gapok_tunjangan"
+                            value="{{ $gaji->gajitunjangan }}">
                         {{ rupiah($gaji->gajitunjangan) }}
                     </td>
                 </tr>
@@ -86,14 +88,14 @@
                     <th>Tenor Maksimal</th>
                     <td>
                         <?php
-                            if($karyawan->status_karyawan == "T"){
-                                $tenormax = 20;
-                            }else{
-                                $tglpinjaman = date_create(date('Y-m-d')); // waktu sekarang
-                                $akhirkontrak = date_create($kontrak!= null ? $kontrak->sampai : date('Y-m-d'));
-                                $sisakontrak = date_diff( $tglpinjaman, $akhirkontrak );
-                               $tenormax = $sisakontrak->m;
-                            }
+                        if ($karyawan->status_karyawan == 'T') {
+                            $tenormax = 20;
+                        } else {
+                            $tglpinjaman = date_create(date('Y-m-d')); // waktu sekarang
+                            $akhirkontrak = date_create($kontrak != null ? $kontrak->sampai : date('Y-m-d'));
+                            $sisakontrak = date_diff($tglpinjaman, $akhirkontrak);
+                            $tenormax = $sisakontrak->m;
+                        }
                         ?>
                         {{ $tenormax }} Bulan
                         <input type="hidden" name="tenor_max" id="tenor_max" value="{{ $tenormax }}">
@@ -103,7 +105,7 @@
                     <th style="width:40%">Angsuran Maksimal (40% dari Gaji Pokok + Tunjangan)</th>
                     <td style="text-align:right">
                         @php
-                        $angsuranmax = ((40/100) * $gaji->gajitunjangan );
+                            $angsuranmax = (40 / 100) * $gaji->gajitunjangan;
                         @endphp
                         {{ rupiah($angsuranmax) }}
                         <input type="hidden" name="angsuran_max" id="angsuran_max" value="{{ $angsuranmax }}">
@@ -113,7 +115,7 @@
                     <th>Plafon</th>
                     <td style="text-align: right">
                         @php
-                        $plafon = $angsuranmax * $tenormax;
+                            $plafon = $angsuranmax * $tenormax;
                         @endphp
                         <input type="hidden" name="plafon" id="plafon" value="{{ $angsuranmax * $tenormax }}">
                         {{ rupiah($angsuranmax * $tenormax) }}
@@ -123,32 +125,32 @@
                     <th>JMK</th>
                     <td style="text-align: right">
                         <?php
-                            $masakerja = $diff->y;
-                            if($masakerja >= 3 && $masakerja < 6){
-                                $jmlkali=2;
-                            }else if($masakerja >= 6 && $masakerja < 9 ){
-                                $jmlkali =3;
-                            }else if($masakerja >= 9 && $masakerja < 12 ){
-                                $jmlkali =4;
-                            }else if($masakerja >= 12 && $masakerja < 15 ){
-                                $jmlkali =5;
-                            }else if($masakerja >= 15 && $masakerja < 18 ){
-                                $jmlkali =6;
-                            }else if($masakerja >= 18 && $masakerja < 21 ){
-                                $jmlkali =7;
-                            }else if($masakerja >= 21 && $masakerja < 24 ){
-                                $jmlkali =8;
-                            }else if($masakerja >= 24 ){
-                                $jmlkali =10;
-                            }else{
-                                $jmlkali = 0.5;
-                            }
-
-                            if($masakerja <= 2){
-                                $totaljmk = $jmlkali * $gaji->gaji_pokok;
-                            }else{
-                                $totaljmk = $gaji->gajitunjangan * $jmlkali;
-                            }
+                        $masakerja = $diff->y;
+                        if ($masakerja >= 3 && $masakerja < 6) {
+                            $jmlkali = 2;
+                        } elseif ($masakerja >= 6 && $masakerja < 9) {
+                            $jmlkali = 3;
+                        } elseif ($masakerja >= 9 && $masakerja < 12) {
+                            $jmlkali = 4;
+                        } elseif ($masakerja >= 12 && $masakerja < 15) {
+                            $jmlkali = 5;
+                        } elseif ($masakerja >= 15 && $masakerja < 18) {
+                            $jmlkali = 6;
+                        } elseif ($masakerja >= 18 && $masakerja < 21) {
+                            $jmlkali = 7;
+                        } elseif ($masakerja >= 21 && $masakerja < 24) {
+                            $jmlkali = 8;
+                        } elseif ($masakerja >= 24) {
+                            $jmlkali = 10;
+                        } else {
+                            $jmlkali = 1;
+                        }
+                        
+                        if ($masakerja <= 2) {
+                            $totaljmk = $jmlkali * $gaji->gaji_pokok;
+                        } else {
+                            $totaljmk = $gaji->gajitunjangan * $jmlkali;
+                        }
                         ?>
 
                         {{ rupiah($totaljmk) }}
@@ -158,18 +160,20 @@
                 <tr>
                     <th>JMK Sudah Dibayar</th>
                     <td style="text-align: right">
-                        {{ rupiah($jmk!=null ? $jmk->jml_jmk : 0) }}
-                        <input type="hidden" name="jmk_sudahbayar" id="jmk_sudahbayar" value="{{ $jmk!=null ? $jmk->jml_jmk : 0 }}">
+                        {{ rupiah($jmk != null ? $jmk->jml_jmk : 0) }}
+                        <input type="hidden" name="jmk_sudahbayar" id="jmk_sudahbayar"
+                            value="{{ $jmk != null ? $jmk->jml_jmk : 0 }}">
                     </td>
                 </tr>
                 <tr>
                     <th style="width:40%">Plafon Maksimal</th>
                     <td style="text-align:right">
                         @php
-                        // $plafonmax = ((40/100) * $gaji->gajitunjangan )* 20;
-                        $jmksudahdibayar = $jmk!=null ? $jmk->jml_jmk : 0;
-                        $plafonjmk = $totaljmk - $jmksudahdibayar;
-                        $plafonmax = $plafonjmk < $plafon ? $plafonjmk : $plafon; @endphp {{ rupiah($plafonmax) }} <input type="hidden" name="plafon_max" id="plafon_max" value="{{ $plafonmax }}">
+                            // $plafonmax = ((40/100) * $gaji->gajitunjangan )* 20;
+                            $jmksudahdibayar = $jmk != null ? $jmk->jml_jmk : 0;
+                            $plafonjmk = $totaljmk - $jmksudahdibayar;
+                        $plafonmax = $plafonjmk < $plafon ? $plafonjmk : $plafon; @endphp {{ rupiah($plafonmax) }} <input type="hidden" name="plafon_max"
+                            id="plafon_max" value="{{ $plafonmax }}">
                     </td>
                 </tr>
 
@@ -179,7 +183,8 @@
                     <label for="" class="form-label">Tanggal Pinjaman</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Tanggal Pinjaman" value="" field="tgl_pinjaman" icon="feather icon-calendar" datepicker />
+                    <x-inputtext label="Tanggal Pinjaman" value="" field="tgl_pinjaman"
+                        icon="feather icon-calendar" datepicker />
                 </div>
             </div>
             <div class="row">
@@ -187,7 +192,8 @@
                     <label for="" class="form-label">Jumlah Pinjaman</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Jumlah Pinjaman" value="" field="jml_pinjaman" icon="feather icon-file" right />
+                    <x-inputtext label="Jumlah Pinjaman" value="" field="jml_pinjaman" icon="feather icon-file"
+                        right />
                 </div>
             </div>
             <div class="row">
@@ -195,7 +201,8 @@
                     <label for="" class="form-label">Angsuran</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Angsuran" value="{{ $tenormax }}" field="angsuran" icon="feather icon-file" right />
+                    <x-inputtext label="Angsuran" value="{{ $tenormax }}" field="angsuran" icon="feather icon-file"
+                        right />
                 </div>
             </div>
             <div class="row">
@@ -203,7 +210,8 @@
                     <label for="" class="form-label">Jumlah Angsuran / Bulan</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Jumlah Angsuran" value="" field="jml_angsuran" icon="feather icon-file" right readonly />
+                    <x-inputtext label="Jumlah Angsuran" value="" field="jml_angsuran" icon="feather icon-file"
+                        right readonly />
                 </div>
             </div>
             <div class="row">
@@ -211,13 +219,15 @@
                     <label for="" class="form-label">Mulai Cicilan</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Mulai Cicilan" value="" field="mulai_cicilan" icon="feather icon-calendar" readonly />
+                    <x-inputtext label="Mulai Cicilan" value="" field="mulai_cicilan"
+                        icon="feather icon-calendar" readonly />
                 </div>
             </div>
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
-                        <button href="#" class="btn btn-primary btn-block" id="btnSubmit"><i class="feather icon-send mr-1"></i>Submit</button>
+                        <button href="#" class="btn btn-primary btn-block" id="btnSubmit"><i
+                                class="feather icon-send mr-1"></i>Submit</button>
                     </div>
                 </div>
             </div>
@@ -227,7 +237,7 @@
 
     </div>
 </form>
-<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
+<script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
 <script>
     $(function() {
         $("#frmPinjaman").submit(function(e) {
@@ -239,20 +249,20 @@
             var angsuran = $("#angsuran").val();
             if (tgl_pinjaman == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Tanggal Pinjaman Tidak Boleh Kosong !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Tanggal Pinjaman Tidak Boleh Kosong !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#tgl_pinjaman").focus();
                 });
                 return false;
             } else if (jmlpinjaman == "" || jmlpinjaman == 0) {
                 swal({
-                    title: 'Oops'
-                    , text: 'Jumlah Pinjaman Tidak Boleh Kosong !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Jumlah Pinjaman Tidak Boleh Kosong !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#jml_pinjaman").focus();
                 });
@@ -260,10 +270,10 @@
                 return false;
             } else if (angsuran == "" || angsuran == 0) {
                 swal({
-                    title: 'Oops'
-                    , text: 'Angsuran Tidak Boleh Kosong !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Angsuran Tidak Boleh Kosong !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#angsuran").focus();
                 });
@@ -302,10 +312,10 @@
             var jml_angsuran = parseInt(jmlangsuran.replace(/\./g, ''));
             if (parseInt(jml_angsuran) > parseInt(angsuranmax)) {
                 swal({
-                    title: 'Oops'
-                    , text: 'Jumlah Angsuran Tidak Boleh lebih dari ' + angsuranmax
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Jumlah Angsuran Tidak Boleh lebih dari ' + angsuranmax,
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#jml_angsuran").val(0);
                     $("#angsuran").val(0);
@@ -341,10 +351,10 @@
 
             if (parseInt(jmlpinjaman) > parseInt(plafonmax)) {
                 swal({
-                    title: 'Oops'
-                    , text: 'Jumlah Pinjaman Melebihi Plafon !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Jumlah Pinjaman Melebihi Plafon !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#jml_pinjaman").val(0);
                     $("#jml_angsuran").val(0);
@@ -362,10 +372,10 @@
 
             if (parseInt(angsuran) > parseInt(tenormax)) {
                 swal({
-                    title: 'Oops'
-                    , text: 'Angsuran Tidak Boleh Lebih dari !' + tenormax
-                    , icon: 'warning'
-                    , showConfirmButton: true
+                    title: 'Oops',
+                    text: 'Angsuran Tidak Boleh Lebih dari !' + tenormax,
+                    icon: 'warning',
+                    showConfirmButton: true
                 }).then(function() {
                     $("#angsuran").val(0);
                     $("#jml_angsuran").val(0);
@@ -387,10 +397,10 @@
             var tahun = tanggal[0];
             if (tgl == 19 || tgl == 20) {
                 swal({
-                    title: 'Oops'
-                    , text: 'Tidak Bisa Melakukan Pinjaman Pada Tanggal 19 dan 20 !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Tidak Bisa Melakukan Pinjaman Pada Tanggal 19 dan 20 !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#mulai_cicilan").val("");
                     $("#tgl_pinjaman").val("");
@@ -434,10 +444,10 @@
             var jml_angsuran = parseInt(jmlangsuran.replace(/\./g, ''));
             if (parseInt(jml_angsuran) > parseInt(angsuranmax)) {
                 Swa.fire({
-                    title: 'Oops'
-                    , text: 'Jumlah Angsuran Tidak Boleh lebih dari ' + angsuranmax
-                    , icon: 'warning'
-                    , showConfirmButton: true
+                    title: 'Oops',
+                    text: 'Jumlah Angsuran Tidak Boleh lebih dari ' + angsuranmax,
+                    icon: 'warning',
+                    showConfirmButton: true
                 }).then(function() {
                     $("#jml_angsuran").val(0);
                     $("#angsuran").val(0);
@@ -445,5 +455,4 @@
             }
         });
     });
-
 </script>

@@ -257,7 +257,10 @@ class TargetkomisiController extends Controller
             SUM(IF(kode_produk ='SP',jumlah_target,0)) as 'SP',
             SUM(IF(kode_produk ='SC',jumlah_target,0)) as 'SC',
             SUM(IF(kode_produk ='SP8',jumlah_target,0)) as 'SP8',
-            SUM(IF(kode_produk ='SP500',jumlah_target,0)) as 'SP500'")
+            SUM(IF(kode_produk ='SP500',jumlah_target,0)) as 'SP500',
+            SUM(IF(kode_produk ='BR20',jumlah_target,0)) as 'BR20',
+            SUM(IF(kode_produk ='P1000',jumlah_target,0)) as 'P1000'
+            ")
             ->join('komisi_target', 'komisi_target_qty_detail.kode_target', '=', 'komisi_target.kode_target')
             ->join('karyawan', 'komisi_target_qty_detail.id_karyawan', '=', 'karyawan.id_karyawan')
             ->leftJoin('komisi_target_cashin_detail', function ($join) {
@@ -5459,11 +5462,13 @@ class TargetkomisiController extends Controller
         );
 
 
-        if (Auth::user()->id == 27 || $cabang == "BDG" && Auth::user()->kode_cabang == "PCF") {
-            $query->whereIn('kode_cabang', ['BDG', 'PWK']);
-        } else {
-            $query->where('kode_cabang', $cabang);
-        }
+        // if (Auth::user()->id == 27 || $cabang == "BDG" && Auth::user()->kode_cabang == "PCF") {
+        //     $query->whereIn('kode_cabang', ['BDG', 'PWK']);
+        // } else {
+        //     $query->where('kode_cabang', $cabang);
+        // }
+
+        $query->where('kode_cabang', $cabang);
         $query->where('nama_karyawan', '!=', '');
 
         $komisi = $query->get();

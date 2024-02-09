@@ -97,6 +97,8 @@
                     <th rowspan="2">Nik</th>
                     <th rowspan="2" style="width: 4%">Nama karyawan</th>
                     <th rowspan="2">No. Rekening</th>
+                    <th rowspan="2">No. KTP</th>
+                    <th rowspan="2">STATUS KAWIN</th>
                     <th rowspan="2">Grup</th>
                     <th colspan="9">DATA KARYAWAN</th>
                     <th rowspan="2">GAJI POKOK</th>
@@ -1199,6 +1201,8 @@
                         </td>
                         <td>{{ $d->nama_karyawan }}</td>
                         <td>{{ $d->no_rekening }}</td>
+                        <td>{{ $d->no_ktp }}</td>
+                        <td>{{ $d->status_kawin }}</td>
                         <td align="center">{{ $d->nama_group }}</td>
                         <td align="center">{{ date('d-m-Y', strtotime($d->tgl_masuk)) }}</td>
                         <td align="center">
@@ -1319,7 +1323,7 @@
                     </tr>
                 @endforeach
                 <tr bgcolor="#024a75" style="color:white; font-size:12;">
-                    <th colspan="14">TOTAL</th>
+                    <th colspan="16">TOTAL</th>
                     <th style="text-align: right">{{ rupiah($total_gajipokok) }}</th>
                     <th style="text-align: right">{{ rupiah($total_tunjangan_jabatan) }}</th>
                     <th style="text-align: right">{{ rupiah($total_tunjangan_masakerja) }}</th>
