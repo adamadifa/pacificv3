@@ -324,7 +324,7 @@ class PelangganController extends Controller
             'nama_pelanggan' => 'required',
             'alamat_pelanggan' => 'required',
             'alamat_toko' => 'required',
-            'no_hp' => 'required',
+            'no_hp_pelanggan' => 'required',
             'pasar' => 'required',
             'kode_cabang' => 'required',
             'id_karyawan' => 'required',
