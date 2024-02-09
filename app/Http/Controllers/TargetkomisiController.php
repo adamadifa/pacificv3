@@ -5197,7 +5197,7 @@ class TargetkomisiController extends Controller
 
 
         //Reqlisasi Qty Kendaraann
-        $query->join(
+        $query->leftjoin(
             DB::raw("(
                 SELECT
                 $select_qty_produk
@@ -5390,7 +5390,7 @@ class TargetkomisiController extends Controller
         );
 
         //Penjualan VS AVG
-        $query->join(
+        $query->leftjoin(
             DB::raw("(
                 SELECT karyawan.id_karyawan,COUNT(kode_pelanggan) as realisasipenjvsavg
                 FROM karyawan
@@ -5415,7 +5415,7 @@ class TargetkomisiController extends Controller
 
 
         //Realisasi OA
-        $query->join(
+        $query->leftjoin(
             DB::raw("(
                 SELECT penjualan.id_karyawan,COUNT(DISTINCT kode_pelanggan) as realisasi_jmlpelanggantrans
                 FROM penjualan
