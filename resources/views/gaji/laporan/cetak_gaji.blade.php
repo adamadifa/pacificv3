@@ -1201,7 +1201,7 @@
                         </td>
                         <td>{{ $d->nama_karyawan }}</td>
                         <td>{{ $d->no_rekening }}</td>
-                        <td>{{ $d->no_ktp }}</td>
+                        <td>'{{ $d->no_ktp }}</td>
                         <td>{{ $d->status_kawin }}</td>
                         <td align="center">{{ $d->nama_group }}</td>
                         <td align="center">{{ date('d-m-Y', strtotime($d->tgl_masuk)) }}</td>
