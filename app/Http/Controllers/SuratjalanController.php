@@ -225,6 +225,7 @@ class SuratjalanController extends Controller
         $tgl_mutasi_gudang = $request->tgl_mutasi_gudang;
         $no_permintaan_pengiriman = Crypt::decrypt($request->no_permintaan_pengiriman);
         $tujuan = $request->tujuan;
+        $keterangan = $request->keterangan;
         $tarif = !empty($request->tarif) ? str_replace(".", "", $request->tarif) : 0;
         $tepung = !empty($request->tepung) ? str_replace(".", "", $request->tepung) : 0;
         $bs = !empty($request->bs) ? str_replace(".", "", $request->bs) : 0;
@@ -265,7 +266,8 @@ class SuratjalanController extends Controller
                 'nopol'           => $nopol,
                 'tarif'           => $tarif,
                 'bs'              => $bs,
-                'tepung'          => $tepung
+                'tepung'          => $tepung,
+                'keterangan'     =>  $keterangan
             );
 
             DB::table('angkutan')->insert($dataangkutan);
