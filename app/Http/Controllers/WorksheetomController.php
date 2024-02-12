@@ -162,14 +162,14 @@ class WorksheetomController extends Controller
         $query->leftJoin(
             DB::raw("(
                 SELECT
-                    no_retur_penj,
+                    kode_barang,
                     SUM(jumlah) as jumlahpelunasan
                 FROM
                     detailretur_pelunasan
-                GROUP BY no_retur_penj
+                GROUP BY kode_barang
             ) pelunasan"),
             function ($join) {
-                $join->on('detailretur.no_retur_penj', '=', 'pelunasan.no_retur_penj');
+                $join->on('detailretur.kode_barang', '=', 'pelunasan.kode_barang');
             }
         );
 
