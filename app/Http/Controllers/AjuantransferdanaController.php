@@ -23,14 +23,14 @@ class AjuantransferdanaController extends Controller
         }
 
         if (!empty($request->kode_cabang)) {
-            $query->where('kode_cabang', $request->kode_cabang);
+            $query->where('pengajuan_transfer_dana.kode_cabang', $request->kode_cabang);
         }
         if (!empty($request->dari) && !empty($request->sampai)) {
             $query->whereBetween('tgl_pengajuan', [$request->dari, $request->sampai]);
         }
 
         if ($kode_cabang != "PCF") {
-            $query->where('kode_cabang', $kode_cabang);
+            $query->where('pengajuan_transfer_dana.kode_cabang', $kode_cabang);
             $query->where('validasi_manager', 1);
         }
         $query->leftJoin('setoran_pusat', 'pengajuan_transfer_dana.no_pengajuan', '=', 'setoran_pusat.no_pengajuan');
