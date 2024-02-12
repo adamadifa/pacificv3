@@ -170,6 +170,7 @@ class WorksheetomController extends Controller
             ) pelunasan"),
             function ($join) {
                 $join->on('detailretur.kode_barang', '=', 'pelunasan.kode_barang');
+                $join->on('detailretur.no_retur_penj', '=', 'pelunasan.no_retur_penj');
             }
         );
 
