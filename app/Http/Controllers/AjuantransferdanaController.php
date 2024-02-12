@@ -37,7 +37,18 @@ class AjuantransferdanaController extends Controller
         $ajuantransferdana = $query->get();
         $cbg = new Cabang();
         $cabang = $cbg->getCabanggudang(Auth::user()->kode_cabang);
-        return view('ajuantransferdana.index', compact('cabang', 'ajuantransferdana'));
+        if (isset($request->export)) {
+            if (isset($_POST['export'])) {
+                echo "EXPORT";
+                // Fungsi header dengan mengirimkan raw data excel
+                header("Content-type: application/vnd-ms-excel");
+                // Mendefinisikan nama file ekspor "hasil-export.xls"
+                header("Content-Disposition: attachment; filename=Ajuan Transfer Dana.xls");
+            }
+            return view('ajuantransferdana.export', compact('cabang', 'ajuantransferdana'));
+        } else {
+            return view('ajuantransferdana.index', compact('cabang', 'ajuantransferdana'));
+        }
     }
 
     public function create()

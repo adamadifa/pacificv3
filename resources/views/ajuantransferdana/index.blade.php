@@ -65,8 +65,8 @@
                                 <div class="col-lg-2 col-sm-12">
                                     <button type="submit" name="submit" value="1" class="btn btn-primary"><i
                                             class="fa fa-search"></i> </button>
-                                    <button type="submit" name="submit" name="export" value="1"
-                                        class="btn btn-success"><i class="fa fa-download"></i> </button>
+                                    <button type="submit" name="export" value="1" class="btn btn-success"><i
+                                            class="fa fa-download"></i> </button>
                                 </div>
 
                             </div>
