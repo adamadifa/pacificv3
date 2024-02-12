@@ -100,7 +100,7 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext label="Keterangan" field="ketereangan" icon="feather icon-file-text" right />
+            <x-inputtext label="Keterangan" field="keterangan" icon="feather icon-file-text" right />
         </div>
     </div>
     <div class="row">
