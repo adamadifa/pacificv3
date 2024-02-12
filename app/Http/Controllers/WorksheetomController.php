@@ -166,8 +166,7 @@ class WorksheetomController extends Controller
                     SUM(jumlah) as jumlahpelunasan
                 FROM
                     detailretur_pelunasan
-                WHERE no_retur_penj ='$request->no_retur_penj'
-                GROUP BY kode_barang
+                GROUP BY no_retur_penj
             ) pelunasan"),
             function ($join) {
                 $join->on('detailretur.kode_barang', '=', 'pelunasan.kode_barang');
