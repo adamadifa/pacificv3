@@ -199,6 +199,20 @@
     <div class="row">
         <div class="col-12">
             <div class="form-group">
+                <select name="kode_jadwal" id="kode_jadwal" class="form-control" required>
+                    <option value="">Jadwal Kerja</option>
+                    @foreach ($jadwal as $d)
+                        <option value="{{ $d->kode_jadwal }}">{{ $d->kode_jadwal }} -
+                            {{ $d->nama_jadwal }} {{ $d->kode_cabang }}</option>
+                    @endforeach
+                </select>
+                <small class="danger"></small>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group">
                 <button class="btn btn-primary btn-block" type="submit"><i
                         class="feather icon-send mr-1"></i>Simpan</button>
             </div>

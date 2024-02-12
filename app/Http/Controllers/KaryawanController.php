@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
 
@@ -180,7 +181,8 @@ class KaryawanController extends Controller
         $jabatan = DB::table('hrd_jabatan')->orderBy('nama_jabatan')->get();
         $group = DB::table('hrd_group')->orderBy('nama_group')->get();
         $status_perkawinan = DB::table('hrd_status_perkawinan')->orderBy('kode_perkawinan')->get();
-        return view('karyawan.create', compact('cabang', 'departemen', 'jabatan', 'group', 'status_perkawinan'));
+        $jadwal = DB::table('jadwal_kerja')->orderBy('kode_cabang')->orderBy('kode_jadwal')->get();
+        return view('karyawan.create', compact('cabang', 'departemen', 'jabatan', 'group', 'status_perkawinan', 'jadwal'));
     }
 
     public function store(Request $request)
@@ -203,7 +205,8 @@ class KaryawanController extends Controller
         $jenis_kelamin = $request->jenis_kelamin;
         $status_kawin = $request->status_kawin;
         $status_karyawan = $request->status_karyawan;
-
+        $kode_jadwal = $request->kode_jadwal;
+        $password = Hash::make('12345');
         $data = [
             'nik' => $nik,
             'no_ktp' => $no_ktp,
@@ -223,7 +226,9 @@ class KaryawanController extends Controller
             'jenis_kelamin' => $jenis_kelamin,
             'status_kawin' => $status_kawin,
             'status_karyawan' => $status_karyawan,
-            'status_aktif' => 1
+            'status_aktif' => 1,
+            'kode_jadwal' => $kode_jadwal,
+            'password' => $password
         ];
 
         $simpan = DB::table('master_karyawan')->insert($data);
