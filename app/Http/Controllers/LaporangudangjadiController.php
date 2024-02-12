@@ -327,6 +327,7 @@ class LaporangudangjadiController extends Controller
         lockreport($dari);
         $sampai = $request->sampai;
         $query = Angkutan::query();
+        $query->select('angkutan.*', 'tgl_mutasi_gudang');
         $query->join('mutasi_gudang_jadi', 'angkutan.no_surat_jalan', '=', 'mutasi_gudang_jadi.no_dok');
         $query->whereBetween('tgl_mutasi_gudang', [$dari, $sampai]);
         if (!empty($angkutan)) {
