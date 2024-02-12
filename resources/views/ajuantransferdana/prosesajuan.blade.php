@@ -38,7 +38,7 @@
     @csrf
     <div class="form-group">
         <x-inputtext field="tgl_proses" label="Tanggal Proses" value="{{ $ajuantransferdana->tgl_pengajuan }}" readonly
-            icon="feather icon-calendar" datepicker />
+            icon="feather icon-calendar" />
     </div>
     <div class="row">
         <div class="col-12">
