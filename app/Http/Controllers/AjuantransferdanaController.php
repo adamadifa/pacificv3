@@ -17,7 +17,7 @@ class AjuantransferdanaController extends Controller
 
         $kode_cabang = Auth::user()->kode_cabang;
         $query = Ajuantransferdana::query();
-        $query->select('*');
+        $query->select('pengajuan_transfer_dana.*', 'setoran_pusat.status as status_setoran');
         if (!empty($request->nama_penerima)) {
             $query->where('nama', 'like', '%' . $request->nama . '%');
         }
@@ -33,6 +33,7 @@ class AjuantransferdanaController extends Controller
             $query->where('kode_cabang', $kode_cabang);
             $query->where('validasi_manager', 1);
         }
+        $query->leftJoin('setoran_pusat', 'pengajuan_transfer_dana.no_pengajuan', '=', 'setoran_pusat.no_pengajuan');
         $query->orderBy('tgl_pengajuan', 'desc');
         $ajuantransferdana = $query->get();
         $cbg = new Cabang();

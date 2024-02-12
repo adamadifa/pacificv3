@@ -161,9 +161,11 @@
                                                         @endif
                                                     @else
                                                         @if (in_array($level, $ajuantransferdana_proses))
-                                                            <a href="/ajuantransferdana/{{ Crypt::encrypt($d->no_pengajuan) }}/batalkan"
-                                                                class="ml-1"><span
-                                                                    class="badge bg-danger">Batalkan</span></a>
+                                                            @if ($d->status_setoran == 0)
+                                                                <a href="/ajuantransferdana/{{ Crypt::encrypt($d->no_pengajuan) }}/batalkan"
+                                                                    class="ml-1"><span
+                                                                        class="badge bg-danger">Batalkan</span></a>
+                                                            @endif
                                                         @endif
                                                     @endif
 
