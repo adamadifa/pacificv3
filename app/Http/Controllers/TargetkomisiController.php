@@ -5115,7 +5115,6 @@ class TargetkomisiController extends Controller
             $field_target .= "target_" . $d->kode_kategori . ",";
             $field_realisasi_qty .= "realisasi_qty_" . $d->kode_kategori . ",";
 
-
             $select_target .= "SUM(IF(kategori_komisi='$d->kode_kategori',jumlah_target,0)) as target_" . $d->kode_kategori . ",";
             $select_realisasi_qty .= "SUM(IF(kategori_komisi = '$d->kode_kategori' AND promo !='1' OR kategori_komisi = '$d->kode_kategori' AND promo IS NULL,jumlah/barang.isipcsdus,0)) as realisasi_qty_" . $d->kode_kategori . ",";
         }
