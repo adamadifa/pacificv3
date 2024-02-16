@@ -5465,7 +5465,78 @@ class PenjualanController extends Controller
             SUM(IF( kode_produk = '$p->kode_produk' AND tgltransaksi >= '$awaltahunini' AND tgltransaksi <= '$akhirbulanini', jumlah/isipcsdus, 0 )) AS realsampaibulanini_" . $kode_produk . ",";
         }
 
-        if (empty($request->kode_cabang)) {
+        if (!empty($request->kode_cabang)) {
+            $query = Salesman::query();
+            $query->selectRaw("
+            $field_target_produk
+            $field_realisasi_produk
+            karyawan.id_karyawan,nama_karyawan");
+            $query->leftJoin(
+                DB::raw("(
+                    SELECT
+                    $select_target_produk
+                    dt.id_karyawan
+                    FROM komisi_target_qty_detail dt
+                    INNER JOIN komisi_target kt ON dt.kode_target = kt.kode_target
+                    WHERE tahun = '$tahun' AND bulan <='$bulan'
+                    GROUP BY dt.id_karyawan
+                ) target"),
+                function ($join) {
+                    $join->on('karyawan.id_karyawan', '=', 'target.id_karyawan');
+                }
+            );
+            if ($sumber == 1) {
+                $query->leftJoin(
+                    DB::raw("(
+                        SELECT
+                        $select_realiasasi_produk_1
+                        penjualan.id_karyawan
+                        FROM
+                            detailpenjualan
+                            INNER JOIN penjualan ON detailpenjualan.no_fak_penj = penjualan.no_fak_penj
+                            INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
+                            LEFT JOIN (
+                                SELECT no_fak_penj,max(tglbayar) as lastpayment
+                                FROM historibayar
+                                GROUP BY no_fak_penj
+                            ) hb ON (hb.no_fak_penj = penjualan.no_fak_penj)
+                        WHERE
+                        lastpayment BETWEEN '$awaltahunlalu' AND '$akhirbulaninilast' AND status_lunas ='1'  OR
+                        lastpayment BETWEEN '$awaltahunini' AND '$akhirbulanini' AND status_lunas ='1'
+                        GROUP BY
+                            penjualan.id_karyawan
+                        ) realisasi"),
+                    function ($join) {
+                        $join->on('karyawan.id_karyawan', '=', 'realisasi.id_karyawan');
+                    }
+                );
+            } else {
+                $query->leftJoin(
+                    DB::raw("(
+                        SELECT
+                        $select_realisasi_produk_2
+                        penjualan.id_karyawan
+                    FROM
+                        detailpenjualan
+                        INNER JOIN penjualan ON detailpenjualan.no_fak_penj = penjualan.no_fak_penj
+                        INNER JOIN barang ON detailpenjualan.kode_barang = barang.kode_barang
+
+                    WHERE
+                    tgltransaksi BETWEEN '$awaltahunlalu' AND '$akhirbulaninilast' OR
+                    tgltransaksi BETWEEN '$awaltahunini' AND '$akhirbulanini'
+                    GROUP BY
+                        penjualan.id_karyawan
+                        ) realisasi"),
+                    function ($join) {
+                        $join->on('karyawan.id_karyawan', '=', 'realisasi.id_karyawan');
+                    }
+                );
+            }
+            $query->where('karyawan.kode_cabang', $request->kode_cabang);
+            $query->where('status_aktif_sales', 1);
+            $dppp = $query->get();
+            //dd($dppp);
+            return view('penjualan.laporan.cetak_dppp_salesman', compact('dppp', 'namabulan', 'tahun', 'produk'));
         } else {
             $query = Cabang::query();
             $query->selectRaw("

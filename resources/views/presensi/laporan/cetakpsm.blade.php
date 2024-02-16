@@ -322,8 +322,8 @@
                                 $izinpulangdirut = $datapresensi[17] != 'NA' ? $datapresensi[17] : ''; //Izin Pulang Persetujuan Dirut
                                 $keperluankeluar = $datapresensi[19] != 'NA' ? $datapresensi[19] : ''; //Izin Pulang Persetujuan Dirut
                                 $izinabsendirut = $datapresensi[18] != 'NA' ? $datapresensi[18] : ''; // Izin Absen Persetujuan Dirut
-                                $izinterlambatdirut = $datapresensi[20] != 'NA' ? $datapresensi[20] : ''; // Izin Absen Persetujuan Dirut
-
+                                $izinterlambatdirut = $datapresensi[20] != 'NA' ? $datapresensi[20] : ''; // Izin Terlambat Persetujuan Dirut
+                                $kode_cuti = $datapresensi[21] != 'NA' ? $datapresensi[21] : '';
                                 // Jika Jadwal Presesni Lintas Hari
                                 if (!empty($lintashari)) {
                                     $tgl_pulang = date('Y-m-d', strtotime('+1 day', strtotime($tgl_presensi))); // Tanggal Pulang adalah Tanggal Berikutnya
@@ -895,7 +895,12 @@
                                     @endphp
                                     <!-- Jika Cuti-->
                                 @elseif($status == 'c')
-                                    C
+                                    @if ($kode_cuti == 'C03')
+                                        IK
+                                    @else
+                                        C
+                                    @endif
+
                                     {{-- <span style="color:rgb(154, 56, 4);">CUTI</span><br>
                                     <span style="color:blue">Total Jam : {{ $grandtotaljam }}</span> --}}
                                     @php

@@ -256,7 +256,8 @@ class LaporanhrdController extends Controller
                 '|',IFNULL(izinpulang.direktur,'NA'),
                 '|',IFNULL(pengajuan_izin.direktur,'NA'),
                 '|',IFNULL(pengajuan_izin.keperluan,'NA'),
-                '|',IFNULL(izinterlambat.direktur,'NA')
+                '|',IFNULL(izinterlambat.direktur,'NA'),
+                '|',IFNULL(pengajuan_izin.jenis_cuti,'NA')
                 ),NULL)) as hari_" . $i . ",";
 
             $field_date .= "hari_" . $i . ",";
@@ -631,7 +632,8 @@ class LaporanhrdController extends Controller
                 '|',IFNULL(izinpulang.direktur,'NA'),
                 '|',IFNULL(pengajuan_izin.direktur,'NA'),
                 '|',IFNULL(pengajuan_izin.keperluan,'NA'),
-                '|',IFNULL(izinterlambat.direktur,'NA')
+                '|',IFNULL(izinterlambat.direktur,'NA'),
+                '|',IFNULL(pengajuan_izin.jenis_cuti,'NA')
                 ),NULL)) as hari_" . $i . ",";
 
             $field_date .= "hari_" . $i . ",";
