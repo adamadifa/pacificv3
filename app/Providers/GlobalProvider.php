@@ -1310,6 +1310,7 @@ class GlobalProvider extends ServiceProvider
             $bpjs_menu = ['admin', 'direktur', 'manager accounting', 'manager hrd', 'spv presensi', 'spv recruitment'];
             $monitoring_presensi = ['admin', 'manager hrd', 'spv presensi', 'manager audit'];
             $presensi_karyawan_menu = ['admin', 'manager hrd', 'spv presensi'];
+            $slip_gaji = ['admin', 'manager hrd', 'spv presensi'];
             $lembur_menu = ['admin', 'manager hrd', 'spv presensi'];
             //General Affair
             $ga_menu = ['admin', 'manager ga', 'general affair', 'manager ga', 'direktur', 'manager accounting', 'rom', 'emf'];
@@ -1732,6 +1733,7 @@ class GlobalProvider extends ServiceProvider
                 'pelanggaran_menu' => $pelanggaran_menu,
                 'monitoring_presensi' => $monitoring_presensi,
                 'presensi_karyawan_menu' => $presensi_karyawan_menu,
+                'slip_gaji' => $slip_gaji,
 
                 'gaji_menu' => $gaji_menu,
                 'gaji_tambah' => $gaji_tambah,

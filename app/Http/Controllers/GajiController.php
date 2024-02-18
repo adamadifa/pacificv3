@@ -121,6 +121,7 @@ class GajiController extends Controller
         $t_makan = isset($request->t_makan) ? str_replace(".", "", $request->t_makan) : 0;
         $t_istri = isset($request->t_istri) ? str_replace(".", "", $request->t_istri) : 0;
         $t_skill = isset($request->t_skill) ?  str_replace(".", "", $request->t_skill) : 0;
+        $t_skill = isset($request->t_skill) ?  str_replace(".", "", $request->t_skill) : 0;
         $tgl_berlaku = $request->tgl_berlaku;
 
 
@@ -153,5 +154,11 @@ class GajiController extends Controller
         } catch (\Exception $e) {
             return Redirect::back()->with(['warning' => 'Data Gagal Disimpan']);
         }
+    }
+
+
+    public function slipgaji()
+    {
+        return view('gaji.slipgaji');
     }
 }

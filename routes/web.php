@@ -141,7 +141,7 @@ use App\Http\Controllers\VisitController;
 use App\Http\Controllers\WhatsappController;
 use App\Http\Controllers\WorksheetomController;
 use App\Http\Controllers\BBMController;
-
+use App\Http\Controllers\Slipgajicontroller;
 use App\Models\Barangpembelian;
 use App\Models\Harilibur;
 use App\Models\Logamtokertas;
@@ -1680,6 +1680,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/gaji/{kode_gaji}/edit', [GajiController::class, 'edit']);
     Route::post('/gaji/{kode_gaji}/update', [GajiController::class, 'update']);
     Route::delete('/gaji/{kode_gaji}/delete', [GajiController::class, 'delete']);
+
+    //Slip Gaji
+    Route::get('/slipgaji', [Slipgajicontroller::class, 'index']);
+    Route::get('/slipgaji/create', [Slipgajicontroller::class, 'create']);
 
     Route::get('/insentif', [InsentifController::class, 'index']);
     Route::get('/insentif/create', [InsentifController::class, 'create']);
