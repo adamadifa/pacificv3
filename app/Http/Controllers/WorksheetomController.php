@@ -1373,6 +1373,12 @@ class WorksheetomController extends Controller
         $cabang = $cbg->getCabang($this->cabang);
         if (isset($request->cetak)) {
             return view('worksheetom.cetak_visitpelanggan', compact('visitpelanggan', 'cabang'));
+        } else if (isset($request->export)) {
+            // Fungsi header dengan mengirimkan raw data excel
+            header("Content-type: application/vnd-ms-excel");
+            // Mendefinisikan nama file ekspor "hasil-export.xls"
+            header("Content-Disposition: attachment; filename=Visit Pelanggan.xls");
+            return view('worksheetom.cetak_visitpelanggan', compact('visitpelanggan', 'cabang'));
         } else {
             return view('worksheetom.visitpelanggan', compact('visitpelanggan', 'cabang'));
         }

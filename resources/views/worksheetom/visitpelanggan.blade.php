@@ -53,6 +53,10 @@
                                         class="btn btn-success">
                                         <i class="feather icon-printer"></i>
                                     </button>
+                                    <button type="submit" name="export" formtarget="_blank" value="1"
+                                        class="btn btn-success">
+                                        <i class="feather icon-download"></i>
+                                    </button>
                                 </div>
 
                             </div>

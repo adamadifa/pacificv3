@@ -100,7 +100,7 @@
                     });
                 }
             }
-
+            loaddetail();
             $("#kode_cabang").change(function(e) {
                 loaddetail();
             });
