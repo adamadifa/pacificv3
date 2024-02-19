@@ -1,4 +1,4 @@
-<form action="/slipgaji/store" method="POST" id="frmSlipgaji">
+<form action="/slipgaji/{{ Crypt::encrypt($slipgaji->kode_gaji) }}/update" method="POST" id="frmSlipgaji">
     @csrf
     <div class="row" id="pilihbulan">
         <div class="col-12">
@@ -10,7 +10,7 @@
                 $bulanini = date("m");
                 for ($i = 1; $i < count($namabulan); $i++) {
                 ?>
-                    <option <?php if ($bulanini == $i) {
+                    <option <?php if ($slipgaji->bulan == $i) {
                         echo 'selected';
                     } ?> value="<?php echo $i; ?>">
                         <?php echo $namabulan[$i]; ?></option>
@@ -29,7 +29,7 @@
                 $tahunmulai = 2020;
                 for ($thn = $tahunmulai; $thn <= date('Y') +1; $thn++) {
                 ?>
-                    <option <?php if (date('Y') == $thn) {
+                    <option <?php if ($slipgaji->tahun == $thn) {
                         echo 'Selected';
                     } ?> value="<?php echo $thn; ?>">
                         <?php echo $thn; ?></option>
@@ -45,8 +45,8 @@
             <div class="form-group">
                 <select name="status" id="status" class="form-control">
                     <option value="">Pilih Status</option>
-                    <option value="1">Publish</option>
-                    <option value="0">Pending</option>
+                    <option value="1" {{ $slipgaji->status === '1' ? 'selected' : '' }}>Publish</option>
+                    <option value="0" {{ $slipgaji->status === '0' ? 'selected' : '' }}>Pending</option>
                 </select>
             </div>
         </div>

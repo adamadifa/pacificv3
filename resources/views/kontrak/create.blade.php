@@ -11,7 +11,6 @@
     .form-label-group {
         margin-bottom: 5px !important;
     }
-
 </style>
 <form action="/kontrak/store" method="POST" id="frmKontrak">
     @csrf
@@ -24,7 +23,7 @@
                         <select name="nik" id="nik" class="form-control">
                             <option value="">Pilih Karyawan</option>
                             @foreach ($karyawan as $d)
-                            <option value="{{ $d->nik }}">{{ $d->nama_karyawan }}</option>
+                                <option value="{{ $d->nik }}">{{ $d->nama_karyawan }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -45,7 +44,7 @@
                         <select name="kode_dept" id="kontrak_kode_dept" class="form-control">
                             <option value="">Departemen</option>
                             @foreach ($departemen as $d)
-                            <option value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
+                                <option value="{{ $d->kode_dept }}">{{ $d->nama_dept }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -57,7 +56,7 @@
                         <select name="id_jabatan" id="kontrak_id_jabatan" class="form-control">
                             <option value="">Jabatan </option>
                             @foreach ($jabatan as $d)
-                            <option value="{{ $d->id }}">{{ $d->nama_jabatan }}</option>
+                                <option value="{{ $d->id }}">{{ $d->nama_jabatan }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -80,7 +79,7 @@
                         <select name="id_kantor" id="kontrak_id_kantor" class="form-control">
                             <option value="">Kantor</option>
                             @foreach ($kantor as $d)
-                            <option value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
+                                <option value="{{ $d->kode_cabang }}">{{ $d->nama_cabang }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -116,7 +115,8 @@
                     <label for="" class="form-label">T. Tanggung Jawab</label>
                 </div>
                 <div class="col-8">
-                    <x-inputtext label="Tunjangan Tanggung Jawab" field="t_tanggungjawab" icon="feather icon-file" right />
+                    <x-inputtext label="Tunjangan Tanggung Jawab" field="t_tanggungjawab" icon="feather icon-file"
+                        right />
                 </div>
             </div>
             <div class="row">
@@ -146,16 +146,17 @@
             <div class="row">
                 <div class="col-12">
                     <div class="form-group">
-                        <button class="btn btn-primary btn-block" type="submit"><i class="feather icon-send mr-1"></i>Buat Kontrak</button>
+                        <button class="btn btn-primary btn-block" type="submit"><i
+                                class="feather icon-send mr-1"></i>Buat Kontrak</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </form>
-<script src="{{asset('app-assets/vendors/js/forms/select/select2.full.min.js')}}"></script>
-<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
-<script src="{{asset('app-assets/js/scripts/forms/select/form-select2.js')}}"></script>
+<script src="{{ asset('app-assets/vendors/js/forms/select/select2.full.min.js') }}"></script>
+<script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
+<script src="{{ asset('app-assets/js/scripts/forms/select/form-select2.js') }}"></script>
 <script src="{{ asset('app-assets/js/external/selectize.js') }}"></script>
 <script>
     $(function() {
@@ -179,70 +180,70 @@
             var t_skill = $("#t_skill").val();
             if (nik == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Nik Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Nik Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#nik").focus();
                 });
                 return false;
             } else if (dari == "" || sampai == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Periode Kontrak Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Periode Kontrak Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#kontrak_dari").focus();
                 });
                 return false;
             } else if (kode_dept == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Departemen Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Departemen Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#kontrak_kode_dept").focus();
                 });
                 return false;
             } else if (id_jabatan == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Jabatan Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Jabatan Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#kontrak_id_jabatan").focus();
                 });
                 return false;
             } else if (id_perusahaan == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Perusahaan Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Perusahaan Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#kontrak_id_perusahaan").focus();
                 });
                 return false;
             } else if (id_kantor == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Kantor Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Kantor Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#kontrak_id_kantor").focus();
                 });
                 return false;
             } else if (gaji_pokok == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Gaji Pokok Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Gaji Pokok Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#gaji_pokok").focus();
                 });
@@ -254,14 +255,14 @@
         $("#frmKontrak").find("#nik").change(function(e) {
             var nik = $(this).val();
             $.ajax({
-                type: 'POST'
-                , url: '/karyawan/getkaryawankontrak'
-                , data: {
-                    _token: '{{ csrf_token() }}'
-                    , nik: nik
-                }
-                , cache: false
-                , success: function(respond) {
+                type: 'POST',
+                url: '/karyawan/getkaryawankontrak',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    nik: nik
+                },
+                cache: false,
+                success: function(respond) {
                     var data = respond.split("|");
                     $("#frmKontrak").find("#kontrak_id_jabatan").val(data[0]);
                     $("#frmKontrak").find("#kontrak_kode_dept").val(data[1]);
@@ -271,5 +272,4 @@
             });
         });
     });
-
 </script>

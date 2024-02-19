@@ -47,7 +47,40 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            @foreach ($slipgaji as $d)
+                                                <tr>
+                                                    <td class="text-center">{{ $loop->iteration }}</td>
+                                                    <td class="text-center">{{ $d->kode_gaji }}</td>
+                                                    <td class="text-center">{{ $namabulan[$d->bulan] }}</td>
+                                                    <td class="text-center">{{ $d->tahun }}</td>
+                                                    <td class="text-center">
+                                                        @if ($d->status === '1')
+                                                            <span class="badge bg-success">Published</span>
+                                                        @else
+                                                            <span class="badge bg-warning">Pending</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>
+                                                        <div class="btn-group">
+                                                            <a class="ml-1"
+                                                                href="/slipgaji/{{ Crypt::encrypt($d->kode_gaji) }}/setpenambahpengurang"><i
+                                                                    class="feather icon-settings info"></i></a>
+                                                            <a class="ml-1 edit"
+                                                                kode_gaji="{{ Crypt::encrypt($d->kode_gaji) }}"
+                                                                href="#"><i class="feather icon-edit success"></i></a>
+                                                            <form method="POST" class="deleteform"
+                                                                action="/slipgaji/{{ Crypt::encrypt($d->kode_gaji) }}/delete">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <a href="#" class="delete-confirm ml-1">
+                                                                    <i class="feather icon-trash danger"></i>
+                                                                </a>
+                                                            </form>
 
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
 
@@ -88,13 +121,13 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel18">Edit Master Gaji</h4>
+                    <h4 class="modal-title" id="myModalLabel18">Edit Slip Gaji</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div id="loadeditgaji"></div>
+                    <div id="loadeditslipgaji"></div>
                 </div>
             </div>
         </div>
@@ -122,7 +155,7 @@
                     backdrop: 'static',
                     keyboard: false
                 });
-                $("#loadeditgaji").load('/gaji/' + kode_gaji + '/edit');
+                $("#loadeditslipgaji").load('/slipgaji/' + kode_gaji + '/edit');
             });
 
 

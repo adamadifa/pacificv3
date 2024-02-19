@@ -1684,6 +1684,13 @@ Route::middleware(['auth'])->group(function () {
     //Slip Gaji
     Route::get('/slipgaji', [Slipgajicontroller::class, 'index']);
     Route::get('/slipgaji/create', [Slipgajicontroller::class, 'create']);
+    Route::get('/slipgaji/{kode_gaji}/edit', [Slipgajicontroller::class, 'edit']);
+    Route::get('/slipgaji/{kode_gaji}/setpenambahpengurang', [Slipgajicontroller::class, 'setpenambahpengurang']);
+    Route::get('/slipgaji/{kode_gaji}/tambahkaryawan', [Slipgajicontroller::class, 'tambahkaryawan']);
+    Route::post('/slipgaji/store', [Slipgajicontroller::class, 'store']);
+    Route::post('/slipgaji/{kode_gaji}/storepenambahpengurang', [Slipgajicontroller::class, 'storepenambahpengurang']);
+    Route::delete('/slipgaji/{kode_gaji}/{nik}/deletepenambahpengurang', [Slipgajicontroller::class, 'deletepenambahpengurang']);
+    Route::delete('/slipgaji/{kode_gaji}/delete', [Slipgajicontroller::class, 'delete']);
 
     Route::get('/insentif', [InsentifController::class, 'index']);
     Route::get('/insentif/create', [InsentifController::class, 'create']);

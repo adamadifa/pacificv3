@@ -112,7 +112,7 @@
                     backdrop: 'static',
                     keyboard: false
                 });
-                $("#loadbuatslipgaji").load('/gaji/createslipgaji');
+                $("#loadbuatslipgaji").load('/slipgaji/create');
             });
 
             $('.edit').click(function(e) {
