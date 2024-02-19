@@ -1685,6 +1685,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/slipgaji', [Slipgajicontroller::class, 'index']);
     Route::get('/slipgaji/create', [Slipgajicontroller::class, 'create']);
     Route::get('/slipgaji/{kode_gaji}/edit', [Slipgajicontroller::class, 'edit']);
+    Route::post('/slipgaji/{kode_gaji}/update', [Slipgajicontroller::class, 'update']);
     Route::get('/slipgaji/{kode_gaji}/setpenambahpengurang', [Slipgajicontroller::class, 'setpenambahpengurang']);
     Route::get('/slipgaji/{kode_gaji}/tambahkaryawan', [Slipgajicontroller::class, 'tambahkaryawan']);
     Route::post('/slipgaji/store', [Slipgajicontroller::class, 'store']);

@@ -70,6 +70,36 @@ class Slipgajicontroller extends Controller
     }
 
 
+    public function update(Request $request, $kode_gaji)
+    {
+        $kode_gaji = Crypt::decrypt($kode_gaji);
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+
+        if ($bulan == 12) {
+            $bulan_cair = 1;
+            $tahun_cair = $tahun + 1;
+        } else {
+            $bulan_cair = $bulan + 1;
+            $tahun_cair = $tahun;
+        }
+
+        $tanggal_cair = $tahun_cair . "-" . $bulan_cair . "-01";
+        try {
+
+            DB::table('slip_gaji')->where('kode_gaji', $kode_gaji)->update([
+                'kode_gaji' => $kode_gaji,
+                'bulan' => $bulan,
+                'tahun' => $tahun,
+                'status' => $request->status,
+                'tanggal' => $tanggal_cair
+            ]);
+
+            return Redirect::back()->with(['success' => 'Data Berhasil Disimpan']);
+        } catch (\Exception $e) {
+            return Redirect::back()->with(['warning' => $e->getMessage()]);
+        }
+    }
     public function setpenambahpengurang($kode_gaji)
     {
         $kode_gaji = Crypt::decrypt($kode_gaji);

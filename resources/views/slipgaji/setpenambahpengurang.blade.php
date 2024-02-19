@@ -69,14 +69,17 @@
                                                     <td class="text-right">{{ rupiah($d->jumlah) }}</td>
                                                     <td class="text-right">{{ rupiah($d->jumlah_penambah) }}</td>
                                                     <td>
-                                                        <form method="POST" class="deleteform"
-                                                            action="/slipgaji/{{ Crypt::encrypt($d->kode_gaji) }}/{{ Crypt::encrypt($d->nik) }}/deletepenambahpengurang">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <a href="#" class="delete-confirm ml-1">
-                                                                <i class="feather icon-trash danger"></i>
-                                                            </a>
-                                                        </form>
+                                                        @if ($slipgaji->status === '0')
+                                                            <form method="POST" class="deleteform"
+                                                                action="/slipgaji/{{ Crypt::encrypt($d->kode_gaji) }}/{{ Crypt::encrypt($d->nik) }}/deletepenambahpengurang">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <a href="#" class="delete-confirm ml-1">
+                                                                    <i class="feather icon-trash danger"></i>
+                                                                </a>
+                                                            </form>
+                                                        @endif
+
                                                     </td>
                                                 </tr>
                                             @endforeach
