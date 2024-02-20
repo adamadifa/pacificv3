@@ -73,7 +73,6 @@
                                         <th>Pemohon</th>
                                         <th style="width: 30%">Keterangan</th>
                                         <th>GM</th>
-                                        <th>Direktur</th>
                                         <th>Status</th>
                                         <th>Tgl Selesai</th>
                                         <th>Diselesaikan Oleh</th>
@@ -97,7 +96,7 @@
                                                     <i class="fa fa-close danger"></i>
                                                 @endif
                                             </td>
-                                            <td style="text-align: center">
+                                            {{-- <td style="text-align: center">
                                                 @if ($d->dirut == 0)
                                                     <i class="feather icon-refresh-ccw warning"></i>
                                                 @elseif ($d->dirut == 1)
@@ -105,7 +104,7 @@
                                                 @elseif ($d->dirut == 2)
                                                     <i class="fa fa-close danger"></i>
                                                 @endif
-                                            </td>
+                                            </td> --}}
                                             <td class="text-center">
                                                 @if ($d->status != 1)
                                                     <i class="feather icon-refresh-ccw warning"></i>
