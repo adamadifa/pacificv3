@@ -124,6 +124,7 @@
                     <th rowspan="2" style="background-color: black;">PINJ.<br> PERUSAHAAN</th>
                     <th rowspan="2" style="background-color: black;">SPIP</th>
                     <th rowspan="2" style="background-color: black;">PENGURANG</th>
+                    <th rowspan="2" style="background-color: rgb(0, 129, 6);">PENAMBAH</th>
                     <th rowspan="2" style="background-color: orange;">JUMLAH<br>POTONGAN</th>
                     <th rowspan="2" style="background-color: orange;">JUMLAH<br>BERSIH</th>
 
@@ -233,6 +234,7 @@
                     $total_all_nonpjp = 0; // Total All Non PJP
                     $total_all_spip = 0; // Total ALl SPIP
                     $total_all_pengurang = 0; // Total ALl Pengurang
+                    $total_all_penambah = 0; // Total ALl Pengurang
 
                     $total_all_potongan = 0; // Total All Potongan
 
@@ -1129,7 +1131,8 @@
                     @endif
                     @php
                         $potongan = ROUND($bpjskesehatan + $bpjstenagakerja + $totaldenda + $d->cicilan_pjp + $d->jml_kasbon + $d->jml_nonpjp + $d->jml_pengurang + $spip, 0); // Potongan Upah
-                        $jmlbersih = $bruto - $potongan; // Jumlah Upah Bersih
+                        $penambah = $d->jml_penambah;
+                        $jmlbersih = $bruto - $potongan + $penambah; // Jumlah Upah Bersih
 
                         //Total Gaji Pokok
                         $total_gajipokok += $d->gaji_pokok;
@@ -1183,6 +1186,7 @@
                         $total_all_pjp += $d->cicilan_pjp;
                         $total_all_kasbon += $d->jml_kasbon;
                         $total_all_pengurang += $d->jml_pengurang;
+                        $total_all_penambah += $d->jml_penambah;
                         $total_all_nonpjp += $d->jml_nonpjp;
                         $total_all_spip += $spip;
 
@@ -1314,6 +1318,7 @@
 
                         </td>
                         <td align="right">{{ !empty($d->jml_pengurang) ? rupiah($d->jml_pengurang) : '' }}</td>
+                        <td align="right">{{ !empty($d->jml_penambah) ? rupiah($d->jml_penambah) : '' }}</td>
                         <td align="right">
                             {{ !empty($potongan) ? desimal($potongan) : '' }}
                         </td>
@@ -1377,6 +1382,7 @@
                     <th style="text-align: right">{{ rupiah($total_all_nonpjp) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_spip) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_pengurang) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_all_penambah) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_potongan) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_bersih) }}</th>
                 </tr>
