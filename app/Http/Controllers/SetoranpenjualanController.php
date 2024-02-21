@@ -368,6 +368,7 @@ class SetoranpenjualanController extends Controller
 
         $setoran_kertas = !empty($request->setoran_kertas) ? str_replace(".", "", $request->setoran_kertas) : 0;
         $setoran_logam = !empty($request->setoran_logam) ? str_replace(".", "", $request->setoran_logam) : 0;
+        $setoran_lainnya = !empty($request->setoran_lainnya) ? str_replace(".", "", $request->setoran_lainnya) : 0;
         $setoran_bg = !empty($request->setoran_bg) ? str_replace(".", "", $request->setoran_bg) : 0;
         $setoran_transfer = !empty($request->setoran_transfer) ? str_replace(".", "", $request->setoran_transfer) : 0;
 
@@ -398,6 +399,7 @@ class SetoranpenjualanController extends Controller
             'lhp_tagihan'     => $lhp_tagihan,
             'setoran_kertas'  => $setoran_kertas,
             'setoran_logam'   => $setoran_logam,
+            'setoran_lainnya'   => $setoran_lainnya,
             'setoran_bg'      => $setoran_bg,
             'setoran_transfer' => $setoran_transfer,
             'girotocash'      => $girotocash,
