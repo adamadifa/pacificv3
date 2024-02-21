@@ -48,14 +48,14 @@
 
         .datatable3 td {
             border: 1px solid #000000;
-            padding: 6px;
+
         }
 
         .datatable3 th {
             border: 2px solid #828282;
             font-weight: bold;
             text-align: left;
-            padding: 10px;
+
             text-align: center;
             font-size: 14px;
         }
@@ -132,6 +132,7 @@
             $total_all_nonpjp = 0; // Total All Non PJP
             $total_all_spip = 0; // Total ALl SPIP
             $total_all_pengurang = 0; // Total ALl SPIP
+            $total_all_penambah = 0; // Total ALl SPIP
 
             $total_all_potongan = 0; // Total All Potongan
 
@@ -1027,7 +1028,8 @@
             @endif
             @php
                 $potongan = ROUND($bpjskesehatan + $bpjstenagakerja + $totaldenda + $d->cicilan_pjp + $d->jml_kasbon + $d->jml_nonpjp + $d->jml_pengurang + $spip, 0); // Potongan Upah
-                $jmlbersih = $bruto - $potongan; // Jumlah Upah Bersih
+                $penambah = $d->jml_penambah;
+                $jmlbersih = $bruto - $potongan + $penambah; // Jumlah Upah Bersih
 
                 //Total Gaji Pokok
                 $total_gajipokok += $d->gaji_pokok;
@@ -1081,6 +1083,7 @@
                 $total_all_pjp += $d->cicilan_pjp;
                 $total_all_kasbon += $d->jml_kasbon;
                 $total_all_pengurang += $d->jml_pengurang;
+                $total_all_penambah += $d->jml_penambah;
                 $total_all_nonpjp += $d->jml_nonpjp;
                 $total_all_spip += $spip;
 
@@ -1228,6 +1231,10 @@
                 <tr>
                     <td colspan="2">Pengurang</td>
                     <td style="text-align:right">{{ rupiah($d->jml_pengurang) }}</td>
+                </tr>
+                <tr>
+                    <td colspan="2">Penambah</td>
+                    <td style="text-align:right">{{ rupiah($d->jml_penambah) }}</td>
                 </tr>
                 <tr>
                     <td colspan="2">TOTAL POTONGAN</td>
