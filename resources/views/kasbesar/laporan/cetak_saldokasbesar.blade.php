@@ -259,7 +259,7 @@
                 $grandtotalsetoranbank += $totalsetoranbank;
                 $grandtotalsetoranbanklainnya += $totalsetoranbanklainnya;
 
-                $rinciankertas = ($lhpkertas - $setoranbank_kertas - $setoranbank_lainnya) + $gantilogamtokertas + $girotocash;
+                $rinciankertas = ($lhpkertas - $setoranbank_kertas - $setoranbank_lainnya) + $gantilogamtokertas + $girotocash + $lhplainnya;
                 $totalrinciankertas = $totalrinciankertas + $rinciankertas;
 
                 $rincianlogam = ($lhplogam - $setoranbank_logam) - $gantilogamtokertas;
