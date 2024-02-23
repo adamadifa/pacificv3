@@ -521,6 +521,7 @@
                         $total_overtime_1 = 0; // Total OVertime 1
                         $total_overtime_2 = 0; // Total Overtime 2
                         $total_overtime_libur_1 = 0; // Total Overtime Libur
+                        $total_overtime_libur_nasional = 0; // Total Overtime Libur Nasional
                         $total_overtime_libur_2 = 0;
                         $izinsakit = 0; // Total Izin Sakit
                         $jmlsid = 0; // Jumlah SID
@@ -1139,7 +1140,14 @@
                                         $jmljam_lbr = hitungjamdesimal($tgl_lembur_dari, $tgl_lembur_sampai);
                                         $istirahatlbr = $ceklemburharilibur[0]['istirahat'] == 1 ? 1 : 0;
                                         $jmljam_lembur = $jmljam_lbr > 7 ? 7 : $jmljam_lbr - $istirahatlbr;
-                                        $jmljam_lembur = !empty($ceklibur) ? $jmljam_lembur * 2 : $jmljam_lembur;
+                                        // $jmljam_lembur = !empty($ceklibur) ? $jmljam_lembur * 2 : $jmljam_lembur;
+                                        if (!empty($ceklibur)) {
+                                            $jmljam_lembur_liburnasional = $jmljam_lembur * 2;
+                                            $jmljam_lembur_reguler = 0;
+                                        } else {
+                                            $jmljam_lembur_liburnasional = 0;
+                                            $jmljam_lembur_reguler = $jmljam_lembur;
+                                        }
                                         $kategori_lembur = $ceklemburharilibur[0]['kategori'];
                                     @endphp
                                     @if (empty($ceklibur) && empty($cekliburpenggantiminggu) && empty($cekwfhfull))
@@ -1160,9 +1168,11 @@
                                         @endif
                                     @endif
                                     @php
-                                        $overtime_libur_1 = $jmljam_lembur;
+                                        $overtime_libur_1 = $jmljam_lembur_reguler;
+                                        $overtime_libur_nasional = $jmljam_lembur_liburnasional;
                                         $overtime_libur_2 = 0;
                                         $total_overtime_libur_1 += $overtime_libur_1;
+                                        $total_overtime_libur_nasional += $overtime_libur_nasional;
                                         $total_overtime_libur_2 += $overtime_libur_2;
                                     @endphp
                                 @else
@@ -1357,22 +1367,36 @@
 
                     @if ($d->nama_jabatan == 'SECURITY')
                         @php
-                            $upah_ot_1 = 8000 * $total_overtime_1;
-                            $upah_ot_2 = 8000 * $total_overtime_2;
-                            $upah_otl_1 = 13143 * $total_overtime_libur_1;
-                            $upah_otl_2 = 0;
+                            $tgl_berlaku = '2024-02-01';
+                            $tgl_gaji = $tahun . '-' . $bulan . '-01';
+
+                            if ($tgl_gaji >= $tgl_berlaku) {
+                                $upah_ot_1 = 1.5 * 6597 * $total_overtime_1;
+                                $upah_ot_2 = 1.5 * 6597 * $total_overtime_2;
+                                $upah_otl_1 = 13194 * $total_overtime_libur_1;
+                                $upah_otl_libur_nasional = 13143 * $total_overtime_libur_nasional;
+                                $upah_otl_2 = 0;
+                            } else {
+                                $upah_ot_1 = 8000 * $total_overtime_1;
+                                $upah_ot_2 = 8000 * $total_overtime_2;
+                                $upah_otl_1 = 13143 * $total_overtime_libur_1;
+                                $upah_otl_libur_nasional = 13143 * $total_overtime_libur_nasional;
+                                $upah_otl_2 = 0;
+                            }
+
                         @endphp
                     @else
                         @php
                             $upah_ot_1 = $upah_perjam * 1.5 * $total_overtime_1;
                             $upah_ot_2 = $upah_perjam * 2 * $total_overtime_2;
                             $upah_otl_1 = floor($upah_perjam * 2 * $total_overtime_libur_1);
+                            $upah_otl_libur_nasional = 0;
                             $upah_otl_2 = $upah_perjam * 2 * $total_overtime_libur_2;
                         @endphp
                     @endif
 
                     @php
-                        $total_upah_overtime = $upah_ot_1 + $upah_ot_2 + $upah_otl_1 + $upah_otl_2; // Total Upah Overtime
+                        $total_upah_overtime = $upah_ot_1 + $upah_ot_2 + $upah_otl_1 + $upah_otl_libur_nasional + $upah_otl_2; // Total Upah Overtime
                         $bruto = $upah_perjam * $totaljamkerja + $total_upah_overtime + $totalpremiall_shift_2 + $totalpremiall_shift_3; // Total Upah Bruto
                         $bpjskesehatan = $d->iuran_kes; // BPJS Kesehatan
                         $bpjstenagakerja = $d->iuran_tk; // BPJS Tenaga Kerja
@@ -1571,21 +1595,21 @@
                         $total_upah_ot_2_mp += $d->id_perusahaan == 'MP' ? $upah_ot_2 : 0;
                         $total_upah_ot_2_pcf += $d->id_perusahaan == 'PCF' ? $upah_ot_2 : 0;
 
-                        $total_all_overtime_libur += $total_overtime_libur_1;
-                        $total_overtime_libur_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $total_overtime_libur_1 : 0;
-                        $total_overtime_libur_penjualan += $d->klasifikasi == 'PENJUALAN' ? $total_overtime_libur_1 : 0;
-                        $total_overtime_libur_tkl += $d->klasifikasi == 'TKL' ? $total_overtime_libur_1 : 0;
-                        $total_overtime_libur_tktl += $d->klasifikasi == 'TKTL' ? $total_overtime_libur_1 : 0;
-                        $total_overtime_libur_mp += $d->id_perusahaan == 'MP' ? $total_overtime_libur_1 : 0;
-                        $total_overtime_libur_pcf += $d->id_perusahaan == 'PCF' ? $total_overtime_libur_1 : 0;
+                        $total_all_overtime_libur += $total_overtime_libur_1 + $total_overtime_libur_nasional;
+                        $total_overtime_libur_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $total_overtime_libur_1 + $total_overtime_libur_nasional : 0;
+                        $total_overtime_libur_penjualan += $d->klasifikasi == 'PENJUALAN' ? $total_overtime_libur_1 + $total_overtime_libur_nasional : 0;
+                        $total_overtime_libur_tkl += $d->klasifikasi == 'TKL' ? $total_overtime_libur_1 + $total_overtime_libur_nasional : 0;
+                        $total_overtime_libur_tktl += $d->klasifikasi == 'TKTL' ? $total_overtime_libur_1 + $total_overtime_libur_nasional : 0;
+                        $total_overtime_libur_mp += $d->id_perusahaan == 'MP' ? $total_overtime_libur_1 + $total_overtime_libur_nasional : 0;
+                        $total_overtime_libur_pcf += $d->id_perusahaan == 'PCF' ? $total_overtime_libur_1 + $total_overtime_libur_nasional : 0;
 
-                        $total_all_upah_overtime_libur += $upah_otl_1;
-                        $total_upah_overtime_libur_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $upah_otl_1 : 0;
-                        $total_upah_overtime_libur_penjualan += $d->klasifikasi == 'PENJUALAN' ? $upah_otl_1 : 0;
-                        $total_upah_overtime_libur_tkl += $d->klasifikasi == 'TKL' ? $upah_otl_1 : 0;
-                        $total_upah_overtime_libur_tktl += $d->klasifikasi == 'TKTL' ? $upah_otl_1 : 0;
-                        $total_upah_overtime_libur_mp += $d->id_perusahaan == 'MP' ? $upah_otl_1 : 0;
-                        $total_upah_overtime_libur_mp += $d->id_perusahaan == 'PCF' ? $upah_otl_1 : 0;
+                        $total_all_upah_overtime_libur += $upah_otl_1 + $upah_otl_libur_nasional;
+                        $total_upah_overtime_libur_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $upah_otl_1 + $upah_otl_libur_nasional : 0;
+                        $total_upah_overtime_libur_penjualan += $d->klasifikasi == 'PENJUALAN' ? $upah_otl_1 + $upah_otl_libur_nasional : 0;
+                        $total_upah_overtime_libur_tkl += $d->klasifikasi == 'TKL' ? $upah_otl_1 + $upah_otl_libur_nasional : 0;
+                        $total_upah_overtime_libur_tktl += $d->klasifikasi == 'TKTL' ? $upah_otl_1 + $upah_otl_libur_nasional : 0;
+                        $total_upah_overtime_libur_mp += $d->id_perusahaan == 'MP' ? $upah_otl_1 + $upah_otl_libur_nasional : 0;
+                        $total_upah_overtime_libur_mp += $d->id_perusahaan == 'PCF' ? $upah_otl_1 + $upah_otl_libur_nasional : 0;
 
                         $total_all_upah_overtime += $total_upah_overtime;
                         $total_all_upah_otl_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $total_upah_overtime : 0;

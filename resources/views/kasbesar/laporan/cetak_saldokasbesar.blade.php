@@ -259,7 +259,7 @@
                 $grandtotalsetoranbank += $totalsetoranbank;
                 $grandtotalsetoranbanklainnya += $totalsetoranbanklainnya;
 
-                $rinciankertas = ($lhpkertas - $setoranbank_kertas - $setoranbank_lainnya) + $gantilogamtokertas + $girotocash;
+                $rinciankertas = ($lhpkertas - $setoranbank_kertas - $setoranbank_lainnya) + $gantilogamtokertas + $girotocash + $lhplainnya;
                 $totalrinciankertas = $totalrinciankertas + $rinciankertas;
 
                 $rincianlogam = ($lhplogam - $setoranbank_logam) - $gantilogamtokertas;
@@ -298,7 +298,7 @@
                 <td style="text-align:right; color:red; font-weight:bold">
                     {{ !empty($totalsetoranbank) ? rupiah($totalsetoranbank) : '' }}</td>
                 <td style="text-align:right; color:red; font-weight:bold">
-                    {{ !empty($totalsetoranlainnya) ? rupiah($totalsetoranlainnya) : '' }}</td>
+                    {{ !empty($setoranbank_lainnya) ? rupiah($setoranbank_lainnya) : '' }}</td>
                 <td style="text-align:right; color:rgb(3, 19, 241); font-weight:bold">
                     {{ !empty($saldo) ? rupiah($saldo) : '' }}</td>
                 <td style="border:none; background-color:white;"></td>

@@ -66,6 +66,11 @@
             <x-inputtext label="Setoran Uang Logam" field="setoran_logam" icon="feather icon-file" right />
         </div>
     </div>
+    <div class="row">
+        <div class="col-12">
+            <x-inputtext label="Setoran Lainnya" field="setoran_lainnya" icon="feather icon-file" right />
+        </div>
+    </div>
 
     <div class="row">
         <div class="col-12">
@@ -206,11 +211,13 @@
 
             var setoran_kertas = $("#setoran_kertas").val();
             var setoran_logam = $("#setoran_logam").val();
+            var setoran_lainnya = $("#setoran_lainnya").val();
             var setoran_bg = $("#setoran_bg").val();
             var setoran_transfer = $("#setoran_transfer").val();
 
             var setorankertas = setoran_kertas.replace(/\./g, '');
             var setoranlogam = setoran_logam.replace(/\./g, '');
+            var setoranlainnya = setoran_lainnya.replace(/\./g, '');
             var setoranbg = setoran_bg.replace(/\./g, '');
             var setorantransfer = setoran_transfer.replace(/\./g, '');
 
@@ -222,6 +229,10 @@
                 var setoranlogam = 0;
             }
 
+            if (setoranlainnya == "") {
+                var setoranlainnya = 0;
+            }
+
             if (setoranbg == "") {
                 var setoranbg = 0;
             }
@@ -229,21 +240,22 @@
             if (setorantransfer == "") {
                 var setorantransfer = 0;
             }
-            var totalsetoran = parseInt(setorankertas) + parseInt(setoranlogam) + parseInt(setoranbg) +
+            var totalsetoran = parseInt(setorankertas) + parseInt(setoranlogam) + parseInt(setoranlainnya) +
+                parseInt(setoranbg) +
                 parseInt(setorantransfer);
             $("#total_setoran").val(totalsetoran);
             $("#total_setoran_text").text(addCommas(totalsetoran));
         }
 
-        $("#setoran_kertas, #setoran_logam").maskMoney();
+        $("#setoran_kertas, #setoran_logam, #setoran_lainnya").maskMoney();
 
-        $("#setoran_kertas, #setoran_logam").keyup(function() {
+        $("#setoran_kertas, #setoran_logam, #setoran_lainnya").keyup(function() {
             loadtotalsetoran();
             loadselisih();
         });
 
 
-        $("#setoran_kertas, #setoran_logam").css("color", "red");
+        $("#setoran_kertas, #setoran_logam, #setoran_lainnya").css("color", "red");
 
         function loadlhp() {
             var tgl_lhp = $("#tgl_lhp").val();
