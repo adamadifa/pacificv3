@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Barang;
 use App\Models\Cabang;
+use App\Models\Komisitargetqtydetail;
 use App\Models\Salesman;
 use App\Models\Targetkomisi;
 use Illuminate\Http\Request;
@@ -243,8 +244,9 @@ class TargetkomisiController extends Controller
     public function show(Request $request)
     {
 
-        $target = DB::table('komisi_target_qty_detail')
-            ->selectRaw("komisi_target_qty_detail.id_karyawan,nama_karyawan,kode_cabang,jumlah_target_cashin,
+        $query = Komisitargetqtydetail::query();
+
+        $query->selectRaw("komisi_target_qty_detail.id_karyawan,nama_karyawan,kode_cabang,jumlah_target_cashin,
             SUM(IF(kode_produk ='AB',jumlah_target,0)) as 'AB',
             SUM(IF(kode_produk ='AR',jumlah_target,0)) as 'AR',
             SUM(IF(kode_produk ='AS',jumlah_target,0)) as 'AS',
@@ -260,18 +262,31 @@ class TargetkomisiController extends Controller
             SUM(IF(kode_produk ='SP500',jumlah_target,0)) as 'SP500',
             SUM(IF(kode_produk ='BR20',jumlah_target,0)) as 'BR20',
             SUM(IF(kode_produk ='P1000',jumlah_target,0)) as 'P1000'
-            ")
-            ->join('komisi_target', 'komisi_target_qty_detail.kode_target', '=', 'komisi_target.kode_target')
-            ->join('karyawan', 'komisi_target_qty_detail.id_karyawan', '=', 'karyawan.id_karyawan')
-            ->leftJoin('komisi_target_cashin_detail', function ($join) {
-                $join->on('komisi_target_qty_detail.kode_target', '=', 'komisi_target_cashin_detail.kode_target')
-                    ->on('komisi_target_qty_detail.id_karyawan', '=', 'komisi_target_cashin_detail.id_karyawan');
-            })
-            ->where('komisi_target_qty_detail.kode_target', $request->kode_target)
-            ->groupByRaw('komisi_target_qty_detail.id_karyawan,nama_karyawan,kode_cabang,jumlah_target_cashin')
-            ->orderBy('karyawan.kode_cabang')
-            ->orderBy('nama_karyawan')
-            ->get();
+            ");
+        $query->join('komisi_target', 'komisi_target_qty_detail.kode_target', '=', 'komisi_target.kode_target');
+        $query->join('karyawan', 'komisi_target_qty_detail.id_karyawan', '=', 'karyawan.id_karyawan');
+        $query->leftJoin('komisi_target_cashin_detail', function ($join) {
+            $join->on('komisi_target_qty_detail.kode_target', '=', 'komisi_target_cashin_detail.kode_target')
+                ->on('komisi_target_qty_detail.id_karyawan', '=', 'komisi_target_cashin_detail.id_karyawan');
+        });
+        $query->where('komisi_target_qty_detail.kode_target', $request->kode_target);
+        $query->groupByRaw('komisi_target_qty_detail.id_karyawan,nama_karyawan,kode_cabang,jumlah_target_cashin');
+
+        if (Auth::user()->kode_cabang != "PCF") {
+            $query->where('karyawan.kode_cabang', Auth::user()->kode_cabang);
+        } else {
+            $wilayah = Auth::user()->wilayah;
+            if (!empty($wilayah)) {
+                $wilayah_user = unserialize($wilayah);
+                $query->whereIn('karyawan.kode_cabang', $wilayah_user);
+            }
+        }
+
+
+
+        $query->orderBy('karyawan.kode_cabang');
+        $query->orderBy('nama_karyawan');
+        $target = $query->get();
         $kodetarget = $request->kode_target;
         return view('targetkomisi.show', compact('target', 'kodetarget'));
     }
