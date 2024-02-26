@@ -11,7 +11,6 @@
     .form-label-group {
         margin-bottom: 5px !important;
     }
-
 </style>
 <form method="POST" action="/kasbon/store" id="frmKasbon">
     @csrf
@@ -41,7 +40,7 @@
                 </tr>
                 <tr>
                     <th>Perusahaan</th>
-                    <td>{{ $karyawan->id_perusahaan=="MP" ? "Makmur Permata" : "CV.Pacific Tasikmalaya" }}</td>
+                    <td>{{ $karyawan->id_perusahaan == 'MP' ? 'Makmur Permata' : 'CV.Pacific Tasikmalaya' }}</td>
                 </tr>
                 <tr>
                     <th>Kantor</th>
@@ -51,65 +50,65 @@
                     <th>Masa Kerja</th>
                     <td>
                         @php
-                        $awal = date_create($karyawan->tgl_masuk);
-                        $akhir = date_create(date('Y-m-d')); // waktu sekarang
-                        $diff = date_diff( $awal, $akhir );
-                        echo $diff->y . ' tahun, '.$diff->m.' bulan, '.$diff->d.' Hari'
+                            $awal = date_create($karyawan->tgl_masuk);
+                            $akhir = date_create(date('Y-m-d')); // waktu sekarang
+                            $diff = date_diff($awal, $akhir);
+                            echo $diff->y . ' tahun, ' . $diff->m . ' bulan, ' . $diff->d . ' Hari';
                         @endphp
                     </td>
                 </tr>
                 <tr>
                     <th>Status</th>
                     <td>
-                        <input type="hidden" name="status_karyawan" id="status_karyawan" value="{{ $karyawan->status_karyawan }}">
-                        {{ $karyawan->status_karyawan=="T" ? "Karyawan Tetap" : "Karyawan Kontrak" }}
+                        <input type="hidden" name="status_karyawan" id="status_karyawan"
+                            value="{{ $karyawan->status_karyawan }}">
+                        {{ $karyawan->status_karyawan == 'T' ? 'Karyawan Tetap' : 'Karyawan Kontrak' }}
                     </td>
                 </tr>
-                @if ($karyawan->status_karyawan == "K")
-                <tr>
-                    <th>Akhir Kontrak</th>
-                    <td>
-                        <input type="hidden" name="akhir_kontrak" id="akhir_kontrak" value="{{ $kontrak->sampai }}">
-                        {{ $kontrak != null ? DateToIndo2($kontrak->sampai) : "" }}
-                    </td>
-                </tr>
+                @if ($karyawan->status_karyawan == 'K')
+                    <tr>
+                        <th>Akhir Kontrak</th>
+                        <td>
+                            <input type="hidden" name="akhir_kontrak" id="akhir_kontrak"
+                                value="{{ $kontrak->sampai }}">
+                            {{ $kontrak != null ? DateToIndo2($kontrak->sampai) : '' }}
+                        </td>
+                    </tr>
                 @endif
                 <tr>
                     <th>Max Kasbon</th>
                     <td>
                         <?php
                         $tgl_masuk = $karyawan->tgl_masuk;
-                        $hariini = date("Y-m-d");
+                        $hariini = date('Y-m-d');
                         $timeStart = strtotime("$tgl_masuk");
                         $timeEnd = strtotime("$hariini");
                         // Menambah bulan ini + semua bulan pada tahun sebelumnya
-                        $numBulan = 1 + (date("Y",$timeEnd)-date("Y",$timeStart))*12;
+                        $numBulan = 1 + (date('Y', $timeEnd) - date('Y', $timeStart)) * 12;
                         // menghitung selisih bulan
-                        $numBulan += date("m",$timeEnd)-date("m",$timeStart);
-
-                        if($numBulan <9){
+                        $numBulan += date('m', $timeEnd) - date('m', $timeStart);
+                        
+                        if ($numBulan < 9) {
                             $maxkasbon = 200000;
-                        }elseif($numBulan <=15){
+                        } elseif ($numBulan <= 15) {
                             $maxkasbon = 400000;
-                        }else{
+                        } else {
                             $maxkasbon = 600000;
                         }
-
+                        
                         $jmlcicilan = $cicilan != null ? $cicilan->jumlah : 0;
-
+                        
                         //echo $maxkasbon;
-                        if(!empty($kasbon_max)){
-                            if($kasbon_max > $maxkasbon){
+                        if (!empty($kasbon_max)) {
+                            if ($kasbon_max > $maxkasbon) {
                                 $maxkasbon = $maxkasbon;
-                            }else{
+                            } else {
                                 $maxkasbon = $kasbon_max;
                             }
-                        }else{
+                        } else {
                             $maxkasbon = $maxkasbon;
                         }
-
-
-
+                        
                         echo rupiah($maxkasbon);
                         ?>
                     </td>
@@ -122,7 +121,8 @@
             <label for="" class="form-label">Tanggal Kasbon</label>
         </div>
         <div class="col-8">
-            <x-inputtext label="Tanggal Kasbon" value="" field="tgl_kasbon" icon="feather icon-calendar" datepicker />
+            <x-inputtext label="Tanggal Kasbon" value="" field="tgl_kasbon" icon="feather icon-calendar"
+                datepicker />
         </div>
     </div>
     <div class="row">
@@ -144,13 +144,14 @@
     <div class="row">
         <div class="col-12">
             <div class="form-group">
-                <button href="#" id="btnSubmit" class="btn btn-primary btn-block"><i class="feather icon-send mr-1"></i>Submit</button>
+                <button href="#" id="btnSubmit" class="btn btn-primary btn-block"><i
+                        class="feather icon-send mr-1"></i>Submit</button>
             </div>
         </div>
     </div>
 </form>
 
-<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
+<script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
 <script>
     $(function() {
         $("#frmKasbon").submit(function(e) {
@@ -159,20 +160,20 @@
             var jml_kasbon = $("#jml_kasbon").val();
             if (tgl_kasbon == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Tanggal Kasbon Tidak Boleh Kosong !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Tanggal Kasbon Tidak Boleh Kosong !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#tgl_kasbon").focus();
                 });
                 return false;
             } else if (jml_kasbon == "" || jml_kasbon == 0) {
                 swal({
-                    title: 'Oops'
-                    , text: 'Jumlah Kasbon Tidak Boleh Kosong !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Jumlah Kasbon Tidak Boleh Kosong !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#jml_kasbon").focus();
                 });
@@ -194,10 +195,10 @@
 
             if (tgl == 19 || tgl == 20) {
                 swal({
-                    title: 'Oops'
-                    , text: 'Tidak Bisa Melakukan Pinjaman Pada Tanggal 19 dan 20 !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Tidak Bisa Melakukan Pinjaman Pada Tanggal 19 dan 20 !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#jatuh_tempo").val("");
                     $("#tgl_kasbon").val("");
@@ -241,15 +242,14 @@
             var jml_kasbon = parseInt(jmlkasbon.replace(/\./g, ''));
             if (parseInt(jml_kasbon) > parseInt(maxkasbon)) {
                 swal({
-                    title: 'Oops'
-                    , text: 'Jumlah Kasbon Tidak Boleh lebih dari ' + maxkasbon
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Jumlah Kasbon Tidak Boleh lebih dari ' + maxkasbon,
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#jml_kasbon").val(0);
                 });
             }
         });
     });
-
 </script>
