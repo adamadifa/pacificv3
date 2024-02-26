@@ -1,13 +1,14 @@
 @foreach ($detail as $d)
-<tr>
-    <td>{{ $d->kode_produk }}</td>
-    <td>{{ $d->nama_barang }}</td>
-    <td>{{ $d->shift }}</td>
-    <td class="text-right">{{ rupiah($d->jumlah) }}</td>
-    <td>
-        <a href="#" kode_produk="{{ $d->kode_produk }}" shift="{{ $d->shift }}" class="hapus"><i class="feather icon-trash danger"></i></a>
-    </td>
-</tr>
+    <tr>
+        <td>{{ $d->kode_produk }}</td>
+        <td>{{ $d->nama_barang }}</td>
+        <td>{{ $d->shift }}</td>
+        <td class="text-right">{{ rupiah($d->jumlah) }}</td>
+        <td>
+            <a href="#" kode_produk="{{ $d->kode_produk }}" shift="{{ $d->shift }}" class="hapus"><i
+                    class="feather icon-trash danger"></i></a>
+        </td>
+    </tr>
 @endforeach
 
 <script>
@@ -22,14 +23,14 @@
         function cekbpbjtemp() {
             var kode_produk = $("#kode_produk").val();
             $.ajax({
-                type: 'POST'
-                , url: '/bpbj/cekbpbjtemp'
-                , data: {
-                    _token: "{{ csrf_token() }}"
-                    , kode_produk: kode_produk
-                }
-                , cache: false
-                , success: function(respond) {
+                type: 'POST',
+                url: '/bpbj/cekbpbjtemp',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    kode_produk: kode_produk
+                },
+                cache: false,
+                success: function(respond) {
                     $("#cekbpbjtemp").val(respond);
                 }
             });
@@ -40,36 +41,33 @@
             var shift = $(this).attr("shift");
             event.preventDefault();
             swal({
-                    title: `Anda Yakin Data ini Akan Dihapus ?`
-                    , text: "Jika dihapus Data Ini Akan Hilang "
-                    , icon: "warning"
-                    , buttons: true
-                    , dangerMode: true
-                , })
+                    title: `Anda Yakin Data ini Akan Dihapus ?`,
+                    text: "Jika dihapus Data Ini Akan Hilang ",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
                 .then((willDelete) => {
                     if (willDelete) {
                         $.ajax({
-                            type: 'POST'
-                            , url: '/bpbj/deletetemp'
-                            , data: {
-                                _token: "{{ csrf_token() }}"
-                                , kode_produk: kode_produk
-                                , shift: shift
-                            }
-                            , cache: false
-                            , success: function(respond) {
+                            type: 'POST',
+                            url: '/bpbj/deletetemp',
+                            data: {
+                                _token: "{{ csrf_token() }}",
+                                kode_produk: kode_produk,
+                                shift: shift
+                            },
+                            cache: false,
+                            success: function(respond) {
                                 if (respond == 0) {
                                     swal(
-                                        'Deleted!'
-                                        , 'Data Berhasil Dihapus'
-                                        , 'success'
+                                        'Deleted!', 'Data Berhasil Dihapus',
+                                        'success'
                                     )
                                     loadBpbj();
                                 } else {
                                     swal(
-                                        'Deleted!'
-                                        , 'Data Gagal Dihapus'
-                                        , 'danger'
+                                        'Deleted!', 'Data Gagal Dihapus', 'danger'
                                     )
                                 }
                             }
@@ -78,5 +76,4 @@
                 });
         });
     });
-
 </script>
