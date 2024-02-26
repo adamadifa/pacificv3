@@ -850,7 +850,7 @@
                                                 @endif
                                             @endif
                                             @php
-                                                $overtime_libur_1 = $jmljam_lembur;
+                                                $overtime_libur_1 = $jmljam_lembur_reguler;
                                                 $overtime_libur_nasional = $jmljam_lembur_liburnasional;
                                                 $overtime_libur_2 = 0;
                                                 $total_overtime_libur_1 += $overtime_libur_1;
