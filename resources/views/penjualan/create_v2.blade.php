@@ -949,6 +949,7 @@
                     $("#pelanggan_text").text(kode_pelanggan + " | " + nama_pelanggan);
                     $("#nama_pelanggan").val(kode_pelanggan + " | " + nama_pelanggan);
                     $("#id_karyawan").val(id_karyawan);
+                    generatenofakpenj();
                     $("#nama_karyawan").val(id_karyawan + " | " + nama_karyawan + " | " +
                         kategori_salesman);
                     $("#alamat_text").text(alamat_pelanggan);
@@ -1585,6 +1586,34 @@
                 .keyup(function(e) {
                     loadtotal();
                 });
+
+
+            function generatenofakpenj() {
+                var tgltransaksi = $("#tgltransaksi").val();
+                var id_karyawan = $("#id_karyawan").val();
+                $.ajax({
+                    type: 'POST',
+                    url: '/penjualan/generatenofakpenjall',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        id_karyawan: id_karyawan,
+                        tgltransaksi: tgltransaksi
+                    },
+                    cache: false,
+                    success: function(respond) {
+                        if (respond !== '0') {
+                            $("#no_fak_penj").val(respond);
+                            $("#no_fak_penj").prop('readonly', true);
+                        }
+
+                    }
+                });
+            }
+
+            $("#tgltransaksi,#id_karyawan").change(function() {
+                generatenofakpenj();
+            });
+
         });
     </script>
 @endpush

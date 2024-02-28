@@ -1400,6 +1400,8 @@ class PenjualanController extends Controller
     {
 
         $ceklevel = Auth::user()->level;
+        $tgltransaksi = $request->tgltransaksi; //ok
+        $id_karyawan = $request->id_karyawan; //ok
         $kategori_salesman = $request->kategori_salesman;
         if ($ceklevel == "salesman" && $kategori_salesman == "TO") {
             $kodecab = Auth::user()->kode_cabang;
@@ -1417,14 +1419,37 @@ class PenjualanController extends Controller
             $lastnofakpenj = $cekpenjualan != null ? $cekpenjualan->no_fak_penj : '';
             $no_fak_penj = buatkode($lastnofakpenj, $kodecab . "PR" . $bulantrans . substr($tahuntrans, 2, 2), 4);
         } else {
-            $no_fak_penj = $request->no_fak_penj; //ok
+            $salesman = DB::table('karyawan')
+                ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
+                ->where('id_karyawan', $id_karyawan)->first();
+            $kode_sales = $salesman->kode_sales;
+            $kode_pt = $salesman->kode_pt;
+            $kode_cabang = $salesman->kode_cabang;
+            $tahun = date('y', strtotime($tgltransaksi));
+            $thn = date('Y', strtotime($tgltransaksi));
+            $start_date = "2024-03-01";
+            if ($tgltransaksi >= '2024-03-01') {
+                $lastransaksi = DB::table('penjualan')
+                    ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+                    ->where('tgltransaksi', '>=', $start_date)
+                    ->where('kode_sales', $kode_sales)
+                    ->where('karyawan.kode_cabang', $kode_cabang)
+                    ->whereRaw('YEAR(tgltransaksi)="' . $thn . '"')
+                    ->whereRaw('LEFT(no_fak_penj,3)="' . $kode_pt . '"')
+                    ->orderBy('no_fak_penj', 'desc')
+                    ->first();
+                $last_no_fak_penj = $lastransaksi != NULL ? $lastransaksi->no_fak_penj : "";
+                $no_fak_penj = buatkode($last_no_fak_penj, $kode_pt . $tahun . $kode_sales, 6);
+            } else {
+                $no_fak_penj = $request->no_fak_penj; //ok
+            }
         }
 
         //dd($lastnofakpenj);
         //$no_fak_penj = $request->no_fak_penj; //ok
         //dd($no_fak_penj);
-        $tgltransaksi = $request->tgltransaksi; //ok
-        $id_karyawan = $request->id_karyawan; //ok
+
+
         $kode_pelanggan = $request->kode_pelanggan; //ok
         $limitpel = $request->limitpel; //ok
         $sisapiutang = $request->sisapiutang; //ok
@@ -9352,6 +9377,28 @@ class PenjualanController extends Controller
         $jmlchar = strlen($nomor_awal);
         $no_fak_penj_auto  =  buatkode($lastnofak, $kode_cabang . $kode_faktur, $jmlchar);
 
+        $salesman = DB::table('karyawan')
+            ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
+            ->where('id_karyawan', $id_karyawan)->first();
+        $kode_sales = $salesman->kode_sales;
+        $kode_pt = $salesman->kode_pt;
+        $kode_cabang = $salesman->kode_cabang;
+        $tahun = date('y', strtotime($tgltransaksi));
+        $thn = date('Y', strtotime($tgltransaksi));
+        $startdate = "2024-03-01";
+        if ($tgltransaksi >= '2024-03-01') {
+            $lastransaksi = DB::table('penjualan')
+                ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+                ->where('tgltransaksi', '>=', $startdate)
+                ->where('kode_sales', $kode_sales)
+                ->where('karyawan.kode_cabang', $kode_cabang)
+                ->whereRaw('YEAR(tgltransaksi)="' . $thn . '"')
+                ->whereRaw('LEFT(no_fak_penj,3)="' . $kode_pt . '"')
+                ->orderBy('no_fak_penj', 'desc')
+                ->first();
+            $last_no_fak_penj = $lastransaksi != NULL ? $lastransaksi->no_fak_penj : "";
+            $no_fak_penj_auto = buatkode($last_no_fak_penj, $kode_pt . $tahun . $kode_sales, 6);
+        }
 
         // echo $no_fak_penj_auto;
         // die;
@@ -9435,13 +9482,46 @@ class PenjualanController extends Controller
         $kode_cabang = $salesman->kode_cabang;
         $tahun = date('y', strtotime($tgltransaksi));
         $thn = date('Y', strtotime($tgltransaksi));
-        if ($tgltransaksi >= '2024-03-01') {
+        $start_date = "2024-03-01";
+        if ($tgltransaksi >= '2024-03-01' && $salesman->kategori_salesman == "CANVASER") {
             $lastransaksi = DB::table('penjualan')
                 ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
-                ->where('tgltransaksi', '>=', $tgltransaksi)
+                ->where('tgltransaksi', '>=', $start_date)
                 ->where('kode_sales', $kode_sales)
                 ->where('karyawan.kode_cabang', $kode_cabang)
                 ->whereRaw('YEAR(tgltransaksi)="' . $thn . '"')
+                ->whereRaw('LEFT(no_fak_penj,3)="' . $kode_pt . '"')
+                ->orderBy('no_fak_penj', 'desc')
+                ->first();
+            $last_no_fak_penj = $lastransaksi != NULL ? $lastransaksi->no_fak_penj : "";
+            $no_fak_penj = buatkode($last_no_fak_penj, $kode_pt . $tahun . $kode_sales, 6);
+            return $no_fak_penj;
+        } else {
+            return 0;
+        }
+    }
+
+
+    public function generatenofakpenjall(Request $request)
+    {
+        $tgltransaksi = $request->tgltransaksi;
+        $salesman = DB::table('karyawan')
+            ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
+            ->where('id_karyawan', $request->id_karyawan)->first();
+        $kode_sales = $salesman->kode_sales;
+        $kode_pt = $salesman->kode_pt;
+        $kode_cabang = $salesman->kode_cabang;
+        $tahun = date('y', strtotime($tgltransaksi));
+        $thn = date('Y', strtotime($tgltransaksi));
+        $start_date = "2024-03-01";
+        if ($tgltransaksi >= '2024-03-01') {
+            $lastransaksi = DB::table('penjualan')
+                ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+                ->where('tgltransaksi', '>=', $start_date)
+                ->where('kode_sales', $kode_sales)
+                ->where('karyawan.kode_cabang', $kode_cabang)
+                ->whereRaw('YEAR(tgltransaksi)="' . $thn . '"')
+                ->whereRaw('LEFT(no_fak_penj,3)="' . $kode_pt . '"')
                 ->orderBy('no_fak_penj', 'desc')
                 ->first();
             $last_no_fak_penj = $lastransaksi != NULL ? $lastransaksi->no_fak_penj : "";

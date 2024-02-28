@@ -1392,6 +1392,7 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::post('/penjualan/generatenofakpenj', [PenjualanController::class, 'generatenofakpenj']);
+    Route::post('/penjualan/generatenofakpenjall', [PenjualanController::class, 'generatenofakpenjall']);
 
     //Pembayaran
     Route::post('/pembayaran/store', [PembayaranController::class, 'store']);

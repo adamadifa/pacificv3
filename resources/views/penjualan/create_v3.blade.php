@@ -1702,6 +1702,7 @@
                     success: function(respond) {
                         if (respond !== '0') {
                             $("#no_fak_penj").val(respond);
+                            $("#no_fak_penj").prop('readonly', true);
                         }
 
                     }
