@@ -403,7 +403,7 @@ class PenjualanController extends Controller
                 ->where('penjualan.kode_pelanggan', $kode_pelanggan)
                 ->groupBy('penjualan.kode_pelanggan')
                 ->first();
-            return view('penjualan.create_v3', compact('pelanggan', 'piutang', 'no_fak_penj_auto', 'ceknofak', 'sikluspembayaran', 'jmlfaktur', 'fakturkredit'));
+            return view('penjualan.create_v3', compact('pelanggan', 'piutang', 'no_fak_penj_auto', 'ceknofak', 'sikluspembayaran', 'jmlfaktur', 'fakturkredit', 'salesman'));
         } else {
             return view('penjualan.create_v2');
         }
@@ -9421,5 +9421,34 @@ class PenjualanController extends Controller
             ->get();
         $rsm = DB::table('users')->where('id', $id_rsm)->first();
         return view('penjualan.laporan.cetak_rsmactivity', compact('rsmactivity', 'rsm', 'dari', 'sampai', 'lokasi'));
+    }
+
+
+    public function generatenofakpenj(Request $request)
+    {
+        $tgltransaksi = $request->tgltransaksi;
+        $salesman = DB::table('karyawan')
+            ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
+            ->where('id_karyawan', $request->id_karyawan)->first();
+        $kode_sales = $salesman->kode_sales;
+        $kode_pt = $salesman->kode_pt;
+        $kode_cabang = $salesman->kode_cabang;
+        $tahun = date('y', strtotime($tgltransaksi));
+        $thn = date('Y', strtotime($tgltransaksi));
+        if ($tgltransaksi >= '2024-03-01') {
+            $lastransaksi = DB::table('penjualan')
+                ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
+                ->where('tgltransaksi', '>=', $tgltransaksi)
+                ->where('kode_sales', $kode_sales)
+                ->where('karyawan.kode_cabang', $kode_cabang)
+                ->whereRaw('YEAR(tgltransaksi)="' . $thn . '"')
+                ->orderBy('no_fak_penj', 'desc')
+                ->first();
+            $last_no_fak_penj = $lastransaksi != NULL ? $lastransaksi->no_fak_penj : "";
+            $no_fak_penj = buatkode($last_no_fak_penj, $kode_pt . $tahun . $kode_sales, 6);
+            return $no_fak_penj;
+        } else {
+            return 0;
+        }
     }
 }

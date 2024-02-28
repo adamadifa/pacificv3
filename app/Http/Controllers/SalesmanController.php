@@ -76,7 +76,8 @@ class SalesmanController extends Controller
             'kode_cabang' => 'required',
             'kategori_salesman' => 'required',
             'status_aktif_sales' => 'required',
-            'status_komisi' => 'required'
+            'status_komisi' => 'required',
+            'kode_sales' => 'required'
         ]);
 
         $simpan = DB::table('karyawan')->insert([
@@ -87,7 +88,8 @@ class SalesmanController extends Controller
             'kode_cabang' => $request->kode_cabang,
             'kategori_salesman' => $request->kategori_salesman,
             'status_aktif_sales' => $request->status_aktif_sales,
-            'status_komisi' => $request->status_komisi
+            'status_komisi' => $request->status_komisi,
+            'kode_sales' => $request->kode_sales
         ]);
 
         if ($simpan) {
@@ -115,7 +117,8 @@ class SalesmanController extends Controller
             'kode_cabang' => 'required',
             'kategori_salesman' => 'required',
             'status_aktif_sales' => 'required',
-            'status_komisi' => 'required'
+            'status_komisi' => 'required',
+            'kode_sales' => 'required'
         ]);
 
         $simpan = DB::table('karyawan')
@@ -128,7 +131,7 @@ class SalesmanController extends Controller
                 'kategori_salesman' => $request->kategori_salesman,
                 'status_aktif_sales' => $request->status_aktif_sales,
                 'status_komisi' => $request->status_komisi,
-                'no_fak_awal' => $request->kode_cabang . $request->kode_faktur . $request->nomor_awal
+                'kode_sales' => $request->kode_sales
             ]);
 
         if ($simpan) {

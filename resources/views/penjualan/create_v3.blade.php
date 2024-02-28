@@ -1687,6 +1687,32 @@
                 .keyup(function(e) {
                     loadtotal();
                 });
+
+            function generatenofakpenj() {
+                var tgltransaksi = $("#tgltransaksi").val();
+                $.ajax({
+                    type: 'POST',
+                    url: '/penjualan/generatenofakpenj',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        id_karyawan: "{{ $pelanggan->id_sales }}",
+                        tgltransaksi: tgltransaksi
+                    },
+                    cache: false,
+                    success: function(respond) {
+                        if (respond !== '0') {
+                            $("#no_fak_penj").val(respond);
+                        }
+
+                    }
+                });
+            }
+
+            $("#tgltransaksi").change(function() {
+                generatenofakpenj();
+            });
+
+            generatenofakpenj();
         });
     </script>
 @endpush
