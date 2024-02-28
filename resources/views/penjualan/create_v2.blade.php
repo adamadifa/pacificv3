@@ -1591,6 +1591,8 @@
             function generatenofakpenj() {
                 var tgltransaksi = $("#tgltransaksi").val();
                 var id_karyawan = $("#id_karyawan").val();
+                $("#btnsimpan").prop('disabled', true);
+                $("#btnsimpan").html('<i class="fa fa-spinner mr-1"></i><i>Loading...</i>');
                 $.ajax({
                     type: 'POST',
                     url: '/penjualan/generatenofakpenjall',
@@ -1601,6 +1603,8 @@
                     },
                     cache: false,
                     success: function(respond) {
+                        $("#btnsimpan").prop('disabled', false);
+                        $("#btnsimpan").html('<i class="feather icon-send mr-1"></i> Simpan');
                         if (respond !== '0') {
                             $("#no_fak_penj").val(respond);
                             $("#no_fak_penj").prop('readonly', true);
