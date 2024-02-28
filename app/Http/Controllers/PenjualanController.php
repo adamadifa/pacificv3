@@ -71,6 +71,7 @@ class PenjualanController extends Controller
                 'nama_karyawan',
                 'kategori_salesman',
                 'pasar',
+                'nama_pt',
                 DB::raw('IFNULL(totalpf,0) - IFNULL(totalgb,0) as totalretur'),
                 DB::raw('IFNULL(total,0) - (IFNULL(totalpf,0) - IFNULL(totalgb,0)) as total')
             );
@@ -1916,6 +1917,8 @@ class PenjualanController extends Controller
                 'alamat_cabang',
                 'pasar',
                 'karyawan.kode_cabang',
+                'kode_pt',
+                'nama_pt',
                 DB::raw('IFNULL(totalpf,0) - IFNULL(totalgb,0) as totalretur'),
                 DB::raw('IFNULL(total,0) - (IFNULL(totalpf,0) - IFNULL(totalgb,0)) as total')
             )
@@ -1976,6 +1979,8 @@ class PenjualanController extends Controller
                 'nama_karyawan',
                 'kategori_salesman',
                 'pasar',
+                'kode_pt',
+                'nama_pt',
                 DB::raw('IFNULL(totalpf,0) - IFNULL(totalgb,0) as totalretur'),
                 DB::raw('IFNULL(total,0) - (IFNULL(totalpf,0) - IFNULL(totalgb,0)) as total')
             )

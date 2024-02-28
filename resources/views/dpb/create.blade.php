@@ -510,5 +510,32 @@
                 return false;
             }
         });
+
+        function generatenodpb() {
+            var tgl_pengambilan = $("#frmDpb").find("#tgl_pengambilan").val();
+            var id_karyawan = $("#frmDpb").find("#id_karyawan").val();
+            $.ajax({
+                type: 'POST',
+                url: '/dpb/generatenodpb',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    id_karyawan: id_karyawan,
+                    tgl_pengambilan: tgl_pengambilan
+                },
+                cache: false,
+                success: function(respond) {
+                    if (respond !== '0') {
+                        $("#frmDpb").find("#no_dpb").val(respond);
+                        $("#frmDpb").find("#no_dpb").prop('readonly', true);
+                    }
+
+                }
+            });
+        }
+
+        $("#tgl_pengambilan,#id_karyawan").change(function(e) {
+            generatenodpb();
+        });
+
     });
 </script>

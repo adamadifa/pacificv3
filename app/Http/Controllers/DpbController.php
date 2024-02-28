@@ -497,4 +497,34 @@ class DpbController extends Controller
 
         return view('dpb.showdpbmutasi', compact('dpb'));
     }
+
+
+    public function generatenodpb(Request $request)
+    {
+        $tgl_pengambilan = $request->tgl_pengambilan;
+        $salesman = DB::table('karyawan')
+            ->join('cabang', 'karyawan.kode_cabang', '=', 'cabang.kode_cabang')
+            ->where('id_karyawan', $request->id_karyawan)->first();
+
+        $kode_pt = $salesman->kode_pt;
+        $kode_cabang = $salesman->kode_cabang;
+        $tahun = date('y', strtotime($tgl_pengambilan));
+        $thn = date('Y', strtotime($tgl_pengambilan));
+        $start_date = "2024-03-01";
+        if ($tgl_pengambilan >= '2024-03-01') {
+            $lastdpb = DB::table('dpb')
+                ->join('karyawan', 'dpb.id_karyawan', '=', 'karyawan.id_karyawan')
+                ->where('tgl_pengambilan', '>=', $start_date)
+                ->where('karyawan.kode_cabang', $kode_cabang)
+                ->whereRaw('YEAR(tgl_pengambilan)="' . $thn . '"')
+                ->whereRaw('LEFT(no_dpb,3)="' . $kode_pt . '"')
+                ->orderBy('no_dpb', 'desc')
+                ->first();
+            $last_no_dpb = $lastdpb != NULL ? $lastdpb->no_dpb : "";
+            $no_dpb = buatkode($last_no_dpb, $kode_pt . $tahun, 5);
+            return $no_dpb;
+        } else {
+            return 0;
+        }
+    }
 }

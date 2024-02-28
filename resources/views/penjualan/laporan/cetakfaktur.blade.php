@@ -35,7 +35,6 @@
     .table td {
         border: solid 1px #000000;
     }
-
 </style>
 
 <table border="0" width="100%">
@@ -51,15 +50,24 @@
             </table>
         </td>
         <td colspan="6" align="left">
-            @if (in_array($faktur->kode_pelanggan,$pelangganmp))
-            <b>CV MAKMUR PERMATA </b><br>
-            <b>Jln. Perintis Kemerdekaan RT 001 / RW 003 Kelurahan Karsamenak Kecamatan Kawalu Kota Tasikmalaya 46182 <br>
-                NPWP : 863860342425000</b>
+            @if (in_array($faktur->kode_pelanggan, $pelangganmp))
+                <b>CV MAKMUR PERMATA </b><br>
+                <b>Jln. Perintis Kemerdekaan RT 001 / RW 003 Kelurahan Karsamenak Kecamatan Kawalu Kota Tasikmalaya
+                    46182 <br>
+                    NPWP : 863860342425000</b>
             @else
-            <b>
-                <b>CV PACIFIC CABANG {{ strtoupper($faktur->nama_cabang) }}</b><br>
-                <b>{{ $faktur->alamat_cabang }}</b>
-            </b>
+                @if ($faktur->tgltransaksi < '2024-03-01')
+                    <b>
+                        <b>CV PACIFIC CABANG {{ strtoupper($faktur->nama_cabang) }}</b><br>
+                        <b>{{ $faktur->alamat_cabang }}</b>
+                    </b>
+                @else
+                    <b>
+                        <b>PT {{ strtoupper($faktur->nama_pt) }}</b><br>
+                        <b>{{ $faktur->alamat_cabang }}</b>
+                    </b>
+                @endif
+
             @endif
 
 
@@ -86,12 +94,12 @@
         <td>:</td>
         <td>
             @if (!empty($faktur->alamat_toko))
-            {{ $faktur->alamat_toko }}
+                {{ $faktur->alamat_toko }}
             @else
-            {{ $faktur->alamat_pelanggan }}
+                {{ $faktur->alamat_pelanggan }}
             @endif
-            @if ($faktur->kode_cabang =="BDG")
-            ({{ $faktur->pasar }})
+            @if ($faktur->kode_cabang == 'BDG')
+                ({{ $faktur->pasar }})
             @endif
         </td>
     </tr>
@@ -116,31 +124,30 @@
                 </thead>
                 <tbody>
                     @foreach ($detail as $b)
-                    @php
-                    $jmldus = floor($b->jumlah / $b->isipcsdus);
-                    $sisadus = $b->jumlah % $b->isipcsdus;
+                        @php
+                            $jmldus = floor($b->jumlah / $b->isipcsdus);
+                            $sisadus = $b->jumlah % $b->isipcsdus;
 
-                    if ($b->isipack == 0) {
-                    $jmlpack = 0;
-                    $sisapack = $sisadus;
-                    } else {
+                            if ($b->isipack == 0) {
+                                $jmlpack = 0;
+                                $sisapack = $sisadus;
+                            } else {
+                                $jmlpack = floor($sisadus / $b->isipcs);
+                                $sisapack = $sisadus % $b->isipcs;
+                            }
 
-                    $jmlpack = floor($sisadus / $b->isipcs);
-                    $sisapack = $sisadus % $b->isipcs;
-                    }
-
-                    $jmlpcs = $sisapack;
-                    @endphp
-                    <tr>
-                        <td align="center">{{ $loop->iteration }}</td>
-                        <td>{{ $b->kode_barang }}</td>
-                        <td>{{ $b->nama_barang }}</td>
-                        <td align="right">{{ rupiah($b->harga_dus) }}</td>
-                        <td align="center">{{ $jmldus }}</td>
-                        <td align="center">{{ $jmlpack }}</td>
-                        <td align="center">{{ $jmlpcs }}</td>
-                        <td align="right">{{ rupiah($b->subtotal) }}</td>
-                    </tr>
+                            $jmlpcs = $sisapack;
+                        @endphp
+                        <tr>
+                            <td align="center">{{ $loop->iteration }}</td>
+                            <td>{{ $b->kode_barang }}</td>
+                            <td>{{ $b->nama_barang }}</td>
+                            <td align="right">{{ rupiah($b->harga_dus) }}</td>
+                            <td align="center">{{ $jmldus }}</td>
+                            <td align="center">{{ $jmlpack }}</td>
+                            <td align="center">{{ $jmlpcs }}</td>
+                            <td align="right">{{ rupiah($b->subtotal) }}</td>
+                        </tr>
                     @endforeach
                 </tbody>
                 <tr>
@@ -169,7 +176,9 @@
                 <tr>
                     <td colspan="4"></td>
                     <td colspan="3" align="center">DPP</td>
-                    <td align="right">{{ rupiah($faktur->subtotal - $faktur->potongan - $faktur->penyharga - $faktur->potistimewa) }}</td>
+                    <td align="right">
+                        {{ rupiah($faktur->subtotal - $faktur->potongan - $faktur->penyharga - $faktur->potistimewa) }}
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="4"></td>
@@ -187,12 +196,12 @@
                     <td colspan="3" align="center">Total Pembayaran</td>
                     <td align="right">{{ rupiah($faktur->total) }}</td>
                 </tr>
-                @if (Auth::user()->kode_cabang=="BDG" || Auth::user()->kode_cabang=="PCF" )
-                <tr>
-                    <td colspan="4"></td>
-                    <td colspan="3" align="center">Terbilang</td>
-                    <td align="right"><i>{{ ucwords(terbilang($faktur->total)) }}</i></td>
-                </tr>
+                @if (Auth::user()->kode_cabang == 'BDG' || Auth::user()->kode_cabang == 'PCF')
+                    <tr>
+                        <td colspan="4"></td>
+                        <td colspan="3" align="center">Terbilang</td>
+                        <td align="right"><i>{{ ucwords(terbilang($faktur->total)) }}</i></td>
+                    </tr>
                 @endif
             </table>
         </td>
@@ -213,15 +222,23 @@
         </td>
         <td colspan="6" align="left">
             <b>
-                @if (in_array($faktur->kode_pelanggan,$pelangganmp))
-                <b>CV MAKMUR PERMATA </b><br>
-                <b>Jln. Perintis Kemerdekaan RT 001 / RW 003 Kelurahan Karsamenak Kecamatan Kawalu Kota Tasikmalaya 46182 <br>
-                    NPWP : 863860342425000</b>
+                @if (in_array($faktur->kode_pelanggan, $pelangganmp))
+                    <b>CV MAKMUR PERMATA </b><br>
+                    <b>Jln. Perintis Kemerdekaan RT 001 / RW 003 Kelurahan Karsamenak Kecamatan Kawalu Kota Tasikmalaya
+                        46182 <br>
+                        NPWP : 863860342425000</b>
                 @else
-                <b>
-                    <b>CV PACIFIC CABANG {{ strtoupper($faktur->nama_cabang) }}</b><br>
-                    <b>{{ $faktur->alamat_cabang }}</b>
-                </b>
+                    @if ($faktur->tgltransaksi < '2024-03-01')
+                        <b>
+                            <b>CV PACIFIC CABANG {{ strtoupper($faktur->nama_cabang) }}</b><br>
+                            <b>{{ $faktur->alamat_cabang }}</b>
+                        </b>
+                    @else
+                        <b>
+                            <b>PT {{ strtoupper($faktur->nama_pt) }}</b><br>
+                            <b>{{ $faktur->alamat_cabang }}</b>
+                        </b>
+                    @endif
                 @endif
             </b>
 
@@ -248,12 +265,12 @@
         <td>:</td>
         <td>
             @if (!empty($faktur->alamat_toko))
-            {{ $faktur->alamat_toko }}
+                {{ $faktur->alamat_toko }}
             @else
-            {{ $faktur->alamat_pelanggan }}
+                {{ $faktur->alamat_pelanggan }}
             @endif
-            @if ($faktur->kode_cabang =="BDG")
-            ({{ $faktur->pasar }})
+            @if ($faktur->kode_cabang == 'BDG')
+                ({{ $faktur->pasar }})
             @endif
         </td>
     </tr>
@@ -278,31 +295,30 @@
                 </thead>
                 <tbody>
                     @foreach ($detail as $b)
-                    @php
-                    $jmldus = floor($b->jumlah / $b->isipcsdus);
-                    $sisadus = $b->jumlah % $b->isipcsdus;
+                        @php
+                            $jmldus = floor($b->jumlah / $b->isipcsdus);
+                            $sisadus = $b->jumlah % $b->isipcsdus;
 
-                    if ($b->isipack == 0) {
-                    $jmlpack = 0;
-                    $sisapack = $sisadus;
-                    } else {
+                            if ($b->isipack == 0) {
+                                $jmlpack = 0;
+                                $sisapack = $sisadus;
+                            } else {
+                                $jmlpack = floor($sisadus / $b->isipcs);
+                                $sisapack = $sisadus % $b->isipcs;
+                            }
 
-                    $jmlpack = floor($sisadus / $b->isipcs);
-                    $sisapack = $sisadus % $b->isipcs;
-                    }
-
-                    $jmlpcs = $sisapack;
-                    @endphp
-                    <tr>
-                        <td align="center">{{ $loop->iteration }}</td>
-                        <td>{{ $b->kode_barang }}</td>
-                        <td>{{ $b->nama_barang }}</td>
-                        <td align="right">{{ rupiah($b->harga_dus) }}</td>
-                        <td align="center">{{ $jmldus }}</td>
-                        <td align="center">{{ $jmlpack }}</td>
-                        <td align="center">{{ $jmlpcs }}</td>
-                        <td align="right">{{ rupiah($b->subtotal) }}</td>
-                    </tr>
+                            $jmlpcs = $sisapack;
+                        @endphp
+                        <tr>
+                            <td align="center">{{ $loop->iteration }}</td>
+                            <td>{{ $b->kode_barang }}</td>
+                            <td>{{ $b->nama_barang }}</td>
+                            <td align="right">{{ rupiah($b->harga_dus) }}</td>
+                            <td align="center">{{ $jmldus }}</td>
+                            <td align="center">{{ $jmlpack }}</td>
+                            <td align="center">{{ $jmlpcs }}</td>
+                            <td align="right">{{ rupiah($b->subtotal) }}</td>
+                        </tr>
                     @endforeach
                 </tbody>
                 <tr>
@@ -319,7 +335,9 @@
                 <tr>
                     <td colspan="4"></td>
                     <td colspan="3" align="center">DPP</td>
-                    <td align="right">{{ rupiah($faktur->subtotal - $faktur->potongan - $faktur->penyharga - $faktur->potistimewa) }}</td>
+                    <td align="right">
+                        {{ rupiah($faktur->subtotal - $faktur->potongan - $faktur->penyharga - $faktur->potistimewa) }}
+                    </td>
                 </tr>
                 <tr>
                     <td colspan="4"></td>
@@ -332,12 +350,12 @@
                     <td colspan="3" align="center">Total </td>
                     <td align="right">{{ rupiah($faktur->total) }}</td>
                 </tr>
-                @if (Auth::user()->kode_cabang=="BDG" || Auth::user()->kode_cabang=="PCF" )
-                <tr>
-                    <td colspan="4"></td>
-                    <td colspan="3" align="center">Terbilang</td>
-                    <td align="right"><i>{{ ucwords(terbilang($faktur->total)) }}</i></td>
-                </tr>
+                @if (Auth::user()->kode_cabang == 'BDG' || Auth::user()->kode_cabang == 'PCF')
+                    <tr>
+                        <td colspan="4"></td>
+                        <td colspan="3" align="center">Terbilang</td>
+                        <td align="right"><i>{{ ucwords(terbilang($faktur->total)) }}</i></td>
+                    </tr>
                 @endif
             </table>
         </td>

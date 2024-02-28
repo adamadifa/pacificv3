@@ -670,6 +670,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/dpb/{no_dpb}/delete', [DpbController::class, 'delete']);
     Route::post('/dpb/{no_dpb}/update', [DpbController::class, 'update']);
     Route::post('/dpb/showdpbmutasi', [DpbController::class, 'showdpbmutasi']);
+    Route::post('/dpb/generatenodpb', [DpbController::class, 'generatenodpb']);
 
 
     //FPB
