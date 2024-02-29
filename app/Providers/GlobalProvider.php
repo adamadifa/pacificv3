@@ -844,12 +844,12 @@ class GlobalProvider extends ServiceProvider
             ];
             //Giro
             $giro_view = ['admin', 'admin penjualan', 'admin penjualan dan persediaan', 'manager accounting', 'rom', 'admin kas dan penjualan', 'salesman', 'audit', 'manager audit', 'kepala admin', 'admin pusat', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'admin penjualan kasir dan kas kecil', 'audit', 'manager audit', 'admin pajak 2'];
-            $giro_approved = ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'manager keuangan'];
+            $giro_approved = ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'manager keuangan', 'kepala admin'];
             $giro_hapus = ['admin', 'admin penjualan', 'admin penjualan dan persediaan', 'manager accounting', 'rom', 'admin kas dan penjualan', 'salesman', 'audit', 'manager audit', 'kepala admin', 'admin pajak 2'];
 
             //Transfer
             $transfer_view = ['admin', 'admin penjualan', 'admin penjualan dan persediaan', 'manager accounting', 'rom', 'admin kas dan penjualan', 'salesman', 'audit', 'manager audit', 'kepala admin', 'admin pusat', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'admin penjualan dan kas kecil', 'admin penjualan dan kasir', 'admin penjualan kasir dan kas kecil', 'audit', 'manager audit', 'admin pajak 2'];
-            $transfer_approved =  ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'manager keuangan'];
+            $transfer_approved =  ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'manager keuangan', 'kepala admin'];
 
             //Kas Kecil
             $kaskecil_menu  = [
@@ -867,7 +867,7 @@ class GlobalProvider extends ServiceProvider
             $klaim_add = ['admin', 'kepala admin', 'admin pusat', 'admin kas kecil', 'audit', 'manager audit', 'admin kas', 'manager accounting', 'rom', 'admin kas dan penjualan', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil', 'staff keuangan 3', 'admin garut', 'admin pajak 2', 'admin penjualan kasir dan kas kecil'];
             $klaim_hapus = ['admin', 'kepala admin', 'admin pusat', 'admin kas kecil', 'audit', 'manager audit', 'admin kas', 'manager accounting', 'rom', 'admin kas dan penjualan', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil', 'staff keuangan 3', 'admin garut', 'admin pajak 2', 'admin penjualan kasir dan kas kecil'];
             $klaim_validasi = ['admin', 'kepala admin', 'admin pusat', 'admin kas kecil', 'audit', 'manager audit', 'admin kas', 'manager accounting', 'rom', 'admin kas dan penjualan', 'admin persediaan dan kas kecil', 'admin penjualan dan kas kecil', 'staff keuangan 3', 'admin garut', 'admin pajak 2', 'admin penjualan kasir dan kas kecil'];
-            $klaim_proses = ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'manager accounting', 'rom', 'admin pajak 2', 'admin penjualan kasir dan kas kecil'];
+            $klaim_proses = ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'manager accounting', 'rom', 'admin pajak 2', 'admin penjualan kasir dan kas kecil', 'kepala admin'];
 
             //Mutasi Bank
             $mutasibank_view = [
@@ -946,7 +946,7 @@ class GlobalProvider extends ServiceProvider
             $setoranpusat_add = ['admin', 'kasir', 'audit', 'manager audit', 'admin garut', 'kepala admin', 'admin pusat', 'kasir', 'audit', 'manager audit', 'admin garut', 'admin kas', 'manager accounting', 'rom', 'admin kas dan penjualan', 'admin persediaan dan kasir', 'admin penjualan dan kasir', 'admin penjualan kasir dan kas kecil', 'admin pajak 2'];
             $setoranpusat_edit = ['admin', 'kasir', 'audit', 'manager audit', 'admin garut', 'kepala admin', 'admin pusat', 'kasir', 'audit', 'manager audit', 'admin garut', 'admin kas', 'manager accounting', 'rom', 'admin kas dan penjualan', 'admin persediaan dan kasir', 'admin penjualan dan kasir', 'admin penjualan kasir dan kas kecil', 'admin pajak 2'];
             $setoranpusat_hapus = ['admin', 'kasir', 'audit', 'manager audit', 'admin garut', 'kepala admin', 'admin pusat', 'kasir', 'audit', 'manager audit', 'admin garut', 'admin kas', 'manager accounting', 'rom', 'admin kas dan penjualan', 'admin persediaan dan kasir', 'admin penjualan dan kasir', 'admin penjualan kasir dan kas kecil', 'admin pajak 2'];
-            $setoranpusat_terimasetoran = ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3'];
+            $setoranpusat_terimasetoran = ['admin', 'staff keuangan', 'staff keuangan 2', 'staff keuangan 3', 'kepala admin'];
             $setorangiro_view = ['admin', 'kepala admin', 'admin pusat', 'kasir', 'audit', 'manager audit', 'admin garut', 'admin kas', 'manager accounting', 'rom', 'admin kas dan penjualan', 'admin persediaan dan kasir', 'admin penjualan dan kasir', 'admin penjualan kasir dan kas kecil', 'admin pajak 2'];
             $setorantransfer_view = ['admin', 'kepala admin', 'admin pusat', 'kasir', 'audit', 'manager audit', 'admin garut', 'admin kas', 'manager accounting', 'rom', 'admin kas dan penjualan', 'admin persediaan dan kasir', 'admin penjualan dan kasir', 'admin penjualan kasir dan kas kecil', 'admin pajak 2'];
             $belum_disetorkan = ['admin', 'kepala admin', 'admin pusat', 'kasir', 'audit', 'manager audit', 'admin garut', 'admin kas', 'manager accounting', 'rom', 'admin kas dan penjualan', 'admin persediaan dan kasir', 'admin penjualan dan kasir', 'admin penjualan kasir dan kas kecil', 'admin pajak 2'];

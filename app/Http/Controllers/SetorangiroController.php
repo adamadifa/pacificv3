@@ -96,7 +96,14 @@ class SetorangiroController extends Controller
             ->where('no_giro', $no_giro)
             ->groupByRaw('no_giro,nama_pelanggan,namabank,tglcair')
             ->first();
-        $bank = Bank::where('show_on_cabang', 1)->get();
+        if (Auth::user()->kode_cabang != "PCF") {
+            $bank = DB::table('master_bank')->orderBy('kode_bank')
+                ->where('kode_cabang', Auth::user()->kode_cabang)
+                ->where('nama_bank', 'like', '%BNI GIRO%')
+                ->get();
+        } else {
+            $bank = DB::table('master_bank')->orderBy('kode_bank')->get();
+        }
         return view('setorangiro.create', compact('giro', 'bank'));
     }
 

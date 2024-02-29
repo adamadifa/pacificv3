@@ -1,38 +1,38 @@
 <form autocomplete="off" id="frmUpdateTransfer" method="POST" action="/transfer/update">
     @csrf
-    <input type="hidden" name="kode_transfer" value="{{$transfer->kode_transfer}}">
-    <input type="hidden" id="statustransfer" name="statustransfer" value="{{$transfer->status}}">
-    <input type="hidden" name="tgl_transfer" value="{{$transfer->tgl_transfer}}">
-    <input type="hidden" name="tglcair" value="{{$transfer->tglcair}}">
-    <input type="hidden" name="pelanggan" value="{{$transfer->nama_pelanggan}}">
+    <input type="hidden" name="kode_transfer" value="{{ $transfer->kode_transfer }}">
+    <input type="hidden" id="statustransfer" name="statustransfer" value="{{ $transfer->status }}">
+    <input type="hidden" name="tgl_transfer" value="{{ $transfer->tgl_transfer }}">
+    <input type="hidden" name="tglcair" value="{{ $transfer->tglcair }}">
+    <input type="hidden" name="pelanggan" value="{{ $transfer->nama_pelanggan }}">
 
-    <input type="hidden" name="kode_cabang" value="{{$transfer->kode_cabang}}">
+    <input type="hidden" name="kode_cabang" value="{{ $transfer->kode_cabang }}">
     <table class="table">
         <tr>
             <td>Kode Transfer</td>
-            <td>{{$transfer->kode_transfer}}</td>
+            <td>{{ $transfer->kode_transfer }}</td>
         </tr>
         <tr>
             <td>Kode Pelanggan</td>
-            <td>{{$transfer->kode_pelanggan}}</td>
+            <td>{{ $transfer->kode_pelanggan }}</td>
         </tr>
         <tr>
             <td>Nama Pelanggan</td>
-            <td>{{$transfer->nama_pelanggan}}</td>
+            <td>{{ $transfer->nama_pelanggan }}</td>
         </tr>
         <tr>
             <td>Nama Bank</td>
-            <td>{{$transfer->namabank}}</td>
+            <td>{{ $transfer->namabank }}</td>
         </tr>
         <tr>
             <td>Jumlah</td>
-            <input type="hidden" name="jumlah" value="{{$transfer->jumlah}}">
-            <td style="font-weight: bold">{{rupiah($transfer->jumlah)}}</td>
+            <input type="hidden" name="jumlah" value="{{ $transfer->jumlah }}">
+            <td style="font-weight: bold">{{ rupiah($transfer->jumlah) }}</td>
         </tr>
         <tr>
             <td>Jatuh Tempo</td>
-            <input type="hidden" value="{{$transfer->tglcair}}" name="jatuhtempo">
-            <td>{{ DateToIndo2($transfer->tglcair)}}</td>
+            <input type="hidden" value="{{ $transfer->tglcair }}" name="jatuhtempo">
+            <td>{{ DateToIndo2($transfer->tglcair) }}</td>
         </tr>
     </table>
     <div class="row">
@@ -63,7 +63,7 @@
                 <select class="form-control" id="bankpenerima" name="bank">
                     <option value="">Bank Penerima</option>
                     @foreach ($bank as $d)
-                    <option value="{{$d->kode_bank}}">{{$d->nama_bank}}</option>
+                        <option value="{{ $d->kode_bank }}">{{ $d->nama_bank }}</option>
                     @endforeach
                 </select>
             </div>
@@ -81,7 +81,9 @@
                 $bulanini = date("m");
                 for ($i = 1; $i < count($bulan); $i++) {
                 ?>
-                    <option <?php if ($bulanini == $i) {echo "selected";} ?> value="<?php echo $i; ?>"><?php echo $bulan[$i]; ?></option>
+                    <option <?php if ($bulanini == $i) {
+                        echo 'selected';
+                    } ?> value="<?php echo $i; ?>"><?php echo $bulan[$i]; ?></option>
                     <?php
                 }
                 ?>
@@ -97,7 +99,9 @@
                 $tahunmulai = 2020;
                 for ($thn = $tahunmulai; $thn <= date('Y'); $thn++) {
                 ?>
-                    <option <?php if (date('Y') == $thn) { echo "Selected";} ?> value="<?php echo $thn; ?>"><?php echo $thn; ?></option>
+                    <option <?php if (date('Y') == $thn) {
+                        echo 'Selected';
+                    } ?> value="<?php echo $thn; ?>"><?php echo $thn; ?></option>
                     <?php
                 }
                 ?>
@@ -116,7 +120,7 @@
         </div>
     </div>
 </form>
-<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
+<script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
 <script>
     $(function() {
         function diterima() {
@@ -168,10 +172,10 @@
             $("#btnSubmit").attr("disabled", true);
             if (status == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Pilih Status Aksi!'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Pilih Status Aksi!',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#statusaksi").focus();
                 });
@@ -180,40 +184,40 @@
                 if (status == 1) {
                     if (tgl_diterima == "") {
                         swal({
-                            title: 'Oops'
-                            , text: 'Tanggal Cair Harus Diisi !'
-                            , icon: 'warning'
-                            , showConfirmButton: false
+                            title: 'Oops',
+                            text: 'Tanggal Cair Harus Diisi !',
+                            icon: 'warning',
+                            showConfirmButton: false
                         }).then(function() {
                             $("#tgl_diterima").focus();
                         });
                         return false;
                     } else if (bankpenerima == "") {
                         swal({
-                            title: 'Oops'
-                            , text: 'Bank Harus Diisi !'
-                            , icon: 'warning'
-                            , showConfirmButton: false
+                            title: 'Oops',
+                            text: 'Bank Harus Diisi !',
+                            icon: 'warning',
+                            showConfirmButton: false
                         }).then(function() {
                             $("#bank").focus();
                         });
                         return false;
                     } else if (bulan == "") {
                         swal({
-                            title: 'Oops'
-                            , text: 'Omset Bulan Harus Diisi !'
-                            , icon: 'warning'
-                            , showConfirmButton: false
+                            title: 'Oops',
+                            text: 'Omset Bulan Harus Diisi !',
+                            icon: 'warning',
+                            showConfirmButton: false
                         }).then(function() {
                             $("#bulan").focus();
                         });
                         return false;
                     } else if (tahun == "") {
                         swal({
-                            title: 'Oops'
-                            , text: 'Omset Tahun Harus Diisi !'
-                            , icon: 'warning'
-                            , showConfirmButton: false
+                            title: 'Oops',
+                            text: 'Omset Tahun Harus Diisi !',
+                            icon: 'warning',
+                            showConfirmButton: false
                         }).then(function() {
                             $("#tgl_diterima").focus();
                         });
@@ -224,20 +228,20 @@
                 } else if (status == 2) {
                     if (tgl_ditolak == "") {
                         swal({
-                            title: 'Oops'
-                            , text: 'Tanggal Ditolak Harus Diisi !'
-                            , icon: 'warning'
-                            , showConfirmButton: false
+                            title: 'Oops',
+                            text: 'Tanggal Ditolak Harus Diisi !',
+                            icon: 'warning',
+                            showConfirmButton: false
                         }).then(function() {
                             $("#tgl_ditolak").focus();
                         });
                         return false;
                     } else if (bankpenerima == "") {
                         swal({
-                            title: 'Oops'
-                            , text: 'Bank Harus Diisi !'
-                            , icon: 'warning'
-                            , showConfirmButton: false
+                            title: 'Oops',
+                            text: 'Bank Harus Diisi !',
+                            icon: 'warning',
+                            showConfirmButton: false
                         }).then(function() {
                             $("#bank").focus();
                         });
@@ -251,5 +255,4 @@
 
 
     });
-
 </script>

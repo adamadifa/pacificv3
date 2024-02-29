@@ -48,7 +48,17 @@ class SetoranpusatController extends Controller
         $setoranpusat = $query->get();
         $cbg = new Cabang();
         $cabang = $cbg->getCabang($this->cabang);
-        $bank = Bank::where('show_on_cabang', 1)->get();
+        if (Auth::user()->kode_cabang != "PCF") {
+            $bank = DB::table('master_bank')->orderBy('kode_bank')
+                ->where('kode_cabang', Auth::user()->kode_cabang)
+                ->where('show_on_cabang', 1)
+                ->orWhere('kode_cabang', 'PST')
+                ->where('show_on_cabang', 1)
+                ->get();
+        } else {
+            $bank = DB::table('master_bank')->orderBy('kode_bank')->get();
+        }
+
         $kode_cabang = $this->cabang;
         lockreport($request->dari);
         return view('setoranpusat.index', compact('cabang', 'bank', 'setoranpusat', 'kode_cabang'));
@@ -58,7 +68,14 @@ class SetoranpusatController extends Controller
     {
         $cbg = new Cabang();
         $cabang = $cbg->getCabang($this->cabang);
-        $bank = Bank::where('show_on_cabang', 1)->get();
+        if (Auth::user()->kode_cabang != "PCF") {
+            $bank = DB::table('master_bank')->orderBy('kode_bank')
+                ->where('kode_cabang', Auth::user()->kode_cabang)
+                ->where('nama_bank', 'like', '%BNI GIRO%')
+                ->get();
+        } else {
+            $bank = DB::table('master_bank')->orderBy('kode_bank')->get();
+        }
         return view('setoranpusat.create', compact('bank', 'cabang'));
     }
 
@@ -215,7 +232,14 @@ class SetoranpusatController extends Controller
         $setoranpusat = DB::table('setoran_pusat')
             ->join('master_bank', 'setoran_pusat.bank', '=', 'master_bank.kode_bank')
             ->where('kode_setoranpusat', $kode_setoranpusat)->first();
-        $bank = Bank::where('show_on_cabang', 1)->get();
+        if (Auth::user()->kode_cabang != "PCF") {
+            $bank = DB::table('master_bank')->orderBy('kode_bank')
+                ->where('kode_cabang', Auth::user()->kode_cabang)
+                ->where('nama_bank', 'like', '%BNI GIRO%')
+                ->get();
+        } else {
+            $bank = DB::table('master_bank')->orderBy('kode_bank')->get();
+        }
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('setoranpusat.createterimasetoran', compact('setoranpusat', 'bank', 'bulan'));
     }

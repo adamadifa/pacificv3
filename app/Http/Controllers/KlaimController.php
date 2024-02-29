@@ -219,7 +219,14 @@ class KlaimController extends Controller
         $detail = DB::table('kaskecil_detail')
             ->join('coa', 'kaskecil_detail.kode_akun', '=', 'coa.kode_akun')
             ->where('kode_klaim', $kode_klaim)->get();
-        $bank = DB::table('master_bank')->orderBy('kode_bank')->get();
+        if (Auth::user()->kode_cabang != "PCF") {
+            $bank = DB::table('master_bank')->orderBy('kode_bank')
+                ->where('kode_cabang', Auth::user()->kode_cabang)
+                ->where('nama_bank', 'like', '%BNI GIRO%')
+                ->get();
+        } else {
+            $bank = DB::table('master_bank')->orderBy('kode_bank')->get();
+        }
         return view('klaim.prosesklaim', compact('saldoawal', 'klaim', 'detail', 'bank'));
     }
 
@@ -293,7 +300,7 @@ class KlaimController extends Controller
             'no_bukti'        => $no_bukti,
             'tgl_ledger'      => $tanggal,
             'bank'            => $bank,
-            'pelanggan'       => 'BNI CAB ' . $kode_cabang,
+            'pelanggan'       => 'CAB ' . $kode_cabang,
             'keterangan'      => $keterangan,
             'kode_akun'       => $akun,
             'jumlah'          => $jumlah,
@@ -349,7 +356,7 @@ class KlaimController extends Controller
         $kode_klaim = Crypt::decrypt($kode_klaim);
         $klaim = DB::table('klaim')->where('kode_klaim', $kode_klaim)->first();
         $kode_cabang = $klaim->kode_cabang;
-        $kasbank_perantara = ['PST', 'TSM'];
+        $kasbank_perantara = ['PST'];
         $ledger = DB::table('ledger_bank')->where('kode_klaim', $kode_klaim)->first();
         $no_bukti = $ledger->no_bukti;
         $tgl_ledger = $ledger->tgl_ledger;

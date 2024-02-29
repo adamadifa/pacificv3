@@ -149,9 +149,15 @@ class PrinterController extends Controller
             $cabang = "";
             $alamat = "Jln. Perintis Kemerdekaan 001/003 Karsamenak, Kawalu, Kota Tasikmalaya";
         } else {
-            $perusahaan = "CV. PACIFIC";
-            $cabang = "CABANG " . strtoupper($faktur->nama_cabang);
-            $alamat = $faktur->alamat_cabang;
+            if ($faktur->tgltransaksi < "2024-03-01") {
+                $perusahaan = "CV. PACIFIC";
+                $cabang = "CABANG " . strtoupper($faktur->nama_cabang);
+                $alamat = $faktur->alamat_cabang;
+            } else {
+                $perusahaan = "";
+                $cabang = strtoupper($faktur->nama_pt);
+                $alamat = $faktur->alamat_cabang;
+            }
         }
         $totalbayar = 0;
 

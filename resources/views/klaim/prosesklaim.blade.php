@@ -12,7 +12,7 @@
         <tr>
             <td>Tanggal Klaim</td>
             <td>:</td>
-            <td><b>{{ date("d-m-Y",strtotime($klaim->tgl_klaim)) }}</b></td>
+            <td><b>{{ date('d-m-Y', strtotime($klaim->tgl_klaim)) }}</b></td>
         </tr>
         <tr>
             <td>Keterangan</td>
@@ -30,11 +30,11 @@
             <td>
                 <?php
                 if ($klaim->status == '0') {
-                    $keterangan = "Belum Di Proses";
-                    $color       = "bg-danger";
+                    $keterangan = 'Belum Di Proses';
+                    $color = 'bg-danger';
                 } else {
-                    $keterangan = "Sudah di Proses";
-                    $color       = "bg-success";
+                    $keterangan = 'Sudah di Proses';
+                    $color = 'bg-success';
                 }
                 ?>
                 <span class="badge <?php echo $color; ?>"><?php echo $keterangan; ?></span>
@@ -58,10 +58,10 @@
                 <th colspan="5"></th>
                 <th style="text-align:right">
                     <?php
-                if (!empty($saldoawal)) {
-                    echo number_format($saldoawal, '0', '', '.');
-                }
-                ?>
+                    if (!empty($saldoawal)) {
+                        echo number_format($saldoawal, '0', '', '.');
+                    }
+                    ?>
                 </th>
             </tr>
         </thead>
@@ -93,18 +93,30 @@
                 <td><?php echo $d->nobukti; ?></td>
                 <td><?php echo ucwords(strtolower($d->keterangan)); ?></td>
                 <th>{{ $d->kode_akun }} {{ $d->nama_akun }}</th>
-                <td align="right" style="color:green"><?php if (!empty($penerimaan)) {echo number_format($penerimaan, '0', '', '.');} ?></td>
-                <td align="right" style="color:red"><?php if (!empty($pengeluaran)) {echo number_format($pengeluaran, '0', '', '.');} ?></td>
-                <td align="right"><?php if (!empty($saldo)) {echo number_format($saldo, '0', '', '.');} ?></td>
+                <td align="right" style="color:green"><?php if (!empty($penerimaan)) {
+                    echo number_format($penerimaan, '0', '', '.');
+                } ?></td>
+                <td align="right" style="color:red"><?php if (!empty($pengeluaran)) {
+                    echo number_format($pengeluaran, '0', '', '.');
+                } ?></td>
+                <td align="right"><?php if (!empty($saldo)) {
+                    echo number_format($saldo, '0', '', '.');
+                } ?></td>
             </tr>
             <?php } ?>
         </tbody>
         <tfoot>
             <tr>
                 <th colspan="4">TOTAL</th>
-                <td align="right" style="color:green"><b><?php if (!empty($totalpenerimaan)) {echo number_format($totalpenerimaan, '0', '', '.');} ?></b></td>
-                <td align="right" style="color:red"><b><?php if (!empty($totalpengeluaran)) { echo number_format($totalpengeluaran, '0', '', '.');} ?></b></td>
-                <td align="right"><b><?php if (!empty($saldo)) {echo number_format($saldo, '0', '', '.');} ?></b></td>
+                <td align="right" style="color:green"><b><?php if (!empty($totalpenerimaan)) {
+                    echo number_format($totalpenerimaan, '0', '', '.');
+                } ?></b></td>
+                <td align="right" style="color:red"><b><?php if (!empty($totalpengeluaran)) {
+                    echo number_format($totalpengeluaran, '0', '', '.');
+                } ?></b></td>
+                <td align="right"><b><?php if (!empty($saldo)) {
+                    echo number_format($saldo, '0', '', '.');
+                } ?></b></td>
             </tr>
         </tfoot>
     </table>
@@ -112,33 +124,43 @@
         <tr>
             <td class="bg-primary text-white">Penggantian Kas Kecil</td>
             <?php
-        if ($klaim->kode_cabang == 'PST') {
-            $penggantian = $totalpengeluaran - $totalpenerimaan2;
-        } else {
-            $penggantian = $totalpengeluaran - $totalpenerimaan2;
-        }
-        ?>
-            <td colspan="2" align="right"><b><?php if (!empty($penggantian)) {echo number_format($penggantian, '0', '', '.');} ?></b></td>
+            if ($klaim->kode_cabang == 'PST') {
+                $penggantian = $totalpengeluaran - $totalpenerimaan2;
+            } else {
+                $penggantian = $totalpengeluaran - $totalpenerimaan2;
+            }
+            ?>
+            <td colspan="2" align="right"><b><?php if (!empty($penggantian)) {
+                echo number_format($penggantian, '0', '', '.');
+            } ?></b></td>
             <td class="bg-primary text-white">Saldo Awal</td>
-            <td colspan="2" align="right"><b><?php if (!empty($saldoawal['jumlah'])) {echo number_format($saldoawal['jumlah'], '0', '', '.');} ?></b></td>
+            <td colspan="2" align="right"><b><?php if (!empty($saldoawal['jumlah'])) {
+                echo number_format($saldoawal['jumlah'], '0', '', '.');
+            } ?></b></td>
         </tr>
         <tr>
             <td class="bg-primary text-white">Terbilang</td>
             <td colspan="2" align="right"><b><?php echo ucwords(terbilang($penggantian)); ?></b></td>
             <td class="bg-primary text-white">Penerimaan Pusat</td>
-            <td colspan="2" align="right"><b><?php if (!empty($totalpenerimaan)) {echo number_format($totalpenerimaan, '0', '', '.');} ?></b></td>
+            <td colspan="2" align="right"><b><?php if (!empty($totalpenerimaan)) {
+                echo number_format($totalpenerimaan, '0', '', '.');
+            } ?></b></td>
         </tr>
         <tr>
             <td></td>
             <td colspan="2"></td>
             <td class="bg-primary text-white">Total</td>
-            <td colspan="2" align="right"><b><?php if (!empty($saldoawal + $totalpenerimaan - $totalpenerimaan2)) {echo number_format($saldoawal + $totalpenerimaan - $totalpenerimaan2, '0', '', '.');} ?></b></td>
+            <td colspan="2" align="right"><b><?php if (!empty($saldoawal + $totalpenerimaan - $totalpenerimaan2)) {
+                echo number_format($saldoawal + $totalpenerimaan - $totalpenerimaan2, '0', '', '.');
+            } ?></b></td>
         </tr>
         <tr>
             <td></td>
             <td colspan="2"></td>
             <td class="bg-primary text-white">Pengeluaran Kas Kecil</td>
-            <td colspan="2" align="right"><b><?php if (!empty($totalpengeluaran)) {echo number_format($totalpengeluaran, '0', '', '.');} ?></b></td>
+            <td colspan="2" align="right"><b><?php if (!empty($totalpengeluaran)) {
+                echo number_format($totalpengeluaran, '0', '', '.');
+            } ?></b></td>
         </tr>
         <tr>
             <td></td>
@@ -146,7 +168,9 @@
             <td class="bg-primary text-white">Saldo Akhir</td>
             <td colspan="2" align="right">
                 <input type="hidden" name="saldo_akhir" value="{{ $saldo }}">
-                <b><?php if (!empty($saldo)) {echo rupiah($saldo);} ?></b>
+                <b><?php if (!empty($saldo)) {
+                    echo rupiah($saldo);
+                } ?></b>
             </td>
         </tr>
     </table>
@@ -162,7 +186,8 @@
     </div>
     <div class="row">
         <div class="col-12">
-            <x-inputtext field="jumlah" label="Jumlah" icon="feather icon-file" value="{{ rupiah($penggantian) }}" right />
+            <x-inputtext field="jumlah" label="Jumlah" icon="feather icon-file" readonly
+                value="{{ rupiah($penggantian) }}" right />
         </div>
     </div>
     <div class="row">
@@ -171,7 +196,8 @@
                 <select name="bank" id="bank" class="form-control">
                     <option value="">Pilih Bank</option>
                     @foreach ($bank as $d)
-                    <option {{ $d->kode_bank == 'BNI CV' ? 'selected' : '' }} value="{{ $d->kode_bank }}">{{ $d->nama_bank }}</option>
+                        <option {{ $d->kode_bank == 'BNI CV' ? 'selected' : '' }} value="{{ $d->kode_bank }}">
+                            {{ $d->nama_bank }}</option>
                     @endforeach
                 </select>
             </div>
@@ -180,14 +206,15 @@
     <div class="row">
         <div class="col-12">
             <div class="form-group">
-                <button type="submit" name="submit" class="btn btn-primary btn-block"><i class="fa fa-send mr-1"></i> Proses Klaim</button>
+                <button type="submit" name="submit" class="btn btn-primary btn-block"><i class="fa fa-send mr-1"></i>
+                    Proses Klaim</button>
             </div>
         </div>
     </div>
 </form>
-<script src="{{asset('app-assets/vendors/js/forms/select/select2.full.min.js')}}"></script>
-<script src="{{asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js')}}"></script>
-<script src="{{asset('app-assets/js/scripts/forms/select/form-select2.js')}}"></script>
+<script src="{{ asset('app-assets/vendors/js/forms/select/select2.full.min.js') }}"></script>
+<script src="{{ asset('app-assets/js/scripts/pickers/dateTime/pick-a-datetime.js') }}"></script>
+<script src="{{ asset('app-assets/js/scripts/forms/select/form-select2.js') }}"></script>
 <script>
     $(function() {
         $("#jumlah").maskMoney();
@@ -198,10 +225,10 @@
             var bank = $("#bank").val();
             if (tanggal == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Tanggal Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Tanggal Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#tanggal").focus();
                 });
@@ -209,10 +236,10 @@
                 return false;
             } else if (keterangan == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Keterangan Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Keterangan Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#keterangan").focus();
                 });
@@ -220,10 +247,10 @@
                 return false;
             } else if (jumlah == "" || jumlah == 0) {
                 swal({
-                    title: 'Oops'
-                    , text: 'Jumlah Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Jumlah Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#jumlah").focus();
                 });
@@ -231,10 +258,10 @@
                 return false;
             } else if (bank == "") {
                 swal({
-                    title: 'Oops'
-                    , text: 'Bank Harus Diisi !'
-                    , icon: 'warning'
-                    , showConfirmButton: false
+                    title: 'Oops',
+                    text: 'Bank Harus Diisi !',
+                    icon: 'warning',
+                    showConfirmButton: false
                 }).then(function() {
                     $("#bank").focus();
                 });
@@ -243,5 +270,4 @@
             }
         });
     });
-
 </script>

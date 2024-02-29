@@ -97,7 +97,14 @@ class GiroController extends Controller
             ->groupBy('giro.no_giro', 'tgl_giro', 'penjualan.kode_pelanggan', 'nama_pelanggan', 'karyawan.kode_cabang', 'namabank', 'tglcair', 'giro.status', 'ket', 'ledger_bank.no_bukti', 'tglbayar', 'penjualan.jenistransaksi')
             ->where('no_giro', $request->no_giro)
             ->first();
-        $bank = DB::table('master_bank')->where('kode_cabang')->get();
+        if (Auth::user()->kode_cabang != "PCF") {
+            $bank = DB::table('master_bank')->orderBy('kode_bank')
+                ->where('kode_cabang', Auth::user()->kode_cabang)
+                ->where('nama_bank', 'like', '%BNI GIRO%')
+                ->get();
+        } else {
+            $bank = DB::table('master_bank')->orderBy('kode_bank')->get();
+        }
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('giro.prosesgiro', compact('giro', 'bank', 'bulan'));
     }
@@ -188,6 +195,19 @@ class GiroController extends Controller
 
         $akun = getAkunpiutangcabang($cabang);
 
+        $tanggal_tutup_laporan = explode("-", $request->tgl_giro);
+        $bulan = $tanggal_tutup_laporan[1];
+        $tahun = $tanggal_tutup_laporan[0];
+        $cektutuplaporan = DB::table('tutup_laporan')
+            ->where('jenis_laporan', 'penjualan')
+            ->where('bulan', $bulan)
+            ->where('tahun', $tahun)
+            ->where('status', 1)
+            ->count();
+
+        if ($cektutuplaporan > 0) {
+            return Redirect::back()->with(['warning' => 'Data Laporan Periode ini Sudah Ditutup']);
+        }
         DB::beginTransaction();
         try {
             if ($status == 1) {
