@@ -6,6 +6,7 @@ use App\Models\Cabang;
 use App\Models\Karyawan;
 use App\Models\Pengajuanizin;
 use App\Models\Presensi;
+use DateTime;
 use Faker\Core\Number;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -617,6 +618,13 @@ class PengajuanizinController extends Controller
         $jenis_cuti = $request->jenis_cuti;
         $kat_cuti_khusus = $request->kat_cuti_khusus;
 
+        $tgl_pengajuan = strtotime(date("Y-m-d", strtotime($dari)));
+        $tigahari    = date('Y-m-d', strtotime("+3 day", $tgl_pengajuan));
+
+        if (date('Y-m-d') > $tigahari) {
+            return Redirect::back()->with(['warning' => 'Pengjuan Izin /Sakit /Cuti Tidak Boleh Lebih Dari 3 Hari']);
+        }
+
         $keperluan = $request->keperluan;
         $tgl = explode("-", $dari);
         $tahun = substr($tgl[0], 2, 2);
@@ -719,6 +727,13 @@ class PengajuanizinController extends Controller
         $tgl = explode("-", $tgl_presensi);
         $tahun = substr($tgl[0], 2, 2);
         $bulan = $tgl[1];
+
+        $tgl_pengajuan = strtotime(date("Y-m-d", strtotime($tgl_presensi)));
+        $tigahari    = date('Y-m-d', strtotime("+3 day", $tgl_pengajuan));
+
+        if (date('Y-m-d') > $tigahari) {
+            return Redirect::back()->with(['warning' => 'Pengajuan Koreksi Presensi Tidak  Boleh Lebih Dari 3 Hari']);
+        }
         $izin = DB::table("pengajuan_izin")
             ->join('master_karyawan', 'pengajuan_izin.nik', '=', 'master_karyawan.nik')
             ->whereRaw('YEAR(dari)="' . $tgl[0] . '"')

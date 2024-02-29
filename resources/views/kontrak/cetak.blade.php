@@ -104,12 +104,20 @@
                             style="width: 80px; height:80px">
                     </td>
                     <td style="text-align: left">
-                        <h3 style="font-family:'Cambria'; line-height:0px">CV PACIFIC TASIKMALAYA</h3>
-                        <span style="font-size: 1.2rem"><i>Factory / Head Office</i></span><br>
-                        <span style="font-family:'Times New Roman'">Jl. Perintis Kemerdekaan No. 160
-                            Tasikmalaya</span><br>
-                        <span style="font-size: 12px">Telp (0265) 336794 Fax (0265) 332329</span><br>
-                        <span style="font-size: 11px">e-mail : pacific.tasikmalaya@gmail.com</span>
+                        @if ($kontrak->dari < '2024-03-01')
+                            <h3 style="font-family:'Cambria'; line-height:0px">CV PACIFIC TASIKMALAYA</h3>
+                            <span style="font-size: 1.2rem"><i>Factory / Head Office</i></span><br>
+                            <span style="font-family:'Times New Roman'">Jl. Perintis Kemerdekaan No. 160
+                                Tasikmalaya</span><br>
+                            <span style="font-size: 12px">Telp (0265) 336794 Fax (0265) 332329</span><br>
+                            <span style="font-size: 11px">e-mail : pacific.tasikmalaya@gmail.com</span>
+                        @else
+                            <h3 style="font-family:'Cambria'; line-height:0px">{{ $cabang->nama_pt }}</h3>
+                            <span style="font-size: 1.2rem"><i>Factory / Head Office</i></span><br>
+                            <span style="font-family:'Times New Roman'">{{ $cabang->alamat_cabang }}</span><br>
+                            <span style="font-size: 12px">Telp (0265) 336794 Fax (0265) 332329</span><br>
+                            <span style="font-size: 11px">e-mail : pacific.tasikmalaya@gmail.com</span>
+                        @endif
                     </td>
                     <td>
 
@@ -227,7 +235,14 @@
             STATUS DAN PENDAPATAN
         </h4>
         @php
-            $totalgaji = $kontrak->gaji_pokok + $kontrak->t_jabatan + $kontrak->t_masakerja + $kontrak->t_tanggungjawab + $kontrak->t_makan + $kontrak->t_istri + $kontrak->t_skill;
+            $totalgaji =
+                $kontrak->gaji_pokok +
+                $kontrak->t_jabatan +
+                $kontrak->t_masakerja +
+                $kontrak->t_tanggungjawab +
+                $kontrak->t_makan +
+                $kontrak->t_istri +
+                $kontrak->t_skill;
         @endphp
         <ol>
             <li>
@@ -242,7 +257,12 @@
                     Pihak kedua setuju menerima upah dengan rincian terlampir:
                 @else
                     @php
-                        $totalupah = $kontrak->gaji_pokok + $kontrak->t_jabatan + $kontrak->t_tanggungjawab + $kontrak->t_makan + $kontrak->t_skill;
+                        $totalupah =
+                            $kontrak->gaji_pokok +
+                            $kontrak->t_jabatan +
+                            $kontrak->t_tanggungjawab +
+                            $kontrak->t_makan +
+                            $kontrak->t_skill;
                     @endphp
                     Pihak kedua setuju menerima upah Sebesar <b>{{ rupiah($totalupah) }}</b> dengan rincian berikut:
                     <table>

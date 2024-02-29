@@ -393,12 +393,12 @@ class KontrakController extends Controller
         $approve = DB::table('hrd_approvekb')
             ->where('tgl_berlaku', '<=', $kontrak->dari)
             ->orderBy('tgl_berlaku', 'desc')->first();
-
+        $cabang = DB::table('cabang')->where('kode_cabang', $kontrak->id_kantor)->first();
         $management = config('global.show_for_hrd');
         if ($kontrak->masa_kontrak_kerja != "Karyawan Tetap") {
             return view('kontrak.cetak', compact('kontrak', 'approve', 'management'));
         } else {
-            return view('kontrak.cetak_pkwtt', compact('kontrak', 'approve', 'management'));
+            return view('kontrak.cetak_pkwtt', compact('kontrak', 'approve', 'management', 'cabang'));
         }
     }
 
