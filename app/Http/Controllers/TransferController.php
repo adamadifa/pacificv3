@@ -107,7 +107,7 @@ class TransferController extends Controller
             ->groupBy('transfer.kode_transfer', 'tgl_transfer', 'penjualan.kode_pelanggan', 'nama_pelanggan', 'karyawan.kode_cabang', 'namabank', 'tglcair', 'transfer.status', 'ket', 'ledger_bank.no_bukti', 'tglbayar')
             ->where('kode_transfer', $request->kode_transfer)
             ->first();
-        $bank = DB::table('master_bank')->where('kode_cabang', 'PST')->get();
+        $bank = DB::table('master_bank')->where('kode_cabang')->get();
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('transfer.prosestransfer', compact('transfer', 'bank', 'bulan'));
     }

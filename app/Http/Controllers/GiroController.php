@@ -97,7 +97,7 @@ class GiroController extends Controller
             ->groupBy('giro.no_giro', 'tgl_giro', 'penjualan.kode_pelanggan', 'nama_pelanggan', 'karyawan.kode_cabang', 'namabank', 'tglcair', 'giro.status', 'ket', 'ledger_bank.no_bukti', 'tglbayar', 'penjualan.jenistransaksi')
             ->where('no_giro', $request->no_giro)
             ->first();
-        $bank = DB::table('master_bank')->where('kode_cabang', 'PST')->get();
+        $bank = DB::table('master_bank')->where('kode_cabang')->get();
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('giro.prosesgiro', compact('giro', 'bank', 'bulan'));
     }
