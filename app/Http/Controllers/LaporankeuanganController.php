@@ -130,7 +130,8 @@ class LaporankeuanganController extends Controller
                         '039',
                         '040',
                         '041',
-                        '042'
+                        '042',
+                        '026'
                     ];
                     $bank = DB::table('master_bank')->whereIn('kode_bank', $list)->orderBy('kode_bank')->get();
                 } else {
