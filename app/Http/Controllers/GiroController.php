@@ -97,13 +97,25 @@ class GiroController extends Controller
             ->groupBy('giro.no_giro', 'tgl_giro', 'penjualan.kode_pelanggan', 'nama_pelanggan', 'karyawan.kode_cabang', 'namabank', 'tglcair', 'giro.status', 'ket', 'ledger_bank.no_bukti', 'tglbayar', 'penjualan.jenistransaksi')
             ->where('no_giro', $request->no_giro)
             ->first();
+        // if (Auth::user()->kode_cabang != "PCF") {
+        //     $bank = DB::table('master_bank')->orderBy('kode_bank')
+        //         ->where('kode_cabang', Auth::user()->kode_cabang)
+        //         ->where('nama_bank', 'like', '%BNI GIRO%')
+        //         ->get();
+        // } else {
+        //     $bank = DB::table('master_bank')->orderBy('kode_bank')->get();
+        // }
         if (Auth::user()->kode_cabang != "PCF") {
             $bank = DB::table('master_bank')->orderBy('kode_bank')
                 ->where('kode_cabang', Auth::user()->kode_cabang)
-                ->where('nama_bank', 'like', '%BNI GIRO%')
+                ->where('show_on_cabang', 1)
+                ->orWhere('kode_cabang', 'PST')
+                ->where('show_on_cabang', 1)
                 ->get();
         } else {
-            $bank = DB::table('master_bank')->orderBy('kode_bank')->get();
+            $bank = DB::table('master_bank')
+                ->where('show_on_cabang', 1)
+                ->orderBy('kode_bank')->get();
         }
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('giro.prosesgiro', compact('giro', 'bank', 'bulan'));
