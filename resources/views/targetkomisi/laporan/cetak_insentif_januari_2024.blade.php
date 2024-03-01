@@ -251,7 +251,10 @@
                     </td>
                     <td align="center">
                         @php
-                            $ratio_ljt = ROUND(!empty($d->realisasi_cashin) ? ($d->sisapiutang / $d->realisasi_cashin) * 100 : 0, 2);
+                            $ratio_ljt = ROUND(
+                                !empty($d->realisasi_cashin) ? ($d->sisapiutang / $d->realisasi_cashin) * 100 : 0,
+                                2,
+                            );
                         @endphp
                         {{ $ratio_ljt }}%
                     </td>
@@ -277,9 +280,18 @@
                     <td align="center">
                         @php
                             if ($d->kode_cabang == 'TSM') {
-                                $cost_ratio = ROUND(!empty($d->penjualanbulanberjalan) ? ($d->totalbiaya / $d->penjualanbulanberjalan) * 100 : 0) + 4;
+                                $cost_ratio =
+                                    ROUND(
+                                        !empty($d->penjualanbulanberjalan)
+                                            ? ($d->totalbiaya / $d->penjualanbulanberjalan) * 100
+                                            : 0,
+                                    ) + 4;
                             } else {
-                                $cost_ratio = ROUND(!empty($d->penjualanbulanberjalan) ? ($d->totalbiaya / $d->penjualanbulanberjalan) * 100 : 0);
+                                $cost_ratio = ROUND(
+                                    !empty($d->penjualanbulanberjalan)
+                                        ? ($d->totalbiaya / $d->penjualanbulanberjalan) * 100
+                                        : 0,
+                                );
                             }
                         @endphp
                         {{ $cost_ratio }} %
@@ -312,8 +324,15 @@
                         @endphp
                         @foreach ($produk->get() as $p)
                             @php
-                                $jmlreject = $d->{"reject_pasar_$p->kode_produk"} + $d->{"reject_mobil_$p->kode_produk"} + $d->{"reject_gudang_$p->kode_produk"} - $d->{"repack_$p->kode_produk"};
-                                $harga = $d->{"reject_pasar_$p->kode_produk"} > 0 ? $d->{"totalretur_$p->kode_produk"} / $d->{"retur_$p->kode_produk"} : 0;
+                                $jmlreject =
+                                    $d->{"reject_pasar_$p->kode_produk"} +
+                                    $d->{"reject_mobil_$p->kode_produk"} +
+                                    $d->{"reject_gudang_$p->kode_produk"} -
+                                    $d->{"repack_$p->kode_produk"};
+                                $harga =
+                                    $d->{"retur_$p->kode_produk"} > 0
+                                        ? $d->{"totalretur_$p->kode_produk"} / $d->{"retur_$p->kode_produk"}
+                                        : 0;
                                 $total = ROUND($jmlreject, 2) * $harga;
                                 $totalharga += $total;
                             @endphp
@@ -322,7 +341,10 @@
                     </td>
                     <td align="center">
                         @php
-                            $ratio_bs = ROUND(!empty($d->realisasi_cashin) ? (ROUND($totalharga) / $d->realisasi_cashin) * 100 : 0, 2);
+                            $ratio_bs = ROUND(
+                                !empty($d->realisasi_cashin) ? (ROUND($totalharga) / $d->realisasi_cashin) * 100 : 0,
+                                2,
+                            );
                         @endphp
                         {{ $ratio_bs }}%
                     </td>
@@ -352,7 +374,16 @@
                     </td>
                     <td align="right">
                         @php
-                            $totalreward = $reward_oa + $rewardkendaraan + $rewardpenjualan + $reward_routing + $reward_lpc + $reward_cashin + $reward_ljt + $reward_costratio + $reward_bs;
+                            $totalreward =
+                                $reward_oa +
+                                $rewardkendaraan +
+                                $rewardpenjualan +
+                                $reward_routing +
+                                $reward_lpc +
+                                $reward_cashin +
+                                $reward_ljt +
+                                $reward_costratio +
+                                $reward_bs;
                         @endphp
                         {{ rupiah($totalreward) }}
                     </td>
