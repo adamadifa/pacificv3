@@ -313,12 +313,15 @@ class PrinterController extends Controller
             //Faktur PERUSAHAAN
             /* Name of shop */
             $printer->setJustification(Printer::JUSTIFY_CENTER);
-            $printer->selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+            //$printer->selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
             $printer->text("\n");
             $printer->text("\n");
             $printer->feed(2);
+            // $printer->selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+            $printer->setEmphasis(true);
             $printer->text($perusahaan . ".\n");
             $printer->text($cabang . ".\n");
+            $printer->setEmphasis(false);
             $printer->selectPrintMode();
             $printer->text($alamat . ".\n");
             $printer->text($date . "\n");
