@@ -9488,7 +9488,7 @@ class PenjualanController extends Controller
         $tahun = date('y', strtotime($tgltransaksi));
         $thn = date('Y', strtotime($tgltransaksi));
         $start_date = "2024-03-01";
-        if ($tgltransaksi >= '2024-03-01' && $salesman->kategori_salesman == "CANVASER") {
+        if ($tgltransaksi >= '2024-03-01' && $salesman->kategori_salesman != "TO") {
             $lastransaksi = DB::table('penjualan')
                 ->join('karyawan', 'penjualan.id_karyawan', '=', 'karyawan.id_karyawan')
                 ->where('tgltransaksi', '>=', $start_date)
