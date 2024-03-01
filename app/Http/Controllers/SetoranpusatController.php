@@ -71,7 +71,7 @@ class SetoranpusatController extends Controller
         if (Auth::user()->kode_cabang != "PCF") {
             $bank = DB::table('master_bank')->orderBy('kode_bank')
                 ->where('kode_cabang', Auth::user()->kode_cabang)
-                ->where('nama_bank', 'like', '%BNI GIRO%')
+                // ->where('nama_bank', 'like', '%BNI GIRO%')
                 ->get();
         } else {
             $bank = DB::table('master_bank')->orderBy('kode_bank')->get();
@@ -146,7 +146,14 @@ class SetoranpusatController extends Controller
     {
         $setoranpusat = DB::table('setoran_pusat')->where('kode_setoranpusat', $kode_setoranpusat)->first();
         $cabang = Cabang::orderBy('kode_cabang')->get();
-        $bank = Bank::where('show_on_cabang', 1)->get();
+        if (Auth::user()->kode_cabang != "PCF") {
+            $bank = DB::table('master_bank')->orderBy('kode_bank')
+                ->where('kode_cabang', Auth::user()->kode_cabang)
+                // ->where('nama_bank', 'like', '%BNI GIRO%')
+                ->get();
+        } else {
+            $bank = DB::table('master_bank')->orderBy('kode_bank')->get();
+        }
         return view('setoranpusat.edit', compact('bank', 'cabang', 'setoranpusat'));
     }
 
@@ -235,7 +242,7 @@ class SetoranpusatController extends Controller
         if (Auth::user()->kode_cabang != "PCF") {
             $bank = DB::table('master_bank')->orderBy('kode_bank')
                 ->where('kode_cabang', Auth::user()->kode_cabang)
-                ->where('nama_bank', 'like', '%BNI GIRO%')
+                // ->where('nama_bank', 'like', '%BNI GIRO%')
                 ->get();
         } else {
             $bank = DB::table('master_bank')->orderBy('kode_bank')->get();
