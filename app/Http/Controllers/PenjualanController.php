@@ -364,11 +364,16 @@ class PenjualanController extends Controller
             $nomor_awal = substr($lastnofak, 4);
             $jmlchar = strlen($nomor_awal);
             if ($salesman->kategori_salesman != 'TO') {
-                if ($cekpenjualan != null) {
-                    $no_fak_penj_auto  =  buatkode($lastnofak, $kode_cabang . $kode_faktur, $jmlchar);
+                if (date('Y-m-d') < "2024-03-01") {
+                    if ($cekpenjualan != null) {
+                        $no_fak_penj_auto  =  buatkode($lastnofak, $kode_cabang . $kode_faktur, $jmlchar);
+                    } else {
+                        $no_fak_penj_auto = $no_fak_awal;
+                    }
                 } else {
-                    $no_fak_penj_auto = $no_fak_awal;
+                    $no_fak_penj_auto = "";
                 }
+
 
                 $ceknofak = DB::table('penjualan')->where('no_fak_penj', $no_fak_penj_auto)->count();
             } else {
