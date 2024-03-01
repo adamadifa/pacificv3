@@ -85,17 +85,22 @@
             <table class="datatable3" style="width: 100%">
                 <tr>
                     <td style="text-align:center; width:5%">
-                        <img src="{{ asset('app-assets/images/logo/pcf.png') }}" alt="" width="70px"
-                            height="70px">
+                        {{-- <img src="{{ asset('app-assets/images/logo/pcf.png') }}" alt="" width="70px"
+                            height="70px"> --}}
                     </td>
 
                     <td style="text-align:center; width:90%" colspan="2">
-                        <h1 style="line-height:1px">CV. PACIFIC</h1>
+                        @if ($tanggal < '2024-03-01')
+                            <h1 style="line-height:1px">CV. PACIFIC</h1>
+                        @else
+                            <h1 style="line-height:1px">{{ $cabang->nama_pt }}</h1>
+                        @endif
+
                         <h2>LAPORAN HARIAN PENJUALAN</h2>
                     </td>
                     <td style="text-align:center;width:5%">
-                        <img src="{{ asset('app-assets/images/logo/pcf.png') }}" alt="" width="70px"
-                            height="70px">
+                        {{-- <img src="{{ asset('app-assets/images/logo/pcf.png') }}" alt="" width="70px"
+                            height="70px"> --}}
                     </td>
                 </tr>
                 <tr>

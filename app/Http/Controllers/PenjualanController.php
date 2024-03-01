@@ -9032,7 +9032,9 @@ class PenjualanController extends Controller
             ->get();
 
         $karyawan = DB::table('karyawan')->where('id_karyawan', $id_karyawan)->first();
-        return view('penjualan.laporan.cetak_lhp', compact('tanggal', 'penjualan', 'historibayar', 'giro', 'transfer', 'karyawan', 'allgiro', 'alltransfer', 'rekapdp'));
+
+        $cabang = DB::table('cabang')->where('kode_cabang', $kode_cabang)->first();
+        return view('penjualan.laporan.cetak_lhp', compact('tanggal', 'penjualan', 'historibayar', 'giro', 'transfer', 'karyawan', 'allgiro', 'alltransfer', 'rekapdp', 'cabang'));
     }
 
 
