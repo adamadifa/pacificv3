@@ -198,9 +198,11 @@ class PrinterController extends Controller
 
             /* Name of shop */
             $printer->setJustification(Printer::JUSTIFY_CENTER);
-            $printer->selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+            // $printer->selectPrintMode(Printer::MODE_DOUBLE_WIDTH);
+            $printer->setEmphasis(true);
             $printer->text($perusahaan . ".\n");
             $printer->text($cabang . ".\n");
+            $printer->setEmphasis(false);
             $printer->selectPrintMode();
             $printer->text($alamat . ".\n");
             $printer->text($date . "\n");
