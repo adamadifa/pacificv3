@@ -32,7 +32,7 @@ class KesepakatanbersamaController extends Controller
         if (!empty($request->id_kantor_search)) {
             $query->where('hrd_penilaian.id_kantor', $request->id_kantor_search);
         }
-        $query->orderBy('no_kontrak');
+        $query->orderBy('no_kb', 'desc');
         $kb = $query->paginate(20);
         $kb->appends($request->all());
         $kantor = DB::table('cabang')->orderBy('kode_cabang')->get();
