@@ -526,7 +526,7 @@
                 success: function(respond) {
                     if (respond !== '0') {
                         $("#frmDpb").find("#no_dpb").val(respond);
-                        $("#frmDpb").find("#no_dpb").prop('readonly', true);
+                        // $("#frmDpb").find("#no_dpb").prop('readonly', true);
                     }
 
                 }
