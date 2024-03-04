@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cetak Laporan Pembayaran Pembelian {{ date("d-m-y") }}</title>
+    <title>Cetak Laporan Pembayaran Pembelian {{ date('d-m-y') }}</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&display=swap');
 
@@ -32,7 +32,6 @@
             text-align: center;
             font-size: 14px;
         }
-
     </style>
 </head>
 
@@ -42,13 +41,13 @@
         PERIODE {{ DateToIndo2($dari) }} s/d {{ DateToIndo2($sampai) }}
         <br>
         @if ($supplier != null)
-        SUPPLIER : {{ $supplier->nama_supplier }}
+            SUPPLIER : {{ $supplier->nama_supplier }}
         @else
-        ALL SUPPLIER
+            ALL SUPPLIER
         @endif
         <br>
         @if ($coa != null)
-        JENIS HUTANG : {{ $coa->kode_akun }} {{ $coa->nama_akun }}
+            JENIS HUTANG : {{ $coa->kode_akun }} {{ $coa->nama_akun }}
         @endif
         <br>
     </b>
@@ -106,41 +105,41 @@
 
                     <td><?php echo $d->penyesuaianbulanlalu; ?></td> -->
                 <td align="right"><?php if (!empty($saldoawal)) {
-                                                            echo desimal($saldoawal);
-                                                        } ?></td>
+                    echo desimal($saldoawal);
+                } ?></td>
                 <td align="right"><?php if (!empty($d->pmbbulanini)) {
-                                                            echo desimal($d->pmbbulanini);
-                                                        } ?></td>
+                    echo desimal($d->pmbbulanini);
+                } ?></td>
                 <td align="right"><?php if (!empty($d->penyesuaianbulanini)) {
-                                                            echo desimal($d->penyesuaianbulanini);
-                                                        } ?></td>
+                    echo desimal($d->penyesuaianbulanini);
+                } ?></td>
                 <td align="right"><?php if (!empty($d->jmlbayarbulanini)) {
-                                                            echo desimal($d->jmlbayarbulanini);
-                                                        } ?></td>
+                    echo desimal($d->jmlbayarbulanini);
+                } ?></td>
                 <td align="right"><?php if (!empty($saldoakhir)) {
-                                                            echo desimal($saldoakhir);
-                                                        } ?></td>
+                    echo desimal($saldoakhir);
+                } ?></td>
             </tr>
             <?php $no++;
             } ?>
 
             <tr bgcolor="#024a75" style="color:white; font-size:12; font-weight:bold">
-                <td colspan="5"><b>TOTAL</b></td>
+                <td colspan="6"><b>TOTAL</b></td>
                 <td align="right"><?php if (!empty($totalsaldoawal)) {
-                                                        echo desimal($totalsaldoawal);
-                                                    } ?></td>
+                    echo desimal($totalsaldoawal);
+                } ?></td>
                 <td align="right"><?php if (!empty($totalpembelian)) {
-                                                        echo desimal($totalpembelian);
-                                                    } ?></td>
+                    echo desimal($totalpembelian);
+                } ?></td>
                 <td align="right"><?php if (!empty($totalpenyesuaian)) {
-                                                        echo desimal($totalpenyesuaian);
-                                                    } ?></td>
+                    echo desimal($totalpenyesuaian);
+                } ?></td>
                 <td align="right"><?php if (!empty($totalpembayaran)) {
-                                                        echo desimal($totalpembayaran);
-                                                    } ?></td>
+                    echo desimal($totalpembayaran);
+                } ?></td>
                 <td align="right"><?php if (!empty($totalsaldoakhir)) {
-                                                        echo desimal($totalsaldoakhir);
-                                                    } ?></td>
+                    echo desimal($totalsaldoakhir);
+                } ?></td>
             </tr>
         </tbody>
 

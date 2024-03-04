@@ -441,6 +441,11 @@
                 Pihak kesatu berhak memindahkan / menempatkan pihak kedua dari pekerjaan yang dianggap perlu oleh pihak
                 kesatu dan pihak kedua wajib mematuhi dan melaksanakannya dengan penuh tanggung jawab.
             </li>
+            <li>
+                Dalam hal pekerja yang mendapatkan kesempatan promosi jabatan atas hasil seleksi yang ditempuh, maka
+                pekerja wajib menandatangani surat pernyataan bersedia mengabdi sekurang-kurangnya 2 tahun untuk promosi
+                ke level supervisor dan 3 tahun untuk promosi ke level manajemen pusat/cabang.
+            </li>
         </ol>
         </p>
         <p>

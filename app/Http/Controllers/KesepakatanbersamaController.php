@@ -19,7 +19,7 @@ class KesepakatanbersamaController extends Controller
         $query->join('hrd_jabatan', 'hrd_penilaian.id_jabatan', '=', 'hrd_jabatan.id');
         $query->join('master_karyawan', 'hrd_penilaian.nik', '=', 'master_karyawan.nik');
         $query->leftjoin('hrd_kontrak', 'hrd_penilaian.kode_penilaian', '=', 'hrd_kontrak.kode_penilaian');
-        $query->orderBy('hrd_kesepakatanbersama.no_kb', 'desc');
+        // $query->orderBy('hrd_kesepakatanbersama.no_kb', 'desc');
         if (!empty($request->nama_karyawan_search)) {
             $query->where('nama_karyawan', 'like', '%' . $request->nama_karyawan_search . '%');
         }
@@ -32,6 +32,7 @@ class KesepakatanbersamaController extends Controller
         if (!empty($request->id_kantor_search)) {
             $query->where('hrd_penilaian.id_kantor', $request->id_kantor_search);
         }
+        $query->orderBy('no_kontrak');
         $kb = $query->paginate(20);
         $kb->appends($request->all());
         $kantor = DB::table('cabang')->orderBy('kode_cabang')->get();
