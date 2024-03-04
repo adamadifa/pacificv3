@@ -22,6 +22,10 @@
             font-size: 14px
         }
 
+        p {
+            margin: 0;
+        }
+
         .datatable3 {
             border: 1px solid #161616;
             border-collapse: collapse;
