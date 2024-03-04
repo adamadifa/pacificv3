@@ -99,10 +99,14 @@ class SetorangiroController extends Controller
         if (Auth::user()->kode_cabang != "PCF") {
             $bank = DB::table('master_bank')->orderBy('kode_bank')
                 ->where('kode_cabang', Auth::user()->kode_cabang)
-                ->where('nama_bank', 'like', '%BNI GIRO%')
+                ->where('show_on_cabang', 1)
+                ->orWhere('kode_cabang', 'PST')
+                ->where('show_on_cabang', 1)
                 ->get();
         } else {
-            $bank = DB::table('master_bank')->orderBy('kode_bank')->get();
+            $bank = DB::table('master_bank')
+                ->where('show_on_cabang', 1)
+                ->orderBy('kode_bank')->get();
         }
         return view('setorangiro.create', compact('giro', 'bank'));
     }
