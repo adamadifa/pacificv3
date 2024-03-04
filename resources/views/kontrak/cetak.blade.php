@@ -99,10 +99,7 @@
         @else
             <table style="width: 100%">
                 <tr>
-                    <td style="width: 20%; text-align:center">
-                        {{-- <img src="{{ asset('app-assets/images/logo/pcf.png') }}" alt=""
-                            style="width: 80px; height:80px"> --}}
-                    </td>
+
                     <td style="text-align: left">
                         @if ($kontrak->dari < '2024-03-01')
                             <h3 style="font-family:'Cambria'; line-height:0px">CV PACIFIC TASIKMALAYA</h3>
