@@ -22,8 +22,10 @@
             font-size: 14px
         }
 
-        p {
-            margin: 0;
+        p,
+        h4 {
+            margin: 0 !important;
+            padding: 0 !important;
         }
 
         .datatable3 {
@@ -485,9 +487,6 @@
         Demikian perjanjian kerja bersama waktu tertentu ini dibuat dan ditandatangani oleh kedua belah pihak dalam
         keadaan sehat walafiat, sadar, mengerti tanpa ada paksaan dari siapapun atau pihak manapun.
         </p>
-
-    </section>
-    <section class="sheet padding-10mm">
         <table class="datatable4">
             <tr>
                 <td colspan="3" style="text-align: center">Tasikmalaya,{{ DateToIndo2($kontrak->dari) }}</td>
@@ -538,6 +537,7 @@
             </tr>
         </table>
     </section>
+
 </body>
 
 </html>
