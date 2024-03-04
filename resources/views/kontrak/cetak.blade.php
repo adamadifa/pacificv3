@@ -473,7 +473,7 @@
 
         </ol>
         </p>
-        <p style="text-align: center" style="margin-bottom: 1px">
+        <p style="text-align: center">
         <h4 style="text-align: center">
             PASAL 8<br>
             PENUTUP

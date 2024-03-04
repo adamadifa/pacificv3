@@ -110,10 +110,14 @@ class TransferController extends Controller
         if (Auth::user()->kode_cabang != "PCF") {
             $bank = DB::table('master_bank')->orderBy('kode_bank')
                 ->where('kode_cabang', Auth::user()->kode_cabang)
-                ->where('nama_bank', 'like', '%BNI GIRO%')
+                ->where('show_on_cabang', 1)
+                ->orWhere('kode_cabang', 'PST')
+                ->where('show_on_cabang', 1)
                 ->get();
         } else {
-            $bank = DB::table('master_bank')->orderBy('kode_bank')->get();
+            $bank = DB::table('master_bank')
+                ->where('show_on_cabang', 1)
+                ->orderBy('kode_bank')->get();
         }
         $bulan = array("", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember");
         return view('transfer.prosestransfer', compact('transfer', 'bank', 'bulan'));
