@@ -485,6 +485,9 @@
         Demikian perjanjian kerja bersama waktu tertentu ini dibuat dan ditandatangani oleh kedua belah pihak dalam
         keadaan sehat walafiat, sadar, mengerti tanpa ada paksaan dari siapapun atau pihak manapun.
         </p>
+
+    </section>
+    <section class="sheet padding-10mm">
         <table class="datatable4">
             <tr>
                 <td colspan="3" style="text-align: center">Tasikmalaya,{{ DateToIndo2($kontrak->dari) }}</td>
@@ -499,7 +502,7 @@
                 @endif
             </tr>
             <tr>
-                <td style="height: 30px"></td>
+                <td style="height: 70px"></td>
                 <td></td>
                 <td></td>
             </tr>
