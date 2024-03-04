@@ -473,7 +473,7 @@
 
         </ol>
         </p>
-        <p style="text-align: center">
+        <p style="text-align: center" style="margin-bottom: 1px">
         <h4 style="text-align: center">
             PASAL 8<br>
             PENUTUP
@@ -495,7 +495,7 @@
                 @endif
             </tr>
             <tr>
-                <td style="height: 40px"></td>
+                <td style="height: 30px"></td>
                 <td></td>
                 <td></td>
             </tr>
