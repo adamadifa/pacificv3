@@ -495,7 +495,7 @@
                 @endif
             </tr>
             <tr>
-                <td style="height: 70px"></td>
+                <td style="height: 40px"></td>
                 <td></td>
                 <td></td>
             </tr>
