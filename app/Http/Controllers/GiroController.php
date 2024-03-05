@@ -207,7 +207,7 @@ class GiroController extends Controller
 
         $akun = getAkunpiutangcabang($cabang);
 
-        $tanggal_tutup_laporan = explode("-", $request->tgl_giro);
+        $tanggal_tutup_laporan = explode("-", $tglcair);
         $bulan = $tanggal_tutup_laporan[1];
         $tahun = $tanggal_tutup_laporan[0];
         $cektutuplaporan = DB::table('tutup_laporan')
