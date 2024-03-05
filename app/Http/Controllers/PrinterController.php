@@ -80,6 +80,7 @@ class PrinterController extends Controller
                 'nama_karyawan',
                 'alamat_pelanggan',
                 'pelanggan.kode_cabang_pkp',
+                'karyawan.kode_cabang',
                 'jenistransaksi',
                 'alamat_cabang',
                 'nama_cabang',
