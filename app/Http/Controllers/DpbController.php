@@ -511,7 +511,7 @@ class DpbController extends Controller
         $tahun = date('y', strtotime($tgl_pengambilan));
         $thn = date('Y', strtotime($tgl_pengambilan));
         $start_date = "2024-03-01";
-        if ($tgl_pengambilan >= '2024-03-01') {
+        if ($tgl_pengambilan >= '2024-03-01' && $kode_cabang != "PST") {
             $lastdpb = DB::table('dpb')
                 ->join('karyawan', 'dpb.id_karyawan', '=', 'karyawan.id_karyawan')
                 ->where('tgl_pengambilan', '>=', $start_date)
