@@ -1922,6 +1922,7 @@ class PenjualanController extends Controller
                 'alamat_cabang',
                 'pasar',
                 'karyawan.kode_cabang',
+                'pelanggan.kode_cabang_pkp',
                 'kode_pt',
                 'nama_pt',
                 DB::raw('IFNULL(totalpf,0) - IFNULL(totalgb,0) as totalretur'),
@@ -1954,7 +1955,15 @@ class PenjualanController extends Controller
             ->get();
 
         //dd($faktur);
-        return view('penjualan.laporan.cetakfaktur', compact('faktur', 'detail', 'pelangganmp'));
+
+        if (!empty($faktur->kode_cabang_pkp)) {
+            $kode_cabang = $faktur->kode_cabang_pkp;
+        } else {
+            $kode_cabang = $faktur->kode_cabang;
+        }
+
+        $cabang = DB::table('cabang')->where('kode_cabang', $kode_cabang)->first();
+        return view('penjualan.laporan.cetakfaktur', compact('faktur', 'detail', 'pelangganmp', 'cabang'));
     }
 
     public function cetaksuratjalan($no_fak_penj, $type)
@@ -1980,6 +1989,7 @@ class PenjualanController extends Controller
                 'alamat_toko',
                 'nama_cabang',
                 'karyawan.kode_cabang',
+                'pelanggan.kode_cabang_pkp',
                 'alamat_cabang',
                 'nama_karyawan',
                 'kategori_salesman',
@@ -2014,10 +2024,18 @@ class PenjualanController extends Controller
             ->join('barang', 'detailpenjualan.kode_barang', '=', 'barang.kode_barang')
             ->where('no_fak_penj', $no_fak_penj)
             ->get();
+
+        if (!empty($faktur->kode_cabang_pkp)) {
+            $kode_cabang = $faktur->kode_cabang_pkp;
+        } else {
+            $kode_cabang = $faktur->kode_cabang;
+        }
+
+        $cabang = DB::table('cabang')->where('kode_cabang', $kode_cabang)->first();
         if ($type == 1) {
-            return view('penjualan.laporan.cetaksuratjalan', compact('faktur', 'detail', 'pelangganmp'));
+            return view('penjualan.laporan.cetaksuratjalan', compact('faktur', 'detail', 'pelangganmp', 'cabang'));
         } else if ($type == 2) {
-            return view('penjualan.laporan.cetaksuratjalan2', compact('faktur', 'detail', 'pelangganmp'));
+            return view('penjualan.laporan.cetaksuratjalan2', compact('faktur', 'detail', 'pelangganmp', 'cabang'));
         }
     }
 

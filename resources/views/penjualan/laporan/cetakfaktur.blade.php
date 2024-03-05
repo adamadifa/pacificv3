@@ -58,12 +58,12 @@
             @else
                 @if ($faktur->tgltransaksi < '2024-03-01')
                     <b>
-                        <b>CV PACIFIC CABANG {{ strtoupper($faktur->nama_cabang) }}</b><br>
+                        <b>CV PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}</b><br>
                         <b>{{ $faktur->alamat_cabang }}</b>
                     </b>
                 @else
                     <b>
-                        <b>{{ strtoupper($faktur->nama_pt) }}</b><br>
+                        <b>{{ strtoupper($cabang->nama_pt) }}</b><br>
                         <b>{{ $faktur->alamat_cabang }}</b>
                     </b>
                 @endif
@@ -230,12 +230,12 @@
                 @else
                     @if ($faktur->tgltransaksi < '2024-03-01')
                         <b>
-                            <b>CV PACIFIC CABANG {{ strtoupper($faktur->nama_cabang) }}</b><br>
+                            <b>CV PACIFIC CABANG {{ strtoupper($cabang->nama_cabang) }}</b><br>
                             <b>{{ $faktur->alamat_cabang }}</b>
                         </b>
                     @else
                         <b>
-                            <b> {{ strtoupper($faktur->nama_pt) }}</b><br>
+                            <b> {{ strtoupper($cabang->nama_pt) }}</b><br>
                             <b>{{ $faktur->alamat_cabang }}</b>
                         </b>
                     @endif
