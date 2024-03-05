@@ -64,7 +64,7 @@
                 @else
                     <b>
                         <b>{{ strtoupper($cabang->nama_pt) }}</b><br>
-                        <b>{{ $faktur->alamat_cabang }}</b>
+                        <b>{{ $cabang->alamat_cabang }}</b>
                     </b>
                 @endif
 
@@ -236,7 +236,7 @@
                     @else
                         <b>
                             <b> {{ strtoupper($cabang->nama_pt) }}</b><br>
-                            <b>{{ $faktur->alamat_cabang }}</b>
+                            <b>{{ $cabang->alamat_cabang }}</b>
                         </b>
                     @endif
                 @endif

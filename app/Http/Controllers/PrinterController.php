@@ -79,6 +79,8 @@ class PrinterController extends Controller
                 'nama_pelanggan',
                 'nama_karyawan',
                 'alamat_pelanggan',
+                'pelanggan.kode_cabang_pkp',
+                'karyawan.kode_cabang',
                 'jenistransaksi',
                 'alamat_cabang',
                 'nama_cabang',
@@ -102,6 +104,13 @@ class PrinterController extends Controller
             ->selectRaw('SUM(total) as totalretur')
             ->where('no_fak_penj', $no_fak_penj)->first();
 
+        if (!empty($faktur->kode_cabang_pkp)) {
+            $kode_cabang = $faktur->kode_cabang_pkp;
+        } else {
+            $kode_cabang = $faktur->kode_cabang;
+        }
+
+        $cbg = DB::table('cabang')->where('kode_cabang', $kode_cabang)->first();
         $profile = CapabilityProfile::load("POS-5890");
         $connector = new RawbtPrintConnector();
         $printer = new Printer($connector, $profile);
@@ -155,8 +164,8 @@ class PrinterController extends Controller
                 $alamat = $faktur->alamat_cabang;
             } else {
                 $perusahaan = "";
-                $cabang = strtoupper($faktur->nama_pt);
-                $alamat = $faktur->alamat_cabang;
+                $cabang = strtoupper($cbg->nama_pt);
+                $alamat = $cbg->alamat_cabang;
             }
         }
         $totalbayar = 0;
