@@ -119,11 +119,11 @@
                                             <td>
 
                                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                                    {{-- @if (in_array($level, $targetkomisiinput))
+                                                    @if (in_array($level, $targetkomisiinput))
                                                         <a href="#" class="ml-1 btn btn-primary btn-sm settarget"
                                                             kodetarget="{{ $d->kode_target }}"><i
                                                                 class="feather icon-settings"></i> Input Qty</a>
-                                                    @endif --}}
+                                                    @endif
                                                     {{-- @if (in_array($level, $generatecashin))
                                                         <a href="/targetkomisi/{{ Crypt::encrypt($d->kode_target) }}/generatecashin"
                                                             class="ml-1 btn btn-warning btn-sm"><i
