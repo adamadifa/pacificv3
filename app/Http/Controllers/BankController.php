@@ -11,7 +11,9 @@ class BankController extends Controller
     {
         $kode_cabang = $request->kode_cabang;
         $kode_bank = $request->bank;
-        $bank = DB::table('master_bank')->where('kode_cabang', $kode_cabang)->get();
+        $bank = DB::table('master_bank')
+            ->where('jenis_rekening', 2)
+            ->where('kode_cabang', $kode_cabang)->get();
         echo "<option value=''>Pilih Bank</option>";
         foreach ($bank as $d) {
             if ($kode_bank == $d->kode_bank) {
