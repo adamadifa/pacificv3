@@ -108,9 +108,9 @@ class GiroController extends Controller
         if (Auth::user()->kode_cabang != "PCF") {
             $bank = DB::table('master_bank')->orderBy('kode_bank')
                 ->where('kode_cabang', Auth::user()->kode_cabang)
-                ->where('show_on_cabang', 1)
-                ->orWhere('kode_cabang', 'PST')
-                ->where('show_on_cabang', 1)
+                // ->where('show_on_cabang', 1)
+                // ->orWhere('kode_cabang', 'PST')
+                // ->where('show_on_cabang', 1)
                 ->get();
         } else {
             $bank = DB::table('master_bank')

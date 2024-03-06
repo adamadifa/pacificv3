@@ -102,9 +102,15 @@
                                             <td>
                                                 <div class="btn-group" role="group" aria-label="Basic example">
                                                     @if (in_array($level, $transfer_approved))
-                                                        <a class="ml-1 prosestransfer" href="#"
-                                                            kode_transfer="{{ $d->kode_transfer }}"><i
-                                                                class=" feather icon-external-link success"></i></a>
+                                                        @if ($d->status == 1 && Auth::user()->kode_cabang == 'PCF')
+                                                            <a class="ml-1 prosestransfer" href="#"
+                                                                kode_transfer="{{ $d->kode_transfer }}"><i
+                                                                    class=" feather icon-external-link success"></i></a>
+                                                        @elseif ($d->status == 0)
+                                                            <a class="ml-1 prosestransfer" href="#"
+                                                                kode_transfer="{{ $d->kode_transfer }}"><i
+                                                                    class=" feather icon-external-link success"></i></a>
+                                                        @endif
                                                     @endif
                                                     <a class="ml-1 detailfaktur" href="#"
                                                         kode_transfer="{{ $d->kode_transfer }}"><i
@@ -147,7 +153,8 @@
         <div class="modal-dialog modal-dialog-centered modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel18">Proses Transfer <span id="kodetransferproses"></span></h4>
+                    <h4 class="modal-title" id="myModalLabel18">Proses Transfer <span id="kodetransferproses"></span>
+                    </h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
