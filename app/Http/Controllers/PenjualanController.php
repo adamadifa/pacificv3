@@ -8763,8 +8763,22 @@ class PenjualanController extends Controller
         $kode_cabang = $cekpenjualan->kode_cabang;
         $pelangganbatal = DB::table('pelanggan')->where('nama_pelanggan', 'BATAL')->where('kode_cabang', $kode_cabang)->first();
         $kode_pelanggan = $pelangganbatal->kode_pelanggan;
-        $id_karyawan = $pelangganbatal->id_sales;
+        $id_karyawan = $cekpenjualan->id_karyawan;
         $tgltransaksi = $cekpenjualan->tgltransaksi;
+
+        $tanggal = explode("-", $tgltransaksi);
+        $bulan = $tanggal[1];
+        $tahun = $tanggal[0];
+        $cek = DB::table('tutup_laporan')
+            ->where('jenis_laporan', "penjualan")
+            ->where('bulan', $bulan)
+            ->where('tahun', $tahun)
+            ->where('status', 1)
+            ->count();
+
+        if ($cek > 0) {
+            Redirect::back()->with(['warning' => 'Periode Laporan Sudah Ditutup']);
+        }
         $data = [
             'no_fak_penj' => $no_fak_penj,
             'tgltransaksi' => $tgltransaksi,
