@@ -158,6 +158,8 @@
         $totalsc = 0;
         $totalsp8 = 0;
         $totalsp500 = 0;
+        $totalbr20 = 0;
+        $totalp1000 = 0;
         $totalcashin = 0;
       }
     }
