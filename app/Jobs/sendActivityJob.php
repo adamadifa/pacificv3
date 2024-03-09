@@ -43,8 +43,8 @@ class sendActivityJob implements ShouldQueue
     {
 
         $group_wa = ['120363181708613638@g.us', '120363048652516047@g.us', '120363023468297226@g.us'];
-        // $url = "https://sfa.pacific-tasikmalaya.com/storage/uploads/smactivity/";
-        $url = "https://sfa.pedasalami.com/storage/uploads/smactivity/";
+        $url = "https://sfa.pacific-tasikmalaya.com/storage/uploads/smactivity/";
+        // $url = "https://sfa.pedasalami.com/storage/uploads/smactivity/";
         if ($this->lv == "manager marketing") {
             foreach ($group_wa as $d) {
                 $pesan = [
