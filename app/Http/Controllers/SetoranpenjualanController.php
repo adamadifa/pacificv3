@@ -28,6 +28,18 @@ class SetoranpenjualanController extends Controller
     }
     public function index(Request $request)
     {
+
+        if (empty($request->dari)) {
+            $dari = $request->dari;
+        } else {
+            $dari = date('Y-m-d');
+        }
+
+        if (!empty($request->sampai)) {
+            $sampai = $request->sampai;
+        } else {
+            $sampai = date('Y-m-d');
+        }
         $query = Setoranpenjualan::query();
         $query->selectRaw(" kode_setoran,tgl_lhp,setoran_penjualan.id_karyawan,setoran_penjualan.kode_cabang,nama_karyawan,lhp_tunai,
         ifnull(cektunai,0) AS cektunai,lhp_tagihan,ifnull(cekkredit,0) AS cekkredit,ifnull(ceksetorangiro,0) AS ceksetorangiro,
@@ -42,8 +54,8 @@ class SetoranpenjualanController extends Controller
                 ,SUM(IF(jenistransaksi='kredit' AND id_giro  IS NULL AND id_transfer IS NULL AND status_bayar IS NULL,bayar,0)) AS cekkredit
                 ,SUM(IF(girotocash IS NOT NULL AND status_bayar IS NULL,bayar,0)) AS cekgirotocash
                 FROM historibayar
-                WHERE  tglbayar >= '$request->dari'
-                AND tglbayar <= '$request->sampai'
+                WHERE  tglbayar >= '$dari'
+                AND tglbayar <= '$sampai'
                 GROUP BY historibayar.id_karyawan,tglbayar
             ) ceklhp"),
             function ($join) {
@@ -56,8 +68,8 @@ class SetoranpenjualanController extends Controller
             DB::raw("(
                 SELECT giro.id_karyawan,tgl_giro,SUM(jumlah) as ceksetorangiro
                 FROM giro
-                WHERE tgl_giro >= '$request->dari'
-                AND tgl_giro <= '$request->sampai'
+                WHERE tgl_giro >= '$dari'
+                AND tgl_giro <= '$sampai'
                 GROUP BY giro.id_karyawan,tgl_giro
             ) cekgiro"),
             function ($join) {
@@ -71,9 +83,9 @@ class SetoranpenjualanController extends Controller
                 SELECT transfer.id_karyawan,tgl_transfer,SUM(jumlah) as ceksetorantransfer
                 FROM transfer
                 LEFT JOIN historibayar ON transfer.id_transfer = historibayar.id_transfer
-                WHERE tgl_transfer >= '$request->dari'
-                AND tgl_transfer <= '$request->sampai' AND girotocash ='' OR tgl_transfer >= '$request->dari'
-                AND tgl_transfer <= '$request->sampai' AND girotocash IS NULL
+                WHERE tgl_transfer >= '$dari'
+                AND tgl_transfer <= '$sampai' AND girotocash ='' OR tgl_transfer >= '$dari'
+                AND tgl_transfer <= '$sampai' AND girotocash IS NULL
                 GROUP BY transfer.id_karyawan,tgl_transfer
             ) cektransfer"),
             function ($join) {
@@ -90,8 +102,8 @@ class SetoranpenjualanController extends Controller
                 SUM(IF(pembayaran='2',uang_logam,0)) AS lebihsetorlogam,
                 SUM(IF(pembayaran='2',uang_kertas,0)) AS lebihsetorkertas
                 FROM kuranglebihsetor
-                WHERE kode_cabang ='$request->kode_cabang' AND tgl_kl >= '$request->dari'
-                AND tgl_kl <= '$request->sampai'
+                WHERE kode_cabang ='$request->kode_cabang' AND tgl_kl >= '$dari'
+                AND tgl_kl <= '$sampai'
                 GROUP BY kuranglebihsetor.id_karyawan,tgl_kl
             ) cek_kl"),
             function ($join) {
@@ -101,7 +113,7 @@ class SetoranpenjualanController extends Controller
         );
 
         $query->where('setoran_penjualan.kode_cabang', $request->kode_cabang);
-        $query->whereBetween('tgl_lhp', [$request->dari, $request->sampai]);
+        $query->whereBetween('tgl_lhp', [$dari, $sampai]);
 
         if (!empty($request->id_karyawan)) {
             $query->where('setoran_penjualan.id_karyawan', $request->id_karyawan);
