@@ -199,6 +199,17 @@
     </div>
 </div>
 
+{{-- $(".koreksitarget").click(function(e) {
+    e.preventDefault();
+    var kodetarget = "{{ $kodetarget }}";
+    var kodeproduk = $(this).attr("kodeproduk");
+    var id_karyawan = $(this).attr("id_karyawan");
+    loadkoreksitarget(kodetarget, kodeproduk, id_karyawan);
+    $('#mdlkoreksitarget').modal({
+        backdrop: 'static',
+        keyboard: false
+    });
+}); --}}
 <script>
     $(function() {
 
@@ -219,17 +230,7 @@
             });
 
         }
-        $(".koreksitarget").click(function(e) {
-            e.preventDefault();
-            var kodetarget = "{{ $kodetarget }}";
-            var kodeproduk = $(this).attr("kodeproduk");
-            var id_karyawan = $(this).attr("id_karyawan");
-            loadkoreksitarget(kodetarget, kodeproduk, id_karyawan);
-            $('#mdlkoreksitarget').modal({
-                backdrop: 'static',
-                keyboard: false
-            });
-        });
+
 
         $("#closemdlkoreksitarget").click(function() {
             $('#mdlkoreksitarget').modal("hide");
