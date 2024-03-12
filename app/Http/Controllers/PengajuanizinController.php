@@ -621,11 +621,11 @@ class PengajuanizinController extends Controller
         $tgl_pengajuan = strtotime(date("Y-m-d", strtotime($dari)));
         $tigahari    = date('Y-m-d', strtotime("+3 day", $tgl_pengajuan));
 
-        if (Auth::user()->level != "admin") {
-            if (date('Y-m-d') > $tigahari) {
-                return Redirect::back()->with(['warning' => 'Pengjuan Izin /Sakit /Cuti Tidak Boleh Lebih Dari 3 Hari']);
-            }
-        }
+        // if (Auth::user()->level != "admin") {
+        //     if (date('Y-m-d') > $tigahari) {
+        //         return Redirect::back()->with(['warning' => 'Pengjuan Izin /Sakit /Cuti Tidak Boleh Lebih Dari 3 Hari']);
+        //     }
+        // }
 
 
         $keperluan = $request->keperluan;
@@ -734,11 +734,11 @@ class PengajuanizinController extends Controller
         $tgl_pengajuan = strtotime(date("Y-m-d", strtotime($tgl_presensi)));
         $tigahari    = date('Y-m-d', strtotime("+3 day", $tgl_pengajuan));
 
-        if (Auth::user()->level != "admin") {
-            if (date('Y-m-d') > $tigahari) {
-                return Redirect::back()->with(['warning' => 'Pengjuan Izin /Sakit /Cuti Tidak Boleh Lebih Dari 3 Hari']);
-            }
-        }
+        // if (Auth::user()->level != "admin") {
+        //     if (date('Y-m-d') > $tigahari) {
+        //         return Redirect::back()->with(['warning' => 'Pengjuan Izin /Sakit /Cuti Tidak Boleh Lebih Dari 3 Hari']);
+        //     }
+        // }
         $izin = DB::table("pengajuan_izin")
             ->join('master_karyawan', 'pengajuan_izin.nik', '=', 'master_karyawan.nik')
             ->whereRaw('YEAR(dari)="' . $tgl[0] . '"')
