@@ -29,7 +29,7 @@ class SetoranpenjualanController extends Controller
     public function index(Request $request)
     {
 
-        if (empty($request->dari)) {
+        if (!empty($request->dari)) {
             $dari = $request->dari;
         } else {
             $dari = date('Y-m-d');
