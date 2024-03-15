@@ -1355,7 +1355,7 @@
                         <td align="right">
                             @if ($tahunkerja >= 10 && $tahunkerja < 15)
                                 @php
-                                    $thr2 = 0.25 * $upah;
+                                    $thr2 = 0.25 * $d->gaji_pokok;
                                 @endphp
                             @else
                                 @php
@@ -1367,7 +1367,7 @@
                         <td align="right">
                             @if ($tahunkerja >= 15)
                                 @php
-                                    $thr3 = 0.5 * $upah;
+                                    $thr3 = 0.5 * $d->gaji_pokok;
                                 @endphp
                             @else
                                 @php
