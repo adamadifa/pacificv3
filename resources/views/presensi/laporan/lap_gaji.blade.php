@@ -127,6 +127,7 @@
                                                         <option value="2">Rekap</option>
                                                         <option value="3">Slip</option>
                                                         <option value="4">Rekening</option>
+                                                        <option value="5">THR</option>
 
                                                     </select>
                                                 </div>
