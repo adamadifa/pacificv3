@@ -128,6 +128,7 @@
                                                         <option value="3">Slip</option>
                                                         <option value="4">Rekening</option>
                                                         <option value="5">THR</option>
+                                                        <option value="6">BPJS</option>
 
                                                     </select>
                                                 </div>
