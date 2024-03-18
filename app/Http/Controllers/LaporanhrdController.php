@@ -537,6 +537,16 @@ class LaporanhrdController extends Controller
                     header("Content-Disposition: attachment; filename=Rekening Gaji.xls");
                 }
                 return view('gaji.laporan.cetak_thr', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'datalemburharilibur', 'sampai'));
+            } else if ($jenislaporan_gaji == 6) {
+                if (isset($_POST['export'])) {
+                    echo "EXPORT";
+                    // Fungsi header dengan mengirimkan raw data excel
+                    header("Content-type: application/vnd-ms-excel");
+                    // Mendefinisikan nama file ekspor "hasil-export.xls"
+                    header("Content-Disposition: attachment; filename=Rekening Gaji.xls");
+                }
+                $cekUmk = cekUmk();
+                return view('gaji.laporan.cetak_bpjs', compact('departemen', 'kantor', 'group', 'namabulan', 'bulan', 'tahun', 'jmlrange', 'rangetanggal', 'presensi', 'datalibur', 'dataliburpenggantiminggu', 'dataminggumasuk', 'datawfh', 'datawfhfull', 'datalembur', 'datalemburharilibur', 'sampai', 'cekUmk'));
             } else {
                 if (isset($_POST['export'])) {
                     echo "EXPORT";

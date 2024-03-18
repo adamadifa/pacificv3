@@ -128,6 +128,8 @@
                     <th rowspan="2" style="background-color: rgb(0, 129, 6);">PENAMBAH</th>
                     <th rowspan="2" style="background-color: orange;">JUMLAH<br>POTONGAN</th>
                     <th rowspan="2" style="background-color: orange;">JUMLAH<br>BERSIH</th>
+                    <th rowspan="2" style="background-color: orange;">UPAH BPJS</th>
+                    <th rowspan="2" style="background-color: orange;">UPAH SISA</th>
 
                 </tr>
                 <tr>
@@ -1431,6 +1433,23 @@
                         </td>
                         <td align="right">
                             {{ !empty($jmlbersih) ? rupiah($jmlbersih) : '' }}
+                        </td>
+                        @if ($jmlbersih > $cekUmk[$d->id_kantor])
+                            @php
+                                $upahbpjs = $cekUmk[$d->id_kantor];
+                                $upahsisa = $jmlbersih - $upahbpjs;
+                            @endphp
+                        @else
+                            @php
+                                $upahbpjs = $jmlbersih;
+                                $upahsisa = 0;
+                            @endphp
+                        @endif
+                        <td align="right">
+                            {{ rupiah($upahbpjs) }}
+                        </td>
+                        <td align="right">
+                            {{ rupiah($upahsisa) }}
                         </td>
                     </tr>
                 @endforeach

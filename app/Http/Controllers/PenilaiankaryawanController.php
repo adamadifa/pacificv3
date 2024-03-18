@@ -47,7 +47,7 @@ class PenilaiankaryawanController extends Controller
                     $qkaryawan->where('id_kantor', 'PST');
                     $qkaryawan->where('kode_dept', 'KEU');
                 } else {
-                    $qkaryawan->whereIn('id_kategori_jabatan', [7, 8, 9, 10, 5, 15, 16]);
+                    $qkaryawan->whereIn('id_kategori_jabatan', [7, 8, 9, 10, 5, 15, 16, 17]);
                     $qkaryawan->where('id_kantor', 'PST');
                 }
             } else if (Auth::user()->kategori_jabatan == 2) {
