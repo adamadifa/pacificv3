@@ -1080,8 +1080,10 @@ class PenjualanController extends Controller
             }
 
             if ($p->kategori == "SP" and $jmldussp >= $p->dari and $jmldussp <= $p->sampai) {
-                $diskonsp = $p->diskon;
-                $diskonsptunai = $p->diskon_tunai;
+                // $diskonsp = $p->diskon;
+                // $diskonsptunai = $p->diskon_tunai;
+                $diskonsp = 0;
+                $diskonsptunai = 0;
             }
 
             if ($p->kategori == "SC" and $jmldussb >= $p->dari and $jmldussb <= $p->sampai) {
@@ -1177,8 +1179,11 @@ class PenjualanController extends Controller
             }
 
             if ($p->kategori == "SP" and $jmldussp >= $p->dari and $jmldussp <= $p->sampai) {
-                $diskonsp = $p->diskon;
-                $diskonsptunai = $p->diskon_tunai;
+                // $diskonsp = $p->diskon;
+                // $diskonsptunai = $p->diskon_tunai;
+
+                $diskonsp = 0;
+                $diskonsptunai = 0;
             }
 
             if ($p->kategori == "SC" and $jmldussb >= $p->dari and $jmldussb <= $p->sampai) {
@@ -1274,8 +1279,11 @@ class PenjualanController extends Controller
             }
 
             if ($p->kategori == "SP" and $jmldussp >= $p->dari and $jmldussp <= $p->sampai) {
-                $diskonsp = $p->diskon;
-                $diskonsptunai = $p->diskon_tunai;
+                // $diskonsp = $p->diskon;
+                // $diskonsptunai = $p->diskon_tunai;
+
+                $diskonsp = 0;
+                $diskonsptunai = 0;
             }
 
             if ($p->kategori == "SC" and $jmldussb >= $p->dari and $jmldussb <= $p->sampai) {
