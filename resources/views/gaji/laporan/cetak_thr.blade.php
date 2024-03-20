@@ -1289,8 +1289,9 @@
                         <td align="center">{{ date('d-m-Y', strtotime($d->tgl_masuk)) }}</td>
                         <td align="center">
                             @php
+                                $sampaithr = '2024-03-23';
                                 $awal = date_create($d->tgl_masuk);
-                                $akhir = date_create($sampai); // waktu sekarang
+                                $akhir = date_create($sampaithr); // waktu sekarang
                                 $diff = date_diff($awal, $akhir);
                                 // echo $diff->y . ' tahun, '.$diff->m.' bulan, '.$diff->d.' Hari'
                                 echo $diff->y . ' tahun, ' . $diff->m . ' bulan';
