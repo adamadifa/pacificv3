@@ -771,7 +771,7 @@
 
                                     <!-- Jika Pulang Cepat-->
                                     @if (!empty($pc))
-                                        <span style="color:red">{{ $pc }} {{ $total_pc }}
+                                        <span style="color:red">{{ $pc }} {{ $totalpc }}
                                             {{ $total_jam . '+' . $jk . '+' . $grandtotaljam }}</span>
                                         <br>
                                     @endif
