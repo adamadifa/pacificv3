@@ -120,6 +120,9 @@
                     <th rowspan="2" style="background-color: rgb(0, 117, 55);">PENAMBAH</th>
                     <th rowspan="2" style="background-color: orange;">JUMLAH<br>POTONGAN</th>
                     <th rowspan="2" style="background-color: orange;">JUMLAH<br>BERSIH</th>
+                    <th rowspan="2" style="background-color: rgb(4, 70, 184);">THR</th>
+                    <th rowspan="2" style="background-color: rgb(4, 70, 184);;">THR 1/4</th>
+                    <th rowspan="2" style="background-color: rgb(4, 70, 184);;">THR 1/2</th>
 
                 </tr>
                 <tr>
@@ -218,6 +221,36 @@
                     $total_t_skillkhusus_tktl = 0;
                     $total_t_skillkhusus_mp = 0;
                     $total_t_skillkhusus_pcf = 0;
+
+                    //THR 1
+
+                    $total_thr = 0;
+                    $total_thr_administrasi = 0;
+                    $total_thr_penjualan = 0;
+                    $total_thr_tkl = 0;
+                    $total_thr_tktl = 0;
+                    $total_thr_mp = 0;
+                    $total_thr_pcf = 0;
+
+                    //THR 2
+
+                    $total_thr2 = 0;
+                    $total_thr2_administrasi = 0;
+                    $total_thr2_penjualan = 0;
+                    $total_thr2_tkl = 0;
+                    $total_thr2_tktl = 0;
+                    $total_thr2_mp = 0;
+                    $total_thr2_pcf = 0;
+
+                    //THR 3
+
+                    $total_thr3 = 0;
+                    $total_thr3_administrasi = 0;
+                    $total_thr3_penjualan = 0;
+                    $total_thr3_tkl = 0;
+                    $total_thr3_tktl = 0;
+                    $total_thr3_mp = 0;
+                    $total_thr3_pcf = 0;
 
                     //Insentif umum Masa Kjra
                     $total_insentif_masakerja = 0;
@@ -557,6 +590,17 @@
                             $end_kerja = date_create($tgl_presensi); // Tanggal Presensi
                             $diff = date_diff($start_kerja, $end_kerja); //Hitung Masa Kerja
                             $cekmasakerja = $diff->y * 12 + $diff->m; // Value Masa Kerja
+
+                            //Hitung Masa Kerja
+
+                            $sampaithr = '2024-03-23';
+                            $awal = date_create($d->tgl_masuk);
+                            $akhir = date_create($sampaithr); // waktu sekarang
+                            $diff = date_diff($awal, $akhir);
+                            // echo $diff->y . ' tahun, '.$diff->m.' bulan, '.$diff->d.' Hari'
+                            echo $diff->y . ' tahun, ' . $diff->m . ' bulan';
+                            $tahunkerja = $diff->y;
+                            $bulankerja = $diff->m;
 
                             $tgllibur = "'" . $tgl_presensi . "'"; // Tanggal Libur
 
@@ -1113,7 +1157,6 @@
                                 } else {
                                     $tidakhadir = 0; // Jika Karyawan Absen Maka $tidakhadir dihitung 0
                                 }
-
                             @endphp
                             @if ($status == 'h')
                                 @php
@@ -1496,6 +1539,24 @@
                         $penambah = $d->jml_penambah;
                         $jmlbersih = $bruto - $potongan + $penambah; // Jumlah Upah Bersih
 
+                        if ($tahunkerja > 1) {
+                            $thr = $upah;
+                        } else {
+                            $thr = ($bulankerja / 12) * $upah;
+                        }
+
+                        if ($tahunkerja >= 10 && $tahunkerja < 15) {
+                            $thr2 = 0.25 * $d->gaji_pokok;
+                        } else {
+                            $thr2 = 0;
+                        }
+
+                        if ($tahunkerja >= 15) {
+                            $thr3 = 0.5 * $d->gaji_pokok;
+                        } else {
+                            $thr3 = 0;
+                        }
+
                         //TOTAL
                         //Total Gaji Pokok
                         $total_gajipokok += $d->gaji_pokok;
@@ -1555,6 +1616,34 @@
                         $total_t_skillkhusus_tktl += $d->klasifikasi == 'TKTL' ? $d->t_skill : 0;
                         $total_t_skillkhusus_mp += $d->id_perusahaan == 'MP' ? $d->t_skill : 0;
                         $total_t_skillkhusus_pcf += $d->id_perusahaan == 'PCF' ? $d->t_skill : 0;
+
+                        //THR 1
+                        $total_thr += $thr;
+                        $total_thr_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $thr : 0;
+                        $total_thr_penjualan += $d->klasifikasi == 'PENJUALAN' ? $thr : 0;
+                        $total_thr_tkl += $d->klasifikasi == 'TKL' ? $thr : 0;
+                        $total_thr_tktl += $d->klasifikasi == 'TKTL' ? $thr : 0;
+                        $total_thr_mp += $d->id_perusahaan == 'MP' ? $thr : 0;
+                        $total_thr_pcf += $d->id_perusahaan == 'PCF' ? $thr : 0;
+
+                        //THR 2
+
+                        $total_thr2 += $thr2;
+                        $total_thr2_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $thr2 : 0;
+                        $total_thr2_penjualan += $d->klasifikasi == 'PENJUALAN' ? $thr2 : 0;
+                        $total_thr2_tkl += $d->klasifikasi == 'TKL' ? $thr2 : 0;
+                        $total_thr2_tktl += $d->klasifikasi == 'TKTL' ? $thr2 : 0;
+                        $total_thr2_mp += $d->id_perusahaan == 'MP' ? $thr2 : 0;
+                        $total_thr2_pcf += $d->id_perusahaan == 'PCF' ? $thr2 : 0;
+
+                        //THR 3
+                        $total_thr3 += $thr3;
+                        $total_thr3_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $thr3 : 0;
+                        $total_thr3_penjualan += $d->klasifikasi == 'PENJUALAN' ? $thr3 : 0;
+                        $total_thr3_tkl += $d->klasifikasi == 'TKL' ? $thr3 : 0;
+                        $total_thr3_tktl += $d->klasifikasi == 'TKTL' ? $thr3 : 0;
+                        $total_thr3_mp += $d->id_perusahaan == 'MP' ? $thr3 : 0;
+                        $total_thr3_pcf += $d->id_perusahaan == 'PCF' ? $thr3 : 0;
 
                         $total_insentif_masakerja += $d->iu_masakerja;
                         $total_i_masakerja_administrasi += $d->klasifikasi == 'ADMINISTRASI' ? $d->iu_masakerja : 0;
@@ -1999,6 +2088,7 @@
                     <td style="text-align:right">{{ rupiah($total_all_penambah_administrasi) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_potongan_administrasi) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_bersih_administrasi) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_thr_administrasi) }}</td>
                 </tr>
                 <tr>
                     <td>PENJUALAN</td>
@@ -2045,6 +2135,7 @@
                     <td style="text-align:right">{{ rupiah($total_all_penambah_penjualan) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_potongan_penjualan) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_bersih_penjualan) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_thr_penjualan) }}</td>
                 </tr>
                 <tr>
                     <td>TKL</td>
@@ -2091,6 +2182,7 @@
                     <td style="text-align:right">{{ rupiah($total_all_penambah_tkl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_potongan_tkl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_bersih_tkl) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_thr_tkl) }}</td>
                 </tr>
                 <tr>
                     <td>TKTL</td>
@@ -2137,6 +2229,7 @@
                     <td style="text-align:right">{{ rupiah($total_all_penambah_tktl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_potongan_tktl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_bersih_tktl) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_thr_tktl) }}</td>
                 </tr>
                 <tr>
                     <th>TOTAL</th>

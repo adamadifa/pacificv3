@@ -636,11 +636,6 @@
                                 } else {
                                     $desimalmenit = 0;
                                     $grandtotaljam = 0;
-                                    if ($namahari == 'Sabtu') {
-                                        $tidakhadir = 5;
-                                    } else {
-                                        $tidakhadir = 7;
-                                    }
                                 }
 
                                 if ($jam_in == 'NA') {
@@ -682,11 +677,6 @@
                                         // }
                                     } else {
                                         $grandtotaljam = 0;
-                                        if ($namahari == 'Sabtu') {
-                                            $tidakhadir = 5;
-                                        } else {
-                                            $tidakhadir = 7;
-                                        }
                                     }
                                 }
 
