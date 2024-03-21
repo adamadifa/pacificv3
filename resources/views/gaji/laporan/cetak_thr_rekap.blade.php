@@ -2090,6 +2090,7 @@
                     <td style="text-align:right">{{ rupiah($total_all_bersih_administrasi) }}</td>
                     <td style="text-align:right">{{ rupiah($total_thr_administrasi) }}</td>
                     <td style="text-align:right">{{ rupiah($total_thr2_administrasi) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_thr3_administrasi) }}</td>
                 </tr>
                 <tr>
                     <td>PENJUALAN</td>
@@ -2138,6 +2139,7 @@
                     <td style="text-align:right">{{ rupiah($total_all_bersih_penjualan) }}</td>
                     <td style="text-align:right">{{ rupiah($total_thr_penjualan) }}</td>
                     <td style="text-align:right">{{ rupiah($total_thr2_penjualan) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_thr3_penjualan) }}</td>
                 </tr>
                 <tr>
                     <td>TKL</td>
@@ -2186,6 +2188,7 @@
                     <td style="text-align:right">{{ rupiah($total_all_bersih_tkl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_thr_tkl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_thr2_tkl) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_thr3_tkl) }}</td>
                 </tr>
                 <tr>
                     <td>TKTL</td>
@@ -2234,6 +2237,7 @@
                     <td style="text-align:right">{{ rupiah($total_all_bersih_tktl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_thr_tktl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_thr2_tktl) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_thr3_tktl) }}</td>
                 </tr>
                 <tr>
                     <th>TOTAL</th>
@@ -2537,6 +2541,7 @@
                     <th style="text-align: right">{{ rupiah($total_all_bersih_rekap) }}</th>
                     <th style="text-align: right">{{ rupiah($total_thr_rekap) }}</th>
                     <th style="text-align: right">{{ rupiah($total_thr2_rekap) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_thr3_rekap) }}</th>
                 </tr>
             </tbody>
         </table>
@@ -2572,7 +2577,9 @@
                     <th rowspan="2" style="background-color: rgb(22, 127, 3);">PENAMBAH</th>
                     <th rowspan="2" style="background-color: orange;">JUMLAH<br>POTONGAN</th>
                     <th rowspan="2" style="background-color: orange;">JUMLAH<br>BERSIH</th>
-
+                    <th rowspan="2" style="background-color: rgb(4, 70, 184);">THR</th>
+                    <th rowspan="2" style="background-color: rgb(4, 70, 184);;">THR 1/4</th>
+                    <th rowspan="2" style="background-color: rgb(4, 70, 184);;">THR 1/2</th>
                 </tr>
                 <tr>
                     <th>JABATAN</th>
@@ -2649,6 +2656,9 @@
                     <td style="text-align:right">{{ rupiah($total_all_penambah_mp) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_potongan_mp) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_bersih_mp) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_thr_mp) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_thr2_mp) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_thr3_mp) }}</td>
                 </tr>
                 <tr>
                     <td>PACIFIC</td>
@@ -2695,6 +2705,9 @@
                     <td style="text-align:right">{{ rupiah($total_all_penambah_pcf) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_potongan_pcf) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_bersih_pcf) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_thr_pcf) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_thr2_pcf) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_thr3_pcf) }}</td>
                 </tr>
                 <tr>
                     <th>TOTAL</th>
