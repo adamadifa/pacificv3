@@ -1113,7 +1113,6 @@
                                 } else {
                                     $tidakhadir = 0; // Jika Karyawan Absen Maka $tidakhadir dihitung 0
                                 }
-
                             @endphp
                             @if ($status == 'h')
                                 @php
@@ -1496,6 +1495,17 @@
                         $penambah = $d->jml_penambah;
                         $jmlbersih = $bruto - $potongan + $penambah; // Jumlah Upah Bersih
 
+                    @endphp
+                    <!--UJI COBA-->
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td>{{ $d->nik }}</td>
+                        <td>{{ $d->nama_karyawan }}</td>
+                        <td style="text-align:center; font-weight:bold">
+                            {{ !empty($totaljamkerja) ? desimal($totaljamkerja) : '' }}
+                        </td>
+                    </tr>
+                    @php
                         //TOTAL
                         //Total Gaji Pokok
                         $total_gajipokok += $d->gaji_pokok;
