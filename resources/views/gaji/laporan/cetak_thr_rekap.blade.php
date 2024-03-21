@@ -598,7 +598,7 @@
                             $akhir = date_create($sampaithr); // waktu sekarang
                             $diff = date_diff($awal, $akhir);
                             // echo $diff->y . ' tahun, '.$diff->m.' bulan, '.$diff->d.' Hari'
-                            echo $diff->y . ' tahun, ' . $diff->m . ' bulan';
+                            //echo $diff->y . ' tahun, ' . $diff->m . ' bulan';
                             $tahunkerja = $diff->y;
                             $bulankerja = $diff->m;
 
