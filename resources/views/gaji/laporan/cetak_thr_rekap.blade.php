@@ -2089,6 +2089,7 @@
                     <td style="text-align:right">{{ rupiah($total_all_potongan_administrasi) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_bersih_administrasi) }}</td>
                     <td style="text-align:right">{{ rupiah($total_thr_administrasi) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_thr2_administrasi) }}</td>
                 </tr>
                 <tr>
                     <td>PENJUALAN</td>
@@ -2136,6 +2137,7 @@
                     <td style="text-align:right">{{ rupiah($total_all_potongan_penjualan) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_bersih_penjualan) }}</td>
                     <td style="text-align:right">{{ rupiah($total_thr_penjualan) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_thr2_penjualan) }}</td>
                 </tr>
                 <tr>
                     <td>TKL</td>
@@ -2183,6 +2185,7 @@
                     <td style="text-align:right">{{ rupiah($total_all_potongan_tkl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_bersih_tkl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_thr_tkl) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_thr2_tkl) }}</td>
                 </tr>
                 <tr>
                     <td>TKTL</td>
@@ -2230,6 +2233,7 @@
                     <td style="text-align:right">{{ rupiah($total_all_potongan_tktl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_all_bersih_tktl) }}</td>
                     <td style="text-align:right">{{ rupiah($total_thr_tktl) }}</td>
+                    <td style="text-align:right">{{ rupiah($total_thr2_tktl) }}</td>
                 </tr>
                 <tr>
                     <th>TOTAL</th>
@@ -2243,6 +2247,10 @@
                         //THR
                         $total_thr_rekap =
                             $total_thr_administrasi + $total_thr_penjualan + $total_thr_tkl + $total_thr_tktl;
+                        $total_thr2_rekap =
+                            $total_thr2_administrasi + $total_thr2_penjualan + $total_thr2_tkl + $total_thr2_tktl;
+                        $total_thr3_rekap =
+                            $total_thr3_administrasi + $total_thr3_penjualan + $total_thr3_tkl + $total_thr3_tktl;
 
                         $total_t_jabatan_rekap =
                             $total_t_jabatan_administrasi +
@@ -2528,6 +2536,7 @@
                     <th style="text-align: right">{{ rupiah($total_all_potongan_rekap) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_bersih_rekap) }}</th>
                     <th style="text-align: right">{{ rupiah($total_thr_rekap) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_thr2_rekap) }}</th>
                 </tr>
             </tbody>
         </table>
