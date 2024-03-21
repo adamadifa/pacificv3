@@ -2240,6 +2240,10 @@
                             $total_gajipokok_tkl +
                             $total_gajipokok_tktl;
 
+                        //THR
+                        $total_thr_rekap =
+                            $total_thr_administrasi + $total_thr_penjualan + $total_thr_tkl + $total_thr_tktl;
+
                         $total_t_jabatan_rekap =
                             $total_t_jabatan_administrasi +
                             $total_t_jabatan_penjualan +
@@ -2523,6 +2527,7 @@
                     <th style="text-align: right">{{ rupiah($total_all_penambah_rekap) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_potongan_rekap) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_bersih_rekap) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_thr_rekap) }}</th>
                 </tr>
             </tbody>
         </table>
