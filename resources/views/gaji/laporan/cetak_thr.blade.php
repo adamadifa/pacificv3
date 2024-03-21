@@ -168,6 +168,9 @@
 
                     $total_upah = 0; // Total All Upah
                     $total_insentif = 0; // Total All Insentif
+                    $total_thr = 0;
+                    $total_thr_2 = 0;
+                    $total_thr_3 = 0;
 
                     $total_all_jamkerja = 0; // Total All Jam Kerja
                     $total_all_upahperjam = 0; // Total All Upah / Jam
@@ -1351,18 +1354,25 @@
                                     $thr = ($bulankerja / 12) * $upah;
                                 @endphp
                             @endif
+                            @php
+                                $total_thr += $thr;
+                            @endphp
                             {{ rupiah($thr) }}
                         </td>
                         <td align="right">
                             @if ($tahunkerja >= 10 && $tahunkerja < 15)
                                 @php
                                     $thr2 = 0.25 * $d->gaji_pokok;
+
                                 @endphp
                             @else
                                 @php
                                     $thr2 = 0;
                                 @endphp
                             @endif
+                            @php
+                                $total_thr_2 += $thr2;
+                            @endphp
                             {{ !empty($thr2) ? rupiah($thr2) : '' }}
                         </td>
                         <td align="right">
@@ -1375,6 +1385,9 @@
                                     $thr3 = 0;
                                 @endphp
                             @endif
+                            @php
+                                $total_thr_3 += $thr3;
+                            @endphp
                             {{ !empty($thr3) ? rupiah($thr3) : '' }}
                         </td>
                         <td align="right">
@@ -1406,8 +1419,9 @@
 
                     <th style="text-align: right">{{ rupiah($total_upah) }}</th>
                     <th style="text-align: right">{{ rupiah($total_insentif) }}</th>
-
-
+                    <th style="text-align: right">{{ rupiah($total_thr) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_thr_2) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_thr_3) }}</th>
                 </tr>
             </tbody>
         </table>
