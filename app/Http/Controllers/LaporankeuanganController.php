@@ -597,7 +597,10 @@ class LaporankeuanganController extends Controller
         $jmlsales = $qsalesman->count();
 
 
-        $qbank = Bank::where('kode_cabang', 'PST')->orWhere('kode_cabang', $kode_cabang);
+        $qbank = Bank::where('kode_cabang', 'PST')
+            ->where('show_on_cabang', 1)
+            ->orWhere('kode_cabang', $kode_cabang)
+            ->where('show_on_cabang', 1);
         $bank = $qbank->get();
         $jmlbank = $qbank->count();
         $cabang = Cabang::where('kode_cabang', $kode_cabang)->first();
