@@ -2714,6 +2714,9 @@
                     @php
 
                         $total_gajipokok_perusahaan = $total_gajipokok_mp + $total_gajipokok_pcf;
+                        $total_thr_perusahaan = $total_thr_mp + $total_thr_pcf;
+                        $total_thr2_perusahaan = $total_thr2_mp + $total_thr2_pcf;
+                        $total_thr3_perusahaan = $total_thr3_mp + $total_thr3_pcf;
 
                         $total_t_jabatan_perusahaan = $total_t_jabatan_mp + $total_t_jabatan_pcf;
 
@@ -2846,6 +2849,9 @@
                     <th style="text-align: right">{{ rupiah($total_all_penambah_perusahaan) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_potongan_perusahaan) }}</th>
                     <th style="text-align: right">{{ rupiah($total_all_bersih_perusahaan) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_thr_perusahaan) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_thr2_perusahaan) }}</th>
+                    <th style="text-align: right">{{ rupiah($total_thr3_perusahaan) }}</th>
 
                 </tr>
             </tbody>
