@@ -1498,14 +1498,14 @@
 
                     @endphp
                     <!--UJI COBA-->
-                    <tr>
+                    {{-- <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $d->nik }}</td>
                         <td>{{ $d->nama_karyawan }}</td>
                         <td style="text-align:center; font-weight:bold">
                             {{ !empty($totaljamkerja) ? desimal($totaljamkerja) : '' }}
                         </td>
-                    </tr>
+                    </tr> --}}
                     @php
                         //TOTAL
                         //Total Gaji Pokok
