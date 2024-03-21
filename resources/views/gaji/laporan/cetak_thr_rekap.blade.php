@@ -1539,7 +1539,7 @@
                         $penambah = $d->jml_penambah;
                         $jmlbersih = $bruto - $potongan + $penambah; // Jumlah Upah Bersih
 
-                        if ($tahunkerja > 1) {
+                        if ($tahunkerja >= 1) {
                             $thr = $upah;
                         } else {
                             $thr = ($bulankerja / 12) * $upah;
