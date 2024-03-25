@@ -215,12 +215,12 @@
                         </li>
                     </a>
                 @endif
-                <li class="{{ request()->is(['worksheetom/monitoringretur']) ? 'active' : '' }}">
-                    <a href="/worksheetom/monitoringretur">
-                        <i class="feather icon-clipboard"></i>
-                        <span class="menu-item">Monitoring Retur</span>
-                    </a>
-                </li>
+                <a href="/worksheetom/monitoringretur" style="color:#626262">
+                    <li class="list-group-item {{ request()->is(['worksheetom/monitoringretur']) ? 'active' : '' }}">
+                        <i class="feather icon-file mr-1"></i>Monitoring Retur
+                    </li>
+                </a>
+
             </ul>
         </div>
     </div>
