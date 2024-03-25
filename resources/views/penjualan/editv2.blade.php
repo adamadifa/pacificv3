@@ -35,7 +35,7 @@
                 <input type="hidden" id="cektutuplaporan" name="cektutuplaporan">
                 <input type="hidden" id="sisapiutang" name="sisapiutang">
                 <input type="hidden" id="sisafakturkredit" name="sisafakturkredit">
-                <input type="hidden" id="sikluspembayaran" name="sikluspembayaran">
+                <input type="text" id="sikluspembayaran" name="sikluspembayaran">
                 <input type="hidden" id="bruto" name="bruto">
                 <input type="hidden" id="subtotal" name="subtotal">
                 <input type="hidden" id="cekpajak" name="cekpajak" value="{{ $pajak }}">
@@ -101,7 +101,7 @@
                                                 <x-inputtext label="Salesman"
                                                     value='{{ $faktur->id_karyawan .
                                                         '
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | ' .
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | ' .
                                                         $faktur->nama_karyawan .
                                                         ' | ' .
                                                         $faktur->kategori_salesman }}'
@@ -819,8 +819,46 @@
                 }
             }
 
+            function cekfakturkredit(kode_pelanggan) {
+                $("#fakturkreditbelumlunas").text("Loading..");
+                $.ajax({
+                    type: 'POST',
+                    url: '/cekfakturkredit',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        kode_pelanggan: kode_pelanggan
+                    },
+                    cache: false,
+                    success: function(respond) {
+                        console.log(respond);
+                        var msg = respond.split("|");
+                        if (msg[0] == "error") {
+                            swal({
+                                title: 'Oops',
+                                text: 'Pelanggan Tersebut Tidak Bisa Melakukan Transaksi Karena Memilki Faktur Kredit Yang Belum Lunas, Maksimal Faktur Kredit : ' +
+                                    msg[1] + ' !',
+                                icon: 'warning',
+                                showConfirmButton: false
+                            }).then(function() {
+                                $("#nama_pelanggan").val("");
+                                $("#kode_pelanggan").val("");
+                                $("#nama_karyawan").val("");
+                                $("#id_karyawan").val("");
+                            });
+                        }
+
+
+                        $("#sisafakturkredit").val(msg[2]);
+                        $("#sikluspembayaran").val(msg[3]);
+                        $("#fakturkreditbelumlunas").text(convertToRupiah(msg[2]));
+
+                    }
+                });
+            }
+
             //Cek Piutang Pelanggan
             cekpiutang($("#kode_pelanggan").val());
+            cekfakturkredit($("#kode_pelanggan").val());
 
 
             function cekpiutang(kode_pelanggan) {
