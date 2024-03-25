@@ -101,7 +101,7 @@
                                                 <x-inputtext label="Salesman"
                                                     value='{{ $faktur->id_karyawan .
                                                         '
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | ' .
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | ' .
                                                         $faktur->nama_karyawan .
                                                         ' | ' .
                                                         $faktur->kategori_salesman }}'
@@ -994,6 +994,7 @@
                 var subtotal = $("#subtotal").val();
                 var lastsubtotal = "{{ $faktur->total }}";
                 var sisapiutang = $("#sisapiutang").val();
+                var sikluspembayaran = $("#sikluspembayaran").val();
                 var totalpiutang = parseInt(sisapiutang) - parseInt(lastsubtotal) + parseInt(subtotal);
                 var limitpel = $("#limitpel").val();
                 // alert(limitpel);
@@ -1001,7 +1002,19 @@
                 if (cektutuplaporan > 0) {
                     swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
                     return false;
-                } else if (parseInt(totalpiutang) >= parseInt(limitpel) && jenistransaksi == 'kredit') {
+                } else if (parseInt(totalpiutang) >= parseInt(limitpel) && sikluspembayaran == 0 &&
+                    jenistransaksi == 'kredit') {
+                    swal({
+                        title: 'Oops',
+                        text: 'Melebihi Limit, Silahkan Ajukan Penambahan Limit !',
+                        icon: 'warning',
+                        showConfirmButton: false
+                    }).then(function() {
+                        $("#no_fak_penj").focus();
+                    });
+                    return false;
+                } else if (parseInt(subtotal) >= parseInt(limitpel) && sikluspembayaran == 1 &&
+                    jenistransaksi == 'kredit') {
                     swal({
                         title: 'Oops',
                         text: 'Melebihi Limit, Silahkan Ajukan Penambahan Limit !',
