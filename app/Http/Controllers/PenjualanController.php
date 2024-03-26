@@ -7275,7 +7275,7 @@ class PenjualanController extends Controller
                 $sisapiutang = $piutang->totalpiutang - $piutang->jmlbayar;
                 $totalpiutang  = $sisapiutang + $faktur->total;
 
-                dd($sisapiutang . "-" . $limitpel);
+                // dd($sisapiutang . "-" . $limitpel);
 
                 if ($sisapiutang <= $limitpel) {
                     DB::table('penjualan')->where('no_fak_penj', $no_fak_penj)->update(['status' => 2]);
