@@ -534,7 +534,11 @@
                                                             </div>
                                                         </div>
                                                         @php
-                                                            $kode_cabang_pelanggan = substr($pelanggan->kode_pelanggan, 0, 3);
+                                                            $kode_cabang_pelanggan = substr(
+                                                                $pelanggan->kode_pelanggan,
+                                                                0,
+                                                                3,
+                                                            );
                                                         @endphp
                                                         @if ($pajak == 1)
                                                             <div class="form-group" style="margin-bottom: 5px">

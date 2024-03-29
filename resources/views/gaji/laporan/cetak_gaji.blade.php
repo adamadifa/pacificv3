@@ -1298,7 +1298,7 @@
                         $total_all_spip += $spip;
 
                         $total_all_potongan += $potongan;
-                        $total_all_bersih += $jmlbersih;
+                        $total_all_bersih += ROUND($jmlbersih);
 
                     @endphp
 
