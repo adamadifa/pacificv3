@@ -101,7 +101,7 @@
                                                 <x-inputtext label="Salesman"
                                                     value='{{ $faktur->id_karyawan .
                                                         '
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | ' .
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    | ' .
                                                         $faktur->nama_karyawan .
                                                         ' | ' .
                                                         $faktur->kategori_salesman }}'
@@ -819,8 +819,46 @@
                 }
             }
 
+            function cekfakturkredit(kode_pelanggan) {
+                $("#fakturkreditbelumlunas").text("Loading..");
+                $.ajax({
+                    type: 'POST',
+                    url: '/cekfakturkredit',
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        kode_pelanggan: kode_pelanggan
+                    },
+                    cache: false,
+                    success: function(respond) {
+                        console.log(respond);
+                        var msg = respond.split("|");
+                        if (msg[0] == "error") {
+                            swal({
+                                title: 'Oops',
+                                text: 'Pelanggan Tersebut Tidak Bisa Melakukan Transaksi Karena Memilki Faktur Kredit Yang Belum Lunas, Maksimal Faktur Kredit : ' +
+                                    msg[1] + ' !',
+                                icon: 'warning',
+                                showConfirmButton: false
+                            }).then(function() {
+                                $("#nama_pelanggan").val("");
+                                $("#kode_pelanggan").val("");
+                                $("#nama_karyawan").val("");
+                                $("#id_karyawan").val("");
+                            });
+                        }
+
+
+                        $("#sisafakturkredit").val(msg[2]);
+                        $("#sikluspembayaran").val(msg[3]);
+                        $("#fakturkreditbelumlunas").text(convertToRupiah(msg[2]));
+
+                    }
+                });
+            }
+
             //Cek Piutang Pelanggan
             cekpiutang($("#kode_pelanggan").val());
+            cekfakturkredit($("#kode_pelanggan").val());
 
 
             function cekpiutang(kode_pelanggan) {
@@ -994,6 +1032,7 @@
                 var subtotal = $("#subtotal").val();
                 var lastsubtotal = "{{ $faktur->total }}";
                 var sisapiutang = $("#sisapiutang").val();
+                var sikluspembayaran = $("#sikluspembayaran").val();
                 var totalpiutang = parseInt(sisapiutang) - parseInt(lastsubtotal) + parseInt(subtotal);
                 var limitpel = $("#limitpel").val();
                 // alert(limitpel);
@@ -1001,7 +1040,19 @@
                 if (cektutuplaporan > 0) {
                     swal("Peringatan", "Laporan Periode Ini Sudah Ditutup !", "warning");
                     return false;
-                } else if (parseInt(totalpiutang) >= parseInt(limitpel) && jenistransaksi == 'kredit') {
+                } else if (parseInt(totalpiutang) >= parseInt(limitpel) && sikluspembayaran == 0 &&
+                    jenistransaksi == 'kredit') {
+                    swal({
+                        title: 'Oops',
+                        text: 'Melebihi Limit, Silahkan Ajukan Penambahan Limit !',
+                        icon: 'warning',
+                        showConfirmButton: false
+                    }).then(function() {
+                        $("#no_fak_penj").focus();
+                    });
+                    return false;
+                } else if (parseInt(subtotal) >= parseInt(limitpel) && sikluspembayaran == 1 &&
+                    jenistransaksi == 'kredit') {
                     swal({
                         title: 'Oops',
                         text: 'Melebihi Limit, Silahkan Ajukan Penambahan Limit !',
