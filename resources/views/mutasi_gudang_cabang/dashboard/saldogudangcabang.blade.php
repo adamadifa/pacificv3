@@ -13,6 +13,8 @@
     $saldoakhir = ROUND(($r->saldoakhir / $r->isipcsdus) - $r->totalpengambilan + $r->totalpengembalian, 2);
     if ($saldoakhir <= 0) {
     $color = "bg-danger";
+    }else if($saldoakhir >= $r->max_stok){
+        $color = "bg-warning";
     } else {
     $color = "bg-success";
     }

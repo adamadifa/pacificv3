@@ -211,7 +211,12 @@
                                                     <td>Netto</td>
                                                     <td></td>
                                                     @php
-                                                        $totalnetto = $rekappenjualan->totalbruto - $rekappenjualan->totalretur - $rekappenjualan->totalpenyharga - $rekappenjualan->totalpotongan - $rekappenjualan->totalpotistimewa;
+                                                        $totalnetto =
+                                                            $rekappenjualan->totalbruto -
+                                                            $rekappenjualan->totalretur -
+                                                            $rekappenjualan->totalpenyharga -
+                                                            $rekappenjualan->totalpotongan -
+                                                            $rekappenjualan->totalpotistimewa;
                                                     @endphp
                                                     <td class="text-right">{{ rupiah($totalnetto) }}</td>
                                                 </tr>
@@ -219,7 +224,12 @@
                                                     <td>Pending</td>
                                                     <td></td>
                                                     @php
-                                                        $totalnettopending = $rekappenjualan->totalbrutopending - $rekappenjualan->totalreturpending - $rekappenjualan->totalpenyhargapending - $rekappenjualan->totalpotonganpending - $rekappenjualan->totalpotistimewapending;
+                                                        $totalnettopending =
+                                                            $rekappenjualan->totalbrutopending -
+                                                            $rekappenjualan->totalreturpending -
+                                                            $rekappenjualan->totalpenyhargapending -
+                                                            $rekappenjualan->totalpotonganpending -
+                                                            $rekappenjualan->totalpotistimewapending;
                                                     @endphp
                                                     <td class="text-right text-warning">
                                                         <form action="/laporanpenjualan/cetak" method="post"
