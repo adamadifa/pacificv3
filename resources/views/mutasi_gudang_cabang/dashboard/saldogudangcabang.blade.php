@@ -11,7 +11,7 @@
     <?php
     foreach ($saldo as $r) {
     $saldoakhir = ROUND(($r->saldoakhir / $r->isipcsdus) - $r->totalpengambilan + $r->totalpengembalian, 2);
-    if ($saldoakhir <= 0) {
+    if ($saldoakhir <= $r->buffer) {
     $color = "bg-danger";
     }else if($saldoakhir >= $r->max_stok){
         $color = "bg-warning";
