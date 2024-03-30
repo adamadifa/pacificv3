@@ -72,10 +72,8 @@
                                 ROUND($r->{"mutasi_$kode_produk"} / ${"isipcs_$d->kode_produk"}, 2) -
                                 $r->{"ambil_$kode_produk"} +
                                 $r->{"kembali_$kode_produk"};
-                            if (${"s$kode_produk"} <= $r->{"buffer_$d->kode_produk"}) {
+                            if (${"s$kode_produk"} >= $r->{"max_$d->kode_produk"}) {
                                 ${"color$kode_produk"} = 'bg-danger';
-                            } elseif (${"s$kode_produk"} >= $r->{"max_$d->kode_produk"}) {
-                                ${"color$kode_produk"} = 'bg-warning';
                             } else {
                                 ${"color$kode_produk"} = 'bg-success';
                             }
