@@ -28,10 +28,10 @@ class GudangController extends Controller
         $field_mutasi_gudang = "";
         $field_buffer = "";
         $field_maxstok = "";
-        $field_penjualan ="";
+        $field_penjualan = "";
 
-        $dari = date('Y-m')."-01";
-        $sampai = date('Y-m-t',strtotime($dari));
+        $dari = date('Y-m') . "-01";
+        $sampai = date('Y-m-t', strtotime($dari));
 
 
         $barang = DB::table('master_barang')
