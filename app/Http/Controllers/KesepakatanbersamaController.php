@@ -57,7 +57,7 @@ class KesepakatanbersamaController extends Controller
         $lastno_kb = $kb != null ? $kb->no_kb : '';
         $no_kb  = buatkode($lastno_kb, "KB" . $format, 3);
 
-        $gaji = DB::table('hrd_mastergaji')->where('tgl_berlaku', '<=', $tanggal)->where('nik', $nik)->first();
+        $gaji = DB::table('hrd_mastergaji')->where('tgl_berlaku', '<=', $tanggal)->where('nik', $nik)->orderBy('kode_gaji')->first();
         $kontrak = DB::table('hrd_kontrak')->where('status_kontrak', 1)->where('nik', $nik)->first();
         DB::beginTransaction();
         try {
