@@ -260,9 +260,9 @@
                     </td>
                     <td align="right">
                         @php
-                            if ($ratio_ljt < 0.5) {
+                            if ($ratio_ljt <= 0.5) {
                                 $reward_ljt = 200000;
-                            } elseif ($ratio_ljt >= 0.5 && $ratio_ljt <= 1) {
+                            } elseif ($ratio_ljt > 0.5 && $ratio_ljt <= 1) {
                                 $reward_ljt = 150000;
                             } elseif ($ratio_ljt > 1 && $ratio_ljt <= 1.5) {
                                 $reward_ljt = 100000;
