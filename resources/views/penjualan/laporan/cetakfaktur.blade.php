@@ -62,10 +62,19 @@
                         <b>{{ $faktur->alamat_cabang }}</b>
                     </b>
                 @else
-                    <b>
-                        <b>{{ strtoupper($cabang->nama_pt) }}</b><br>
-                        <b>{{ $cabang->alamat_cabang }}</b>
-                    </b>
+                    @if ($faktur->tgltransaksi <= '2024-03-14')
+                        <b>CV MAKMUR PERMATA </b><br>
+                        <b>Jln. Perintis Kemerdekaan RT 001 / RW 003 Kelurahan Karsamenak Kecamatan Kawalu Kota
+                            Tasikmalaya
+                            46182 <br>
+                            NPWP : 863860342425000</b>
+                    @else
+                        <b>
+                            <b>{{ strtoupper($cabang->nama_pt) }}</b><br>
+                            <b>{{ $cabang->alamat_cabang }}</b>
+                        </b>
+                    @endif
+
                 @endif
 
             @endif
@@ -234,10 +243,18 @@
                             <b>{{ $faktur->alamat_cabang }}</b>
                         </b>
                     @else
-                        <b>
-                            <b> {{ strtoupper($cabang->nama_pt) }}</b><br>
-                            <b>{{ $cabang->alamat_cabang }}</b>
-                        </b>
+                        @if ($faktur->tgltransaksi <= '2024-03-14')
+                            <b>CV MAKMUR PERMATA </b><br>
+                            <b>Jln. Perintis Kemerdekaan RT 001 / RW 003 Kelurahan Karsamenak Kecamatan Kawalu Kota
+                                Tasikmalaya
+                                46182 <br>
+                                NPWP : 863860342425000</b>
+                        @else
+                            <b>
+                                <b>{{ strtoupper($cabang->nama_pt) }}</b><br>
+                                <b>{{ $cabang->alamat_cabang }}</b>
+                            </b>
+                        @endif
                     @endif
                 @endif
             </b>
