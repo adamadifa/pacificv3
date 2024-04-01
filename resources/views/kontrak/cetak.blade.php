@@ -267,6 +267,7 @@
                 @else
                     Perusahaan dengan Jabatan sebagai {{ $kontrak->nama_jabatan }}
                 @endif
+                yang berlokasi di {{ $cabang->nama_cabang }}
                 serta bersedia ditempatkan diluar lokasi dan departemen tersebut bila Perusahaan memerlukan.
             </li>
             <li>
