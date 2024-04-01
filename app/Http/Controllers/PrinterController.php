@@ -242,7 +242,9 @@ class PrinterController extends Controller
             $potongan = new item('Potongan', rupiah($faktur->potongan));
             $totalnonppn = $faktur->subtotal - $faktur->potongan - $faktur->potistimewa - $faktur->penyharga;
             $total = new item('Total', rupiah($totalnonppn));
-            $ppn = new item('PPN', rupiah($faktur->ppn));
+            if (!empty($faktur->ppn)) {
+                $ppn = new item('PPN', rupiah($faktur->ppn));
+            }
             $_grandtotal = $faktur->total - $totalretur;
             $retur = new item('Retur', rupiah($totalretur));
             $grandtotal = new item('Grand Total', rupiah($_grandtotal));
@@ -361,7 +363,9 @@ class PrinterController extends Controller
             $potongan = new item('Potongan', rupiah($faktur->potongan));
             $totalnonppn = $faktur->subtotal - $faktur->potongan - $faktur->potistimewa - $faktur->penyharga;
             $total = new item('Total', rupiah($totalnonppn));
-            $ppn = new item('PPN', rupiah($faktur->ppn));
+            if (!empty($faktur->ppn)) {
+                $ppn = new item('PPN', rupiah($faktur->ppn));
+            }
             $_grandtotal = $faktur->total - $totalretur;
             $retur = new item('Retur', rupiah($totalretur));
             $grandtotal = new item('Grand Total', rupiah($_grandtotal));
