@@ -155,7 +155,13 @@
             <tr>
                 <td>Alamat</td>
                 <td>:</td>
-                <td>Jl. Perintis Kemerdekaan No.160 Tasikmalaya</td>
+                <td>
+                    @if ($kontrak->dari < '2024-03-01')
+                        Jl. Perintis Kemerdekaan No.160 Tasikmalaya
+                    @else
+                        {{ $cabang->alamat_cabang }}
+                    @endif
+                </td>
             </tr>
         </table>
         </p>
