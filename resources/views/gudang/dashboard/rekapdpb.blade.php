@@ -1,3 +1,9 @@
+<style>
+    .bg-blue {
+        background-color: blue;
+        color: white;
+    }
+</style>
 @php
     $hariini = date('Y-m-d');
 @endphp
@@ -75,7 +81,7 @@
                             if (${"s$kode_produk"} <= $r->{"buffer_$d->kode_produk"}) {
                                 ${"color$kode_produk"} = 'bg-danger';
                             } elseif (${"s$kode_produk"} >= $r->{"maxstok_$d->kode_produk"}) {
-                                ${"color$kode_produk"} = 'bg-warning';
+                                ${"color$kode_produk"} = 'bg-blue';
                             } else {
                                 ${"color$kode_produk"} = 'bg-success';
                             }
