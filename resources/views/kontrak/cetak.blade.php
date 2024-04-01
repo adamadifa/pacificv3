@@ -161,8 +161,13 @@
         </p>
 
         <p>
-            Bertindak untuk dan atas nama {{ $kontrak->id_perusahaan == 'MP' ? 'CV Makmur Permata' : 'CV. Pacific' }}
-            berkedudukan di Tasikmalaya selanjutnya disebut <b>pihak kesatu.</b>
+            Bertindak untuk dan atas nama
+            @if ($kontrak->dari < '2024-03-01')
+                {{ $kontrak->id_perusahaan == 'MP' ? 'CV Makmur Permata' : 'CV. Pacific' }}
+            @else
+                {{ $cabang->nama_pt }}
+            @endif
+            berkedudukan di {{ $cabang->nama_cabang }} selanjutnya disebut <b>pihak kesatu.</b>
         </p>
 
         <p>
