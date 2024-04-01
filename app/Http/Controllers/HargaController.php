@@ -536,7 +536,7 @@ class HargaController extends Controller
                         ->where('kategori_harga', $kategori_salesman)
                         ->whereNull('status_promo_product')
                         ->get();
-
+                    echo 1;
                     // $barangnew = DB::table('barang_new')
                     //     ->select('barang_new.*')
                     //     ->join('master_barang', 'barang_new.kode_produk', '=', 'master_barang.kode_produk')->where('barang_new.status_harga', 1)
