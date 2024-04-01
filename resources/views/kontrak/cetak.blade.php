@@ -82,7 +82,7 @@
     <!-- Each sheet element should have the class "sheet" -->
     <!-- "padding-**mm" is optional: you can set 10, 15, 20 or 25 -->
     <section class="sheet padding-10mm">
-        @if ($kontrak->id_perusahaan == 'MP')
+        @if ($kontrak->id_kantor == 'PST')
             <table style="width: 100%">
                 <tr>
                     <td style="width: 20%; text-align:center">
@@ -119,7 +119,6 @@
                             <span style="font-size: 1.2rem"><i>Factory / Head Office</i></span><br>
                             <span style="font-family:'Times New Roman'">{{ $cabang->alamat_cabang }}</span><br>
                             <span style="font-size: 12px">Telp (0265) 336794 Fax (0265) 332329</span><br>
-                            <span style="font-size: 11px">e-mail : pacific.tasikmalaya@gmail.com</span>
                         @endif
                     </td>
                     <td>
