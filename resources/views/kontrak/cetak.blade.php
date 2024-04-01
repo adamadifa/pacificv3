@@ -118,7 +118,7 @@
                             <h3 style="font-family:'Cambria'; line-height:0px">{{ $cabang->nama_pt }}</h3>
                             <span style="font-size: 1.2rem"><i>Factory / Head Office</i></span><br>
                             <span style="font-family:'Times New Roman'">{{ $cabang->alamat_cabang }}</span><br>
-                            <span style="font-size: 12px">Telp (0265) 336794 Fax (0265) 332329</span><br>
+                            <span style="font-size: 12px">{{ $cabang->email }}</span><br>
                         @endif
                     </td>
                     <td>
