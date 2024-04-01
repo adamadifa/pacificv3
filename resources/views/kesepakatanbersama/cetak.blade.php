@@ -74,7 +74,7 @@
                     <img src="{{ asset('app-assets/images/logo/mp.png') }}" alt=""
                         style="width: 80px; height:80px">
                 </td>
-                <td style="text-align: center">
+                <td style="text-align: left">
                     <h3 style="font-family:'Cambria'; line-height:0px">CV MAKMUR PERMATA</h3>
                     <span style="font-size: 1.2rem"><i>Factory / Head Office</i></span><br>
                     <span style="font-family:'Times New Roman'">Jl. Perintis Kemerdekaan No. 160 Tasikmalaya</span><br>
