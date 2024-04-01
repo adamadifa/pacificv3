@@ -89,24 +89,14 @@
                         <img src="{{ asset('app-assets/images/logo/mp.png') }}" alt=""
                             style="width: 80px; height:80px">
                     </td>
-                    @if ($kontrak->dari < '2024-03-01')
-                        <td style="text-align: left">
-                            <h3 style="font-family:'Cambria'; line-height:0px">CV MAKMUR PERMATA</h3>
-                            <span style="font-size: 1.2rem"><i>Factory / Head Office</i></span><br>
-                            <span style="font-family:'Times New Roman'">Jl. Perintis Kemerdekaan No. 160
-                                Tasikmalaya</span><br>
-                            <span style="font-size: 12px">Telp (0265) 336794 Fax (0265) 332329</span><br>
-                            <span style="font-size: 11px">e-mail : pacific.tasikmalaya@gmail.com</span>
-                        </td>
-                    @else
-                        <td style="text-align: left">
-                            <h3 style="font-family:'Cambria'; line-height:0px">{{ $cabang->nama_pt }}</h3>
-                            <span style="font-size: 1.2rem"><i>Factory / Head Office</i></span><br>
-                            <span style="font-family:'Times New Roman'">{{ $cabang->alamat_cabang }}</span><br>
-                            <span style="font-size: 12px">Telp (0265) 336794 Fax (0265) 332329</span><br>
-                            {{-- <span style="font-size: 11px">e-mail : pacific.tasikmalaya@gmail.com</span> --}}
-                        </td>
-                    @endif
+                    <td style="text-align: left">
+                        <h3 style="font-family:'Cambria'; line-height:0px">CV MAKMUR PERMATA</h3>
+                        <span style="font-size: 1.2rem"><i>Factory / Head Office</i></span><br>
+                        <span style="font-family:'Times New Roman'">Jl. Perintis Kemerdekaan No. 160
+                            Tasikmalaya</span><br>
+                        <span style="font-size: 12px">Telp (0265) 336794 Fax (0265) 332329</span><br>
+                        <span style="font-size: 11px">e-mail : pacific.tasikmalaya@gmail.com</span>
+                    </td>
                     <td>
 
                     </td>
