@@ -504,7 +504,8 @@
         </p>
         <table class="datatable4">
             <tr>
-                <td colspan="3" style="text-align: center">Tasikmalaya,{{ DateToIndo2($kontrak->dari) }}</td>
+                <td colspan="3" style="text-align: center">
+                    {{ ucwords($cabang->nama_cabang) }},{{ DateToIndo2($kontrak->dari) }}</td>
             </tr>
             <tr>
                 <td style="text-align:center">PIHAK KEDUA</td>
